@@ -22,87 +22,85 @@ namespace VVVV.Hosting.Pins
 			//Register default types
 			this.RegisterType(typeof(double), (host, attribute, t) => {
 			                  	var valueConfig = host.CreateValueConfig(attribute, t);
-			                  	var inStream = new DoubleInStream(GetValuePointerFunc(valueConfig), GetValidateAction(valueConfig));
+			                  	var inStream = new DoubleInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
 			                  	var outStream = new DoubleOutStream(ResizeValueArrayFunc(valueConfig));
-			                  	return new ConfigPin<double>(host, valueConfig, inStream, outStream);
+			                  	return new ConfigIOStream<double>(inStream, outStream);
 			                  });
 			
 			this.RegisterType(typeof(float), (host, attribute, t) => {
 			                  	var valueConfig = host.CreateValueConfig(attribute, t);
-			                  	var inStream = new FloatInStream(GetValuePointerFunc(valueConfig), GetValidateAction(valueConfig));
+			                  	var inStream = new FloatInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
 			                  	var outStream = new FloatOutStream(ResizeValueArrayFunc(valueConfig));
-			                  	return new ConfigPin<float>(host, valueConfig, inStream, outStream);
+			                  	return new ConfigIOStream<float>(inStream, outStream);
 			                  });
 			
 			this.RegisterType(typeof(int), (host, attribute, t) => {
 			                  	var valueConfig = host.CreateValueConfig(attribute, t);
-			                  	var inStream = new IntInStream(GetValuePointerFunc(valueConfig), GetValidateAction(valueConfig));
+			                  	var inStream = new IntInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
 			                  	var outStream = new IntOutStream(ResizeValueArrayFunc(valueConfig));
-			                  	return new ConfigPin<int>(host, valueConfig, inStream, outStream);
+			                  	return new ConfigIOStream<int>(inStream, outStream);
 			                  });
 			
 			this.RegisterType(typeof(bool), (host, attribute, t) => {
 			                  	var valueConfig = host.CreateValueConfig(attribute, t);
-			                  	var inStream = new BoolInStream(GetValuePointerFunc(valueConfig), GetValidateAction(valueConfig));
+			                  	var inStream = new BoolInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
 			                  	var outStream = new BoolOutStream(ResizeValueArrayFunc(valueConfig));
-			                  	return new ConfigPin<bool>(host, valueConfig, inStream, outStream);
+			                  	return new ConfigIOStream<bool>(inStream, outStream);
 			                  });
 
 			this.RegisterType(typeof(Vector2D), (host, attribute, t) => {
 			                  	var valueConfig = host.CreateValueConfig(attribute, t);
-			                  	var inStream = new Vector2DInStream(GetValuePointerFunc(valueConfig), GetValidateAction(valueConfig));
+			                  	var inStream = new Vector2DInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
 			                  	var outStream = new Vector2DOutStream(ResizeValueArrayFunc(valueConfig));
-			                  	return new ConfigPin<Vector2D>(host, valueConfig, inStream, outStream);
+			                  	return new ConfigIOStream<Vector2D>(inStream, outStream);
 			                  });
 			this.RegisterType(typeof(Vector3D),(host, attribute, t) => {
 			                  	var valueConfig = host.CreateValueConfig(attribute, t);
-			                  	var inStream = new Vector3DInStream(GetValuePointerFunc(valueConfig), GetValidateAction(valueConfig));
+			                  	var inStream = new Vector3DInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
 			                  	var outStream = new Vector3DOutStream(ResizeValueArrayFunc(valueConfig));
-			                  	return new ConfigPin<Vector3D>(host, valueConfig, inStream, outStream);
+			                  	return new ConfigIOStream<Vector3D>(inStream, outStream);
 			                  });
 			this.RegisterType(typeof(Vector4D),(host, attribute, t) => {
 			                  	var valueConfig = host.CreateValueConfig(attribute, t);
-			                  	var inStream = new Vector4DInStream(GetValuePointerFunc(valueConfig), GetValidateAction(valueConfig));
+			                  	var inStream = new Vector4DInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
 			                  	var outStream = new Vector4DOutStream(ResizeValueArrayFunc(valueConfig));
-			                  	return new ConfigPin<Vector4D>(host, valueConfig, inStream, outStream);
+			                  	return new ConfigIOStream<Vector4D>(inStream, outStream);
 			                  });
 
 			this.RegisterType(typeof(Vector2), (host, attribute, t) => {
 			                  	var valueConfig = host.CreateValueConfig(attribute, t);
-			                  	var inStream = new Vector2InStream(GetValuePointerFunc(valueConfig), GetValidateAction(valueConfig));
+			                  	var inStream = new Vector2InStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
 			                  	var outStream = new Vector2OutStream(ResizeValueArrayFunc(valueConfig));
-			                  	return new ConfigPin<Vector2>(host, valueConfig, inStream, outStream);
+			                  	return new ConfigIOStream<Vector2>(inStream, outStream);
 			                  });
 			this.RegisterType(typeof(Vector3), (host, attribute, t) => {
 			                  	var valueConfig = host.CreateValueConfig(attribute, t);
-			                  	var inStream = new Vector3InStream(GetValuePointerFunc(valueConfig), GetValidateAction(valueConfig));
+			                  	var inStream = new Vector3InStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
 			                  	var outStream = new Vector3OutStream(ResizeValueArrayFunc(valueConfig));
-			                  	return new ConfigPin<Vector3>(host, valueConfig, inStream, outStream);
+			                  	return new ConfigIOStream<Vector3>(inStream, outStream);
 			                  });
 			this.RegisterType(typeof(Vector4), (host, attribute, t) => {
 			                  	var valueConfig = host.CreateValueConfig(attribute, t);
-			                  	var inStream = new Vector4InStream(GetValuePointerFunc(valueConfig), GetValidateAction(valueConfig));
+			                  	var inStream = new Vector4InStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
 			                  	var outStream = new Vector4OutStream(ResizeValueArrayFunc(valueConfig));
-			                  	return new ConfigPin<Vector4>(host, valueConfig, inStream, outStream);
+			                  	return new ConfigIOStream<Vector4>(inStream, outStream);
 			                  });
 
 			this.RegisterType(typeof(string), (host, attribute, t) => {
 			                  	var stringConfig = host.CreateStringConfig(attribute, t);
-			                  	var stream = new StringConfigStream(stringConfig);
-			                  	return new ConfigPin<string>(host, stringConfig, stream);
+			                  	return new StringConfigStream(stringConfig);
 			                  });
 			
 			this.RegisterType(typeof(RGBAColor), (host, attribute, t) => {
 			                  	var colorConfig = host.CreateColorConfig(attribute, t);
-			                  	var inStream = new ColorInStream(GetColorPointerFunc(colorConfig), GetValidateAction(colorConfig));
+			                  	var inStream = new ColorInStream(GetColorPointerFunc(colorConfig), GetValidateFunc(colorConfig));
 			                  	var outStream = new ColorOutStream(ResizeColorArrayFunc(colorConfig));
-			                  	return new ConfigPin<RGBAColor>(host, colorConfig, inStream, outStream);
+			                  	return new ConfigIOStream<RGBAColor>(inStream, outStream);
 			                  });
 
 			this.RegisterType(typeof(EnumEntry), (host, attribute, t) => {
 			                  	var enumConfig = host.CreateEnumConfig(attribute, t);
-			                  	var stream = new DynamicEnumConfigStream(enumConfig);
-			                  	return new ConfigPin<EnumEntry>(host, enumConfig, stream);
+			                  	return new DynamicEnumConfigStream(enumConfig);
 			                  });
 		}
 		
@@ -116,16 +114,16 @@ namespace VVVV.Hosting.Pins
 			};
 		}
 		
-		private Action GetValidateAction(IValueConfig valueConfig)
+		private Func<bool> GetValidateFunc(IValueConfig valueConfig)
 		{
 			// TODO: check this
-			return () => { };
+			return () => { return valueConfig.PinIsChanged; };
 		}
 		
-		private Action GetValidateAction(IColorConfig colorConfig)
+		private Func<bool> GetValidateFunc(IColorConfig colorConfig)
 		{
 			// TODO: check this
-			return () => { };
+			return () => { return colorConfig.PinIsChanged; };
 		}
 		
 		unsafe private Func<int, IntPtr> ResizeValueArrayFunc(IValueConfig valueConfig)

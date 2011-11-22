@@ -87,10 +87,7 @@ namespace VVVV.Hosting.Streams
 			set;
 		}
 		
-		public void Sync()
-		{
-			// Nothing to do
-		}
+		public abstract bool Sync();
 		
 		public void Flush()
 		{
@@ -130,6 +127,11 @@ namespace VVVV.Hosting.Streams
 			{
 				FStringConfig.SliceCount = value;
 			}
+		}
+		
+		public override bool Sync()
+		{
+			return FStringConfig.PinIsChanged;
 		}
 	}
 	
@@ -171,6 +173,11 @@ namespace VVVV.Hosting.Streams
 			{
 				return default(T);
 			}
+		}
+		
+		public override bool Sync()
+		{
+			return FEnumConfig.PinIsChanged;
 		}
 	}
 	

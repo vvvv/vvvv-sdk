@@ -79,7 +79,7 @@ namespace VVVV.Hosting
                     yield return new Export(contractName, () => PluginHost);
                     yield break;
                 }
-                
+
                 foreach (var attribute in GetImportDefinitionAttributes(definition))
                 {
                     if (!(attribute is PinAttribute)) continue;

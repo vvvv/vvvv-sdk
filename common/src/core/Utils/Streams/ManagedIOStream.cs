@@ -31,9 +31,10 @@ namespace VVVV.Utils.Streams
 			return clonedStream;
 		}
 		
-		public void Sync()
+		public bool Sync()
 		{
 			// Nothing to do
+			return true;
 		}
 		
 		public void Flush()

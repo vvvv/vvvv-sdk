@@ -24,88 +24,73 @@ namespace VVVV.Hosting.Pins
 			//Register default types
 			this.RegisterType(typeof(double), (host, attribute, t) => {
 			                  	var valueOut = host.CreateValueOutput(attribute, t);
-			                  	var stream = new DoubleOutStream(GetResizeValueArrayFunc(valueOut));
-			                  	return new OutputPin<double>(host, valueOut, stream);
+			                  	return new DoubleOutStream(GetResizeValueArrayFunc(valueOut));
 			                  });
 			
 			this.RegisterType(typeof(float), (host, attribute, t) => {
 			                  	var valueOut = host.CreateValueOutput(attribute, t);
-			                  	var stream = new FloatOutStream(GetResizeValueArrayFunc(valueOut));
-			                  	return new OutputPin<float>(host, valueOut, stream);
+			                  	return new FloatOutStream(GetResizeValueArrayFunc(valueOut));
 			                  });
 			
 			this.RegisterType(typeof(int), (host, attribute, t) => {
 			                  	var valueOut = host.CreateValueOutput(attribute, t);
-			                  	var stream = new IntOutStream(GetResizeValueArrayFunc(valueOut));
-			                  	return new OutputPin<int>(host, valueOut, stream);
+			                  	return new IntOutStream(GetResizeValueArrayFunc(valueOut));
 			                  });
 			
 			this.RegisterType(typeof(bool), (host, attribute, t) => {
 			                  	var valueOut = host.CreateValueOutput(attribute, t);
-			                  	var stream = new BoolOutStream(GetResizeValueArrayFunc(valueOut));
-			                  	return new OutputPin<bool>(host, valueOut, stream);
+			                  	return new BoolOutStream(GetResizeValueArrayFunc(valueOut));
 			                  });
 
 			this.RegisterType(typeof(Matrix4x4), (host, attribute, t) => {
 			                  	var transformOut = host.CreateTransformOutput(attribute, t);
-			                  	var stream = new Matrix4x4OutStream(GetResizeMatrixArrayFunc(transformOut));
-			                  	return new OutputPin<Matrix4x4>(host, transformOut, stream);
+			                  	return new Matrix4x4OutStream(GetResizeMatrixArrayFunc(transformOut));
 			                  });
 			
 			this.RegisterType(typeof(Matrix), (host, attribute, t) => {
 			                  	var transformOut = host.CreateTransformOutput(attribute, t);
-			                  	var stream = new MatrixOutStream(GetResizeMatrixArrayFunc(transformOut));
-			                  	return new OutputPin<Matrix>(host, transformOut, stream);
+			                  	return new MatrixOutStream(GetResizeMatrixArrayFunc(transformOut));
 			                  });
 
 			this.RegisterType(typeof(Vector2D), (host, attribute, t) => {
 			                  	var valueOut = host.CreateValueOutput(attribute, t);
-			                  	var stream = new Vector2DOutStream(GetResizeValueArrayFunc(valueOut));
-			                  	return new OutputPin<Vector2D>(host, valueOut, stream);
+			                  	return new Vector2DOutStream(GetResizeValueArrayFunc(valueOut));
 			                  });
 			this.RegisterType(typeof(Vector3D),(host, attribute, t) => {
 			                  	var valueOut = host.CreateValueOutput(attribute, t);
-			                  	var stream = new Vector3DOutStream(GetResizeValueArrayFunc(valueOut));
-			                  	return new OutputPin<Vector3D>(host, valueOut, stream);
+			                  	return new Vector3DOutStream(GetResizeValueArrayFunc(valueOut));
 			                  });
 			this.RegisterType(typeof(Vector4D),(host, attribute, t) => {
 			                  	var valueOut = host.CreateValueOutput(attribute, t);
-			                  	var stream = new Vector4DOutStream(GetResizeValueArrayFunc(valueOut));
-			                  	return new OutputPin<Vector4D>(host, valueOut, stream);
+			                  	return new Vector4DOutStream(GetResizeValueArrayFunc(valueOut));
 			                  });
 
 			this.RegisterType(typeof(Vector2), (host, attribute, t) => {
 			                  	var valueOut = host.CreateValueOutput(attribute, t);
-			                  	var stream = new Vector2OutStream(GetResizeValueArrayFunc(valueOut));
-			                  	return new OutputPin<Vector2>(host, valueOut, stream);
+			                  	return new Vector2OutStream(GetResizeValueArrayFunc(valueOut));
 			                  });
 			this.RegisterType(typeof(Vector3), (host, attribute, t) => {
 			                  	var valueOut = host.CreateValueOutput(attribute, t);
-			                  	var stream = new Vector3OutStream(GetResizeValueArrayFunc(valueOut));
-			                  	return new OutputPin<Vector3>(host, valueOut, stream);
+			                  	return new Vector3OutStream(GetResizeValueArrayFunc(valueOut));
 			                  });
 			this.RegisterType(typeof(Vector4), (host, attribute, t) => {
 			                  	var valueOut = host.CreateValueOutput(attribute, t);
-			                  	var stream = new Vector4OutStream(GetResizeValueArrayFunc(valueOut));
-			                  	return new OutputPin<Vector4>(host, valueOut, stream);
+			                  	return new Vector4OutStream(GetResizeValueArrayFunc(valueOut));
 			                  });
 
 			this.RegisterType(typeof(string), (host, attribute, t) => {
 			                  	var stringOut = host.CreateStringOutput(attribute, t);
-			                  	var stream = new StringOutStream(stringOut);
-			                  	return new OutputPin<string>(host, stringOut, stream);
+			                  	return new StringOutStream(stringOut);
 			                  });
 			
 			this.RegisterType(typeof(RGBAColor), (host, attribute, t) => {
 			                  	var colorOut = host.CreateColorOutput(attribute, t);
-			                  	var stream = new ColorOutStream(GetResizeColorArrayFunc(colorOut));
-			                  	return new OutputPin<RGBAColor>(host, colorOut, stream);
+			                  	return new ColorOutStream(GetResizeColorArrayFunc(colorOut));
 			                  });
 
 			this.RegisterType(typeof(EnumEntry), (host, attribute, t) => {
 			                  	var enumOut = host.CreateEnumOutput(attribute, t);
-			                  	var stream = new DynamicEnumOutStream(enumOut);
-			                  	return new OutputPin<EnumEntry>(host, enumOut, stream);
+			                  	return new DynamicEnumOutStream(enumOut);
 			                  });
 		}
 		

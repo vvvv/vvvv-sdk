@@ -58,7 +58,7 @@ namespace VVVV.Hosting.Streams
 		public UnmanagedOutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
 		{
 			FResizeUnmanagedArrayFunc = resizeUnmanagedArrayFunc;
-			FInStream = UnmanagedInStream<T>.Create(() => Tuple.Create(FUnmanagedArrayPtr, FLength), () => {});
+			FInStream = UnmanagedInStream<T>.Create(() => Tuple.Create(FUnmanagedArrayPtr, FLength), () => { return true; });
 			Resize(1);
 		}
 		
@@ -172,9 +172,10 @@ namespace VVVV.Hosting.Streams
 			StreamUtils.ReadCyclic(this, buffer, index, length, stride);
 		}
 		
-		public void Sync()
+		public bool Sync()
 		{
 			// We read what the user wrote. So no need to sync here with external data.
+			return true;
 		}
 	}
 	

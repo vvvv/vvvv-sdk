@@ -101,9 +101,10 @@ namespace VVVV.Hosting.Pins.Output
 			FIOStream.ReadCyclic(buffer, index, length, stride);
 		}
 		
-		public void Sync()
+		public bool Sync()
 		{
 			// Nothing to do here.
+			return true;
 		}
 		
 		public void Reset()

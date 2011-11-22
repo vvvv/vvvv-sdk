@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -11,12 +10,15 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Runtime;
 using VVVV.Hosting;
+using VVVV.Hosting.Interfaces;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Collections;

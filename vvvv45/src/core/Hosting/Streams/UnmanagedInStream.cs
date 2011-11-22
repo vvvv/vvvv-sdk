@@ -13,35 +13,35 @@ namespace VVVV.Hosting.Streams
 {
 	unsafe abstract class UnmanagedInStream<T> : IInStream<T>
 	{
-		public static IInStream<T> Create(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateAction)
+		public static IInStream<T> Create(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
 		{
 			object result = null;
 			
 			var type = typeof(T);
 			if (type == typeof(double))
-				result = new DoubleInStream(getUnmanagedArrayFunc, validateAction);
+				result = new DoubleInStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(float))
-				result = new FloatInStream(getUnmanagedArrayFunc, validateAction);
+				result = new FloatInStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(int))
-				result = new IntInStream(getUnmanagedArrayFunc, validateAction);
+				result = new IntInStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(bool))
-				result = new BoolInStream(getUnmanagedArrayFunc, validateAction);
+				result = new BoolInStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(Vector2))
-				result = new Vector2InStream(getUnmanagedArrayFunc, validateAction);
+				result = new Vector2InStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(Vector3))
-				result = new Vector3InStream(getUnmanagedArrayFunc, validateAction);
+				result = new Vector3InStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(Vector4))
-				result = new Vector4InStream(getUnmanagedArrayFunc, validateAction);
+				result = new Vector4InStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(Vector2D))
-				result = new Vector2DInStream(getUnmanagedArrayFunc, validateAction);
+				result = new Vector2DInStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(Vector3D))
-				result = new Vector3DInStream(getUnmanagedArrayFunc, validateAction);
+				result = new Vector3DInStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(Vector4D))
-				result = new Vector4DInStream(getUnmanagedArrayFunc, validateAction);
+				result = new Vector4DInStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(Matrix))
-				result = new MatrixInStream(getUnmanagedArrayFunc, validateAction);
+				result = new MatrixInStream(getUnmanagedArrayFunc, validateFunc);
 			else if (type == typeof(Matrix4x4))
-				result = new Matrix4x4InStream(getUnmanagedArrayFunc, validateAction);
+				result = new Matrix4x4InStream(getUnmanagedArrayFunc, validateFunc);
 			else
 				throw new NotSupportedException(string.Format("UnmanagedInStream of type '{0}' is not supported.", type));
 			
@@ -49,13 +49,13 @@ namespace VVVV.Hosting.Streams
 		}
 		
 		private readonly Func<Tuple<IntPtr, int>> FGetUnmanagedArrayFunc;
-		private readonly Action FValidateAction;
+		private readonly Func<bool> FValidateFunc;
 		protected IntPtr FUnmanagedArrayPtr;
 		
-		public UnmanagedInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateAction)
+		public UnmanagedInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
 		{
 			FGetUnmanagedArrayFunc = getUnmanagedArrayFunc;
-			FValidateAction = validateAction;
+			FValidateFunc = validateFunc;
 		}
 		
 		public int ReadPosition
@@ -180,14 +180,16 @@ namespace VVVV.Hosting.Streams
 			return numSlicesToRead;
 		}
 		
-		public void Sync()
+		public bool Sync()
 		{
-			FValidateAction();
+			var changed = FValidateFunc();
 			
 			var result = FGetUnmanagedArrayFunc();
 			FUnmanagedArrayPtr = result.Item1;
 			Length = result.Item2;
 			Synced(FUnmanagedArrayPtr, Length);
+			
+			return changed;
 		}
 		
 		public void Reset()
@@ -205,8 +207,8 @@ namespace VVVV.Hosting.Streams
 	{
 		private double* FUnmanagedArray;
 		
-		public DoubleInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateAction)
-			: base(getUnmanagedArrayFunc, validateAction)
+		public DoubleInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+			: base(getUnmanagedArrayFunc, validateFunc)
 		{
 			
 		}
@@ -252,8 +254,8 @@ namespace VVVV.Hosting.Streams
 	{
 		private double* FUnmanagedArray;
 		
-		public FloatInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateAction)
-			: base(getUnmanagedArrayFunc, validateAction)
+		public FloatInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+			: base(getUnmanagedArrayFunc, validateFunc)
 		{
 			
 		}
@@ -291,8 +293,8 @@ namespace VVVV.Hosting.Streams
 	{
 		private double* FUnmanagedArray;
 		
-		public IntInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateAction)
-			: base(getUnmanagedArrayFunc, validateAction)
+		public IntInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+			: base(getUnmanagedArrayFunc, validateFunc)
 		{
 			
 		}
@@ -330,8 +332,8 @@ namespace VVVV.Hosting.Streams
 	{
 		private double* FUnmanagedArray;
 		
-		public BoolInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateAction)
-			: base(getUnmanagedArrayFunc, validateAction)
+		public BoolInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+			: base(getUnmanagedArrayFunc, validateFunc)
 		{
 			
 		}
@@ -369,8 +371,8 @@ namespace VVVV.Hosting.Streams
 	{
 		private Matrix* FUnmanagedArray;
 		
-		public MatrixInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateAction)
-			: base(getUnmanagedArrayFunc, validateAction)
+		public MatrixInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+			: base(getUnmanagedArrayFunc, validateFunc)
 		{
 			
 		}
@@ -408,8 +410,8 @@ namespace VVVV.Hosting.Streams
 	{
 		private Matrix* FUnmanagedArray;
 		
-		public Matrix4x4InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateAction)
-			: base(getUnmanagedArrayFunc, validateAction)
+		public Matrix4x4InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+			: base(getUnmanagedArrayFunc, validateFunc)
 		{
 			
 		}

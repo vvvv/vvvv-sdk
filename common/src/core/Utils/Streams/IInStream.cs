@@ -11,7 +11,15 @@ namespace VVVV.Utils.Streams
 		
 		void ReadCyclic(T[] buffer, int index, int length, int stride = 1);
 		
-		void Sync();
+		/// <summary>
+		/// Synchronize the input buffer with the source.
+		/// </summary>
+		/// <returns>
+		/// Returns true if the stream contains new data.
+		/// This will return true in most cases, as a computation whether or not
+		/// the data changed might be too expensive.
+		/// </returns>
+		bool Sync();
 		
 		int ReadPosition
 		{

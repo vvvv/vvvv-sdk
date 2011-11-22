@@ -98,10 +98,11 @@ namespace VVVV.Hosting.Pins.Input
 			FCurrentInStream.ReadCyclic(buffer, index, length, stride);
 		}
 		
-		public void Sync()
+		public bool Sync()
 		{
-			FInStream.Sync();
+			var changed = FInStream.Sync();
 			FCurrentInStream = FInStream;
+			return changed;
 		}
 		
 		public void Reset()

@@ -11,7 +11,7 @@ namespace VVVV.Hosting.Streams
 	unsafe abstract class VectorInStream<T> : IInStream<T> where T : struct
 	{
 		private readonly Func<Tuple<IntPtr, int>> FGetUnmanagedArrayFunc;
-		private readonly Action FValidateFunc;
+		private readonly Func<bool> FValidateFunc;
 		protected readonly int FDimension;
 		protected double* FUnmanagedArray;
 		protected double* FReadPointer;
@@ -19,7 +19,7 @@ namespace VVVV.Hosting.Streams
 		protected int FUnderFlow;
 		protected int FReadPosition;
 		
-		public VectorInStream(int dimension, Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateFunc)
+		public VectorInStream(int dimension, Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
 		{
 			FDimension = dimension;
 			FGetUnmanagedArrayFunc = getUnmanagedArrayFunc;
@@ -132,9 +132,9 @@ namespace VVVV.Hosting.Streams
 			FReadPointer = FUnmanagedArray;
 		}
 		
-		public void Sync()
+		public bool Sync()
 		{
-			FValidateFunc();
+			var changed = FValidateFunc();
 			
 			var result = FGetUnmanagedArrayFunc();
 			FUnmanagedArray = (double*) result.Item1.ToPointer();
@@ -142,6 +142,8 @@ namespace VVVV.Hosting.Streams
 			Length = Math.DivRem(FUnmanagedLength, FDimension, out FUnderFlow);
 			if (FUnderFlow > 0)
 				Length++;
+			
+			return changed;
 		}
 		
 		protected bool IsOutOfBounds(int numSlicesToWorkOn)
@@ -152,7 +154,7 @@ namespace VVVV.Hosting.Streams
 	
 	unsafe class Vector2DInStream : VectorInStream<Vector2D>
 	{
-		public Vector2DInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateFunc)
+		public Vector2DInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
 			: base(2, getUnmanagedArrayFunc, validateFunc)
 		{
 			
@@ -219,7 +221,7 @@ namespace VVVV.Hosting.Streams
 	
 	unsafe class Vector3DInStream : VectorInStream<Vector3D>
 	{
-		public Vector3DInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateFunc)
+		public Vector3DInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
 			: base(3, getUnmanagedArrayFunc, validateFunc)
 		{
 			
@@ -288,7 +290,7 @@ namespace VVVV.Hosting.Streams
 	
 	unsafe class Vector4DInStream : VectorInStream<Vector4D>
 	{
-		public Vector4DInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateFunc)
+		public Vector4DInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
 			: base(4, getUnmanagedArrayFunc, validateFunc)
 		{
 			
@@ -359,7 +361,7 @@ namespace VVVV.Hosting.Streams
 	
 	unsafe class ColorInStream : VectorInStream<RGBAColor>
 	{
-		public ColorInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateFunc)
+		public ColorInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
 			: base(4, getUnmanagedArrayFunc, validateFunc)
 		{
 			
@@ -430,7 +432,7 @@ namespace VVVV.Hosting.Streams
 	
 	unsafe class Vector2InStream : VectorInStream<Vector2>
 	{
-		public Vector2InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateFunc)
+		public Vector2InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
 			: base(2, getUnmanagedArrayFunc, validateFunc)
 		{
 			
@@ -497,7 +499,7 @@ namespace VVVV.Hosting.Streams
 	
 	unsafe class Vector3InStream : VectorInStream<Vector3>
 	{
-		public Vector3InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateFunc)
+		public Vector3InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
 			: base(3, getUnmanagedArrayFunc, validateFunc)
 		{
 			
@@ -516,7 +518,7 @@ namespace VVVV.Hosting.Streams
 	
 	unsafe class Vector4InStream : VectorInStream<Vector4>
 	{
-		public Vector4InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Action validateFunc)
+		public Vector4InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
 			: base(4, getUnmanagedArrayFunc, validateFunc)
 		{
 			

@@ -64,10 +64,7 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		public void Sync()
-		{
-			// Nothing to do
-		}
+		public abstract bool Sync();
 	}
 	
 	class StringInStream : PluginInStream<string>
@@ -93,6 +90,11 @@ namespace VVVV.Hosting.Streams
 			{
 				return FStringIn.SliceCount;
 			}
+		}
+		
+		public override bool Sync()
+		{
+			return FStringIn.PinIsChanged;
 		}
 	}
 	
@@ -125,6 +127,11 @@ namespace VVVV.Hosting.Streams
 			{
 				return default(T);
 			}
+		}
+		
+		public override bool Sync()
+		{
+			return FEnumIn.PinIsChanged;
 		}
 	}
 	
@@ -165,7 +172,7 @@ namespace VVVV.Hosting.Streams
 		
 		protected override T GetSlice(int index)
 		{
-			INodeIOBase usI;
+			object usI;
 			FNodeIn.GetUpstreamInterface(out usI);
 			var upstreamInterface = usI as IGenericIO;
 			
@@ -179,6 +186,11 @@ namespace VVVV.Hosting.Streams
 			{
 				return default(T);
 			}
+		}
+		
+		public override bool Sync()
+		{
+			return FNodeIn.PinIsChanged;
 		}
 	}
 }

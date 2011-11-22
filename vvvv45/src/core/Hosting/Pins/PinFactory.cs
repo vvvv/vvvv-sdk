@@ -106,7 +106,9 @@ namespace VVVV.Hosting.Pins
 					var openGenericType = type.GetGenericTypeDefinition();
 					if (inputPinFactory.ContainsType(openGenericType))
 					{
-						return inputPinFactory.CreatePin(openGenericType, host, type, attribute);
+						var stream = inputPinFactory.CreatePin(openGenericType, host, type, attribute);
+						var pinType = typeof(InputPin<>).MakeGenericType(subSpreadType);
+//						new InputPin<T>(
 					}
 				}
 			}

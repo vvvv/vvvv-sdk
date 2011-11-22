@@ -22,88 +22,73 @@ namespace VVVV.Hosting.Pins
 			//Register default types
 			this.RegisterType(typeof(double), (host, attribute, t) => {
 			                  	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			                  	var stream = new DoubleInStream(GetFastValuePointerFunc(valueFastIn), GetValidateAction(valueFastIn));
-			                  	return new InputPin<double>(host, valueFastIn, stream);
+			                  	return new DoubleInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
 			                  });
 			
 			this.RegisterType(typeof(float), (host, attribute, t) => {
 			                  	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			                  	var stream = new FloatInStream(GetFastValuePointerFunc(valueFastIn), GetValidateAction(valueFastIn));
-			                  	return new InputPin<float>(host, valueFastIn, stream);
+			                  	return new FloatInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
 			                  });
 			
 			this.RegisterType(typeof(int), (host, attribute, t) => {
 			                  	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			                  	var stream = new IntInStream(GetFastValuePointerFunc(valueFastIn), GetValidateAction(valueFastIn));
-			                  	return new InputPin<int>(host, valueFastIn, stream);
+			                  	return new IntInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
 			                  });
 			
 			this.RegisterType(typeof(bool), (host, attribute, t) => {
 			                  	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			                  	var stream = new BoolInStream(GetFastValuePointerFunc(valueFastIn), GetValidateAction(valueFastIn));
-			                  	return new InputPin<bool>(host, valueFastIn, stream);
+			                  	return new BoolInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
 			                  });
 
 			this.RegisterType(typeof(Matrix4x4), (host, attribute, t) => {
 			                  	var transformIn = host.CreateTransformInput(attribute, t);
-			                  	var stream = new Matrix4x4InStream(GetMatrixPointerFunc(transformIn), GetValidateAction(transformIn));
-			                  	return new InputPin<Matrix4x4>(host, transformIn, stream);
+			                  	return new Matrix4x4InStream(GetMatrixPointerFunc(transformIn), GetValidateFunc(transformIn));
 			                  });
 			
 			this.RegisterType(typeof(Matrix), (host, attribute, t) => {
 			                  	var transformIn = host.CreateTransformInput(attribute, t);
-			                  	var stream = new MatrixInStream(GetMatrixPointerFunc(transformIn), GetValidateAction(transformIn));
-			                  	return new InputPin<Matrix>(host, transformIn, stream);
+			                  	return new MatrixInStream(GetMatrixPointerFunc(transformIn), GetValidateFunc(transformIn));
 			                  });
 
 			this.RegisterType(typeof(Vector2D), (host, attribute, t) => {
 			                  	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			                  	var stream = new Vector2DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateAction(valueFastIn));
-			                  	return new InputPin<Vector2D>(host, valueFastIn, stream);
+			                  	return new Vector2DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
 			                  });
 			this.RegisterType(typeof(Vector3D),(host, attribute, t) => {
 			                  	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			                  	var stream = new Vector3DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateAction(valueFastIn));
-			                  	return new InputPin<Vector3D>(host, valueFastIn, stream);
+			                  	return new Vector3DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
 			                  });
 			this.RegisterType(typeof(Vector4D),(host, attribute, t) => {
 			                  	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			                  	var stream = new Vector4DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateAction(valueFastIn));
-			                  	return new InputPin<Vector4D>(host, valueFastIn, stream);
+			                  	return new Vector4DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
 			                  });
 
 			this.RegisterType(typeof(Vector2), (host, attribute, t) => {
 			                  	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			                  	var stream = new Vector2InStream(GetFastValuePointerFunc(valueFastIn), GetValidateAction(valueFastIn));
-			                  	return new InputPin<Vector2>(host, valueFastIn, stream);
+			                  	return new Vector2InStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
 			                  });
 			this.RegisterType(typeof(Vector3), (host, attribute, t) => {
 			                  	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			                  	var stream = new Vector3InStream(GetFastValuePointerFunc(valueFastIn), GetValidateAction(valueFastIn));
-			                  	return new InputPin<Vector3>(host, valueFastIn, stream);
+			                  	return new Vector3InStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
 			                  });
 			this.RegisterType(typeof(Vector4), (host, attribute, t) => {
 			                  	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			                  	var stream = new Vector4InStream(GetFastValuePointerFunc(valueFastIn), GetValidateAction(valueFastIn));
-			                  	return new InputPin<Vector4>(host, valueFastIn, stream);
+			                  	return new Vector4InStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
 			                  });
 
 			this.RegisterType(typeof(string), (host, attribute, t) => {
 			                  	var stringIn = host.CreateStringInput(attribute, t);
-			                  	var stream = new StringInStream(stringIn);
-			                  	return new InputPin<string>(host, stringIn, stream);
+			                  	return new StringInStream(stringIn);
 			                  });
 			
 			this.RegisterType(typeof(RGBAColor), (host, attribute, t) => {
 			                  	var colorIn = host.CreateColorInput(attribute, t);
-			                  	var stream = new ColorInStream(GetColorPointerFunc(colorIn), GetValidateAction(colorIn));
-			                  	return new InputPin<RGBAColor>(host, colorIn, stream);
+			                  	return new ColorInStream(GetColorPointerFunc(colorIn), GetValidateFunc(colorIn));
 			                  });
 
 			this.RegisterType(typeof(EnumEntry), (host, attribute, t) => {
 			                  	var enumIn = host.CreateEnumInput(attribute, t);
-			                  	var stream = new DynamicEnumInStream(enumIn);
-			                  	return new InputPin<EnumEntry>(host, enumIn, stream);
+			                  	return new DynamicEnumInStream(enumIn);
 			                  });
 		}
 		
@@ -137,22 +122,22 @@ namespace VVVV.Hosting.Pins
 			};
 		}
 		
-		private Action GetValidateAction(IValueFastIn valueFastIn)
+		private Func<bool> GetValidateFunc(IValueFastIn valueFastIn)
 		{
 			// TODO: check this
-			return () => { };
+			return () => { return true; };
 		}
 		
-		private Action GetValidateAction(IColorIn colorIn)
+		private Func<bool> GetValidateFunc(IColorIn colorIn)
 		{
 			// TODO: check this
-			return () => { };
+			return () => { return colorIn.PinIsChanged; };
 		}
 		
-		private Action GetValidateAction(ITransformIn transformIn)
+		private Func<bool> GetValidateFunc(ITransformIn transformIn)
 		{
 			// TODO: check this
-			return () => { };
+			return () => { return transformIn.PinIsChanged; };
 		}
 	}
 }

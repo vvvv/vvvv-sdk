@@ -4,7 +4,7 @@ using VVVV.Hosting.Interfaces.EX9;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Hosting
+namespace VVVV.Hosting.Interfaces
 {
 	[Guid("21230B31-1929-44F8-B8C0-03E5C2AA42EF"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -15,6 +15,9 @@ namespace VVVV.Hosting
 			get;
 			set;
 		}
+		
+		void AddListener(IPluginNodeListener listener);
+		void RemoveListener(IPluginNodeListener listener);
 		
 		IDXTextureOut CreateTextureOutput2(IDXTexturePin texturePin, string name, TSliceMode sliceMode, TPinVisibility visibility);
 	}

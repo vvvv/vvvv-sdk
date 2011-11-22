@@ -17,11 +17,6 @@ namespace VVVV.Hosting.Pins.Config
 			FPluginConfig = pluginConfig;
 		}
 		
-		public ConfigPin(IPluginHost host, IPluginConfig pluginConfig, IInStream<T> inStream, IOutStream<T> outStream)
-			: this(host, pluginConfig, new ConfigIOStream<T>(inStream, outStream))
-		{
-		}
-		
 		public event SpreadChangedEventHander<T> Changed;
 		
 		protected SpreadChangedEventHander FChanged;
@@ -142,9 +137,9 @@ namespace VVVV.Hosting.Pins.Config
 			FInStream.ReadCyclic(buffer, index, length, stride);
 		}
 		
-		public void Sync()
+		public bool Sync()
 		{
-			FInStream.Sync();
+			return FInStream.Sync();
 		}
 		
 		public void Reset()
