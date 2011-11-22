@@ -136,12 +136,6 @@ namespace VVVV.Core.Model
             References = FReferences;
             Documents = FDocuments;
             
-            Documents.Added += Documents_Changed;
-            Documents.Removed += Documents_Changed;
-            
-            References.Added += References_Changed;
-            References.Removed += References_Changed;
-            
             FBackgroundWorker = new BackgroundWorker();
             FBackgroundWorker.WorkerReportsProgress = false;
             FBackgroundWorker.WorkerSupportsCancellation = false;
@@ -322,16 +316,26 @@ namespace VVVV.Core.Model
             OnCompileCompleted(compilerArgs);
         }
         
-        // Should be called by subclass.
-        public override void Unload()
+		protected override void DoLoad()
+		{
+			Documents.Added += Documents_Changed;
+            Documents.Removed += Documents_Changed;
+            References.Added += References_Changed;
+            References.Removed += References_Changed;
+		}
+        
+        protected override void DoUnload()
         {
+        	Documents.Added -= Documents_Changed;
+            Documents.Removed -= Documents_Changed;
+            References.Added -= References_Changed;
+            References.Removed -= References_Changed;
+        	
             foreach (var doc in Documents)
                 doc.Unload();
             
             Documents.Clear();
             References.Clear();
-            
-            base.Unload();
         }
         
         public override void SaveTo(Uri newLocation)

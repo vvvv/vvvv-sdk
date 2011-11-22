@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha24.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vake\source\my_package\plugins\Animation\ParticlesField\Particles (3d Field) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Particles (3d Field) help.v4p">
    <BOUNDS height="10455" left="1185" top="765" type="Window" width="11955">
    </BOUNDS>
    <NODE componentmode="InABox" id="43" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Velocity field based particles system.&cr;&lf;You provide a cube of vectors, then particle is updated depending on which cell it&apos;s in.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Velocity field based particles system.&cr;&lf;You provide a cube of vectors, then particle is updated depending on which cell it&apos;s in.|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Particles - 3d Field|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Particles - 3d Field|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -39,7 +39,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -53,14 +53,14 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="39" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="39" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="3675" top="11160" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="3675" top="11160" type="Box" width="2400">
@@ -69,9 +69,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="8">
    </PIN>
@@ -80,6 +80,8 @@
    <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="8">
    </PIN>
    <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="38" nodename="Quad (DX9)" systemname="Quad (DX9)">
@@ -104,7 +106,7 @@
    <PIN pinname="Cycles" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="36" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="36" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2370" top="6225" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="2370" top="6225" type="Box" width="795">
@@ -115,7 +117,7 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="0.117">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Size">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Size" encoded="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="35" nodename="CHANGE (ANIMATION)" systemname="Change (Animation)">
@@ -130,21 +132,21 @@
    </NODE>
    <LINK dstnodeid="35" dstpinname="Input" srcnodeid="37" srcpinname="Cycles">
    </LINK>
-   <NODE componentmode="InABox" id="34" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="34" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2655" top="1695" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="2655" top="1695" type="Box" width="795">
    </BOUNDS>
    <BOUNDS height="160" left="1230" top="3015" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Cube Size|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cube Size|" encoded="0">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="10">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="33" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="33" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1365" top="3465" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="1365" top="3465" type="Box" width="795">
@@ -155,7 +157,7 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="40">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Emit Count|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Emit Count|" encoded="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="32" nodename="Random (Value)" systemname="Random (Value)">
@@ -206,7 +208,7 @@
    </LINK>
    <LINK dstnodeid="31" dstpinname="Spread Count" srcnodeid="29" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="28" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="28" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4995" top="4560" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="4995" top="4560" type="Box" width="480">
@@ -225,14 +227,14 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Reset">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Reset" encoded="0">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" debug="0" id="27" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" debug="0" id="27" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5655" top="3015" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="5655" top="3015" type="Box" width="480">
@@ -249,7 +251,7 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Update">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Update" encoded="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -346,7 +348,7 @@
    </LINK>
    <LINK dstnodeid="39" dstpinname="Layers" srcnodeid="21" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="10125" top="6120" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="10125" top="6120" type="Box" width="480">
@@ -363,7 +365,7 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Show Field|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Show Field|" encoded="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -397,7 +399,7 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" slicecount="1" values="|girlpower\images\halo dot.bmp|">
+   <PIN pinname="Input 2" slicecount="1" values="|lib\assets\images\halo dot.bmp|" encoded="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -428,7 +430,7 @@
    <LINKPOINT x="8970" y="2595">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4020" top="5145" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="4020" top="5145" type="Box" width="840">
@@ -439,10 +441,10 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Particles Count|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Particles Count|" encoded="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="13" nodename="ParticlesField.dll|VVVV.Nodes.Particle3dfieldNode" systemname="Particles (3d Field)" filename="%VVVV%\addonpack\plugins\ParticlesField.dll">
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\ParticlesField.dll" id="13" nodename="ParticlesField.dll|VVVV.Nodes.Particle3dfieldNode" systemname="Particles (3d Field)">
    <BOUNDS height="270" left="1965" top="5760" type="Node" width="3600">
    </BOUNDS>
    <BOUNDS height="0" left="1965" top="5760" type="Box" width="0">
@@ -808,7 +810,7 @@
    <LINKPOINT x="5670" y="8070">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="Hidden" id="14" nodename=":MODULES:\kalle\Camera (Transform Softimage 2.0)\Camera (Transform Softimage 2.0)\Camera (Transform Softimage 2.0).v4p" systemname="Camera (Transform Softimage)" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" id="14" nodename=":MODULES:\kalle\Camera (Transform Softimage 2.0)\Camera (Transform Softimage 2.0)\Camera (Transform Softimage 2.0).v4p" systemname="Camera (Transform Softimage)">
    <BOUNDS height="0" left="4650" top="10425" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="3600" left="4650" top="10425" type="Box" width="4800">
@@ -819,9 +821,11 @@
    </PIN>
    <PIN pinname="Projection" visible="1">
    </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="4">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="39" dstpinname="View Transform" srcnodeid="14" srcpinname="View">
+   <LINK dstnodeid="39" dstpinname="View" srcnodeid="14" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="39" dstpinname="Projection Transform" srcnodeid="14" srcpinname="Projection">
+   <LINK dstnodeid="39" dstpinname="Projection" srcnodeid="14" srcpinname="Projection">
    </LINK>
    </PATCH>

@@ -29,7 +29,7 @@ interface
 
 uses
   Windows, ActiveX,
-  BaseClass, DirectShow9, DSUtil;
+  BaseClass, DirectShow9, DXSUtil;
 
 const
   CLSID_SharedMemSource: TGUID = '{59F06E43-D8F9-4EB0-BAF7-DBADA343CDB0}';

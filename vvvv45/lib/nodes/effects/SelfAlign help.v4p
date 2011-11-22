@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
-   <PATCH nodename="C:\vvvv\shader\SelfAlign\SelfAlign help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\effects\SelfAlign help.v4p">
    <BOUNDS height="8940" left="165" top="510" type="Window" width="7890">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="20" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="20" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="0" left="1110" top="7890" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="8955" left="8055" top="495" type="Window" width="8715">
@@ -11,9 +11,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
    </PIN>
@@ -27,8 +27,10 @@
    </PIN>
    <PIN pinname="Clear" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
    </NODE>
-   <NODE id="19" nodename=":MODULES:\Camera (Transform Softimage).v4p" path="C:\vvvv\vvvv_40beta18\modules\">
+   <NODE id="19" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p">
    <BOUNDS height="0" left="2070" top="7425" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="5955" top="3915" type="Window" width="9000">
@@ -40,11 +42,11 @@
    <PIN pinname="Projection" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="20" dstpinname="View Transform" srcnodeid="19" srcpinname="View">
+   <LINK dstnodeid="20" dstpinname="View" srcnodeid="19" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="20" dstpinname="Projection Transform" srcnodeid="19" srcpinname="Projection">
+   <LINK dstnodeid="20" dstpinname="Projection" srcnodeid="19" srcpinname="Projection">
    </LINK>
-   <NODE id="18" nodename="Translate (Transform Vector)">
+   <NODE id="18" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
    <BOUNDS height="0" left="1425" top="5310" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform In" visible="1">
@@ -54,7 +56,7 @@
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
-   <NODE id="17" nodename="Rotate (Transform Vector)">
+   <NODE id="17" nodename="Rotate (Transform Vector)" systemname="Rotate (Transform Vector)">
    <BOUNDS height="0" left="1440" top="3135" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
@@ -64,7 +66,7 @@
    </NODE>
    <LINK dstnodeid="18" dstpinname="Transform In" srcnodeid="17" srcpinname="Transform Out">
    </LINK>
-   <NODE id="16" nodename="GaussianSpread (Spreads)">
+   <NODE id="16" nodename="GaussianSpread (Spreads)" systemname="GaussianSpread (Spreads)">
    <BOUNDS height="0" left="2160" top="4635" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -78,7 +80,7 @@
    </NODE>
    <LINK dstnodeid="18" dstpinname="XYZ" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <NODE id="15" nodename="GaussianSpread (Spreads)">
+   <NODE id="15" nodename="GaussianSpread (Spreads)" systemname="GaussianSpread (Spreads)">
    <BOUNDS height="0" left="2025" top="2235" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -90,7 +92,7 @@
    <PIN pinname="Standard Deviation" slicecount="1" visible="1" values="53.0745323637562">
    </PIN>
    </NODE>
-   <NODE id="14" nodename="LFO (Animation)">
+   <NODE id="14" nodename="LFO (Animation)" systemname="LFO (Animation)">
    <BOUNDS height="0" left="2130" top="1770" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -102,7 +104,7 @@
    <PIN pinname="Pause" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="12" nodename="Switch (Value Input)">
+   <NODE id="12" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
    <BOUNDS height="0" left="4860" top="3825" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -116,7 +118,7 @@
    <PIN pinname="Input Count" slicecount="1" values="3">
    </PIN>
    </NODE>
-   <NODE id="11" nodename="RandomSpread (Spreads)">
+   <NODE id="11" nodename="RandomSpread (Spreads Legacy)" systemname="RandomSpread (Spreads Legacy)">
    <BOUNDS height="0" left="4845" top="3300" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -132,7 +134,7 @@
    </NODE>
    <LINK dstnodeid="12" dstpinname="Switch" srcnodeid="11" srcpinname="Output">
    </LINK>
-   <NODE id="10" nodename="LinearFilter (Animation)">
+   <NODE id="10" nodename="LinearFilter (Animation)" systemname="LinearFilter (Animation)">
    <BOUNDS height="0" left="4560" top="4440" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Go To Position" visible="1">
@@ -144,7 +146,7 @@
    </NODE>
    <LINK dstnodeid="10" dstpinname="Go To Position" srcnodeid="12" srcpinname="Output">
    </LINK>
-   <NODE id="9" nodename="LFO (Animation)">
+   <NODE id="9" nodename="LFO (Animation)" systemname="LFO (Animation)">
    <BOUNDS height="0" left="4905" top="2805" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Cycles" visible="1">
@@ -156,7 +158,7 @@
    </LINK>
    <LINK dstnodeid="15" dstpinname="Random Seed" srcnodeid="14" srcpinname="Cycles">
    </LINK>
-   <NODE id="8" nodename="LinearFilter (Animation)">
+   <NODE id="8" nodename="LinearFilter (Animation)" systemname="LinearFilter (Animation)">
    <BOUNDS height="0" left="2025" top="2655" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Go To Position" visible="1">
@@ -172,12 +174,12 @@
    </LINK>
    <LINK dstnodeid="17" dstpinname="XYZ" srcnodeid="8" srcpinname="Position Out">
    </LINK>
-   <NODE hiddenwhenlocked="0" id="7" managers="" nodename="Scale (Transform Vector)">
+   <NODE hiddenwhenlocked="0" id="7" managers="" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
    <PIN pinname="Transform In" pintype="Input" visible="1">
    </PIN>
    <BOUNDS height="0" left="3990" top="5295" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="X" pintype="Input" visible="1">
    </PIN>
@@ -190,42 +192,42 @@
    <PIN pinname="XYZ" slicecount="3" values="3.46,3.46,3.46">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="1605" top="3660" type="Node" width="6045">
    </BOUNDS>
    <BOUNDS height="870" left="1605" top="3660" type="Box" width="2745">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|first transform places the mesh in view space, without affecting its original orientation nor scaling|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|first transform places the mesh in view space, without affecting its original orientation nor scaling|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="4860" top="4875" type="Node" width="2445">
    </BOUNDS>
    <BOUNDS height="735" left="4860" top="4875" type="Box" width="2580">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|the second transform is applied in view space, it transforms the mesh in respect to the camera|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the second transform is applied in view space, it transforms the mesh in respect to the camera|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="285" top="300" type="Node" width="1830">
    </BOUNDS>
    <BOUNDS height="465" left="285" top="300" type="Box" width="3690">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Self Align Vertex Shader|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Self Align Vertex Shader|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -234,21 +236,21 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="315" top="780" type="Node" width="2880">
    </BOUNDS>
    <BOUNDS height="270" left="315" top="780" type="Box" width="2880">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|alings 3d objects to the virtual camera|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|alings 3d objects to the virtual camera|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="0" nodename="SelfAlign.fx">
+   <NODE componentmode="Hidden" id="0" nodename="SelfAlign.fx" systemname="SelfAlign (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\SelfAlign.fx">
    <BOUNDS height="0" left="1095" top="6945" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="12810" left="1005" top="4080" type="Window" width="15330">
@@ -268,7 +270,7 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="Second Transform" srcnodeid="7" srcpinname="Transform Out">
    </LINK>
-   <NODE id="21" nodename="Rotate (Transform)">
+   <NODE id="21" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
    <BOUNDS height="0" left="3990" top="4875" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
@@ -277,53 +279,55 @@
    </PIN>
    <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="X" visible="1" slicecount="1" values="0">
+   <PIN pinname="X" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Z" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Transform In" srcnodeid="21" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="10" srcpinname="Position Out" dstnodeid="21" dstpinname="Z">
+   <LINK dstnodeid="21" dstpinname="Z" srcnodeid="10" srcpinname="Position Out">
    </LINK>
-   <NODE id="23" nodename="Grid (EX9.Geometry)">
-   <BOUNDS type="Node" height="0" left="615" top="4890" width="0">
+   <NODE id="23" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="615" top="4890" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="23" srcpinname="Mesh" dstnodeid="0" dstpinname="Mesh">
+   <LINK dstnodeid="0" dstpinname="Mesh" srcnodeid="23" srcpinname="Mesh">
    </LINK>
-   <NODE nodename="FileTexture (EX9.Texture)" id="24">
-   <BOUNDS type="Node" left="2925" top="6495" width="0" height="0">
+   <NODE id="24" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="2925" top="6495" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
    <PIN pinname="Filename" visible="1">
    </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="24" srcpinname="Texture Out" dstnodeid="0" dstpinname="Texture">
+   <LINK dstnodeid="0" dstpinname="Texture" srcnodeid="24" srcpinname="Texture Out">
    </LINK>
-   <NODE nodename="SystemFolder (File)" id="25">
-   <BOUNDS type="Node" left="3990" top="5760" width="0" height="0">
+   <NODE id="25" nodename="SystemFolder (File)" systemname="SystemFolder (File)">
+   <BOUNDS height="0" left="3990" top="5760" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Folder" slicecount="1" values="Application">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="Add (String)" id="26">
-   <BOUNDS type="Node" left="3975" top="6180" width="0" height="0">
+   <NODE id="26" nodename="Add (String)" systemname="Add (String)">
+   <BOUNDS height="0" left="3975" top="6180" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" slicecount="1" values="|girlpower\images\flower four.jpg|">
+   <PIN pinname="Input 2" slicecount="1" values="|lib\assets\images\flower four.jpg|" encoded="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="26" dstpinname="Input 1">
+   <LINK dstnodeid="26" dstpinname="Input 1" srcnodeid="25" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="26" srcpinname="Output" dstnodeid="24" dstpinname="Filename">
+   <LINK dstnodeid="24" dstpinname="Filename" srcnodeid="26" srcpinname="Output">
    </LINK>
    </PATCH>

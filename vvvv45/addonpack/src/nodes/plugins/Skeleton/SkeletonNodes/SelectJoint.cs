@@ -295,7 +295,7 @@ namespace VVVV.Nodes
 			if (FSkeletonInput.PinIsChanged || !initialized)
 			{
 				jointPositions = new Dictionary<string, Vector3D>();
-				INodeIOBase currInterface;
+				object currInterface;
 				FSkeletonInput.GetUpstreamInterface(out currInterface);
 				try
 				{

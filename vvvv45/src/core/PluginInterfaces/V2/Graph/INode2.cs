@@ -80,6 +80,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		StatusCode Status
 		{
 			get;
+			set;
 		}
 		
 		StatusCode InnerStatus

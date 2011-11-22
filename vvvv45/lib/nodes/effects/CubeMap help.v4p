@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.4.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\effects\CubeMap help.v4p" systemname="CubeMap help" filename="C:\Users\joreg\dev\vake\source\complete\vvvv45\effects\CubeMap help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\effects\CubeMap help.v4p" filename="C:\Users\joreg\dev\vake\source\complete\vvvv45\effects\CubeMap help.v4p" systemname="CubeMap help">
    <BOUNDS height="7260" left="1725" top="5955" type="Window" width="10710">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="20" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage)" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" id="20" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage)">
    <BOUNDS height="0" left="4830" top="5340" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="12600" left="795" top="300" type="Window" width="15510">
@@ -21,7 +21,7 @@
    </PIN>
    <PIN pinname="Inverse Interest" visible="1">
    </PIN>
-   <PIN pinname="Distortion" visible="1" slicecount="1" values="||">
+   <PIN pinname="Distortion" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Inital Distance" slicecount="1" values="2">
    </PIN>
@@ -30,7 +30,7 @@
    <PIN pinname="Interest" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="19" nodename=":MODULES:\vvvv group\EX9\AxisAndGrid (DX9).v4p" systemname="AxisAndGrid (DX9)" filename="%VVVV%\modules\vvvv group\EX9\AxisAndGrid (DX9).v4p">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\EX9\AxisAndGrid (DX9).v4p" id="19" nodename=":MODULES:\vvvv group\EX9\AxisAndGrid (DX9).v4p" systemname="AxisAndGrid (DX9)">
    <BOUNDS height="0" left="1425" top="4680" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6690" left="1020" top="1110" type="Window" width="10290">
@@ -49,7 +49,7 @@
    </BOUNDS>
    <PIN pinname="Mesh" pintype="Output" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Slices ">
    </PIN>
@@ -99,7 +99,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="teapot" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="teapot">
    </PIN>
    </NODE>
    <LINK dstnodeid="16" dstpinname="Switch" hiddenwhenlocked="1" srcnodeid="15" srcpinname="Y Output Value">
@@ -119,7 +119,7 @@
    </BOUNDS>
    <PIN pinname="Mesh" pintype="Output" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Slices ">
    </PIN>
@@ -133,7 +133,7 @@
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="..\girlpower\images\meso.dds" encoded="0">
+   <PIN encoded="0" pinname="Filename" slicecount="1" values="..\..\assets\images\meso_cubemap.dds">
    </PIN>
    <PIN pinname="Resource Type">
    </PIN>
@@ -144,7 +144,7 @@
    <PIN pinname="Mip Map Count" slicecount="1" values="All">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" hiddenwhenlocked="0" id="6" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" hiddenwhenlocked="0" id="6" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="3840" top="5850" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="5655" left="1725" top="285" type="Window" width="10710">
@@ -164,6 +164,14 @@
    <PIN pinname="Actual Backbuffer Width" visible="1">
    </PIN>
    <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="View" hiddenwhenlocked="0" srcnodeid="20" srcpinname="View">
@@ -192,8 +200,8 @@
    </LINK>
    <LINK dstnodeid="5" dstpinname="Layer 1" hiddenwhenlocked="0" srcnodeid="19" srcpinname="Layer">
    </LINK>
-   <NODE systemname="CubeMap (EX9.Effect)" filename="%VVVV%\effects\CubeMap.fx" nodename="CubeMap (EX9.Effect)" componentmode="Hidden" id="21">
-   <BOUNDS type="Node" left="2385" top="3825" width="100" height="100">
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\CubeMap.fx" id="21" nodename="CubeMap (EX9.Effect)" systemname="CubeMap (EX9.Effect)">
+   <BOUNDS height="100" left="2385" top="3825" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
@@ -206,19 +214,19 @@
    <PIN pinname="Environment CubeMap" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="Mesh" dstnodeid="21" dstpinname="Mesh">
+   <LINK dstnodeid="21" dstpinname="Mesh" srcnodeid="8" srcpinname="Mesh">
    </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="22" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Node" left="3900" top="3195" width="0" height="0">
+   <NODE componentmode="InABox" id="22" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="3900" top="3195" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3900" top="3195" width="945" height="240">
+   <BOUNDS height="240" left="3900" top="3195" type="Box" width="945">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="| TSkyBox|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="22" srcpinname="Output Enum" dstnodeid="21" dstpinname="Technique">
+   <LINK dstnodeid="21" dstpinname="Technique" srcnodeid="22" srcpinname="Output Enum">
    </LINK>
-   <NODE id="18" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)" componentmode="Hidden">
+   <NODE componentmode="Hidden" id="18" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
    <BOUNDS height="100" left="2700" top="3090" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
@@ -228,26 +236,26 @@
    <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="2955" top="2685" width="0" height="0">
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2955" top="2685" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="2955" top="2685" width="795" height="240">
+   <BOUNDS height="240" left="2955" top="2685" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="10">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="18" dstpinname="XYZ">
+   <LINK dstnodeid="18" dstpinname="XYZ" srcnodeid="23" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="18" srcpinname="Transform Out" dstnodeid="21" dstpinname="Transform">
+   <LINK dstnodeid="21" dstpinname="Transform" srcnodeid="18" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="7" srcpinname="Texture Out" dstnodeid="21" dstpinname="Environment CubeMap">
+   <LINK dstnodeid="21" dstpinname="Environment CubeMap" srcnodeid="7" srcpinname="Texture Out">
    </LINK>
-   <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="5" dstpinname="Layer 2">
+   <LINK dstnodeid="5" dstpinname="Layer 2" srcnodeid="21" srcpinname="Layer">
    </LINK>
-   <NODE systemname="CubeMap (EX9.Effect)" filename="%VVVV%\effects\CubeMap.fx" nodename="CubeMap (EX9.Effect)" componentmode="Hidden" id="24">
-   <BOUNDS type="Node" left="5850" top="3825" width="100" height="100">
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\CubeMap.fx" id="24" nodename="CubeMap (EX9.Effect)" systemname="CubeMap (EX9.Effect)">
+   <BOUNDS height="100" left="5850" top="3825" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
@@ -262,26 +270,26 @@
    <PIN pinname="Maximum Reflectiveness" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="24" dstpinname="Mesh">
+   <LINK dstnodeid="24" dstpinname="Mesh" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="25" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Node" left="7380" top="3360" width="0" height="0">
+   <NODE componentmode="InABox" id="25" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="7380" top="3360" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="7380" top="3360" width="1380" height="240">
+   <BOUNDS height="240" left="7380" top="3360" type="Box" width="1380">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="| TReflect|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="25" srcpinname="Output Enum" dstnodeid="24" dstpinname="Technique">
+   <LINK dstnodeid="24" dstpinname="Technique" srcnodeid="25" srcpinname="Output Enum">
    </LINK>
-   <LINK srcnodeid="7" srcpinname="Texture Out" dstnodeid="24" dstpinname="Environment CubeMap">
+   <LINK dstnodeid="24" dstpinname="Environment CubeMap" srcnodeid="7" srcpinname="Texture Out">
    </LINK>
-   <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="5" dstpinname="Layer 3">
+   <LINK dstnodeid="5" dstpinname="Layer 3" srcnodeid="24" srcpinname="Layer">
    </LINK>
-   <LINK srcnodeid="7" srcpinname="Texture Out" dstnodeid="24" dstpinname="Refraction CubeMap">
+   <LINK dstnodeid="24" dstpinname="Refraction CubeMap" srcnodeid="7" srcpinname="Texture Out">
    </LINK>
-   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="5505" top="5835" width="100" height="100">
+   <NODE componentmode="Hidden" id="26" nodename="AspectRatio (Transform)" systemname="AspectRatio (Transform)">
+   <BOUNDS height="100" left="5505" top="5835" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -290,11 +298,11 @@
    <PIN pinname="Aspect Height" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="26" srcpinname="Transform Out" dstnodeid="6" dstpinname="Aspect Ratio">
+   <LINK dstnodeid="6" dstpinname="Aspect Ratio" srcnodeid="26" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="6" srcpinname="Actual Backbuffer Width" dstnodeid="26" dstpinname="Aspect Width">
+   <LINK dstnodeid="26" dstpinname="Aspect Width" srcnodeid="6" srcpinname="Actual Backbuffer Width">
    </LINK>
-   <LINK srcnodeid="6" srcpinname="Actual Backbuffer Height" dstnodeid="26" dstpinname="Aspect Height">
+   <LINK dstnodeid="26" dstpinname="Aspect Height" srcnodeid="6" srcpinname="Actual Backbuffer Height">
    </LINK>
    <NODE componentmode="InABox" id="28" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="90" top="480" type="Node" width="570">

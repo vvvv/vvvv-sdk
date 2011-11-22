@@ -90,7 +90,7 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
-                return VVVV.Hosting.Graph.Node.Create(null, FNativeWindow.GetNode(), ProxyNodeInfoFactory.Instance);
+                return VVVV.Hosting.Graph.Node.Create(FNativeWindow.GetNode(), ProxyNodeInfoFactory.Instance);
             }
         }
         
