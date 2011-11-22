@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
-   <PATCH nodename="Preview (EX9.Texture).v4p">
-   <BOUNDS type="Window" left="14070" top="7665" width="9000" height="6000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="D:\Program Files\vvvv_45beta26\addonpack\modules\common\TextureFX\misc\Preview (EX9.Texture).v4p">
+   <BOUNDS height="6000" left="14070" top="7665" type="Window" width="9000">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="7" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="7" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="100" left="1335" top="3510" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="1800" left="1335" top="3510" type="Box" width="2400">
@@ -11,9 +11,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Aspect Ratio Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Aspect Ratio" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
    <PIN pinname="Presentation Interval" slicecount="1" values="immediately">
    </PIN>
@@ -78,7 +78,7 @@
    </NODE>
    <LINK dstnodeid="3" dstpinname="Mesh" srcnodeid="2" srcpinname="Mesh">
    </LINK>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="2055" top="1740" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="2055" top="1740" type="Box" width="450">
@@ -94,7 +94,7 @@
    </LINK>
    <LINK dstnodeid="4" dstpinname="Layer 2" srcnodeid="6" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="7" dstpinname="View Transform" srcnodeid="5" srcpinname="Transform Out">
+   <LINK dstnodeid="7" dstpinname="View" srcnodeid="5" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\catweasel\Debug\PerfMeter (Debug).v4p" id="0" nodename="PerfMeter (Debug)" systemname="PerfMeter (Debug)">
    <BOUNDS height="100" left="5670" top="2145" type="Node" width="100">
@@ -103,39 +103,15 @@
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="5670" top="2145">
+   <BOUNDS left="5670" top="2145" type="Box">
    </BOUNDS>
    </NODE>
    <LINK dstnodeid="4" dstpinname="Layer 3" srcnodeid="0" srcpinname="Layer">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="8">
-   <BOUNDS type="Node" left="2655" top="975" width="100" height="100">
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="100" left="2655" top="975" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="2655" top="975" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Show Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Show Slider" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Show Chess Pattern|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Enabled">
-   </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
-   <BOUNDS type="Node" left="6270" top="990" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="6270" top="990" width="480" height="480">
+   <BOUNDS height="480" left="2655" top="975" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -151,23 +127,51 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Show PerfMeter|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Show Chess Pattern|" encoded="0">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Enabled">
+   <LINK dstnodeid="3" dstpinname="Enabled" srcnodeid="8" srcpinname="Y Output Value">
    </LINK>
-   <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="10">
-   <BOUNDS type="Node" left="1035" top="990" width="100" height="100">
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="100" left="6270" top="990" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1035" top="990" width="795" height="240">
+   <BOUNDS height="480" left="6270" top="990" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Show PerfMeter|" encoded="0">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Enabled" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="100" left="1035" top="990" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="1035" top="990" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Input Node" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Input|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input" encoded="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="10" srcpinname="Output Node" dstnodeid="6" dstpinname="Texture">
+   <LINK dstnodeid="6" dstpinname="Texture" srcnodeid="10" srcpinname="Output Node">
    </LINK>
    </PATCH>
