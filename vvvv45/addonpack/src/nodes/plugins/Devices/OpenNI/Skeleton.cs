@@ -156,8 +156,7 @@ namespace VVVV.Nodes
                         if (FSmoothingIn.IsChanged)
                             FSkeletonCapability.SetSmoothing(FSmoothingIn[0]);
 
-
-                        if (FInit == false && FEnableIn[0] == true)
+                        if (!FInit && FEnableIn[0])
                         {
                             //get all Users and sort them
                             int[] tUsers = FUsersIn[0].GetUsers();
@@ -173,115 +172,96 @@ namespace VVVV.Nodes
                             FJointOrientationZOut.SliceCount = Users.Length;
                             FStatusOut.SliceCount = Users.Length;
                             FConfidenceOut.SliceCount = Users.Length;
-
-
-                            if (Users.Length > 0)
+                            
+                            if (Users.Length == 0)
                             {
-                                for (int i = 0; i < Users.Length; i++)
+                            	FStatusOut.SliceCount = 1;
+                            	FStatusOut[0] = "No User found";
+                            }                           
+
+                            for (int i = 0; i < Users.Length; i++)
+                            {
+                                //Reset the User
+                                if (FResetIn[i])
                                 {
-                                    //Rest the User
-                                    if (FResetIn.IsChanged)
+                                    FSkeletonCapability.Reset(Users[i]);
+                                    FWorkerList.Clear();
+                                }
+
+                                //write the User ID
+                                FUserIdOut[i] = Users[i];
+
+                                //Check the state of the skeleton
+                                if (FSkeletonCapability.IsTracking(Users[i]))
+                                {
+                                    FStatusOut[i] = "Tracking";
+                                    //when the user is tracked stop pose detection
+                                    FPoseDecetionCapability.StopPoseDetection(Users[i]);
+
+                                    //write all requested joint to the ouput
+                                    WriteJointValuesToOutput(i, Users);
+
+                                    //save the user to file and to an memory slot
+                                    if (FSaveIn[i])
                                     {
-                                        if (FResetIn[0] == true)
+                                        FSkeletonCapability.SaveCalibrationDataToFile(Users[i], FFilePathIn[i]);
+                                        FSkeletonCapability.SaveCalibrationData(Users[i], i);
+                                    }
+                                }
+                                else if (FSkeletonCapability.IsCalibrated(Users[i]))
+                                {
+                                    FStatusOut[i] = "Calibrated";
+                                    //if a skeleton is loaded to a user start tracking and stop pose detection
+                                    FSkeletonCapability.StartTracking(Users[i]);
+                                    FPoseDecetionCapability.StopPoseDetection(Users[i]);
+                                }
+                                else if (FSkeletonCapability.IsCalibrating(Users[i]))
+                                {
+                                    FStatusOut[i] = "Calibrating";
+                                }
+                                else
+                                {
+                                    //if there is a users but he is not tracked delete the position data
+                                    FJointOut[i].SliceCount = FJointsPositionOut[i].SliceCount = 0;
+                                    FJointOrientationXOut[i].SliceCount = FJointOrientationYOut[i].SliceCount = FJointOrientationZOut[i].SliceCount = 0;
+                                    FConfidenceOut[i].SliceCount = 0;
+
+                                    //check if a user should calibrate or load a skeleton to the users
+
+                                    if (FLoadIn[i])
+                                    {
+                                        //check if the user is loading the skelton
+                                        if (!FWorkerList.ContainsKey(Users[i]))
                                         {
-                                            FSkeletonCapability.Reset(Users[i]);
-                                            FWorkerList.Clear();
-                                        }
-                                    }
+                                            FStatusOut[i] = "Load Skeleton";
 
-                                    //write the User ID
-                                    FUserIdOut[i] = Users[i];
+                                            //load the skelton in a backgroundthread so that it does not interrup vvvv
+                                            BackgroundWorker Worker = new BackgroundWorker();
+                                            Worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
+                                            Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
 
-                                    //Check the state of the skeleton
-                                    if (FSkeletonCapability.IsTracking(Users[i]))
-                                    {
-                                        FStatusOut[i] = "Tracking";
-                                        //when the user is tracked stop pose detection
-                                        FPoseDecetionCapability.StopPoseDetection(Users[i]);
+                                            FWorkerList.Add(Users[i], Worker);
 
-                                        //write all requested joint to the ouput
-                                        WriteJointValuesToOutput(i, Users);
+                                            LoadingValues Values = new LoadingValues();
+                                            Values.Slice = 1;
+                                            Values.UserID = Users[i];
 
-                                        //save the user to file and to an memory slot
-                                        if (FSaveIn.IsChanged)
-                                        {
-                                            if (FSaveIn[0] == true)
-                                            {
-                                                FSkeletonCapability.SaveCalibrationDataToFile(Users[i], FFilePathIn[i]);
-                                                FSkeletonCapability.SaveCalibrationData(Users[i], i);
-                                            }
-                                        }
-                                    }
-                                    else if (FSkeletonCapability.IsCalibrated(Users[i]))
-                                    {
-                                        FStatusOut[i] = "Clibrated";
-                                        //if a skeleton is loaded to a user start tracking and stop pose detection
-                                        FSkeletonCapability.StartTracking(Users[i]);
-                                        FPoseDecetionCapability.StopPoseDetection(Users[i]);
-                                    }
-                                    else if (FSkeletonCapability.IsCalibrating(Users[i]))
-                                    {
-                                        FStatusOut[i] = "Calibrating";
-                                    }
-                                    else
-                                    {
-                                        //if there is a users but he is not tracked delete the position data
-                                        FJointOut[i].SliceCount = FJointsPositionOut[i].SliceCount = 0;
-                                        FJointOrientationXOut[i].SliceCount = FJointOrientationYOut[i].SliceCount = FJointOrientationZOut[i].SliceCount = 0;
-                                        FConfidenceOut[i].SliceCount = 0;
-
-                                        //check if a user should calibrate or load an skeleton to the users
-
-                                        if (FLoadIn[0] == true)
-                                        {
-                                            //check if the user is loading the skelton
-                                            if (!FWorkerList.ContainsKey(Users[i]))
-                                            {
-                                                FStatusOut[i] = "Load Skeleton";
-
-                                                //load the skelton in a backgroundthread s that it does not interrup vvvv
-                                                BackgroundWorker Worker = new BackgroundWorker();
-                                                Worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
-                                                Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
-
-                                                FWorkerList.Add(Users[i], Worker);
-
-                                                LoadingValues Values = new LoadingValues();
-                                                Values.Slice = 1;
-                                                Values.UserID = Users[i];
-
-                                                Worker.RunWorkerAsync(Values);
-
-                                            }
-                                            else
-                                            {
-                                                FLogger.Log(LogType.Message, "Load Skeleton");
-                                            }
+                                            Worker.RunWorkerAsync(Values);
                                         }
                                         else
                                         {
-                                            //start the pose detection if a user should calibrate 
-                                            FStatusOut[i] = "Pose Detection";
-                                            FPoseDecetionCapability.StartPoseDetection("Psi", Users[i]);
+                                            FLogger.Log(LogType.Message, "Load Skeleton");
                                         }
+                                    }
+                                    else
+                                    {
+                                        //start the pose detection if a user should calibrate 
+                                        FStatusOut[i] = "Pose Detection";
+                                        FPoseDecetionCapability.StartPoseDetection("Psi", Users[i]);
                                     }
                                 }
                             }
-                            else
-                            {
-                                //reset the outputpins
-                                FJointOut.SliceCount = 0;
-                                FUserIdOut.SliceCount = 0;
-                                FJointsPositionOut.SliceCount = 0;
-                                FJointOrientationXOut.SliceCount = 0;
-                                FJointOrientationYOut.SliceCount = 0;
-                                FJointOrientationZOut.SliceCount = 0;
-                                FConfidenceOut.SliceCount = 0;
-
-
-                                FStatusOut.SliceCount = 1;
-                                FStatusOut[0] = "No User found";
-                            }
+ 
 
                             if (FErrorMessages.Count > 0)
                             {
@@ -379,11 +359,6 @@ namespace VVVV.Nodes
             }
         }
 
-        /// <summary>
-        /// Reads the Joint Position and writes it to the Output Pins
-        /// </summary>
-        /// <param name="Index">Index of Users</param>
-        /// <param name="Users">Array of all Users</param>
         private void WriteJointValuesToOutput(int Index, int[] Users)
         {
             int BinSize = FJointIn[Index].SliceCount;
@@ -392,13 +367,11 @@ namespace VVVV.Nodes
             FJointOrientationXOut[Index].SliceCount = FJointOrientationYOut[Index].SliceCount = FJointOrientationZOut[Index].SliceCount = BinSize;
             FConfidenceOut[Index].SliceCount = BinSize;
 
-
             for (int i = 0; i < BinSize; i++)
             {
                 FJointOut[Index][i] = FJointIn[Index][i].ToString();
 
                 Point3D Point = GetJointPoint(Users[Index], FJointIn[Index][i]);
-                
                 
                 float Confidence = 0;
                 if (FConfidenceIn[Index] == true)
@@ -425,7 +398,6 @@ namespace VVVV.Nodes
 //                    Debug.WriteLine("Out of Confidence");
                 }
             }
-
         }
 
         private Point3D GetJointPoint(int User, SkeletonJoint Joint)
@@ -442,12 +414,6 @@ namespace VVVV.Nodes
             return Point;
         }
 
-        /// <summary>
-        /// get and orientation of an specific joint 
-        /// </summary>
-        /// <param name="User"></param>
-        /// <param name="Joint"></param>
-        /// <returns></returns>
         private SkeletonJointOrientation GetJointOrientation(int User, SkeletonJoint Joint)
         {
             SkeletonJointOrientation Orientation = new SkeletonJointOrientation();
