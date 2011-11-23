@@ -127,14 +127,34 @@ namespace PinTests
             var spread = new Spread<int>(0);
             spread.AssignFrom(sampleData);
             
-            int index = 3;
+            int index = 1;
             int count = 3;
             var subSpread = spread.GetRange(index, count);
             
             Assert.AreEqual(subSpread.SliceCount, count);
             for (int i = 0; i < count; i++)
             {
-                Assert.AreEqual(subSpread[i], spread[i + count]);
+                Assert.AreEqual(subSpread[i], spread[i + index]);
+            }
+            
+            
+        }
+        
+        [Test]
+        public void TestGetRangeOutOfBounds()
+        {
+            var spread = new Spread<int>(0);
+            spread.AssignFrom(sampleData);
+            
+            // Go out of bounds
+            int index = 15;
+            int count = 21;
+            var subSpread = spread.GetRange(index, count);
+            
+            Assert.AreEqual(subSpread.SliceCount, count);
+            for (int i = 0; i < count; i++)
+            {
+                Assert.AreEqual(subSpread[i], spread[i + index]);
             }
         }
         

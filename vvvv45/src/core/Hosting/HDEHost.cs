@@ -179,7 +179,7 @@ namespace VVVV.Hosting
             
             foreach (var factory in AddonFactories)
                 if (factory is PatchFactory)
-                    NodeCollection.Add(string.Empty, ExePath.ConcatPath(@"help\"), factory, true, false);
+                    NodeCollection.Add(string.Empty, ExePath.ConcatPath(@"lib\nodes\native\"), factory, true, false);
             
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             FWindowSwitcher = PluginFactory.CreatePlugin(windowSwitcherNodeInfo, null);
