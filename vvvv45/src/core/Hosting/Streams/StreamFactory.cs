@@ -7,7 +7,7 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.Streams
 {
-	public class StreamFactory
+	public class StreamFactory : IDisposable
 	{
 		class PluginNodeListener : IPluginNodeListener
 		{
@@ -42,7 +42,7 @@ namespace VVVV.Hosting.Streams
 		private readonly ConfigStreamRegistry FConfigRegistry;
 		private readonly List<IInStream> FAutoValidatedInStreams = new List<IInStream>();
 		private readonly List<IOutStream> FOutStreams = new List<IOutStream>();
-		private IPluginNodeListener FPluginNodeListener;
+		private readonly IPluginNodeListener FPluginNodeListener;
 		
 		public StreamFactory(
 			IInternalPluginHost pluginHost,
@@ -54,11 +54,13 @@ namespace VVVV.Hosting.Streams
 		)
 		{
 			FPluginHost = pluginHost;
-			FPluginNodeListener = pluginNodeListener;
+			FPluginNodeListener = pluginNodeListener ?? new PluginNodeListener(this);
 			FDiffInputRegistry = diffInputStreamRegistry;
 			FInputRegistry = inputRegistry;
 			FOutputRegistry = outputRegistry;
 			FConfigRegistry = configRegistry;
+			
+			FPluginHost.AddListener(FPluginNodeListener);
 		}
 		
 		public StreamFactory(
@@ -69,7 +71,11 @@ namespace VVVV.Hosting.Streams
 			ConfigStreamRegistry configRegistry
 		) : this(pluginHost, null, diffInputStreamRegistry, inputRegistry, outputRegistry, configRegistry)
 		{
-			FPluginNodeListener = new PluginNodeListener(this);
+		}
+		
+		public void Dispose()
+		{
+			FPluginHost.RemoveListener(FPluginNodeListener);
 		}
 		
 		public IInStream CreateInputStream(Type type, InputAttribute attribute)

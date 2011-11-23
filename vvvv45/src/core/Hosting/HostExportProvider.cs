@@ -7,10 +7,11 @@ using System.ComponentModel.Composition.ReflectionModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
-
 using VVVV.Core;
 using VVVV.Core.Logging;
+using VVVV.Hosting.Interfaces;
 using VVVV.Hosting.Pins;
+using VVVV.Hosting.Streams;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
@@ -42,17 +43,15 @@ namespace VVVV.Hosting
         #endregion
         
         private readonly List<IDisposable> FDisposableExports = new List<IDisposable>();
+        private readonly StreamFactory FStreamFactory;
         
-        public HostExportProvider()
-        {
-        }
-        
-        public HostExportProvider(IPluginHost2 pluginHost)
+        public HostExportProvider(IInternalPluginHost pluginHost, StreamFactory streamFactory)
         {
             PluginHost = pluginHost;
+            FStreamFactory = streamFactory;
         }
         
-        public IPluginHost2 PluginHost 
+        public IInternalPluginHost PluginHost 
         { 
             get; 
             set;
