@@ -1,0 +1,125 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.4.dtd" >
+   <PATCH nodename="A:\v\vvvv\public\vvvv45\lib\nodes\native\Quote (String) help.v4p">
+   <BOUNDS height="11820" left="2340" top="1860" type="Window" width="7380">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="585" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8715" top="4680" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="390" left="585" top="1740" type="Box" width="2130">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="1" values="vvvv">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Quote (String)" systemname="Quote (String)">
+   <BOUNDS height="0" left="585" top="9675" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Quote Mode" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4365" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9015" top="4980" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="6600" left="4365" top="2880" type="Box" width="1950">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="24">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input String" linkstyle="Bezier" srcnodeid="5" srcpinname="Output">
+   <LINKPOINT x="825" y="4155">
+   </LINKPOINT>
+   <LINKPOINT x="15" y="885">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="1635" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8220" top="5085" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="6615" left="1635" top="2880" type="Box" width="2685">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="PullDown">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="24" visible="1" values="None,Single,Double,RichSingle,RichDouble,German,French,ReverseFrench,Question,CurlyBrackets,RoundBrackets,SquareBrackets,AngleBrackets,HTMLComment,PascalComment,CComment,BasicComment,Space,Comma,UnixPath,DosPath,CarriageReturnLineFeed,CarriageReturn,LineFeed">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="24">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Quote Mode" linkstyle="Bezier" srcnodeid="3" srcpinname="Output Enum">
+   <LINKPOINT x="1560" y="10155">
+   </LINKPOINT>
+   <LINKPOINT x="1470" y="9300">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="510" left="15" top="390" type="Box" width="2445">
+   </BOUNDS>
+   <BOUNDS height="160" left="2520" top="40800" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|encloses the given string in one of the predefined brackets|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="15" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="2520" top="40800" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Quote - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="1320" left="2925" top="210" type="Node" width="11715">
+   </BOUNDS>
+   <BOUNDS height="2070" left="2925" top="210" type="Box" width="3690">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Since devs of different platforms have some serious hassle understanding things the same way, we give you three different modes for the newline control character.&cr;&lf;&cr;&lf;Win uses  CRLF = 0D0A (HEX) = 13 10 (ASCII)&cr;&lf;Unix uses     LF = 0A (HEX) = 10 (ASCII)&cr;&lf;Mac uses      CR = 0D (Hex) = 13 (ASCII)&cr;&lf;More infos: http://en.wikipedia.org/wiki/Newline|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

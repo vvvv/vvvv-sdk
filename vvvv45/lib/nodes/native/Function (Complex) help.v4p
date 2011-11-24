@@ -1,0 +1,307 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH nodename="Y:\vvvv33\help\Function (Complex) help.v4p">
+   <BOUNDS height="10425" left="225" top="180" type="Window" width="4260">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="270" left="225" top="210" type="Node" width="465">
+   </BOUNDS>
+   <BOUNDS height="495" left="225" top="210" type="Box" width="3255">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Function">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="17">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="270" left="180" top="720" type="Node" width="4860">
+   </BOUNDS>
+   <BOUNDS height="435" left="180" top="720" type="Box" width="3450">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|choose a trigonometric or hyperbolic function|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Renderer (EX9)" componentmode="InAWindow">
+   <BOUNDS height="0" left="990" top="9390" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6360" left="4590" top="180" type="Window" width="6150">
+   </BOUNDS>
+   <BOUNDS height="1800" left="990" top="9390" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Grid (DX9)">
+   <BOUNDS height="0" left="990" top="8565" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Resolution X" visible="1">
+   </PIN>
+   <PIN pinname="Resolution Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Layers" srcnodeid="15" srcpinname="Layer">
+   </LINK>
+   <NODE id="14" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="690" top="7860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Render State" srcnodeid="14" srcpinname="Render State Out">
+   </LINK>
+   <NODE id="13" nodename="ArbitraryPoint (Transform)">
+   <BOUNDS height="270" left="1170" top="7725" type="Node" width="1080">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Y UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="12" nodename="Cross (2d)">
+   <BOUNDS height="0" left="1515" top="2475" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2520" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2700" top="3000" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2520" top="1395" type="Box" width="510">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="20">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="285" top="2460" type="Node" width="1170">
+   </BOUNDS>
+   <BOUNDS height="270" left="285" top="2460" type="Box" width="1170">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|complex plane|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="1530" top="1950" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" values="3.46944695195361E-18">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="6.28318531">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="X In" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE id="8" nodename="S (Value)">
+   <BOUNDS height="0" left="2985" top="1950" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="SendString" slicecount="1" values="Resolution">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="R (Value)">
+   <BOUNDS height="0" left="2415" top="8115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="ReceiveString" slicecount="1" values="Resolution">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Resolution X" srcnodeid="7" srcpinname="Input Value">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Resolution Y" srcnodeid="7" srcpinname="Input Value">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Spread Count" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input Value" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="2850" top="2640" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3915" top="4545" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2265" left="2850" top="2640" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Sin">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Cons (Spreads)">
+   <BOUNDS height="0" left="1845" top="7245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Abs (Complex)">
+   <BOUNDS height="270" left="2340" top="6750" type="Node" width="465">
+   </BOUNDS>
+   <PIN pinname="Input Real" visible="1">
+   </PIN>
+   <PIN pinname="Input Imagiary" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input 3" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename=":MODULES:\Camera (Transform Softimage).v4p">
+   <BOUNDS height="0" left="1965" top="8925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="2805" top="5835" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1965" top="8925" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="View Transform" srcnodeid="3" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Projection Transform" srcnodeid="3" srcpinname="Projection">
+   </LINK>
+   <NODE id="2" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="645" top="6540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="3" values="-7,0,7">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="X" srcnodeid="12" srcpinname="X Out">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Y" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Z" srcnodeid="12" srcpinname="Y Out">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Y In" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="1" managers="" nodename="Function (Complex)">
+   <PIN pinname="Input Real 1" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Real 2" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Imaginary 1" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Imaginary 2" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="270" left="1530" top="5130" type="Node" width="1380">
+   </BOUNDS>
+   <PIN pinname="Output Imaginary" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Output Real" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input Count" pintype="Configuration">
+   </PIN>
+   <PIN pinname="Input Real" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Imaginary" pintype="Input">
+   </PIN>
+   <PIN pinname="Input Imagiary" visible="1">
+   </PIN>
+   <PIN pinname="Function" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input Real" srcnodeid="12" srcpinname="X Out">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Input Imagiary" srcnodeid="12" srcpinname="Y Out">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Function" srcnodeid="6" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Input 1" srcnodeid="1" srcpinname="Output Real">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Input 2" srcnodeid="1" srcpinname="Output Imaginary">
+   <LINKPOINT x="2115" y="6735">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input Real" srcnodeid="1" srcpinname="Output Real">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input Imagiary" srcnodeid="1" srcpinname="Output Imaginary">
+   </LINK>
+   <NODE id="0" nodename="Scale (Transform Vector)">
+   <BOUNDS height="0" left="645" top="6075" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="0.68,0.68,0.68">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Transform In" srcnodeid="2" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Transform In" srcnodeid="0" srcpinname="Transform Out">
+   </LINK>
+   </PATCH>
