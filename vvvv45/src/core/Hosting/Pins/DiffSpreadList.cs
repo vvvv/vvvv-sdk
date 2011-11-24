@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
 using VVVV.Hosting.Pins.Config;
+using VVVV.Hosting.Streams;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
@@ -16,18 +16,18 @@ namespace VVVV.Hosting.Pins
     [ComVisible(false)]
     public abstract class DiffSpreadList<T> : Spread<ISpread<T>>, IDiffSpread<ISpread<T>>, IDisposable
     {
-        protected IPluginHost FHost;
-        protected PinAttribute FAttribute;
-        protected ConfigPin<int> FConfigPin;
+        protected readonly IOFactory FIOFactory;
+        protected readonly IOAttribute FAttribute;
+        protected IDiffSpread<int> FCountSpread;
         protected int FOffsetCounter;
         protected int FUpdateCounter;
         protected static int FInstanceCounter = 1;
         
-        public DiffSpreadList(IPluginHost host, PinAttribute attribute)
+        public DiffSpreadList(IOFactory ioFactory, IOAttribute attribute)
             : base(0)
         {
             //store fields
-            FHost = host;
+            FIOFactory = ioFactory;
             FAttribute = attribute;
             
             //create config pin
@@ -37,23 +37,23 @@ namespace VVVV.Hosting.Pins
             //increment instance Counter and store it as pin offset
             FOffsetCounter = FInstanceCounter++;
             
-            FConfigPin = (ConfigPin<int>) PinFactory.CreatePin<int>(host, att);
-            FConfigPin.Changed += UpdatePins;
+            FCountSpread = ioFactory.CreateIO<IDiffSpread<int>>(att);
+            FCountSpread.Changed += UpdatePins;
             
-            FConfigPin.Update();
+//            FCountSpread.Update();
         }
 
         public virtual void Dispose()
         {
-            FConfigPin.Changed -= UpdatePins;
-            FConfigPin.Dispose();
+            FCountSpread.Changed -= UpdatePins;
+//            FCountSpread.Dispose();
             SliceCount = 0;
         }
         
         //pin management
         protected void UpdatePins(IDiffSpread<int> spread)
         {
-            SliceCount = FConfigPin[0];
+            SliceCount = FCountSpread[0];
         }
         
         public override int SliceCount 

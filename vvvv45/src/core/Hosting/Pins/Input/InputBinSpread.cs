@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
+using VVVV.Hosting.Streams;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
@@ -11,40 +11,40 @@ namespace VVVV.Hosting.Pins.Input
     [ComVisible(false)]
     public class InputBinSpread<T> : BinSpread<T>, IDisposable
     {
-        protected DiffInputPin<int> FBinSizePin;
-        protected Pin<T> FSpreadPin;
+        protected IDiffSpread<int> FBinSizeSpread;
+        protected ISpread<T> FDataSpread;
         protected int FUpdateCount;
         protected int FBinSize;
         
-        public InputBinSpread(IPluginHost host, InputAttribute attribute)
-            : base(attribute)
+        public InputBinSpread(IOFactory ioFactory, InputAttribute attribute)
+            : base(ioFactory, attribute)
         {
             //data pin
-            FSpreadPin = CreateDataPin(host, attribute);
-            FSpreadPin.Updated += AnyPin_Updated;
+            FDataSpread = CreateDataSpread(attribute);
+//            FDataSpread.Updated += AnyPin_Updated;
             
             //bin size pin
             var att = new InputAttribute(attribute.Name + " Bin Size");
             att.DefaultValue = attribute.BinSize;
             att.Order = attribute.Order + 1;
-            FBinSizePin = PinFactory.CreateDiffPin<int>(host, att);
-            FBinSizePin.Updated += AnyPin_Updated;
+            FBinSizeSpread = FIOFactory.CreateIO<IDiffSpread<int>>(att);
+//            FBinSizeSpread.Updated += AnyPin_Updated;
         }
         
-        public Pin<T> SpreadPin
-        {
-            get
-            {
-                return this.FSpreadPin;
-            }
-        }
+//        public Pin<T> SpreadPin
+//        {
+//            get
+//            {
+//                return this.FDataSpread;
+//            }
+//        }
         
         public virtual void Dispose()
         {
-            FSpreadPin.Updated -= AnyPin_Updated;
-            FBinSizePin.Updated -= AnyPin_Updated;
-            FSpreadPin.Dispose();
-            FBinSizePin.Dispose();
+//            FDataSpread.Updated -= AnyPin_Updated;
+//            FBinSizeSpread.Updated -= AnyPin_Updated;
+//            FDataSpread.Dispose();
+//            FBinSizeSpread.Dispose();
         }
 
         protected virtual bool NeedToBuildSpread()
@@ -52,9 +52,9 @@ namespace VVVV.Hosting.Pins.Input
             return true;
         }
         
-        protected virtual Pin<T> CreateDataPin(IPluginHost host, InputAttribute attribute)
+        protected virtual ISpread<T> CreateDataSpread(InputAttribute attribute)
         {
-            return PinFactory.CreatePin<T>(host, attribute);
+            return FIOFactory.CreateIO<ISpread<T>>(attribute);
         }
         
         void AnyPin_Updated(object sender, EventArgs args)
@@ -64,7 +64,7 @@ namespace VVVV.Hosting.Pins.Input
             {
                 FUpdateCount = 0;
                 if (NeedToBuildSpread())
-                    FSpreadPin.Raise(FBinSizePin, this);
+                    FDataSpread.Raise(FBinSizeSpread, this);
             }
         }
     }

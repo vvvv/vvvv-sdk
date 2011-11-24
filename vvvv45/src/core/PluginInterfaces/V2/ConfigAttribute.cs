@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace VVVV.PluginInterfaces.V2
 {
     [ComVisible(false)]
-	public sealed class ConfigAttribute : PinAttribute
+	public sealed class ConfigAttribute : IOAttribute
 	{
 		public ConfigAttribute(string name)
 			:base(name)

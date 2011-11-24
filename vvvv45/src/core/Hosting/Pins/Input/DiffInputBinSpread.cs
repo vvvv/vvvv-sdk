@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using VVVV.Hosting.Streams;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
@@ -11,18 +12,18 @@ namespace VVVV.Hosting.Pins.Input
 	{
 		protected DiffInputPin<T> FDiffSpreadPin;
 
-		public DiffInputBinSpread(IPluginHost host, InputAttribute attribute)
-			: base(host, attribute)
+		public DiffInputBinSpread(IOFactory ioFactory, InputAttribute attribute)
+			: base(ioFactory, attribute)
 		{
-			FDiffSpreadPin = (DiffInputPin<T>) FSpreadPin;
+			FDiffSpreadPin = (DiffInputPin<T>) FDataSpread;
 			FDiffSpreadPin.Changed += FSpreadPin_Changed;
-			FBinSizePin.Changed += FBinSizePin_Changed;
+			FBinSizeSpread.Changed += FBinSizePin_Changed;
 		}
 		
         public override void Dispose()
         {
             FDiffSpreadPin.Changed -= FSpreadPin_Changed;
-            FBinSizePin.Changed -= FBinSizePin_Changed;
+            FBinSizeSpread.Changed -= FBinSizePin_Changed;
             base.Dispose();
         }
 
@@ -71,13 +72,13 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			get 
 			{
-				return FDiffSpreadPin.IsChanged || FBinSizePin.IsChanged;
+				return FDiffSpreadPin.IsChanged || FBinSizeSpread.IsChanged;
 			}
 		}
 
-		protected override Pin<T> CreateDataPin(IPluginHost host, InputAttribute attribute)
+		protected override ISpread<T> CreateDataSpread(InputAttribute attribute)
 		{
-			return PinFactory.CreateDiffPin<T>(host, attribute);
+			return FIOFactory.CreateIO<IDiffSpread<T>>(attribute);
 		}
 		
 		protected override bool NeedToBuildSpread()

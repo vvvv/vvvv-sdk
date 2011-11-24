@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using VVVV.Hosting.Streams;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
@@ -8,8 +9,8 @@ namespace VVVV.Hosting.Pins.Output
     [ComVisible(false)]
 	public class OutputSpreadList<T> : SpreadList<T>
 	{
-		public OutputSpreadList(IPluginHost host, OutputAttribute attribute)
-			: base(host, attribute)
+		public OutputSpreadList(IOFactory ioFactory, OutputAttribute attribute)
+			: base(ioFactory, attribute)
 		{
 		}
 		
@@ -20,7 +21,7 @@ namespace VVVV.Hosting.Pins.Output
 			attribute.IsPinGroup = false;
 			attribute.Order = FAttribute.Order + FOffsetCounter * 1000 + pos;
 			
-			return PinFactory.CreateSpread<T>(FHost, attribute);
+			return FIOFactory.CreateIO<ISpread<T>>(attribute);
 		}
 
 	}

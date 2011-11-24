@@ -38,17 +38,17 @@ namespace VVVV.PluginInterfaces.V2
 			{ typeof(Matrix4x4), Tuple.Create(double.MinValue, double.MaxValue, 0.01, false, 1) },
 		};
 		
-		private static T NormalizePinAttribute<T>(T attribute, Type type) where T : PinAttribute
+		private static T NormalizePinAttribute<T>(T attribute, Type type) where T : IOAttribute
 		{
 			attribute = attribute.Clone() as T;
 			
-			if (attribute.MinValue == PinAttribute.DefaultMinValue && FDefaultValues.ContainsKey(type))
+			if (attribute.MinValue == IOAttribute.DefaultMinValue && FDefaultValues.ContainsKey(type))
 				attribute.MinValue = FDefaultValues[type].Item1;
 			
-			if (attribute.MaxValue == PinAttribute.DefaultMaxValue && FDefaultValues.ContainsKey(type))
+			if (attribute.MaxValue == IOAttribute.DefaultMaxValue && FDefaultValues.ContainsKey(type))
 				attribute.MaxValue = FDefaultValues[type].Item2;
 			
-			if (attribute.StepSize == PinAttribute.DefaultStepSize && FDefaultValues.ContainsKey(type))
+			if (attribute.StepSize == IOAttribute.DefaultStepSize && FDefaultValues.ContainsKey(type))
 				attribute.StepSize = FDefaultValues[type].Item3;
 			
 			if (attribute.AsInt)

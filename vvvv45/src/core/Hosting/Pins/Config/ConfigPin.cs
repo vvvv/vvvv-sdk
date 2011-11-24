@@ -58,12 +58,6 @@ namespace VVVV.Hosting.Pins.Config
 			
 			OnUpdated();
 		}
-		
-		protected override void DisposeManaged()
-		{
-			Changed = null;
-			base.DisposeManaged();
-		}
 	}
 	
 	// In and out streams use the same data store. Simply delegate.

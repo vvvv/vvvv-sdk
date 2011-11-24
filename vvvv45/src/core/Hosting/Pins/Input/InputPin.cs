@@ -6,12 +6,23 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.Pins.Input
 {
+	public interface IInputPin
+	{
+		void Sync();
+	}
+	
 	[ComVisible(false)]
-	public class InputPin<T> : Pin<T>
+	public class InputPin<T> : Pin<T>, IInputPin
 	{
 		public InputPin(IPluginHost host, IPluginIO pluginIO, IInStream<T> inStream)
 			: base(host, pluginIO, new InputIOStream<T>(inStream))
 		{
+		}
+		
+		public void Sync()
+		{
+			// TODO: Implement changed stuff etc.
+			FStream.Sync();
 		}
 		
 		public override void Update()

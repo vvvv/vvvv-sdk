@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
+using VVVV.Hosting.Streams;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
@@ -40,10 +41,13 @@ namespace VVVV.Hosting.Pins
 			}
 		}
 		
-		public BinSpread(PinAttribute attribute)
+		protected readonly IOFactory FIOFactory;
+		
+		public BinSpread(IOFactory ioFactory, IOAttribute attribute)
 			: base(new BinSpreadStream())
 		{
 			FStream.Length = 1;
+			FIOFactory = ioFactory;
 //			BufferIncreased(new ISpread<T>[0], FBuffer);
 		}
 		

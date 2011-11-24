@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace VVVV.PluginInterfaces.V2
 {
     [ComVisible(false)]
-	public sealed class InputAttribute : PinAttribute
+	public sealed class InputAttribute : IOAttribute
 	{
 		public InputAttribute(string name)
 			:base(name)

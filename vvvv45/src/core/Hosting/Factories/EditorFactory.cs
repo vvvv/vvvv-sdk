@@ -190,7 +190,7 @@ namespace VVVV.Hosting.Factories
                 }
                 
                 // We didn't find a suitable editor, create a new one.
-                FHostExportProvider.PluginHost = host as IPluginHost2;
+                FHostExportProvider.PluginHost = host as IInternalPluginHost;
                 
                 var nodeInfoExport = FNodeInfos[nodeInfo];
                 var exportLifetimeContext = nodeInfoExport.CreateExport();

@@ -88,11 +88,5 @@ namespace VVVV.Hosting.Pins.Input
 				FIsReconnected = false;
 			}
 		}
-		
-		protected override void DisposeManaged()
-		{
-			Changed = null;
-			base.DisposeManaged();
-		}
 	}
 }

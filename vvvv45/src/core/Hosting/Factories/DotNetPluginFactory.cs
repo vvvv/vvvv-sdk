@@ -12,13 +12,15 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Runtime;
 using VVVV.Hosting;
 using VVVV.Hosting.Interfaces;
+using VVVV.Hosting.Pins;
+using VVVV.Hosting.Streams;
+using VVVV.Hosting.Streams.Registry;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Collections;
@@ -58,9 +60,10 @@ namespace VVVV.Hosting.Factories
         
         private PluginImporter FPluginImporter = new PluginImporter();
         private readonly Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts;
-        private readonly Dictionary<IPluginBase, HostExportProvider> FPinExportProviders;
+        private readonly Dictionary<IPluginBase, IOFactory> FFactories;
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
+        private readonly IORegistry FIORegistry = new IORegistry();
         protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 
         public Dictionary<string, IPluginBase> FNodesPath = new Dictionary<string, IPluginBase>();
@@ -77,7 +80,7 @@ namespace VVVV.Hosting.Factories
             : base(fileExtension)
         {
             FParentContainer = parentContainer;
-            FPinExportProviders = new Dictionary<IPluginBase, HostExportProvider>();
+            FFactories = new Dictionary<IPluginBase, IOFactory>();
             FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
             
             AppDomain.CurrentDomain.AssemblyResolve += HandleAssemblyResolve;
@@ -338,8 +341,13 @@ namespace VVVV.Hosting.Factories
             if (attribute != null)
             {
                 var catalog = new TypeCatalog(type);
-                var pinExportProvider = new HostExportProvider(pluginHost);
-                var exportProviders = new ExportProvider[] { pinExportProvider, FParentContainer };
+                
+                // Create a new factory for each plugin.
+                // The factory will take care of auto validation.
+                var ioFactory = new IOFactory(pluginHost as IInternalPluginHost, FIORegistry);
+                var ioExportProvider = new IOExportProvider(ioFactory);
+                var hostExportProvider = new HostExportProvider() { PluginHost = pluginHost as IInternalPluginHost };
+                var exportProviders = new ExportProvider[] { hostExportProvider, ioExportProvider, FParentContainer };
                 var container = new CompositionContainer(catalog, exportProviders);
                 container.ComposeParts(FPluginImporter);
                 
@@ -348,7 +356,7 @@ namespace VVVV.Hosting.Factories
                 plugin = lifetimeContext.Value;
                 
                 FPluginLifetimeContexts[plugin] = lifetimeContext;
-                FPinExportProviders[plugin] = pinExportProvider;
+                FFactories[plugin] = ioFactory;
             }
             else
             {
@@ -375,8 +383,8 @@ namespace VVVV.Hosting.Factories
             {
                 FPluginLifetimeContexts[plugin].Dispose();
                 FPluginLifetimeContexts.Remove(plugin);
-                FPinExportProviders[plugin].Dispose();
-                FPinExportProviders.Remove(plugin);
+                FFactories[plugin].Dispose();
+                FFactories.Remove(plugin);
             }
             else if (disposablePlugin != null)
             {

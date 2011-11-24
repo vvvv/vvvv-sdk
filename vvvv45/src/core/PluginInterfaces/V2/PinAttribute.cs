@@ -12,13 +12,13 @@ namespace VVVV.PluginInterfaces.V2
 	/// Note that not all properties make sense for every pin data type.
 	/// </summary>
 	[ComVisible(false)]
-	public abstract class PinAttribute : ImportAttribute, ICloneable
+	public abstract class IOAttribute : ImportAttribute, ICloneable
 	{
 		public static readonly double DefaultMinValue = double.MinValue;
 		public static readonly double DefaultMaxValue = double.MaxValue;
 		public static readonly double DefaultStepSize = 1.0;
 		
-		public PinAttribute(string name)
+		public IOAttribute(string name)
 		{
 			//pin
 			Name = name;
@@ -271,7 +271,7 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public abstract object Clone();
 		
-		protected object Clone(PinAttribute clonedInstance)
+		protected object Clone(IOAttribute clonedInstance)
 		{
 			clonedInstance.AllowDefault = AllowDefault;
 			clonedInstance.AllowRecomposition = AllowRecomposition;

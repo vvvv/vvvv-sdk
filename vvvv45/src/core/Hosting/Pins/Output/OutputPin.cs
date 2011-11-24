@@ -6,6 +6,11 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.Pins.Output
 {
+	interface IOutputPin
+	{
+		void Flush();
+	}
+	
 	class OutputPin<T> : Pin<T>
 	{
 		public OutputPin(IPluginHost host, IPluginOut pluginOut, IIOStream<T> stream)
@@ -16,6 +21,11 @@ namespace VVVV.Hosting.Pins.Output
 		public OutputPin(IPluginHost host, IPluginOut pluginOut, IOutStream<T> outStream)
 			: this(host, pluginOut, new OutputIOStream<T>(outStream))
 		{
+		}
+		
+		public void Flush()
+		{
+			FStream.Flush();
 		}
 		
 		public override void Update()
