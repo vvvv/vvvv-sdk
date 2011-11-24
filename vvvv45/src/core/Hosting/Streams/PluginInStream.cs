@@ -80,8 +80,7 @@ namespace VVVV.Hosting.Streams
 		{
 			string result;
 			FStringIn.GetString(index, out result);
-			result = result ?? string.Empty;
-			return result;
+			return result ?? string.Empty;
 		}
 		
 		public override int Length

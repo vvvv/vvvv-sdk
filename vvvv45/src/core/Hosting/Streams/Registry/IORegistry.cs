@@ -271,6 +271,16 @@ namespace VVVV.Hosting.Streams.Registry
 			             		return IOHandler.Create(stream, enumIn);
 			             });
 			
+			RegisterInput(typeof(IInStream<>), (host, attribute, t) => {
+//			              	if (t.
+			             	var enumIn = host.CreateEnumInput(attribute, t);
+			             	var stream = new DynamicEnumInStream(enumIn);
+			             	if (attribute.AutoValidate)
+			             		return IOHandler.Create(stream, enumIn, s => s.Sync(), null);
+			             	else
+			             		return IOHandler.Create(stream, enumIn);
+			             });
+			
 			RegisterInput(typeof(ISpread<>), (host, attribute, t) => {
 			              	var ioBuilder = CreateIO(typeof(IInStream<>).MakeGenericType(t), typeof(IInStream<>).MakeGenericType(t), host, attribute);
 			              	var pinType = typeof(InputPin<>).MakeGenericType(t);
@@ -284,7 +294,7 @@ namespace VVVV.Hosting.Streams.Registry
 			RegisterInput(typeof(IDiffSpread<>), (host, attribute, t) => {
 			              	attribute.CheckIfChanged = true;
 			              	var ioBuilder = CreateIO(typeof(IInStream<>).MakeGenericType(t), typeof(IInStream<>).MakeGenericType(t), host, attribute);
-			              	var pinType = typeof(InputPin<>).MakeGenericType(t);
+			              	var pinType = typeof(DiffInputPin<>).MakeGenericType(t);
 			              	var pin = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as IInputPin;
 			              	if (attribute.AutoValidate)
 			              		return IOHandler.Create(pin, ioBuilder.Metadata, p => p.Sync(), null);
@@ -306,73 +316,73 @@ namespace VVVV.Hosting.Streams.Registry
 			
 			RegisterOutput(typeof(IOutStream<double>), (host, attribute, t) => {
 			             	var valueOut = host.CreateValueOutput(attribute, t);
-			             	return IOHandler.Create(new DoubleOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new DoubleOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
 			             });
 			
 			RegisterOutput(typeof(IOutStream<float>), (host, attribute, t) => {
 			             	var valueOut = host.CreateValueOutput(attribute, t);
-			             	return IOHandler.Create(new FloatOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new FloatOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
 			             });
 			
 			RegisterOutput(typeof(IOutStream<int>), (host, attribute, t) => {
 			             	var valueOut = host.CreateValueOutput(attribute, t);
-			             	return IOHandler.Create(new IntOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new IntOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
 			             });
 			
 			RegisterOutput(typeof(IOutStream<bool>), (host, attribute, t) => {
 			             	var valueOut = host.CreateValueOutput(attribute, t);
-			             	return IOHandler.Create(new BoolOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new BoolOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
 			             });
 
 			RegisterOutput(typeof(IOutStream<Matrix4x4>), (host, attribute, t) => {
 			             	var transformOut = host.CreateTransformOutput(attribute, t);
-			             	return IOHandler.Create(new Matrix4x4OutStream(GetResizeMatrixArrayFunc(transformOut)), transformOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new Matrix4x4OutStream(GetResizeMatrixArrayFunc(transformOut)), transformOut, null, null);
 			             });
 			
 			RegisterOutput(typeof(IOutStream<Matrix>), (host, attribute, t) => {
 			             	var transformOut = host.CreateTransformOutput(attribute, t);
-			             	return IOHandler.Create(new MatrixOutStream(GetResizeMatrixArrayFunc(transformOut)), transformOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new MatrixOutStream(GetResizeMatrixArrayFunc(transformOut)), transformOut, null, s => s.Flush());
 			             });
 
 			RegisterOutput(typeof(IOutStream<Vector2D>), (host, attribute, t) => {
 			             	var valueOut = host.CreateValueOutput(attribute, t);
-			             	return IOHandler.Create(new Vector2DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new Vector2DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
 			             });
 			RegisterOutput(typeof(IOutStream<Vector3D>),(host, attribute, t) => {
 			             	var valueOut = host.CreateValueOutput(attribute, t);
-			             	return IOHandler.Create(new Vector3DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new Vector3DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
 			             });
 			RegisterOutput(typeof(IOutStream<Vector4D>),(host, attribute, t) => {
 			             	var valueOut = host.CreateValueOutput(attribute, t);
-			             	return IOHandler.Create(new Vector4DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new Vector4DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
 			             });
 
 			RegisterOutput(typeof(IOutStream<Vector2>), (host, attribute, t) => {
 			             	var valueOut = host.CreateValueOutput(attribute, t);
-			             	return IOHandler.Create(new Vector2OutStream(GetResizeValueArrayFunc(valueOut)), valueOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new Vector2OutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
 			             });
 			RegisterOutput(typeof(IOutStream<Vector3>), (host, attribute, t) => {
 			             	var valueOut = host.CreateValueOutput(attribute, t);
-			             	return IOHandler.Create(new Vector3OutStream(GetResizeValueArrayFunc(valueOut)), valueOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new Vector3OutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
 			             });
 			RegisterOutput(typeof(IOutStream<Vector4>), (host, attribute, t) => {
 			             	var valueOut = host.CreateValueOutput(attribute, t);
-			             	return IOHandler.Create(new Vector4OutStream(GetResizeValueArrayFunc(valueOut)), valueOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new Vector4OutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
 			             });
 
 			RegisterOutput(typeof(IOutStream<string>), (host, attribute, t) => {
 			             	var stringOut = host.CreateStringOutput(attribute, t);
-			             	return IOHandler.Create(new StringOutStream(stringOut), stringOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new StringOutStream(stringOut), stringOut, null, s => s.Flush());
 			             });
 			
 			RegisterOutput(typeof(IOutStream<RGBAColor>), (host, attribute, t) => {
 			             	var colorOut = host.CreateColorOutput(attribute, t);
-			             	return IOHandler.Create(new ColorOutStream(GetResizeColorArrayFunc(colorOut)), colorOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new ColorOutStream(GetResizeColorArrayFunc(colorOut)), colorOut, null, s => s.Flush());
 			             });
 
 			RegisterOutput(typeof(IOutStream<EnumEntry>), (host, attribute, t) => {
 			             	var enumOut = host.CreateEnumOutput(attribute, t);
-			             	return IOHandler.Create(new DynamicEnumOutStream(enumOut), enumOut, s => s.Flush(), null);
+			             	return IOHandler.Create(new DynamicEnumOutStream(enumOut), enumOut, null, s => s.Flush());
 			             });
 			
 			RegisterOutput(typeof(IDXLayerIO), (host, attribute, t) => {
@@ -397,7 +407,7 @@ namespace VVVV.Hosting.Streams.Registry
 			              	var ioBuilder = CreateIO(typeof(IOutStream<>).MakeGenericType(t), typeof(IOutStream<>).MakeGenericType(t), host, attribute);
 			              	var pinType = typeof(OutputPin<>).MakeGenericType(t);
 			              	var pin = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as IOutputPin;
-			              	return IOHandler.Create(pin, ioBuilder.Metadata, p => p.Flush(), null);
+			              	return IOHandler.Create(pin, ioBuilder.Metadata, null, p => p.Flush());
 			              });
 			
 			RegisterConfig(typeof(IIOStream<double>), (host, attribute, t) => {

@@ -37,6 +37,29 @@ namespace VVVV.Utils.Streams
 			return Math.Max(Math.Min(length, slicesAhead), 0);
 		}
 		
+		public static int Read<T>(IInStream<T> inStream, T[] buffer, int index, int length, int stride = 1)
+		{
+			int slicesToRead = GetNumSlicesToRead(inStream, index, length, stride);
+			
+			switch (stride)
+			{
+				case 0:
+					if (index == 0 && slicesToRead == buffer.Length)
+						buffer.Init(inStream.Read(stride)); // Slightly faster
+					else
+						buffer.Fill(index, slicesToRead, inStream.Read(stride));
+					break;
+				default:
+					for (int i = index; i < index + slicesToRead; i++)
+					{
+						buffer[i] = inStream.Read(stride);
+					}
+					break;
+			}
+			
+			return slicesToRead;
+		}
+		
 		public static void ReadCyclic<T>(IInStream<T> inStream, T[] buffer, int index, int length, int stride = 1)
 		{
 			// Exception handling

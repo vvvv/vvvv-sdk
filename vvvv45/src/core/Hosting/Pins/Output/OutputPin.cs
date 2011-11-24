@@ -11,7 +11,7 @@ namespace VVVV.Hosting.Pins.Output
 		void Flush();
 	}
 	
-	class OutputPin<T> : Pin<T>
+	class OutputPin<T> : Pin<T>, IOutputPin
 	{
 		public OutputPin(IPluginHost host, IPluginOut pluginOut, IIOStream<T> stream)
 			: base(host, pluginOut, stream)

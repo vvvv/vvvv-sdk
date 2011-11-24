@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -559,10 +560,12 @@ namespace VVVV.PluginInterfaces.V2
 		
 		private static int DivByBinSize(int sliceCount, int binSize)
 		{
+			Debug.Assert(binSize >= 0);
+			
 			if (binSize > 0)
 			{
 				int remainder = 0;
-				int result = Math.DivRem(sliceCount, Math.Abs(binSize), out remainder);
+				int result = Math.DivRem(sliceCount, binSize, out remainder);
 				if (remainder > 0)
 					result++;
 				return result;
