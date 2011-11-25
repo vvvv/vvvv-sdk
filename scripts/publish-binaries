@@ -8,7 +8,7 @@ function usage
   echo "Usage: publish-binaries -u USER -s SERVER -r REMOTE-DIR FILES ..."
 }
 
-while [ ! -n "$1" ]; do
+while [ -n "$1" ]; do
     case $1 in
         -u | --username )       shift
                                 username=$1
@@ -28,18 +28,21 @@ while [ ! -n "$1" ]; do
 done
 
 binaries=$*
-
+echo $binaries
 if [ ! -n "$username" ]; then
+  echo "Username must be set on command line."
   usage
   exit 1
 fi
 
 if [ ! -n "$server" ]; then
+  echo "Server must be set on command line."
   usage
   exit 1
 fi
 
 if [ ! -n "$remoteDir" ]; then
+  echo "RemoteDir must be set on command line."
   usage
   exit 1
 fi
@@ -60,9 +63,15 @@ fi
 binariesArchiveFile="${binariesArchiveFilename}-${commitId}.tar.bz2"
 binariesMD5File="${binariesArchiveFilename}-${commitId}.tar.bz2.md5"
 
+echo "Creating archive $binariesArchiveFile ..."
 tar -jcvf "$binariesArchiveFile" $binaries
+echo "Generating checksum for $binariesArchiveFile ..."
 md5sum "$binariesArchiveFile" > "$binariesMD5File"
+echo "Uploading $binariesArchiveFile ..."
 scp "$binariesArchiveFile" "${username}@${server}:${remoteDir}"
+echo "Uploading $binariesMD5File ..."
 scp "$binariesMD5File" "${username}@${server}:${remoteDir}"
+echo "Cleaning up ..."
 rm -f "$binariesArchiveFile"
 rm -f "$binariesMD5File"
+echo "Done"
