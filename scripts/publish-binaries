@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# Publish binaries for fetch-binaries script
+binariesArchiveFilename="binaries"
+
+function usage
+{
+  echo "Usage: publish-binaries -u USER -s SERVER -r REMOTE-DIR FILES ..."
+}
+
+while [ ! -n "$1" ]; do
+    case $1 in
+        -u | --username )       shift
+                                username=$1
+                                ;;
+        -s | --server )         shift
+                                server=$1
+                                ;;
+        -r | --remote-dir )     shift
+                                remoteDir=$1
+                                ;;
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     break
+    esac
+    shift
+done
+
+binaries=$*
+
+if [ ! -n "$username" ]; then
+  usage
+  exit 1
+fi
+
+if [ ! -n "$server" ]; then
+  usage
+  exit 1
+fi
+
+if [ ! -n "$remoteDir" ]; then
+  usage
+  exit 1
+fi
+
+if [ ! -n "$binaries" ]; then
+  echo "No binaries given to publish."
+  exit 1
+fi
+
+commitId=`git log -1 | grep git-subtree-split | sed -e 's/.* //g'`
+
+# Only publish if last commit was a split
+if [ ! -n "$commitId" ]; then
+  echo "Last commit is not a git-subtree-split commit. Abort."
+  exit
+fi
+
+binariesArchiveFile="${binariesArchiveFilename}-${commitId}.tar.bz2"
+binariesMD5File="${binariesArchiveFilename}-${commitId}.tar.bz2.md5"
+
+tar -jcvf "$binariesArchiveFile" $binaries
+md5sum "$binariesArchiveFile" > "$binariesMD5File"
+scp "$binariesArchiveFile" "${username}@${server}:${remoteDir}"
+scp "$binariesMD5File" "${username}@${server}:${remoteDir}"
+rm -f "$binariesArchiveFile"
+rm -f "$binariesMD5File"
