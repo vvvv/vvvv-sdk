@@ -348,6 +348,10 @@ namespace VVVV.Hosting.Graph
             {
                 return FInternalCOMInterf.Status;
             }
+            set
+            {
+                FInternalCOMInterf.Status = value;
+            }
         }
         
         public StatusCode InnerStatus
