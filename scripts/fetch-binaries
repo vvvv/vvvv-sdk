@@ -36,8 +36,15 @@ in_array()
 binariesArchiveFilename="binaries"
 url="http://vvvv.org/daily/binaries"
 
+# save and change IFS
+OLDIFS=$IFS
+IFS=$'\n'
+
 echo "Retrieving directory listing from $url"
-archiveMd5Files=`curl --stderr /dev/null ${url}/list-binaries.php`
+archiveMd5Files=(`curl --stderr /dev/null ${url}/list-binaries.php`)
+
+# restore it
+IFS=$OLDIFS
 
 echo "Looking for binaries"
 found=0
@@ -75,6 +82,8 @@ do
     rm "$archiveMD5File"
     break;
   fi
+  
+  break;
 done < GIT_LOG
 
 rm GIT_LOG
