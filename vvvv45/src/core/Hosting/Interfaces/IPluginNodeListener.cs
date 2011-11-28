@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Hosting.Interfaces
 {
@@ -9,5 +10,6 @@ namespace VVVV.Hosting.Interfaces
 	{
 		void BeforeEvaluate();
 		void AfterEvaluate();
+		void Configurate(IPluginConfig configPin);
 	}
 }

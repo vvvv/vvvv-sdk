@@ -13,33 +13,34 @@ namespace VVVV.Nodes
 	public abstract class ZipNode<T> : IPluginEvaluate
 	{
 		[Input("Input", IsPinGroup = true)]
-		protected ISpread<ISpread<T>> FInputSpreads;
+		protected IInStream<IInStream<T>> FInputStreams;
 		
 		[Output("Output")]
-		protected ISpread<T> FOutput;
+		protected IOutStream<T> FOutputStream;
 		
 		private readonly T[] FBuffer = new T[128];
 		
 		public void Evaluate(int SpreadMax)
 		{
-			FOutput.SetSliceCountBy(FInputSpreads);
+			FOutputStream.SetLengthBy(FInputStreams);
 
-			var outputStream = FOutput.GetStream();
-			var inputSpreadsStream = FInputSpreads.GetStream();
-			var inputSpreadsCount = inputSpreadsStream.Length;
-			
-			int i = 0;
-			
-			while (!inputSpreadsStream.Eof)
+			var inputStreamsLength = FInputStreams.Length;
+			using (var writer = FOutputStream.GetWriter())
 			{
-				var inputStream = inputSpreadsStream.Read().GetStream();
-				int numSlicesToRead = Math.Min(inputStream.Length, FBuffer.Length);
-				
-				outputStream.WritePosition = i++;
-				while (!outputStream.Eof)
+				int i = 0;
+				foreach (var inputStream in FInputStreams)
 				{
-					inputStream.ReadCyclic(FBuffer, 0, numSlicesToRead);
-					outputStream.Write(FBuffer, 0, numSlicesToRead, inputSpreadsCount);
+					int numSlicesToRead = Math.Min(inputStream.Length, FBuffer.Length);
+					
+					writer.Position = i++;
+					using (var reader = inputStream.GetReader())
+					{
+						while (!writer.Eos)
+						{
+							reader.ReadCyclic(FBuffer, 0, numSlicesToRead);
+							writer.Write(FBuffer, 0, numSlicesToRead, inputStreamsLength);
+						}
+					}
 				}
 			}
 		}

@@ -26,7 +26,7 @@ namespace VVVV.Hosting.Pins
 					{
 						var spread = oldBuffer[i & (oldBuffer.Length - 1)];
 						if (spread != null)
-							newBuffer[i] = spread.Clone();
+							newBuffer[i] = spread.Clone() as Spread<T>;
 						else
 							newBuffer[i] = new Spread<T>(0);
 					}
@@ -46,11 +46,9 @@ namespace VVVV.Hosting.Pins
 		public BinSpread(IOFactory ioFactory, IOAttribute attribute)
 			: base(new BinSpreadStream())
 		{
-			FStream.Length = 1;
+//			FStream.Length = 1;
 			FIOFactory = ioFactory;
 //			BufferIncreased(new ISpread<T>[0], FBuffer);
 		}
-		
-		
 	}
 }

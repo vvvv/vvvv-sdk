@@ -34,7 +34,7 @@ namespace VVVV.PluginInterfaces.V2
 	}
 	
 	[ComVisible(false)]
-	public class Pin<T> : Spread<T>, IDisposable, IPinUpdater
+	public class Pin<T> : Spread<T>, IDisposable
 	{
 		private readonly IPluginHost FHost;
 		private readonly IPluginIO FPluginIO;
@@ -45,7 +45,7 @@ namespace VVVV.PluginInterfaces.V2
 			FHost = host;
 			FPluginIO = pluginIO;
 			
-			FPluginIO.SetPinUpdater(this);
+//			FPluginIO.SetPinUpdater(this);
 //			SliceCount = 1;
 		}
 		
@@ -60,49 +60,6 @@ namespace VVVV.PluginInterfaces.V2
 			{
 				return FPluginIO;
 			}
-		}
-
-		public event PinUpdatedEventHandler Updated;
-		
-		protected virtual void OnUpdated()
-		{
-			if (Updated != null)
-				Updated(this, EventArgs.Empty);
-		}
-		
-		public event PinConnectionEventHandler Connected;
-		
-		protected virtual void OnConnected(PinConnectionEventArgs args)
-		{
-			if (Connected != null) {
-				Connected(this, args);
-			}
-		}
-		
-		public event PinConnectionEventHandler Disconnected;
-		
-		protected virtual void OnDisconnected(PinConnectionEventArgs args)
-		{
-			if (Disconnected != null) {
-				Disconnected(this, args);
-			}
-		}
-		
-		//prepare for IPinUpdater
-		public virtual void Update()
-		{
-			FStream.Reset();
-			OnUpdated();
-		}
-		
-		public virtual void Connect(IPin otherPin)
-		{
-			OnConnected(new PinConnectionEventArgs(otherPin));
-		}
-		
-		public virtual void Disconnect(IPin otherPin)
-		{
-			OnDisconnected(new PinConnectionEventArgs(otherPin));
 		}
 		
 		#region IDisposable
@@ -155,7 +112,7 @@ namespace VVVV.PluginInterfaces.V2
 		
 		protected virtual void DisposeManaged()
 		{
-			Updated = null;
+//			Updated = null;
 			FHost.DeletePin(this.PluginIO);
 		}
 		

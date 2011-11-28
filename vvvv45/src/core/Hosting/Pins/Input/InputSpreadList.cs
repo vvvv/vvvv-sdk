@@ -7,7 +7,7 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Hosting.Pins.Input
 {
     [ComVisible(false)]
-	public class InputSpreadList<T> : SpreadList<T>
+	public class InputSpreadList<T> : SpreadList<T>, IInputPin
 	{
 		public InputSpreadList(IOFactory ioFactory, InputAttribute attribute)
 			: base(ioFactory, attribute)
@@ -24,5 +24,11 @@ namespace VVVV.Hosting.Pins.Input
 			return FIOFactory.CreateIO<ISpread<T>>(attribute);
 		}
 		
+		
+		public override bool Sync()
+		{
+			// TODO
+			return base.Sync();
+		}
 	}
 }

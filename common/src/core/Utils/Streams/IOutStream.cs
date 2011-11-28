@@ -5,26 +5,18 @@ namespace VVVV.Utils.Streams
 {
 	public interface IOutStream : IStream
 	{
-		void Flush();
-		
-		int WritePosition
-		{
-			get;
-			set;
-		}
-		
 		new int Length
 		{
 			get;
 			set;
 		}
+		
+		void Flush();
 	}
 	
 	public interface IOutStream<T> : IOutStream
 	{
-		void Write(T value, int stride = 1);
-		
-		int Write(T[] buffer, int index, int length, int stride = 1);
+		IStreamWriter<T> GetWriter();
 	}
 	
 	public static class OutStreamExtensions
@@ -34,14 +26,14 @@ namespace VVVV.Utils.Streams
 			return new T[Math.Max(8, Math.Min(inStream.Length, 512))];
 		}
 		
-		internal static void CyclicWrite<T>(this IOutStream<T> outStream, T[] buffer, int index, int length, int stride = 1)
+		internal static void CyclicWrite<T>(this IStreamWriter<T> writer, T[] buffer, int index, int length, int stride = 1)
 		{
-			int numSlicesWritten = outStream.Write(buffer, index, length, stride);
+			int numSlicesWritten = writer.Write(buffer, index, length, stride);
 			
 			for (int i = numSlicesWritten; i < length; i++)
 			{
-				outStream.WritePosition %= outStream.Length;
-				numSlicesWritten += outStream.Write(buffer, index + i, length - numSlicesWritten, stride);
+				writer.Position %= writer.Length;
+				numSlicesWritten += writer.Write(buffer, index + i, length - numSlicesWritten, stride);
 			}
 		}
 	}

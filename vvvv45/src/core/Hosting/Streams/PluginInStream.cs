@@ -10,6 +10,95 @@ namespace VVVV.Hosting.Streams
 	// Slow
 	abstract class PluginInStream<T> : IInStream<T>
 	{
+		class PluginInReader : IStreamReader<T>
+		{
+			private readonly PluginInStream<T> FStream;
+			
+			public PluginInReader(PluginInStream<T> stream)
+			{
+				FStream = stream;
+			}
+			
+			public bool Eos
+			{
+				get
+				{
+					return Position >= Length;
+				}
+			}
+			
+			public int Position
+			{
+				get;
+				set;
+			}
+			
+			public int Length
+			{
+				get
+				{
+					return FStream.Length;
+				}
+			}
+			
+			public T Current
+			{
+				get;
+				private set;
+			}
+			
+			object System.Collections.IEnumerator.Current
+			{
+				get
+				{
+					return Current;
+				}
+			}
+			
+			public bool MoveNext()
+			{
+				var result = !Eos;
+				if (result)
+				{
+					Current = Read();
+				}
+				return result;
+			}
+			
+			public T Read(int stride = 1)
+			{
+				var result = FStream.GetSlice(Position);
+				Position += stride;
+				return result;
+			}
+			
+			public int Read(T[] buffer, int index, int length, int stride)
+			{
+				var numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+				for (int i = index; i < index + numSlicesToRead; i++)
+				{
+					buffer[i] = Read(stride);
+				}
+				return numSlicesToRead;
+			}
+			
+//			public void ReadCyclic(T[] buffer, int index, int length, int stride)
+//			{
+//				// No need to optimize here as slow as it is already.
+//				StreamUtils.ReadCyclic(this, buffer, index, length, stride);
+//			}
+			
+			public void Dispose()
+			{
+				// Nothing to do
+			}
+			
+			public void Reset()
+			{
+				Position = 0;
+			}
+		}
+		
 		public object Clone()
 		{
 			throw new NotImplementedException();
@@ -22,52 +111,25 @@ namespace VVVV.Hosting.Streams
 		
 		protected abstract T GetSlice(int index);
 		
-		public T Read(int stride)
-		{
-			var result = GetSlice(ReadPosition);
-			ReadPosition += stride;
-			return result;
-		}
-		
-		public int Read(T[] buffer, int index, int length, int stride)
-		{
-			var numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stride);
-			for (int i = index; i < index + numSlicesToRead; i++)
-			{
-				buffer[i] = Read(stride);
-			}
-			return numSlicesToRead;
-		}
-		
-		public void ReadCyclic(T[] buffer, int index, int length, int stride)
-		{
-			// No need to optimize here as slow as it is already.
-			StreamUtils.ReadCyclic(this, buffer, index, length, stride);
-		}
-		
-		public void Reset()
-		{
-			ReadPosition = 0;
-		}
-		
-		public int ReadPosition 
-		{
-			get;
-			set;
-		}
-		
-		public bool Eof 
-		{
-			get 
-			{
-				return ReadPosition >= Length;
-			}
-		}
-		
 		public abstract bool Sync();
+		
+		public IStreamReader<T> GetReader()
+		{
+			return new PluginInReader(this);
+		}
+		
+		public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+		{
+			return GetReader();
+		}
+		
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
 	}
 	
-	class StringInStream : PluginInStream<string>
+	class StringInStream : ManagedIOStream<string>
 	{
 		private readonly IStringIn FStringIn;
 		
@@ -76,24 +138,25 @@ namespace VVVV.Hosting.Streams
 			FStringIn = stringIn;
 		}
 		
-		protected override string GetSlice(int index)
-		{
-			string result;
-			FStringIn.GetString(index, out result);
-			return result ?? string.Empty;
-		}
-		
-		public override int Length
-		{
-			get
-			{
-				return FStringIn.SliceCount;
-			}
-		}
-		
 		public override bool Sync()
 		{
-			return FStringIn.PinIsChanged;
+			if (FStringIn.PinIsChanged)
+			{
+				Length = FStringIn.SliceCount;
+				using (var writer = GetWriter())
+				{
+					for (int i = 0; i < Length; i++)
+					{
+						string result;
+						FStringIn.GetString(i, out result);
+						writer.Write(result ?? string.Empty);
+					}
+				}
+				
+				return true;
+			}
+			
+			return false;
 		}
 	}
 	

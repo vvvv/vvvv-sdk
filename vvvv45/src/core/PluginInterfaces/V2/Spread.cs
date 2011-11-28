@@ -14,18 +14,18 @@ namespace VVVV.PluginInterfaces.V2
 	[ComVisible(false)]
 	public class Spread<T> : ISpread<T>
 	{
-		protected readonly IIOStream<T> FStream;
+		private readonly IIOStream<T> FStream;
 		
 		public Spread(IIOStream<T> stream)
 		{
 			FStream = stream;
-			FStream.Sync();
+			Sync();
 		}
 		
 		public Spread(int size)
 			: this(new ManagedIOStream<T>())
 		{
-			FStream.Length = size;
+			SliceCount = size;
 		}
 		
 		public Spread()
@@ -38,40 +38,49 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			var buffer = new T[original.Count];
 			original.CopyTo(buffer, 0);
-			FStream.Write(buffer, 0, buffer.Length);
-		}
-		
-		public Spread(ISpread<T> original)
-			: this(original.SliceCount)
-		{
-			var srcStream = original.GetStream();
-			var buffer = srcStream.CreateReadBuffer();
-			while (!srcStream.Eof)
+			using (var writer = FStream.GetWriter())
 			{
-				int n = srcStream.Read(buffer, 0, buffer.Length);
-				FStream.Write(buffer, 0, n);
+				writer.Write(buffer, 0, buffer.Length);
 			}
 		}
 		
-		public IIOStream<T> GetStream()
+		public virtual bool Sync()
 		{
-			FStream.Reset();
-			return FStream;
+			return FStream.Sync();
+		}
+		
+		public virtual void Flush()
+		{
+			FStream.Flush();
+		}
+		
+		public IIOStream<T> Stream
+		{
+			get
+			{
+				return FStream;
+			}
 		}
 		
 		public T this[int index]
 		{
 			get
 			{
-				// TODO: Try to make this faster
-				FStream.ReadPosition = VMath.Zmod(index, FStream.Length);
-				return FStream.Read();
+				index = VMath.Zmod(index, FStream.Length);
+				using (var reader = FStream.GetReader())
+				{
+					reader.Position = index;
+					return reader.Read();
+				}
 			}
 			set
 			{
-				// TODO: Try to make this faster
-				FStream.WritePosition = VMath.Zmod(index, FStream.Length);
-				FStream.Write(value);
+				index = VMath.Zmod(index, FStream.Length);
+				using (var writer = FStream.GetWriter())
+				{
+					writer.Position = index;
+					writer.Write(value);
+				}
 			}
 		}
 		
@@ -95,27 +104,26 @@ namespace VVVV.PluginInterfaces.V2
 			}
 			set
 			{
-				FStream.Length = value >= 0 ? value : 0;
+				if (value != FStream.Length)
+				{
+					FStream.Length = value >= 0 ? value : 0;
+				}
 			}
 		}
 		
 		public IEnumerator<T> GetEnumerator()
 		{
-			// TODO: implement this
-			//var stream = FStream.Clone() as IInStream<T>;
-			var stream = FStream;
-			
-			stream.Reset();
-			
-			while (!stream.Eof)
-			{
-				yield return stream.Read();
-			}
+			return FStream.GetEnumerator();
 		}
 		
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+		
+		public object Clone()
+		{
+			return new Spread<T>(FStream.Clone() as IIOStream<T>);
 		}
 	}
 

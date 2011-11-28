@@ -9,9 +9,153 @@ namespace VVVV.Hosting.Streams
 	// Slow
 	abstract class PluginConfigStream<T> : IIOStream<T>
 	{
-		public object Clone()
+		class PluginConfigReader : IStreamReader<T>
 		{
-			throw new NotImplementedException();
+			private readonly PluginConfigStream<T> FStream;
+			
+			public PluginConfigReader(PluginConfigStream<T> stream)
+			{
+				FStream = stream;
+			}
+			
+			public bool Eos
+			{
+				get
+				{
+					return Position >= Length;
+				}
+			}
+			
+			public int Position
+			{
+				get;
+				set;
+			}
+			
+			public int Length
+			{
+				get
+				{
+					return FStream.Length;
+				}
+			}
+			
+			public T Current
+			{
+				get;
+				private set;
+			}
+			
+			object System.Collections.IEnumerator.Current
+			{
+				get
+				{
+					return Current;
+				}
+			}
+			
+			public bool MoveNext()
+			{
+				var result = !Eos;
+				if (result)
+				{
+					Current = Read();
+				}
+				return result;
+			}
+			
+			public T Read(int stride = 1)
+			{
+				var result = FStream.GetSlice(Position);
+				Position += stride;
+				return result;
+			}
+			
+			public int Read(T[] buffer, int index, int length, int stride)
+			{
+				var numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+				for (int i = index; i < index + numSlicesToRead; i++)
+				{
+					buffer[i] = Read(stride);
+				}
+				return numSlicesToRead;
+			}
+//			public void ReadCyclic(T[] buffer, int index, int length, int stride)
+//			{
+//				StreamUtils.ReadCyclic(this, buffer, index, length, stride);
+//			}
+			
+			public void Dispose()
+			{
+				// Nothing to do here
+			}
+			
+			public void Reset()
+			{
+				Position = 0;
+			}
+		}
+		
+		class PluginConfigWriter : IStreamWriter<T>
+		{
+			private readonly PluginConfigStream<T> FStream;
+			
+			public PluginConfigWriter(PluginConfigStream<T> stream)
+			{
+				FStream = stream;
+			}
+			
+			public bool Eos
+			{
+				get
+				{
+					return Position >= Length;
+				}
+			}
+			
+			public int Position
+			{
+				get;
+				set;
+			}
+			
+			public int Length
+			{
+				get
+				{
+					return FStream.Length;
+				}
+				set
+				{
+					FStream.Length = value;
+				}
+			}
+			
+			public void Reset()
+			{
+				Position = 0;
+			}
+			
+			public void Write(T value, int stride)
+			{
+				FStream.SetSlice(Position, value);
+				Position += stride;
+			}
+			
+			public int Write(T[] buffer, int index, int length, int stride)
+			{
+				var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+				for (int i = index; i < index + numSlicesToWrite; i++)
+				{
+					Write(buffer[i], stride);
+				}
+				return numSlicesToWrite;
+			}
+			
+			public void Dispose()
+			{
+				// Nothing to do here
+			}
 		}
 		
 		public abstract int Length
@@ -24,67 +168,9 @@ namespace VVVV.Hosting.Streams
 		
 		protected abstract void SetSlice(int index, T value);
 		
-		public T Read(int stride)
+		public object Clone()
 		{
-			var result = GetSlice(ReadPosition);
-			ReadPosition += stride;
-			return result;
-		}
-		
-		public int Read(T[] buffer, int index, int length, int stride)
-		{
-			var numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stride);
-			for (int i = index; i < index + numSlicesToRead; i++)
-			{
-				buffer[i] = Read(stride);
-			}
-			return numSlicesToRead;
-		}
-		public void ReadCyclic(T[] buffer, int index, int length, int stride)
-		{
-			StreamUtils.ReadCyclic(this, buffer, index, length, stride);
-		}
-		
-		public void Write(T value, int stride)
-		{
-			SetSlice(WritePosition, value);
-			WritePosition += stride;
-		}
-		
-		public int Write(T[] buffer, int index, int length, int stride)
-		{
-			var numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stride);
-			for (int i = index; i < index + numSlicesToWrite; i++)
-			{
-				Write(buffer[i], stride);
-			}
-			return numSlicesToWrite;
-		}
-		
-		public void Reset()
-		{
-			ReadPosition = 0;
-			WritePosition = 0;
-		}
-		
-		public int ReadPosition
-		{
-			get;
-			set;
-		}
-		
-		public bool Eof
-		{
-			get
-			{
-				return ReadPosition >= Length || WritePosition >= Length;
-			}
-		}
-		
-		public int WritePosition
-		{
-			get;
-			set;
+			throw new NotImplementedException();
 		}
 		
 		public abstract bool Sync();
@@ -92,6 +178,26 @@ namespace VVVV.Hosting.Streams
 		public void Flush()
 		{
 			// Nothing to do
+		}
+		
+		public IStreamReader<T> GetReader()
+		{
+			return new PluginConfigReader(this);
+		}
+		
+		public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+		{
+			return GetReader();
+		}
+		
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+		
+		public IStreamWriter<T> GetWriter()
+		{
+			return new PluginConfigWriter(this);
 		}
 	}
 	

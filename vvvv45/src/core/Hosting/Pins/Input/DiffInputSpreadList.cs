@@ -7,7 +7,7 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Hosting.Pins.Input
 {
     [ComVisible(false)]
-	public class DiffInputSpreadList<T> : DiffSpreadList<T>
+	public class DiffInputSpreadList<T> : DiffSpreadList<T>, IInputPin
 	{
 		public DiffInputSpreadList(IOFactory ioFactory, InputAttribute attribute)
 			: base(ioFactory, attribute)
@@ -24,5 +24,11 @@ namespace VVVV.Hosting.Pins.Input
 			return FIOFactory.CreateIO<IDiffSpread<T>>(attribute);
 		}
 		
+		
+		public override bool Sync()
+		{
+			// TODO
+			return base.Sync();
+		}
 	}
 }

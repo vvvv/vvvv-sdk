@@ -4,48 +4,63 @@ using System.Runtime.InteropServices;
 using VVVV.Hosting.Streams;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
-    [ComVisible(false)]
-	public class OutputBinSpread<T> : BinSpread<T>, IDisposable
+	[ComVisible(false)]
+	public class OutputBinSpread<T> : BinSpread<T>, IOutputPin
 	{
-		protected ISpread<int> FBinSizeSpread;
-		protected ISpread<T> FDataSpread;
-		protected int FUpdateCount;
+		private readonly IOutStream<T> FDataStream;
+		private readonly IOutStream<int> FBinSizeStream;
+		private readonly T[] FDataBuffer = new T[StreamUtils.BUFFER_SIZE];
+		private readonly int[] FBinSizeBuffer = new int[StreamUtils.BUFFER_SIZE];
 		
 		public OutputBinSpread(IOFactory ioFactory, OutputAttribute attribute)
 			: base(ioFactory, attribute)
 		{
-			//data pin
-			FDataSpread = FIOFactory.CreateIO<ISpread<T>>(attribute);
-//			FDataSpread.Updated += AnyUpdated;
+			FDataStream = FIOFactory.CreateIO<IOutStream<T>>(attribute);
 			
-			//bin size pin
-			var att = new OutputAttribute(attribute.Name + " Bin Size");
-			att.DefaultValue = 1;
-			FBinSizeSpread = FIOFactory.CreateIO<ISpread<int>>(att);
-//			FBinSizeSpread.Updated += AnyUpdated;
+			var att = new OutputAttribute(attribute.Name + " Bin Size")
+			{
+				DefaultValue = 1
+			};
+			FBinSizeStream = FIOFactory.CreateIO<IOutStream<int>>(att);
 		}
 		
-		public virtual void Dispose()
+		public override void Flush()
 		{
-//		    FDataSpread.Updated -= AnyUpdated;
-//		    FBinSizeSpread.Updated -= AnyUpdated;
-//		    FDataSpread.Dispose();
-//		    FBinSizeSpread.Dispose();
-		}
-
-		void AnyUpdated(object sender, EventArgs args)
-		{
-			if (FUpdateCount == 0)
-			    this.Flatten(FDataSpread, FBinSizeSpread);
+			FBinSizeStream.Length = SliceCount;
 			
-			FUpdateCount++;
-
-			if (FUpdateCount >= 2)
-				FUpdateCount = 0;
+			int dataStreamLength = 0;
+			using (var binSizeWriter = FBinSizeStream.GetWriter())
+			{
+				foreach (var spread in this)
+				{
+					var stream = spread.Stream;
+					dataStreamLength += stream.Length;
+					binSizeWriter.Write(stream.Length);
+				}
+			}
+			
+			FDataStream.Length = dataStreamLength;
+			
+			using (var dataWriter = FDataStream.GetWriter())
+			{
+				foreach (var spread in this)
+				{
+					var stream = spread.Stream;
+					using (var dataReader = stream.GetReader())
+					{
+						while (!dataReader.Eos)
+						{
+							int numSlicesRead = dataReader.Read(FDataBuffer, 0, FDataBuffer.Length);
+							dataWriter.Write(FDataBuffer, 0, numSlicesRead);
+						}
+					}
+				}
+			}
 		}
 	}
 }

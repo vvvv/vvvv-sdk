@@ -9,14 +9,9 @@ namespace VVVV.Hosting.Pins.Input
     [ComVisible(false)]
 	public class DiffInputPin<T> : InputPin<T>, IDiffSpread<T>
 	{
-		private readonly IPluginIn FPluginIn;
-	    private bool FIsChanged;
-		private bool FIsReconnected;
-		
 		public DiffInputPin(IPluginHost host, IPluginIn pluginIn, IInStream<T> stream)
 			: base(host, pluginIn, stream)
 		{
-			FPluginIn = pluginIn;
 		}
 		
 		public event SpreadChangedEventHander<T> Changed;
@@ -44,49 +39,20 @@ namespace VVVV.Hosting.Pins.Input
 		
 		public bool IsChanged
 		{
-			get
-			{
-			    return FIsChanged;
-			}
+			get;
+			private set;
 		}
 		
-		protected virtual void DoUpdate()
+		public override bool Sync()
 		{
+			IsChanged = base.Sync();
 			
-		}
-		
-		public override void Connect(IPin otherPin)
-		{
-			FIsReconnected = true;
-			base.Connect(otherPin);
-		}
-		
-		public override void Disconnect(IPin otherPin)
-		{
-			FIsReconnected = true;
-			base.Disconnect(otherPin);
-		}
-		
-		public override sealed void Update()
-		{
-			FIsChanged = FIsReconnected || FPluginIn.PinIsChanged;
+			if (IsChanged)
+			{
+				OnChanged();
+			}
 			
-			try
-			{
-				if (FIsChanged)
-				{
-					FStream.Sync();
-					DoUpdate();
-					OnChanged();
-				}
-				
-				FStream.Reset();
-				OnUpdated();
-			}
-			finally
-			{
-				FIsReconnected = false;
-			}
+			return IsChanged;
 		}
 	}
 }

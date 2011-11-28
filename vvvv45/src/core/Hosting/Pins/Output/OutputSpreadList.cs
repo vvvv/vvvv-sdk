@@ -7,7 +7,7 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Hosting.Pins.Output
 {
     [ComVisible(false)]
-	public class OutputSpreadList<T> : SpreadList<T>
+	public class OutputSpreadList<T> : SpreadList<T>, IOutputPin
 	{
 		public OutputSpreadList(IOFactory ioFactory, OutputAttribute attribute)
 			: base(ioFactory, attribute)
@@ -24,5 +24,11 @@ namespace VVVV.Hosting.Pins.Output
 			return FIOFactory.CreateIO<ISpread<T>>(attribute);
 		}
 
+		
+		public override void Flush()
+		{
+			base.Flush();
+			// TODO
+		}
 	}
 }

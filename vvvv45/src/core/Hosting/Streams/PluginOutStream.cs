@@ -10,6 +10,68 @@ namespace VVVV.Hosting.Streams
 	// Slow
 	abstract class PluginOutStream<T> : IOutStream<T>
 	{
+		class PluginOutWriter : IStreamWriter<T>
+		{
+			private readonly PluginOutStream<T> FStream;
+			
+			public PluginOutWriter(PluginOutStream<T> stream)
+			{
+				FStream = stream;
+			}
+			
+			public bool Eos
+			{
+				get
+				{
+					return Position >= Length;
+				}
+			}
+			
+			public int Position
+			{
+				get;
+				set;
+			}
+			
+			public int Length
+			{
+				get
+				{
+					return FStream.Length;
+				}
+				set
+				{
+					FStream.Length = value;
+				}
+			}
+			
+			public void Write(T value, int stride)
+			{
+				FStream.SetSlice(Position, value);
+				Position += stride;
+			}
+			
+			public int Write(T[] buffer, int index, int length, int stride)
+			{
+				var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+				for (int i = index; i < index + numSlicesToWrite; i++)
+				{
+					Write(buffer[i], stride);
+				}
+				return numSlicesToWrite;
+			}
+			
+			public void Dispose()
+			{
+				// Nothing to do
+			}
+			
+			public void Reset()
+			{
+				Position = 0;
+			}
+		}
+		
 		public object Clone()
 		{
 			throw new NotImplementedException();
@@ -23,48 +85,18 @@ namespace VVVV.Hosting.Streams
 		
 		protected abstract void SetSlice(int index, T value);
 		
-		public void Write(T value, int stride)
-		{
-			SetSlice(WritePosition, value);
-			WritePosition += stride;
-		}
-		
-		public int Write(T[] buffer, int index, int length, int stride)
-		{
-			var numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stride);
-			for (int i = index; i < index + numSlicesToWrite; i++)
-			{
-				Write(buffer[i], stride);
-			}
-			return numSlicesToWrite;
-		}
-		
-		public void Reset()
-		{
-			WritePosition = 0;
-		}
-		
-		public bool Eof 
-		{
-			get 
-			{
-				return WritePosition >= Length;
-			}
-		}
-		
-		public int WritePosition 
-		{
-			get;
-			set;
-		}
-		
 		public void Flush()
 		{
 			// Nothing to do
 		}
+		
+		public IStreamWriter<T> GetWriter()
+		{
+			return new PluginOutWriter(this);
+		}
 	}
 	
-	class StringOutStream : PluginOutStream<string>
+	class StringOutStream : ManagedIOStream<string>
 	{
 		private readonly IStringOut FStringOut;
 		
@@ -73,21 +105,23 @@ namespace VVVV.Hosting.Streams
 			FStringOut = stringOut;
 		}
 		
-		protected override void SetSlice(int index, string value)
+		public override void Flush()
 		{
-			FStringOut.SetString(index, value);
-		}
-		
-		public override int Length
-		{
-			get
+			if (FChanged)
 			{
-				return FStringOut.SliceCount;
+				FStringOut.SliceCount = Length;
+				
+				int i = 0;
+				using (var reader = GetReader())
+				{
+					while (!reader.Eos)
+					{
+						FStringOut.SetString(i++, reader.Read());
+					}
+				}
 			}
-			set
-			{
-				FStringOut.SliceCount = value;
-			}
+			
+			base.Flush();
 		}
 	}
 	

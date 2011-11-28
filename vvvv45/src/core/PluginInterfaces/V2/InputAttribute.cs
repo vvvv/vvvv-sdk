@@ -50,6 +50,8 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			var clonedInstance = new InputAttribute(Name);
 			clonedInstance.BinSize = BinSize;
+			clonedInstance.AutoValidate = AutoValidate;
+			clonedInstance.CheckIfChanged = CheckIfChanged;
 			return base.Clone(clonedInstance);
 		}
 	}

@@ -24,18 +24,19 @@ namespace VVVV.Nodes
 
         public void Evaluate(int SpreadMax)
         {
-        	var outputStream = Output.GetStream();
-        	var inputStream = Input.GetStream();
-        	
-        	outputStream.Length = inputStream.Length;
+//        	var outputStream = Output.GetStream();
+//        	var inputStream = Input.GetStream();
+//        	
+//        	outputStream.Length = inputStream.Length;
 
-        	while (!outputStream.Eof)
-        	{
-        		int numSlicesRead = inputStream.Read(FBuffer, 0, FBuffer.Length);
-        		outputStream.Write(FBuffer, 0, numSlicesRead);
-        	}
-//            for (var i = 0; i < Input.SliceCount; i++)
-//            	Output[i] = Input[i];
+//        	while (!outputStream.Eof)
+//        	{
+//        		int numSlicesRead = inputStream.Read(FBuffer, 0, FBuffer.Length);
+//        		outputStream.Write(FBuffer, 0, numSlicesRead);
+//        	}
+			Output.SliceCount = Input.SliceCount;
+            for (var i = 0; i < Input.SliceCount; i++)
+            	Output[i] = Input[i];
         }
     }
 

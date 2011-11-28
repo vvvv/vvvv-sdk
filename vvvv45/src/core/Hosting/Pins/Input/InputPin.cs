@@ -8,7 +8,7 @@ namespace VVVV.Hosting.Pins.Input
 {
 	public interface IInputPin
 	{
-		void Sync();
+		bool Sync();
 	}
 	
 	[ComVisible(false)]
@@ -18,18 +18,6 @@ namespace VVVV.Hosting.Pins.Input
 			: base(host, pluginIO, new InputIOStream<T>(inStream))
 		{
 		}
-		
-		public void Sync()
-		{
-			// TODO: Implement changed stuff etc.
-			FStream.Sync();
-		}
-		
-		public override void Update()
-		{
-			FStream.Sync();
-			base.Update();
-		}
 	}
 	
 	[ComVisible(false)]
@@ -37,6 +25,7 @@ namespace VVVV.Hosting.Pins.Input
 	{
 		private readonly IInStream<T> FInStream;
 		private readonly IIOStream<T> FIOStream;
+		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
 		private IInStream<T> FCurrentInStream;
 		
 		public InputIOStream(IInStream<T> inStream)
@@ -44,18 +33,6 @@ namespace VVVV.Hosting.Pins.Input
 			FInStream = inStream;
 			FIOStream = new ManagedIOStream<T>();
 			FCurrentInStream = FInStream;
-		}
-		
-		public int ReadPosition
-		{
-			get
-			{
-				return FCurrentInStream.ReadPosition;
-			}
-			set
-			{
-				FCurrentInStream.ReadPosition = value;
-			}
 		}
 		
 		public int Length
@@ -74,41 +51,6 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		public bool Eof
-		{
-			get
-			{
-				return FCurrentInStream.Eof;
-			}
-		}
-		
-		public int WritePosition
-		{
-			get
-			{
-				return FIOStream.WritePosition;
-			}
-			set
-			{
-				FIOStream.WritePosition = value;
-			}
-		}
-		
-		public T Read(int stride)
-		{
-			return FCurrentInStream.Read(stride);
-		}
-		
-		public int Read(T[] buffer, int index, int length, int stride)
-		{
-			return FCurrentInStream.Read(buffer, index, length, stride);
-		}
-		
-		public void ReadCyclic(T[] buffer, int index, int length, int stride)
-		{
-			FCurrentInStream.ReadCyclic(buffer, index, length, stride);
-		}
-		
 		public bool Sync()
 		{
 			var changed = FInStream.Sync();
@@ -116,62 +58,58 @@ namespace VVVV.Hosting.Pins.Input
 			return changed;
 		}
 		
-		public void Reset()
-		{
-			ReadPosition = 0;
-			WritePosition = 0;
-		}
-		
 		public object Clone()
 		{
-			throw new NotImplementedException();
-		}
-		
-		public void Write(T value, int stride)
-		{
-			CopyOnWrite();
-			FIOStream.Write(value, stride);
-		}
-		
-		public int Write(T[] buffer, int index, int length, int stride)
-		{
-			CopyOnWrite();
-			return FIOStream.Write(buffer, index, length, stride);
+			return new InputIOStream<T>(FInStream.Clone() as IInStream<T>);
 		}
 		
 		private void CopyOnWrite()
 		{
 			if (FCurrentInStream == FInStream)
 			{
-				// Save positions
-				int readPosition = ReadPosition;
-				int writePosition = WritePosition;
-				
-				// Reset the streams
-				FInStream.Reset();
-				FIOStream.Reset();
-				
 				// Copy data
-				var buffer = FInStream.CreateReadBuffer();
 				FIOStream.Length = FInStream.Length;
-				while (!FInStream.Eof)
+				using (var reader = FInStream.GetReader())
 				{
-					int n = FInStream.Read(buffer, 0, buffer.Length);
-					FIOStream.Write(buffer, 0, n);
+					using (var writer = FIOStream.GetWriter())
+					{
+						while (!reader.Eos)
+						{
+							int n = reader.Read(FBuffer, 0, FBuffer.Length);
+							writer.Write(FBuffer, 0, n);
+						}
+					}
 				}
 				
 				// Set current inStream to ioStream
 				FCurrentInStream = FIOStream;
-				
-				// Restore positions
-				ReadPosition = readPosition;
-				WritePosition = writePosition;
 			}
 		}
 		
 		public void Flush()
 		{
 			FIOStream.Flush();
+		}
+		
+		public IStreamReader<T> GetReader()
+		{
+			return FCurrentInStream.GetReader();
+		}
+		
+		public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+		{
+			return FCurrentInStream.GetEnumerator();
+		}
+		
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+		
+		public IStreamWriter<T> GetWriter()
+		{
+			CopyOnWrite();
+			return FIOStream.GetWriter();
 		}
 	}
 }

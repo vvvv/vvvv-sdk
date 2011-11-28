@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using VVVV.Hosting.Interfaces;
 using VVVV.Hosting.Streams.Registry;
+using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 
@@ -33,12 +34,25 @@ namespace VVVV.Hosting.Streams
 					output.AfterEvaluate();
 				}
 			}
+			
+			public void Configurate(IPluginConfig configPin)
+			{
+				foreach (var config in FIOFactory.FConfigs)
+				{
+					if (config.Metadata == configPin)
+					{
+						config.Configurate();
+						break;
+					}
+				}
+			}
 		}
 		
 		private readonly IInternalPluginHost FPluginHost;
 		private readonly IORegistry FIORegistry;
 		private readonly List<IOHandler> FInputs = new List<IOHandler>();
 		private readonly List<IOHandler> FOutputs = new List<IOHandler>();
+		private readonly List<IOHandler> FConfigs = new List<IOHandler>();
 		private readonly IPluginNodeListener FPluginNodeListener;
 		
 		public IOFactory(
@@ -66,25 +80,22 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
+		public IInternalPluginHost PluginHost
+		{
+			get
+			{
+				return FPluginHost;
+			}
+		}
+		
 		public IOHandler CreateIOHandler(Type type, IOAttribute attribute)
 		{
-			IOHandler io = null;
-			if (!FIORegistry.CanCreate(type, attribute))
-			{
-				if (type.IsGenericType)
-				{
-					var openGenericType = type.GetGenericTypeDefinition();
-					if (FIORegistry.CanCreate(openGenericType, attribute))
-					{
-						io = FIORegistry.CreateIO(openGenericType, type, FPluginHost, attribute);
-					}
-				}
-			}
-			
-			if (io == null)
-			{
-				throw new NotSupportedException(string.Format("Can't create IO of type '{0}'.", type));
-			}
+			var io = FIORegistry.CreateIO(
+				type.IsGenericType ? type.GetGenericTypeDefinition() : type,
+				type,
+				this,
+				attribute
+			);
 			
 			if (io.IsBeforeEvalActionEnabled)
 			{
@@ -93,6 +104,10 @@ namespace VVVV.Hosting.Streams
 			if (io.IsAfterEvalActionEnabled)
 			{
 				FOutputs.Add(io);
+			}
+			if (io.IsConfigActionEnabled)
+			{
+				FConfigs.Add(io);
 			}
 			
 			return io;

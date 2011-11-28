@@ -4,68 +4,76 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.Streams
 {
-	public class MultiDimOutStream<T> : IOutStream<IOutStream<T>>
+//	class MyPlugin<T>
+//	{
+//		IInStream<IInStream<T>> InStreams;
+//		IIOStream<IOutStream<T>> OutStreams;
+//
+//		public void Evaluate()
+//		{
+//			OutStreams.Length = InStreams.Length;
+//			while (!OutStreams.Eof)
+//			{
+//				var inStream = InStreams.Read();
+//				var outStream = OutStreams.Read();
+//
+//				OutStreams.Write(outStream);
+//			}
+//		}
+//	}
+	
+	public class MultiDimOutStream<T> : ManagedIOStream<ManagedIOStream<T>>
 	{
 		private readonly IOutStream<T> FDataStream;
 		private readonly IOutStream<int> FBinSizeStream;
+		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
 		
 		public MultiDimOutStream(IOFactory ioFactory, OutputAttribute attribute)
 		{
-			FDataStream = ioFactory.Create<IOutStream<T>>(attribute);
+			FDataStream = ioFactory.CreateIO<IOutStream<T>>(attribute);
 			FBinSizeStream = ioFactory.CreateIO<IOutStream<int>>(
 				new OutputAttribute(string.Format("{0} Bin Size", attribute.Name))
 			);
 		}
 		
-		public int WritePosition 
+		public override void Flush()
 		{
-			get;
-			set;
-		}
-		
-		public int Length 
-		{
-			get 
+			FBinSizeStream.Length = Length;
+			
+			int binSizeSum = 0;
+			using (var binSizeWriter = FBinSizeStream.GetWriter())
 			{
-				throw new NotImplementedException();
+				foreach (var outputStream in this)
+				{
+					binSizeWriter.Write(outputStream.Length);
+					binSizeSum += outputStream.Length;
+				}
 			}
-			set 
+			
+			FDataStream.Length = binSizeSum;
+			using (var dataWriter = FDataStream.GetWriter())
 			{
-				throw new NotImplementedException();
+				foreach (var outputStream in this)
+				{
+					using (var reader = outputStream.GetReader())
+					{
+						int numSlicesRead = reader.Read(FBuffer, 0, FBuffer.Length);
+						dataWriter.Write(FBuffer, 0, numSlicesRead);
+					}
+				}
 			}
+			
+			base.Flush();
 		}
 		
-		public bool Eof 
+		protected override void BufferIncreased(ManagedIOStream<T>[] oldBuffer, ManagedIOStream<T>[] newBuffer)
 		{
-			get 
+			Array.Copy(oldBuffer, newBuffer, oldBuffer.Length);
+			if (oldBuffer.Length > 0)
 			{
-				return WritePosition >= Length;
+				for (int i = oldBuffer.Length; i < newBuffer.Length; i++)
+					newBuffer[i] = new ManagedIOStream<T>();
 			}
-		}
-		
-		public void Write(IOutStream<T> value, int stride)
-		{
-			throw new NotImplementedException();
-		}
-		
-		public int Write(IOutStream<T>[] buffer, int index, int length, int stride)
-		{
-			throw new NotImplementedException();
-		}
-		
-		public void Flush()
-		{
-			throw new NotImplementedException();
-		}
-		
-		public void Reset()
-		{
-			WritePosition = 0;
-		}
-		
-		public object Clone()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

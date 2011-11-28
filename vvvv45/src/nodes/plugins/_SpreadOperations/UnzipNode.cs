@@ -11,29 +11,34 @@ namespace VVVV.Nodes
 	public abstract class UnzipNode<T> : IPluginEvaluate
 	{
 		[Input("Input", BinSize = 1)]
-		protected ISpread<T> FInput;
+		protected IInStream<T> FInputStream;
 
 		[Output("Output", IsPinGroup = true)]
-		protected ISpread<ISpread<T>> FOutputSpreads;
+		protected IIOStream<IOutStream<T>> FOutputStreams;
 		
 		private readonly T[] FBuffer = new T[128];
 		
 		public void Evaluate(int SpreadMax)
 		{
-			FOutputSpreads.SetSliceCountBy(FInput);
+			FOutputStreams.SetLengthBy(FInputStream);
 			
-			var inputStream = FInput.GetStream();
-			var outputSpreadCount = FOutputSpreads.SliceCount;
-			for (int i = 0; i < outputSpreadCount; i++)
+			var outputStreamsLength = FOutputStreams.Length;
+			using (var reader = FInputStream.GetReader())
 			{
-				var outputStream = FOutputSpreads[i].GetStream();
-				int numSlicesToWrite = Math.Min(outputStream.Length, FBuffer.Length);
-				
-				inputStream.ReadPosition = i;
-				while (!outputStream.Eof)
+				int i = 0;
+				foreach (var outputStream in FOutputStreams)
 				{
-					inputStream.ReadCyclic(FBuffer, 0, numSlicesToWrite, outputSpreadCount);
-					outputStream.Write(FBuffer, 0, numSlicesToWrite);
+					int numSlicesToWrite = Math.Min(outputStream.Length, FBuffer.Length);
+					
+					reader.Position = i++;
+					using (var writer = outputStream.GetWriter())
+					{
+						while (!writer.Eos)
+						{
+							reader.ReadCyclic(FBuffer, 0, numSlicesToWrite, outputStreamsLength);
+							writer.Write(FBuffer, 0, numSlicesToWrite);
+						}
+					}
 				}
 			}
 		}

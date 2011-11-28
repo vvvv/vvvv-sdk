@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 
 namespace VVVV.Utils.Streams
 {
@@ -14,21 +15,11 @@ namespace VVVV.Utils.Streams
 		/// the data changed might be too expensive.
 		/// </returns>
 		bool Sync();
-		
-		int ReadPosition
-		{
-			get;
-			set;
-		}
 	}
 	
-	public interface IInStream<T> : IInStream
+	public interface IInStream<T> : IInStream, IEnumerable<T>
 	{
-		T Read(int stride = 1);
-		
-		int Read(T[] buffer, int index, int length, int stride = 1);
-		
-		void ReadCyclic(T[] buffer, int index, int length, int stride = 1);
+		IStreamReader<T> GetReader();
 	}
 	
 	public static class InStreamExtensions

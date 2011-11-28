@@ -15,7 +15,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// Set/Get, Read/Write methods are only implemented when it makes sense.
 	/// </summary>
 	[ComVisible(false)]
-	public interface ISpread : IEnumerable
+	public interface ISpread : IEnumerable, ICloneable
 	{
 		/// <summary>
 		/// Provides read/write access to the actual data.
@@ -34,6 +34,10 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 			set;
 		}
+		
+		bool Sync();
+		
+		void Flush();
 	}
 	
 	/// <summary>
@@ -61,7 +65,10 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
-		IIOStream<T> GetStream();
+		IIOStream<T> Stream
+		{
+			get;
+		}
 	}
 
 	[ComVisible(false)]
@@ -163,7 +170,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <returns>A new copy of <see cref="ISpread{T}"/>.</returns>
 		public static ISpread<T> Clone<T>(this ISpread<T> spread)
 		{
-			return new Spread<T>(spread);
+			return spread.Clone() as ISpread<T>;
 		}
 		
 		/// <summary>
@@ -387,17 +394,11 @@ namespace VVVV.PluginInterfaces.V2
 				case 1:
 					return spreads[0].SliceCount;
 				default:
-					var stream = spreads.GetStream();
-					int result = stream.Read().SliceCount;
-					while (!stream.Eof)
+					int result = spreads[0].SliceCount;
+					for (int i = 1; i < spreads.SliceCount; i++)
 					{
-						result = result.CombineWith(stream.Read());
+						result = result.CombineWith(spreads[i]);
 					}
-//					int result = spreads[0].SliceCount;
-//					for (int i = 1; i < spreads.SliceCount; i++)
-//					{
-//						result = result.CombineWith(spreads[i]);
-//					}
 					return result;
 			}
 		}
@@ -432,145 +433,30 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
-		public static TAccumulate FoldL<TSource, TAccumulate>(
-			this ISpread<TSource> source,
-			TAccumulate seed,
-			Func<TAccumulate, TSource, TAccumulate> func
-		)
-		{
-			var stream = source.GetStream();
-			var buffer = stream.CreateReadBuffer();
-			
-			while (!stream.Eof)
-			{
-				int n = stream.Read(buffer, 0, buffer.Length);
-				
-				for (int i = 0; i < n; i++)
-				{
-					seed = func(seed, buffer[i]);
-				}
-			}
-			
-			return seed;
-		}
+//		public static TAccumulate FoldL<TSource, TAccumulate>(
+//			this ISpread<TSource> source,
+//			TAccumulate seed,
+//			Func<TAccumulate, TSource, TAccumulate> func
+//		)
+//		{
+//			var stream = source.GetStream();
+//			var buffer = stream.CreateReadBuffer();
+//			
+//			while (!stream.Eof)
+//			{
+//				int n = stream.Read(buffer, 0, buffer.Length);
+//				
+//				for (int i = 0; i < n; i++)
+//				{
+//					seed = func(seed, buffer[i]);
+//				}
+//			}
+//			
+//			return seed;
+//		}
 		
-		public static void Raise<T>(
-			this ISpread<T> reducedSpread,
-			ISpread<int> binSizeSpread,
-			ISpread<ISpread<T>> expandedSpread
-		)
-		{
-			var expandedStream = expandedSpread.GetStream();
-			var binSizeStream = binSizeSpread.GetStream();
-			var srcStream = reducedSpread.GetStream();
-			
-			var binSizeBuffer = binSizeStream.CreateReadBuffer();
-			var buffer = srcStream.CreateReadBuffer();
-			
-			int binSizeSum = 0;
-			
-			var normBinSize = new Spread<int>();
-			while (!binSizeStream.Eof)
-			{
-				int binSizeCount = binSizeStream.Read(binSizeBuffer, 0, binSizeBuffer.Length);
-				for (int i = 0; i < binSizeCount; i++)
-				{
-					binSizeBuffer[i] = NormalizeBinSize(srcStream.Length, binSizeBuffer[i]);
-					binSizeSum += binSizeBuffer[i];
-					normBinSize.Add(binSizeBuffer[i]);
-				}
-//				binSizeStream.CurrentSlice -= binSizeCount;
-//				binSizeStream.Write(binSizeBuffer, 0, binSizeCount);
-			}
+		
+//		
 
-			int binTimes = DivByBinSize(srcStream.Length, binSizeSum);
-			binTimes = binTimes > 0 ? binTimes : 1;
-			expandedStream.Length = binTimes * binSizeStream.Length;
-			
-//			binSizeStream.Reset();
-			binSizeStream = normBinSize.GetStream();
-			
-			while (!expandedStream.Eof && srcStream.Length > 0)
-			{
-				if (binSizeStream.Eof)
-					binSizeStream.Reset();
-				
-				var spread = expandedStream.Read();
-				
-				var dstStream = spread.GetStream();
-				dstStream.Length = binSizeStream.Read();
-				
-				while (!dstStream.Eof)
-				{
-					if (srcStream.Eof)
-						srcStream.Reset();
-
-					int slicesRead = srcStream.Read(buffer, 0, Math.Min(buffer.Length, dstStream.Length));
-					dstStream.Write(buffer, 0, slicesRead);
-				}
-			}
-		}
-		
-		public static void Flatten<T>(
-			this ISpread<ISpread<T>> expandedSpread,
-			ISpread<T> reducedSpread,
-			ISpread<int> binSizeSpread
-		)
-		{
-			var binSizeStream = binSizeSpread.GetStream();
-			var dstStream = reducedSpread.GetStream();
-			var expandedStream = expandedSpread.GetStream();
-			
-			var buffer = dstStream.CreateWriteBuffer();
-			
-			binSizeStream.Length = expandedStream.Length;
-			
-			int dstStreamLength = 0;
-			while (!expandedStream.Eof)
-			{
-				dstStreamLength += expandedStream.Read().SliceCount;
-			}
-			dstStream.Length = dstStreamLength;
-			
-			expandedStream.Reset();
-			
-			while (!expandedStream.Eof)
-			{
-				var spread = expandedStream.Read();
-				var srcStream = spread.GetStream();
-				while (!srcStream.Eof)
-				{
-					int dataCount = srcStream.Read(buffer, 0, buffer.Length);
-					dstStream.Write(buffer, 0, dataCount);
-				}
-				
-				binSizeStream.Write(srcStream.Length);
-			}
-		}
-		
-		private static int NormalizeBinSize(int sliceCount, int binSize)
-		{
-			if (binSize < 0)
-			{
-				return DivByBinSize(sliceCount, Math.Abs(binSize));
-			}
-			
-			return binSize;
-		}
-		
-		private static int DivByBinSize(int sliceCount, int binSize)
-		{
-			Debug.Assert(binSize >= 0);
-			
-			if (binSize > 0)
-			{
-				int remainder = 0;
-				int result = Math.DivRem(sliceCount, binSize, out remainder);
-				if (remainder > 0)
-					result++;
-				return result;
-			}
-			return binSize;
-		}
 	}
 }
