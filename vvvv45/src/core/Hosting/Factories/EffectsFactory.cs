@@ -204,10 +204,17 @@ namespace VVVV.Hosting.Factories
             foreach (var line in errorlines)
             {
                 string filePath = project.Location.LocalPath;
-                string eCoords;
-                int eLine, eChar;
-                string eNumber;
-                string eText = "";
+                string eCoords = string.Empty;
+                int eLine = 0;
+                int eChar = 0;
+                string eNumber = string.Empty;
+                string eText = string.Empty;
+                bool isWarning = false;
+                
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
                 
                 //split the line at ": "
                 //which results in 3 or 4 lines:
@@ -220,11 +227,6 @@ namespace VVVV.Hosting.Factories
                 //extract line/char substring
                 int start = eItems[0].LastIndexOf('(');
                 int end = eItems[0].LastIndexOf(')');
-                
-                //should not happen with latest compiler used, but
-                //if there is no linenumber in braces continue with the next error
-                if (start == -1)
-                    continue;
                 
                 if (start > 0)
                 {
@@ -253,23 +255,29 @@ namespace VVVV.Hosting.Factories
                     }
                 }
                 
-                eCoords = eItems[0].Substring(start+1, end-start-1);
-                var eLineChar = eCoords.Split(new char[1]{','});
-                eLine = Convert.ToInt32(eLineChar[0]);
-                eChar = Convert.ToInt32(eLineChar[1]);
-                
-                bool isWarning = false;
-                if (eItems[1].StartsWith("warning"))
+                if (start > 0 && end > 0)
                 {
-                    isWarning = true;
-                    eNumber = eItems[1].Substring(8, 5);
+                    eCoords = eItems[0].Substring(start+1, end-start-1);
+                    var eLineChar = eCoords.Split(new char[1]{','});
+                    eLine = Convert.ToInt32(eLineChar[0]);
+                    eChar = Convert.ToInt32(eLineChar[1]);
+                    
+                    if (eItems[1].StartsWith("warning"))
+                    {
+                        isWarning = true;
+                        eNumber = eItems[1].Substring(8, 5);
+                    }
+                    else
+                        eNumber = eItems[1].Substring(6, 5);
+                    
+                    eText = eItems[2];
+                    if (eItems.Length > 3)
+                        eText += ": " + eItems[3];
                 }
                 else
-                    eNumber = eItems[1].Substring(6, 5);
-                
-                eText = eItems[2];
-                if (eItems.Length > 3)
-                    eText += ": " + eItems[3];
+                {
+                    eText = line;
+                }
                 
                 var error = new CompilerError(filePath, eLine, eChar, eNumber, eText);
                 error.IsWarning = isWarning;

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.4.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" locked="0">
-   <BOUNDS height="13170" left="16425" top="3480" type="Window" width="17160">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="A:\v\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" locked="0">
+   <BOUNDS height="13170" left="8460" top="2235" type="Window" width="17160">
    </BOUNDS>
    <INFO author="vvvv group" description="move your camera with keyboard and mouse like in the 3d modeller &quot;Softimage&quot;" tags="3d, perspective, modelling, tool">
    </INFO>
@@ -1407,6 +1407,8 @@
    </PIN>
    <PIN pinname="TopMost Window" visible="1">
    </PIN>
+   <PIN pinname="Update" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="4" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="0" left="1905" top="1230" type="Node" width="0">
@@ -1537,5 +1539,15 @@
    <LINK dstnodeid="105" dstpinname="Ord Value" srcnodeid="40" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="-2" dstpinname="Cycle Mode" srcnodeid="105" srcpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="6" dstpinname="Update">
+   <LINKPOINT x="1350" y="1740">
+   </LINKPOINT>
+   <LINKPOINT x="750" y="1035">
+   </LINKPOINT>
+   <LINKPOINT x="1005" y="285">
+   </LINKPOINT>
+   <LINKPOINT x="1260" y="105">
+   </LINKPOINT>
    </LINK>
    </PATCH>
