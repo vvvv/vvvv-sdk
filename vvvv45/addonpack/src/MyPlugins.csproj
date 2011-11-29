@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
 	<!-- IDE seems to need this line, MSBuild not? -->
-	<ProjectReference Include="@(ProjectReference)" />
+	<ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
   </ItemGroup>
   <ItemDefinitionGroup>
     <ProjectReference>

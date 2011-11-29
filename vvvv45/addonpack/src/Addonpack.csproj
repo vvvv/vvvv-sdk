@@ -9,7 +9,7 @@
 
   <ItemGroup>
 	<!-- IDE seems to need this line, MSBuild not? -->
-	<ProjectReference Include="@(ProjectReference)" />
+	<ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\plugins\*\*\*.csproj;
                                $(MSBuildThisFileDirectory)nodes\plugins\Network\Databases\*\*.csproj">
       <OutputDir>$(AddonPluginsOutputDir)</OutputDir>
