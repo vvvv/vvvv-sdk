@@ -62,7 +62,10 @@
     <GetVersionInfo File="$(MSBuildThisFileDirectory)..\vvvv.exe">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </GetVersionInfo>
-    <Delete Files="$(MSBuildThisFileDirectory)..\lib\*.dtd" />
+    <ItemGroup>
+	  <DTDFiles Include="$(MSBuildThisFileDirectory)..\lib\*.dtd" />
+    </ItemGroup>
+    <Delete Files="@(DTDFiles)" />
     <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" 
           DestinationFiles="$(MSBuildThisFileDirectory)..\lib\$(VersionInfo).dtd" />
   </Target>
