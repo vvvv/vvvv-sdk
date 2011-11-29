@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
