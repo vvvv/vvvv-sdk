@@ -5,6 +5,10 @@
     <ProjectGuid>{9B076BD5-8E94-471A-81BC-E4C59EB29A48}</ProjectGuid>
     <AddonPluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</AddonPluginsOutputDir>
   </PropertyGroup>
+  <ItemGroup>
+	<!-- IDE seems to need this line, MSBuild not? -->
+	<ProjectReference Include="@(ProjectReference)" />
+  </ItemGroup>
   <ItemDefinitionGroup>
     <ProjectReference>
       <OutputDir>$(AddonPluginsOutputDir)</OutputDir>
