@@ -8,12 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectsToBuild Include="$(MSBuildThisFileDirectory)nodes\plugins\*\*\*.csproj;
-                              $(MSBuildThisFileDirectory)nodes\plugins\Network\Databases\*\*.csproj">
+	<!-- IDE seems to need this line, MSBuild not? -->
+	<ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\plugins\*\*\*.csproj;
+                               $(MSBuildThisFileDirectory)nodes\plugins\Network\Databases\*\*.csproj">
       <OutputDir>$(AddonPluginsOutputDir)</OutputDir>
-    </ProjectsToBuild>
-    <ProjectReference Include="@(ProjectsToBuild)" />
+    </ProjectReference>
   </ItemGroup>
+  
+  <Target Name="Print">
+	<Message Text="@(ProjectReference)" />
+  </Target>
   
   <PropertyGroup>
     <BuildDependsOn>
@@ -32,13 +37,13 @@
           DestinationFiles="@(PluginLicenses->'$(AddonPluginsOutputDir)..\..\..\licenses\%(Filename)%(Extension)')" 
           SkipUnchangedFiles="true"
           Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
-	<!-- Flash plugin is special -->
-	<ItemGroup>
+    <!-- Flash plugin is special -->
+	  <ItemGroup>
       <_FlashPluginDependencies_ Include="$(MSBuildThisFileDirectory)nodes\plugins\Layer\DrawFlash\Dependencies\*.*" />
     </ItemGroup>
-	<Copy SourceFiles="@(_FlashPluginDependencies_)"
-		  DestinationFolder="$(AddonPluginsOutputDir)" 
-		  SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_FlashPluginDependencies_)"
+        DestinationFolder="$(AddonPluginsOutputDir)" 
+        SkipUnchangedFiles="true" />
   </Target>
   
   <!-- Freeframe and DirectShow -->
@@ -79,6 +84,7 @@
       <Output ItemName="OutputFiles" TaskParameter="Include" />
     </CreateItem>
     <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Exec Command="attrib +R &quot;$(TempDir)lib\nodes\*.*&quot; /S /D" />
     <Exec Command="&quot;$(StartProgram)&quot; /nodelist &quot;$(TempDir)lib\nodes&quot;" />
     <CreateItem Include="$(TempDir)\**\*.*">
       <Output ItemName="ZipFiles" TaskParameter="Include" />
