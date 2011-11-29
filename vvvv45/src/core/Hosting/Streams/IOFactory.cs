@@ -53,7 +53,7 @@ namespace VVVV.Hosting.Streams
 		private readonly List<IOHandler> FInputs = new List<IOHandler>();
 		private readonly List<IOHandler> FOutputs = new List<IOHandler>();
 		private readonly List<IOHandler> FConfigs = new List<IOHandler>();
-		private readonly IPluginNodeListener FPluginNodeListener;
+		private IPluginNodeListener FPluginNodeListener;
 		
 		public IOFactory(
 			IInternalPluginHost pluginHost,
@@ -61,22 +61,25 @@ namespace VVVV.Hosting.Streams
 		)
 		{
 			FPluginHost = pluginHost;
-			FPluginNodeListener = new PluginNodeListener(this);
 			FIORegistry = streamRegistry;
-			
-			// HACK: FPluginHost is null in case of WindowSwitcher/NodeBrowser/etc. Fix this.
-			if (FPluginHost != null)
-			{
-				FPluginHost.AddListener(FPluginNodeListener);
-			}
 		}
 		
 		public void Dispose()
 		{
 			// HACK: FPluginHost is null in case of WindowSwitcher/NodeBrowser/etc. Fix this.
-			if (FPluginHost != null)
+			if (FPluginHost != null && FPluginNodeListener != null)
 			{
 				FPluginHost.RemoveListener(FPluginNodeListener);
+			}
+		}
+		
+		private void HookPluginNode()
+		{
+			// HACK: FPluginHost is null in case of WindowSwitcher/NodeBrowser/etc. Fix this.
+			if (FPluginHost != null && FPluginNodeListener == null)
+			{
+				FPluginNodeListener = new PluginNodeListener(this);
+				FPluginHost.AddListener(FPluginNodeListener);
 			}
 		}
 		
@@ -99,14 +102,17 @@ namespace VVVV.Hosting.Streams
 			
 			if (io.IsBeforeEvalActionEnabled)
 			{
+				HookPluginNode();
 				FInputs.Add(io);
 			}
 			if (io.IsAfterEvalActionEnabled)
 			{
+				HookPluginNode();
 				FOutputs.Add(io);
 			}
 			if (io.IsConfigActionEnabled)
 			{
+				HookPluginNode();
 				FConfigs.Add(io);
 			}
 			

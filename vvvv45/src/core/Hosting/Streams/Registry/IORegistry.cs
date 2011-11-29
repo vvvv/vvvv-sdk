@@ -414,69 +414,69 @@ namespace VVVV.Hosting.Streams.Registry
 			RegisterOutput(typeof(IOutStream<double>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new DoubleOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
+			               	return IOHandler.Create(new DoubleOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
 			               });
 			
 			RegisterOutput(typeof(IOutStream<float>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new FloatOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
+			               	return IOHandler.Create(new FloatOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
 			               });
 			
 			RegisterOutput(typeof(IOutStream<int>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new IntOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
+			               	return IOHandler.Create(new IntOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
 			               });
 			
 			RegisterOutput(typeof(IOutStream<bool>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new BoolOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
+			               	return IOHandler.Create(new BoolOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
 			               });
 
 			RegisterOutput(typeof(IOutStream<Matrix4x4>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var transformOut = host.CreateTransformOutput(attribute, t);
-			               	return IOHandler.Create(new Matrix4x4OutStream(GetResizeMatrixArrayFunc(transformOut)), transformOut, null, null);
+			               	return IOHandler.Create(new Matrix4x4OutStream(GetResizeMatrixArrayFunc(transformOut)), transformOut);
 			               });
 			
 			RegisterOutput(typeof(IOutStream<Matrix>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var transformOut = host.CreateTransformOutput(attribute, t);
-			               	return IOHandler.Create(new MatrixOutStream(GetResizeMatrixArrayFunc(transformOut)), transformOut, null, s => s.Flush());
+			               	return IOHandler.Create(new MatrixOutStream(GetResizeMatrixArrayFunc(transformOut)), transformOut);
 			               });
 
 			RegisterOutput(typeof(IOutStream<Vector2D>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector2DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
+			               	return IOHandler.Create(new Vector2DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
 			               });
 			RegisterOutput(typeof(IOutStream<Vector3D>),(factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector3DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
+			               	return IOHandler.Create(new Vector3DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
 			               });
 			RegisterOutput(typeof(IOutStream<Vector4D>),(factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector4DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
+			               	return IOHandler.Create(new Vector4DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
 			               });
 
 			RegisterOutput(typeof(IOutStream<Vector2>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector2OutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
+			               	return IOHandler.Create(new Vector2OutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
 			               });
 			RegisterOutput(typeof(IOutStream<Vector3>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector3OutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
+			               	return IOHandler.Create(new Vector3OutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
 			               });
 			RegisterOutput(typeof(IOutStream<Vector4>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector4OutStream(GetResizeValueArrayFunc(valueOut)), valueOut, null, s => s.Flush());
+			               	return IOHandler.Create(new Vector4OutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
 			               });
 
 			RegisterOutput(typeof(IOutStream<string>), (factory, attribute, t) => {
@@ -488,7 +488,7 @@ namespace VVVV.Hosting.Streams.Registry
 			RegisterOutput(typeof(IOutStream<RGBAColor>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var colorOut = host.CreateColorOutput(attribute, t);
-			               	return IOHandler.Create(new ColorOutStream(GetResizeColorArrayFunc(colorOut)), colorOut, null, s => s.Flush());
+			               	return IOHandler.Create(new ColorOutStream(GetResizeColorArrayFunc(colorOut)), colorOut);
 			               });
 
 			RegisterOutput(typeof(IOutStream<EnumEntry>), (factory, attribute, t) => {

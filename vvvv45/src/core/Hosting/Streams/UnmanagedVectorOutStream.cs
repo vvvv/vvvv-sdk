@@ -119,7 +119,7 @@ namespace VVVV.Hosting.Streams
 		
 		public void Flush()
 		{
-			
+			// No need. We write to the unmanaged array directly.
 		}
 		
 		public abstract IStreamWriter<T> GetWriter();

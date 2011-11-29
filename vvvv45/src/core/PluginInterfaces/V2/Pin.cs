@@ -62,6 +62,10 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
+		public event PinConnectionEventHandler Connected;
+		
+		public event PinConnectionEventHandler Disconnected;
+		
 		#region IDisposable
 		
 		// Implement IDisposable.

@@ -276,6 +276,10 @@ namespace VVVV.Hosting.Streams
 			FDataStream = factory.CreateIO<IInStream<T>>(attribute);
 			FBinSizeStream = factory.CreateIO<IInStream<int>>(
 				new InputAttribute(string.Format("{0} Bin Size", attribute.Name))
+				{
+					BinSize = attribute.BinSize,
+					AutoValidate = false
+				}
 			);
 			FNormBinSizeStream = new ManagedIOStream<int>();
 			FBinSizeBuffer = new int[16]; // 64 byte

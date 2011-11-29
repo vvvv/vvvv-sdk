@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
@@ -19,7 +20,7 @@ namespace VVVV.Utils.Streams
 		{
 			int slicesAhead = streamer.Length - streamer.Position;
 			
-			if (stride > 0)
+			if (stride > 1)
 			{
 				int r = 0;
 				slicesAhead = Math.DivRem(slicesAhead, stride, out r);
@@ -155,12 +156,17 @@ namespace VVVV.Utils.Streams
 				case 0:
 					return 0;
 				default:
-					int result = 0;
-					foreach (var stream in streams)
+					using (var reader = streams.GetReader())
 					{
-						result = result.CombineStreams(stream.Length);
+						var stream = reader.Read();
+						int result = stream.Length;
+						while (!reader.Eos)
+						{
+							stream = reader.Read();
+							result = result.CombineStreams(stream.Length);
+						}
+						return result;
 					}
-					return result;
 			}
 		}
 	}

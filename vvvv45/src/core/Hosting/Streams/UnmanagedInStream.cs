@@ -148,7 +148,7 @@ namespace VVVV.Hosting.Streams
 			{
 				int slicesAhead = Length - Position;
 				
-				if (stride > 0)
+				if (stride > 1)
 				{
 					int r = 0;
 					slicesAhead = Math.DivRem(slicesAhead, stride, out r);
@@ -158,18 +158,28 @@ namespace VVVV.Hosting.Streams
 				
 				int numSlicesToRead = Math.Max(Math.Min(length, slicesAhead), 0);
 				
-				switch (stride)
+				switch (numSlicesToRead)
 				{
 					case 0:
-						if (index == 0 && numSlicesToRead == buffer.Length)
-							buffer.Init(Read(stride)); // Slightly faster
-						else
-							buffer.Fill(index, numSlicesToRead, Read(stride));
-						break;
+						return 0;
+					case 1:
+						buffer[index] = Read(stride);
+						return 1;
 					default:
-						Debug.Assert(Position + numSlicesToRead <= Length);
-						Copy(buffer, index, numSlicesToRead, stride);
-						Position += numSlicesToRead * stride;
+						switch (stride)
+						{
+							case 0:
+								if (index == 0 && numSlicesToRead == buffer.Length)
+									buffer.Init(Read(stride)); // Slightly faster
+								else
+									buffer.Fill(index, numSlicesToRead, Read(stride));
+								break;
+							default:
+								Debug.Assert(Position + numSlicesToRead <= Length);
+								Copy(buffer, index, numSlicesToRead, stride);
+								Position += numSlicesToRead * stride;
+								break;
+						}
 						break;
 				}
 				
