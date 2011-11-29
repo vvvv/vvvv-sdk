@@ -307,7 +307,7 @@ namespace VVVV.Hosting.Streams.Registry
 			              			var multiDimStreamType = typeof(MultiDimInStream<>).MakeGenericType(t.GetGenericArguments().First());
 			              			if (attribute.IsPinGroup)
 			              			{
-			              				// TODO
+			              				multiDimStreamType = typeof(InStreamGroup<>).MakeGenericType(t.GetGenericArguments().First());
 			              			}
 			              			
 			              			var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IInStream;

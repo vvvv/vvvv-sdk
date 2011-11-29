@@ -91,6 +91,11 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
+		public IOHandler CreateIOHandler<T>(IOAttribute attribute)
+		{
+			return CreateIOHandler(typeof(T), attribute);
+		}
+		
 		public IOHandler CreateIOHandler(Type type, IOAttribute attribute)
 		{
 			var io = FIORegistry.CreateIO(
@@ -144,6 +149,28 @@ namespace VVVV.Hosting.Streams
 			}
 			
 			return true;
+		}
+		
+		public void DestroyIOHandler(IOHandler io)
+		{
+			if (io.IsBeforeEvalActionEnabled)
+			{
+				FInputs.Remove(io);
+			}
+			if (io.IsAfterEvalActionEnabled)
+			{
+				FOutputs.Remove(io);
+			}
+			if (io.IsConfigActionEnabled)
+			{
+				FConfigs.Remove(io);
+			}
+			
+			var pluginIO = io.Metadata as IPluginIO;
+			if (pluginIO != null)
+			{
+				FPluginHost.DeletePin(pluginIO);
+			}
 		}
 	}
 }
