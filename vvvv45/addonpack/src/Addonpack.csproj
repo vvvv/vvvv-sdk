@@ -8,11 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectsToBuild Include="$(MSBuildThisFileDirectory)nodes\plugins\*\*\*.csproj;
+    <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\plugins\*\*\*.csproj;
                               $(MSBuildThisFileDirectory)nodes\plugins\Network\Databases\*\*.csproj">
       <OutputDir>$(AddonPluginsOutputDir)</OutputDir>
-    </ProjectsToBuild>
-    <ProjectReference Include="@(ProjectsToBuild)" />
+    </ProjectReference>
   </ItemGroup>
   
   <PropertyGroup>
@@ -32,13 +31,13 @@
           DestinationFiles="@(PluginLicenses->'$(AddonPluginsOutputDir)..\..\..\licenses\%(Filename)%(Extension)')" 
           SkipUnchangedFiles="true"
           Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
-	<!-- Flash plugin is special -->
-	<ItemGroup>
+    <!-- Flash plugin is special -->
+	  <ItemGroup>
       <_FlashPluginDependencies_ Include="$(MSBuildThisFileDirectory)nodes\plugins\Layer\DrawFlash\Dependencies\*.*" />
     </ItemGroup>
-	<Copy SourceFiles="@(_FlashPluginDependencies_)"
-		  DestinationFolder="$(AddonPluginsOutputDir)" 
-		  SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_FlashPluginDependencies_)"
+        DestinationFolder="$(AddonPluginsOutputDir)" 
+        SkipUnchangedFiles="true" />
   </Target>
   
   <!-- Freeframe and DirectShow -->
