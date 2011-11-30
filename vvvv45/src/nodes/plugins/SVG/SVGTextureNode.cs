@@ -67,8 +67,14 @@ namespace VVVV.Nodes
 		[Output("View")]
 		ISpread<SvgViewBox> FViewOut;
 		
+		[Output("Has View")]
+		ISpread<bool> FHasViewOut;
+		
 		[Output("Size")]
 		ISpread<Vector2D> FSizeOut;
+		
+		[Output("Has Size")]
+		ISpread<bool> FHasSizeOut;
 
 		[Import()]
 		ILogger FLogger;
@@ -81,8 +87,10 @@ namespace VVVV.Nodes
 			{
 				FDocOut.SliceCount = SpreadMax;				
 				FLayerOut.SliceCount = SpreadMax;
-				FSizeOut.SliceCount = SpreadMax;
 				FViewOut.SliceCount = SpreadMax;
+				FHasViewOut.SliceCount = SpreadMax;
+				FSizeOut.SliceCount = SpreadMax;
+				FHasSizeOut.SliceCount = SpreadMax;
 				
 				for(int i=0; i<SpreadMax; i++)
 				{
@@ -92,8 +100,11 @@ namespace VVVV.Nodes
 						FDocOut[i] = new SvgDoc(doc, FBackgroundIn[i].Color);
 						FLayerOut[i] = (SvgElement)doc.Children[0].Clone();
 						FViewOut[i] = doc.ViewBox;
+						FHasViewOut[i] = !doc.ViewBox.Equals(SvgViewBox.Empty);
 						var size = doc.GetDimensions();
 						FSizeOut[i] = new Vector2D(size.Width, size.Height);
+						var hp = new SvgUnit(SvgUnitType.Percentage, 100);
+						FHasSizeOut[i] = !(doc.Width == hp && doc.Height == hp);
 					}
 				}
 			}
@@ -117,17 +128,36 @@ namespace VVVV.Nodes
 		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename)]
 		ISpread<string> FFilenameIn;
 		
+		[Input("Size", StepSize = 1)]
+		ISpread<Vector2> FSizeIn;
+		
 		[Input("Write", IsBang = true)]
 		ISpread<bool> FDoWriteIn;
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			//save to disc
-			if(FDoWriteIn[0])
+			for(int i=0; i<SpreadMax; i++)
 			{
-				FDocIn[0].Document.Write(FFilenameIn[0]);
-			}	
+				//save to disc
+				if(FDoWriteIn[i])
+				{
+					var doc = FDocIn[i].Document;
+					var oldW = doc.Width;
+					var oldH = doc.Height;
+					
+					if(FSizeIn[i] != Vector2.Zero)
+					{
+						doc.Width = FSizeIn[i].X;
+						doc.Height = FSizeIn[i].Y;
+					}
+					
+					doc.Write(FFilenameIn[i]);
+					
+					doc.Width = oldW;
+					doc.Height = oldH;
+				}
+			}
 		}
 	}
 	
@@ -148,7 +178,7 @@ namespace VVVV.Nodes
 		[Input("View Box", IsSingle = true)]
 		IDiffSpread<SvgViewBox> FViewIn;
 		
-		[Input("Ignore View", IsSingle = true)]
+		[Input("Ignore View", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<bool> FIgnoreView;
 		
 		[Input("Background Color, IsSingle = true", DefaultColor = new double[] { 0, 0, 0, 1 }, IsSingle = true)]

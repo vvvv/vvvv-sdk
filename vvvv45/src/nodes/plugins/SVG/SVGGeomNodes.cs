@@ -486,7 +486,7 @@ namespace VVVV.Nodes
 	public class SVGGroupNode : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Transform", IsSingle = true)]
+		[Input("Transform")]
 		IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
 		[Input("Input", IsPinGroup=true)]
