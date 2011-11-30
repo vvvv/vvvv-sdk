@@ -88,4 +88,33 @@ namespace VVVV.Hosting.Pins.Output
 			}
 		}
 	}
+
+    [ComVisible(false)]
+    public class QuaternionOutputPin : VectorOutputPin<Quaternion>
+    {
+        public QuaternionOutputPin(IPluginHost host, OutputAttribute attribute)
+            : base(host, attribute, 4, float.MinValue, float.MaxValue, 0.01)
+        {
+        }
+
+        unsafe protected override void CopyFromBuffer(Quaternion[] buffer, double* dst, int length)
+        {
+            fixed (Quaternion* source = buffer)
+            {
+                Quaternion* src = source;
+                for (int i = 0; i < length / FDimension; i++)
+                {
+                    *dst = (double)src->X;
+                    dst++;
+                    *dst = (double)src->Y;
+                    dst++;
+                    *dst = (double)src->Z;
+                    dst++;
+                    *dst = (double)src->W;
+                    dst++;
+                    src++;
+                }
+            }
+        }
+    }
 }
