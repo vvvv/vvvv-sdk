@@ -18,28 +18,28 @@ namespace VVVV.Nodes
 		[Output("Output")]
 		protected IOutStream<T> FOutputStream;
 		
-		private readonly T[] FBuffer = new T[128];
+		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
 		
 		public void Evaluate(int SpreadMax)
 		{
 			FInputStreams.Sync();
 			
-			FOutputStream.SetLengthBy(FInputStreams);
-
-			var inputStreamsLength = FInputStreams.Length;
+			int inputStreamsLength = FInputStreams.Length;
+			int maxInputStreamLength = FInputStreams.GetMaxLength();
+			FOutputStream.Length = maxInputStreamLength * inputStreamsLength;
+			
 			using (var writer = FOutputStream.GetWriter())
 			{
+				int numSlicesToRead = Math.Min(maxInputStreamLength, FBuffer.Length);
 				int i = 0;
 				foreach (var inputStream in FInputStreams)
 				{
-					int numSlicesToRead = Math.Min(inputStream.Length, FBuffer.Length);
-					
 					writer.Position = i++;
-					using (var reader = inputStream.GetReader())
+					using (var reader = inputStream.GetCyclicReader())
 					{
 						while (!writer.Eos)
 						{
-							reader.ReadCyclic(FBuffer, 0, numSlicesToRead);
+							reader.Read(FBuffer, 0, numSlicesToRead);
 							writer.Write(FBuffer, 0, numSlicesToRead, inputStreamsLength);
 						}
 					}

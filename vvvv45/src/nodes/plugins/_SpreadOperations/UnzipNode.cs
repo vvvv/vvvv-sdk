@@ -16,7 +16,7 @@ namespace VVVV.Nodes
 		[Output("Output", IsPinGroup = true)]
 		protected IIOStream<IOutStream<T>> FOutputStreams;
 		
-		private readonly T[] FBuffer = new T[128];
+		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
 		
 		public void Evaluate(int SpreadMax)
 		{
