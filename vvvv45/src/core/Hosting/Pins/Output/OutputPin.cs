@@ -16,6 +16,7 @@ namespace VVVV.Hosting.Pins.Output
 		public OutputPin(IPluginHost host, IPluginOut pluginOut, IIOStream<T> stream)
 			: base(host, pluginOut, stream)
 		{
+			SliceCount = 1;
 		}
 		
 		public OutputPin(IPluginHost host, IPluginOut pluginOut, IOutStream<T> outStream)

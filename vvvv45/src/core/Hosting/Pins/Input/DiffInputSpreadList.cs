@@ -23,12 +23,5 @@ namespace VVVV.Hosting.Pins.Input
 			
 			return FIOFactory.CreateIO<IDiffSpread<T>>(attribute);
 		}
-		
-		
-		public override bool Sync()
-		{
-			// TODO
-			return base.Sync();
-		}
 	}
 }

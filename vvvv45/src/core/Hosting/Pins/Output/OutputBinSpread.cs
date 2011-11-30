@@ -27,6 +27,8 @@ namespace VVVV.Hosting.Pins.Output
 				DefaultValue = 1
 			};
 			FBinSizeStream = FIOFactory.CreateIO<IOutStream<int>>(att);
+			
+			SliceCount = 1;
 		}
 		
 		public override void Flush()

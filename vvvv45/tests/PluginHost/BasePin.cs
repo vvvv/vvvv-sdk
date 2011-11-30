@@ -9,30 +9,10 @@ namespace Hoster
 {
 	public delegate void TOnConfigurate(IPluginConfig Input);
 	
-	class BasicPinUpdater : IPinUpdater
-	{
-		public void Update()
-		{
-		}
-		
-		public void Connect(IPin otherPin)
-		{
-		}
-		
-		public void Disconnect(IPin otherPin)
-		{
-		}
-		
-		public void Dispose()
-		{
-		}
-	}
-	
 	abstract public class TBasePin: IPluginIO, IPluginIn, IPluginOut
 	{
 		public int FSliceCount = 0;
 		protected IPluginHost FParent;
-		protected IPinUpdater FPinUpdater;
 		protected string FName;
 		protected int FOrder;
 		protected int FDimension;
@@ -65,8 +45,6 @@ namespace Hoster
 			
 			//initialize with an arbitrary order so that the sortby-order in the gui is not flickering
 			FOrder = GlobalPinCount++;
-			
-			SetPinUpdater(new BasicPinUpdater());
 		}
 		
 		protected virtual void Initialize()
@@ -129,8 +107,6 @@ namespace Hoster
 					
 					FSliceCountIsChanged = true;
 					FPinIsChanged = true;
-					
-					FPinUpdater.Update();
 					//don't call configurate here for vvvv doesn't do it either
 					//if (FOnConfigurate != null)
 					//	FOnConfigurate(this);
@@ -194,11 +170,6 @@ namespace Hoster
 			{
 				g.DrawString(AsDisplayString(i), f, b, r.X+2, FSliceHeight + 2 + i * FSliceHeight);
 			}
-		}
-		
-		public void SetPinUpdater(IPinUpdater pinUpdater)
-		{
-			FPinUpdater = pinUpdater;
 		}
 	}	
 }

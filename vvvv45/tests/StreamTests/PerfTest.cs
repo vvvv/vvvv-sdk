@@ -22,9 +22,9 @@ namespace VVVV.Tests.StreamTests
 			return Tuple.Create(FDoubleArrayHandle.AddrOfPinnedObject() + sizeof(double) * FDoubleArrayBegin, FDoubleArray.Length - (FDoubleArrayBegin + FDoubleArrayEnd));
 		}
 		
-		private static void Validate()
+		private static bool Validate()
 		{
-			
+			return true;
 		}
 		
 		private static IntPtr ResizeUnmanagedArray(int newLength)
@@ -46,7 +46,7 @@ namespace VVVV.Tests.StreamTests
 			FDoubleArray.Fill(0, FDoubleArrayBegin, double.MinValue);
 			FDoubleArray.Fill(FDoubleArray.Length - FDoubleArrayEnd, FDoubleArrayEnd, double.MaxValue);
 			
-			var stream = UnmanagedInStream<double>.Create(GetUnmanagedArray, Validate);
+			var stream = UnmanagedInStream.Create<double>(GetUnmanagedArray, Validate);
 			stream.Sync();
 			
 			ReadUnbuffered(stream, 1024 * 1024, 1);
@@ -56,11 +56,14 @@ namespace VVVV.Tests.StreamTests
 		
 		private static void ReadUnbuffered<T>(IInStream<T> stream, int length, int stepSize)
 		{
-			for (int i = 0; i < length; i++)
+			using (var reader = stream.GetReader())
 			{
-				if (stream.Eof) stream.Reset();
-				
-				stream.Read(stepSize);
+				for (int i = 0; i < length; i++)
+				{
+					if (reader.Eos) reader.Reset();
+					
+					reader.Read(stepSize);
+				}
 			}
 		}
 		
@@ -68,12 +71,15 @@ namespace VVVV.Tests.StreamTests
 		{
 			T[] buffer = new T[Math.Min(1024, length)];
 			
-			int readCount = 0;
-			while (readCount < length)
+			using (var reader = stream.GetReader())
 			{
-				if (stream.Eof) stream.Reset();
-				
-				readCount += stream.Read(buffer, 0, Math.Min(buffer.Length, length - readCount), stepSize);
+				int readCount = 0;
+				while (readCount < length)
+				{
+					if (reader.Eos) reader.Reset();
+					
+					readCount += reader.Read(buffer, 0, Math.Min(buffer.Length, length - readCount), stepSize);
+				}
 			}
 		}
 		
@@ -81,7 +87,10 @@ namespace VVVV.Tests.StreamTests
 		{
 			T[] buffer = new T[length];
 			
-			stream.ReadCyclic(buffer, 0, buffer.Length, stepSize);
+			using (var reader = stream.GetCyclicReader())
+			{
+				reader.ReadCyclic(buffer, 0, buffer.Length, stepSize);
+			}
 		}
 	}
 }

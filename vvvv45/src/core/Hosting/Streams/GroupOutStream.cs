@@ -7,23 +7,24 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.Streams
 {
-	public class InStreamGroup<T> : IInStream<IInStream<T>>
+	public class GroupOutStream<T> : IIOStream<IOutStream<T>>
 	{
-		private readonly ManagedIOStream<IInStream<T>> FStreams = new ManagedIOStream<IInStream<T>>();
+		private readonly ManagedIOStream<IOutStream<T>> FStreams = new ManagedIOStream<IOutStream<T>>();
 		private readonly List<IOHandler> FIOHandlers = new List<IOHandler>();
 		private readonly IDiffSpread<int> FCountSpread;
 		private readonly IOFactory FFactory;
-		private readonly InputAttribute FInputAttribute;
+		private readonly OutputAttribute FOutputAttribute;
 		
-		public InStreamGroup(IOFactory factory, InputAttribute attribute)
+		public GroupOutStream(IOFactory factory, OutputAttribute attribute)
 		{
 			FFactory = factory;
-			FInputAttribute = attribute;
+			FOutputAttribute = attribute;
 			
 			FCountSpread = factory.CreateIO<IDiffSpread<int>>(
-				new ConfigAttribute(FInputAttribute.Name + " Count")
+				new ConfigAttribute(FOutputAttribute.Name + " Count")
 				{
-					DefaultValue = 2
+					DefaultValue = 2,
+					MinValue = 0
 				}
 			);
 			
@@ -34,17 +35,16 @@ namespace VVVV.Hosting.Streams
 		void HandleCountSpreadChanged(IDiffSpread<int> spread)
 		{
 			int oldCount = FIOHandlers.Count;
-			int newCount = spread[0];
+			int newCount = Math.Max(spread[0], 0);
 			
 			for (int i = oldCount; i < newCount; i++)
 			{
-				var attribute = new InputAttribute(string.Format("{0} {1}", FInputAttribute.Name, i))
+				var attribute = new OutputAttribute(string.Format("{0} {1}", FOutputAttribute.Name, i + 1))
 				{
 					IsPinGroup = false,
-					Order = i,
-					AutoValidate = false // We validate them if necessary
+					Order = i
 				};
-				var io = FFactory.CreateIOHandler<IInStream<T>>(attribute);
+				var io = FFactory.CreateIOHandler<IOutStream<T>>(attribute);
 				FIOHandlers.Add(io);
 			}
 			
@@ -60,7 +60,7 @@ namespace VVVV.Hosting.Streams
 			{
 				foreach (var io in FIOHandlers)
 				{
-					writer.Write(io.RawIOObject as IInStream<T>);
+					writer.Write(io.RawIOObject as IOutStream<T>);
 				}
 			}
 		}
@@ -71,21 +71,33 @@ namespace VVVV.Hosting.Streams
 			{
 				return FStreams.Length;
 			}
+			set
+			{
+				throw new NotSupportedException();
+			}
 		}
 		
-		public IStreamReader<IInStream<T>> GetReader()
+		public IStreamReader<IOutStream<T>> GetReader()
 		{
 			return FStreams.GetReader();
 		}
 		
+		public IStreamWriter<IOutStream<T>> GetWriter()
+		{
+			throw new NotSupportedException();
+		}
+		
 		public bool Sync()
 		{
-			var changed = false;
+			return true;
+		}
+		
+		public void Flush()
+		{
 			foreach (var stream in FStreams)
 			{
-				changed = stream.Sync() || changed;
+				stream.Flush();
 			}
-			return changed;
 		}
 		
 		public object Clone()
@@ -93,7 +105,7 @@ namespace VVVV.Hosting.Streams
 			throw new NotImplementedException();
 		}
 		
-		public System.Collections.Generic.IEnumerator<IInStream<T>> GetEnumerator()
+		public System.Collections.Generic.IEnumerator<IOutStream<T>> GetEnumerator()
 		{
 			return GetReader();
 		}

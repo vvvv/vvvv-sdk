@@ -82,6 +82,7 @@ namespace VVVV.Hosting.Pins.Config
 			set
 			{
 				FOutStream.Length = value;
+				FInStream.Sync();
 			}
 		}
 		

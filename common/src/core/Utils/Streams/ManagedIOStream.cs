@@ -312,7 +312,10 @@ namespace VVVV.Utils.Streams
 		
 		public object Clone()
 		{
-			throw new NotImplementedException();
+			var stream = new ManagedIOStream<T>();
+			stream.Length = Length;
+			Array.Copy(FBuffer, stream.FBuffer, FBuffer.Length);
+			return stream;
 		}
 		
 		private void ResizeInternalBuffer()

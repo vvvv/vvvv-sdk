@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Windows.Forms;
 
 using VVVV.Hosting;
+using VVVV.Hosting.Interfaces;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using HighPerfTimer = MLib.Timer;
@@ -504,6 +505,10 @@ namespace Hoster
 			{
 				throw new NotImplementedException();
 			}
+			set
+			{
+				throw new NotImplementedException();
+			}
 		}
 		
 		public StatusCode InnerStatus
@@ -558,6 +563,16 @@ namespace Hoster
 			get {
 				throw new NotImplementedException();
 			}
+		}
+		
+		public void AddListener(IPluginNodeListener listener)
+		{
+			
+		}
+		
+		public void RemoveListener(IPluginNodeListener listener)
+		{
+			
 		}
 	}
 }

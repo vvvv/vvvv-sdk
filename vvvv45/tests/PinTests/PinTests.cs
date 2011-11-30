@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Hoster;
 using NUnit.Framework;
 using SlimDX;
+using VVVV.Hosting.Interfaces;
 using VVVV.Hosting.Pins;
 using VVVV.Hosting.Pins.Input;
+using VVVV.Hosting.Streams;
+using VVVV.Hosting.Streams.Registry;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
@@ -30,12 +32,14 @@ namespace PinTests
 		static Vector3D[] SampleDataVector3D = new Vector3D[] { new Vector3D(0.1, 0.2, 0.3), new Vector3D(0.2, 0.3, 0.4), new Vector3D(0.9, 0.10, 0.11) };
 		static Vector4D[] SampleDataVector4D = new Vector4D[] { new Vector4D(0.1, 0.2, 0.3, 0.4), new Vector4D(0.5, 0.6, 0.7, 0.8), new Vector4D(0.9, 0.10, 0.11, 0.12) };
 		
-		protected IPluginHost2 FPluginHost;
+		protected IInternalPluginHost FPluginHost;
+		protected IOFactory FFactory;
 		
 		[SetUp]
 		public void Init()
 		{
 			FPluginHost = new PluginHost();
+			FFactory = new IOFactory(FPluginHost, new IORegistry());
 		}
 		
 		#region Input
@@ -407,32 +411,37 @@ namespace PinTests
 			var pinName = string.Format("{0} Input", typeof(T));
 			var attribute = new InputAttribute(pinName);
 			
-			ISpread<T> spread = PinFactory.CreateSpread<T>(FPluginHost, attribute);
+			ISpread<T> spread = FFactory.CreateIO<ISpread<T>>(attribute);
 			
 			Assert.True(spread.SliceCount == 1);
 			
 			TestSpread(spread, sampleData);
 			
-			ISpread<ISpread<T>> spreadedSpread = PinFactory.CreateSpread<ISpread<T>>(FPluginHost, attribute);
-			
-			Assert.True(spreadedSpread.SliceCount == 1);
-			
-			TestSpread(spreadedSpread, new ISpread<T>[] { new Spread<T>(sampleData.ToList()), new Spread<T>(sampleData.ToList()) });
-		}
+			try {
+				ISpread<ISpread<T>> spreadedSpread = FFactory.CreateIO<ISpread<ISpread<T>>>(attribute);
+				
+				Assert.True(spreadedSpread.SliceCount == 1);
+				
+				TestSpread(spreadedSpread, new ISpread<T>[] { new Spread<T>(sampleData.ToList()), new Spread<T>(sampleData.ToList()) });
+	
+			} catch (Exception e) {
+				
+				throw;
+			}		}
 		
 		protected void TestDiffInputPin<T>(T[] sampleData)
 		{
 			var pinName = string.Format("{0} Input", typeof(T));
 			var attribute = new InputAttribute(pinName);
 			
-			IDiffSpread<T> spread = PinFactory.CreateDiffSpread<T>(FPluginHost, attribute);
+			IDiffSpread<T> spread = FFactory.CreateIO<IDiffSpread<T>>(attribute);
 			
 			Assert.True(spread.SliceCount == 1);
 			
 			TestSpread(spread, sampleData);
 			TestDiffSpread(spread, sampleData);
 			
-			IDiffSpread<ISpread<T>> spreadedSpread = PinFactory.CreateDiffSpread<ISpread<T>>(FPluginHost, attribute);
+			IDiffSpread<ISpread<T>> spreadedSpread = FFactory.CreateIO<IDiffSpread<ISpread<T>>>(attribute);
 			
 			Assert.True(spreadedSpread.SliceCount == 1);
 			
@@ -446,7 +455,7 @@ namespace PinTests
 			var pinName = string.Format("{0} Input", typeof(T));
 			var attribute = new ConfigAttribute(pinName);
 			
-			ISpread<T> spread = PinFactory.CreateSpread<T>(FPluginHost, attribute);
+			ISpread<T> spread = FFactory.CreateIO<ISpread<T>>(attribute);
 			
 			Assert.True(spread.SliceCount == 1, "Initial SliceCount not correct.");
 			
@@ -464,13 +473,13 @@ namespace PinTests
 			var pinName = string.Format("{0} Input", typeof(T));
 			var attribute = new OutputAttribute(pinName);
 			
-			ISpread<T> spread = PinFactory.CreateSpread<T>(FPluginHost, attribute);
+			ISpread<T> spread = FFactory.CreateIO<ISpread<T>>(attribute);
 			
 			Assert.True(spread.SliceCount == 1);
 			
 			TestSpread(spread, sampleData);
 			
-			ISpread<ISpread<T>> spreadedSpread = PinFactory.CreateSpread<ISpread<T>>(FPluginHost, attribute);
+			ISpread<ISpread<T>> spreadedSpread = FFactory.CreateIO<ISpread<ISpread<T>>>(attribute);
 			
 			Assert.True(spreadedSpread.SliceCount == 1);
 			
@@ -528,27 +537,27 @@ namespace PinTests
 			Assert.True(spread.SliceCount == 1);
 			Assert.AreEqual(sampleData[0], spread[0]);
 			
-			bool eventRaised = false;
+//			bool eventRaised = false;
 			
 			
-			var pin = spread as Pin<T>;
-			if (pin != null)
-			{
-				pin.Updated +=
-					delegate(object sender, EventArgs args)
-				{
-					eventRaised = true;
-				};
-				
-				pin[0] = sampleData[0];
-				pin.Update();
-				pin[0] = default(T);
-				pin.Update();
-				pin[0] = sampleData[1];
-				pin.Update();
-				
-				Assert.IsTrue(eventRaised, "Update event was not raised");
-			}
+//			var pin = spread as Pin<T>;
+//			if (pin != null)
+//			{
+//				pin.Updated +=
+//					delegate(object sender, EventArgs args)
+//				{
+//					eventRaised = true;
+//				};
+//
+//				pin[0] = sampleData[0];
+//				pin.Update();
+//				pin[0] = default(T);
+//				pin.Update();
+//				pin[0] = sampleData[1];
+//				pin.Update();
+//
+//				Assert.IsTrue(eventRaised, "Update event was not raised");
+//			}
 		}
 		
 		protected void TestDiffSpread<T>(IDiffSpread<T> spread, T[] sampleData)
@@ -561,18 +570,12 @@ namespace PinTests
 				eventRaised = true;
 			};
 			
-			var pin = spread as DiffInputPin<T>;
-			if (pin != null)
-			{
-				pin[0] = sampleData[0];
-				pin.Update();
-				pin[0] = default(T);
-				pin.Update();
-				pin[0] = sampleData[1];
-				pin.Update();
-				
-				Assert.IsTrue(eventRaised, "Changed event was not raised");
-			}
+			spread[0] = sampleData[0];
+			spread[0] = default(T);
+			spread[0] = sampleData[1];
+			
+			Assert.IsTrue(spread.Sync());
+			Assert.IsTrue(eventRaised, "Changed event was not raised");
 		}
 	}
 }

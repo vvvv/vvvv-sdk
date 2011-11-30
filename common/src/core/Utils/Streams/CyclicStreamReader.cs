@@ -70,15 +70,15 @@ namespace VVVV.Utils.Streams
 		
 		public int Read(T[] buffer, int index, int length, int stride)
 		{
-			var reader = FReader;
+			int readerLength = FReader.Length;
 			
 			// Exception handling
-			if (FReader.Length == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
+			if (readerLength == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
 			
 			// Normalize the stride
-			stride %= FReader.Length;
+			stride %= readerLength;
 			
-			switch (FReader.Length)
+			switch (readerLength)
 			{
 				case 1:
 					// Special treatment for streams of length one
@@ -93,7 +93,7 @@ namespace VVVV.Utils.Streams
 					int numSlicesRead = 0;
 					
 					// Read till end
-					while ((numSlicesRead < length) && (FReader.Position %= FReader.Length) > 0)
+					while ((numSlicesRead < length) && (FReader.Position %= readerLength) > 0)
 					{
 						numSlicesRead += FReader.Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 					}
@@ -106,7 +106,7 @@ namespace VVVV.Utils.Streams
 					{
 						numSlicesRead += FReader.Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 						// Exit the loop once Position is back at beginning
-						if ((FReader.Position %= reader.Length) == 0) break;
+						if ((FReader.Position %= readerLength) == 0) break;
 					}
 					
 					// Save end of possible block
@@ -126,7 +126,7 @@ namespace VVVV.Utils.Streams
 					// Read the rest
 					while (numSlicesRead < length)
 					{
-						if (reader.Eos) FReader.Position %= reader.Length;
+						if (FReader.Eos) FReader.Position %= readerLength;
 						numSlicesRead += FReader.Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 					}
 					

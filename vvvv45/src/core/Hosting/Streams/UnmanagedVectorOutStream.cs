@@ -28,6 +28,7 @@ namespace VVVV.Hosting.Streams
 				FDimension = stream.FDimension;
 				FUnmanagedLength = stream.FUnmanagedLength;
 				FUnderFlow = stream.FUnderFlow;
+				FPointer = FUnmanagedArray;
 			}
 			
 			public bool Eos
@@ -92,6 +93,7 @@ namespace VVVV.Hosting.Streams
 		{
 			FDimension = dimension;
 			FResizeUnmanagedArrayFunc = resizeUnmanagedArrayFunc;
+			Length = 1;
 		}
 		
 		public object Clone()
@@ -537,12 +539,58 @@ namespace VVVV.Hosting.Streams
 			
 			public override int Write(Vector3[] buffer, int index, int length, int stride)
 			{
-				throw new NotImplementedException();
+				int numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+				
+				fixed (Vector3* source = buffer)
+				{
+					Vector3D* dst = (Vector3D*) FPointer;
+					Vector3* src = source + index;
+					
+					int numSlicesToWriteAtFullSpeed = numSlicesToWrite;
+					
+					// Check if we would read too much (for example unmanaged array is of size 7).
+					if (IsOutOfBounds(numSlicesToWrite))
+					{
+						numSlicesToWriteAtFullSpeed = Math.Max(numSlicesToWriteAtFullSpeed - 1, 0);
+					}
+					
+					for (int i = 0; i < numSlicesToWriteAtFullSpeed; i++)
+					{
+						*dst = (*(src++)).ToVector3D();
+						dst += stride;
+					}
+					
+					if (numSlicesToWriteAtFullSpeed < numSlicesToWrite)
+					{
+						int i = FUnmanagedLength - FUnderFlow;
+						FUnmanagedArray[i++ % FUnmanagedLength] = (double) src->X;
+						FUnmanagedArray[i++ % FUnmanagedLength] = (double) src->Y;
+						FUnmanagedArray[i++ % FUnmanagedLength] = (double) src->Z;
+					}
+				}
+				
+				FPosition += numSlicesToWrite * stride;
+				FPointer += numSlicesToWrite * stride * FDimension;
+				
+				return numSlicesToWrite;
 			}
 			
 			public override void Write(Vector3 value, int stride)
 			{
-				throw new NotImplementedException();
+				if (IsOutOfBounds(1))
+				{
+					int i = FUnmanagedLength - FUnderFlow;
+					FUnmanagedArray[i++ % FUnmanagedLength] = (double) value.X;
+					FUnmanagedArray[i++ % FUnmanagedLength] = (double) value.Y;
+					FUnmanagedArray[i++ % FUnmanagedLength] = (double) value.Z;
+				}
+				else
+				{
+					*((Vector3D*) FPointer) = value.ToVector3D();
+				}
+				
+				FPosition += stride;
+				FPointer += stride * FDimension;
 			}
 		}
 		
@@ -571,12 +619,60 @@ namespace VVVV.Hosting.Streams
 			
 			public override int Write(Vector4[] buffer, int index, int length, int stride)
 			{
-				throw new NotImplementedException();
+				int numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+				
+				fixed (Vector4* source = buffer)
+				{
+					Vector4D* dst = (Vector4D*) FPointer;
+					Vector4* src = source + index;
+					
+					int numSlicesToWriteAtFullSpeed = numSlicesToWrite;
+					
+					// Check if we would read too much (for example unmanaged array is of size 7).
+					if (IsOutOfBounds(numSlicesToWrite))
+					{
+						numSlicesToWriteAtFullSpeed = Math.Max(numSlicesToWriteAtFullSpeed - 1, 0);
+					}
+					
+					for (int i = 0; i < numSlicesToWriteAtFullSpeed; i++)
+					{
+						*dst = (*(src++)).ToVector4D();
+						dst += stride;
+					}
+					
+					if (numSlicesToWriteAtFullSpeed < numSlicesToWrite)
+					{
+						int i = FUnmanagedLength - FUnderFlow;
+						FUnmanagedArray[i++ % FUnmanagedLength] = (double) src->X;
+						FUnmanagedArray[i++ % FUnmanagedLength] = (double) src->Y;
+						FUnmanagedArray[i++ % FUnmanagedLength] = (double) src->Z;
+						FUnmanagedArray[i++ % FUnmanagedLength] = (double) src->W;
+					}
+				}
+				
+				FPosition += numSlicesToWrite * stride;
+				FPointer += numSlicesToWrite * stride * FDimension;
+				
+				return numSlicesToWrite;
 			}
 			
 			public override void Write(Vector4 value, int stride)
 			{
-				throw new NotImplementedException();
+				if (IsOutOfBounds(1))
+				{
+					int i = FUnmanagedLength - FUnderFlow;
+					FUnmanagedArray[i++ % FUnmanagedLength] = (double) value.X;
+					FUnmanagedArray[i++ % FUnmanagedLength] = (double) value.Y;
+					FUnmanagedArray[i++ % FUnmanagedLength] = (double) value.Z;
+					FUnmanagedArray[i++ % FUnmanagedLength] = (double) value.W;
+				}
+				else
+				{
+					*((Vector4D*) FPointer) = value.ToVector4D();
+				}
+				
+				FPosition += stride;
+				FPointer += stride * FDimension;
 			}
 		}
 		

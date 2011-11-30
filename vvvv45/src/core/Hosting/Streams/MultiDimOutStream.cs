@@ -34,6 +34,7 @@ namespace VVVV.Hosting.Streams
 			FBinSizeStream = ioFactory.CreateIO<IOutStream<int>>(
 				new OutputAttribute(string.Format("{0} Bin Size", attribute.Name))
 			);
+			Length = 1;
 		}
 		
 		public override void Flush()

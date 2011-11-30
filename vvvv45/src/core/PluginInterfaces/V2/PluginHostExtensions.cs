@@ -92,7 +92,7 @@ namespace VVVV.PluginInterfaces.V2
 			attribute = NormalizePinAttribute(attribute, type);
 			
 			IValueConfig result = null;
-			host.CreateValueConfig(attribute.Name, 1, null, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
+			host.CreateValueConfig(attribute.Name, attribute.Dimension, attribute.DimensionNames, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			switch (attribute.Dimension)
 			{
 				case 2:
@@ -118,7 +118,7 @@ namespace VVVV.PluginInterfaces.V2
 			attribute = NormalizePinAttribute(attribute, type);
 			
 			IValueIn result = null;
-			host.CreateValueInput(attribute.Name, 1, null, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
+			host.CreateValueInput(attribute.Name, attribute.Dimension, attribute.DimensionNames, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			switch (attribute.Dimension)
 			{
 				case 2:
@@ -144,7 +144,7 @@ namespace VVVV.PluginInterfaces.V2
 			attribute = NormalizePinAttribute(attribute, type);
 			
 			IValueFastIn result = null;
-			host.CreateValueFastInput(attribute.Name, 1, null, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
+			host.CreateValueFastInput(attribute.Name, attribute.Dimension, attribute.DimensionNames, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			switch (attribute.Dimension)
 			{
 				case 2:
@@ -170,7 +170,7 @@ namespace VVVV.PluginInterfaces.V2
 			attribute = NormalizePinAttribute(attribute, type);
 			
 			IValueOut result = null;
-			host.CreateValueOutput(attribute.Name, 1, null, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
+			host.CreateValueOutput(attribute.Name, attribute.Dimension, attribute.DimensionNames, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			switch (attribute.Dimension)
 			{
 				case 2:

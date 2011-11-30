@@ -307,7 +307,7 @@ namespace VVVV.Hosting.Streams.Registry
 			              			var multiDimStreamType = typeof(MultiDimInStream<>).MakeGenericType(t.GetGenericArguments().First());
 			              			if (attribute.IsPinGroup)
 			              			{
-			              				multiDimStreamType = typeof(InStreamGroup<>).MakeGenericType(t.GetGenericArguments().First());
+			              				multiDimStreamType = typeof(GroupInStream<>).MakeGenericType(t.GetGenericArguments().First());
 			              			}
 			              			
 			              			var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IInStream;
@@ -340,6 +340,7 @@ namespace VVVV.Hosting.Streams.Registry
 			
 			RegisterInput(typeof(ISpread<>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
+			              	ISpread spread = null;
 			              	if (t.IsGenericType)
 			              	{
 			              		if (typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
@@ -351,25 +352,28 @@ namespace VVVV.Hosting.Streams.Registry
 			              				spreadType = typeof(InputSpreadList<>).MakeGenericType(t.GetGenericArguments().First());
 			              			}
 			              			
-			              			var stream = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
+			              			spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
+			              			spread.Sync();
 			              			if (attribute.AutoValidate)
-			              				return IOHandler.Create(stream, null, p => p.Sync());
+			              				return IOHandler.Create(spread, null, p => p.Sync());
 			              			else
-			              				return IOHandler.Create(stream, null);
+			              				return IOHandler.Create(spread, null);
 			              		}
 			              	}
 			              	var ioBuilder = CreateIO(typeof(IInStream<>), typeof(IInStream<>).MakeGenericType(t), factory, attribute);
 			              	var pinType = typeof(InputPin<>).MakeGenericType(t);
-			              	var pin = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
+			              	spread = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
+			              	spread.Sync();
 			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(pin, ioBuilder.Metadata, p => p.Sync());
+			              		return IOHandler.Create(spread, ioBuilder.Metadata, p => p.Sync());
 			              	else
-			              		return IOHandler.Create(pin, ioBuilder.Metadata);
+			              		return IOHandler.Create(spread, ioBuilder.Metadata);
 			              });
 			
 			RegisterInput(typeof(IDiffSpread<>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	attribute.CheckIfChanged = true;
+			              	ISpread spread = null;
 			              	if (t.IsGenericType)
 			              	{
 			              		if (typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
@@ -381,20 +385,22 @@ namespace VVVV.Hosting.Streams.Registry
 			              				spreadType = typeof(DiffInputSpreadList<>).MakeGenericType(t.GetGenericArguments().First());
 			              			}
 			              			
-			              			var stream = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
+			              			spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
+			              			spread.Sync();
 			              			if (attribute.AutoValidate)
-			              				return IOHandler.Create(stream, null, p => p.Sync());
+			              				return IOHandler.Create(spread, null, p => p.Sync());
 			              			else
-			              				return IOHandler.Create(stream, null);
+			              				return IOHandler.Create(spread, null);
 			              		}
 			              	}
 			              	var ioBuilder = CreateIO(typeof(IInStream<>), typeof(IInStream<>).MakeGenericType(t), factory, attribute);
 			              	var pinType = typeof(DiffInputPin<>).MakeGenericType(t);
-			              	var pin = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
+			              	spread = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
+			              	spread.Sync();
 			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(pin, ioBuilder.Metadata, p => p.Sync());
+			              		return IOHandler.Create(spread, ioBuilder.Metadata, p => p.Sync());
 			              	else
-			              		return IOHandler.Create(pin, ioBuilder.Metadata);
+			              		return IOHandler.Create(spread, ioBuilder.Metadata);
 			              });
 			
 			RegisterInput(typeof(IDXRenderStateIn), (factory, attribute, t) => {
@@ -497,23 +503,8 @@ namespace VVVV.Hosting.Streams.Registry
 			               	return IOHandler.Create(new DynamicEnumOutStream(enumOut), enumOut, null, s => s.Flush());
 			               });
 			
-			RegisterOutput(typeof(IIOStream<>), (factory, attribute, t) => {
+			RegisterOutput(typeof(IOutStream<>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
-			               	if (t.IsGenericType)
-			               	{
-			               		if (typeof(IOutStream<>).MakeGenericType(t.GetGenericArguments()).IsAssignableFrom(t))
-			               		{
-			               			var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
-			               			if (attribute.IsPinGroup)
-			               			{
-			               				// TODO
-			               			}
-			               			
-			               			var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
-			               			return IOHandler.Create(stream, null, null, s => s.Flush());
-			               		}
-			               	}
-			               	
 			               	if (t.BaseType == typeof(Enum))
 			               	{
 			               		var enumOut = host.CreateEnumOutput(attribute, t);
@@ -526,6 +517,26 @@ namespace VVVV.Hosting.Streams.Registry
 			               		var stream = Activator.CreateInstance(typeof(NodeOutStream<>).MakeGenericType(t), new object[] { nodeOut }) as IOutStream;
 			               		return IOHandler.Create(stream, nodeOut, null, s => s.Flush());
 			               	}
+			               });
+			
+			RegisterOutput(typeof(IIOStream<>), (factory, attribute, t) => {
+			               	var host = factory.PluginHost;
+			               	if (t.IsGenericType)
+			               	{
+			               		if (typeof(IOutStream<>).MakeGenericType(t.GetGenericArguments()).IsAssignableFrom(t))
+			               		{
+			               			var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
+			               			if (attribute.IsPinGroup)
+			               			{
+			               				multiDimStreamType = typeof(GroupOutStream<>).MakeGenericType(t.GetGenericArguments().First());
+			               			}
+			               			
+			               			var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
+			               			return IOHandler.Create(stream, null, null, s => s.Flush());
+			               		}
+			               	}
+			               	
+			               	throw new NotSupportedException();
 			               });
 			
 			RegisterOutput(typeof(IDXLayerIO), (factory, attribute, t) => {
@@ -566,7 +577,7 @@ namespace VVVV.Hosting.Streams.Registry
 			               			return IOHandler.Create(stream, null, null, p => p.Flush());
 			               		}
 			               	}
-			               	var ioBuilder = CreateIO(typeof(IOutStream<>).MakeGenericType(t), typeof(IOutStream<>).MakeGenericType(t), factory, attribute);
+			               	var ioBuilder = CreateIO(typeof(IOutStream<>), typeof(IOutStream<>).MakeGenericType(t), factory, attribute);
 			               	var pinType = typeof(OutputPin<>).MakeGenericType(t);
 			               	var pin = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
 			               	return IOHandler.Create(pin, ioBuilder.Metadata, null, p => p.Flush());
@@ -668,20 +679,33 @@ namespace VVVV.Hosting.Streams.Registry
 			               	return IOHandler.Create(new DynamicEnumConfigStream(enumConfig), enumConfig, null, null, s => s.Sync());
 			               });
 			
+			RegisterConfig(typeof(IIOStream<>), (factory, attribute, t) => {
+			               	var host = factory.PluginHost;
+			               	if (t.BaseType == typeof(Enum))
+			               	{
+			               		var enumConfig = host.CreateEnumConfig(attribute, t);
+			               		var stream = Activator.CreateInstance(typeof(EnumConfigStream<>).MakeGenericType(t), new object[] { enumConfig }) as IIOStream;
+			               		return IOHandler.Create(stream, enumConfig, null, null, s => s.Flush());
+			               	}
+			               	throw new NotSupportedException();
+			               });
+			
 			RegisterConfig(typeof(ISpread<>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
-			               	var ioBuilder = CreateIO(typeof(IIOStream<>).MakeGenericType(t), typeof(IIOStream<>).MakeGenericType(t), factory, attribute);
+			               	var ioBuilder = CreateIO(typeof(IIOStream<>), typeof(IIOStream<>).MakeGenericType(t), factory, attribute);
 			               	var pinType = typeof(ConfigPin<>).MakeGenericType(t);
-			               	var pin = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as IInputPin;
-			               	return IOHandler.Create(pin, ioBuilder.Metadata, null, null, p => p.Sync());
+			               	var spread = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
+			               	spread.Sync();
+			               	return IOHandler.Create(spread, ioBuilder.Metadata, null, null, p => p.Sync());
 			               });
 			
 			RegisterConfig(typeof(IDiffSpread<>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
-			               	var ioBuilder = CreateIO(typeof(IIOStream<>).MakeGenericType(t), typeof(IIOStream<>).MakeGenericType(t), factory, attribute);
+			               	var ioBuilder = CreateIO(typeof(IIOStream<>), typeof(IIOStream<>).MakeGenericType(t), factory, attribute);
 			               	var pinType = typeof(ConfigPin<>).MakeGenericType(t);
-			               	var pin = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as IInputPin;
-			               	return IOHandler.Create(pin, ioBuilder.Metadata, null, null, p => p.Sync());
+			               	var spread = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
+			               	spread.Sync();
+			               	return IOHandler.Create(spread, ioBuilder.Metadata, null, null, p => p.Sync());
 			               });
 		}
 

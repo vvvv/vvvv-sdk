@@ -38,9 +38,9 @@ namespace StreamTests
 			return FDoubleArrayHandle.AddrOfPinnedObject() + sizeof(double) * FDoubleArrayBegin;
 		}
 		
-		private static void Validate()
+		private static bool Validate()
 		{
-			
+			return true;
 		}
 		
 		private void CheckArrayBoundaries()
@@ -63,106 +63,121 @@ namespace StreamTests
 		}
 		
 		[Test]
-		public void TestEof()
+		public void TestEos()
 		{
-			var stream = UnmanagedInStream<double>.Create(GetUnmanagedArray, Validate);
-			Assert.IsTrue(stream.Eof);
+			var stream = UnmanagedInStream.Create<double>(GetUnmanagedArray, Validate);
+			using (var reader = stream.GetReader())
+			{
+				Assert.IsTrue(reader.Eos);
+			}
+			
 			stream.Sync();
-			Assert.IsFalse(stream.Eof);
+			
+			using (var reader = stream.GetReader())
+			{
+				Assert.IsFalse(reader.Eos);
+			}
 		}
 		
 		[Test]
 		public void TestRead()
 		{
-			var stream = UnmanagedInStream<double>.Create(GetUnmanagedArray, Validate);
+			var stream = UnmanagedInStream.Create<double>(GetUnmanagedArray, Validate);
 			stream.Sync();
 			
-			for (int stepSize = 1; stepSize < FDoubleArray.Length; stepSize++)
+			using (var reader = stream.GetReader())
 			{
-				double s = 0.0;
-				while (!stream.Eof)
+				for (int stepSize = 1; stepSize < FDoubleArray.Length; stepSize++)
 				{
-					double v = stream.Read(stepSize);
-					Assert.AreEqual(s, v);
-					s += stepSize;
+					double s = 0.0;
+					while (!reader.Eos)
+					{
+						double v = reader.Read(stepSize);
+						Assert.AreEqual(s, v);
+						s += stepSize;
+					}
+					CheckArrayBoundaries();
+					reader.Reset();
 				}
-				CheckArrayBoundaries();
-				stream.Reset();
 			}
 		}
 		
 		[Test]
 		public void TestBufferedRead()
 		{
-			var stream = UnmanagedInStream<double>.Create(GetUnmanagedArray, Validate);
-			stream.Sync();
+			var stream = UnmanagedInStream.Create<double>(GetUnmanagedArray, Validate);
 			
 			int startIndex = 2;
 			int length = 2;
 			
-			for (int stepSize = 1; stepSize < FDoubleArray.Length; stepSize++)
+			using (var reader = stream.GetReader())
 			{
-				double s = 0.0;
-				
-				while (!stream.Eof)
+				for (int stepSize = 1; stepSize < FDoubleArray.Length; stepSize++)
 				{
-					var buffer = stream.CreateReadBuffer();
-					int n = stream.Read(buffer, startIndex, length, stepSize);
-					for (int i = 0; i < startIndex; i++)
-						Assert.AreEqual(0.0, buffer[i], "Step size was: {0}", stepSize);
-					for (int i = startIndex; i < startIndex + n; i++)
+					double s = 0.0;
+					
+					while (!reader.Eos)
 					{
-						Assert.AreEqual(s, buffer[i], "Step size was: {0}", stepSize);
-						s += stepSize;
+						var buffer = new double[16];
+						int n = reader.Read(buffer, startIndex, length, stepSize);
+						for (int i = 0; i < startIndex; i++)
+							Assert.AreEqual(0.0, buffer[i], "Step size was: {0}", stepSize);
+						for (int i = startIndex; i < startIndex + n; i++)
+						{
+							Assert.AreEqual(s, buffer[i], "Step size was: {0}", stepSize);
+							s += stepSize;
+						}
+						for (int i = startIndex + n; i < buffer.Length; i++)
+							Assert.AreEqual(0.0, buffer[i], "Step size was: {0}", stepSize);
 					}
-					for (int i = startIndex + n; i < buffer.Length; i++)
-						Assert.AreEqual(0.0, buffer[i], "Step size was: {0}", stepSize);
+					CheckArrayBoundaries();
+					reader.Reset();
 				}
-				CheckArrayBoundaries();
-				stream.Reset();
 			}
 		}
 		
 		[Test]
 		public void TestCyclicRead()
 		{
-			var stream = UnmanagedInStream<double>.Create(GetUnmanagedArray, Validate);
-			stream.Sync();
+			var stream = UnmanagedInStream.Create<double>(GetUnmanagedArray, Validate);
 			
-			for (int bufferSize = 2; bufferSize < stream.Length * 5; bufferSize++)
+			using (var reader = stream.GetCyclicReader())
 			{
-				var buffer = new double[bufferSize];
-				
-				int startIndex = 0;
-				int length = buffer.Length;
-				
-				if (bufferSize > 5)
+				for (int bufferSize = 2; bufferSize < stream.Length * 5; bufferSize++)
 				{
-					startIndex = 2;
-					length = bufferSize - 2;
-				}
-				
-				for (int stepSize = 8; stepSize < FDoubleArray.Length; stepSize++)
-				{
-					stream.ReadCyclic(buffer, startIndex, length, stepSize);
-					for (int i = 0; i < startIndex; i++)
-						Assert.AreEqual(0.0, buffer[i], "Step size was: {0}, Buffer size was: {1}", stepSize, bufferSize);
+					var buffer = new double[bufferSize];
 					
-					for (int i = startIndex; i < startIndex + length; i++)
+					int startIndex = 0;
+					int length = buffer.Length;
+					
+					if (bufferSize > 5)
 					{
-						try {
-							Assert.AreEqual(FDoubleArray[FDoubleArrayBegin + (stepSize * (i - startIndex)) % stream.Length], buffer[i], "Step size was: {0}, Buffer size was: {1}", stepSize, bufferSize);
-						} catch (Exception) {
-							
-							throw;
-						}
+						startIndex = 2;
+						length = bufferSize - 2;
 					}
 					
-					for (int i = startIndex + length; i < buffer.Length; i++)
-						Assert.AreEqual(0.0, buffer[i], "Step size was: {0}, Buffer size was: {1}", stepSize, bufferSize);
-					
-					CheckArrayBoundaries();
-					stream.Reset();
+					for (int stepSize = 8; stepSize < FDoubleArray.Length; stepSize++)
+					{
+						reader.Read(buffer, startIndex, length, stepSize);
+						for (int i = 0; i < startIndex; i++)
+							Assert.AreEqual(0.0, buffer[i], "Step size was: {0}, Buffer size was: {1}", stepSize, bufferSize);
+						
+						for (int i = startIndex; i < startIndex + length; i++)
+						{
+							try {
+								Assert.AreEqual(FDoubleArray[FDoubleArrayBegin + (stepSize * (i - startIndex)) % stream.Length], buffer[i], "Step size was: {0}, Buffer size was: {1}", stepSize, bufferSize);
+							} catch (Exception) {
+								
+								throw;
+							}
+						}
+						
+						for (int i = startIndex + length; i < buffer.Length; i++)
+							Assert.AreEqual(0.0, buffer[i], "Step size was: {0}, Buffer size was: {1}", stepSize, bufferSize);
+						
+						CheckArrayBoundaries();
+						reader.Reset();
+					}
 				}
 			}
 		}
@@ -170,40 +185,46 @@ namespace StreamTests
 		[Test]
 		public void TestWrite()
 		{
-			var stream = UnmanagedOutStream<double>.Create(ResizeUnmanagedArray);
+			var stream = UnmanagedOutStream.Create<double>(ResizeUnmanagedArray);
 			
-			var buffer = stream.CreateWriteBuffer();
-			for (int stepSize = 1; stepSize < FDoubleArray.Length; stepSize++)
+			var buffer = new double[16];
+			using (var writer = stream.GetWriter())
 			{
-				while (!stream.Eof)
+				for (int stepSize = 1; stepSize < FDoubleArray.Length; stepSize++)
 				{
-					stream.Write((double) stepSize, stepSize);
+					while (!writer.Eos)
+					{
+						writer.Write((double) stepSize, stepSize);
+					}
+					CheckArrayBoundaries();
+					writer.Reset();
 				}
-				CheckArrayBoundaries();
-				stream.Reset();
 			}
 		}
 		
 		[Test]
 		public void TestBufferedWrite()
 		{
-			var stream = UnmanagedOutStream<double>.Create(ResizeUnmanagedArray);
+			var stream = UnmanagedOutStream.Create<double>(ResizeUnmanagedArray);
 			
-			var buffer = stream.CreateWriteBuffer();
+			var buffer = new double[16];
 			buffer[1] = 3.0;
 			buffer[2] = 4.0;
 			
-			for (int stepSize = 1; stepSize < FDoubleArray.Length; stepSize++)
+			using (var writer = stream.GetWriter())
 			{
-				stream.Reset();
-				
-				int n = stream.Write(buffer, 1, 2, stepSize);
-				CheckArrayBoundaries();
-				
-				stream.Reset();
-				for (int i = 0; i < n; i++)
+				for (int stepSize = 1; stepSize < FDoubleArray.Length; stepSize++)
 				{
-					Assert.AreEqual(buffer[i + 1], FDoubleArray[FDoubleArrayBegin + i], "Step size was: {0}", stepSize);
+					writer.Reset();
+					
+					int n = writer.Write(buffer, 1, 2, stepSize);
+					CheckArrayBoundaries();
+					
+					writer.Reset();
+					for (int i = 0; i < n; i++)
+					{
+						Assert.AreEqual(buffer[i + 1], FDoubleArray[FDoubleArrayBegin + i], "Step size was: {0}", stepSize);
+					}
 				}
 			}
 		}

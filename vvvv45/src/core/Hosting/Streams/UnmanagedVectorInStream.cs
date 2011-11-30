@@ -28,6 +28,7 @@ namespace VVVV.Hosting.Streams
 				FDimension = stream.FDimension;
 				FUnmanagedLength = stream.FUnmanagedLength;
 				FUnderFlow = stream.FUnderFlow;
+				FPointer = FUnmanagedArray;
 			}
 			
 			public bool Eos
@@ -653,12 +654,62 @@ namespace VVVV.Hosting.Streams
 			
 			public override int Read(Vector3[] buffer, int index, int length, int stride)
 			{
-				throw new NotImplementedException();
+				int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+				
+				fixed (Vector3* destination = buffer)
+				{
+					Vector3* dst = destination + index;
+					Vector3D* src = (Vector3D*) FPointer;
+					
+					int numSlicesToReadAtFullSpeed = numSlicesToRead;
+					
+					// Check if we would read too much (for example unmanaged array is of size 7).
+					if (IsOutOfBounds(numSlicesToRead))
+					{
+						numSlicesToReadAtFullSpeed = Math.Max(numSlicesToReadAtFullSpeed - 1, 0);
+					}
+					
+					for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
+					{
+						*(dst++) = (*src).ToSlimDXVector();
+						src += stride;
+					}
+					
+					if (numSlicesToReadAtFullSpeed < numSlicesToRead)
+					{
+						int i = FUnmanagedLength - FUnderFlow;
+						dst->X = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+						dst->Y = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+						dst->Z = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+					}
+				}
+				
+				FPosition += numSlicesToRead * stride;
+				FPointer += numSlicesToRead * stride * FDimension;
+				
+				return numSlicesToRead;
 			}
 			
 			public override Vector3 Read(int stride)
 			{
-				throw new NotImplementedException();
+				Vector3 result;
+				
+				if (IsOutOfBounds(1))
+				{
+					int i = FUnmanagedLength - FUnderFlow;
+					result.X = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+					result.Y = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+					result.Z = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+				}
+				else
+				{
+					result = (*((Vector3D*) FPointer)).ToSlimDXVector();
+				}
+				
+				FPosition += stride;
+				FPointer += stride * FDimension;
+				
+				return result;
 			}
 		}
 		
@@ -687,12 +738,64 @@ namespace VVVV.Hosting.Streams
 			
 			public override int Read(Vector4[] buffer, int index, int length, int stride)
 			{
-				throw new NotImplementedException();
+				int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+				
+				fixed (Vector4* destination = buffer)
+				{
+					Vector4* dst = destination + index;
+					Vector4D* src = (Vector4D*) FPointer;
+					
+					int numSlicesToReadAtFullSpeed = numSlicesToRead;
+					
+					// Check if we would read too much (for example unmanaged array is of size 7).
+					if (IsOutOfBounds(numSlicesToRead))
+					{
+						numSlicesToReadAtFullSpeed = Math.Max(numSlicesToReadAtFullSpeed - 1, 0);
+					}
+					
+					for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
+					{
+						*(dst++) = (*src).ToSlimDXVector();
+						src += stride;
+					}
+					
+					if (numSlicesToReadAtFullSpeed < numSlicesToRead)
+					{
+						int i = FUnmanagedLength - FUnderFlow;
+						dst->X = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+						dst->Y = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+						dst->Z = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+						dst->W = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+					}
+				}
+				
+				FPosition += numSlicesToRead * stride;
+				FPointer += numSlicesToRead * stride * FDimension;
+				
+				return numSlicesToRead;
 			}
 			
 			public override Vector4 Read(int stride)
 			{
-				throw new NotImplementedException();
+				Vector4 result;
+				
+				if (IsOutOfBounds(1))
+				{
+					int i = FUnmanagedLength - FUnderFlow;
+					result.X = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+					result.Y = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+					result.Z = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+					result.W = (float) FUnmanagedArray[i++ % FUnmanagedLength];
+				}
+				else
+				{
+					result = (*((Vector4D*) FPointer)).ToSlimDXVector();
+				}
+				
+				FPosition += stride;
+				FPointer += stride * FDimension;
+				
+				return result;
 			}
 		}
 		

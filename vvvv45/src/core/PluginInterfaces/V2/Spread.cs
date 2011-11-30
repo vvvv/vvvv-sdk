@@ -19,7 +19,6 @@ namespace VVVV.PluginInterfaces.V2
 		public Spread(IIOStream<T> stream)
 		{
 			FStream = stream;
-			Sync();
 		}
 		
 		public Spread(int size)
