@@ -159,7 +159,7 @@ namespace VVVV.Hosting
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(NodeCollection).Assembly.Location));
             //allow plugin writers to add their own factories
-            var factoriesPath = Path.GetDirectoryName(typeof(HDEHost).Assembly.Location).ConcatPath("factories");
+            var factoriesPath = Path.GetDirectoryName(ExePath.ConcatPath(@"lib\factories"));
             if (Directory.Exists(factoriesPath))
                 catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
             Container = new CompositionContainer(catalog);
@@ -179,7 +179,7 @@ namespace VVVV.Hosting
             
             foreach (var factory in AddonFactories)
                 if (factory is PatchFactory)
-                    NodeCollection.Add(string.Empty, ExePath.ConcatPath(@"help\"), factory, true, false);
+                    NodeCollection.Add(string.Empty, ExePath.ConcatPath(@"lib\nodes\native\"), factory, true, false);
             
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             FWindowSwitcher = PluginFactory.CreatePlugin(windowSwitcherNodeInfo, null);
@@ -350,7 +350,7 @@ namespace VVVV.Hosting
             get
             {
                 if (FRootNode == null)
-                    FRootNode = Node.Create(null, FVVVVHost.Root, NodeInfoFactory);
+                    FRootNode = Node.Create(FVVVVHost.Root, NodeInfoFactory);
                 return FRootNode;
             }
         }

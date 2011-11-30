@@ -32,7 +32,7 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			SliceCount = FNodeIn.SliceCount;
 			
-			INodeIOBase usI;
+			object usI;
 			FNodeIn.GetUpstreamInterface(out usI);
 			var upstreamInterface = usI as IGenericIO;
 			

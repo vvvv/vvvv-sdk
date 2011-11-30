@@ -86,5 +86,15 @@ namespace VVVV.Core.Model
         {
             // TODO: Implement this
         }
+        
+		protected override void DoLoad()
+		{
+			// TODO: Implement this
+		}
+		
+		protected override void DoUnload()
+		{
+			// TODO: Implement this
+		}
     }
 }

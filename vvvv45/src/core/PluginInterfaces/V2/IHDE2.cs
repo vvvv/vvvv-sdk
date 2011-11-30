@@ -331,6 +331,7 @@ namespace VVVV.PluginInterfaces.V2
 		StatusCode Status
 		{
 			get;
+			set;
 		}
 		
 		StatusCode InnerStatus
@@ -342,6 +343,10 @@ namespace VVVV.PluginInterfaces.V2
 		int GetChildCount();
 		INode GetChild(int index);
 		INode[] GetChildren();
+		INode ParentNode
+		{
+			get;
+		}
 		
 		//todo: check GetPins mem leak?!
 		IPin[] GetPins();
@@ -417,6 +422,11 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <param name="listener">The listener to unregister.</param>
 		void RemoveListener(IPinListener listener);
+		
+		INode ParentNode
+		{
+			get;
+		}
 	    
 	    //int GetSliceCount();
 	    //enum GetDirection();

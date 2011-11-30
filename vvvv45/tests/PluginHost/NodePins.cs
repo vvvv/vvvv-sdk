@@ -11,7 +11,7 @@ namespace Hoster
 	{
 		private Guid[] FGuids;
 		private string FFriendlyName;
-		private INodeIOBase FTheInterface;
+		private object FTheInterface;
 		
 		public TNodePin(IPluginHost Parent, string PinName, TPinDirection Direction, TSliceMode SliceMode, TPinVisibility Visibility)
 		: base(Parent, PinName, 1, Direction, null, SliceMode, Visibility)
@@ -57,5 +57,16 @@ namespace Hoster
 		
 		override public void SetSpreadAsString(string Spread)
 		{}
+		
+		public void GetUpstreamInterface(out object UpstreamInterface)
+		{
+			//should return interface of upstream connected pin
+			UpstreamInterface = null;
+		}
+		
+		public void SetInterface(object TheInterface)
+		{
+			FTheInterface = TheInterface;
+		}
 	}	
 }

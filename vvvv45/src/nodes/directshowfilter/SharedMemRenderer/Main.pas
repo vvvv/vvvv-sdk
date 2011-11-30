@@ -79,7 +79,7 @@ Type
 implementation
 
 uses
-  SysUtils, DSUtil,
+  SysUtils, DXSUtil,
   SharedMemoryUtils;
 
 constructor TMPin.Create(ObjectName: string;pUnk: IUnKnown; Filter: TBCBaseFilter;

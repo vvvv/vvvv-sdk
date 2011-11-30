@@ -131,6 +131,11 @@ namespace Hoster
 			}
 			SliceCount = this.SliceCount;
 		}
+		
+		public void GetRenderWorldMatrix(int Index, out SlimDX.Matrix Value)
+		{
+			throw new NotImplementedException();
+		}
 	}	
 	
 	
