@@ -111,7 +111,7 @@ namespace VVVV.Hosting.Streams
 			{
 				if (value != FLength)
 				{
-					FUnmanagedArray = (double*) FResizeUnmanagedArrayFunc(value * FDimension).ToPointer();
+					FUnmanagedArray = (double*) FResizeUnmanagedArrayFunc(value).ToPointer();
 					FLength = value;
 					FUnmanagedLength = value * FDimension;
 					FUnderFlow = 0;

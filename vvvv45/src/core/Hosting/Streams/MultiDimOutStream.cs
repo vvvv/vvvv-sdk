@@ -4,25 +4,7 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.Streams
 {
-//	class MyPlugin<T>
-//	{
-//		IInStream<IInStream<T>> InStreams;
-//		IIOStream<IOutStream<T>> OutStreams;
-//
-//		public void Evaluate()
-//		{
-//			OutStreams.Length = InStreams.Length;
-//			while (!OutStreams.Eof)
-//			{
-//				var inStream = InStreams.Read();
-//				var outStream = OutStreams.Read();
-//
-//				OutStreams.Write(outStream);
-//			}
-//		}
-//	}
-	
-	public class MultiDimOutStream<T> : ManagedIOStream<ManagedIOStream<T>>
+	class MultiDimOutStream<T> : ManagedIOStream<IInStream<T>>
 	{
 		private readonly IOutStream<T> FDataStream;
 		private readonly IOutStream<int> FBinSizeStream;
@@ -65,16 +47,6 @@ namespace VVVV.Hosting.Streams
 			}
 			
 			base.Flush();
-		}
-		
-		protected override void BufferIncreased(ManagedIOStream<T>[] oldBuffer, ManagedIOStream<T>[] newBuffer)
-		{
-			Array.Copy(oldBuffer, newBuffer, oldBuffer.Length);
-			if (oldBuffer.Length > 0)
-			{
-				for (int i = oldBuffer.Length; i < newBuffer.Length; i++)
-					newBuffer[i] = new ManagedIOStream<T>();
-			}
 		}
 	}
 }

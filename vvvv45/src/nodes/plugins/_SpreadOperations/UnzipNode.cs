@@ -14,7 +14,7 @@ namespace VVVV.Nodes
 		protected IInStream<T> FInputStream;
 
 		[Output("Output", IsPinGroup = true)]
-		protected IIOStream<IOutStream<T>> FOutputStreams;
+		protected IInStream<IOutStream<T>> FOutputStreams;
 		
 		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
 		
@@ -23,7 +23,7 @@ namespace VVVV.Nodes
 			FOutputStreams.SetLengthBy(FInputStream);
 			
 			var outputStreamsLength = FOutputStreams.Length;
-			using (var reader = FInputStream.GetReader())
+			using (var reader = FInputStream.GetCyclicReader())
 			{
 				int i = 0;
 				foreach (var outputStream in FOutputStreams)
@@ -35,7 +35,7 @@ namespace VVVV.Nodes
 					{
 						while (!writer.Eos)
 						{
-							reader.ReadCyclic(FBuffer, 0, numSlicesToWrite, outputStreamsLength);
+							reader.Read(FBuffer, 0, numSlicesToWrite, outputStreamsLength);
 							writer.Write(FBuffer, 0, numSlicesToWrite);
 						}
 					}
@@ -51,7 +51,7 @@ namespace VVVV.Nodes
 	}
 	
 	[PluginInfo(Name = "Unzip", Category = "Spreads", Help = "Unzips a spread into multiple spreads", Tags = "")]
-	public class Value2dUnzipNode : UnzipNode<ISpread<double>>
+	public class Value2dUnzipNode : UnzipNode<IInStream<double>>
 	{
 		
 	}

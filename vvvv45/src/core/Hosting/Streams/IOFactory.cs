@@ -105,6 +105,11 @@ namespace VVVV.Hosting.Streams
 				attribute
 			);
 			
+			if (io == null)
+			{
+				throw new NotSupportedException(string.Format("Can't create {0} of type '{1}'.", attribute, type));
+			}
+			
 			if (io.IsBeforeEvalActionEnabled)
 			{
 				HookPluginNode();

@@ -136,7 +136,7 @@ namespace VVVV.Utils.Streams
 			outStream.Length = inputStreams.GetMaxLength() * inputStreams.Length;
 		}
 		
-		public static void SetLengthBy<T>(this IIOStream<IOutStream<T>> outputStreams, IInStream<T> inputStream)
+		public static void SetLengthBy<T>(this IInStream<IOutStream<T>> outputStreams, IInStream<T> inputStream)
 		{
 			int outputLength = outputStreams.Length;
 			int remainder = 0;

@@ -39,18 +39,16 @@ namespace VVVV.Hosting.Streams
 				{
 					// Compute offset
 					// TODO: Find faster solution.
-					int difference = value - FPosition;
-					int stride = 1;
-					if (difference < 0)
+					FBinSizeReader.Position = value;
+					for (int i = FPosition; i < value; i++)
 					{
-						stride = -1;
-						FBinSizeReader.Read(stride);
+						FCurrentOffset += FBinSizeReader.Read();
 					}
-					
-					for (int i = 0; i < Math.Abs(difference); i++)
+					for (int i = FPosition; i > value; i--)
 					{
-						FCurrentOffset += stride * FBinSizeReader.Read();
+						FCurrentOffset -= FBinSizeReader.Read();
 					}
+					FBinSizeReader.Position = value;
 					
 					FPosition = value;
 				}
@@ -91,9 +89,7 @@ namespace VVVV.Hosting.Streams
 				if (Eos) throw new InvalidOperationException("Stream is EOS.");
 				
 				int offset = FCurrentOffset;
-				int length = FBinSizeReader.Read(1);
-				FCurrentOffset += length;
-				
+				int length = FBinSizeReader.Read(0);
 				Position += stride;
 				
 				return new InnerStream(FStream.FDataStream, offset, length);
@@ -277,7 +273,7 @@ namespace VVVV.Hosting.Streams
 			FBinSizeStream = factory.CreateIO<IInStream<int>>(
 				new InputAttribute(string.Format("{0} Bin Size", attribute.Name))
 				{
-					BinSize = attribute.BinSize,
+					DefaultValue = attribute.BinSize,
 					AutoValidate = false
 				}
 			);
@@ -307,9 +303,10 @@ namespace VVVV.Hosting.Streams
 				FNormBinSizeStream.Length = binSizeLength;
 				using (var normBinSizeWriter = FNormBinSizeStream.GetWriter())
 				{
+					int numSlicesToRead = Math.Min(FBinSizeBuffer.Length, binSizeLength);
 					while (!binSizeReader.Eos)
 					{
-						int numSlicesRead = binSizeReader.Read(FBinSizeBuffer, 0, binSizeLength);
+						int numSlicesRead = binSizeReader.Read(FBinSizeBuffer, 0, numSlicesToRead);
 						for (int i = 0; i < numSlicesRead; i++)
 						{
 							FBinSizeBuffer[i] = SpreadUtils.NormalizeBinSize(dataLength, FBinSizeBuffer[i]);

@@ -505,6 +505,16 @@ namespace VVVV.Hosting.Streams.Registry
 			
 			RegisterOutput(typeof(IOutStream<>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
+			               	if (t.IsGenericType)
+			               	{
+			               		if (typeof(IInStream<>).MakeGenericType(t.GetGenericArguments()).IsAssignableFrom(t))
+			               		{
+			               			var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
+			               			var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
+			               			return IOHandler.Create(stream, null, null, s => s.Flush());
+			               		}
+			               	}
+			               	
 			               	if (t.BaseType == typeof(Enum))
 			               	{
 			               		var enumOut = host.CreateEnumOutput(attribute, t);
@@ -519,24 +529,24 @@ namespace VVVV.Hosting.Streams.Registry
 			               	}
 			               });
 			
-			RegisterOutput(typeof(IIOStream<>), (factory, attribute, t) => {
+			RegisterOutput(typeof(IInStream<>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	if (t.IsGenericType)
 			               	{
 			               		if (typeof(IOutStream<>).MakeGenericType(t.GetGenericArguments()).IsAssignableFrom(t))
 			               		{
-			               			var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
-			               			if (attribute.IsPinGroup)
+			               			var multiDimStreamType = typeof(GroupOutStream<>).MakeGenericType(t.GetGenericArguments().First());
+			               			if (!attribute.IsPinGroup)
 			               			{
-			               				multiDimStreamType = typeof(GroupOutStream<>).MakeGenericType(t.GetGenericArguments().First());
+			               				throw new NotSupportedException("IInStream<IOutStream<T>> can only be used as a pin group.");
 			               			}
 			               			
-			               			var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
-			               			return IOHandler.Create(stream, null, null, s => s.Flush());
+			               			var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IInStream;
+			               			return IOHandler.Create(stream, null);
 			               		}
 			               	}
 			               	
-			               	throw new NotSupportedException();
+			               	return null; // IOFactory will throw a NotSupportedException with a few more details.
 			               });
 			
 			RegisterOutput(typeof(IDXLayerIO), (factory, attribute, t) => {
@@ -750,12 +760,10 @@ namespace VVVV.Hosting.Streams.Registry
 		public IOHandler CreateIO(Type openIOType, Type closedIOType, IOFactory factory, IOAttribute attribute)
 		{
 			var ioDataType = closedIOType.GetGenericArguments().FirstOrDefault();
-			var ioName = "IO";
 			
 			var inputAttribute = attribute as InputAttribute;
 			if (inputAttribute != null)
 			{
-				ioName = "Input";
 				if (FInputDelegates.ContainsKey(closedIOType))
 					return FInputDelegates[closedIOType](factory, inputAttribute, ioDataType);
 				else if (FInputDelegates.ContainsKey(openIOType))
@@ -765,7 +773,6 @@ namespace VVVV.Hosting.Streams.Registry
 			var outputAttribute = attribute as OutputAttribute;
 			if (outputAttribute != null)
 			{
-				ioName = "Output";
 				if (FOutputDelegates.ContainsKey(closedIOType))
 					return FOutputDelegates[closedIOType](factory, outputAttribute, ioDataType);
 				else if (FOutputDelegates.ContainsKey(openIOType))
@@ -775,14 +782,13 @@ namespace VVVV.Hosting.Streams.Registry
 			var configAttribute = attribute as ConfigAttribute;
 			if (configAttribute != null)
 			{
-				ioName = "Config";
 				if (FConfigDelegates.ContainsKey(closedIOType))
 					return FConfigDelegates[closedIOType](factory, configAttribute, ioDataType);
 				else if (FConfigDelegates.ContainsKey(openIOType))
 					return FConfigDelegates[openIOType](factory, configAttribute, ioDataType);
 			}
 			
-			throw new NotSupportedException(string.Format("Can't create {0} of type '{1}'.", ioName, closedIOType));
+			throw new NotSupportedException(string.Format("Can't create {0} of type '{1}'.", attribute, closedIOType));
 		}
 		
 		static unsafe private Func<Tuple<IntPtr, int>> GetValuePointerFunc(IValueIn valueIn)

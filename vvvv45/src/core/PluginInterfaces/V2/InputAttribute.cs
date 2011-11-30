@@ -54,5 +54,10 @@ namespace VVVV.PluginInterfaces.V2
 			clonedInstance.CheckIfChanged = CheckIfChanged;
 			return base.Clone(clonedInstance);
 		}
+		
+		public override string ToString()
+		{
+			return "Input";
+		}
 	}
 }

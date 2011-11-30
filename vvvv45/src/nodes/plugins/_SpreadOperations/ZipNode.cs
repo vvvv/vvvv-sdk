@@ -55,7 +55,7 @@ namespace VVVV.Nodes
 	}
 	
 	[PluginInfo(Name = "Zip", Category = "Spreads", Help = "Zips spreads together", Tags = "")]
-	public class Value2dZipNode : ZipNode<ISpread<double>>
+	public class Value2dZipNode : ZipNode<IInStream<double>>
 	{
 
 	}

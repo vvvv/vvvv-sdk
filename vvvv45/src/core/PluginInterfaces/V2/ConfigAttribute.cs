@@ -15,5 +15,11 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			return base.Clone(new ConfigAttribute(Name));
 		}
+		
+		public override string ToString()
+		{
+			return "Config";
+		}
+
 	}
 }

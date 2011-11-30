@@ -16,5 +16,11 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			return base.Clone(new OutputAttribute(Name));
 		}
+		
+		public override string ToString()
+		{
+			return "Output";
+		}
+
 	}
 }

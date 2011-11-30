@@ -7,7 +7,7 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.Streams
 {
-	public class GroupOutStream<T> : IIOStream<IOutStream<T>>
+	public class GroupOutStream<T> : IInStream<IOutStream<T>>
 	{
 		private readonly ManagedIOStream<IOutStream<T>> FStreams = new ManagedIOStream<IOutStream<T>>();
 		private readonly List<IOHandler> FIOHandlers = new List<IOHandler>();
@@ -71,10 +71,6 @@ namespace VVVV.Hosting.Streams
 			{
 				return FStreams.Length;
 			}
-			set
-			{
-				throw new NotSupportedException();
-			}
 		}
 		
 		public IStreamReader<IOutStream<T>> GetReader()
@@ -82,22 +78,9 @@ namespace VVVV.Hosting.Streams
 			return FStreams.GetReader();
 		}
 		
-		public IStreamWriter<IOutStream<T>> GetWriter()
-		{
-			throw new NotSupportedException();
-		}
-		
 		public bool Sync()
 		{
 			return true;
-		}
-		
-		public void Flush()
-		{
-			foreach (var stream in FStreams)
-			{
-				stream.Flush();
-			}
 		}
 		
 		public object Clone()
