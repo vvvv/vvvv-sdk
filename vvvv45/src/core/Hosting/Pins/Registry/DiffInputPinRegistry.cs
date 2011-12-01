@@ -30,6 +30,8 @@ namespace VVVV.Hosting.Pins
             this.RegisterType(typeof(Vector2), (host, attribute, t) => new DiffVector2InputPin(host, attribute));
             this.RegisterType(typeof(Vector3), (host, attribute, t) => new DiffVector3InputPin(host, attribute));
             this.RegisterType(typeof(Vector4), (host, attribute, t) => new DiffVector4InputPin(host, attribute));
+            this.RegisterType(typeof(Quaternion), (host, attribute, t) => new DiffQuaternionInputPin(host, attribute));
+
 
         }
     }
