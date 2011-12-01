@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using System.Text;
+
+using NUnit.Framework;
 using VVVV.Core;
 using VVVV.Core.Collections;
 using VVVV.Core.Collections.Sync;
 
 namespace CoreTests
 {
-    [TestClass]
+    [TestFixture]
     public class Collections
     {
         public IEditableList<int> Numbers
@@ -26,7 +27,7 @@ namespace CoreTests
             private set;
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod1()
         {
             Numbers = new EditableList<int>();
