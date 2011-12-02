@@ -62,7 +62,10 @@
     <GetVersionInfo File="$(MSBuildThisFileDirectory)..\vvvv.exe">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </GetVersionInfo>
-    <Delete Files="$(MSBuildThisFileDirectory)..\lib\*.dtd" />
+    <ItemGroup>
+	  <DTDFiles Include="$(MSBuildThisFileDirectory)..\lib\*.dtd" />
+    </ItemGroup>
+    <Delete Files="@(DTDFiles)" />
     <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" 
           DestinationFiles="$(MSBuildThisFileDirectory)..\lib\$(VersionInfo).dtd" />
   </Target>
@@ -122,7 +125,8 @@
     </CreateItem>
     <Copy SourceFiles="@(OutputFiles)" 
           DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Exec Command="attrib +H $(TempDir)vvvv.exe.config" />
+    <Exec Command="attrib +R &quot;$(TempDir)lib\nodes\*.*&quot; /S /D" />
+    <Exec Command="attrib +H &quot;$(TempDir)vvvv.exe.config&quot;" />
     <Exec Command="vvvv.exe /nodelist" WorkingDirectory="$(TempDir)" />
     <CreateItem Include="$(TempDir)\**\*.*">
       <Output ItemName="ZipFiles" TaskParameter="Include" />
