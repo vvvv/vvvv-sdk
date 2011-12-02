@@ -15,6 +15,13 @@ namespace VVVV.Hosting.Pins
 
         private Dictionary<Type, PinCreateDelegate> delegates = new Dictionary<Type, PinCreateDelegate>();
 
+        private Dictionary<Type, PinCreateDelegate> delegatesbase = new Dictionary<Type, PinCreateDelegate>();
+
+        public void RegisterBaseType(Type openGenericType, PinCreateDelegate creator)
+        {
+            delegatesbase[openGenericType] = creator;
+        }
+
         public void RegisterType(Type openGenericType, PinCreateDelegate creator)
         {
             delegates[openGenericType] = creator;
@@ -22,12 +29,38 @@ namespace VVVV.Hosting.Pins
 
         public bool ContainsType(Type openGenericType)
         {
-            return this.delegates.ContainsKey(openGenericType);
+            if (this.delegates.ContainsKey(openGenericType))
+            {
+                return true;
+            }
+            else
+            {
+                foreach (Type t in delegatesbase.Keys)
+                {
+                    if (t.IsAssignableFrom(openGenericType)) { return true; }
+                }
+                return false;
+            }
         }
 
         public object CreatePin(Type openGenericType, IPluginHost host, Type closedGenericType, A attribute)
         {
-            return delegates[openGenericType](host, attribute, closedGenericType);
+            if (this.delegates.ContainsKey(openGenericType))
+            {
+                return this.delegates[openGenericType](host, attribute, closedGenericType);
+            }
+            else
+            {
+                foreach (Type t in delegatesbase.Keys)
+                {
+                    if (t.IsAssignableFrom(openGenericType))
+                    {
+                        return this.delegatesbase[t](host, attribute, closedGenericType);
+                    }
+                }
+                //Should never go there
+                return null;
+            } 
         }
     }
 }
