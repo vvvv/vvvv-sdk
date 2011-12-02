@@ -149,7 +149,7 @@ namespace VVVV.Nodes
 			if (FContext != null)
 			{
 				//FContext.StopGeneratingAll();
-				//FContext.Release();
+				FContext.Release();
 				FContext.Dispose();
 				FContext = null;
 			}
@@ -161,12 +161,11 @@ namespace VVVV.Nodes
 		/// <param name="FilePath"></param>
 		private void LoadContext(string FilePath)
 		{
-
 			//ty to open Kinect Context with given ConfigFilePath
 			try
 			{
 				ScriptNode Node;
-				FContext =new Context(FConfigPinIn[0]);
+				FContext = new Context(FConfigPinIn[0]);
 				FDefaultValuesOut[0] = false;
 			}
 			catch (StatusException ex)
