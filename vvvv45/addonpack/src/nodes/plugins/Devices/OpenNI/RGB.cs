@@ -3,7 +3,9 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Runtime.InteropServices;
-
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -11,16 +13,10 @@ using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2.EX9;
+using VVVV.Utils.SharedMemory;
 
 using OpenNI;
 using SlimDX.Direct3D9;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-
-
-
-
 #endregion usings
 
 namespace VVVV.Nodes
@@ -41,6 +37,9 @@ namespace VVVV.Nodes
 
         [Input("Enabled", IsSingle = true, DefaultValue = 1)]
         IDiffSpread<bool> FEnabledIn;
+        
+        [Input("Shared Name", IsSingle = true, DefaultString = "#vvvv")]
+        IDiffSpread<string> FSharedNamePin;        
 
         [Import()]
         ILogger FLogger;
@@ -52,12 +51,20 @@ namespace VVVV.Nodes
         private int FTexHeight;
 
         private bool FInit = true;
+        private Segment FSegment;
+        private IntPtr FImage;
         #endregion fields & pins
 
         // import host and hand it to base constructor
         [ImportingConstructor()]
         public Texture_Image(IPluginHost host): base(host)
         {
+        }
+        
+        ~Texture_Image()
+        {
+        	if (FSegment != null)
+				FSegment.Dispose();
         }
 
         #region Evaluate
@@ -82,6 +89,16 @@ namespace VVVV.Nodes
                         Reinitialize();
 
                         FInit = false;
+                        
+                       // if (FSharedNamePin.IsChanged)
+						{
+							if (FSegment != null)
+								FSegment.Dispose();
+			
+							int byteCount = FTexWidth*FTexHeight*3;
+							FSegment = new Segment(FSharedNamePin[0], SharedMemoryCreationFlag.Create, byteCount);
+							FImage = System.Runtime.InteropServices.Marshal.AllocHGlobal(byteCount);
+						}
                     }
                     catch (StatusException ex)
                     {
@@ -125,20 +142,42 @@ namespace VVVV.Nodes
         //calculate the pixels in evaluate and just copy the data to the device texture here
         unsafe protected override void UpdateTexture(int Slice, Texture texture)
         {
-            //lock the vvvv texture
-            byte* dest32 = (byte*)texture.LockRectangle(0, LockFlags.Discard).Data.DataPointer;
-                    
-            //get the pointer to the Rgb Image
+        	//get the pointer to the Rgb Image
             byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
 
-            //write the pixels
-            for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
+            //lock the vvvv texture
+            byte* dest32 = (byte*)texture.LockRectangle(0, LockFlags.Discard).Data.DataPointer;
+            
+            if (FSegment != null)
             {
-                dest32[0] = src24[2];
-                dest32[1] = src24[1];
-                dest32[2] = src24[0];
-                dest32[3] = 255;
+            	byte* share24 = (byte*) FImage;
+        		
+	            //write the pixels
+	            for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4, share24 += 3)
+	            {
+	                dest32[0] = src24[2];
+	                dest32[1] = src24[1];
+	                dest32[2] = src24[0];
+	                dest32[3] = 255;
+	                
+	                share24[0] = src24[2];
+	                share24[1] = src24[1];
+	                share24[2] = src24[0];
+	            }
+	            
+  				FSegment.Lock();
+  				FSegment.CopyByteArrayToSharedMemory(FImage, FTexWidth * FTexHeight * 3);
+				FSegment.Unlock();
+
             }
+            else //write the pixels         
+	            for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
+	            {
+	                dest32[0] = src24[2];
+	                dest32[1] = src24[1];
+	                dest32[2] = src24[0];
+	                dest32[3] = 255;
+	            }
             
             texture.UnlockRectangle(0);
         }

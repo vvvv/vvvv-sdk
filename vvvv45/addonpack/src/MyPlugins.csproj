@@ -6,8 +6,12 @@
     <AddonPluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</AddonPluginsOutputDir>
   </PropertyGroup>
   <ItemGroup>
-	<!-- IDE seems to need this line, MSBuild not? -->
-	<ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
+    <!-- IDE seems to need this line, MSBuild not? -->
+    <ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
+    <ProjectReference Include="nodes\plugins\Devices\OpenNI\Kinect.csproj">
+      <Project>{7C53C43F-300D-4767-A2C6-502A108D6964}</Project>
+      <Name>Kinect</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup>
     <ProjectReference>
@@ -20,7 +24,6 @@
       AddonpackBuild
     </BuildDependsOn>
   </PropertyGroup>
-
   <Target Name="AddonpackBuild">
     <!-- Delete all files which are already in lib/core -->
     <Delete Files="@(CoreOutputFiles->'$(AddonPluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
