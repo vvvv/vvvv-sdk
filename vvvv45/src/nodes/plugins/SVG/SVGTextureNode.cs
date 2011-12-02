@@ -62,7 +62,7 @@ namespace VVVV.Nodes
 		ISpread<SvgDoc> FDocOut;
 
 		[Output("Layer")]
-		ISpread<SvgElement> FLayerOut;
+		ISpread<ISpread<SvgElement>> FLayerOut;
 		
 		[Output("View")]
 		ISpread<SvgViewBox> FViewOut;
@@ -98,9 +98,25 @@ namespace VVVV.Nodes
 					if(doc != null)
 					{
 						FDocOut[i] = new SvgDoc(doc, FBackgroundIn[i].Color);
-						FLayerOut[i] = (SvgElement)doc.Children[0].Clone();
-						FViewOut[i] = doc.ViewBox;
-						FHasViewOut[i] = !doc.ViewBox.Equals(SvgViewBox.Empty);
+						
+						var spread = FLayerOut[i];
+						spread.SliceCount = doc.Children.Count;
+						
+						for(int j=0; j<spread.SliceCount; j++)
+						{
+							spread[j] = (SvgElement)doc.Children[j].Clone();
+						}
+						
+						var view = doc.ViewBox;
+						var noView = doc.ViewBox.Equals(SvgViewBox.Empty);
+						if(noView)
+						{
+							var bounds = doc.GetDimensions();
+							view = new SvgViewBox(0, 0, bounds.Width, bounds.Height);
+						}
+						
+						FViewOut[i] = view;
+						FHasViewOut[i] = !noView;
 						var size = doc.GetDimensions();
 						FSizeOut[i] = new Vector2D(size.Width, size.Height);
 						var hp = new SvgUnit(SvgUnitType.Percentage, 100);
