@@ -1,0 +1,93 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.1.dtd" >
+   <PATCH nodename="X:\vvvv33\help\PatchAlias (VVVV) help.v4p">
+   <BOUNDS type="Window" left="12435" top="1290" width="4200" height="9405">
+   </BOUNDS>
+   <NODE nodename="PatchAlias (VVVV)" id="0">
+   <BOUNDS type="Node" left="285" top="1230" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Parent Level" visible="1">
+   </PIN>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="GetPatch (VVVV)" id="6">
+   <BOUNDS type="Node" left="300" top="1905" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   <PIN pinname="Patch Description" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Patch" dstnodeid="6" dstpinname="Patch">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="7">
+   <BOUNDS type="Node" left="285" top="3390" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14400" top="8040" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="285" top="3390" width="3105" height="1785">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Patch Description" dstnodeid="7" dstpinname="Input String" linkstyle="VHV">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="285" top="855" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9480" top="5670" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="285" top="855" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Parent Level">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="225" top="240" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="420" left="225" top="240" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="160" left="10530" top="40530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|PatchAlias (VVVV)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="270" left="345" top="5385" type="Node" width="6870">
+   </BOUNDS>
+   <BOUNDS height="3105" left="345" top="5385" type="Box" width="3285">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|This node is just a control node.&cr;&lf;It returns only a link to a running patch.&cr;&lf;&cr;&lf;Select a parent level to select a patch.&cr;&lf;&cr;&lf;0 = Itself&cr;&lf;1 = Its parent&cr;&lf;2 = Its grand parent&cr;&lf;....&cr;&lf;&cr;&lf;If you want to get a link of a Child-Patch (Subpatch) select the Subpatch and use the&cr;&lf;Inspektor to make the Patch-Output-Pin visible.&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13">
+   <BOUNDS type="Node" left="1260" top="840" width="1680" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1260" top="840" width="2100" height="285">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;-- Change the parent level|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

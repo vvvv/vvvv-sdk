@@ -1,0 +1,167 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="V:\releases\vvvv_33beta9a\help\Teapot (EX9.Geometry) help.v4p">
+   <BOUNDS height="3600" left="4095" top="2070" type="Window" width="5625">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="9" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="2970" top="765" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5820" left="9150" top="2925" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="2130" left="2970" top="765" type="Box" width="2370">
+   </BOUNDS>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.70972,0.70972,0.70972,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="195" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="Solid">
+   </PIN>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="195" top="975" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Blend">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Render State In" srcnodeid="7" srcpinname="Render State Out">
+   </LINK>
+   <NODE id="6" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="1830" top="960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="1245" top="1410" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Z" linkstyle="PolyLine" srcnodeid="6" srcpinname="Output">
+   <LINKPOINT x="1860" y="1125">
+   </LINKPOINT>
+   <LINKPOINT x="1860" y="1125">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y" linkstyle="PolyLine" srcnodeid="6" srcpinname="Output">
+   <LINKPOINT x="1860" y="1320">
+   </LINKPOINT>
+   <LINKPOINT x="1665" y="1320">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="4" nodename="Teapot (EX9.Geometry)">
+   <BOUNDS height="0" left="345" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="3" managers="" nodename="UniformScale (Transform)">
+   <PIN pinname="Transform In" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" pintype="Input" slicecount="1" visible="1" values="1.01">
+   </PIN>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1245" top="1860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Transform In" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="2490">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="45240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|creates the classic Teapot|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="2880">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="45240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Teapot - EX9.Geometry|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename=":EFFECTS:\FlatDirectional.fx">
+   <BOUNDS height="0" left="195" top="2580" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|1.00000,1.00000,1.00000,0.00000|">
+   </PIN>
+   <BOUNDS left="195" top="2580" type="Box">
+   </BOUNDS>
+   <PIN pinname="Specular Light" slicecount="1" values="|0.068637,0.068637,0.049968,1.000000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Render State" linkstyle="VHV" srcnodeid="8" srcpinname="Render State Out">
+   <LINKPOINT x="225" y="2445">
+   </LINKPOINT>
+   <LINKPOINT x="225" y="2445">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Mesh" srcnodeid="4" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Transform" linkstyle="PolyLine" srcnodeid="3" srcpinname="Transform Out">
+   <LINKPOINT x="1275" y="2430">
+   </LINKPOINT>
+   <LINKPOINT x="690" y="2430">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   <LINKPOINT x="210" y="2865">
+   </LINKPOINT>
+   <LINKPOINT x="2790" y="2865">
+   </LINKPOINT>
+   <LINKPOINT x="2790" y="795">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

@@ -1,0 +1,281 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\effects\Bicubic help.v4p" componentmode="InAWindow">
+   <BOUNDS height="9120" left="285" top="795" type="Window" width="7620">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="16" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="255" top="7920" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="8400" left="7890" top="795" type="Window" width="8220">
+   </BOUNDS>
+   <BOUNDS height="1800" left="255" top="7920" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="855" top="6435" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="2070" top="4545" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="|..\..\assets\images\ring thin.bmp|" encoded="0">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS height="0" left="1455" top="5970" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="INFO (EX9.TEXTURE)" systemname="Info (EX9.Texture)">
+   <BOUNDS height="270" left="2910" top="5595" type="Node" width="600">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Type" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Format Description" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Levels" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Depth" pintype="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
+   <BOUNDS height="0" left="2910" top="6030" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="X" srcnodeid="12" srcpinname="Width">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Y" srcnodeid="12" srcpinname="Height">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="5055" top="6120" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6825" top="11910" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="945" left="5055" top="6120" type="Box" width="1635">
+   </BOUNDS>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="| Bicubic|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1215" top="5475" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2025" top="4785" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1215" top="5475" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="-0.38">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="XYZ" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="120" type="Node" width="270">
+   </BOUNDS>
+   <BOUNDS height="450" left="255" top="120" type="Box" width="1575">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Bicubic.fx" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="270" top="585" type="Node" width="1755">
+   </BOUNDS>
+   <BOUNDS height="3735" left="270" top="585" type="Box" width="6225">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|bicubic texture filtering. provides a much better picture upscaling quality than the usual linear interpolation.&cr;&lf;using it in your own shader is quite simple:&cr;&lf;write:&cr;&lf;&cr;&lf;#include &quot;Bicubic.fxh&quot;&cr;&lf;&cr;&lf;in your shader and make sure the Bicubic.fxh is in the same folder as your shader. this creates 2 input input pins. one for width and hight of the input texture in pixels and the other for the BicubicFilterKernel.hdr texture.&cr;&lf;&cr;&lf;then just write:&cr;&lf;tex2Dbicubic(Samp, In.TexCd);&cr;&lf;&cr;&lf;instad of:&cr;&lf;tex2D(Samp, In.TexCd);&cr;&lf;|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2940" top="4965" type="Node" width="1830">
+   </BOUNDS>
+   <BOUNDS height="555" left="2940" top="4965" type="Box" width="1110">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|texture width and hight|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Texture" srcnodeid="14" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="5" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="4470" top="5505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="4470" top="4770" type="Node" width="1065">
+   </BOUNDS>
+   <BOUNDS height="240" left="4470" top="4770" type="Box" width="1635">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|filter kernel texture|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4470" top="5100" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="285" left="4470" top="5100" type="Box" width="1950">
+   </BOUNDS>
+   <BOUNDS height="160" left="5520" top="7155" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="BicubicFilterKernel.hdr" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Filename" srcnodeid="3" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3075" top="6585" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="510" left="3075" top="6585" type="Box" width="840">
+   </BOUNDS>
+   <BOUNDS height="160" left="3570" top="8790" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="11" srcpinname="XY">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6255" top="8385" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="285" left="6255" top="8385" type="Box" width="1050">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|tonfilm &apos;08|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="0" nodename=":EFFECTS:\Bicubic.fx" systemname="Bicubic (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Bicubic.fx">
+   <BOUNDS height="270" left="255" top="7380" type="Node" width="6060">
+   </BOUNDS>
+   <BOUNDS height="6000" left="255" top="7380" type="Box" width="6000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="imageTexture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <BOUNDS height="12000" left="1320" top="8640" type="Window" width="12000">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="e x XY" visible="1">
+   </PIN>
+   <PIN pinname="e y XY" visible="1">
+   </PIN>
+   <PIN pinname="size source XY" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="pix XY" visible="1">
+   </PIN>
+   <PIN pinname="Filter Texture" visible="1">
+   </PIN>
+   <PIN pinname="t">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Mesh" srcnodeid="15" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Technique" srcnodeid="10" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Texture" srcnodeid="14" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Filter Texture" srcnodeid="5" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="size source XY" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   </PATCH>

@@ -1,0 +1,703 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\Desktop\vvvvs\vvvv_45beta24.1\help\Automata (Animation) help.v4p">
+   <BOUNDS height="15210" left="12150" top="165" type="Window" width="15960">
+   </BOUNDS>
+   <NODE id="32" nodename="Automata (Animation)">
+   <BOUNDS height="270" left="3105" top="8175" type="Node" width="2220">
+   </BOUNDS>
+   <PIN pinname="Quadrupels (from, event, to, action)" slicecount="1" values="|reset OnSet set DoSet&cr;&lf;set OnReset reset DoReset|">
+   </PIN>
+   <PIN pinname="OnSet" visible="1">
+   </PIN>
+   <PIN pinname="OnReset" visible="1">
+   </PIN>
+   <PIN pinname="Current state" visible="1">
+   </PIN>
+   <PIN pinname="DoSet" visible="1">
+   </PIN>
+   <PIN pinname="Error messages" visible="1">
+   </PIN>
+   <PIN pinname="DoReset" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="31" nodename="IOBox (String)">
+   <BOUNDS height="17745" left="3000" top="1305" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="3075" left="3000" top="1305" type="Box" width="9780">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The automata is about deterministic finite state automata&cr;&lf;The automata is defined by writing a program in a kind of programming language.&cr;&lf;&cr;&lf;Graphical programming is fine for data flow, but it gets in your way when dealing with complex if-then-else structures evolving over time. Sooner or later your patches tend to have counters, flipflops, framedelays and lots of logic nodes.&cr;&lf;The main idea of the automata node within vvvv is being able to distill complex logic into a textual description into one node. Note that the logic will be very distilled and you might probably start with very little amounts of it to get amazing results.&cr;&lf;&cr;&lf;For a start open the Inspektor and view the Quadrupels pin of the Automata node. The Quadrupels pin expect a string in a special programming language. This is where the logic gets. The automata language has a very minimalisitic approach: it is just a string of so called quadruples (computer science people tend to call structures with four elements quadruples). All Quadruples are separated by new lines.&cr;&lf;&cr;&lf;Each line in this language consists of four separate tokens separated by three spaces:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="30" nodename="IOBox (String)">
+   <BOUNDS height="420" left="3240" top="4425" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="555" left="3240" top="4425" type="Box" width="2025">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CODE&cr;&lf;from event to action|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="29" nodename="IOBox (String)">
+   <BOUNDS height="420" left="3270" top="5415" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="855" left="3270" top="5415" type="Box" width="2550">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CODE&cr;&lf;reset OnSet set DoSet&cr;&lf;set OnReset reset DoReset|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="28" nodename="IOBox (String)">
+   <BOUNDS height="17745" left="3000" top="13365" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="1350" left="3000" top="13365" type="Box" width="10035">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The automata continuously loops through the code and checks the if causes - for each quadruple a new tests gets inserted. Thats basically all the automata does, but it&apos;s amazing how simple certain problems get when formulated this way.&cr;&lf;&cr;&lf;Comments&cr;&lf;&cr;&lf;A double slash will mark a line as comment. You can use whitespaces and blank lines as will|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="27" nodename="IOBox (String)">
+   <BOUNDS height="17745" left="3030" top="5040" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="345" left="3030" top="5040" type="Box" width="3345">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|therefore a typical program might look like|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)">
+   <BOUNDS height="17745" left="3015" top="6255" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="855" left="3015" top="6255" type="Box" width="5625">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|But what does this simple program do?&cr;&lf;&cr;&lf;After you enter the program you will notice four additional pins at the node:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2730" top="7395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1695" top="6660" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="2730" top="7395" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="OnSet">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="32" dstpinname="OnSet" srcnodeid="25" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4890" top="7380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1995" top="6960" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="4890" top="7380" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="OnReset">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="32" dstpinname="OnReset" srcnodeid="24" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2280" top="8610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3360" top="7740" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="2280" top="8610" type="Box" width="870">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Input String" srcnodeid="32" srcpinname="Current state">
+   </LINK>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3420" top="8625" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1995" top="6960" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="3420" top="8625" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="DoSet">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Y Input Value" srcnodeid="32" srcpinname="DoSet">
+   </LINK>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4155" top="8625" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2295" top="7260" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="4155" top="8625" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="DoReset">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Y Input Value" srcnodeid="32" srcpinname="DoReset">
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <BOUNDS height="17745" left="3000" top="9570" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="2235" left="3000" top="9570" type="Box" width="10125">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|For each event in your program a boolean input pin gets created. For each action a boolean outpt pin gets created.&cr;&lf;&cr;&lf;Events, modes and actions in your quadruples can have any name - its not necessary to prefix events with On and actions with Do, but it helps you to distinguish between the names.&cr;&lf;&cr;&lf;Now play with the input pins in the inspector: As soon as you set DoSet from 0 to 1, the mode gets switched to reset and vice versa -- the program implements a flipflop.&cr;&lf;&cr;&lf;A way to understand the program is to consider the folloiwing pseudocode written in a procedural language similar to c or java. this is how the automata internally works when the above quadruples programmed:&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="420" left="3165" top="11895" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="1275" left="3165" top="11895" type="Box" width="7245">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CODE&cr;&lf;do forever (&cr;&lf; if (currentstate=reset) and (input=OnSet) then (currentstate:=set) and (DoSet)&cr;&lf; if (currentstate=set) and (input=OnReset) then (currentstate:=reset) and (DoReset)&cr;&lf;)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="17745" left="3000" top="16425" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="1035" left="3000" top="16425" type="Box" width="9870">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Monoflops&cr;&lf;&cr;&lf;You can write numbers for the event which means it will trigger automatically after n seconds. so you can implement monoflops and blinkenlights.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="420" left="3165" top="14835" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="1395" left="3165" top="14835" type="Box" width="2655">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CODE&cr;&lf;// a simple flipflop&cr;&lf;&cr;&lf;reset OnSet set DoSet&cr;&lf;set   OnReset reset DoReset|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="17745" left="2880" top="19560" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="1380" left="2880" top="19560" type="Box" width="9660">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Spreads&cr;&lf;You can spread the event pins and get spreaded events. Each slice will manage its own state. All slices share the same program though.&cr;&lf;&cr;&lf;&cr;&lf;References&cr;&lf;Automata are a well known concept in computer science - google for Finite State Machine, Finite State Automata or Mealey Machine|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="420" left="3180" top="17610" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="1470" left="3180" top="17610" type="Box" width="2115">
+   </BOUNDS>
+   <BOUNDS height="160" left="1200" top="1200" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CODE&cr;&lf;// simple chaser&cr;&lf;&cr;&lf;m0 1 m1 a0&cr;&lf;m1 1 m2 a1&cr;&lf;m2 1 m0 a2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8085" top="17610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1995" top="6960" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="8085" top="17610" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="reset">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="0" left="7635" top="18840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3660" top="8040" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="7635" top="18840" type="Box" width="870">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8775" top="18840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2295" top="7260" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="8775" top="18840" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9360" top="18840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2595" top="7560" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="9360" top="18840" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="10" managers="" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS height="0" left="10215" top="17580" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="465" left="10215" top="17580" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="2295" top="7260" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="0">
+   </PIN>
+   </NODE>
+   <NODE id="-4" nodename="MainLoop (VVVV)">
+   <BOUNDS height="0" left="11385" top="17940" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Maximum forground fps" slicecount="1" values="30">
+   </PIN>
+   <PIN pinname="Maximum background fpsS" slicecount="1" values="30">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9975" top="18840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2895" top="7860" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="9975" top="18840" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="8" managers="" nodename="Automata (Animation)">
+   <PIN pinname="a2" visible="1">
+   </PIN>
+   <PIN pinname="a1" visible="1">
+   </PIN>
+   <PIN pinname="a0" visible="1">
+   </PIN>
+   <PIN pinname="onReset" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Quadrupels (from, event, to, action)" pintype="Configuration" slicecount="1" values="|// simple chaser&cr;&lf;m0 onReset m0 r&cr;&lf;m1 onReset m0 r&cr;&lf;m2 onReset m0 r&cr;&lf;&cr;&lf;m0 1 m1 a0&cr;&lf;m1 1 m2 a1&cr;&lf;m2 1 m0 a2|">
+   </PIN>
+   <BOUNDS height="270" left="8460" top="18405" type="Node" width="2220">
+   </BOUNDS>
+   <PIN pinname="OnSet" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="OnReset" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Current state" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="DoSet" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Error messages" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="DoReset" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="8" srcpinname="a1">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Y Input Value" srcnodeid="8" srcpinname="a0">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Input String" srcnodeid="8" srcpinname="Current state">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" srcnodeid="8" srcpinname="a2">
+   </LINK>
+   <NODE id="7" nodename="ShellExecute (Windows)">
+   <BOUNDS height="0" left="2985" top="23310" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="File" slicecount="3" visible="1" values="http://www.fastgraph.com/fsm.html,http://en2.wikipedia.org/wiki/Finite_state_machine,http://en2.wikipedia.org/wiki/Mealy_machine">
+   </PIN>
+   <PIN pinname="Do Execute" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="6" managers="" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="open">
+   </PIN>
+   <BOUNDS height="0" left="3825" top="22395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="465" left="3825" top="22395" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="2595" top="7560" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Do Execute" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2955" top="21345" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7425" top="13755" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="870" left="2955" top="21345" type="Box" width="4065">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input String" slicecount="3" values="http://www.fastgraph.com/fsm.html,http://en2.wikipedia.org/wiki/Finite_state_machine,http://en2.wikipedia.org/wiki/Mealy_machine">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="GetSlice (String)">
+   <BOUNDS height="0" left="2970" top="22920" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="File" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="onReset" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3255" top="22395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8430" top="9435" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3255" top="22395" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="url#">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Index" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="750" left="4410" top="22410" type="Node" width="4365">
+   </BOUNDS>
+   <BOUNDS height="1215" left="4410" top="22410" type="Box" width="4755">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt;&lt;&lt; &cr;&lf;these nodes form a little link chooser.&cr;&lf;Select the Number of the URL you want to visit and bang &quot;open&quot; to&cr;&lf;open a browser window, which will display the selected page.&cr;&lf;No more copy and paste!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="15" top="390" type="Box" width="6975">
+   </BOUNDS>
+   <BOUNDS height="160" left="210" top="4890" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Write a program in a kind of programming language to control complex if-then-else structures.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="210" top="4890" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Automata - Animation|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>

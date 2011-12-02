@@ -1,0 +1,441 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\TreeView (String Advanced) help.v4p">
+   <BOUNDS height="11655" left="90" top="1380" type="Window" width="10065">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="27" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2595" top="2670" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="300" left="2595" top="2670" type="Box" width="3480">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="447" visible="1" values="c:\root\subdir\subsbdir\filename.ext">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)">
+   <BOUNDS height="0" left="90" top="4545" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7905" top="8805" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="6585" left="90" top="4545" type="Box" width="2580">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="26">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2730" top="4530" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7020" top="8010" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="6600" left="2730" top="4530" type="Box" width="750">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="26">
+   </PIN>
+   </NODE>
+   <NODE id="24" nodename="Dir (File)">
+   <BOUNDS height="0" left="5775" top="675" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Directory" visible="1">
+   </PIN>
+   <PIN pinname="Include Hidden" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Include Subdirectories" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Filenames" visible="1">
+   </PIN>
+   <PIN pinname="Mask" slicecount="1" visible="1" values="*.*">
+   </PIN>
+   <PIN pinname="doRescan" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="23" nodename="SystemFolder (File)">
+   <BOUNDS height="0" left="5940" top="270" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Folder" slicecount="1" values="Application">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Directory" srcnodeid="23" srcpinname="Output">
+   </LINK>
+   <NODE id="22" nodename="Text (GDI)">
+   <BOUNDS height="0" left="3705" top="7755" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="HorizontalAlign" slicecount="1" values="Left">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Pen Color" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="21" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="3690" top="8385" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="11655" left="10170" top="1395" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="1800" left="3690" top="8385" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="Count (String)">
+   <BOUNDS height="0" left="5760" top="4740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="I (Spreads)">
+   <BOUNDS height="0" left="5565" top="6045" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname=".. To [" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname=".. To [" srcnodeid="20" srcpinname="Count">
+   </LINK>
+   <NODE id="18" nodename="Map (Value)">
+   <BOUNDS height="0" left="5550" top="6540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Source Maximum" slicecount="1" values="55">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="0.9">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="-0.9">
+   </PIN>
+   <PIN pinname="Source Minimum" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Input" srcnodeid="19" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Y" linkstyle="PolyLine" srcnodeid="18" srcpinname="Output">
+   <LINKPOINT x="5580" y="7155">
+   </LINKPOINT>
+   <LINKPOINT x="3885" y="7155">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="17" nodename="Map (Value)">
+   <BOUNDS height="0" left="4560" top="6525" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Source Maximum" slicecount="1" values="16.2">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="-0.9">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="0.9">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="X" linkstyle="PolyLine" srcnodeid="17" srcpinname="Output">
+   <LINKPOINT x="4590" y="7020">
+   </LINKPOINT>
+   <LINKPOINT x="3735" y="7020">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="16" nodename="TreeView (String Advanced)">
+   <BOUNDS height="270" left="2610" top="3855" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Depth" visible="1">
+   </PIN>
+   <PIN pinname="Levels" slicecount="1" values="9">
+   </PIN>
+   <PIN pinname="Input Cursor Index" slicecount="1" visible="1" values="20.00000">
+   </PIN>
+   <PIN pinname="Output Cursor Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input" srcnodeid="27" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Y Input Value" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="16" srcpinname="Depth">
+   <LINKPOINT x="2940" y="4395">
+   </LINKPOINT>
+   <LINKPOINT x="3450" y="4320">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Text" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="16" srcpinname="Output">
+   <LINKPOINT x="2640" y="4410">
+   </LINKPOINT>
+   <LINKPOINT x="4350" y="4410">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Input" linkstyle="PolyLine" srcnodeid="16" srcpinname="Depth">
+   <LINKPOINT x="2925" y="4230">
+   </LINKPOINT>
+   <LINKPOINT x="4590" y="4230">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="15" nodename="FileName (File Split)">
+   <BOUNDS height="0" left="5790" top="1035" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="Shortname" visible="1">
+   </PIN>
+   <PIN pinname="Extension" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Caps (String)">
+   <BOUNDS height="0" left="5490" top="1545" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Caps Mode" slicecount="1" values="UpperCase">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input" srcnodeid="15" srcpinname="Path">
+   </LINK>
+   <NODE id="13" nodename="Add (String)">
+   <BOUNDS height="0" left="6000" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="447" visible="1" values=".,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input 1" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="27" dstpinname="Input String" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Filename" srcnodeid="24" srcpinname="Filenames">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Input 2" srcnodeid="15" srcpinname="Shortname">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Input 4" srcnodeid="15" srcpinname="Extension">
+   </LINK>
+   <NODE id="12" nodename="SetSlice (Spreads)">
+   <BOUNDS height="0" left="6945" top="6120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread" visible="1">
+   </PIN>
+   <PIN pinname="Slice Index" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="HSL (Color Join)">
+   <BOUNDS height="0" left="6585" top="6525" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Hue" slicecount="1" values="0.19333">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Pen Color" linkstyle="PolyLine" srcnodeid="11" srcpinname="Output">
+   <LINKPOINT x="6615" y="7410">
+   </LINKPOINT>
+   <LINKPOINT x="5280" y="7410">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="10" nodename="Resample (Spreads)">
+   <BOUNDS height="0" left="6405" top="5655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0.4">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Spread" linkstyle="VHV" srcnodeid="10" srcpinname="Output">
+   <LINKPOINT x="6435" y="5985">
+   </LINKPOINT>
+   <LINKPOINT x="6975" y="5985">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Spread Count" linkstyle="VHV" srcnodeid="20" srcpinname="Count">
+   <LINKPOINT x="5790" y="5355">
+   </LINKPOINT>
+   <LINKPOINT x="7275" y="5355">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Lightness" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <NODE id="9" nodename="Subtract (Value)">
+   <BOUNDS height="0" left="7590" top="5010" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input 1" linkstyle="PolyLine" srcnodeid="16" srcpinname="Output Cursor Index">
+   <LINKPOINT x="3195" y="4170">
+   </LINKPOINT>
+   <LINKPOINT x="7620" y="4170">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Slice Index" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="26" dstpinname="Input String" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Input" linkstyle="PolyLine" srcnodeid="16" srcpinname="Output">
+   <LINKPOINT x="2640" y="4305">
+   </LINKPOINT>
+   <LINKPOINT x="5790" y="4305">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7890" top="2640" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8565" top="4470" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="405" left="7890" top="2640" type="Box" width="765">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input Cursor Index" linkstyle="VHV" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="7" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="8625" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Map (Value)">
+   <BOUNDS height="0" left="8610" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="30">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE id="5" nodename="Frac (Value)">
+   <BOUNDS height="0" left="8610" top="2220" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Whole Part" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="5" srcpinname="Whole Part">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="8685" top="2715" type="Node" width="1035">
+   </BOUNDS>
+   <BOUNDS height="255" left="8685" top="2715" type="Box" width="1035">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|selected file|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="8730" top="10545" type="Node" width="855">
+   </BOUNDS>
+   <BOUNDS height="255" left="8730" top="10545" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="TreeView (String)">
+   <BOUNDS height="0" left="8790" top="10815" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1170" left="15" top="390" type="Box" width="4500">
+   </BOUNDS>
+   <BOUNDS height="160" left="10500" top="43560" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tree View takes a input directory and creates a string of directories and files, where each item recieves a &quot;Depth&quot;, that states how far it is from the root directory.&cr;&lf;The Advanced Node offers also the possibility to collapse the branches of the tree and to highlight certain files/folders.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10500" top="43560" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|TreeView - String Advanced|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Layer" dstnodeid="21" dstpinname="Layers">
+   </LINK>
+   </PATCH>

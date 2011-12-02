@@ -1,0 +1,49 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.6.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\patches\beispiel patches\ODE\ODE_rigid_bodies (help).v4p">
+   <BOUNDS height="6990" left="6690" top="2295" type="Window" width="12825">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="750" left="165" top="720" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="3930" left="165" top="720" type="Box" width="11715">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|A rigid body has various properties from the point of view of the simulation.&cr;&lf;&cr;&lf;Some properties change over time:&cr;&lf;• Position vector (x,y,z) of the body’s point of reference. Currently the point of reference must correspond to the body’s center of mass.&cr;&lf;• Linear velocity of the point of reference, a vector (vx,vy,vz).&cr;&lf;• Orientation of a body, represented by a quaternion (qs,qx,qy,qz) or a 3x3 rotation matrix.&cr;&lf;• Angular velocity vector (wx,wy,wz) which describes how the orientation changes over time.&cr;&lf;&cr;&lf;Other body properties are usually constant over time:&cr;&lf;• Mass of the body.&cr;&lf;• Position of the center of mass with respect to the point of reference. In the current implementation the center of mass and the point of reference must coincide.&cr;&lf;• Inertia matrix. This is a 3x3 matrix that describes how the body’s mass is distributed around the center of mass.&cr;&lf;&cr;&lf;Conceptually each body has an x-y-z coordinate frame embedded in it, that moves and rotates with the body.&cr;&lf;The origin of this coordinate frame is the body’s point of reference. Some values in ODE (vectors, matrices etc) are relative to the body coordinate frame, and others are relative to the global coordinate frame.&cr;&lf;Note that the shape of a rigid body is not a dynamical property (except insofar as it influences the various mass properties). It is only collision detection that cares about the detailed shape of the body.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="165" top="120" type="Node" width="1050">
+   </BOUNDS>
+   <BOUNDS height="330" left="165" top="120" type="Box" width="1950">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|RIGID BODIES|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="420" left="225" top="5655" type="Node" width="2790">
+   </BOUNDS>
+   <BOUNDS height="510" left="225" top="5655" type="Box" width="5805">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Text taken out of ODE&apos;s documentation (http://ode.org/ode-docs.html)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

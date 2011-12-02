@@ -1,0 +1,389 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha22.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vvvv_trunk\help\VideoTexture (EX9.Texture VMR9 YUVMixingMode) help.v4p">
+   <BOUNDS height="13485" left="1065" top="1245" type="Window" width="14040">
+   </BOUNDS>
+   <NODE id="25" nodename="FileStream (DShow9)">
+   <BOUNDS height="0" left="360" top="2760" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Play" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Do Seek" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Loop" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="End Time" slicecount="1" values="9999">
+   </PIN>
+   </NODE>
+   <NODE id="24" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="465" top="4365" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="8910" top="1950" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="11925" top="6690" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3750" left="8910" top="1950" type="Box" width="4830">
+   </BOUNDS>
+   <PIN pinname="Global Visual Range">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)">
+   <BOUNDS height="420" left="750" top="5925" type="Node" width="1560">
+   </BOUNDS>
+   <BOUNDS height="6645" left="750" top="5925" type="Box" width="5205">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Texture Size Mode: the videotexture node copies the videos frames from system to video memory, onto a texture. in videomemory usually textures with side length of powers of two (i.e. 4, 16, 32, 64, 128, 256, 512,..) are preferred for performance reasons. in Pow2Stretched mode the videoframe is being copied onto a texture with the next largest width and height that are a power of 2. that copyprocess may cause stretching which means that to see your video with the right aspectratio you&apos;ll have to scale the receiving geometry accordingly. &cr;&lf;most current graphiccards support non power of 2 textures which means that no stretching will be involved in the copy operation. which mode is better for a specific case depends on too many factors to make a general recommendation here. if you don&apos;t see a difference with one video you may experience one with another.&cr;&lf;for now the VideoTexture node has two annoying pins. we&apos;ll try to get rid of them in future versions. here is what they are good for:&cr;&lf;&cr;&lf;Wait for every Nth frame:  to playback video without any jitter you&apos;ll first have to make sure your monitors refreshrate is a multiple of your videos framerate. e.g. if your video has 25fps your monitor must be set to 50hz, 75hz,... or if your video has 30fps your monitor must be set to 60hz, 90hz,...&cr;&lf;now also vvvvs mainloop framerate needs to become a multiple of the monitors refreshrate and the videos fps. by setting this pins value to 1 vvvvs framerate will be throttled to the videos framerate. by setting it to 2 it will be throttled to twice the videos framerate... so if your video is 25fps and you want your monitor to have 50hz you set this value to 2. if your monitor has 75hz you set this value to 3. &cr;&lf;&cr;&lf;also related is the renderers &quot;Presentation Interval&quot; pin. values of &quot;default&quot; or &quot;wait for frame&quot; there mean that vvvvs mainloop is throttled to the monitors refresh rate.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <BOUNDS height="420" left="1485" top="1410" type="Node" width="4050">
+   </BOUNDS>
+   <BOUNDS height="495" left="1485" top="1410" type="Box" width="4395">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|____choose a videofile to be played as a texture on the quad&cr;&lf;v|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="255" left="8460" top="8145" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="4350" left="8460" top="8145" type="Box" width="4905">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Average FrameRate: actual average frame rate since playback started&cr;&lf;&cr;&lf;Average Sync Offset: average time difference between when the video frames should have been displayed and when they actually were&cr;&lf;&cr;&lf;Standard Deviation Sync Offset same as above but the value is calculated as a standard deviation rather than as a simple average&cr;&lf;&cr;&lf;Frames drawn: number of frames actually drawn since playback started&cr;&lf;&cr;&lf;Frames dropped: number of frames dropped by the renderer&cr;&lf;&cr;&lf;Jitter: expresses the average time between successive frames delivered to the video renderer&cr;&lf;&cr;&lf;MediaSubType: shows the encoding of the bitmap, like RGB or YUV&cr;&lf;&cr;&lf;Pixel Aspect: the actual pixel aspect with DV encoded material may not reflect the images width/height. keyword: non-square pixels|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="510" left="15" top="390" type="Box" width="6075">
+   </BOUNDS>
+   <BOUNDS height="160" left="810" top="7740" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Requires Windows XP SP2. Renders video on a texture. Depending on graphics card optionally allows deinterlacing and color transformations.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="6270">
+   </BOUNDS>
+   <BOUNDS height="160" left="810" top="7740" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|VideoTexture - EX9.Texture VMR9 YUVMixingMode|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="270" left="8070" top="7710" type="Node" width="795">
+   </BOUNDS>
+   <BOUNDS height="375" left="8070" top="7710" type="Box" width="1050">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="outputs:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="11">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="270" left="360" top="5445" type="Node" width="795">
+   </BOUNDS>
+   <BOUNDS height="375" left="360" top="5445" type="Box" width="1050">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="inputs:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="11">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename=":MODULES:\vvvv group\Debug\PerfMeter (Debug).v4p" path="C:\Users\joreg\dev\vvvv_trunk\modules\vvvv group\Debug\">
+   <BOUNDS height="0" left="7695" top="4095" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="7905" top="5580" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="7695" top="4095" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Group (EX9)">
+   <BOUNDS height="0" left="7425" top="4755" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="12120" top="5955" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12600" top="6105" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="255" left="12120" top="5955" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="23" srcpinname="Actual Backbuffer Width">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="12675" top="5955" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13110" top="6210" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="12675" top="5955" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Y Input Value" srcnodeid="23" srcpinname="Actual Backbuffer Height">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Layers" linkstyle="Bezier" srcnodeid="12" srcpinname="Layer">
+   <LINKPOINT x="6015" y="6450">
+   </LINKPOINT>
+   <LINKPOINT x="7905" y="1500">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3120" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5430" top="3450" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3120" top="3270" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="AviParser (EX9.Texture)">
+   <BOUNDS height="0" left="7365" top="2640" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Framerate" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1500" top="1965" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4350" top="5190" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="1500" top="1965" type="Box" width="4170">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="E:\Triko_DV.avi">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Filename" srcnodeid="7" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Filename" srcnodeid="7" srcpinname="Output String">
+   </LINK>
+   <NODE id="6" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="7035" top="3135" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Texture" srcnodeid="8" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3120" top="2865" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6855" top="5220" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="255" left="3120" top="2865" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Framerate">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2280" top="2850" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="270" left="2280" top="2850" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|video fps:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2010" top="3240" type="Node" width="1110">
+   </BOUNDS>
+   <BOUNDS height="270" left="2010" top="3240" type="Box" width="1110">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|wait for every|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3645" top="3255" type="Node" width="555">
+   </BOUNDS>
+   <BOUNDS height="270" left="3645" top="3255" type="Box" width="555">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="frame">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Layer 1" srcnodeid="6" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Layer 3" srcnodeid="13" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Layer 2" linkstyle="VHV" srcnodeid="24" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3660" top="3705" type="Node" width="8985">
+   </BOUNDS>
+   <BOUNDS height="960" left="3660" top="3705" type="Box" width="2565">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|note the renderers frame rate being throttled to a multiple of the videos framerate when adjusting &quot;Wait for every Nth frame&quot;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="VideoTexture (EX9.Texture VMR9 YUVMixingMode)">
+   <BOUNDS height="0" left="810" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Wait for every Nth frame" visible="1">
+   </PIN>
+   <PIN pinname="Texture Size Mode" slicecount="1" values="Pow2Stretched">
+   </PIN>
+   <PIN pinname="Pixel Aspect" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Texture" srcnodeid="0" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Video" srcnodeid="25" srcpinname="Video">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Wait for every Nth frame" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="27" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1365" top="3945" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="1365" top="3945" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="2820" top="5775" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2205" top="3915" type="Node" width="1140">
+   </BOUNDS>
+   <BOUNDS height="270" left="2205" top="3915" type="Box" width="1140">
+   </BOUNDS>
+   <BOUNDS height="160" left="180" top="90" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; pixel aspect|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Pixel Aspect" dstnodeid="27" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="UniformScale (Transform)" componentmode="Hidden" id="28">
+   <BOUNDS type="Node" left="11595" top="1245" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Transform Out" dstnodeid="23" dstpinname="View Transform">
+   </LINK>
+   </PATCH>
