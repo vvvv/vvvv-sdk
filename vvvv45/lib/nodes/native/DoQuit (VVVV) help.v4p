@@ -1,0 +1,107 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\DoQuit (VVVV) help.v4p">
+   <BOUNDS height="5055" left="2625" top="1455" type="Window" width="4560">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="585" left="1755" top="1380" type="Node" width="1890">
+   </BOUNDS>
+   <BOUNDS height="2010" left="1755" top="1380" type="Box" width="1935">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Set the input of DoQuit to 1 if you want to close vvvv. &cr;&lf;&cr;&lf;vvvv may not quit immediately though if there is still a FinallyNode in any patch that is not set to 1.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="30" top="4245" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="240" left="30" top="4245" type="Box" width="705">
+   </BOUNDS>
+   <BOUNDS height="160" left="1200" top="1200" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="OnActivate (VVVV)">
+   <BOUNDS height="0" left="1635" top="4245" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="4" nodename="OnOpen (VVVV)">
+   <BOUNDS height="0" left="825" top="4245" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="3" nodename="Finally (VVVV)">
+   <BOUNDS height="0" left="3375" top="4245" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="2" nodename="DoQuit (VVVV)">
+   <BOUNDS height="0" left="585" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Quit VVVV" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="570" top="1620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11807" top="7097" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="570" left="570" top="1620" type="Box" width="750">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Quit VVVV" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="0" nodename="OnQuit (VVVV)">
+   <BOUNDS height="0" left="2655" top="4245" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="4350">
+   </BOUNDS>
+   <BOUNDS height="160" left="4440" top="9180" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Banging this node is the same as selecting Quit in the menu|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="5040" top="9780" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|DoQuit - VVVV|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

@@ -1,0 +1,91 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Subtract (String) help.v4p">
+   <BOUNDS height="3645" left="2070" top="1740" type="Window" width="4320">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="360" top="990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5203" top="4757" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="360" top="990" type="Box" width="1155">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|this is vvvv|" slices="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1695" top="990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5279" top="4755" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="1695" top="990" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|this is |" slices="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="495" top="2535" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5579" top="5055" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="495" top="2535" type="Box" width="1530">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Subtract (String)">
+   <BOUNDS height="0" left="945" top="1815" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Operand 1" visible="1">
+   </PIN>
+   <PIN pinname="Operand 2" visible="1">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Operand 1" srcnodeid="4" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Operand 2" srcnodeid="3" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input String" srcnodeid="0" srcpinname="Result" linkstyle="VHV">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="4020">
+   </BOUNDS>
+   <BOUNDS height="160" left="9660" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Removes the second string from the first if they match|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9660" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Subtract - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

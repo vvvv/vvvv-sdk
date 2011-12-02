@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="VVVV.Plugin"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
+>
+
+  <include buildfile="${root.dir}/nant-plugins.xml" />
+  <property name="lib.name" value="CodeEditor.dll" />
+
+  <assemblyfileset id="project.references">
+		<include name="${root.bin}/VVVV.PluginInterfaces.dll" />
+    <include name="${root.bin}/VVVV.Utils.dll" />
+		<include name="${lib.dir}/**/*.dll" />
+		<exclude name="${lib.dir}/**/VVVV.Utils.dll" />
+		<exclude name="${lib.dir}/**/VVVV.PluginInterfaces.dll" />
+    <include name="Dependencies/*.dll" />
+  </assemblyfileset>
+
+  <fileset id="project.sources" failonempty="true">
+    <include name="**/*.cs" />
+    <include name="${shared.src}/ManagedVCL/ManagedVCLControl.cs" />
+  </fileset>
+  
+  <target name="post-build">
+    <copy todir="${plugin.path}">
+      <fileset basedir="Dependencies">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
+
+</project>

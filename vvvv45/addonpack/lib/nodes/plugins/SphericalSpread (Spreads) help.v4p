@@ -1,0 +1,243 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta16.dtd" >
+   <PATCH nodename="D:\vvvv\sourceforge\plugins\SphericalSpread\SphericalSpread (Spreads) help.v4p">
+   <BOUNDS height="8475" left="1125" top="1125" type="Window" width="5355">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="270" top="210" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="420" left="270" top="210" type="Box" width="3705">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SphericalSpread (Spreads)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="10" nodename=":PLUGINS:\SphericalSpread.dll">
+   <BOUNDS height="270" left="915" top="2520" type="Node" width="2670">
+   </BOUNDS>
+   <BOUNDS left="915" top="2520" type="Box">
+   </BOUNDS>
+   <PIN pinname="X Output" visible="1">
+   </PIN>
+   <PIN pinname="Y Output" visible="1">
+   </PIN>
+   <PIN pinname="Z Output" visible="1">
+   </PIN>
+   <PIN pinname="Radius" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Factor" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="OutputXYZ" visible="1">
+   </PIN>
+   <PIN pinname="InputXYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="555" top="3870" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="2655" top="7185" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="3045" left="555" top="3870" type="Box" width="3735">
+   </BOUNDS>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="3765" top="3570" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Z" slicecount="1" values="1.5">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="View Transform" srcnodeid="8" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="7" nodename="Perspective (Transform)">
+   <BOUNDS height="0" left="3765" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="FOV" slicecount="1" values="0.25">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Transform In" srcnodeid="7" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="6" nodename="Transform (Transform 3d Vector)">
+   <BOUNDS height="0" left="720" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Translate XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Scale XYZ" slicecount="3" values="0.1,0.1,0.1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="555" top="3555" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Layers" srcnodeid="5" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Transform" srcnodeid="6" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3135" top="1770" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4500" top="2595" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3135" top="1770" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="40">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Spread Count" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename="Fog (EX9.RenderState)" id="12" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="555" top="3225" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Render State Out" dstnodeid="5" dstpinname="Render State">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="OutputXYZ" dstnodeid="6" dstpinname="Translate XYZ">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="330" top="630" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="330" top="630" type="Box" width="3630">
+   </BOUNDS>
+   <BOUNDS height="160" left="11115" top="11175" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|creates a spread of values forming a sphere|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15">
+   <BOUNDS type="Node" left="1230" top="1785" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2640" top="3135" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1230" top="1785" width="615" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.85">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Radius">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="315" top="1770" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5670" top="3390" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="315" top="1770" width="660" height="660">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="10" dstpinname="InputXYZ">
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="255" left="300" top="1200" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="495" left="300" top="1200" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="160" left="11415" top="11475" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|defines the center|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1215" top="1200" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="495" left="1215" top="1200" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="160" left="11715" top="11775" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|defines the radius|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3135" top="1200" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="495" left="3135" top="1200" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="160" left="12015" top="12075" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|number of elements|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also|">
+   </PIN>
+   <BOUNDS height="160" left="1155" top="660" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="540" top="7155" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="255" left="540" top="7155" type="Node" width="825">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="CircularSpread (Spreads)" id="21">
+   <BOUNDS type="Node" left="1650" top="7425" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="LinearSpread (Spreads)" id="22">
+   <BOUNDS type="Node" left="540" top="7425" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="TypoSpread (Spreads)" id="23">
+   <BOUNDS type="Node" left="2835" top="7425" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
