@@ -28,11 +28,17 @@ namespace VVVV.Utils.Streams
 			}
 			set
 			{
-				FReader.Position = value;
-				if (FReader.Eos)
+				if (value < 0)
 				{
-					FReader.Position %= FReader.Length;
+					value = VMath.VMath.Zmod(value, FReader.Length);
 				}
+				
+				if (value >= FReader.Length)
+				{
+					value %= FReader.Length;
+				}
+				
+				FReader.Position = value;
 			}
 		}
 		

@@ -169,5 +169,22 @@ namespace VVVV.Utils.Streams
 					}
 			}
 		}
+		
+		public static void Write<T>(this IOutStream<T> outStream, IInStream<T> inStream, T[] buffer)
+		{
+			outStream.Length = inStream.Length;
+			
+			using (var reader = inStream.GetReader())
+			{
+				using (var writer = outStream.GetWriter())
+				{
+					while (!reader.Eos)
+					{
+						int numSlicesRead = reader.Read(buffer, 0, buffer.Length);
+						writer.Write(buffer, 0, numSlicesRead);
+					}
+				}
+			}
+		}
 	}
 }
