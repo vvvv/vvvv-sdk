@@ -107,20 +107,33 @@ namespace VVVV.Nodes
 							spread[j] = (SvgElement)doc.Children[j].Clone();
 						}
 						
-						var view = doc.ViewBox;
+						//check view and size
 						var noView = doc.ViewBox.Equals(SvgViewBox.Empty);
+						
+						var hp = new SvgUnit(SvgUnitType.Percentage, 100);
+						var noSize = (doc.Width == hp && doc.Height == hp);
+						
+						var view = doc.ViewBox;
+						
 						if(noView)
 						{
-							var bounds = doc.GetDimensions();
-							view = new SvgViewBox(0, 0, bounds.Width, bounds.Height);
+							var bounds = doc.Bounds;
+							view = new SvgViewBox(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+							doc.ViewBox = view;
+						}
+						
+						if(noSize)
+						{
+							doc.Width = new SvgUnit(SvgUnitType.User, view.Width);
+							doc.Height = new SvgUnit(SvgUnitType.User, view.Height);
 						}
 						
 						FViewOut[i] = view;
 						FHasViewOut[i] = !noView;
 						var size = doc.GetDimensions();
 						FSizeOut[i] = new Vector2D(size.Width, size.Height);
-						var hp = new SvgUnit(SvgUnitType.Percentage, 100);
-						FHasSizeOut[i] = !(doc.Width == hp && doc.Height == hp);
+						
+						FHasSizeOut[i] = !noSize;
 					}
 				}
 			}
