@@ -2,98 +2,108 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
 using VVVV.Hosting.Pins.Config;
 using VVVV.Hosting.Streams;
+using VVVV.Hosting.Streams.Registry;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins
 {
-    /// <summary>
-    /// base class for spread lists
-    /// </summary>
-    [ComVisible(false)]
-    public abstract class SpreadList<T> : Spread<ISpread<T>>, IDisposable
-    {
-        protected readonly IOFactory FIOFactory;
-        protected readonly IOAttribute FAttribute;
-        protected IDiffSpread<int> FCountSpread;
-        protected int FOffsetCounter;
-        protected static int FInstanceCounter = 1;
-        
-        public SpreadList(IOFactory ioFactory, IOAttribute attribute)
-            : base(0)
-        {
-            //store fields
-            FIOFactory = ioFactory;
-            FAttribute = attribute;
-            
-            //create config pin
-            var att = new ConfigAttribute(FAttribute.Name + " Count");
-            att.DefaultValue = 2;
-            
-            //increment instance Counter and store it as pin offset
-            FOffsetCounter = FInstanceCounter++;
-            
-            FCountSpread = FIOFactory.CreateIO<IDiffSpread<int>>(att);
-            FCountSpread.Changed += UpdatePins;
-            
-//            FCountSpread.Update();
-        }
-        
-        public virtual void Dispose()
-        {
-            FCountSpread.Changed -= UpdatePins;
-//            FCountSpread.Dispose();
-            SliceCount = 0;
-        }
-        
-        //pin management
-        protected void UpdatePins(IDiffSpread<int> configSpread)
-        {
-            SliceCount = FCountSpread[0];
-        }
-        
-        public override int SliceCount 
-        {
-            get 
-            { 
-                return base.SliceCount; 
-            }
-            set
-            { 
-                int oldSliceCount = SliceCount;
-                int newSliceCount = value;
-                
-                if (newSliceCount < oldSliceCount)
-                    SliceCountDecreasing(oldSliceCount, newSliceCount);
-                
-                base.SliceCount = value; 
-                
-                if (newSliceCount > oldSliceCount)
-                    SliceCountIncreased(oldSliceCount, newSliceCount);
-            }
-        }
-        
-        private void SliceCountIncreased(int oldSliceCount, int newSliceCount)
-        {
-            for (int i = oldSliceCount; i < newSliceCount; i++)
-            {
-                this[i] = CreateSpread(i + 1);
-            }
-        }
-        
-        private void SliceCountDecreasing(int oldSliceCount, int newSliceCount)
-        {
-            for (int i = newSliceCount; i < oldSliceCount; i++)
-            {
-                var disposable = this[i] as IDisposable;
-                if (disposable != null)
-                    disposable.Dispose();
-            }
-        }
-        
-        protected abstract ISpread<T> CreateSpread(int pos);
-    }
+	/// <summary>
+	/// base class for spread lists
+	/// </summary>
+	[ComVisible(false)]
+	public abstract class SpreadList<T> : Spread<ISpread<T>>, IDisposable
+	{
+		protected readonly IOFactory FFactory;
+		protected readonly IOAttribute FAttribute;
+		private readonly List<IOHandler> FIOHandlers = new List<IOHandler>();
+		protected IDiffSpread<int> FCountSpread;
+		protected int FOffsetCounter;
+		protected static int FInstanceCounter = 1;
+		
+		public SpreadList(IOFactory factory, IOAttribute attribute)
+			: base(0)
+		{
+			//store fields
+			FFactory = factory;
+			FAttribute = attribute;
+			
+			//increment instance Counter and store it as pin offset
+			FOffsetCounter = FInstanceCounter++;
+			
+			//create config pin
+			FCountSpread = factory.CreateIO<IDiffSpread<int>>(
+				new ConfigAttribute(FAttribute.Name + " Count")
+				{
+					DefaultValue = 2,
+					MinValue = 0
+				}
+			);
+			FCountSpread.Changed += HandleCountSpreadChanged;
+			FCountSpread.Sync();
+		}
+		
+		public virtual void Dispose()
+		{
+			FCountSpread.Changed -= HandleCountSpreadChanged;
+			SliceCount = 0;
+		}
+		
+		//pin management
+		void HandleCountSpreadChanged(IDiffSpread<int> spread)
+		{
+			int oldCount = FIOHandlers.Count;
+			int newCount = Math.Max(spread[0], 0);
+			
+			for (int i = oldCount; i < newCount; i++)
+			{
+				var attribute = CreateAttribute(i + 1);
+				attribute.IsPinGroup = false;
+				attribute.Order = FAttribute.Order + FOffsetCounter * 1000 + i;
+				var io = FFactory.CreateIOHandler<ISpread<T>>(attribute);
+				FIOHandlers.Add(io);
+			}
+			
+			for (int i = oldCount - 1; i >= newCount; i--)
+			{
+				var io = FIOHandlers[i];
+				FFactory.DestroyIOHandler(io);
+				FIOHandlers.Remove(io);
+			}
+			
+			SliceCount = FIOHandlers.Count;
+			using (var writer = Stream.GetWriter())
+			{
+				foreach (var io in FIOHandlers)
+				{
+					writer.Write(io.RawIOObject as ISpread<T>);
+				}
+			}
+		}
+		
+		public override bool Sync()
+		{
+			var changed = base.Sync();
+			foreach (var spread in Stream)
+			{
+				changed |= spread.Sync();
+			}
+			return changed;
+		}
+		
+		public override void Flush()
+		{
+			foreach (var spread in Stream)
+			{
+				spread.Flush();
+			}
+			base.Flush();
+		}
+		
+		protected abstract IOAttribute CreateAttribute(int position);
+	}
 }

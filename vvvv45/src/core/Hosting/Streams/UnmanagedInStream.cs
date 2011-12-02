@@ -304,7 +304,7 @@ namespace VVVV.Hosting.Streams
 		
 		public object Clone()
 		{
-			throw new NotImplementedException();
+			return UnmanagedInStream.Create<T>(FGetUnmanagedArrayFunc, FValidateFunc);
 		}
 		
 		protected abstract void Synced(IntPtr unmanagedArray, int unmanagedArrayLength);

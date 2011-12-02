@@ -14,21 +14,9 @@ namespace VVVV.Hosting.Pins.Output
 		{
 		}
 		
-		//create a pin at position
-		protected override ISpread<T> CreateSpread(int pos)
+		protected override IOAttribute CreateAttribute(int position)
 		{
-			var attribute = new OutputAttribute(FAttribute.Name + " " + pos);
-			attribute.IsPinGroup = false;
-			attribute.Order = FAttribute.Order + FOffsetCounter * 1000 + pos;
-			
-			return FIOFactory.CreateIO<ISpread<T>>(attribute);
-		}
-
-		
-		public override void Flush()
-		{
-			base.Flush();
-			// TODO
+			return new OutputAttribute(FAttribute.Name + " " + position);
 		}
 	}
 }

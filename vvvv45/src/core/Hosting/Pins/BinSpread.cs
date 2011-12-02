@@ -46,9 +46,7 @@ namespace VVVV.Hosting.Pins
 		public BinSpread(IOFactory ioFactory, IOAttribute attribute)
 			: base(new BinSpreadStream())
 		{
-//			FStream.Length = 1;
 			FIOFactory = ioFactory;
-//			BufferIncreased(new ISpread<T>[0], FBuffer);
 		}
 	}
 }
