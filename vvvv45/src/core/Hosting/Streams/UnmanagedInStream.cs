@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+
 using SlimDX;
 using VVVV.Utils;
 using VVVV.Utils.SlimDX;
 using VVVV.Utils.Streams;
+using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Streams
@@ -549,6 +551,62 @@ namespace VVVV.Hosting.Streams
 		{
 			FRefCount++;
 			return new BoolInStreamReader(this);
+		}
+	}
+	
+	unsafe class ColorInStream : UnmanagedInStream<RGBAColor>
+	{
+		class ColorInStreamReader : UnmanagedInStreamReader
+		{
+			private readonly RGBAColor* FUnmanagedArray;
+			
+			public ColorInStreamReader(ColorInStream stream)
+				: base(stream)
+			{
+				FUnmanagedArray = stream.FUnmanagedArray;
+			}
+			
+			public override RGBAColor Read(int stride)
+			{
+				Debug.Assert(Position < Length);
+				var result = FUnmanagedArray[Position];
+				Position += stride;
+				return result;
+			}
+			
+			protected override void Copy(RGBAColor[] destination, int destinationIndex, int length, int stride)
+			{
+				fixed (RGBAColor* destinationPtr = destination)
+				{
+					RGBAColor* dst = destinationPtr + destinationIndex;
+					RGBAColor* src = FUnmanagedArray + Position;
+					
+					for (int i = 0; i < length; i++)
+					{
+						*(dst++) = *src;
+						src += stride;
+					}
+				}
+			}
+		}
+		
+		private RGBAColor* FUnmanagedArray;
+		
+		public ColorInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+			: base(getUnmanagedArrayFunc, validateFunc)
+		{
+			
+		}
+		
+		protected override void Synced(IntPtr unmanagedArray, int unmanagedArrayLength)
+		{
+			FUnmanagedArray = (RGBAColor*) unmanagedArray.ToPointer();
+		}
+		
+		public override IStreamReader<RGBAColor> GetReader()
+		{
+			FRefCount++;
+			return new ColorInStreamReader(this);
 		}
 	}
 
