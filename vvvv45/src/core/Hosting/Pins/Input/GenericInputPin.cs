@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -9,13 +10,38 @@ namespace VVVV.Hosting.Pins.Input
     [ComVisible(false)]
 	public class GenericInputPin<T> : DiffPin<T>, IPinUpdater
 	{
-		protected INodeIn FNodeIn;
+		class DefaultConnectionHandler : IConnectionHandler
+		{
+			public bool Accepts(object source, object sink)
+			{
+				var sourceDataType = source.GetType().GetGenericArguments().First();
+				var sinkDataType = sink.GetType().GetGenericArguments().First();
+				
+				return sinkDataType.IsAssignableFrom(sourceDataType);
+			}
+		}
 		
-		public GenericInputPin(IPluginHost host, InputAttribute attribute)
+		protected INodeIn FNodeIn;
+
+        public GenericInputPin(IPluginHost host, InputAttribute attribute) : this(host, attribute, new DefaultConnectionHandler()) { }
+		
+		public GenericInputPin(IPluginHost host, InputAttribute attribute,IConnectionHandler handler)
 			: base(host, attribute)
 		{
 			host.CreateNodeInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FNodeIn);
-			FNodeIn.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).GetCSharpName());
+			
+			var type = typeof(T);
+			if (type.IsGenericType)
+			{
+				// Set the GUID of the generic type definition and let the ConnectionHandler figure out
+				// if generic types are assignable or not.
+				FNodeIn.SetSubType(new Guid[] { type.GetGenericTypeDefinition().GUID }, type.GetCSharpName());
+                FNodeIn.SetConnectionHandler(handler, this);
+			}
+			else
+			{
+				FNodeIn.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).GetCSharpName());
+			}
 			
 			base.InitializeInternalPin(FNodeIn);
 		}
