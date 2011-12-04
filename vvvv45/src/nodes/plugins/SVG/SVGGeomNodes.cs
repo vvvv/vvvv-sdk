@@ -405,16 +405,60 @@ namespace VVVV.Nodes
 			{
 				FOutput.SliceCount = SpreadMax;
 				
-				//create groups and add matrix to it
+				//create views
 				for(int i=0; i<SpreadMax; i++)
 				{
-					FOutput[i] = new SvgViewBox(FViewCenterIn[0].X - FViewSizeIn[0].X * 0.5f,
-					                            FViewCenterIn[0].Y - FViewSizeIn[0].Y * 0.5f,
-					                            FViewSizeIn[0].X,
-					                            FViewSizeIn[0].Y);
+					FOutput[i] = new SvgViewBox(FViewCenterIn[i].X - FViewSizeIn[i].X * 0.5f,
+					                            FViewCenterIn[i].Y - FViewSizeIn[i].Y * 0.5f,
+					                            FViewSizeIn[i].X,
+					                            FViewSizeIn[i].Y);
 				}
 			}
-			
+		}
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Camera", 
+	            Category = "SVG",
+	            Version = "Split",
+	            Help = "get the values of the view box",
+	            Tags = "viewbox")]
+	#endregion PluginInfo
+	public class SVGCameraSplitNode : IPluginEvaluate
+	{
+		#region fields & pins
+		[Input("View Box")]
+		IDiffSpread<SvgViewBox> FInput;
+		
+		[Output("Center")]
+		ISpread<Vector2> FViewCenterOut;
+		
+		[Output("Size")]
+		ISpread<Vector2> FViewSizeOut;
+
+		[Import()]
+		ILogger FLogger;
+		
+		#endregion fields & pins
+
+		//called when data for any output pin is requested
+		public void Evaluate(int SpreadMax)
+		{	
+			if(FInput.IsChanged)
+			{
+				FViewCenterOut.SliceCount = SpreadMax;
+				FViewSizeOut.SliceCount = SpreadMax;
+				
+				//get view values
+				for(int i=0; i<SpreadMax; i++)
+				{
+					
+					FViewSizeOut[i] = new Vector2(FInput[i].Width, FInput[i].Height);
+					FViewCenterOut[i] = new Vector2(FInput[i].MinX + FInput[i].Width * 0.5f,
+					                                FInput[i].MinY + FInput[i].Height * 0.5f);
+					
+				}
+			}
 		}
 	}
 	

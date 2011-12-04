@@ -52,7 +52,7 @@ namespace VVVV.Nodes
 		[Input("Filename", StringType = StringType.Filename, FileMask = "SVG Files (*.svg)|*.svg")]
 		IDiffSpread<string> FFilenameIn;
 		
-		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 0 }, IsSingle = true)]
+		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 0 })]
 		IDiffSpread<RGBAColor> FBackgroundIn;
 		
 		[Input("Reload", IsBang = true)]
@@ -67,13 +67,13 @@ namespace VVVV.Nodes
 		[Output("View")]
 		ISpread<SvgViewBox> FViewOut;
 		
-		[Output("Has View")]
+		[Output("Has View", Visibility = PinVisibility.Hidden)]
 		ISpread<bool> FHasViewOut;
 		
 		[Output("Size")]
 		ISpread<Vector2D> FSizeOut;
 		
-		[Output("Has Size")]
+		[Output("Has Size", Visibility = PinVisibility.Hidden)]
 		ISpread<bool> FHasSizeOut;
 
 		[Import()]
