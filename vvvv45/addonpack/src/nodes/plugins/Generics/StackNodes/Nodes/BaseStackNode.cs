@@ -73,14 +73,14 @@ namespace VVVV.Nodes
                         OutputAttribute attr = new OutputAttribute("Stack");
                         attr.Order = 10000;
 
-                        this.FOutputFull = new OutputBinSpread<T>(this.Fhost,attr);
+//                        this.FOutputFull = new OutputBinSpread<T>(this.Fhost,attr);
                     }
                 }
                 else
                 {
                     if (this.FOutputFull != null)
                     {
-                        this.FOutputFull.Dispose();
+//                        this.FOutputFull.Dispose();
                         this.FOutputFull = null;
                     }
                 }

@@ -11,81 +11,6 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Streams
 {
-	static class UnmanagedInStream
-	{
-		private static readonly Dictionary<Type, Func<Func<Tuple<IntPtr, int>>, Func<bool>, object>> FStreamCreators;
-		
-		static UnmanagedInStream()
-		{
-			FStreamCreators = new Dictionary<Type, Func<Func<Tuple<IntPtr, int>>, Func<bool>, object>>();
-			FStreamCreators[typeof(double)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new DoubleInStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(float)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new FloatInStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(int)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new IntInStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(bool)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new BoolInStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(Vector2)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new Vector2InStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(Vector3)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new Vector3InStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(Vector4)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new Vector4InStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(Vector2D)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new Vector2DInStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(Vector3D)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new Vector3DInStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(Vector4D)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new Vector4DInStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(Matrix)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new MatrixInStream(getUnmanagedArrayFunc, validateFunc);
-			};
-			FStreamCreators[typeof(Matrix4x4)] = (getUnmanagedArrayFunc, validateFunc) =>
-			{
-				return new Matrix4x4InStream(getUnmanagedArrayFunc, validateFunc);
-			};
-		}
-		
-		public static IInStream<T> Create<T>(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-		{
-			Func<Func<Tuple<IntPtr, int>>, Func<bool>, object> streamCreator = null;
-			
-			if (FStreamCreators.TryGetValue(typeof(T), out streamCreator))
-			{
-				return streamCreator(getUnmanagedArrayFunc, validateFunc) as IInStream<T>;
-			}
-			
-			throw new NotSupportedException(string.Format("UnmanagedInStream of type '{0}' is not supported.", typeof(T)));
-		}
-		
-		public static bool CanCreate(Type type)
-		{
-			return FStreamCreators.ContainsKey(type);
-		}
-	}
-	
 	unsafe abstract class UnmanagedInStream<T> : IInStream<T>
 	{
 		internal abstract class UnmanagedInStreamReader : IStreamReader<T>
@@ -263,49 +188,35 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		private readonly Func<Tuple<IntPtr, int>> FGetUnmanagedArrayFunc;
+		//private readonly Func<Tuple<IntPtr, int>> FGetUnmanagedArrayFunc;
+		private readonly int* FPLength;
 		private readonly Func<bool> FValidateFunc;
 		protected int FRefCount;
-		protected IntPtr FUnmanagedArrayPtr;
 		
-		public UnmanagedInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+		public UnmanagedInStream(int* pLength, Func<bool> validateFunc)
 		{
-			FGetUnmanagedArrayFunc = getUnmanagedArrayFunc;
+			//FGetUnmanagedArrayFunc = getUnmanagedArrayFunc;
+			FPLength = pLength;
 			FValidateFunc = validateFunc;
-		}
-		
-		public int RefCount
-		{
-			get
-			{
-				return FRefCount;
-			}
 		}
 		
 		public int Length
 		{
-			get;
-			private set;
+			get
+			{
+				return *FPLength;
+			}
 		}
 		
 		public bool Sync()
 		{
-			var changed = FValidateFunc();
-			
-			var result = FGetUnmanagedArrayFunc();
-			FUnmanagedArrayPtr = result.Item1;
-			Length = result.Item2;
-			Synced(FUnmanagedArrayPtr, Length);
-			
-			return changed;
+			return FValidateFunc();
 		}
 		
 		public object Clone()
 		{
 			throw new NotImplementedException();
 		}
-		
-		protected abstract void Synced(IntPtr unmanagedArray, int unmanagedArrayLength);
 		
 		public abstract IStreamReader<T> GetReader();
 		
@@ -324,18 +235,18 @@ namespace VVVV.Hosting.Streams
 	{
 		class DoubleInStreamReader : UnmanagedInStreamReader
 		{
-			private readonly double* FUnmanagedArray;
+			private readonly double* FPData;
 			
-			public DoubleInStreamReader(DoubleInStream stream)
+			public DoubleInStreamReader(DoubleInStream stream, double* pData)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPData = pData;
 			}
 			
 			public override double Read(int stride)
 			{
 				Debug.Assert(Position < Length);
-				var result = FUnmanagedArray[Position];
+				var result = FPData[Position];
 				Position += stride;
 				return result;
 			}
@@ -345,13 +256,13 @@ namespace VVVV.Hosting.Streams
 				switch (stride)
 				{
 					case 1:
-						Marshal.Copy(new IntPtr(FUnmanagedArray + Position), destination, destinationIndex, length);
+						Marshal.Copy(new IntPtr(FPData + Position), destination, destinationIndex, length);
 						break;
 					default:
 						fixed (double* destinationPtr = destination)
 						{
 							double* dst = destinationPtr + destinationIndex;
-							double* src = FUnmanagedArray + Position;
+							double* src = FPData + Position;
 							
 							for (int i = 0; i < length; i++)
 							{
@@ -364,23 +275,18 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		private double* FUnmanagedArray;
+		private readonly double** FPPData;
 		
-		public DoubleInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(getUnmanagedArrayFunc, validateFunc)
+		public DoubleInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+			: base(pLength, validateFunc)
 		{
-			
-		}
-		
-		protected override void Synced(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
+			FPPData = ppData;
 		}
 		
 		public override IStreamReader<double> GetReader()
 		{
 			FRefCount++;
-			return new DoubleInStreamReader(this);
+			return new DoubleInStreamReader(this, *FPPData);
 		}
 	}
 	
@@ -388,18 +294,18 @@ namespace VVVV.Hosting.Streams
 	{
 		class FloatInStreamReader : UnmanagedInStreamReader
 		{
-			private readonly double* FUnmanagedArray;
+			private readonly double* FPData;
 			
-			public FloatInStreamReader(FloatInStream stream)
+			public FloatInStreamReader(FloatInStream stream, double* pData)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPData = pData;
 			}
 			
 			public override float Read(int stride)
 			{
 				Debug.Assert(Position < Length);
-				var result = (float) FUnmanagedArray[Position];
+				var result = (float) FPData[Position];
 				Position += stride;
 				return result;
 			}
@@ -409,7 +315,7 @@ namespace VVVV.Hosting.Streams
 				fixed (float* destinationPtr = destination)
 				{
 					float* dst = destinationPtr + destinationIndex;
-					double* src = FUnmanagedArray + Position;
+					double* src = FPData + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -420,23 +326,18 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		private double* FUnmanagedArray;
+		private readonly double** FPPData;
 		
-		public FloatInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(getUnmanagedArrayFunc, validateFunc)
+		public FloatInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+			: base(pLength, validateFunc)
 		{
-			
-		}
-		
-		protected override void Synced(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
+			FPPData = ppData;
 		}
 		
 		public override IStreamReader<float> GetReader()
 		{
 			FRefCount++;
-			return new FloatInStreamReader(this);
+			return new FloatInStreamReader(this, *FPPData);
 		}
 	}
 
@@ -444,18 +345,18 @@ namespace VVVV.Hosting.Streams
 	{
 		class IntInStreamReader : UnmanagedInStreamReader
 		{
-			private readonly double* FUnmanagedArray;
+			private readonly double* FPData;
 			
-			public IntInStreamReader(IntInStream stream)
+			public IntInStreamReader(IntInStream stream, double* pData)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPData = pData;
 			}
 			
 			public override int Read(int stride)
 			{
 				Debug.Assert(Position < Length);
-				var result = (int) Math.Round(FUnmanagedArray[Position]);
+				var result = (int) Math.Round(FPData[Position]);
 				Position += stride;
 				return result;
 			}
@@ -465,7 +366,7 @@ namespace VVVV.Hosting.Streams
 				fixed (int* destinationPtr = destination)
 				{
 					int* dst = destinationPtr + destinationIndex;
-					double* src = FUnmanagedArray + Position;
+					double* src = FPData + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -476,23 +377,18 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		private double* FUnmanagedArray;
+		private readonly double** FPPData;
 		
-		public IntInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(getUnmanagedArrayFunc, validateFunc)
+		public IntInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+			: base(pLength, validateFunc)
 		{
-			
-		}
-		
-		protected override void Synced(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
+			FPPData = ppData;
 		}
 		
 		public override IStreamReader<int> GetReader()
 		{
 			FRefCount++;
-			return new IntInStreamReader(this);
+			return new IntInStreamReader(this, *FPPData);
 		}
 	}
 
@@ -500,18 +396,18 @@ namespace VVVV.Hosting.Streams
 	{
 		class BoolInStreamReader : UnmanagedInStreamReader
 		{
-			private readonly double* FUnmanagedArray;
+			private readonly double* FPData;
 			
-			public BoolInStreamReader(BoolInStream stream)
+			public BoolInStreamReader(BoolInStream stream, double* pData)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPData = pData;
 			}
 			
 			public override bool Read(int stride)
 			{
 				Debug.Assert(Position < Length, string.Format("Position: {0}, Length: {0}", Position, Length));
-				var result = FUnmanagedArray[Position] >= 0.5;
+				var result = FPData[Position] >= 0.5;
 				Position += stride;
 				return result;
 			}
@@ -521,7 +417,7 @@ namespace VVVV.Hosting.Streams
 				fixed (bool* destinationPtr = destination)
 				{
 					bool* dst = destinationPtr + destinationIndex;
-					double* src = FUnmanagedArray + Position;
+					double* src = FPData + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -532,23 +428,18 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		private double* FUnmanagedArray;
+		private readonly double** FPPData;
 		
-		public BoolInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(getUnmanagedArrayFunc, validateFunc)
+		public BoolInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+			: base(pLength, validateFunc)
 		{
-			
-		}
-		
-		protected override void Synced(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
+			FPPData = ppData;
 		}
 		
 		public override IStreamReader<bool> GetReader()
 		{
 			FRefCount++;
-			return new BoolInStreamReader(this);
+			return new BoolInStreamReader(this, *FPPData);
 		}
 	}
 
@@ -556,18 +447,18 @@ namespace VVVV.Hosting.Streams
 	{
 		class MatrixInStreamReader : UnmanagedInStreamReader
 		{
-			private readonly Matrix* FUnmanagedArray;
+			private readonly Matrix* FPData;
 			
-			public MatrixInStreamReader(MatrixInStream stream)
+			public MatrixInStreamReader(MatrixInStream stream, Matrix* pData)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPData = pData;
 			}
 			
 			public override Matrix Read(int stride)
 			{
 				Debug.Assert(Position < Length);
-				var result = FUnmanagedArray[Position];
+				var result = FPData[Position];
 				Position += stride;
 				return result;
 			}
@@ -577,7 +468,7 @@ namespace VVVV.Hosting.Streams
 				fixed (Matrix* destinationPtr = destination)
 				{
 					Matrix* dst = destinationPtr + destinationIndex;
-					Matrix* src = FUnmanagedArray + Position;
+					Matrix* src = FPData + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -588,23 +479,18 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		private Matrix* FUnmanagedArray;
+		private readonly Matrix** FPPData;
 		
-		public MatrixInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(getUnmanagedArrayFunc, validateFunc)
+		public MatrixInStream(int* pLength, Matrix** ppData, Func<bool> validateFunc)
+			: base(pLength, validateFunc)
 		{
-			
-		}
-		
-		protected override void Synced(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (Matrix*) unmanagedArray.ToPointer();
+			FPPData = ppData;
 		}
 		
 		public override IStreamReader<Matrix> GetReader()
 		{
 			FRefCount++;
-			return new MatrixInStreamReader(this);
+			return new MatrixInStreamReader(this, *FPPData);
 		}
 	}
 
@@ -612,18 +498,18 @@ namespace VVVV.Hosting.Streams
 	{
 		class Matrix4x4InStreamReader : UnmanagedInStreamReader
 		{
-			private readonly Matrix* FUnmanagedArray;
+			private readonly Matrix* FPData;
 			
-			public Matrix4x4InStreamReader(Matrix4x4InStream stream)
+			public Matrix4x4InStreamReader(Matrix4x4InStream stream, Matrix* pData)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPData = pData;
 			}
 			
 			public override Matrix4x4 Read(int stride)
 			{
 				Debug.Assert(Position < Length);
-				var result = FUnmanagedArray[Position].ToMatrix4x4();
+				var result = FPData[Position].ToMatrix4x4();
 				Position += stride;
 				return result;
 			}
@@ -633,7 +519,7 @@ namespace VVVV.Hosting.Streams
 				fixed (Matrix4x4* destinationPtr = destination)
 				{
 					Matrix4x4* dst = destinationPtr + destinationIndex;
-					Matrix* src = FUnmanagedArray + Position;
+					Matrix* src = FPData + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -644,23 +530,18 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		private Matrix* FUnmanagedArray;
+		private readonly Matrix** FPPData;
 		
-		public Matrix4x4InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(getUnmanagedArrayFunc, validateFunc)
+		public Matrix4x4InStream(int* pLength, Matrix** ppData, Func<bool> validateFunc)
+			: base(pLength, validateFunc)
 		{
-			
-		}
-		
-		protected override void Synced(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (Matrix*) unmanagedArray.ToPointer();
+			FPPData = ppData;
 		}
 		
 		public override IStreamReader<Matrix4x4> GetReader()
 		{
 			FRefCount++;
-			return new Matrix4x4InStreamReader(this);
+			return new Matrix4x4InStreamReader(this, *FPPData);
 		}
 	}
 }

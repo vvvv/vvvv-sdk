@@ -181,7 +181,7 @@ namespace VVVV.Hosting.Streams
 		{
 			FUnmanagedArrayPtr = FResizeUnmanagedArrayFunc(newSize);
 			FLength = newSize;
-			Resized(FUnmanagedArrayPtr, FLength);
+			Resized(FUnmanagedArrayPtr, newSize);
 		}
 		
 		protected abstract void Resized(IntPtr unmanagedArray, int unmanagedArrayLength);

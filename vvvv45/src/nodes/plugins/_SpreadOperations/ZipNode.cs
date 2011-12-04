@@ -12,7 +12,7 @@ namespace VVVV.Nodes
 {
 	public abstract class ZipNode<T> : IPluginEvaluate
 	{
-		[Input("Input", IsPinGroup = true, AutoValidate = false)]
+		[Input("Input", IsPinGroup = true)]
 		protected IInStream<IInStream<T>> FInputStreams;
 		
 		[Output("Output")]
@@ -22,8 +22,6 @@ namespace VVVV.Nodes
 		
 		public void Evaluate(int SpreadMax)
 		{
-			FInputStreams.Sync();
-			
 			int inputStreamsLength = FInputStreams.Length;
 			int maxInputStreamLength = FInputStreams.GetMaxLength();
 			FOutputStream.Length = maxInputStreamLength * inputStreamsLength;

@@ -136,6 +136,7 @@ namespace VVVV.PluginInterfaces.V2
 					
 			}
 			result.Order = attribute.Order;
+			result.AutoValidate = attribute.AutoValidate;
 			return result;
 		}
 		
@@ -162,6 +163,7 @@ namespace VVVV.PluginInterfaces.V2
 					
 			}
 			result.Order = attribute.Order;
+			result.AutoValidate = attribute.AutoValidate;
 			return result;
 		}
 		
@@ -206,6 +208,7 @@ namespace VVVV.PluginInterfaces.V2
 			host.CreateStringInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			result.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType) attribute.StringType);
 			result.Order = attribute.Order;
+			result.AutoValidate = attribute.AutoValidate;
 			return result;
 		}
 		
@@ -233,6 +236,7 @@ namespace VVVV.PluginInterfaces.V2
 			host.CreateColorInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			result.SetSubType(new RGBAColor(attribute.DefaultColor), attribute.HasAlpha);
 			result.Order = attribute.Order;
+			result.AutoValidate = attribute.AutoValidate;
 			return result;
 		}
 		
@@ -280,6 +284,7 @@ namespace VVVV.PluginInterfaces.V2
 			else
 				result.SetSubType(attribute.EnumName);
 			result.Order = attribute.Order;
+			result.AutoValidate = attribute.AutoValidate;
 			return result;
 		}
 		
@@ -307,6 +312,7 @@ namespace VVVV.PluginInterfaces.V2
 			ITransformIn result = null;
 			host.CreateTransformInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			result.Order = attribute.Order;
+			result.AutoValidate = attribute.AutoValidate;
 			return result;
 		}
 		
@@ -324,6 +330,7 @@ namespace VVVV.PluginInterfaces.V2
 			host.CreateNodeInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			result.SetSubType(new Guid[] { type.GUID }, type.GetCSharpName());
 			result.Order = attribute.Order;
+			result.AutoValidate = attribute.AutoValidate;
 			return result;
 		}
 		
@@ -372,6 +379,7 @@ namespace VVVV.PluginInterfaces.V2
 			IDXRenderStateIn result = null;
 			host.CreateRenderStateInput((TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			result.Order = attribute.Order;
+			result.AutoValidate = attribute.AutoValidate;
 			return result;
 		}
 		
@@ -380,6 +388,7 @@ namespace VVVV.PluginInterfaces.V2
 			IDXSamplerStateIn result = null;
 			host.CreateSamplerStateInput((TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			result.Order = attribute.Order;
+			result.AutoValidate = attribute.AutoValidate;
 			return result;
 		}
 	}

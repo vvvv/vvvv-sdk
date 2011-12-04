@@ -43,7 +43,7 @@ namespace VVVV.Hosting.Streams
 				{
 					IsPinGroup = false,
 					Order = i,
-					AutoValidate = false // We validate them if necessary
+					AutoValidate = FInputAttribute.AutoValidate
 				};
 				var io = FFactory.CreateIOHandler<IInStream<T>>(attribute);
 				FIOHandlers.Add(io);

@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Security;
 
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -26,7 +27,8 @@ namespace VVVV.PluginInterfaces.V1
 	/// Base interface of all pin interfaces. Never used directly.
 	/// </summary>
 	[Guid("D3C5CB5C-C054-4AB6-AC04-6BDB34692B25"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	public interface IPluginIO
 	{
 		/// <summary>
@@ -85,13 +87,16 @@ namespace VVVV.PluginInterfaces.V1
 		/// further processing is needed or can be ommited.
 		/// </summary>
 		bool PinIsChanged{get;}
+		bool Validate();
+		bool AutoValidate{get;set;}
 	}
 	
 	/// <summary>
 	/// Base interface of all fast InputPin interfaces. Never used directly.
 	/// </summary>
 	[Guid("9AFAD289-7C11-4296-B232-8B33FAC3E27D"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	public interface IPluginFastIn: IPluginIO
 	{
 		/// <summary>
@@ -102,6 +107,8 @@ namespace VVVV.PluginInterfaces.V1
 		/// Returns a String of the pins concatenated Values. Typcally used internally only to save a pins state to disk.
 		/// </summary>
 		string SpreadAsString{get;}
+		bool Validate();
+		bool AutoValidate{get;set;}
 	}
 	
 	/// <summary>
@@ -211,6 +218,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetValuePointer(out int SliceCount, out double* Value);
+		void GetValuePointer(out int* length, out double** dataPointer);
 
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
@@ -322,6 +330,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetValuePointer(out int SliceCount, out double* Value);
+		void GetValuePointer(out int* length, out double** dataPointer);
 		
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
@@ -387,7 +396,8 @@ namespace VVVV.PluginInterfaces.V1
 	/// Interface to a fast InputPin of type Value.
 	/// </summary>
 	[Guid("095081B7-D929-4459-83C0-18AA809E6635"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	unsafe public interface IValueFastIn: IPluginFastIn		//fast value input pin
 	{
 		/// <summary>
@@ -433,6 +443,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetValuePointer(out int SliceCount, out double* Value);
+		void GetValuePointer(out int* length, out double** dataPointer);
 		
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
@@ -498,7 +509,8 @@ namespace VVVV.PluginInterfaces.V1
 	/// Interface to an OutputPin of type Value.
 	/// </summary>
 	[Guid("B55B70E8-9C3D-408D-B9F9-A90CF8288FC7"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	unsafe public interface IValueOut: IPluginOut			//value output pin
 	{
 		/// <summary>
@@ -543,6 +555,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetValuePointer(out double* Value);
+		void GetValuePointer(out double** Value);
 
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
@@ -1014,6 +1027,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetMatrixPointer(out int SliceCount, out float* Value);
+		void GetMatrixPointer(out int* pLength, out float** ppData);
 		/// <summary>
 		/// Used to retrieve a World Matrix from the pin at the specified slice. 
 		/// You should call this method only from within your Render method when supporting the IPluginDXLayer interface.

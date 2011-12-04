@@ -96,7 +96,7 @@ namespace VVVV.Hosting.Streams.Registry
 	}
 	
 	[ComVisible(false)]
-	public class IORegistry
+	public unsafe class IORegistry
 	{
 		private readonly Dictionary<Type, Func<IOFactory, InputAttribute, Type, IOHandler>> FInputDelegates = new Dictionary<Type, Func<IOFactory, InputAttribute, Type, IOHandler>>();
 		private readonly Dictionary<Type, Func<IOFactory, OutputAttribute, Type, IOHandler>> FOutputDelegates = new Dictionary<Type, Func<IOFactory, OutputAttribute, Type, IOHandler>>();
@@ -104,25 +104,25 @@ namespace VVVV.Hosting.Streams.Registry
 		
 		public IORegistry()
 		{
+			int* pLength;
+			double** ppDoubleData;
+			float** ppFloatData;
+			
 			RegisterInput(typeof(IInStream<double>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	if (attribute.CheckIfChanged)
 			              	{
 			              		var valueIn = host.CreateValueInput(attribute, t);
-			              		var stream = new DoubleInStream(GetValuePointerFunc(valueIn), GetValidateFunc(valueIn));
-			              		if (attribute.AutoValidate)
-			              			return IOHandler.Create(stream, valueIn, s => s.Sync(), null);
-			              		else
-			              			return IOHandler.Create(stream, valueIn);
+			              		valueIn.GetValuePointer(out pLength, out ppDoubleData);
+			              		var stream = new DoubleInStream(pLength, ppDoubleData, GetValidateFunc(valueIn));
+			              		return IOHandler.Create(stream, valueIn);
 			              	}
 			              	else
 			              	{
 			              		var valueFastIn = host.CreateValueFastInput(attribute, t);
-			              		var stream = new DoubleInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
-			              		if (attribute.AutoValidate)
-			              			return IOHandler.Create(stream, valueFastIn, s => s.Sync(), null);
-			              		else
-			              			return IOHandler.Create(stream, valueFastIn);
+			              		valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              		var stream = new DoubleInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+			              		return IOHandler.Create(stream, valueFastIn);
 			              	}
 			              });
 			
@@ -131,20 +131,16 @@ namespace VVVV.Hosting.Streams.Registry
 			              	if (attribute.CheckIfChanged)
 			              	{
 			              		var valueIn = host.CreateValueInput(attribute, t);
-			              		var stream = new FloatInStream(GetValuePointerFunc(valueIn), GetValidateFunc(valueIn));
-			              		if (attribute.AutoValidate)
-			              			return IOHandler.Create(stream, valueIn, s => s.Sync(), null);
-			              		else
-			              			return IOHandler.Create(stream, valueIn);
+			              		valueIn.GetValuePointer(out pLength, out ppDoubleData);
+			              		var stream = new FloatInStream(pLength, ppDoubleData, GetValidateFunc(valueIn));
+			              		return IOHandler.Create(stream, valueIn);
 			              	}
 			              	else
 			              	{
 			              		var valueFastIn = host.CreateValueFastInput(attribute, t);
-			              		var stream = new FloatInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
-			              		if (attribute.AutoValidate)
-			              			return IOHandler.Create(stream, valueFastIn, s => s.Sync(), null);
-			              		else
-			              			return IOHandler.Create(stream, valueFastIn);
+			              		valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              		var stream = new FloatInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+			              		return IOHandler.Create(stream, valueFastIn);
 			              	}
 			              });
 			
@@ -153,20 +149,16 @@ namespace VVVV.Hosting.Streams.Registry
 			              	if (attribute.CheckIfChanged)
 			              	{
 			              		var valueIn = host.CreateValueInput(attribute, t);
-			              		var stream = new IntInStream(GetValuePointerFunc(valueIn), GetValidateFunc(valueIn));
-			              		if (attribute.AutoValidate)
-			              			return IOHandler.Create(stream, valueIn, s => s.Sync(), null);
-			              		else
-			              			return IOHandler.Create(stream, valueIn);
+			              		valueIn.GetValuePointer(out pLength, out ppDoubleData);
+			              		var stream = new IntInStream(pLength, ppDoubleData, GetValidateFunc(valueIn));
+			              		return IOHandler.Create(stream, valueIn);
 			              	}
 			              	else
 			              	{
 			              		var valueFastIn = host.CreateValueFastInput(attribute, t);
-			              		var stream = new IntInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
-			              		if (attribute.AutoValidate)
-			              			return IOHandler.Create(stream, valueFastIn, s => s.Sync(), null);
-			              		else
-			              			return IOHandler.Create(stream, valueFastIn);
+			              		valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              		var stream = new IntInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+			              		return IOHandler.Create(stream, valueFastIn);
 			              	}
 			              });
 			
@@ -175,127 +167,92 @@ namespace VVVV.Hosting.Streams.Registry
 			              	if (attribute.CheckIfChanged)
 			              	{
 			              		var valueIn = host.CreateValueInput(attribute, t);
-			              		var stream = new BoolInStream(GetValuePointerFunc(valueIn), GetValidateFunc(valueIn));
-			              		if (attribute.AutoValidate)
-			              			return IOHandler.Create(stream, valueIn, s => s.Sync(), null);
-			              		else
-			              			return IOHandler.Create(stream, valueIn);
+			              		valueIn.GetValuePointer(out pLength, out ppDoubleData);
+			              		var stream = new BoolInStream(pLength, ppDoubleData, GetValidateFunc(valueIn));
+			              		return IOHandler.Create(stream, valueIn);
 			              	}
 			              	else
 			              	{
 			              		var valueFastIn = host.CreateValueFastInput(attribute, t);
-			              		var stream = new BoolInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
-			              		if (attribute.AutoValidate)
-			              			return IOHandler.Create(stream, valueFastIn, s => s.Sync(), null);
-			              		else
-			              			return IOHandler.Create(stream, valueFastIn);
+			              		valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              		var stream = new BoolInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+			              		return IOHandler.Create(stream, valueFastIn);
 			              	}
 			              });
 
 			RegisterInput(typeof(IInStream<Matrix4x4>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var transformIn = host.CreateTransformInput(attribute, t);
-			              	var stream = new Matrix4x4InStream(GetMatrixPointerFunc(transformIn), GetValidateFunc(transformIn));
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, transformIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, transformIn);
+			              	transformIn.GetMatrixPointer(out pLength, out ppFloatData);
+			              	var stream = new Matrix4x4InStream(pLength, (Matrix**) ppFloatData, GetValidateFunc(transformIn));
+			              	return IOHandler.Create(stream, transformIn);
 			              });
 			
 			RegisterInput(typeof(IInStream<Matrix>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var transformIn = host.CreateTransformInput(attribute, t);
-			              	var stream = new MatrixInStream(GetMatrixPointerFunc(transformIn), GetValidateFunc(transformIn));
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, transformIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, transformIn);
+			              	transformIn.GetMatrixPointer(out pLength, out ppFloatData);
+			              	var stream = new MatrixInStream(pLength, (Matrix**) ppFloatData, GetValidateFunc(transformIn));
+			              	return IOHandler.Create(stream, transformIn);
 			              });
 
 			RegisterInput(typeof(IInStream<Vector2D>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
 			              	var stream = new Vector2DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, valueFastIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, valueFastIn);
+			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 			RegisterInput(typeof(IInStream<Vector3D>),(factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
 			              	var stream = new Vector3DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, valueFastIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, valueFastIn);
+			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 			RegisterInput(typeof(IInStream<Vector4D>),(factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
 			              	var stream = new Vector4DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, valueFastIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, valueFastIn);
+			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 
 			RegisterInput(typeof(IInStream<Vector2>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
 			              	var stream = new Vector2InStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, valueFastIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, valueFastIn);
+			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 			RegisterInput(typeof(IInStream<Vector3>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
 			              	var stream = new Vector3InStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, valueFastIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, valueFastIn);
+			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 			RegisterInput(typeof(IInStream<Vector4>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
 			              	var stream = new Vector4InStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, valueFastIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, valueFastIn);
+			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 
 			RegisterInput(typeof(IInStream<string>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var stringIn = host.CreateStringInput(attribute, t);
 			              	var stream = new StringInStream(stringIn);
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, stringIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, stringIn);
+			              	return IOHandler.Create(stream, stringIn);
 			              });
 			
 			RegisterInput(typeof(IInStream<RGBAColor>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var colorIn = host.CreateColorInput(attribute, t);
 			              	var stream = new ColorInStream(GetColorPointerFunc(colorIn), GetValidateFunc(colorIn));
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, colorIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, colorIn);
+			              	return IOHandler.Create(stream, colorIn);
 			              });
 
 			RegisterInput(typeof(IInStream<EnumEntry>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var enumIn = host.CreateEnumInput(attribute, t);
 			              	var stream = new DynamicEnumInStream(enumIn);
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(stream, enumIn, s => s.Sync(), null);
-			              	else
-			              		return IOHandler.Create(stream, enumIn);
+			              	return IOHandler.Create(stream, enumIn);
 			              });
 			
 			RegisterInput(typeof(IInStream<>), (factory, attribute, t) => {
@@ -311,8 +268,10 @@ namespace VVVV.Hosting.Streams.Registry
 			              			}
 			              			
 			              			var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IInStream;
-			              			if (attribute.AutoValidate)
-			              				return IOHandler.Create(stream, null, s => s.Sync(), null);
+			              			
+			              			// PinGroup impementation doesn't need to get synced on managed side.
+			              			if (!attribute.IsPinGroup && attribute.AutoValidate)
+			              				return IOHandler.Create(stream, null, s => s.Sync());
 			              			else
 			              				return IOHandler.Create(stream, null);
 			              		}
@@ -322,19 +281,13 @@ namespace VVVV.Hosting.Streams.Registry
 			              	{
 			              		var enumIn = host.CreateEnumInput(attribute, t);
 			              		var stream = Activator.CreateInstance(typeof(EnumInStream<>).MakeGenericType(t), new object[] { enumIn }) as IInStream;
-			              		if (attribute.AutoValidate)
-			              			return IOHandler.Create(stream, enumIn, s => s.Sync(), null);
-			              		else
-			              			return IOHandler.Create(stream, enumIn);
+			              		return IOHandler.Create(stream, enumIn);
 			              	}
 			              	else
 			              	{
 			              		var nodeIn = host.CreateNodeInput(attribute, t);
 			              		var stream = Activator.CreateInstance(typeof(NodeInStream<>).MakeGenericType(t), new object[] { nodeIn }) as IInStream;
-			              		if (attribute.AutoValidate)
-			              			return IOHandler.Create(stream, nodeIn, s => s.Sync(), null);
-			              		else
-			              			return IOHandler.Create(stream, nodeIn);
+			              		return IOHandler.Create(stream, nodeIn);
 			              	}
 			              });
 			
@@ -364,16 +317,14 @@ namespace VVVV.Hosting.Streams.Registry
 			              	var pinType = typeof(InputPin<>).MakeGenericType(t);
 			              	spread = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
 			              	spread.Sync();
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(spread, ioBuilder.Metadata, p => p.Sync());
-			              	else
-			              		return IOHandler.Create(spread, ioBuilder.Metadata);
+			              	return IOHandler.Create(spread, ioBuilder.Metadata);
 			              });
 			
 			RegisterInput(typeof(IDiffSpread<>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	attribute.CheckIfChanged = true;
 			              	ISpread spread = null;
+			              	
 			              	if (t.IsGenericType)
 			              	{
 			              		if (typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
@@ -397,10 +348,7 @@ namespace VVVV.Hosting.Streams.Registry
 			              	var pinType = typeof(DiffInputPin<>).MakeGenericType(t);
 			              	spread = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
 			              	spread.Sync();
-			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(spread, ioBuilder.Metadata, p => p.Sync());
-			              	else
-			              		return IOHandler.Create(spread, ioBuilder.Metadata);
+			              	return IOHandler.Create(spread, ioBuilder.Metadata);
 			              });
 			
 			RegisterInput(typeof(IDXRenderStateIn), (factory, attribute, t) => {
@@ -596,7 +544,8 @@ namespace VVVV.Hosting.Streams.Registry
 			RegisterConfig(typeof(IIOStream<double>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	var inStream = new DoubleInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
+			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
+			               	var inStream = new DoubleInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
 			               	var outStream = new DoubleOutStream(ResizeValueArrayFunc(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<double>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
@@ -604,7 +553,8 @@ namespace VVVV.Hosting.Streams.Registry
 			RegisterConfig(typeof(IIOStream<float>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	var inStream = new FloatInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
+			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
+			               	var inStream = new FloatInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
 			               	var outStream = new FloatOutStream(ResizeValueArrayFunc(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<float>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
@@ -612,7 +562,8 @@ namespace VVVV.Hosting.Streams.Registry
 			RegisterConfig(typeof(IIOStream<int>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	var inStream = new IntInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
+			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
+			               	var inStream = new IntInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
 			               	var outStream = new IntOutStream(ResizeValueArrayFunc(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<int>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
@@ -620,7 +571,8 @@ namespace VVVV.Hosting.Streams.Registry
 			RegisterConfig(typeof(IIOStream<bool>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	var inStream = new BoolInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
+			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
+			               	var inStream = new BoolInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
 			               	var outStream = new BoolOutStream(ResizeValueArrayFunc(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<bool>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
@@ -791,6 +743,16 @@ namespace VVVV.Hosting.Streams.Registry
 			throw new NotSupportedException(string.Format("Can't create {0} of type '{1}'.", attribute, closedIOType));
 		}
 		
+		static private Func<bool> GetValidateFunc(IPluginIn pluginIn)
+		{
+			return () => { return pluginIn.Validate(); };
+		}
+		
+		static private Func<bool> GetValidateFunc(IPluginFastIn pluginFastIn)
+		{
+			return () => { return pluginFastIn.Validate(); };
+		}
+		
 		static unsafe private Func<Tuple<IntPtr, int>> GetValuePointerFunc(IValueIn valueIn)
 		{
 			return () => {
@@ -799,12 +761,6 @@ namespace VVVV.Hosting.Streams.Registry
 				valueIn.GetValuePointer(out length, out ptr);
 				return Tuple.Create(new IntPtr(ptr), length);
 			};
-		}
-		
-		static private Func<bool> GetValidateFunc(IValueIn valueIn)
-		{
-			// TODO: check this
-			return () => { return valueIn.PinIsChanged; };
 		}
 		
 		static unsafe private Func<Tuple<IntPtr, int>> GetFastValuePointerFunc(IValueFastIn valueFastIn)
@@ -835,24 +791,6 @@ namespace VVVV.Hosting.Streams.Registry
 				colorIn.GetColorPointer(out length, out ptr);
 				return Tuple.Create(new IntPtr(ptr), length);
 			};
-		}
-		
-		static private Func<bool> GetValidateFunc(IValueFastIn valueFastIn)
-		{
-			// TODO: check this
-			return () => { return true; };
-		}
-		
-		static private Func<bool> GetValidateFunc(IColorIn colorIn)
-		{
-			// TODO: check this
-			return () => { return colorIn.PinIsChanged; };
-		}
-		
-		static private Func<bool> GetValidateFunc(ITransformIn transformIn)
-		{
-			// TODO: check this
-			return () => { return transformIn.PinIsChanged; };
 		}
 		
 		static unsafe private Func<Tuple<IntPtr, int>> GetValuePointerFunc(IValueOut valueFastOut)
