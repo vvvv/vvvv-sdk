@@ -29,7 +29,7 @@ namespace VVVV.Nodes.Bullet
 		protected IDiffSpread<string> FCustom;
 
 		[Input("Custom Object")]
-		protected DiffInputPin<ICloneable> FCustomObj;
+		protected IDiffSpread<ICloneable> FCustomObj;
 
 		[Output("Shape")]
 		protected ISpread<AbstractRigidShapeDefinition> FShapes;
@@ -71,14 +71,7 @@ namespace VVVV.Nodes.Bullet
 			sd.Rotation = this.FRotate[sliceindex].ToBulletQuaternion();
 			sd.Scaling = this.FScaling[sliceindex].Abs().ToBulletVector();
 			sd.CustomString = this.FCustom[sliceindex];
-			if (this.FCustomObj.PluginIO.IsConnected)
-			{
-				sd.CustomObject = this.FCustomObj[sliceindex];
-			}
-			else
-			{
-				sd.CustomObject = null;
-			}
+			sd.CustomObject = this.FCustomObj[sliceindex];
 		}
 		#endregion
 	}
