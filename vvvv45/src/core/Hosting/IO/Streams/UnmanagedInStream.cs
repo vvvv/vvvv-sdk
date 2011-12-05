@@ -190,8 +190,8 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private readonly Func<Tuple<IntPtr, int>> FGetUnmanagedArrayFunc;
-		private readonly Func<bool> FValidateFunc;
+		protected readonly Func<Tuple<IntPtr, int>> FGetUnmanagedArrayFunc;
+		protected readonly Func<bool> FValidateFunc;
 		protected int FRefCount;
 		protected IntPtr FUnmanagedArrayPtr;
 		
@@ -227,10 +227,7 @@ namespace VVVV.Hosting.IO.Streams
 			return changed;
 		}
 		
-		public object Clone()
-		{
-			return UnmanagedInStream.Create<T>(FGetUnmanagedArrayFunc, FValidateFunc);
-		}
+		public abstract object Clone();
 		
 		protected abstract void Synced(IntPtr unmanagedArray, int unmanagedArrayLength);
 		
@@ -309,6 +306,11 @@ namespace VVVV.Hosting.IO.Streams
 			FRefCount++;
 			return new DoubleInStreamReader(this);
 		}
+		
+		public override object Clone()
+		{
+			return new DoubleInStream(FGetUnmanagedArrayFunc, FValidateFunc);
+		}
 	}
 	
 	unsafe class FloatInStream : UnmanagedInStream<float>
@@ -364,6 +366,11 @@ namespace VVVV.Hosting.IO.Streams
 		{
 			FRefCount++;
 			return new FloatInStreamReader(this);
+		}
+		
+		public override object Clone()
+		{
+			return new FloatInStream(FGetUnmanagedArrayFunc, FValidateFunc);
 		}
 	}
 
@@ -421,6 +428,11 @@ namespace VVVV.Hosting.IO.Streams
 			FRefCount++;
 			return new IntInStreamReader(this);
 		}
+		
+		public override object Clone()
+		{
+			return new IntInStream(FGetUnmanagedArrayFunc, FValidateFunc);
+		}
 	}
 
 	unsafe class BoolInStream : UnmanagedInStream<bool>
@@ -476,6 +488,11 @@ namespace VVVV.Hosting.IO.Streams
 		{
 			FRefCount++;
 			return new BoolInStreamReader(this);
+		}
+		
+		public override object Clone()
+		{
+			return new BoolInStream(FGetUnmanagedArrayFunc, FValidateFunc);
 		}
 	}
 	
@@ -533,6 +550,11 @@ namespace VVVV.Hosting.IO.Streams
 			FRefCount++;
 			return new ColorInStreamReader(this);
 		}
+		
+		public override object Clone()
+		{
+			return new ColorInStream(FGetUnmanagedArrayFunc, FValidateFunc);
+		}
 	}
 
 	unsafe class MatrixInStream : UnmanagedInStream<Matrix>
@@ -589,6 +611,11 @@ namespace VVVV.Hosting.IO.Streams
 			FRefCount++;
 			return new MatrixInStreamReader(this);
 		}
+		
+		public override object Clone()
+		{
+			return new MatrixInStream(FGetUnmanagedArrayFunc, FValidateFunc);
+		}
 	}
 
 	unsafe class Matrix4x4InStream : UnmanagedInStream<Matrix4x4>
@@ -644,6 +671,11 @@ namespace VVVV.Hosting.IO.Streams
 		{
 			FRefCount++;
 			return new Matrix4x4InStreamReader(this);
+		}
+		
+		public override object Clone()
+		{
+			return new Matrix4x4InStream(FGetUnmanagedArrayFunc, FValidateFunc);
 		}
 	}
 }

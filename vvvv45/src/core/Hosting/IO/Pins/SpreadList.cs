@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-using VVVV.Hosting.Streams.Registry;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Pins
@@ -12,14 +12,14 @@ namespace VVVV.Hosting.Pins
 	[ComVisible(false)]
 	abstract class SpreadList<T> : Spread<ISpread<T>>, IDisposable
 	{
-		protected readonly IOFactory FFactory;
+		protected readonly IIOFactory FFactory;
 		protected readonly IOAttribute FAttribute;
-		private readonly List<IOHandler> FIOHandlers = new List<IOHandler>();
+		private readonly List<IIOHandler> FIOHandlers = new List<IIOHandler>();
 		protected IDiffSpread<int> FCountSpread;
 		protected int FOffsetCounter;
 		protected static int FInstanceCounter = 1;
 		
-		public SpreadList(IOFactory factory, IOAttribute attribute)
+		public SpreadList(IIOFactory factory, IOAttribute attribute)
 			: base(0)
 		{
 			//store fields
