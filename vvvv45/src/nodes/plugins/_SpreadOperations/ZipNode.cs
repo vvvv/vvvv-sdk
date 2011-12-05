@@ -18,8 +18,6 @@ namespace VVVV.Nodes
 		[Output("Output")]
 		protected IOutStream<T> FOutputStream;
 		
-		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
-		
 		public void Evaluate(int SpreadMax)
 		{
 			FInputStreams.Sync();
@@ -28,19 +26,23 @@ namespace VVVV.Nodes
 			int maxInputStreamLength = FInputStreams.GetMaxLength();
 			FOutputStream.Length = maxInputStreamLength * inputStreamsLength;
 			
-			using (var writer = FOutputStream.GetWriter())
+			using (var memory = MemoryPool<T>.GetMemory(StreamUtils.BUFFER_SIZE))
 			{
-				int numSlicesToRead = Math.Min(maxInputStreamLength, FBuffer.Length);
-				int i = 0;
-				foreach (var inputStream in FInputStreams)
+				var buffer = memory.Array;
+				using (var writer = FOutputStream.GetWriter())
 				{
-					writer.Position = i++;
-					using (var reader = inputStream.GetCyclicReader())
+					int numSlicesToRead = Math.Min(maxInputStreamLength, buffer.Length);
+					int i = 0;
+					foreach (var inputStream in FInputStreams)
 					{
-						while (!writer.Eos)
+						writer.Position = i++;
+						using (var reader = inputStream.GetCyclicReader())
 						{
-							reader.Read(FBuffer, 0, numSlicesToRead);
-							writer.Write(FBuffer, 0, numSlicesToRead, inputStreamsLength);
+							while (!writer.Eos)
+							{
+								reader.Read(buffer, 0, numSlicesToRead);
+								writer.Write(buffer, 0, numSlicesToRead, inputStreamsLength);
+							}
 						}
 					}
 				}

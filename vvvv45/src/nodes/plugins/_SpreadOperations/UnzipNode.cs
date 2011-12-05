@@ -16,27 +16,30 @@ namespace VVVV.Nodes
 		[Output("Output", IsPinGroup = true)]
 		protected IInStream<IOutStream<T>> FOutputStreams;
 		
-		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
-		
 		public void Evaluate(int SpreadMax)
 		{
 			FOutputStreams.SetLengthBy(FInputStream);
 			
-			var outputStreamsLength = FOutputStreams.Length;
-			using (var reader = FInputStream.GetCyclicReader())
+			using (var memory = MemoryPool<T>.GetMemory(StreamUtils.BUFFER_SIZE))
 			{
-				int i = 0;
-				foreach (var outputStream in FOutputStreams)
+				var buffer = memory.Array;
+				var outputStreamsLength = FOutputStreams.Length;
+				
+				using (var reader = FInputStream.GetCyclicReader())
 				{
-					int numSlicesToWrite = Math.Min(outputStream.Length, FBuffer.Length);
-					
-					reader.Position = i++;
-					using (var writer = outputStream.GetWriter())
+					int i = 0;
+					foreach (var outputStream in FOutputStreams)
 					{
-						while (!writer.Eos)
+						int numSlicesToWrite = Math.Min(outputStream.Length, buffer.Length);
+						
+						reader.Position = i++;
+						using (var writer = outputStream.GetWriter())
 						{
-							reader.Read(FBuffer, 0, numSlicesToWrite, outputStreamsLength);
-							writer.Write(FBuffer, 0, numSlicesToWrite);
+							while (!writer.Eos)
+							{
+								reader.Read(buffer, 0, numSlicesToWrite, outputStreamsLength);
+								writer.Write(buffer, 0, numSlicesToWrite);
+							}
 						}
 					}
 				}

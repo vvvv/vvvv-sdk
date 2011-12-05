@@ -1,26 +1,19 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
-using System.ComponentModel.Composition.ReflectionModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+
 using VVVV.Core;
 using VVVV.Core.Logging;
-using VVVV.Core.Model;
-using VVVV.Core.Runtime;
-using VVVV.Hosting;
 using VVVV.Hosting.Interfaces;
-using VVVV.Hosting.Pins;
-using VVVV.Hosting.Streams;
-using VVVV.Hosting.Streams.Registry;
+using VVVV.Hosting.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Collections;
@@ -60,7 +53,7 @@ namespace VVVV.Hosting.Factories
         
         private PluginImporter FPluginImporter = new PluginImporter();
         private readonly Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts;
-        private readonly Dictionary<IPluginBase, IOFactory> FFactories;
+        private readonly Dictionary<IPluginBase, IIOFactory> FFactories;
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
         private readonly IORegistry FIORegistry = new IORegistry();
@@ -80,7 +73,7 @@ namespace VVVV.Hosting.Factories
             : base(fileExtension)
         {
             FParentContainer = parentContainer;
-            FFactories = new Dictionary<IPluginBase, IOFactory>();
+            FFactories = new Dictionary<IPluginBase, IIOFactory>();
             FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
             
             AppDomain.CurrentDomain.AssemblyResolve += HandleAssemblyResolve;

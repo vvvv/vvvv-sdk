@@ -44,9 +44,6 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			FHost = host;
 			FPluginIO = pluginIO;
-			
-//			FPluginIO.SetPinUpdater(this);
-//			SliceCount = 1;
 		}
 		
 		public override string ToString()
