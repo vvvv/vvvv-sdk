@@ -32,7 +32,7 @@ namespace VVVV.Hosting.Pins
             
             FCountSpread = FIOFactory.CreateIO<IDiffSpread<int>>(att);
             FCountSpread.Changed += UpdatePins;
-            
+            FCountSpread.Sync();
 //            FCountSpread.Update();
         }
         
