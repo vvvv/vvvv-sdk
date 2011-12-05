@@ -28,7 +28,7 @@ namespace VVVV.Nodes
 		#region fields & pins
 
 		//vvvv
-		[Input("Configuration File", DefaultString = "Data\\SamplesConfig.xml", StringType = StringType.Filename, IsSingle=true)]
+		[Input("Configuration File", DefaultString = "OpenNIConfig.xml", StringType = StringType.Filename, IsSingle=true)]
 		IDiffSpread<string> FConfigPinIn;
 
 		[Input("Reload Configuration", IsSingle = true, IsBang = true)]
