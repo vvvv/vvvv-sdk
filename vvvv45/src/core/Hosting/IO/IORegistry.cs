@@ -161,7 +161,11 @@ namespace VVVV.Hosting.IO
 			              	var host = factory.PluginHost;
 			              	var stringIn = host.CreateStringInput(attribute, t);
 			              	var stream = new StringInStream(stringIn);
-			              	return IOHandler.Create(stream, stringIn);
+			              	// Using ManagedIOStream -> needs to be synced on managed side.
+			              	if (attribute.AutoValidate)
+			              		return IOHandler.Create(stream, stringIn, s => s.Sync());
+			              	else
+			              		return IOHandler.Create(stream, stringIn);
 			              });
 			
 			RegisterInput(typeof(IInStream<RGBAColor>), (factory, attribute, t) => {
@@ -236,11 +240,17 @@ namespace VVVV.Hosting.IO
 			              				return IOHandler.Create(spread, null);
 			              		}
 			              	}
-			              	var ioBuilder = CreateIOHandler(typeof(IInStream<>), typeof(IInStream<>).MakeGenericType(t), factory, attribute);
+			              	// Disable auto validation for stream as spread will do it.
+			              	var streamAttribute = attribute.Clone() as InputAttribute;
+			              	streamAttribute.AutoValidate = false;
+			              	var ioBuilder = CreateIOHandler(typeof(IInStream<>), typeof(IInStream<>).MakeGenericType(t), factory, streamAttribute);
 			              	var pinType = typeof(InputPin<>).MakeGenericType(t);
 			              	spread = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
 			              	spread.Sync();
-			              	return IOHandler.Create(spread, ioBuilder.Metadata);
+			              	if (attribute.AutoValidate)
+			              		return IOHandler.Create(spread, ioBuilder.Metadata, p => p.Sync());
+			              	else
+			              		return IOHandler.Create(spread, ioBuilder.Metadata);
 			              });
 			
 			RegisterInput(typeof(IDiffSpread<>), (factory, attribute, t) => {
@@ -267,11 +277,17 @@ namespace VVVV.Hosting.IO
 			              				return IOHandler.Create(spread, null);
 			              		}
 			              	}
-			              	var ioBuilder = CreateIOHandler(typeof(IInStream<>), typeof(IInStream<>).MakeGenericType(t), factory, attribute);
+			              	// Disable auto validation for stream as spread will do it.
+			              	var streamAttribute = attribute.Clone() as InputAttribute;
+			              	streamAttribute.AutoValidate = false;
+			              	var ioBuilder = CreateIOHandler(typeof(IInStream<>), typeof(IInStream<>).MakeGenericType(t), factory, streamAttribute);
 			              	var pinType = typeof(DiffInputPin<>).MakeGenericType(t);
 			              	spread = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
 			              	spread.Sync();
-			              	return IOHandler.Create(spread, ioBuilder.Metadata);
+			              	if (attribute.AutoValidate)
+			              		return IOHandler.Create(spread, ioBuilder.Metadata, p => p.Sync());
+			              	else
+			              		return IOHandler.Create(spread, ioBuilder.Metadata);
 			              });
 			
 			RegisterInput(typeof(IDXRenderStateIn), (factory, attribute, t) => {

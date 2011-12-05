@@ -140,7 +140,7 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override bool Sync()
 		{
-			if (FStringIn.PinIsChanged)
+			if (FStringIn.Validate())
 			{
 				Length = FStringIn.SliceCount;
 				using (var writer = GetWriter())
@@ -193,7 +193,7 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override bool Sync()
 		{
-			return FEnumIn.PinIsChanged;
+			return FEnumIn.Validate();
 		}
 	}
 	
@@ -252,7 +252,7 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override bool Sync()
 		{
-			return FNodeIn.PinIsChanged;
+			return FNodeIn.Validate();
 		}
 	}
 }
