@@ -12,11 +12,15 @@ namespace VVVV.Hosting.IO.Streams
 		private readonly IDiffSpread<int> FCountSpread;
 		private readonly IIOFactory FFactory;
 		private readonly InputAttribute FInputAttribute;
+		private readonly int FOffsetCounter;
+		private static int FInstanceCounter = 1;
 		
 		public GroupInStream(IIOFactory factory, InputAttribute attribute)
 		{
 			FFactory = factory;
 			FInputAttribute = attribute;
+			//increment instance Counter and store it as pin offset
+			FOffsetCounter = FInstanceCounter++;
 			
 			FCountSpread = factory.CreateIO<IDiffSpread<int>>(
 				new ConfigAttribute(FInputAttribute.Name + " Count")
@@ -40,7 +44,7 @@ namespace VVVV.Hosting.IO.Streams
 				var attribute = new InputAttribute(string.Format("{0} {1}", FInputAttribute.Name, i + 1))
 				{
 					IsPinGroup = false,
-					Order = i,
+					Order = FInputAttribute.Order + FOffsetCounter * 1000 + i,
 					AutoValidate = FInputAttribute.AutoValidate
 				};
 				var io = FFactory.CreateIOHandler(typeof(IInStream<T>), attribute);

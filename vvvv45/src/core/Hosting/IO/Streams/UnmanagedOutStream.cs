@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SlimDX;
 using VVVV.Utils.Streams;
+using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.IO.Streams
@@ -428,6 +429,61 @@ namespace VVVV.Hosting.IO.Streams
 		{
 			FRefCount++;
 			return new BoolOutWriter(this);
+		}
+	}
+	
+	unsafe class ColorOutStream : UnmanagedOutStream<RGBAColor>
+	{
+		class ColorOutWriter : UnmanagedOutWriter
+		{
+			private readonly RGBAColor* FUnmanagedArray;
+			
+			public ColorOutWriter(ColorOutStream stream)
+				: base(stream)
+			{
+				FUnmanagedArray = stream.FUnmanagedArray;
+			}
+			
+			public override void Write(RGBAColor value, int stride)
+			{
+				Debug.Assert(!Eos);
+				FUnmanagedArray[Position] = value;
+				Position += stride;
+			}
+			
+			protected override void Copy(RGBAColor[] source, int sourceIndex, int length, int stride)
+			{
+				fixed (RGBAColor* sourcePtr = source)
+				{
+					RGBAColor* src = sourcePtr + sourceIndex;
+					RGBAColor* dst = FUnmanagedArray + Position;
+					
+					for (int i = 0; i < length; i++)
+					{
+						*dst = *(src++);
+						dst += stride;
+					}
+				}
+			}
+		}
+		
+		private RGBAColor* FUnmanagedArray;
+		
+		public ColorOutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
+			: base(resizeUnmanagedArrayFunc)
+		{
+			
+		}
+		
+		protected override void Resized(IntPtr unmanagedArray, int unmanagedArrayLength)
+		{
+			FUnmanagedArray = (RGBAColor*) unmanagedArray.ToPointer();
+		}
+		
+		public override IStreamWriter<RGBAColor> GetWriter()
+		{
+			FRefCount++;
+			return new ColorOutWriter(this);
 		}
 	}
 

@@ -13,13 +13,13 @@ namespace VVVV.Hosting.Pins.Input
 		}
 
 		//create a pin at position
-		protected override ISpread<T> CreateSpread(int pos)
+		protected override IOAttribute CreateAttribute(int position)
 		{
-			var attribute = new InputAttribute(FAttribute.Name + " " + pos);
-			attribute.IsPinGroup = false;
-			attribute.Order = FAttribute.Order + FOffsetCounter * 1000 + pos;
-			
-			return FIOFactory.CreateIO<ISpread<T>>(attribute);
+			return new InputAttribute(FAttribute.Name + " " + position)
+			{
+				IsPinGroup = false,
+				AutoValidate = false
+			};
 		}
 	}
 }

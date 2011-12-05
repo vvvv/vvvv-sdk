@@ -752,6 +752,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
 		
 		void GetColorPointer(out int SliceCount, out double* Value);
+		void GetColorPointer(out int* pLength, out double** ppData);
 
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
@@ -784,6 +785,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceCount">The pins current SliceCount, specifying the number of colors accessible via the Pointer.</param>
 		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
 		void GetColorPointer(out int SliceCount, out double* Value);
+		void GetColorPointer(out int* pLength, out double** ppData);
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.

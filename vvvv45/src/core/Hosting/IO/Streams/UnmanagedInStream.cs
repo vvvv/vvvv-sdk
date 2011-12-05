@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+
 using SlimDX;
 using VVVV.Utils;
 using VVVV.Utils.SlimDX;
 using VVVV.Utils.Streams;
+using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.IO.Streams
@@ -189,8 +191,8 @@ namespace VVVV.Hosting.IO.Streams
 		}
 		
 		//private readonly Func<Tuple<IntPtr, int>> FGetUnmanagedArrayFunc;
-		private readonly int* FPLength;
-		private readonly Func<bool> FValidateFunc;
+		protected readonly int* FPLength;
+		protected readonly Func<bool> FValidateFunc;
 		protected int FRefCount;
 		
 		public UnmanagedInStream(int* pLength, Func<bool> validateFunc)
@@ -213,10 +215,7 @@ namespace VVVV.Hosting.IO.Streams
 			return FValidateFunc();
 		}
 		
-		public object Clone()
-		{
-			throw new NotImplementedException();
-		}
+		public abstract object Clone();
 		
 		public abstract IStreamReader<T> GetReader();
 		
@@ -288,6 +287,11 @@ namespace VVVV.Hosting.IO.Streams
 			FRefCount++;
 			return new DoubleInStreamReader(this, *FPPData);
 		}
+		
+		public override object Clone()
+		{
+			return new DoubleInStream(FPLength, FPPData, FValidateFunc);
+		}
 	}
 	
 	unsafe class FloatInStream : UnmanagedInStream<float>
@@ -338,6 +342,11 @@ namespace VVVV.Hosting.IO.Streams
 		{
 			FRefCount++;
 			return new FloatInStreamReader(this, *FPPData);
+		}
+		
+		public override object Clone()
+		{
+			return new FloatInStream(FPLength, FPPData, FValidateFunc);
 		}
 	}
 
@@ -390,6 +399,11 @@ namespace VVVV.Hosting.IO.Streams
 			FRefCount++;
 			return new IntInStreamReader(this, *FPPData);
 		}
+		
+		public override object Clone()
+		{
+			return new IntInStream(FPLength, FPPData, FValidateFunc);
+		}
 	}
 
 	unsafe class BoolInStream : UnmanagedInStream<bool>
@@ -440,6 +454,67 @@ namespace VVVV.Hosting.IO.Streams
 		{
 			FRefCount++;
 			return new BoolInStreamReader(this, *FPPData);
+		}
+		
+		public override object Clone()
+		{
+			return new BoolInStream(FPLength, FPPData, FValidateFunc);
+		}
+	}
+	
+	unsafe class ColorInStream : UnmanagedInStream<RGBAColor>
+	{
+		class ColorInStreamReader : UnmanagedInStreamReader
+		{
+			private readonly RGBAColor* FPData;
+			
+			public ColorInStreamReader(ColorInStream stream, RGBAColor* pData)
+				: base(stream)
+			{
+				FPData = pData;
+			}
+			
+			public override RGBAColor Read(int stride)
+			{
+				Debug.Assert(Position < Length);
+				var result = FPData[Position];
+				Position += stride;
+				return result;
+			}
+			
+			protected override void Copy(RGBAColor[] destination, int destinationIndex, int length, int stride)
+			{
+				fixed (RGBAColor* destinationPtr = destination)
+				{
+					RGBAColor* dst = destinationPtr + destinationIndex;
+					RGBAColor* src = FPData + Position;
+					
+					for (int i = 0; i < length; i++)
+					{
+						*(dst++) = *src;
+						src += stride;
+					}
+				}
+			}
+		}
+		
+		private readonly RGBAColor** FPPData;
+		
+		public ColorInStream(int* pLength, RGBAColor** ppData, Func<bool> validateFunc)
+			: base(pLength, validateFunc)
+		{
+			FPPData = ppData;
+		}
+		
+		public override IStreamReader<RGBAColor> GetReader()
+		{
+			FRefCount++;
+			return new ColorInStreamReader(this, *FPPData);
+		}
+		
+		public override object Clone()
+		{
+			return new ColorInStream(FPLength, FPPData, FValidateFunc);
 		}
 	}
 
@@ -492,6 +567,11 @@ namespace VVVV.Hosting.IO.Streams
 			FRefCount++;
 			return new MatrixInStreamReader(this, *FPPData);
 		}
+		
+		public override object Clone()
+		{
+			return new MatrixInStream(FPLength, FPPData, FValidateFunc);
+		}
 	}
 
 	unsafe class Matrix4x4InStream : UnmanagedInStream<Matrix4x4>
@@ -542,6 +622,11 @@ namespace VVVV.Hosting.IO.Streams
 		{
 			FRefCount++;
 			return new Matrix4x4InStreamReader(this, *FPPData);
+		}
+		
+		public override object Clone()
+		{
+			return new Matrix4x4InStream(FPLength, FPPData, FValidateFunc);
 		}
 	}
 }

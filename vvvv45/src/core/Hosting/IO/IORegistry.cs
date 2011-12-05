@@ -171,7 +171,8 @@ namespace VVVV.Hosting.IO
 			RegisterInput(typeof(IInStream<RGBAColor>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var colorIn = host.CreateColorInput(attribute, t);
-			              	var stream = new ColorInStream(GetColorPointerFunc(colorIn), GetValidateFunc(colorIn));
+			              	colorIn.GetColorPointer(out pLength, out ppDoubleData);
+			              	var stream = new ColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorIn));
 			              	return IOHandler.Create(stream, colorIn);
 			              });
 
@@ -569,7 +570,8 @@ namespace VVVV.Hosting.IO
 			RegisterConfig(typeof(IIOStream<RGBAColor>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var colorConfig = host.CreateColorConfig(attribute, t);
-			               	var inStream = new ColorInStream(GetColorPointerFunc(colorConfig), GetValidateFunc(colorConfig));
+			               	colorConfig.GetColorPointer(out pLength, out ppDoubleData);
+			               	var inStream = new ColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorConfig));
 			               	var outStream = new ColorOutStream(ResizeColorArrayFunc(colorConfig));
 			               	return IOHandler.Create(new ConfigIOStream<RGBAColor>(inStream, outStream), colorConfig, null, null, s => s.Sync());
 			               });

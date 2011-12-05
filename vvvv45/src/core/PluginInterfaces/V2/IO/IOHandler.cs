@@ -19,7 +19,7 @@ namespace VVVV.PluginInterfaces.V2
 	[ComVisible(false)]
 	public abstract class IOHandler : IIOHandler
 	{
-		public static IOHandler<TIOObject> Create<TIOObject>(
+		public static IOHandler Create<TIOObject>(
 			TIOObject iOObject,
 			object metadata,
 			Action<TIOObject> preEvalAction = null,
@@ -27,7 +27,10 @@ namespace VVVV.PluginInterfaces.V2
 			Action<TIOObject> configAction = null
 		)
 		{
-			return new IOHandler<TIOObject>(iOObject, metadata, preEvalAction, postEvalAction, configAction);
+			// We need to construct with runtime type here, as compiletime type might be too simple (cast exceptions later).
+			var ioHandlerType = typeof(IOHandler<>).MakeGenericType(iOObject.GetType());
+			return (IOHandler) Activator.CreateInstance(ioHandlerType, iOObject, metadata, preEvalAction, postEvalAction, configAction);
+//			return new IOHandler<TIOObject>(iOObject, metadata, preEvalAction, postEvalAction, configAction);
 		}
 		
 		public object RawIOObject
