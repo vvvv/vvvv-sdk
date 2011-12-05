@@ -6,10 +6,8 @@ using System.Linq;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using System.ComponentModel.Composition;
-using VVVV.Hosting.Pins.Output;
 
 namespace VVVV.Nodes
 {
@@ -17,7 +15,7 @@ namespace VVVV.Nodes
     {
         #region Fields
         [Import()]
-        private IPluginHost Fhost;
+        private IIOFactory FIOFactory;
 
         [Config("Show Whole Stack", IsSingle = true)]
         IDiffSpread<bool> FCfgShowStack;
@@ -49,7 +47,7 @@ namespace VVVV.Nodes
 		[Output("Stack Size")]
 		ISpread<int> FPinOutStackSize;
 
-        private OutputBinSpread<T> FOutputFull;
+        private IIOHandler<ISpread<ISpread<T>>> FOutputFull;
 
         private Stack<List<T>> FStack;
 		private int FStackSize = -1;
@@ -73,14 +71,14 @@ namespace VVVV.Nodes
                         OutputAttribute attr = new OutputAttribute("Stack");
                         attr.Order = 10000;
 
-//                        this.FOutputFull = new OutputBinSpread<T>(this.Fhost,attr);
+                        this.FOutputFull = this.FIOFactory.CreateIOHandler<ISpread<ISpread<T>>>(attr);
                     }
                 }
                 else
                 {
                     if (this.FOutputFull != null)
                     {
-//                        this.FOutputFull.Dispose();
+                    	this.FIOFactory.DestroyIOHandler(this.FOutputFull);
                         this.FOutputFull = null;
                     }
                 }
@@ -155,11 +153,12 @@ namespace VVVV.Nodes
 
             if (this.FOutputFull != null)
             {
-                this.FOutputFull.SliceCount = this.FStack.Count;
+            	var output = this.FOutputFull.IOObject;
+                output.SliceCount = this.FStack.Count;
                 List<List<T>> lst = this.FStack.ToList();
                 for (int i = 0; i < this.FStack.Count; i++)
                 {
-                    this.FOutputFull[i].AssignFrom(lst[i]);
+                    output[i].AssignFrom(lst[i]);
                 }
             }
         }

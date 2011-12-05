@@ -322,7 +322,7 @@ namespace VVVV.Utils.Streams
 		{
 			if (FLength > FUpperThreshold)
 			{
-				FUpperThreshold = NextHigher(FLength);
+				FUpperThreshold = StreamUtils.NextHigher(FLength);
 				FLowerThreshold = FUpperThreshold / 2;
 				FDecreaseRequests = FUpperThreshold;
 
@@ -363,14 +363,6 @@ namespace VVVV.Utils.Streams
 		protected virtual void BufferDecreased(T[] oldBuffer, T[] newBuffer)
 		{
 			Array.Copy(oldBuffer, newBuffer, newBuffer.Length);
-		}
-		
-		private static int NextHigher(int k) {
-			if (k == 0) return 1;
-			k--;
-			for (int i = 1; i < sizeof(int)*8; i <<= 1)
-				k = k | k >> i;
-			return k + 1;
 		}
 		
 		public System.Collections.Generic.IEnumerator<T> GetEnumerator()

@@ -186,5 +186,20 @@ namespace VVVV.Utils.Streams
 				}
 			}
 		}
+		
+		// From: http://en.wikipedia.org/wiki/Power_of_two
+		public static bool IsPowerOfTwo(int x)
+		{
+			return (x & (x - 1)) == 0;
+		}
+		
+		// From: http://en.wikipedia.org/wiki/Power_of_two
+		public static int NextHigher(int k) {
+			if (k == 0) return 1;
+			k--;
+			for (int i = 1; i < sizeof(int) * 8; i <<= 1)
+				k = k | k >> i;
+			return k + 1;
+		}
 	}
 }
