@@ -117,8 +117,17 @@ namespace VVVV.Nodes
 						
 						if(noView)
 						{
-							var bounds = doc.Bounds;
-							view = new SvgViewBox(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+							if(noSize)
+							{
+								var bounds = doc.Bounds;
+								view = new SvgViewBox(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+							}
+							else
+							{
+								var bounds = doc.GetDimensions();
+								view = new SvgViewBox(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+							}
+							
 							doc.ViewBox = view;
 						}
 						
