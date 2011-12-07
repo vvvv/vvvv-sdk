@@ -129,7 +129,7 @@ namespace VVVV.Hosting.IO
 				if (type.IsGenericType)
 				{
 					var openGenericType = type.GetGenericTypeDefinition();
-					return CanCreateIOHandler(openGenericType, attribute);
+					return FIORegistry.CanCreate(openGenericType, attribute);
 				}
 				
 				return false;
