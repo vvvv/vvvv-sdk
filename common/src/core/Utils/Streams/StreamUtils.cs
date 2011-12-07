@@ -170,7 +170,7 @@ namespace VVVV.Utils.Streams
 			}
 		}
 		
-		public static void Write<T>(this IOutStream<T> outStream, IInStream<T> inStream, T[] buffer)
+		public static void AssignFrom<T>(this IOutStream<T> outStream, IInStream<T> inStream, T[] buffer)
 		{
 			outStream.Length = inStream.Length;
 			
@@ -184,6 +184,14 @@ namespace VVVV.Utils.Streams
 						writer.Write(buffer, 0, numSlicesRead);
 					}
 				}
+			}
+		}
+		
+		public static void AssignFrom<T>(this IOutStream<T> outStream, IInStream<T> inStream)
+		{
+			using (var buffer = MemoryPool<T>.GetMemory(StreamUtils.BUFFER_SIZE))
+			{
+				outStream.AssignFrom(inStream, buffer.Array);
 			}
 		}
 		

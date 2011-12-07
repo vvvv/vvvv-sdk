@@ -20,7 +20,6 @@ namespace VVVV.Hosting.Pins.Input
 	{
 		private readonly IInStream<T> FInStream;
 		private readonly IIOStream<T> FIOStream;
-		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
 		private IInStream<T> FCurrentInStream;
 		
 		public InputIOStream(IInStream<T> inStream)
@@ -63,18 +62,7 @@ namespace VVVV.Hosting.Pins.Input
 			if (FCurrentInStream == FInStream)
 			{
 				// Copy data
-				FIOStream.Length = FInStream.Length;
-				using (var reader = FInStream.GetReader())
-				{
-					using (var writer = FIOStream.GetWriter())
-					{
-						while (!reader.Eos)
-						{
-							int n = reader.Read(FBuffer, 0, FBuffer.Length);
-							writer.Write(FBuffer, 0, n);
-						}
-					}
-				}
+				FIOStream.AssignFrom(FInStream);
 				
 				// Set current inStream to ioStream
 				FCurrentInStream = FIOStream;
