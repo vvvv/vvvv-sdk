@@ -42,6 +42,8 @@ namespace VVVV.PluginInterfaces.V1
 	public interface IConnectionHandler
 	{
 		bool Accepts([In, MarshalAs(UnmanagedType.IUnknown)] object source, [In, MarshalAs(UnmanagedType.IUnknown)] object sink);
+		string GetFriendlyNameForSink([In, MarshalAs(UnmanagedType.IUnknown)] object sink);
+		string GetFriendlyNameForSource([In, MarshalAs(UnmanagedType.IUnknown)] object source);
 	}
 	
 	/// <summary>
@@ -986,7 +988,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="UpstreamInterface">The retrieved interface.</param>
 		void GetUpstreamInterface([MarshalAs(UnmanagedType.IUnknown)] out object UpstreamInterface);
-		void SetConnectionHandler(IConnectionHandler handler, [MarshalAs(UnmanagedType.IUnknown)] object source);
+		void SetConnectionHandler(IConnectionHandler handler, [MarshalAs(UnmanagedType.IUnknown)] object sink);
 	}
 	
 	/// <summary>
@@ -1019,6 +1021,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="TheInterface"></param>
 		void SetInterface([MarshalAs(UnmanagedType.IUnknown)] object TheInterface);
+		void SetConnectionHandler(IConnectionHandler handler, [MarshalAs(UnmanagedType.IUnknown)] object source);
 	}
 	
 	/// <summary>
