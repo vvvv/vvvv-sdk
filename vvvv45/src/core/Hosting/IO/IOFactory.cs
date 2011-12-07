@@ -1,87 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using VVVV.Hosting.Interfaces;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.IO
 {
-	class IOFactory : IIOFactory, IDisposable
+	class IOFactory : IIOFactory, IPlugin, IPluginConnections, IDisposable
 	{
-		class PluginNodeListener : IPluginNodeListener
-		{
-			private readonly IOFactory FIOFactory;
-			
-			public PluginNodeListener(IOFactory streamFactory)
-			{
-				FIOFactory = streamFactory;
-			}
-			
-			public void BeforeEvaluate()
-			{
-				foreach (var input in FIOFactory.FPreHandlers)
-				{
-					input.PreEvaluate();
-				}
-			}
-			
-			public void AfterEvaluate()
-			{
-				foreach (var output in FIOFactory.FPostHandler)
-				{
-					output.PostEvaluate();
-				}
-			}
-			
-			public void Configurate(IPluginConfig configPin)
-			{
-				foreach (var config in FIOFactory.FConfigHandlers)
-				{
-					if (config.Metadata == configPin)
-					{
-						config.Configurate();
-						break;
-					}
-				}
-			}
-		}
-		
 		private readonly IInternalPluginHost FPluginHost;
 		private readonly IORegistry FIORegistry;
+		private readonly List<IIOHandler> FCreatedHandlers = new List<IIOHandler>();
 		private readonly List<IOHandler> FPreHandlers = new List<IOHandler>();
-		private readonly List<IOHandler> FPostHandler = new List<IOHandler>();
+		private readonly List<IOHandler> FPostHandlers = new List<IOHandler>();
 		private readonly List<IOHandler> FConfigHandlers = new List<IOHandler>();
-		private IPluginNodeListener FPluginNodeListener;
+		private readonly CompositionContainer FContainer;
+		private readonly IPluginEvaluate FPlugin;
+		private readonly bool FAutoEvaluate;
+		
+		[Import(typeof(IPluginBase))]
+		public IPluginBase PluginBase
+		{
+			get;
+			private set;
+		}
 		
 		public IOFactory(
-			IInternalPluginHost pluginHost,
-			IORegistry streamRegistry
+			IInternalPluginHost internalPluginHost,
+			IORegistry streamRegistry,
+			CompositionContainer parentContainer,
+			Type pluginType,
+			INodeInfo nodeInfo
 		)
 		{
-			FPluginHost = pluginHost;
+			FPluginHost = internalPluginHost;
 			FIORegistry = streamRegistry;
+			
+			var catalog = new TypeCatalog(pluginType);
+			var ioExportProvider = new IOExportProvider(this);
+			var hostExportProvider = new HostExportProvider() { PluginHost = internalPluginHost };
+			var exportProviders = new ExportProvider[] { hostExportProvider, ioExportProvider, parentContainer };
+			FContainer = new CompositionContainer(catalog, exportProviders);
+			FContainer.ComposeParts(this);
+			FPlugin = PluginBase as IPluginEvaluate;
+			FAutoEvaluate = nodeInfo.AutoEvaluate;
 		}
 		
 		public void Dispose()
 		{
-			// HACK: FPluginHost is null in case of WindowSwitcher/NodeBrowser/etc. Fix this.
-			if (FPluginHost != null && FPluginNodeListener != null)
+//			// HACK: FPluginHost is null in case of WindowSwitcher/NodeBrowser/etc. Fix this.
+//			if (FPluginHost != null && FPluginNodeListener != null)
+//			{
+//				FPluginHost.RemoveListener(FPluginNodeListener);
+//			}
+//
+//			var disposablePlugin = FPlugin as IDisposable;
+//			if (disposablePlugin != null)
+//			{
+//				disposablePlugin.Dispose();
+//			}
+			foreach (var ioHandler in FCreatedHandlers.ToArray())
 			{
-				FPluginHost.RemoveListener(FPluginNodeListener);
+				DestroyIOHandler(ioHandler);
 			}
+			FContainer.Dispose();
 		}
 		
-		private void HookPluginNode()
-		{
-			// HACK: FPluginHost is null in case of WindowSwitcher/NodeBrowser/etc. Fix this.
-			if (FPluginHost != null && FPluginNodeListener == null)
-			{
-				FPluginNodeListener = new PluginNodeListener(this);
-				FPluginHost.AddListener(FPluginNodeListener);
-			}
-		}
+//		private void HookPluginNode()
+//		{
+//			// HACK: FPluginHost is null in case of WindowSwitcher/NodeBrowser/etc. Fix this.
+//			if (FPluginHost != null && FPluginNodeListener == null)
+//			{
+//				FPluginNodeListener = new PluginNodeListener(this);
+//				FPluginHost.AddListener(FPluginNodeListener);
+//			}
+//		}
 		
-		public IPluginHost2 PluginHost
+		IPluginHost2 IIOFactory.PluginHost
 		{
 			get
 			{
@@ -89,7 +86,7 @@ namespace VVVV.Hosting.IO
 			}
 		}
 		
-		public IIOHandler CreateIOHandler(Type type, IOAttribute attribute)
+		IIOHandler IIOFactory.CreateIOHandler(Type type, IOAttribute attribute)
 		{
 			var io = FIORegistry.CreateIOHandler(
 				type.IsGenericType ? type.GetGenericTypeDefinition() : type,
@@ -105,19 +102,21 @@ namespace VVVV.Hosting.IO
 			
 			if (io.NeedsPreEvaluation)
 			{
-				HookPluginNode();
+//				HookPluginNode();
 				FPreHandlers.Add(io);
 			}
 			if (io.NeedsPostEvaluation)
 			{
-				HookPluginNode();
-				FPostHandler.Add(io);
+//				HookPluginNode();
+				FPostHandlers.Add(io);
 			}
 			if (io.NeedsConfiguration)
 			{
-				HookPluginNode();
+//				HookPluginNode();
 				FConfigHandlers.Add(io);
 			}
+			
+			FCreatedHandlers.Add(io);
 			
 			return io;
 		}
@@ -138,6 +137,7 @@ namespace VVVV.Hosting.IO
 			return true;
 		}
 		
+		// HACK: IIOHandler should implement IDisposable
 		public void DestroyIOHandler(IIOHandler io_interface)
 		{
 			// HACK: Remove this cast
@@ -149,11 +149,19 @@ namespace VVVV.Hosting.IO
 			}
 			if (io.NeedsPostEvaluation)
 			{
-				FPostHandler.Remove(io);
+				FPostHandlers.Remove(io);
 			}
 			if (io.NeedsConfiguration)
 			{
 				FConfigHandlers.Remove(io);
+			}
+			
+			FCreatedHandlers.Remove(io);
+			
+			var disposableIO = io as IDisposable;
+			if (disposableIO != null)
+			{
+				disposableIO.Dispose();
 			}
 			
 			var pluginIO = io.Metadata as IPluginIO;
@@ -161,6 +169,56 @@ namespace VVVV.Hosting.IO
 			{
 				FPluginHost.DeletePin(pluginIO);
 			}
+		}
+		
+		void IPlugin.SetPluginHost(IPluginHost Host)
+		{
+			throw new NotImplementedException();
+		}
+		
+		void IPlugin.Configurate(IPluginConfig configPin)
+		{
+			foreach (var config in FConfigHandlers)
+			{
+				if (config.Metadata == configPin)
+				{
+					config.Configurate();
+					break;
+				}
+			}
+		}
+		
+		void IPlugin.Evaluate(int SpreadMax)
+		{
+			foreach (var input in FPreHandlers)
+			{
+				input.PreEvaluate();
+			}
+			
+			FPlugin.Evaluate(SpreadMax);
+			
+			foreach (var output in FPostHandlers)
+			{
+				output.PostEvaluate();
+			}
+		}
+		
+		bool IPlugin.AutoEvaluate
+		{
+			get
+			{
+				return FAutoEvaluate;
+			}
+		}
+		
+		void IPluginConnections.ConnectPin(IPluginIO pin)
+		{
+			// TODO: Implement this
+		}
+		
+		void IPluginConnections.DisconnectPin(IPluginIO pin)
+		{
+			// TODO: Implement this
 		}
 	}
 }

@@ -11,7 +11,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-
 using VVVV.Core;
 using VVVV.Core.Commands;
 using VVVV.Core.Logging;
@@ -19,6 +18,7 @@ using VVVV.Core.Model;
 using VVVV.Hosting;
 using VVVV.Hosting.Factories;
 using VVVV.Hosting.Graph;
+using VVVV.Hosting.IO;
 using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -40,8 +40,7 @@ namespace VVVV.Hosting
         const string NODE_BROWSER = "NodeBrowser (VVVV)";
         
         private IVVVVHost FVVVVHost;
-        private INodeBrowser FNodeBrowser;
-        private IPluginBase FWindowSwitcher, FKommunikator;
+        private IPluginBase FWindowSwitcher, FKommunikator, FNodeBrowser;
         private readonly List<Window> FWindows = new List<Window>();
         
         [Export]
@@ -184,9 +183,7 @@ namespace VVVV.Hosting
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             FWindowSwitcher = PluginFactory.CreatePlugin(windowSwitcherNodeInfo, null);
             FKommunikator = PluginFactory.CreatePlugin(kommunikatorNodeInfo, null);
-            FNodeBrowser = (INodeBrowser) PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
-            FNodeBrowser.IsStandalone = false;
-            FNodeBrowser.DragDrop(false);
+            FNodeBrowser = PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
         }
         
         private INodeInfo GetNodeInfo(string systemName)
@@ -196,9 +193,12 @@ namespace VVVV.Hosting
 
         public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
         {
-            nodeBrowser = FNodeBrowser;
-            windowSwitcher = FWindowSwitcher;
-            kommunikator = FKommunikator;
+        	// HACK hack hack :/
+        	nodeBrowser = ((IOFactory) FNodeBrowser).PluginBase;
+        	((INodeBrowser) nodeBrowser).IsStandalone = false;
+            ((INodeBrowser) nodeBrowser).DragDrop(false);
+            windowSwitcher = ((IOFactory) FWindowSwitcher).PluginBase;
+            kommunikator = ((IOFactory) FKommunikator).PluginBase;
         }
         
         public void ExtractNodeInfos(string filename, string arguments, out INodeInfo[] result)

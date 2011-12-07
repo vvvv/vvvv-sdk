@@ -26,12 +26,6 @@ namespace VVVV.Hosting.Factories
     [ComVisible(false)]
     public delegate void PluginDeletedDelegate(IPluginBase plugin);
 
-    enum PluginVersion
-    {
-        V1,
-        V2
-    }
-    
     /// <summary>
     /// DotNetPluginFactory for V1 and V2 style plugins.
     /// V1 style plugins need to be loaded manually
@@ -42,17 +36,9 @@ namespace VVVV.Hosting.Factories
     [ComVisible(false)]
     public class DotNetPluginFactory : AbstractFileFactory<IInternalPluginHost>
     {
-        class PluginImporter
-        {
-            [Import(typeof(IPluginBase), AllowRecomposition=true)]
-            public ExportFactory<IPluginBase> PluginExportFactory { get; set; }
-        }
-        
         [Import]
         protected IHDEHost FHost;
         
-        private PluginImporter FPluginImporter = new PluginImporter();
-        private readonly Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts;
         private readonly Dictionary<IPluginBase, IIOFactory> FFactories;
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
@@ -74,7 +60,6 @@ namespace VVVV.Hosting.Factories
         {
             FParentContainer = parentContainer;
             FFactories = new Dictionary<IPluginBase, IIOFactory>();
-            FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
             
             AppDomain.CurrentDomain.AssemblyResolve += HandleAssemblyResolve;
             AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += HandleReflectionOnlyAssemblyResolve;
@@ -333,23 +318,14 @@ namespace VVVV.Hosting.Factories
             var attribute = GetPluginInfoAttributeData(type);
             if (attribute != null)
             {
-                var catalog = new TypeCatalog(type);
+                var ioFactory = new IOFactory(pluginHost as IInternalPluginHost, FIORegistry, FParentContainer, type, nodeInfo);
+
+                // We intercept the plugin to manage IOHandlers.
+                plugin = ioFactory;
+                FFactories[ioFactory.PluginBase] = ioFactory;
                 
-                // Create a new factory for each plugin.
-                // The factory will take care of auto validation.
-                var ioFactory = new IOFactory(pluginHost as IInternalPluginHost, FIORegistry);
-                var ioExportProvider = new IOExportProvider(ioFactory);
-                var hostExportProvider = new HostExportProvider() { PluginHost = pluginHost as IInternalPluginHost };
-                var exportProviders = new ExportProvider[] { hostExportProvider, ioExportProvider, FParentContainer };
-                var container = new CompositionContainer(catalog, exportProviders);
-                container.ComposeParts(FPluginImporter);
-                
-                var lifetimeContext = FPluginImporter.PluginExportFactory.CreateExport();
-                
-                plugin = lifetimeContext.Value;
-                
-                FPluginLifetimeContexts[plugin] = lifetimeContext;
-                FFactories[plugin] = ioFactory;
+                // Send event, clients are not interested in wrapping plugin, so send original here.
+                if (this.PluginCreated != null) { this.PluginCreated(ioFactory.PluginBase, pluginHost); }
             }
             else
             {
@@ -358,10 +334,10 @@ namespace VVVV.Hosting.Factories
                 v1Plugin.SetPluginHost(pluginHost);
                 
                 plugin = v1Plugin;
+                
+                // Send event
+                if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
             }
-            
-            //Send event
-            if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
             
             return plugin;
         }
@@ -372,10 +348,8 @@ namespace VVVV.Hosting.Factories
             if (this.PluginDeleted != null) { this.PluginDeleted(plugin); }
 
             var disposablePlugin = plugin as IDisposable;
-            if (FPluginLifetimeContexts.ContainsKey(plugin))
+            if (FFactories.ContainsKey(plugin))
             {
-                FPluginLifetimeContexts[plugin].Dispose();
-                FPluginLifetimeContexts.Remove(plugin);
                 FFactories[plugin].Dispose();
                 FFactories.Remove(plugin);
             }

@@ -16,9 +16,6 @@ namespace VVVV.Hosting.Interfaces
 			set;
 		}
 		
-		void AddListener(IPluginNodeListener listener);
-		void RemoveListener(IPluginNodeListener listener);
-		
 		IDXTextureOut CreateTextureOutput2(IDXTexturePin texturePin, string name, TSliceMode sliceMode, TPinVisibility visibility);
 	}
 }
