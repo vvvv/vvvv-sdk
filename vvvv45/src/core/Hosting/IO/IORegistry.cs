@@ -183,6 +183,17 @@ namespace VVVV.Hosting.IO
 			              	return IOHandler.Create(stream, enumIn);
 			              });
 			
+			RegisterInput(typeof(IIOStream<>), (factory, attribute, t) => {
+			              	var inStreamType = typeof(IInStream<>).MakeGenericType(t);
+			              	var ioStreamType = typeof(InputIOStream<>).MakeGenericType(t);
+			              	var inStream = factory.CreateIO(inStreamType, attribute);
+			              	var ioStream = (IIOStream) Activator.CreateInstance(ioStreamType, inStream);
+			              	if (attribute.AutoValidate)
+			              		return IOHandler.Create(ioStream, inStream, s => s.Sync(), s => s.Flush());
+			              	else
+			              		return IOHandler.Create(ioStream, inStream, null, s => s.Flush());
+			              });
+			
 			RegisterInput(typeof(IInStream<>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	if (t.IsGenericType)
@@ -244,14 +255,14 @@ namespace VVVV.Hosting.IO
 			              	// Disable auto validation for stream as spread will do it.
 			              	var streamAttribute = attribute.Clone() as InputAttribute;
 			              	streamAttribute.AutoValidate = false;
-			              	var ioBuilder = CreateIOHandler(typeof(IInStream<>), typeof(IInStream<>).MakeGenericType(t), factory, streamAttribute);
+			              	var ioHandler = CreateIOHandler(typeof(IInStream<>), typeof(IInStream<>).MakeGenericType(t), factory, streamAttribute);
 			              	var pinType = typeof(InputPin<>).MakeGenericType(t);
-			              	spread = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
+			              	spread = Activator.CreateInstance(pinType, host, ioHandler.Metadata, ioHandler.RawIOObject) as ISpread;
 			              	spread.Sync();
 			              	if (attribute.AutoValidate)
-			              		return IOHandler.Create(spread, ioBuilder.Metadata, p => p.Sync());
+			              		return IOHandler.Create(spread, ioHandler.Metadata, p => p.Sync());
 			              	else
-			              		return IOHandler.Create(spread, ioBuilder.Metadata);
+			              		return IOHandler.Create(spread, ioHandler.Metadata);
 			              });
 			
 			RegisterInput(typeof(IDiffSpread<>), (factory, attribute, t) => {
