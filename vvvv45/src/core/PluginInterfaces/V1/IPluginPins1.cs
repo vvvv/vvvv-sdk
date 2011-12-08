@@ -824,6 +824,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Default">The Color the pin is initialized with and can be reset to at any time.</param>
 		/// <param name="HasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
 		void SetSubType(RGBAColor Default, bool HasAlpha);
+		void GetColorPointer(out double** ppDst);
 	}
 	
 	#endregion color pins
@@ -1070,6 +1071,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetMatrixPointer(out float* Value);
+		void GetMatrixPointer(out float** ppDst);
 	}
 	#endregion node pins	
 	

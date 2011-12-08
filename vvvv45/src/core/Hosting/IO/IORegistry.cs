@@ -325,69 +325,81 @@ namespace VVVV.Hosting.IO
 			RegisterOutput(typeof(IOutStream<double>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new DoubleOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new DoubleOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 			
 			RegisterOutput(typeof(IOutStream<float>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new FloatOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new FloatOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 			
 			RegisterOutput(typeof(IOutStream<int>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new IntOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new IntOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 			
 			RegisterOutput(typeof(IOutStream<bool>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new BoolOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new BoolOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 
 			RegisterOutput(typeof(IOutStream<Matrix4x4>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var transformOut = host.CreateTransformOutput(attribute, t);
-			               	return IOHandler.Create(new Matrix4x4OutStream(GetResizeMatrixArrayFunc(transformOut)), transformOut);
+			               	transformOut.GetMatrixPointer(out ppFloatData);
+			               	return IOHandler.Create(new Matrix4x4OutStream((Matrix**) ppFloatData, GetSetMatrixLengthAction(transformOut)), transformOut);
 			               });
 			
 			RegisterOutput(typeof(IOutStream<Matrix>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var transformOut = host.CreateTransformOutput(attribute, t);
-			               	return IOHandler.Create(new MatrixOutStream(GetResizeMatrixArrayFunc(transformOut)), transformOut);
+			               	transformOut.GetMatrixPointer(out ppFloatData);
+			               	return IOHandler.Create(new MatrixOutStream((Matrix**) ppFloatData, GetSetMatrixLengthAction(transformOut)), transformOut);
 			               });
 
 			RegisterOutput(typeof(IOutStream<Vector2D>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector2DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new Vector2DOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 			RegisterOutput(typeof(IOutStream<Vector3D>),(factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector3DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new Vector3DOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 			RegisterOutput(typeof(IOutStream<Vector4D>),(factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector4DOutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new Vector4DOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 
 			RegisterOutput(typeof(IOutStream<Vector2>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector2OutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new Vector2OutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 			RegisterOutput(typeof(IOutStream<Vector3>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector3OutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new Vector3OutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 			RegisterOutput(typeof(IOutStream<Vector4>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueOut = host.CreateValueOutput(attribute, t);
-			               	return IOHandler.Create(new Vector4OutStream(GetResizeValueArrayFunc(valueOut)), valueOut);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new Vector4OutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 
 			RegisterOutput(typeof(IOutStream<string>), (factory, attribute, t) => {
@@ -399,7 +411,8 @@ namespace VVVV.Hosting.IO
 			RegisterOutput(typeof(IOutStream<RGBAColor>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var colorOut = host.CreateColorOutput(attribute, t);
-			               	return IOHandler.Create(new ColorOutStream(GetResizeColorArrayFunc(colorOut)), colorOut);
+			               	colorOut.GetColorPointer(out ppDoubleData);
+			               	return IOHandler.Create(new ColorOutStream((RGBAColor**) ppDoubleData, GetSetColorLengthAction(colorOut)), colorOut);
 			               });
 
 			RegisterOutput(typeof(IOutStream<EnumEntry>), (factory, attribute, t) => {
@@ -503,7 +516,7 @@ namespace VVVV.Hosting.IO
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
 			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
 			               	var inStream = new DoubleInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new DoubleOutStream(ResizeValueArrayFunc(valueConfig));
+			               	var outStream = new DoubleOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<double>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			
@@ -512,7 +525,7 @@ namespace VVVV.Hosting.IO
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
 			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
 			               	var inStream = new FloatInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new FloatOutStream(ResizeValueArrayFunc(valueConfig));
+			               	var outStream = new FloatOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<float>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			
@@ -521,7 +534,7 @@ namespace VVVV.Hosting.IO
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
 			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
 			               	var inStream = new IntInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new IntOutStream(ResizeValueArrayFunc(valueConfig));
+			               	var outStream = new IntOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<int>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			
@@ -530,7 +543,7 @@ namespace VVVV.Hosting.IO
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
 			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
 			               	var inStream = new BoolInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new BoolOutStream(ResizeValueArrayFunc(valueConfig));
+			               	var outStream = new BoolOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<bool>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 
@@ -539,7 +552,7 @@ namespace VVVV.Hosting.IO
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
 			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
 			               	var inStream = new Vector2DInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector2DOutStream(ResizeValueArrayFunc(valueConfig));
+			               	var outStream = new Vector2DOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector2D>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			RegisterConfig(typeof(IIOStream<Vector3D>),(factory, attribute, t) => {
@@ -547,7 +560,7 @@ namespace VVVV.Hosting.IO
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
 			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
 			               	var inStream = new Vector3DInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector3DOutStream(ResizeValueArrayFunc(valueConfig));
+			               	var outStream = new Vector3DOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector3D>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			RegisterConfig(typeof(IIOStream<Vector4D>),(factory, attribute, t) => {
@@ -555,7 +568,7 @@ namespace VVVV.Hosting.IO
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
 			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
 			               	var inStream = new Vector4DInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector4DOutStream(ResizeValueArrayFunc(valueConfig));
+			               	var outStream = new Vector4DOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector4D>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 
@@ -564,7 +577,7 @@ namespace VVVV.Hosting.IO
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
 			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
 			               	var inStream = new Vector2InStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector2OutStream(ResizeValueArrayFunc(valueConfig));
+			               	var outStream = new Vector2OutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector2>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			RegisterConfig(typeof(IIOStream<Vector3>), (factory, attribute, t) => {
@@ -572,7 +585,7 @@ namespace VVVV.Hosting.IO
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
 			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
 			               	var inStream = new Vector3InStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector3OutStream(ResizeValueArrayFunc(valueConfig));
+			               	var outStream = new Vector3OutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector3>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			RegisterConfig(typeof(IIOStream<Vector4>), (factory, attribute, t) => {
@@ -580,7 +593,7 @@ namespace VVVV.Hosting.IO
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
 			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
 			               	var inStream = new Vector4InStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector4OutStream(ResizeValueArrayFunc(valueConfig));
+			               	var outStream = new Vector4OutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector4>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 
@@ -595,7 +608,7 @@ namespace VVVV.Hosting.IO
 			               	var colorConfig = host.CreateColorConfig(attribute, t);
 			               	colorConfig.GetColorPointer(out pLength, out ppDoubleData);
 			               	var inStream = new ColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorConfig));
-			               	var outStream = new ColorOutStream(ResizeColorArrayFunc(colorConfig));
+			               	var outStream = new ColorOutStream((RGBAColor**) ppDoubleData, GetSetColorLengthAction(colorConfig));
 			               	return IOHandler.Create(new ConfigIOStream<RGBAColor>(inStream, outStream), colorConfig, null, null, s => s.Sync());
 			               });
 
@@ -789,46 +802,27 @@ namespace VVVV.Hosting.IO
 			};
 		}
 		
-		static unsafe private Func<int, IntPtr> GetResizeValueArrayFunc(IValueOut valueOut)
+		static unsafe private Action<int> GetSetValueLengthAction(IValueOut valueOut)
 		{
 			return (newLength) =>
 			{
-				double* ptr;
 				valueOut.SliceCount = newLength;
-				valueOut.GetValuePointer(out ptr);
-				return new IntPtr(ptr);
 			};
 		}
 		
-		static unsafe private Func<int, IntPtr> GetResizeColorArrayFunc(IColorOut colorOut)
+		static unsafe private Action<int> GetSetColorLengthAction(IColorOut colorOut)
 		{
 			return (newLength) =>
 			{
-				double* ptr;
 				colorOut.SliceCount = newLength;
-				colorOut.GetColorPointer(out ptr);
-				return new IntPtr(ptr);
 			};
 		}
 		
-		static unsafe private Func<int, IntPtr> GetResizeMatrixArrayFunc(ITransformOut transformOut)
+		static unsafe private Action<int> GetSetMatrixLengthAction(ITransformOut transformOut)
 		{
 			return (newLength) =>
 			{
-				float* ptr;
 				transformOut.SliceCount = newLength;
-				transformOut.GetMatrixPointer(out ptr);
-				return new IntPtr(ptr);
-			};
-		}
-		
-		static unsafe private Func<Tuple<IntPtr, int>> GetValuePointerFunc(IValueConfig valueConfig)
-		{
-			return () => {
-				int length;
-				double* ptr;
-				valueConfig.GetValuePointer(out length, out ptr);
-				return Tuple.Create(new IntPtr(ptr), length);
 			};
 		}
 		
@@ -844,35 +838,17 @@ namespace VVVV.Hosting.IO
 			return () => { return colorConfig.PinIsChanged; };
 		}
 		
-		static unsafe private Func<int, IntPtr> ResizeValueArrayFunc(IValueConfig valueConfig)
+		static unsafe private Action<int> GetSetValueLengthAction(IValueConfig valueConfig)
 		{
 			return (int newLength) => {
-				int length;
-				double* ptr;
 				valueConfig.SliceCount = newLength;
-				valueConfig.GetValuePointer(out length, out ptr);
-				return new IntPtr(ptr);
 			};
 		}
 		
-		static unsafe private Func<Tuple<IntPtr, int>> GetColorPointerFunc(IColorConfig colorConfig)
-		{
-			return () => {
-				int length;
-				double* ptr;
-				colorConfig.GetColorPointer(out length, out ptr);
-				return Tuple.Create(new IntPtr(ptr), length);
-			};
-		}
-		
-		static unsafe private Func<int, IntPtr> ResizeColorArrayFunc(IColorConfig colorConfig)
+		static unsafe private Action<int> GetSetColorLengthAction(IColorConfig colorConfig)
 		{
 			return (int newLength) => {
-				int length;
-				double* ptr;
 				colorConfig.SliceCount = newLength;
-				colorConfig.GetColorPointer(out length, out ptr);
-				return new IntPtr(ptr);
 			};
 		}
 	}

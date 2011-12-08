@@ -23,6 +23,8 @@ namespace VVVV.Hosting.IO.Streams
 			{
 				FStream = stream;
 				Length = stream.Length;
+				
+				FStream.FRefCount++;
 			}
 			
 			public bool Eos
@@ -113,70 +115,6 @@ namespace VVVV.Hosting.IO.Streams
 				return numSlicesToRead;
 			}
 			
-			public void ReadCyclic(T[] buffer, int index, int length, int stride)
-			{
-				// Exception handling
-				if (Length == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
-				
-				// Normalize the stride
-				stride %= Length;
-				
-				switch (Length)
-				{
-					case 1:
-						// Special treatment for streams of length one
-						if (Eos) Reset();
-						
-						if (index == 0 && length == buffer.Length)
-							buffer.Init(Read(stride)); // Slightly faster
-						else
-							buffer.Fill(index, length, Read(stride));
-						break;
-					default:
-						int numSlicesRead = 0;
-						
-						// Read till end
-						while ((numSlicesRead < length) && (Position %= Length) > 0)
-						{
-							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
-						}
-						
-						// Save start of possible block
-						int startIndex = index + numSlicesRead;
-						
-						// Read one block
-						while (numSlicesRead < length)
-						{
-							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
-							// Exit the loop once ReadPosition is back at beginning
-							if ((Position %= Length) == 0) break;
-						}
-						
-						// Save end of possible block
-						int endIndex = index + numSlicesRead;
-						
-						// Calculate block size
-						int blockSize = endIndex - startIndex;
-						
-						// Now see if the block can be replicated to fill up the buffer
-						if (blockSize > 0)
-						{
-							int times = (length - numSlicesRead) / blockSize;
-							buffer.Replicate(startIndex, endIndex, times);
-							numSlicesRead += blockSize * times;
-						}
-						
-						// Read the rest
-						while (numSlicesRead < length)
-						{
-							if (Eos) Position %= Length;
-							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
-						}
-						
-						break;
-				}
-			}
-			
 			protected abstract void Copy(T[] destination, int destinationIndex, int length, int stride);
 			
 			public void Dispose()
@@ -190,14 +128,12 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		//private readonly Func<Tuple<IntPtr, int>> FGetUnmanagedArrayFunc;
 		protected readonly int* FPLength;
 		protected readonly Func<bool> FValidateFunc;
 		protected int FRefCount;
 		
 		public UnmanagedInStream(int* pLength, Func<bool> validateFunc)
 		{
-			//FGetUnmanagedArrayFunc = getUnmanagedArrayFunc;
 			FPLength = pLength;
 			FValidateFunc = validateFunc;
 		}

@@ -16,6 +16,7 @@ namespace VVVV.Hosting.Pins.Config
 			: base(host, pluginConfig, stream)
 		{
 			FPluginConfig = pluginConfig;
+			SliceCount = 1;
 		}
 		
 		public event SpreadChangedEventHander<T> Changed;

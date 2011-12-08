@@ -10,81 +10,6 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.IO.Streams
 {
-	static class UnmanagedOutStream
-	{
-		private static readonly Dictionary<Type, Func<Func<int, IntPtr>, object>> FStreamCreators;
-		
-		static UnmanagedOutStream()
-		{
-			FStreamCreators = new Dictionary<Type, Func<Func<int, IntPtr>, object>>();
-			FStreamCreators[typeof(double)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new DoubleOutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(float)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new FloatOutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(int)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new IntOutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(bool)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new BoolOutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(Vector2)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new Vector2OutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(Vector3)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new Vector3OutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(Vector4)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new Vector4OutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(Vector2D)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new Vector2DOutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(Vector3D)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new Vector3DOutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(Vector4D)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new Vector4DOutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(Matrix)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new MatrixOutStream(resizeUnmanagedArrayFunc);
-			};
-			FStreamCreators[typeof(Matrix4x4)] = (resizeUnmanagedArrayFunc) =>
-			{
-				return new Matrix4x4OutStream(resizeUnmanagedArrayFunc);
-			};
-		}
-		
-		public static IOutStream<T> Create<T>(Func<int, IntPtr> resizeUnmanagedArrayFunc)
-		{
-			Func<Func<int, IntPtr>, object> streamCreator = null;
-			
-			if (FStreamCreators.TryGetValue(typeof(T), out streamCreator))
-			{
-				return streamCreator(resizeUnmanagedArrayFunc) as IOutStream<T>;
-			}
-			
-			throw new NotSupportedException(string.Format("UnmanagedOutStream of type '{0}' is not supported.", typeof(T)));
-		}
-		
-		public static bool CanCreate(Type type)
-		{
-			return FStreamCreators.ContainsKey(type);
-		}
-	}
-	
 	unsafe abstract class UnmanagedOutStream<T> : IOutStream<T>
 	{
 		internal abstract class UnmanagedOutWriter : IStreamWriter<T>
@@ -95,6 +20,8 @@ namespace VVVV.Hosting.IO.Streams
 			{
 				FStream = stream;
 				Length = stream.Length;
+				
+				FStream.FRefCount++;
 			}
 			
 			public bool Eos
@@ -151,16 +78,13 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private readonly Func<int, IntPtr> FResizeUnmanagedArrayFunc;
-		protected int FRefCount;
-		protected IntPtr FUnmanagedArrayPtr;
+		private readonly Action<int> FSetDstLengthAction;
 		protected int FLength;
-		protected int FWritePosition;
+		protected int FRefCount;
 		
-		public UnmanagedOutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
+		public UnmanagedOutStream(Action<int> setDstLengthAction)
 		{
-			FResizeUnmanagedArrayFunc = resizeUnmanagedArrayFunc;
-			Resize(1);
+			FSetDstLengthAction = setDstLengthAction;
 		}
 		
 		public int Length
@@ -173,19 +97,11 @@ namespace VVVV.Hosting.IO.Streams
 			{
 				if (value != FLength)
 				{
-					Resize(value);
+					FSetDstLengthAction(value);
+					FLength = value;
 				}
 			}
 		}
-		
-		private void Resize(int newSize)
-		{
-			FUnmanagedArrayPtr = FResizeUnmanagedArrayFunc(newSize);
-			FLength = newSize;
-			Resized(FUnmanagedArrayPtr, newSize);
-		}
-		
-		protected abstract void Resized(IntPtr unmanagedArray, int unmanagedArrayLength);
 		
 		public void Flush()
 		{
@@ -204,18 +120,18 @@ namespace VVVV.Hosting.IO.Streams
 	{
 		class DoubleOutWriter : UnmanagedOutWriter
 		{
-			private readonly double* FUnmanagedArray;
+			private readonly double* FPDst;
 			
-			public DoubleOutWriter(DoubleOutStream stream)
+			public DoubleOutWriter(DoubleOutStream stream, double* pDst)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPDst = pDst;
 			}
 			
 			public override void Write(double value, int stride)
 			{
 				Debug.Assert(!Eos);
-				FUnmanagedArray[Position] = value;
+				FPDst[Position] = value;
 				Position += stride;
 			}
 			
@@ -224,13 +140,13 @@ namespace VVVV.Hosting.IO.Streams
 				switch (stride)
 				{
 					case 1:
-						Marshal.Copy(source, sourceIndex, new IntPtr(FUnmanagedArray + Position), length);
+						Marshal.Copy(source, sourceIndex, new IntPtr(FPDst + Position), length);
 						break;
 					default:
-						fixed (double* sourcePtr = source)
+						fixed (double* pSrc = source)
 						{
-							double* src = sourcePtr + sourceIndex;
-							double* dst = FUnmanagedArray + Position;
+							double* src = pSrc + sourceIndex;
+							double* dst = FPDst + Position;
 							
 							for (int i = 0; i < length; i++)
 							{
@@ -243,23 +159,17 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private double* FUnmanagedArray;
+		private readonly double** FPPDst;
 		
-		public DoubleOutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
-			: base(resizeUnmanagedArrayFunc)
+		public DoubleOutStream(double** ppDst, Action<int> setDstLengthAction)
+			: base(setDstLengthAction)
 		{
-			
-		}
-		
-		protected override void Resized(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
+			FPPDst = ppDst;
 		}
 		
 		public override IStreamWriter<double> GetWriter()
 		{
-			FRefCount++;
-			return new DoubleOutWriter(this);
+			return new DoubleOutWriter(this, *FPPDst);
 		}
 	}
 	
@@ -267,18 +177,18 @@ namespace VVVV.Hosting.IO.Streams
 	{
 		class FloatOutWriter : UnmanagedOutWriter
 		{
-			private readonly double* FUnmanagedArray;
+			private readonly double* FPDst;
 			
-			public FloatOutWriter(FloatOutStream stream)
+			public FloatOutWriter(FloatOutStream stream, double* pDst)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPDst = pDst;
 			}
 			
 			public override void Write(float value, int stride)
 			{
 				Debug.Assert(!Eos);
-				FUnmanagedArray[Position] = (double) value;
+				FPDst[Position] = (double) value;
 				Position += stride;
 			}
 			
@@ -287,7 +197,7 @@ namespace VVVV.Hosting.IO.Streams
 				fixed (float* sourcePtr = source)
 				{
 					float* src = sourcePtr + sourceIndex;
-					double* dst = FUnmanagedArray + Position;
+					double* dst = FPDst + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -298,23 +208,17 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private double* FUnmanagedArray;
+		private readonly double** FPPDst;
 		
-		public FloatOutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
-			: base(resizeUnmanagedArrayFunc)
+		public FloatOutStream(double** ppDst, Action<int> setDstLengthAction)
+			: base(setDstLengthAction)
 		{
-			
-		}
-		
-		protected override void Resized(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
+			FPPDst = ppDst;
 		}
 		
 		public override IStreamWriter<float> GetWriter()
 		{
-			FRefCount++;
-			return new FloatOutWriter(this);
+			return new FloatOutWriter(this, *FPPDst);
 		}
 	}
 
@@ -322,18 +226,18 @@ namespace VVVV.Hosting.IO.Streams
 	{
 		class IntOutWriter : UnmanagedOutWriter
 		{
-			private readonly double* FUnmanagedArray;
+			private readonly double* FPDst;
 			
-			public IntOutWriter(IntOutStream stream)
+			public IntOutWriter(IntOutStream stream, double* pDst)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPDst = pDst;
 			}
 			
 			public override void Write(int value, int stride)
 			{
 				Debug.Assert(!Eos);
-				FUnmanagedArray[Position] = (double) value;
+				FPDst[Position] = (double) value;
 				Position += stride;
 			}
 			
@@ -342,7 +246,7 @@ namespace VVVV.Hosting.IO.Streams
 				fixed (int* sourcePtr = source)
 				{
 					int* src = sourcePtr + sourceIndex;
-					double* dst = FUnmanagedArray + Position;
+					double* dst = FPDst + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -353,25 +257,17 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private double* FUnmanagedArray;
+		private readonly double** FPPDst;
 		
-		public IntOutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
-			: base(resizeUnmanagedArrayFunc)
+		public IntOutStream(double** ppDst, Action<int> setDstLengthAction)
+			: base(setDstLengthAction)
 		{
-			
+			FPPDst = ppDst;
 		}
-		
-		protected override void Resized(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
-		}
-		
-		
 		
 		public override IStreamWriter<int> GetWriter()
 		{
-			FRefCount++;
-			return new IntOutWriter(this);
+			return new IntOutWriter(this, *FPPDst);
 		}
 	}
 
@@ -379,18 +275,18 @@ namespace VVVV.Hosting.IO.Streams
 	{
 		class BoolOutWriter : UnmanagedOutWriter
 		{
-			private readonly double* FUnmanagedArray;
+			private readonly double* FPDst;
 			
-			public BoolOutWriter(BoolOutStream stream)
+			public BoolOutWriter(BoolOutStream stream, double* pDst)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPDst = pDst;
 			}
 			
 			public override void Write(bool value, int stride)
 			{
 				Debug.Assert(!Eos);
-				FUnmanagedArray[Position] = value ? 1.0 : 0.0;
+				FPDst[Position] = value ? 1.0 : 0.0;
 				Position += stride;
 			}
 			
@@ -399,7 +295,7 @@ namespace VVVV.Hosting.IO.Streams
 				fixed (bool* sourcePtr = source)
 				{
 					bool* src = sourcePtr + sourceIndex;
-					double* dst = FUnmanagedArray + Position;
+					double* dst = FPDst + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -410,25 +306,17 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private double* FUnmanagedArray;
+		private readonly double** FPPDst;
 		
-		public BoolOutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
-			: base(resizeUnmanagedArrayFunc)
+		public BoolOutStream(double** ppDst, Action<int> setDstLengthAction)
+			: base(setDstLengthAction)
 		{
-			
+			FPPDst = ppDst;
 		}
-		
-		protected override void Resized(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
-		}
-		
-		
 		
 		public override IStreamWriter<bool> GetWriter()
 		{
-			FRefCount++;
-			return new BoolOutWriter(this);
+			return new BoolOutWriter(this, *FPPDst);
 		}
 	}
 	
@@ -436,18 +324,18 @@ namespace VVVV.Hosting.IO.Streams
 	{
 		class ColorOutWriter : UnmanagedOutWriter
 		{
-			private readonly RGBAColor* FUnmanagedArray;
+			private readonly RGBAColor* FPDst;
 			
-			public ColorOutWriter(ColorOutStream stream)
+			public ColorOutWriter(ColorOutStream stream, RGBAColor* pDst)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPDst = pDst;
 			}
 			
 			public override void Write(RGBAColor value, int stride)
 			{
 				Debug.Assert(!Eos);
-				FUnmanagedArray[Position] = value;
+				FPDst[Position] = value;
 				Position += stride;
 			}
 			
@@ -456,7 +344,7 @@ namespace VVVV.Hosting.IO.Streams
 				fixed (RGBAColor* sourcePtr = source)
 				{
 					RGBAColor* src = sourcePtr + sourceIndex;
-					RGBAColor* dst = FUnmanagedArray + Position;
+					RGBAColor* dst = FPDst + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -467,23 +355,17 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private RGBAColor* FUnmanagedArray;
+		private readonly RGBAColor** FPPDst;
 		
-		public ColorOutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
-			: base(resizeUnmanagedArrayFunc)
+		public ColorOutStream(RGBAColor** ppDst, Action<int> setDstLengthAction)
+			: base(setDstLengthAction)
 		{
-			
-		}
-		
-		protected override void Resized(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (RGBAColor*) unmanagedArray.ToPointer();
+			FPPDst = ppDst;
 		}
 		
 		public override IStreamWriter<RGBAColor> GetWriter()
 		{
-			FRefCount++;
-			return new ColorOutWriter(this);
+			return new ColorOutWriter(this, *FPPDst);
 		}
 	}
 
@@ -491,18 +373,18 @@ namespace VVVV.Hosting.IO.Streams
 	{
 		class MatrixOutWriter : UnmanagedOutWriter
 		{
-			private readonly Matrix* FUnmanagedArray;
+			private readonly Matrix* FPDst;
 			
-			public MatrixOutWriter(MatrixOutStream stream)
+			public MatrixOutWriter(MatrixOutStream stream, Matrix* pDst)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPDst = pDst;
 			}
 			
 			public override void Write(Matrix value, int stride)
 			{
 				Debug.Assert(!Eos);
-				FUnmanagedArray[Position] = value;
+				FPDst[Position] = value;
 				Position += stride;
 			}
 			
@@ -511,7 +393,7 @@ namespace VVVV.Hosting.IO.Streams
 				fixed (Matrix* sourcePtr = source)
 				{
 					Matrix* src = sourcePtr + sourceIndex;
-					Matrix* dst = FUnmanagedArray + Position;
+					Matrix* dst = FPDst + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -522,23 +404,17 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private Matrix* FUnmanagedArray;
+		private readonly Matrix** FPPDst;
 		
-		public MatrixOutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
-			: base(resizeUnmanagedArrayFunc)
+		public MatrixOutStream(Matrix** ppDst, Action<int> setDstLengthAction)
+			: base(setDstLengthAction)
 		{
-			
-		}
-		
-		protected override void Resized(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (Matrix*) unmanagedArray.ToPointer();
+			FPPDst = ppDst;
 		}
 		
 		public override IStreamWriter<Matrix> GetWriter()
 		{
-			FRefCount++;
-			return new MatrixOutWriter(this);
+			return new MatrixOutWriter(this, *FPPDst);
 		}
 	}
 
@@ -546,18 +422,18 @@ namespace VVVV.Hosting.IO.Streams
 	{
 		class Matrix4x4OutWriter : UnmanagedOutWriter
 		{
-			private readonly Matrix* FUnmanagedArray;
+			private readonly Matrix* FPDst;
 			
-			public Matrix4x4OutWriter(Matrix4x4OutStream stream)
+			public Matrix4x4OutWriter(Matrix4x4OutStream stream, Matrix* pDst)
 				: base(stream)
 			{
-				FUnmanagedArray = stream.FUnmanagedArray;
+				FPDst = pDst;
 			}
 			
 			public override void Write(Matrix4x4 value, int stride)
 			{
 				Debug.Assert(!Eos);
-				FUnmanagedArray[Position] = value.ToSlimDXMatrix();
+				FPDst[Position] = value.ToSlimDXMatrix();
 				Position += stride;
 			}
 			
@@ -566,7 +442,7 @@ namespace VVVV.Hosting.IO.Streams
 				fixed (Matrix4x4* sourcePtr = source)
 				{
 					Matrix4x4* src = sourcePtr + sourceIndex;
-					Matrix* dst = FUnmanagedArray + Position;
+					Matrix* dst = FPDst + Position;
 					
 					for (int i = 0; i < length; i++)
 					{
@@ -577,25 +453,17 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private Matrix* FUnmanagedArray;
+		private readonly Matrix** FPPDst;
 		
-		public Matrix4x4OutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
-			: base(resizeUnmanagedArrayFunc)
+		public Matrix4x4OutStream(Matrix** ppDst, Action<int> setDstLengthAction)
+			: base(setDstLengthAction)
 		{
-			
+			FPPDst = ppDst;
 		}
-		
-		protected override void Resized(IntPtr unmanagedArray, int unmanagedArrayLength)
-		{
-			FUnmanagedArray = (Matrix*) unmanagedArray.ToPointer();
-		}
-		
-		
 		
 		public override IStreamWriter<Matrix4x4> GetWriter()
 		{
-			FRefCount++;
-			return new Matrix4x4OutWriter(this);
+			return new Matrix4x4OutWriter(this, *FPPDst);
 		}
 	}
 }
