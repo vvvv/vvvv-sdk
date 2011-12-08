@@ -474,6 +474,9 @@ namespace VVVV.Nodes
 		[Input("Layer")]
 		IDiffSpread<SvgElement> FInput;
 		
+		[Input("Update", IsBang = true, IsSingle = true)]
+		ISpread<bool> FUpdateInput;
+		
 		[Output("Path ")]
 		ISpread<ISpread<Vector2D>> FPathOutput;
 		
@@ -482,7 +485,7 @@ namespace VVVV.Nodes
 		
 		public void Evaluate(int SpreadMax)
 		{
-			if(FInput.IsChanged)
+			if(FUpdateInput[0])
 			{
 				FPathOutput.SliceCount = SpreadMax;
 				FPathTypeOutput.SliceCount = SpreadMax;
@@ -516,6 +519,58 @@ namespace VVVV.Nodes
 					}
 				}
 			}
+		}
+	}
+	
+	//GETPATH-------------------------------------------------------------------
+	#region PluginInfo
+	[PluginInfo(Name = "GetElements", 
+	            Category = "SVG", 
+	            Help = "Returns all elements in the svg tree as a flat spread", 
+	            Tags = "")]
+	#endregion PluginInfo
+	public class SVGGetElementsNode : IPluginEvaluate
+	{
+		[Input("Layer")]
+		IDiffSpread<SvgElement> FInput;
+		
+		[Output("Element")]
+		ISpread<SvgElement> FElementsOut;
+		
+		[Output("Type")]
+		ISpread<string> FElementTypeOut;
+		
+		[Output("Level")]
+		ISpread<int> FElementLevelOut;
+		
+		public void Evaluate(int SpreadMax)
+		{
+			if(FInput.IsChanged)
+			{
+				FElementsOut.SliceCount = 0;
+				FElementTypeOut.SliceCount = 0;
+				FElementLevelOut.SliceCount = 0;
+				
+				for(int i=0; i<SpreadMax; i++)
+				{
+					if(FInput[i] != null)
+						FillRecursive(FInput[i], 0);
+				}
+			}
+		}
+		
+		//fill the pins recursive with data
+		private void FillRecursive(SvgElement elem, int level)
+		{
+			FElementsOut.Add(elem);
+			FElementTypeOut.Add(elem.GetType().Name.Replace("Svg", ""));
+			FElementLevelOut.Add(level);
+			
+			foreach(var child in elem.Children)
+			{
+				FillRecursive(child, level + 1);
+			}
+			
 		}
 	}
 	

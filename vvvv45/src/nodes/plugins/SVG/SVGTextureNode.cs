@@ -104,7 +104,7 @@ namespace VVVV.Nodes
 						
 						for(int j=0; j<spread.SliceCount; j++)
 						{
-							spread[j] = (SvgElement)doc.Children[j].Clone();
+							spread[j] = doc.Children[j];
 						}
 						
 						//check view and size
@@ -119,13 +119,11 @@ namespace VVVV.Nodes
 						{
 							if(noSize)
 							{
-								var bounds = doc.Bounds;
-								view = new SvgViewBox(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+								view = doc.Bounds;
 							}
 							else
 							{
-								var bounds = doc.GetDimensions();
-								view = new SvgViewBox(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+								view = doc.GetDimensions();
 							}
 							
 							doc.ViewBox = view;
