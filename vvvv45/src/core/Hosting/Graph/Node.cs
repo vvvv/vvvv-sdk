@@ -314,7 +314,10 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
-            	return Node.Create(FInternalCOMInterf.ParentNode, FNodeInfoFactory);
+            	if (FInternalCOMInterf.ParentNode == null)
+            		return null;
+            	else
+            		return Node.Create(FInternalCOMInterf.ParentNode, FNodeInfoFactory);
             }
         }
         
@@ -347,6 +350,10 @@ namespace VVVV.Hosting.Graph
             get
             {
                 return FInternalCOMInterf.Status;
+            }
+            set
+            {
+                FInternalCOMInterf.Status = value;
             }
         }
         

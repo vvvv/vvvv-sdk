@@ -386,21 +386,24 @@ namespace VVVV.Nodes.Finder
                 if (e.Button == MouseButtons.Left && nodeView != null)
                 {
                     nodeView.Selected = true;
-                    FHDEHost.SelectNodes(new INode2[1] { nodeView.Node});
-                    
-                    if (FNodeView != null && !FNodeFilter.ScopeIsLocal)
+                    if (FActivePatchNode.Window != null && FActivePatchNode.Window.IsVisible)
                     {
-                        if (sender.CanMap<ICamera>())
-                        {
-                            var camera = sender.Map<ICamera>();
-                            var parent = nodeView.Parent;
-                            if (parent == null)
-                            {
-                                parent = FNodeView;
-                            }
-                            
-                            camera.View(parent);
-                        }
+                    	FHDEHost.SelectNodes(new INode2[1] { nodeView.Node});
+                    
+	                    if (FNodeView != null && !FNodeFilter.ScopeIsLocal)
+	                    {
+	                        if (sender.CanMap<ICamera>())
+	                        {
+	                            var camera = sender.Map<ICamera>();
+	                            var parent = nodeView.Parent;
+	                            if (parent == null)
+	                            {
+	                                parent = FNodeView;
+	                            }
+	                            
+	                            camera.View(parent);
+	                        }
+	                    }
                     }
                 }
                 else if (e.Button == MouseButtons.Right && nodeView != null)

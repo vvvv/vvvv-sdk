@@ -36,7 +36,7 @@ interface
 
 uses
  Classes, SysUtils, ActiveX, MMSystem, Math, Windows,
- BaseClass, DirectShow9, DSUtil, DirectSound;
+ BaseClass, DirectShow9, DXSUtil, DirectSound;
 
 //****************************************************************************//
 
