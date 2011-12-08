@@ -33,8 +33,8 @@ namespace VVVV.Hosting.Pins
 			FCountSpread = factory.CreateIO<IDiffSpread<int>>(
 				new ConfigAttribute(FAttribute.Name + " Count")
 				{
-					DefaultValue = 2,
-					MinValue = 0
+				    DefaultValue = 2,
+					MinValue = 2
 				}
 			);
 			FCountSpread.Changed += HandleCountSpreadChanged;

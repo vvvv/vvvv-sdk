@@ -26,7 +26,7 @@ namespace VVVV.Hosting.IO.Streams
 				new ConfigAttribute(FOutputAttribute.Name + " Count")
 				{
 					DefaultValue = 2,
-					MinValue = 0
+					MinValue = 2
 				}
 			);
 			
