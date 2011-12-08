@@ -14,21 +14,23 @@ namespace VVVV.Hosting.IO.Streams
 		{
 			private readonly VectorInStream<T> FStream;
 			protected readonly int FDimension;
-			protected readonly double* FUnmanagedArray;
+			protected readonly double* FPData;
 			protected readonly int FUnmanagedLength;
 			protected readonly int FUnderFlow;
 			protected double* FPointer;
 			protected int FPosition;
 			
-			public VectorInStreamReader(VectorInStream<T> stream)
+			public VectorInStreamReader(VectorInStream<T> stream, int length, int underFlow, double* pData)
 			{
 				FStream = stream;
-				Length = stream.Length;
-				FUnmanagedArray = stream.FUnmanagedArray;
 				FDimension = stream.FDimension;
+				Length = length;
+				FUnderFlow = underFlow;
+				FPData = pData;
+				
 				FUnmanagedLength = stream.FUnmanagedLength;
-				FUnderFlow = stream.FUnderFlow;
-				FPointer = FUnmanagedArray;
+				
+				FPointer = FPData;
 			}
 			
 			public bool Eos
@@ -48,7 +50,7 @@ namespace VVVV.Hosting.IO.Streams
 				set
 				{
 					FPosition = value;
-					FPointer = FUnmanagedArray + value * FDimension;
+					FPointer = FPData + value * FDimension;
 				}
 			}
 			
@@ -86,69 +88,69 @@ namespace VVVV.Hosting.IO.Streams
 			
 			public abstract int Read(T[] buffer, int index, int length, int stride);
 			
-			public void ReadCyclic(T[] buffer, int index, int length, int stride)
-			{
-				// Exception handling
-				if (Length == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
-				
-				// Normalize the stride
-				stride %= Length;
-				
-				switch (Length)
-				{
-					case 1:
-						// Special treatment for streams of length one
-						if (Eos) Reset();
-						
-						if (index == 0 && length == buffer.Length)
-							buffer.Init(Read(stride)); // Slightly faster
-						else
-							buffer.Fill(index, length, Read(stride));
-						break;
-					default:
-						int numSlicesRead = 0;
-						
-						// Read till end
-						while ((numSlicesRead < length) && (Position %= Length) > 0)
-						{
-							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
-						}
-						
-						// Save start of possible block
-						int startIndex = index + numSlicesRead;
-						
-						// Read one block
-						while (numSlicesRead < length)
-						{
-							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
-							// Exit the loop once ReadPosition is back at beginning
-							if ((Position %= Length) == 0) break;
-						}
-						
-						// Save end of possible block
-						int endIndex = index + numSlicesRead;
-						
-						// Calculate block size
-						int blockSize = endIndex - startIndex;
-						
-						// Now see if the block can be replicated to fill up the buffer
-						if (blockSize > 0)
-						{
-							int times = (length - numSlicesRead) / blockSize;
-							buffer.Replicate(startIndex, endIndex, times);
-							numSlicesRead += blockSize * times;
-						}
-						
-						// Read the rest
-						while (numSlicesRead < length)
-						{
-							if (Eos) Position %= Length;
-							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
-						}
-						
-						break;
-				}
-			}
+//			public void ReadCyclic(T[] buffer, int index, int length, int stride)
+//			{
+//				// Exception handling
+//				if (Length == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
+//				
+//				// Normalize the stride
+//				stride %= Length;
+//				
+//				switch (Length)
+//				{
+//					case 1:
+//						// Special treatment for streams of length one
+//						if (Eos) Reset();
+//						
+//						if (index == 0 && length == buffer.Length)
+//							buffer.Init(Read(stride)); // Slightly faster
+//						else
+//							buffer.Fill(index, length, Read(stride));
+//						break;
+//					default:
+//						int numSlicesRead = 0;
+//						
+//						// Read till end
+//						while ((numSlicesRead < length) && (Position %= Length) > 0)
+//						{
+//							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
+//						}
+//						
+//						// Save start of possible block
+//						int startIndex = index + numSlicesRead;
+//						
+//						// Read one block
+//						while (numSlicesRead < length)
+//						{
+//							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
+//							// Exit the loop once ReadPosition is back at beginning
+//							if ((Position %= Length) == 0) break;
+//						}
+//						
+//						// Save end of possible block
+//						int endIndex = index + numSlicesRead;
+//						
+//						// Calculate block size
+//						int blockSize = endIndex - startIndex;
+//						
+//						// Now see if the block can be replicated to fill up the buffer
+//						if (blockSize > 0)
+//						{
+//							int times = (length - numSlicesRead) / blockSize;
+//							buffer.Replicate(startIndex, endIndex, times);
+//							numSlicesRead += blockSize * times;
+//						}
+//						
+//						// Read the rest
+//						while (numSlicesRead < length)
+//						{
+//							if (Eos) Position %= Length;
+//							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
+//						}
+//						
+//						break;
+//				}
+//			}
 			
 			public void Dispose()
 			{
@@ -158,7 +160,7 @@ namespace VVVV.Hosting.IO.Streams
 			public void Reset()
 			{
 				FPosition = 0;
-				FPointer = FUnmanagedArray;
+				FPointer = FPData;
 			}
 			
 			protected bool IsOutOfBounds(int numSlicesToWorkOn)
@@ -167,20 +169,19 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private readonly Func<Tuple<IntPtr, int>> FGetUnmanagedArrayFunc;
 		private readonly Func<bool> FValidateFunc;
 		protected readonly int FDimension;
+		protected readonly int* FPLength;
+		protected readonly double** FPPData;
 		protected int FRefCount;
 		protected double* FUnmanagedArray;
-		protected double* FReadPointer;
-		protected int FUnmanagedLength;
 		protected int FUnderFlow;
-		protected int FReadPosition;
 		
-		public VectorInStream(int dimension, Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+		public VectorInStream(int dimension, int* pLength, double** ppData, Func<bool> validateFunc)
 		{
 			FDimension = dimension;
-			FGetUnmanagedArrayFunc = getUnmanagedArrayFunc;
+			FPLength = pLength;
+			FPPData = ppData;
 			FValidateFunc = validateFunc;
 		}
 		
@@ -191,7 +192,7 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public bool Sync()
 		{
-			var changed = FValidateFunc();
+			return FValidateFunc();
 			
 			var result = FGetUnmanagedArrayFunc();
 			FUnmanagedArray = (double*) result.Item1.ToPointer();
@@ -205,8 +206,11 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public int Length
 		{
-			get;
-			private set;
+			get
+			{
+				int length = Math.DivRem(*FPLength, FDimension, out FUnderFlow);
+				return FUnderFlow > 0 ? length + 1 : length;
+			}
 		}
 		
 		public abstract IStreamReader<T> GetReader();
