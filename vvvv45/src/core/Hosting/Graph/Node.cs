@@ -173,7 +173,7 @@ namespace VVVV.Hosting.Graph
         
         public override string ToString()
         {
-            return FName;
+            return Name;
         }
         
         public INode InternalCOMInterf
