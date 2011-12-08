@@ -198,6 +198,7 @@ namespace VVVV.Hosting.Factories
                 
                 var editor = exportLifetimeContext.Value;
                 editorHost.Plugin = editor;
+                editorHost.Win32Window = editor as System.Windows.Forms.IWin32Window;
                 editor.Open(nodeInfo.Filename);
                 
                 if (FNodeToAttach != null)
