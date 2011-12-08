@@ -122,38 +122,44 @@ namespace VVVV.Hosting.IO
 			RegisterInput(typeof(IInStream<Vector2D>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			              	var stream = new Vector2DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
+			              	valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              	var stream = new Vector2DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
 			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 			RegisterInput(typeof(IInStream<Vector3D>),(factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			              	var stream = new Vector3DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
+			              	valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              	var stream = new Vector3DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
 			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 			RegisterInput(typeof(IInStream<Vector4D>),(factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			              	var stream = new Vector4DInStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
+			              	valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              	var stream = new Vector4DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
 			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 
 			RegisterInput(typeof(IInStream<Vector2>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			              	var stream = new Vector2InStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
+			              	valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              	var stream = new Vector2InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
 			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 			RegisterInput(typeof(IInStream<Vector3>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			              	var stream = new Vector3InStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
+			              	valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              	var stream = new Vector3InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
 			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 			RegisterInput(typeof(IInStream<Vector4>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	var valueFastIn = host.CreateValueFastInput(attribute, t);
-			              	var stream = new Vector4InStream(GetFastValuePointerFunc(valueFastIn), GetValidateFunc(valueFastIn));
+			              	valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              	var stream = new Vector4InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
 			              	return IOHandler.Create(stream, valueFastIn);
 			              });
 
@@ -531,21 +537,24 @@ namespace VVVV.Hosting.IO
 			RegisterConfig(typeof(IIOStream<Vector2D>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	var inStream = new Vector2DInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
+			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
+			               	var inStream = new Vector2DInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
 			               	var outStream = new Vector2DOutStream(ResizeValueArrayFunc(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector2D>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			RegisterConfig(typeof(IIOStream<Vector3D>),(factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	var inStream = new Vector3DInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
+			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
+			               	var inStream = new Vector3DInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
 			               	var outStream = new Vector3DOutStream(ResizeValueArrayFunc(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector3D>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			RegisterConfig(typeof(IIOStream<Vector4D>),(factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	var inStream = new Vector4DInStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
+			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
+			               	var inStream = new Vector4DInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
 			               	var outStream = new Vector4DOutStream(ResizeValueArrayFunc(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector4D>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
@@ -553,21 +562,24 @@ namespace VVVV.Hosting.IO
 			RegisterConfig(typeof(IIOStream<Vector2>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	var inStream = new Vector2InStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
+			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
+			               	var inStream = new Vector2InStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
 			               	var outStream = new Vector2OutStream(ResizeValueArrayFunc(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector2>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			RegisterConfig(typeof(IIOStream<Vector3>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	var inStream = new Vector3InStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
+			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
+			               	var inStream = new Vector3InStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
 			               	var outStream = new Vector3OutStream(ResizeValueArrayFunc(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector3>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });
 			RegisterConfig(typeof(IIOStream<Vector4>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	var inStream = new Vector4InStream(GetValuePointerFunc(valueConfig), GetValidateFunc(valueConfig));
+			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
+			               	var inStream = new Vector4InStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
 			               	var outStream = new Vector4OutStream(ResizeValueArrayFunc(valueConfig));
 			               	return IOHandler.Create(new ConfigIOStream<Vector4>(inStream, outStream), valueConfig, null, null, s => s.Sync());
 			               });

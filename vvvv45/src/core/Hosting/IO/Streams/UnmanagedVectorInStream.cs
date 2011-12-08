@@ -8,725 +8,483 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.IO.Streams
 {
-	unsafe abstract class VectorInStream<T> : IInStream<T> where T : struct
-	{
-		internal abstract class VectorInStreamReader : IStreamReader<T>
-		{
-			private readonly VectorInStream<T> FStream;
-			protected readonly int FDimension;
-			protected readonly double* FPData;
-			protected readonly int FUnmanagedLength;
-			protected readonly int FUnderFlow;
-			protected double* FPointer;
-			protected int FPosition;
-			
-			public VectorInStreamReader(VectorInStream<T> stream, int length, int underFlow, double* pData)
-			{
-				FStream = stream;
-				FDimension = stream.FDimension;
-				Length = length;
-				FUnderFlow = underFlow;
-				FPData = pData;
-				
-				FUnmanagedLength = stream.FUnmanagedLength;
-				
-				FPointer = FPData;
-			}
-			
-			public bool Eos
-			{
-				get
-				{
-					return FPosition >= Length;
-				}
-			}
-			
-			public int Position
-			{
-				get
-				{
-					return FPosition;
-				}
-				set
-				{
-					FPosition = value;
-					FPointer = FPData + value * FDimension;
-				}
-			}
-			
-			public int Length
-			{
-				get;
-				private set;
-			}
-			
-			public T Current
-			{
-				get;
-				private set;
-			}
-			
-			object System.Collections.IEnumerator.Current
-			{
-				get
-				{
-					return Current;
-				}
-			}
-			
-			public bool MoveNext()
-			{
-				var result = !Eos;
-				if (result)
-				{
-					Current = Read();
-				}
-				return result;
-			}
-			
-			public abstract T Read(int stride = 1);
-			
-			public abstract int Read(T[] buffer, int index, int length, int stride);
-			
-//			public void ReadCyclic(T[] buffer, int index, int length, int stride)
-//			{
-//				// Exception handling
-//				if (Length == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
-//				
-//				// Normalize the stride
-//				stride %= Length;
-//				
-//				switch (Length)
-//				{
-//					case 1:
-//						// Special treatment for streams of length one
-//						if (Eos) Reset();
-//						
-//						if (index == 0 && length == buffer.Length)
-//							buffer.Init(Read(stride)); // Slightly faster
-//						else
-//							buffer.Fill(index, length, Read(stride));
-//						break;
-//					default:
-//						int numSlicesRead = 0;
-//						
-//						// Read till end
-//						while ((numSlicesRead < length) && (Position %= Length) > 0)
-//						{
-//							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
-//						}
-//						
-//						// Save start of possible block
-//						int startIndex = index + numSlicesRead;
-//						
-//						// Read one block
-//						while (numSlicesRead < length)
-//						{
-//							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
-//							// Exit the loop once ReadPosition is back at beginning
-//							if ((Position %= Length) == 0) break;
-//						}
-//						
-//						// Save end of possible block
-//						int endIndex = index + numSlicesRead;
-//						
-//						// Calculate block size
-//						int blockSize = endIndex - startIndex;
-//						
-//						// Now see if the block can be replicated to fill up the buffer
-//						if (blockSize > 0)
-//						{
-//							int times = (length - numSlicesRead) / blockSize;
-//							buffer.Replicate(startIndex, endIndex, times);
-//							numSlicesRead += blockSize * times;
-//						}
-//						
-//						// Read the rest
-//						while (numSlicesRead < length)
-//						{
-//							if (Eos) Position %= Length;
-//							numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
-//						}
-//						
-//						break;
-//				}
-//			}
-			
-			public void Dispose()
-			{
-				FStream.FRefCount--;
-			}
-			
-			public void Reset()
-			{
-				FPosition = 0;
-				FPointer = FPData;
-			}
-			
-			protected bool IsOutOfBounds(int numSlicesToWorkOn)
-			{
-				return (FUnderFlow > 0) && ((FPosition + numSlicesToWorkOn) > (Length - 1));
-			}
-		}
-		
-		private readonly Func<bool> FValidateFunc;
-		protected readonly int FDimension;
-		protected readonly int* FPLength;
-		protected readonly double** FPPData;
-		protected int FRefCount;
-		protected double* FUnmanagedArray;
-		protected int FUnderFlow;
-		
-		public VectorInStream(int dimension, int* pLength, double** ppData, Func<bool> validateFunc)
-		{
-			FDimension = dimension;
-			FPLength = pLength;
-			FPPData = ppData;
-			FValidateFunc = validateFunc;
-		}
-		
-		public object Clone()
-		{
-			throw new NotImplementedException();
-		}
-		
-		public bool Sync()
-		{
-			return FValidateFunc();
-			
-			var result = FGetUnmanagedArrayFunc();
-			FUnmanagedArray = (double*) result.Item1.ToPointer();
-			FUnmanagedLength = result.Item2;
-			Length = Math.DivRem(FUnmanagedLength, FDimension, out FUnderFlow);
-			if (FUnderFlow > 0)
-				Length++;
-			
-			return changed;
-		}
-		
-		public int Length
-		{
-			get
-			{
-				int length = Math.DivRem(*FPLength, FDimension, out FUnderFlow);
-				return FUnderFlow > 0 ? length + 1 : length;
-			}
-		}
-		
-		public abstract IStreamReader<T> GetReader();
-		
-		public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-		{
-			return GetReader();
-		}
-		
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
-	}
-	
-	unsafe class Vector2DInStream : VectorInStream<Vector2D>
-	{
-		class Vector2DInStreamReader : VectorInStreamReader
-		{
-			public Vector2DInStreamReader(Vector2DInStream stream)
-				: base(stream)
-			{
-				
-			}
-			
-			public override int Read(Vector2D[] buffer, int index, int length, int stride)
-			{
-				int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-				
-				fixed (Vector2D* destination = buffer)
-				{
-					Vector2D* dst = destination + index;
-					Vector2D* src = (Vector2D*) FPointer;
-					
-					int numSlicesToReadAtFullSpeed = numSlicesToRead;
-					
-					// Check if we would read too much (for example unmanaged array is of size 7).
-					if (IsOutOfBounds(numSlicesToRead))
-					{
-						numSlicesToReadAtFullSpeed = Math.Max(numSlicesToReadAtFullSpeed - 1, 0);
-					}
-					
-					for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
-					{
-						*(dst++) = *src;
-						src += stride;
-					}
-					
-					if (numSlicesToReadAtFullSpeed < numSlicesToRead)
-					{
-						int i = FUnmanagedLength - FUnderFlow;
-						dst->x = FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->y = FUnmanagedArray[i++ % FUnmanagedLength];
-					}
-				}
-				
-				FPosition += numSlicesToRead * stride;
-				FPointer += numSlicesToRead * stride * FDimension;
-				
-				return numSlicesToRead;
-			}
-			
-			public override Vector2D Read(int stride)
-			{
-				Vector2D result;
-				
-				if (IsOutOfBounds(1))
-				{
-					int i = FUnmanagedLength - FUnderFlow;
-					result.x = FUnmanagedArray[i++ % FUnmanagedLength];
-					result.y = FUnmanagedArray[i++ % FUnmanagedLength];
-				}
-				else
-				{
-					result = *((Vector2D*) FPointer);
-				}
-				
-				FPosition += stride;
-				FPointer += stride * FDimension;
-				
-				return result;
-			}
-		}
-		
-		public Vector2DInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(2, getUnmanagedArrayFunc, validateFunc)
-		{
-			
-		}
-		
-		public override IStreamReader<Vector2D> GetReader()
-		{
-			FRefCount++;
-			return new Vector2DInStreamReader(this);
-		}
-	}
-	
-	unsafe class Vector3DInStream : VectorInStream<Vector3D>
-	{
-		class Vector3DInStreamReader : VectorInStreamReader
-		{
-			public Vector3DInStreamReader(Vector3DInStream stream)
-				: base(stream)
-			{
-				
-			}
-			
-			public override int Read(Vector3D[] buffer, int index, int length, int stride)
-			{
-				int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-				
-				fixed (Vector3D* destination = buffer)
-				{
-					Vector3D* dst = destination + index;
-					Vector3D* src = (Vector3D*) FPointer;
-					
-					int numSlicesToReadAtFullSpeed = numSlicesToRead;
-					
-					// Check if we would read too much (for example unmanaged array is of size 7).
-					if (IsOutOfBounds(numSlicesToRead))
-					{
-						numSlicesToReadAtFullSpeed = Math.Max(numSlicesToReadAtFullSpeed - 1, 0);
-					}
-					
-					for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
-					{
-						*(dst++) = *src;
-						src += stride;
-					}
-					
-					if (numSlicesToReadAtFullSpeed < numSlicesToRead)
-					{
-						int i = FUnmanagedLength - FUnderFlow;
-						dst->x = FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->y = FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->z = FUnmanagedArray[i++ % FUnmanagedLength];
-					}
-				}
-				
-				FPosition += numSlicesToRead * stride;
-				FPointer += numSlicesToRead * stride * FDimension;
-				
-				return numSlicesToRead;
-			}
-			
-			public override Vector3D Read(int stride)
-			{
-				Vector3D result;
-				
-				if (IsOutOfBounds(1))
-				{
-					int i = FUnmanagedLength - FUnderFlow;
-					result.x = FUnmanagedArray[i++ % FUnmanagedLength];
-					result.y = FUnmanagedArray[i++ % FUnmanagedLength];
-					result.z = FUnmanagedArray[i++ % FUnmanagedLength];
-				}
-				else
-				{
-					result = *((Vector3D*) FPointer);
-				}
-				
-				FPosition += stride;
-				FPointer += stride * FDimension;
-				
-				return result;
-			}
-		}
-		
-		public Vector3DInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(3, getUnmanagedArrayFunc, validateFunc)
-		{
-			
-		}
-		
-		public override IStreamReader<Vector3D> GetReader()
-		{
-			FRefCount++;
-			return new Vector3DInStreamReader(this);
-		}
-	}
-	
-	unsafe class Vector4DInStream : VectorInStream<Vector4D>
-	{
-		class Vector4DInStreamReader : VectorInStreamReader
-		{
-			public Vector4DInStreamReader(Vector4DInStream stream)
-				: base(stream)
-			{
-				
-			}
-			
-			public override int Read(Vector4D[] buffer, int index, int length, int stride)
-			{
-				int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-				
-				fixed (Vector4D* destination = buffer)
-				{
-					Vector4D* dst = destination + index;
-					Vector4D* src = (Vector4D*) FPointer;
-					
-					int numSlicesToReadAtFullSpeed = numSlicesToRead;
-					
-					// Check if we would read too much (for example unmanaged array is of size 7).
-					if (IsOutOfBounds(numSlicesToRead))
-					{
-						numSlicesToReadAtFullSpeed = Math.Max(numSlicesToReadAtFullSpeed - 1, 0);
-					}
-					
-					for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
-					{
-						*(dst++) = *src;
-						src += stride;
-					}
-					
-					if (numSlicesToReadAtFullSpeed < numSlicesToRead)
-					{
-						int i = FUnmanagedLength - FUnderFlow;
-						dst->x = FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->y = FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->z = FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->w = FUnmanagedArray[i++ % FUnmanagedLength];
-					}
-				}
-				
-				FPosition += numSlicesToRead * stride;
-				FPointer += numSlicesToRead * stride * FDimension;
-				
-				return numSlicesToRead;
-			}
-			
-			public override Vector4D Read(int stride)
-			{
-				Vector4D result;
-				
-				if (IsOutOfBounds(1))
-				{
-					int i = FUnmanagedLength - FUnderFlow;
-					result.x = FUnmanagedArray[i++ % FUnmanagedLength];
-					result.y = FUnmanagedArray[i++ % FUnmanagedLength];
-					result.z = FUnmanagedArray[i++ % FUnmanagedLength];
-					result.w = FUnmanagedArray[i++ % FUnmanagedLength];
-				}
-				else
-				{
-					result = *((Vector4D*) FPointer);
-				}
-				
-				FPosition += stride;
-				FPointer += stride * FDimension;
-				
-				return result;
-			}
-		}
-		
-		public Vector4DInStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(4, getUnmanagedArrayFunc, validateFunc)
-		{
-			
-		}
-		
-		public override IStreamReader<Vector4D> GetReader()
-		{
-			FRefCount++;
-			return new Vector4DInStreamReader(this);
-		}
-	}
-	
-	unsafe class Vector2InStream : VectorInStream<Vector2>
-	{
-		class Vector2InStreamReader : VectorInStreamReader
-		{
-			public Vector2InStreamReader(Vector2InStream stream)
-				: base(stream)
-			{
-				
-			}
-			
-			public override int Read(Vector2[] buffer, int index, int length, int stride)
-			{
-				int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-				
-				fixed (Vector2* destination = buffer)
-				{
-					Vector2* dst = destination + index;
-					Vector2D* src = (Vector2D*) FPointer;
-					
-					int numSlicesToReadAtFullSpeed = numSlicesToRead;
-					
-					// Check if we would read too much (for example unmanaged array is of size 7).
-					if (IsOutOfBounds(numSlicesToRead))
-					{
-						numSlicesToReadAtFullSpeed = Math.Max(numSlicesToReadAtFullSpeed - 1, 0);
-					}
-					
-					for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
-					{
-						*(dst++) = (*src).ToSlimDXVector();
-						src += stride;
-					}
-					
-					if (numSlicesToReadAtFullSpeed < numSlicesToRead)
-					{
-						int i = FUnmanagedLength - FUnderFlow;
-						dst->X = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->Y = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-					}
-				}
-				
-				FPosition += numSlicesToRead * stride;
-				FPointer += numSlicesToRead * stride * FDimension;
-				
-				return numSlicesToRead;
-			}
-			
-			public override Vector2 Read(int stride)
-			{
-				Vector2 result;
-				
-				if (IsOutOfBounds(1))
-				{
-					int i = FUnmanagedLength - FUnderFlow;
-					result.X = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-					result.Y = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-				}
-				else
-				{
-					result = (*((Vector2D*) FPointer)).ToSlimDXVector();
-				}
-				
-				FPosition += stride;
-				FPointer += stride * FDimension;
-				
-				return result;
-			}
-		}
-		
-		public Vector2InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(2, getUnmanagedArrayFunc, validateFunc)
-		{
-			
-		}
-		
-		public override IStreamReader<Vector2> GetReader()
-		{
-			FRefCount++;
-			return new Vector2InStreamReader(this);
-		}
-	}
-	
-	unsafe class Vector3InStream : VectorInStream<Vector3>
-	{
-		class Vector3InStreamReader : VectorInStreamReader
-		{
-			public Vector3InStreamReader(Vector3InStream stream)
-				: base(stream)
-			{
-				
-			}
-			
-			public override int Read(Vector3[] buffer, int index, int length, int stride)
-			{
-				int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-				
-				fixed (Vector3* destination = buffer)
-				{
-					Vector3* dst = destination + index;
-					Vector3D* src = (Vector3D*) FPointer;
-					
-					int numSlicesToReadAtFullSpeed = numSlicesToRead;
-					
-					// Check if we would read too much (for example unmanaged array is of size 7).
-					if (IsOutOfBounds(numSlicesToRead))
-					{
-						numSlicesToReadAtFullSpeed = Math.Max(numSlicesToReadAtFullSpeed - 1, 0);
-					}
-					
-					for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
-					{
-						*(dst++) = (*src).ToSlimDXVector();
-						src += stride;
-					}
-					
-					if (numSlicesToReadAtFullSpeed < numSlicesToRead)
-					{
-						int i = FUnmanagedLength - FUnderFlow;
-						dst->X = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->Y = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->Z = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-					}
-				}
-				
-				FPosition += numSlicesToRead * stride;
-				FPointer += numSlicesToRead * stride * FDimension;
-				
-				return numSlicesToRead;
-			}
-			
-			public override Vector3 Read(int stride)
-			{
-				Vector3 result;
-				
-				if (IsOutOfBounds(1))
-				{
-					int i = FUnmanagedLength - FUnderFlow;
-					result.X = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-					result.Y = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-					result.Z = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-				}
-				else
-				{
-					result = (*((Vector3D*) FPointer)).ToSlimDXVector();
-				}
-				
-				FPosition += stride;
-				FPointer += stride * FDimension;
-				
-				return result;
-			}
-		}
-		
-		public Vector3InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(3, getUnmanagedArrayFunc, validateFunc)
-		{
-			
-		}
-		
-		public override IStreamReader<Vector3> GetReader()
-		{
-			FRefCount++;
-			return new Vector3InStreamReader(this);
-		}
-	}
-	
-	unsafe class Vector4InStream : VectorInStream<Vector4>
-	{
-		class Vector4InStreamReader : VectorInStreamReader
-		{
-			public Vector4InStreamReader(Vector4InStream stream)
-				: base(stream)
-			{
-				
-			}
-			
-			public override int Read(Vector4[] buffer, int index, int length, int stride)
-			{
-				int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-				
-				fixed (Vector4* destination = buffer)
-				{
-					Vector4* dst = destination + index;
-					Vector4D* src = (Vector4D*) FPointer;
-					
-					int numSlicesToReadAtFullSpeed = numSlicesToRead;
-					
-					// Check if we would read too much (for example unmanaged array is of size 7).
-					if (IsOutOfBounds(numSlicesToRead))
-					{
-						numSlicesToReadAtFullSpeed = Math.Max(numSlicesToReadAtFullSpeed - 1, 0);
-					}
-					
-					for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
-					{
-						*(dst++) = (*src).ToSlimDXVector();
-						src += stride;
-					}
-					
-					if (numSlicesToReadAtFullSpeed < numSlicesToRead)
-					{
-						int i = FUnmanagedLength - FUnderFlow;
-						dst->X = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->Y = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->Z = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-						dst->W = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-					}
-				}
-				
-				FPosition += numSlicesToRead * stride;
-				FPointer += numSlicesToRead * stride * FDimension;
-				
-				return numSlicesToRead;
-			}
-			
-			public override Vector4 Read(int stride)
-			{
-				Vector4 result;
-				
-				if (IsOutOfBounds(1))
-				{
-					int i = FUnmanagedLength - FUnderFlow;
-					result.X = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-					result.Y = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-					result.Z = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-					result.W = (float) FUnmanagedArray[i++ % FUnmanagedLength];
-				}
-				else
-				{
-					result = (*((Vector4D*) FPointer)).ToSlimDXVector();
-				}
-				
-				FPosition += stride;
-				FPointer += stride * FDimension;
-				
-				return result;
-			}
-		}
-		
-		public Vector4InStream(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
-			: base(4, getUnmanagedArrayFunc, validateFunc)
-		{
-			
-		}
-		
-		public override IStreamReader<Vector4> GetReader()
-		{
-			FRefCount++;
-			return new Vector4InStreamReader(this);
-		}
-	}
+    unsafe abstract class VectorInStream<T> : IInStream<T> where T : struct
+    {
+        internal abstract class VectorInStreamReader : IStreamReader<T>
+        {
+            private readonly VectorInStream<T> FStream;
+            protected readonly int FDimension;
+            protected readonly double* FPSrc;
+            protected readonly int FSrcLength;
+            protected readonly int FUnderFlow;
+            
+            public VectorInStreamReader(VectorInStream<T> stream, int srcLength, double* pSrc)
+            {
+                FStream = stream;
+                FDimension = stream.FDimension;
+                Length = stream.Length;
+                // Underflow is set after Length property was read.
+                FUnderFlow = stream.FUnderFlow;
+                FSrcLength = srcLength;
+                FPSrc = pSrc;
+                
+                FStream.FRefCount++;
+            }
+            
+            public bool Eos
+            {
+                get
+                {
+                    return Position >= Length;
+                }
+            }
+            
+            public int Position
+            {
+                get;
+                set;
+            }
+            
+            public int Length
+            {
+                get;
+                private set;
+            }
+            
+            public T Current
+            {
+                get;
+                private set;
+            }
+            
+            object System.Collections.IEnumerator.Current
+            {
+                get
+                {
+                    return Current;
+                }
+            }
+            
+            public bool MoveNext()
+            {
+                var result = !Eos;
+                if (result)
+                {
+                    Current = Read();
+                }
+                return result;
+            }
+            
+            protected int Read(double* pDst, int index, int length, int stride)
+            {
+                double* src = FPSrc + Position * FDimension;
+                double* dst = pDst + index * FDimension;
+                
+                int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+                int numSlicesToReadAtFullSpeed = numSlicesToRead;
+                
+                if (IsOutOfBounds(numSlicesToRead))
+                {
+                    numSlicesToReadAtFullSpeed = Math.Max(numSlicesToReadAtFullSpeed - 1, 0);
+                }
+                
+                for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
+                {
+                    for (int j = 0; j < FDimension; j++)
+                    {
+                        *(dst++) = *(src + j);
+                    }
+                    src += FDimension * stride;
+                }
+                
+                if (numSlicesToReadAtFullSpeed < numSlicesToRead)
+                {
+                    int i = FSrcLength - FUnderFlow;
+                    for (int j = 0; j < FDimension; j++)
+                    {
+                        *(dst++) = FPSrc[i++ % FSrcLength];
+                    }
+                }
+                
+                Position += numSlicesToRead * stride;
+                return numSlicesToRead;
+            }
+            
+            protected void Read(double* pDst, int stride)
+            {
+                double* src = FPSrc + Position * FDimension;
+                double* dst = pDst;
+                
+                if (IsOutOfBounds(1))
+                {
+                    int i = FSrcLength - FUnderFlow;
+                    for (int j = 0; j < FDimension; j++)
+                    {
+                        *(dst++) = FPSrc[i++ % FSrcLength];
+                    }
+                }
+                else
+                {
+                    for (int j = 0; j < FDimension; j++)
+                    {
+                        *(dst++) = *(src++);
+                    }
+                }
+                
+                Position += stride;
+            }
+            
+            protected int Read(float* pDst, int index, int length, int stride)
+            {
+                double* src = FPSrc + Position * FDimension;
+                float* dst = pDst + index * FDimension;
+                
+                int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+                int numSlicesToReadAtFullSpeed = numSlicesToRead;
+                
+                if (IsOutOfBounds(numSlicesToRead))
+                {
+                    numSlicesToReadAtFullSpeed = Math.Max(numSlicesToReadAtFullSpeed - 1, 0);
+                }
+                
+                for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
+                {
+                    for (int j = 0; j < FDimension; j++)
+                    {
+                        *(dst++) = (float) *(src + j);
+                    }
+                    src += FDimension * stride;
+                }
+                
+                if (numSlicesToReadAtFullSpeed < numSlicesToRead)
+                {
+                    int i = FSrcLength - FUnderFlow;
+                    for (int j = 0; j < FDimension; j++)
+                    {
+                        *(dst++) = (float) FPSrc[i++ % FSrcLength];
+                    }
+                }
+                
+                Position += numSlicesToRead * stride;
+                return numSlicesToRead;
+            }
+            
+            protected void Read(float* pDst, int stride)
+            {
+                double* src = FPSrc + Position * FDimension;
+                float* dst = pDst;
+                
+                if (IsOutOfBounds(1))
+                {
+                    int i = FSrcLength - FUnderFlow;
+                    for (int j = 0; j < FDimension; j++)
+                    {
+                        *(dst++) = (float) FPSrc[i++ % FSrcLength];
+                    }
+                }
+                else
+                {
+                    for (int j = 0; j < FDimension; j++)
+                    {
+                        *(dst++) = (float) *(src++);
+                    }
+                }
+                
+                Position += stride;
+            }
+            
+            public abstract T Read(int stride = 1);
+            
+            public abstract int Read(T[] buffer, int index, int length, int stride);
+            
+            public void Dispose()
+            {
+                FStream.FRefCount--;
+            }
+            
+            public void Reset()
+            {
+                Position = 0;
+            }
+            
+            protected bool IsOutOfBounds(int numSlicesToWorkOn)
+            {
+                return (FUnderFlow > 0) && ((Position + numSlicesToWorkOn) > (Length - 1));
+            }
+        }
+        
+        private readonly Func<bool> FValidateFunc;
+        protected readonly int FDimension;
+        protected readonly int* FPLength;
+        protected readonly double** FPPSrc;
+        protected int FRefCount;
+        protected int FUnderFlow;
+        
+        public VectorInStream(int dimension, int* pLength, double** ppSrc, Func<bool> validateFunc)
+        {
+            FDimension = dimension;
+            FPLength = pLength;
+            FPPSrc = ppSrc;
+            FValidateFunc = validateFunc;
+        }
+        
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+        
+        public bool Sync()
+        {
+            return FValidateFunc();
+        }
+        
+        public int Length
+        {
+            get
+            {
+                int length = Math.DivRem(*FPLength, FDimension, out FUnderFlow);
+                return FUnderFlow > 0 ? length + 1 : length;
+            }
+        }
+        
+        public abstract IStreamReader<T> GetReader();
+        
+        public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+        {
+            return GetReader();
+        }
+        
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+    
+    unsafe class Vector2DInStream : VectorInStream<Vector2D>
+    {
+        class Vector2DInStreamReader : VectorInStreamReader
+        {
+            public Vector2DInStreamReader(Vector2DInStream stream, int srcLength, double* pSrc)
+                : base(stream, srcLength, pSrc)
+            {
+                
+            }
+            
+            public override int Read(Vector2D[] buffer, int index, int length, int stride)
+            {
+                fixed (Vector2D* destination = buffer)
+                {
+                    return Read((double*) destination, index, length, stride);
+                }
+            }
+            
+            public override Vector2D Read(int stride)
+            {
+                Vector2D result;
+                Read((double*) &result, stride);
+                return result;
+            }
+        }
+        
+        public Vector2DInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(2, pLength, ppData, validateFunc)
+        {
+            
+        }
+        
+        public override IStreamReader<Vector2D> GetReader()
+        {
+            return new Vector2DInStreamReader(this, *FPLength, *FPPSrc);
+        }
+    }
+    
+    unsafe class Vector3DInStream : VectorInStream<Vector3D>
+    {
+        class Vector3DInStreamReader : VectorInStreamReader
+        {
+            public Vector3DInStreamReader(Vector3DInStream stream, int srcLength, double* pSrc)
+                : base(stream, srcLength, pSrc)
+            {
+                
+            }
+            
+            public override int Read(Vector3D[] buffer, int index, int length, int stride)
+            {
+                fixed (Vector3D* destination = buffer)
+                {
+                    return Read((double*) destination, index, length, stride);
+                }
+            }
+            
+            public override Vector3D Read(int stride)
+            {
+                Vector3D result;
+                Read((double*) &result, stride);
+                return result;
+            }
+        }
+        
+        public Vector3DInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(3, pLength, ppData, validateFunc)
+        {
+            
+        }
+        
+        public override IStreamReader<Vector3D> GetReader()
+        {
+            return new Vector3DInStreamReader(this, *FPLength, *FPPSrc);
+        }
+    }
+    
+    unsafe class Vector4DInStream : VectorInStream<Vector4D>
+    {
+        class Vector4DInStreamReader : VectorInStreamReader
+        {
+            public Vector4DInStreamReader(Vector4DInStream stream, int srcLength, double* pSrc)
+                : base(stream, srcLength, pSrc)
+            {
+                
+            }
+            
+            public override int Read(Vector4D[] buffer, int index, int length, int stride)
+            {
+                fixed (Vector4D* destination = buffer)
+                {
+                    return Read((double*) destination, index, length, stride);
+                }
+            }
+            
+            public override Vector4D Read(int stride)
+            {
+                Vector4D result;
+                Read((double*) &result, stride);
+                return result;
+            }
+        }
+        
+        public Vector4DInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(4, pLength, ppData, validateFunc)
+        {
+            
+        }
+        
+        public override IStreamReader<Vector4D> GetReader()
+        {
+            return new Vector4DInStreamReader(this, *FPLength, *FPPSrc);
+        }
+    }
+    
+    unsafe class Vector2InStream : VectorInStream<Vector2>
+    {
+        class Vector2InStreamReader : VectorInStreamReader
+        {
+            public Vector2InStreamReader(Vector2InStream stream, int srcLength, double* pSrc)
+                : base(stream, srcLength, pSrc)
+            {
+                
+            }
+            
+            public override int Read(Vector2[] buffer, int index, int length, int stride)
+            {
+                fixed (Vector2* destination = buffer)
+                {
+                    return Read((float*) destination, index, length, stride);
+                }
+            }
+            
+            public override Vector2 Read(int stride)
+            {
+                Vector2 result;
+                Read((float*) &result, stride);
+                return result;
+            }
+        }
+        
+        public Vector2InStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(2, pLength, ppData, validateFunc)
+        {
+            
+        }
+        
+        public override IStreamReader<Vector2> GetReader()
+        {
+            return new Vector2InStreamReader(this, *FPLength, *FPPSrc);
+        }
+    }
+    
+    unsafe class Vector3InStream : VectorInStream<Vector3>
+    {
+        class Vector3InStreamReader : VectorInStreamReader
+        {
+            public Vector3InStreamReader(Vector3InStream stream, int srcLength, double* pSrc)
+                : base(stream, srcLength, pSrc)
+            {
+                
+            }
+            
+            public override int Read(Vector3[] buffer, int index, int length, int stride)
+            {
+                fixed (Vector3* destination = buffer)
+                {
+                    return Read((float*) destination, index, length, stride);
+                }
+            }
+            
+            public override Vector3 Read(int stride)
+            {
+                Vector3 result;
+                Read((float*) &result, stride);
+                return result;
+            }
+        }
+        
+        public Vector3InStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(3, pLength, ppData, validateFunc)
+        {
+            
+        }
+        
+        public override IStreamReader<Vector3> GetReader()
+        {
+            return new Vector3InStreamReader(this, *FPLength, *FPPSrc);
+        }
+    }
+    
+    unsafe class Vector4InStream : VectorInStream<Vector4>
+    {
+        class Vector4InStreamReader : VectorInStreamReader
+        {
+            public Vector4InStreamReader(Vector4InStream stream, int srcLength, double* pSrc)
+                : base(stream, srcLength, pSrc)
+            {
+                
+            }
+            
+            public override int Read(Vector4[] buffer, int index, int length, int stride)
+            {
+                fixed (Vector4* destination = buffer)
+                {
+                    return Read((float*) destination, index, length, stride);
+                }
+            }
+            
+            public override Vector4 Read(int stride)
+            {
+                Vector4 result;
+                Read((float*) &result, stride);
+                return result;
+            }
+        }
+        
+        public Vector4InStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(4, pLength, ppData, validateFunc)
+        {
+            
+        }
+        
+        public override IStreamReader<Vector4> GetReader()
+        {
+            return new Vector4InStreamReader(this, *FPLength, *FPPSrc);
+        }
+    }
 }
