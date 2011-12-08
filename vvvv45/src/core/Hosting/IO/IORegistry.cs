@@ -644,73 +644,6 @@ namespace VVVV.Hosting.IO
 			return () => { return pluginFastIn.Validate(); };
 		}
 		
-		static unsafe private Func<Tuple<IntPtr, int>> GetValuePointerFunc(IValueIn valueIn)
-		{
-			return () => {
-				int length;
-				double* ptr;
-				valueIn.GetValuePointer(out length, out ptr);
-				return Tuple.Create(new IntPtr(ptr), length);
-			};
-		}
-		
-		static unsafe private Func<Tuple<IntPtr, int>> GetFastValuePointerFunc(IValueFastIn valueFastIn)
-		{
-			return () => {
-				int length;
-				double* ptr;
-				valueFastIn.GetValuePointer(out length, out ptr);
-				return Tuple.Create(new IntPtr(ptr), length);
-			};
-		}
-		
-		static unsafe private Func<Tuple<IntPtr, int>> GetMatrixPointerFunc(ITransformIn transformIn)
-		{
-			return () => {
-				int length;
-				float* ptr;
-				transformIn.GetMatrixPointer(out length, out ptr);
-				return Tuple.Create(new IntPtr(ptr), length);
-			};
-		}
-		
-		static unsafe private Func<Tuple<IntPtr, int>> GetColorPointerFunc(IColorIn colorIn)
-		{
-			return () => {
-				int length;
-				double* ptr;
-				colorIn.GetColorPointer(out length, out ptr);
-				return Tuple.Create(new IntPtr(ptr), length);
-			};
-		}
-		
-		static unsafe private Func<Tuple<IntPtr, int>> GetValuePointerFunc(IValueOut valueFastOut)
-		{
-			return () => {
-				double* ptr;
-				valueFastOut.GetValuePointer(out ptr);
-				return Tuple.Create(new IntPtr(ptr), valueFastOut.SliceCount);
-			};
-		}
-		
-		static unsafe private Func<Tuple<IntPtr, int>> GetMatrixPointerFunc(ITransformOut transformOut)
-		{
-			return () => {
-				float* ptr;
-				transformOut.GetMatrixPointer(out ptr);
-				return Tuple.Create(new IntPtr(ptr), transformOut.SliceCount);
-			};
-		}
-		
-		static unsafe private Func<Tuple<IntPtr, int>> GetColorPointerFunc(IColorOut colorOut)
-		{
-			return () => {
-				double* ptr;
-				colorOut.GetColorPointer(out ptr);
-				return Tuple.Create(new IntPtr(ptr), colorOut.SliceCount);
-			};
-		}
-		
 		static unsafe private Action<int> GetSetValueLengthAction(IValueOut valueOut)
 		{
 			return (newLength) =>
@@ -737,13 +670,11 @@ namespace VVVV.Hosting.IO
 		
 		static private Func<bool> GetValidateFunc(IValueConfig valueConfig)
 		{
-			// TODO: check this
 			return () => { return valueConfig.PinIsChanged; };
 		}
 		
 		static private Func<bool> GetValidateFunc(IColorConfig colorConfig)
 		{
-			// TODO: check this
 			return () => { return colorConfig.PinIsChanged; };
 		}
 		
