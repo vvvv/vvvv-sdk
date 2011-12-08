@@ -140,7 +140,7 @@ namespace VVVV.Utils.Streams
 		{
 			int outputLength = outputStreams.Length;
 			int remainder = 0;
-			int lengthPerStream = Math.DivRem(inputStream.Length, outputLength, out remainder);
+			int lengthPerStream = outputLength > 0 ? Math.DivRem(inputStream.Length, outputLength, out remainder) : 0;
 			if (remainder > 0) lengthPerStream++;
 			
 			foreach (var outputStream in outputStreams)
