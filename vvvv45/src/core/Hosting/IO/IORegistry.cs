@@ -251,7 +251,6 @@ namespace VVVV.Hosting.IO
 			              			}
 			              			
 			              			spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
-			              			spread.Sync();
 			              			if (attribute.AutoValidate)
 			              				return IOHandler.Create(spread, null, p => p.Sync());
 			              			else
@@ -264,7 +263,6 @@ namespace VVVV.Hosting.IO
 			              	var ioHandler = CreateIOHandler(typeof(IInStream<>), typeof(IInStream<>).MakeGenericType(t), factory, streamAttribute);
 			              	var pinType = typeof(InputPin<>).MakeGenericType(t);
 			              	spread = Activator.CreateInstance(pinType, host, ioHandler.Metadata, ioHandler.RawIOObject) as ISpread;
-			              	spread.Sync();
 			              	if (attribute.AutoValidate)
 			              		return IOHandler.Create(spread, ioHandler.Metadata, p => p.Sync());
 			              	else
@@ -288,7 +286,6 @@ namespace VVVV.Hosting.IO
 			              			}
 			              			
 			              			spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
-			              			spread.Sync();
 			              			if (attribute.AutoValidate)
 			              				return IOHandler.Create(spread, null, p => p.Sync());
 			              			else
@@ -301,7 +298,6 @@ namespace VVVV.Hosting.IO
 			              	var ioBuilder = CreateIOHandler(typeof(IInStream<>), typeof(IInStream<>).MakeGenericType(t), factory, streamAttribute);
 			              	var pinType = typeof(DiffInputPin<>).MakeGenericType(t);
 			              	spread = Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject) as ISpread;
-			              	spread.Sync();
 			              	if (attribute.AutoValidate)
 			              		return IOHandler.Create(spread, ioBuilder.Metadata, p => p.Sync());
 			              	else
@@ -511,92 +507,6 @@ namespace VVVV.Hosting.IO
 			               	return IOHandler.Create(pin, ioBuilder.Metadata, null, p => p.Flush());
 			               });
 			
-			RegisterConfig(typeof(IIOStream<double>), (factory, attribute, t) => {
-			               	var host = factory.PluginHost;
-			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
-			               	var inStream = new DoubleInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new DoubleOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
-			               	return IOHandler.Create(new ConfigIOStream<double>(inStream, outStream), valueConfig, null, null, s => s.Sync());
-			               });
-			
-			RegisterConfig(typeof(IIOStream<float>), (factory, attribute, t) => {
-			               	var host = factory.PluginHost;
-			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
-			               	var inStream = new FloatInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new FloatOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
-			               	return IOHandler.Create(new ConfigIOStream<float>(inStream, outStream), valueConfig, null, null, s => s.Sync());
-			               });
-			
-			RegisterConfig(typeof(IIOStream<int>), (factory, attribute, t) => {
-			               	var host = factory.PluginHost;
-			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
-			               	var inStream = new IntInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new IntOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
-			               	return IOHandler.Create(new ConfigIOStream<int>(inStream, outStream), valueConfig, null, null, s => s.Sync());
-			               });
-			
-			RegisterConfig(typeof(IIOStream<bool>), (factory, attribute, t) => {
-			               	var host = factory.PluginHost;
-			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
-			               	var inStream = new BoolInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new BoolOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
-			               	return IOHandler.Create(new ConfigIOStream<bool>(inStream, outStream), valueConfig, null, null, s => s.Sync());
-			               });
-
-			RegisterConfig(typeof(IIOStream<Vector2D>), (factory, attribute, t) => {
-			               	var host = factory.PluginHost;
-			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
-			               	var inStream = new Vector2DInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector2DOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
-			               	return IOHandler.Create(new ConfigIOStream<Vector2D>(inStream, outStream), valueConfig, null, null, s => s.Sync());
-			               });
-			RegisterConfig(typeof(IIOStream<Vector3D>),(factory, attribute, t) => {
-			               	var host = factory.PluginHost;
-			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
-			               	var inStream = new Vector3DInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector3DOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
-			               	return IOHandler.Create(new ConfigIOStream<Vector3D>(inStream, outStream), valueConfig, null, null, s => s.Sync());
-			               });
-			RegisterConfig(typeof(IIOStream<Vector4D>),(factory, attribute, t) => {
-			               	var host = factory.PluginHost;
-			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
-			               	var inStream = new Vector4DInStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector4DOutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
-			               	return IOHandler.Create(new ConfigIOStream<Vector4D>(inStream, outStream), valueConfig, null, null, s => s.Sync());
-			               });
-
-			RegisterConfig(typeof(IIOStream<Vector2>), (factory, attribute, t) => {
-			               	var host = factory.PluginHost;
-			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
-			               	var inStream = new Vector2InStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector2OutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
-			               	return IOHandler.Create(new ConfigIOStream<Vector2>(inStream, outStream), valueConfig, null, null, s => s.Sync());
-			               });
-			RegisterConfig(typeof(IIOStream<Vector3>), (factory, attribute, t) => {
-			               	var host = factory.PluginHost;
-			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
-			               	var inStream = new Vector3InStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector3OutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
-			               	return IOHandler.Create(new ConfigIOStream<Vector3>(inStream, outStream), valueConfig, null, null, s => s.Sync());
-			               });
-			RegisterConfig(typeof(IIOStream<Vector4>), (factory, attribute, t) => {
-			               	var host = factory.PluginHost;
-			               	var valueConfig = host.CreateValueConfig(attribute, t);
-			               	valueConfig.GetValuePointer(out pLength, out ppDoubleData);
-			               	var inStream = new Vector4InStream(pLength, ppDoubleData, GetValidateFunc(valueConfig));
-			               	var outStream = new Vector4OutStream(ppDoubleData, GetSetValueLengthAction(valueConfig));
-			               	return IOHandler.Create(new ConfigIOStream<Vector4>(inStream, outStream), valueConfig, null, null, s => s.Sync());
-			               });
-
 			RegisterConfig(typeof(IIOStream<string>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var stringConfig = host.CreateStringConfig(attribute, t);
@@ -606,10 +516,8 @@ namespace VVVV.Hosting.IO
 			RegisterConfig(typeof(IIOStream<RGBAColor>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
 			               	var colorConfig = host.CreateColorConfig(attribute, t);
-			               	colorConfig.GetColorPointer(out pLength, out ppDoubleData);
-			               	var inStream = new ColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorConfig));
-			               	var outStream = new ColorOutStream((RGBAColor**) ppDoubleData, GetSetColorLengthAction(colorConfig));
-			               	return IOHandler.Create(new ConfigIOStream<RGBAColor>(inStream, outStream), colorConfig, null, null, s => s.Sync());
+			               	var stream = new ColorConfigStream(colorConfig);
+			               	return IOHandler.Create(stream, colorConfig, null, null, s => s.Sync());
 			               });
 
 			RegisterConfig(typeof(IIOStream<EnumEntry>), (factory, attribute, t) => {
@@ -623,10 +531,18 @@ namespace VVVV.Hosting.IO
 			               	if (t.BaseType == typeof(Enum))
 			               	{
 			               		var enumConfig = host.CreateEnumConfig(attribute, t);
-			               		var stream = Activator.CreateInstance(typeof(EnumConfigStream<>).MakeGenericType(t), new object[] { enumConfig }) as IIOStream;
-			               		return IOHandler.Create(stream, enumConfig, null, null, s => s.Flush());
+			               		var streamType = typeof(EnumConfigStream<>).MakeGenericType(t);
+			               		var stream = Activator.CreateInstance(streamType, new object[] { enumConfig }) as IIOStream;
+			               		return IOHandler.Create(stream, enumConfig, null, null, s => s.Sync());
 			               	}
-			               	throw new NotSupportedException();
+			               	else if (t.IsPrimitive)
+			               	{
+			               	    var valueConfig = host.CreateValueConfig(attribute, t);
+			               	    var streamType = typeof(ValueConfigStream<>).MakeGenericType(t);
+			               	    var stream = Activator.CreateInstance(streamType, new object[] { valueConfig }) as IIOStream;
+			               	    return IOHandler.Create(stream, valueConfig, null, null, s => s.Sync());
+			               	}
+			               	throw new NotSupportedException(string.Format("Config pin of type '{0}' is not supported.", t));
 			               });
 			
 			RegisterConfig(typeof(ISpread<>), (factory, attribute, t) => {
@@ -634,7 +550,6 @@ namespace VVVV.Hosting.IO
 			               	var ioBuilder = CreateIOHandler(typeof(IIOStream<>), typeof(IIOStream<>).MakeGenericType(t), factory, attribute);
 			               	var pinType = typeof(ConfigPin<>).MakeGenericType(t);
 			               	var spread = (ISpread) Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject);
-			               	spread.Sync();
 			               	return IOHandler.Create(spread, ioBuilder.Metadata, null, null, p => p.Sync());
 			               });
 			
@@ -643,7 +558,6 @@ namespace VVVV.Hosting.IO
 			               	var ioBuilder = CreateIOHandler(typeof(IIOStream<>), typeof(IIOStream<>).MakeGenericType(t), factory, attribute);
 			               	var pinType = typeof(ConfigPin<>).MakeGenericType(t);
 			               	var spread = (IDiffSpread) Activator.CreateInstance(pinType, host, ioBuilder.Metadata, ioBuilder.RawIOObject);
-			               	spread.Sync();
 			               	return IOHandler.Create(spread, ioBuilder.Metadata, null, null, p => p.Sync());
 			               });
 		}
@@ -718,11 +632,6 @@ namespace VVVV.Hosting.IO
 			}
 			
 			throw new NotSupportedException(string.Format("Can't create {0} of type '{1}'.", attribute, closedIOType));
-		}
-		
-		static void SyncSpread(ISpread spread)
-		{
-			spread.Sync();
 		}
 		
 		static private Func<bool> GetValidateFunc(IPluginIn pluginIn)

@@ -106,7 +106,8 @@ namespace VVVV.HDE.ProjectExplorer
                 FTreeViewer.Input = Solution;
                 
                 // Workaround because config pins do not send changed on reload :/
-				FHideUnusedProjectsCheckBox.Checked = true;
+                FHideUnusedProjectsIn.Sync();
+                FBuildConfigIn.Sync();
 			}
 			catch (Exception e)
 			{
