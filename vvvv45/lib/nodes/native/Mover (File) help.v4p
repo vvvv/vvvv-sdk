@@ -1,0 +1,187 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Mover (File) help.v4p">
+   <BOUNDS height="4635" left="2040" top="2445" type="Window" width="7830">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3150" top="825" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3210" top="3810" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="3150" top="825" type="Box" width="1845">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="move.me">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5250" top="825" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3510" top="4110" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="5250" top="825" type="Box" width="2205">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="../moved.txt">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3645" top="1755" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5010" top="5445" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="390" left="3645" top="1755" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="move">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="420" left="3090" top="2760" type="Node" width="4050">
+   </BOUNDS>
+   <BOUNDS height="1350" left="3090" top="2760" type="Box" width="4140">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|step 2: move the file to a new location (which will be one level higher an that schould be your vvvv directory), where it will have a new filename (moved.txt)&cr;&lf;&cr;&lf;you can also use spreads to move multiple files. &cr;&lf;use with caution!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Mover (File)">
+   <BOUNDS height="0" left="3165" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="FromFilename" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="ToFilename" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="doCopy" visible="1">
+   </PIN>
+   <PIN pinname="doMove" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="FromFilename" srcnodeid="7" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="ToFilename" srcnodeid="6" srcpinname="Output String">
+   <LINKPOINT x="5265" y="1590">
+   </LINKPOINT>
+   <LINKPOINT x="3480" y="1590">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="doMove" srcnodeid="5" srcpinname="Y Output Value">
+   <LINKPOINT x="4065" y="2265">
+   </LINKPOINT>
+   <LINKPOINT x="3765" y="2265">
+   </LINKPOINT>
+   <LINKPOINT x="3765" y="2355">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="2" nodename="Writer (File)">
+   <BOUNDS height="0" left="450" top="2175" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" visible="1" values="|C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\vvvv_33alpha7.6\file.txt|">
+   </PIN>
+   <PIN pinname="Content" slicecount="1" values="|hello world, I&apos;m moving!&cr;&lf;|">
+   </PIN>
+   <PIN pinname="doWrite" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="600" top="1260" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5310" top="5745" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="390" left="600" top="1260" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="create">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Filename" srcnodeid="7" srcpinname="Output String">
+   <LINKPOINT x="465" y="1095">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="doWrite" srcnodeid="1" srcpinname="Y Output Value">
+   <LINKPOINT x="1020" y="1815">
+   </LINKPOINT>
+   <LINKPOINT x="720" y="1815">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="405" top="2520" type="Node" width="1410">
+   </BOUNDS>
+   <BOUNDS height="1005" left="405" top="2520" type="Box" width="1605">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|step 1: create a file&cr;&lf;(u&apos;ll find it in the help directory in your vvvv folder)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="255" left="15" top="390" type="Box" width="3825">
+   </BOUNDS>
+   <BOUNDS height="160" left="570" top="11970" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|moves a spread of files from one location to another|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="570" top="11970" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Mover - File|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

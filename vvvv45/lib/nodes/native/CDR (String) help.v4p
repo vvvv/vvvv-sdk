@@ -1,0 +1,111 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
+   <PATCH nodename="G:\vvvv\help\CDR (String) help.v4p">
+   <BOUNDS height="4305" left="8100" top="4875" type="Window" width="4065">
+   </BOUNDS>
+   <NODE id="7" nodename="CDR (String)">
+   <BOUNDS height="0" left="930" top="2010" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Remainder" visible="1">
+   </PIN>
+   <PIN pinname="Last Slice" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="945" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7575" top="5130" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="810" left="945" top="810" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="4" values="v,vv,vvv,vvvv">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1095" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8775" top="6090" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="810" left="1095" top="2610" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input String" srcnodeid="7" srcpinname="Remainder">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="180" top="2625" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8445" top="5865" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="180" top="2625" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input String" srcnodeid="7" srcpinname="Last Slice">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="2010">
+   </BOUNDS>
+   <BOUNDS height="160" left="660" top="14265" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CDR - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="3780">
+   </BOUNDS>
+   <BOUNDS height="160" left="1050" top="14505" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Splits the spread into the last element and the rest|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="3630" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="3630" type="Box" width="750">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="CAR (String)">
+   <BOUNDS height="0" left="810" top="3630" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
