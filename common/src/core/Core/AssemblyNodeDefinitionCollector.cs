@@ -25,7 +25,7 @@ namespace VVVV.Core
             if (fullname)
                 return TypeHelper.GetTypeName(type);
             else
-                return TypeHelper.GetTypeName(type, NameFormattingOptions.OmitContainingNamespace);            
+                return TypeHelper.GetTypeName(type, NameFormattingOptions.OmitContainingNamespace);
         }
 
         public static bool ValueIsString(this IMetadataNamedArgument arg)
@@ -60,10 +60,10 @@ namespace VVVV.Core
     public class AssemblyNodeDefinitionCollector
     {
         // PLAY AROUND WITH THOSE:
-        public bool AcceptFunctionNodes = false;
-        public bool AcceptFunctorNodes = true;
-        public bool AcceptNodesWithoutNodeAttribute = false;        // why not import everything that can be worked with(?)
-        public bool AcceptNodesThatHaveRefParams = false;           // not supported yet 
+        public bool AcceptFunctionNodes = true;
+        public bool AcceptFunctorNodes = false;
+        public bool AcceptNodesWithoutNodeAttribute = true;        // why not import everything that can be worked with(?)
+        public bool AcceptNodesThatHaveRefParams = false;           // not supported yet
         public bool AcceptNodesThatWorkWithUnclonableTypes = true;  // in the best case patch view will take care that only one connection is allowed when values aren't clonable
         public bool AcceptConstructorsAsFunctors = false;           // keep it like that
 
@@ -73,7 +73,7 @@ namespace VVVV.Core
         public AssemblyNodeDefinitionCollector(MetadataReaderHost host)
         {
             FHost = host;
-            FctorName = FHost.NameTable.Ctor; 
+            FctorName = FHost.NameTable.Ctor;
         }
 
         public static string ParamNameToPinName(string paramname)
@@ -83,11 +83,10 @@ namespace VVVV.Core
 
             //param names start with a lower case letter, after that are camelcaps
             //out params that need to have the same name as another (in) param, can be named param_Out, resulting in a pin name "Param"
-
             var pinname = paramname;
             if (pinname.EndsWith("_Out"))
                 pinname = pinname.Remove(pinname.LastIndexOf("_Out"));
-
+            
             pinname = Regex.Replace(pinname, "[A-Z]+", match => " "+match.Value);
             pinname = char.ToUpper(pinname[0]) + pinname.Substring(1);
             return pinname;
@@ -103,7 +102,7 @@ namespace VVVV.Core
 
         public static string FullTypeNameToVersion(string fulltypename, INodeDefinition node)
         {
-            // in case of an unsorted category we need to ensure a unique systemname otherwise 
+            // in case of an unsorted category we need to ensure a unique systemname otherwise
             // (by putting the name of the containing type into the version)
             if (node.Category == "uncategorized")
                 return fulltypename;
@@ -131,6 +130,8 @@ namespace VVVV.Core
             else
             {
                 var input = new InputPinDefinition();
+                
+                input.ParameterDefinition = param;
 
                 input.HasDefaultValue = param.HasDefaultValue;
                 if (input.HasDefaultValue)
@@ -176,14 +177,14 @@ namespace VVVV.Core
                 pin.Node = node as IDataflowNodeDefinition;
 
                 yield return pin;
-            }            
+            }
         }
 
         public void CollectInputsAndOutpus(IMethodDefinition methodDefinition, DataflowNodeDefinition node)
         {
             IEnumerable<IDataflowPinDefinition> stdpindefs =
                 from param in methodDefinition.Parameters
-                from pindef in Collect(param, node)                
+                from pindef in Collect(param, node)
                 select pindef;
 
             IEnumerable<IDataflowPinDefinition> allpindefs =
@@ -202,23 +203,23 @@ namespace VVVV.Core
                 yield break;
 
             if (!AcceptNodesThatWorkWithUnclonableTypes && !(
-                    methodDefinition.Type.IsClonable() &&
-                    methodDefinition.Parameters.Any(param => param.Type.IsClonable()))
-                )
+                methodDefinition.Type.IsClonable() &&
+                methodDefinition.Parameters.Any(param => param.Type.IsClonable()))
+               )
                 yield break;
 
             var nodeattribute = methodDefinition.Attributes.FirstOrDefault(attribute => attribute.Type.TypeName() == "NodeAttribute");
 
-            if (!AcceptNodesWithoutNodeAttribute || nodeattribute != null)
+            if (AcceptNodesWithoutNodeAttribute || nodeattribute != null)
             {
                 DataflowNodeDefinition node;
                 if (methodDefinition.IsStatic)
                     node = new FunctionNodeDefinition();
                 else
                     node = new FunctorNodeDefinition()
-                    {
-                        StateType = methodDefinition.ContainingTypeDefinition                            
-                    };
+                {
+                    StateType = methodDefinition.ContainingTypeDefinition
+                };
 
                 node.MethodDefinition = methodDefinition;
 
@@ -258,7 +259,7 @@ namespace VVVV.Core
                 CollectInputsAndOutpus(methodDefinition, node);
 
                 yield return node;
-            }            
+            }
         }
         
         public IEnumerable<INodeDefinition> Collect(IAssembly assembly)
@@ -266,12 +267,12 @@ namespace VVVV.Core
             return
                 from type in assembly.GetAllTypes()
                 where
-                    (!type.IsInterface) && 
+                    (!type.IsInterface) &&
                     (
                         (type.IsStatic && AcceptFunctionNodes) ||
                         (!type.IsStatic && (AcceptFunctionNodes || AcceptFunctorNodes))
                     )
-                let functortype = 
+                let functortype =
                     (type.IsValueType || type.HasDefaultConstructor(FHost)) &&
                     (AcceptNodesThatWorkWithUnclonableTypes || type.IsClonable())
                 from method in type.Methods

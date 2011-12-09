@@ -124,6 +124,8 @@ namespace VVVV.Core
         public Microsoft.Cci.IMetadataConstant DefaultValue { get; set; }
 
         public bool StrikedOutByDefault { get; set; }
+        
+        public Microsoft.Cci.IParameterDefinition ParameterDefinition { get; set; }
     }
 
     public class OutputPinDefinition : DataflowPinDefinition, IOutputPinDefinition

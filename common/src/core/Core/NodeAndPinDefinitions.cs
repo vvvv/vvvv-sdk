@@ -180,6 +180,11 @@ namespace VVVV.Core
     public interface IInputPinDefinition : IDataflowPinDefinition
     {
         /// <summary>
+        /// the method parameter definition
+        /// </summary>
+        IParameterDefinition ParameterDefinition { get; }
+        
+        /// <summary>
         /// returns if the pin has a default value
         /// </summary>
         bool HasDefaultValue { get; }
