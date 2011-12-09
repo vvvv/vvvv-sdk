@@ -194,11 +194,11 @@ namespace VVVV.Hosting
         public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
         {
         	// HACK hack hack :/
-        	nodeBrowser = ((IOFactory) FNodeBrowser).PluginBase;
+        	nodeBrowser = ((PluginContainer) FNodeBrowser).PluginBase;
         	((INodeBrowser) nodeBrowser).IsStandalone = false;
             ((INodeBrowser) nodeBrowser).DragDrop(false);
-            windowSwitcher = ((IOFactory) FWindowSwitcher).PluginBase;
-            kommunikator = ((IOFactory) FKommunikator).PluginBase;
+            windowSwitcher = ((PluginContainer) FWindowSwitcher).PluginBase;
+            kommunikator = ((PluginContainer) FKommunikator).PluginBase;
         }
         
         public void ExtractNodeInfos(string filename, string arguments, out INodeInfo[] result)

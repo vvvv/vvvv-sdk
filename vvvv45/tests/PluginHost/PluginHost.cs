@@ -565,14 +565,13 @@ namespace Hoster
 			}
 		}
 		
-		public void AddListener(IPluginNodeListener listener)
-		{
-			
-		}
-		
-		public void RemoveListener(IPluginNodeListener listener)
-		{
-			
+		public IWin32Window Win32Window {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
 		}
 	}
 }

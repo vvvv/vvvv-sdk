@@ -170,5 +170,15 @@ namespace Hoster
 				Value = null;
 			}
 		}
+		
+		unsafe public void GetColorPointer(out int* pLength, out double** ppData)
+		{
+			throw new NotImplementedException();
+		}
+		
+		unsafe public void GetColorPointer(out double** ppDst)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -129,7 +129,7 @@ namespace VVVV.Hosting.IO.Streams
 				public InnerStreamReader(InnerStream stream)
 				{
 					FStream = stream;
-					FDataReader = stream.FDataStream.GetReader();
+					FDataReader = stream.FDataStream.GetCyclicReader();
 					FOffset = stream.FOffset;
 					Length = FStream.Length;
 					Reset();
@@ -189,22 +189,10 @@ namespace VVVV.Hosting.IO.Streams
 				public int Read(T[] buffer, int index, int length, int stride)
 				{
 					int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-					
-					int numSlicesRead = FDataReader.Read(buffer, index, length, stride);
-					
-					if (numSlicesRead < numSlicesToRead)
-					{
-						FDataReader.ReadCyclic(buffer, index + numSlicesRead, numSlicesToRead - numSlicesRead, stride);
-					}
-					
+					FDataReader.Read(buffer, index, numSlicesToRead, stride);
 					Position += numSlicesToRead * stride;
 					return numSlicesToRead;
 				}
-				
-//				public void ReadCyclic(T[] buffer, int index, int length, int stride)
-//				{
-//					StreamUtils.ReadCyclic(this, buffer, index, length, stride);
-//				}
 				
 				public void Dispose()
 				{

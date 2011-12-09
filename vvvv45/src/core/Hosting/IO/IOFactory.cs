@@ -9,54 +9,20 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.IO
 {
-    class IOFactory : IIOFactory, IPlugin, IPluginConnections, IDisposable
+    class IOFactory : IIOFactory, IDisposable
     {
         private readonly IInternalPluginHost FPluginHost;
         private readonly IORegistry FIORegistry;
         private readonly List<IIOHandler> FCreatedHandlers = new List<IIOHandler>();
-        private readonly List<IOHandler> FPreHandlers = new List<IOHandler>();
-        private readonly List<IOHandler> FPostHandlers = new List<IOHandler>();
-        private readonly List<IOHandler> FConfigHandlers = new List<IOHandler>();
-        private readonly CompositionContainer FContainer;
-        private readonly IPluginEvaluate FPlugin;
-        private readonly bool FAutoEvaluate;
+        // used by internal class PluginContainer
+        internal readonly List<IOHandler> FPreHandlers = new List<IOHandler>();
+        internal readonly List<IOHandler> FPostHandlers = new List<IOHandler>();
+        internal readonly List<IOHandler> FConfigHandlers = new List<IOHandler>();
         
-        [Import(typeof(IPluginBase))]
-        public IPluginBase PluginBase
+        public IOFactory(IInternalPluginHost pluginHost, IORegistry streamRegistry)
         {
-            get;
-            private set;
-        }
-        
-        public IOFactory(
-            IInternalPluginHost internalPluginHost,
-            IORegistry streamRegistry,
-            CompositionContainer parentContainer,
-            Type pluginType,
-            INodeInfo nodeInfo
-           )
-        {
-            FPluginHost = internalPluginHost;
+            FPluginHost = pluginHost;
             FIORegistry = streamRegistry;
-            
-            var catalog = new TypeCatalog(pluginType);
-            var ioExportProvider = new IOExportProvider(this);
-            var hostExportProvider = new HostExportProvider() { PluginHost = internalPluginHost };
-            var exportProviders = new ExportProvider[] { hostExportProvider, ioExportProvider, parentContainer };
-            FContainer = new CompositionContainer(catalog, exportProviders);
-            FContainer.ComposeParts(this);
-            FPlugin = PluginBase as IPluginEvaluate;
-            FAutoEvaluate = nodeInfo.AutoEvaluate;
-            
-            // HACK: FPluginHost is null in case of WindowSwitcher and friends
-            if (FPluginHost != null)
-            {
-                var win32Window = PluginBase as IWin32Window;
-                if (win32Window != null)
-                {
-                    FPluginHost.Win32Window = win32Window;
-                }
-            }
         }
         
         public void Dispose()
@@ -65,10 +31,9 @@ namespace VVVV.Hosting.IO
             {
                 DestroyIOHandler(ioHandler);
             }
-            FContainer.Dispose();
         }
         
-        IPluginHost2 IIOFactory.PluginHost
+        public IPluginHost2 PluginHost
         {
             get
             {
@@ -76,7 +41,7 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        IIOHandler IIOFactory.CreateIOHandler(Type type, IOAttribute attribute)
+        public IIOHandler CreateIOHandler(Type type, IOAttribute attribute)
         {
             var io = FIORegistry.CreateIOHandler(
                 type.IsGenericType ? type.GetGenericTypeDefinition() : type,
@@ -92,17 +57,14 @@ namespace VVVV.Hosting.IO
             
             if (io.NeedsPreEvaluation)
             {
-//				HookPluginNode();
                 FPreHandlers.Add(io);
             }
             if (io.NeedsPostEvaluation)
             {
-//				HookPluginNode();
                 FPostHandlers.Add(io);
             }
             if (io.NeedsConfiguration)
             {
-//				HookPluginNode();
                 FConfigHandlers.Add(io);
             }
             
@@ -159,60 +121,6 @@ namespace VVVV.Hosting.IO
             {
                 FPluginHost.DeletePin(pluginIO);
             }
-        }
-        
-        void IPlugin.SetPluginHost(IPluginHost Host)
-        {
-            throw new NotImplementedException();
-        }
-        
-        void IPlugin.Configurate(IPluginConfig configPin)
-        {
-            foreach (var config in FConfigHandlers)
-            {
-                if (config.Metadata == configPin)
-                {
-                    config.Configurate();
-                    break;
-                }
-            }
-        }
-        
-        void IPlugin.Evaluate(int SpreadMax)
-        {
-            foreach (var input in FPreHandlers)
-            {
-                input.PreEvaluate();
-            }
-            
-            // HACK: Can we remove this? Maybe by seperating...
-            if (FPlugin != null)
-            {
-                FPlugin.Evaluate(SpreadMax);
-            }
-            
-            foreach (var output in FPostHandlers)
-            {
-                output.PostEvaluate();
-            }
-        }
-        
-        bool IPlugin.AutoEvaluate
-        {
-            get
-            {
-                return FAutoEvaluate;
-            }
-        }
-        
-        void IPluginConnections.ConnectPin(IPluginIO pin)
-        {
-            // TODO: Implement this
-        }
-        
-        void IPluginConnections.DisconnectPin(IPluginIO pin)
-        {
-            // TODO: Implement this
         }
     }
 }

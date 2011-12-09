@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 using VVVV.Core;
 using VVVV.Core.Logging;
@@ -39,7 +40,7 @@ namespace VVVV.Hosting.Factories
         [Import]
         protected IHDEHost FHost;
         
-        private readonly Dictionary<IPluginBase, IIOFactory> FFactories;
+        private readonly Dictionary<IPluginBase, PluginContainer> FPluginContainers;
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
         private readonly IORegistry FIORegistry = new IORegistry();
@@ -59,7 +60,7 @@ namespace VVVV.Hosting.Factories
             : base(fileExtension)
         {
             FParentContainer = parentContainer;
-            FFactories = new Dictionary<IPluginBase, IIOFactory>();
+            FPluginContainers = new Dictionary<IPluginBase, PluginContainer>();
             
             AppDomain.CurrentDomain.AssemblyResolve += HandleAssemblyResolve;
             AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += HandleReflectionOnlyAssemblyResolve;
@@ -318,14 +319,14 @@ namespace VVVV.Hosting.Factories
             var attribute = GetPluginInfoAttributeData(type);
             if (attribute != null)
             {
-                var ioFactory = new IOFactory(pluginHost as IInternalPluginHost, FIORegistry, FParentContainer, type, nodeInfo);
+            	var pluginContainer = new PluginContainer(pluginHost as IInternalPluginHost, FIORegistry, FParentContainer, type, nodeInfo);
 
                 // We intercept the plugin to manage IOHandlers.
-                plugin = ioFactory;
-                FFactories[ioFactory.PluginBase] = ioFactory;
+                plugin = pluginContainer;
+                FPluginContainers[pluginContainer.PluginBase] = pluginContainer;
                 
                 // Send event, clients are not interested in wrapping plugin, so send original here.
-                if (this.PluginCreated != null) { this.PluginCreated(ioFactory.PluginBase, pluginHost); }
+                if (this.PluginCreated != null) { this.PluginCreated(pluginContainer.PluginBase, pluginHost); }
             }
             else
             {
@@ -348,10 +349,10 @@ namespace VVVV.Hosting.Factories
             if (this.PluginDeleted != null) { this.PluginDeleted(plugin); }
 
             var disposablePlugin = plugin as IDisposable;
-            if (FFactories.ContainsKey(plugin))
+            if (FPluginContainers.ContainsKey(plugin))
             {
-                FFactories[plugin].Dispose();
-                FFactories.Remove(plugin);
+                FPluginContainers[plugin].Dispose();
+                FPluginContainers.Remove(plugin);
             }
             else if (disposablePlugin != null)
             {
@@ -482,6 +483,111 @@ namespace VVVV.Hosting.Factories
         private bool IsDynamicAssembly(string filename)
         {
             return FDynamicRegExp.IsMatch(filename);
+        }
+    }
+    
+    class PluginContainer : IPlugin, IPluginConnections, IDisposable
+    {
+    	private readonly IOFactory FIOFactory;
+        private readonly CompositionContainer FContainer;
+        private readonly IPluginEvaluate FPlugin;
+        private readonly bool FAutoEvaluate;
+        
+        [Import(typeof(IPluginBase))]
+        public IPluginBase PluginBase
+        {
+            get;
+            private set;
+        }
+        
+        public PluginContainer(
+        	IInternalPluginHost pluginHost,
+            IORegistry ioRegistry,
+            CompositionContainer parentContainer,
+            Type pluginType,
+            INodeInfo nodeInfo
+           )
+        {
+        	FIOFactory = new IOFactory(pluginHost, ioRegistry);
+            
+            var catalog = new TypeCatalog(pluginType);
+            var ioExportProvider = new IOExportProvider(FIOFactory);
+            var hostExportProvider = new HostExportProvider() { PluginHost = pluginHost };
+            var exportProviders = new ExportProvider[] { hostExportProvider, ioExportProvider, parentContainer };
+            FContainer = new CompositionContainer(catalog, exportProviders);
+            FContainer.ComposeParts(this);
+            FPlugin = PluginBase as IPluginEvaluate;
+            FAutoEvaluate = nodeInfo.AutoEvaluate;
+            
+            // HACK: FPluginHost is null in case of WindowSwitcher and friends
+            if (pluginHost != null)
+            {
+                var win32Window = PluginBase as IWin32Window;
+                if (win32Window != null)
+                {
+                    pluginHost.Win32Window = win32Window;
+                }
+            }
+        }
+        
+        public void Dispose()
+        {
+        	FContainer.Dispose();
+        	FIOFactory.Dispose();
+        }
+        
+        void IPlugin.SetPluginHost(IPluginHost Host)
+        {
+            throw new NotImplementedException();
+        }
+        
+        void IPlugin.Configurate(IPluginConfig configPin)
+        {
+            foreach (var config in FIOFactory.FConfigHandlers)
+            {
+                if (config.Metadata == configPin)
+                {
+                    config.Configurate();
+                    break;
+                }
+            }
+        }
+        
+        void IPlugin.Evaluate(int SpreadMax)
+        {
+            foreach (var input in FIOFactory.FPreHandlers)
+            {
+                input.PreEvaluate();
+            }
+            
+            // HACK: Can we remove this? Maybe by seperating...
+            if (FPlugin != null)
+            {
+                FPlugin.Evaluate(SpreadMax);
+            }
+            
+            foreach (var output in FIOFactory.FPostHandlers)
+            {
+                output.PostEvaluate();
+            }
+        }
+        
+        bool IPlugin.AutoEvaluate
+        {
+            get
+            {
+                return FAutoEvaluate;
+            }
+        }
+        
+        void IPluginConnections.ConnectPin(IPluginIO pin)
+        {
+            // TODO: Implement this
+        }
+        
+        void IPluginConnections.DisconnectPin(IPluginIO pin)
+        {
+            // TODO: Implement this
         }
     }
 }

@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using VVVV.Hosting.Streams;
+using VVVV.Hosting.IO.Streams;
 using VVVV.Utils;
 using VVVV.Utils.Streams;
 
 namespace VVVV.Tests.StreamTests
 {
-	public static class PerfTest
+	public unsafe static class PerfTest
 	{
 		private static double[] FDoubleArray;
 		private static GCHandle FDoubleArrayHandle;
 		private static int FDoubleArrayBegin = 4;
 		private static int FDoubleArrayEnd = 4;
+		private static double** FPPData;
+		private static int* FPLength;
+		private static int FLength;
+		private static GCHandle FPPDataHandle;
 		
 		private static Tuple<IntPtr, int> GetUnmanagedArray()
 		{
@@ -27,26 +31,33 @@ namespace VVVV.Tests.StreamTests
 			return true;
 		}
 		
-		private static IntPtr ResizeUnmanagedArray(int newLength)
+		private static void SetDataLength(int newLength)
 		{
 			if (FDoubleArrayHandle.IsAllocated)
 				FDoubleArrayHandle.Free();
 			
+			FLength = newLength;
 			Array.Resize(ref FDoubleArray, newLength + FDoubleArrayBegin + FDoubleArrayEnd);
 			FDoubleArray.Fill(0, FDoubleArrayBegin, double.MinValue);
 			FDoubleArray.Fill(FDoubleArray.Length - FDoubleArrayEnd, FDoubleArrayEnd, double.MaxValue);
 			FDoubleArrayHandle = GCHandle.Alloc(FDoubleArray, GCHandleType.Pinned);
-			return FDoubleArrayHandle.AddrOfPinnedObject() + sizeof(double) * FDoubleArrayBegin;
+			IntPtr dataPtr = FDoubleArrayHandle.AddrOfPinnedObject() + sizeof(double) * FDoubleArrayBegin;
+			FPPDataHandle = GCHandle.Alloc(dataPtr, GCHandleType.Pinned);
+			FPPData = (double**) FPPDataHandle.AddrOfPinnedObject().ToPointer();
 		}
 		
 		public static void Main(string[] args)
 		{
-			FDoubleArray = new double[64];
+		    FLength = 64;
+		    var lengthHandle = GCHandle.Alloc(FLength, GCHandleType.Pinned);
+		    FPLength = (int*) lengthHandle.AddrOfPinnedObject().ToPointer();
+		    
+			FDoubleArray = new double[FLength];
 			FDoubleArray.Init(1.0);
 			FDoubleArray.Fill(0, FDoubleArrayBegin, double.MinValue);
 			FDoubleArray.Fill(FDoubleArray.Length - FDoubleArrayEnd, FDoubleArrayEnd, double.MaxValue);
 			
-			var stream = UnmanagedInStream.Create<double>(GetUnmanagedArray, Validate);
+			var stream = new DoubleInStream(FPLength, FPPData, Validate);
 			stream.Sync();
 			
 			ReadUnbuffered(stream, 1024 * 1024, 1);
@@ -89,7 +100,7 @@ namespace VVVV.Tests.StreamTests
 			
 			using (var reader = stream.GetCyclicReader())
 			{
-				reader.ReadCyclic(buffer, 0, buffer.Length, stepSize);
+				reader.Read(buffer, 0, buffer.Length, stepSize);
 			}
 		}
 	}

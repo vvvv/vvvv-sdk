@@ -171,5 +171,10 @@ namespace Hoster
 				g.DrawString(AsDisplayString(i), f, b, r.X+2, FSliceHeight + 2 + i * FSliceHeight);
 			}
 		}
+		
+		public bool Validate()
+		{
+			return PinIsChanged;
+		}
 	}	
 }
