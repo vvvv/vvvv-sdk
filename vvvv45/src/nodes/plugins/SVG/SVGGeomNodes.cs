@@ -211,6 +211,8 @@ namespace VVVV.Nodes
 		protected override void CalcGeometry(SvgRectangle elem, Vector2 trans, Vector2 scale, int slice)
 		{
 			elem.Transforms.Add(new SvgTranslate(-scale.X * 0.5f, -scale.Y * 0.5f));
+			elem.X = 0;
+			elem.Y = 0;
 			elem.Width = (float)scale.X;
 			elem.Height = (float)scale.Y;
 			
