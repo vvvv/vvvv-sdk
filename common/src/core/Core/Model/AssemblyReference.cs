@@ -40,5 +40,10 @@ namespace VVVV.Core.Model
                 return FIsGlobal;
 			}
 		}
+		
+        public override void Dispatch(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
 	}
 }

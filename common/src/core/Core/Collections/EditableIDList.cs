@@ -275,6 +275,11 @@ namespace VVVV.Core.Collections
         }
 
         public event RootingChangedEventHandler RootingChanged;
+        
+        public virtual void Dispatch(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
 
         private void CheckIfRootingChanged(RootingChangedEventArgs args)
         {

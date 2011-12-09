@@ -96,6 +96,15 @@
     </Reference>
     <Reference Include="Microsoft.Build.Engine">
     </Reference>
+    <Reference Include="Microsoft.Cci.MetadataHelper">
+      <HintPath>..\..\thirdparty\Microsoft.Cci.MetadataHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.MetadataModel">
+      <HintPath>..\..\thirdparty\Microsoft.Cci.MetadataModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.PeReader">
+      <HintPath>..\..\thirdparty\Microsoft.Cci.PeReader.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -117,6 +126,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyNodeDefinitionCollector.cs" />
     <Compile Include="Collections\DotNetCollectionExtensions.cs" />
     <Compile Include="Collections\EditableIDList.cs" />
     <Compile Include="Collections\EditableCollection.cs" />
@@ -143,6 +153,9 @@
     <Compile Include="Commands\RemoveCommand.cs" />
     <Compile Include="Commands\RenameCommand.cs" />
     <Compile Include="Commands\SetPropertyCommand.cs" />
+    <Compile Include="DataflowLinksAndLocations.cs" />
+    <Compile Include="NodeAndPinAttributes.cs" />
+    <Compile Include="NodeAndPinDefinitions.cs" />
     <Compile Include="Dialogs\ReferenceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +163,7 @@
       <DependentUpon>ReferenceDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Helper\Traverser.cs" />
     <Compile Include="IConverter.cs" />
     <Compile Include="IEditableProperty.cs" />
     <Compile Include="Dialogs\BaseDialog.cs">
@@ -183,6 +197,7 @@
     <Compile Include="IViewableCollection.cs" />
     <Compile Include="IViewableList.cs" />
     <Compile Include="IViewableProperty.cs" />
+    <Compile Include="IVisitor.cs" />
     <Compile Include="LazyModelMapper.cs" />
     <Compile Include="Logging\DebugHelpers.cs" />
     <Compile Include="Logging\DebugLogger.cs" />
@@ -215,6 +230,8 @@
     <Compile Include="Model\PersistentIDContainer.cs" />
     <Compile Include="Model\ProjectItem.cs" />
     <Compile Include="Model\Properties.cs" />
+    <Compile Include="NodeAndPinReferences.cs" />
+    <Compile Include="DefaultNodeAndPinDefinitions.cs" />
     <Compile Include="Runtime\CS\CSCompiler.cs" />
     <Compile Include="Model\CS\CSDocument.cs" />
     <Compile Include="Model\CS\CSProject.cs" />

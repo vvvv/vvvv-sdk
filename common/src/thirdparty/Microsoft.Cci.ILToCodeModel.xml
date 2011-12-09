@@ -1,0 +1,990 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Cci.ILToCodeModel</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Cci.ILToCodeModel.DeclarationAdder">
+            <summary>
+            Add LocalDeclarationStatement instances to the appropriate blocks.
+            </summary>
+            <remarks>
+            The metadata model does not have the concept of block scopes. All local variables used in a method body are listed in the LocalVariables property of IMethodBody.
+            The CodeModel on the other hand, has explicit blocks and these blocks contain explicit LocalDeclarationStatement instances that declare the variables that are local
+            to a block. This class decompiles the MetaData model to the CodeModel by inserting (adding) the necessary LocalDeclarationStatement instances in the 
+            appropriate places. 
+            </remarks>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.Decompiler">
+            <summary>
+            Provides methods that convert a given Metadata Model into an equivalent Code Model. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.Decompiler.GetCodeModelFromMetadataModel(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IAssembly,Microsoft.Cci.PdbReader,System.Boolean)">
+            <summary>
+            Returns a mutable Code Model assembly that is equivalent to the given Metadata Model assembly,
+            except that in the new assembly method bodies also implement ISourceMethodBody.
+            </summary>
+            <param name="host">An object representing the application that is hosting this decompiler. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.</param>
+            <param name="assembly">The root of the Metadata Model to be converted to a Code Model.</param>
+            <param name="pdbReader">An object that can map offsets in an IL stream to source locations and block scopes. May be null.</param>
+            <param name="decompileIterators">True if iterator classes should be decompiled into iterator methods.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.Decompiler.GetCodeModelFromMetadataModel(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IModule,Microsoft.Cci.PdbReader,System.Boolean)">
+            <summary>
+            Returns a mutable Code Model module that is equivalent to the given Metadata Model module,
+            except that in the new module method bodies also implement ISourceMethodBody.
+            </summary>
+            <param name="host">An object representing the application that is hosting this decompiler. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.</param>
+            <param name="module">The root of the Metadata Model to be converted to a Code Model.</param>
+            <param name="pdbReader">An object that can map offsets in an IL stream to source locations and block scopes. May be null.</param>
+            <param name="decompileIterators">True if iterator classes should be decompiled into iterator methods.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.Decompiler.GetCodeModelFromMetadataModel(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IMethodBody,Microsoft.Cci.PdbReader,System.Boolean)">
+            <summary>
+            Returns a (mutable) Code Model SourceMethod body that is equivalent to the given Metadata Model method body.
+            It does *not* delete any helper types.
+            </summary>
+            <param name="host">An object representing the application that is hosting this decompiler. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.</param>
+            <param name="methodBody">The Metadata Model method body that is to be decompiled.</param>
+            <param name="pdbReader">An object that can map offsets in an IL stream to source locations and block scopes. May be null.</param>
+            <param name="decompileIterators">True if iterator classes should be decompiled into iterator methods.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.Decompiler.GetCodeModelFromMetadataModelHelper(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IModule,Microsoft.Cci.ISourceLocationProvider,Microsoft.Cci.ILocalScopeProvider,System.Boolean)">
+            <summary>
+            Returns a mutable Code Model module that is equivalent to the given Metadata Model module,
+            except that in the new module method bodies also implement ISourceMethodBody.
+            </summary>
+            <param name="host">An object representing the application that is hosting this decompiler. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.</param>
+            <param name="module">The root of the Metadata Model to be converted to a Code Model.</param>
+            <param name="sourceLocationProvider">An object that can map some kinds of ILocation objects to IPrimarySourceLocation objects. May be null.</param>
+            <param name="localScopeProvider">An object that can provide information about the local scopes of a method. May be null.</param>
+            <param name="decompileIterators">True if iterator classes should be decompiled into iterator methods.</param>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.ReplaceMetadataMethodBodiesWithDecompiledMethodBodies">
+            <summary>
+            A mutator that copies metadata models into mutable code models by using the base MetadataMutator class to make a mutable copy
+            of a given metadata model and also replaces any method bodies with instances of SourceMethodBody, which implements the ISourceMethodBody.Block property
+            by decompiling the metadata model information provided by the properties of IMethodBody.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.ReplaceMetadataMethodBodiesWithDecompiledMethodBodies.localScopeProvider">
+            <summary>
+            An object that can provide information about the local scopes of a method. May be null. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.ReplaceMetadataMethodBodiesWithDecompiledMethodBodies.sourceLocationProvider">
+            <summary>
+            An object that can map offsets in an IL stream to source locations and block scopes. May be null.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.ReplaceMetadataMethodBodiesWithDecompiledMethodBodies.host">
+            <summary>
+            An object representing the application that is hosting this mutator. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.ReplaceMetadataMethodBodiesWithDecompiledMethodBodies.decompileIterators">
+            <summary>
+            True if iterator classes should be decompiled into iterator methods.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.ReplaceMetadataMethodBodiesWithDecompiledMethodBodies.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IUnit,Microsoft.Cci.ISourceLocationProvider,Microsoft.Cci.ILocalScopeProvider,System.Boolean)">
+            <summary>
+            Allocates a mutator that copies metadata models into mutable code models by using the base MetadataMutator class to make a mutable copy
+            of a given metadata model and also replaces any method bodies with instances of SourceMethodBody, which implements the ISourceMethodBody.Block property
+            by decompiling the metadata model information provided by the properties of IMethodBody.
+            </summary>
+            <param name="host">An object representing the application that is hosting this mutator. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.</param>
+            <param name="unit">The unit of metadata that will be mutated.</param>
+            <param name="sourceLocationProvider">An object that can map some kinds of ILocation objects to IPrimarySourceLocation objects. May be null.</param>
+            <param name="localScopeProvider">An object that can provide information about the local scopes of a method. May be null.</param>
+            <param name="decompileIterators">True if iterator classes should be decompiled into iterator methods.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.ReplaceMetadataMethodBodiesWithDecompiledMethodBodies.TraverseChildren(Microsoft.Cci.IMethodDefinition)">
+            <summary>
+            Replaces the body of the given method with an equivalent instance of SourceMethod body, which in addition also implements ISourceMethodBody,
+            which has the additional property, Block, which represents the corresponding Code Model for the method body.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.HelperTypeFinder">
+            <summary>
+            A traverser that visits every method body and collects together all of the private helper types of these bodies.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.HelperTypeFinder.helperTypes">
+            <summary>
+            Contains an entry for every type that has been introduced by the compiler to hold the state of an anonymous delegate or of an iterator.
+            Since decompilation re-introduces the anonymous delegates and iterators, these types should be removed from member lists.
+            They stick around as PrivateHelperTypes of the methods containing the iterators and anonymous delegates.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.HelperTypeFinder.helperMethods">
+            <summary>
+            Contains an entry for every method that has been introduced by the compiler in order to implement anonymous delegates.
+            Since decompilation re-introduces the anonymous delegates and iterators, these members should be removed from member lists.
+            They stick around as PrivateHelperMembers of the methods containing the anonymous delegates.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.HelperTypeFinder.helperFields">
+            <summary>
+            Contains an entry for every field that has been introduced by the compiler in order to implement anonymous delegates.
+            Since decompilation re-introduces the anonymous delegates and iterators, these members should be removed from member lists.
+            They stick around as PrivateHelperMembers of the methods containing the anonymous delegates.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.HelperTypeFinder.host">
+            <summary>
+            An object representing the application that is hosting this decompiler. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.HelperTypeFinder.sourceLocationProvider">
+            <summary>
+            An object that can map some kinds of ILocation objects to IPrimarySourceLocation objects. May be null.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.HelperTypeFinder.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.ISourceLocationProvider)">
+            <summary>
+            A traverser that visits every method body and collects together all of the private helper types of these bodies.
+            </summary>
+            <param name="host">An object representing the application that is hosting this decompiler. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.</param>
+            <param name="sourceLocationProvider">An object that can map some kinds of ILocation objects to IPrimarySourceLocation objects. May be null.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.HelperTypeFinder.TraverseChildren(Microsoft.Cci.IModule)">
+            <summary>
+            Traverses only the namespace root of the given assembly, removing any type from the model that have the same
+            interned key as one of the entries of this.typesToRemove.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.HelperTypeFinder.TraverseChildren(Microsoft.Cci.INamedTypeDefinition)">
+            <summary>
+            Traverses only the nested types and methods and collects together all of the private helper types that are introduced by the compiler
+            when methods that contain closures or iterators are compiled.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.HelperTypeFinder.TraverseChildren(Microsoft.Cci.IMethodDefinition)">
+            <summary>
+            Traverses only the (possibly missing) body of the method.
+            </summary>
+            <param name="method"></param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.HelperTypeFinder.TraverseChildren(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Records all of the helper types of the method body into this.helperTypes.
+            </summary>
+            <param name="methodBody"></param>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.RemoveUnnecessaryTypes">
+            <summary>
+            A traverser for a mutable code model that removes a specified set of types from the model.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.RemoveUnnecessaryTypes.helperTypes">
+            <summary>
+            Contains an entry for every type that has been introduced by the compiler to hold the state of an anonymous delegate or of an iterator.
+            Since decompilation re-introduces the anonymous delegates and iterators, these types should be removed from member lists.
+            They stick around as PrivateHelperTypes of the methods containing the iterators and anonymous delegates.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.RemoveUnnecessaryTypes.helperMethods">
+            <summary>
+            Contains an entry for every method that has been introduced by the compiler in order to implement anonymous delegates.
+            Since decompilation re-introduces the anonymous delegates and iterators, these members should be removed from member lists.
+            They stick around as PrivateHelperMembers of the methods containing the anonymous delegates.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.RemoveUnnecessaryTypes.helperFields">
+            <summary>
+            Contains an entry for every field that has been introduced by the compiler in order to implement anonymous delegates.
+            Since decompilation re-introduces the anonymous delegates and iterators, these members should be removed from member lists.
+            They stick around as PrivateHelperMembers of the methods containing the anonymous delegates.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemoveUnnecessaryTypes.#ctor(System.Collections.Generic.Dictionary{System.UInt32,Microsoft.Cci.ITypeDefinition},System.Collections.Generic.Dictionary{System.UInt32,Microsoft.Cci.IMethodDefinition},System.Collections.Generic.Dictionary{Microsoft.Cci.IFieldDefinition,Microsoft.Cci.IFieldDefinition})">
+            <summary>
+            Allocates a traverser for a mutable code model that removes a specified set of types from the model.
+            </summary>
+            <param name="helperTypes">A dictionary whose keys are the interned keys of the types to remove from member lists.</param>
+            <param name="helperMethods">A dictionary whose keys are the interned keys of the methods to remove from member lists.</param>
+            <param name="helperFields">A dictionary whose keys are the interned keys of the methods to remove from member lists.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemoveUnnecessaryTypes.TraverseChildren(Microsoft.Cci.IModule)">
+            <summary>
+            Traverses only the namespace root of the given assembly, removing any type from the model that have the same
+            interned key as one of the entries of this.typesToRemove.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemoveUnnecessaryTypes.TraverseChildren(Microsoft.Cci.INamedTypeDefinition)">
+            <summary>
+            Traverses the specified type definition, removing any nested types that are compiler introduced private helper types
+            for maintaining the state of closures and anonymous delegates.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.BasicBlock">
+            <summary>
+            A block of statements that can only be reached by branching to the first statement in the block.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.BasicBlock.#ctor(System.UInt32)">
+            <summary>
+            Allocates a block of statements that can only be reached by branching to the first statement in the block.
+            </summary>
+            <param name="startOffset">The IL offset of the first statement in the block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.UnspecializedMethods.UnspecializedMethodDefinition(Microsoft.Cci.IMethodDefinition)">
+            <summary>
+            Get the unspecialized method definition is <paramref name="methodDefinition"/> is a specialized
+            version, or itself otherwise. 
+            </summary>
+            <param name="methodDefinition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.UnspecializedMethods.UnspecializedFieldDefinition(Microsoft.Cci.IFieldDefinition)">
+            <summary>
+            Get the unspecialized version of the given field definition, if it is specialized. Or the field 
+            definition itself, otherwise.
+            </summary>
+            <param name="fieldDefinition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.UnspecializedMethods.UnspecializedFieldReference(Microsoft.Cci.IFieldReference)">
+            <summary>
+            Get the unspecialized version of the given field reference, if it is specialized. Or the field 
+            reference itself, otherwise.
+            </summary>
+            <param name="fieldReference"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.UnspecializedMethods.GetMethodBodyFromUnspecializedVersion(Microsoft.Cci.IMethodDefinition)">
+            <summary>
+            A specialized method definition or generic method instance does not have a body. Given a method definition,
+            find the unspecialized version of the definition and fetch the body. 
+            </summary>
+            <param name="methodDefinition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.UnspecializedMethods.IsCompilerGenerated(Microsoft.Cci.ITypeReference)">
+            <summary>
+            See if a type reference refers to a type definition that is compiler generated. 
+            </summary>
+            <param name="typeReference"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.UnspecializedMethods.IsCompilerGenerated(Microsoft.Cci.IMethodDefinition)">
+            <summary>
+            See if a method definition is compiler generated, or is inside a compiler generated type.
+            </summary>
+            <param name="methodDefinition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.UnspecializedMethods.IsCompilerGenerated(Microsoft.Cci.IFieldReference)">
+            <summary>
+            Returns true if the given field reference refers to a field that is compiler generated.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.UnspecializedMethods.AsUnspecializedNestedTypeReference(Microsoft.Cci.ITypeReference)">
+            <summary>
+            If the type reference refers to a nested type, return a reference to the uninstantiated and/or unspecialized version 
+            of the nested type. Otherwise return null. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.UnspecializedMethods.AsUnspecializedTypeReference(Microsoft.Cci.ITypeReference)">
+            <summary>
+            Given a type, if it is a specialized type, return its generic type. Otherwise return itself.
+            If the type reference refers to a nested type, return a reference to the uninstantiated and/or unspecialized version 
+            of the nested type. Otherwise return the given type reference. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.LinearCodeTraverser">
+            <summary>
+            Given a delegate that processes the element of a list at a given position, this traverser
+            goes through a list of statements, which could be basic blocks, and processes the element in linear 
+            order, that is, as if the list is flattened. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.LinearCodeTraverser.Process(System.Collections.Generic.List{Microsoft.Cci.IStatement},System.Int32)">
+            <summary>
+            One step of processing the elements in a list in LinearCoderTraverser. Such a step, in addition to
+            processing the element at the <paramref name="index"/> location in <paramref name="list"/>
+            may move the index to reflect adding elements to or removing elements from the list 
+            and may indicate whether whole list processing of the traverser should stop. 
+            </summary>
+            <param name="list">List of elements</param>
+            <param name="index">In: position of element to be processed; out: position of the last processed element. </param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.LinearCodeTraverser.Reset">
+            <summary>
+            Reset the stopLinearTraversal flag for the traverser to run again. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.LinearCodeTraverser.stopLinearTraversal">
+            <summary>
+            A flag that stops linear Traversal. When set to true, the linear traversal stops.  
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.LinearCodeTraverser.TraverseChildren(Microsoft.Cci.IBlockStatement)">
+            <summary>
+            Visit every statement in the block, including those in the nested blocks. 
+            </summary>
+            <param name="block">block of statements, which themselves may be blocks.</param>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler">
+            <summary>
+            Decompilation of a MoveNext method into an iterator method. The structure of 
+            a MoveNext method may contain:
+            1) An optional try catch block, if the source iterator method has, for example, an foreach statement.
+               We need to get rid of this try statement and decompile it back to foreach. Currently, we only remove
+               this try statement.
+            2) The body of the MoveNext is a switch statement testing the state field of the closure class.
+               The state may be:
+               a) An initial state, the handling of which contains most of the logic from the original
+               iterator method. This part we are going to keep.
+               b) One of the continuing states, the handling of which simply go to (may be through a series of 
+               gotos) a label inside the handling of the initial state. (The label follows a location where a yield
+               return should be.)
+               c) A default (finishing) state, in which the control goes to a return false by the MoveNext.
+               We need to remove the switch statement, the goto chains for the continuing state, and code to handle 
+               finishing states. 
+            3) Assignments to the current field of the closure, which is followed by a return true. These correspond 
+               to a yield return. We should replace such sequence with yield return. 
+            4) Return false, which should be replaced by yield break.
+            5) Any other accesses of iterator class internals, whcih should be removed. These include calls to m__finally, assignments
+               to state, current, and other fields that do not capture a variable in the iterator method.
+            6) References to closure fields that captures a local or a parameter (including self), which ought to be replaced by 
+               the captured variable.
+            7) References to generic type parameter(s) of the closure class. These should be replaced by corresponding generic
+               method parameters of the iterator method. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.containingType">
+            <summary>
+            The containing type of the MoveNext method, that is, the closure class. May be specialized.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.unspecializedContainingType">
+            <summary>
+            Unspecialized version of the containing type is used often. Keep a cached value here. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.#ctor(Microsoft.Cci.ITypeDefinition,Microsoft.Cci.IMetadataHost)">
+            <summary>
+            Decompile of a MoveNext method body and transform the result into the body of the original iterator method. 
+            This involves the removal of the state machine, handling of possible compiled code for for-each, introducing
+            yield returns and yield breaks, and tranforming the code to the context of the iterator method. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.Decompile(Microsoft.Cci.MutableCodeModel.BlockStatement)">
+            <summary>
+            Entry point of the decompiler: 
+            1) Remove a TryCatchFinally statement in the MoveNext, if there is one.
+            2) Remove the state machine, including control flow that tests states, returns from
+            a state and reenters in another state.
+            3) Replace return statements with approppriate yield return or yield breaks.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.RemovePossibleTryCatchBlock(Microsoft.Cci.MutableCodeModel.BlockStatement)">
+            <summary>
+            If the body of MoveNext has a try/catch block at the beginning inserted by compiler and the catch block contains
+            a call to call this (the closure class).dispose, remove the try block. Also remove all the calls to m__finally. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.RemoveAssignmentsFromOrToThisDotState(Microsoft.Cci.MutableCodeModel.BlockStatement)">
+            <summary>
+            Remove any assignment to <code>this.&lt;&gt;?_state</code> and collect all the local variables that hold the
+            value of the state field of the closure instance. 
+            </summary>
+            <param name="blockStatement">A BlockStatement representing the body of MoveNext.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.ReplaceReturnWithYield(Microsoft.Cci.MutableCodeModel.BlockStatement)">
+            <summary>
+            Replace every return true with yield return, and every return false with yield break. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.RemoveToplevelSwitch(Microsoft.Cci.MutableCodeModel.BlockStatement)">
+            <summary>
+            Remove the switch statement, if any, on <code>this.&lt;&gt;?_state</code>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.RemoveDummyStatements(Microsoft.Cci.MutableCodeModel.BlockStatement)">
+            <summary>
+            Remove any statements that were marked as dummy.
+            </summary>
+            <param name="block"></param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.IsClosureStateField(Microsoft.Cci.IFieldReference)">
+            <summary>
+            Test whether a field is the state field of the iterator closure.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.IsClosureCurrentField(Microsoft.Cci.IFieldReference)">
+            <summary>
+            Test whether a field is the current field of the iterator closure.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextDecompiler.IsZeroConstant(Microsoft.Cci.IExpression)">
+            <summary>
+            Test whether a constant is zero (as an int) or false (as a boolean). Return false for anything else. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer">
+            <summary>
+            An iterator method is compiled to a closure class with a MoveNext method. This class 
+            substitutes every occurrance of a iterator closure type parameter with a method generic parameter and every reference 
+            to this.field to the locals or parameters captured by the closure field.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.fieldMapping">
+            <summary>
+            A mapping from a closure field (a unique key of its name) to the local or parameter it captures.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.typeParameterMapping">
+            <summary>
+            A mapping from a type parameter of the closure class to a generic method parameter of the iterator method.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.unspecializedClosureType">
+            <summary>
+            Cached unspecialized version of the iterator closure. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.#ctor(System.Collections.Generic.Dictionary{Microsoft.Cci.IGenericTypeParameter,Microsoft.Cci.IGenericMethodParameter},System.Collections.Generic.Dictionary{System.Int32,System.Object},Microsoft.Cci.IMetadataHost,Microsoft.Cci.ITypeReference)">
+            <summary>
+            An iterator method is compiled to a closure class with a MoveNext method. This class 
+            substitutes every occurrance of a type parameter with a method generic parameter and every reference 
+            to this.field to the locals or parameters captured by the closure field.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.Transform(Microsoft.Cci.IMethodDefinition,Microsoft.Cci.IMethodDefinition,Microsoft.Cci.MutableCodeModel.BlockStatement,Microsoft.Cci.IMetadataHost)">
+            <summary>
+            Given method definitions of the original iterator method and the MoveNext Method, and the decompiled body of MoveNext, performs 
+            the necessary substitution so that the method body becomes a legitimate, decompiled body of the iterator method.
+            
+            "decompiled MoveNext body" refers to the method body that has it state machine and TryCatchFinallyBlock removed, but references
+            to closure fields remain. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.IsClosureType(Microsoft.Cci.ITypeReference)">
+            <summary>
+            Whether (the unspecialized version of) a type reference is equivalent to the (unspecialized version of) closure class. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.Visit(Microsoft.Cci.MutableCodeModel.AddressableExpression)">
+            <summary>
+            Replace reference to this.field by reference to corresponding local or parameter.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.Visit(Microsoft.Cci.MutableCodeModel.TargetExpression)">
+            <summary>
+            Replace the field binding in a target expression with an approppriate local or parameter.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.Visit(Microsoft.Cci.MutableCodeModel.BoundExpression)">
+            <summary>
+            Replace the field binding in a bound expression with an approppriate local or parameter.
+            If the field is _this that captures this, replace the whole bound expression with the self
+            of the original method. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.Visit(Microsoft.Cci.ITypeReference)">
+            <summary>
+            Replace type paramter with generic method parameter.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.GetGenericParameterMapping(Microsoft.Cci.IMethodDefinition,Microsoft.Cci.ITypeDefinition)">
+            <summary>
+            Get the mapping between the type parameters of the closure class and the generic method parameters of 
+            the iterator methods, if any. The two have the same number of generic parameters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextToIteratorBlockTransformer.GetMapping(Microsoft.Cci.IMethodDefinition,Microsoft.Cci.IMethodDefinition)">
+            <summary>
+            The mapping from closure fields (their names) to the locals or parameters captured by the field. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.ClosureLocalVariableDeclarationAdder">
+            <summary>
+            Turn an assignment of create object instance into a local declaration so that closure decompilation can pick it up. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.ClosureLocalVariableDeclarationAdder.#ctor(Microsoft.Cci.ILToCodeModel.MoveNextSourceMethodBody)">
+            <summary>
+            Turn an assignment of create object instance into a local declaration so that closure decompilation can pick it up. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.ClosureLocalVariableDeclarationAdder.Visit(Microsoft.Cci.MutableCodeModel.BlockStatement)">
+            <summary>
+            Before visiting subnodes, add local declarations to the assignment to a local that creates a display class object. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.ClosureLocalVariableDeclarationAdder.AddLocalDeclarationIfNecessary(System.Collections.Generic.List{Microsoft.Cci.IStatement})">
+            <summary>
+            Add a local declaration to the assignment to a local that creates a display class objects.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.ClosureLocalVariableDeclarationAdder.IsCompilerGeneratedClass(Microsoft.Cci.ITypeReference)">
+            <summary>
+            Test to see if the type reference is to a compiler generated class. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.RemovePossibleTryCatchBlock">
+            <summary>
+            Helper class to remove try-catch block generated by foreach statements
+            in iterators.
+            Inlines (recursively) all try blocks and throws away any catch blocks
+            and finally/fault blocks. (There shouldn't be any catch blocks when
+            the code is generated by a compiler to implement an iterator.)
+            TODO: Decompile foreach statement
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemovePossibleTryCatchBlock.TraverseChildren(Microsoft.Cci.IBlockStatement)">
+            <summary>
+            Inlines (recursively) all try blocks and throws away any catch blocks
+            and finally/fault blocks. (There shouldn't be any catch blocks when
+            the code is generated by a compiler to implement an iterator.)
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.RemoveStateFieldAccessAndMFinallyCall">
+            <summary>
+            Helper class that:
+            1) Removes assignments to this.&lt;&gt;__state,
+            2) Collect local variables that hold the value of this.&lt;&gt;__state.
+            3) Removes calls to the m__finally method.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.RemoveStateFieldAccessAndMFinallyCall.thisDotStateLocal">
+            <summary>
+            The local variable that holds the value of the state field of the iterator closure instance (self in movenext).
+            We assume there is only one such local variable. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemoveStateFieldAccessAndMFinallyCall.#ctor(Microsoft.Cci.ILToCodeModel.MoveNextDecompiler)">
+            <summary>
+            Helper class that removes assignments to this.&lt;&gt;__state. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemoveStateFieldAccessAndMFinallyCall.TraverseChildren(Microsoft.Cci.IBlockStatement)">
+            <summary>
+            1) Removes assignments to this.&lt;&gt;__state,
+            2) Collect local variables that hold the value of this.&lt;&gt;__state.
+            3) Removes calls to the m__finally method.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.ProcessCurrentAndReturn">
+            <summary>
+            Helper class to:
+            1) replace assignments to the current field with yield returns;
+            2) replace return 0 with yield break;
+            3) remember the labels right before return statements;
+            4) remember the locals that hold the return value.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.ProcessCurrentAndReturn.#ctor(Microsoft.Cci.ILToCodeModel.MoveNextDecompiler)">
+            <summary>
+            Helper class to:
+            1) replace assignments to the current field with yield returns;
+            2) replace return 0 with yield break;
+            3) remember the labels right before return statements;
+            4) remember the locals that hold the return value.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.ProcessCurrentAndReturn.IsAssignmentToThisDotCurrent(Microsoft.Cci.IStatement,Microsoft.Cci.IExpression@)">
+            <summary>
+            Whether a statement is an assignment to the current field of the closure class. If so, out 
+            parameter <paramref name="expression"/> is set to the source of the assignment. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.ProcessCurrentAndReturn.currentLabeledStatement">
+            <summary>
+            Remember the most recently seen labeled statement. We assume there is a label before a return 
+            statement. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.ProcessCurrentAndReturn.returnLocals">
+            <summary>
+            Locals that holds the return value(s) of the method. This piece of information is later useful 
+            in yield break inserter. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.ProcessCurrentAndReturn.labelBeforeReturn">
+            <summary>
+            Labels right before the return statement. Later on, this is used to match patterns like: 
+            local:= true; goto L; ... L: return local;
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.ProcessCurrentAndReturn.Process(System.Collections.Generic.List{Microsoft.Cci.IStatement},System.Int32)">
+            <summary>
+            1) replace assignments to the current field with yield returns;
+            2) replace return 0 with yield break;
+            3) remember the labels right before return statements;
+            4) remember the locals that hold the return value.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.YieldBreakInserter">
+            <summary>
+            Helper class to replace assignments of false to return local with yield break and remove some unnecessary gotos. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.YieldBreakInserter.Process(System.Collections.Generic.List{Microsoft.Cci.IStatement},System.Int32)">
+            <summary>
+            Removes the gotoes to the label right before a return because it has become dead code after 
+            the assignment of false to return local has been replaced by yield break and assignment to current
+            has been replaced by yield return. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.RemoveGotoInIndirection">
+            <summary>
+            Traverse method body to collect gotos in a goto chain left after a switch statement has been deleted. A 
+            goto chain is formed by indirection introduced by the decompilation of a switch statement. A typical goto-chain is like:
+            
+            case 1: goto L1;
+             ...
+            L1: ;
+            goto State1Entry;
+             ...
+            // code for yield return;
+            State1Entry;
+            
+            The end of the goto chain is at either a label like State1Entry, which points to a location after a yield return,
+            a label that leads to a return, or the entrance of iterator method. All these gotos are introduced during the decompilation
+            of the swtich statement for the MoveNext the state machine. 
+            
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.RemoveGotoInIndirection.targetOfGotoFromSwitchCase">
+            <summary>
+            Set to a goto target when we hit the target label. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.RemoveGotoInIndirection.gotoFromSwitchCase">
+            <summary>
+            The current Goto statement for which we need to collect goto(s) in chain.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemoveGotoInIndirection.RemoveGotoStatements(Microsoft.Cci.IBlockStatement,Microsoft.Cci.IGotoStatement)">
+            <summary>
+            Traverse method body to collect gotos in a goto chain left after a switch statement has been deleted. 
+            
+            Currently we assume there is always one intermediate goto in the goto chain for a continuing state, and none
+            for the default case.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemoveGotoInIndirection.Process(System.Collections.Generic.List{Microsoft.Cci.IStatement},System.Int32)">
+            <summary>
+            Given a gotoStatement, collect the next goto (the intermediate goto in the chain) and stop. See pattern
+            above. Or if the current chain leads to the default case, nothing is collected.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.RemoveSwitchAndCollectGotos">
+            <summary>
+            Remove test on the state machine state. When such a test is by a switch statement, 
+            collect goto statements in switch cases and remove the switch statement. It is assumed
+            that when an iterator method contains only yield breaks, an if statement may be used
+            in the test. It is always of the form:
+            
+            if (state !=0) {
+            } else {
+              //body of iterator method
+            }
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.RemoveSwitchAndCollectGotos.localForThisDotState">
+            <summary>
+            Used for detecting whether whether thisdotstate is tested.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.RemoveSwitchAndCollectGotos.gotosFromSwitchCases">
+            <summary>
+            A list of goto statements from the switch cases. They are starting points of an goto indirection. Both these gotos and the gotos
+            in the indirection should be removed. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemoveSwitchAndCollectGotos.#ctor(Microsoft.Cci.ILocalDefinition,System.Collections.Generic.List{Microsoft.Cci.IGotoStatement})">
+            <summary>
+            Collect goto statements in switch cases and remove the switch statement. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemoveSwitchAndCollectGotos.TraverseChildren(Microsoft.Cci.IBlockStatement)">
+            <summary>
+            Collect the gotos in the swiches cases. Visit only the top level block.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.RemoveDummyStatements">
+            <summary>
+            Remove null statements from list of statements in a block. 
+            
+            This class is supposed to use with a linear code traverser that removes unwanted statements. The expectation is
+            that the linear code traverser will nullify the unwanted statements and this class removes the null ones from 
+            the statement list to avoid O(n^2) complexity.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.RemoveDummyStatements.TraverseChildren(Microsoft.Cci.IBlockStatement)">
+            <summary>
+            Remove all the null elements in a statement list. Time complexity is O(n). 
+            </summary>
+            <param name="block"></param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.PatternDecompiler.ReplaceShortCircuitPattern(System.Collections.Generic.List{Microsoft.Cci.IStatement},System.Int32)">
+            <summary>
+            Finds the following pattern:
+            i   :  if (c) A else B; // either A or B must be an empty statement and the other is "goto L1;"
+            i+1 :  push x;
+            i+2 :  goto L2;
+            i+3 :  Block1
+                   0  : L1;
+                   1  : push y;
+                   2  : Block2
+                        0 : L2;
+                        1 : (rest of statements in Block2)
+                        
+            Transforms it into:
+            i   : push (d ? X : Y);
+            i+1 : (rest of statements in Block2, preceded by L2 if there are more branches to L2 than just the one that was at i+2)
+            
+            Where if A is the empty statement, then
+              d == c, X == x, Y == y
+            If B is the empty statement, then if y is zero,
+              d == !c, X == x, Y == y
+            If B is the empty statement, then if y is not zero,
+              d == c, X == y, Y == x
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.PatternDecompiler.ReplaceShortCircuitPatternCreatedByCCI2(System.Collections.Generic.List{Microsoft.Cci.IStatement},System.Int32)">
+            <summary>
+            Finds the following pattern:
+            i   :  c ? A : B; // either A or B must be an empty statement and the other is "goto L1;"
+            i+1 :  push x;
+            i+2 :  goto L2;
+            i+3 :  Block1
+                   0  : L1;
+                   1  : push y;
+                   2  : goto L2;
+                   3  : Block2
+                        0 : whatever (but presumably it is the label L2)
+                        
+            Transforms it into:
+            i   : push d ? X : Y;
+            i+1 : goto L1;
+            i+2 : Block 2
+            
+            Where if A is the empty statement,
+              d == c, X == x, Y == y
+            If B is the empty statement and y is zero
+              d == !c, X == x, Y == y
+            If B is the empty statement and y is not zero
+              d == c, X == y, Y == x
+            And Block1 is deleted from the list.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.CompilationArtifactRemover">
+            <summary>
+            Replaces certain compiler-generated patterns with their source-level equivalents.
+              1. Closures: anonymous delegates are restored from closure classes and methods.
+              2. Return values: boolean methods have integer return values replaced by boolean values.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.CompilationArtifactRemover.UnspecializedParameterDefinition(Microsoft.Cci.IParameterDefinition)">
+            <summary>
+            Given a parameter definition, if it is a specialized parameter definition, get the unspecialized version, or
+            otherwise return the parameter itself. 
+            </summary>
+            <param name="parameter"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Microsoft.Cci.ILToCodeModel.CompilationArtifactRemover.GetTypeFromHandle">
+            <summary>
+            A reference to System.Type.GetTypeFromHandle(System.Runtime.TypeHandle).
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.CachedDelegateRemover.FindAssignmentToCachedDelegateStaticFieldOrLocal.TraverseChildren(Microsoft.Cci.IConditionalStatement)">
+            <summary>
+            Need to look for the pattern "if (!loc) then {loc = lambda;} else nop;" (or field instead of "loc")
+            instead of looking for just assignments of lambdas to locals (or fields). The latter leads to the
+            mis-identification of user-written code that assigns labmdas to locals (or fields).
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.GenericMethodParameterMapper">
+            <summary>
+            If the original method that contained the anonymous delegate is generic, then
+            the code generated by the compiler, the "closure method", is also generic.
+            If the anonymous delegate didn't capture any locals or parameters, then a
+            (generic) static method was generated to implement the lambda.
+            If it did capture things, then the closure method is a non-generic instance
+            method in a generic class.
+            In either case, any references to those generic parameters need to be mapped back
+            to become references to the original method's generic parameters.
+            Create an instance of this class for each anonymous delegate using the appropriate
+            constructor. This is known from whether the closure method is (static and generic)
+            or (instance and not-generic, but whose containing type is generic).
+            Those are the only two patterns created by the compiler.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.GenericMethodParameterMapper.targetMethod">
+            <summary>
+            The original generic method in which the anonymous delegate is being re-created.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.GenericMethodParameterMapper.targetMethodGenericParameters">
+            <summary>
+            Just a short-cut to the generic parameters so the list can be created once
+            and then the individual parameters can be accessed with an indexer.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.GenericMethodParameterMapper.sourceMethod">
+            <summary>
+            Used only when mapping from a generic method (i.e., a static closure method) to
+            the original generic method.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.GenericMethodParameterMapper.sourceType">
+            <summary>
+            Used only when mapping from a method in a generic class (i.e., a closure class)
+            to the original generic method.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.GenericMethodParameterMapper.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IMethodDefinition,Microsoft.Cci.IMethodDefinition)">
+            <summary>
+            Use this constructor when the anonymous delegate did not capture any locals or parameters
+            and so was implemented as a static, generic closure method.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.GenericMethodParameterMapper.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IMethodDefinition,Microsoft.Cci.INestedTypeReference)">
+            <summary>
+            Use this constructor when the anonymous delegate did capture a local or parameter
+            and so was implemented as an instance, non-generic closure method within a generic
+            class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.GenericTypeParameterMapper">
+            <summary>
+            If the original method that contained the anonymous delegate is comes from a generic type, then
+            the code generated by the compiler, the "closure method", is also generic.
+            The references to generic type parameters of the closure method must be mapped back
+            to references to the generic type parameters of the containing type of the method containing
+            the anonymous delegate.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.GenericTypeParameterMapper.targetType">
+            <summary>
+            The original generic type in which the anonymous delegate is being re-created.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.GenericTypeParameterMapper.targetTypeGenericParameters">
+            <summary>
+            Just a short-cut to the generic parameters so the list can be created once
+            and then the individual parameters can be accessed with an indexer.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.GenericTypeParameterMapper.sourceType">
+            <summary>
+            The generic closure class that contains the method being mapped to an anonymous delegate.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.GenericTypeParameterMapper.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.ITypeDefinition,Microsoft.Cci.ITypeDefinition)">
+            <summary>
+            Use this constructor when the anonymous delegate did not capture any locals or parameters
+            and so was implemented as a static, generic closure method.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.SourceMethodBody">
+            <summary>
+            A metadata (IL) representation along with a source level representation of the body of a method or of a property/event accessor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.SourceMethodBody.#ctor(Microsoft.Cci.IMethodBody,Microsoft.Cci.IMetadataHost,Microsoft.Cci.ISourceLocationProvider,Microsoft.Cci.ILocalScopeProvider,System.Boolean)">
+            <summary>
+            Allocates a metadata (IL) representation along with a source level representation of the body of a method or of a property/event accessor.
+            </summary>
+            <param name="ilMethodBody">A method body whose IL operations should be decompiled into a block of statements that will be the
+            result of the Block property of the resulting source method body.</param>
+            <param name="host">An object representing the application that is hosting the converter. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.</param>
+            <param name="sourceLocationProvider">An object that can map some kinds of ILocation objects to IPrimarySourceLocation objects. May be null.</param>
+            <param name="localScopeProvider">An object that can provide information about the local scopes of a method.</param>
+            <param name="decompileIterators">True if iterator classes should be decompiled into iterator methods.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.SourceMethodBody.GetBlock">
+            <summary>
+            Decompile the IL operations of this method body into a block of statements.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.SourceMethodBody.FindClosureMoveNext(Microsoft.Cci.IBlockStatement)">
+            <summary>
+            For an iterator method, find the closure class' MoveNext method and return its body.
+            </summary>
+            <param name="iteratorIL">The body of the iterator method, decompiled from the ILs of the iterator body.</param>
+            <returns>Dummy.MethodBody if <paramref name="iteratorIL"/> does not fit into the code pattern of an iterator method, 
+            or the body of the MoveNext method of the corresponding closure class if it does.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.SourceMethodBody.Transform(Microsoft.Cci.ILToCodeModel.BasicBlock)">
+            <summary>
+            Perform different phases approppriate for normal, MoveNext, or iterator source method bodies.
+            </summary>
+            <param name="rootBlock"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.SourceMethodBody.GetOrCreateBlock(System.UInt32,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="offset"></param>
+            <param name="addLabel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.SourceMethodBody.ParseInstruction(Microsoft.Cci.ILToCodeModel.BasicBlock)">
+            <summary>
+            Parse instructions and put them into an expression tree until an assignment, void call, branch target, or branch is encountered.
+            Returns true if the parsed statement is last of the current basic block. This happens when the next statement is a branch
+            target, or if the parsed statement could transfers control to anything but the following statement.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.SourceMethodBody.predecessors">
+            <summary>
+            Predecessors of labeled statements.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.MoveNextSourceMethodBody">
+            <summary>
+            A metadata (IL) representation along with a source level representation of the body of an iterator method/property.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILToCodeModel.MoveNextSourceMethodBody.iteratorMethodBody">
+            <summary>
+            The method body of the original iterator method. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.MoveNextSourceMethodBody.#ctor(Microsoft.Cci.IMethodBody,Microsoft.Cci.IMethodBody,Microsoft.Cci.IMetadataHost,Microsoft.Cci.ISourceLocationProvider,Microsoft.Cci.ILocalScopeProvider)">
+            <summary>
+            Allocates a metadata (IL) representation along with a source level representation of the body of an iterator method/property/event accessor.
+            </summary>
+            <param name="iteratorMethodBody"> The method body of the iterator method, to which this MoveNextSourceMethodBody corresponds.</param>
+            <param name="ilMethodBody">The method body of MoveNext whose IL operations should be decompiled into a block of statements that will be the
+            result of the Block property of the resulting source method body. More importantly, the decompiled body for the original iterator method 
+            is accessed by the TransformedBlock property.</param>
+            <param name="host">An object representing the application that is hosting the converter. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.</param>
+            <param name="sourceLocationProvider">An object that can map some kinds of ILocation objects to IPrimarySourceLocation objects. May be null.</param>
+            <param name="localScopeProvider">An object that can provide information about the local scopes of a method.</param>
+        </member>
+        <member name="P:Microsoft.Cci.ILToCodeModel.MoveNextSourceMethodBody.TransformedBlock">
+            <summary>
+            Computes the method body of the iterator method of which the defining class of this MoveNext method is a closure class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.Unstacker.Visit(Microsoft.Cci.MutableCodeModel.BlockStatement)">
+            <summary>
+            Visits the specified block statement.
+            </summary>
+            <param name="blockStatement">The block statement.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -54,6 +54,8 @@ namespace VVVV.Core
         {
             get;
         }
+        
+        void Dispatch(IVisitor visitor);
     }
 
     public static class IDExtensions
