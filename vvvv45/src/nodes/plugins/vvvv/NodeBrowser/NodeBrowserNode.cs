@@ -28,8 +28,8 @@ namespace VVVV.Nodes.NodeBrowser
                 Help = "The NodeInfo Browser",
                 InitialBoxWidth = 200,
                 InitialBoxHeight = 250,
-                InitialWindowWidth = 320,
-                InitialWindowHeight = 500,
+                InitialWindowWidth = 340,
+                InitialWindowHeight = 550,
                 InitialComponentMode = TComponentMode.InAWindow)]
     public class NodeBrowserPluginNode: UserControl, INodeBrowser, IPartImportsSatisfiedNotification
     {

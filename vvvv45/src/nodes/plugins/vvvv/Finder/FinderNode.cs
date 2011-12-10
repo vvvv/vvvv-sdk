@@ -30,8 +30,8 @@ namespace VVVV.Nodes.Finder
                 Help = "Finds Nodes, Comments and Send/Receive channels and more.",
                 InitialBoxWidth = 200,
                 InitialBoxHeight = 250,
-                InitialWindowWidth = 320,
-                InitialWindowHeight = 500,
+                InitialWindowWidth = 340,
+                InitialWindowHeight = 550,
                 InitialComponentMode = TComponentMode.InAWindow)]
     public class FinderPluginNode: UserControl, IPluginBase
     {
