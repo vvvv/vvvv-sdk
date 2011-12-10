@@ -13,7 +13,9 @@ namespace VVVV.Hosting.Pins.Output
 		protected INodeOut FNodeOut;
 		protected bool FChanged;
 		
-		public GenericOutputPin(IPluginHost host, OutputAttribute attribute)
+		public GenericOutputPin(IPluginHost host, OutputAttribute attribute) : this(host, attribute, new DefaultConnectionHandler()) { }
+		
+		public GenericOutputPin(IPluginHost host, OutputAttribute attribute, IConnectionHandler handler)
 			: base(host, attribute)
 		{
 			host.CreateNodeOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FNodeOut);
@@ -34,6 +36,7 @@ namespace VVVV.Hosting.Pins.Output
 
             FNodeOut.SetSubType(guids.ToArray(), typeof(T).GetCSharpName());
 			FNodeOut.SetInterface(this);
+			FNodeOut.SetConnectionHandler(handler, this);
 			
 			base.InitializeInternalPin(FNodeOut);
 		}
