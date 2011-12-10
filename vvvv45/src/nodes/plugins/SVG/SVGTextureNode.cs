@@ -43,7 +43,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Reader",
 	            Category = "SVG",
-	            Help = "Reads and returns an SVG Document, its elements (layer) and other properties",
+	            Help = "Reads and returns an SVG document, its elements (layers) and other properties",
 	            Tags = "xml")]
 	#endregion PluginInfo
 	public class DucumentSvgReaderNode : IPluginEvaluate
@@ -152,7 +152,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Writer",
 	            Category = "SVG",
-	            Help = "Writes an SVG Document to disc",
+	            Help = "Writes an SVG document to disk",
 	            Tags = "xml",
 	            AutoEvaluate = true)]
 	#endregion PluginInfo
@@ -200,9 +200,13 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Renderer",
 	            Category = "SVG",
-	            Help = "Renders svg layers into a window and outputs the document",
+	            Help = "Renders SVG layers into a window and returns the document",
 	            Tags = "xml",
 	            AutoEvaluate = true,
+	            InitialBoxWidth = 160,
+                InitialBoxHeight = 120,
+                InitialWindowWidth = 400,
+                InitialWindowHeight = 300,
 	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
 	public class SvgRendererNode : UserControl, IPluginEvaluate
@@ -327,7 +331,6 @@ namespace VVVV.Nodes
 			
 		}
 	}
-	
 	
 	#region PluginInfo
 	[PluginInfo(Name = "SVGTexture", 

@@ -186,11 +186,10 @@ namespace VVVV.Nodes
 	#endregion Base Nodes
 	
 	//QUAD----------------------------------------------------------------------
-	
 	#region PluginInfo
 	[PluginInfo(Name = "Quad", 
 	            Category = "SVG", 
-	            Help = "Renders a rectangle into an SVGTexture", 
+	            Help = "Renders a rectangle into a Renderer (SVG)", 
 	            Tags = "rectangle, square, primitive, 2d, vector")]
 	#endregion PluginInfo
 	public class SvgRectNode : SVGVisualElementFillNode<SvgRectangle>
@@ -220,11 +219,10 @@ namespace VVVV.Nodes
 	}
 	
 	//ELLIPSE-------------------------------------------------------------------
-	
 	#region PluginInfo
 	[PluginInfo(Name = "Circle", 
 	            Category = "SVG", 
-	            Help = "Renders an ellipse into an SVGTexture", 
+	            Help = "Renders an ellipse into a Renderer (SVG)", 
 	            Tags = "ellipse, primitive, 2d, vector")]
 	#endregion PluginInfo
 	public class SvgEllipseNode : SVGVisualElementFillNode<SvgEllipse>
@@ -246,7 +244,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Polyline", 
 	            Category = "SVG", 
-	            Help = "Renders an open polyline from a list of vertices into an SVGTexture", 
+	            Help = "Renders an open polyline from a list of vertices into a Renderer (SVG)", 
 	            Tags = "primitive, 2d, vector")]
 	#endregion PluginInfo
 	public class SvgPolylineNode : SVGVisualElementFillNode<SvgPolyline>
@@ -293,7 +291,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Polygon", 
 	            Category = "SVG", 
-	            Help = "Renders a closed polygon from a list of vertices into an SVGTexture", 
+	            Help = "Renders a closed polygon from a list of vertices into a Renderer (SVG)", 
 	            Tags = "primitive, 2d, vector")]
 	#endregion PluginInfo
 	public class SvgPolygonNode : SVGVisualElementFillNode<SvgPolygon>
@@ -340,7 +338,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Text", 
 	            Category = "SVG", 
-	            Help = "Renders text into an SVGTexture", 
+	            Help = "Renders text into a Renderer (SVG)", 
 	            Tags = "primitive, 2d, vector")]
 	#endregion PluginInfo
 	public class SvgTextNode : SVGVisualElementFillNode<SvgText>
@@ -374,11 +372,10 @@ namespace VVVV.Nodes
 	}
 	
 	//VIEWBOX---------------------------------------------------------------------------------------
-	
 	#region PluginInfo
 	[PluginInfo(Name = "Camera", 
 	            Category = "SVG", 
-	            Help = "Sets the visible rectangle of a SVG scene", 
+	            Help = "Sets the visible rectangle of an SVG scene", 
 	            Tags = "viewbox")]
 	#endregion PluginInfo
 	public class SVGCameraNode : IPluginEvaluate
@@ -421,7 +418,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Camera", 
 	            Category = "SVG",
 	            Version = "Split",
-	            Help = "get the values of the view box",
+	            Help = "Returns the values of the viewbox",
 	            Tags = "viewbox")]
 	#endregion PluginInfo
 	public class SVGCameraSplitNode : IPluginEvaluate
@@ -526,7 +523,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "GetElements", 
 	            Category = "SVG", 
-	            Help = "Returns all elements in the svg tree as a flat spread", 
+	            Help = "Returns all elements in the SVG tree as a flat spread", 
 	            Tags = "")]
 	#endregion PluginInfo
 	public class SVGGetElementsNode : IPluginEvaluate
@@ -575,7 +572,6 @@ namespace VVVV.Nodes
 	}
 	
 	//GROUP---------------------------------------------------------------------
-	
 	#region PluginInfo
 	[PluginInfo(Name = "Group", 
 	            Category = "SVG", 

@@ -29,7 +29,7 @@ namespace VVVV.HDE.ProjectExplorer
 	            Help = "The Project Explorer",
 	            InitialBoxWidth = 200,
 	            InitialBoxHeight = 100,
-	            InitialWindowWidth = 300,
+	            InitialWindowWidth = 320,
 	            InitialWindowHeight = 500,
 	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
