@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -17,6 +17,7 @@ namespace VVVV.Hosting.Pins.Input
 		protected int FUpdateCount;
 		protected int FBinSizeSum;
 		protected int FBinSize;
+		protected string FBinName;
 		
 		private readonly Dictionary<int, bool> FCache = new Dictionary<int, bool>();
 		private int[] FOffset = new int[0];
@@ -27,14 +28,19 @@ namespace VVVV.Hosting.Pins.Input
 			: base(attribute)
 		{
 			FBinSize = attribute.BinSize;
+			FBinName = attribute.BinName;
 			
 			//data pin
 			FSpreadPin = CreateDataPin(host, attribute);
 			FSpreadPin.Updated += AnyPin_Updated;
 			
 			//bin size pin
-			var att = new InputAttribute(attribute.Name + " Bin Size");
+			if (FBinName == " Bin Size")
+			  FBinName = attribute.Name+FBinName;
+			
+			var att = new InputAttribute(FBinName);
 			att.DefaultValue = FBinSize;
+			att.Visibility = attribute.BinVisibility;
 			FBinSizePin = new DiffIntInputPin(host, att);
 			FBinSizePin.Updated += AnyPin_Updated;
 		}
