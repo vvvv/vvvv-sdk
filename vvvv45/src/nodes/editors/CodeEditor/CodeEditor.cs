@@ -583,7 +583,7 @@ namespace VVVV.HDE.CodeEditor
 				FSearchBar.ShowSearchBar();
 				return true;
 			}
-			else if (ke.Control && (ke.KeyCode == Keys.Add || ke.KeyCode == Keys.Oemplus))
+			else if ((ke.Control && !ke.Alt) && (ke.KeyCode == Keys.Add || ke.KeyCode == Keys.Oemplus))
 			{
 				if (!FNeedsKeyUp)
 				{
@@ -592,7 +592,7 @@ namespace VVVV.HDE.CodeEditor
 				}
 				return true;
 			}
-			else if (ke.Control && (ke.KeyCode == Keys.Subtract || ke.KeyCode == Keys.OemMinus))
+			else if ((ke.Control && !ke.Alt) && (ke.KeyCode == Keys.Subtract || ke.KeyCode == Keys.OemMinus))
 			{
 				if (!FNeedsKeyUp)
 				{
