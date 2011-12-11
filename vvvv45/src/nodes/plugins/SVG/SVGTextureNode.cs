@@ -221,7 +221,7 @@ namespace VVVV.Nodes
 		[Input("Ignore View", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<bool> FIgnoreView;
 		
-		[Input("Background Color, IsSingle = true", DefaultColor = new double[] { 0, 0, 0, 1 }, IsSingle = true)]
+		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 1 }, IsSingle = true)]
 		IDiffSpread<RGBAColor> FBackgroundIn;
 
 		[Input("Size", StepSize = 1)]
