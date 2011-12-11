@@ -133,7 +133,7 @@ namespace VVVV.Nodes
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "*";
+					FPluginInfo.Name = "Multiply";
 					//the nodes category: try to use an existing one
 					FPluginInfo.Category = "Value";
 					//the nodes version: optional. leave blank if not
