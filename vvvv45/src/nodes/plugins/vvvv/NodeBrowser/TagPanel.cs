@@ -558,13 +558,13 @@ namespace VVVV.Nodes.NodeBrowser
                 //special sorting for categories
                 if (cat1.Contains("Value"))
                     v1 = 99;
-                else if (cat1.Contains("Spreads"))
-                    v1 = 98;
                 else if (cat1.ToUpper().Contains("2D"))
-                    v1 = 97;
+                    v1 = 98;
                 else if (cat1.ToUpper().Contains("3D"))
-                    v1 = 96;
+                    v1 = 97;
                 else if (cat1.ToUpper().Contains("4D"))
+                    v1 = 96;
+                else if (cat1.Contains("Spreads"))
                     v1 = 95;
                 else if (cat1.Contains("Animation"))
                     v1 = 94;
@@ -572,36 +572,40 @@ namespace VVVV.Nodes.NodeBrowser
                     v1 = 93;
                 else if (cat1.Contains("DX9"))
                     v1 = 92;
-                else if (cat1.Contains("SVG"))
+                else if (cat1.Contains("File"))
                     v1 = 91;
-                else if (cat1.Contains("TTY"))
+                else if (cat1.Contains("SVG"))
                     v1 = 90;
-                else if (cat1.Contains("GDI"))
+                else if (cat1.Contains("TTY"))
                     v1 = 89;
-                else if (cat1.Contains("Flash"))
+                else if (cat1.Contains("GDI"))
                     v1 = 88;
-                else if (cat1.Contains("Transform"))
+                else if (cat1.Contains("Flash"))
                     v1 = 87;
-                else if (cat1.Contains("Quaternion"))
+                else if (cat1.Contains("Transform"))
                     v1 = 86;
-                else if (cat1.Contains("Octonion"))
+                else if (cat1.Contains("Quaternion"))
                     v1 = 85;
-                else if (cat1.Contains("String"))
+                else if (cat1.Contains("Octonion"))
                     v1 = 84;
-                else if (cat1.Contains("Color"))
+                else if (cat1.Contains("String"))
                     v1 = 83;
+                else if (cat1.Contains("Color"))
+                    v1 = 82;
+                else if (cat1.Contains("DShow9"))
+                    v1 = 81;
                 else
                     v1 = 0;
                 
                 if (cat2.Contains("Value"))
                     v2 = 99;
-                else if (cat2.Contains("Spreads"))
-                    v2 = 98;
                 else if (cat2.ToUpper().Contains("2D"))
-                    v2 = 97;
+                    v2 = 98;
                 else if (cat2.ToUpper().Contains("3D"))
-                    v2 = 96;
+                    v2 = 97;
                 else if (cat2.ToUpper().Contains("4D"))
+                    v2 = 96;
+                else if (cat2.Contains("Spreads"))
                     v2 = 95;
                 else if (cat2.Contains("Animation"))
                     v2 = 94;
@@ -609,24 +613,28 @@ namespace VVVV.Nodes.NodeBrowser
                     v2 = 93;
                 else if (cat2.Contains("DX9"))
                     v2 = 92;
-                else if (cat2.Contains("SVG"))
+                else if (cat2.Contains("File"))
                     v2 = 91;
-                else if (cat2.Contains("TTY"))
+                else if (cat2.Contains("SVG"))
                     v2 = 90;
-                else if (cat2.Contains("GDI"))
+                else if (cat2.Contains("TTY"))
                     v2 = 89;
-                else if (cat2.Contains("Flash"))
+                else if (cat2.Contains("GDI"))
                     v2 = 88;
-                else if (cat2.Contains("Transform"))
+                else if (cat2.Contains("Flash"))
                     v2 = 87;
-                else if (cat2.Contains("Quaternion"))
+                else if (cat2.Contains("Transform"))
                     v2 = 86;
-                else if (cat2.Contains("Octonion"))
+                else if (cat2.Contains("Quaternion"))
                     v2 = 85;
-                else if (cat2.Contains("String"))
+                else if (cat2.Contains("Octonion"))
                     v2 = 84;
-                else if (cat2.Contains("Color"))
+                else if (cat2.Contains("String"))
                     v2 = 83;
+                else if (cat2.Contains("Color"))
+                    v2 = 82;
+                else if (cat2.Contains("DShow9"))
+                    v2 = 81;
                 else
                     v2 = 0;
                 
