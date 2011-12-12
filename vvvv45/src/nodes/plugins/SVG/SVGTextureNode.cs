@@ -94,7 +94,16 @@ namespace VVVV.Nodes
 				
 				for(int i=0; i<SpreadMax; i++)
 				{
-					var doc = SvgDocument.Open(FFilenameIn[i]);
+					SvgDocument doc = null;
+					try
+					{
+						doc = SvgDocument.Open(FFilenameIn[i]);
+					}
+					catch (Exception e)
+					{
+						FLogger.Log(e);
+					}
+					
 					if(doc != null)
 					{
 						FDocOut[i] = new SvgDoc(doc, FBackgroundIn[i].Color);

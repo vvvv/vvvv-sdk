@@ -368,8 +368,17 @@ namespace VVVV.Nodes
 		{
 			elem.Text = FTextIn[slice];
 			elem.FontSize = FTextSizeIn[slice];
-			elem.FontFamily = (new Font(FFontIn[slice].Name, 1)).FontFamily.Name;
-			elem.Transforms.Add(new SvgScale(scale.X, scale.Y));
+			try
+			{
+				elem.FontFamily = (new Font(FFontIn[slice].Name, 1)).FontFamily.Name;
+				
+			}
+			catch (Exception e)
+			{
+				elem.FontFamily = (new Font("Arial", 1)).FontFamily.Name;
+			}
+			
+			elem.Transforms.Add(new SvgScale(scale.X, scale.Y));	
 		}
 	}
 	
