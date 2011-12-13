@@ -606,16 +606,12 @@ namespace VVVV.HDE.CodeEditor
 				this.Font = new Font(this.Font.Name, 10);
 				return true;
 			}
-			else if (ke.KeyCode == Keys.F1)
+			else if (ke.KeyCode == Keys.F1 && m.Msg == 0x100)
 			{
-				if (!FNeedsKeyUp)
-				{
-					FNeedsKeyUp = true;
-					if (TextDocument is CSDocument)
-						Process.Start("http://vvvv.org/documentation/plugins");
-					else
-						Process.Start("http://vvvv.org/documentation/effects");						
-				}
+				if (TextDocument is CSDocument)
+					Process.Start("http://vvvv.org/documentation/plugins");
+				else
+					Process.Start("http://vvvv.org/documentation/effects");						
 				return true;
 			}
 			else
