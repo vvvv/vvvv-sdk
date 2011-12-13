@@ -35,6 +35,20 @@
             </summary>
             <param name="local">The local variable to add to the current scope.</param>
         </member>
+        <member name="M:Microsoft.Cci.ILGenerator.AddExceptionHandlerInformation(Microsoft.Cci.HandlerKind,Microsoft.Cci.ITypeReference,Microsoft.Cci.ILGeneratorLabel,Microsoft.Cci.ILGeneratorLabel,Microsoft.Cci.ILGeneratorLabel,Microsoft.Cci.ILGeneratorLabel,Microsoft.Cci.ILGeneratorLabel)">
+            <summary>
+            Adds an exception handler entry to the generated body. This intended for IL rewriting scenarios and should not be used in conjunction with methods such as BeginCatchBlock,
+            which are intended for CodeModel to IL generation scenarios. The calls to AddExceptionHandler should result in a list of handlers that 
+            satisfies CLI rules with respect to ordering and nesting.
+            </summary>
+            <param name="kind">The kind of handler being added.</param>
+            <param name="exceptionType">The type of exception this handler will handle (may be Dummy.TypeReference).</param>
+            <param name="tryStart">A label identifying the first instruction in the try body.</param>
+            <param name="tryEnd">A label identifying the first instruction following the try body.</param>
+            <param name="handlerStart">A label identifying the first instruction in the handler body.</param>
+            <param name="handlerEnd">A label identifying the first instruction following the handler body.</param>
+            <param name="filterStart">A label identifying the first instruction of the filter decision block. May be null.</param>
+        </member>
         <member name="M:Microsoft.Cci.ILGenerator.AdjustBranchSizesToBestFit">
             <summary>
             Performs one or more extra passes over the list of operations, changing long branches to short if possible and short branches to
@@ -91,6 +105,13 @@
             Puts the specified instruction onto the stream of instructions.
             </summary>
             <param name="opcode">The Intermediate Language (IL) instruction to be put onto the stream.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILGenerator.Emit(Microsoft.Cci.OperationCode,System.Object)">
+            <summary>
+            Calls a type specific overload of Emit, based on the runtime type of the given object. Use this when copying IL operations.
+            </summary>
+            <param name="opcode">The Intermediate Language (IL) instruction to be put onto the stream.</param>
+            <param name="value">An argument that parameterizes the IL instruction at compile time (not a runtime operand for the instruction).</param>
         </member>
         <member name="M:Microsoft.Cci.ILGenerator.Emit(Microsoft.Cci.OperationCode,System.Byte)">
             <summary>
@@ -255,6 +276,14 @@
             Returns a sequence of all of the block scopes that have been defined for this method body. Includes nested block scopes.
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.ILGenerator.GetNamespaceScopes">
+            <summary>
+            Returns zero or more namespace scopes into which the namespace type containing the given method body has been nested.
+            These scopes determine how simple names are looked up inside the method body. There is a separate scope for each dotted
+            component in the namespace type name. For istance namespace type x.y.z will have two namespace scopes, the first is for the x and the second
+            is for the y.
+            </summary>
+        </member>
         <member name="M:Microsoft.Cci.ILGenerator.GetOperations">
             <summary>
             Returns a sequence of all of the IL operations that make up this method body.
@@ -274,6 +303,66 @@
             <summary>
             True if the ILGenerator is currently inside the body of a try statement.
             </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILGenerator.LocalScopeProvider">
+            <summary>
+            An object that can provide information about the local scopes of a method.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.#ctor(Microsoft.Cci.ILocalScopeProvider)">
+            <summary>
+            An object that can provide information about the local scopes of a method.
+            </summary>
+            <param name="originalLocalScopeProvider">The local scope provider to use for methods that have not been decompiled.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.GetIteratorScopes(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns zero or more local (block) scopes, each defining an IL range in which an iterator local is defined.
+            The scopes are returned by the MoveNext method of the object returned by the iterator method.
+            The index of the scope corresponds to the index of the local. Specifically local scope i corresponds
+            to the local stored in field &lt;localName&gt;x_i of the class used to store the local values in between
+            calls to MoveNext.
+            </summary>
+            <param name="methodBody"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.GetLocalScopes(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns zero or more local (block) scopes into which the CLR IL operations in the given method body is organized.
+            </summary>
+            <param name="methodBody"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.GetNamespaceScopes(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns zero or more namespace scopes into which the namespace type containing the given method body has been nested.
+            These scopes determine how simple names are looked up inside the method body. There is a separate scope for each dotted
+            component in the namespace type name. For istance namespace type x.y.z will have two namespace scopes, the first is for the x and the second
+            is for the y.
+            </summary>
+            <param name="methodBody"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.GetConstantsInScope(Microsoft.Cci.ILocalScope)">
+            <summary>
+            Returns zero or more local constant definitions that are local to the given scope.
+            </summary>
+            <param name="scope"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.GetVariablesInScope(Microsoft.Cci.ILocalScope)">
+            <summary>
+            Returns zero or more local variable definitions that are local to the given scope.
+            </summary>
+            <param name="scope"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.IsIterator(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns true if the method body is an iterator.
+            </summary>
+            <param name="methodBody"></param>
+            <returns></returns>
         </member>
         <member name="T:Microsoft.Cci.ILGeneratorLabel">
             <summary>
@@ -411,24 +500,24 @@
             Zero or more used namespaces. These correspond to using clauses in C#.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.UsedNamespace">
+        <member name="T:Microsoft.Cci.ILGeneratorImplementation.UsedNamespace">
             <summary>
              A namespace that is used (imported) inside a namespace scope.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.UsedNamespace.#ctor(Microsoft.Cci.IName)">
+        <member name="M:Microsoft.Cci.ILGeneratorImplementation.UsedNamespace.#ctor(Microsoft.Cci.IName)">
             <summary>
             Allocates a namespace that is used (imported) inside a namespace scope.
             </summary>
             <param name="namespaceName">The name of a namepace that has been aliased.  For example the "y.z" of "using x = y.z;" or "using y.z" in C#.</param>
         </member>
-        <member name="P:Microsoft.Cci.UsedNamespace.Alias">
+        <member name="P:Microsoft.Cci.ILGeneratorImplementation.UsedNamespace.Alias">
             <summary>
             An alias for a namespace. For example the "x" of "using x = y.z;" in C#. Empty if no alias is present.
             </summary>
             <value></value>
         </member>
-        <member name="P:Microsoft.Cci.UsedNamespace.NamespaceName">
+        <member name="P:Microsoft.Cci.ILGeneratorImplementation.UsedNamespace.NamespaceName">
             <summary>
             The name of a namepace that has been aliased.  For example the "y.z" of "using x = y.z;" or "using y.z" in C#.
             </summary>
@@ -439,7 +528,7 @@
             A metadata (IL) level represetation of the body of a method or of a property/event accessor.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.ILGeneratorMethodBody.#ctor(Microsoft.Cci.ILGenerator,System.Boolean,System.UInt16)">
+        <member name="M:Microsoft.Cci.ILGeneratorMethodBody.#ctor(Microsoft.Cci.ILGenerator,System.Boolean,System.UInt16,Microsoft.Cci.IMethodDefinition,System.Collections.Generic.IEnumerable{Microsoft.Cci.ILocalDefinition},System.Collections.Generic.IEnumerable{Microsoft.Cci.ITypeDefinition})">
             <summary>
             Allocates an object that is the metadata (IL) level represetation of the body of a method or of a property/event accessor.
             </summary>
@@ -447,6 +536,13 @@
             be completed by the time the generator is passed to this constructor. The generator is not referenced by the resulting method body.</param>
             <param name="localsAreZeroed">True if the locals are initialized by zeroeing the stack upon method entry.</param>
             <param name="maxStack">The maximum number of elements on the evaluation stack during the execution of the method.</param>
+            <param name="methodDefinition">The definition of the method whose body this is.
+            If this is the body of an event or property accessor, this will hold the corresponding adder/remover/setter or getter method.</param>
+            <param name="localVariables"></param>
+            <param name="privateHelperTypes">Any types that are implicitly defined in order to implement the body semantics.
+            In case of AST to instructions conversion this lists the types produced.
+            In case of instructions to AST decompilation this should ideally be list of all types
+            which are local to method.</param>
         </member>
         <member name="M:Microsoft.Cci.ILGeneratorMethodBody.Dispatch(Microsoft.Cci.IMetadataVisitor)">
             <summary>
@@ -486,7 +582,6 @@
             The definition of the method whose body this is.
             If this is the body of an event or property accessor, this will hold the corresponding adder/remover/setter or getter method.
             </summary>
-            <remarks>The setter should only be called once, to complete the two phase initialization of this object.</remarks>
         </member>
         <member name="P:Microsoft.Cci.ILGeneratorMethodBody.Operations">
             <summary>

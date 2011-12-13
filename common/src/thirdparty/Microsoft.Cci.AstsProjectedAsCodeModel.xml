@@ -234,7 +234,7 @@
             <param name="invariants">A possibly empty or null list of loop invariants.</param>
             <param name="writes">A possibly empty list of expressions that each represents a set of memory locations that may be written to by the body of the loop.</param>
         </member>
-        <member name="M:Microsoft.Cci.Ast.LoopContract.#ctor(System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.LoopInvariant},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.LoopVariant})">
+        <member name="M:Microsoft.Cci.Ast.LoopContract.#ctor(System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.LoopInvariant},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression})">
             <summary>
             Allocates a collection of collections of objects that describe a loop.
             </summary>
@@ -332,47 +332,6 @@
             care not to call any other methods or property/event accessors on the object until after this method has been called.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.Ast.LoopVariant">
-            <summary>
-            A condition that must be true at the start of every iteration of a loop.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.LoopVariant.#ctor(Microsoft.Cci.Ast.Expression,Microsoft.Cci.ISourceLocation)">
-            <summary>
-            Allocates a measure that must decrease in every nonterminal iteration of a loop.
-            </summary>
-            <param name="measure">The measure that must decrease.</param>
-            <param name="sourceLocation">The source location corresponding to the newly allocated source item.</param>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.LoopVariant.#ctor(Microsoft.Cci.Ast.BlockStatement,Microsoft.Cci.Ast.LoopVariant)">
-            <summary>
-            A copy constructor that allocates an instance that is the same as the given template, except for its containing block.
-            </summary>
-            <param name="containingBlock">The containing block of the copied variant. This should be different from the containing block of the template variant.</param>
-            <param name="template">The statement to copy.</param>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.LoopVariant.Dispatch(Microsoft.Cci.Contracts.ICodeAndContractVisitor)">
-            <summary>
-            Calls visitor.Visit(ILoopInvariant).
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.LoopVariant.Dispatch(Microsoft.Cci.Ast.SourceVisitor)">
-            <summary>
-            Calls visitor.Visit(LoopInvariant).
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.LoopVariant.MakeCopyFor(Microsoft.Cci.Ast.BlockStatement)">
-            <summary>
-            Makes a copy of this invariant, changing the Condition.ContainingBlock to the given block.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.LoopVariant.SetContainingExpression(Microsoft.Cci.Ast.Expression)">
-            <summary>
-            Completes the two stage construction of this object. This allows bottom up parsers to construct an Expression before constructing the containing Expression.
-            This method should be called once only and must be called before this object is made available to client code. The construction code itself should also take
-            care not to call any other methods or property/event accessors on the object until after this method has been called.
-            </summary>
-        </member>
         <member name="T:Microsoft.Cci.Ast.MethodContract">
             <summary>
             A collection of collections of objects that augment the type signature of a method with additional information
@@ -395,7 +354,7 @@
             <param name="writes">A possibly empty list of expressions that each represents a set of memory locations that may be written to by the called method.</param>
             <param name="isPure">True if the method has no observable side-effect on program state and hence this method is safe to use in a contract, which may or may not be executed, depending on how the program has been compiled.</param>
         </member>
-        <member name="M:Microsoft.Cci.Ast.MethodContract.#ctor(System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.AddressableExpression},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Postcondition},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Precondition},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.ThrownException},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression},System.Boolean,System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.MethodVariant})">
+        <member name="M:Microsoft.Cci.Ast.MethodContract.#ctor(System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.AddressableExpression},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Postcondition},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Precondition},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.ThrownException},System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression},System.Boolean,System.Collections.Generic.IEnumerable{Microsoft.Cci.Ast.Expression})">
             <summary>
             Allocates a collection of collections of objects that augment the type signature of a method with additional information
             that describes the contract between calling method and called method. This constructor omits termination checking, for backwards compatability,
@@ -569,40 +528,6 @@
             <summary>
             True iff any member mentioned in the Condition is a "model member", i.e.,
             its definition has the [ContractModel] attribute on it.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.Ast.MethodVariant">
-            <summary>
-            A measure which is decreased in calls from the method.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.MethodVariant.#ctor(Microsoft.Cci.Ast.Expression,Microsoft.Cci.ISourceLocation)">
-            <summary>
-            Allocates a method variant.
-            </summary>
-            <param name="condition">The condition that must be true at the end of the method that is associated with this Postcondition instance.</param>
-            <param name="sourceLocation">The source location corresponding to the newly allocated source item.</param>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.MethodVariant.#ctor(Microsoft.Cci.Ast.BlockStatement,Microsoft.Cci.Ast.MethodVariant)">
-            <summary>
-            A copy constructor that allocates an instance that is the same as the given template, except for its containing block.
-            </summary>
-            <param name="containingBlock">The containing block of the copied postcondition. This should be different from the containing block of the template postcondition.</param>
-            <param name="template">The statement to copy.</param>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.MethodVariant.Dispatch(Microsoft.Cci.Contracts.ICodeAndContractVisitor)">
-            <summary>
-            Calls visitor.Visit(IPostcondition).
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.MethodVariant.Dispatch(Microsoft.Cci.Ast.SourceVisitor)">
-            <summary>
-            Calls visitor.Visit(Postcondition).
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.MethodVariant.MakeCopyFor(Microsoft.Cci.Ast.BlockStatement)">
-            <summary>
-            Makes a copy of this post condition, changing the containing block to the given block.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.Ast.Precondition">
@@ -1670,7 +1595,7 @@
             Performs some computation with the given goto switch case statement.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Ast.SourceVisitor.Visit(Microsoft.Cci.GenericTypeInstance)">
+        <member name="M:Microsoft.Cci.Ast.SourceVisitor.Visit(Microsoft.Cci.Immutable.GenericTypeInstance)">
             <summary>
             Performs some computation with the given generic instance.
             </summary>
@@ -1810,17 +1735,12 @@
             Performs some computation with the given loop invariant.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Ast.SourceVisitor.Visit(Microsoft.Cci.Ast.LoopVariant)">
-            <summary>
-            Performs some computation with the given loop variant.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.Ast.SourceVisitor.Visit(Microsoft.Cci.Ast.MakeTypedReference)">
             <summary>
             Performs some computation with the given make typed reference expression.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Ast.SourceVisitor.Visit(Microsoft.Cci.ManagedPointerType)">
+        <member name="M:Microsoft.Cci.Ast.SourceVisitor.Visit(Microsoft.Cci.Immutable.ManagedPointerType)">
             <summary>
             Performs some computation with the given managed pointer type.
             </summary>
@@ -1846,11 +1766,6 @@
             </summary>
         </member>
         <member name="M:Microsoft.Cci.Ast.SourceVisitor.Visit(Microsoft.Cci.Ast.MethodGroup)">
-            <summary>
-            Performs some computation with the given method group.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.SourceVisitor.Visit(Microsoft.Cci.Ast.MethodVariant)">
             <summary>
             Performs some computation with the given method group.
             </summary>
@@ -2723,7 +2638,7 @@
             Performs some computation with the given generic type instance expression.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Ast.SourceTraverser.Visit(Microsoft.Cci.GenericTypeInstance)">
+        <member name="M:Microsoft.Cci.Ast.SourceTraverser.Visit(Microsoft.Cci.Immutable.GenericTypeInstance)">
             <summary>
             Performs some computation with the given generic type instance.
             </summary>
@@ -2898,17 +2813,12 @@
             Performs some computation with the given loop invariant.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Ast.SourceTraverser.Visit(Microsoft.Cci.Ast.LoopVariant)">
-            <summary>
-            Performs some computation with the given loop invariant.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.Ast.SourceTraverser.Visit(Microsoft.Cci.Ast.MakeTypedReference)">
             <summary>
             Performs some computation with the given make typed reference expression.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Ast.SourceTraverser.Visit(Microsoft.Cci.ManagedPointerType)">
+        <member name="M:Microsoft.Cci.Ast.SourceTraverser.Visit(Microsoft.Cci.Immutable.ManagedPointerType)">
             <summary>
             Performs some computation with the given managed pointer type.
             </summary>
@@ -2936,11 +2846,6 @@
         <member name="M:Microsoft.Cci.Ast.SourceTraverser.Visit(Microsoft.Cci.Ast.MethodGroup)">
             <summary>
             Performs some computation with the given method group expression.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Ast.SourceTraverser.Visit(Microsoft.Cci.Ast.MethodVariant)">
-            <summary>
-            Performs some computation with the given method variant.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.Ast.SourceTraverser.Visit(Microsoft.Cci.Ast.Modulus)">
@@ -4616,6 +4521,11 @@
             '{0}' : illegal use of type '{1}'.	
             </summary>
         </member>
+        <member name="F:Microsoft.Cci.Ast.Error.TypeNameNotFound">
+            <summary>
+            The type or namespace name '{1}' does not exist in the namespace '{0}' (are you missing an assembly reference?)
+            </summary>
+        </member>
         <member name="F:Microsoft.Cci.Ast.Error.ToBeDefined">
             <summary>
             Not an actual error message, but a convenient place holder during development.
@@ -6043,6 +5953,11 @@
             </summary>
             <value></value>
         </member>
+        <member name="P:Microsoft.Cci.Ast.AnonymousDelegate.IsStatic">
+            <summary>
+            True if the referenced method or property does not require an instance of its declaring type as its first argument.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.Ast.AnonymousDelegate.Parameters">
             <summary>
             The parameters this anonymous method.
@@ -6141,6 +6056,11 @@
             Calling convention of the signature.
             </summary>
             <value></value>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.AnonymousMethod.IsStatic">
+            <summary>
+            True if the referenced method or property does not require an instance of its declaring type as its first argument.
+            </summary>
         </member>
         <member name="P:Microsoft.Cci.Ast.AnonymousMethod.ReturnValueCustomModifiers">
             <summary>
@@ -6676,6 +6596,11 @@
         <member name="M:Microsoft.Cci.Ast.MethodCall.ComplainAboutCallee">
             <summary>
             Called when the arguments are good and no type inferences have failed. This means that the callee could not be found. Complain.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.MethodCall.IsJumpCall">
+            <summary>
+            True if this method call terminates the calling method and reuses the arguments of the calling method as the arguments of the called method.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.Ast.MethodCall.IsStaticCall">
@@ -7836,6 +7761,12 @@
             Constant expressions such as 2*16 are polymorhpic if both operands are polymorhic.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.Ast.CompileTimeConstant.UnfoldedExpression">
+            <summary>
+            If this expression is the result of constant folding performed on another expression, then this property returns that other expression.
+            Otherwise it returns this object.
+            </summary>
+        </member>
         <member name="T:Microsoft.Cci.Ast.DummyConstant">
             <summary>
             A dummy constant expression with a source location. Used to provide a non null constant expression in error situations.
@@ -8414,6 +8345,11 @@
         <member name="P:Microsoft.Cci.Ast.CreateDelegateInstance.Instance">
             <summary>
             An expression that evaluates to the instance (if any) on which this.MethodToCallViaDelegate must be called (via the delegate).
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.CreateDelegateInstance.IsVirtualDelegate">
+            <summary>
+            True if the delegate encapsulates a virtual method.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.Ast.CreateDelegateInstance.MethodToCallViaDelegate">
@@ -12336,7 +12272,7 @@
             <param name="ignoreAccessibility">Set this to true when the qualified name has failed to resolve and an appropriate error has to be
             generated. In particular, if the qualified name can resolve to an inaccessible member, the error will say as much.</param>
         </member>
-        <member name="M:Microsoft.Cci.Ast.QualifiedName.ResolveAsNamespaceOrTypeGroup">
+        <member name="M:Microsoft.Cci.Ast.QualifiedName.ResolveAsNamespaceOrTypeGroup(System.Boolean)">
             <summary>
             Returns either null or the namespace or type group that binds to this name after resolving the Qualifier as a namespace or type.
             </summary>
@@ -12354,12 +12290,12 @@
             Returns null if qualified name does not bind to one of the above cases.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Ast.QualifiedName.ResolveQualifierAsNamespace">
+        <member name="M:Microsoft.Cci.Ast.QualifiedName.ResolveQualifierAsNamespace(System.Boolean)">
             <summary>
             Resolves the qualifier as a namespace, provided that it is a simple name. Returns null if this is not possible.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Ast.QualifiedName.ResolveQualifierAsNamespaceOrType">
+        <member name="M:Microsoft.Cci.Ast.QualifiedName.ResolveQualifierAsNamespaceOrType(System.Boolean)">
             <summary>
             Resolves the qualifier as a namespace or as a type. Returns null if this is not possible.
             </summary>
@@ -13618,7 +13554,7 @@
             property groups and type groups.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Ast.SimpleName.ResolveAsNamespaceOrType">
+        <member name="M:Microsoft.Cci.Ast.SimpleName.ResolveAsNamespaceOrType(System.Boolean)">
             <summary>
             Returns either null or the namespace or type that binds to this name using the applicable scope chain and compilation context.
             When the name binds to both a type and and a namespace, only the type is returned. When the name binds to more than one
@@ -17260,6 +17196,11 @@
             </summary>
             <value></value>
         </member>
+        <member name="P:Microsoft.Cci.Ast.FunctionPointerMethod.IsAggressivelyInlined">
+            <summary>
+            True if the the runtime is requested to inline this method.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.Ast.FunctionPointerMethod.IsCil">
             <summary>
             True if the method is implemented in the CLI Common Intermediate Language.
@@ -18421,6 +18362,11 @@
             True if the method can only be overridden when it is also accessible. 
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.Ast.MethodDefinition.IsAggressivelyInlined">
+            <summary>
+            True if the the runtime is requested to inline this method.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.Ast.MethodDefinition.IsCil">
             <summary>
             True if the method is implemented in the CLI Common Intermediate Language.
@@ -19002,12 +18948,6 @@
             </summary>
             <value></value>
         </member>
-        <member name="P:Microsoft.Cci.Ast.PropertyDefinition.ReturnValueAttributes">
-            <summary>
-            Custom attributes associated with the property's return value.
-            </summary>
-            <value></value>
-        </member>
         <member name="P:Microsoft.Cci.Ast.PropertyDefinition.ReturnValueCustomModifiers">
             <summary>
             Returns the list of custom modifiers, if any, associated with the returned value. Evaluate this property only if ReturnValueIsModified is true.
@@ -19043,6 +18983,11 @@
             Calling convention of the signature.
             </summary>
             <value></value>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.PropertyDefinition.IsStatic">
+            <summary>
+            True if the referenced method or property does not require an instance of its declaring type as its first argument.
+            </summary>
         </member>
         <member name="T:Microsoft.Cci.Ast.SignatureDefinition">
             <summary>
@@ -19103,13 +19048,18 @@
             </summary>
             <value></value>
         </member>
+        <member name="P:Microsoft.Cci.Ast.SignatureDefinition.IsStatic">
+            <summary>
+            True if the referenced method or property does not require an instance of its declaring type as its first argument.
+            </summary>
+        </member>
         <member name="T:Microsoft.Cci.Ast.SpecializedTypeDefinitionMember`1">
             <summary>
             
             </summary>
             <typeparam name="MemberType"></typeparam>
         </member>
-        <member name="M:Microsoft.Cci.Ast.SpecializedTypeDefinitionMember`1.#ctor(`0,Microsoft.Cci.GenericTypeInstance)">
+        <member name="M:Microsoft.Cci.Ast.SpecializedTypeDefinitionMember`1.#ctor(`0,Microsoft.Cci.IGenericTypeInstance)">
             <summary>
             
             </summary>
@@ -25654,6 +25604,12 @@
             Returns the identity of the unit reference.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.Ast.Unit.UninterpretedSections">
+            <summary>
+            A sequence of PE sections that are not well known to PE readers and thus have not been decompiled into 
+            other parts of the Metadata Model. These sections may have meaning to other tools. 
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.Ast.Unit.ResolvedUnit">
             <summary>
             The referenced unit, or Dummy.Unit if the reference cannot be resolved.
@@ -25737,6 +25693,11 @@
             The assembly that contains this module.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.Ast.Module.DebugInformationLocation">
+            <summary>
+            A path to the debug information corresponding to this module. Can be absolute or relative to the file path of the module. Empty if not specified.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.Ast.Module.DllCharacteristics">
             <summary>
             Flags that control the behavior of the target operating system. CLI implementations are supposed to ignore this, but some operating system pay attention.
@@ -25808,6 +25769,11 @@
             A list of the modules that are referenced by this module.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.Ast.Module.NativeEntryPoint">
+            <summary>
+            True if the module has a native entry point.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.Ast.Module.PersistentIdentifier">
             <summary>
             A globally unique persistent identifier for this module.
@@ -25854,6 +25820,11 @@
         <member name="P:Microsoft.Cci.Ast.Module.SizeOfStackCommit">
             <summary>
             The size of the virtual memory initially committed for the initial thread's stack.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.Module.StrongNameSigned">
+            <summary>
+            True if the module contains a hash of its contents, encrypted with the private key of an assembly strong name.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.Ast.Module.TargetRuntimeVersion">
@@ -25977,6 +25948,11 @@
             <summary>
             A set of bits and bit ranges representing properties of the assembly. The value of <see cref="P:Microsoft.Cci.Ast.Assembly.Flags"/> can be set
             from source code via the AssemblyFlags assembly custom attribute. The interpretation of the property depends on the target platform.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.Assembly.HashValue">
+            <summary>
+            The encrypted SHA1 hash of the persisted form of the referenced assembly.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.Ast.Assembly.IsRetargetable">
@@ -26156,9 +26132,21 @@
             Empty if not specified.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.Ast.ResolvedAssemblyReference.HashValue">
+            <summary>
+            The encrypted SHA1 hash of the persisted form of the referenced assembly.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.Ast.ResolvedAssemblyReference.IsRetargetable">
             <summary>
             True if the implementation of the referenced assembly used at runtime is not expected to match the version seen at compile time.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.ResolvedAssemblyReference.PublicKey">
+            <summary>
+            The public part of the key used to encrypt the SHA1 hash over the persisted form of the referenced assembly. Empty if not specified.
+            This value is used by the loader to decrypt an encrypted hash value stored in the assembly, which it then compares with a freshly computed hash value
+            in order to verify the integrity of the assembly.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.Ast.ResolvedAssemblyReference.PublicKeyToken">

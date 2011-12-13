@@ -49,6 +49,13 @@
             </summary>
             <param name="location">A location in a document that have been derived from one or more source documents.</param>
         </member>
+        <member name="M:Microsoft.Cci.PdbReader.GetPrimarySourceLocationsForToken(System.UInt32)">
+            <summary>
+            Returns zero or more locations in primary source documents that correspond to the definition with the given token.
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
         <member name="M:Microsoft.Cci.PdbReader.GetPrimarySourceLocationsForDefinitionOf(Microsoft.Cci.ILocalDefinition)">
             <summary>
             Return zero or more locations in primary source documents that correspond to the definition of the given local.
@@ -109,13 +116,13 @@
             <param name="location1">A document location. Typically one obtained from the PdbReader.</param>
             <param name="location2">A document location. Typically one obtained from the PdbReader.</param>
         </member>
-        <member name="T:Microsoft.Cci.PdbSourceDocument">
+        <member name="T:Microsoft.Cci.Pdb.PdbSourceDocument">
             <summary>
             A primary source document that is referenced by a pdb file and that is used to provide source context to lines from compiled CLR modules with
             associated PDB files.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.PdbSourceDocument.#ctor(Microsoft.Cci.IName,Microsoft.Cci.Pdb.PdbSource,System.IO.StreamReader)">
+        <member name="M:Microsoft.Cci.Pdb.PdbSourceDocument.#ctor(Microsoft.Cci.IName,Microsoft.Cci.Pdb.PdbSource,System.IO.StreamReader)">
             <summary>
             Allocates an object that represents a source document, such as file, which is parsed according to the rules of a particular langauge, 
             such as C#, to produce an object model.
@@ -124,7 +131,7 @@
             <param name="pdbSourceFile">Information about the document, such as its location.</param>
             <param name="streamReader">A StreamReader instance whose BaseStream produces the contents of the document.</param>
         </member>
-        <member name="M:Microsoft.Cci.PdbSourceDocument.#ctor(Microsoft.Cci.IName,Microsoft.Cci.Pdb.PdbSource)">
+        <member name="M:Microsoft.Cci.Pdb.PdbSourceDocument.#ctor(Microsoft.Cci.IName,Microsoft.Cci.Pdb.PdbSource)">
             <summary>
             Allocates an object that represents a source document, such as file, which is parsed according to the rules of a particular langauge, 
             such as C#, to produce an object model.
@@ -132,62 +139,62 @@
             <param name="name">The name of the document. Used to identify the document in user interaction.</param>
             <param name="pdbSourceFile">Information about the document, such as its location.</param>
         </member>
-        <member name="T:Microsoft.Cci.PdbSourceLineLocation">
+        <member name="T:Microsoft.Cci.Pdb.PdbSourceLineLocation">
             <summary>
             A range of source text that corresponds to a source line.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.PdbSourceLineLocation.#ctor(Microsoft.Cci.PdbSourceDocument,System.Int32,System.Int32,System.Int32,System.Int32)">
+        <member name="M:Microsoft.Cci.Pdb.PdbSourceLineLocation.#ctor(Microsoft.Cci.Pdb.PdbSourceDocument,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             Allocates a range of source text that corresponds to a source line.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.PdbSourceLineLocation.EndColumn">
+        <member name="P:Microsoft.Cci.Pdb.PdbSourceLineLocation.EndColumn">
             <summary>
             The last column in the last line of the range.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.PdbSourceLineLocation.EndLine">
+        <member name="P:Microsoft.Cci.Pdb.PdbSourceLineLocation.EndLine">
             <summary>
             The last line of the range.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.PdbSourceLineLocation.PrimarySourceDocument">
+        <member name="P:Microsoft.Cci.Pdb.PdbSourceLineLocation.PrimarySourceDocument">
             <summary>
             The document containing the source text of which this location is a subrange.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.PdbSourceLineLocation.StartColumn">
+        <member name="P:Microsoft.Cci.Pdb.PdbSourceLineLocation.StartColumn">
             <summary>
             The first column in the first line of the range.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.PdbSourceLineLocation.StartLine">
+        <member name="P:Microsoft.Cci.Pdb.PdbSourceLineLocation.StartLine">
             <summary>
             The first line of the range.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.PdbLocalScope">
+        <member name="T:Microsoft.Cci.Pdb.PdbLocalScope">
             <summary>
             A range of CLR IL operations that comprise a lexical scope, specified as an IL offset and a length.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.PdbLocalScope.#ctor(Microsoft.Cci.IMethodBody,Microsoft.Cci.Pdb.PdbScope)">
+        <member name="M:Microsoft.Cci.Pdb.PdbLocalScope.#ctor(Microsoft.Cci.IMethodBody,Microsoft.Cci.Pdb.PdbScope)">
             <summary>
             Allocates a range of CLR IL operations that comprise a lexical scope, specified as an IL offset and a length.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.PdbLocalScope.Offset">
+        <member name="P:Microsoft.Cci.Pdb.PdbLocalScope.Offset">
             <summary>
             The offset of the first operation in the scope.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.PdbLocalScope.Length">
+        <member name="P:Microsoft.Cci.Pdb.PdbLocalScope.Length">
             <summary>
             The length of the scope. Offset+Length equals the offset of the first operation outside the scope, or equals the method body length.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.PdbLocalScope.MethodDefinition">
+        <member name="P:Microsoft.Cci.Pdb.PdbLocalScope.MethodDefinition">
             <summary>
             The definition of the method in which this local scope is defined.
             </summary>
