@@ -24,6 +24,15 @@ namespace VVVV.PluginInterfaces.V1
 {
 	#region basic pins
 	/// <summary>
+	[Guid("19D25C40-AE80-4960-9847-4FECF661522B"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IConnectionHandler
+	{
+		bool Accepts([In, MarshalAs(UnmanagedType.IUnknown)] object source, [In, MarshalAs(UnmanagedType.IUnknown)] object sink);
+		string GetFriendlyNameForSink([In, MarshalAs(UnmanagedType.IUnknown)] object sink);
+		string GetFriendlyNameForSource([In, MarshalAs(UnmanagedType.IUnknown)] object source);
+	}
+	
 	/// Base interface of all pin interfaces. Never used directly.
 	/// </summary>
 	[Guid("D3C5CB5C-C054-4AB6-AC04-6BDB34692B25"),
@@ -976,6 +985,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="UpstreamInterface">The retrieved interface.</param>
 		void GetUpstreamInterface([MarshalAs(UnmanagedType.IUnknown)] out object UpstreamInterface);
+		void SetConnectionHandler(IConnectionHandler handler, [MarshalAs(UnmanagedType.IUnknown)] object sink);
 	}
 	
 	/// <summary>
@@ -1008,6 +1018,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="TheInterface"></param>
 		void SetInterface([MarshalAs(UnmanagedType.IUnknown)] object TheInterface);
+		void SetConnectionHandler(IConnectionHandler handler, [MarshalAs(UnmanagedType.IUnknown)] object source);
 	}
 	
 	/// <summary>
@@ -1049,7 +1060,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="Index">The index of the slice to retrieve the Matrix from.</param>
 		/// <param name="Value">The retrieved Matrix.</param>
-		void GetRenderWorldMatrix(int Index, out Matrix Value);
+		void GetRenderWorldMatrix(int Index, [Out, MarshalAs(UnmanagedType.Struct)] out Matrix Value);
 	}
 	
 	/// <summary>

@@ -29,8 +29,8 @@ namespace VVVV.HDE.ProjectExplorer
 	            Help = "The Project Explorer",
 	            InitialBoxWidth = 200,
 	            InitialBoxHeight = 100,
-	            InitialWindowWidth = 300,
-	            InitialWindowHeight = 500,
+	            InitialWindowWidth = 340,
+	            InitialWindowHeight = 550,
 	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
 	public partial class ProjectExplorerPlugin : TopControl, IPluginBase
