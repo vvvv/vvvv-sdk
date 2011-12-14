@@ -3,7 +3,7 @@ using System.Linq;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.Reflection;
 
-namespace VVVV.Hosting.Pins
+namespace VVVV.Hosting.IO
 {
 	class DefaultConnectionHandler : IConnectionHandler
 	{
