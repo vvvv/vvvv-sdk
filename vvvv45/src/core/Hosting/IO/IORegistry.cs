@@ -214,7 +214,7 @@ namespace VVVV.Hosting.IO
 			              			
 			              			var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IInStream;
 			              			
-			              			// PinGroup impementation doesn't need to get synced on managed side.
+			              			// PinGroup implementation doesn't need to get synced on managed side.
 			              			if (!attribute.IsPinGroup && attribute.AutoValidate)
 			              				return IOHandler.Create(stream, null, s => s.Sync());
 			              			else

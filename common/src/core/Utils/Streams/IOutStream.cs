@@ -3,15 +3,13 @@ using System;
 
 namespace VVVV.Utils.Streams
 {
-	public interface IOutStream : IStream
+	public interface IOutStream : IStream, IFlushable
 	{
 		new int Length
 		{
 			get;
 			set;
 		}
-		
-		void Flush();
 	}
 	
 	public interface IOutStream<T> : IOutStream
