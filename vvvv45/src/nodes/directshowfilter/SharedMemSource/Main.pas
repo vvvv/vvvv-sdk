@@ -29,7 +29,7 @@ interface
 
 uses
   Windows, ActiveX,
-  BaseClass, DirectShow9, DXSUtil;
+  BaseClass, DirectShow9, DSUtil;
 
 const
   CLSID_SharedMemSource: TGUID = '{59F06E43-D8F9-4EB0-BAF7-DBADA343CDB0}';
@@ -80,11 +80,13 @@ type
   TMSharedMemSourcePushPin = class(TBCSourceStream)
   private
     FBitmapInfoHeader: TBitmapInfoHeader;
+    FFlipped: Boolean;
     FImageSize: Integer;
     FMapHandle: THandle;
     FSharedData: Pointer;
     FShareName: WideString;
     FUseSync: Boolean;
+    procedure Reinitialize;
   protected
     // To track where we are in the file
     FFramesWritten: Integer;
@@ -152,19 +154,11 @@ begin
 end;
 
 procedure TMSharedMemSourcePushPin.SetShareName(ShareName: WideString);
-var
-  p: Pointer;
 begin
-  if ShareName = FShareName then
-    exit;
-
-  CloseMap(FMapHandle, FSharedData);
-
-  if FImageSize > 0 then
+  if ShareName <> FShareName then
   begin
     FShareName := ShareName;
-    OpenMap(FMapHandle, FSharedData, ShareName, FImageSize);
-    FRawImageData := PByte(FSharedData);
+    Reinitialize;
   end;
 end;
 
@@ -346,17 +340,41 @@ begin
   Result := E_FAIL;
 end;
 
+procedure TMSharedMemSourcePushPin.Reinitialize;
+begin
+  CloseMap(FMapHandle, FSharedData);
+
+  if FImageSize > 0 then
+  begin
+    OpenMap(FMapHandle, FSharedData, FShareName, FImageSize);
+    FRawImageData := PByte(FSharedData);
+  end;
+end;
+
 procedure TMSharedMemSourcePushPin.SetImageFormat(Width, Height, Depth:
     Integer);
+var
+  imageSize: Integer;
+  flipped: boolean;
 begin
-  FImageSize := Width * abs(Height) * Depth;
+  flipped := Height < 0;
+  imageSize := Width * Height * Depth;
 
-  FBitmapInfoHeader.biSize := SizeOf(TBitmapInfoHeader);
-  FBitmapInfoHeader.biWidth := Width;
-  FBitmapInfoHeader.biHeight := Height;
-  FBitmapInfoHeader.biPlanes := 1;
-  FBitmapInfoHeader.biBitCount := Depth * 8;
-  FBitmapInfoHeader.biCompression := BI_RGB;
+  if (imageSize <> FImageSize)
+  or (flipped <> FFlipped) then
+  begin
+    FImageSize := abs(imageSize);
+    FFlipped := flipped;
+
+    FBitmapInfoHeader.biSize := SizeOf(TBitmapInfoHeader);
+    FBitmapInfoHeader.biWidth := Width;
+    FBitmapInfoHeader.biHeight := Height;
+    FBitmapInfoHeader.biPlanes := 1;
+    FBitmapInfoHeader.biBitCount := Depth * 8;
+    FBitmapInfoHeader.biCompression := BI_RGB;
+
+    Reinitialize;
+  end;
 end;
 
 procedure TMSharedMemSourcePushPin.SetUseSync(UseSync: Boolean);

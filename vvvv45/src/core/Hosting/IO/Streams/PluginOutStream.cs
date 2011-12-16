@@ -171,15 +171,22 @@ namespace VVVV.Hosting.IO.Streams
 		private readonly ISpread<T> FDataStore;
 		
 		public NodeOutStream(INodeOut nodeOut)
-			: this(nodeOut, new Spread<T>())
+		    : this(nodeOut, new DefaultConnectionHandler())
 		{
 			
 		}
 		
-		private NodeOutStream(INodeOut nodeOut, ISpread<T> dataStore)
+		public NodeOutStream(INodeOut nodeOut, IConnectionHandler handler)
+			: this(nodeOut, new Spread<T>(), handler)
+		{
+			
+		}
+		
+		private NodeOutStream(INodeOut nodeOut, ISpread<T> dataStore, IConnectionHandler handler)
 		{
 			FNodeOut = nodeOut;
 			FNodeOut.SetInterface(this);
+			FNodeOut.SetConnectionHandler(handler, this);
 			FDataStore = dataStore;
 		}
 		

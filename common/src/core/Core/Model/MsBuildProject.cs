@@ -75,10 +75,16 @@ namespace VVVV.Core.Model
 			
 			foreach (var reference in References.Where((r) => !r.IsGlobal))
 			{
-				var srcFileInfo = new FileInfo(reference.AssemblyLocation);
-				var dstFileName = assemblyDir.ConcatPath(Path.GetFileName(srcFileInfo.Name));
-				var dstFileInfo = srcFileInfo.CopyTo(dstFileName, true);
-				dstFileInfo.IsReadOnly = false;
+				try
+				{
+					var srcFileInfo = new FileInfo(reference.AssemblyLocation);
+					var dstFileName = assemblyDir.ConcatPath(Path.GetFileName(srcFileInfo.Name));
+					var dstFileInfo = srcFileInfo.CopyTo(dstFileName, true);
+					dstFileInfo.IsReadOnly = false;
+				} catch (IOException)
+				{
+					// Ignore as file is probably in use (because we loaded it)
+				}
 			}
 		}
 		

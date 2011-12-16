@@ -15,7 +15,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// Set/Get, Read/Write methods are only implemented when it makes sense.
 	/// </summary>
 	[ComVisible(false)]
-	public interface ISpread : IEnumerable, ICloneable
+	public interface ISpread : IEnumerable, ICloneable, ISynchronizable, IFlushable
 	{
 		/// <summary>
 		/// Provides read/write access to the actual data.
@@ -34,10 +34,6 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 			set;
 		}
-		
-		bool Sync();
-		
-		void Flush();
 	}
 	
 	/// <summary>

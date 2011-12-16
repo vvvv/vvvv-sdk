@@ -1,0 +1,114 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{60845498-c955-4004-ad66-521063c477d5}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Projects Include="CheaterIP\CheaterIP.dproj" />
+    <Projects Include="Cheater\Cheater.dproj" />
+    <Projects Include="DumpSample\DumpSample.dproj" />
+    <Projects Include="SharedMemRenderer\SharedMemRenderer.dproj" />
+    <Projects Include="SharedMemSource\SharedMemSource.dproj" />
+    <Projects Include="SharedMemTIP\SharedMemTIP.dproj" />
+    <Projects Include="SourceBuffer\Sourcebuffer.dproj" />
+    <Projects Include="TextureSource\TextureSource.dproj" />
+    <Projects Include="WavePlayer\WavePlayer.dproj" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+  <BorlandProject xmlns=""> <Default.Personality> </Default.Personality> </BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="SharedMemSource">
+    <MSBuild Projects="SharedMemSource\SharedMemSource.dproj" Targets="" />
+  </Target>
+  <Target Name="SharedMemSource:Clean">
+    <MSBuild Projects="SharedMemSource\SharedMemSource.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SharedMemSource:Make">
+    <MSBuild Projects="SharedMemSource\SharedMemSource.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SharedMemRenderer">
+    <MSBuild Projects="SharedMemRenderer\SharedMemRenderer.dproj" Targets="" />
+  </Target>
+  <Target Name="SharedMemRenderer:Clean">
+    <MSBuild Projects="SharedMemRenderer\SharedMemRenderer.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SharedMemRenderer:Make">
+    <MSBuild Projects="SharedMemRenderer\SharedMemRenderer.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SharedMemTIP">
+    <MSBuild Projects="SharedMemTIP\SharedMemTIP.dproj" Targets="" />
+  </Target>
+  <Target Name="SharedMemTIP:Clean">
+    <MSBuild Projects="SharedMemTIP\SharedMemTIP.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SharedMemTIP:Make">
+    <MSBuild Projects="SharedMemTIP\SharedMemTIP.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Cheater">
+    <MSBuild Projects="Cheater\Cheater.dproj" Targets="" />
+  </Target>
+  <Target Name="Cheater:Clean">
+    <MSBuild Projects="Cheater\Cheater.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="Cheater:Make">
+    <MSBuild Projects="Cheater\Cheater.dproj" Targets="Make" />
+  </Target>
+  <Target Name="CheaterIP">
+    <MSBuild Projects="CheaterIP\CheaterIP.dproj" Targets="" />
+  </Target>
+  <Target Name="CheaterIP:Clean">
+    <MSBuild Projects="CheaterIP\CheaterIP.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="CheaterIP:Make">
+    <MSBuild Projects="CheaterIP\CheaterIP.dproj" Targets="Make" />
+  </Target>
+  <Target Name="DumpSample">
+    <MSBuild Projects="DumpSample\DumpSample.dproj" Targets="" />
+  </Target>
+  <Target Name="DumpSample:Clean">
+    <MSBuild Projects="DumpSample\DumpSample.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="DumpSample:Make">
+    <MSBuild Projects="DumpSample\DumpSample.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Sourcebuffer">
+    <MSBuild Projects="SourceBuffer\Sourcebuffer.dproj" Targets="" />
+  </Target>
+  <Target Name="Sourcebuffer:Clean">
+    <MSBuild Projects="SourceBuffer\Sourcebuffer.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="Sourcebuffer:Make">
+    <MSBuild Projects="SourceBuffer\Sourcebuffer.dproj" Targets="Make" />
+  </Target>
+  <Target Name="TextureSource">
+    <MSBuild Projects="TextureSource\TextureSource.dproj" Targets="" />
+  </Target>
+  <Target Name="TextureSource:Clean">
+    <MSBuild Projects="TextureSource\TextureSource.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="TextureSource:Make">
+    <MSBuild Projects="TextureSource\TextureSource.dproj" Targets="Make" />
+  </Target>
+  <Target Name="WavePlayer">
+    <MSBuild Projects="WavePlayer\WavePlayer.dproj" Targets="" />
+  </Target>
+  <Target Name="WavePlayer:Clean">
+    <MSBuild Projects="WavePlayer\WavePlayer.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="WavePlayer:Make">
+    <MSBuild Projects="WavePlayer\WavePlayer.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="SharedMemSource;SharedMemRenderer;SharedMemTIP;Cheater;CheaterIP;DumpSample;Sourcebuffer;TextureSource;WavePlayer" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="SharedMemSource:Clean;SharedMemRenderer:Clean;SharedMemTIP:Clean;Cheater:Clean;CheaterIP:Clean;DumpSample:Clean;Sourcebuffer:Clean;TextureSource:Clean;WavePlayer:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="SharedMemSource:Make;SharedMemRenderer:Make;SharedMemTIP:Make;Cheater:Make;CheaterIP:Make;DumpSample:Make;Sourcebuffer:Make;TextureSource:Make;WavePlayer:Make" />
+  </Target>
+  <Import Condition="Exists('$(MSBuildBinPath)\Borland.Group.Targets')" Project="$(MSBuildBinPath)\Borland.Group.Targets" />
+</Project>

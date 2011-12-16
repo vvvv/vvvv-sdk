@@ -202,7 +202,7 @@ namespace VVVV.Hosting.IO
 			
 			RegisterInput(typeof(IInStream<>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
-			              	if (t.IsGenericType)
+			              	if (t.IsGenericType && t.GetGenericArguments().Length == 1)
 			              	{
 			              		if (typeof(IInStream<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
 			              		{
@@ -214,7 +214,7 @@ namespace VVVV.Hosting.IO
 			              			
 			              			var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IInStream;
 			              			
-			              			// PinGroup impementation doesn't need to get synced on managed side.
+			              			// PinGroup implementation doesn't need to get synced on managed side.
 			              			if (!attribute.IsPinGroup && attribute.AutoValidate)
 			              				return IOHandler.Create(stream, null, s => s.Sync());
 			              			else
@@ -239,7 +239,7 @@ namespace VVVV.Hosting.IO
 			RegisterInput(typeof(ISpread<>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	ISpread spread = null;
-			              	if (t.IsGenericType)
+			              	if (t.IsGenericType && t.GetGenericArguments().Length == 1)
 			              	{
 			              		if (typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
 			              		{
@@ -274,7 +274,7 @@ namespace VVVV.Hosting.IO
 			              	attribute.CheckIfChanged = true;
 			              	ISpread spread = null;
 			              	
-			              	if (t.IsGenericType)
+			              	if (t.IsGenericType && t.GetGenericArguments().Length == 1)
 			              	{
 			              		if (typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
 			              		{
@@ -419,7 +419,7 @@ namespace VVVV.Hosting.IO
 			
 			RegisterOutput(typeof(IOutStream<>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
-			               	if (t.IsGenericType)
+			               	if (t.IsGenericType && t.GetGenericArguments().Length == 1)
 			               	{
 			               		if (typeof(IInStream<>).MakeGenericType(t.GetGenericArguments()).IsAssignableFrom(t))
 			               		{
@@ -486,7 +486,7 @@ namespace VVVV.Hosting.IO
 			
 			RegisterOutput(typeof(ISpread<>), (factory, attribute, t) => {
 			               	var host = factory.PluginHost;
-			               	if (t.IsGenericType)
+			               	if (t.IsGenericType && t.GetGenericArguments().Length == 1)
 			               	{
 			               		if (typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
 			               		{

@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha24.9.dtd" >
-   <PATCH nodename="D:\work\repositories\vvvv_full_v2\plugins\c#\Transform\TransformAdv\trunk\Multiply (Transform Priority) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Multiply (Transform Priority) help.v4p">
    <BOUNDS height="8340" left="1575" top="960" type="Window" width="6810">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="12" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="12" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="100" left="1410" top="6210" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="1800" left="1410" top="6210" type="Box" width="2400">
@@ -10,6 +10,16 @@
    <BOUNDS height="4860" left="8415" top="1020" type="Window" width="6120">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="11" nodename="Quad (DX9)" systemname="Quad (DX9)">
@@ -29,7 +39,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="10380" top="44940" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Similar to * (Transform), with a priority pin so you can change the transform order in real time.&cr;&lf;Input count is configurable in the inspector|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Similar to * (Transform), with a priority pin so you can change the transform order in real time.&cr;&lf;Input count is configurable in the inspector|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -43,7 +53,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="10380" top="44940" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|* - Transform Priority|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|* - Transform Priority|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -59,7 +69,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -73,15 +83,79 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE systemname="* (Transform Priority)" filename="bin\Release\TransformsAdvanced.dll" nodename="* (Transform Priority)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="1575" top="4710" width="2670" height="270">
+   <NODE componentmode="Hidden" id="17" nodename="Translate (Transform)" systemname="Translate (Transform)">
+   <BOUNDS height="100" left="1575" top="3885" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.18">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.31">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="100" left="2730" top="1950" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="2730" top="1950" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Change Order|" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="25" managers="" nodename="NOT (Boolean)" systemname="NOT (Boolean)">
+   <PIN pinname="Input" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="4200" top="3450" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Input" linkstyle="Bezier" srcnodeid="19" srcpinname="Y Output Value">
+   <LINKPOINT x="3210" y="2933">
+   </LINKPOINT>
+   <LINKPOINT x="4200" y="2933">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="26" nodename="Scale (Transform)" systemname="Rotate (Transform)">
+   <BOUNDS height="100" left="3315" top="3945" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="1.16">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0.67">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.58">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\TransformsAdvanced.dll" id="14" nodename="Multiply (Transform Priority)" systemname="Multiply (Transform Priority)">
+   <BOUNDS height="270" left="1575" top="4710" type="Node" width="2670">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -94,82 +168,18 @@
    <PIN pinname="Priority 2" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="11" dstpinname="Transform">
+   <LINK dstnodeid="11" dstpinname="Transform" srcnodeid="14" srcpinname="Output">
    </LINK>
-   <NODE systemname="Translate (Transform)" nodename="Translate (Transform)" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="1575" top="3885" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="X" slicecount="1" values="0.18">
-   </PIN>
-   <PIN pinname="Y" slicecount="1" values="0.31">
-   </PIN>
-   </NODE>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="19">
-   <BOUNDS type="Node" left="2730" top="1950" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2730" top="1950" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Show Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Show Slider" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Change Order|">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="17" srcpinname="Transform Out" dstnodeid="14" dstpinname="Transform 1">
+   <LINK dstnodeid="14" dstpinname="Transform 1" srcnodeid="17" srcpinname="Transform Out">
    </LINK>
-   <NODE id="25" systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Input" visible="1" pintype="Input">
-   </PIN>
-   <PIN pinname="Output" visible="1" pintype="Output">
-   </PIN>
-   <BOUNDS type="Node" left="4200" top="3450" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Input" linkstyle="Bezier">
-   <LINKPOINT x="3210" y="2933">
-   </LINKPOINT>
-   <LINKPOINT x="4200" y="2933">
-   </LINKPOINT>
+   <LINK dstnodeid="14" dstpinname="Priority 2" srcnodeid="25" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="14" dstpinname="Priority 2">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Priority 1" linkstyle="Bezier">
+   <LINK dstnodeid="14" dstpinname="Priority 1" linkstyle="Bezier" srcnodeid="19" srcpinname="Y Output Value">
    <LINKPOINT x="3165" y="3570">
    </LINKPOINT>
    <LINKPOINT x="2475" y="3570">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="Rotate (Transform)" nodename="Scale (Transform)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="3315" top="3945" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="X" slicecount="1" values="1.16">
-   </PIN>
-   <PIN pinname="Z" slicecount="1" values="0.67">
-   </PIN>
-   <PIN pinname="Y" slicecount="1" values="0.58">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="26" srcpinname="Transform Out" dstnodeid="14" dstpinname="Transform 2">
+   <LINK dstnodeid="14" dstpinname="Transform 2" srcnodeid="26" srcpinname="Transform Out">
    </LINK>
    </PATCH>

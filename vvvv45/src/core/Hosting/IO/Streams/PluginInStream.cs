@@ -219,9 +219,15 @@ namespace VVVV.Hosting.IO.Streams
 	{
 		private readonly INodeIn FNodeIn;
 		
-		public NodeInStream(INodeIn nodeIn)
+		public NodeInStream(INodeIn nodeIn, IConnectionHandler handler)
 		{
 			FNodeIn = nodeIn;
+			FNodeIn.SetConnectionHandler(handler, this);
+		}
+		
+		public NodeInStream(INodeIn nodeIn)
+		    : this(nodeIn, new DefaultConnectionHandler())
+		{
 		}
 		
 		public override int Length
