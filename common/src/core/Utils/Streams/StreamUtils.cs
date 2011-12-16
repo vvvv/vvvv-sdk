@@ -8,7 +8,7 @@ namespace VVVV.Utils.Streams
 	// Base class with various utility functions.
 	public static class StreamUtils
 	{
-		public const int BUFFER_SIZE = 128;
+		public const int BUFFER_SIZE = 1024;
 		public const string STREAM_IN_USE_MSG = "Stream is in use.";
 		
 		public static IStreamReader<T> GetCyclicReader<T>(this IInStream<T> stream)
