@@ -196,6 +196,12 @@ namespace VVVV.Core
 
         public IEnumerable<INodeDefinition> Collect(IMethodDefinition methodDefinition)
         {
+            if (methodDefinition.Type.TypeCode == PrimitiveTypeCode.Pointer)
+                yield break;
+            
+            if (methodDefinition.Parameters.Where(p => p.Type.TypeCode == PrimitiveTypeCode.Pointer).Any())
+                yield break;
+            
             if (!AcceptConstructorsAsFunctors && methodDefinition.IsConstructor)
                 yield break;
 
@@ -264,9 +270,11 @@ namespace VVVV.Core
         
         public IEnumerable<INodeDefinition> Collect(IAssembly assembly)
         {
+            
             return
                 from type in assembly.GetAllTypes()
                 where
+                    (type.Name.Value != "<Module>") &&
                     (!type.IsInterface) &&
                     (
                         (type.IsStatic && AcceptFunctionNodes) ||
