@@ -251,7 +251,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgPolylineNode : SVGVisualElementFillNode<SvgPolyline>
 	{
-		[Input("Vertices ", Order = -1)]
+		[Input("Vertices", Order = -1)]
 		IDiffSpread<ISpread<Vector2>> FVerticesIn;
 		
 		protected override SvgPolyline CreateElement()
@@ -298,7 +298,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgPolygonNode : SVGVisualElementFillNode<SvgPolygon>
 	{
-		[Input("Vertices ", Order = -1)]
+		[Input("Vertices", Order = -1)]
 		IDiffSpread<ISpread<Vector2>> FVerticesIn;
 		
 		protected override SvgPolygon CreateElement()
@@ -385,17 +385,18 @@ namespace VVVV.Nodes
 	//VIEWBOX---------------------------------------------------------------------------------------
 	#region PluginInfo
 	[PluginInfo(Name = "Camera", 
-	            Category = "SVG", 
+	            Category = "SVG",
+	            Version = "Join",
 	            Help = "Sets the visible rectangle of an SVG scene", 
 	            Tags = "viewbox")]
 	#endregion PluginInfo
 	public class SVGCameraNode : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Center ")]
+		[Input("Center")]
 		IDiffSpread<Vector2> FViewCenterIn;
 		
-		[Input("Size ", DefaultValues = new double[] {2, 2})]
+		[Input("Size", DefaultValues = new double[] {2, 2})]
 		IDiffSpread<Vector2> FViewSizeIn;
 
 		[Output("View Box")]
@@ -485,7 +486,7 @@ namespace VVVV.Nodes
 		[Input("Update", IsBang = true, IsSingle = true)]
 		ISpread<bool> FUpdateInput;
 		
-		[Output("Path ")]
+		[Output("Path")]
 		ISpread<ISpread<Vector2D>> FPathOutput;
 		
 		[Output("Path Type")]

@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\SVG\_root_SVG.v4p" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\SVG\_root_SVG.v4p" systemname="_root_SVG">
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\SVG\Renderer (SVG) help.v4p" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\SVG\_root_SVG.v4p" systemname="_root_SVG">
    <BOUNDS height="12225" left="0" top="0" type="Window" width="11340">
    </BOUNDS>
    <NODE componentmode="Hidden" hiddenwhenlocked="1" id="190" nodename="CircularSpread (Spreads)" systemname="CircularSpread (Spreads)">
@@ -27,7 +27,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="4395" top="2100" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1.51">
+   <PIN pinname="Y Input Value" slicecount="1" values="1.5">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -37,7 +37,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="201" nodename="Renderer (SVG)" systemname="Renderer (SVG)">
-   <BOUNDS height="7575" left="11355" top="0" type="Window" width="7650">
+   <BOUNDS height="7575" left="11580" top="0" type="Window" width="7650">
    </BOUNDS>
    <BOUNDS height="270" left="4440" top="6465" type="Node" width="2310">
    </BOUNDS>
@@ -126,14 +126,6 @@
    <PIN pinname="Input 4" visible="1">
    </PIN>
    <PIN pinname="Input 5" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="215" nodename="Camera (SVG)" systemname="Camera (SVG)">
-   <BOUNDS height="100" left="5175" top="5955" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Size XY" slicecount="2" values="30,30">
-   </PIN>
-   <PIN pinname="View Box" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="176" dstpinname="Input 1" srcnodeid="209" srcpinname="Layer">
@@ -283,9 +275,9 @@
    </PIN>
    <PIN pinname="Path XY" visible="1">
    </PIN>
+   <PIN pinname="PathXY" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="201" dstpinname="View Box" srcnodeid="215" srcpinname="View Box">
-   </LINK>
    <LINK dstnodeid="201" dstpinname="Layer" srcnodeid="176" srcpinname="Layer">
    <LINKPOINT x="4455" y="5441">
    </LINKPOINT>
@@ -430,20 +422,6 @@
    </NODE>
    <LINK dstnodeid="176" dstpinname="Transform" srcnodeid="219" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="285" nodename="Polygon (SVG)" systemname="Polygon (SVG)">
-   <BOUNDS height="100" left="6285" top="3240" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <BOUNDS left="6285" top="3240" type="Box">
-   </BOUNDS>
-   <PIN pinname="Vertices XY" visible="1">
-   </PIN>
-   <PIN pinname="Fill">
-   </PIN>
-   <PIN pinname="Fill Mode" slicecount="1" values="EvenOdd">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="286" nodename="Polyline (SVG)" systemname="Polyline (SVG)">
    <BOUNDS height="100" left="7560" top="3240" type="Node" width="100">
    </BOUNDS>
@@ -454,6 +432,8 @@
    <PIN pinname="Vertices XY" visible="1">
    </PIN>
    <PIN pinname="Fill" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="VerticesXY" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="287" nodename="Text (SVG)" systemname="Text (SVG)">
@@ -472,15 +452,13 @@
    <PIN pinname="Stroke Width" slicecount="1" values="0.01">
    </PIN>
    </NODE>
-   <LINK dstnodeid="176" dstpinname="Input 3" srcnodeid="285" srcpinname="Layer">
-   </LINK>
    <LINK dstnodeid="176" dstpinname="Input 4" srcnodeid="286" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="176" dstpinname="Input 5" srcnodeid="287" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="228" dstpinname="TranslateY" hiddenwhenlocked="1" srcnodeid="190" srcpinname="Output Y">
    </LINK>
-   <LINK dstnodeid="209" dstpinname="Transform" srcnodeid="228" srcpinname="Transform Out">
+   <LINK dstnodeid="209" dstpinname="Transform" hiddenwhenlocked="1" srcnodeid="228" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" hiddenwhenlocked="1" id="289" nodename="Translate (Transform)" systemname="Translate (Transform)">
    <BOUNDS height="100" left="8865" top="2730" type="Node" width="100">
@@ -492,10 +470,10 @@
    <PIN pinname="Y" slicecount="1" values="-1.5">
    </PIN>
    </NODE>
-   <LINK dstnodeid="287" dstpinname="Transform" srcnodeid="289" srcpinname="Transform Out">
+   <LINK dstnodeid="287" dstpinname="Transform" hiddenwhenlocked="0" srcnodeid="289" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" hiddenwhenlocked="1" id="291" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
-   <BOUNDS height="100" left="6270" top="1665" type="Node" width="100">
+   <BOUNDS height="100" left="7560" top="1575" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -507,7 +485,7 @@
    <LINK dstnodeid="285" dstpinname="Vertices XY" srcnodeid="291" srcpinname="XY">
    </LINK>
    <NODE componentmode="Hidden" hiddenwhenlocked="1" id="292" nodename="CircularSpread (Spreads)" systemname="CircularSpread (Spreads)">
-   <BOUNDS height="100" left="6255" top="1245" type="Node" width="100">
+   <BOUNDS height="100" left="7545" top="1155" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output X" visible="1">
    </PIN>
@@ -542,7 +520,7 @@
    <PIN pinname="Input 2" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="293" dstpinname="Input 1" srcnodeid="291" srcpinname="XY">
+   <LINK dstnodeid="293" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="291" srcpinname="XY">
    </LINK>
    <LINK dstnodeid="286" dstpinname="Vertices XY" srcnodeid="293" srcpinname="Output">
    </LINK>
@@ -608,8 +586,6 @@
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="285" dstpinname="Fill" srcnodeid="299" srcpinname="Color Output">
-   </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="300" nodename="GetElements (SVG)" systemname="GetElements (SVG)">
    <BOUNDS height="100" left="7080" top="4755" type="Node" width="100">
    </BOUNDS>
@@ -781,7 +757,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="7">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    <PIN pinname="Columns" slicecount="1" values="2">
    </PIN>
@@ -863,5 +839,47 @@
    <LINK dstnodeid="297" dstpinname="Phase" hiddenwhenlocked="1" srcnodeid="317" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="240" dstpinname="Document" srcnodeid="279" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="286" dstpinname="VerticesXY" hiddenwhenlocked="0" srcnodeid="293" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="311" dstpinname="Y Input Value" srcnodeid="261" srcpinname="PathXY">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="215" nodename="Camera (SVG Join)" systemname="Camera (SVG Join)">
+   <BOUNDS height="100" left="5175" top="5955" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Size XY">
+   </PIN>
+   <PIN pinname="View Box" visible="1">
+   </PIN>
+   <PIN pinname="SizeXY" slicecount="2" values="30,30">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="201" dstpinname="View Box" srcnodeid="215" srcpinname="View Box">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="285" nodename="Polygon (SVG)" systemname="Polygon (SVG)">
+   <PIN pinname="Fill">
+   </PIN>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="6285" top="3240" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="6285" top="3240" type="Box">
+   </BOUNDS>
+   <PIN pinname="Vertices XY" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="EvenOdd">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="285" dstpinname="Fill" srcnodeid="299" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="176" dstpinname="Input 3" srcnodeid="285" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="285" dstpinname="VerticesXY" hiddenwhenlocked="0" srcnodeid="291" srcpinname="XY">
+   <LINKPOINT x="6315" y="2205">
+   </LINKPOINT>
    </LINK>
    </PATCH>
