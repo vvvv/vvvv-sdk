@@ -41,6 +41,7 @@ namespace VVVV.Hosting.Pins.Input
 			var att = new InputAttribute(FBinName);
 			att.DefaultValue = FBinSize;
 			att.Visibility = attribute.BinVisibility;
+			att.Order = attribute.BinOrder;
 			FBinSizePin = new DiffIntInputPin(host, att);
 			FBinSizePin.Updated += AnyPin_Updated;
 		}
