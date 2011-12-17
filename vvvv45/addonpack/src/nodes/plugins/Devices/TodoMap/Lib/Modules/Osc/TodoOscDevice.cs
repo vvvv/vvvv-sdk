@@ -10,6 +10,7 @@ namespace VVVV.TodoMap.Lib.Modules.Osc
 
     public delegate void OscStatusChangedDelegate(eTodoOscStatus status);
     public delegate void OscOutputStatusChangedDelegate(bool enabled);
+    public delegate void OscReceivedDelegate(OSCMessage msg);
     
 
     public class TodoOscDevice : AbstractTodoDevice<TodoOscInput>
@@ -30,6 +31,7 @@ namespace VVVV.TodoMap.Lib.Modules.Osc
 
         public event OscStatusChangedDelegate OscInputStatusChanged;
         public event OscOutputStatusChangedDelegate OscOutputStatusChanged;
+        public event OscReceivedDelegate OscDataReceived;
 
         private void ChangeInputStatus(eTodoOscStatus status)
         {
@@ -76,6 +78,12 @@ namespace VVVV.TodoMap.Lib.Modules.Osc
         public bool RemoteEnabled
         {
             get { return this.enableOutput; }
+        }
+
+        public List<string> IgnoreList
+        {
+            get;
+            set;
         }
 
      
@@ -187,66 +195,74 @@ namespace VVVV.TodoMap.Lib.Modules.Osc
 
         private void ProcessMessage(OSCMessage msg)
         {
-            if (this.engine.LearnMode && this.engine.SelectedVariable != null)
+            if (!this.IgnoreList.Contains(msg.Address))
             {
-                TodoOscInput input = null;
-                bool isnew = false;
-                bool found = false;
-
-                foreach (AbstractTodoInput ainput in this.engine.SelectedVariable.Inputs)
+                if (this.engine.LearnMode && this.engine.SelectedVariable != null)
                 {
-                    if (ainput is TodoOscInput)
-                    {
-                        TodoOscInput osc = ainput as TodoOscInput;
+                    TodoOscInput input = null;
+                    bool isnew = false;
+                    bool found = false;
 
-                        if (osc.Message == msg.Address)
+                    foreach (AbstractTodoInput ainput in this.engine.SelectedVariable.Inputs)
+                    {
+                        if (ainput is TodoOscInput)
                         {
-                            input = osc;
-                            found = true;
+                            TodoOscInput osc = ainput as TodoOscInput;
+
+                            if (osc.Message == msg.Address)
+                            {
+                                input = osc;
+                                found = true;
+                            }
                         }
                     }
-                }
 
-                if (!found)
-                {
+                    if (!found)
+                    {
 
-                    if (this.engine.SelectedInput == null)
-                    {
-                        input = new TodoOscInput(this.engine.SelectedVariable);
-                        this.inputvars.Add(input);
-                        isnew = true;
-                    }
-                    else
-                    {
-                        if (this.engine.SelectedInput is TodoOscInput)
-                        {
-                            input = (TodoOscInput)this.engine.SelectedInput;
-                        }
-                        else
+                        if (this.engine.SelectedInput == null)
                         {
                             input = new TodoOscInput(this.engine.SelectedVariable);
                             this.inputvars.Add(input);
                             isnew = true;
                         }
+                        else
+                        {
+                            if (this.engine.SelectedInput is TodoOscInput)
+                            {
+                                input = (TodoOscInput)this.engine.SelectedInput;
+                            }
+                            else
+                            {
+                                input = new TodoOscInput(this.engine.SelectedVariable);
+                                this.inputvars.Add(input);
+                                isnew = true;
+                            }
+                        }
+                    }
+                    this.engine.SelectInput(input);
+
+                    input.Message = msg.Address;
+
+                    this.engine.VarriableMappingAdded(input, isnew);
+                }
+
+                if (!this.engine.LearnMode)
+                {
+                    foreach (TodoOscInput toi in this.inputvars)
+                    {
+                        if (toi.Message == msg.Address)
+                        {
+                            double dblval = Convert.ToDouble(msg.Values[0]);
+                            toi.UpdateValue(dblval);
+                        }
                     }
                 }
-                this.engine.SelectInput(input);
-
-                input.Message = msg.Address;
-
-                this.engine.VarriableMappingAdded(input, isnew);
             }
 
-            if (!this.engine.LearnMode)
+            if (this.OscDataReceived != null)
             {
-                foreach (TodoOscInput toi in this.inputvars)
-                {
-                    if (toi.Message == msg.Address)
-                    {
-                        double dblval = Convert.ToDouble(msg.Values[0]);
-                        toi.UpdateValue(dblval);
-                    }
-                }
+                this.OscDataReceived(msg);
             }
         }
 

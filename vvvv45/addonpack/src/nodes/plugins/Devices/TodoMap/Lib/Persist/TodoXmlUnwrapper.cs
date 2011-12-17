@@ -78,7 +78,37 @@ namespace VVVV.TodoMap.Lib.Persist
 
         private static void LoadMidiModule(TodoEngine engine, XmlNode node)
         {
+            foreach (XmlNode child in node.ChildNodes)
+            {
+                if (child.Name == "Inputs")
+                {
+                    foreach (XmlNode n in child.ChildNodes)
+                    {
+                        if (n.Name == "Input")
+                        {
+                            engine.Midi.SetInputAutoStart(n.Attributes["AutoStart"].Value, true);
+                            //engine.Osc.AutoStartInput = bool.Parse(child.Attributes["AutoStart"].Value);
+                            //engine.Osc.LocalPort = int.Parse(child.Attributes["Port"].Value);
+                        }
+                    }
+                }
 
+                if (child.Name == "Outputs")
+                {
+                    foreach (XmlNode n in child.ChildNodes)
+                    {
+                        if (n.Name == "Output")
+                        {
+                            engine.Midi.SetOutputAutoStart(n.Attributes["AutoStart"].Value, true);
+                            //engine.Osc.AutoStartOutput = bool.Parse(child.Attributes["AutoStart"].Value);
+                            //engine.Osc.RemotePort = int.Parse(child.Attributes["Port"].Value);
+                        }
+                    }
+                }
+            }
+
+            if (engine.Osc.AutoStartInput) { engine.Osc.SetEnabled(true); }
+            if (engine.Osc.AutoStartOutput) { engine.Osc.SetOutputEnabled(true); }
         }
 
         private static void LoadVariable(TodoEngine engine, XmlNode node)
