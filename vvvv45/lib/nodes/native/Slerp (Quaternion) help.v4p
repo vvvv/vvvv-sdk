@@ -1,0 +1,197 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Slerp (Quaternion) help.v4p">
+   <BOUNDS height="7320" left="4380" top="2100" type="Window" width="5655">
+   </BOUNDS>
+   <NODE id="11" nodename="Slerp (Quaternion)">
+   <BOUNDS height="0" left="1290" top="3660" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Quaternion 1 XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion 2 XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Slerp Mode" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="855" top="1875" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6765" top="2835" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1440" left="855" top="1875" type="Box" width="675">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" values="0.50000,0.50000,0.50000,0.50000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Quaternion 1 XYZW" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2070" top="1875" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7065" top="3135" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1440" left="2070" top="1875" type="Box" width="675">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" values="0.00000,0.00000,0.00000,1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Quaternion 2 XYZW" linkstyle="PolyLine" srcnodeid="8" srcpinname="Y Output Value">
+   <LINKPOINT x="2715" y="3450">
+   </LINKPOINT>
+   <LINKPOINT x="1680" y="3450">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="765" top="1290" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5040" top="3960" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="435" left="765" top="1290" type="Box" width="2010">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Slider Constraints" slicecount="1" values="scY">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.50000">
+   </PIN>
+   <PIN pinname="X Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input" linkstyle="PolyLine" srcnodeid="7" srcpinname="X Output Value">
+   <LINKPOINT x="795" y="3480">
+   </LINKPOINT>
+   <LINKPOINT x="1320" y="3480">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="675" top="4200" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7065" top="3135" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1440" left="675" top="4200" type="Box" width="675">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="11" srcpinname="Quaternion XYZW">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="2970" top="2160" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11970" top="5355" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1185" left="2970" top="2160" type="Box" width="1695">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="ShorterArc">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Slerp Mode" linkstyle="PolyLine" srcnodeid="5" srcpinname="Output Enum">
+   <LINKPOINT x="3000" y="3585">
+   </LINKPOINT>
+   <LINKPOINT x="1860" y="3585">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2835" top="1395" type="Node" width="2670">
+   </BOUNDS>
+   <BOUNDS height="285" left="2835" top="1395" type="Box" width="2625">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|blend between the two quaternions|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="135" top="6555" type="Node" width="855">
+   </BOUNDS>
+   <BOUNDS height="255" left="135" top="6555" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Merge (Differential)">
+   <BOUNDS height="0" left="1710" top="6555" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="1" nodename="InputMorph (Value)">
+   <BOUNDS height="0" left="2715" top="6555" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="0" nodename="Blend (Color)">
+   <BOUNDS height="0" left="1020" top="6555" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="5220">
+   </BOUNDS>
+   <BOUNDS height="160" left="9600" top="39420" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Interpolates between two rotations, using spherical linear interpolation|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9600" top="39420" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Slerp - Quaternion|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
