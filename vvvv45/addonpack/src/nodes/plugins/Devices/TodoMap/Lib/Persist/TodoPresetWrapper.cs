@@ -50,8 +50,9 @@ namespace VVVV.TodoMap.Lib.Persist
             sb.AppendLine("</TodoVariable>");
         }
 
-        public static void LoadXml(TodoEngine engine, string xml)
+        public static List<TodoPreset> LoadXml(TodoEngine engine, string xml)
         {
+            List<TodoPreset> varnames = new List<TodoPreset>();
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
 
@@ -64,13 +65,14 @@ namespace VVVV.TodoMap.Lib.Persist
                 {
                     foreach (XmlNode child in node.ChildNodes)
                     {
-                        LoadVariable(engine, child);
+                        LoadVariable(engine, child,varnames);
                     }
                 }
             }
+            return varnames;
         }
 
-        private static void LoadVariable(TodoEngine engine, XmlNode node)
+        private static void LoadVariable(TodoEngine engine, XmlNode node, List<TodoPreset> varnames)
         {
             TodoPreset preset = new TodoPreset();
 
@@ -94,6 +96,7 @@ namespace VVVV.TodoMap.Lib.Persist
             if (var != null)
             {
                 var.SetValue(null, preset.Value);
+                varnames.Add(preset);
             }
         }
     }
