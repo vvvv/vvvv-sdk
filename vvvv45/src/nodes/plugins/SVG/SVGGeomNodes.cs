@@ -29,7 +29,7 @@ namespace VVVV.Nodes
 		[Input("Stroke", Order = 20, DefaultColor = new double[] { 0, 0, 0, 1 })]
 		protected IDiffSpread<RGBAColor> FStrokeIn;
 		
-		[Input("Stroke Width", DefaultValue = 0.1, Order = 22)]
+		[Input("Stroke Width", DefaultValue = 0.1, Order = 22, MinValue = 0)]
 		protected IDiffSpread<float> FStrokeWidthIn;
 		
 		[Input("Enabled", Order = 30, DefaultValue = 1)]
@@ -90,7 +90,6 @@ namespace VVVV.Nodes
 		{
 			return FTransformIn.IsChanged || FStrokeIn.IsChanged || FStrokeWidthIn.IsChanged || FEnabledIn.IsChanged;
 		}
-		
 		
 		protected void SetTransform(T elem, int slice)
 		{
@@ -215,8 +214,8 @@ namespace VVVV.Nodes
 			elem.Width = (float)scale.X;
 			elem.Height = (float)scale.Y;
 			
-			elem.CornerRadiusX = Math.Max(FCornerRadiusIn[slice].X, 0);
-			elem.CornerRadiusY = Math.Max(FCornerRadiusIn[slice].Y, 0);
+			elem.CornerRadiusX = Math.Max(FCornerRadiusIn[slice].X * elem.Width * 0.5f, 0);
+			elem.CornerRadiusY = Math.Max(FCornerRadiusIn[slice].Y * elem.Height * 0.5f, 0);
 		}
 	}
 	
@@ -345,7 +344,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgTextNode : SVGVisualElementFillNode<SvgText>
 	{
-		[Input("Text", Order = 1)]
+		[Input("Text", Order = 1, DefaultString = "vvvv")]
 		IDiffSpread<string> FTextIn;
 		
 		[Input("Font", EnumName = "SystemFonts", Order = 2)]
@@ -481,7 +480,13 @@ namespace VVVV.Nodes
 	public class SVGGetPathNode : IPluginEvaluate
 	{
 		[Input("Layer")]
-		IDiffSpread<SvgElement> FInput;
+		ISpread<SvgElement> FInput;
+		
+		[Input("Flatten", DefaultValue = 1)]
+		ISpread<bool> FFlattenInput;
+		
+		[Input("Max Flatten Error", DefaultValue = 0.25)]
+		ISpread<float> FMaxFlattenInput;
 		
 		[Input("Update", IsBang = true, IsSingle = true)]
 		ISpread<bool> FUpdateInput;
@@ -509,9 +514,15 @@ namespace VVVV.Nodes
 					if(elem is SvgVisualElement || elem is SvgFragment)
 					{
 						GraphicsPath p;
-						if(elem is SvgVisualElement) p = ((SvgVisualElement)elem).Path;
+						if(elem is SvgGroup) p = ((SvgGroup)elem).Path;
+						else if(elem is SvgVisualElement) p = (GraphicsPath)((SvgVisualElement)elem).Path.Clone();
 						else p = ((SvgFragment)elem).Path;
-						   
+						
+						if(FFlattenInput[i])
+						{
+							p.Flatten(new System.Drawing.Drawing2D.Matrix(), FMaxFlattenInput[i] * 0.1f);
+						}
+							          
 						po.SliceCount = p.PointCount;
 						pto.SliceCount = p.PointCount;
 						
@@ -598,6 +609,9 @@ namespace VVVV.Nodes
 		
 		[Input("Input", IsPinGroup=true)]
 		IDiffSpread<ISpread<SvgElement>> FInput;
+		
+		[Input("Enabled", DefaultValue = 1, Order = 1000000)]
+		IDiffSpread<bool> FEnabledIn;
 
 		[Output("Layer")]
 		ISpread<SvgElement> FOutput;
@@ -640,19 +654,23 @@ namespace VVVV.Nodes
 			}
 			
 			//add all elements to each group
-			if(FInput.IsChanged || FTransformIn.IsChanged)
+			if(FInput.IsChanged || FTransformIn.IsChanged || FEnabledIn.IsChanged)
 			{
 				foreach (var g in FGroups)
 				{
 					g.Children.Clear();
-					for(int i=0; i<FInput.SliceCount; i++)
+					
+					if(FEnabledIn[0])
 					{
-						var pin = FInput[i];
-						for(int j=0; j<pin.SliceCount; j++)
-						{ 
-							var elem = pin[j];
-							if(elem != null)
-								g.Children.Add(elem);
+						for(int i=0; i<FInput.SliceCount; i++)
+						{
+							var pin = FInput[i];
+							for(int j=0; j<pin.SliceCount; j++)
+							{
+								var elem = pin[j];
+								if(elem != null)
+									g.Children.Add(elem);
+							}
 						}
 					}
 					
