@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="D:\AlphaLevels\AlphaLevels (EX9.Texture Filter).v4p">
+   <PATCH nodename="D:\Program Files\vvvv_45beta26\addonpack\modules\common\TextureFX\Filter\AlphaLevels\AlphaLevels (EX9.Texture Filter).v4p">
    <BOUNDS height="10260" left="5535" top="3570" type="Window" width="14490">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="AlphaLevels.fx" id="23" nodename="AlphaLevels.fx" systemname="AlphaLevels (EX9.Effect)">
@@ -67,9 +67,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Backbuffer Width" visible="1">
+   <PIN pinname="Backbuffer Width" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Backbuffer Height" visible="1">
+   <PIN pinname="Backbuffer Height" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
@@ -93,6 +93,8 @@
    </PIN>
    <PIN pinname="Get Original File Infos" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Format" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="19" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
    <BOUNDS height="0" left="3330" top="2490" type="Node" width="0">
@@ -109,7 +111,7 @@
    <LINK dstnodeid="19" dstpinname="Y" linkstyle="PolyLine" srcnodeid="20" srcpinname="Height">
    </LINK>
    <NODE componentmode="Hidden" id="18" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
-   <BOUNDS height="0" left="2520" top="6315" type="Node" width="0">
+   <BOUNDS height="0" left="2160" top="7620" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -118,10 +120,6 @@
    <PIN pinname="XY" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="21" dstpinname="Backbuffer Width" linkstyle="PolyLine" srcnodeid="18" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="21" dstpinname="Backbuffer Height" linkstyle="PolyLine" srcnodeid="18" srcpinname="Y">
-   </LINK>
    <LINK dstnodeid="18" dstpinname="XY" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="19" srcpinname="XY">
    </LINK>
    <LINK dstnodeid="20" dstpinname="Texture" linkstyle="PolyLine" srcnodeid="22" srcpinname="Output Node">
@@ -175,6 +173,8 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="10" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="0" left="3690" top="6270" type="Node" width="0">
@@ -199,7 +199,11 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
+   <PIN pinname="Format" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Width" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Height" visible="1" pintype="Input">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="8" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -325,5 +329,11 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="23" dstpinname="toWhite" srcnodeid="35" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Format" dstnodeid="9" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="X" dstnodeid="9" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Y" dstnodeid="9" dstpinname="Height">
    </LINK>
    </PATCH>
