@@ -378,7 +378,7 @@ namespace VVVV.Nodes
 		}
 		
 		//memcopy method
-		[DllImport("Kernel32.dll", EntryPoint="RtlMoveMemory", SetLastError=false)]
+		[DllImport("msvcrt.dll", EntryPoint="memcpy", SetLastError=false)]
         static extern void CopyMemory(IntPtr dest, IntPtr src, int size);
 
 		//called when data for any output pin is requested
