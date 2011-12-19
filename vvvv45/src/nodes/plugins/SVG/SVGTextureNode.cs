@@ -49,7 +49,7 @@ namespace VVVV.Nodes
 	public class DucumentSvgReaderNode : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Filename", StringType = StringType.Filename, FileMask = "SVG Files (*.svg)|*.svg")]
+		[Input("Filename", StringType = StringType.Filename, DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg")]
 		IDiffSpread<string> FFilenameIn;
 		
 		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 0 })]
@@ -239,6 +239,9 @@ namespace VVVV.Nodes
 		[Output("Document")]
 		ISpread<SvgDoc> FOutput;
 		
+		[Output("Size")]
+		ISpread<Vector2> FSizeOutput;
+		
 		SvgDocument FSVGDoc = new SvgDocument();
 		
 		SizeF FSize = new SizeF();
@@ -314,6 +317,7 @@ namespace VVVV.Nodes
 				FSVGDoc.Height = new SvgUnit(SvgUnitType.User, Math.Max(FSize.Height, 1));
 				 
 				FOutput[0] = new SvgDoc(FSVGDoc, FBackgroundIn[0].Color);
+				FSizeOutput[0] = new Vector2(FSize.Width, FSize.Height);
 			}
 			
 			//render to window
