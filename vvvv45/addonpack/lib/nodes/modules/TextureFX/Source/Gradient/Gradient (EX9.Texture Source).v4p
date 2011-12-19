@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="D:\Program Files\vvvv_45beta26\addonpack\modules\common\TextureFX\Source\Gradient\Gradient (EX9.Texture Source).v4p">
-   <BOUNDS height="6000" left="7245" top="6225" type="Window" width="15195">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
+   <PATCH nodename="D:\Program Files\vvvv_45alpha26.1\addonpack\lib\nodes\modules\TextureFX\Source\Gradient\Gradient (EX9.Texture Source).v4p">
+   <BOUNDS height="6000" left="3210" top="585" type="Window" width="15195">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="22" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="22" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="2040" top="6330" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="2040" top="6330" type="Box" width="2400">
@@ -22,6 +22,16 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="21" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
@@ -336,7 +346,23 @@
    </NODE>
    <LINK dstnodeid="1" dstpinname="Input 1" srcnodeid="2" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Source\Gradient\Gradient.fx" id="0" nodename="Gradient.fx" systemname="Gradient (EX9.Effect)">
+   <LINK dstnodeid="0" dstpinname="R XY" srcnodeid="21" srcpinname="XY">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="FromXY XY" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="ToXY XY" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Extrapolate" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="ColorA" srcnodeid="7" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="ColorB" srcnodeid="6" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Width" srcnodeid="20" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Height" srcnodeid="20" srcpinname="Y">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Source\Gradient\Gradient.fx" id="0" nodename="Gradient (EX9.Effect)" systemname="Gradient (EX9.Effect)">
    <BOUNDS height="270" left="2085" top="5535" type="Node" width="4725">
    </BOUNDS>
    <PIN pinname="Render State" visible="1">
@@ -376,24 +402,8 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="Enabled" srcnodeid="16" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="0" dstpinname="R XY" srcnodeid="21" srcpinname="XY">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="FromXY XY" srcnodeid="4" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="ToXY XY" srcnodeid="3" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="Extrapolate" srcnodeid="1" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="0" dstpinname="Technique" srcnodeid="5" srcpinname="Output Enum">
    </LINK>
-   <LINK dstnodeid="0" dstpinname="ColorA" srcnodeid="7" srcpinname="Color Output">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="ColorB" srcnodeid="6" srcpinname="Color Output">
-   </LINK>
    <LINK dstnodeid="17" dstpinname="Input 1" srcnodeid="0" srcpinname="Compiled">
-   </LINK>
-   <LINK dstnodeid="15" dstpinname="Width" srcnodeid="20" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="15" dstpinname="Height" srcnodeid="20" srcpinname="Y">
    </LINK>
    </PATCH>
