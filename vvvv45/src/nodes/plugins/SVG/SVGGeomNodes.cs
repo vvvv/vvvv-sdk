@@ -193,7 +193,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgRectNode : SVGVisualElementFillNode<SvgRectangle>
 	{
-		[Input("Corner Radius ", Order = 23)]
+		[Input("Corner Radius ", Order = 23, MinValue = 0, MaxValue = 1)]
 		IDiffSpread<Vector2> FCornerRadiusIn;
 		
 		protected override SvgRectangle CreateElement()

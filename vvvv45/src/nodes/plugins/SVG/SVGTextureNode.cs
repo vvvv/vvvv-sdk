@@ -41,9 +41,8 @@ namespace VVVV.Nodes
 	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Reader",
-	            Category = "SVG",
-	            Version = "String",
+	[PluginInfo(Name = "AsSVG",
+	            Category = "String",
 	            Help = "Reads an XML string and returns an SVG document, its elements (layers) and other properties",
 	            Tags = "xml")]
 	#endregion PluginInfo
@@ -235,8 +234,8 @@ namespace VVVV.Nodes
 					
 					if(FSizeIn[i] != Vector2.Zero)
 					{
-						doc.Width = FSizeIn[i].X;
-						doc.Height = FSizeIn[i].Y;
+						doc.Width = Math.Max(FSizeIn[i].X, 1);
+						doc.Height = Math.Max(FSizeIn[i].Y, 1);
 					}
 					
 					WriteDoc(doc, i);
@@ -269,9 +268,8 @@ namespace VVVV.Nodes
 	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Writer",
+	[PluginInfo(Name = "AsString",
 	            Category = "SVG",
-	            Version = "String",
 	            Help = "Writes an SVG document into a string",
 	            Tags = "xml",
 	            AutoEvaluate = true)]
@@ -289,6 +287,7 @@ namespace VVVV.Nodes
                 ms.Position = 0;
                 var sr = new StreamReader(ms);
                 FStringOut[0] = sr.ReadToEnd();
+                sr.Close();
             }
 		}
 	}
@@ -347,6 +346,8 @@ namespace VVVV.Nodes
 			//clear controls in case init is called multiple times
 			Controls.Clear();
 			FPicBox.Dock = DockStyle.Fill;
+			
+			FPicBox.SizeMode = PictureBoxSizeMode.StretchImage;
 			
 			Controls.Add(FPicBox);
 			
