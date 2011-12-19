@@ -1,0 +1,95 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Transform\ToLine (Transform).v4p">
+   <BOUNDS height="6000" left="17880" top="8415" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="3075" top="1290" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="3075" top="1290" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="12975" top="6165" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="From">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="4680" top="1260" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="4680" top="1260" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="14205" top="5955" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="To">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="100" left="3885" top="3360" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="3885" top="3360" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="14100" top="8445" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Transform">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="4" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="100" left="3870" top="2790" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="3870" top="2790" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="15405" top="8295" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input Node" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="5" nodename="ParallelEpiped (Transform Vector)" systemname="ParallelEpiped (Transform Vector)">
+   <BOUNDS height="100" left="3885" top="2145" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="3885" top="2145" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="13380" top="7545" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="XAxis XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Position XYZ" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="6" nodename="Subtract (Value)" systemname="Subtract (Value)">
+   <BOUNDS height="100" left="4275" top="1695" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="4275" top="1695" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="14115" top="6675" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input 1" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input 2" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="XAxis XYZ" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Transform In" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   </PATCH>

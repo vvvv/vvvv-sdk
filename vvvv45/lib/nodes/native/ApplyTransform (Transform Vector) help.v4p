@@ -1,0 +1,231 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="V:\releases\vvvv_33beta9a\help\ApplyTransform (Transform Vector) help.v4p">
+   <BOUNDS height="8355" left="1950" top="1020" type="Window" width="5415">
+   </BOUNDS>
+   <NODE id="15" nodename="GaussianSpread (Spreads)">
+   <BOUNDS height="0" left="2070" top="4290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="60">
+   </PIN>
+   <PIN pinname="Standard Deviation" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="105" top="1140" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6915" left="675" top="420" type="Window" width="9135">
+   </BOUNDS>
+   <BOUNDS height="2880" left="105" top="1140" type="Box" width="3600">
+   </BOUNDS>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="675" top="4995" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="-0.12">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="ApplyTransform (Transform Vector)">
+   <BOUNDS height="0" left="3030" top="5535" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="XYZ Transformed" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="XYZ UnTransformed" linkstyle="Bezier" srcnodeid="15" srcpinname="Output">
+   <LINKPOINT x="2100" y="5040">
+   </LINKPOINT>
+   <LINKPOINT x="4215" y="5040">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="11" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="495" top="6555" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.25307,1.00000,0.24400,0.61400|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Translate (Transform Vector)">
+   <BOUNDS height="0" left="675" top="6090" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="XYZ" linkstyle="Bezier" srcnodeid="15" srcpinname="Output">
+   <LINKPOINT x="2100" y="5325">
+   </LINKPOINT>
+   <LINKPOINT x="1440" y="5325">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Transform" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Transform In" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Transform" linkstyle="VHV" srcnodeid="13" srcpinname="Transform Out">
+   <LINKPOINT x="705" y="5400">
+   </LINKPOINT>
+   <LINKPOINT x="3060" y="5400">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="9" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="2130" top="6555" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,0.28773,0.14800,0.56800|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Translate (Transform Vector)">
+   <BOUNDS height="0" left="2295" top="6090" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="XYZ" srcnodeid="12" srcpinname="XYZ Transformed">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Transform" srcnodeid="8" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="120" top="4320" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6675" top="7335" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="120" top="4320" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-0.51">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="X" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1035" top="4320" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7095" top="7845" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1035" top="4320" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-0.24">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Z" linkstyle="VHV" srcnodeid="6" srcpinname="Y Output Value">
+   <LINKPOINT x="1800" y="4770">
+   </LINKPOINT>
+   <LINKPOINT x="1290" y="4770">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="3180">
+   </BOUNDS>
+   <BOUNDS height="160" left="210" top="7140" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Applies the given transform to the points|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4575">
+   </BOUNDS>
+   <BOUNDS height="160" left="210" top="7140" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Apply Transform - Transform Vector|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="0" top="7560" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="270" left="0" top="7560" type="Box" width="750">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="ApplyTransform (Transform)">
+   <BOUNDS height="0" left="840" top="7560" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="1" nodename="Group (EX9)">
+   <BOUNDS height="0" left="1575" top="7050" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Layer 1" srcnodeid="11" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Layer 2" srcnodeid="9" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="1" srcpinname="Layer">
+   <LINKPOINT x="45" y="7485">
+   </LINKPOINT>
+   <LINKPOINT x="60" y="885">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="0" nodename=":MODULES:\Camera (Transform Softimage).v4p">
+   <BOUNDS height="0" left="3630" top="735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="5925" top="2295" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="3630" top="735" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Projection Transform" srcnodeid="0" srcpinname="View Projection">
+   </LINK>
+   </PATCH>

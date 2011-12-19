@@ -1,0 +1,117 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33debug8.1.dtd" >
+   <PATCH nodename="X:\vvvv33\help\FileStream (DShow9) help.v4p">
+   <BOUNDS height="5430" left="1620" top="2190" type="Window" width="6930">
+   </BOUNDS>
+   <NODE id="7" nodename="FileStream (DShow9)">
+   <BOUNDS height="0" left="525" top="1170" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="|C:\videos\Avalanches - Frontier Psychiatrist.mpg|">
+   </PIN>
+   <PIN pinname="Play" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Do Seek" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Midi" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="420" left="510" top="2910" type="Node" width="1560">
+   </BOUNDS>
+   <BOUNDS height="1530" left="510" top="2910" type="Box" width="4365">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the FileStream node should be capable of playing all files that you can play with your favourite media player.  &cr;&lf;&cr;&lf;when the &apos;Loop&apos; pin is set to 1 &apos;Start Time&apos; and &apos;End Time&apos; are beeing used. a loop will always run to the end time set when the loop started even if meanwhile a new end time was set. |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="VideoOut (DShow9)">
+   <BOUNDS height="0" left="2205" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="AudioOut (DShow9)">
+   <BOUNDS height="0" left="525" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Audio" srcnodeid="7" srcpinname="Audio">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Video" srcnodeid="7" srcpinname="Video">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="420" left="3690" top="2130" type="Node" width="4050">
+   </BOUNDS>
+   <BOUNDS height="270" left="3690" top="2130" type="Box" width="2865">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|be careful with the fullscreen pin!!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="390" type="Box" width="3555">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="7440" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Renders an audio stream on the specified device|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4575">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="7440" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|FileStream - DShow9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="1800" top="1020" width="2340" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1800" top="1020" width="2340" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|choose a mediafile to be played|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE nodename="MidiOut (DShow9)" id="9">
+   <BOUNDS type="Node" left="1425" top="2250" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Midi" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Midi" dstnodeid="9" dstpinname="Midi">
+   </LINK>
+   </PATCH>

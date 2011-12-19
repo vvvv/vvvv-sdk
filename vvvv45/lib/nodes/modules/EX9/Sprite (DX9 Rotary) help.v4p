@@ -1,0 +1,179 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9\Sprite (DX9 Rotary) help.v4p">
+   <BOUNDS height="4845" left="615" top="5490" type="Window" width="6150">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="930" left="255" top="525" type="Box" width="4635">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|A Sprite is a flat render object which can be positioned in 2d and can be textured easily. Only helpful for 2d rendering.&cr;&lf;&cr;&lf;You can specify a Center which is used for rotation and scaling.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sprite - DX9|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="5" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="2085" top="3900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="6750" top="5490" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2085" top="3900" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="3435" top="1725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" values="..\..\..\assets\images\earth_512x512.jpg" encoded="0">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Scale (Transform)" systemname="Scale (Transform)">
+   <BOUNDS height="0" left="3390" top="3420" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.75">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Projection" srcnodeid="3" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="1" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="2580" top="1800" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="4560" top="2100" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3476" top="3702" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="675" left="4560" top="2100" type="Box" width="765">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Show Helper|" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Sprite (DX9 Rotary).v4p" hiddenwhenlocked="0" id="8" managers="" nodename="Sprite (DX9 Rotary)" systemname="Sprite (DX9 Rotary)">
+   <PIN pinname="Texture" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Rotate" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="1695" top="2730" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1695" top="2730" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="X" pintype="Input" slicecount="1" visible="1" values="-1.14">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" slicecount="1" visible="1" values="1.4">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" slicecount="1" visible="1" values="0.7">
+   </PIN>
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="6900" left="13005" top="8550" type="Window" width="14355">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="CenterX" pintype="Input" slicecount="1" visible="1" values="0.17">
+   </PIN>
+   <PIN pinname="CenterY" pintype="Input" slicecount="1" visible="1" values="0.19">
+   </PIN>
+   <PIN pinname="ShowRegpoint" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Color" pintype="Input" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Patch" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Y" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Normalize" slicecount="1" values="Width">
+   </PIN>
+   <PIN pinname="Magnification Filter" slicecount="1" values="Point">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Layers" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Texture" srcnodeid="4" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Rotate" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="ShowRegpoint" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="9" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS height="100" left="1515" top="2055" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="0.83,0.83,0.83">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   </PATCH>
