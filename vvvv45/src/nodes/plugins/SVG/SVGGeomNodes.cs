@@ -481,7 +481,13 @@ namespace VVVV.Nodes
 	public class SVGGetPathNode : IPluginEvaluate
 	{
 		[Input("Layer")]
-		IDiffSpread<SvgElement> FInput;
+		ISpread<SvgElement> FInput;
+		
+		[Input("Flatten", DefaultValue = 1)]
+		ISpread<bool> FFlattenInput;
+		
+		[Input("Max Flatten Error", DefaultValue = 0.25)]
+		ISpread<float> FMaxFlattenInput;
 		
 		[Input("Update", IsBang = true, IsSingle = true)]
 		ISpread<bool> FUpdateInput;
@@ -509,9 +515,15 @@ namespace VVVV.Nodes
 					if(elem is SvgVisualElement || elem is SvgFragment)
 					{
 						GraphicsPath p;
-						if(elem is SvgVisualElement) p = ((SvgVisualElement)elem).Path;
+						if(elem is SvgGroup) p = ((SvgGroup)elem).Path;
+						else if(elem is SvgVisualElement) p = (GraphicsPath)((SvgVisualElement)elem).Path.Clone();
 						else p = ((SvgFragment)elem).Path;
-						   
+						
+						if(FFlattenInput[i])
+						{
+							p.Flatten(new System.Drawing.Drawing2D.Matrix(), FMaxFlattenInput[i] * 0.1f);
+						}
+							          
 						po.SliceCount = p.PointCount;
 						pto.SliceCount = p.PointCount;
 						
