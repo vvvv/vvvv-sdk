@@ -23,6 +23,7 @@ namespace VVVV.TodoMap.Lib
         public event TodoInputChangedEventDelegate VariableMappingChanged;
         
         public event TodoVariableChangedDelegate VariableValueChanged;
+        public event TodoVariableExtendedChangedDelegate VariableValueChangedExtended;
         
 
         public event EventHandler OnReset;
@@ -176,6 +177,11 @@ namespace VVVV.TodoMap.Lib
             if (this.VariableValueChanged != null)
             {
                 this.VariableValueChanged(var.Name,var.Value);
+            }
+
+            if (this.VariableValueChangedExtended != null)
+            {
+                this.VariableValueChangedExtended(var, source);
             }
 
             if (var.AllowFeedBack)
