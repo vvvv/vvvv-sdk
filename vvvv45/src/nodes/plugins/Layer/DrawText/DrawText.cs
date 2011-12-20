@@ -343,6 +343,8 @@ namespace VVVV.Nodes
 					font.MeasureString(dh.Sprite, text, format, ref tmpRect);
 					width = tmpRect.Width;
 					height = tmpRect.Height;
+					
+					FSizeOutput[i] = new Vector2D(width, height);
 
 					switch (normalize)
 					{
@@ -386,8 +388,6 @@ namespace VVVV.Nodes
 							default: x = 0; break;
 					}
 					font.DrawString(dh.Sprite, text, new Rectangle((int)-x, (int)-y, width, height), format, (Color)FColorInput[i]);
-
-					FSizeOutput[i] = new Vector2D(width, height);
 				}
 			}
 			catch (Exception e)
