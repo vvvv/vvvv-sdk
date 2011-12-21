@@ -16,6 +16,7 @@ namespace VVVV.PluginInterfaces.V2
 			BinSize = DefaultBinSize;
 			BinName = DefaultBinName;
 			BinVisibility = PinVisibility.True;
+			BinOrder = 0;
 		}
 		
 		/// <summary>
@@ -40,6 +41,15 @@ namespace VVVV.PluginInterfaces.V2
 		/// The visibility of the bin size pin in the patch and inspektor.
 		/// </summary>
 		public PinVisibility BinVisibility
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
+		/// The position of the bin size used in ISpread&lt;ISpread&lt;T&gt;&gt; implementations.
+		/// </summary>
+		public int BinOrder
 		{
 			get;
 			set;
