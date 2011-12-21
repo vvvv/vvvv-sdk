@@ -94,12 +94,12 @@ namespace VVVV.Nodes
                         FGesture = new GestureGenerator(FContextIn[0]);
                         FHands = new HandsGenerator(FContextIn[0]);
 
-                        //Write all possibel Gesture to the Output Pin
-                        string[] Enum = FGesture.EnumerateAllGestures();
-                        FGesturesPosOut.SliceCount = Enum.Length;
-                        for (int i = 0; i < Enum.Length; i++)
+                        //Write all possible gestures to the Output Pin
+                        var gestures = FGesture.EnumerateAllGestures();
+                        FGesturesPosOut.SliceCount = gestures.Length;
+                        for (int i = 0; i < gestures.Length; i++)
                         {
-                            FGesturesPosOut[i] = Enum[i];
+                            FGesturesPosOut[i] = gestures[i];
                         }
 
                         //Start the Nodes to generate data
