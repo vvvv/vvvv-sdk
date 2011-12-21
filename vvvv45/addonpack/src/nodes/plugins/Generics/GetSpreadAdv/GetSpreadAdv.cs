@@ -22,7 +22,7 @@ namespace VVVV.Nodes
 		[Input("Offset")]
 		ISpread<int> FOffset;
 		
-		[Input("Count")]
+		[Input("Count", DefaultValue = 1, MinValue = 0)]
 		ISpread<int> FCount;
 
 		[Output("Output")]
@@ -36,7 +36,7 @@ namespace VVVV.Nodes
 			SpreadMax = Math.Max(SpreadMax, FCount.SliceCount);
 			FOutput.SliceCount = SpreadMax;
 			for (int i=0; i<SpreadMax; i++)
-				FOutput[i]=FInput[i].GetRange(FOffset[i],FCount[i]);
+				FOutput[i]=FInput[i].GetRange(FOffset[i],Math.Max(FCount[i],0));
 
 		}
 	}

@@ -30,10 +30,10 @@ namespace VVVV.Nodes
 	public class TextEX9TextureNode : DXTextureOutPluginBase, IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Width", DefaultValue = 64)]
+		[Input("Width", DefaultValue = 256)]
 		IDiffSpread<int> FWidthIn;
 
-		[Input("Height", DefaultValue = 64)]
+		[Input("Height", DefaultValue = 256)]
 		IDiffSpread<int> FHeightIn;
 		
  		[Input("Text", DefaultString = "vvvv")]

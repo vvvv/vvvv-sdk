@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("woei")]
 [assembly: AssemblyProduct("GetSpread Advanced - Plugin")]
-[assembly: AssemblyCopyright("Copyright 2011")]
+[assembly: AssemblyCopyright("LGPL 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

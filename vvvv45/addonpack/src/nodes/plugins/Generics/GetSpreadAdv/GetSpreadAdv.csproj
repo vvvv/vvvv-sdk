@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{6A0AFB1F-8219-4A08-85F7-B7F19B66AC16}</ProjectGuid>
     <Configuration>Debug</Configuration>
@@ -6,27 +7,36 @@
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Nodes</RootNamespace>
     <AssemblyName>GetSpreadAdv</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <OutputPath>bin\Debug\</OutputPath>
     <DebugSymbols>True</DebugSymbols>
     <DebugType>Full</DebugType>
     <Optimize>False</Optimize>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ReferencePath>$(VVVV45)\bin\managed\</ReferencePath>
-    <StartProgram>$(VVVV45)\vvvv.exe</StartProgram>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <ReferencePath>C:\Users\woeishi\vvvv\vvvv45\lib\core\</ReferencePath>
+    <ReferencePath>..\..\..\vvvv\vvvv-sdk\vvvv45\bin\managed\</ReferencePath>    
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SlimDX" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.ComponentModel.Composition.Codeplex">
+      <HintPath>..\..\..\..\..\..\lib\core\System.ComponentModel.Composition.Codeplex.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition.Codeplex">
+      <HintPath>..\..\..\..\..\..\lib\core\System.ComponentModel.Composition.Codeplex.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="VVVV.Core" />
-    <Reference Include="VVVV.PluginInterfaces" />
-    <Reference Include="VVVV.Utils" />
-    <Reference Include="VVVV.Utils3rdParty" />
+    <Reference Include="VVVV.Core">
+      <HintPath>..\..\..\..\..\..\lib\core\VVVV.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.PluginInterfaces">
+      <HintPath>..\..\..\..\..\..\lib\core\VVVV.PluginInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils">
+      <HintPath>..\..\..\..\..\..\lib\core\VVVV.Utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GetSpreadAdv.cs" />
