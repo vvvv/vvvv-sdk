@@ -159,7 +159,7 @@ namespace VVVV.Hosting
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(NodeCollection).Assembly.Location));
             //allow plugin writers to add their own factories
-            var factoriesPath = Path.GetDirectoryName(ExePath.ConcatPath(@"lib\factories"));
+            var factoriesPath = ExePath.ConcatPath(@"lib\factories");
             if (Directory.Exists(factoriesPath))
                 catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
             Container = new CompositionContainer(catalog);

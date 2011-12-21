@@ -36,6 +36,7 @@ namespace VVVV.Hosting.Pins
             this.RegisterType(typeof(Vector2), (host, attribute, t) => new Vector2OutputPin(host, attribute));
             this.RegisterType(typeof(Vector3), (host, attribute, t) => new Vector3OutputPin(host, attribute));
             this.RegisterType(typeof(Vector4), (host, attribute, t) => new Vector4OutputPin(host, attribute));
+            this.RegisterType(typeof(Quaternion), (host, attribute, t) => new QuaternionOutputPin(host, attribute));
 
             this.RegisterType(typeof(string), (host, attribute, t) => new StringOutputPin(host, attribute));
             this.RegisterType(typeof(RGBAColor), (host, attribute, t) => new ColorOutputPin(host, attribute));
