@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
@@ -14,17 +14,25 @@ namespace VVVV.Hosting.Pins.Output
 		protected Pin<T> FSpreadPin;
 		protected bool FSpreadsBuilt;
 		protected int FUpdateCount;
+		protected string FBinName;
 		
 		public OutputBinSpread(IPluginHost host, OutputAttribute attribute)
 			: base(attribute)
 		{
+			FBinName = attribute.BinName;
+			
 			//data pin
 			FSpreadPin = PinFactory.CreatePin<T>(host, attribute);
 			FSpreadPin.Updated += AnyUpdated;
 			
 			//bin size pin
-			var att = new OutputAttribute(attribute.Name + " Bin Size");
+			if (FBinName == " Bin Size")
+			  FBinName = attribute.Name+FBinName;
+			
+			var att = new OutputAttribute(FBinName);
 			att.DefaultValue = 1;
+			att.Visibility = attribute.BinVisibility;
+			att.Order = attribute.BinOrder;
 			FBinSize = new IntOutputPin(host, att);
 			FBinSize.Updated += AnyUpdated;
 		}
