@@ -1,0 +1,155 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\_legacy\MidiNote (Devices Legacy).v4p" componentmode="Hidden">
+   <BOUNDS height="6000" left="4935" top="6900" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5055" top="525" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5055" top="525" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="17250" top="10650" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="6750" top="525" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="6750" top="525" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="9675" top="8685" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Midi Input Port|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3300" top="525" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="3300" top="525" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="6735" top="8610" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Buffer Length|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1860" top="525" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="1860" top="525" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="6180" top="9195" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Note">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="555" top="525" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="555" top="525" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="5250" top="9765" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Channel">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="7" nodename="Cross (2d)" systemname="Cross (2d)">
+   <BOUNDS height="0" left="1800" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y In" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="X In" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1755" top="4500" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="1755" top="4500" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="6630" top="12270" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2625" top="4500" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="2625" top="4500" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="7890" top="11775" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|On Data|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3645" top="4485" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="3645" top="4485" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="8190" top="12075" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Buffer Overflow|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="MidiNote (Devices)" systemname="MidiNote (Devices)">
+   <BOUNDS height="0" left="2490" top="3585" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Midi Input Port" visible="1">
+   </PIN>
+   <PIN pinname="Controller" visible="1">
+   </PIN>
+   <PIN pinname="Buffer Length" visible="1">
+   </PIN>
+   <PIN pinname="Channel" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   <PIN pinname="Buffer Overflow" visible="1">
+   </PIN>
+   <PIN pinname="Note" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Enabled" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Midi Input Port" srcnodeid="3" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Buffer Length" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Channel" srcnodeid="7" srcpinname="Y Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" srcnodeid="12" srcpinname="On Data">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Buffer Overflow">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Note" srcnodeid="7" srcpinname="X Out">
+   </LINK>
+   </PATCH>
