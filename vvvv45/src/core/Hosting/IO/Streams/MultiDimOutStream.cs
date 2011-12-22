@@ -13,9 +13,7 @@ namespace VVVV.Hosting.IO.Streams
 		public MultiDimOutStream(IIOFactory ioFactory, OutputAttribute attribute)
 		{
 			FDataStream = ioFactory.CreateIO<IOutStream<T>>(attribute);
-			FBinSizeStream = ioFactory.CreateIO<IOutStream<int>>(
-				new OutputAttribute(string.Format("{0} Bin Size", attribute.Name))
-			);
+			FBinSizeStream = ioFactory.CreateIO<IOutStream<int>>(attribute.GetBinSizeOutputAttribute());
 			Length = 1;
 		}
 		

@@ -85,6 +85,24 @@ namespace VVVV.Hosting.IO
 			              	}
 			              });
 			
+			RegisterInput(typeof(IInStream<uint>), (factory, attribute, t) => {
+			              	var host = factory.PluginHost;
+			              	if (attribute.CheckIfChanged)
+			              	{
+			              		var valueIn = host.CreateValueInput(attribute, t);
+			              		valueIn.GetValuePointer(out pLength, out ppDoubleData);
+			              		var stream = new UIntInStream(pLength, ppDoubleData, GetValidateFunc(valueIn));
+			              		return IOHandler.Create(stream, valueIn);
+			              	}
+			              	else
+			              	{
+			              		var valueFastIn = host.CreateValueFastInput(attribute, t);
+			              		valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+			              		var stream = new UIntInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+			              		return IOHandler.Create(stream, valueFastIn);
+			              	}
+			              });
+			
 			RegisterInput(typeof(IInStream<bool>), (factory, attribute, t) => {
 			              	var host = factory.PluginHost;
 			              	if (attribute.CheckIfChanged)
@@ -337,6 +355,13 @@ namespace VVVV.Hosting.IO
 			               	var valueOut = host.CreateValueOutput(attribute, t);
 			               	valueOut.GetValuePointer(out ppDoubleData);
 			               	return IOHandler.Create(new IntOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+			               });
+			
+			RegisterOutput(typeof(IOutStream<uint>), (factory, attribute, t) => {
+			               	var host = factory.PluginHost;
+			               	var valueOut = host.CreateValueOutput(attribute, t);
+			               	valueOut.GetValuePointer(out ppDoubleData);
+			               	return IOHandler.Create(new UIntOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
 			               });
 			
 			RegisterOutput(typeof(IOutStream<bool>), (factory, attribute, t) => {

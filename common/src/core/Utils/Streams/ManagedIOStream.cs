@@ -314,7 +314,7 @@ namespace VVVV.Utils.Streams
 		{
 			var stream = new ManagedIOStream<T>();
 			stream.Length = Length;
-			Array.Copy(FBuffer, stream.FBuffer, FBuffer.Length);
+			Array.Copy(FBuffer, stream.FBuffer, stream.FBuffer.Length);
 			return stream;
 		}
 		

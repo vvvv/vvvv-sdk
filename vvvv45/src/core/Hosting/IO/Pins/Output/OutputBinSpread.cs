@@ -17,12 +17,7 @@ namespace VVVV.Hosting.Pins.Output
 			: base(ioFactory, attribute)
 		{
 			FDataStream = FIOFactory.CreateIO<IOutStream<T>>(attribute);
-			
-			var att = new OutputAttribute(attribute.Name + " Bin Size")
-			{
-				DefaultValue = 1
-			};
-			FBinSizeStream = FIOFactory.CreateIO<IOutStream<int>>(att);
+			FBinSizeStream = FIOFactory.CreateIO<IOutStream<int>>(attribute.GetBinSizeOutputAttribute());
 			
 			SliceCount = 1;
 		}

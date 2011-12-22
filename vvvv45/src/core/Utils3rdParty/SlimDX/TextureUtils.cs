@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -80,6 +82,27 @@ namespace VVVV.Utils.SlimDX
 			
 			t.UnlockRectangle(0);
 			return t;
+		}
+		
+		//memcopy method
+		[DllImport("msvcrt.dll", EntryPoint="memcpy", SetLastError=false)]
+        static extern void CopyMemory(IntPtr dest, IntPtr src, int size);
+		
+		/// <summary>
+		/// Copies all pixels of the bitmap into the texture.
+		/// no checks are done, make sure the pixel count of the bitmap and texture matches
+		/// </summary>
+		/// <param name="bm"></param>
+		/// <param name="texture"></param>
+		public static void CopyBitmapToTexture(Bitmap bm, Texture texture)
+		{
+			var data = bm.LockBits(new Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadOnly, bm.PixelFormat);
+			var rect = texture.LockRectangle(0, LockFlags.None);
+			
+			CopyMemory(rect.Data.DataPointer, data.Scan0, data.Stride * data.Height);
+			
+			texture.UnlockRectangle(0);
+			bm.UnlockBits(data);
 		}
 		
 		/// <summary>

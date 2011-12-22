@@ -295,13 +295,13 @@ namespace VVVV.Hosting.IO.Streams
             {
                 fixed (Vector2* source = buffer)
                 {
-                    return Write((double*) source, index, length, stride);
+                    return Write((float*) source, index, length, stride);
                 }
             }
             
             public override void Write(Vector2 value, int stride)
             {
-                Write((double*) &value, stride);
+                Write((float*) &value, stride);
             }
         }
         
@@ -331,13 +331,13 @@ namespace VVVV.Hosting.IO.Streams
             {
                 fixed (Vector3* source = buffer)
                 {
-                    return Write((double*) source, index, length, stride);
+                    return Write((float*) source, index, length, stride);
                 }
             }
             
             public override void Write(Vector3 value, int stride)
             {
-                Write((double*) &value, stride);
+                Write((float*) &value, stride);
             }
         }
         
@@ -367,13 +367,13 @@ namespace VVVV.Hosting.IO.Streams
             {
                 fixed (Vector4* source = buffer)
                 {
-                    return Write((double*) source, index, length, stride);
+                    return Write((float*) source, index, length, stride);
                 }
             }
             
             public override void Write(Vector4 value, int stride)
             {
-                Write((double*) &value, stride);
+                Write((float*) &value, stride);
             }
         }
         

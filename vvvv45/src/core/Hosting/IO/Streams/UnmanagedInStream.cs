@@ -342,6 +342,63 @@ namespace VVVV.Hosting.IO.Streams
 		}
 	}
 
+	unsafe class UIntInStream : UnmanagedInStream<uint>
+	{
+		class UIntInStreamReader : UnmanagedInStreamReader
+		{
+			private readonly double* FPData;
+			
+			public UIntInStreamReader(UIntInStream stream, double* pData)
+				: base(stream)
+			{
+				FPData = pData;
+			}
+			
+			public override uint Read(int stride)
+			{
+				Debug.Assert(Position < Length);
+				var result = (uint) Math.Round(FPData[Position]);
+				Position += stride;
+				return result;
+			}
+			
+			protected override void Copy(uint[] destination, int destinationIndex, int length, int stride)
+			{
+				fixed (uint* destinationPtr = destination)
+				{
+					uint* dst = destinationPtr + destinationIndex;
+					double* src = FPData + Position;
+					
+					for (int i = 0; i < length; i++)
+					{
+						*(dst++) = (uint) Math.Round(*src);
+						src += stride;
+					}
+				}
+			}
+		}
+		
+		private readonly double** FPPData;
+		
+		public UIntInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+			: base(pLength, validateFunc)
+		{
+			FPPData = ppData;
+		}
+		
+		public override IStreamReader<uint> GetReader()
+		{
+			FRefCount++;
+			return new UIntInStreamReader(this, *FPPData);
+		}
+		
+		public override object Clone()
+		{
+			return new UIntInStream(FPLength, FPPData, FValidateFunc);
+		}
+	}
+	
+	
 	unsafe class BoolInStream : UnmanagedInStream<bool>
 	{
 		class BoolInStreamReader : UnmanagedInStreamReader
