@@ -17,7 +17,7 @@ namespace VVVV.Nodes
 {
     #region PluginInfo
     [PluginInfo(Name = "IO",
-                Category = "Device",
+                Category = "Devices",
                 Version = "Phidget",
                 Help = "Wrapper for the Phidget IOBoards",
                 Tags = "Controller, InterfaceKit",
