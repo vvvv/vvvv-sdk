@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectGuid>{9B076BD5-8E94-471A-81BC-E4C59EB29A48}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <StartAction>Program</StartAction>
+    <StartProgram>..\..\vvvv.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CoreDestFolder>..\..\lib\core\</CoreDestFolder>
+    <PluginsDestFolder>..\lib\nodes\plugins\</PluginsDestFolder>
+  </PropertyGroup>
+  <ItemGroup>
+    <CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <BuildDependsOn>$(BuildDependsOn)</BuildDependsOn>
+    <RebuildDependsOn>Clean;Build</RebuildDependsOn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
+    <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
+    <MSBuild Projects="@(ProjectReference)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
+      <Output TaskParameter="TargetOutputs" ItemName="PluginsOutputFiles" />
+    </MSBuild>
+    <CreateItem Include="core\**\bin\$(Configuration)\*;gui\**\bin\$(Configuration)\*">
+      <Output TaskParameter="Include" ItemName="CoreOutputFiles" />
+    </CreateItem>
+    <!-- Make sure *.pdb files are included -->
+    <CreateItem Include="@(PluginsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
+      <Output TaskParameter="Include" ItemName="PluginsOutputFiles" />
+    </CreateItem>
+    <Copy SourceFiles="@(CoreOutputFiles)" DestinationFiles="@(CoreOutputFiles->'$(CoreDestFolder)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(PluginsOutputFiles)" DestinationFiles="@(PluginsOutputFiles->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
+    <!-- Copy everything in Dependencies -->
+    <ItemGroup>
+      <PluginDependencies Include="nodes\plugins\**\Dependencies\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
+  </Target>
+  <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
+  <!--
+  This target can be used to clean all of the projects before you build them.
+  It will also delete any dll & exe files located in the the Deploy folder. This could be accomplished
+  much better than this, but this is quick and easy.
+  -->
+  <Target Name="Clean">
+    <!-- Delete any files this process may have created from a previous execution -->
+    <CreateItem Include="$(CoreDestFolder)\**\*exe;$(CoreDestFolder)\**\*dll;$(CoreDestFolder)\**\*xml;$(CoreDestFolder)\**\*pdb;$(PluginsDestFolder)\**\*exe;$(PluginsDestFolder)\**\*dll;$(PluginsDestFolder)\**\*xml;$(PluginsDestFolder)\**\*pdb">
+      <Output ItemName="GeneratedFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Delete Files="@(GeneratedFiles)" />
+  </Target>
+  <!-- Will simply print all of the project files to be built -->
+  <!--
+  <Target Name="PrintAll">
+    <Message Text="Project files:%0d%0a@(ProjectsToBuild,'%0d%0a')" Importance="high" />
+  </Target>
+  -->
+</Project>
