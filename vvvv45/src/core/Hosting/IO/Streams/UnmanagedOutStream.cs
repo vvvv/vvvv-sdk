@@ -270,6 +270,55 @@ namespace VVVV.Hosting.IO.Streams
 			return new IntOutWriter(this, *FPPDst);
 		}
 	}
+	
+	unsafe class UIntOutStream : UnmanagedOutStream<uint>
+	{
+		class UIntOutWriter : UnmanagedOutWriter
+		{
+			private readonly double* FPDst;
+			
+			public UIntOutWriter(UIntOutStream stream, double* pDst)
+				: base(stream)
+			{
+				FPDst = pDst;
+			}
+			
+			public override void Write(uint value, int stride)
+			{
+				Debug.Assert(!Eos);
+				FPDst[Position] = (double) value;
+				Position += stride;
+			}
+			
+			protected override void Copy(uint[] source, int sourceIndex, int length, int stride)
+			{
+				fixed (uint* sourcePtr = source)
+				{
+					uint* src = sourcePtr + sourceIndex;
+					double* dst = FPDst + Position;
+					
+					for (int i = 0; i < length; i++)
+					{
+						*dst = (double) *(src++);
+						dst += stride;
+					}
+				}
+			}
+		}
+		
+		private readonly double** FPPDst;
+		
+		public UIntOutStream(double** ppDst, Action<int> setDstLengthAction)
+			: base(setDstLengthAction)
+		{
+			FPPDst = ppDst;
+		}
+		
+		public override IStreamWriter<uint> GetWriter()
+		{
+			return new UIntOutWriter(this, *FPPDst);
+		}
+	}
 
 	unsafe class BoolOutStream : UnmanagedOutStream<bool>
 	{

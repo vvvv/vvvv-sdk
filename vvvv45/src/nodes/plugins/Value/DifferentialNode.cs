@@ -29,7 +29,7 @@ namespace VVVV.Nodes.Value
 				var input = FInput[i];
 				var output = FOutput[i];
 
-                FOffset[i] = input[0];
+				FOffset[i] = input.SliceCount > 0 ? input[0] : 0;
 
 				output.SliceCount = input.SliceCount - 1;
 				for (int j = 1; j < input.SliceCount; j++)

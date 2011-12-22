@@ -3,7 +3,7 @@ float4 fromBlack:COLOR;
 float4 fromWhite:COLOR;
 float4 toBlack:COLOR;
 float4 toWhite:COLOR;
-float Gamma=1;
+float4 Gamma=1;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;

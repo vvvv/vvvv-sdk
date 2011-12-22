@@ -258,13 +258,7 @@ namespace VVVV.Hosting.IO.Streams
 		public MultiDimInStream(IIOFactory factory, InputAttribute attribute)
 		{
 			FDataStream = factory.CreateIO<IInStream<T>>(attribute);
-			FBinSizeStream = factory.CreateIO<IInStream<int>>(
-				new InputAttribute(string.Format("{0} Bin Size", attribute.Name))
-				{
-					DefaultValue = attribute.BinSize,
-					AutoValidate = false
-				}
-			);
+			FBinSizeStream = factory.CreateIO<IInStream<int>>(attribute.GetBinSizeInputAttribute());
 			FNormBinSizeStream = new ManagedIOStream<int>();
 			FBinSizeBuffer = new int[16]; // 64 byte
 		}

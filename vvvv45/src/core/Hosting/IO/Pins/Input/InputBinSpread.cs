@@ -21,15 +21,7 @@ namespace VVVV.Hosting.Pins.Input
 			
 			attribute.AutoValidate = false;
 			FDataStream = FIOFactory.CreateIO<IInStream<T>>(attribute);
-			
-			var att = new InputAttribute(attribute.Name + " Bin Size")
-			{
-				AutoValidate = false,
-				DefaultValue = attribute.BinSize,
-				Order = attribute.Order + 1,
-				CheckIfChanged = attribute.CheckIfChanged
-			};
-			FBinSizeStream = FIOFactory.CreateIO<IInStream<int>>(att);
+			FBinSizeStream = FIOFactory.CreateIO<IInStream<int>>(attribute.GetBinSizeInputAttribute());
 			FNormBinSizeStream = new ManagedIOStream<int>();
 		}
 		
