@@ -36,7 +36,7 @@ namespace VVVV.Hosting.Pins
 				FStepSize = 1.0;
 			
 			var isBool = typeof(T) == typeof(bool);
-			var isInteger = typeof(T) == typeof(int);
+			var isInteger = (typeof(T) == typeof(int)) || (typeof(T) == typeof(uint));
 			
 			FIsBang = isBool && attribute.IsBang;
 			FIsToggle = isBool && !attribute.IsBang;
@@ -75,7 +75,7 @@ namespace VVVV.Hosting.Pins
 				FStepSize = 1.0;
 			
 			var isBool = typeof(T) == typeof(bool);
-			var isInteger = typeof(T) == typeof(int);
+			var isInteger = (typeof(T) == typeof(int)) || (typeof(T) == typeof(uint));
 			
 			FIsBang = isBool && attribute.IsBang;
 			FIsToggle = isBool && !attribute.IsBang;

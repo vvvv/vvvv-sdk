@@ -16,6 +16,7 @@ namespace VVVV.TodoMap.Lib.Persist
             //Modules
             sb.AppendLine("<TodoModules>");
             PersistOsc(sb, engine.Osc);
+            PersistMidi(sb, engine.Midi);
             sb.AppendLine("</TodoModules>");
 
 
@@ -50,6 +51,30 @@ namespace VVVV.TodoMap.Lib.Persist
             sb.AppendLine(outputline);
 
             sb.AppendLine("</Osc>");
+        }
+
+        private static void PersistMidi(StringBuilder sb, TodoMidiDevice midi)
+        {
+            sb.AppendLine("<Midi>");
+            
+            sb.AppendLine("<Inputs>");
+            foreach (string s in midi.InputAuto)
+            {
+                string inputline = "<Input AutoStart=\"[inputname]\" />";
+                inputline = inputline.Replace("[inputname]", s);
+                sb.AppendLine(inputline);
+            }
+            sb.AppendLine("</Inputs>");
+
+            sb.AppendLine("<Outputs>");
+            foreach (string s in midi.OutputAuto)
+            {
+                string outputline = "<Output AutoStart=\"[outputname]\" />";
+                outputline = outputline.Replace("[outputname]", s);
+                sb.AppendLine(outputline);
+            }
+            sb.AppendLine("</Outputs>");
+            sb.AppendLine("</Midi>");
         }
 
         private static void PersistVariable(StringBuilder sb, TodoVariable var)

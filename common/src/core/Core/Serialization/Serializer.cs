@@ -41,7 +41,7 @@ namespace VVVV.Core.Serialization
             if (FCultureSwitchCounter <= 0)
             {
                 // Save off previous culture and switch to invariant for serialization.
-                CultureInfo FPreviousCulture = Thread.CurrentThread.CurrentCulture;
+                FPreviousCulture = Thread.CurrentThread.CurrentCulture;
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             }
 
