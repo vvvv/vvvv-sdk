@@ -22,7 +22,7 @@ namespace VVVV.Hosting.Pins
 					{
 						var spread = oldBuffer[i & (oldBuffer.Length - 1)];
 						if (spread != null)
-							newBuffer[i] = spread.Clone() as Spread<T>;
+						    newBuffer[i] = (Spread<T>) spread.Clone();
 						else
 							newBuffer[i] = new Spread<T>(0);
 					}
