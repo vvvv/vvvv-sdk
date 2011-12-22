@@ -75,7 +75,10 @@ namespace VVVV.Nodes
 					{
 						binSize = buffer[FId[i]].SliceCount;
 					}
-					catch {}
+					catch
+					{
+						binSize = FBinSize[FId[i]];
+					}
 					Alter(i, incr, binSize, ref buffer);		
 					incr+=binSize;
 				}

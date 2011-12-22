@@ -21,6 +21,7 @@ namespace VVVV.Hosting.Pins
             this.RegisterType(typeof(double), (host, attribute, t) => new DoubleInputPin(host, attribute));
             this.RegisterType(typeof(float), (host, attribute, t) => new FloatInputPin(host, attribute));
             this.RegisterType(typeof(int), (host, attribute, t) => new IntInputPin(host, attribute));
+            this.RegisterType(typeof(uint), (host, attribute, t) => new UIntInputPin(host, attribute));
             this.RegisterType(typeof(bool), (host, attribute, t) => new BoolInputPin(host, attribute));
 
             this.RegisterType(typeof(Matrix4x4), (host, attribute, t) => new Matrix4x4InputPin(host, attribute));

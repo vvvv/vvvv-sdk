@@ -26,6 +26,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		protected void Update()
 		{
 			foreach (var dd in FDeviceData.Values) dd.Update = true;
+			SetResourcePinsChanged();
 		}
 		
 		/// <summary>
@@ -34,8 +35,10 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		protected void Reinitialize()
 		{
 			foreach (var dd in FDeviceData.Values) dd.Reinitialize = true;
+			SetResourcePinsChanged();
 		}
 		
+		protected abstract void SetResourcePinsChanged();
 		protected abstract T CreateDeviceData(Device device);
 		protected abstract void UpdateDeviceData(T deviceData);
 		protected abstract void DestroyDeviceData(T deviceData, bool OnlyUnManaged);

@@ -200,6 +200,17 @@ namespace VVVV.Nodes
 						
 						FHasSizeOut[i] = !noSize;
 					}
+					else
+					{
+						FDocOut[i] = new SvgDoc();
+						FLayerOut[i].SliceCount = 0;
+						
+						FViewOut[i] = new SvgViewBox();
+						FHasViewOut[i] = false;
+						
+						FSizeOut[i] = new Vector2D();
+						FHasSizeOut[i] = false;
+					}
 				}
 			}
 			//FLogger.Log(LogType.Debug, "hi tty!");
@@ -550,17 +561,21 @@ namespace VVVV.Nodes
 						}
 						
 						var m = FTransformIn[i];
-						var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
-						doc.Transforms.Add(mat);
-						doc.Width = new SvgUnit(SvgUnitType.Pixel, size.Width);
-						doc.Height = new SvgUnit(SvgUnitType.Pixel, size.Height);
 						
-						//draw into bitmap
-						doc.Draw(bm);
-						
-						doc.Width = oldW;
-						doc.Height = oldH;
-						doc.Transforms.Remove(mat);
+						if(m.M11 != 0 && m.M22 !=0)
+						{
+							var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
+							doc.Transforms.Add(mat);
+							doc.Width = new SvgUnit(SvgUnitType.Pixel, size.Width);
+							doc.Height = new SvgUnit(SvgUnitType.Pixel, size.Height);
+							
+							//draw into bitmap
+							doc.Draw(bm);
+							
+							doc.Width = oldW;
+							doc.Height = oldH;
+							doc.Transforms.Remove(mat);
+						}
 						
 						Update();
 					}

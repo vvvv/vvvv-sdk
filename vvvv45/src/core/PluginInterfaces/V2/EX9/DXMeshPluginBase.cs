@@ -39,5 +39,10 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		{
 			deviceData.Data.Dispose();
 		}
+		
+		protected override void SetResourcePinsChanged()
+		{
+			FMeshOut.MarkPinAsChanged();
+		}
 	}
 }

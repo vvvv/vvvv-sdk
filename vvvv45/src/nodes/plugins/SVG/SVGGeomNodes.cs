@@ -353,6 +353,9 @@ namespace VVVV.Nodes
 		[Input("Size", DefaultValue = 1, Order = 3)]
 		IDiffSpread<float> FTextSizeIn;
 		
+		[Input("Anchor", Order = 4)]
+		IDiffSpread<SvgTextAnchor> FTextAnchorIn;
+		
 		protected override SvgText CreateElement()
 		{
 			return new SvgText();
@@ -360,13 +363,14 @@ namespace VVVV.Nodes
 		
 		protected override bool PinsChanged()
 		{
-			return base.PinsChanged() || FTextIn.IsChanged || FTextSizeIn.IsChanged || FFontIn.IsChanged;
+			return base.PinsChanged() || FTextIn.IsChanged || FTextSizeIn.IsChanged || FFontIn.IsChanged || FTextAnchorIn.IsChanged;
 		}
 		
 		protected override void CalcGeometry(SvgText elem, Vector2 trans, Vector2 scale, int slice)
 		{
 			elem.Text = FTextIn[slice];
 			elem.FontSize = FTextSizeIn[slice];
+			elem.TextAnchor = FTextAnchorIn[slice];
 			try
 			{
 				elem.FontFamily = (new Font(FFontIn[slice].Name, 1)).FontFamily.Name;
