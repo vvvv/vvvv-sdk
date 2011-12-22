@@ -20,7 +20,7 @@ namespace VVVV.Nodes
                 Category = "Device",
                 Version = "Phidget",
                 Help = "Wrapper for the Phidget IOBoards",
-                Tags = "Controller,IO,InterfaceKit",
+                Tags = "Controller, InterfaceKit",
                 Author = "Phlegma",
                 AutoEvaluate = true
 )]
