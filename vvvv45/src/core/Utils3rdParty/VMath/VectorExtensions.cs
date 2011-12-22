@@ -1,5 +1,6 @@
 ﻿using System;
 using SlimDX;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Utils.VMath
 {

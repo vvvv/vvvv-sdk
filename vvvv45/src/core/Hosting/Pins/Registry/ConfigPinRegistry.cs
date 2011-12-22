@@ -21,6 +21,7 @@ namespace VVVV.Hosting.Pins
             this.RegisterType(typeof(double), (host, attribute, t) => new DoubleConfigPin(host, attribute));
             this.RegisterType(typeof(float), (host, attribute, t) => new FloatConfigPin(host, attribute));
             this.RegisterType(typeof(int), (host, attribute, t) => new IntConfigPin(host, attribute));
+            this.RegisterType(typeof(uint), (host, attribute, t) => new UIntConfigPin(host, attribute));
             this.RegisterType(typeof(bool), (host, attribute, t) => new BoolConfigPin(host, attribute));
 
             this.RegisterType(typeof(Vector2D), (host, attribute, t) => new Vector2DConfigPin(host, attribute));

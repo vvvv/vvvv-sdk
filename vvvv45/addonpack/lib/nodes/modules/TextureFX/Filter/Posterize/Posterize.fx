@@ -23,5 +23,4 @@ float4 pHSV(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     return c;
 }
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
-technique RGB{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 pRGB();}}
-technique HSV{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 pHSV();}}
+technique ShaderFilter{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 pRGB();}}

@@ -63,5 +63,10 @@ namespace VVVV.PluginInterfaces.V2.EX9
 				FOldSliceCount = SliceCount;
 			}
 		}
+		
+		protected override void SetResourcePinsChanged()
+		{
+			FTextureOut.MarkPinAsChanged();
+		}
 	}
 }
