@@ -146,11 +146,11 @@ namespace VVVV.TodoMap.UI.UserControls
             lv.SubItems.Add(var.Default.ToString());
             lv.SubItems.Add(var.Mapper.MinValue.ToString());
             lv.SubItems.Add(var.Mapper.MaxValue.ToString());
-            lv.SubItems.Add(var.Mapper.Reverse.ToString());
+            lv.SubItems.Add(var.Mapper.Reverse.ToStringEnglish());
             lv.SubItems.Add(var.Mapper.TweenMode.ToString());
             lv.SubItems.Add(var.Mapper.EaseMode.ToString());
             lv.SubItems.Add(var.TakeOverMode.ToString());
-            lv.SubItems.Add(var.AllowFeedBack.ToString());
+            lv.SubItems.Add(var.AllowFeedBack.ToStringEnglish());
 
             //Preserve selected var
             //if (this.lvVariables.a
@@ -291,7 +291,7 @@ namespace VVVV.TodoMap.UI.UserControls
             }
             if (e.SubItem == 5)
             {
-                tv.Mapper.Reverse = Convert.ToBoolean(e.DisplayText);
+                tv.Mapper.Reverse = BoolExtension.ParseEnglish(e.DisplayText);
             }
             if (e.SubItem == 6)
             {
@@ -307,7 +307,7 @@ namespace VVVV.TodoMap.UI.UserControls
             }
             if (e.SubItem == 9)
             {
-                tv.AllowFeedBack = Convert.ToBoolean(e.DisplayText);
+                tv.AllowFeedBack = BoolExtension.ParseEnglish(e.DisplayText);
             }
             tv.MarkForUpdate();
             
