@@ -275,7 +275,7 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Stroke Width" slicecount="1" values="0.01">
+   <PIN pinname="Stroke Width" visible="1">
    </PIN>
    <PIN pinname="Stroke" slicecount="1" visible="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
@@ -305,5 +305,37 @@
    <LINK dstnodeid="2" dstpinname="Open" srcnodeid="7" srcpinname="Y Output Value">
    <LINKPOINT x="4350" y="2835">
    </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="51" nodename="Random (Value)" systemname="Random (Value)">
+   <BOUNDS height="100" left="4125" top="2835" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Is Integer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="99999">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="50" nodename="RandomSpread (Spreads)" systemname="RandomSpread (Spreads)">
+   <BOUNDS height="100" left="3390" top="3225" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="60">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0.1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0.05">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="50" dstpinname="Random Seed" srcnodeid="51" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="51" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="50" srcpinname="Output" dstnodeid="48" dstpinname="Stroke Width">
    </LINK>
    </PATCH>
