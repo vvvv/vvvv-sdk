@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
    <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\girlpower\svvvvg.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\svvvvg.v4p" systemname="svvvvg">
-   <BOUNDS height="2400" left="900" top="5490" type="Window" width="8085">
+   <BOUNDS height="2265" left="900" top="5490" type="Window" width="7995">
    </BOUNDS>
    <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="0" nodename="Renderer (SVG)" systemname="Renderer (SVG)">
    <BOUNDS height="100" left="1320" top="4665" type="Node" width="100">
@@ -171,7 +171,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="13" nodename="Writer (SVG)" systemname="Writer (SVG)">
-   <BOUNDS height="100" left="4410" top="5430" type="Node" width="100">
+   <BOUNDS height="100" left="4410" top="5565" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Document" visible="1">
    </PIN>
@@ -183,9 +183,9 @@
    <LINK dstnodeid="13" dstpinname="Document" srcnodeid="0" srcpinname="Document">
    </LINK>
    <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="5460" top="4740" type="Node" width="0">
+   <BOUNDS height="0" left="5460" top="4875" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="5460" top="4740" type="Box" width="480">
+   <BOUNDS height="480" left="5460" top="4875" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -201,9 +201,9 @@
    <LINK dstnodeid="13" dstpinname="Write" srcnodeid="14" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6075" top="4845" type="Node" width="2490">
+   <BOUNDS height="270" left="6075" top="4980" type="Node" width="2490">
    </BOUNDS>
-   <BOUNDS height="270" left="6075" top="4845" type="Box" width="2490">
+   <BOUNDS height="270" left="6075" top="4980" type="Box" width="2490">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; write the svg document to disc|">
    </PIN>
@@ -215,9 +215,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="4590" top="4965" type="Node" width="0">
+   <BOUNDS height="0" left="4590" top="5100" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="4590" top="4965" type="Box" width="795">
+   <BOUNDS height="240" left="4590" top="5100" type="Box" width="795">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" values="file.svg">
    </PIN>
@@ -241,18 +241,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="2" dstpinname="Url" srcnodeid="5" srcpinname="Output String">
-   </LINK>
-   <NODE componentmode="Hidden" id="42" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
-   <BOUNDS height="100" left="4350" top="3585" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output 1" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="42" dstpinname="Input 1" srcnodeid="7" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="2" dstpinname="Open" srcnodeid="42" srcpinname="Output 1">
    </LINK>
    <NODE componentmode="Hidden" id="43" nodename="Random (Value)" systemname="Random (Value)">
    <BOUNDS height="100" left="2805" top="2835" type="Node" width="100">
@@ -297,7 +285,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="49" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
-   <BOUNDS height="100" left="1320" top="3660" type="Node" width="100">
+   <BOUNDS height="100" left="1320" top="3705" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="XYZ" visible="1">
    </PIN>
@@ -313,5 +301,9 @@
    <LINK dstnodeid="3" dstpinname="Document" srcnodeid="0" srcpinname="Document">
    </LINK>
    <LINK dstnodeid="46" dstpinname="Random Seed" srcnodeid="43" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Open">
+   <LINKPOINT x="4350" y="2835">
+   </LINKPOINT>
    </LINK>
    </PATCH>
