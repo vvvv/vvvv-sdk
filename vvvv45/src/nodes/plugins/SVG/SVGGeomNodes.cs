@@ -72,7 +72,7 @@ namespace VVVV.Nodes
 					SetFill(elem, i);
 					SetStroke(elem, i);
 					elem.Visible = FEnabledIn[i];
-					FOutput[i] = elem;	
+					FOutput[i] = elem;
 				}
 			}
 			
@@ -623,7 +623,7 @@ namespace VVVV.Nodes
 		[Input("Input")]
 		IDiffSpread<SvgElement> FInput;
 		
-		[Input("Mode")]
+		[Input("Mode", DefaultEnumEntry = "Both")]
 		IDiffSpread<SvgNormalizeMode> FModeIn;
 
 		[Output("Layer")]
@@ -660,34 +660,62 @@ namespace VVVV.Nodes
 					var m = FTransformIn[i];
 					var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
 					
-					g.Transforms.Add(mat);	
-					
-					FGroups.Add(g);
-				}
-				
-				foreach (var g in FGroups)
-				{
 					g.Children.Clear();
 					
-					for(int i=0; i<FInput.SliceCount; i++)
+					for(int j=0; j<FInput.SliceCount; j++)
 					{
-						var elem = FInput[i];
+						var elem = FInput[j];
 						if(elem != null)
 							g.Children.Add(elem);
 					}
 					
-					var b = g.Path.GetBounds();
+					var b = FModeIn[i] == SvgNormalizeMode.None ? new RectangleF() : g.Path.GetBounds();
 					
-					if (b.Height > 0 && b.Width > 0)
+					switch (FModeIn[i])
 					{
-						var sx = 1/b.Width;
-						var sy = 1/b.Height;
-						
-						var ox = -b.X * sx - 0.5f;
-						var oy = -b.Y * sy - 0.5f;
-						
-						g.Transforms.Add(new SvgMatrix(new List<float>(){sx, 0, 0, sy, ox, oy}));
+						case SvgNormalizeMode.Both:
+							
+							if (b.Height > 0 && b.Width > 0)
+							{
+								var sx = 1/b.Width;
+								var sy = 1/b.Height;
+								var ox = -b.X * sx - 0.5f;
+								var oy = -b.Y * sy - 0.5f;
+								
+								g.Transforms.Add(new SvgMatrix(new List<float>(){sx, 0, 0, sy, ox, oy}));
+							}
+							break;
+							
+						case SvgNormalizeMode.Width:
+							
+							if (b.Width > 0)
+							{
+								var sx = 1/b.Width;
+								var ox = -b.X * sx - 0.5f;
+								
+								g.Transforms.Add(new SvgMatrix(new List<float>(){sx, 0, 0, 1, ox, 0}));
+							}
+							break;
+							
+						case SvgNormalizeMode.Height:
+							
+							if (b.Height > 0)
+							{
+								var sy = 1/b.Height;
+								var oy = -b.Y * sy - 0.5f;
+								
+								g.Transforms.Add(new SvgMatrix(new List<float>(){1, 0, 0, sy, 0, oy}));
+							}
+							break;
+							
+						default:
+							break;
 					}
+					
+					g.Transforms.Add(mat);
+					
+					//add to group list
+					FGroups.Add(g);
 				}
 				
 				//write groups to output
