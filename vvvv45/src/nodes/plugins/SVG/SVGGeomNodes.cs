@@ -597,6 +597,104 @@ namespace VVVV.Nodes
 			
 		}
 	}
+
+	//NORMALIZE---------------------------------------------------------------------
+
+	public enum SvgNormalizeMode
+	{
+		None,
+		Width,
+		Height,
+		Both
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Normalize", 
+	            Category = "SVG", 
+	            Help = "Takes a layer and transforms it into unit space", 
+	            Tags = "")]
+	#endregion PluginInfo
+	public class SVGNormalizeNode : IPluginEvaluate
+	{
+		#region fields & pins
+		[Input("Transform")]
+		IDiffSpread<SlimDX.Matrix> FTransformIn;
+		
+		[Input("Input")]
+		IDiffSpread<SvgElement> FInput;
+		
+		[Input("Mode")]
+		IDiffSpread<SvgNormalizeMode> FModeIn;
+
+		[Output("Layer")]
+		ISpread<SvgElement> FOutput;
+
+		[Import()]
+		ILogger FLogger;
+		
+		List<SvgGroup> FGroups = new List<SvgGroup>();
+		#endregion fields & pins
+		
+		public SVGNormalizeNode()
+		{
+			var g = new SvgGroup();
+			FGroups.Add(g);
+		}
+
+		//called when data for any output pin is requested
+		public void Evaluate(int SpreadMax)
+		{
+			//add all elements to each group
+			if(FInput.IsChanged || FTransformIn.IsChanged || FModeIn.IsChanged)
+			{
+				//assign size and clear group list
+				FOutput.SliceCount = FTransformIn.SliceCount;
+				FGroups.Clear();
+				
+				//create groups and add matrix to it
+				for(int i=0; i<FTransformIn.SliceCount; i++)
+				{
+					var g = new SvgGroup();
+					g.Transforms = new SvgTransformCollection();
+					
+					var m = FTransformIn[i];
+					var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
+					
+					g.Transforms.Add(mat);	
+					
+					FGroups.Add(g);
+				}
+				
+				foreach (var g in FGroups)
+				{
+					g.Children.Clear();
+					
+					for(int i=0; i<FInput.SliceCount; i++)
+					{
+						var elem = FInput[i];
+						if(elem != null)
+							g.Children.Add(elem);
+					}
+					
+					var b = g.Path.GetBounds();
+					
+					if (b.Height > 0 && b.Width > 0)
+					{
+						var sx = 1/b.Width;
+						var sy = 1/b.Height;
+						
+						var ox = -b.X * sx - 0.5f;
+						var oy = -b.Y * sy - 0.5f;
+						
+						g.Transforms.Add(new SvgMatrix(new List<float>(){sx, 0, 0, sy, ox, oy}));
+					}
+				}
+				
+				//write groups to output
+				FOutput.AssignFrom(FGroups);
+			}
+		}
+	}
 	
 	//GROUP---------------------------------------------------------------------
 	#region PluginInfo

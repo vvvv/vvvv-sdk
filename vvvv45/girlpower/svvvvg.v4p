@@ -1,37 +1,25 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\svvvvg.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\svvvvg.v4p" systemname="svvvvg">
-   <BOUNDS height="8010" left="5430" top="7035" type="Window" width="9585">
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\girlpower\svvvvg.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\svvvvg.v4p" systemname="svvvvg">
+   <BOUNDS height="2400" left="900" top="5490" type="Window" width="8085">
    </BOUNDS>
    <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="0" nodename="Renderer (SVG)" systemname="Renderer (SVG)">
-   <BOUNDS height="100" left="1200" top="5415" type="Node" width="100">
+   <BOUNDS height="100" left="1320" top="4665" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="1800" left="1200" top="5415" type="Box" width="2400">
+   <BOUNDS height="1800" left="1320" top="4665" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS height="5085" left="5430" top="1410" type="Window" width="5220">
+   <BOUNDS height="4500" left="900" top="480" type="Window" width="6000">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Document" visible="1">
    </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="1" nodename="Quad (SVG)" systemname="Quad (SVG)">
-   <BOUNDS height="100" left="1200" top="4950" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
+   <PIN pinname="Background Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
-   </NODE>
-   <LINK dstnodeid="0" dstpinname="Layer" srcnodeid="1" srcpinname="Layer">
-   </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" id="2" nodename="OpenURL (Network)" systemname="OpenURL (Network)">
-   <BOUNDS height="100" left="5160" top="5985" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Url">
-   </PIN>
-   <PIN pinname="Open">
+   <PIN pinname="View Box" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="3" nodename="AsString (SVG)" systemname="AsString (SVG)">
-   <BOUNDS height="100" left="1200" top="6705" type="Node" width="100">
+   <BOUNDS height="100" left="1335" top="5955" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Document" visible="1">
    </PIN>
@@ -40,10 +28,8 @@
    <PIN pinname="XML" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Document" srcnodeid="0" srcpinname="Document">
-   </LINK>
    <NODE componentmode="Hidden" id="4" nodename="HTTP (Network Server)" systemname="HTTP (Network Server)">
-   <BOUNDS height="100" left="930" top="7230" type="Node" width="100">
+   <BOUNDS height="100" left="1065" top="6480" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="URL" visible="1">
    </PIN>
@@ -57,9 +43,9 @@
    <LINK dstnodeid="4" dstpinname="Content" srcnodeid="3" srcpinname="XML">
    </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="5160" top="5475" type="Node" width="0">
+   <BOUNDS height="0" left="3375" top="4125" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="270" left="5160" top="5475" type="Box" width="2925">
+   <BOUNDS height="270" left="3375" top="4125" type="Box" width="2925">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" values="http://localhost:81/svvvvg">
    </PIN>
@@ -70,12 +56,10 @@
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="2" dstpinname="Url" srcnodeid="5" srcpinname="Output String">
-   </LINK>
    <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="255" top="6720" type="Node" width="0">
+   <BOUNDS height="0" left="390" top="5970" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="255" left="255" top="6720" type="Box" width="690">
+   <BOUNDS height="255" left="390" top="5970" type="Box" width="690">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" values="svvvvg">
    </PIN>
@@ -89,9 +73,9 @@
    <LINK dstnodeid="4" dstpinname="URL" srcnodeid="6" srcpinname="Output String">
    </LINK>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="6135" top="4620" type="Node" width="0">
+   <BOUNDS height="0" left="3540" top="825" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="6135" top="4620" type="Box" width="480">
+   <BOUNDS height="1185" left="3540" top="825" type="Box" width="1230">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -105,9 +89,9 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="2" dstpinname="Open" srcnodeid="7" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="150" top="180" type="Node" width="2610">
    </BOUNDS>
@@ -139,9 +123,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="2070" top="6255" type="Node" width="0">
+   <BOUNDS height="0" left="2205" top="5505" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="2070" top="6255" type="Box" width="480">
+   <BOUNDS height="480" left="2205" top="5505" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -159,9 +143,9 @@
    <LINK dstnodeid="3" dstpinname="Write" srcnodeid="10" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="1605" top="7245" type="Node" width="2445">
+   <BOUNDS height="270" left="1740" top="6495" type="Node" width="2445">
    </BOUNDS>
-   <BOUNDS height="270" left="1605" top="7245" type="Box" width="2445">
+   <BOUNDS height="270" left="1740" top="6495" type="Box" width="2445">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; serves the svg on localhost:81|">
    </PIN>
@@ -173,11 +157,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6675" top="4635" type="Node" width="3090">
+   <BOUNDS height="270" left="5025" top="1065" type="Node" width="3090">
    </BOUNDS>
-   <BOUNDS height="465" left="6675" top="4635" type="Box" width="1785">
+   <BOUNDS height="525" left="5025" top="1065" type="Box" width="2850">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; view the generated svg file in a browser|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; right click to generate new image and view the svg file in a browser|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -187,7 +171,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="13" nodename="Writer (SVG)" systemname="Writer (SVG)">
-   <BOUNDS height="100" left="5175" top="7215" type="Node" width="100">
+   <BOUNDS height="100" left="4410" top="5430" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Document" visible="1">
    </PIN>
@@ -199,9 +183,9 @@
    <LINK dstnodeid="13" dstpinname="Document" srcnodeid="0" srcpinname="Document">
    </LINK>
    <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="6225" top="6525" type="Node" width="0">
+   <BOUNDS height="0" left="5460" top="4740" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="6225" top="6525" type="Box" width="480">
+   <BOUNDS height="480" left="5460" top="4740" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -217,9 +201,9 @@
    <LINK dstnodeid="13" dstpinname="Write" srcnodeid="14" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6840" top="6630" type="Node" width="2490">
+   <BOUNDS height="270" left="6075" top="4845" type="Node" width="2490">
    </BOUNDS>
-   <BOUNDS height="270" left="6840" top="6630" type="Box" width="2490">
+   <BOUNDS height="270" left="6075" top="4845" type="Box" width="2490">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; write the svg document to disc|">
    </PIN>
@@ -231,9 +215,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="5355" top="6750" type="Node" width="0">
+   <BOUNDS height="0" left="4590" top="4965" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="5355" top="6750" type="Box" width="795">
+   <BOUNDS height="240" left="4590" top="4965" type="Box" width="795">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" values="file.svg">
    </PIN>
@@ -247,5 +231,87 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="13" dstpinname="Filename" srcnodeid="16" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" id="2" nodename="OpenURL (Network)" systemname="OpenURL (Network)">
+   <BOUNDS height="100" left="3375" top="4635" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Url">
+   </PIN>
+   <PIN pinname="Open" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Url" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="Hidden" id="42" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <BOUNDS height="100" left="4350" top="3585" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="42" dstpinname="Input 1" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Open" srcnodeid="42" srcpinname="Output 1">
+   </LINK>
+   <NODE componentmode="Hidden" id="43" nodename="Random (Value)" systemname="Random (Value)">
+   <BOUNDS height="100" left="2805" top="2835" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Is Integer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="99999">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="43" dstpinname="Enabled" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="46" nodename="RandomSpread (Spreads)" systemname="RandomSpread (Spreads)">
+   <BOUNDS height="100" left="2070" top="3225" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="60">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="48" nodename="Quad (SVG)" systemname="Quad (SVG)">
+   <BOUNDS height="100" left="1320" top="4155" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Stroke Width" slicecount="1" values="0.01">
+   </PIN>
+   <PIN pinname="Stroke" slicecount="1" visible="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Fill" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,0.74791|">
+   </PIN>
+   <PIN pinname="Corner Radius XY" slicecount="2" values="0.15,0.15">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="49" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
+   <BOUNDS height="100" left="1320" top="3660" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="49" dstpinname="XYZ" srcnodeid="46" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Transform" srcnodeid="49" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer" srcnodeid="48" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Document" srcnodeid="0" srcpinname="Document">
+   </LINK>
+   <LINK dstnodeid="46" dstpinname="Random Seed" srcnodeid="43" srcpinname="Output">
    </LINK>
    </PATCH>
