@@ -46,5 +46,10 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		{
 			Render(Device.FromPointer(new IntPtr(DXDevice.DevicePointer())), FDeviceData[DXDevice.DevicePointer()]);
 		}
+		
+		protected override void SetResourcePinsChanged()
+		{
+			//nothing to do
+		}
 	}
 }

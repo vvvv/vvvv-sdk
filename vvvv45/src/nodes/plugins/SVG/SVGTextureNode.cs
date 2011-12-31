@@ -41,16 +41,73 @@ namespace VVVV.Nodes
 	}
 	
 	#region PluginInfo
+	[PluginInfo(Name = "AsSVG",
+	            Category = "String",
+	            Help = "Reads an XML string and returns an SVG document, its elements (layers) and other properties",
+	            Tags = "xml")]
+	#endregion PluginInfo
+	public class DucumentSvgStringReaderNode : DucumentSvgReaderNode
+	{
+		[Input("XML", DefaultString = "<SVG></SVG>")]
+		IDiffSpread<string> FXMLIn;
+		
+		protected override SvgDocument ReadDocument(int slice)
+		{
+			SvgDocument doc = null;
+			try
+			{
+				var s = new MemoryStream(UTF8Encoding.Default.GetBytes(FXMLIn[slice]));
+				doc = SvgDocument.Open(s, null);
+			}
+			catch (Exception e)
+			{
+				FLogger.Log(e);
+			}
+			
+			return doc;
+		}
+		
+		protected override bool InputChanged()
+		{
+			return FXMLIn.IsChanged;
+		}
+	}
+	
+	#region PluginInfo
 	[PluginInfo(Name = "Reader",
 	            Category = "SVG",
 	            Help = "Reads and returns an SVG document, its elements (layers) and other properties",
 	            Tags = "xml")]
 	#endregion PluginInfo
-	public class DucumentSvgReaderNode : IPluginEvaluate
+	public class DucumentSvgFileReaderNode : DucumentSvgReaderNode
 	{
-		#region fields & pins
 		[Input("Filename", StringType = StringType.Filename, DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg")]
 		IDiffSpread<string> FFilenameIn;
+		
+		protected override SvgDocument ReadDocument(int slice)
+		{
+			SvgDocument doc = null;
+			try
+			{
+				doc = SvgDocument.Open(FFilenameIn[slice]);
+			}
+			catch (Exception e)
+			{
+				FLogger.Log(e);
+			}
+			
+			return doc;
+		}
+		
+		protected override bool InputChanged()
+		{
+			return FFilenameIn.IsChanged;
+		}
+	}
+	
+	public abstract class DucumentSvgReaderNode : IPluginEvaluate
+	{
+		#region fields & pins
 		
 		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 0 })]
 		IDiffSpread<RGBAColor> FBackgroundIn;
@@ -77,13 +134,13 @@ namespace VVVV.Nodes
 		ISpread<bool> FHasSizeOut;
 
 		[Import()]
-		ILogger FLogger;
+		protected ILogger FLogger;
 		#endregion fields & pins
  
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if(FFilenameIn.IsChanged || FBackgroundIn.IsChanged || FReloadIn[0])
+			if(InputChanged() || FBackgroundIn.IsChanged || FReloadIn[0])
 			{
 				FDocOut.SliceCount = SpreadMax;				
 				FLayerOut.SliceCount = SpreadMax;
@@ -94,15 +151,7 @@ namespace VVVV.Nodes
 				
 				for(int i=0; i<SpreadMax; i++)
 				{
-					SvgDocument doc = null;
-					try
-					{
-						doc = SvgDocument.Open(FFilenameIn[i]);
-					}
-					catch (Exception e)
-					{
-						FLogger.Log(e);
-					}
+					var doc = ReadDocument(i);
 					
 					if(doc != null)
 					{
@@ -151,32 +200,35 @@ namespace VVVV.Nodes
 						
 						FHasSizeOut[i] = !noSize;
 					}
+					else
+					{
+						FDocOut[i] = new SvgDoc();
+						FLayerOut[i].SliceCount = 0;
+						
+						FViewOut[i] = new SvgViewBox();
+						FHasViewOut[i] = false;
+						
+						FSizeOut[i] = new Vector2D();
+						FHasSizeOut[i] = false;
+					}
 				}
 			}
-				 
 			//FLogger.Log(LogType.Debug, "hi tty!");
 		}
+		
+		protected abstract SvgDocument ReadDocument(int slice);
+		protected abstract bool InputChanged();
 	}
 	
-	#region PluginInfo
-	[PluginInfo(Name = "Writer",
-	            Category = "SVG",
-	            Help = "Writes an SVG document to disk",
-	            Tags = "xml",
-	            AutoEvaluate = true)]
-	#endregion PluginInfo
-	public class DucumentSvgWriterNode : IPluginEvaluate
+	public abstract class DucumentSvgWriterNode : IPluginEvaluate
 	{
 		[Input("Document")]
 		ISpread<SvgDoc> FDocIn;
 		
-		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename)]
-		ISpread<string> FFilenameIn;
-		
-		[Input("Size", StepSize = 1)]
+		[Input("Size", StepSize = 1, Order = 10)]
 		ISpread<Vector2> FSizeIn;
 		
-		[Input("Write", IsBang = true)]
+		[Input("Write", IsBang = true, Order = 20)]
 		ISpread<bool> FDoWriteIn;
 		
 		//called when data for any output pin is requested
@@ -193,16 +245,61 @@ namespace VVVV.Nodes
 					
 					if(FSizeIn[i] != Vector2.Zero)
 					{
-						doc.Width = FSizeIn[i].X;
-						doc.Height = FSizeIn[i].Y;
+						doc.Width = Math.Max(FSizeIn[i].X, 1);
+						doc.Height = Math.Max(FSizeIn[i].Y, 1);
 					}
 					
-					doc.Write(FFilenameIn[i]);
+					WriteDoc(doc, i);
 					
 					doc.Width = oldW;
 					doc.Height = oldH;
 				}
 			}
+		}
+		
+		protected abstract void WriteDoc(SvgDocument doc, int slice);
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Writer",
+	            Category = "SVG",
+	            Help = "Writes an SVG document to disk",
+	            Tags = "xml",
+	            AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class DucumentSvgFileWriterNode : DucumentSvgWriterNode
+	{	
+		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
+		ISpread<string> FFilenameIn;
+		
+		protected override void WriteDoc(SvgDocument doc, int slice)
+		{
+			doc.Write(FFilenameIn[slice]);
+		}
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "AsString",
+	            Category = "SVG",
+	            Help = "Writes an SVG document into a string",
+	            Tags = "xml",
+	            AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class DucumentSvgStringWriterNode : DucumentSvgWriterNode
+	{	
+		[Output("XML")]
+		ISpread<string> FStringOut;
+		 
+		protected override void WriteDoc(SvgDocument doc, int slice)
+		{
+			using(var ms = new MemoryStream())
+            {
+                doc.Write(ms);
+                ms.Position = 0;
+                var sr = new StreamReader(ms);
+                FStringOut[0] = sr.ReadToEnd();
+                sr.Close();
+            }
 		}
 	}
 	
@@ -260,6 +357,8 @@ namespace VVVV.Nodes
 			//clear controls in case init is called multiple times
 			Controls.Clear();
 			FPicBox.Dock = DockStyle.Fill;
+			
+			FPicBox.SizeMode = PictureBoxSizeMode.StretchImage;
 			
 			Controls.Add(FPicBox);
 			
@@ -462,17 +561,21 @@ namespace VVVV.Nodes
 						}
 						
 						var m = FTransformIn[i];
-						var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
-						doc.Transforms.Add(mat);
-						doc.Width = new SvgUnit(SvgUnitType.Pixel, size.Width);
-						doc.Height = new SvgUnit(SvgUnitType.Pixel, size.Height);
 						
-						//draw into bitmap
-						doc.Draw(bm);
-						
-						doc.Width = oldW;
-						doc.Height = oldH;
-						doc.Transforms.Remove(mat);
+						if(m.M11 != 0 && m.M22 !=0)
+						{
+							var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
+							doc.Transforms.Add(mat);
+							doc.Width = new SvgUnit(SvgUnitType.Pixel, size.Width);
+							doc.Height = new SvgUnit(SvgUnitType.Pixel, size.Height);
+							
+							//draw into bitmap
+							doc.Draw(bm);
+							
+							doc.Width = oldW;
+							doc.Height = oldH;
+							doc.Transforms.Remove(mat);
+						}
 						
 						Update();
 					}
