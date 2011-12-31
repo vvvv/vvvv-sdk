@@ -42,7 +42,8 @@ namespace VVVV.Nodes
 	}
 	#region PluginInfo
 	[PluginInfo(Name = "GetSpread",
-	            Category = "Spreads Advanced",
+	            Category = "Spreads",
+	            Version = "Advanced",
 	            Help = "returns sub-spreads from the input specified via offset and count, with Bin Size Option",
 	            Tags = "",
 	            Author = "woei")]
@@ -51,7 +52,8 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "GetSpread",
-	            Category = "String Advanced",
+	            Category = "String",
+	            Version = "Advanced",
 	            Help = "returns sub-spreads from the input specified via offset and count, with Bin Size Option",
 	            Tags = "",
 	            Author = "woei")]
@@ -60,7 +62,8 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "GetSpread",
-	            Category = "Color Advanced",
+	            Category = "Color",
+	            Version = "Advanced",
 	            Help = "returns sub-spreads from the input specified via offset and count, with Bin Size Option",
 	            Tags = "",
 	            Author = "woei")]
