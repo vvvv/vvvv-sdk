@@ -100,10 +100,22 @@ namespace VVVV.TodoMap.UI.UserControls
 
         private void engine_VariableChanged(TodoVariable var, bool gui)
         {
-            BeginInvoke((MethodInvoker)delegate()
+            if (!gui)
             {
-
-            });           
+                BeginInvoke((MethodInvoker)delegate()
+                {
+                    int idx = this.engine.Variables.IndexOf(var);
+                    ListViewItem lv = this.lvVariables.Items[idx];
+                    lv.SubItems[0].Text = var.Category;
+                    lv.SubItems[2].Text = var.Default.ToString();
+                    lv.SubItems[3].Text = var.Mapper.MinValue.ToString();
+                    lv.SubItems[4].Text = var.Mapper.MaxValue.ToString();
+                    lv.SubItems[6].Text = var.Mapper.TweenMode.ToString();
+                    lv.SubItems[7].Text = var.Mapper.EaseMode.ToString();
+                    lv.SubItems[8].Text = var.TakeOverMode.ToString();
+                    lv.SubItems[9].Text = var.AllowFeedBack.ToString();
+                });
+            }
         }
 
         private void engine_VariableValueChanged(string name, double newvalue)
