@@ -93,7 +93,10 @@ namespace VVVV.MSKinect.Lib
                     {
                         RuntimeOptions options = (RuntimeOptions)0;
                         if (color) { options |= RuntimeOptions.UseColor; }
-                        if (skeleton) { options |= RuntimeOptions.UseSkeletalTracking; }
+                        if (skeleton) 
+                        { 
+                            options |= RuntimeOptions.UseSkeletalTracking; 
+                        }
 
                         if (depthmode == eDepthMode.DepthOnly) { options |= RuntimeOptions.UseDepth; }
                         if (depthmode == eDepthMode.DepthAndPlayer) { options |= RuntimeOptions.UseDepthAndPlayerIndex; }
@@ -107,6 +110,11 @@ namespace VVVV.MSKinect.Lib
                             ImageType it = ImageType.Depth;
                             if (depthmode == eDepthMode.DepthAndPlayer) { it = ImageType.DepthAndPlayerIndex; }
                             this.Runtime.DepthStream.Open(ImageStreamType.Depth, 2, ImageResolution.Resolution320x240, it);
+                        }
+
+                        if (skeleton)
+                        {
+                            this.Runtime.SkeletonEngine.TransformSmooth = true;
                         }
 
                         this.IsStarted = true;
