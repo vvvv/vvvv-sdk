@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Skeleton (Kinect OpenNI) help.v4p" filename="C:\Users\joreg\work\tempest\tempest\patches\Skeleton (Kinect OpenNI) help.v4p" systemname="Skeleton (Kinect OpenNI) help">
-   <BOUNDS height="9660" left="8220" top="750" type="Window" width="10740">
+   <BOUNDS height="9705" left="8220" top="750" type="Window" width="11535">
    </BOUNDS>
    <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4530" top="2535" type="Node" width="0">
@@ -191,15 +191,15 @@
    <LINK dstnodeid="30" dstpinname="Y Input Value" srcnodeid="6" srcpinname="PositionXYZ">
    </LINK>
    <NODE componentmode="InAWindow" id="31" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
-   <BOUNDS height="100" left="4080" top="8445" type="Node" width="100">
+   <BOUNDS height="100" left="3810" top="8595" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="1800" left="4080" top="8445" type="Box" width="2400">
+   <BOUNDS height="1800" left="3810" top="8595" type="Box" width="2400">
    </BOUNDS>
    <BOUNDS height="5010" left="1950" top="720" type="Window" width="6240">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Aspect Ratio" visible="1">
+   <PIN pinname="Aspect Ratio" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Actual Backbuffer Width" visible="1">
    </PIN>
@@ -218,30 +218,12 @@
    <PIN pinname="Transform" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="31" dstpinname="Layers" srcnodeid="32" srcpinname="Layer">
-   </LINK>
-   <NODE componentmode="Hidden" id="33" nodename="AspectRatio (Transform)" systemname="AspectRatio (Transform)">
-   <BOUNDS height="100" left="5700" top="8430" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="Aspect Width" visible="1">
-   </PIN>
-   <PIN pinname="Aspect Height" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="31" dstpinname="Aspect Ratio" srcnodeid="33" srcpinname="Transform Out">
-   </LINK>
-   <LINK dstnodeid="33" dstpinname="Aspect Width" srcnodeid="31" srcpinname="Actual Backbuffer Width">
-   </LINK>
-   <LINK dstnodeid="33" dstpinname="Aspect Height" srcnodeid="31" srcpinname="Actual Backbuffer Height">
-   </LINK>
    <NODE componentmode="Hidden" id="34" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
    <BOUNDS height="100" left="4245" top="7140" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="XYZ" slicecount="1" values="0.1">
+   <PIN pinname="XYZ" slicecount="1" values="0.04">
    </PIN>
    <PIN pinname="Transform In" visible="1">
    </PIN>
@@ -290,18 +272,10 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="38" nodename="Ortho (Transform)" systemname="Ortho (Transform)">
-   <BOUNDS height="100" left="5355" top="8025" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="31" dstpinname="Projection" srcnodeid="38" srcpinname="Transform Out">
-   </LINK>
    <NODE componentmode="InABox" id="39" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="8160" top="2505" type="Node" width="2130">
+   <BOUNDS height="270" left="8160" top="2535" type="Node" width="2130">
    </BOUNDS>
-   <BOUNDS height="270" left="8160" top="2505" type="Box" width="2130">
+   <BOUNDS height="270" left="8160" top="2535" type="Box" width="2130">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; when a user is detected....|">
    </PIN>
@@ -318,6 +292,90 @@
    <BOUNDS height="510" left="8160" top="4515" type="Box" width="2040">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; ...pose detection starts automatically|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="42" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="100" left="3810" top="8130" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="31" dstpinname="Layers" srcnodeid="42" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="42" dstpinname="Layer 2" srcnodeid="32" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="45" nodename="RGB (Kinect OpenNI)" systemname="RGB (Kinect OpenNI)">
+   <BOUNDS height="100" left="2610" top="6975" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="45" dstpinname="Context" srcnodeid="0" srcpinname="Context">
+   </LINK>
+   <NODE systemname="Perspective (Transform Kinect)" filename="%VVVV%\addonpack\lib\nodes\modules\Kinect\Perspective (Transform Kinect).v4p" nodename="Perspective (Transform Kinect)" componentmode="Hidden" id="47">
+   <BOUNDS type="Node" left="5085" top="8130" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="5085" top="8130">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="47" srcpinname="Transform Out" dstnodeid="31" dstpinname="Projection">
+   </LINK>
+   <NODE componentmode="Hidden" filename="" id="46" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="100" left="2280" top="7545" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <BOUNDS left="2280" top="7545" type="Box">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="42" dstpinname="Layer 1" srcnodeid="46" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="46" dstpinname="Texture" srcnodeid="45" srcpinname="Texture Out">
+   </LINK>
+   <NODE systemname="WithinViewport (Transform)" nodename="WithinViewport (Transform)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="1410" top="6510" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="1410" top="6960" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="49" srcpinname="Transform Out" dstnodeid="46" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="48" srcpinname="Transform Out" dstnodeid="49" dstpinname="Transform In">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="50" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6330" top="8145" width="4740" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6330" top="8145" width="4740" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; adapts the renderers perspective to that of the kinect-cameras|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
