@@ -19,7 +19,7 @@ namespace VVVV.Nodes
                 Category = "Devices",
                 Version = "Phidget",
                 Help = "Wrapper for the Phidget Encoders",
-                Tags = "Controller, Encoder, HighSpeed",
+                Tags = "Controller, HighSpeed",
                 Author = "Phlegma",
                 AutoEvaluate = true
 )]
