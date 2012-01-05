@@ -1,0 +1,93 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Caps (String) help.v4p">
+   <BOUNDS height="3675" left="3090" top="3150" type="Window" width="3465">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="75" top="795" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8809" top="7879" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="75" top="795" type="Box" width="2415">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|everything you knöw is wröng|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="0" left="75" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8800" top="8019" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="75" top="2790" type="Box" width="2700">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Caps (String)">
+   <BOUNDS height="0" left="75" top="2310" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Byte Output Mode" slicecount="1">
+   </PIN>
+   <PIN pinname="Caps Mode" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="4" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input String" srcnodeid="1" srcpinname="Output" linkstyle="VHV">
+   <LINKPOINT x="105" y="2685">
+   </LINKPOINT>
+   <LINKPOINT x="2745" y="2685">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="570" top="1275" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7406" top="3935" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="930" left="570" top="1275" type="Box" width="1215">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="UpperCase">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Caps Mode" srcnodeid="0" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="15" top="390" type="Box" width="3210">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="13260" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Change the capitalisation of the given string|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="3090">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="13260" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Caps - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

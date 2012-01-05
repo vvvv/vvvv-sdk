@@ -1,0 +1,125 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Camera (SVG Join) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Camera (SVG Join) help.v4p" systemname="Camera (SVG Join) help">
+   <BOUNDS height="6405" left="9360" top="2295" type="Window" width="6825">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="195" top="495" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="195" top="495" type="Box" width="4470">
+   </BOUNDS>
+   <BOUNDS height="160" left="2400" top="41700" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Sets the visible rectangle of an SVG scene|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="195" top="120" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="195" top="120" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="2400" top="41700" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Camera (SVG Join)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="16" nodename="Renderer (SVG)" systemname="Renderer (SVG)">
+   <BOUNDS height="100" left="510" top="3360" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="2940" left="510" top="3360" type="Box" width="3855">
+   </BOUNDS>
+   <BOUNDS height="4500" left="14745" top="5955" type="Window" width="6000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Document" visible="1">
+   </PIN>
+   <PIN pinname="View Box" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.25206,0.25206,0.25206,1.00000|">
+   </PIN>
+   <PIN pinname="SizeXY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   </NODE>
+   <NODE id="7" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS type="Node" height="270" left="5640" top="4350" width="750">
+   </BOUNDS>
+   <BOUNDS type="Box" height="255" left="5640" top="4350" width="1410">
+   </BOUNDS>
+   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Camera (SVG Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Camera (SVG Join)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="1755" top="2220" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View Box" visible="1">
+   </PIN>
+   <PIN pinname="SizeXY">
+   </PIN>
+   <PIN pinname="CenterXY">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="View Box" dstnodeid="16" dstpinname="View Box">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="28" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2400" top="1485" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2400" top="1485" width="615" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="2.66666666666667,2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="25" dstpinname="SizeXY">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="29" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1755" top="1485" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1755" top="1485" width="600" height="465">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="0.5,0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="25" dstpinname="CenterXY">
+   </LINK>
+   <NODE filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="32" nodename="Quad (SVG)" systemname="Quad (SVG)">
+   <BOUNDS height="0" left="510" top="2595" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Layer" srcnodeid="32" srcpinname="Layer">
+   </LINK>
+   <NODE id="14" componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Camera (SVG Split)" systemname="Camera (SVG Split)">
+   <BOUNDS type="Node" height="100" left="5805" top="4815" width="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>

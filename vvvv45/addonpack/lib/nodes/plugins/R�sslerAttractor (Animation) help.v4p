@@ -1,0 +1,263 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
+   <PATCH nodename="C:\SVN_ROOT\vvvv\plugins\c#\Animation\ChaosToys\RösslerAttractor (Animation) help.v4p">
+   <BOUNDS height="6735" left="1110" top="840" type="Window" width="6195">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="465" left="15" top="15" type="Box" width="4500">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|RösslerAttractor - Animation|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="585" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="960" left="15" top="585" type="Box" width="3705">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Rössler system&apos;s attractor.&cr;&lf;&cr;&lf;&cr;&lf;http://en.wikipedia.org/wiki/Rossler_map|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="14" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="495" top="5985" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5445" left="495" top="5985" type="Box" width="5970">
+   </BOUNDS>
+   <BOUNDS height="6885" left="7350" top="660" type="Window" width="7995">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   <PIN pinname="Clear" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4275" top="2760" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4275" top="2760" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="7875" top="4080" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="5000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="10000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="Change (Animation)">
+   <BOUNDS height="0" left="3090" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="11" nodename="Change (Animation)">
+   <BOUNDS height="0" left="2040" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="10" nodename="Change (Animation)">
+   <BOUNDS height="0" left="960" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="9" nodename="Queue (Spreads)">
+   <BOUNDS height="0" left="1755" top="3630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Frame Count" linkstyle="VHV" srcnodeid="13" srcpinname="Y Output Value">
+   <LINKPOINT x="5330" y="3300">
+   </LINKPOINT>
+   <LINKPOINT x="2050" y="3300">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="do Insert" srcnodeid="11" srcpinname="OnChange">
+   </LINK>
+   <NODE componentmode="Hidden" id="8" nodename="Queue (Spreads)">
+   <BOUNDS height="0" left="2805" top="3645" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Frame Count" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="do Insert" srcnodeid="12" srcpinname="OnChange">
+   </LINK>
+   <NODE componentmode="Hidden" id="7" nodename="Queue (Spreads)">
+   <BOUNDS height="0" left="675" top="3630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Frame Count" linkstyle="VHV" srcnodeid="13" srcpinname="Y Output Value">
+   <LINKPOINT x="5330" y="3300">
+   </LINKPOINT>
+   <LINKPOINT x="970" y="3300">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="do Insert" srcnodeid="10" srcpinname="OnChange">
+   </LINK>
+   <NODE componentmode="Hidden" id="6" nodename="Vector (3d Join)">
+   <BOUNDS height="270" left="675" top="4110" type="Node" width="2205">
+   </BOUNDS>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Z" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="X" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="5" nodename="Line (EX9.Geometry)">
+   <PIN pinname="VerticesXYZ" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="495" top="5190" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|0.70839,0.07784,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="5" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="VerticesXYZ" srcnodeid="6" srcpinname="XYZ">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Frame Count" linkstyle="VHV" srcnodeid="13" srcpinname="Y Output Value">
+   <LINKPOINT x="5330" y="3308">
+   </LINKPOINT>
+   <LINKPOINT x="3100" y="3308">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="4" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Program Files\vvvv\vvvv_40beta23\modules\vvvv group\Transform\">
+   <BOUNDS height="0" left="1470" top="5550" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1470" top="5550" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="6000" left="5415" top="8595" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="35">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="400">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0.04">
+   </PIN>
+   <PIN pinname="Initial Yaw" slicecount="1" values="-3.46944695195361E-018">
+   </PIN>
+   <PIN pinname="Initial Interest" slicecount="3" values="1,8,4">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Projection Transform" srcnodeid="4" srcpinname="Projection">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="5205" top="5700" type="Node" width="630">
+   </BOUNDS>
+   <BOUNDS height="270" left="5205" top="5700" type="Box" width="630">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by fibo|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="View Transform" srcnodeid="4" srcpinname="View">
+   </LINK>
+   <NODE componentmode="Hidden" id="2" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="1395" top="4470" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="100">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="1" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="810" top="4845" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" slicecount="1" values="-0.25">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Transform" srcnodeid="1" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Z" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\ChaosToys.dll|VVVV.Nodes.RösslerAttractor">
+   <BOUNDS height="270" left="690" top="2130" type="Node" width="2190">
+   </BOUNDS>
+   <BOUNDS height="0" left="690" top="2130" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1935" top="3345" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Z" slicecount="1" values="25">
+   </PIN>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Output Z" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="0" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="0" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="0" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input" srcnodeid="0" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="0" srcpinname="Output Z">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="0" srcpinname="Output Z">
+   </LINK>
+   </PATCH>
