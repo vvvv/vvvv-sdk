@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using SlimDX.Direct3D9;
 
 namespace VVVV.Nodes.ImagePlayer
 {
     public abstract class Frame : IDisposable
     {
-        private readonly CancellationTokenSource FCancellationTokenSource = new CancellationTokenSource();
-        
         public int FrameNr
         {
             get;
@@ -22,47 +21,25 @@ namespace VVVV.Nodes.ImagePlayer
             set;
         }
         
-        public bool Scheduled
+        public abstract bool IsStarted
         {
             get;
-            set;
         }
         
-        public bool Disposed
+        public abstract bool IsCanceled
         {
             get;
-            private set;
-        }
-        
-        protected CancellationToken Token
-        {
-            get
-            {
-                return FCancellationTokenSource.Token;
-            }
         }
         
         public abstract Texture GetTexture(Device device);
-
-        public abstract void DoIO();
         
-        public abstract void DoLoad();
+        public abstract void Start();
         
-        public void Cancel()
-        {
-            FCancellationTokenSource.Cancel();
-        }
+        public abstract void Cancel();
         
-        public virtual void Dispose()
-        {
-            if (Disposed)
-            {
-                throw new ObjectDisposedException(this.ToString());
-            }
-            
-            Disposed = true;
-            FCancellationTokenSource.Dispose();
-        }
+        public abstract void Wait(CancellationToken token);   
+        
+        public abstract void Dispose();
         
         public double DurationIO
         {

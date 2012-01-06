@@ -17,6 +17,8 @@ namespace VVVV.Nodes.ImagePlayer
     {
         class InternalFrame : Frame
         {
+            private readonly CancellationTokenSource FCancellationTokenSource = new CancellationTokenSource();
+            private readonly Task FTask;
             private readonly Dictionary<Device, Texture> FTextures = new Dictionary<Device, Texture>();
             private readonly Device[] FDevices;
             private readonly FramePreloader FFactory;
@@ -31,6 +33,17 @@ namespace VVVV.Nodes.ImagePlayer
                 FFilename = filename;
                 FrameNr = frameNr;
                 FDevices = devices;
+                
+                factory.FCancellationToken.Register(Cancel);
+                FTask = new Task(Load, Token);
+            }
+            
+            protected CancellationToken Token
+            {
+                get
+                {
+                    return FCancellationTokenSource.Token;
+                }
             }
             
             public string Filename
@@ -41,7 +54,40 @@ namespace VVVV.Nodes.ImagePlayer
                 }
             }
             
-            public override void DoIO()
+            private bool FIsStarted;
+            public override bool IsStarted
+            {
+                get
+                {
+                    return FIsStarted;
+                }
+            }
+            
+            public override bool IsCanceled
+            {
+                get
+                {
+                    return FTask.IsCanceled;
+                }
+            }
+            
+            public override void Start()
+            {
+                FIsStarted = true;
+                FTask.Start();
+            }
+            
+            public override void Wait(CancellationToken token)
+            {
+                FTask.Wait(token);
+            }
+            
+            public override void Cancel()
+            {
+                FCancellationTokenSource.Cancel();
+            }
+            
+            private void Load()
             {
                 FTimer.Start();
                 
@@ -68,22 +114,13 @@ namespace VVVV.Nodes.ImagePlayer
                 FTimer.Stop();
                 
                 DurationIO = FTimer.Duration;
-                //                using (var fileStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read))
-                //                {
-                //                    FStream = new MemoryStream((int) fileStream.Length);
-                //                    fileStream.CopyTo(FStream);
-                //                }
-                //                                FStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read);
-            }
-            
-            public override void DoLoad()
-            {
+                
                 foreach (var device in FDevices)
                 {
                     FTextures[device] = CreateTextureForDevice(device);
                 }
             }
-            
+
             private Texture CreateTextureForDevice(Device device)
             {
                 FTimer.Start();
@@ -144,10 +181,6 @@ namespace VVVV.Nodes.ImagePlayer
                     FMemory.Dispose();
                     FMemory = null;
                 }
-                //                                if (FStream != null)
-                //                                {
-                //                                    FStream.Dispose();
-                //                                }
                 
                 foreach (var texture in FTextures.Values)
                 {
@@ -155,8 +188,8 @@ namespace VVVV.Nodes.ImagePlayer
                 }
                 
                 FTextures.Clear();
-                
-                base.Dispose();
+                FTask.Dispose();
+                FCancellationTokenSource.Dispose();
             }
             
             public override string ToString()
@@ -168,9 +201,28 @@ namespace VVVV.Nodes.ImagePlayer
         
         class EmptyInternalFrame : Frame
         {
+            private bool FIsStarted;
+            private bool FIsCanceled;
+            
             public EmptyInternalFrame()
             {
                 FrameNr = -1;
+            }
+            
+            public override bool IsStarted
+            {
+                get
+                {
+                    return FIsStarted;
+                }
+            }
+            
+            public override bool IsCanceled
+            {
+                get
+                {
+                    return FIsCanceled;
+                }
             }
             
             public override Texture GetTexture(Device device)
@@ -178,12 +230,22 @@ namespace VVVV.Nodes.ImagePlayer
                 return null;
             }
             
-            public override void DoIO()
+            public override void Start()
+            {
+                FIsStarted = true;
+            }
+            
+            public override void Wait(CancellationToken token)
             {
                 // Do nothing
             }
             
-            public override void DoLoad()
+            public override void Cancel()
+            {
+                FIsCanceled = true;
+            }
+            
+            public override void Dispose()
             {
                 // Do nothing
             }
@@ -192,86 +254,47 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly Dictionary<string, Frame> FCreatedFrames = new Dictionary<string, Frame>();
         private readonly CancellationTokenSource FCancellationTokenSource;
         private readonly CancellationToken FCancellationToken;
-        private readonly int FPreloadCount;
-        private readonly Task FIOTask;
-        private readonly Task FPreloadTask;
-        private readonly BlockingCollection<Frame> FRequestQueue;
-        private readonly BlockingCollection<Frame> FIOQueue;
-        private readonly BlockingCollection<Frame> FPreloadQueue;
         private readonly IEnumerable<Device> FDevices;
         private readonly ILogger FLogger;
+        private readonly TaskScheduler FTaskScheduler;
         
-        public FramePreloader(int preloadCount, IEnumerable<Device> devices, ILogger logger)
+        public FramePreloader(IEnumerable<Device> devices, ILogger logger)
         {
-            FPreloadCount = preloadCount;
             FDevices = devices;
             FLogger = logger;
-            
-            FRequestQueue = new BlockingCollection<Frame>(preloadCount + 1);
-            FIOQueue = new BlockingCollection<Frame>();
-            FPreloadQueue = new BlockingCollection<Frame>();
             
             FCancellationTokenSource = new CancellationTokenSource();
             FCancellationToken = FCancellationTokenSource.Token;
             
-            FIOTask = Task.Factory.StartNew(ProcessRequestQueue, FCancellationToken);
-            FPreloadTask = Task.Factory.StartNew(ProcessIOQueue, FCancellationToken);
+            FTaskScheduler = TaskScheduler.Default;
         }
         
         public void Dispose()
         {
-            foreach (var frame in WorkQueue)
-            {
-                frame.Cancel();
-            }
-            
             FCancellationTokenSource.Cancel();
             
-            try
+            foreach (var frame in WorkQueue)
             {
                 try
                 {
-                    FIOTask.Wait();
+                    frame.Wait(CancellationToken.None);
                 }
                 catch (AggregateException)
                 {
-                    // Should only contain the OperationCanceledException exception.
-                    if (FIOTask.Exception != null)
-                    {
-                        throw FIOTask.Exception;
-                    }
+                    // TODO: Should only contain the OperationCanceledException exception.
                 }
-                
-                try
+                catch (Exception e)
                 {
-                    FPreloadTask.Wait();
-                }
-                catch (AggregateException)
-                {
-                    // Should only contain the OperationCanceledException exception.
-                    if (FPreloadTask.Exception != null)
-                    {
-                        throw FPreloadTask.Exception;
-                    }
+                    FLogger.Log(e);
                 }
             }
-            finally
+            
+            foreach (var frame in WorkQueue)
             {
-                // Dispose remaining frames
-                foreach (var frame in WorkQueue)
-                {
-                    frame.Dispose();
-                }
-                
-                FRequestQueue.Dispose();
-                FIOQueue.Dispose();
-                FPreloadQueue.Dispose();
-                
-                FIOTask.Dispose();
-                FPreloadTask.Dispose();
-                
-                FCancellationTokenSource.Dispose();
+                frame.Dispose();
             }
+            
+            FCancellationTokenSource.Dispose();
         }
         
         public static Frame EmptyFrame
@@ -279,30 +302,6 @@ namespace VVVV.Nodes.ImagePlayer
             get
             {
                 return new EmptyInternalFrame();
-            }
-        }
-        
-        public int PreloadCount
-        {
-            get
-            {
-                return FPreloadCount;
-            }
-        }
-        
-        public bool Underflow
-        {
-            get
-            {
-                return FPreloadQueue.Count == 0;
-            }
-        }
-        
-        public bool Overflow
-        {
-            get
-            {
-                return FPreloadQueue.Count == FPreloadCount;
             }
         }
         
@@ -322,34 +321,6 @@ namespace VVVV.Nodes.ImagePlayer
             return result;
         }
         
-        public void Preload(Frame frame)
-        {
-            if (!frame.Scheduled)
-            {
-                FRequestQueue.Add(frame);
-                frame.Scheduled = true;
-            }
-        }
-        
-        public int WaitForFrame(Frame frame)
-        {
-            Contract.Requires(frame != null, "Frame to wait for must not be null.");
-            
-            int unusedFrames = 0;
-            Frame preloadedFrame = null;
-            while (preloadedFrame != frame)
-            {
-                preloadedFrame = FPreloadQueue.Take(FCancellationToken);
-                if (preloadedFrame != frame)
-                {
-                    // Oops, seems we did too much work.
-                    preloadedFrame.Dispose();
-                    unusedFrames++;
-                }
-            }
-            return unusedFrames;
-        }
-        
         public IEnumerable<Frame> WorkQueue
         {
             get
@@ -366,52 +337,6 @@ namespace VVVV.Nodes.ImagePlayer
             lock (FCreatedFrames)
             {
                 FCreatedFrames.Remove(frame.Filename);
-            }
-        }
-        
-        private readonly HiPerfTimer FTimer1 = new HiPerfTimer();
-        private void ProcessRequestQueue()
-        {
-            foreach (var frame in FRequestQueue.GetConsumingEnumerable(FCancellationToken))
-            {
-                try
-                {
-                    frame.DoIO();
-                }
-                catch (OperationCanceledException)
-                {
-                    frame.Dispose();
-                    continue;
-                }
-                catch (Exception e)
-                {
-                    FLogger.Log(e);
-                }
-                
-                FIOQueue.Add(frame);
-            }
-        }
-        
-        private readonly HiPerfTimer FTimer2 = new HiPerfTimer();
-        private void ProcessIOQueue()
-        {
-            foreach (var frame in FIOQueue.GetConsumingEnumerable(FCancellationToken))
-            {
-                try
-                {
-                    frame.DoLoad();
-                }
-                catch (OperationCanceledException)
-                {
-                    frame.Dispose();
-                    continue;
-                }
-                catch (Exception e)
-                {
-                    FLogger.Log(e);
-                }
-                
-                FPreloadQueue.Add(frame);
             }
         }
     }

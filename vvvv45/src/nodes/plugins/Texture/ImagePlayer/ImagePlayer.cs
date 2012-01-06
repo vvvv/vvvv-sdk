@@ -36,7 +36,7 @@ namespace VVVV.Nodes.ImagePlayer
         {
             FDevices = devices;
             FLogger = logger;
-            FFramePreloader = new FramePreloader(0, devices, logger);
+            FFramePreloader = new FramePreloader(devices, logger);
         }
         
         public void Dispose()
@@ -102,36 +102,8 @@ namespace VVVV.Nodes.ImagePlayer
         
         public int PreloadCount
         {
-            get
-            {
-                return FFramePreloader.PreloadCount;
-            }
-            set
-            {
-                Contract.Requires(value >= 0);
-                
-                if (value != FFramePreloader.PreloadCount)
-                {
-                    FFramePreloader.Dispose();
-                    FFramePreloader = new FramePreloader(value, FDevices, FLogger);
-                }
-            }
-        }
-        
-        public bool Underflow
-        {
-            get
-            {
-                return FFramePreloader.Underflow;
-            }
-        }
-        
-        public bool Overflow
-        {
-            get
-            {
-                return FFramePreloader.Overflow;
-            }
+            get;
+            set;
         }
         
         public Frame CurrentFrame
@@ -169,7 +141,7 @@ namespace VVVV.Nodes.ImagePlayer
             
             // Mark frames we actually need as used
             var framesToPreload = new LinkedList<Frame>();
-            for (int i = 0; i <= FFramePreloader.PreloadCount; i++)
+            for (int i = 0; i <= PreloadCount; i++)
             {
                 int nextFrameNr = VMath.Zmod(frameNr + i, FFiles.Length);
                 var frame = FFramePreloader.CreateFrame(FFiles[nextFrameNr], nextFrameNr);
@@ -186,10 +158,22 @@ namespace VVVV.Nodes.ImagePlayer
                 }
             }
             
+            // Dispose canceled frames
+            foreach (var frame in FFramePreloader.WorkQueue)
+            {
+                if (frame.IsCanceled)
+                {
+                    frame.Dispose();
+                }
+            }
+            
             // Preload frames
             foreach (var frame in framesToPreload)
             {
-                FFramePreloader.Preload(frame);
+                if (!frame.IsStarted)
+                {
+                    frame.Start();
+                }
             }
             
             var newFrame = framesToPreload.First.Value;
@@ -197,14 +181,8 @@ namespace VVVV.Nodes.ImagePlayer
             // Nothing to do if current frame has same frame number
             if (newFrame != FCurrentFrame)
             {
-                // Dispose the old frame
-                if (!FCurrentFrame.Disposed)
-                {
-                    FCurrentFrame.Dispose();
-                }
-                
                 // Wait till new frame is loaded
-                UnusedFrames += FFramePreloader.WaitForFrame(newFrame);
+                newFrame.Wait(CancellationToken.None);
                 
                 // Set new frame as current frame
                 FCurrentFrame = newFrame;
