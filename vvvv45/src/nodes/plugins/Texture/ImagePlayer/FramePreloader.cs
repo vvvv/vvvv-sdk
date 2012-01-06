@@ -20,7 +20,8 @@ namespace VVVV.Nodes.ImagePlayer
             private readonly Device[] FDevices;
             private readonly FramePreloader FFactory;
             private readonly string FFilename;
-            private Stream FStream;
+            private MemoryPool.Memory FMemory;
+//                        private Stream FStream;
             
             public InternalFrame(FramePreloader factory, string filename, int frameNr, Device[] devices)
             {
@@ -40,12 +41,19 @@ namespace VVVV.Nodes.ImagePlayer
             
             public override void LoadFromDisk()
             {
+                Contract.Requires(FMemory != null);
+                
                 using (var fileStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read))
                 {
-                    FMemoryStream = new MemoryStream((int) fileStream.Length);
-                    fileStream.CopyTo(FMemoryStream);
+                    FMemory = MemoryPool.GetStream((int) fileStream.Length);
+                    fileStream.CopyTo(FMemory.Stream);
                 }
-//                FStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read);
+//                using (var fileStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read))
+//                {
+//                    FStream = new MemoryStream((int) fileStream.Length);
+//                    fileStream.CopyTo(FStream);
+//                }
+//                                FStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read);
             }
             
             public override void CreateTextures()
@@ -58,13 +66,18 @@ namespace VVVV.Nodes.ImagePlayer
             
             private Texture CreateTextureForDevice(Device device)
             {
-                FStream.Position = 0;
+                Contract.Requires(FMemory != null);
                 
-                var info = ImageInformation.FromStream(FStream, true);
+                var stream = FMemory.Stream;
+//                                var stream = FStream;
+                
+                stream.Position = 0;
+                
+                var info = ImageInformation.FromStream(stream, true);
 
                 return Texture.FromStream(
                     device,
-                    FStream,
+                    stream,
                     info.Width,
                     info.Height,
                     info.MipLevels,
@@ -78,6 +91,8 @@ namespace VVVV.Nodes.ImagePlayer
             
             public override Texture GetTexture(Device device)
             {
+                Contract.Requires(FMemory != null);
+                
                 Texture result = null;
                 if (!FTextures.TryGetValue(device, out result))
                 {
@@ -90,16 +105,23 @@ namespace VVVV.Nodes.ImagePlayer
             
             public override void Dispose()
             {
-                if (FStream != null)
+                if (FMemory != null)
                 {
-                    FStream.Dispose();
+                    FMemory.Dispose();
+                    FMemory = null;
                 }
+//                                if (FStream != null)
+//                                {
+//                                    FStream.Dispose();
+//                                }
+                
                 foreach (var texture in FTextures.Values)
                 {
                     texture.Dispose();
                 }
+                
                 FTextures.Clear();
-                FFactory.Destroy(this);
+                FFactory.FCreatedFrames.Remove(Filename);
             }
         }
         
@@ -163,20 +185,33 @@ namespace VVVV.Nodes.ImagePlayer
         public void Dispose()
         {
             FCancellationTokenSource.Cancel();
+            
             try
             {
-                Task.WaitAll(FIOTask, FPreloadTask);
-            }
-            catch (AggregateException)
-            {
-                // Should only contain the OperationCanceledException exception.
-                if (FIOTask.Exception != null)
+                try
                 {
-                    throw FIOTask.Exception;
+                    FIOTask.Wait();
                 }
-                if (FPreloadTask.Exception != null)
+                catch (AggregateException)
                 {
-                    throw FPreloadTask.Exception;
+                    // Should only contain the OperationCanceledException exception.
+                    if (FIOTask.Exception != null)
+                    {
+                        throw FIOTask.Exception;
+                    }
+                }
+                
+                try
+                {
+                    FPreloadTask.Wait();
+                }
+                catch (AggregateException)
+                {
+                    // Should only contain the OperationCanceledException exception.
+                    if (FPreloadTask.Exception != null)
+                    {
+                        throw FPreloadTask.Exception;
+                    }
                 }
             }
             finally
@@ -248,19 +283,14 @@ namespace VVVV.Nodes.ImagePlayer
             return unusedFrames;
         }
         
-        private void Destroy(InternalFrame frame)
-        {
-            FCreatedFrames.Remove(frame.Filename);
-        }
-        
         private void ProcessRequestQueue()
         {
             foreach (var frame in FRequestQueue.GetConsumingEnumerable(FCancellationToken))
             {
-                try 
+                try
                 {
                     frame.LoadFromDisk();
-                } 
+                }
                 catch (Exception e)
                 {
                     FLogger.Log(e);
@@ -276,10 +306,10 @@ namespace VVVV.Nodes.ImagePlayer
         {
             foreach (var frame in FIOQueue.GetConsumingEnumerable(FCancellationToken))
             {
-                try 
+                try
                 {
                     frame.CreateTextures();
-                } 
+                }
                 catch (Exception e)
                 {
                     FLogger.Log(e);

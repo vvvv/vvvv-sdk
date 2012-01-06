@@ -42,6 +42,7 @@ namespace VVVV.Nodes.ImagePlayer
         public void Dispose()
         {
             FFramePreloader.Dispose();
+            FFramePreloader = null;
         }
         
         public string Directory

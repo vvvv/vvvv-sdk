@@ -54,26 +54,27 @@ namespace VVVV.Nodes.ImagePlayer
         
         public void Evaluate(int spreadMax)
         {
-            // Dispose unused image players
-            for (int i = spreadMax; i < FImagePlayers.SliceCount; i++)
+            int previosSliceCount = FImagePlayers.SliceCount;
+            
+             // Dispose unused image players
+            for (int i = spreadMax; i < FImagePlayers.SliceCount ; i++)
             {
                 FImagePlayers[i].Dispose();
-                FImagePlayers[i] = null;
             }
             
             FImagePlayers.SliceCount = spreadMax;
             FTextureOut.SliceCount = spreadMax;
             FUnusedFramesOut.SliceCount = spreadMax;
             
+            // Create new image players
+            for (int i = previosSliceCount; i < spreadMax; i++)
+            {
+                FImagePlayers[i] = new ImagePlayer(FDevices.Values, FLogger);
+            }
+            
             for (int i = 0; i < spreadMax; i++)
             {
                 var imagePlayer = FImagePlayers[i];
-                if (imagePlayer == null)
-                {
-                    imagePlayer = new ImagePlayer(FDevices.Values, FLogger);
-                    FImagePlayers[i] = imagePlayer;
-                }
-                
                 imagePlayer.Directory = FDirectoryIn[i];
                 imagePlayer.Filemask = FFilemaskIn[i];
                 imagePlayer.FPS = FFpsIn[i];
