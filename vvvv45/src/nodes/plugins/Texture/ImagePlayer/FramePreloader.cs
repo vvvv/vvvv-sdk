@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SlimDX.Direct3D9;
 using VVVV.Core.Logging;
+using VVVV.Utils.Win32;
 
 namespace VVVV.Nodes.ImagePlayer
 {
@@ -20,8 +21,9 @@ namespace VVVV.Nodes.ImagePlayer
             private readonly Device[] FDevices;
             private readonly FramePreloader FFactory;
             private readonly string FFilename;
+            private readonly HiPerfTimer FTimer = new HiPerfTimer();
             private MemoryPool.Memory FMemory;
-//                        private Stream FStream;
+            //                        private Stream FStream;
             
             public InternalFrame(FramePreloader factory, string filename, int frameNr, Device[] devices)
             {
@@ -39,24 +41,42 @@ namespace VVVV.Nodes.ImagePlayer
                 }
             }
             
-            public override void LoadFromDisk()
+            public override void DoIO()
             {
+                FTimer.Start();
+                
                 Contract.Requires(FMemory != null);
+                
+                Token.ThrowIfCancellationRequested();
                 
                 using (var fileStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read))
                 {
                     FMemory = MemoryPool.GetStream((int) fileStream.Length);
-                    fileStream.CopyTo(FMemory.Stream);
+                    
+                    var memoryStream = FMemory.Stream;
+                    var buffer = new byte[4096];
+                    while (fileStream.Position < fileStream.Length)
+                    {
+                        Token.ThrowIfCancellationRequested();
+                        
+                        int numBytesRead = fileStream.Read(buffer, 0, buffer.Length);
+                        memoryStream.Write(buffer, 0, numBytesRead);
+                    }
+                    //                    fileStream.CopyTo(FMemory.Memory);
                 }
-//                using (var fileStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read))
-//                {
-//                    FStream = new MemoryStream((int) fileStream.Length);
-//                    fileStream.CopyTo(FStream);
-//                }
-//                                FStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read);
+                
+                FTimer.Stop();
+                
+                DurationIO = FTimer.Duration;
+                //                using (var fileStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read))
+                //                {
+                //                    FStream = new MemoryStream((int) fileStream.Length);
+                //                    fileStream.CopyTo(FStream);
+                //                }
+                //                                FStream = new FileStream(FFilename, FileMode.Open, FileAccess.Read);
             }
             
-            public override void CreateTextures()
+            public override void DoLoad()
             {
                 foreach (var device in FDevices)
                 {
@@ -66,16 +86,22 @@ namespace VVVV.Nodes.ImagePlayer
             
             private Texture CreateTextureForDevice(Device device)
             {
+                FTimer.Start();
+                
                 Contract.Requires(FMemory != null);
                 
+                Token.ThrowIfCancellationRequested();
+                
                 var stream = FMemory.Stream;
-//                                var stream = FStream;
+                //                                var stream = FStream;
                 
                 stream.Position = 0;
                 
                 var info = ImageInformation.FromStream(stream, true);
+                
+                Token.ThrowIfCancellationRequested();
 
-                return Texture.FromStream(
+                var result = Texture.FromStream(
                     device,
                     stream,
                     info.Width,
@@ -87,6 +113,12 @@ namespace VVVV.Nodes.ImagePlayer
                     Filter.None,
                     Filter.None,
                     0);
+                
+                FTimer.Stop();
+                
+                DurationTexture += FTimer.Duration;
+                
+                return result;
             }
             
             public override Texture GetTexture(Device device)
@@ -105,15 +137,17 @@ namespace VVVV.Nodes.ImagePlayer
             
             public override void Dispose()
             {
+                FFactory.RemoveFrame(this);
+                
                 if (FMemory != null)
                 {
                     FMemory.Dispose();
                     FMemory = null;
                 }
-//                                if (FStream != null)
-//                                {
-//                                    FStream.Dispose();
-//                                }
+                //                                if (FStream != null)
+                //                                {
+                //                                    FStream.Dispose();
+                //                                }
                 
                 foreach (var texture in FTextures.Values)
                 {
@@ -121,8 +155,15 @@ namespace VVVV.Nodes.ImagePlayer
                 }
                 
                 FTextures.Clear();
-                FFactory.FCreatedFrames.Remove(Filename);
+                
+                base.Dispose();
             }
+            
+            public override string ToString()
+            {
+                return string.Format("Frame {0} ({1})", FrameNr, Filename);
+            }
+
         }
         
         class EmptyInternalFrame : Frame
@@ -137,17 +178,12 @@ namespace VVVV.Nodes.ImagePlayer
                 return null;
             }
             
-            public override void LoadFromDisk()
+            public override void DoIO()
             {
                 // Do nothing
             }
             
-            public override void CreateTextures()
-            {
-                // Do nothing
-            }
-            
-            public override void Dispose()
+            public override void DoLoad()
             {
                 // Do nothing
             }
@@ -172,8 +208,8 @@ namespace VVVV.Nodes.ImagePlayer
             FLogger = logger;
             
             FRequestQueue = new BlockingCollection<Frame>(preloadCount + 1);
-            FIOQueue = new BlockingCollection<Frame>(preloadCount + 1);
-            FPreloadQueue = new BlockingCollection<Frame>(preloadCount + 1);
+            FIOQueue = new BlockingCollection<Frame>();
+            FPreloadQueue = new BlockingCollection<Frame>();
             
             FCancellationTokenSource = new CancellationTokenSource();
             FCancellationToken = FCancellationTokenSource.Token;
@@ -184,6 +220,11 @@ namespace VVVV.Nodes.ImagePlayer
         
         public void Dispose()
         {
+            foreach (var frame in WorkQueue)
+            {
+                frame.Cancel();
+            }
+            
             FCancellationTokenSource.Cancel();
             
             try
@@ -216,7 +257,8 @@ namespace VVVV.Nodes.ImagePlayer
             }
             finally
             {
-                foreach (var frame in FCreatedFrames.Values.ToArray())
+                // Dispose remaining frames
+                foreach (var frame in WorkQueue)
                 {
                     frame.Dispose();
                 }
@@ -248,20 +290,45 @@ namespace VVVV.Nodes.ImagePlayer
             }
         }
         
-        public Frame Preload(string filename, int frameNr)
+        public bool Underflow
+        {
+            get
+            {
+                return FPreloadQueue.Count == 0;
+            }
+        }
+        
+        public bool Overflow
+        {
+            get
+            {
+                return FPreloadQueue.Count == FPreloadCount;
+            }
+        }
+        
+        public Frame CreateFrame(string filename, int frameNr)
         {
             Frame result = null;
             
-            if (!FCreatedFrames.TryGetValue(filename, out result))
+            lock (FCreatedFrames)
             {
-                result = new InternalFrame(this, filename, frameNr, FDevices.ToArray());
-                FCreatedFrames[filename] = result;
-                FRequestQueue.Add(result);
+                if (!FCreatedFrames.TryGetValue(filename, out result))
+                {
+                    result = new InternalFrame(this, filename, frameNr, FDevices.ToArray());
+                    FCreatedFrames[filename] = result;
+                }
             }
             
-            Debug.Assert(frameNr == result.FrameNr, "Invalid frame number.");
-            
             return result;
+        }
+        
+        public void Preload(Frame frame)
+        {
+            if (!frame.Scheduled)
+            {
+                FRequestQueue.Add(frame);
+                frame.Scheduled = true;
+            }
         }
         
         public int WaitForFrame(Frame frame)
@@ -283,41 +350,68 @@ namespace VVVV.Nodes.ImagePlayer
             return unusedFrames;
         }
         
+        public IEnumerable<Frame> WorkQueue
+        {
+            get
+            {
+                lock (FCreatedFrames)
+                {
+                    return FCreatedFrames.Values.ToArray();
+                }
+            }
+        }
+        
+        private void RemoveFrame(InternalFrame frame)
+        {
+            lock (FCreatedFrames)
+            {
+                FCreatedFrames.Remove(frame.Filename);
+            }
+        }
+        
+        private readonly HiPerfTimer FTimer1 = new HiPerfTimer();
         private void ProcessRequestQueue()
         {
             foreach (var frame in FRequestQueue.GetConsumingEnumerable(FCancellationToken))
             {
                 try
                 {
-                    frame.LoadFromDisk();
+                    frame.DoIO();
+                }
+                catch (OperationCanceledException)
+                {
+                    frame.Dispose();
+                    continue;
                 }
                 catch (Exception e)
                 {
                     FLogger.Log(e);
                 }
-                finally
-                {
-                    FIOQueue.Add(frame);
-                }
+                
+                FIOQueue.Add(frame);
             }
         }
         
+        private readonly HiPerfTimer FTimer2 = new HiPerfTimer();
         private void ProcessIOQueue()
         {
             foreach (var frame in FIOQueue.GetConsumingEnumerable(FCancellationToken))
             {
                 try
                 {
-                    frame.CreateTextures();
+                    frame.DoLoad();
+                }
+                catch (OperationCanceledException)
+                {
+                    frame.Dispose();
+                    continue;
                 }
                 catch (Exception e)
                 {
                     FLogger.Log(e);
                 }
-                finally
-                {
-                    FPreloadQueue.Add(frame);
-                }
+                
+                FPreloadQueue.Add(frame);
             }
         }
     }

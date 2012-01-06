@@ -37,6 +37,18 @@ namespace VVVV.Nodes.ImagePlayer
         [Output("Unused Frames")]
         public ISpread<int> FUnusedFramesOut;
         
+        [Output("Underflow")]
+        public ISpread<bool> FUnderflowOut;
+        
+        [Output("Overflow")]
+        public ISpread<bool> FOverflowOut;
+        
+        [Output("Duration IO")]
+        public ISpread<double> FDurationIOOut;
+        
+        [Output("Duration Texture")]
+        public ISpread<double> FDurationTextureOut;
+        
         public IDXTextureOut FTextureOut;
         
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
@@ -65,6 +77,10 @@ namespace VVVV.Nodes.ImagePlayer
             FImagePlayers.SliceCount = spreadMax;
             FTextureOut.SliceCount = spreadMax;
             FUnusedFramesOut.SliceCount = spreadMax;
+            FUnderflowOut.SliceCount = spreadMax;
+            FOverflowOut.SliceCount = spreadMax;
+            FDurationIOOut.SliceCount = spreadMax;
+            FDurationTextureOut.SliceCount = spreadMax;
             
             // Create new image players
             for (int i = previosSliceCount; i < spreadMax; i++)
@@ -87,6 +103,10 @@ namespace VVVV.Nodes.ImagePlayer
                 imagePlayer.Seek(FTimeIn[i]);
                 
                 FUnusedFramesOut[i] = imagePlayer.UnusedFrames;
+                FUnderflowOut[i] = imagePlayer.Underflow;
+                FOverflowOut[i] = imagePlayer.Overflow;
+                FDurationIOOut[i] = imagePlayer.CurrentFrame.DurationIO;
+                FDurationTextureOut[i] = imagePlayer.CurrentFrame.DurationTexture;
             }
         }
         

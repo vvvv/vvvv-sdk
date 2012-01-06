@@ -118,6 +118,22 @@ namespace VVVV.Nodes.ImagePlayer
             }
         }
         
+        public bool Underflow
+        {
+            get
+            {
+                return FFramePreloader.Underflow;
+            }
+        }
+        
+        public bool Overflow
+        {
+            get
+            {
+                return FFramePreloader.Overflow;
+            }
+        }
+        
         public Frame CurrentFrame
         {
             get
@@ -143,44 +159,56 @@ namespace VVVV.Nodes.ImagePlayer
             
             // Compute and normalize the frame number, as it can be any value
             int frameNr = VMath.Zmod((int) Math.Floor(time * FPS), FFiles.Length);
-//            int frameNr = VMath.Zmod(FFrameNr++, FFiles.Length);
-            
-            // Nothing to do if current frame has same frame number
-            if (FCurrentFrame.FrameNr == frameNr)
-            {
-                return;
-            }
-            
-            // We need the frame difference for prediction
-            int frameDifference = frameNr - CurrentFrame.FrameNr;
-            
-            // Dispose old frame
-            FCurrentFrame.Dispose();
-            
-            // Setup this frame
-            FCurrentFrame = FFramePreloader.Preload(FFiles[frameNr], frameNr);
-            
-            // Preload next frames
-            for (int i = 0; i < FFramePreloader.PreloadCount; i++)
-            {
-                frameNr += frameDifference;
-                frameNr = VMath.Zmod(frameNr, FFiles.Length);
-                FFramePreloader.Preload(FFiles[frameNr], frameNr);
-            }
-            
-            // Wait till frame is loaded
-            UnusedFrames += FFramePreloader.WaitForFrame(FCurrentFrame);
+            //            int frameNr = VMath.Zmod(FFrameNr++, FFiles.Length);
 
-//foreach (var file in FFiles)
-//{
-//    using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read))
-//    {
-//        using (var memoryStream = new MemoryStream())
-//        {
-//            fileStream.CopyTo(memoryStream);
-//        }
-//    }
-//}
+            // Mark all frames as unused
+            foreach (var frame in FFramePreloader.WorkQueue)
+            {
+                frame.Used = false;
+            }
+            
+            // Mark frames we actually need as used
+            var framesToPreload = new LinkedList<Frame>();
+            for (int i = 0; i <= FFramePreloader.PreloadCount; i++)
+            {
+                int nextFrameNr = VMath.Zmod(frameNr + i, FFiles.Length);
+                var frame = FFramePreloader.CreateFrame(FFiles[nextFrameNr], nextFrameNr);
+                frame.Used = true;
+                framesToPreload.AddLast(frame);
+            }
+
+            // Cancle unsed frames
+            foreach (var frame in FFramePreloader.WorkQueue)
+            {
+                if (!frame.Used)
+                {
+                    frame.Cancel();
+                }
+            }
+            
+            // Preload frames
+            foreach (var frame in framesToPreload)
+            {
+                FFramePreloader.Preload(frame);
+            }
+            
+            var newFrame = framesToPreload.First.Value;
+
+            // Nothing to do if current frame has same frame number
+            if (newFrame != FCurrentFrame)
+            {
+                // Dispose the old frame
+                if (!FCurrentFrame.Disposed)
+                {
+                    FCurrentFrame.Dispose();
+                }
+                
+                // Wait till new frame is loaded
+                UnusedFrames += FFramePreloader.WaitForFrame(newFrame);
+                
+                // Set new frame as current frame
+                FCurrentFrame = newFrame;
+            }
         }
     }
 }
