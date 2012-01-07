@@ -91,9 +91,30 @@ namespace VVVV.TodoMap.UI.UserControls
                 this.engine.VariableMappingChanged += engine_VariableMappingUpdated;
                 this.engine.VariableValueChanged += engine_VariableValueChanged;
                 this.engine.VariableDeleted += engine_VariableDeleted;
+                this.engine.VariableChanged += engine_VariableChanged;
 
                 this.ucFilter.Filter = new TodoCategoryFilter(this.engine);
                 this.ucFilter.Engine = this.engine;
+            }
+        }
+
+        private void engine_VariableChanged(TodoVariable var, bool gui)
+        {
+            if (!gui)
+            {
+                BeginInvoke((MethodInvoker)delegate()
+                {
+                    int idx = this.engine.Variables.IndexOf(var);
+                    ListViewItem lv = this.lvVariables.Items[idx];
+                    lv.SubItems[0].Text = var.Category;
+                    lv.SubItems[2].Text = var.Default.ToString();
+                    lv.SubItems[3].Text = var.Mapper.MinValue.ToString();
+                    lv.SubItems[4].Text = var.Mapper.MaxValue.ToString();
+                    lv.SubItems[6].Text = var.Mapper.TweenMode.ToString();
+                    lv.SubItems[7].Text = var.Mapper.EaseMode.ToString();
+                    lv.SubItems[8].Text = var.TakeOverMode.ToString();
+                    lv.SubItems[9].Text = var.AllowFeedBack.ToString();
+                });
             }
         }
 
@@ -127,7 +148,7 @@ namespace VVVV.TodoMap.UI.UserControls
         }
 
         #region Variables
-        private void Engine_VariableRegistered(TodoVariable var)
+        private void Engine_VariableRegistered(TodoVariable var, bool gui)
         {
             BeginInvoke((MethodInvoker)delegate()
             {
@@ -156,7 +177,7 @@ namespace VVVV.TodoMap.UI.UserControls
             //if (this.lvVariables.a
         }
 
-        void engine_VariableDeleted(TodoVariable var)
+        void engine_VariableDeleted(TodoVariable var,bool gui)
         {
             BeginInvoke((MethodInvoker)delegate()
             {
@@ -171,7 +192,7 @@ namespace VVVV.TodoMap.UI.UserControls
             if (this.lvVariables.SelectedItems.Count > 0 && e.KeyCode == Keys.Delete)
             {
                 string varname = this.lvVariables.SelectedItems[0].Tag.ToString();
-                this.engine.DeleteVariable(this.engine.GetVariableByName(varname));
+                this.engine.DeleteVariable(this.engine.GetVariableByName(varname),true);
                 
                 //Clear anyway as it's the selected var
                 this.lvInputs.Items.Clear();
@@ -309,7 +330,7 @@ namespace VVVV.TodoMap.UI.UserControls
             {
                 tv.AllowFeedBack = BoolExtension.ParseEnglish(e.DisplayText);
             }
-            tv.MarkForUpdate();
+            tv.MarkForUpdate(true);
             
         }
 

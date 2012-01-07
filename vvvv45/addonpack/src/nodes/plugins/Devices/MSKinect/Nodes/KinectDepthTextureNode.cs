@@ -130,13 +130,36 @@ namespace VVVV.MSKinect.Nodes
             byte[] d16 = e.ImageFrame.Image.Bits;
             lock (m_lock)
             {
-                for (int i = 0, i16 = 0; i < 320 * 240; i++, i16 += 2)
+                if (hasplayer)
                 {
-                    int realDepth = hasplayer ? (d16[i16 + 1] << 5) | (d16[i16] >> 3) : (d16[i16 + 1] << 8) | (d16[i16]);
-                    byte intensity =   (byte)(255 - (255 * realDepth / 0x0fff));
-                    this.depthimage[i] = intensity;
-                    
+                    for (int i = 0, i16 = 0; i < 320 * 240; i++, i16 += 2)
+                    {
+                        int realDepth = (d16[i16 + 1] << 5) | (d16[i16] >> 3);
+                        byte intensity = (byte)(255 - (255 * realDepth / 0x0fff));
+                        this.depthimage[i] = intensity;
+                    }
                 }
+                else
+                {
+                    /*int i16 = 0;
+                    for (int i = 0; i < 240; i++)
+                    {
+                        for (int j = 0; j < 320; j++)
+                        {
+                            int realDepth = (d16[i16 + 1] << 8) | (d16[i16]);
+                            byte intensity = (byte)(255 - (255 * realDepth / 0x0fff));
+                            this.depthimage[(319-j)+  i * 240] = intensity;
+                            i16 += 2;
+                        }
+                    }*/
+                    for (int i = 0, i16 = 0; i < 320 * 240; i++, i16 += 2)
+                    {
+                        int realDepth = (d16[i16 + 1] << 8) | (d16[i16]);
+                        byte intensity = (byte)(255 - (255 * realDepth / 0x0fff));
+                        this.depthimage[i] = intensity;
+                    }
+                }
+
                 //Marshal.Copy(e.ImageFrame.Image.Bits, 0, this.depthimage, 640 * 480);
             }
             this.FInvalidate = true;

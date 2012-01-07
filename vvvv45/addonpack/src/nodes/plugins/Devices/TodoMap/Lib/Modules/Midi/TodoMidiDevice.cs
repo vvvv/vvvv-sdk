@@ -324,7 +324,6 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
                     {
                         this.inputstatus[idx] = eTodoMidiStatus.Error;
                         this.OnMidiInputStatusChange(idx, eTodoMidiStatus.Error);
-                        throw;
                     }
                 }
             }

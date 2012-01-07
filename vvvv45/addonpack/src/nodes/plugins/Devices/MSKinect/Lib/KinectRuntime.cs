@@ -47,9 +47,6 @@ namespace VVVV.MSKinect.Lib
             if (Runtime.Kinects.Count > 0)
             {
                 this.Runtime = Runtime.Kinects[idx % Runtime.Kinects.Count];
-                this.Runtime.SkeletonFrameReady += Runtime_SkeletonFrameReady;
-                this.Runtime.VideoFrameReady += Runtime_VideoFrameReady;
-                this.Runtime.DepthFrameReady += Runtime_DepthFrameReady;
             }
         }
 
@@ -93,20 +90,35 @@ namespace VVVV.MSKinect.Lib
                     {
                         RuntimeOptions options = (RuntimeOptions)0;
                         if (color) { options |= RuntimeOptions.UseColor; }
-                        if (skeleton) { options |= RuntimeOptions.UseSkeletalTracking; }
+                        if (skeleton) 
+                        { 
+                            options |= RuntimeOptions.UseSkeletalTracking; 
+                        }
 
                         if (depthmode == eDepthMode.DepthOnly) { options |= RuntimeOptions.UseDepth; }
                         if (depthmode == eDepthMode.DepthAndPlayer) { options |= RuntimeOptions.UseDepthAndPlayerIndex; }
 
 
                         this.Runtime.Initialize(options);
-                        this.Runtime.VideoStream.Open(ImageStreamType.Video, 2, ImageResolution.Resolution640x480, ImageType.Color);
+
+                        if (color)
+                        {
+                            this.Runtime.VideoStream.Open(ImageStreamType.Video, 2, ImageResolution.Resolution640x480, ImageType.Color);
+                            this.Runtime.VideoFrameReady += Runtime_VideoFrameReady;
+                        }
 
                         if (depthmode != eDepthMode.Disabled)
                         {
                             ImageType it = ImageType.Depth;
                             if (depthmode == eDepthMode.DepthAndPlayer) { it = ImageType.DepthAndPlayerIndex; }
                             this.Runtime.DepthStream.Open(ImageStreamType.Depth, 2, ImageResolution.Resolution320x240, it);
+                            this.Runtime.DepthFrameReady += Runtime_DepthFrameReady;
+                        }
+
+                        if (skeleton)
+                        {
+                            this.Runtime.SkeletonEngine.TransformSmooth = true;
+                            this.Runtime.SkeletonFrameReady += Runtime_SkeletonFrameReady;
                         }
 
                         this.IsStarted = true;
@@ -131,6 +143,9 @@ namespace VVVV.MSKinect.Lib
                 {
                     try
                     {
+                        this.Runtime.SkeletonFrameReady -= Runtime_SkeletonFrameReady;
+                        this.Runtime.VideoFrameReady -= Runtime_VideoFrameReady;
+                        this.Runtime.DepthFrameReady -= Runtime_DepthFrameReady;
                         this.Runtime.Uninitialize();
                     }
                     catch
