@@ -37,6 +37,10 @@ namespace VVVV.MSKinect.Nodes
         [Output("Joint State")]
         private ISpread<string> FOutJointState;
 
+        [Output("Frame Number", IsSingle = true)]
+        private ISpread<int> FOutFrameNumber;
+
+
         private bool FInvalidateConnect = false;
 
         private KinectRuntime runtime;
@@ -87,6 +91,7 @@ namespace VVVV.MSKinect.Nodes
                     this.FOutJointPosition.SliceCount = cnt * (int)JointID.Count;
                     this.FOutJointState.SliceCount = cnt * (int)JointID.Count;
                     this.FOutJointID.SliceCount = cnt * (int)JointID.Count;
+                    this.FOutFrameNumber[0] = this.lastframe.FrameNumber;
 
 
                     int jc = 0;
@@ -119,6 +124,10 @@ namespace VVVV.MSKinect.Nodes
                     this.FOutCount[0] = 0;
                     this.FOutPosition.SliceCount = 0;
                     this.FOutUserIndex.SliceCount = 0;
+                    this.FOutJointID.SliceCount = 0;
+                    this.FOutJointPosition.SliceCount = 0;
+                    this.FOutJointState.SliceCount = 0;
+                    this.FOutFrameNumber[0] = 0;
                 }
                 this.FInvalidate = false;
             }
