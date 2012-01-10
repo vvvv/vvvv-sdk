@@ -7,186 +7,423 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+using System.Threading.Tasks.Schedulers;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using SlimDX.Direct3D9;
 using VVVV.Core.Logging;
 using VVVV.Utils.VMath;
+using VVVV.Utils.Win32;
 
 namespace VVVV.Nodes.ImagePlayer
 {
-    /// <summary>
-    /// Given a directory containing a sequence of images this class will
-    /// try to preload the next couple of images based on the given frame
-    /// number in order to provide fast access.
-    /// </summary>
-    public class ImagePlayer : IDisposable
-    {
-        public const string DEFAULT_FILEMASK = "*.dds";
-        public const double DEFAULT_FPS = 25.0;
-        
-        private string FDirectory = string.Empty;
-        private string FFilemask = DEFAULT_FILEMASK;
-        private double FFps = DEFAULT_FPS;
-        private string[] FFiles = new string[0];
-        private FramePreloader FFramePreloader;
-        private Frame FCurrentFrame = FramePreloader.EmptyFrame;
-        private readonly IEnumerable<Device> FDevices;
-        private readonly ILogger FLogger;
-        
-        public ImagePlayer(IEnumerable<Device> devices, ILogger logger)
-        {
-            FDevices = devices;
-            FLogger = logger;
-            FFramePreloader = new FramePreloader(devices, logger);
-        }
-        
-        public void Dispose()
-        {
-            FFramePreloader.Dispose();
-            FFramePreloader = null;
-        }
-        
-        public string Directory
-        {
-            get
-            {
-                return FDirectory;
-            }
-            set
-            {
-                Contract.Requires(System.IO.Directory.Exists(value));
-                
-                if (value != FDirectory)
-                {
-                    FDirectory = value;
-                    Reload();
-                }
-            }
-        }
-        
-        public string Filemask
-        {
-            get
-            {
-                return FFilemask;
-            }
-            set
-            {
-                Contract.Requires(value != null);
-                
-                if (value != FFilemask)
-                {
-                    FFilemask = value;
-                    Reload();
-                }
-            }
-        }
-        
-        public void Reload()
-        {
-            FFiles = System.IO.Directory.GetFiles(FDirectory, FFilemask);
-        }
-        
-        public double FPS
-        {
-            get
-            {
-                return FFps;
-            }
-            set
-            {
-                Contract.Requires(value >= 0.0);
-                
-                FFps = value;
-            }
-        }
-        
-        public int PreloadCount
-        {
-            get;
-            set;
-        }
-        
-        public Frame CurrentFrame
-        {
-            get
-            {
-                return FCurrentFrame;
-            }
-        }
-        
-        public int UnusedFrames
-        {
-            get;
-            private set;
-        }
-        
-        private int FFrameNr = 0;
-        public void Seek(double time)
-        {
-            // Nothing to do
-            if (FFiles.Length == 0)
-            {
-                return;
-            }
-            
-            // Compute and normalize the frame number, as it can be any value
-            int frameNr = VMath.Zmod((int) Math.Floor(time * FPS), FFiles.Length);
-            //            int frameNr = VMath.Zmod(FFrameNr++, FFiles.Length);
+	/// <summary>
+	/// Given a directory containing a sequence of images this class will
+	/// try to preload the next couple of images based on the given frame
+	/// number in order to provide fast access.
+	/// </summary>
+	public class ImagePlayer : IDisposable
+	{
+		public const string DEFAULT_FILEMASK = "*.dds";
+		public const double DEFAULT_FPS = 25.0;
+		
+		private string FDirectory = string.Empty;
+		private string FFilemask = DEFAULT_FILEMASK;
+		private double FFps = DEFAULT_FPS;
+		private string[] FFiles = new string[0];
+		private Frame FCurrentFrame = new Frame(new FrameInfo(-1, string.Empty), Enumerable.Empty<Texture>(), null);
+		
+		private readonly int FPreloadCount;
+		private readonly IEnumerable<Device> FDevices;
+		private readonly ILogger FLogger;
+		private readonly ObjectPool<MemoryStream> FStreamPool;
+		private readonly ObjectPool<byte[]> FBufferPool;
+		private readonly TexturePool FTexturePool;
+		private readonly CancellationTokenSource FCancellationTokenSource;
+		private readonly CancellationToken FCancellationToken;
+		private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>> FFilePreloader;
+		private readonly TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame> FFramePreloader;
+		private readonly BufferBlock<Frame> FFrameBuffer;
+		private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
+		
+		public ImagePlayer(int preloadCount, IEnumerable<Device> devices, ILogger logger)
+		{
+			FPreloadCount = preloadCount;
+			FDevices = devices;
+			FLogger = logger;
 
-            // Mark all frames as unused
-            foreach (var frame in FFramePreloader.WorkQueue)
-            {
-                frame.Used = false;
-            }
-            
-            // Mark frames we actually need as used
-            var framesToPreload = new LinkedList<Frame>();
-            for (int i = 0; i <= PreloadCount; i++)
-            {
-                int nextFrameNr = VMath.Zmod(frameNr + i, FFiles.Length);
-                var frame = FFramePreloader.CreateFrame(FFiles[nextFrameNr], nextFrameNr);
-                frame.Used = true;
-                framesToPreload.AddLast(frame);
-            }
+			FStreamPool = new ObjectPool<MemoryStream>(() => new MemoryStream());
+			FBufferPool = new ObjectPool<byte[]>(() => new byte[0x2000]);
+			FTexturePool = new TexturePool();
+			
+			FCancellationTokenSource = new CancellationTokenSource();
+			FCancellationToken = FCancellationTokenSource.Token;
+			
+			var filePreloaderOptions = new ExecutionDataflowBlockOptions()
+			{
+				CancellationToken = FCancellationToken,
+				MaxDegreeOfParallelism = DataflowBlockOptions.Unbounded,
+				TaskScheduler = new IOTaskScheduler(),
+				BoundedCapacity = FPreloadCount + 1
+			};
+			
+			FFilePreloader = new TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>>(
+				frameInfo =>
+				{
+					// TODO: Consider using CopyStreamToStreamAsync from TPL extensions
+					var timer = new HiPerfTimer();
+					timer.Start();
+					
+					var filename = frameInfo.Filename;
+					var cancellationToken = frameInfo.Token;
+					var memoryStream = FStreamPool.GetObject();
+					var buffer = FBufferPool.GetObject();
+					
+					try
+					{
+						cancellationToken.ThrowIfCancellationRequested();
+						
+						using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+						{
+							memoryStream.Position = 0;
+							if (fileStream.Length != memoryStream.Length)
+							{
+								memoryStream.SetLength(fileStream.Length);
+							}
+							
+							while (fileStream.Position < fileStream.Length)
+							{
+								cancellationToken.ThrowIfCancellationRequested();
 
-            // Cancle unsed frames
-            foreach (var frame in FFramePreloader.WorkQueue)
-            {
-                if (!frame.Used)
-                {
-                    frame.Cancel();
-                }
-            }
-            
-            // Dispose canceled frames
-            foreach (var frame in FFramePreloader.WorkQueue)
-            {
-                if (frame.IsCanceled)
-                {
-                    frame.Dispose();
-                }
-            }
-            
-            // Preload frames
-            foreach (var frame in framesToPreload)
-            {
-                if (!frame.IsStarted)
-                {
-                    frame.Start();
-                }
-            }
-            
-            var newFrame = framesToPreload.First.Value;
+								int numBytesRead = fileStream.Read(buffer, 0, buffer.Length);
+								memoryStream.Write(buffer, 0, numBytesRead);
+							}
+//							fileStream.CopyTo(memoryStream);
+							
+							memoryStream.Position = 0;
+						}
+					}
+					catch (OperationCanceledException)
+					{
+						// That's fine
+					}
+					catch (Exception e)
+					{
+						// Mark this frame as canceled
+						frameInfo.Cancel();
+						
+						// Log the exception
+						FLogger.Log(e);
+					}
+					finally
+					{
+						// Put the buffer back in the pool so other blocks can use it
+						FBufferPool.PutObject(buffer);
+					}
+					
+					timer.Stop();
+					frameInfo.DurationIO = timer.Duration;
+					
+					return Tuple.Create(frameInfo, memoryStream);
+				},
+				filePreloaderOptions
+			);
+			
+			var framePreloaderOptions = new ExecutionDataflowBlockOptions()
+			{
+				CancellationToken = FCancellationToken,
+				MaxDegreeOfParallelism = DataflowBlockOptions.Unbounded,
+				BoundedCapacity = FPreloadCount + 1
+			};
+			
+			FFramePreloader = new TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame>(
+				tuple =>
+				{
+					var timer = new HiPerfTimer();
+					timer.Start();
+					
+					var frameInfo = tuple.Item1;
+					var stream = tuple.Item2;
+					var cancellationToken = frameInfo.Token;
+					var textures = new List<Texture>();
+					
+					try
+					{
+						cancellationToken.ThrowIfCancellationRequested();
 
-            // Nothing to do if current frame has same frame number
-            if (newFrame != FCurrentFrame)
-            {
-                // Wait till new frame is loaded
-                newFrame.Wait(CancellationToken.None);
-                
-                // Set new frame as current frame
-                FCurrentFrame = newFrame;
-            }
-        }
-    }
+						var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
+						var bitmapFrame = new FormatConvertedBitmap(decoder.Frames[0], PixelFormats.Bgra32, decoder.Palette, 0.0);
+						var sourceRect = new Int32Rect(0, 0, bitmapFrame.PixelWidth, bitmapFrame.PixelHeight);
+						
+						foreach (var device in FDevices)
+						{
+							cancellationToken.ThrowIfCancellationRequested();
+							
+							var texture = FTexturePool.GetTexture(
+								device,
+								bitmapFrame.PixelWidth,
+								bitmapFrame.PixelHeight,
+								1,
+								Usage.Dynamic & ~Usage.AutoGenerateMipMap,
+								Format.A8R8G8B8,
+								Pool.Default);
+							
+							var dataRectangle = texture.LockRectangle(0, LockFlags.None);
+							
+							try
+							{
+								var stride = bitmapFrame.PixelWidth * (bitmapFrame.Format.BitsPerPixel / 8);
+								var data = dataRectangle.Data;
+								var buffer = data.DataPointer;
+								bitmapFrame.CopyPixels(sourceRect, buffer, (int) data.Length, stride);
+							}
+							finally
+							{
+								texture.UnlockRectangle(0);
+							}
+							
+							textures.Add(texture);
+						}
+					}
+					catch (OperationCanceledException)
+					{
+						// That's fine
+					}
+					catch (Exception e)
+					{
+						// Mark this frame as canceled
+						frameInfo.Cancel();
+						
+						// Do some cleanup
+						foreach (var texture in textures)
+						{
+							FTexturePool.PutTexture(texture);
+						}
+						textures.Clear();
+						
+						// Log the exception
+						FLogger.Log(e);
+					}
+					finally
+					{
+						// We're done with this frame, put used memory stream back in the pool
+						FStreamPool.PutObject(stream);
+					}
+					
+					timer.Stop();
+					frameInfo.DurationTexture = timer.Duration;
+					
+					return new Frame(frameInfo, textures, FTexturePool);
+				},
+				framePreloaderOptions
+			);
+			
+			var frameBufferOptions = new DataflowBlockOptions()
+			{
+				CancellationToken = FCancellationToken
+			};
+			
+			FFrameBuffer = new BufferBlock<Frame>(frameBufferOptions);
+			
+			FFilePreloader.LinkTo(FFramePreloader);
+			FFramePreloader.LinkTo(FFrameBuffer);
+			
+			FFilePreloader.Completion.ContinueWith(t => FFramePreloader.Complete());
+			FFramePreloader.Completion.ContinueWith(t => FFrameBuffer.Complete());
+		}
+		
+		public void Dispose()
+		{
+//			FCancellationTokenSource.Cancel();
+			Stall();
+			
+			FCurrentFrame.Dispose();
+			
+			// Mark head of pipeline as completed
+			FFilePreloader.Complete();
+			
+			try
+			{
+				// Wait for frame preloader
+//				FFramePreloader.Completion.Wait();
+//				
+//				IList<Frame> frames = null;
+//				if (FFrameBuffer.TryReceiveAll(out frames))
+//				{
+//					foreach (var frame in frames)
+//					{
+//						frame.Dispose();
+//					}
+//				}
+				
+				// Wait for last element in pipeline till completed
+				FFrameBuffer.Completion.Wait();
+				
+				FFilePreloader.Completion.Dispose();
+				FFramePreloader.Completion.Dispose();
+				FFrameBuffer.Completion.Dispose();
+			}
+			catch (AggregateException e)
+			{
+				// TODO: Check if these are only exceptions of type OperationCancledException
+			}
+			finally
+			{
+				foreach (var stream in FStreamPool.ToArrayAndClear())
+				{
+					stream.Dispose();
+				}
+				
+				FBufferPool.ToArrayAndClear();
+				
+				FTexturePool.Dispose();
+				
+				FCancellationTokenSource.Dispose();
+			}
+		}
+		
+		public string Directory
+		{
+			get
+			{
+				return FDirectory;
+			}
+			set
+			{
+				Contract.Requires(System.IO.Directory.Exists(value));
+				
+				if (value != FDirectory)
+				{
+					FDirectory = value;
+					Reload();
+				}
+			}
+		}
+		
+		public string Filemask
+		{
+			get
+			{
+				return FFilemask;
+			}
+			set
+			{
+				Contract.Requires(value != null);
+				
+				if (value != FFilemask)
+				{
+					FFilemask = value;
+					Reload();
+				}
+			}
+		}
+		
+		public void Reload()
+		{
+			FFiles = System.IO.Directory.GetFiles(FDirectory, FFilemask);
+		}
+		
+		public double FPS
+		{
+			get
+			{
+				return FFps;
+			}
+			set
+			{
+				Contract.Requires(value >= 0.0);
+				
+				FFps = value;
+			}
+		}
+		
+		public int PreloadCount
+		{
+			get
+			{
+				return FPreloadCount;
+			}
+		}
+		
+		public Frame CurrentFrame
+		{
+			get
+			{
+				return FCurrentFrame;
+			}
+		}
+		
+		public int UnusedFrames
+		{
+			get;
+			private set;
+		}
+		
+		public void Stall()
+		{
+			var stallingFrameInfo = new FrameInfo(-1, string.Empty);
+			
+			stallingFrameInfo.Cancel();
+			
+			FFilePreloader.Post(stallingFrameInfo);
+				
+			FrameInfo frameInfo = null;
+			while (frameInfo != stallingFrameInfo)
+			{
+				var frame = FFrameBuffer.Receive();
+				frameInfo = frame.Info;
+				FScheduledFrameInfos.Remove(frameInfo);
+				frame.Dispose();
+			}
+		}
+		
+		public void Seek(double time)
+		{
+			// Nothing to do
+			if (FFiles.Length == 0)
+			{
+				return;
+			}
+			
+			// Compute and normalize the frame number, as it can be any value
+			int newFrameNr = VMath.Zmod((int) Math.Floor(time * FPS), FFiles.Length);
+			
+			var frameInfosToPreload =
+				from frameNr in Enumerable.Range(newFrameNr, FPreloadCount + 1)
+				let normalizedFrameNr = VMath.Zmod(frameNr, FFiles.Length)
+				select new FrameInfo(normalizedFrameNr, FFiles[normalizedFrameNr]);
+			
+			foreach (var frameInfo in frameInfosToPreload)
+			{
+				if (!FScheduledFrameInfos.Contains(frameInfo))
+				{
+					if (FFilePreloader.Post(frameInfo))
+					{
+						FScheduledFrameInfos.AddLast(frameInfo);
+					}
+				}
+			}
+			
+			var newFrameInfo = frameInfosToPreload.First();
+			
+			while (newFrameInfo != FCurrentFrame.Info)
+			{
+				var frame = FFrameBuffer.Receive();
+				if (frame.Info != newFrameInfo)
+				{
+					FScheduledFrameInfos.Remove(frame.Info);
+					frame.Dispose();
+					UnusedFrames++;
+				}
+				else
+				{
+					FScheduledFrameInfos.Remove(FCurrentFrame.Info);
+					FCurrentFrame.Dispose();
+					FCurrentFrame = frame;
+				}
+			}
+		}
+	}
 }

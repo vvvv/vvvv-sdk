@@ -25,7 +25,7 @@ namespace VVVV.Nodes.ImagePlayer
         [Input("FPS", DefaultValue = 25.0)]
         public ISpread<double> FFpsIn;
         
-        [Input("Preload Count", MinValue = 0)]
+        [Input("Preload Count", MinValue = 1)]
         public ISpread<int> FPreloadCountIn;
         
         [Input("Reload")]
@@ -46,7 +46,7 @@ namespace VVVV.Nodes.ImagePlayer
         public IDXTextureOut FTextureOut;
         
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
-        private readonly Dictionary<int, Device> FDevices = new Dictionary<int, Device>();
+        private readonly ConcurrentDictionary<int, Device> FDevices = new ConcurrentDictionary<int, Device>();
         private readonly ILogger FLogger;
         
         [ImportingConstructor]
@@ -56,6 +56,8 @@ namespace VVVV.Nodes.ImagePlayer
             
             pluginHost.CreateTextureOutput("Texture", TSliceMode.Dynamic, TPinVisibility.True, out FTextureOut);
             FTextureOut.Order = -1;
+            
+            SlimDX.Configuration.EnableObjectTracking = true;
         }
         
         public void Evaluate(int spreadMax)
@@ -77,16 +79,28 @@ namespace VVVV.Nodes.ImagePlayer
             // Create new image players
             for (int i = previosSliceCount; i < spreadMax; i++)
             {
-                FImagePlayers[i] = new ImagePlayer(FDevices.Values, FLogger);
+            	FImagePlayers[i] = new ImagePlayer(FPreloadCountIn[i], FDevices.Values, FLogger);
             }
             
             for (int i = 0; i < spreadMax; i++)
             {
                 var imagePlayer = FImagePlayers[i];
+                
+                if (imagePlayer != null && imagePlayer.PreloadCount != FPreloadCountIn[i])
+                {
+                	imagePlayer.Dispose();
+                	imagePlayer = null;
+                }
+                
+                if (imagePlayer == null)
+                {
+                	imagePlayer = new ImagePlayer(FPreloadCountIn[i], FDevices.Values, FLogger);
+                	FImagePlayers[i] = imagePlayer;
+                }
+                
                 imagePlayer.Directory = FDirectoryIn[i];
                 imagePlayer.Filemask = FFilemaskIn[i];
                 imagePlayer.FPS = FFpsIn[i];
-                imagePlayer.PreloadCount = FPreloadCountIn[i];
                 
                 if (FReloadIn[i])
                 {
@@ -95,8 +109,8 @@ namespace VVVV.Nodes.ImagePlayer
                 imagePlayer.Seek(FTimeIn[i]);
                 
                 FUnusedFramesOut[i] = imagePlayer.UnusedFrames;
-                FDurationIOOut[i] = imagePlayer.CurrentFrame.DurationIO;
-                FDurationTextureOut[i] = imagePlayer.CurrentFrame.DurationTexture;
+                FDurationIOOut[i] = imagePlayer.CurrentFrame.Info.DurationIO;
+                FDurationTextureOut[i] = imagePlayer.CurrentFrame.Info.DurationTexture;
             }
         }
         
@@ -109,6 +123,7 @@ namespace VVVV.Nodes.ImagePlayer
                     imagePlayer.Dispose();
                 }
             }
+            FImagePlayers.SliceCount = 0;
         }
         
         void IPluginDXTexture2.GetTexture(IDXTextureOut ForPin, int OnDevice, int Slice, out int texAddr)
@@ -134,7 +149,26 @@ namespace VVVV.Nodes.ImagePlayer
         
         void IPluginDXResource.DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
         {
-            FDevices.Remove(OnDevice);
+        	foreach (var imagePlayer in FImagePlayers)
+        	{
+        		if (imagePlayer != null)
+        		{
+        			imagePlayer.Dispose();
+        		}
+        	}
+        	FImagePlayers.SliceCount = 0;
+        	
+        	Device device = null;
+        	if (!FDevices.TryRemove(OnDevice, out device))
+        	{
+        		FLogger.Log(LogType.Error, "Couldn't remove device from device list.");
+        	}
+        	else
+        	{
+        		device.Dispose();
+        	}
+        	
+        	FLogger.Log(LogType.Debug, SlimDX.ObjectTable.ReportLeaks());
         }
     }
 }

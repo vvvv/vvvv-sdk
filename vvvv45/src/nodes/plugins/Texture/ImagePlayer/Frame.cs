@@ -1,56 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SlimDX.Direct3D9;
 
 namespace VVVV.Nodes.ImagePlayer
 {
-    public abstract class Frame : IDisposable
+    public class Frame : IDisposable
     {
-        public int FrameNr
+    	private readonly FrameInfo FFrameInfo;
+    	private readonly Texture[] FTextures;
+    	private readonly TexturePool FTexturePool;
+    	
+    	public Frame(FrameInfo frameInfo, IEnumerable<Texture> textures, TexturePool texturePool)
+    	{
+    		FFrameInfo = frameInfo;
+    		FTextures = textures.ToArray();
+    		FTexturePool = texturePool;
+    	}
+    	
+    	public FrameInfo Info
+    	{
+    		get
+    		{
+    			return FFrameInfo;
+    		}
+    	}
+        
+        public Texture GetTexture(Device device)
         {
-            get;
-            protected set;
+        	return FTextures.FirstOrDefault(texture => texture.Device == device);
         }
         
-        public bool Used
+        public void Dispose()
         {
-            get;
-            set;
-        }
-        
-        public abstract bool IsStarted
-        {
-            get;
-        }
-        
-        public abstract bool IsCanceled
-        {
-            get;
-        }
-        
-        public abstract Texture GetTexture(Device device);
-        
-        public abstract void Start();
-        
-        public abstract void Cancel();
-        
-        public abstract void Wait(CancellationToken token);   
-        
-        public abstract void Dispose();
-        
-        public double DurationIO
-        {
-            get;
-            protected set;
-        }
-        
-        public double DurationTexture
-        {
-            get;
-            protected set;
+        	FFrameInfo.Dispose();
+        	
+        	foreach (var texture in FTextures)
+        	{
+        		FTexturePool.PutTexture(texture);
+        	}
         }
     }
 }
