@@ -157,7 +157,13 @@ namespace VVVV.Nodes.ImagePlayer
 						var bitmapFrame = new FormatConvertedBitmap(decoder.Frames[0], PixelFormats.Bgra32, decoder.Palette, 0.0);
 						var sourceRect = new Int32Rect(0, 0, bitmapFrame.PixelWidth, bitmapFrame.PixelHeight);
 						
-						foreach (var device in FDevices)
+						Device[] devices1 = null;
+						lock (FDevices)
+						{
+						    devices1 = FDevices.ToArray();
+						}
+						
+						foreach (var device in devices1)
 						{
 							cancellationToken.ThrowIfCancellationRequested();
 							

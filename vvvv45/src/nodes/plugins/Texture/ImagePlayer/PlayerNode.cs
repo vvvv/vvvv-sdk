@@ -46,7 +46,7 @@ namespace VVVV.Nodes.ImagePlayer
         public IDXTextureOut FTextureOut;
         
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
-        private readonly ConcurrentDictionary<int, Device> FDevices = new ConcurrentDictionary<int, Device>();
+        private readonly List<Device> FDevices = new List<Device>();
         private readonly ILogger FLogger;
         
         [ImportingConstructor]
@@ -64,7 +64,7 @@ namespace VVVV.Nodes.ImagePlayer
         {
             int previosSliceCount = FImagePlayers.SliceCount;
             
-             // Dispose unused image players
+            // Dispose unused image players
             for (int i = spreadMax; i < FImagePlayers.SliceCount ; i++)
             {
                 FImagePlayers[i].Dispose();
@@ -79,7 +79,7 @@ namespace VVVV.Nodes.ImagePlayer
             // Create new image players
             for (int i = previosSliceCount; i < spreadMax; i++)
             {
-            	FImagePlayers[i] = new ImagePlayer(FPreloadCountIn[i], FDevices.Values, FLogger);
+                FImagePlayers[i] = new ImagePlayer(FPreloadCountIn[i], FDevices, FLogger);
             }
             
             for (int i = 0; i < spreadMax; i++)
@@ -88,14 +88,14 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 if (imagePlayer != null && imagePlayer.PreloadCount != FPreloadCountIn[i])
                 {
-                	imagePlayer.Dispose();
-                	imagePlayer = null;
+                    imagePlayer.Dispose();
+                    imagePlayer = null;
                 }
                 
                 if (imagePlayer == null)
                 {
-                	imagePlayer = new ImagePlayer(FPreloadCountIn[i], FDevices.Values, FLogger);
-                	FImagePlayers[i] = imagePlayer;
+                    imagePlayer = new ImagePlayer(FPreloadCountIn[i], FDevices, FLogger);
+                    FImagePlayers[i] = imagePlayer;
                 }
                 
                 imagePlayer.Directory = FDirectoryIn[i];
@@ -126,49 +126,39 @@ namespace VVVV.Nodes.ImagePlayer
             FImagePlayers.SliceCount = 0;
         }
         
-        void IPluginDXTexture2.GetTexture(IDXTextureOut ForPin, int OnDevice, int Slice, out int texAddr)
+        Texture IPluginDXTexture2.GetTexture(IDXTextureOut pin, Device device, int slice)
         {
-            var intPtr = new IntPtr(OnDevice);
-            var device = Device.FromPointer(intPtr);
-            var texture = FImagePlayers[Slice].CurrentFrame.GetTexture(device);
-            if (texture != null)
+            return FImagePlayers[slice].CurrentFrame.GetTexture(device);
+        }
+        
+        void IPluginDXResource.UpdateResource(IPluginOut pin, Device device)
+        {
+            lock (FDevices)
             {
-                texAddr = texture.ComPointer.ToInt32();
-            }
-            else
-            {
-                texAddr = IntPtr.Zero.ToInt32();
+                if (!FDevices.Contains(device))
+                {
+                    FDevices.Add(device);
+                }
             }
         }
         
-        void IPluginDXResource.UpdateResource(IPluginOut ForPin, int OnDevice)
+        void IPluginDXResource.DestroyResource(IPluginOut pin, Device device, bool onlyUnManaged)
         {
-            var intPtr = new IntPtr(OnDevice);
-            FDevices[OnDevice] = Device.FromPointer(intPtr);
-        }
-        
-        void IPluginDXResource.DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
-        {
-        	foreach (var imagePlayer in FImagePlayers)
-        	{
-        		if (imagePlayer != null)
-        		{
-        			imagePlayer.Dispose();
-        		}
-        	}
-        	FImagePlayers.SliceCount = 0;
-        	
-        	Device device = null;
-        	if (!FDevices.TryRemove(OnDevice, out device))
-        	{
-        		FLogger.Log(LogType.Error, "Couldn't remove device from device list.");
-        	}
-        	else
-        	{
-        		device.Dispose();
-        	}
-        	
-        	FLogger.Log(LogType.Debug, SlimDX.ObjectTable.ReportLeaks());
+            foreach (var imagePlayer in FImagePlayers)
+            {
+                if (imagePlayer != null)
+                {
+                    imagePlayer.Dispose();
+                }
+            }
+            FImagePlayers.SliceCount = 0;
+            
+            lock (FDevices)
+            {
+                FDevices.Remove(device);
+            }
+            
+            FLogger.Log(LogType.Debug, SlimDX.ObjectTable.ReportLeaks());
         }
     }
 }
