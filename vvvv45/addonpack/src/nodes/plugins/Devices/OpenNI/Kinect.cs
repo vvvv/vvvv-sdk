@@ -165,7 +165,11 @@ namespace VVVV.Nodes
 			try
 			{
 				ScriptNode Node;
+				//OpenNI.Log.SetSeverityFilter(LogSeverity.Error);
 				FContext = new Context(FConfigPinIn[0]);
+				var version = OpenNI.Version.Current.Major.ToString() + "." + OpenNI.Version.Current.Minor.ToString() + "." + OpenNI.Version.Current.Maintenance.ToString() + "." + OpenNI.Version.Current.Build.ToString();
+				FLogger.Log(LogType.Message, "OpenNI Version: " + version);
+				
 				FDefaultValuesOut[0] = false;
 			}
 			catch (StatusException ex)
