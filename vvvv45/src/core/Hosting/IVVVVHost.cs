@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using VVVV.Hosting.Interfaces.EX9;
+using VVVV.PluginInterfaces.InteropServices.EX9;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 

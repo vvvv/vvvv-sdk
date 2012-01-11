@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SlimDX.Direct3D9;
 
-namespace VVVV.Hosting.Interfaces.EX9
+namespace VVVV.PluginInterfaces.InteropServices.EX9
 {
     [ComVisible(false)]
-    public class DeviceMarshaler : ICustomMarshaler, IDXDeviceListener
+    internal class DeviceMarshaler : ICustomMarshaler, IDXDeviceListener
     {
         private static DeviceMarshaler marshaler = null;
         public static ICustomMarshaler GetInstance(string cookie)
@@ -19,11 +19,11 @@ namespace VVVV.Hosting.Interfaces.EX9
             return marshaler;
         }
         
-        internal static void Initialize(IVVVVHost host)
+        internal static void Initialize(IDXDeviceService deviceService)
         {
             if (marshaler == null)
             {
-                marshaler = new DeviceMarshaler(host);
+                marshaler = new DeviceMarshaler(deviceService);
             }
             else
             {
@@ -34,9 +34,9 @@ namespace VVVV.Hosting.Interfaces.EX9
         private readonly Dictionary<IntPtr, Device> FDevices = new Dictionary<IntPtr, Device>();
         private readonly IDXDeviceService FDeviceService;
         
-        private DeviceMarshaler(IVVVVHost host)
+        private DeviceMarshaler(IDXDeviceService deviceService)
         {
-            FDeviceService = host.DeviceService;
+            FDeviceService = deviceService;
             foreach (var devicePtr in FDeviceService.Devices)
             {
                 FDevices[devicePtr] = Device.FromPointer(devicePtr);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace VVVV.Hosting.Interfaces.EX9
+namespace VVVV.PluginInterfaces.InteropServices.EX9
 {
     /// <summary>
     /// IDXDeviceListener is the callback interface used by IDXDeviceService.

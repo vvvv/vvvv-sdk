@@ -7,10 +7,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
+
 using VVVV.Core;
 using VVVV.Core.Commands;
 using VVVV.Core.Logging;
@@ -20,6 +21,7 @@ using VVVV.Hosting.Factories;
 using VVVV.Hosting.Graph;
 using VVVV.Hosting.Interfaces.EX9;
 using VVVV.Hosting.Pins;
+using VVVV.PluginInterfaces.InteropServices.EX9;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
@@ -188,7 +190,7 @@ namespace VVVV.Hosting
             FNodeBrowser.IsStandalone = false;
             FNodeBrowser.DragDrop(false);
             
-            DeviceMarshaler.Initialize(vvvvHost);
+            DeviceMarshaler.Initialize(vvvvHost.DeviceService);
         }
         
         private INodeInfo GetNodeInfo(string systemName)

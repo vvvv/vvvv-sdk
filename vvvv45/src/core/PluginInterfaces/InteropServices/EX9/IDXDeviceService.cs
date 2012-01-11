@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using SlimDX.Direct3D9;
 
-namespace VVVV.Hosting.Interfaces.EX9
+namespace VVVV.PluginInterfaces.InteropServices.EX9
 {
     /// <summary>
     /// IDXDeviceService provides access to Direct3D9 devices created by vvvv.
