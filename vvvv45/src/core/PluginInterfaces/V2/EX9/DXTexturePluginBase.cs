@@ -20,11 +20,11 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		protected abstract Texture CreateTexture(int Slice, Device device);
 		protected abstract void UpdateTexture(int Slice, Texture texture);
 		
-		public void GetTexture(IDXTextureOut ForPin, Device OnDevice, int Slice, out Texture Texture)
+		public Texture GetTexture(IDXTextureOut ForPin, Device OnDevice, int Slice)
 		{
-			Texture = null;
 			if(FDeviceData.ContainsKey(OnDevice)) 
-				Texture = FDeviceData[OnDevice].Data[Slice];
+				return FDeviceData[OnDevice].Data[Slice];
+			return null;
 		}
 		
 		protected override TextureDeviceData CreateDeviceData(Device device)

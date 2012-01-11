@@ -18,11 +18,11 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		protected abstract Mesh CreateMesh(Device device);
 		protected abstract void UpdateMesh(Mesh mesh);
 		
-		public void GetMesh(IDXMeshOut ForPin, Device OnDevice, out Mesh Mesh)
+		public Mesh GetMesh(IDXMeshOut ForPin, Device OnDevice)
 		{
-			Mesh = null;
 			if(FDeviceData.ContainsKey(OnDevice))
-				Mesh = FDeviceData[OnDevice].Data;
+				return FDeviceData[OnDevice].Data;
+			return null;
 		}
 		
 		protected override MeshDeviceData CreateDeviceData(Device device)

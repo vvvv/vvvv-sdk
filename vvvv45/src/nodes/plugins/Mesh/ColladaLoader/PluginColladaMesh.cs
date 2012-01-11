@@ -327,9 +327,11 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public void GetMesh(IDXMeshOut ForPin, Device OnDevice, out Mesh Mesh)
+		public Mesh GetMesh(IDXMeshOut ForPin, Device OnDevice)
 		{
-			FDeviceMeshes.TryGetValue(OnDevice, out Mesh);
+		    Mesh mesh = null;
+			FDeviceMeshes.TryGetValue(OnDevice, out mesh);
+			return mesh;
 		}
 		#endregion
         

@@ -126,10 +126,10 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="ForPin">Interface to the pin via which the mesh is accessed.</param>
 		/// <param name="OnDevice">Pointer to the device for which the mesh is accessed.</param>
 		/// <param name="Mesh">The retrieved mesh</param>
-		void GetMesh(
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(MeshMarshaler))]
+		Mesh GetMesh(
 		    IDXMeshOut ForPin, 
-		    [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice, 
-		    [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(MeshMarshaler))] out Mesh Mesh);
+		    [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice);
 	}
 	
 	/// <summary>
@@ -147,10 +147,10 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="ForPin">Interface to the pin via which the texture is accessed.</param>
 		/// <param name="OnDevice">Pointer to the device for which the texture is accessed.</param>
 		/// <param name="Texture">The retrieved texture</param>
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(TextureMarshaler))]
 		void GetTexture(
 		    IDXTextureOut ForPin, 
-		    [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice, 
-		    [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(TextureMarshaler))] out Texture Texture);
+		    [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice);
 	}
 	
 	/// <summary>
@@ -169,11 +169,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="OnDevice">Pointer to the device for which the texture is accessed.</param>
 		/// /// <param name="Slice">Slice Index of the texture to be accessed.</param>
 		/// <param name="Texture">The retrieved texture</param>
-		void GetTexture(
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(TextureMarshaler))]
+		Texture GetTexture(
 		    IDXTextureOut ForPin, 
 		    [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice, 
-		    int Slice, 
-		    [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(TextureMarshaler))] out Texture Texture);
+		    int Slice);
 	}
 
 	/// <summary>
