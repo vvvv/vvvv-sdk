@@ -1,30 +1,55 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-
 using SlimDX.Direct3D9;
 
 namespace VVVV.Hosting.Interfaces.EX9
 {
     [ComVisible(false)]
-    public class DeviceMarshaler : ICustomMarshaler
+    public class DeviceMarshaler : ICustomMarshaler, IDXDeviceListener
     {
         private static DeviceMarshaler marshaler = null;
         public static ICustomMarshaler GetInstance(string cookie)
         {
             if (marshaler == null)
             {
-                marshaler = new DeviceMarshaler();
+                throw new InvalidOperationException("DeviceMarshaler has not yet been initialized.");
             }
             return marshaler;
         }
         
+        internal static void Initialize(IVVVVHost host)
+        {
+            if (marshaler == null)
+            {
+                marshaler = new DeviceMarshaler(host);
+            }
+            else
+            {
+                throw new InvalidOperationException("DeviceMarshaler has already been initialized.");
+            }
+        }
+        
+        private readonly Dictionary<IntPtr, Device> FDevices = new Dictionary<IntPtr, Device>();
+        private readonly IDXDeviceService FDeviceService;
+        
+        private DeviceMarshaler(IVVVVHost host)
+        {
+            FDeviceService = host.DeviceService;
+            foreach (var devicePtr in FDeviceService.Devices)
+            {
+                FDevices[devicePtr] = Device.FromPointer(devicePtr);
+            }
+            
+            FDeviceService.Subscribe(this);
+        }
+        
         public object MarshalNativeToManaged(IntPtr pNativeData)
         {
-            if (pNativeData == IntPtr.Zero)
-                return null;
-            else
-                return Device.FromPointer(pNativeData);
+            Device device = null;
+            FDevices.TryGetValue(pNativeData, out device);
+            return device;
         }
         
         public IntPtr MarshalManagedToNative(object ManagedObj)
@@ -43,13 +68,32 @@ namespace VVVV.Hosting.Interfaces.EX9
         
         public void CleanUpManagedData(object ManagedObj)
         {
-            var device = ManagedObj as Device;
-            device.Dispose();
+            // Do nothing
         }
         
         public int GetNativeDataSize()
         {
             return Marshal.SizeOf(typeof(IntPtr));
+        }
+        
+        void IDXDeviceListener.DeviceAddedCB(IntPtr devicePtr)
+        {
+            Device device = null;
+            if (!FDevices.TryGetValue(devicePtr, out device))
+            {
+                device = Device.FromPointer(devicePtr);
+                FDevices.Add(devicePtr, device);
+            }
+        }
+        
+        void IDXDeviceListener.DeviceRemovedCB(IntPtr devicePtr)
+        {
+            Device device = null;
+            if (FDevices.TryGetValue(devicePtr, out device))
+            {
+                device.Dispose();
+                FDevices.Remove(devicePtr);
+            }
         }
     }
 }

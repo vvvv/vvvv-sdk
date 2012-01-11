@@ -11,7 +11,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-
 using VVVV.Core;
 using VVVV.Core.Commands;
 using VVVV.Core.Logging;
@@ -19,6 +18,7 @@ using VVVV.Core.Model;
 using VVVV.Hosting;
 using VVVV.Hosting.Factories;
 using VVVV.Hosting.Graph;
+using VVVV.Hosting.Interfaces.EX9;
 using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -187,6 +187,8 @@ namespace VVVV.Hosting
             FNodeBrowser = (INodeBrowser) PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
             FNodeBrowser.IsStandalone = false;
             FNodeBrowser.DragDrop(false);
+            
+            DeviceMarshaler.Initialize(vvvvHost);
         }
         
         private INodeInfo GetNodeInfo(string systemName)
