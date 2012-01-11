@@ -124,7 +124,7 @@ namespace VVVV.Nodes
 
                         FPoseDecetionCapability.PoseDetected += new EventHandler<PoseDetectedEventArgs>(FPoseDecetionCapability_PoseDetected);
                         FPoseDecetionCapability.PoseEnded += new EventHandler<PoseEndedEventArgs>(FPoseDecetionCapability_PoseEnded);
-
+                        
                         FInit = false;
                     }
                     catch (StatusException ex)
@@ -261,17 +261,14 @@ namespace VVVV.Nodes
                                     }
                                 }
                             }
- 
 
-                            if (FErrorMessages.Count > 0)
-                            {
-                                foreach (string Message in FErrorMessages)
-                                {
+                        	lock (FErrorMessages)
+                        	{
+                        		foreach (string Message in FErrorMessages)
                                     FLogger.Log(LogType.Error, Message);
-                                }
 
                                 FErrorMessages.Clear();
-                            }
+                        	}
                         }
                         else
                         {
@@ -305,9 +302,7 @@ namespace VVVV.Nodes
             if (e.Error != null)
             {
                 lock (FErrorMessages)
-                {
                     FErrorMessages.Add("Skeleton loading failed: " + e.Error.Message.ToString());
-                }
             }
             else
             {
@@ -353,7 +348,8 @@ namespace VVVV.Nodes
                 }
                 catch (StatusException ex)
                 {
-                    FErrorMessages.Add(ex.Message);
+                	lock (FErrorMessages)
+                    	FErrorMessages.Add(ex.Message);
                     //Debug.WriteLine(ex.Message);
                 }
             }
