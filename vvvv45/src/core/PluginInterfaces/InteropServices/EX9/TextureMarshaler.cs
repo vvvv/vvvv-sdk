@@ -4,10 +4,10 @@ using System.Runtime.InteropServices;
 
 using SlimDX.Direct3D9;
 
-namespace VVVV.Hosting.Interfaces.EX9
+namespace VVVV.PluginInterfaces.InteropServices.EX9
 {
     [ComVisible(false)]
-    public class TextureMarshaler : ICustomMarshaler
+    internal class TextureMarshaler : ICustomMarshaler
     {
         private static TextureMarshaler marshaler = null;
         public static ICustomMarshaler GetInstance(string cookie)
@@ -32,7 +32,7 @@ namespace VVVV.Hosting.Interfaces.EX9
             Texture texture = ManagedObj as Texture;
             if (texture != null)
             {
-                // We need to do this.
+                // TODO: We need to do this. Find out why!
                 Marshal.AddRef(texture.ComPointer);
                 return texture.ComPointer;
             }
