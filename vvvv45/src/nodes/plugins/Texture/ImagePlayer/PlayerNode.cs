@@ -56,8 +56,6 @@ namespace VVVV.Nodes.ImagePlayer
             
             pluginHost.CreateTextureOutput("Texture", TSliceMode.Dynamic, TPinVisibility.True, out FTextureOut);
             FTextureOut.Order = -1;
-            
-            SlimDX.Configuration.EnableObjectTracking = true;
         }
         
         public void Evaluate(int spreadMax)
@@ -157,8 +155,6 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 FDevices.Remove(device);
             }
-            
-            FLogger.Log(LogType.Debug, SlimDX.ObjectTable.ReportLeaks());
         }
     }
 }

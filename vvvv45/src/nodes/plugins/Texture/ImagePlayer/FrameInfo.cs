@@ -111,5 +111,9 @@ namespace VVVV.Nodes.ImagePlayer
 		}
 		#endregion
 
+		public override string ToString()
+        {
+            return string.Format("[FrameInfo FFrameNr={0}, FFilename={1}]", FFrameNr, FFilename);
+        }
 	}
 }
