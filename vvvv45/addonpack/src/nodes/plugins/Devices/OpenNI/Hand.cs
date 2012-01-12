@@ -21,20 +21,20 @@ namespace VVVV.Nodes
                 Category = "Kinect",
                 Version = "OpenNI",
                 Help = "Hand recognition from the Kinect",
-                Tags = "Kinect, OpenNI, Hand")]
+                Tags = "tracking, hand")]
     #endregion PluginInfo
-    public class HandOpenNI: IPluginEvaluate, IDisposable
+    public class HandOpenNI: IPluginEvaluate, IPluginConnections, IDisposable
     {
         #region fields & pins
         [Input("Context", IsSingle=true)]
-        ISpread<Context> FContextIn;
-
+		Pin<Context> FContextIn;
+		
+		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
+		ISpread<bool> FEnabledIn;
+		
         [Input("Track Start Position")]
         ISpread<Vector3D> FTrackStartIn;
         
-        [Input("Enable", IsSingle = true, DefaultValue=1)]
-        IDiffSpread<bool> FEnableIn;
-
         [Output("Hand Position")]
         ISpread<Vector3D> FHandPositionOut;
         
@@ -46,43 +46,48 @@ namespace VVVV.Nodes
 
         HandsGenerator FHandGenerator;
 
-        private bool FInit = true;
+        private bool FContextChanged = false;
         private Dictionary<int, Vector3D> FTrackedHands = new Dictionary<int, Vector3D>();
         private Dictionary<int, Point3D> FTrackedStarts = new Dictionary<int, Point3D>();
-        //private List<Vector3D> FTrackedStarts = new List<Vector3D>();
         #endregion fields & pins
 
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
-            if (FContextIn[0] != null)
-            {
-                // Initialization
-                if (FInit == true)
-                {
-                    try
-                    {
-                        // Create and Hands generator
-                        FHandGenerator = new HandsGenerator(FContextIn[0]);
-                        FHandGenerator.HandCreate += new EventHandler<HandCreateEventArgs>(FHands_HandCreate);
-                        FHandGenerator.HandDestroy += new EventHandler<HandDestroyEventArgs>(FHands_HandDestroy);
-                        FHandGenerator.HandUpdate += new EventHandler<HandUpdateEventArgs>(FHands_HandUpdate);
-
-                        //Start the Nodes to generate data
-                        FHandGenerator.StartGenerating();
-                    }
-                    catch (StatusException ex)
-                    {
-                        FLogger.Log(ex);
-                    }
-                    catch (GeneralException e)
-                    {
-                        FLogger.Log(e);
-                    }
-                    
-                    FInit = false;
-                }
-                
+            if (FContextChanged)
+			{
+				if (FContextIn.PluginIO.IsConnected)
+				{
+					if (FContextIn[0] != null)
+					{
+						try
+						{
+	                        // Create and Hands generator
+	                        FHandGenerator = new HandsGenerator(FContextIn[0]);
+	                        FHandGenerator.HandCreate += FHands_HandCreate;
+	                        FHandGenerator.HandDestroy += FHands_HandDestroy;
+	                        FHandGenerator.HandUpdate += FHands_HandUpdate;
+	
+	                        //Start the Nodes to generate data
+	                        FHandGenerator.StartGenerating();
+	                        
+	                        FContextChanged = false;
+						}
+						catch (StatusException ex)
+						{
+							FLogger.Log(ex);
+						}
+					}
+				}
+				else
+				{
+					CleanUp();
+					FContextChanged = false;
+				}
+			}
+			
+			if (FHandGenerator != null && FEnabledIn[0])
+			{
                 for (int i = 0; i < FTrackStartIn.SliceCount; i++)
                 {
                 	var p = new Point3D((float)(FTrackStartIn[i].x * 1000), (float)(FTrackStartIn[i].y * 1000), (float)(FTrackStartIn[i].z * 1000));
@@ -136,18 +141,40 @@ namespace VVVV.Nodes
         }
         
         #region Dispose
-
         public void Dispose()
+        {
+        	CleanUp();
+        }
+        
+        private void CleanUp()
         {
         	if (FHandGenerator != null)
         	{
-        		FHandGenerator.HandCreate -= new EventHandler<HandCreateEventArgs>(FHands_HandCreate);
-                FHandGenerator.HandDestroy -= new EventHandler<HandDestroyEventArgs>(FHands_HandDestroy);
-                FHandGenerator.HandUpdate -= new EventHandler<HandUpdateEventArgs>(FHands_HandUpdate);
+        		FHandGenerator.HandCreate -= FHands_HandCreate;
+                FHandGenerator.HandDestroy -= FHands_HandDestroy;
+                FHandGenerator.HandUpdate -= FHands_HandUpdate;
+                
                 FHandGenerator.Dispose();
+                FHandGenerator = null;
         	}
+        	
+        	FTrackedStarts.Clear();
+        	FTrackedHands.Clear();
         }
-
         #endregion 
+        
+        #region ContextConnect
+		public void ConnectPin(IPluginIO pin)
+		{
+			if (pin == FContextIn.PluginIO)
+				FContextChanged = true;
+		}
+
+		public void DisconnectPin(IPluginIO pin)
+		{
+			if (pin == FContextIn.PluginIO)
+				FContextChanged = true;
+		}
+		#endregion
     }
 }

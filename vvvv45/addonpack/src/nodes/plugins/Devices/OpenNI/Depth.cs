@@ -1,7 +1,4 @@
-﻿//if this line is uncomment the debug information will be written to the output view an will be include to the compiling
-//#define Debug
-
-#region usings
+﻿#region usings
 using System;
 using System.ComponentModel.Composition;
 using System.Threading;
@@ -41,7 +38,7 @@ namespace VVVV.Nodes
 	            Tags = "ex9, texture",
 	            Author = "Phlegma, joreg")]
 	#endregion PluginInfo
-	public class Texture_Depth: DXTextureOutPluginBase, IPluginEvaluate, IDisposable
+	public class Texture_Depth: DXTextureOutPluginBase, IPluginEvaluate, IPluginConnections, IDisposable
 	{
 		//memcopy method
 		[DllImport("Kernel32.dll", EntryPoint="RtlMoveMemory", SetLastError=false)]
@@ -51,14 +48,14 @@ namespace VVVV.Nodes
 		//static extern void CopyMemory(IntPtr dest, IntPtr src, int size);
 		
 		#region fields & pins
-		[Input("Context", IsSingle = true)]
-		ISpread<Context> FContext;
+		[Input("Context", IsSingle=true)]
+		Pin<Context> FContextIn;
 		
 		[Input("Depth Mode")]
 		IDiffSpread<DepthMode> FDepthMode;
 
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
-		ISpread<bool> FEnableIn;
+		ISpread<bool> FEnabledIn;
 		
 		[Output("FOV", Order = int.MaxValue)]
 		ISpread<Vector2D> FFov;
@@ -70,74 +67,77 @@ namespace VVVV.Nodes
 		private int FTexWidth;
 		private int FTexHeight;
 		private DepthGenerator FDepthGenerator;
-		private bool FInit = true;
-		IPluginHost FHost;
-
+		private bool FContextChanged = false;
 		#endregion fields & pins
 
 		// import host and hand it to base constructor
 		[ImportingConstructor()]
 		public Texture_Depth(IPluginHost host)
 			: base(host)
-		{
-			FHost = host;
-		}
+		{}
 
 		#region Evaluate
 
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FContext[0] != null)
+			if (FContextChanged)
 			{
-				if (FInit == true)
+				if (FContextIn.PluginIO.IsConnected)
 				{
-					if (FDepthGenerator == null)
+					if (FContextIn[0] != null)
 					{
-						FDepthGenerator = new DepthGenerator(FContext[0]);
-						
-						FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle);
-						FHistogram = new int[FDepthGenerator.DeviceMaxDepth];
-						
-						//Set the resolution of the texture
-						MapOutputMode MapMode = FDepthGenerator.MapOutputMode;
-						FTexWidth = MapMode.XRes;
-						FTexHeight = MapMode.YRes;
+						try
+						{
+							FDepthGenerator = new DepthGenerator(FContextIn[0]);
+							
+							FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle);
+							FHistogram = new int[FDepthGenerator.DeviceMaxDepth];
+							
+							//Set the resolution of the texture
+							MapOutputMode MapMode = FDepthGenerator.MapOutputMode;
+							FTexWidth = MapMode.XRes;
+							FTexHeight = MapMode.YRes;
 
-						FDepthGenerator.StartGenerating();
-						
-						//Reinitalie the vvvv texture
-						Reinitialize();
-						
-						FInit = false;
+							FDepthGenerator.StartGenerating();
+							
+							//Reinitalie the vvvv texture
+							Reinitialize();
+							
+							FContextChanged = false;
+						}
+						catch (StatusException ex)
+						{
+							FLogger.Log(ex);
+						}
 					}
 				}
 				else
 				{
-					//update the vvvv texture
-					if (FEnableIn[0])
-						Update();
+					CleanUp();
+					FContextChanged = false;
 				}
 			}
-			else
-			{
-				if (FDepthGenerator != null)
-				{
-					//FDepthGenerator.StopGenerating();
-					FDepthGenerator = null;
-					FInit = true;
-				}
-			}
+			
+			if (FDepthGenerator != null && FEnabledIn[0])
+				Update();
 		}
 
 		#endregion
 
 		#region Dispose
-
 		public void Dispose()
 		{
+			CleanUp();
+		}
+		
+		private void CleanUp()
+		{
 			if (FDepthGenerator != null)
+			{
 				FDepthGenerator.Dispose();
+				FDepthGenerator = null;
+			}
 		}
 
 		#endregion
@@ -149,37 +149,26 @@ namespace VVVV.Nodes
 			for (int i = 0; i < FHistogram.Length; ++i)
 				FHistogram[i] = 0;
 
-			try
+			ushort* pDepth = (ushort*)DepthMD.DepthMapPtr;
+
+			int points = 0;
+			for (int y = 0; y < DepthMD.YRes; y++)
+				for (int x = 0; x < DepthMD.XRes; x++, pDepth++)
 			{
-				ushort* pDepth = (ushort*)DepthMD.DepthMapPtr;
+				ushort depthVal = *pDepth;
+				if (depthVal != 0)
+				{
+					FHistogram[depthVal]++;
+					points++;
+				}
+			}
 
-				int points = 0;
-				for (int y = 0; y < DepthMD.YRes; y++)
-					for (int x = 0; x < DepthMD.XRes; x++, pDepth++)
-					{
-						ushort depthVal = *pDepth;
-						if (depthVal != 0)
-						{
-							FHistogram[depthVal]++;
-							points++;
-						}
-					}
+			for (int i = 1; i < FHistogram.Length; i++)
+				FHistogram[i] += FHistogram[i - 1];
 
+			if (points > 0)
 				for (int i = 1; i < FHistogram.Length; i++)
-					FHistogram[i] += FHistogram[i - 1];
-
-				if (points > 0)
-					for (int i = 1; i < FHistogram.Length; i++)
-						FHistogram[i] = (ushort)(ushort.MaxValue * (1.0f - (FHistogram[i] / (float)points)));
-			}
-			catch (AccessViolationException)
-			{
-				//FLogger.Log(ex);
-			}
-			catch (IndexOutOfRangeException)
-			{
-				//FLogger.Log(ex);
-			}			
+					FHistogram[i] = (ushort)(ushort.MaxValue * (1.0f - (FHistogram[i] / (float)points)));
 		}
 		#endregion Helper
 		
@@ -224,5 +213,19 @@ namespace VVVV.Nodes
 		}
 
 		#endregion IPluginDXResource Members
+		
+		#region ContextConnect
+		public void ConnectPin(IPluginIO pin)
+		{
+			if (pin == FContextIn.PluginIO)
+				FContextChanged = true;
+		}
+
+		public void DisconnectPin(IPluginIO pin)
+		{
+			if (pin == FContextIn.PluginIO)
+				FContextChanged = true;
+		}
+		#endregion
 	}
 }

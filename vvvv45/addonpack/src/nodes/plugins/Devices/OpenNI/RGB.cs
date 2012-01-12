@@ -31,21 +31,15 @@ namespace VVVV.Nodes
 	            Tags = "ex9, texture",
 	            Author = "Phlegma, joreg")]
 	#endregion PluginInfo
-	public class Texture_Image: DXTextureOutPluginBase, IPluginEvaluate, IDisposable
+	public class Texture_Image: DXTextureOutPluginBase, IPluginEvaluate, IPluginConnections, IDisposable
 	{
 		#region fields & pins
-		[Input("Context", IsSingle = true)]
-		ISpread<Context> FContextIn;
-
+		[Input("Context", IsSingle=true)]
+		Pin<Context> FContextIn;
+		
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
-		IDiffSpread<bool> FEnabledIn;
-		
-		[Input("Output Mode", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
-		IDiffSpread<OutputMode> FOutputMode;
-		
-		[Input("Shared Name", IsSingle = true, DefaultString = "#vvvv", Visibility = PinVisibility.OnlyInspector)]
-		IDiffSpread<string> FSharedNamePin;
-
+		ISpread<bool> FEnabledIn;
+	
 		[Import()]
 		ILogger FLogger;
 
@@ -55,90 +49,71 @@ namespace VVVV.Nodes
 		private int FTexWidth;
 		private int FTexHeight;
 
-		private bool FInit = true;
-		private Segment FSegment;
-		private IntPtr FSharedImage;
+		private bool FContextChanged = false;
 		#endregion fields & pins
-
+		
 		// import host and hand it to base constructor
 		[ImportingConstructor()]
 		public Texture_Image(IPluginHost host): base(host)
-		{
-		}
+		{}
 		
 		#region Evaluate
-
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FContextIn[0] != null)
+			if (FContextChanged)
 			{
-				if (FInit == true)
+				if (FContextIn.PluginIO.IsConnected)
 				{
-					//Create an Image Generator
-					try
+					if (FContextIn[0] != null)
 					{
-						FImageGenerator = new ImageGenerator(FContextIn[0]);
-						FImageMetaData = FImageGenerator.GetMetaData();
-
-						FTexWidth = FImageMetaData.XRes;
-						FTexHeight = FImageMetaData.YRes;
-						
-						//Reinitalie the vvvv texture
-						Reinitialize();
-
-						FInit = false;
-						
-						UpdateOutputMode();
-					}
-					catch (StatusException ex)
-					{
-						FLogger.Log(ex);
+						try
+						{
+							FImageGenerator = new ImageGenerator(FContextIn[0]);
+							FImageMetaData = FImageGenerator.GetMetaData();
+							
+							FTexWidth = FImageMetaData.XRes;
+							FTexHeight = FImageMetaData.YRes;
+							
+							//Reinitalie the vvvv texture
+							Reinitialize();
+							
+							FContextChanged = false;
+						}
+						catch (StatusException ex)
+						{
+							FLogger.Log(ex);
+						}
 					}
 				}
+				else
+				{
+					CleanUp();
+					FContextChanged = false;
+				}
 			}
-			else
-			{
-				FInit = true;
-			}
-
-			if (FEnabledIn[0])
-				Update();
 			
-			if (!FInit && (FOutputMode.IsChanged || FSharedNamePin.IsChanged))
-				UpdateOutputMode();
-		}
-		
-		private void UpdateOutputMode()
-		{
-			DisposeSharedStuff();
-
-			int byteCount = FTexWidth*FTexHeight*3;
-			FSegment = new Segment(FSharedNamePin[0], SharedMemoryCreationFlag.Create, byteCount);
-			FSharedImage = Marshal.AllocHGlobal(byteCount);
+			if (FImageGenerator != null && FEnabledIn[0])
+				Update();
 		}
 
 		#endregion
 
 		#region Dispose
-
 		public void Dispose()
 		{
-			if (FImageGenerator != null)
-				FImageGenerator.Dispose();
-			
-			DisposeSharedStuff();
+			CleanUp();
 		}
 		
-		private void DisposeSharedStuff()
+		private void CleanUp()
 		{
-			if (FSegment != null)
+			if (FImageGenerator != null)
 			{
-				FSegment.Dispose();
-				Marshal.FreeHGlobal(FSharedImage);
+				FImageGenerator.Dispose();
+				FImageGenerator = null;
 			}
+				
 		}
-
 		#endregion
 
 		#region IPluginDXTexture Members
@@ -158,67 +133,34 @@ namespace VVVV.Nodes
 		{
 			//get the pointer to the Rgb Image
 			byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
-
+			
 			//lock the vvvv texture
 			byte* dest32 = (byte*)texture.LockRectangle(0, LockFlags.Discard).Data.DataPointer;
 			
-			switch (FOutputMode[0])
+			for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
 			{
-				case OutputMode.Texture:
-					{
-						for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
-						{
-							dest32[0] = src24[2];
-							dest32[1] = src24[1];
-							dest32[2] = src24[0];
-							dest32[3] = 255;
-						}
-						break;
-					}
-				case OutputMode.SharedMemory:
-					{
-						byte* share24 = (byte*) FSharedImage;
-						
-						for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, share24 += 3)
-						{
-							share24[0] = src24[2];
-							share24[1] = src24[1];
-							share24[2] = src24[0];
-						}
-						
-						FSegment.Lock();
-						FSegment.CopyByteArrayToSharedMemory(FSharedImage, FTexWidth * FTexHeight * 3);
-						FSegment.Unlock();
-						
-						break;
-					}
-				case OutputMode.Both:
-					{
-						byte* share24 = (byte*) FSharedImage;
-						
-						//write the pixels
-						for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4, share24 += 3)
-						{
-							dest32[0] = src24[2];
-							dest32[1] = src24[1];
-							dest32[2] = src24[0];
-							dest32[3] = 255;
-							
-							share24[0] = src24[2];
-							share24[1] = src24[1];
-							share24[2] = src24[0];
-						}
-						
-						FSegment.Lock();
-						FSegment.CopyByteArrayToSharedMemory(FSharedImage, FTexWidth * FTexHeight * 3);
-						FSegment.Unlock();
-						
-						break;
-					}
+				dest32[0] = src24[2];
+				dest32[1] = src24[1];
+				dest32[2] = src24[0];
+				dest32[3] = 255;
 			}
-			texture.UnlockRectangle(0);
 
-			#endregion IPluginDXResource Members
+			texture.UnlockRectangle(0);
 		}
+		#endregion IPluginDXResource Members
+		
+		#region ContextConnect
+		public void ConnectPin(IPluginIO pin)
+		{
+			if (pin == FContextIn.PluginIO)
+				FContextChanged = true;
+		}
+
+		public void DisconnectPin(IPluginIO pin)
+		{
+			if (pin == FContextIn.PluginIO)
+				FContextChanged = true;
+		}
+		#endregion
 	}
 }

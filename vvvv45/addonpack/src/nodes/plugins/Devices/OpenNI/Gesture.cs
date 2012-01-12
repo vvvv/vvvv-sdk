@@ -16,375 +16,263 @@ using OpenNI;
 
 namespace VVVV.Nodes
 {
-    #region PluginInfo
-    [PluginInfo(Name = "Gesture",
-                Category = "Kinect",
-                Version = "OpenNI",
-                Help = "Gesture recognition from the Kinect",
-                Tags = "Kinect, OpenNI, Hand",
-                Author = "Phlegma")]
-    #endregion PluginInfo
+	#region PluginInfo
+	[PluginInfo(Name = "Gesture",
+	            Category = "Kinect",
+	            Version = "OpenNI",
+	            Help = "Gesture recognition from the Kinect",
+	            Tags = "tracking, hand",
+	            Author = "Phlegma")]
+	#endregion PluginInfo
+	public class GestureOpenNI: IPluginEvaluate, IPluginConnections, IDisposable
+	{
+		#region fields & pins
+		[Input("Context", IsSingle=true)]
+		Pin<Context> FContextIn;
+		
+		[Input("Gestures Names", DefaultString = "RaiseHand")]
+		IDiffSpread<string> FGestureNamesIn;
 
+		[Input("Reset", IsSingle = true, IsBang = true)]
+		IDiffSpread<bool> FStopTrackingIn;
 
-    public class GestureOpenNI: IPluginEvaluate, IDisposable
-    {
-        #region fields & pins
-        [Input("Context", IsSingle=true)]
-        ISpread<Context> FContextIn;
+		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
+		ISpread<bool> FEnabledIn;
 
-        [Input("Gestures Names", DefaultString = "RaiseHand")]
-        IDiffSpread<string> FGestureNamesIn;
+		[Output("Possible Gestures")]
+		ISpread<string> FGesturesPosOut;
 
-        [Input("Smoothing", IsSingle = true, DefaultValue = 0.5, MaxValue=1, MinValue=0)]
-        IDiffSpread<float> FSmoothingIn;
+		[Output("Active Gestures")]
+		ISpread<string> FGestureActOut;
 
-        [Input("Reset", IsSingle = true, IsBang = true)]
-        IDiffSpread<bool> FStopTrackingIn;
+		[Output("Recognized Gestures")]
+		ISpread<string> FGesturesRegOut;
 
-        [Input("Enable", IsSingle = true, DefaultValue=1)]
-        IDiffSpread<bool> FEnableIn;
+		[Output("Gesture Position")]
+		ISpread<Vector3D> FGesturePositionOut;
 
-        [Output("Possible Gestures")]
-        ISpread<string> FGesturesPosOut;
+		[Output("Hand ID")]
+		ISpread<int> FUserIdOut;
 
-        [Output("Active Gestures")]
-        ISpread<string> FGestureActOut;
+		[Output("Tracking Position")]
+		ISpread<Vector3D> FPositionOut;
 
-        [Output("Recognized Gestures")]
-        ISpread<string> FGesturesRegOut;
+		[Import()]
+		ILogger FLogger;
 
-        [Output("Gesture Position")]
-        ISpread<Vector3D> FGesturePositionOut;
+		GestureGenerator FGestureGenerator;
 
-        [Output("Hand ID")]
-        ISpread<int> FUserIdOut;
+		private bool FContextChanged = false;
+		private SortedList<int,Vector3D> FPositions = new SortedList<int,Vector3D>();
+		private Dictionary<Vector3D,string> FGestureRecognized = new Dictionary<Vector3D,string>();
+		private List<Vector3D> FMovingHands = new List<Vector3D>();
+		#endregion fields & pins
 
-        [Output("Tracking Position")]
-        ISpread<Vector3D> FPositionOut;
+		//called when data for any output pin is requested
+		public void Evaluate(int SpreadMax)
+		{
+			if (FContextChanged)
+			{
+				if (FContextIn.PluginIO.IsConnected)
+				{
+					if (FContextIn[0] != null)
+					{
+						try
+						{
+							FGestureGenerator = new GestureGenerator(FContextIn[0]);
+							
+							FGestureGenerator.GestureRecognized += FGesture_GestureRecognized;
+							FGestureGenerator.GestureProgress += FGesture_GestureProgress;
 
-        [Output("Position Moving Hands")]
-        ISpread<Vector3D> FMovingHandsOut;
+							//Write all possible gestures to the Output Pin
+							var gestures = FGestureGenerator.EnumerateAllGestures();
+							FGesturesPosOut.SliceCount = gestures.Length;
+							for (int i = 0; i < gestures.Length; i++)
+								FGesturesPosOut[i] = gestures[i];
 
-        [Import()]
-        ILogger FLogger;
+							//Start the Nodes to generate data
+							FGestureGenerator.StartGenerating();
+							
+							FContextChanged = false;
+						}
+						catch (StatusException ex)
+						{
+							FLogger.Log(ex);
+						}
+					}
+				}
+				else
+				{
+					CleanUp();
+					FContextChanged = false;
+				}
+			}
+			
+			if (FGestureGenerator != null && FEnabledIn[0])
+			{
+				//Check the Incomming gestures and try to add them to the Gesture generator
+				if (FGestureNamesIn.IsChanged)
+				{
+					//check which getsures are active and delete them
+					string[] ActiveGesture = FGestureGenerator.GetAllActiveGestures();
+					if (ActiveGesture.Length > 0)
+					{
+						foreach (string Gesture in ActiveGesture)
+						{
+							try
+							{
+								FGestureGenerator.RemoveGesture(Gesture);
+							}
+							catch (StatusException ex)
+							{
+								FLogger.Log(LogType.Error, String.Format("Cannot Remove Gesture: {0}", Gesture));
+								FLogger.Log(LogType.Message, ex.Message);
+							}
+						}
+					}
 
-        GestureGenerator FGesture;
-        HandsGenerator FHands;
+					//add all gestures to the Gesture Generator
+					foreach (string Gesture in FGestureNamesIn)
+					{
+						try
+						{
+							FGestureGenerator.AddGesture(Gesture);
+						}
+						catch (StatusException ex)
+						{
+							FLogger.Log(LogType.Error, String.Format("Cannot Add Gesture: {0}", Gesture));
+							FLogger.Log(LogType.Message, ex.Message);
+						}
+					}
 
-        private bool FInit = true;
-        private SortedList<int,Vector3D> FPositions = new SortedList<int,Vector3D>();
-        private Dictionary<Vector3D,string> FGestureRecognized = new Dictionary<Vector3D,string>();
-        private List<Vector3D> FMovingHands = new List<Vector3D>();
+					//check with gestures are active and write them to the output
+					ActiveGesture = null;
+					ActiveGesture = FGestureGenerator.GetAllActiveGestures();
+					FGestureActOut.SliceCount = ActiveGesture.Length;
+					for (int i = 0; i < ActiveGesture.Length; i++)
+					{
+						FGestureActOut[i] = ActiveGesture[i];
+					}
+				}
 
-        #endregion fields & pins
+				// Handle the Output Pins
+				if (true)
+				{
+					if (FGestureRecognized.Count > 0)
+					{
+						//lock the List that it its not changed  by the OpenNI Thread
+						lock (FGestureRecognized)
+						{
+							FGesturesRegOut.SliceCount = FGestureRecognized.Count;
+							int Slice = 0;
 
-        //called when data for any output pin is requested
-        public void Evaluate(int SpreadMax)
-        {
-            if (FContextIn[0] != null)
-            {
+							// Write the received Gestures with their endposition to the output
+							foreach (KeyValuePair<Vector3D, string> item in FGestureRecognized)
+							{
+								FGesturesRegOut[Slice] = item.Value;
+								FGesturePositionOut[Slice] = item.Key / 1000;
+								Slice++;
+							}
 
-                // Initialization
-                if (FInit == true)
-                {
-                    
-                    try
-                    {
-                        // Create Gesture and Hands generator
-                        FGesture = new GestureGenerator(FContextIn[0]);
-                        FHands = new HandsGenerator(FContextIn[0]);
+							FGestureRecognized.Clear();
+						}
+					}
+					else
+					{
+						FGesturesRegOut.SliceCount = 0;
+					}
 
-                        //Write all possible gestures to the Output Pin
-                        var gestures = FGesture.EnumerateAllGestures();
-                        FGesturesPosOut.SliceCount = gestures.Length;
-                        for (int i = 0; i < gestures.Length; i++)
-                        {
-                            FGesturesPosOut[i] = gestures[i];
-                        }
+					//write tracked hand id and position to the output
+					if (FPositions.Count > 0)
+					{
+						lock (FPositions)
+						{
+							IList<Vector3D> Vectors = FPositions.Values;
+							IList<int> UserIds = FPositions.Keys;
 
-                        //Start the Nodes to generate data
-                        FHands.StartGenerating();
-                        FGesture.StartGenerating();
-                    }
-                    catch (StatusException ex)
-                    {
-                        FLogger.Log(ex);
-                    }
-                    catch (GeneralException e)
-                    {
-                        FLogger.Log(e);
-                    }
-                }
+							FUserIdOut.SliceCount = UserIds.Count;
 
-                // Handle the Input Pins
-                if (FEnableIn.IsChanged || FInit)
-                {
-                    if (FEnableIn[0] == true)
-                    {
-                        //Add Event Handler for the Gesture Generator
-                        FGesture.GestureRecognized += new EventHandler<GestureRecognizedEventArgs>(FGesture_GestureRecognized);
-                        FGesture.GestureProgress += new EventHandler<GestureProgressEventArgs>(FGesture_GestureProgress);
+							for (int i = 0; i < Vectors.Count; i++)
+							{
+								try
+								{
+									FPositionOut[i] = Vectors[i] / 1000;
+									FUserIdOut[i] = UserIds[i];
+								}
+								catch (ArgumentOutOfRangeException Exception)
+								{
+									FLogger.Log(Exception);
+								}
+							}
+						}
+					}
+					else
+					{
+						FUserIdOut.SliceCount = 0;
+						FPositionOut.SliceCount = 0;
+					}
+				}
+				else
+				{
+					FGesturesRegOut.SliceCount = FPositionOut.SliceCount = FUserIdOut.SliceCount = 0;
+				}
+			}
+		}
 
-                        //Add Event Handlers for Hand Generator
-                        FHands.HandCreate += new EventHandler<HandCreateEventArgs>(FHands_HandCreate);
-                        FHands.HandDestroy += new EventHandler<HandDestroyEventArgs>(FHands_HandDestroy);
-                        FHands.HandUpdate += new EventHandler<HandUpdateEventArgs>(FHands_HandUpdate);
+		void FGesture_GestureRecognized(object sender, GestureRecognizedEventArgs e)
+		{
+			try
+			{
+				lock (FGestureRecognized)
+				{
+					Vector3D Vector = new Vector3D(e.EndPosition.X, e.EndPosition.Y, e.EndPosition.Z);
+					FGestureRecognized.Add(Vector, e.Gesture);
+				}
+			}
+			catch (ArgumentException)
+			{
+			}
+			catch (InvalidOperationException)
+			{
+			}
+		}
+		
+		void FGesture_GestureProgress(object sender, GestureProgressEventArgs e)
+		{
+			
+		}
+		
+		#region Dispose
+		public void Dispose()
+		{
+			CleanUp();
+		}
+		
+		private void CleanUp()
+		{
+			if (FGestureGenerator != null)
+			{
+				FGestureGenerator.GestureRecognized -= FGesture_GestureRecognized;
+				FGestureGenerator.GestureProgress -= FGesture_GestureProgress;
+				
+				FGestureGenerator.Dispose();
+				FGestureGenerator = null;
+			}
+		}
+		#endregion
+		
+		#region ContextConnect
+		public void ConnectPin(IPluginIO pin)
+		{
+			if (pin == FContextIn.PluginIO)
+				FContextChanged = true;
+		}
 
-                    }
-                    else if(FEnableIn[0] == false && FInit == false)
-                    {
-                        //Add Event Handler for the Gesture Generator
-                        FGesture.GestureRecognized -= new EventHandler<GestureRecognizedEventArgs>(FGesture_GestureRecognized);
-                        FGesture.GestureProgress -= new EventHandler<GestureProgressEventArgs>(FGesture_GestureProgress);
-
-                        //Add Event Handlers for Hand Generator
-                        FHands.HandCreate -= new EventHandler<HandCreateEventArgs>(FHands_HandCreate);
-                        FHands.HandDestroy -= new EventHandler<HandDestroyEventArgs>(FHands_HandDestroy);
-                        FHands.HandUpdate -= new EventHandler<HandUpdateEventArgs>(FHands_HandUpdate);
-                    }
-                }
-
-                //Check the Incomming gestures and try to add them to the Gesture generator
-                if (FGestureNamesIn.IsChanged || FEnableIn.IsChanged || FInit)
-                {
-                    //check which getsures are active and delete them
-                    string[] ActiveGesture = FGesture.GetAllActiveGestures();
-                    if (ActiveGesture.Length > 0)
-                    {
-                        foreach (string Gesture in ActiveGesture)
-                        {
-                            try
-                            {
-                                FGesture.RemoveGesture(Gesture);
-                            }
-                            catch (StatusException ex)
-                            {
-                                FLogger.Log(LogType.Error, String.Format("Cannot Remove Gesture: {0}", Gesture));
-                                FLogger.Log(LogType.Message, ex.Message);
-                            }
-                        }
-                    }
-
-                    //add all gestures to the Gesture Generator
-                    foreach (string Gesture in FGestureNamesIn)
-                    {
-                        try
-                        {
-                            FGesture.AddGesture(Gesture);
-                        }
-                        catch (StatusException ex)
-                        {
-                            FLogger.Log(LogType.Error, String.Format("Cannot Add Gesture: {0}", Gesture));
-                            FLogger.Log(LogType.Message, ex.Message);
-                        }
-                    }
-
-                    //check with gestures are active and write them to the output
-                    ActiveGesture = null;
-                    ActiveGesture = FGesture.GetAllActiveGestures();
-                    FGestureActOut.SliceCount = ActiveGesture.Length;
-                    for (int i = 0; i < ActiveGesture.Length; i++)
-                    {
-                        FGestureActOut[i] = ActiveGesture[i];
-                    }
-                }
-
-                //set smoothing
-                if (FSmoothingIn.IsChanged)
-                    FHands.SetSmoothing(FSmoothingIn[0]);
-
-                //stop traking
-                if (FStopTrackingIn.IsChanged && FStopTrackingIn[0] == true)
-                    FHands.StopTrackingAll();
-
-                // Handle the Output Pins
-                if (FInit == false && FEnableIn[0] == true)
-                {
-                    if (FGestureRecognized.Count > 0)
-                    {
-                        //lock the List that it its not changed  by the OpenNI Thread
-                        lock (FGestureRecognized)
-                        {
-                            FGesturesRegOut.SliceCount = FGestureRecognized.Count;
-                            int Slice = 0;
-
-                            // Write the received Gestures with their endposition to the output
-                            foreach (KeyValuePair<Vector3D, string> item in FGestureRecognized)
-                            {
-                                FGesturesRegOut[Slice] = item.Value;
-                                FGesturePositionOut[Slice] = item.Key / 1000;
-                                Slice++;
-                            }
-
-                            FGestureRecognized.Clear();
-                        }
-                    }
-                    else
-                    {
-                        FGesturesRegOut.SliceCount = 0;
-                    }
-
-                    //write tracked hand id and position to the output 
-                    if (FPositions.Count > 0)
-                    {
-                        lock (FPositions)
-                        {
-                            IList<Vector3D> Vectors = FPositions.Values;
-                            IList<int> UserIds = FPositions.Keys;
-
-                            FUserIdOut.SliceCount = UserIds.Count;
-
-                            for (int i = 0; i < Vectors.Count; i++)
-                            {
-                                try
-                                {
-                                    FPositionOut[i] = Vectors[i] / 1000;
-                                    FUserIdOut[i] = UserIds[i];
-                                }
-                                catch (ArgumentOutOfRangeException Exception)
-                                {
-                                    FLogger.Log(Exception);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        FUserIdOut.SliceCount = 0;
-                        FPositionOut.SliceCount = 0;
-                    }
-
-                    //write the position from moving hands to the output
-                    if (FMovingHands.Count > 0)
-                    {
-                        FMovingHandsOut.SliceCount = FMovingHands.Count;
-                        lock (FMovingHands)
-                        {
-                            for (int i = 0; i < FMovingHands.Count; i++)
-                                FMovingHandsOut[i] = FMovingHands[i];
-                        }
-                        FMovingHands.Clear();
-                    }
-                    else
-                        FMovingHandsOut.SliceCount = 0;
-                }
-
-                FInit = false;
-            }
-            else
-            {
-                FGesturesRegOut.SliceCount = FPositionOut.SliceCount = FUserIdOut.SliceCount = 0;
-            }
-        }
-
-        /// <summary>
-        /// Callback for Gesture Prograss Event. Regonized Moving Hands a store theire Position.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void FGesture_GestureProgress(object sender, GestureProgressEventArgs e)
-        {
-            if (e.Gesture == "MovingHand")
-                FMovingHands.Add(new Vector3D(e.Position.X, e.Position.Y, e.Position.Z));
-        }
-
- 		/// <summary>
-        /// Callback function for the Gesture Recognized Event. 
-        /// Takes the endposition of the gesture and try to track the hand from 
-        /// this position.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void FGesture_GestureRecognized(object sender, GestureRecognizedEventArgs e)
-        {
-            try
-            {
-                lock (FGestureRecognized)
-                {
-                    Vector3D Vector = new Vector3D(e.EndPosition.X, e.EndPosition.Y, e.EndPosition.Z);
-                    FGestureRecognized.Add(Vector, e.Gesture);
-                }
-            }
-            catch (ArgumentException)
-            {
-            }
-            catch (InvalidOperationException)
-            {
-            }
-
-            FHands.StartTracking(e.EndPosition);
-        }
-        
-        /// <summary>
-        /// Callback function for the HandUpdate Event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void FHands_HandUpdate(object sender, HandUpdateEventArgs e)
-        {
-            //Debug.WriteLine(String.Format("Hand ID: {0} updated : {1} y: {2} z: {3}", e.UserID, e.Position.X, e.Position.Y, e.Position.Z));
-
-            Vector3D Vector;
-            Vector.x = e.Position.X;
-            Vector.y = e.Position.Y;
-            Vector.z = e.Position.Z;
-
-            if (FPositions.ContainsKey(e.UserID))
-            {
-                FPositions.Remove(e.UserID);
-                FPositions.Add(e.UserID, Vector);
-            }
-            else
-                FPositions.Add(e.UserID, Vector);
-
-        }
-
-        /// <summary>
-        /// Callback for the Hand Destroy Event. Delete ID form Postion List.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void FHands_HandDestroy(object sender, HandDestroyEventArgs e)
-        {
-           // Debug.WriteLine(String.Format("Hand ID: {0} destroyed", e.UserID));
-            if (FPositions.ContainsKey(e.UserID))
-                FPositions.Remove(e.UserID);
-        }
-
-        /// <summary>
-        /// Callback for the Hand Create Event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void FHands_HandCreate(object sender, HandCreateEventArgs e)
-        {
-            if (!FPositions.Keys.Contains(e.UserID))
-                FPositions.Add(e.UserID, new Vector3D(e.Position.X, e.Position.Y, e.Position.Z));
-            else
-            {
-                FPositions.Remove(e.UserID);
-                FPositions.Add(e.UserID, new Vector3D(e.Position.X, e.Position.Y, e.Position.Z));
-            }
-            //Debug.WriteLine(String.Format("Hand ID: {0} updated x: {1} y: {2} z: {3}", e.UserID, e.Position.X, e.Position.Y, e.Position.Z));
-
-        }
-
-        void FHands_HandDestroy(ProductionNode node, uint id, float fTime)
-        {
-            throw new NotImplementedException();
-        }
-        
-        #region Dispose
-
-        public void Dispose()
-        {
-        	if (FHands != null)
-        		FHands.Dispose();
-        	
-        	if (FGesture != null)
-        		FGesture.Dispose();
-        }
-
-        #endregion 
-    }
+		public void DisconnectPin(IPluginIO pin)
+		{
+			if (pin == FContextIn.PluginIO)
+				FContextChanged = true;
+		}
+		#endregion
+	}
 }
