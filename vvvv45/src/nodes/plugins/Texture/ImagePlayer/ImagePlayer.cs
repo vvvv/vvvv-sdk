@@ -40,7 +40,6 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly IEnumerable<Device> FDevices;
         private readonly ILogger FLogger;
         private readonly ObjectPool<Stream> FStreamPool;
-        private readonly ObjectPool<byte[]> FBufferPool;
         private readonly IOTaskScheduler FIOTaskScheduler;
         private readonly TexturePool FTexturePool;
         private readonly BufferBlock<FrameInfo> FFrameInfoBuffer;
@@ -56,7 +55,6 @@ namespace VVVV.Nodes.ImagePlayer
             FLogger = logger;
 
             FStreamPool = new ObjectPool<Stream>(() => new MemoryStream());
-            FBufferPool = new ObjectPool<byte[]>(() => new byte[0x2000]);
             FTexturePool = new TexturePool();
             FIOTaskScheduler = new IOTaskScheduler();
             
@@ -121,7 +119,6 @@ namespace VVVV.Nodes.ImagePlayer
                     stream.Dispose();
                 }
                 
-                FBufferPool.ToArrayAndClear();
                 FTexturePool.Dispose();
                 FIOTaskScheduler.Dispose();
             }
@@ -296,7 +293,7 @@ namespace VVVV.Nodes.ImagePlayer
             var filename = frameInfo.Filename;
             var cancellationToken = frameInfo.Token;
             var memoryStream = FStreamPool.GetObject();
-            var buffer = FBufferPool.GetObject();
+            var buffer = MemoryPool.GetMemory(0x2000);
             
             try
             {
@@ -336,7 +333,7 @@ namespace VVVV.Nodes.ImagePlayer
             finally
             {
                 // Put the buffer back in the pool so other blocks can use it
-                FBufferPool.PutObject(buffer);
+                MemoryPool.PutMemory(buffer);
             }
             
             timer.Stop();
@@ -359,13 +356,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
-                BitmapSource bitmapFrame = decoder.Frames[0];
-                if (bitmapFrame.Format != PixelFormats.Bgra32)
-                {
-                    bitmapFrame = new FormatConvertedBitmap(bitmapFrame, PixelFormats.Bgra32, decoder.Palette, 0.0);
-                }
-                var sourceRect = new Int32Rect(0, 0, bitmapFrame.PixelWidth, bitmapFrame.PixelHeight);
+                var decoder = FrameDecoder.Create(frameInfo, FTexturePool, stream);
                 
                 Device[] devices = null;
                 lock (FDevices)
@@ -377,29 +368,7 @@ namespace VVVV.Nodes.ImagePlayer
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    var texture = FTexturePool.GetTexture(
-                        device,
-                        bitmapFrame.PixelWidth,
-                        bitmapFrame.PixelHeight,
-                        1,
-                        Usage.Dynamic & ~Usage.AutoGenerateMipMap,
-                        Format.A8R8G8B8,
-                        Pool.Default);
-
-                    var desc = texture.GetLevelDescription(0);
-                    var dataRectangle = texture.LockRectangle(0, LockFlags.None);
-
-                    try
-                    {
-                        var data = dataRectangle.Data;
-                        var buffer = data.DataPointer;
-                        bitmapFrame.CopyPixels(sourceRect, buffer, (int) data.Length, dataRectangle.Pitch);
-                    }
-                    finally
-                    {
-                        texture.UnlockRectangle(0);
-                    }
-
+                    var texture = decoder.Decode(device);
                     textures.Add(texture);
                 }
             }

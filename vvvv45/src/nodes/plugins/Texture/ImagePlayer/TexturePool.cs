@@ -1,12 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: nsynk
- * Date: 10.01.2012
- * Time: 16:51
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using SlimDX.Direct3D9;
 

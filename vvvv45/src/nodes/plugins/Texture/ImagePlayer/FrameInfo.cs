@@ -3,6 +3,9 @@ using System.Threading;
 
 namespace VVVV.Nodes.ImagePlayer
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public class FrameInfo : IEquatable<FrameInfo>, IDisposable
 	{
 		private readonly int FFrameNr;
