@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -38,13 +39,13 @@ namespace VVVV.Nodes.ImagePlayer
 		private readonly int FPreloadCount;
 		private readonly IEnumerable<Device> FDevices;
 		private readonly ILogger FLogger;
-		private readonly ObjectPool<MemoryStream> FStreamPool;
+		private ObjectPool<Stream> FStreamPool;
 		private readonly ObjectPool<byte[]> FBufferPool;
 		private readonly TexturePool FTexturePool;
 		private readonly CancellationTokenSource FCancellationTokenSource;
 		private readonly CancellationToken FCancellationToken;
-		private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>> FFilePreloader;
-		private readonly TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame> FFramePreloader;
+		private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>> FFilePreloader;
+		private readonly TransformBlock<Tuple<FrameInfo, Stream>, Frame> FFramePreloader;
 		private readonly BufferBlock<Frame> FFrameBuffer;
 		private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
 		
@@ -54,7 +55,7 @@ namespace VVVV.Nodes.ImagePlayer
 			FDevices = devices;
 			FLogger = logger;
 
-			FStreamPool = new ObjectPool<MemoryStream>(() => new MemoryStream());
+			FStreamPool = new ObjectPool<Stream>(() => new MemoryStream());
 			FBufferPool = new ObjectPool<byte[]>(() => new byte[0x2000]);
 			FTexturePool = new TexturePool();
 			
@@ -69,65 +70,8 @@ namespace VVVV.Nodes.ImagePlayer
 				BoundedCapacity = FPreloadCount + 1
 			};
 			
-			FFilePreloader = new TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>>(
-				frameInfo =>
-				{
-					// TODO: Consider using CopyStreamToStreamAsync from TPL extensions
-					var timer = new HiPerfTimer();
-					timer.Start();
-					
-					var filename = frameInfo.Filename;
-					var cancellationToken = frameInfo.Token;
-					var memoryStream = FStreamPool.GetObject();
-					var buffer = FBufferPool.GetObject();
-					
-					try
-					{
-						cancellationToken.ThrowIfCancellationRequested();
-						
-						using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
-						{
-							memoryStream.Position = 0;
-							if (fileStream.Length != memoryStream.Length)
-							{
-								memoryStream.SetLength(fileStream.Length);
-							}
-							
-							while (fileStream.Position < fileStream.Length)
-							{
-								cancellationToken.ThrowIfCancellationRequested();
-
-								int numBytesRead = fileStream.Read(buffer, 0, buffer.Length);
-								memoryStream.Write(buffer, 0, numBytesRead);
-							}
-//							fileStream.CopyTo(memoryStream);
-							
-							memoryStream.Position = 0;
-						}
-					}
-					catch (OperationCanceledException)
-					{
-						// That's fine
-					}
-					catch (Exception e)
-					{
-						// Mark this frame as canceled
-						frameInfo.Cancel();
-						
-						// Log the exception
-						FLogger.Log(e);
-					}
-					finally
-					{
-						// Put the buffer back in the pool so other blocks can use it
-						FBufferPool.PutObject(buffer);
-					}
-					
-					timer.Stop();
-					frameInfo.DurationIO = timer.Duration;
-					
-					return Tuple.Create(frameInfo, memoryStream);
-				},
+			FFilePreloader = new TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>>(
+				(Func<FrameInfo, Tuple<FrameInfo, Stream>>) PreloadFile,
 				filePreloaderOptions
 			);
 			
@@ -138,91 +82,8 @@ namespace VVVV.Nodes.ImagePlayer
 				BoundedCapacity = FPreloadCount + 1
 			};
 			
-			FFramePreloader = new TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame>(
-				tuple =>
-				{
-					var timer = new HiPerfTimer();
-					timer.Start();
-					
-					var frameInfo = tuple.Item1;
-					var stream = tuple.Item2;
-					var cancellationToken = frameInfo.Token;
-					var textures = new List<Texture>();
-					
-					try
-					{
-						cancellationToken.ThrowIfCancellationRequested();
-
-						var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
-						var bitmapFrame = new FormatConvertedBitmap(decoder.Frames[0], PixelFormats.Bgra32, decoder.Palette, 0.0);
-						var sourceRect = new Int32Rect(0, 0, bitmapFrame.PixelWidth, bitmapFrame.PixelHeight);
-						
-						Device[] devices1 = null;
-						lock (FDevices)
-						{
-						    devices1 = FDevices.ToArray();
-						}
-						
-						foreach (var device in devices1)
-						{
-							cancellationToken.ThrowIfCancellationRequested();
-							
-							var texture = FTexturePool.GetTexture(
-								device,
-								bitmapFrame.PixelWidth,
-								bitmapFrame.PixelHeight,
-								1,
-								Usage.Dynamic & ~Usage.AutoGenerateMipMap,
-								Format.A8R8G8B8,
-								Pool.Default);
-							
-							var dataRectangle = texture.LockRectangle(0, LockFlags.None);
-							
-							try
-							{
-								var stride = bitmapFrame.PixelWidth * (bitmapFrame.Format.BitsPerPixel / 8);
-								var data = dataRectangle.Data;
-								var buffer = data.DataPointer;
-								bitmapFrame.CopyPixels(sourceRect, buffer, (int) data.Length, stride);
-							}
-							finally
-							{
-								texture.UnlockRectangle(0);
-							}
-							
-							textures.Add(texture);
-						}
-					}
-					catch (OperationCanceledException)
-					{
-						// That's fine
-					}
-					catch (Exception e)
-					{
-						// Mark this frame as canceled
-						frameInfo.Cancel();
-						
-						// Do some cleanup
-						foreach (var texture in textures)
-						{
-							FTexturePool.PutTexture(texture);
-						}
-						textures.Clear();
-						
-						// Log the exception
-						FLogger.Log(e);
-					}
-					finally
-					{
-						// We're done with this frame, put used memory stream back in the pool
-						FStreamPool.PutObject(stream);
-					}
-					
-					timer.Stop();
-					frameInfo.DurationTexture = timer.Duration;
-					
-					return new Frame(frameInfo, textures, FTexturePool);
-				},
+			FFramePreloader = new TransformBlock<Tuple<FrameInfo, Stream>, Frame>(
+				(Func<Tuple<FrameInfo, Stream>, Frame>) PreloadFrame,
 				framePreloaderOptions
 			);
 			
@@ -242,7 +103,6 @@ namespace VVVV.Nodes.ImagePlayer
 		
 		public void Dispose()
 		{
-//			FCancellationTokenSource.Cancel();
 			Stall();
 			
 			FCurrentFrame.Dispose();
@@ -252,18 +112,6 @@ namespace VVVV.Nodes.ImagePlayer
 			
 			try
 			{
-				// Wait for frame preloader
-//				FFramePreloader.Completion.Wait();
-//				
-//				IList<Frame> frames = null;
-//				if (FFrameBuffer.TryReceiveAll(out frames))
-//				{
-//					foreach (var frame in frames)
-//					{
-//						frame.Dispose();
-//					}
-//				}
-				
 				// Wait for last element in pipeline till completed
 				FFrameBuffer.Completion.Wait();
 				
@@ -281,11 +129,10 @@ namespace VVVV.Nodes.ImagePlayer
 				{
 					stream.Dispose();
 				}
+				FStreamPool = null;
 				
 				FBufferPool.ToArrayAndClear();
-				
 				FTexturePool.Dispose();
-				
 				FCancellationTokenSource.Dispose();
 			}
 		}
@@ -373,8 +220,11 @@ namespace VVVV.Nodes.ImagePlayer
 			
 			stallingFrameInfo.Cancel();
 			
-			FFilePreloader.Post(stallingFrameInfo);
-				
+			while (!FFilePreloader.Post(stallingFrameInfo))
+			{
+				Thread.Sleep(1);
+			}
+			
 			FrameInfo frameInfo = null;
 			while (frameInfo != stallingFrameInfo)
 			{
@@ -395,6 +245,15 @@ namespace VVVV.Nodes.ImagePlayer
 			
 			// Compute and normalize the frame number, as it can be any value
 			int newFrameNr = VMath.Zmod((int) Math.Floor(time * FPS), FFiles.Length);
+			
+			// Cancel scheduled frames with a lower frame number
+			foreach (var frameInfo in FScheduledFrameInfos)
+			{
+				if (frameInfo.FrameNr < newFrameNr)
+				{
+					frameInfo.Cancel();
+				}
+			}
 			
 			var frameInfosToPreload =
 				from frameNr in Enumerable.Range(newFrameNr, FPreloadCount + 1)
@@ -430,6 +289,150 @@ namespace VVVV.Nodes.ImagePlayer
 					FCurrentFrame = frame;
 				}
 			}
+		}
+		
+		private Tuple<FrameInfo, Stream> PreloadFile(FrameInfo frameInfo)
+		{
+			// TODO: Consider using CopyStreamToStreamAsync from TPL extensions
+			var timer = new HiPerfTimer();
+			timer.Start();
+			
+			var filename = frameInfo.Filename;
+			var cancellationToken = frameInfo.Token;
+			var memoryStream = FStreamPool.GetObject();
+			var buffer = FBufferPool.GetObject();
+			
+			try
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+				
+				using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+				{
+					memoryStream.Position = 0;
+					if (fileStream.Length != memoryStream.Length)
+					{
+						memoryStream.SetLength(fileStream.Length);
+					}
+					
+					while (fileStream.Position < fileStream.Length)
+					{
+						//                                cancellationToken.ThrowIfCancellationRequested();
+
+						int numBytesRead = fileStream.Read(buffer, 0, buffer.Length);
+						memoryStream.Write(buffer, 0, numBytesRead);
+					}
+//							fileStream.CopyTo(memoryStream);
+					
+					memoryStream.Position = 0;
+				}
+			}
+			catch (OperationCanceledException)
+			{
+				// That's fine
+			}
+			catch (Exception e)
+			{
+				// Mark this frame as canceled
+				frameInfo.Cancel();
+				
+				// Log the exception
+				FLogger.Log(e);
+			}
+			finally
+			{
+				// Put the buffer back in the pool so other blocks can use it
+				FBufferPool.PutObject(buffer);
+			}
+			
+			timer.Stop();
+			frameInfo.DurationIO = timer.Duration;
+			
+			return Tuple.Create(frameInfo, memoryStream);
+		}
+		
+		private Frame PreloadFrame(Tuple<FrameInfo, Stream> tuple)
+		{
+			var timer = new HiPerfTimer();
+			timer.Start();
+			
+			var frameInfo = tuple.Item1;
+			var stream = tuple.Item2;
+			var cancellationToken = frameInfo.Token;
+			var textures = new List<Texture>();
+			
+			try
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+
+				var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
+				var bitmapFrame = new FormatConvertedBitmap(decoder.Frames[0], PixelFormats.Bgra32, decoder.Palette, 0.0);
+				var sourceRect = new Int32Rect(0, 0, bitmapFrame.PixelWidth, bitmapFrame.PixelHeight);
+				
+				Device[] devices = null;
+				lock (FDevices)
+				{
+					devices = FDevices.ToArray();
+				}
+				
+				foreach (var device in devices)
+				{
+					cancellationToken.ThrowIfCancellationRequested();
+
+					var texture = FTexturePool.GetTexture(
+						device,
+						bitmapFrame.PixelWidth,
+						bitmapFrame.PixelHeight,
+						1,
+						Usage.Dynamic & ~Usage.AutoGenerateMipMap,
+						Format.A8R8G8B8,
+						Pool.Default);
+
+					var dataRectangle = texture.LockRectangle(0, LockFlags.None);
+
+					try
+					{
+						var stride = bitmapFrame.PixelWidth * (bitmapFrame.Format.BitsPerPixel / 8);
+						var data = dataRectangle.Data;
+						var buffer = data.DataPointer;
+						bitmapFrame.CopyPixels(sourceRect, buffer, (int) data.Length, stride);
+					}
+					finally
+					{
+						texture.UnlockRectangle(0);
+					}
+
+					textures.Add(texture);
+				}
+			}
+			catch (OperationCanceledException)
+			{
+				// That's fine
+			}
+			catch (Exception e)
+			{
+				// Mark this frame as canceled
+				frameInfo.Cancel();
+				
+				// Do some cleanup
+				foreach (var texture in textures)
+				{
+					FTexturePool.PutTexture(texture);
+				}
+				textures.Clear();
+				
+				// Log the exception
+				FLogger.Log(e);
+			}
+			finally
+			{
+				// We're done with this frame, put used memory stream back in the pool
+				FStreamPool.PutObject(stream);
+			}
+			
+			timer.Stop();
+			frameInfo.DurationTexture = timer.Duration;
+			
+			return new Frame(frameInfo, textures, FTexturePool);
 		}
 	}
 }
