@@ -360,7 +360,11 @@ namespace VVVV.Nodes.ImagePlayer
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
-                var bitmapFrame = new FormatConvertedBitmap(decoder.Frames[0], PixelFormats.Bgra32, decoder.Palette, 0.0);
+                BitmapSource bitmapFrame = decoder.Frames[0];
+                if (bitmapFrame.Format != PixelFormats.Bgra32)
+                {
+                    bitmapFrame = new FormatConvertedBitmap(bitmapFrame, PixelFormats.Bgra32, decoder.Palette, 0.0);
+                }
                 var sourceRect = new Int32Rect(0, 0, bitmapFrame.PixelWidth, bitmapFrame.PixelHeight);
                 
                 Device[] devices = null;
@@ -382,14 +386,14 @@ namespace VVVV.Nodes.ImagePlayer
                         Format.A8R8G8B8,
                         Pool.Default);
 
+                    var desc = texture.GetLevelDescription(0);
                     var dataRectangle = texture.LockRectangle(0, LockFlags.None);
 
                     try
                     {
-                        var stride = bitmapFrame.PixelWidth * (bitmapFrame.Format.BitsPerPixel / 8);
                         var data = dataRectangle.Data;
                         var buffer = data.DataPointer;
-                        bitmapFrame.CopyPixels(sourceRect, buffer, (int) data.Length, stride);
+                        bitmapFrame.CopyPixels(sourceRect, buffer, (int) data.Length, dataRectangle.Pitch);
                     }
                     finally
                     {
