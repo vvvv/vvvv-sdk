@@ -1,488 +1,264 @@
 ﻿#region usings
-
 using System;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.Threading;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
-using VVVV.PluginInterfaces.V2.EX9;
 
 using OpenNI;
-using SlimDX.Direct3D9;
-using System.Drawing;
-using System.Drawing.Imaging;
 
 #endregion usings
 
 namespace VVVV.Nodes
 {
-    #region PluginInfo
-    [PluginInfo(Name = "Skeleton",
-                Category = "Kinect",
-                Version = "OpenNI",
-                Help = "Returns skeleton information for each recognized user",
-                Tags = "tracking, person, people",
-                Author = "Phlegma")]
-    #endregion PluginInfo
-    public class Skeleton: IPluginEvaluate, IDisposable
-    {
-        #region fields & pins
-        [Import()]
-        ILogger FLogger;
-
-        [Import()]
-        IHDEHost FHost;
-
-        [Input("Users", IsSingle = true)]
-        ISpread<UserGenerator> FUsersIn;
-
-        [Input("Joint", DefaultEnumEntry = "Head")]
-        ISpread<ISpread<SkeletonJoint>> FJointIn;
-
-        [Input("Confidence", DefaultValue=1)]
-        ISpread<bool> FConfidenceIn;
-
-        [Input("Smoothing", DefaultValue = 0.5, MinValue = 0, MaxValue = 1, IsSingle = true)]
-        IDiffSpread<float> FSmoothingIn;
-
-        [Input("File Path", StringType = StringType.Filename, DefaultString = "Skeleton")]
-        IDiffSpread<string> FFilePathIn;
-
-        [Input("Save Skeleton", IsBang = true)]
-        IDiffSpread<bool> FSaveIn;
-
-        [Input("Use Saved Skeleton")]
-        IDiffSpread<bool> FLoadIn;
-
-        [Input("Skeleton Profile", DefaultEnumEntry = "All", IsSingle = true)]
-        IDiffSpread<SkeletonProfile> FSkeletonProfileIn;
-
-        [Input("Reset", IsBang = true)]
-        IDiffSpread<bool> FResetIn;
-
-        [Input("Enabled", IsSingle = true, DefaultValue = 1)]
-        ISpread<bool> FEnableIn;
-
-        [Output("User ID")]
-        ISpread<int> FUserIdOut;
-
-        [Output("Joint")]
-        ISpread<ISpread<string>> FJointOut;
-
-        [Output("Confidence")]
-        ISpread<ISpread<float>> FConfidenceOut;
-
-        [Output("Position")]
-        ISpread<ISpread<Vector3D>> FJointsPositionOut;
-
-        [Output("Orientation X ")]
-        ISpread<ISpread<Vector3D>> FJointOrientationXOut;
-
-        [Output("Orientation Y ")]
-        ISpread<ISpread<Vector3D>> FJointOrientationYOut;
-
-        [Output("Orientation Z ")]
-        ISpread<ISpread<Vector3D>> FJointOrientationZOut;
-
-        [Output("Status")]
-        ISpread<string> FStatusOut;
-
-        PoseDetectionCapability FPoseDecetionCapability;
-        SkeletonCapability FSkeletonCapability;
-
-        private bool FInit = true;
-        private SortedList<int, BackgroundWorker> FWorkerList = new SortedList<int, BackgroundWorker>();
-        private List<string> FErrorMessages = new List<string>();
-
-        private Object LockObject = new Object();
-        #endregion fields & pins
-
-        //called when data for any output pin is requested
-        public void Evaluate(int SpreadMax)
-        {
-            if (FUsersIn[0] != null)
-            {
-                if (FInit == true)
-                {
-                    try
-                    {
-                        //Get Pose and Skeleton Capabilities from the Users Generator
-                        FPoseDecetionCapability = FUsersIn[0].PoseDetectionCapability;
-                        FSkeletonCapability = FUsersIn[0].SkeletonCapability;
-
-                        //add the Callback function to the Events
-                        FSkeletonCapability.CalibrationStart += new EventHandler<CalibrationStartEventArgs>(FSkeletonCapability_CalibrationStart);
-                        FSkeletonCapability.CalibrationEnd += new EventHandler<CalibrationEndEventArgs>(FSkeletonCapability_CalibrationEnd);
-
-                        FPoseDecetionCapability.PoseDetected += new EventHandler<PoseDetectedEventArgs>(FPoseDecetionCapability_PoseDetected);
-                        FPoseDecetionCapability.PoseEnded += new EventHandler<PoseEndedEventArgs>(FPoseDecetionCapability_PoseEnded);
-                        
-                        FInit = false;
-                    }
-                    catch (StatusException ex)
-                    {
-                        FLogger.Log(ex);
-                        return;
-                    }
-                    catch (GeneralException e)
-                    {
-                        FLogger.Log(e);
-                        return;
-                    }
-                    catch (ObjectDisposedException ex2)
-                    {
-                        FLogger.Log(ex2);
-                        return;
-                    }
-                }
-
-                lock (FSkeletonCapability)
-                {
-                    try
-                    {
-                        //set the Skeleton Profil
-                        if (FSkeletonProfileIn.IsChanged)
-                            FSkeletonCapability.SetSkeletonProfile(FSkeletonProfileIn[0]);
-
-                        //set the smoothing value
-                        if (FSmoothingIn.IsChanged)
-                            FSkeletonCapability.SetSmoothing(FSmoothingIn[0]);
-
-                        if (!FInit && FEnableIn[0])
-                        {
-                            //get all Users and sort them
-                            int[] tUsers = FUsersIn[0].GetUsers();
-                            int[] Users = (int[])tUsers.Clone();
-                            Array.Sort(Users);
-
-                            //set the SliceCount of the binsize
-                            FUserIdOut.SliceCount = Users.Length;
-                            FJointOut.SliceCount = Users.Length;
-                            FJointsPositionOut.SliceCount = Users.Length;
-                            FJointOrientationXOut.SliceCount = Users.Length;
-                            FJointOrientationYOut.SliceCount = Users.Length;
-                            FJointOrientationZOut.SliceCount = Users.Length;
-                            FStatusOut.SliceCount = Users.Length;
-                            FConfidenceOut.SliceCount = Users.Length;
-                            
-                            if (Users.Length == 0)
-                            {
-                            	FStatusOut.SliceCount = 1;
-                            	FStatusOut[0] = "No User found";
-                            }                           
-
-                            for (int i = 0; i < Users.Length; i++)
-                            {
-                                //Reset the User
-                                if (FResetIn[i])
-                                {
-                                    FSkeletonCapability.Reset(Users[i]);
-                                    FWorkerList.Clear();
-                                }
-
-                                //write the User ID
-                                FUserIdOut[i] = Users[i];
-
-                                //Check the state of the skeleton
-                                if (FSkeletonCapability.IsTracking(Users[i]))
-                                {
-                                    FStatusOut[i] = "Tracking";
-                                    //when the user is tracked stop pose detection
-                                    FPoseDecetionCapability.StopPoseDetection(Users[i]);
-
-                                    //write all requested joint to the ouput
-                                    WriteJointValuesToOutput(i, Users);
-
-                                    //save the user to file and to an memory slot
-                                    if (FSaveIn[i])
-                                    {
-                                        FSkeletonCapability.SaveCalibrationDataToFile(Users[i], FFilePathIn[i]);
-                                        FSkeletonCapability.SaveCalibrationData(Users[i], i);
-                                    }
-                                }
-                                else if (FSkeletonCapability.IsCalibrated(Users[i]))
-                                {
-                                    FStatusOut[i] = "Calibrated";
-                                    //if a skeleton is loaded to a user start tracking and stop pose detection
-                                    FSkeletonCapability.StartTracking(Users[i]);
-                                    FPoseDecetionCapability.StopPoseDetection(Users[i]);
-                                }
-                                else if (FSkeletonCapability.IsCalibrating(Users[i]))
-                                {
-                                    FStatusOut[i] = "Calibrating";
-                                }
-                                else
-                                {
-                                    //if there is a users but he is not tracked delete the position data
-                                    FJointOut[i].SliceCount = FJointsPositionOut[i].SliceCount = 0;
-                                    FJointOrientationXOut[i].SliceCount = FJointOrientationYOut[i].SliceCount = FJointOrientationZOut[i].SliceCount = 0;
-                                    FConfidenceOut[i].SliceCount = 0;
-
-                                    //check if a user should calibrate or load a skeleton to the users
-
-                                    if (FLoadIn[i])
-                                    {
-                                        //check if the user is loading the skelton
-                                        if (!FWorkerList.ContainsKey(Users[i]))
-                                        {
-                                            FStatusOut[i] = "Load Skeleton";
-
-                                            //load the skelton in a backgroundthread so that it does not interrup vvvv
-                                            BackgroundWorker Worker = new BackgroundWorker();
-                                            Worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
-                                            Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
-
-                                            FWorkerList.Add(Users[i], Worker);
-
-                                            LoadingValues Values = new LoadingValues();
-                                            Values.Slice = 1;
-                                            Values.UserID = Users[i];
-
-                                            Worker.RunWorkerAsync(Values);
-                                        }
-                                        else
-                                        {
-                                            FLogger.Log(LogType.Message, "Load Skeleton");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //start the pose detection if a user should calibrate 
-                                        FStatusOut[i] = "Pose Detection";
-                                        FPoseDecetionCapability.StartPoseDetection("Psi", Users[i]);
-                                    }
-                                }
-                            }
-
-                        	lock (FErrorMessages)
-                        	{
-                        		foreach (string Message in FErrorMessages)
-                                    FLogger.Log(LogType.Error, Message);
-
-                                FErrorMessages.Clear();
-                        	}
-                        }
-                        else
-                        {
-                            //reset the outputpins
-                            FJointOut.SliceCount = 0;
-                            FUserIdOut.SliceCount = 0;
-                            FJointsPositionOut.SliceCount = 0;
-                            FJointOrientationXOut.SliceCount = 0;
-                            FJointOrientationYOut.SliceCount = 0;
-                            FJointOrientationZOut.SliceCount = 0;
-                            FConfidenceOut.SliceCount = 0;
-
-                            FStatusOut.SliceCount = 1;
-                            FStatusOut[0] = "Disabled";
-                        }
-                    }
-                    catch(ObjectDisposedException ex)
-                    {
-                        FLogger.Log(LogType.Warning,"Reinit Openni Plugin");
-                        FPoseDecetionCapability = null;
-                        FSkeletonCapability = null;
-                        FInit = true;
-                    }
-                }
-            }
-        }
-         
-        void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            // First, handle the case where an exception was thrown.
-            if (e.Error != null)
-            {
-                lock (FErrorMessages)
-                    FErrorMessages.Add("Skeleton loading failed: " + e.Error.Message.ToString());
-            }
-            else
-            {
-                //if the loading succed remove the worker from the list
-                if (FWorkerList.ContainsKey(((LoadingValues)e.Result).UserID))
-                    FWorkerList.Remove(((LoadingValues)e.Result).UserID);
-            }
-        }
-
-        void Worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            lock (LockObject)
-            {
-                try
-                {
-                    LoadingValues Value = (LoadingValues)e.Argument;
-                    e.Result = Value;
-                    int i = Value.Slice;
-                    int UserID = Value.UserID;
-
-                    //try to load an skeleton from memory or file
-                    if (FSkeletonCapability.IsCalibrationData(i))
-                    {
-                        FSkeletonCapability.LoadCalibrationData(UserID, i);
-                        Debug.WriteLine(String.Format("Load Memory User {0} on Slice {1}", UserID, i));
-                    }
-                    else
-                    { 
-                        if ((FFilePathIn.SliceCount - 1) <= i)
-                        {
-                            //if there is file for the skeleton load it from file and write it to a slot
-                            FSkeletonCapability.LoadCalibrationDataFromFile(UserID, FFilePathIn[i]);
-                            FSkeletonCapability.SaveCalibrationData(UserID, i);
-                            Debug.WriteLine(String.Format("Load File User {0} on Slice {1}", UserID, i));
-                        }
-                        else
-                        {
-                            int Slice = i % FFilePathIn.SliceCount;
-                            FSkeletonCapability.LoadCalibrationData(UserID, Slice);
-                            Debug.WriteLine(String.Format("Load Pre Memory User {0} on Slice {1}", UserID, Slice));
-                        }
-                    }
-                }
-                catch (StatusException ex)
-                {
-                	lock (FErrorMessages)
-                    	FErrorMessages.Add(ex.Message);
-                    //Debug.WriteLine(ex.Message);
-                }
-            }
-        }
-
-        private void WriteJointValuesToOutput(int Index, int[] Users)
-        {
-            int BinSize = FJointIn[Index].SliceCount;
-
-            FJointOut[Index].SliceCount = FJointsPositionOut[Index].SliceCount = BinSize;
-            FJointOrientationXOut[Index].SliceCount = FJointOrientationYOut[Index].SliceCount = FJointOrientationZOut[Index].SliceCount = BinSize;
-            FConfidenceOut[Index].SliceCount = BinSize;
-
-            for (int i = 0; i < BinSize; i++)
-            {
-                FJointOut[Index][i] = FJointIn[Index][i].ToString();
-
-                Point3D Point = GetJointPoint(Users[Index], FJointIn[Index][i]);
-                
-                float Confidence = 0;
-                if (FConfidenceIn[Index] == true)
-                    Confidence = FSkeletonCapability.GetSkeletonJointPosition(Users[Index], FJointIn[Index][i]).Confidence;
-                else
-                    Confidence = -1;
-                
-//                Debug.WriteLine(String.Format("Confidence {0} for User {1} and Joint {2}", Confidence, Users[Index], FJointIn[Index][i]));
-
-                if (Confidence != 0 || Confidence == -1)
-                {
-                    FConfidenceOut[Index][i] = Confidence;
-                    Vector3D Position = new Vector3D(Point.X, Point.Y, Point.Z);
-                    FJointsPositionOut[Index][i] = Position / 1000;
-
-                    SkeletonJointOrientation Orientation = GetJointOrientation(Users[Index], FJointIn[Index][i]);
-                    FJointOrientationXOut[Index][i] = new Vector3D(Orientation.X1, Orientation.Y1, Orientation.Z1);
-                    FJointOrientationYOut[Index][i] = new Vector3D(Orientation.X2, Orientation.Y2, Orientation.Z2);
-                    FJointOrientationZOut[Index][i] = new Vector3D(Orientation.X3, Orientation.Y3, Orientation.Z3);
-                }
-                else
-                {
-                    FConfidenceOut[Index][i] = Confidence;
-//                    Debug.WriteLine("Out of Confidence");
-                }
-            }
-        }
-
-        private Point3D GetJointPoint(int User, SkeletonJoint Joint)
-        {
-            Point3D Point = new Point3D();
-            if (FSkeletonCapability.IsJointAvailable(Joint))
-            {
-                if (!FSkeletonCapability.IsJointActive(Joint))
-                    FSkeletonCapability.SetJointActive(Joint, true);
-
-                Point = FSkeletonCapability.GetSkeletonJointPosition(User, Joint).Position;
-            }
-
-            return Point;
-        }
-
-        private SkeletonJointOrientation GetJointOrientation(int User, SkeletonJoint Joint)
-        {
-            SkeletonJointOrientation Orientation = new SkeletonJointOrientation();
-            if (FSkeletonCapability.IsJointAvailable(Joint))
-            {
-                if (!FSkeletonCapability.IsJointActive(Joint))
-                    FSkeletonCapability.SetJointActive(Joint, true);
-
-                Orientation = FSkeletonCapability.GetSkeletonJointOrientation(User, Joint);
-            }
-
-            return Orientation;
-        }
-
-        void FPoseDecetionCapability_PoseEnded(object sender, PoseEndedEventArgs e)
-        {
-            lock (FErrorMessages)
-                FErrorMessages.Add(String.Format("Pose Ended. ID: {0}; Pose:{1}", e.ID, e.Pose));
-
-            //Debug.WriteLine(String.Format("Pose Ended. ID: {0}; Pose:{1}", e.ID, e.Pose));
-        }
-
-        void FPoseDecetionCapability_PoseDetected(object sender, PoseDetectedEventArgs e)
-        {
-            FSkeletonCapability.RequestCalibration(e.ID, true);
-
-            lock (FErrorMessages)
-                FErrorMessages.Add(String.Format("Pose for User {0} detected", e.ID));
-        }
-
-        void FSkeletonCapability_CalibrationEnd(object sender, CalibrationEndEventArgs e)
-        {
-            if (e.Success)
-                FSkeletonCapability.StartTracking(e.ID);
-            else
-            {
-                FPoseDecetionCapability.StartPoseDetection("Psi", e.ID);
-
-                lock (FErrorMessages)
-                    FErrorMessages.Add(String.Format("Calibration for User {0} failed", e.ID));
-            }
-
-            //Debug.WriteLine(String.Format("Calibration End. ID: {0}; Success:{1}", e.ID, e.Success));
-        }
-
-        void FSkeletonCapability_CalibrationStart(object sender, CalibrationStartEventArgs e)
-        {
-            FPoseDecetionCapability.StopPoseDetection(e.ID);
-
-            lock (FErrorMessages)
-                FErrorMessages.Add(String.Format("Calibration for User {0} started", e.ID));
-            //Debug.WriteLine(String.Format("Calibration Start. ID: {0} ", e.ID));
-        }
-        
-        #region Dispose
-
-        public void Dispose()
-        {
-        	if (FSkeletonCapability != null)
-        		FSkeletonCapability.Dispose();
-        	
-        	if (FPoseDecetionCapability != null)
-        		FPoseDecetionCapability.Dispose();
-        	
-        	//dispose backgroundworkers of sortedlist?!
-        }
-
-        #endregion 
-    }
-
-    class LoadingValues
-    {
-        public int UserID;
-        public int Slice;
-    }
+	#region PluginInfo
+	[PluginInfo(Name = "Skeleton",
+	            Category = "Kinect",
+	            Version = "OpenNI",
+	            Help = "Returns skeleton information for each recognized user",
+	            Tags = "tracking, person, user, people")]
+	#endregion PluginInfo
+	public class Skeleton2OpenNI: IPluginEvaluate, IPluginConnections, IDisposable
+	{
+		#region fields & pins
+		[Input("Context", IsSingle=true)]
+		Pin<Context> FContextIn;
+		
+		[Input("Skeleton Profile", DefaultEnumEntry = "All", IsSingle = true)]
+		IDiffSpread<SkeletonProfile> FSkeletonProfileIn;
+		
+		[Input("Smoothing", DefaultValue = 0.5, MinValue = 0, MaxValue = 1, IsSingle = true)]
+		IDiffSpread<float> FSmoothingIn;
+		
+		[Input("Joint", DefaultEnumEntry = "Head")]
+		ISpread<ISpread<SkeletonJoint>> FJointIn;
+
+		[Output("Position")]
+		ISpread<ISpread<Vector3D>> FJointPositionOut;
+		
+		[Output("Orientation X ")]
+		ISpread<ISpread<Vector3D>> FJointOrientationXOut;
+
+		[Output("Orientation Y ")]
+		ISpread<ISpread<Vector3D>> FJointOrientationYOut;
+
+		[Output("Orientation Z ")]
+		ISpread<ISpread<Vector3D>> FJointOrientationZOut;
+		
+		[Output("User ID")]
+		ISpread<int> FUserIdOut;
+		
+		[Output("Status")]
+		ISpread<string> FStatusOut;
+
+		[Import()]
+		ILogger FLogger;
+
+		UserGenerator FUserGenerator;
+		SkeletonCapability FSkeletonCapability;
+		PoseDetectionCapability FPoseDetectionCapability;
+		string FCalibPose;
+		
+		private bool FContextChanged = false;
+		private Dictionary<int, Dictionary<SkeletonJoint, SkeletonJointTransformation>> FJoints;
+		#endregion fields & pins
+		
+		//called when data for any output pin is requested
+		public void Evaluate(int SpreadMax)
+		{
+			if (FContextChanged)
+			{
+				if (FContextIn.PluginIO.IsConnected)
+				{
+					if (FContextIn[0] != null)
+					{
+						try
+						{
+							FUserGenerator = new UserGenerator(FContextIn[0]);
+							FSkeletonCapability = FUserGenerator.SkeletonCapability;
+							FPoseDetectionCapability = FUserGenerator.PoseDetectionCapability;
+							FCalibPose = FSkeletonCapability.CalibrationPose;
+							
+							FUserGenerator.NewUser += userGenerator_NewUser;
+							FUserGenerator.LostUser += userGenerator_LostUser;
+							FPoseDetectionCapability.PoseDetected += poseDetectionCapability_PoseDetected;
+							FSkeletonCapability.CalibrationComplete += skeletonCapbility_CalibrationComplete;
+							
+							FSkeletonCapability.SetSkeletonProfile(FSkeletonProfileIn[0]);
+							FJoints = new Dictionary<int, Dictionary<SkeletonJoint, SkeletonJointTransformation>>();
+							FUserGenerator.StartGenerating();
+							
+							FContextChanged = false;
+						}
+						catch (StatusException ex)
+						{
+							FLogger.Log(ex);
+						}
+						catch (GeneralException e)
+						{
+							FLogger.Log(e);
+						}
+					}
+				}
+				else
+				{
+					CleanUp();
+					FContextChanged = false;
+				}
+			}
+			
+			if (FUserGenerator != null)
+			{
+				if (FSkeletonProfileIn.IsChanged)
+					FSkeletonCapability.SetSkeletonProfile(FSkeletonProfileIn[0]);
+				
+				if (FSmoothingIn.IsChanged)
+					FSkeletonCapability.SetSmoothing(FSmoothingIn[0]);
+				
+				//get all Users and sort them
+				int[] users = FUserGenerator.GetUsers();
+				Array.Sort(users);
+
+				FUserIdOut.SliceCount = users.Length;
+				FStatusOut.SliceCount = users.Length;
+				FJointPositionOut.SliceCount = users.Length;
+				FJointOrientationXOut.SliceCount = users.Length;
+				FJointOrientationYOut.SliceCount = users.Length;
+				FJointOrientationZOut.SliceCount = users.Length;
+				
+				int slice = 0;
+				foreach (int user in users)
+				{
+					FUserIdOut[slice] = user;
+					if (FSkeletonCapability.IsTracking(user))
+					{
+						FStatusOut[slice] = "Tracking user " + user;
+						
+						int u = user - 1;
+						int binSize = FJointIn[u].SliceCount;						
+						FJointPositionOut[u].SliceCount = binSize;
+            			FJointOrientationXOut[u].SliceCount = FJointOrientationYOut[u].SliceCount = FJointOrientationZOut[u].SliceCount = binSize;
+						for (int i = 0; i < binSize; i++)
+						{
+							var j = GetJoint(user, FJointIn[u][i]);
+							var p = j.Position.Position;
+							FJointPositionOut[u][i] = new Vector3D(p.X, p.Y, p.Z) / 1000;
+							
+							var o = j.Orientation;
+							FJointOrientationXOut[u][i] = new Vector3D(o.X1, o.Y1, o.Z1);
+							FJointOrientationYOut[u][i] = new Vector3D(o.X2, o.Y2, o.Z2);
+							FJointOrientationZOut[u][i] = new Vector3D(o.X3, o.Y3, o.Z3);
+						}
+					}
+					else if (FSkeletonCapability.IsCalibrating(user))
+						FStatusOut[slice] = "Calibrating user " + user;
+					else
+						FStatusOut[slice] = "Looking for pose on user " + user;
+					
+					slice++;
+				}
+			}
+			else
+			{
+				FUserIdOut.SliceCount = 0;
+				FStatusOut.SliceCount = 0;
+				FJointPositionOut.SliceCount = 0;
+				FJointOrientationXOut.SliceCount = 0;
+				FJointOrientationYOut.SliceCount = 0;
+				FJointOrientationZOut.SliceCount = 0;
+			}
+		}
+		
+		private SkeletonJointTransformation GetJoint(int user, SkeletonJoint joint)
+		{
+			if (FSkeletonCapability.IsJointAvailable(joint))
+			{
+				if (!FSkeletonCapability.IsJointActive(joint))
+					FSkeletonCapability.SetJointActive(joint, true);
+				
+				return FSkeletonCapability.GetSkeletonJoint(user, joint);
+			}
+			else
+				return new SkeletonJointTransformation();
+		}
+		
+		void skeletonCapbility_CalibrationComplete(object sender, CalibrationProgressEventArgs e)
+		{
+			if (e.Status == CalibrationStatus.OK)
+			{
+				FSkeletonCapability.StartTracking(e.ID);
+				FJoints.Add(e.ID, new Dictionary<SkeletonJoint, SkeletonJointTransformation>());
+			}
+			else if (e.Status != CalibrationStatus.ManualAbort)
+			{
+				if (FSkeletonCapability.DoesNeedPoseForCalibration)
+					FPoseDetectionCapability.StartPoseDetection(FCalibPose, e.ID);
+				else
+					FSkeletonCapability.RequestCalibration(e.ID, true);
+			}
+		}
+
+		void poseDetectionCapability_PoseDetected(object sender, PoseDetectedEventArgs e)
+		{
+			FPoseDetectionCapability.StopPoseDetection(e.ID);
+			FSkeletonCapability.RequestCalibration(e.ID, true);
+		}
+
+		void userGenerator_NewUser(object sender, NewUserEventArgs e)
+		{
+			if (FSkeletonCapability.DoesNeedPoseForCalibration)
+				FPoseDetectionCapability.StartPoseDetection(FCalibPose, e.ID);
+			else
+				FSkeletonCapability.RequestCalibration(e.ID, true);
+		}
+
+		void userGenerator_LostUser(object sender, UserLostEventArgs e)
+		{
+			FJoints.Remove(e.ID);
+		}
+		
+		#region Dispose
+		private void CleanUp()
+		{
+			if (FUserGenerator != null)
+			{
+				FUserGenerator.StopGenerating();
+				
+				FSkeletonCapability.CalibrationComplete -= skeletonCapbility_CalibrationComplete;
+				FPoseDetectionCapability.PoseDetected -= poseDetectionCapability_PoseDetected;
+				FUserGenerator.LostUser -= userGenerator_LostUser;
+				FUserGenerator.NewUser -= userGenerator_NewUser;
+				
+				FUserGenerator.Dispose();
+				FUserGenerator = null;
+				
+				FJoints = null;
+			}
+		}
+		
+		public void Dispose()
+		{
+			CleanUp();
+		}
+		#endregion
+		
+		#region ContextConnect
+		public void ConnectPin(IPluginIO pin)
+		{
+			if (pin == FContextIn.PluginIO)
+				FContextChanged = true;
+		}
+
+		public void DisconnectPin(IPluginIO pin)
+		{
+			if (pin == FContextIn.PluginIO)
+				FContextChanged = true;
+		}
+		#endregion
+	}
 }

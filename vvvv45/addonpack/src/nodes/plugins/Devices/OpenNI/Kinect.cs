@@ -23,19 +23,12 @@ namespace VVVV.Nodes
 	            Help = "Provides access to a Kinect through the OpenNI API",
 	            Author = "Phlegma")]
 	#endregion PluginInfo
-	public class Configuration: IPluginEvaluate, IDisposable
+	public class KinectContext: IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
-
 		//vvvv
-		[Input("Configuration File", DefaultString = "OpenNIConfig.xml", StringType = StringType.Filename, IsSingle=true)]
-		IDiffSpread<string> FConfigPinIn;
-
-		[Input("Reload Configuration", IsSingle = true, IsBang = true)]
-		IDiffSpread<bool> FReloadIn;
-		
-		[Input("Mirrored", IsSingle = true, DefaultValue = 1)]
-        ISpread<bool> FMirrored;
+		[Input("Mirrored", IsSingle = true, DefaultValue = 0)]
+		IDiffSpread<bool> FMirrored;
 
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
 		IDiffSpread<bool> FUpdateIn;
@@ -43,134 +36,60 @@ namespace VVVV.Nodes
 		[Output("Context")]
 		ISpread<Context> FContextOut;
 
-		[Output("Default Values")]
-		ISpread<bool> FDefaultValuesOut;
-
-		[Output("Node List")]
-		ISpread<string> FNodeListOut;
-
-		[Output("Status")]
-		ISpread<string> FStatus;
-
 		[Import()]
 		ILogger FLogger;
 
 		//Kinect
+		private bool FRunning;
 		private Context FContext;
-		private List<string> FErrors = new List<string>();
+		private ImageGenerator FImageGenerator;
+		private DepthGenerator FDepthGenerator;
 		private Thread FUpdater;
-		private bool FInit = true;
-		private bool FActiveThread = false;
 		#endregion fields & pins
+		
+		public KinectContext()
+		{
+			OpenContext();
+			
+			FUpdater = new Thread(Update);
+			FRunning = true;
+			FUpdater.Start();
+		}
 
 		#region Evaluate
 
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			//Start
-			if (FInit)
-			{
-				FStatus[0] = "Init OpenNI Node.";
-
-				//Init the Context Object
-				LoadContext(FConfigPinIn[0]);
-				
-				//Thread for updating the Generators
-				FActiveThread = true;
-				FUpdater = new Thread(Update);
-				FUpdater.Start();
-			}
-			else
-			{
-				//check if Filepath or Relaod Pin is changed
-				if (FReloadIn.IsChanged || FConfigPinIn.IsChanged)
-				{
-					if (FContext != null)
-					{
-						FContextOut[0] = null;
-						CloseContext();
-					}
-					FInit = true;
-				}
-
-				if (FContext != null)
-				{
-					//Spits out the Global Error Massage
-					if (!String.IsNullOrEmpty(FContext.GlobalErrorState))
-					{
-						FStatus[0] = FContext.GlobalErrorState;
-					}
-
-					//Close and restart the Update Thread
-					if (FUpdateIn.IsChanged)
-					{
-						if (FUpdateIn[0])
-						{
-							if (FUpdater == null)
-							{
-								FActiveThread = true;
-								FUpdater = new Thread(Update);
-								FUpdater.Start();
-							}
-						}
-						else
-						{
-							FActiveThread = false;
-							FUpdater = null;
-						}
-					}
-					
-					FContext.GlobalMirror = FMirrored[0];
-				}
-
-				//writes the Context Object to the Output for
-				//is required for other generators
-				FContextOut[0] = FContext;
-			}
-		}
-
-		#endregion
-
-		#region Open and close Context
-
-		/// <summary>
-		/// Aborts the Update Thread and disposes the Context Object
-		/// </summary>
-		private void CloseContext()
-		{
-			if (FUpdater.IsAlive)
-			{
-				FActiveThread = false;
-				//wait for threadloop to exit
-				FUpdater.Join();
-			}
-
 			if (FContext != null)
 			{
-				//FContext.StopGeneratingAll();
-				FContext.Release();
-				FContext.Dispose();
-				FContext = null;
+				if (FMirrored.IsChanged)
+					FContext.GlobalMirror = FMirrored[0];
 			}
-		}
 
-		/// <summary>
-		/// Load the Context XML from File or from the OpenNI Libary
-		/// </summary>
-		/// <param name="FilePath"></param>
-		private void LoadContext(string FilePath)
+			//writes the Context Object to the Output for
+			//is required for other generators
+			FContextOut[0] = FContext;
+		}
+		#endregion
+		
+		#region Open and close Context
+		private void OpenContext()
 		{
-			//ty to open Kinect Context with given ConfigFilePath
+			//try to open Kinect Context
 			try
 			{
-				ScriptNode Node;
-				//OpenNI.Log.SetSeverityFilter(LogSeverity.Error);
-				FContext = new Context(FConfigPinIn[0]);
-				var version = OpenNI.Version.Current.Major.ToString() + "." + OpenNI.Version.Current.Minor.ToString() + "." + OpenNI.Version.Current.Maintenance.ToString() + "." + OpenNI.Version.Current.Build.ToString();
-				FLogger.Log(LogType.Message, "OpenNI Version: " + version);
+				FContext = new Context();
+				FContext.ErrorStateChanged += FContext_ErrorStateChanged;
 				
-				FDefaultValuesOut[0] = false;
+				FImageGenerator = (ImageGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Image, null);
+				FDepthGenerator = (DepthGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Depth, null);
+				FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
+				
+				FContext.StartGeneratingAll();
+				
+				var version = OpenNI.Version.Current.Major.ToString() + "." + OpenNI.Version.Current.Minor.ToString() + "." + OpenNI.Version.Current.Maintenance.ToString() + "." + OpenNI.Version.Current.Build.ToString();
+				//FLogger.Log(LogType.Message, "OpenNI Version: " + version);
 			}
 			catch (StatusException ex)
 			{
@@ -180,87 +99,41 @@ namespace VVVV.Nodes
 			{
 				FLogger.Log(e);
 			}
-
-			//try to OpenOpenNi Cofig File
-			if (FContext == null)
+		}
+		
+		private void CloseContext()
+		{
+			if (FUpdater.IsAlive)
 			{
-				FStatus[0] = "Error loading SampleConfig.xml. Try to load Default Values.";
-				try
-				{
-					FContext = new Context();
-					FDefaultValuesOut[0] = true;
-				}
-				catch (StatusException ex)
-				{
-					FLogger.Log(ex);
-				}
-				catch (GeneralException e)
-				{
-					FLogger.Log(e);
-				}
+				//wait for threadloop to exit
+				FRunning = false;
+				FUpdater.Join();
 			}
 
-			if (FContext == null)
-				FStatus[0] = "Could no create Context.";
-			else
+			if (FContext != null)
 			{
-				FContext.ErrorStateChanged += new EventHandler<ErrorStateEventArgs>(FContext_ErrorStateChanged);
-
-				FStatus[0] = "Created Context.";
-
-				//write all found Nodes in the config xml to the Output Pin
-				List<string> NodeNames = ReadNodeList();
-				FNodeListOut.SliceCount = NodeNames.Count;
-				for (int i = 0; i < NodeNames.Count; i++)
-				{
-					FNodeListOut[i] = NodeNames[i];
-				}
-
-				FInit = false;
+				FContext.StopGeneratingAll();
+				FContext.ErrorStateChanged -= FContext_ErrorStateChanged;
+				FImageGenerator.Dispose();
+				//FDepthGenerator.Dispose();
+				
+				FContext.Shutdown();
+				FContext = null;
 			}
 		}
-
 		#endregion
 
 		#region Error Event
-
-		/// <summary>
-		/// callback Function for the Error Changed Event
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		void FContext_ErrorStateChanged(object sender, ErrorStateEventArgs e)
 		{
-			FLogger.Log(LogType.Error,"Global Kinect Error");
+			FLogger.Log(LogType.Error, "Global Kinect Error: " + e.CurrentError);
 		}
-
-		/// <summary>
-		/// Reads all nodes form the Config XML file
-		/// </summary>
-		/// <returns>List of all Nodes</returns>
-		private List<string> ReadNodeList()
-		{
-			NodeInfoList NodeInfos = FContext.EnumerateExistingNodes();
-			IEnumerator<NodeInfo> Infos = NodeInfos.GetEnumerator();
-
-			List<string> NodeNames = new List<string>();
-			while (Infos.MoveNext())
-			{
-				NodeNames.Add(Infos.Current.InstanceName);
-			}
-
-			return NodeNames;
-		}
-
 		#endregion
 
 		#region Update Thread
-		/// <summary>
-		/// Thread for updating all Generators
-		/// </summary>
 		private void Update()
 		{
-			while (FUpdateIn[0] && FInit == false && FActiveThread)
+			while (FRunning)
 			{
 				try
 				{
@@ -282,16 +155,13 @@ namespace VVVV.Nodes
 				}
 			}
 		}
-
 		#endregion
 
 		#region Dispose
-
 		public void Dispose()
 		{
 			CloseContext();
 		}
-
 		#endregion Dispose
 	}
 }

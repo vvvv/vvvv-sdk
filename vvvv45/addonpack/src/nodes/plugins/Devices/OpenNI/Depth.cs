@@ -89,7 +89,7 @@ namespace VVVV.Nodes
 					{
 						try
 						{
-							FDepthGenerator = new DepthGenerator(FContextIn[0]);
+							FDepthGenerator = (DepthGenerator) FContextIn[0].GetProductionNodeByName("Depth1");//new DepthGenerator(FContextIn[0]);
 							
 							FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle);
 							FHistogram = new int[FDepthGenerator.DeviceMaxDepth];
@@ -98,8 +98,6 @@ namespace VVVV.Nodes
 							MapOutputMode MapMode = FDepthGenerator.MapOutputMode;
 							FTexWidth = MapMode.XRes;
 							FTexHeight = MapMode.YRes;
-
-							FDepthGenerator.StartGenerating();
 							
 							//Reinitalie the vvvv texture
 							Reinitialize();
@@ -133,11 +131,7 @@ namespace VVVV.Nodes
 		
 		private void CleanUp()
 		{
-			if (FDepthGenerator != null)
-			{
-				FDepthGenerator.Dispose();
-				FDepthGenerator = null;
-			}
+			FDepthGenerator = null;
 		}
 
 		#endregion

@@ -39,7 +39,7 @@ namespace VVVV.Nodes
 		
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
 		ISpread<bool> FEnabledIn;
-	
+		
 		[Import()]
 		ILogger FLogger;
 
@@ -69,7 +69,7 @@ namespace VVVV.Nodes
 					{
 						try
 						{
-							FImageGenerator = new ImageGenerator(FContextIn[0]);
+							FImageGenerator = (ImageGenerator) FContextIn[0].GetProductionNodeByName("Image1"); //new ImageGenerator(FContextIn[0]);
 							FImageMetaData = FImageGenerator.GetMetaData();
 							
 							FTexWidth = FImageMetaData.XRes;
@@ -97,6 +97,11 @@ namespace VVVV.Nodes
 				Update();
 		}
 
+		void FImageGenerator_NewDataAvailable(object sender, EventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 
 		#region Dispose
@@ -107,12 +112,7 @@ namespace VVVV.Nodes
 		
 		private void CleanUp()
 		{
-			if (FImageGenerator != null)
-			{
-				FImageGenerator.Dispose();
-				FImageGenerator = null;
-			}
-				
+			FImageGenerator = null;
 		}
 		#endregion
 
