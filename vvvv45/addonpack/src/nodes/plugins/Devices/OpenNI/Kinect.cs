@@ -47,10 +47,11 @@ namespace VVVV.Nodes
 		private Context FContext;
 		private ImageGenerator FImageGenerator;
 		private DepthGenerator FDepthGenerator;
+		private Device FDevice;
 		private Thread FUpdater;
 		private string FOpenNI;
-		private string FNite;
-		private string FSensorKinect;		
+		private string FSensor;
+		private string FMiddleware;		
 		#endregion fields & pins
 		
 		public KinectContext()
@@ -76,7 +77,7 @@ namespace VVVV.Nodes
 			//writes the Context Object to the Output for
 			//is required for other generators
 			FContextOut[0] = FContext;
-			FDriver[0] = "\n" + FOpenNI + "\n" + FNite + "\n" + FSensorKinect;
+			FDriver[0] = "\n" + FOpenNI + "\n" + FMiddleware + "\n" + FSensor;
 		}
 		#endregion
 		
@@ -92,14 +93,22 @@ namespace VVVV.Nodes
 				FImageGenerator = (ImageGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Image, null);
 				FDepthGenerator = (DepthGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Depth, null);
 				FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
-				
+				//FDevice = (Device) FContext.CreateAnyProductionTree(OpenNI.NodeType.Device, null);
+
 				FContext.StartGeneratingAll();
-								
+							
+				//read out driver versions:				
 				var v = OpenNI.Version.Current;
 				FOpenNI = "OpenNI: " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;
+				
+				//create a usergenerator here just for getting the NITE version
+				var user = FContext.CreateAnyProductionTree(OpenNI.NodeType.User, null);
+				v = user.Info.Description.Version;
+				FMiddleware = user.Info.Description.Vendor + " " + user.Info.Description.Name + ": " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;
+				user.Dispose();
+				
 				v = FImageGenerator.Info.Description.Version;
-				FNite = FImageGenerator.Info.Description.Vendor + ": " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;;
-				FSensorKinect = "";
+				FSensor = FImageGenerator.Info.Description.Vendor + " " + FImageGenerator.Info.Description.Name + ": " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;
 			}
 			catch (StatusException ex)
 			{
