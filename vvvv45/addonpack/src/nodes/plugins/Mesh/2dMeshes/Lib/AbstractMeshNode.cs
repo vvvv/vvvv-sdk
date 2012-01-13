@@ -19,7 +19,7 @@ namespace VVVV.Lib
         private bool FInvalidate;
 
         private IDXMeshOut FPinOutMesh;
-        private Dictionary<int, Mesh> FMeshes = new Dictionary<int, Mesh>();
+        private Dictionary<Device, Mesh> FMeshes = new Dictionary<Device, Mesh>();
 
         protected abstract void SetInputs();
         #endregion
@@ -57,7 +57,7 @@ namespace VVVV.Lib
         #endregion
 
         #region IPluginDXResource Members
-        public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+        public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
         {
             try
             {
@@ -74,14 +74,14 @@ namespace VVVV.Lib
             }
         }
 
-        private void RemoveResource(int OnDevice)
+        private void RemoveResource(Device OnDevice)
         {
             Mesh m = FMeshes[OnDevice];
             FMeshes.Remove(OnDevice);
             m.Dispose();
         }
 
-        public void UpdateResource(IPluginOut ForPin, int OnDevice)
+        public void UpdateResource(IPluginOut ForPin, Device OnDevice)
         {
             if (ForPin == this.FPinOutMesh)
             {
@@ -98,14 +98,12 @@ namespace VVVV.Lib
 
                 if (this.FInvalidate)
                 {
-                    Device dev = Device.FromPointer(new IntPtr(OnDevice));
-
                     List<Mesh> meshes = new List<Mesh>();
 
                     for (int i = 0; i < this.FVertex.Count; i++)
                     {
 
-                        Mesh mesh = new Mesh(dev, this.FIndices[i].Length / 3, this.FVertex[i].Length, MeshFlags.Dynamic | MeshFlags.WriteOnly, Vertex.Format);
+                        Mesh mesh = new Mesh(OnDevice, this.FIndices[i].Length / 3, this.FVertex[i].Length, MeshFlags.Dynamic | MeshFlags.WriteOnly, Vertex.Format);
                         DataStream vS = mesh.LockVertexBuffer(LockFlags.Discard);
                         DataStream iS = mesh.LockIndexBuffer(LockFlags.Discard);
 
@@ -118,7 +116,7 @@ namespace VVVV.Lib
                         meshes.Add(mesh);
                     }
 
-                    Mesh merge = Mesh.Concatenate(dev, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+                    Mesh merge = Mesh.Concatenate(OnDevice, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
 
                     this.FMeshes.Add(OnDevice, merge);
 
@@ -127,8 +125,6 @@ namespace VVVV.Lib
                         m.Dispose();
                     }
 
-                    dev.Dispose();
-
                     this.FInvalidate = false;
                 }
             }
@@ -136,18 +132,13 @@ namespace VVVV.Lib
         #endregion
 
         #region IPluginDXMesh Members
-        public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int mesh)
+        public Mesh GetMesh(IDXMeshOut ForPin, Device OnDevice)
         {
-            mesh = 0;
             //in case the plugin has several mesh outputpins a test for the pin can be made here to get the right mesh.
-            if (ForPin == this.FPinOutMesh)
-            {
-                if (this.FMeshes.ContainsKey(OnDevice))
-                {
-                    mesh = this.FMeshes[OnDevice].ComPointer.ToInt32();
-
-                }
-            }
+            if (ForPin == this.FPinOutMesh && this.FMeshes.ContainsKey(OnDevice))
+            	return this.FMeshes[OnDevice];
+            else
+            	return null;
         }
 
         #endregion

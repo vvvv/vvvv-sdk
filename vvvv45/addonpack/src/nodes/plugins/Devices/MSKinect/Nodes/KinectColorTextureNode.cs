@@ -14,7 +14,7 @@ using SlimDX;
 namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "RGB", Category = "Kinect",Version="Microsoft", Author = "vux",Tags="directx,texture")]
-    public class KinectColorTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture
+    public class KinectColorTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]
         private Pin<KinectRuntime> FInRuntime;
@@ -36,7 +36,7 @@ namespace VVVV.MSKinect.Nodes
 
 
 
-        private Dictionary<int, Texture> FColorTex = new Dictionary<int, Texture>();
+        private Dictionary<Device, Texture> FColorTex = new Dictionary<Device, Texture>();
 
 
         [ImportingConstructor()]
@@ -84,17 +84,21 @@ namespace VVVV.MSKinect.Nodes
             }
         }
 
-        public void GetTexture(IDXTextureOut ForPin, int OnDevice, out int tex)
+        public Texture GetTexture(IDXTextureOut ForPin, Device OnDevice, int Slice)
         {
-            tex = 0;
-            if (this.FColorTex.ContainsKey(OnDevice)) { tex = this.FColorTex[OnDevice].ComPointer.ToInt32(); }
+            if (this.FColorTex.ContainsKey(OnDevice)) 
+            { 
+            	return this.FColorTex[OnDevice]; 
+            }
+            else
+            	return null;
         }
 
-        public void UpdateResource(IPluginOut ForPin, int OnDevice)
+        public void UpdateResource(IPluginOut ForPin, Device OnDevice)
         {
             if (!this.FColorTex.ContainsKey(OnDevice))
             {
-                Texture t = new Texture(Device.FromPointer(new IntPtr(OnDevice)), 640, 480, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
+                Texture t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
                 this.FColorTex.Add(OnDevice, t);
             }
 
@@ -115,7 +119,7 @@ namespace VVVV.MSKinect.Nodes
             }
         }
 
-        public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+        public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
         {
             if (this.FColorTex.ContainsKey(OnDevice))
             {
