@@ -63,6 +63,11 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="InteropServices\EX9\DeviceMarshaler.cs" />
+    <Compile Include="InteropServices\EX9\IDXDeviceListener.cs" />
+    <Compile Include="InteropServices\EX9\IDXDeviceService.cs" />
+    <Compile Include="InteropServices\EX9\MeshMarshaler.cs" />
+    <Compile Include="InteropServices\EX9\TextureMarshaler.cs" />
     <Compile Include="V1\Enumerations1.cs" />
     <Compile Include="V1\IPlugin1.cs" />
     <Compile Include="V1\IPluginHost1.cs" />
@@ -124,5 +129,9 @@
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="InteropServices" />
+    <Folder Include="InteropServices\EX9" />
   </ItemGroup>
 </Project>

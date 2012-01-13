@@ -1,5 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
+using VVVV.Hosting.Interfaces.EX9;
+using VVVV.PluginInterfaces.InteropServices.EX9;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
@@ -122,6 +124,14 @@ namespace VVVV.Hosting
         /// The currently selected patch window.
         /// </summary>
         IWindow ActivePatchWindow
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// Gets the Direct3D9 device service.
+        /// </summary>
+        IDXDeviceService DeviceService
         {
             get;
         }
