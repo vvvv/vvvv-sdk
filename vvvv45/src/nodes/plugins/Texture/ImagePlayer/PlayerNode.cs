@@ -14,7 +14,7 @@ using VVVV.PluginInterfaces.V2.EX9;
 namespace VVVV.Nodes.ImagePlayer
 {
     [PluginInfo(Name = "Player", Category = "EX9.Texture")]
-    public class PlayerNode : IPluginEvaluate, IDisposable, IPluginDXTexture2
+    public class PlayerNode : IPluginEvaluate, IDisposable
     {
         [Input("Directory", StringType = StringType.Directory)]
         public ISpread<string> FDirectoryIn;
@@ -25,28 +25,32 @@ namespace VVVV.Nodes.ImagePlayer
         [Input("FPS", DefaultValue = 25.0)]
         public ISpread<double> FFpsIn;
         
-        [Input("Preload Count", MinValue = 1)]
-        public ISpread<int> FPreloadCountIn;
+        [Input("Queue Size", DefaultValue = 4.0)]
+        public ISpread<int> FQueueSizeIn;
+        
+        [Input("Visible Frames")]
+        public ISpread<ISpread<int>> FVisibleFramesIn;
+        
+        [Input("Preload Frames")]
+        public ISpread<ISpread<int>> FPreloadFramesIn;
         
         [Input("Reload")]
         public ISpread<bool> FReloadIn;
         
-        [Input("Time")]
-        public ISpread<double> FTimeIn;
+//        [Output("Unused Frames")]
+//        public ISpread<int> FUnusedFramesOut;
+//        
+//        [Output("Duration IO")]
+//        public ISpread<double> FDurationIOOut;
+//        
+//        [Output("Duration Texture")]
+//        public ISpread<double> FDurationTextureOut;
         
-        [Output("Unused Frames")]
-        public ISpread<int> FUnusedFramesOut;
-        
-        [Output("Duration IO")]
-        public ISpread<double> FDurationIOOut;
-        
-        [Output("Duration Texture")]
-        public ISpread<double> FDurationTextureOut;
-        
-        public IDXTextureOut FTextureOut;
+        [Output("Texture")]
+        public ISpread<ISpread<DXResource<Texture, Frame>>> FTextureOut;
         
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
-        private readonly List<Device> FDevices = new List<Device>();
+//        private readonly List<Device> FDevices = new List<Device>();
         private readonly ILogger FLogger;
         
         [ImportingConstructor]
@@ -54,8 +58,8 @@ namespace VVVV.Nodes.ImagePlayer
         {
             FLogger = logger;
             
-            pluginHost.CreateTextureOutput("Texture", TSliceMode.Dynamic, TPinVisibility.True, out FTextureOut);
-            FTextureOut.Order = -1;
+//            pluginHost.CreateTextureOutput("Texture", TSliceMode.Dynamic, TPinVisibility.True, out FTextureOut);
+//            FTextureOut.Order = -1;
         }
         
         public void Evaluate(int spreadMax)
@@ -70,21 +74,21 @@ namespace VVVV.Nodes.ImagePlayer
             
             FImagePlayers.SliceCount = spreadMax;
             FTextureOut.SliceCount = spreadMax;
-            FUnusedFramesOut.SliceCount = spreadMax;
-            FDurationIOOut.SliceCount = spreadMax;
-            FDurationTextureOut.SliceCount = spreadMax;
+//            FUnusedFramesOut.SliceCount = spreadMax;
+//            FDurationIOOut.SliceCount = spreadMax;
+//            FDurationTextureOut.SliceCount = spreadMax;
             
             // Create new image players
             for (int i = previosSliceCount; i < spreadMax; i++)
             {
-                FImagePlayers[i] = new ImagePlayer(FPreloadCountIn[i], FDevices, FLogger);
+                FImagePlayers[i] = new ImagePlayer(FQueueSizeIn[i], FLogger);
             }
             
             for (int i = 0; i < spreadMax; i++)
             {
                 var imagePlayer = FImagePlayers[i];
                 
-                if (imagePlayer != null && imagePlayer.PreloadCount != FPreloadCountIn[i])
+                if (imagePlayer != null && imagePlayer.QueueSize != FQueueSizeIn[i])
                 {
                     imagePlayer.Dispose();
                     imagePlayer = null;
@@ -92,7 +96,7 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 if (imagePlayer == null)
                 {
-                    imagePlayer = new ImagePlayer(FPreloadCountIn[i], FDevices, FLogger);
+                    imagePlayer = new ImagePlayer(FQueueSizeIn[i], FLogger);
                     FImagePlayers[i] = imagePlayer;
                 }
                 
@@ -104,11 +108,12 @@ namespace VVVV.Nodes.ImagePlayer
                 {
                     imagePlayer.Reload();
                 }
-                imagePlayer.Seek(FTimeIn[i]);
                 
-                FUnusedFramesOut[i] = imagePlayer.UnusedFrames;
-                FDurationIOOut[i] = imagePlayer.CurrentFrame.Info.DurationIO;
-                FDurationTextureOut[i] = imagePlayer.CurrentFrame.Info.DurationTexture;
+                FTextureOut[i] = imagePlayer.Preload(FVisibleFramesIn[i], FPreloadFramesIn[i]);
+                
+//                FUnusedFramesOut[i] = imagePlayer.UnusedFrames;
+//                FDurationIOOut[i] = imagePlayer.CurrentFrame.Info.DurationIO;
+//                FDurationTextureOut[i] = imagePlayer.CurrentFrame.Info.DurationTexture;
             }
         }
         
@@ -124,37 +129,37 @@ namespace VVVV.Nodes.ImagePlayer
             FImagePlayers.SliceCount = 0;
         }
         
-        Texture IPluginDXTexture2.GetTexture(IDXTextureOut pin, Device device, int slice)
-        {
-            return FImagePlayers[slice].CurrentFrame.GetTexture(device);
-        }
-        
-        void IPluginDXResource.UpdateResource(IPluginOut pin, Device device)
-        {
-            lock (FDevices)
-            {
-                if (!FDevices.Contains(device))
-                {
-                    FDevices.Add(device);
-                }
-            }
-        }
-        
-        void IPluginDXResource.DestroyResource(IPluginOut pin, Device device, bool onlyUnManaged)
-        {
-            foreach (var imagePlayer in FImagePlayers)
-            {
-                if (imagePlayer != null)
-                {
-                    imagePlayer.Dispose();
-                }
-            }
-            FImagePlayers.SliceCount = 0;
-            
-            lock (FDevices)
-            {
-                FDevices.Remove(device);
-            }
-        }
+//        Texture IPluginDXTexture2.GetTexture(IDXTextureOut pin, Device device, int slice)
+//        {
+//            return FImagePlayers[slice].CurrentFrame.GetTexture(device);
+//        }
+//        
+//        void IPluginDXResource.UpdateResource(IPluginOut pin, Device device)
+//        {
+//            lock (FDevices)
+//            {
+//                if (!FDevices.Contains(device))
+//                {
+//                    FDevices.Add(device);
+//                }
+//            }
+//        }
+//        
+//        void IPluginDXResource.DestroyResource(IPluginOut pin, Device device, bool onlyUnManaged)
+//        {
+//            foreach (var imagePlayer in FImagePlayers)
+//            {
+//                if (imagePlayer != null)
+//                {
+//                    imagePlayer.Dispose();
+//                }
+//            }
+//            FImagePlayers.SliceCount = 0;
+//            
+//            lock (FDevices)
+//            {
+//                FDevices.Remove(device);
+//            }
+//        }
     }
 }

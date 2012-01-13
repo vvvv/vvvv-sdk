@@ -91,7 +91,7 @@ namespace VVVV.Hosting.Pins.Output
         {
             for (int i = 0; i < SliceCount; i++)
             {
-                this[i].DestroyResource(device);
+                this[i].DestroyResource(device, onlyUnmanaged);
             }
         }
     }

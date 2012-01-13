@@ -3,17 +3,16 @@ using System.Threading;
 
 namespace VVVV.Nodes.ImagePlayer
 {
-    /// <summary>
-    /// 
-    /// </summary>
 	public class FrameInfo : IEquatable<FrameInfo>, IDisposable
 	{
 		private readonly int FFrameNr;
 		private readonly string FFilename;
 		private readonly CancellationTokenSource FCancellationTokenSource;
+		private readonly ImagePlayer FPlayer;
 		
-		public FrameInfo(int frameNr, string filename)
+		public FrameInfo(ImagePlayer player, int frameNr, string filename)
 		{
+		    FPlayer = player;
 			FFrameNr = frameNr;
 			FFilename = filename;
 			
@@ -44,6 +43,12 @@ namespace VVVV.Nodes.ImagePlayer
 			}
 		}
 		
+		public bool IsInUse
+		{
+		    get;
+		    set;
+		}
+		
 		public CancellationToken Token
 		{
 			get
@@ -60,6 +65,7 @@ namespace VVVV.Nodes.ImagePlayer
 		public void Dispose()
 		{
 			FCancellationTokenSource.Dispose();
+			FPlayer.DestroyFrameInfo(this);
 		}
 		
 		public double DurationIO

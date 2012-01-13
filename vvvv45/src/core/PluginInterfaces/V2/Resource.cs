@@ -10,18 +10,22 @@ namespace VVVV.PluginInterfaces.V2
     {
         private readonly Func<TMetadata, TDevice, TResource> FCreateResourceFunc;
         private readonly Action<TMetadata, TResource> FUpdateResourceFunc;
-        private readonly Action<TMetadata, TResource> FDestroyResourceAction;
+        private readonly Action<TMetadata, TResource, bool> FDestroyResourceAction;
         private readonly Dictionary<TDeviceKey, TResource> FResources = new Dictionary<TDeviceKey, TResource>();
 		private readonly TMetadata FMetadata;
         
-        public Resource(TMetadata metadata, Func<TMetadata, TDevice, TResource> createResourceFunc, Action<TMetadata, TResource> updateResourceFunc, Action<TMetadata, TResource> destroyResourceAction)
+        public Resource(
+		    TMetadata metadata, 
+		    Func<TMetadata, TDevice, TResource> createResourceFunc, 
+		    Action<TMetadata, TResource> updateResourceFunc, 
+		    Action<TMetadata, TResource, bool> destroyResourceAction)
         {
             FMetadata = metadata;
             FCreateResourceFunc = createResourceFunc;
             FUpdateResourceFunc = updateResourceFunc;
             FDestroyResourceAction = destroyResourceAction;
         }
-        
+		
         public Resource(TMetadata metadata, Func<TMetadata, TDevice, TResource> createResourceFunc, Action<TMetadata, TResource> updateResourceFunc)
             : this(metadata, createResourceFunc, updateResourceFunc, DestroyResource)
         {
@@ -49,6 +53,14 @@ namespace VVVV.PluginInterfaces.V2
             }
         }
         
+        public TMetadata Metadata
+        {
+            get
+            {
+                return FMetadata;
+            }
+        }
+        
         public void UpdateResource(TDevice device)
         {
             TDeviceKey deviceKey = GetDeviceKey(device);
@@ -62,12 +74,12 @@ namespace VVVV.PluginInterfaces.V2
             }
         }
         
-        public void DestroyResource(TDevice device)
+        public void DestroyResource(TDevice device, bool onlyUnmanaged)
         {
             TDeviceKey deviceKey = GetDeviceKey(device);
             if (FResources.ContainsKey(deviceKey))
             {
-                FDestroyResourceAction(FMetadata, FResources[deviceKey]);
+                FDestroyResourceAction(FMetadata, FResources[deviceKey], onlyUnmanaged);
                 FResources.Remove(deviceKey);
             }
         }
@@ -76,7 +88,7 @@ namespace VVVV.PluginInterfaces.V2
         {
             foreach (var resource in FResources.Values)
             {
-                FDestroyResourceAction(FMetadata, resource);
+                FDestroyResourceAction(FMetadata, resource, true);
             }
             
             FResources.Clear();
@@ -87,9 +99,17 @@ namespace VVVV.PluginInterfaces.V2
             // Do nothing
         }
         
-        private static void DestroyResource(TMetadata metadata, TResource resource)
+        private static void DestroyResource(TMetadata metadata, TResource resource, bool onlyUnmanaged)
         {
-            resource.Dispose();
+            if (resource != null)
+            {
+                resource.Dispose();
+            }
+        }
+        
+        private static void DeviceLost(TMetadata metadata, TDevice device)
+        {
+            // Do nothing
         }
     }
 }

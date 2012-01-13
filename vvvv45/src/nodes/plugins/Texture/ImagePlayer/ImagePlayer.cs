@@ -15,8 +15,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SlimDX.Direct3D9;
 using VVVV.Core.Logging;
+using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.VMath;
 using VVVV.Utils.Win32;
+using TextureResource = VVVV.PluginInterfaces.V2.EX9.DXResource<SlimDX.Direct3D9.Texture, VVVV.Nodes.ImagePlayer.Frame>;
 
 namespace VVVV.Nodes.ImagePlayer
 {
@@ -34,10 +37,10 @@ namespace VVVV.Nodes.ImagePlayer
         private string FFilemask = DEFAULT_FILEMASK;
         private double FFps = DEFAULT_FPS;
         private string[] FFiles = new string[0];
-        private Frame FCurrentFrame = new Frame(new FrameInfo(-1, string.Empty), Enumerable.Empty<Texture>(), null);
+        private Frame FCurrentFrame;
         
-        private readonly int FPreloadCount;
-        private readonly IEnumerable<Device> FDevices;
+        private readonly int FQueueSize;
+        private readonly List<Device> FDevices = new List<Device>();
         private readonly ILogger FLogger;
         private readonly ObjectPool<Stream> FStreamPool;
         private readonly IOTaskScheduler FIOTaskScheduler;
@@ -45,14 +48,17 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly BufferBlock<FrameInfo> FFrameInfoBuffer;
         private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>> FFilePreloader;
         private readonly TransformBlock<Tuple<FrameInfo, Stream>, Frame> FFramePreloader;
+//        private readonly BufferBlock<Frame> FCancledFrameBuffer;
         private readonly BufferBlock<Frame> FFrameBuffer;
-        private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
+        private readonly Dictionary<int, FrameInfo> FFrameInfos = new Dictionary<int, FrameInfo>();
+        private readonly Dictionary<int, FrameInfo> FScheduledFrameInfos = new Dictionary<int, FrameInfo>();
         
-        public ImagePlayer(int preloadCount, IEnumerable<Device> devices, ILogger logger)
+        public ImagePlayer(int queueSize, ILogger logger)
         {
-            FPreloadCount = preloadCount;
-            FDevices = devices;
+            FQueueSize = queueSize;
             FLogger = logger;
+            
+            FCurrentFrame = new Frame(new FrameInfo(this, -1, string.Empty), Enumerable.Empty<Texture>(), null);
 
             FStreamPool = new ObjectPool<Stream>(() => new MemoryStream());
             FTexturePool = new TexturePool();
@@ -64,7 +70,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 MaxDegreeOfParallelism = DataflowBlockOptions.Unbounded,
                 TaskScheduler = FIOTaskScheduler,
-                BoundedCapacity = FPreloadCount + 1
+                BoundedCapacity = FQueueSize + 1
             };
             
             FFilePreloader = new TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>>(
@@ -75,7 +81,7 @@ namespace VVVV.Nodes.ImagePlayer
             var framePreloaderOptions = new ExecutionDataflowBlockOptions()
             {
                 MaxDegreeOfParallelism = DataflowBlockOptions.Unbounded,
-                BoundedCapacity = FPreloadCount + 1
+                BoundedCapacity = FQueueSize + 1
             };
             
             FFramePreloader = new TransformBlock<Tuple<FrameInfo, Stream>, Frame>(
@@ -83,15 +89,23 @@ namespace VVVV.Nodes.ImagePlayer
                 framePreloaderOptions
                );
             
+//            FCancledFrameBuffer = new BufferBlock<Frame>();
+            
             FFrameBuffer = new BufferBlock<Frame>();
             
-            FFrameInfoBuffer.LinkTo(FFilePreloader);
-            FFilePreloader.LinkTo(FFramePreloader);
-            FFramePreloader.LinkTo(FFrameBuffer);
+            var linkOptions = new DataflowLinkOptions()
+            {
+                PropagateCompletion = true
+            };
             
-            FFrameInfoBuffer.Completion.ContinueWith(t => FFilePreloader.Complete());
-            FFilePreloader.Completion.ContinueWith(t => FFramePreloader.Complete());
-            FFramePreloader.Completion.ContinueWith(t => FFrameBuffer.Complete());
+            FFrameInfoBuffer.LinkTo(FFilePreloader, linkOptions);
+            FFilePreloader.LinkTo(FFramePreloader, linkOptions);
+            FFramePreloader.LinkTo(FFrameBuffer, linkOptions);
+//            FFramePreloader.LinkTo(FCancledFrameBuffer, linkOptions, frame => frame.Info.IsCanceled);
+            
+//            FFrameInfoBuffer.Completion.ContinueWith(t => FFilePreloader.Complete());
+//            FFilePreloader.Completion.ContinueWith(t => FFramePreloader.Complete());
+//            FFramePreloader.Completion.ContinueWith(t => FFrameBuffer.Complete());
         }
         
         public void Dispose()
@@ -179,11 +193,11 @@ namespace VVVV.Nodes.ImagePlayer
             }
         }
         
-        public int PreloadCount
+        public int QueueSize
         {
             get
             {
-                return FPreloadCount;
+                return FQueueSize;
             }
         }
         
@@ -203,7 +217,7 @@ namespace VVVV.Nodes.ImagePlayer
         
         public void Flush()
         {
-            var stallingFrameInfo = new FrameInfo(-1, string.Empty);
+            var stallingFrameInfo = new FrameInfo(this, -1, string.Empty);
             stallingFrameInfo.Cancel();
             Enqueue(stallingFrameInfo);
             Dequeue(stallingFrameInfo).Dispose();
@@ -211,11 +225,11 @@ namespace VVVV.Nodes.ImagePlayer
         
         private void Enqueue(FrameInfo frameInfo)
         {
-            if (!FScheduledFrameInfos.Contains(frameInfo))
+            if (!FScheduledFrameInfos.ContainsKey(frameInfo.FrameNr))
             {
                 if (FFrameInfoBuffer.Post(frameInfo))
                 {
-                    FScheduledFrameInfos.AddLast(frameInfo);
+                    FScheduledFrameInfos.Add(frameInfo.FrameNr, frameInfo);
                 }
                 else
                 {
@@ -227,61 +241,156 @@ namespace VVVV.Nodes.ImagePlayer
         
         private Frame Dequeue(FrameInfo frameInfoToDequeue)
         {
-            Frame result = null;
+            Frame frame = null;
             
             FrameInfo frameInfo = null;
             while (frameInfo != frameInfoToDequeue)
             {
-                result = FFrameBuffer.Receive();
-                frameInfo = result.Info;
-                FScheduledFrameInfos.Remove(frameInfo);
+                frame = FFrameBuffer.Receive();
+                frameInfo = frame.Info;
+                FScheduledFrameInfos.Remove(frameInfo.FrameNr);
                 if (frameInfo != frameInfoToDequeue)
                 {
-                    result.Dispose();
+                    frame.Dispose();
                     UnusedFrames++;
                 }
             }
             
-            return result;
+            return frame;
         }
         
-        public void Seek(double time)
+        private void Cancel(FrameInfo frameInfo)
+        {
+            frameInfo.Cancel();
+            var frame = Dequeue(frameInfo);
+            frame.Dispose();
+            FScheduledFrameInfos.Remove(frameInfo.FrameNr);
+            FFrameInfos.Remove(frameInfo.FrameNr);
+        }
+        
+        private FrameInfo CreateFrameInfo(int frameNr)
+        {
+            FrameInfo frameInfo = null;
+            
+            frameNr = VMath.Zmod(frameNr, FFiles.Length);
+            if (!FFrameInfos.TryGetValue(frameNr, out frameInfo))
+            {
+                frameInfo = new FrameInfo(this, frameNr, FFiles[frameNr]);
+                FFrameInfos[frameNr] = frameInfo;
+            }
+            
+            return frameInfo;
+        }
+        
+        internal void DestroyFrameInfo(FrameInfo frameInfo)
+        {
+            FFrameInfos.Remove(frameInfo.FrameNr);
+        }
+        
+        private readonly Spread<TextureResource> FVisibleResources = new Spread<TextureResource>(0);
+        
+        public ISpread<TextureResource> Preload(
+            ISpread<int> visibleFrameNrs,
+            ISpread<int> preloadFrameNrs)
         {
             // Nothing to do
             if (FFiles.Length == 0)
             {
-                return;
+                return new Spread<TextureResource>(0);
             }
             
-            // Compute and normalize the frame number, as it can be any value
-            int newFrameNr = VMath.Zmod((int) Math.Floor(time * FPS), FFiles.Length);
-            
-            // Cancel scheduled frames with a lower frame number
-            foreach (var frameInfo in FScheduledFrameInfos)
+            // Mark all scheduled frames as unused
+            foreach (var frameInfo in FScheduledFrameInfos.Values)
             {
-                if (frameInfo.FrameNr < newFrameNr)
-                {
-                    frameInfo.Cancel();
-                }
+                frameInfo.IsInUse = false;
             }
             
             var frameInfosToPreload =
-                from frameNr in Enumerable.Range(newFrameNr, FPreloadCount + 1)
-                let normalizedFrameNr = VMath.Zmod(frameNr, FFiles.Length)
-                select new FrameInfo(normalizedFrameNr, FFiles[normalizedFrameNr]);
+                from frameNr in visibleFrameNrs.Concat(preloadFrameNrs)
+                select CreateFrameInfo(frameNr);
             
+            // Preload frames
             foreach (var frameInfo in frameInfosToPreload)
             {
+                // Mark frame as used
+                frameInfo.IsInUse = true;
+            }
+            
+            // Cancel unused frames
+            foreach (var frameInfo in FScheduledFrameInfos.Values.ToArray())
+            {
+                if (!frameInfo.IsInUse && !frameInfo.IsCanceled)
+                {
+                    Cancel(frameInfo);
+                }
+            }
+            
+            // Preload frames
+            foreach (var frameInfo in frameInfosToPreload)
+            {
+                // Schedule it
                 Enqueue(frameInfo);
             }
             
-            var newFrameInfo = frameInfosToPreload.First();
-            
-            if (newFrameInfo != FCurrentFrame.Info)
+            // Dispose unused texture resources
+            for (int i = visibleFrameNrs.SliceCount; i < FVisibleResources.SliceCount; i++)
             {
-                FCurrentFrame.Dispose();
-                FCurrentFrame = Dequeue(newFrameInfo);
+                FVisibleResources[i].Dispose();
+                FVisibleResources[i] = null;
             }
+            
+            FVisibleResources.SliceCount = visibleFrameNrs.SliceCount;
+            
+            var visibleFrames = visibleFrameNrs.Select(frameNr => CreateFrameInfo(frameNr)).ToArray();
+            for (int i = 0; i < FVisibleResources.SliceCount; i++)
+            {
+                var frameInfo = visibleFrames[i];
+                var resource = FVisibleResources[i];
+                if (resource != null && resource.Metadata.Info != frameInfo)
+                {
+                    resource.Dispose();
+                    resource = null;
+                }
+                if (resource == null)
+                {
+                    var frame = Dequeue(frameInfo);
+                    resource = new TextureResource(frame, CreateTexture, UpdateTexture, DestroyTexture);
+                    FVisibleResources[i] = resource;
+                }
+            }
+            
+            return FVisibleResources;
+        }
+        
+        private Texture CreateTexture(Frame frame, Device device)
+        {
+            lock (FDevices)
+            {
+                if (!FDevices.Contains(device))
+                {
+                    FDevices.Add(device);
+                }
+            }
+            
+            return frame.GetTexture(device);
+        }
+        
+        private void UpdateTexture(Frame frame, Texture texture)
+        {
+            
+        }
+        
+        private void DestroyTexture(Frame frame, Texture texture, bool onlyUnmanaged)
+        {
+            if (!onlyUnmanaged)
+            {
+                lock (FDevices)
+                {
+                    FDevices.Remove(texture.Device);
+                }
+            }
+            
+            frame.Dispose();
         }
         
         private Tuple<FrameInfo, Stream> PreloadFile(FrameInfo frameInfo)
