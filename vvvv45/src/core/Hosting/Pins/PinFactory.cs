@@ -41,6 +41,21 @@ namespace VVVV.Hosting.Pins
             outputPinFactory.RegisterType(t, creator);
         }
 
+        public static void RegisterBaseCustomInputPinType(Type t, InputPinRegistry.PinCreateDelegate creator)
+        {
+            inputPinFactory.RegisterBaseType(t, creator);
+        }
+
+        public static void RegisterBaseCustomDiffInputPinType(Type t, DiffInputPinRegistry.PinCreateDelegate creator)
+        {
+            diffInputPinFactory.RegisterBaseType(t, creator);
+        }
+
+        public static void RegisterBaseCustomOutputPinType(Type t, OutputPinRegistry.PinCreateDelegate creator)
+        {
+            outputPinFactory.RegisterBaseType(t, creator);
+        }
+
 		public static Pin<T> CreatePin<T>(IPluginHost host, Attribute attribute)
 		{
 			return CreatePin(host, attribute, typeof(T)) as Pin<T>;
