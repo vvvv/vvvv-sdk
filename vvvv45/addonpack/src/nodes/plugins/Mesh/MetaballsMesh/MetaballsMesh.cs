@@ -408,7 +408,6 @@ namespace VVVV.Nodes
 				}
 				finally
 				{
-//					OnDevice.Dispose();
 					update = false;
 				}
 			}
