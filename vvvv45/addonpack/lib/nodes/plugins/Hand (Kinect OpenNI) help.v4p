@@ -169,7 +169,7 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="34" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -201,11 +201,21 @@
    </PIN>
    <PIN pinname="Hand PositionXYZ" visible="1">
    </PIN>
-   <PIN pinname="Track">
+   <PIN pinname="Track" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Track Start PositionXYZ" visible="1">
    </PIN>
    <PIN pinname="Hand ID" visible="1">
+   </PIN>
+   <PIN pinname="Initial PositionXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Initialize" visible="1">
+   </PIN>
+   <PIN pinname="PositionXYZ" visible="1">
+   </PIN>
+   <PIN pinname="ID" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="26" dstpinname="Context" srcnodeid="0" srcpinname="Context">
@@ -253,9 +263,9 @@
    <LINK dstnodeid="36" dstpinname="Transform" srcnodeid="38" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="InABox" id="39" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="7155" top="1140" type="Node" width="0">
+   <BOUNDS height="0" left="5820" top="1260" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="720" left="7155" top="1140" type="Box" width="795">
+   <BOUNDS height="720" left="5820" top="1260" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="3" values="-0.33,0.031,0.773">
    </PIN>
@@ -271,7 +281,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="40" nodename="Cons (Spreads)" systemname="Cons (Spreads)">
-   <BOUNDS height="100" left="7155" top="2130" type="Node" width="100">
+   <BOUNDS height="100" left="5820" top="2250" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -285,9 +295,9 @@
    <LINK dstnodeid="26" dstpinname="Track Start PositionXYZ" srcnodeid="40" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="42" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="8070" top="1140" type="Node" width="0">
+   <BOUNDS height="0" left="6735" top="1260" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="720" left="8070" top="1140" type="Box" width="795">
+   <BOUNDS height="720" left="6735" top="1260" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="3" values="0.26,0.031,0.773">
    </PIN>
@@ -325,5 +335,45 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="44" dstpinname="Y Input Value" srcnodeid="43" srcpinname="Count">
+   </LINK>
+   <NODE componentmode="InABox" id="45" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7860" top="1425" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="7860" top="1425" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="1,0">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="1,0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Track" srcnodeid="45" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="Output" dstnodeid="26" dstpinname="Initial PositionXYZ">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initialize">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="PositionXYZ" dstnodeid="37" dstpinname="XYZ">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="PositionXYZ" dstnodeid="34" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="ID" dstnodeid="31" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="ID" dstnodeid="43" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Enabled">
    </LINK>
    </PATCH>

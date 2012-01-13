@@ -35,6 +35,9 @@ namespace VVVV.Nodes
 
 		[Output("Context")]
 		ISpread<Context> FContextOut;
+		
+		[Output("Driver")]
+		ISpread<string> FDriver;
 
 		[Import()]
 		ILogger FLogger;
@@ -45,6 +48,9 @@ namespace VVVV.Nodes
 		private ImageGenerator FImageGenerator;
 		private DepthGenerator FDepthGenerator;
 		private Thread FUpdater;
+		private string FOpenNI;
+		private string FNite;
+		private string FSensorKinect;		
 		#endregion fields & pins
 		
 		public KinectContext()
@@ -70,6 +76,7 @@ namespace VVVV.Nodes
 			//writes the Context Object to the Output for
 			//is required for other generators
 			FContextOut[0] = FContext;
+			FDriver[0] = "\n" + FOpenNI + "\n" + FNite + "\n" + FSensorKinect;
 		}
 		#endregion
 		
@@ -87,9 +94,12 @@ namespace VVVV.Nodes
 				FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
 				
 				FContext.StartGeneratingAll();
-				
-				var version = OpenNI.Version.Current.Major.ToString() + "." + OpenNI.Version.Current.Minor.ToString() + "." + OpenNI.Version.Current.Maintenance.ToString() + "." + OpenNI.Version.Current.Build.ToString();
-				//FLogger.Log(LogType.Message, "OpenNI Version: " + version);
+								
+				var v = OpenNI.Version.Current;
+				FOpenNI = "OpenNI: " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;
+				v = FImageGenerator.Info.Description.Version;
+				FNite = FImageGenerator.Info.Description.Vendor + ": " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;;
+				FSensorKinect = "";
 			}
 			catch (StatusException ex)
 			{

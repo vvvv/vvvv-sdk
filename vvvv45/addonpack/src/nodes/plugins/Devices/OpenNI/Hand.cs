@@ -29,16 +29,19 @@ namespace VVVV.Nodes
         [Input("Context", IsSingle=true)]
 		Pin<Context> FContextIn;
 		
-		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
-		ISpread<bool> FEnabledIn;
-		
-        [Input("Track Start Position")]
+        [Input("Initial Position")]
         ISpread<Vector3D> FTrackStartIn;
         
-        [Output("Hand Position")]
+        [Input("Initialize")]
+        ISpread<bool> FTrackIn;
+        
+        [Input("Enabled", IsSingle = true, DefaultValue = 1)]
+		ISpread<bool> FEnabledIn;
+        
+        [Output("Position")]
         ISpread<Vector3D> FHandPositionOut;
         
-        [Output("Hand ID")]
+        [Output("ID")]
         ISpread<int> FHandIdOut;
 
         [Import()]
@@ -90,14 +93,14 @@ namespace VVVV.Nodes
 			{
                 for (int i = 0; i < FTrackStartIn.SliceCount; i++)
                 {
-                	var p = new Point3D((float)(FTrackStartIn[i].x * 1000), (float)(FTrackStartIn[i].y * 1000), (float)(FTrackStartIn[i].z * 1000));
-                	if (!FTrackedStarts.ContainsValue(p))
-                		FHandGenerator.StartTracking(p);
+                	if (FTrackIn[i])
+                	{
+                		var p = new Point3D((float)(FTrackStartIn[i].x * 1000), (float)(FTrackStartIn[i].y * 1000), (float)(FTrackStartIn[i].z * 1000));
+                		if (!FTrackedStarts.ContainsValue(p))
+	                		FHandGenerator.StartTracking(p);
+                	}
                 }
                 
-               // if (FTrackIn[0] && (FTrackedHands.Count < 2))
-               // 	FHandGenerator.StartTracking(new Point3D(128, 31, 773));
-               
                 // Write the received Gestures with their endposition to the output
                 FHandIdOut.SliceCount = FHandPositionOut.SliceCount = FTrackedHands.Count;
                 int Slice = 0;
