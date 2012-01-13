@@ -27,7 +27,7 @@ namespace VVVV.Nodes.ImagePlayer
     /// </summary>
     public class ImagePlayer : IDisposable
     {
-        public const string DEFAULT_FILEMASK = "*.dds";
+        public const string DEFAULT_FILEMASK = "*";
         public const double DEFAULT_FPS = 25.0;
         
         private string FDirectory = string.Empty;

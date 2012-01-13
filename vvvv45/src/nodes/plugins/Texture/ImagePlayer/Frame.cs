@@ -11,13 +11,13 @@ namespace VVVV.Nodes.ImagePlayer
     public class Frame : IDisposable
     {
     	private readonly FrameInfo FFrameInfo;
-    	private readonly Texture[] FTextures;
+    	private readonly List<Texture> FTextures;
     	private readonly TexturePool FTexturePool;
     	
     	public Frame(FrameInfo frameInfo, IEnumerable<Texture> textures, TexturePool texturePool)
     	{
     		FFrameInfo = frameInfo;
-    		FTextures = textures.ToArray();
+    		FTextures = textures.ToList();
     		FTexturePool = texturePool;
     	}
     	
@@ -31,7 +31,17 @@ namespace VVVV.Nodes.ImagePlayer
         
         public Texture GetTexture(Device device)
         {
-        	return FTextures.FirstOrDefault(texture => texture.Device == device);
+        	var texture = FTextures.FirstOrDefault(t => t.Device == device);
+        	if (texture == null)
+        	{
+        	    using (var stream = new FileStream(FFrameInfo.Filename, FileMode.Open, FileAccess.Read))
+        	    {
+        	        var decoder = FrameDecoder.Create(FFrameInfo, FTexturePool, stream);
+        	        texture = decoder.Decode(device);
+        	        FTextures.Add(texture);
+        	    }
+        	}
+        	return texture;
         }
         
         public void Dispose()

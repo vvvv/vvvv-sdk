@@ -151,12 +151,12 @@ namespace VVVV.Nodes.ImagePlayer
         static FrameDecoder()
         {
             Register(
-                BitmapFrameDecoder.SupportedFileExtensions, 
-                (texturePool, stream) => new BitmapFrameDecoder(texturePool, stream)
-               );
-            Register(
                 Direct3D9FrameDecoder.SupportedFileExtensions, 
                 (texturePool, stream) => new Direct3D9FrameDecoder(texturePool, stream)
+               );
+            Register(
+                BitmapFrameDecoder.SupportedFileExtensions, 
+                (texturePool, stream) => new BitmapFrameDecoder(texturePool, stream)
                );
         }
         
