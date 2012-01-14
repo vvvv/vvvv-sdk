@@ -1,17 +1,17 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Skeleton (Kinect OpenNI) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Skeleton (Kinect OpenNI) help.v4p" systemname="Skeleton (Kinect OpenNI) help">
    <BOUNDS height="8310" left="10860" top="1905" type="Window" width="8310">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="0" nodename="Kinect (Devices OpenNI)" systemname="Kinect (Devices OpenNI)">
-   <BOUNDS height="100" left="1425" top="1590" type="Node" width="100">
+   <BOUNDS height="100" left="1425" top="1290" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Context" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="4740" top="3825" type="Node" width="0">
+   <BOUNDS height="0" left="4740" top="4425" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="270" left="4740" top="3825" type="Box" width="2055">
+   <BOUNDS height="270" left="4740" top="4425" type="Box" width="2055">
    </BOUNDS>
    <PIN encoded="0" pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -23,9 +23,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="5" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
-   <BOUNDS height="0" left="4380" top="2160" type="Node" width="0">
+   <BOUNDS height="0" left="4380" top="2760" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="930" left="4380" top="2160" type="Box" width="1110">
+   <BOUNDS height="930" left="4380" top="2760" type="Box" width="1110">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="3" values="Head,LeftHand,RightHand">
    </PIN>
@@ -107,7 +107,7 @@
    <LINK dstnodeid="11" dstpinname="Context" srcnodeid="0" srcpinname="Context">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="1" nodename="Skeleton (Kinect OpenNI)" systemname="Skeleton (Kinect OpenNI)">
-   <BOUNDS height="100" left="3300" top="3300" type="Node" width="100">
+   <BOUNDS height="100" left="3300" top="3900" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Context" visible="1">
    </PIN>
@@ -196,4 +196,18 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1965" top="1695" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1965" top="1695" width="2685" height="780">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Driver" dstnodeid="20" dstpinname="Input String">
+   </LINK>
    </PATCH>

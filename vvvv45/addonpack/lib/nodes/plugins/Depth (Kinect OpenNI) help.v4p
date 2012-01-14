@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Depth (Kinect OpenNI) help.v4p" filename="C:\Users\joreg\work\tempest\tempest\patches\Users (Kinect OpenNI) help.v4p" systemname="Users (Kinect OpenNI) help">
-   <BOUNDS height="9660" left="7605" top="1305" type="Window" width="9015">
+   <BOUNDS height="9660" left="7605" top="1305" type="Window" width="9090">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="100" left="4530" top="5550" type="Node" width="100">
@@ -23,9 +23,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="5265" top="2250" type="Node" width="0">
+   <BOUNDS height="0" left="5265" top="1950" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="270" left="5265" top="2250" type="Box" width="1455">
+   <BOUNDS height="690" left="5265" top="1950" type="Box" width="3345">
    </BOUNDS>
    <PIN encoded="0" pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -33,44 +33,26 @@
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="Input String">
+   <PIN pinname="Input String" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="0" nodename="Kinect (Devices OpenNI)" systemname="Kinect (Devices OpenNI)">
-   <BOUNDS height="100" left="4725" top="1845" type="Node" width="100">
+   <BOUNDS height="100" left="4725" top="1545" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Context" visible="1">
    </PIN>
    <PIN pinname="Update">
    </PIN>
-   <PIN pinname="Enabled" visible="1">
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN encoded="0" pinname="Configuration File" slicecount="1" values="OpenNIConfig.xml">
    </PIN>
+   <PIN pinname="Driver" visible="1">
+   </PIN>
+   <PIN pinname="Mirrored" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="0" srcpinname="Status">
-   </LINK>
-   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="5265" top="1185" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="480" left="5265" top="1185" type="Box" width="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="0" dstpinname="Enabled" srcnodeid="15" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="Hidden" filename="" id="11" nodename="Quad (DX9)" systemname="Quad (DX9)">
    <BOUNDS height="100" left="4530" top="5130" type="Node" width="100">
@@ -246,6 +228,22 @@
    <BOUNDS height="2400" left="705" top="6345" type="Box" width="6300">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In order for a pixel to be converted from projective-space to realworld-space you need to do something like:&cr;&lf;&cr;&lf;realworld.x = (projective.x - 0.5) * projective.z * XYtoZ.x + projective.x*projective.z;&cr;&lf;realworld.y = (0.5 - projective.y) * projective.z * XYtoZ.y + projective.y*projective.z;&cr;&lf;realworld.z = projective.z;&cr;&lf;&cr;&lf;where:&cr;&lf;projective.xy = uv coordinates of a fullscreen quad&cr;&lf;projective.z = value from the depthmap&cr;&lf;XYtoZ = tan(FOV/2)*2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="0" srcpinname="Driver">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6825" top="3210" width="1905" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6825" top="3210" width="1905" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; enable || disable output|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

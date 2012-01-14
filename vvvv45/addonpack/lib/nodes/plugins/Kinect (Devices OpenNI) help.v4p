@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Kinect (Devices OpenNI) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Kinect (Devices OpenNI) help.v4p" systemname="Kinect (Devices OpenNI) help">
-   <BOUNDS height="6750" left="5460" top="1395" type="Window" width="7305">
+   <BOUNDS height="4920" left="5460" top="1395" type="Window" width="6015">
    </BOUNDS>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="255" top="525" type="Node" width="570">
@@ -33,7 +33,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="3" nodename="Kinect (Devices OpenNI)" systemname="Kinect (Devices OpenNI)">
-   <BOUNDS height="100" left="945" top="4155" type="Node" width="100">
+   <BOUNDS height="100" left="885" top="2310" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Configuration File">
    </PIN>
@@ -41,11 +41,13 @@
    </PIN>
    <PIN pinname="Mirrored">
    </PIN>
+   <PIN pinname="Driver" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="1485" top="4665" type="Node" width="0">
+   <BOUNDS height="0" left="1425" top="2925" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="285" left="1485" top="4665" type="Box" width="1695">
+   <BOUNDS height="735" left="1425" top="2925" type="Box" width="3390">
    </BOUNDS>
    <PIN encoded="0" pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -53,63 +55,19 @@
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="4" dstpinname="Input String" srcnodeid="3" srcpinname="Status">
    </LINK>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="285" top="1365" type="Node" width="2790">
-   </BOUNDS>
-   <BOUNDS height="360" left="285" top="1365" type="Box" width="2820">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Make sure this node exists only once!|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="1485" top="3525" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="480" left="1485" top="3525" type="Box" width="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   </NODE>
    <LINK dstnodeid="3" dstpinname="Enabled" srcnodeid="6" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="945" top="2340" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="285" left="945" top="2340" type="Box" width="2325">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" values="OpenNIConfig.xml">
-   </PIN>
-   <PIN encoded="0" pinname="Default" slicecount="1" values="Data\SamplesConfig.xml">
-   </PIN>
-   <PIN encoded="0" pinname="File Mask" slicecount="1" values="|All Files (*.*)||*.*|">
-   </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="Filename">
-   </PIN>
-   </NODE>
    <LINK dstnodeid="3" dstpinname="Configuration File" srcnodeid="7" srcpinname="Output String">
    </LINK>
    <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="1305" top="2955" type="Node" width="0">
+   <BOUNDS height="0" left="900" top="1530" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="1305" top="2955" type="Box" width="480">
+   <BOUNDS height="480" left="900" top="1530" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -125,9 +83,9 @@
    <LINK dstnodeid="3" dstpinname="Mirrored" srcnodeid="8" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="2070" top="3045" type="Node" width="3135">
+   <BOUNDS height="270" left="1665" top="1620" type="Node" width="3135">
    </BOUNDS>
-   <BOUNDS height="270" left="2070" top="3045" type="Box" width="3135">
+   <BOUNDS height="270" left="1665" top="1620" type="Box" width="3135">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; horizontally mirror the cameras images|">
    </PIN>
@@ -138,12 +96,14 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="2070" top="3630" type="Node" width="1500">
+   <LINK srcnodeid="3" srcpinname="Driver" dstnodeid="4" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1455" top="3780" width="1395" height="270">
    </BOUNDS>
-   <BOUNDS height="270" left="2070" top="3630" type="Box" width="1500">
+   <BOUNDS type="Box" left="1455" top="3780" width="1395" height="270">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; enable the device|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ used drivers|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

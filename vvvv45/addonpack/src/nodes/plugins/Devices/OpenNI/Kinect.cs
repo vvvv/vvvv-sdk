@@ -27,11 +27,11 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		//vvvv
-		[Input("Mirrored", IsSingle = true, DefaultValue = 0)]
+		[Input("Mirrored", IsSingle = true, DefaultValue = 1)]
 		IDiffSpread<bool> FMirrored;
 
-		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
-		IDiffSpread<bool> FUpdateIn;
+		//[Input("Enabled", IsSingle = true, DefaultValue = 1)]
+		//IDiffSpread<bool> FUpdateIn;
 
 		[Output("Context")]
 		ISpread<Context> FContextOut;
@@ -84,7 +84,7 @@ namespace VVVV.Nodes
 			//writes the Context Object to the Output for
 			//is required for other generators
 			FContextOut[0] = FContext;
-			FDriver[0] = "\n" + FOpenNI + "\n" + FMiddleware + "\n" + FSensor;
+			FDriver[0] = FOpenNI + "\n" + FMiddleware + "\n" + FSensor;
 		}
 		#endregion
 		
