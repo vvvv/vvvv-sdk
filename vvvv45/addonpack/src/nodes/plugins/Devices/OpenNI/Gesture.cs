@@ -95,7 +95,7 @@ namespace VVVV.Nodes
 							
 							FContextChanged = false;
 						}
-						catch (StatusException ex)
+						catch (Exception ex)
 						{
 							FLogger.Log(ex);
 						}

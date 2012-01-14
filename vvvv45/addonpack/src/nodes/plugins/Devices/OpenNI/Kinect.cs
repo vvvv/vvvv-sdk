@@ -51,16 +51,23 @@ namespace VVVV.Nodes
 		private Thread FUpdater;
 		private string FOpenNI;
 		private string FSensor;
-		private string FMiddleware;		
+		private string FMiddleware;
 		#endregion fields & pins
 		
 		public KinectContext()
 		{
-			OpenContext();
-			
-			FUpdater = new Thread(Update);
-			FRunning = true;
-			FUpdater.Start();
+			try
+			{
+				OpenContext();
+				
+				FUpdater = new Thread(Update);
+				FRunning = true;
+				FUpdater.Start();
+			}
+			catch
+			{
+				FOpenNI = "Unable to connect to Device!";
+			}
 		}
 
 		#region Evaluate
@@ -93,11 +100,10 @@ namespace VVVV.Nodes
 				FImageGenerator = (ImageGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Image, null);
 				FDepthGenerator = (DepthGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Depth, null);
 				FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
-				//FDevice = (Device) FContext.CreateAnyProductionTree(OpenNI.NodeType.Device, null);
 
 				FContext.StartGeneratingAll();
-							
-				//read out driver versions:				
+				
+				//read out driver versions:
 				var v = OpenNI.Version.Current;
 				FOpenNI = "OpenNI: " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;
 				
@@ -110,11 +116,7 @@ namespace VVVV.Nodes
 				v = FImageGenerator.Info.Description.Version;
 				FSensor = FImageGenerator.Info.Description.Vendor + " " + FImageGenerator.Info.Description.Name + ": " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;
 			}
-			catch (StatusException ex)
-			{
-				FLogger.Log(ex);
-			}
-			catch (GeneralException e)
+			catch (Exception e)
 			{
 				FLogger.Log(e);
 			}
@@ -122,7 +124,7 @@ namespace VVVV.Nodes
 		
 		private void CloseContext()
 		{
-			if (FUpdater.IsAlive)
+			if (FUpdater != null && FUpdater.IsAlive)
 			{
 				//wait for threadloop to exit
 				FRunning = false;
@@ -133,8 +135,11 @@ namespace VVVV.Nodes
 			{
 				FContext.StopGeneratingAll();
 				FContext.ErrorStateChanged -= FContext_ErrorStateChanged;
-				FImageGenerator.Dispose();
-				//FDepthGenerator.Dispose();
+				
+				if (FImageGenerator != null)
+					FImageGenerator.Dispose();
+				if (FDepthGenerator != null)
+					FDepthGenerator.Dispose();
 				
 				FContext.Shutdown();
 				FContext = null;
