@@ -62,7 +62,7 @@ namespace VVVV.Nodes
 				
 				FUpdater = new Thread(Update);
 				FRunning = true;
-				FUpdater.Start();
+				//FUpdater.Start();
 			}
 			catch
 			{
@@ -78,13 +78,16 @@ namespace VVVV.Nodes
 			if (FContext != null)
 			{
 				if (FMirrored.IsChanged)
-					FContext.GlobalMirror = FMirrored[0];
+					lock (FImageGenerator)
+						FContext.GlobalMirror = FMirrored[0];
 			}
 
 			//writes the Context Object to the Output for
 			//is required for other generators
 			FContextOut[0] = FContext;
 			FDriver[0] = FOpenNI + "\n" + FMiddleware + "\n" + FSensor;
+			
+//			FContext.WaitAndUpdateAll();// .WaitAndUpdateAll();
 		}
 		#endregion
 		
@@ -163,17 +166,15 @@ namespace VVVV.Nodes
 				{
 					//The way how to update
 					if (FContext != null)
-						FContext.WaitAnyUpdateAll();
+					{
+						lock (FImageGenerator)
+							FImageGenerator.WaitAndUpdateData();
+//						lock (FDepthGenerator)
+//							FDepthGenerator.WaitAndUpdateData();
+							//FContext.WaitOneUpdateAll();
+					}
 				}
-				catch (StatusException ey)
-				{
-					Debug.WriteLine(ey.Message);
-				}
-				catch (GeneralException ez)
-				{
-					Debug.WriteLine(ez.Message);
-				}
-				catch (AccessViolationException ex)
+				catch (Exception ex)
 				{
 					Debug.WriteLine(ex.Message);
 				}

@@ -50,12 +50,18 @@ namespace VVVV.Nodes
 		private int FTexHeight;
 
 		private bool FContextChanged = false;
+		
+		private IntPtr FImage = new IntPtr();
+		private Thread FUpdater;
+		private bool FRunning = false;
 		#endregion fields & pins
 		
 		// import host and hand it to base constructor
 		[ImportingConstructor()]
 		public Texture_Image(IPluginHost host): base(host)
-		{}
+		{
+			
+		}
 		
 		#region Evaluate
 		//called when data for any output pin is requested
@@ -75,8 +81,16 @@ namespace VVVV.Nodes
 							FTexWidth = FImageMetaData.XRes;
 							FTexHeight = FImageMetaData.YRes;
 							
+							//allocate data for the RGB Image
+							FImage = Marshal.AllocCoTaskMem(FTexWidth * FTexHeight * 4);
+							
 							//Reinitalie the vvvv texture
 							Reinitialize();
+							
+							//Start the Thread for reading the Rgb Image
+							FUpdater = new Thread(ReadImage);
+							FRunning = true;
+							FUpdater.Start();
 							
 							FContextChanged = false;
 						}
@@ -96,12 +110,6 @@ namespace VVVV.Nodes
 			if (FImageGenerator != null && FEnabledIn[0])
 				Update();
 		}
-
-		void FImageGenerator_NewDataAvailable(object sender, EventArgs e)
-		{
-			throw new NotImplementedException();
-		}
-
 		#endregion
 
 		#region Dispose
@@ -112,12 +120,58 @@ namespace VVVV.Nodes
 		
 		private void CleanUp()
 		{
+			FRunning = false;
+			FUpdater.Join();
+
+			Marshal.FreeCoTaskMem(FImage);
+			
 			FImageGenerator = null;
 		}
 		#endregion
 
-		#region IPluginDXTexture Members
+		#region UpdateThread
+		private unsafe void ReadImage()
+		{
+			while (FRunning)
+			{
+				if (FImageGenerator != null)
+				{
+					lock(FImageGenerator)
+					{
+						FImageGenerator.WaitAndUpdateData();
+						if (FImageGenerator.IsDataNew)
+						{
+							//create a pointer where the information for the vvvv texture lies
+							byte* dest32 = (byte*)FImage.ToPointer();
 
+							//get the pointer to the Rgb Image
+							byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
+							
+							try
+							{
+								//write the pixels
+								for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
+								{
+									dest32[0] = src24[2];
+									dest32[1] = src24[1];
+									dest32[2] = src24[0];
+									dest32[3] = 255;
+								}
+							}
+							catch (Exception)
+							{ }
+						}
+					}
+				}
+//				else
+//				{
+					Thread.Sleep(0);
+//				}
+			}
+		}
+		#endregion
+		
+		#region IPluginDXTexture Members
 		//this method gets called, when Reinitialize() was called in evaluate,
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int Slice, SlimDX.Direct3D9.Device device)
@@ -132,18 +186,21 @@ namespace VVVV.Nodes
 		unsafe protected override void UpdateTexture(int Slice, Texture texture)
 		{
 			//get the pointer to the Rgb Image
-			byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
+			//byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
 			
 			//lock the vvvv texture
-			byte* dest32 = (byte*)texture.LockRectangle(0, LockFlags.Discard).Data.DataPointer;
+			//byte* dest32 = (byte*)texture.LockRectangle(0, LockFlags.Discard).Data.DataPointer;
 			
-			for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
-			{
-				dest32[0] = src24[2];
-				dest32[1] = src24[1];
-				dest32[2] = src24[0];
-				dest32[3] = 255;
-			}
+			var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
+			// tell the vvvv texture where the pointer to the depth image lies
+			rect.WriteRange(FImage, FTexHeight * FTexWidth * 4);
+//			for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
+//			{
+//				dest32[0] = src24[2];
+//				dest32[1] = src24[1];
+//				dest32[2] = src24[0];
+//				dest32[3] = 255;
+//			}
 
 			texture.UnlockRectangle(0);
 		}
