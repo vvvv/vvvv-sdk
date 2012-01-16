@@ -374,5 +374,25 @@ namespace VVVV.PluginInterfaces.V2
                 spread.Insert(index, item);
             }
         }
+        
+        /// <summary>
+        /// Resizes a spread and calls given disposer on all items which are not used anymore.
+        /// </summary>
+        /// <param name="spread">The <see cref="ISpread{T}"/> to resize.</param>
+        /// <param name="size">The new size.</param>
+        /// <param name="disposer">The custom disposer to call if an item is not in the resized spread anymore.</param>
+        public static void Resize<T>(this ISpread<T> spread, int size, Action<T> disposer)
+        {
+            for (int i = size; i < spread.SliceCount; i++)
+            {
+                var item = spread[i];
+                if (item != null)
+                {
+                    disposer(item);
+                }
+                spread[i] = default(T);
+            }
+            spread.SliceCount = size;
+        }
     }
 }

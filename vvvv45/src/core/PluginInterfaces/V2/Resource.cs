@@ -5,20 +5,26 @@ using System.Runtime.InteropServices;
 
 namespace VVVV.PluginInterfaces.V2
 {
+    public enum DestroyReason
+    {
+        DeviceLost,
+        Dispose
+    }
+    
     [ComVisible(false)]
-    public abstract class Resource<TDevice, TDeviceKey, TResource, TMetadata> : IDisposable where TResource : IDisposable
+    public abstract class Resource<TDevice, TResource, TMetadata> : IDisposable where TResource : IDisposable
     {
         private readonly Func<TMetadata, TDevice, TResource> FCreateResourceFunc;
         private readonly Action<TMetadata, TResource> FUpdateResourceFunc;
-        private readonly Action<TMetadata, TResource, bool> FDestroyResourceAction;
-        private readonly Dictionary<TDeviceKey, TResource> FResources = new Dictionary<TDeviceKey, TResource>();
+        private readonly Action<TMetadata, TResource, DestroyReason> FDestroyResourceAction;
+        private readonly Dictionary<TDevice, TResource> FResources = new Dictionary<TDevice, TResource>();
 		private readonly TMetadata FMetadata;
         
         public Resource(
 		    TMetadata metadata, 
 		    Func<TMetadata, TDevice, TResource> createResourceFunc, 
 		    Action<TMetadata, TResource> updateResourceFunc, 
-		    Action<TMetadata, TResource, bool> destroyResourceAction)
+		    Action<TMetadata, TResource, DestroyReason> destroyResourceAction)
         {
             FMetadata = metadata;
             FCreateResourceFunc = createResourceFunc;
@@ -36,18 +42,15 @@ namespace VVVV.PluginInterfaces.V2
         {
         }
         
-        protected abstract TDeviceKey GetDeviceKey(TDevice device);
-        
         public TResource this[TDevice device]
         {
             get
             {
                 TResource result = default(TResource);
-                TDeviceKey deviceKey = GetDeviceKey(device);
-                if (!FResources.TryGetValue(deviceKey, out result))
+                if (!FResources.TryGetValue(device, out result))
                 {
                     result = FCreateResourceFunc(FMetadata, device);
-                    FResources[deviceKey] = result;
+                    FResources[device] = result;
                 }
                 return result;
             }
@@ -63,10 +66,9 @@ namespace VVVV.PluginInterfaces.V2
         
         public void UpdateResource(TDevice device)
         {
-            TDeviceKey deviceKey = GetDeviceKey(device);
-            if (FResources.ContainsKey(deviceKey))
+            if (FResources.ContainsKey(device))
             {
-                FUpdateResourceFunc(FMetadata, FResources[deviceKey]);
+                FUpdateResourceFunc(FMetadata, FResources[device]);
             }
             else
             {
@@ -76,11 +78,10 @@ namespace VVVV.PluginInterfaces.V2
         
         public void DestroyResource(TDevice device, bool onlyUnmanaged)
         {
-            TDeviceKey deviceKey = GetDeviceKey(device);
-            if (FResources.ContainsKey(deviceKey))
+            if (FResources.ContainsKey(device))
             {
-                FDestroyResourceAction(FMetadata, FResources[deviceKey], onlyUnmanaged);
-                FResources.Remove(deviceKey);
+                FDestroyResourceAction(FMetadata, FResources[device], DestroyReason.DeviceLost);
+                FResources.Remove(device);
             }
         }
         
@@ -88,7 +89,7 @@ namespace VVVV.PluginInterfaces.V2
         {
             foreach (var resource in FResources.Values)
             {
-                FDestroyResourceAction(FMetadata, resource, true);
+                FDestroyResourceAction(FMetadata, resource, DestroyReason.Dispose);
             }
             
             FResources.Clear();
@@ -99,17 +100,12 @@ namespace VVVV.PluginInterfaces.V2
             // Do nothing
         }
         
-        private static void DestroyResource(TMetadata metadata, TResource resource, bool onlyUnmanaged)
+        private static void DestroyResource(TMetadata metadata, TResource resource, DestroyReason reason)
         {
             if (resource != null)
             {
                 resource.Dispose();
             }
-        }
-        
-        private static void DeviceLost(TMetadata metadata, TDevice device)
-        {
-            // Do nothing
         }
     }
 }

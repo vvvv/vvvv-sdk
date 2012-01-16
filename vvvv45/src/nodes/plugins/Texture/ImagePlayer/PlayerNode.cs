@@ -5,11 +5,12 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using SlimDX.Direct3D9;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
+using EX9 = SlimDX.Direct3D9;
+using Frame = VVVV.PluginInterfaces.V2.EX9.DXResource<SlimDX.Direct3D9.Texture, VVVV.Nodes.ImagePlayer.FrameInfo>;
 
 namespace VVVV.Nodes.ImagePlayer
 {
@@ -21,9 +22,6 @@ namespace VVVV.Nodes.ImagePlayer
         
         [Input("Filemask", DefaultString = ImagePlayer.DEFAULT_FILEMASK)]
         public ISpread<string> FFilemaskIn;
-        
-        [Input("FPS", DefaultValue = 25.0)]
-        public ISpread<double> FFpsIn;
         
         [Input("Queue Size", DefaultValue = 4.0)]
         public ISpread<int> FQueueSizeIn;
@@ -47,23 +45,27 @@ namespace VVVV.Nodes.ImagePlayer
 //        public ISpread<double> FDurationTextureOut;
         
         [Output("Texture")]
-        public ISpread<ISpread<DXResource<Texture, Frame>>> FTextureOut;
+        public ISpread<ISpread<Frame>> FTextureOut;
         
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
-//        private readonly List<Device> FDevices = new List<Device>();
         private readonly ILogger FLogger;
         
         [ImportingConstructor]
         public PlayerNode(IPluginHost pluginHost, ILogger logger)
         {
             FLogger = logger;
-            
-//            pluginHost.CreateTextureOutput("Texture", TSliceMode.Dynamic, TPinVisibility.True, out FTextureOut);
-//            FTextureOut.Order = -1;
         }
         
         public void Evaluate(int spreadMax)
         {
+            // SpreadMax is not correct (should be correct in streams branch).
+            spreadMax = FDirectoryIn
+                .CombineWith(FFilemaskIn)
+                .CombineWith(FQueueSizeIn)
+                .CombineWith(FVisibleFramesIn)
+                .CombineWith(FPreloadFramesIn)
+                .CombineWith(FReloadIn);
+            
             int previosSliceCount = FImagePlayers.SliceCount;
             
             // Dispose unused image players
@@ -88,6 +90,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 var imagePlayer = FImagePlayers[i];
                 
+                FQueueSizeIn[i] = Math.Max(1, FQueueSizeIn[i]);
                 if (imagePlayer != null && imagePlayer.QueueSize != FQueueSizeIn[i])
                 {
                     imagePlayer.Dispose();
@@ -102,7 +105,6 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 imagePlayer.Directory = FDirectoryIn[i];
                 imagePlayer.Filemask = FFilemaskIn[i];
-                imagePlayer.FPS = FFpsIn[i];
                 
                 if (FReloadIn[i])
                 {

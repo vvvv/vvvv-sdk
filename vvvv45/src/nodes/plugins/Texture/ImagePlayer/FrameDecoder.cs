@@ -13,7 +13,7 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.ImagePlayer
 {
-    abstract class FrameDecoder
+    public abstract class FrameDecoder
     {
         class BitmapFrameDecoder : FrameDecoder
         {
@@ -160,9 +160,9 @@ namespace VVVV.Nodes.ImagePlayer
                );
         }
         
-        public static FrameDecoder Create(FrameInfo frameInfo, TexturePool texturePool, Stream stream)
+        public static FrameDecoder Create(string filename, TexturePool texturePool, Stream stream)
         {
-            var extension = Path.GetExtension(frameInfo.Filename);
+            var extension = Path.GetExtension(filename);
             
             Func<TexturePool, Stream, FrameDecoder> decoderFactory = null;
             if (!FDecoderFactories.TryGetValue(extension, out decoderFactory))

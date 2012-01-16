@@ -8,11 +8,9 @@ namespace VVVV.Nodes.ImagePlayer
 		private readonly int FFrameNr;
 		private readonly string FFilename;
 		private readonly CancellationTokenSource FCancellationTokenSource;
-		private readonly ImagePlayer FPlayer;
 		
-		public FrameInfo(ImagePlayer player, int frameNr, string filename)
+		public FrameInfo(int frameNr, string filename)
 		{
-		    FPlayer = player;
 			FFrameNr = frameNr;
 			FFilename = filename;
 			
@@ -43,12 +41,6 @@ namespace VVVV.Nodes.ImagePlayer
 			}
 		}
 		
-		public bool IsInUse
-		{
-		    get;
-		    set;
-		}
-		
 		public CancellationToken Token
 		{
 			get
@@ -59,13 +51,15 @@ namespace VVVV.Nodes.ImagePlayer
 		
 		public void Cancel()
 		{
-			FCancellationTokenSource.Cancel();
+		    if (!IsCanceled)
+		    {
+			     FCancellationTokenSource.Cancel();
+		    }
 		}
 		
 		public void Dispose()
 		{
 			FCancellationTokenSource.Dispose();
-			FPlayer.DestroyFrameInfo(this);
 		}
 		
 		public double DurationIO

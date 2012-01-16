@@ -75,7 +75,12 @@ namespace VVVV.Hosting.Pins.Output
         {
             get 
             {
-                return this[slice][device];
+                var textureResource = this[slice];
+                if (textureResource != null)
+                {
+                    return textureResource[device];
+                }
+                return null;
             }
         }
         
