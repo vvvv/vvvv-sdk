@@ -72,8 +72,6 @@ namespace VVVV.Nodes
 		private bool FContextChanged = false;
 		
 		private IntPtr FBufferedImage = new IntPtr();
-		private Thread FUpdater;
-		private bool FRunning = false;
 		#endregion fields & pins
 
 		// import host and hand it to base constructor
@@ -109,11 +107,6 @@ namespace VVVV.Nodes
 							
 							//Reinitalie the vvvv texture
 							Reinitialize();
-							
-							//Start the Thread for reading the ImageData
-							FUpdater = new Thread(ReadImageData);
-							FRunning = true;
-//							FUpdater.Start();
 							
 							FContextChanged = false;
 						}
@@ -191,43 +184,35 @@ namespace VVVV.Nodes
 		#region UpdateThread
 		private unsafe void ReadImageData()
 		{
-//			while (FRunning)
+			if (FDepthGenerator.IsNewDataAvailable)
 			{
-//				lock(FDepthGenerator)
+				FDepthGenerator.WaitAndUpdateData();
+				
+				try
 				{
-					//FContextIn[0].WaitOneUpdateAll(FDepthGenerator);
-					if (FDepthGenerator.IsNewDataAvailable)
+					//lock(this)
 					{
-						FDepthGenerator.WaitAndUpdateData();
-						
-						
-						try
+						if (FDepthMode[0] == DepthMode.Raw)
+							CopyMemory(FBufferedImage, FDepthGenerator.DepthMapPtr, FTexHeight * FTexWidth * 2);
+						else
 						{
-							//lock(this)
-							{
-								if (FDepthMode[0] == DepthMode.Raw)
-									CopyMemory(FBufferedImage, FDepthGenerator.DepthMapPtr, FTexHeight * FTexWidth * 2);
-								else
-								{
-									var metaData = FDepthGenerator.GetMetaData();
-									CalculateHistogram(metaData);
-									
-									ushort* pSrc = (ushort*)FDepthGenerator.DepthMapPtr;
-									ushort* pDest = (ushort*)FBufferedImage;
+							var metaData = FDepthGenerator.GetMetaData();
+							CalculateHistogram(metaData);
+							
+							ushort* pSrc = (ushort*)FDepthGenerator.DepthMapPtr;
+							ushort* pDest = (ushort*)FBufferedImage;
 
-									//write the Depth pointer to Destination pointer
-									for (int y = 0; y < FTexHeight; y++)
-									{
-										for (int x = 0; x < FTexWidth; x++, pSrc++, pDest++)
-											pDest[0] = (ushort)FHistogram[*pSrc];
-									}
-								}
+							//write the Depth pointer to Destination pointer
+							for (int y = 0; y < FTexHeight; y++)
+							{
+								for (int x = 0; x < FTexWidth; x++, pSrc++, pDest++)
+									pDest[0] = (ushort)FHistogram[*pSrc];
 							}
 						}
-						catch (Exception)
-						{ }
 					}
 				}
+				catch (Exception)
+				{ }
 			}
 		}
 		#endregion

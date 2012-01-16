@@ -43,12 +43,10 @@ namespace VVVV.Nodes
 		ILogger FLogger;
 
 		//Kinect
-		private bool FRunning;
 		private Context FContext;
 		private ImageGenerator FImageGenerator;
 		private DepthGenerator FDepthGenerator;
-		private Device FDevice;
-		private Thread FUpdater;
+
 		private string FOpenNI;
 		private string FSensor;
 		private string FMiddleware;
@@ -59,10 +57,6 @@ namespace VVVV.Nodes
 			try
 			{
 				OpenContext();
-				
-				FUpdater = new Thread(Update);
-				FRunning = true;
-				//FUpdater.Start();
 			}
 			catch
 			{
@@ -82,7 +76,6 @@ namespace VVVV.Nodes
 			
 			if (FMirrored.IsChanged)
 				FContext.GlobalMirror = FMirrored[0];
-//			FContext.WaitNoneUpdateAll();
 		}
 		#endregion
 		
@@ -122,13 +115,6 @@ namespace VVVV.Nodes
 		
 		private void CloseContext()
 		{
-		/*	if (FUpdater != null && FUpdater.IsAlive)
-			{
-				//wait for threadloop to exit
-				FRunning = false;
-				FUpdater.Join();
-			}*/
-
 			if (FContext != null)
 			{
 				FContext.StopGeneratingAll();
@@ -149,30 +135,6 @@ namespace VVVV.Nodes
 		void FContext_ErrorStateChanged(object sender, ErrorStateEventArgs e)
 		{
 			FLogger.Log(LogType.Error, "Global Kinect Error: " + e.CurrentError);
-		}
-		#endregion
-
-		#region Update Thread
-		private void Update()
-		{
-			while (FRunning)
-			{
-				try
-				{
-					if (FContext != null)
-					{
-						lock(FContext)
-						{
-							FContext.GlobalMirror = FMirrored[0];
-							FContext.WaitAndUpdateAll();
-						}
-					}
-				}
-				catch (Exception ex)
-				{
-					Debug.WriteLine(ex.Message);
-				}
-			}
 		}
 		#endregion
 

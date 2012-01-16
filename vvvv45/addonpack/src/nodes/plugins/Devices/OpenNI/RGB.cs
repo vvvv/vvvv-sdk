@@ -50,8 +50,6 @@ namespace VVVV.Nodes
 		private bool FContextChanged = false;
 		
 		private IntPtr FBufferedImage = new IntPtr();
-		private Thread FUpdater;
-		private bool FRunning = false;
 		#endregion fields & pins
 		
 		// import host and hand it to base constructor
@@ -83,11 +81,6 @@ namespace VVVV.Nodes
 							
 							//Reinitalie the vvvv texture
 							Reinitialize();
-							
-							//Start the Thread for reading the ImageData
-							FUpdater = new Thread(ReadImageData);
-							FRunning = true;
-//							FUpdater.Start();
 							
 							FContextChanged = false;
 						}
@@ -135,35 +128,28 @@ namespace VVVV.Nodes
 		#region UpdateThread
 		private unsafe void ReadImageData()
 		{
-			//while (FRunning)
+			if (FImageGenerator.IsNewDataAvailable)
 			{
-				//lock(FImageGenerator)
+				FImageGenerator.WaitAndUpdateData();
+				try
 				{
-					//FContextIn[0].WaitOneUpdateAll(FImageGenerator);
-					if (FImageGenerator.IsNewDataAvailable)
-					{
-						FImageGenerator.WaitAndUpdateData();
-						try
-						{
-							//get a pointer to the buffered Image
-							byte* dest32 = (byte*)FBufferedImage.ToPointer();
+					//get a pointer to the buffered Image
+					byte* dest32 = (byte*)FBufferedImage.ToPointer();
 
-							//get the pointer to the RGB Image
-							byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
-							
-							//write the pixels
-							for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
-							{
-								dest32[0] = src24[2];
-								dest32[1] = src24[1];
-								dest32[2] = src24[0];
-								dest32[3] = 255;
-							}
-						}
-						catch (Exception)
-						{ }
+					//get the pointer to the RGB Image
+					byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
+					
+					//write the pixels
+					for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
+					{
+						dest32[0] = src24[2];
+						dest32[1] = src24[1];
+						dest32[2] = src24[0];
+						dest32[3] = 255;
 					}
 				}
+				catch (Exception)
+				{ }
 			}
 		}
 		#endregion
