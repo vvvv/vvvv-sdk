@@ -93,6 +93,9 @@ namespace VVVV.Nodes.ImagePlayer
             FFrameInfoBuffer.LinkTo(FFilePreloader, linkOptions);
             FFilePreloader.LinkTo(FFramePreloader, linkOptions);
             FFramePreloader.LinkTo(FFrameBuffer, linkOptions);
+            
+            SlimDX.Configuration.DetectDoubleDispose = true;
+            SlimDX.Configuration.EnableObjectTracking = true;
         }
         
         public void Dispose()
@@ -110,27 +113,16 @@ namespace VVVV.Nodes.ImagePlayer
                 frame.Metadata.Dispose();
             }
             
+            // Stall the pipeline
+            Stall();
+            
             // Mark head of pipeline as completed
             FFrameInfoBuffer.Complete();
             
             try
             {
-                FFramePreloader.Completion.Wait();
-                
-                // Dispose frames in frame buffer
-                IList<Frame> frames = null;
-                if (FFrameBuffer.TryReceiveAll(out frames))
-                {
-                    foreach (var frame in frames)
-                    {
-                        frame.Dispose();
-                        frame.Metadata.Dispose();
-                    }
-                }
-                
                 // Wait for last elements in pipeline till completed
                 FFrameBuffer.Completion.Wait();
-                //                FFrameDisposer.Completion.Wait();
             }
             catch (AggregateException)
             {
@@ -145,6 +137,7 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 FTexturePool.Dispose();
                 FIOTaskScheduler.Dispose();
+                FLogger.Log(LogType.Debug, SlimDX.ObjectTable.ReportLeaks());
             }
         }
         
@@ -261,11 +254,17 @@ namespace VVVV.Nodes.ImagePlayer
         
         public ISpread<Frame> Preload(
             ISpread<int> visibleFrameNrs,
-            ISpread<int> preloadFrameNrs)
+            ISpread<int> preloadFrameNrs,
+            ref ISpread<double> durationIO,
+            ref ISpread<double> durationTexture,
+            out int scheduledFrameCount,
+            out int canceledFrameCount)
         {
             // Nothing to do
             if (FFiles.Length == 0)
             {
+                scheduledFrameCount = 0;
+                canceledFrameCount = 0;
                 return new Spread<Frame>(0);
             }
             
@@ -279,17 +278,38 @@ namespace VVVV.Nodes.ImagePlayer
                 }
                );
             
+            durationIO.SliceCount = visibleFrameNrs.SliceCount;
+            durationTexture.SliceCount = visibleFrameNrs.SliceCount;
+            
+            var visibleFramesEnumerator = FVisibleFrames.GetEnumerator();
             for (int i = 0; i < visibleFrameNrs.SliceCount; i++)
             {
-                var currentFrame = FVisibleFrames[i] ?? GetEmptyFrame();
-                var currentFrameInfo = currentFrame.Metadata;
                 var newFrameInfo = CreateFrameInfo(visibleFrameNrs[i]);
                 
-                if (currentFrameInfo != newFrameInfo)
+                while (visibleFramesEnumerator.MoveNext())
                 {
-                    currentFrame.Dispose();
-                    currentFrameInfo.Dispose();
+                    var currentFrame = visibleFramesEnumerator.Current ?? GetEmptyFrame();
+                    var currentFrameInfo = currentFrame.Metadata;
                     
+                    Debug.Assert(!currentFrameInfo.IsCanceled);
+                    if (currentFrameInfo == newFrameInfo)
+                    {
+                        FVisibleFrames[i] = currentFrame;
+                        durationIO[i] = currentFrameInfo.DurationIO;
+                        durationTexture[i] = currentFrameInfo.DurationTexture;
+                        newFrameInfo.Dispose();
+                        newFrameInfo = null;
+                        break;
+                    }
+                    else
+                    {
+                        currentFrame.Dispose();
+                        currentFrameInfo.Dispose();
+                    }
+                }
+                
+                if (newFrameInfo != null)
+                {
                     while (FScheduledFrameInfos.Count > 0)
                     {
                         var frame = Dequeue();
@@ -298,6 +318,8 @@ namespace VVVV.Nodes.ImagePlayer
                         if (frameInfo == newFrameInfo && !frameInfo.IsCanceled)
                         {
                             FVisibleFrames[i] = frame;
+                            durationIO[i] = frameInfo.DurationIO;
+                            durationTexture[i] = frameInfo.DurationTexture;
                             newFrameInfo.Dispose();
                             newFrameInfo = null;
                             break;
@@ -308,13 +330,15 @@ namespace VVVV.Nodes.ImagePlayer
                             frameInfo.Dispose();
                         }
                     }
-                    
-                    if (newFrameInfo != null)
-                    {
-                        Enqueue(newFrameInfo);
-                        FVisibleFrames[i] = Dequeue(newFrameInfo);
-                        newFrameInfo = null;
-                    }
+                }
+                
+                if (newFrameInfo != null)
+                {
+                    Enqueue(newFrameInfo);
+                    FVisibleFrames[i] = Dequeue(newFrameInfo);
+                    durationIO[i] = newFrameInfo.DurationIO;
+                    durationTexture[i] = newFrameInfo.DurationTexture;
+                    newFrameInfo = null;
                 }
                 
                 if (newFrameInfo != null)
@@ -356,6 +380,9 @@ namespace VVVV.Nodes.ImagePlayer
                 }
             }
             
+            scheduledFrameCount = FScheduledFrameInfos.Where(frameInfo => !frameInfo.IsCanceled).Count();
+            canceledFrameCount = FScheduledFrameInfos.Where(frameInfo => frameInfo.IsCanceled).Count();
+            
             return FVisibleFrames;
         }
         
@@ -388,22 +415,20 @@ namespace VVVV.Nodes.ImagePlayer
         
         private void DestroyTexture(FrameInfo frameInfo, EX9.Texture texture, DestroyReason reason)
         {
-            FTexturePool.PutTexture(texture);
-            
             switch (reason)
             {
+                case DestroyReason.Dispose:
+                    FTexturePool.PutTexture(texture);
+                    break;
                 case DestroyReason.DeviceLost:
-                    bool doStall = false;
+                    Stall();
+                    
                     lock (FDevices)
                     {
-                        doStall = FDevices.Remove(texture.Device);
+                        FDevices.Remove(texture.Device);
                     }
                     
-                    if (doStall)
-                    {
-                        Stall();
-                    }
-                    
+                    FTexturePool.PutTexture(texture);
                     FTexturePool.TryToCleanup();
                     break;
             }

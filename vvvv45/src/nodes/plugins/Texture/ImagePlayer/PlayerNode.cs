@@ -35,17 +35,24 @@ namespace VVVV.Nodes.ImagePlayer
         [Input("Reload")]
         public ISpread<bool> FReloadIn;
         
-//        [Output("Unused Frames")]
-//        public ISpread<int> FUnusedFramesOut;
-//        
-//        [Output("Duration IO")]
-//        public ISpread<double> FDurationIOOut;
-//        
-//        [Output("Duration Texture")]
-//        public ISpread<double> FDurationTextureOut;
+        //        [Output("Unused Frames")]
+        //        public ISpread<int> FUnusedFramesOut;
+//
         
         [Output("Texture")]
         public ISpread<ISpread<Frame>> FTextureOut;
+        
+        [Output("Duration IO")]
+        public ISpread<ISpread<double>> FDurationIOOut;
+        
+        [Output("Duration Texture")]
+        public ISpread<ISpread<double>> FDurationTextureOut;
+        
+        [Output("Scheduled Frames")]
+        public ISpread<int> FScheduledFramesOut;
+        
+        [Output("Canceled Frames")]
+        public ISpread<int> FCanceledFramesOut;
         
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
         private readonly ILogger FLogger;
@@ -76,9 +83,11 @@ namespace VVVV.Nodes.ImagePlayer
             
             FImagePlayers.SliceCount = spreadMax;
             FTextureOut.SliceCount = spreadMax;
-//            FUnusedFramesOut.SliceCount = spreadMax;
-//            FDurationIOOut.SliceCount = spreadMax;
-//            FDurationTextureOut.SliceCount = spreadMax;
+            //            FUnusedFramesOut.SliceCount = spreadMax;
+            FDurationIOOut.SliceCount = spreadMax;
+            FDurationTextureOut.SliceCount = spreadMax;
+            FScheduledFramesOut.SliceCount = spreadMax;
+            FCanceledFramesOut.SliceCount = spreadMax;
             
             // Create new image players
             for (int i = previosSliceCount; i < spreadMax; i++)
@@ -111,11 +120,20 @@ namespace VVVV.Nodes.ImagePlayer
                     imagePlayer.Reload();
                 }
                 
-                FTextureOut[i] = imagePlayer.Preload(FVisibleFramesIn[i], FPreloadFramesIn[i]);
+                var durationIO = FDurationIOOut[i];
+                var durationTexture = FDurationTextureOut[i];
+                int scheduledFrames = 0;
+                int canceledFrames = 0;
+                FTextureOut[i] = imagePlayer.Preload(
+                    FVisibleFramesIn[i],
+                    FPreloadFramesIn[i],
+                    ref durationIO,
+                    ref durationTexture,
+                    out scheduledFrames,
+                    out canceledFrames);
                 
-//                FUnusedFramesOut[i] = imagePlayer.UnusedFrames;
-//                FDurationIOOut[i] = imagePlayer.CurrentFrame.Info.DurationIO;
-//                FDurationTextureOut[i] = imagePlayer.CurrentFrame.Info.DurationTexture;
+                FScheduledFramesOut[i] = scheduledFrames;
+                FCanceledFramesOut[i] = canceledFrames;
             }
         }
         
@@ -130,38 +148,5 @@ namespace VVVV.Nodes.ImagePlayer
             }
             FImagePlayers.SliceCount = 0;
         }
-        
-//        Texture IPluginDXTexture2.GetTexture(IDXTextureOut pin, Device device, int slice)
-//        {
-//            return FImagePlayers[slice].CurrentFrame.GetTexture(device);
-//        }
-//        
-//        void IPluginDXResource.UpdateResource(IPluginOut pin, Device device)
-//        {
-//            lock (FDevices)
-//            {
-//                if (!FDevices.Contains(device))
-//                {
-//                    FDevices.Add(device);
-//                }
-//            }
-//        }
-//        
-//        void IPluginDXResource.DestroyResource(IPluginOut pin, Device device, bool onlyUnManaged)
-//        {
-//            foreach (var imagePlayer in FImagePlayers)
-//            {
-//                if (imagePlayer != null)
-//                {
-//                    imagePlayer.Dispose();
-//                }
-//            }
-//            FImagePlayers.SliceCount = 0;
-//            
-//            lock (FDevices)
-//            {
-//                FDevices.Remove(device);
-//            }
-//        }
     }
 }
