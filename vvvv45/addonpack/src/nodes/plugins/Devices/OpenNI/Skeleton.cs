@@ -116,10 +116,8 @@ namespace VVVV.Nodes
 				if (FSmoothingIn.IsChanged)
 					FSkeletonCapability.SetSmoothing(FSmoothingIn[0]);
 				
-				if (FUserGenerator.IsNewDataAvailable)
+				if (FUserGenerator.IsDataNew)
 				{
-					FUserGenerator.WaitAndUpdateData();
-					
 					//get all Users and sort them
 					int[] users = FUserGenerator.GetUsers();
 					Array.Sort(users);

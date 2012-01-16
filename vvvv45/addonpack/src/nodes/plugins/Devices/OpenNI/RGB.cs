@@ -99,8 +99,8 @@ namespace VVVV.Nodes
 			
 			if (FImageGenerator != null && FEnabledIn[0])
 			{
-				ReadImageData();
-				Update();
+				if (FImageGenerator.IsDataNew)
+					Update();
 			}
 		}
 		#endregion
@@ -113,47 +113,12 @@ namespace VVVV.Nodes
 		
 		private void CleanUp()
 		{
-			/*	if (FUpdater != null)
-			{
-				FRunning = false;
-				FUpdater.Join();
-			}*/
-
 			Marshal.FreeCoTaskMem(FBufferedImage);
 			
 			FImageGenerator = null;
 		}
 		#endregion
 
-		#region UpdateThread
-		private unsafe void ReadImageData()
-		{
-			if (FImageGenerator.IsNewDataAvailable)
-			{
-				FImageGenerator.WaitAndUpdateData();
-				try
-				{
-					//get a pointer to the buffered Image
-					byte* dest32 = (byte*)FBufferedImage.ToPointer();
-
-					//get the pointer to the RGB Image
-					byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
-					
-					//write the pixels
-					for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
-					{
-						dest32[0] = src24[2];
-						dest32[1] = src24[1];
-						dest32[2] = src24[0];
-						dest32[3] = 255;
-					}
-				}
-				catch (Exception)
-				{ }
-			}
-		}
-		#endregion
-		
 		#region IPluginDXTexture Members
 		//this method gets called, when Reinitialize() was called in evaluate,
 		//or a graphics device asks for its data
@@ -168,12 +133,21 @@ namespace VVVV.Nodes
 		//calculate the pixels in evaluate and just copy the data to the device texture here
 		unsafe protected override void UpdateTexture(int Slice, Texture texture)
 		{
-			//lock the vvvv texture
-			var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
+			//get the pointer to the Rgb Image
+			byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
 			
-			//write the image buffer data to the texture
-			rect.WriteRange(FBufferedImage, FTexHeight * FTexWidth * 4);
+			//lock the vvvv texture
+			byte* dest32 = (byte*)texture.LockRectangle(0, LockFlags.Discard).Data.DataPointer;
 
+			//write the pixels
+			for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
+			{
+				dest32[0] = src24[2];
+				dest32[1] = src24[1];
+				dest32[2] = src24[0];
+				dest32[3] = 255;
+			}
+			
 			texture.UnlockRectangle(0);
 		}
 		#endregion IPluginDXResource Members

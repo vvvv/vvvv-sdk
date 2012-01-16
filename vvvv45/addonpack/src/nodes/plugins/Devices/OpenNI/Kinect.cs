@@ -76,6 +76,8 @@ namespace VVVV.Nodes
 			
 			if (FMirrored.IsChanged)
 				FContext.GlobalMirror = FMirrored[0];
+			
+			FContext.WaitNoneUpdateAll();
 		}
 		#endregion
 		
@@ -88,9 +90,9 @@ namespace VVVV.Nodes
 				FContext = new Context();
 				FContext.ErrorStateChanged += FContext_ErrorStateChanged;
 				
-				FImageGenerator = (ImageGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Image, null);
+				//FImageGenerator = (ImageGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Image, null);
 				FDepthGenerator = (DepthGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Depth, null);
-				FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
+				//FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
 
 				FContext.StartGeneratingAll();
 				
