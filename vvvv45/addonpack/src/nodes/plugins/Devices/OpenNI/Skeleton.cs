@@ -116,47 +116,52 @@ namespace VVVV.Nodes
 				if (FSmoothingIn.IsChanged)
 					FSkeletonCapability.SetSmoothing(FSmoothingIn[0]);
 				
-				//get all Users and sort them
-				int[] users = FUserGenerator.GetUsers();
-				Array.Sort(users);
-
-				FUserIdOut.SliceCount = users.Length;
-				FStatusOut.SliceCount = users.Length;
-				FJointPositionOut.SliceCount = users.Length;
-				FJointOrientationXOut.SliceCount = users.Length;
-				FJointOrientationYOut.SliceCount = users.Length;
-				FJointOrientationZOut.SliceCount = users.Length;
-				
-				int slice = 0;
-				foreach (int user in users)
+				if (FUserGenerator.IsNewDataAvailable)
 				{
-					FUserIdOut[slice] = user;
-					if (FSkeletonCapability.IsTracking(user))
-					{
-						FStatusOut[slice] = "Tracking user " + user;
-						
-						int u = user - 1;
-						int binSize = FJointIn[u].SliceCount;						
-						FJointPositionOut[u].SliceCount = binSize;
-            			FJointOrientationXOut[u].SliceCount = FJointOrientationYOut[u].SliceCount = FJointOrientationZOut[u].SliceCount = binSize;
-						for (int i = 0; i < binSize; i++)
-						{
-							var j = GetJoint(user, FJointIn[u][i]);
-							var p = j.Position.Position;
-							FJointPositionOut[u][i] = new Vector3D(p.X, p.Y, p.Z) / 1000;
-							
-							var o = j.Orientation;
-							FJointOrientationXOut[u][i] = new Vector3D(o.X1, o.Y1, o.Z1);
-							FJointOrientationYOut[u][i] = new Vector3D(o.X2, o.Y2, o.Z2);
-							FJointOrientationZOut[u][i] = new Vector3D(o.X3, o.Y3, o.Z3);
-						}
-					}
-					else if (FSkeletonCapability.IsCalibrating(user))
-						FStatusOut[slice] = "Calibrating user " + user;
-					else
-						FStatusOut[slice] = "Looking for pose on user " + user;
+					FUserGenerator.WaitAndUpdateData();
 					
-					slice++;
+					//get all Users and sort them
+					int[] users = FUserGenerator.GetUsers();
+					Array.Sort(users);
+
+					FUserIdOut.SliceCount = users.Length;
+					FStatusOut.SliceCount = users.Length;
+					FJointPositionOut.SliceCount = users.Length;
+					FJointOrientationXOut.SliceCount = users.Length;
+					FJointOrientationYOut.SliceCount = users.Length;
+					FJointOrientationZOut.SliceCount = users.Length;
+					
+					int slice = 0;
+					foreach (int user in users)
+					{
+						FUserIdOut[slice] = user;
+						if (FSkeletonCapability.IsTracking(user))
+						{
+							FStatusOut[slice] = "Tracking user " + user;
+							
+							int u = user - 1;
+							int binSize = FJointIn[u].SliceCount;
+							FJointPositionOut[u].SliceCount = binSize;
+							FJointOrientationXOut[u].SliceCount = FJointOrientationYOut[u].SliceCount = FJointOrientationZOut[u].SliceCount = binSize;
+							for (int i = 0; i < binSize; i++)
+							{
+								var j = GetJoint(user, FJointIn[u][i]);
+								var p = j.Position.Position;
+								FJointPositionOut[u][i] = new Vector3D(p.X, p.Y, p.Z) / 1000;
+								
+								var o = j.Orientation;
+								FJointOrientationXOut[u][i] = new Vector3D(o.X1, o.Y1, o.Z1);
+								FJointOrientationYOut[u][i] = new Vector3D(o.X2, o.Y2, o.Z2);
+								FJointOrientationZOut[u][i] = new Vector3D(o.X3, o.Y3, o.Z3);
+							}
+						}
+						else if (FSkeletonCapability.IsCalibrating(user))
+							FStatusOut[slice] = "Calibrating user " + user;
+						else
+							FStatusOut[slice] = "Looking for pose on user " + user;
+						
+						slice++;
+					}
 				}
 			}
 			else

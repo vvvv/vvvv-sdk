@@ -75,19 +75,14 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FContext != null)
-			{
-				if (FMirrored.IsChanged)
-					lock (FImageGenerator)
-						FContext.GlobalMirror = FMirrored[0];
-			}
-
-			//writes the Context Object to the Output for
-			//is required for other generators
+			//writes the Context Object to the Output
+			//as it is required for other generators
 			FContextOut[0] = FContext;
 			FDriver[0] = FOpenNI + "\n" + FMiddleware + "\n" + FSensor;
 			
-//			FContext.WaitAndUpdateAll();// .WaitAndUpdateAll();
+			if (FMirrored.IsChanged)
+				FContext.GlobalMirror = FMirrored[0];
+//			FContext.WaitNoneUpdateAll();
 		}
 		#endregion
 		
@@ -127,12 +122,12 @@ namespace VVVV.Nodes
 		
 		private void CloseContext()
 		{
-			if (FUpdater != null && FUpdater.IsAlive)
+		/*	if (FUpdater != null && FUpdater.IsAlive)
 			{
 				//wait for threadloop to exit
 				FRunning = false;
 				FUpdater.Join();
-			}
+			}*/
 
 			if (FContext != null)
 			{
@@ -144,7 +139,7 @@ namespace VVVV.Nodes
 				if (FDepthGenerator != null)
 					FDepthGenerator.Dispose();
 				
-				FContext.Shutdown();
+				FContext.Release();
 				FContext = null;
 			}
 		}
@@ -164,14 +159,13 @@ namespace VVVV.Nodes
 			{
 				try
 				{
-					//The way how to update
 					if (FContext != null)
 					{
-						lock (FImageGenerator)
-							FImageGenerator.WaitAndUpdateData();
-//						lock (FDepthGenerator)
-//							FDepthGenerator.WaitAndUpdateData();
-							//FContext.WaitOneUpdateAll();
+						lock(FContext)
+						{
+							FContext.GlobalMirror = FMirrored[0];
+							FContext.WaitAndUpdateAll();
+						}
 					}
 				}
 				catch (Exception ex)

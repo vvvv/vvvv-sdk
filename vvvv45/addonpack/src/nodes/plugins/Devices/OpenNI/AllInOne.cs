@@ -5,6 +5,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -47,6 +48,21 @@ namespace VVVV.Nodes
 		[Input("Depth Mode")]
 		IDiffSpread<DepthMode> FDepthMode;
 
+		[Input("Start Position")]
+		ISpread<Vector3D> FStartPositionIn;
+		
+		[Input("Track")]
+		ISpread<bool> FDoTrackStartPosition;
+		
+		[Output("Position")]
+		ISpread<Vector3D> FHandPositionOut;
+		
+		[Output("Start Position Is Tracked")]
+		ISpread<bool> FIsTrackedOut;
+		
+		[Output("ID")]
+		ISpread<int> FHandIdOut;
+		
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
 		ISpread<bool> FEnabledIn;
 		
@@ -68,6 +84,14 @@ namespace VVVV.Nodes
 		//private IntPtr FBufferedDepth = new IntPtr();
 		private Thread FUpdater;
 		private bool FRunning = false;
+		
+		HandsGenerator FHandGenerator;
+
+		private bool FContextChanged = false;
+		private readonly object FHandTrackerLock = new object();
+		private readonly object FBufferedImageLock = new object();
+		private Dictionary<int, Vector3D> FTrackedHands = new Dictionary<int, Vector3D>();
+		private Dictionary<int, Vector3D> FTrackedStartPositions = new Dictionary<int, Vector3D>();
 		#endregion fields & pins
 
 		// import host and hand it to base constructor
@@ -75,18 +99,7 @@ namespace VVVV.Nodes
 		public AllInOne(IPluginHost host)
 			: base(host)
 		{
-			try
-			{
-				OpenContext();
-				
-				FUpdater = new Thread(ReadImageData);
-				FRunning = true;
-				FUpdater.Start();
-			}
-			catch
-			{
-				//FOpenNI = "Unable to connect to Device!";
-			}
+			OpenContext();
 		}
 
 		#region Evaluate
@@ -95,15 +108,112 @@ namespace VVVV.Nodes
 		{
 			if (FContext != null)
 			{
-				if (FMirrored.IsChanged)
-					FContext.GlobalMirror = FMirrored[0];
-				
 				if (FDepthGenerator != null && FEnabledIn[0])
 				{
 					FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle);
 					Update();
 				}
+				
+				if (FHandGenerator != null && FEnabledIn[0])
+				{
+					FIsTrackedOut.SliceCount = FHandIdOut.SliceCount = FHandPositionOut.SliceCount = FStartPositionIn.SliceCount;
+					//for every given StartPosition check if it is currently tracked
+					lock(FHandTrackerLock)
+						for (int i = 0; i < FStartPositionIn.SliceCount; i++)
+					{
+						if (FDoTrackStartPosition[i])
+						{
+							//find userID in FTrackedStartPositions
+							int userID = -1;
+							foreach (var tracker in FTrackedStartPositions)
+								if (tracker.Value == FStartPositionIn[i])
+							{
+								userID = tracker.Key;
+								break;
+							}
+							
+							//if present return tracking info
+							if (userID > -1)
+							{
+								FIsTrackedOut[i] = true;
+								FHandIdOut[i] = userID;
+								FHandPositionOut[i] = FTrackedHands[userID];
+							}
+							//else start tracking
+							else
+							{
+								FIsTrackedOut[i] = false;
+								FHandIdOut[i] = -1;
+								FHandPositionOut[i] = FStartPositionIn[i];
+								
+								var p = new Point3D((float)(FStartPositionIn[i].x * 1000), (float)(FStartPositionIn[i].y * 1000), (float)(FStartPositionIn[i].z * 1000));
+								FHandGenerator.StartTracking(p);
+							}
+						}
+						else
+						{
+							//find the userID corresponding to the StartPosition
+							//and stop tracking it
+							int userID = -1;
+							foreach (var tracker in FTrackedStartPositions)
+								if (tracker.Value == FStartPositionIn[i])
+							{
+								userID = tracker.Key;
+								break;
+							}
+							
+							if (userID > -1)
+								FHandGenerator.StopTracking(userID);
+							
+							FIsTrackedOut[i] = false;
+							FHandIdOut[i] = -1;
+							FHandPositionOut[i] = FStartPositionIn[i];
+						}
+					}
+				}
+				else
+				{
+					FIsTrackedOut.SliceCount = FHandIdOut.SliceCount = FHandPositionOut.SliceCount = 0;
+				}
 			}
+		}
+		#endregion
+		
+		#region HandEvents
+		void FHands_HandUpdate(object sender, HandUpdateEventArgs e)
+		{
+			//if this hand is updated for the first time
+			//add it to TrckedStartPositions
+			//with the original position of this hand which is found in FTrackedHands[e.UserID]
+			//before this is updated!
+			lock(FHandTrackerLock)
+			{
+				if (FTrackedHands.ContainsKey(e.UserID) && !FTrackedStartPositions.ContainsKey(e.UserID))
+					FTrackedStartPositions.Add(e.UserID, FTrackedHands[e.UserID]);
+				
+				if (FTrackedHands.ContainsKey(e.UserID))
+					FTrackedHands[e.UserID] = new Vector3D(e.Position.X / 1000, e.Position.Y / 1000, e.Position.Z / 1000);
+			}
+		}
+
+		void FHands_HandDestroy(object sender, HandDestroyEventArgs e)
+		{
+			lock(FHandTrackerLock)
+			{
+				if (FTrackedHands.ContainsKey(e.UserID))
+					FTrackedHands.Remove(e.UserID);
+				
+				if (FTrackedStartPositions.ContainsKey(e.UserID))
+					FTrackedStartPositions.Remove(e.UserID);
+			}
+		}
+
+		void FHands_HandCreate(object sender, HandCreateEventArgs e)
+		{
+			var v = new Vector3D(e.Position.X / 1000, e.Position.Y / 1000, e.Position.Z / 1000);
+			lock(FHandTrackerLock)
+				if (!FTrackedHands.ContainsValue(v))
+					FTrackedHands.Add(e.UserID, v);
 		}
 		#endregion
 
@@ -119,6 +229,12 @@ namespace VVVV.Nodes
 				FImageGenerator = (ImageGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Image, null);
 				FDepthGenerator = (DepthGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Depth, null);
 				FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
+				
+				// Create and Hands generator
+				FHandGenerator = new HandsGenerator(FContext);
+				FHandGenerator.HandCreate += FHands_HandCreate;
+				FHandGenerator.HandDestroy += FHands_HandDestroy;
+				FHandGenerator.HandUpdate += FHands_HandUpdate;
 
 				FHistogram = new int[FDepthGenerator.DeviceMaxDepth];
 				
@@ -135,6 +251,9 @@ namespace VVVV.Nodes
 				
 				FContext.StartGeneratingAll();
 				
+				FUpdater = new Thread(ReadImageData);
+				FRunning = true;
+				FUpdater.Start();
 			}
 			catch (Exception e)
 			{
@@ -153,13 +272,28 @@ namespace VVVV.Nodes
 
 			if (FContext != null)
 			{
+				//FContext.WaitAndUpdateAll();
 				FContext.StopGeneratingAll();
 				FContext.ErrorStateChanged -= FContext_ErrorStateChanged;
 				
-				if (FImageGenerator != null)
-					FImageGenerator.Dispose();
+				if (FHandGenerator != null)
+				{
+					FHandGenerator.HandCreate -= FHands_HandCreate;
+					FHandGenerator.HandDestroy -= FHands_HandDestroy;
+					FHandGenerator.HandUpdate -= FHands_HandUpdate;
+					
+					FHandGenerator.Dispose();
+					FHandGenerator = null;
+				}
+				
 				if (FDepthGenerator != null)
 					FDepthGenerator.Dispose();
+				
+				if (FImageGenerator != null)
+					FImageGenerator.Dispose();
+				
+				FTrackedStartPositions.Clear();
+				FTrackedHands.Clear();
 				
 				FContext.Release();
 				FContext = null;
@@ -202,35 +336,42 @@ namespace VVVV.Nodes
 		#region UpdateThread
 		private unsafe void ReadImageData()
 		{
+			var depthMD = new DepthMetaData();
+			
 			while (FRunning)
 			{
-				lock(this)
+				try
 				{
+					FContext.GlobalMirror = FMirrored[0];
 					FContext.WaitOneUpdateAll(FDepthGenerator);
-					//FDepthGenerator.WaitAndUpdateData();
-					
+				}
+				catch (Exception)
+				{}
+
+				if (FDepthMode[0] == DepthMode.Histogram)
+				{
+					FDepthGenerator.GetMetaData(depthMD);
+					CalculateHistogram(depthMD);
+				}
+				
+				lock(FBufferedImageLock)
+				{
 					if (FDepthGenerator.IsDataNew)
 					{
 						try
 						{
-							lock(this)
+							if (FDepthMode[0] == DepthMode.Raw)
+								CopyMemory(FBufferedImage, FDepthGenerator.DepthMapPtr, FTexHeight * FTexWidth * 2);
+							else
 							{
-								if (FDepthMode[0] == DepthMode.Raw)
-									CopyMemory(FBufferedImage, FDepthGenerator.DepthMapPtr, FTexHeight * FTexWidth * 2);
-								else
-								{
-									var metaData = FDepthGenerator.GetMetaData();
-									CalculateHistogram(metaData);
-									
-									ushort* pSrc = (ushort*)FDepthGenerator.DepthMapPtr;
-									ushort* pDest = (ushort*)FBufferedImage;
+								ushort* pSrc = (ushort*)FDepthGenerator.DepthMapPtr.ToPointer();
+								ushort* pDest = (ushort*)FBufferedImage.ToPointer();
 
-									//write the Depth pointer to Destination pointer
-									for (int y = 0; y < FTexHeight; y++)
-									{
-										for (int x = 0; x < FTexWidth; x++, pSrc++, pDest++)
-											pDest[0] = (ushort)FHistogram[*pSrc];
-									}
+								//write the Depth pointer to Destination pointer
+								for (int y = 0; y < FTexHeight; y++)
+								{
+									for (int x = 0; x < FTexWidth; x++, pSrc++, pDest++)
+										*pDest = (ushort)FHistogram[*pSrc];
 								}
 							}
 						}
@@ -259,8 +400,9 @@ namespace VVVV.Nodes
 			//lock the vvvv texture
 			var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
 			
-			//write the image buffer data to the texture
-			rect.WriteRange(FBufferedImage, FTexHeight * FTexWidth * 2);
+			lock(FBufferedImageLock)
+				//write the image buffer data to the texture
+				rect.WriteRange(FBufferedImage, FTexHeight * FTexWidth * 2);
 
 			texture.UnlockRectangle(0);
 		}

@@ -64,10 +64,16 @@ namespace VVVV.Nodes
 		ILogger FLogger;
 
 		private int[] FHistogram;
+		private DepthGenerator FDepthGenerator;
+		
 		private int FTexWidth;
 		private int FTexHeight;
-		private DepthGenerator FDepthGenerator;
+		
 		private bool FContextChanged = false;
+		
+		private IntPtr FBufferedImage = new IntPtr();
+		private Thread FUpdater;
+		private bool FRunning = false;
 		#endregion fields & pins
 
 		// import host and hand it to base constructor
@@ -77,7 +83,6 @@ namespace VVVV.Nodes
 		{}
 
 		#region Evaluate
-
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
@@ -89,18 +94,26 @@ namespace VVVV.Nodes
 					{
 						try
 						{
-							FDepthGenerator = (DepthGenerator) FContextIn[0].GetProductionNodeByName("Depth1");//new DepthGenerator(FContextIn[0]);
+							FDepthGenerator = (DepthGenerator) FContextIn[0].GetProductionNodeByName("Depth1");
 							
 							FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle);
 							FHistogram = new int[FDepthGenerator.DeviceMaxDepth];
 							
 							//Set the resolution of the texture
-							MapOutputMode MapMode = FDepthGenerator.MapOutputMode;
-							FTexWidth = MapMode.XRes;
-							FTexHeight = MapMode.YRes;
+							var mapMode = FDepthGenerator.MapOutputMode;
+							FTexWidth = mapMode.XRes;
+							FTexHeight = mapMode.YRes;
+							
+							//allocate data for the Depth Image
+							FBufferedImage = Marshal.AllocCoTaskMem(FTexWidth * FTexHeight * 2);
 							
 							//Reinitalie the vvvv texture
 							Reinitialize();
+							
+							//Start the Thread for reading the ImageData
+							FUpdater = new Thread(ReadImageData);
+							FRunning = true;
+//							FUpdater.Start();
 							
 							FContextChanged = false;
 						}
@@ -118,11 +131,13 @@ namespace VVVV.Nodes
 			}
 			
 			if (FDepthGenerator != null && FEnabledIn[0])
+			{
+				ReadImageData();
 				Update();
+			}
 		}
-
 		#endregion
-
+		
 		#region Dispose
 		public void Dispose()
 		{
@@ -131,9 +146,16 @@ namespace VVVV.Nodes
 		
 		private void CleanUp()
 		{
+			/*	if (FUpdater != null)
+			{
+				FRunning = false;
+				FUpdater.Join();
+			}
+			 */
+			Marshal.FreeCoTaskMem(FBufferedImage);
+			
 			FDepthGenerator = null;
 		}
-
 		#endregion
 
 		#region Helper
@@ -166,8 +188,51 @@ namespace VVVV.Nodes
 		}
 		#endregion Helper
 		
-		#region IPluginDXTexture Members
+		#region UpdateThread
+		private unsafe void ReadImageData()
+		{
+//			while (FRunning)
+			{
+//				lock(FDepthGenerator)
+				{
+					//FContextIn[0].WaitOneUpdateAll(FDepthGenerator);
+					if (FDepthGenerator.IsNewDataAvailable)
+					{
+						FDepthGenerator.WaitAndUpdateData();
+						
+						
+						try
+						{
+							//lock(this)
+							{
+								if (FDepthMode[0] == DepthMode.Raw)
+									CopyMemory(FBufferedImage, FDepthGenerator.DepthMapPtr, FTexHeight * FTexWidth * 2);
+								else
+								{
+									var metaData = FDepthGenerator.GetMetaData();
+									CalculateHistogram(metaData);
+									
+									ushort* pSrc = (ushort*)FDepthGenerator.DepthMapPtr;
+									ushort* pDest = (ushort*)FBufferedImage;
 
+									//write the Depth pointer to Destination pointer
+									for (int y = 0; y < FTexHeight; y++)
+									{
+										for (int x = 0; x < FTexWidth; x++, pSrc++, pDest++)
+											pDest[0] = (ushort)FHistogram[*pSrc];
+									}
+								}
+							}
+						}
+						catch (Exception)
+						{ }
+					}
+				}
+			}
+		}
+		#endregion
+		
+		#region IPluginDXTexture Members
 		//this method gets called, when Reinitialize() was called in evaluate,
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int Slice, SlimDX.Direct3D9.Device device)
@@ -184,28 +249,11 @@ namespace VVVV.Nodes
 			//lock the vvvv texture
 			var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
 			
-			if (FDepthMode[0] == DepthMode.Raw)
-				CopyMemory(rect.DataPointer, FDepthGenerator.DepthMapPtr, FTexHeight * FTexWidth * 2);
-			else
-			{
-				DepthMetaData DepthMD = FDepthGenerator.GetMetaData();
-				CalculateHistogram(DepthMD);
-				
-				ushort* pSrc = (ushort*)FDepthGenerator.DepthMapPtr;
-				ushort* pDest = (ushort*)rect.DataPointer;
+			//write the image buffer data to the texture
+			rect.WriteRange(FBufferedImage, FTexHeight * FTexWidth * 2);
 
-				// write the Depth pointer to Destination pointer
-				for (int y = 0; y < FTexHeight; y++)
-				{
-					for (int x = 0; x < FTexWidth; x++, pSrc++, pDest++)
-						pDest[0] = (ushort)FHistogram[*pSrc];
-				}
-			}
-			
-			//unlock the vvvv texture
 			texture.UnlockRectangle(0);
 		}
-
 		#endregion IPluginDXResource Members
 		
 		#region ContextConnect

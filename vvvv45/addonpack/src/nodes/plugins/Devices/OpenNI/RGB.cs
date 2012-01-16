@@ -13,7 +13,6 @@ using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2.EX9;
-using VVVV.Utils.SharedMemory;
 
 using OpenNI;
 using SlimDX.Direct3D9;
@@ -44,14 +43,13 @@ namespace VVVV.Nodes
 		ILogger FLogger;
 
 		private ImageGenerator FImageGenerator;
-		private ImageMetaData FImageMetaData;
 
 		private int FTexWidth;
 		private int FTexHeight;
 
 		private bool FContextChanged = false;
 		
-		private IntPtr FImage = new IntPtr();
+		private IntPtr FBufferedImage = new IntPtr();
 		private Thread FUpdater;
 		private bool FRunning = false;
 		#endregion fields & pins
@@ -59,9 +57,7 @@ namespace VVVV.Nodes
 		// import host and hand it to base constructor
 		[ImportingConstructor()]
 		public Texture_Image(IPluginHost host): base(host)
-		{
-			
-		}
+		{}
 		
 		#region Evaluate
 		//called when data for any output pin is requested
@@ -76,21 +72,22 @@ namespace VVVV.Nodes
 						try
 						{
 							FImageGenerator = (ImageGenerator) FContextIn[0].GetProductionNodeByName("Image1"); //new ImageGenerator(FContextIn[0]);
-							FImageMetaData = FImageGenerator.GetMetaData();
 							
-							FTexWidth = FImageMetaData.XRes;
-							FTexHeight = FImageMetaData.YRes;
+							//Set the resolution of the texture
+							var mapMode = FImageGenerator.MapOutputMode;
+							FTexWidth = mapMode.XRes;
+							FTexHeight = mapMode.YRes;
 							
 							//allocate data for the RGB Image
-							FImage = Marshal.AllocCoTaskMem(FTexWidth * FTexHeight * 4);
+							FBufferedImage = Marshal.AllocCoTaskMem(FTexWidth * FTexHeight * 4);
 							
 							//Reinitalie the vvvv texture
 							Reinitialize();
 							
-							//Start the Thread for reading the Rgb Image
-							FUpdater = new Thread(ReadImage);
+							//Start the Thread for reading the ImageData
+							FUpdater = new Thread(ReadImageData);
 							FRunning = true;
-							FUpdater.Start();
+//							FUpdater.Start();
 							
 							FContextChanged = false;
 						}
@@ -108,7 +105,10 @@ namespace VVVV.Nodes
 			}
 			
 			if (FImageGenerator != null && FEnabledIn[0])
+			{
+				ReadImageData();
 				Update();
+			}
 		}
 		#endregion
 
@@ -120,53 +120,50 @@ namespace VVVV.Nodes
 		
 		private void CleanUp()
 		{
-			FRunning = false;
-			FUpdater.Join();
+			/*	if (FUpdater != null)
+			{
+				FRunning = false;
+				FUpdater.Join();
+			}*/
 
-			Marshal.FreeCoTaskMem(FImage);
+			Marshal.FreeCoTaskMem(FBufferedImage);
 			
 			FImageGenerator = null;
 		}
 		#endregion
 
 		#region UpdateThread
-		private unsafe void ReadImage()
+		private unsafe void ReadImageData()
 		{
-			while (FRunning)
+			//while (FRunning)
 			{
-				if (FImageGenerator != null)
+				//lock(FImageGenerator)
 				{
-					lock(FImageGenerator)
+					//FContextIn[0].WaitOneUpdateAll(FImageGenerator);
+					if (FImageGenerator.IsNewDataAvailable)
 					{
 						FImageGenerator.WaitAndUpdateData();
-						if (FImageGenerator.IsDataNew)
+						try
 						{
-							//create a pointer where the information for the vvvv texture lies
-							byte* dest32 = (byte*)FImage.ToPointer();
+							//get a pointer to the buffered Image
+							byte* dest32 = (byte*)FBufferedImage.ToPointer();
 
-							//get the pointer to the Rgb Image
+							//get the pointer to the RGB Image
 							byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
 							
-							try
+							//write the pixels
+							for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
 							{
-								//write the pixels
-								for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
-								{
-									dest32[0] = src24[2];
-									dest32[1] = src24[1];
-									dest32[2] = src24[0];
-									dest32[3] = 255;
-								}
+								dest32[0] = src24[2];
+								dest32[1] = src24[1];
+								dest32[2] = src24[0];
+								dest32[3] = 255;
 							}
-							catch (Exception)
-							{ }
 						}
+						catch (Exception)
+						{ }
 					}
 				}
-//				else
-//				{
-					Thread.Sleep(0);
-//				}
 			}
 		}
 		#endregion
@@ -185,22 +182,11 @@ namespace VVVV.Nodes
 		//calculate the pixels in evaluate and just copy the data to the device texture here
 		unsafe protected override void UpdateTexture(int Slice, Texture texture)
 		{
-			//get the pointer to the Rgb Image
-			//byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
-			
 			//lock the vvvv texture
-			//byte* dest32 = (byte*)texture.LockRectangle(0, LockFlags.Discard).Data.DataPointer;
-			
 			var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
-			// tell the vvvv texture where the pointer to the depth image lies
-			rect.WriteRange(FImage, FTexHeight * FTexWidth * 4);
-//			for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
-//			{
-//				dest32[0] = src24[2];
-//				dest32[1] = src24[1];
-//				dest32[2] = src24[0];
-//				dest32[3] = 255;
-//			}
+			
+			//write the image buffer data to the texture
+			rect.WriteRange(FBufferedImage, FTexHeight * FTexWidth * 4);
 
 			texture.UnlockRectangle(0);
 		}
