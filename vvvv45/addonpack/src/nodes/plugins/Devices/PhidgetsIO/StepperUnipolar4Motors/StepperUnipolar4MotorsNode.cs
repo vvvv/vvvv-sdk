@@ -16,11 +16,11 @@ using Phidgets;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Stepper Unipolar",
+	[PluginInfo(Name = "UnipolarStepper",
 	            Category = "Devices",
                 Version = "Phidget",
                 Help = "Wrapper for the Phidget Stepper Unipolar Motors",
-	            Tags = "Phidget , Device, Controller, Stepper, Motor",
+	            Tags = "Controller, Motor",
                 Author = "Phlegma")]
 	#endregion PluginInfo
 
