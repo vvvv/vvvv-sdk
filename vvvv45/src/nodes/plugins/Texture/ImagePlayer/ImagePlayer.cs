@@ -93,9 +93,6 @@ namespace VVVV.Nodes.ImagePlayer
             FFrameInfoBuffer.LinkTo(FFilePreloader, linkOptions);
             FFilePreloader.LinkTo(FFramePreloader, linkOptions);
             FFramePreloader.LinkTo(FFrameBuffer, linkOptions);
-            
-            SlimDX.Configuration.DetectDoubleDispose = true;
-            SlimDX.Configuration.EnableObjectTracking = true;
         }
         
         public void Dispose()
@@ -137,7 +134,6 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 FTexturePool.Dispose();
                 FIOTaskScheduler.Dispose();
-                FLogger.Log(LogType.Debug, SlimDX.ObjectTable.ReportLeaks());
             }
         }
         
@@ -429,7 +425,7 @@ namespace VVVV.Nodes.ImagePlayer
                     }
                     
                     FTexturePool.PutTexture(texture);
-                    FTexturePool.TryToCleanup();
+                    FTexturePool.Release(texture.Device);
                     break;
             }
         }

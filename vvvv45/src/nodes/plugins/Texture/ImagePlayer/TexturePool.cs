@@ -8,7 +8,6 @@ namespace VVVV.Nodes.ImagePlayer
     public class TexturePool : IDisposable
     {
         private readonly ConcurrentDictionary<int, ObjectPool<Texture>> FTexturePools = new ConcurrentDictionary<int, ObjectPool<Texture>>();
-        private int FTextureCount;
         
         public Texture GetTexture(
             Device device,
@@ -28,8 +27,6 @@ namespace VVVV.Nodes.ImagePlayer
                 FTexturePools[key] = texturePool;
             }
             
-            FTextureCount++;
-            
             return texturePool.GetObject();
         }
         
@@ -44,8 +41,6 @@ namespace VVVV.Nodes.ImagePlayer
                 desc.Usage,
                 desc.Format,
                 desc.Pool);
-            
-            FTextureCount--;
             
             var texturePool = FTexturePools[key];
             texturePool.PutObject(texture);
@@ -70,18 +65,23 @@ namespace VVVV.Nodes.ImagePlayer
                 pool.GetHashCode();
         }
         
-        public void TryToCleanup()
+        public void Release(Device device)
         {
-            if (FTextureCount == 0)
+            foreach (var key in FTexturePools.Keys.ToArray())
             {
-                foreach (var key in FTexturePools.Keys.ToArray())
+                ObjectPool<Texture> texturePool = null;
+                
+                if (FTexturePools.TryGetValue(key, out texturePool))
                 {
-                    ObjectPool<Texture> texturePool = null;
-                    if (FTexturePools.TryRemove(key, out texturePool))
+                    foreach (var texture in texturePool.ToArrayAndClear())
                     {
-                        foreach (var texture in texturePool.ToArrayAndClear())
+                        if (texture.Device == device)
                         {
                             texture.Dispose();
+                        }
+                        else
+                        {
+                            texturePool.PutObject(texture);
                         }
                     }
                 }
@@ -90,7 +90,18 @@ namespace VVVV.Nodes.ImagePlayer
         
         public void Dispose()
         {
-            TryToCleanup();
+            foreach (var key in FTexturePools.Keys.ToArray())
+            {
+                ObjectPool<Texture> texturePool = null;
+                
+                if (FTexturePools.TryRemove(key, out texturePool))
+                {
+                    foreach (var texture in texturePool.ToArrayAndClear())
+                    {
+                        texture.Dispose();
+                    }
+                }
+            }
         }
     }
 }
