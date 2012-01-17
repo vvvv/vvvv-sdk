@@ -64,7 +64,6 @@ namespace VVVV.Nodes.ImagePlayer
             // SpreadMax is not correct (should be correct in streams branch).
             spreadMax = FDirectoryIn
                 .CombineWith(FFilemaskIn)
-                .CombineWith(FThreadsIOConfig)
                 .CombineWith(FVisibleFramesIn)
                 .CombineWith(FPreloadFramesIn)
                 .CombineWith(FReloadIn);
