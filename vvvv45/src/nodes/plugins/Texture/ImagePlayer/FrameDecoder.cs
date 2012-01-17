@@ -48,7 +48,7 @@ namespace VVVV.Nodes.ImagePlayer
                     Format.A8R8G8B8,
                     Pool.Default);
                 
-                var dataRectangle = texture.LockRectangle(0, LockFlags.None);
+                var dataRectangle = texture.LockRectangle(0, LockFlags.Discard);
 
                 try
                 {

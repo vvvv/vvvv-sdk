@@ -23,9 +23,6 @@ namespace VVVV.Nodes.ImagePlayer
         [Input("Filemask", DefaultString = ImagePlayer.DEFAULT_FILEMASK)]
         public ISpread<string> FFilemaskIn;
         
-        [Input("Queue Size", DefaultValue = 4.0)]
-        public ISpread<int> FQueueSizeIn;
-        
         [Input("Visible Frames")]
         public ISpread<ISpread<int>> FVisibleFramesIn;
         
@@ -35,24 +32,23 @@ namespace VVVV.Nodes.ImagePlayer
         [Input("Reload")]
         public ISpread<bool> FReloadIn;
         
-        //        [Output("Unused Frames")]
-        //        public ISpread<int> FUnusedFramesOut;
-//
+        [Config("Threads IO", DefaultValue = 1.0, MinValue = -1.0)]
+        public ISpread<int> FThreadsIOConfig;
+        
+        [Config("Threads Texture", DefaultValue = 2.0, MinValue = -1.0)]
+        public ISpread<int> FThreadsTextureConfig;
         
         [Output("Texture")]
         public ISpread<ISpread<Frame>> FTextureOut;
         
-        [Output("Duration IO")]
-        public ISpread<ISpread<double>> FDurationIOOut;
+        [Output("Duration IO", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<double> FDurationIOOut;
         
-        [Output("Duration Texture")]
-        public ISpread<ISpread<double>> FDurationTextureOut;
+        [Output("Duration Texture", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<double> FDurationTextureOut;
         
-        [Output("Scheduled Frames")]
-        public ISpread<int> FScheduledFramesOut;
-        
-        [Output("Canceled Frames")]
-        public ISpread<int> FCanceledFramesOut;
+        [Output("Unused Frames Count", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<int> FUnusedFramesOut;
         
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
         private readonly ILogger FLogger;
@@ -68,7 +64,7 @@ namespace VVVV.Nodes.ImagePlayer
             // SpreadMax is not correct (should be correct in streams branch).
             spreadMax = FDirectoryIn
                 .CombineWith(FFilemaskIn)
-                .CombineWith(FQueueSizeIn)
+                .CombineWith(FThreadsIOConfig)
                 .CombineWith(FVisibleFramesIn)
                 .CombineWith(FPreloadFramesIn)
                 .CombineWith(FReloadIn);
@@ -83,24 +79,21 @@ namespace VVVV.Nodes.ImagePlayer
             
             FImagePlayers.SliceCount = spreadMax;
             FTextureOut.SliceCount = spreadMax;
-            //            FUnusedFramesOut.SliceCount = spreadMax;
             FDurationIOOut.SliceCount = spreadMax;
             FDurationTextureOut.SliceCount = spreadMax;
-            FScheduledFramesOut.SliceCount = spreadMax;
-            FCanceledFramesOut.SliceCount = spreadMax;
+            FUnusedFramesOut.SliceCount = spreadMax;
             
             // Create new image players
             for (int i = previosSliceCount; i < spreadMax; i++)
             {
-                FImagePlayers[i] = new ImagePlayer(FQueueSizeIn[i], FLogger);
+                FImagePlayers[i] = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger);
             }
             
             for (int i = 0; i < spreadMax; i++)
             {
                 var imagePlayer = FImagePlayers[i];
                 
-                FQueueSizeIn[i] = Math.Max(1, FQueueSizeIn[i]);
-                if (imagePlayer != null && imagePlayer.QueueSize != FQueueSizeIn[i])
+                if (imagePlayer != null && (imagePlayer.ThreadsIO != FThreadsIOConfig[i] || imagePlayer.ThreadsTexture != FThreadsTextureConfig[i]))
                 {
                     imagePlayer.Dispose();
                     imagePlayer = null;
@@ -108,7 +101,7 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 if (imagePlayer == null)
                 {
-                    imagePlayer = new ImagePlayer(FQueueSizeIn[i], FLogger);
+                    imagePlayer = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger);
                     FImagePlayers[i] = imagePlayer;
                 }
                 
@@ -120,20 +113,19 @@ namespace VVVV.Nodes.ImagePlayer
                     imagePlayer.Reload();
                 }
                 
-                var durationIO = FDurationIOOut[i];
-                var durationTexture = FDurationTextureOut[i];
-                int scheduledFrames = 0;
-                int canceledFrames = 0;
+                double durationIO = 0.0;
+                double durationTexture = 0.0;
+                int unusedFrames = 0;
                 FTextureOut[i] = imagePlayer.Preload(
                     FVisibleFramesIn[i],
                     FPreloadFramesIn[i],
-                    ref durationIO,
-                    ref durationTexture,
-                    out scheduledFrames,
-                    out canceledFrames);
+                    out durationIO,
+                    out durationTexture,
+                    out unusedFrames);
                 
-                FScheduledFramesOut[i] = scheduledFrames;
-                FCanceledFramesOut[i] = canceledFrames;
+                FDurationIOOut[i] = durationIO;
+                FDurationTextureOut[i] = durationTexture;
+                FUnusedFramesOut[i] = unusedFrames;
             }
         }
         

@@ -35,8 +35,10 @@ namespace VVVV.Nodes.ImagePlayer
         private string FDirectory = string.Empty;
         private string FFilemask = DEFAULT_FILEMASK;
         private string[] FFiles = new string[0];
+        private int FUnusedFrames;
         
-        private readonly int FQueueSize;
+        private readonly int FThreadsIO;
+        private readonly int FThreadsTexture;
         private readonly List<EX9.Device> FDevices = new List<EX9.Device>();
         private readonly ILogger FLogger;
         private readonly ObjectPool<Stream> FStreamPool;
@@ -49,9 +51,10 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
         private readonly Spread<Frame> FVisibleFrames = new Spread<Frame>(0);
         
-        public ImagePlayer(int queueSize, ILogger logger)
+        public ImagePlayer(int threadsIO, int threadsTexture, ILogger logger)
         {
-            FQueueSize = queueSize;
+            FThreadsIO = threadsIO;
+            FThreadsTexture = threadsTexture;
             FLogger = logger;
             
             FStreamPool = new ObjectPool<Stream>(() => new MemoryStream());
@@ -62,9 +65,9 @@ namespace VVVV.Nodes.ImagePlayer
             
             var filePreloaderOptions = new ExecutionDataflowBlockOptions()
             {
-                MaxDegreeOfParallelism = DataflowBlockOptions.Unbounded,
+                MaxDegreeOfParallelism = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : threadsIO,
                 TaskScheduler = FIOTaskScheduler,
-                BoundedCapacity = Math.Max(1, FQueueSize / 2)
+                BoundedCapacity = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : threadsIO
             };
             
             FFilePreloader = new TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>>(
@@ -74,8 +77,8 @@ namespace VVVV.Nodes.ImagePlayer
             
             var framePreloaderOptions = new ExecutionDataflowBlockOptions()
             {
-                MaxDegreeOfParallelism = DataflowBlockOptions.Unbounded,
-                BoundedCapacity = FQueueSize
+                MaxDegreeOfParallelism = threadsTexture <= 0 ? DataflowBlockOptions.Unbounded : threadsTexture,
+                BoundedCapacity = threadsTexture <= 0 ? DataflowBlockOptions.Unbounded : threadsTexture
             };
             
             FFramePreloader = new TransformBlock<Tuple<FrameInfo, Stream>, Frame>(
@@ -178,18 +181,20 @@ namespace VVVV.Nodes.ImagePlayer
             FFiles = System.IO.Directory.GetFiles(FDirectory, FFilemask);
         }
         
-        public int QueueSize
+        public int ThreadsIO
         {
             get
             {
-                return FQueueSize;
+                return FThreadsIO;
             }
         }
         
-        public int UnusedFrames
+        public int ThreadsTexture
         {
-            get;
-            private set;
+            get
+            {
+                return FThreadsTexture;
+            }
         }
         
         private void Enqueue(FrameInfo frameInfo)
@@ -219,7 +224,7 @@ namespace VVVV.Nodes.ImagePlayer
                 {
                     frame.Dispose();
                     frameInfo.Dispose();
-                    UnusedFrames++;
+                    FUnusedFrames++;
                 }
             }
             
@@ -251,16 +256,18 @@ namespace VVVV.Nodes.ImagePlayer
         public ISpread<Frame> Preload(
             ISpread<int> visibleFrameNrs,
             ISpread<int> preloadFrameNrs,
-            ref ISpread<double> durationIO,
-            ref ISpread<double> durationTexture,
-            out int scheduledFrameCount,
-            out int canceledFrameCount)
+            out double durationIO,
+            out double durationTexture,
+            out int unusedFrames)
         {
+            durationIO = 0.0;
+            durationTexture = 0.0;
+            FUnusedFrames = 0;
+            
             // Nothing to do
             if (FFiles.Length == 0)
             {
-                scheduledFrameCount = 0;
-                canceledFrameCount = 0;
+                unusedFrames = FUnusedFrames;
                 return new Spread<Frame>(0);
             }
             
@@ -273,9 +280,6 @@ namespace VVVV.Nodes.ImagePlayer
                     frame.Metadata.Dispose();
                 }
                );
-            
-            durationIO.SliceCount = visibleFrameNrs.SliceCount;
-            durationTexture.SliceCount = visibleFrameNrs.SliceCount;
             
             var visibleFramesEnumerator = FVisibleFrames.GetEnumerator();
             for (int i = 0; i < visibleFrameNrs.SliceCount; i++)
@@ -291,8 +295,8 @@ namespace VVVV.Nodes.ImagePlayer
                     if (currentFrameInfo == newFrameInfo)
                     {
                         FVisibleFrames[i] = currentFrame;
-                        durationIO[i] = currentFrameInfo.DurationIO;
-                        durationTexture[i] = currentFrameInfo.DurationTexture;
+                        durationIO += currentFrameInfo.DurationIO;
+                        durationTexture += currentFrameInfo.DurationTexture;
                         newFrameInfo.Dispose();
                         newFrameInfo = null;
                         break;
@@ -314,8 +318,8 @@ namespace VVVV.Nodes.ImagePlayer
                         if (frameInfo == newFrameInfo && !frameInfo.IsCanceled)
                         {
                             FVisibleFrames[i] = frame;
-                            durationIO[i] = frameInfo.DurationIO;
-                            durationTexture[i] = frameInfo.DurationTexture;
+                            durationIO += frameInfo.DurationIO;
+                            durationTexture += frameInfo.DurationTexture;
                             newFrameInfo.Dispose();
                             newFrameInfo = null;
                             break;
@@ -324,6 +328,7 @@ namespace VVVV.Nodes.ImagePlayer
                         {
                             frame.Dispose();
                             frameInfo.Dispose();
+                            FUnusedFrames++;
                         }
                     }
                 }
@@ -332,8 +337,8 @@ namespace VVVV.Nodes.ImagePlayer
                 {
                     Enqueue(newFrameInfo);
                     FVisibleFrames[i] = Dequeue(newFrameInfo);
-                    durationIO[i] = newFrameInfo.DurationIO;
-                    durationTexture[i] = newFrameInfo.DurationTexture;
+                    durationIO += newFrameInfo.DurationIO;
+                    durationTexture += newFrameInfo.DurationTexture;
                     newFrameInfo = null;
                 }
                 
@@ -349,6 +354,7 @@ namespace VVVV.Nodes.ImagePlayer
                 var frame = Dequeue();
                 frame.Dispose();
                 frame.Metadata.Dispose();
+                FUnusedFrames++;
             }
             
             var scheduledFrameInfosEnumerator = FScheduledFrameInfos.Where(frameInfo => !frameInfo.IsCanceled).GetEnumerator();
@@ -376,8 +382,7 @@ namespace VVVV.Nodes.ImagePlayer
                 }
             }
             
-            scheduledFrameCount = FScheduledFrameInfos.Where(frameInfo => !frameInfo.IsCanceled).Count();
-            canceledFrameCount = FScheduledFrameInfos.Where(frameInfo => frameInfo.IsCanceled).Count();
+            unusedFrames = FUnusedFrames;
             
             return FVisibleFrames;
         }
