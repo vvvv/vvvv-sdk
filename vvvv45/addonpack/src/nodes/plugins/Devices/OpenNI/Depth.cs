@@ -123,11 +123,8 @@ namespace VVVV.Nodes
 				}
 			}
 			
-			if (FDepthGenerator != null && FEnabledIn[0])
-			{
-				if (FDepthGenerator.IsDataNew)
-					Update();
-			}
+			if (FDepthGenerator != null && FDepthGenerator.IsDataNew && FEnabledIn[0])
+				Update();
 		}
 		#endregion
 		

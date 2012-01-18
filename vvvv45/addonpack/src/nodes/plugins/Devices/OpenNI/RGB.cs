@@ -97,11 +97,8 @@ namespace VVVV.Nodes
 				}
 			}
 			
-			if (FImageGenerator != null && FEnabledIn[0])
-			{
-				if (FImageGenerator.IsDataNew)
-					Update();
-			}
+			if (FImageGenerator != null && FImageGenerator.IsDataNew && FEnabledIn[0])
+				Update();
 		}
 		#endregion
 

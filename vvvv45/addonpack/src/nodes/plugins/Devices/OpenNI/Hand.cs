@@ -90,11 +90,8 @@ namespace VVVV.Nodes
 				}
 			}
 			
-			if (FHandGenerator != null)
+			if (FHandGenerator != null && FHandGenerator.IsDataNew)
 			{
-				//FContextIn[0].WaitNoneUpdateAll();
-				//FHandGenerator.WaitAndUpdateData();
-				
 				FIsTrackedOut.SliceCount = FHandIdOut.SliceCount = FHandPositionOut.SliceCount = FStartPositionIn.SliceCount;
 				//for every given StartPosition check if it is currently tracked
 				for (int i = 0; i < FStartPositionIn.SliceCount; i++)

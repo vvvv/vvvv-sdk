@@ -29,7 +29,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "AllInOne",
 	            Category = "Kinect",
 	            Version ="OpenNI",
-	            Help = "Depth + Handtracker.",
+	            Help = "Depth + Handtracker",
 	            Tags = "ex9, texture")]
 	#endregion PluginInfo
 	public class AllInOne: DXTextureOutPluginBase, IPluginEvaluate, IDisposable
@@ -226,9 +226,9 @@ namespace VVVV.Nodes
 				FContext = new Context();
 				FContext.ErrorStateChanged += FContext_ErrorStateChanged;
 				
-				FImageGenerator = (ImageGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Image, null);
+//				FImageGenerator = (ImageGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Image, null);
 				FDepthGenerator = (DepthGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Depth, null);
-				FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
+//				FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
 				
 				// Create and Hands generator
 				FHandGenerator = new HandsGenerator(FContext);
