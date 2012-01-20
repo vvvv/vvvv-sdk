@@ -60,13 +60,13 @@ namespace VVVV.TodoMap.Lib.Persist
             {
                 if (child.Name == "Input")
                 {
-                    engine.Osc.AutoStartInput = bool.Parse(child.Attributes["AutoStart"].Value);
+                    engine.Osc.AutoStartInput = BoolExtension.ParseEnglish(child.Attributes["AutoStart"].Value);
                     engine.Osc.LocalPort = int.Parse(child.Attributes["Port"].Value);
                 }
 
                 if (child.Name == "Output")
                 {
-                    engine.Osc.AutoStartOutput = bool.Parse(child.Attributes["AutoStart"].Value);
+                    engine.Osc.AutoStartOutput = BoolExtension.ParseEnglish(child.Attributes["AutoStart"].Value);
                     engine.Osc.RemotePort = int.Parse(child.Attributes["Port"].Value);
                 }
             }
@@ -128,7 +128,7 @@ namespace VVVV.TodoMap.Lib.Persist
                 }
                 if (child.Name == "AllowFeedBack")
                 {
-                    var.AllowFeedBack = Convert.ToBoolean(child.InnerText);
+                    var.AllowFeedBack = BoolExtension.ParseEnglish(child.InnerText);
                 }
                 if (child.Name == "Default")
                 {
@@ -165,7 +165,7 @@ namespace VVVV.TodoMap.Lib.Persist
 
             if (var.Category == null) { var.Category = "Global"; }
             else { if (var.Category.Length == 0) { var.Category = "Global"; } }
-            engine.RegisterVariable(var);
+            engine.RegisterVariable(var,false);
             var.SetDefault();
             
             //foreach (AbstractTodoInput ti in var.Inputs)

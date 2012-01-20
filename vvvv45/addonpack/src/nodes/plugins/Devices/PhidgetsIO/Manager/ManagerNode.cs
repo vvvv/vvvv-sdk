@@ -21,7 +21,7 @@ namespace VVVV.Nodes
                 Category = "Devices",
                 Version = "Phidget",
                 Help = "Wrapper for the Phidget Manager",
-                Tags = "Manager",
+                Tags = "",
                 Author = "Phlegma",
                 AutoEvaluate = true
 )]

@@ -72,7 +72,7 @@ namespace VVVV.Nodes
 					SetFill(elem, i);
 					SetStroke(elem, i);
 					elem.Visible = FEnabledIn[i];
-					FOutput[i] = elem;	
+					FOutput[i] = elem;
 				}
 			}
 			
@@ -595,6 +595,132 @@ namespace VVVV.Nodes
 				FillRecursive(child, level + 1);
 			}
 			
+		}
+	}
+
+	//NORMALIZE---------------------------------------------------------------------
+
+	public enum SvgNormalizeMode
+	{
+		None,
+		Width,
+		Height,
+		Both
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Normalize", 
+	            Category = "SVG", 
+	            Help = "Takes a layer and transforms it into unit space", 
+	            Tags = "")]
+	#endregion PluginInfo
+	public class SVGNormalizeNode : IPluginEvaluate
+	{
+		#region fields & pins
+		[Input("Transform")]
+		IDiffSpread<SlimDX.Matrix> FTransformIn;
+		
+		[Input("Input")]
+		IDiffSpread<SvgElement> FInput;
+		
+		[Input("Mode", DefaultEnumEntry = "Both")]
+		IDiffSpread<SvgNormalizeMode> FModeIn;
+
+		[Output("Layer")]
+		ISpread<SvgElement> FOutput;
+
+		[Import()]
+		ILogger FLogger;
+		
+		List<SvgGroup> FGroups = new List<SvgGroup>();
+		#endregion fields & pins
+		
+		public SVGNormalizeNode()
+		{
+			var g = new SvgGroup();
+			FGroups.Add(g);
+		}
+
+		//called when data for any output pin is requested
+		public void Evaluate(int SpreadMax)
+		{
+			//add all elements to each group
+			if(FInput.IsChanged || FTransformIn.IsChanged || FModeIn.IsChanged)
+			{
+				//assign size and clear group list
+				FOutput.SliceCount = FTransformIn.SliceCount;
+				FGroups.Clear();
+				
+				//create groups and add matrix to it
+				for(int i=0; i<FTransformIn.SliceCount; i++)
+				{
+					var g = new SvgGroup();
+					g.Transforms = new SvgTransformCollection();
+					
+					var m = FTransformIn[i];
+					var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
+					
+					g.Children.Clear();
+					
+					for(int j=0; j<FInput.SliceCount; j++)
+					{
+						var elem = FInput[j];
+						if(elem != null)
+							g.Children.Add(elem);
+					}
+					
+					var b = FModeIn[i] == SvgNormalizeMode.None ? new RectangleF() : g.Path.GetBounds();
+					
+					switch (FModeIn[i])
+					{
+						case SvgNormalizeMode.Both:
+							
+							if (b.Height > 0 && b.Width > 0)
+							{
+								var sx = 1/b.Width;
+								var sy = 1/b.Height;
+								var ox = -b.X * sx - 0.5f;
+								var oy = -b.Y * sy - 0.5f;
+								
+								g.Transforms.Add(new SvgMatrix(new List<float>(){sx, 0, 0, sy, ox, oy}));
+							}
+							break;
+							
+						case SvgNormalizeMode.Width:
+							
+							if (b.Width > 0)
+							{
+								var sx = 1/b.Width;
+								var ox = -b.X * sx - 0.5f;
+								
+								g.Transforms.Add(new SvgMatrix(new List<float>(){sx, 0, 0, 1, ox, 0}));
+							}
+							break;
+							
+						case SvgNormalizeMode.Height:
+							
+							if (b.Height > 0)
+							{
+								var sy = 1/b.Height;
+								var oy = -b.Y * sy - 0.5f;
+								
+								g.Transforms.Add(new SvgMatrix(new List<float>(){1, 0, 0, sy, 0, oy}));
+							}
+							break;
+							
+						default:
+							break;
+					}
+					
+					g.Transforms.Add(mat);
+					
+					//add to group list
+					FGroups.Add(g);
+				}
+				
+				//write groups to output
+				FOutput.AssignFrom(FGroups);
+			}
 		}
 	}
 	

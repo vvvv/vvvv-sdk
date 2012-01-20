@@ -100,7 +100,7 @@ namespace VVVV.TodoMap.Nodes
                 {
                     TodoVariable var = new TodoVariable(this.FInVariableName[i]);
                     var.Category = this.FInVariableCategory[i];
-                    this.FEngine.RegisterVariable(var);                   
+                    this.FEngine.RegisterVariable(var,false);                   
                 }
             }
 

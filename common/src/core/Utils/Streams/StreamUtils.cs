@@ -125,9 +125,14 @@ namespace VVVV.Utils.Streams
 		
 		public static void AssignFrom<T>(this IOutStream<T> outStream, IInStream<T> inStream)
 		{
-			using (var buffer = MemoryPool<T>.GetMemory(StreamUtils.BUFFER_SIZE))
+			var buffer = MemoryPool<T>.GetArray(StreamUtils.BUFFER_SIZE);
+			try
 			{
-				outStream.AssignFrom(inStream, buffer.Array);
+				outStream.AssignFrom(inStream, buffer);
+			}
+			finally
+			{
+				MemoryPool<T>.PutArray(buffer);
 			}
 		}
 		

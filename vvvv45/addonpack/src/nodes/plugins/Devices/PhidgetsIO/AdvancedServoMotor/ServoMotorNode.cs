@@ -21,7 +21,7 @@ namespace VVVV.Nodes
 	            Category = "Devices",
                 Version = "Phidget",
 	            Help = "Wrapper for the Phidget Servo Motor Controllers",
-	            Tags = "Controller, Servo, Motor",
+	            Tags = "Controller",
                 Author = "Phlegma",
                 AutoEvaluate=true
 )]

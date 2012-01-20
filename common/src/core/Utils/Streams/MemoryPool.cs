@@ -5,55 +5,42 @@ namespace VVVV.Utils.Streams
 {
 	public static class MemoryPool<T>
 	{
-		private static readonly Dictionary<int, Stack<Array>> FPool = new Dictionary<int, Stack<Array>>();
+		private static readonly Dictionary<int, Stack<T[]>> FPool = new Dictionary<int, Stack<T[]>>();
 		
-		public static Memory<T> GetMemory(int length)
+		public static T[] GetArray(int length)
 		{
-			if (!StreamUtils.IsPowerOfTwo(length))
-			{
-				throw new ArgumentException("Paremeter length must be a power of two.");
-			}
-			
 			lock (FPool)
 			{
-				Stack<Array> stack = null;
+				Stack<T[]> stack = null;
 				if (!FPool.TryGetValue(length, out stack))
 				{
-					stack = new Stack<Array>();
+					stack = new Stack<T[]>();
 					FPool[length] = stack;
 				}
 				
 				if (stack.Count == 0)
 				{
-					return new Memory<T>(stack, new T[length]);
+					return new T[length];
 				}
 				else
 				{
-					return new Memory<T>(stack, stack.Pop() as T[]);
+					return stack.Pop();
 				}
 			}
 		}
-	}
-	
-	public class Memory<T> : IDisposable
-	{
-		private readonly Stack<Array> FStack;
 		
-		internal Memory(Stack<Array> stack, T[] array)
+		public static void PutArray(T[] array)
 		{
-			FStack = stack;
-			Array = array;
-		}
-		
-		public T[] Array
-		{
-			get;
-			private set;
-		}
-		
-		public void Dispose()
-		{
-			FStack.Push(Array);
+			lock (FPool)
+			{
+				Stack<T[]> stack = null;
+				if (!FPool.TryGetValue(array.Length, out stack))
+				{
+					stack = new Stack<T[]>();
+					FPool[array.Length] = stack;
+				}
+				stack.Push(array);
+			}
 		}
 	}
 }

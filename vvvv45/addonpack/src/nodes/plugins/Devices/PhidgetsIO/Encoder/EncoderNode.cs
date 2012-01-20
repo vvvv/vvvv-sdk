@@ -2,13 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.Threading;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
 
 
 using VVVV.Core.Logging;
@@ -23,7 +19,7 @@ namespace VVVV.Nodes
                 Category = "Devices",
                 Version = "Phidget",
                 Help = "Wrapper for the Phidget Encoders",
-                Tags = "Controller, Encoder, HighSpeed",
+                Tags = "Controller, HighSpeed",
                 Author = "Phlegma",
                 AutoEvaluate = true
 )]
@@ -36,9 +32,6 @@ namespace VVVV.Nodes
 
         
         //Input 
-        [Input("Position")]
-        ISpread<bool> Enable;
-
         [Input("Position")]
         ISpread<int> FPositionIn;
 
