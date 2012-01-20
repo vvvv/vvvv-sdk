@@ -320,7 +320,7 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
                         this.inputstatus[idx] = eTodoMidiStatus.Started;
                         this.OnMidiInputStatusChange(idx, eTodoMidiStatus.Started);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         this.inputstatus[idx] = eTodoMidiStatus.Error;
                         this.OnMidiInputStatusChange(idx, eTodoMidiStatus.Error);

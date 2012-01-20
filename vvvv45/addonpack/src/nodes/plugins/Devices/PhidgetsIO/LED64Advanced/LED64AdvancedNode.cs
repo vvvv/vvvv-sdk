@@ -21,7 +21,7 @@ namespace VVVV.Nodes
                 Category = "Devices",
                 Version = "Phidget",
                 Help = "Wrapper for the Phidget LED 64 Advanced board",
-                Tags = "Controller, LED",
+                Tags = "Controller",
                 Author = "Phlegma",
                 AutoEvaluate = true
 )]

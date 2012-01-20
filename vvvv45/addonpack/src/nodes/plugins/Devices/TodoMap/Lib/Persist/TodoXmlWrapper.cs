@@ -41,10 +41,10 @@ namespace VVVV.TodoMap.Lib.Persist
             string inputline = "<Input AutoStart=\"[inputauto]\" Port=\"[inputport]\" />";
             string outputline = "<Output AutoStart=\"[outputauto]\" Port=\"[outputport]\" />";
 
-            inputline = inputline.Replace("[inputauto]", osc.AutoStartInput.ToString());
+            inputline = inputline.Replace("[inputauto]", osc.AutoStartInput.ToStringEnglish());
             inputline = inputline.Replace("[inputport]", osc.LocalPort.ToString());
 
-            outputline = outputline.Replace("[outputauto]", osc.AutoStartOutput.ToString());
+            outputline = outputline.Replace("[outputauto]", osc.AutoStartOutput.ToStringEnglish());
             outputline = outputline.Replace("[outputport]", osc.RemotePort.ToString());
 
             sb.AppendLine(inputline);
@@ -83,7 +83,7 @@ namespace VVVV.TodoMap.Lib.Persist
             sb.AppendLine("<TodoVariable>");
             sb.AppendLine("<Name>" + var.Name + "</Name>");
             sb.AppendLine("<Category>" + var.Category + "</Category>");
-            sb.AppendLine("<AllowFeedBack>" + var.AllowFeedBack.ToString() + "</AllowFeedBack>");
+            sb.AppendLine("<AllowFeedBack>" + var.AllowFeedBack.ToStringEnglish() + "</AllowFeedBack>");
             sb.AppendLine("<TakeOverMode>" + var.TakeOverMode.ToString() + "</TakeOverMode>");
             sb.AppendLine("<Default>" + var.Default + "</Default>");
             sb.AppendLine("<MinValue>" + var.Mapper.MinValue + "</MinValue>");

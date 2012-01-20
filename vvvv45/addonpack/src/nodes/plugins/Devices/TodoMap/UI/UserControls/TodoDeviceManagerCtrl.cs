@@ -89,19 +89,19 @@ namespace VVVV.TodoMap.UI.UserControls
                 if (status == eTodoMidiStatus.Disconnected || status == eTodoMidiStatus.Error)
                 {
                     this.lvMidiInput.Items[index].BackColor = Color.LightSalmon;
-                    this.lvMidiInput.Items[index].SubItems[2].Text = "False";
+                    this.lvMidiInput.Items[index].SubItems[2].Text =  "False";
                 }
                 else
                 {
                     if (status == eTodoMidiStatus.Started)
                     {
                         this.lvMidiInput.Items[index].BackColor = Color.LightGreen;
-                        this.lvMidiInput.Items[index].SubItems[2].Text = "True";
+                        this.lvMidiInput.Items[index].SubItems[2].Text =  "True";
                     }
                     else
                     {
                         this.lvMidiInput.Items[index].BackColor = Color.White;
-                        this.lvMidiInput.Items[index].SubItems[2].Text = "False";
+                        this.lvMidiInput.Items[index].SubItems[2].Text =  "False";
                     }
                 }
             });
@@ -131,19 +131,19 @@ namespace VVVV.TodoMap.UI.UserControls
                 if (status == eTodoMidiStatus.Disconnected || status == eTodoMidiStatus.Error)
                 {
                     this.lvMidiOutput.Items[index].BackColor = Color.LightSalmon;
-                    this.lvMidiOutput.Items[index].SubItems[2].Text = "False";
+                    this.lvMidiOutput.Items[index].SubItems[2].Text = false.ToString();// "False";
                 }
                 else
                 {
                     if (status == eTodoMidiStatus.Started)
                     {
                         this.lvMidiOutput.Items[index].BackColor = Color.LightGreen;
-                        this.lvMidiOutput.Items[index].SubItems[2].Text = "True";
+                        this.lvMidiOutput.Items[index].SubItems[2].Text = true.ToString();// "True";
                     }
                     else
                     {
                         this.lvMidiOutput.Items[index].BackColor = Color.White;
-                        this.lvMidiOutput.Items[index].SubItems[2].Text = "False";
+                        this.lvMidiOutput.Items[index].SubItems[2].Text = false.ToString(); //"False";
                     }
                 }
             });
@@ -241,7 +241,7 @@ namespace VVVV.TodoMap.UI.UserControls
         {
             if (e.SubItem == 2 || e.SubItem == 3)
             {
-                this.chkenabled.Checked = bool.Parse(e.Item.SubItems[e.SubItem].Text);
+                this.chkenabled.Checked = BoolExtension.ParseEnglish(e.Item.SubItems[e.SubItem].Text);
                 this.lvMidiInput.StartEditing(this.midiInputEditors[e.SubItem], e.Item, e.SubItem);
             }
         }
@@ -252,13 +252,13 @@ namespace VVVV.TodoMap.UI.UserControls
             {
                 e.DisplayText = this.chkenabled.Checked.ToString();
                 e.Item.SubItems[e.SubItem].Text = this.chkenabled.Checked.ToString();
-                this.engine.Midi.SetInputEnabled(int.Parse(e.Item.Text),bool.Parse(e.DisplayText));
+                this.engine.Midi.SetInputEnabled(int.Parse(e.Item.Text), BoolExtension.ParseEnglish(e.DisplayText));
             }
             if (e.SubItem ==3)
             {
                 e.DisplayText = this.chkenabled.Checked.ToString();
                 e.Item.SubItems[e.SubItem].Text = this.chkenabled.Checked.ToString();
-                this.engine.Midi.SetInputAutoStart(int.Parse(e.Item.Text), bool.Parse(e.DisplayText));
+                this.engine.Midi.SetInputAutoStart(int.Parse(e.Item.Text), BoolExtension.ParseEnglish(e.DisplayText));
             }
         }
         #endregion
@@ -268,7 +268,7 @@ namespace VVVV.TodoMap.UI.UserControls
         {
             if (e.SubItem == 2 || e.SubItem == 3)
             {
-                this.chkenabled.Checked = bool.Parse(e.Item.SubItems[e.SubItem].Text);
+                this.chkenabled.Checked = BoolExtension.ParseEnglish(e.Item.SubItems[e.SubItem].Text);
                 this.lvMidiOutput.StartEditing(this.midiOutputEditors[e.SubItem], e.Item, e.SubItem);
             }
         }
@@ -279,13 +279,13 @@ namespace VVVV.TodoMap.UI.UserControls
             {
                 e.DisplayText = this.chkenabled.Checked.ToString();
                 e.Item.SubItems[e.SubItem].Text = this.chkenabled.Checked.ToString();
-                this.engine.Midi.SetOutputEnabled(int.Parse(e.Item.Text), bool.Parse(e.DisplayText));
+                this.engine.Midi.SetOutputEnabled(int.Parse(e.Item.Text), BoolExtension.ParseEnglish(e.DisplayText));
             }
             if (e.SubItem == 3)
             {
                 e.DisplayText = this.chkenabled.Checked.ToString();
                 e.Item.SubItems[e.SubItem].Text = this.chkenabled.Checked.ToString();
-                this.engine.Midi.SetOutputAutoStart(int.Parse(e.Item.Text), bool.Parse(e.DisplayText));
+                this.engine.Midi.SetOutputAutoStart(int.Parse(e.Item.Text), BoolExtension.ParseEnglish(e.DisplayText));
             }
         }
         #endregion
