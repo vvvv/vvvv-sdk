@@ -24,9 +24,9 @@ namespace VVVV.Nodes
 			int maxInputStreamLength = FInputStreams.GetMaxLength();
 			FOutputStream.Length = maxInputStreamLength * inputStreamsLength;
 			
-			using (var memory = MemoryPool<T>.GetMemory(StreamUtils.BUFFER_SIZE))
+			var buffer = MemoryPool<T>.GetArray(StreamUtils.BUFFER_SIZE);
+			try
 			{
-				var buffer = memory.Array;
 				using (var writer = FOutputStream.GetWriter())
 				{
 					int numSlicesToRead = Math.Min(maxInputStreamLength, buffer.Length);
@@ -44,6 +44,10 @@ namespace VVVV.Nodes
 						}
 					}
 				}
+			}
+			finally
+			{
+				MemoryPool<T>.PutArray(buffer);
 			}
 		}
 	}
