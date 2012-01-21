@@ -23,6 +23,7 @@ namespace VVVV.TodoMap.Lib
         public event TodoInputChangedEventDelegate VariableMappingChanged;
         
         public event TodoVariableChangedDelegate VariableValueChanged;
+        public event TodoVariableExtendedChangedDelegate VariableValueChangedExtended;
         
 
         public event EventHandler OnReset;
@@ -134,7 +135,7 @@ namespace VVVV.TodoMap.Lib
             input.Variable.Inputs.Remove(input);
         }
 
-        public void RegisterVariable(TodoVariable var)
+        public void RegisterVariable(TodoVariable var, bool gui)
         {
             if (!this.variables.ContainsKey(var.Name))
             {
@@ -143,17 +144,17 @@ namespace VVVV.TodoMap.Lib
                 var.VariableUpdated += var_VariableUpdated;
                 if (this.VariableRegistered != null)
                 {
-                    this.VariableRegistered(var);
+                    this.VariableRegistered(var,gui);
                 }
             }
         }
 
-        void var_VariableUpdated(TodoVariable var)
+        void var_VariableUpdated(TodoVariable var, bool gui)
         {
-            if (this.VariableChanged != null) { this.VariableChanged(var); }
+            if (this.VariableChanged != null) { this.VariableChanged(var,gui); }
         }
 
-        public void DeleteVariable(TodoVariable var)
+        public void DeleteVariable(TodoVariable var,bool gui)
         {
             if (this.variables.ContainsKey(var.Name))
             {
@@ -166,7 +167,7 @@ namespace VVVV.TodoMap.Lib
                 this.variables.Remove(var.Name);
                 if (this.VariableDeleted != null)
                 {
-                    this.VariableDeleted(var);
+                    this.VariableDeleted(var,gui);
                 }
             }
         }
@@ -176,6 +177,11 @@ namespace VVVV.TodoMap.Lib
             if (this.VariableValueChanged != null)
             {
                 this.VariableValueChanged(var.Name,var.Value);
+            }
+
+            if (this.VariableValueChangedExtended != null)
+            {
+                this.VariableValueChangedExtended(var, source);
             }
 
             if (var.AllowFeedBack)

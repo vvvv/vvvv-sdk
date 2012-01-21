@@ -16,7 +16,7 @@ namespace VVVV.TodoMap.Nodes.Variables
         [Input("Variable Name")]
         IDiffSpread<string> FInVarName;
 
-        [Output("Delete")]
+        [Input("Delete")]
         ISpread<bool> FInDoDelete;
 
         [Output("Is Found")]
@@ -41,7 +41,7 @@ namespace VVVV.TodoMap.Nodes.Variables
                         }
                         else
                         {
-                            this.FInEngine[0].DeleteVariable(var);
+                            this.FInEngine[0].DeleteVariable(var,false);
                             this.FOutIsFound[i] = true;
                         }
                     }

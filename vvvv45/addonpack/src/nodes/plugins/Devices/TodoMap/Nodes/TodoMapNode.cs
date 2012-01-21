@@ -34,6 +34,9 @@ namespace VVVV.TodoMap.Nodes
         [Input("Save", IsSingle = true, IsBang = true)]
         ISpread<bool> FInSave;
 
+        [Input("OSC Ignore List")]
+        IDiffSpread<string> FInIgnoreListOsc;
+
         [Input("Enabled", IsSingle = true)]
         IDiffSpread<bool> FInEnabled;
 
@@ -84,6 +87,11 @@ namespace VVVV.TodoMap.Nodes
                 this.FCLearAllNextFrame = false;
             }
 
+            if (this.FInIgnoreListOsc.IsChanged)
+            {
+                this.FEngine.Osc.IgnoreList = new List<string>(this.FInIgnoreListOsc);
+            }
+
             int maxreg = Math.Max(this.FInVariableName.SliceCount, this.FInRegisterVariable.SliceCount);
             maxreg = Math.Max(maxreg,this.FInVariableCategory.SliceCount);
             for (int i = 0; i < maxreg; i++)
@@ -92,7 +100,7 @@ namespace VVVV.TodoMap.Nodes
                 {
                     TodoVariable var = new TodoVariable(this.FInVariableName[i]);
                     var.Category = this.FInVariableCategory[i];
-                    this.FEngine.RegisterVariable(var);                   
+                    this.FEngine.RegisterVariable(var,false);                   
                 }
             }
 
