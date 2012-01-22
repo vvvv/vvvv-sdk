@@ -90,61 +90,64 @@ namespace VVVV.Nodes
 				}
 			}
 			
-			if (FHandGenerator != null && FHandGenerator.IsDataNew)
+			if (FHandGenerator != null)
 			{
-				FIsTrackedOut.SliceCount = FHandIdOut.SliceCount = FHandPositionOut.SliceCount = FStartPositionIn.SliceCount;
-				//for every given StartPosition check if it is currently tracked
-				for (int i = 0; i < FStartPositionIn.SliceCount; i++)
+				if (FHandGenerator.IsDataNew)
 				{
-					if (FDoTrackStartPosition[i])
+					FIsTrackedOut.SliceCount = FHandIdOut.SliceCount = FHandPositionOut.SliceCount = FStartPositionIn.SliceCount;
+					//for every given StartPosition check if it is currently tracked
+					for (int i = 0; i < FStartPositionIn.SliceCount; i++)
 					{
-						//find userID in FTrackedStartPositions
-						int userID = -1;
-						lock(FTrackedStartPositions)
-							foreach (var tracker in FTrackedStartPositions)
-								if (tracker.Value == FStartPositionIn[i])
+						if (FDoTrackStartPosition[i])
 						{
-							userID = tracker.Key;
-							break;
+							//find userID in FTrackedStartPositions
+							int userID = -1;
+							lock(FTrackedStartPositions)
+								foreach (var tracker in FTrackedStartPositions)
+									if (tracker.Value == FStartPositionIn[i])
+							{
+								userID = tracker.Key;
+								break;
+							}
+							
+							//if present return tracking info
+							if (userID > -1)
+							{
+								FIsTrackedOut[i] = true;
+								FHandIdOut[i] = userID;
+								FHandPositionOut[i] = FTrackedHands[userID];
+							}
+							//else start tracking
+							else
+							{
+								FIsTrackedOut[i] = false;
+								FHandIdOut[i] = -1;
+								FHandPositionOut[i] = FStartPositionIn[i];
+								
+								var p = new Point3D((float)(FStartPositionIn[i].x * 1000), (float)(FStartPositionIn[i].y * 1000), (float)(FStartPositionIn[i].z * 1000));
+								FHandGenerator.StartTracking(p);
+							}
 						}
-						
-						//if present return tracking info
-						if (userID > -1)
-						{
-							FIsTrackedOut[i] = true;
-							FHandIdOut[i] = userID;
-							FHandPositionOut[i] = FTrackedHands[userID];							
-						}
-						//else start tracking
 						else
 						{
+							//find the userID corresponding to the StartPosition
+							//and stop tracking it
+							int userID = -1;
+							lock(FTrackedStartPositions)
+								foreach (var tracker in FTrackedStartPositions)
+									if (tracker.Value == FStartPositionIn[i])
+							{
+								userID = tracker.Key;
+								break;
+							}
+							
+							if (userID > -1)
+								FHandGenerator.StopTracking(userID);
+							
 							FIsTrackedOut[i] = false;
 							FHandIdOut[i] = -1;
 							FHandPositionOut[i] = FStartPositionIn[i];
-							
-							var p = new Point3D((float)(FStartPositionIn[i].x * 1000), (float)(FStartPositionIn[i].y * 1000), (float)(FStartPositionIn[i].z * 1000));
-							FHandGenerator.StartTracking(p);
 						}
-					}
-					else
-					{
-						//find the userID corresponding to the StartPosition
-						//and stop tracking it
-						int userID = -1;
-						lock(FTrackedStartPositions)
-							foreach (var tracker in FTrackedStartPositions)
-								if (tracker.Value == FStartPositionIn[i])
-						{
-							userID = tracker.Key;
-							break;
-						}
-						
-						if (userID > -1)
-							FHandGenerator.StopTracking(userID);
-						
-						FIsTrackedOut[i] = false;
-						FHandIdOut[i] = -1;
-						FHandPositionOut[i] = FStartPositionIn[i];
 					}
 				}
 			}
