@@ -83,6 +83,11 @@ namespace VVVV.Core
         {
             throw new NotImplementedException();
         }
+        
+        public override string ToString()
+        {
+            return string.Format("[DataflowNodeDefinition MethodDefinition={0}]", MethodDefinition);
+        }
     }
 
     public class FunctionNodeDefinition : DataflowNodeDefinition, IFunctionNodeDefinition

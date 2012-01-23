@@ -205,7 +205,7 @@ namespace VVVV.Core
             if (!AcceptConstructorsAsFunctors && methodDefinition.IsConstructor)
                 yield break;
 
-            if (!AcceptNodesThatHaveRefParams && methodDefinition.Parameters.Any(param => param.IsByReference))
+            if (!AcceptNodesThatHaveRefParams && methodDefinition.Parameters.Any(param => !param.IsOut && param.IsByReference))
                 yield break;
 
             if (!AcceptNodesThatWorkWithUnclonableTypes && !(
