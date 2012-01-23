@@ -4,119 +4,12 @@
         <name>Microsoft.Cci.PeReader</name>
     </assembly>
     <members>
-        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.Module">
+        <member name="M:Microsoft.Cci.MetadataReader.ObjectModelImplementation.ExpressionBase.Dispatch(Microsoft.Cci.IMetadataVisitor)">
             <summary>
-            The module which this PEFile corresponds to.
+            Calls the visitor.Visit(T) method where T is the most derived object model node interface type implemented by the concrete type
+            of the object implementing IDoubleDispatcher. The dispatch method does not invoke Dispatch on any child objects. If child traversal
+            is desired, the implementations of the Visit methods should do the subsequent dispatching.
             </summary>
-        </member>
-        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.AssemblyReferenceArray">
-            <summary>
-            Cache for assembly references. This indexes from row id to assembly reference.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ModuleReferenceArray">
-            <summary>
-            Cache for module references. This indexes from row id to module reference.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.LoadAssemblyReferences">
-            <summary>
-            Populates the list of assembly references.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.LoadModuleReferences">
-            <summary>
-            Populates the list of module references.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.FindAssemblyReference(Microsoft.Cci.AssemblyIdentity)">
-            <summary>
-            Finds the assembly ref token corresponding to the given assembly identifier.
-            </summary>
-            <param name="assemblyIdentity"></param>
-            <returns></returns>
-        </member>
-        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.FileReferenceArray">
-            <summary>
-            Cache for file referneces of the assembly.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResourceReferenceArray">
-            <summary>
-            Cache for Resource referneces of the assembly.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.InitFileReferenceArray">
-            <summary>
-            Populates the File reference cache.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.InitResourceReferenceArray">
-            <summary>
-            Populates the Resource reference cache
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResolveNamespaceTypeDefinition(Microsoft.Cci.IName,Microsoft.Cci.IName)">
-            <summary>
-            Given a namespace full name and type's mangled name this method resolves it to a TypeBase.
-            </summary>
-            <param name="namespaceName"></param>
-            <param name="mangledTypeName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResolveNestedTypeDefinition(Microsoft.Cci.INamedTypeDefinition,Microsoft.Cci.IName)">
-            <summary>
-            Given a parent type and mangled type name of the nested type, this method resolves it.
-            </summary>
-            <param name="parentType"></param>
-            <param name="typeName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResolveExportedNamespaceType(Microsoft.Cci.IName,Microsoft.Cci.IName)">
-            <summary>
-            Given a namespace full name and type's mangled name this method resolves it to an aliased type.
-            Aliased type can further be walked to find the exact type it resolved to.
-            </summary>
-            <param name="namespaceName"></param>
-            <param name="mangledTypeName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResolveExportedNestedType(Microsoft.Cci.MetadataReader.ObjectModelImplementation.ExportedTypeAliasBase,Microsoft.Cci.IName)">
-            <summary>
-            Given a alias type and type's mangled name this method resolves it to a nested aliased type.
-            Aliased type can further be walked to find the exact type it resolved to.
-            </summary>
-            <param name="parentType"></param>
-            <param name="typeName"></param>
-            <returns></returns>
-        </member>
-        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ModuleTypeRefReferenceArray">
-            <summary>
-            Cache for type ref's in the module.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResolveModuleTypeRefReference(Microsoft.Cci.MetadataReader.ObjectModelImplementation.IMetadataReaderNamedTypeReference)">
-            <summary>
-             This method resolves TypeRef as a non exported type. i.e. the said type reference refers to the type
-             in the type def table direcly rather than exported type table of the assembly.
-            </summary>
-            <param name="namedTypeReference"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResolveNamespaceTypeRefReferenceAsExportedType(Microsoft.Cci.MetadataReader.ObjectModelImplementation.NamespaceTypeRefReference)">
-            <summary>
-            This method resolved the TypeRef as an exported type. i.e. the said type reference refers to the type
-            in exported type table.
-            </summary>
-            <param name="moduleTypeRefReference"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.FindExportedType(Microsoft.Cci.MetadataReader.ObjectModelImplementation.ExportedTypeAliasBase)">
-            <summary>
-            Finds the given aliased type in the exported type table.
-            </summary>
-            <param name="aliasAliasBase"></param>
-            <returns></returns>
         </member>
         <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.MetadataObject">
             <summary>
@@ -208,61 +101,125 @@
             (for example it might be an array type reference that only occurs in a signature blob), the the value is UInt32.MaxValue.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.MetadataReader.ObjectModelImplementation.ExpressionBase.Dispatch(Microsoft.Cci.IMetadataVisitor)">
+        <member name="T:Microsoft.Cci.MetadataReader.MethodBodyDocument">
             <summary>
-            Calls the visitor.Visit(T) method where T is the most derived object model node interface type implemented by the concrete type
-            of the object implementing IDoubleDispatcher. The dispatch method does not invoke Dispatch on any child objects. If child traversal
-            is desired, the implementations of the Visit methods should do the subsequent dispatching.
+            
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.MetadataReaderTypeKind">
+        <member name="M:Microsoft.Cci.MetadataReader.MethodBodyDocument.#ctor(Microsoft.Cci.MetadataReader.ObjectModelImplementation.MethodDefinition)">
             <summary>
-            Enumeration to identify various type kinds
+            
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.MetadataReaderSignatureTypeCode">
+        <member name="M:Microsoft.Cci.MetadataReader.MethodBodyDocument.GetTypeFromToken(System.UInt32)">
             <summary>
-            A enumeration of all of the types that can be used in IL operations.
+            
             </summary>
-        </member>
-        <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.IMetadataReaderNamedTypeReference">
-            <summary>
-            This represents either a namespace or nested type. This supports fast comparision of nominal types using interned module id, namespace name, type name
-            and parent type reference in case of nested type.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.CoreTypeReference">
-            <summary>
-            Represents the core types such as int, float, object etc from the core assembly.
-            These are created if these types are not directly referenced by the assembly being loaded.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.TypeRefReference">
-            <summary>
-            Represents type reference to types in TypeRef table. This could either be Namespace type reference or nested type reference.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.ObjectModelImplementation.TypeCache.LeastUpperBound(Microsoft.Cci.TypeMemberVisibility,Microsoft.Cci.TypeMemberVisibility)">
-            <summary>
-            Least upper bound of the Type member visibility considered as the following lattice:
-                     Public
-                 FamilyOrAssembly
-               Family        Assembly
-                 FamilyAndAssembly
-                     Private
-                     Other
-            </summary>
-            <param name="left"></param>
-            <param name="right"></param>
+            <param name="standAloneSignatureToken"></param>
             <returns></returns>
         </member>
-        <member name="T:Microsoft.Cci.MetadataReader.CoreTypes">
+        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyDocument.Location">
             <summary>
-            These types are used to implement properties such as ITypeDefinition.IsEnum, which relies on checking
-            that the base type is a well known type form the core assembly (mscorlib, for example). This module
-            may refer to these types via a reference assembly which forwards type references to the real core assembly.
-            Since we should not resolve any type references, and since the host's platform types may be referencing
-            the real core assembly, we need to set up references to types from this module's idea of the core assembly.
+            The location where this document was found, or where it should be stored.
+            This will also uniquely identify the source document within an instance of compilation host.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyDocument.MethodToken">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyDocument.Name">
+            <summary>
+            The name of the document. For example the name of the file if the document corresponds to a file.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.MetadataReader.MethodBodyLocation">
+            <summary>
+            Represents a location in IL operation stream.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.MethodBodyLocation.#ctor(Microsoft.Cci.MetadataReader.MethodBodyDocument,System.UInt32)">
+            <summary>
+            Allocates an object that represents a location in IL operation stream.
+            </summary>
+            <param name="document">The document containing this method whose body contains this location.</param>
+            <param name="offset">Offset into the IL Stream.</param>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyLocation.Document">
+            <summary>
+            The document containing this method whose body contains this location.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyLocation.MethodDefinition">
+            <summary>
+            The method whose body contains this IL operation whose location this is.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyLocation.Offset">
+            <summary>
+            Offset into the IL Stream.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.MetadataReader.Errors.IDirectoryLocation">
+            <summary>
+            Represents a location in a directory of the PE File.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.Errors.IDirectoryLocation.BinaryDocument">
+            <summary>
+            The binary document corresponding to the PE File.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.Errors.IDirectoryLocation.DirectoryName">
+            <summary>
+            The name of the directory of the PE File.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.Errors.IDirectoryLocation.Offset">
+            <summary>
+            Offset into the directory.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.MetadataReader.Errors.IMetadataStreamLocation">
+            <summary>
+            Represents a location in the Metadata stream.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataStreamLocation.BinaryDocument">
+            <summary>
+            The binary document corresponding to the metadata stream.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataStreamLocation.StreamName">
+            <summary>
+            The name of the metadata stream corresponding to the location.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataStreamLocation.Offset">
+            <summary>
+            Offset into the IL Stream.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.MetadataReader.Errors.IMetadataLocation">
+            <summary>
+            Represents a location in the Metadata tables.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataLocation.BinaryDocument">
+            <summary>
+            The binary document corresponding to the metadata tables.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataLocation.TableName">
+            <summary>
+            The name of the table represented by the location.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataLocation.RowId">
+            <summary>
+            The row number corresponding to the location.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.MetadataReaderException">
@@ -450,64 +407,189 @@
             </summary>
             <param name="location">A path to the file that contains the unit of metdata to load.</param>
         </member>
-        <member name="T:Microsoft.Cci.MetadataReader.Errors.IDirectoryLocation">
+        <member name="T:Microsoft.Cci.MetadataReader.CoreTypes">
             <summary>
-            Represents a location in a directory of the PE File.
+            These types are used to implement properties such as ITypeDefinition.IsEnum, which relies on checking
+            that the base type is a well known type form the core assembly (mscorlib, for example). This module
+            may refer to these types via a reference assembly which forwards type references to the real core assembly.
+            Since we should not resolve any type references, and since the host's platform types may be referencing
+            the real core assembly, we need to set up references to types from this module's idea of the core assembly.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.Errors.IDirectoryLocation.BinaryDocument">
+        <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.MetadataReaderTypeKind">
             <summary>
-            The binary document corresponding to the PE File.
+            Enumeration to identify various type kinds
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.Errors.IDirectoryLocation.DirectoryName">
+        <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.MetadataReaderSignatureTypeCode">
             <summary>
-            The name of the directory of the PE File.
+            A enumeration of all of the types that can be used in IL operations.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.Errors.IDirectoryLocation.Offset">
+        <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.IMetadataReaderNamedTypeReference">
             <summary>
-            Offset into the directory.
+            This represents either a namespace or nested type. This supports fast comparision of nominal types using interned module id, namespace name, type name
+            and parent type reference in case of nested type.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.MetadataReader.Errors.IMetadataStreamLocation">
+        <member name="M:Microsoft.Cci.MetadataReader.ObjectModelImplementation.IMetadataReaderNamedTypeReference.TryResolveAsExportedType">
             <summary>
-            Represents a location in the Metadata stream.
+            Type references resolve to type definitions. The resolution process traverses zero or more entries in exported type tables, also known as type aliases.
+            If a reference is indirected via a type alias, ITypeReference.IsAlias is true and ITypeReference.AliasForType exposes the information in the relevant row of the exported type table.
+            This method returns an object with that information, if available. If not available, it returns null.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataStreamLocation.BinaryDocument">
+        <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.CoreTypeReference">
             <summary>
-            The binary document corresponding to the metadata stream.
+            Represents the core types such as int, float, object etc from the core assembly.
+            These are created if these types are not directly referenced by the assembly being loaded.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataStreamLocation.StreamName">
+        <member name="T:Microsoft.Cci.MetadataReader.ObjectModelImplementation.TypeRefReference">
             <summary>
-            The name of the metadata stream corresponding to the location.
+            Represents type reference to types in TypeRef table. This could either be Namespace type reference or nested type reference.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataStreamLocation.Offset">
+        <member name="M:Microsoft.Cci.MetadataReader.ObjectModelImplementation.TypeRefReference.TryResolveAsExportedType">
             <summary>
-            Offset into the IL Stream.
+            Type references resolve to type definitions. The resolution process traverses zero or more entries in exported type tables, also known as type aliases.
+            If a reference is indirected via a type alias, ITypeReference.IsAlias is true and ITypeReference.AliasForType exposes the information in the relevant row of the exported type table.
+            This method returns an object with that information, if available. If not available, it returns null.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.MetadataReader.Errors.IMetadataLocation">
+        <member name="M:Microsoft.Cci.MetadataReader.ObjectModelImplementation.NamespaceTypeRefReference.TryResolveAsExportedType">
             <summary>
-            Represents a location in the Metadata tables.
+            Type references resolve to type definitions. The resolution process traverses zero or more entries in exported type tables, also known as type aliases.
+            If a reference is indirected via a type alias, ITypeReference.IsAlias is true and ITypeReference.AliasForType exposes the information in the relevant row of the exported type table.
+            This method returns an object with that information, if available. If not available, it returns null.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataLocation.BinaryDocument">
+        <member name="M:Microsoft.Cci.MetadataReader.ObjectModelImplementation.TypeCache.LeastUpperBound(Microsoft.Cci.TypeMemberVisibility,Microsoft.Cci.TypeMemberVisibility)">
             <summary>
-            The binary document corresponding to the metadata tables.
+            Least upper bound of the Type member visibility considered as the following lattice:
+                     Public
+                 FamilyOrAssembly
+               Family        Assembly
+                 FamilyAndAssembly
+                     Private
+                     Other
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MemoryReader.ReadCompressedUInt32">
+            <summary>
+            Returns -1 if the first byte is 0xFF. This is used to represent the index for the null string.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataLocation.TableName">
+        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.Module">
             <summary>
-            The name of the table represented by the location.
+            The module which this PEFile corresponds to.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.Errors.IMetadataLocation.RowId">
+        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.AssemblyReferenceArray">
             <summary>
-            The row number corresponding to the location.
+            Cache for assembly references. This indexes from row id to assembly reference.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.AssemblyReferences">
+            <summary>
+            The value to return for IModule.AssemblyReferences. May have been modified by the host, so
+            this is not the same as AssemblyReferenceArray.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ModuleReferenceArray">
+            <summary>
+            Cache for module references. This indexes from row id to module reference.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.LoadAssemblyReferences">
+            <summary>
+            Populates the list of assembly references.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.LoadModuleReferences">
+            <summary>
+            Populates the list of module references.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.FindAssemblyReference(Microsoft.Cci.AssemblyIdentity)">
+            <summary>
+            Finds the assembly ref token corresponding to the given assembly identifier.
+            </summary>
+            <param name="assemblyIdentity"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.FileReferenceArray">
+            <summary>
+            Cache for file referneces of the assembly.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResourceReferenceArray">
+            <summary>
+            Cache for Resource referneces of the assembly.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.InitFileReferenceArray">
+            <summary>
+            Populates the File reference cache.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.InitResourceReferenceArray">
+            <summary>
+            Populates the Resource reference cache
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResolveNamespaceTypeDefinition(Microsoft.Cci.IName,Microsoft.Cci.IName)">
+            <summary>
+            Given a namespace full name and type's mangled name this method resolves it to a TypeBase.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResolveNestedTypeDefinition(Microsoft.Cci.INamedTypeDefinition,Microsoft.Cci.IName)">
+            <summary>
+            Given a parent type and mangled type name of the nested type, this method resolves it.
+            </summary>
+            <param name="parentType"></param>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.TryToResolveAsNamespaceTypeAlias(Microsoft.Cci.IName,Microsoft.Cci.IName)">
+            <summary>
+            Given a namespace full name and type's mangled name this method resolves it to a type alias, if such an alias exists in this module.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResolveExportedNestedType(Microsoft.Cci.MetadataReader.ObjectModelImplementation.ExportedTypeAliasBase,Microsoft.Cci.IName)">
+            <summary>
+            Given a alias type and type's mangled name this method resolves it to a nested aliased type.
+            Aliased type can further be walked to find the exact type it resolved to.
+            </summary>
+            <param name="parentType"></param>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ModuleTypeRefReferenceArray">
+            <summary>
+            Cache for type ref's in the module.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.ResolveModuleTypeRefReference(Microsoft.Cci.MetadataReader.ObjectModelImplementation.IMetadataReaderNamedTypeReference)">
+            <summary>
+             This method resolves TypeRef as a non exported type. i.e. the said type reference refers to the type
+             in the type def table direcly rather than exported type table of the assembly.
+            </summary>
+            <param name="namedTypeReference"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.TryToResolveNamespaceTypeReferenceAsExportedType(Microsoft.Cci.MetadataReader.ObjectModelImplementation.NamespaceTypeRefReference)">
+            <summary>
+            This method tries to resolves the give namespace type reference as an exported type.
+            </summary>
+            <param name="namespaceTypeReference"></param>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.PEFileToObjectModel.GetReferenceToAliasedType(Microsoft.Cci.MetadataReader.ObjectModelImplementation.ExportedTypeAliasBase)">
+            <summary>
+            Returns a reference to the type that the given alias stands for. For example, if alias is a type forwarder, return a reference to the forwarded type (in another assembly).
             </summary>
         </member>
         <member name="T:Microsoft.Cci.MetadataReader.DefaultWindowsRuntimeHost">
@@ -573,12 +655,21 @@
             Usually the value in methodDefinition, but occassionally something else.
             </returns>
         </member>
+        <member name="M:Microsoft.Cci.MetadataReader.WindowsRuntimeMetadataReaderHost.Redirect(Microsoft.Cci.IUnit,System.Collections.Generic.IEnumerable{Microsoft.Cci.IAssemblyReference})">
+            <summary>
+            Provides the host with an opportunity to add, remove or substitute assembly references in the given list.
+            This avoids the cost of rewriting the entire unit in order to make such changes.
+            </summary>
+            <param name="referringUnit">A reference to the unit that has these references.</param>
+            <param name="assemblyReferences">The assembly references to substitute.</param>
+            <returns>Usually assemblyReferences, but occasionally a modified enumeration.</returns>
+        </member>
         <member name="M:Microsoft.Cci.MetadataReader.WindowsRuntimeMetadataReaderHost.Redirect(Microsoft.Cci.IUnit,Microsoft.Cci.ITypeReference)">
             <summary>
             Provides the host with an opportunity to substitute one type reference for another during metadata reading.
             This avoids the cost of rewriting the entire unit in order to make such changes.
             </summary>
-            <param name="referringUnit">The unit that is referencing the type.</param>
+            <param name="definingUnit">A reference to the unit that is defining the type.</param>
             <param name="typeReference">A type reference encountered during metadata reading.</param>
             <returns>
             Usually the value in typeReference, but occassionally something else.
@@ -594,6 +685,11 @@
             <returns>
             Usually the value in customAttribute, but occassionally another custom attribute.
             </returns>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.WindowsRuntimeMetadataReaderHost.UnifyAssembly(Microsoft.Cci.AssemblyIdentity)">
+            <summary>
+            Default implementation of UnifyAssembly. Override this method to change the behavior.
+            </summary>
         </member>
         <member name="M:Microsoft.Cci.MetadataReader.DefaultWindowsRuntimeHost.#ctor(System.Boolean)">
             <summary>
@@ -635,9 +731,24 @@
             Returns an identity that is the same as CoreAssemblyIdentity, except that the name is "System".
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.GetSystemObjectModelSymbolicIdentity">
+            <summary>
+            Returns an identity that is the same as CoreAssemblyIdentity, except that the name is "System".
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.GetSystemRuntimeInteropServicesWindowsRuntimeSymbolicIdentity">
+            <summary>
+            Returns an identity that is the same as CoreAssemblyIdentity, except that the name is "System.Runtime.InteropServices.WindowsRuntime" and the version is at least 4.0.
+            </summary>
+        </member>
         <member name="M:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.GetSystemRuntimeWindowsRuntimeSymbolicIdentity">
             <summary>
             Returns an identity that is the same as CoreAssemblyIdentity, except that the name is "System.Runtime.WindowsRuntime" and the version is at least 4.0.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.GetSystemRuntimeWindowsRuntimeUIXamlSymbolicIdentity">
+            <summary>
+            Returns an identity that is the same as CoreAssemblyIdentity, except that the name is "System.Runtime.WindowsRuntime.UI.Xaml" and the version is at least 4.0.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.System">
@@ -645,9 +756,24 @@
             A reference to the CLR System assembly
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.SystemObjectModel">
+            <summary>
+            A reference to the CLR System.ObjectModel contract assembly
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.SystemRuntimeInteropServicesWindowsRuntime">
+            <summary>
+            A reference to the assembly that contains CLR types to substitute for Windows Runtime interop types, i.e. System.Runtime.InteropServices.WindowsRuntime.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.SystemRuntimeWindowsRuntime">
             <summary>
             A reference to the assembly that contains CLR types to substitute for Windows Runtime types.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.SystemRuntimeWindowsRuntimeUIXaml">
+            <summary>
+            A reference to the assembly that contains Xaml types to substitute for Windows Runtime types.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.SystemAttributeTargets">
@@ -715,6 +841,11 @@
             System.EventHandler`1
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.SystemIDisposable">
+            <summary>
+            System.IDisposable
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.SystemNullable1">
             <summary>
             System.Nullable`1
@@ -735,9 +866,14 @@
             System.Uri
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsFoundationColor">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.SystemWindowsInputICommand">
             <summary>
-            Windows.Foundation.Color
+            System.Windows.Input.ICommand
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIColor">
+            <summary>
+            Windows.UI.Color
             </summary>
         </member>
         <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsFoundationPoint">
@@ -755,130 +891,64 @@
             Windows.Foundation.Size
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUICornerRadius">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlCornerRadius">
             <summary>
-            Windows.UI.DirectUI.CornerRadius
+            Windows.UI.Xaml.CornerRadius
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIDuration">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlDuration">
             <summary>
-            Windows.UI.DirectUI.Duration
+            Windows.UI.Xaml.Duration
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIDurationType">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlDurationType">
             <summary>
-            Windows.UI.DirectUI.DurationType
+            Windows.UI.Xaml.DurationType
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIGridLength">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlGridLength">
             <summary>
-            Windows.UI.DirectUI.GridLength
+            Windows.UI.Xaml.GridLength
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIGridUnitType">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlGridUnitType">
             <summary>
-            Windows.UI.DirectUI.GridUnitType
+            Windows.UI.Xaml.GridUnitType
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIThickness">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlThickness">
             <summary>
-            Windows.UI.DirectUI.Thickness
+            Windows.UI.Xaml.Thickness
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIControlsPrimitivesGeneratorPosition">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlControlsPrimitivesGeneratorPosition">
             <summary>
-            Windows.UI.DirectUI.Controls.Primitives.GeneratorPosition
+            Windows.UI.Xaml.Controls.Primitives.GeneratorPosition
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIMediaMatrix">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlMediaMatrix">
             <summary>
-            Windows.UI.DirectUI.Media.Matrix
+            Windows.UI.Xaml.Media.Matrix
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIMediaAnimationKeyTime">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlMediaAnimationKeyTime">
             <summary>
-            Windows.UI.DirectUI.Media.Animation.KeyTime
+            Windows.UI.Xaml.Media.Animation.KeyTime
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIMediaAnimationRepeatBehavior">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlMediaAnimationRepeatBehavior">
             <summary>
-            Windows.UI.DirectUI.Media.Animation.RepeatBehavior
+            Windows.UI.Xaml.Media.Animation.RepeatBehavior
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIMediaAnimationRepeatBehaviorType">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlMediaAnimationRepeatBehaviorType">
             <summary>
-            Windows.UI.DirectUI.Media.Animation.RepeatBehaviorType
+            Windows.UI.Xaml.Media.Animation.RepeatBehaviorType
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIDirectUIMediaMedia3DMatrix3D">
+        <member name="P:Microsoft.Cci.MetadataReader.WindowsRuntimePlatform.WindowsUIXamlMediaMedia3DMatrix3D">
             <summary>
-            Windows.UI.DirectUI.Media.Media3D.Matrix3D
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.UtilityDataStructures.MemoryReader.ReadCompressedUInt32">
-            <summary>
-            Returns -1 if the first byte is 0xFF. This is used to represent the index for the null string.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.MetadataReader.MethodBodyDocument">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.MethodBodyDocument.#ctor(Microsoft.Cci.MetadataReader.ObjectModelImplementation.MethodDefinition)">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.MethodBodyDocument.GetTypeFromToken(System.UInt32)">
-            <summary>
-            
-            </summary>
-            <param name="standAloneSignatureToken"></param>
-            <returns></returns>
-        </member>
-        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyDocument.Location">
-            <summary>
-            The location where this document was found, or where it should be stored.
-            This will also uniquely identify the source document within an instance of compilation host.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyDocument.MethodToken">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyDocument.Name">
-            <summary>
-            The name of the document. For example the name of the file if the document corresponds to a file.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.MetadataReader.MethodBodyLocation">
-            <summary>
-            Represents a location in IL operation stream.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.MetadataReader.MethodBodyLocation.#ctor(Microsoft.Cci.MetadataReader.MethodBodyDocument,System.UInt32)">
-            <summary>
-            Allocates an object that represents a location in IL operation stream.
-            </summary>
-            <param name="document">The document containing this method whose body contains this location.</param>
-            <param name="offset">Offset into the IL Stream.</param>
-        </member>
-        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyLocation.Document">
-            <summary>
-            The document containing this method whose body contains this location.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyLocation.MethodDefinition">
-            <summary>
-            The method whose body contains this IL operation whose location this is.
-            </summary>
-            <value></value>
-        </member>
-        <member name="P:Microsoft.Cci.MetadataReader.MethodBodyLocation.Offset">
-            <summary>
-            Offset into the IL Stream.
+            Windows.UI.Xaml.Media.Media3D.Matrix3D
             </summary>
         </member>
     </members>
