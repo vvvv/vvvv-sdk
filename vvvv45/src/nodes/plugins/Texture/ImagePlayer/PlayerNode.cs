@@ -23,6 +23,9 @@ namespace VVVV.Nodes.ImagePlayer
         [Input("Filemask", DefaultString = ImagePlayer.DEFAULT_FILEMASK)]
         public ISpread<string> FFilemaskIn;
         
+        [Input("Buffer Size IO", DefaultValue = ImagePlayer.DEFAULT_BUFFER_SIZE, Visibility = PinVisibility.Hidden)]
+        public ISpread<int> FBufferSizeIn;
+        
         [Input("Visible Frames")]
         public ISpread<ISpread<int>> FVisibleFramesIn;
         
@@ -64,6 +67,7 @@ namespace VVVV.Nodes.ImagePlayer
             // SpreadMax is not correct (should be correct in streams branch).
             spreadMax = FDirectoryIn
                 .CombineWith(FFilemaskIn)
+                .CombineWith(FBufferSizeIn)
                 .CombineWith(FVisibleFramesIn)
                 .CombineWith(FPreloadFramesIn)
                 .CombineWith(FReloadIn);
@@ -118,6 +122,7 @@ namespace VVVV.Nodes.ImagePlayer
                 FTextureOut[i] = imagePlayer.Preload(
                     FVisibleFramesIn[i],
                     FPreloadFramesIn[i],
+                    FBufferSizeIn[i],
                     out durationIO,
                     out durationTexture,
                     out unusedFrames);

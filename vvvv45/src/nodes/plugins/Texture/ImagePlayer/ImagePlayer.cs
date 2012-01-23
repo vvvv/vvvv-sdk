@@ -31,6 +31,7 @@ namespace VVVV.Nodes.ImagePlayer
     public class ImagePlayer : IDisposable
     {
         public const string DEFAULT_FILEMASK = "*";
+        public const int DEFAULT_BUFFER_SIZE = 0x2000;
         
         private string FDirectory = string.Empty;
         private string FFilemask = DEFAULT_FILEMASK;
@@ -237,10 +238,10 @@ namespace VVVV.Nodes.ImagePlayer
             return FFrameBuffer.Receive();
         }
         
-        private FrameInfo CreateFrameInfo(int frameNr)
+        private FrameInfo CreateFrameInfo(int frameNr, int bufferSize)
         {
             frameNr = VMath.Zmod(frameNr, FFiles.Length);
-            return new FrameInfo(frameNr, FFiles[frameNr]);
+            return new FrameInfo(frameNr, FFiles[frameNr], bufferSize);
         }
         
         private static Frame GetEmptyFrame()
@@ -250,12 +251,13 @@ namespace VVVV.Nodes.ImagePlayer
         
         private static FrameInfo GetEmptyFrameInfo()
         {
-            return new FrameInfo(-1, string.Empty);
+            return new FrameInfo(-1, string.Empty, DEFAULT_BUFFER_SIZE);
         }
         
         public ISpread<Frame> Preload(
             ISpread<int> visibleFrameNrs,
             ISpread<int> preloadFrameNrs,
+            int bufferSize,
             out double durationIO,
             out double durationTexture,
             out int unusedFrames)
@@ -284,7 +286,7 @@ namespace VVVV.Nodes.ImagePlayer
             var visibleFramesEnumerator = FVisibleFrames.GetEnumerator();
             for (int i = 0; i < visibleFrameNrs.SliceCount; i++)
             {
-                var newFrameInfo = CreateFrameInfo(visibleFrameNrs[i]);
+                var newFrameInfo = CreateFrameInfo(visibleFrameNrs[i], bufferSize);
                 
                 while (visibleFramesEnumerator.MoveNext())
                 {
@@ -360,7 +362,7 @@ namespace VVVV.Nodes.ImagePlayer
             var scheduledFrameInfosEnumerator = FScheduledFrameInfos.Where(frameInfo => !frameInfo.IsCanceled).GetEnumerator();
             for (int i = 0; i < preloadFrameNrs.SliceCount; i++)
             {
-                var newFrameInfo = CreateFrameInfo(preloadFrameNrs[i]);
+                var newFrameInfo = CreateFrameInfo(preloadFrameNrs[i], bufferSize);
                 
                 while (scheduledFrameInfosEnumerator.MoveNext())
                 {
@@ -452,15 +454,16 @@ namespace VVVV.Nodes.ImagePlayer
             timer.Start();
             
             var filename = frameInfo.Filename;
+            var bufferSize = frameInfo.BufferSize;
             var cancellationToken = frameInfo.Token;
             var memoryStream = FStreamPool.GetObject();
-            var buffer = MemoryPool.GetMemory(0x2000);
+            var buffer = MemoryPool.GetMemory(bufferSize);
             
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 
-                using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+                using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize))
                 {
                     memoryStream.Position = 0;
                     if (fileStream.Length != memoryStream.Length)

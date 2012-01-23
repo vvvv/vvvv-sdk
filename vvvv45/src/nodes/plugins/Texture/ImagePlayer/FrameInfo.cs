@@ -7,12 +7,14 @@ namespace VVVV.Nodes.ImagePlayer
 	{
 		private readonly int FFrameNr;
 		private readonly string FFilename;
+		private readonly int FBufferSize;
 		private readonly CancellationTokenSource FCancellationTokenSource;
 		
-		public FrameInfo(int frameNr, string filename)
+		public FrameInfo(int frameNr, string filename, int bufferSize)
 		{
 			FFrameNr = frameNr;
 			FFilename = filename;
+			FBufferSize = bufferSize;
 			
 			FCancellationTokenSource = new CancellationTokenSource();
 		}
@@ -31,6 +33,14 @@ namespace VVVV.Nodes.ImagePlayer
 			{
 				return FFilename;
 			}
+		}
+		
+		public int BufferSize
+		{
+		    get
+		    {
+		        return FBufferSize;
+		    }
 		}
 		
 		public bool IsCanceled
