@@ -39,7 +39,7 @@ namespace VVVV.Hosting.IO.Streams
 				{
 					// Compute offset
 					// TODO: Find faster solution.
-					FBinSizeReader.Position = value;
+					FBinSizeReader.Position = FPosition;
 					for (int i = FPosition; i < value; i++)
 					{
 						FCurrentOffset += FBinSizeReader.Read();
