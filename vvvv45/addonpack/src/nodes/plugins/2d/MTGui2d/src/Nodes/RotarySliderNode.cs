@@ -66,7 +66,7 @@ namespace VVVV.Nodes
 			{
 				//fill out nodes info
 				IPluginInfo Info = new PluginInfo();
-				Info.Name = "MTRotarySlider";
+				Info.Name = "RotarySlider";
 				Info.Category = "GUI";
 				Info.Version = "Multitouch";
 				Info.Help = "A spread of rotary knob groups, for multi touch";
