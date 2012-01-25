@@ -1,29 +1,7 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\MonitorPower (System) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\MonitorPower (System) help.v4p">
    <BOUNDS height="5985" left="3165" top="3750" type="Window" width="6540">
    </BOUNDS>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="405" top="1050" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="4980" top="5565" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="2895" left="405" top="1050" type="Box" width="2805">
-   </BOUNDS>
-   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="0.00000">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1.00000">
-   </PIN>
-   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
-   </PIN>
-   <PIN pinname="Show Value" slicecount="1" values="0.00000">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|right click to turn off your monitor.|">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
    <BOUNDS height="255" left="375" top="4545" type="Node" width="840">
    </BOUNDS>
@@ -31,13 +9,13 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Use with caution!!!|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Use with caution!!!|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="30.00000">
+   <PIN pinname="Size" slicecount="1" values="30">
    </PIN>
    </NODE>
    <NODE id="0" nodename="MonitorPower (System)">
@@ -48,20 +26,18 @@
    <PIN pinname="Monitor Power (Take Care!)" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Monitor Power (Take Care!)" srcnodeid="2" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
    <BOUNDS height="255" left="15" top="390" type="Node" width="570">
    </BOUNDS>
-   <BOUNDS height="540" left="15" top="390" type="Box" width="4575">
+   <BOUNDS height="525" left="15" top="390" type="Box" width="5235">
    </BOUNDS>
    <BOUNDS height="160" left="6450" top="17760" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Switches off your monitor.&cr;&lf;After some milliseconds, the OS switches the monitor back on|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Switches off your monitor.&cr;&lf;Moving the mouse or pressing a button makes the OS to turn it back on.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
@@ -71,13 +47,33 @@
    </BOUNDS>
    <BOUNDS height="160" left="6450" top="17760" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|MonitorPower - System|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|MonitorPower - System|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="12.00000">
+   <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="825" top="1425" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2100" left="825" top="1425" type="Box" width="2070">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Monitor Power (Take Care!)" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
    </PATCH>
