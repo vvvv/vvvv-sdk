@@ -110,6 +110,11 @@ namespace VVVV.Core
         /// the outcome from a compilation of the visual source code of a patch that is a dataflow node definition
         /// </summary>
         IMethodDefinition MethodDefinition { get; }
+        
+        /// <summary>
+        /// the type of the state
+        /// </summary>
+        ITypeReference StateType { get; }
 
         /// <summary>
         /// Creates a node reference defined by this node definition; typically used to build up patches
@@ -117,29 +122,6 @@ namespace VVVV.Core
         /// <returns> a fresh node reference pointing to this definition </returns>
         new IDataFlowNodeReference CreateReference();
     }
-
-    /// <summary>
-    /// a function node definition defines a pure dataflow node with nothing but inputs and outputs
-    /// </summary>
-    public interface IFunctionNodeDefinition : IDataflowNodeDefinition
-    {
-    }
-
-    /// <summary>
-    /// a functors node definition refers to a node that needs a state to run on
-    /// </summary>
-    public interface IFunctorNodeDefinition : IDataflowNodeDefinition
-    {
-        /// <summary>
-        /// the type of the state
-        /// </summary>
-        ITypeReference StateType { get; }
-    }
-
-
-
-
-
 
     /// <summary>
     /// a pin as defined by source code (textually via an method parameter or visually via a hub (inlet,outlet))

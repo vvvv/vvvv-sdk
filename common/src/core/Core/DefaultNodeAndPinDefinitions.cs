@@ -78,6 +78,8 @@ namespace VVVV.Core
         }
 
         public Microsoft.Cci.IMethodDefinition MethodDefinition { get; set; }
+        
+        public Microsoft.Cci.ITypeReference StateType { get; set; }
 
         public new IDataFlowNodeReference CreateReference()
         {
@@ -89,19 +91,6 @@ namespace VVVV.Core
             return string.Format("[DataflowNodeDefinition MethodDefinition={0}]", MethodDefinition);
         }
     }
-
-    public class FunctionNodeDefinition : DataflowNodeDefinition, IFunctionNodeDefinition
-    {
-    }
-
-    public class FunctorNodeDefinition : DataflowNodeDefinition, IFunctorNodeDefinition
-    {
-        public Microsoft.Cci.ITypeReference StateType { get; set; }
-    }
-
-
-
-
 
 
     public class DataflowPinDefinition : IDataflowPinDefinition
