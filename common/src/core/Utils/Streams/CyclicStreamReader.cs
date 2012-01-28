@@ -7,7 +7,7 @@ namespace VVVV.Utils.Streams
 	{
 		private readonly IStreamReader<T> FReader;
 		
-		public CyclicStreamReader(IInStream<T> stream)
+		internal CyclicStreamReader(IInStream<T> stream)
 		{
 			FReader = stream.GetReader();
 			Eos = stream.Length == 0;
@@ -78,9 +78,6 @@ namespace VVVV.Utils.Streams
 		{
 			int readerLength = FReader.Length;
 			
-			// Exception handling
-			if (readerLength == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
-			
 			// Normalize the stride
 			stride %= readerLength;
 			
@@ -113,6 +110,11 @@ namespace VVVV.Utils.Streams
 						numSlicesRead += FReader.Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 						// Exit the loop once Position is back at beginning
 						if ((FReader.Position %= readerLength) == 0) break;
+					}
+					
+					if (numSlicesRead == length)
+					{
+					    break;
 					}
 					
 					// Save end of possible block

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using SlimDX;
+using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.SlimDX;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VColor;
@@ -129,18 +130,18 @@ namespace VVVV.Hosting.IO.Streams
             public abstract int Write(T[] buffer, int index, int length, int stride = 1);
         }
         
-        private readonly Action<int> FSetDstLengthAction;
+        private readonly IPluginOut FPluginOut;
         protected readonly int FDimension;
         protected readonly double** FPPDst;
         protected int FDstLength;
         protected int FLength;
         protected int FRefCount;
         
-        public VectorOutStream(int dimension, double** ppDst, Action<int> setDstLengthAction)
+        public VectorOutStream(int dimension, double** ppDst, IPluginOut pluginOut)
         {
             FDimension = dimension;
             FPPDst = ppDst;
-            FSetDstLengthAction = setDstLengthAction;
+            FPluginOut = pluginOut;
         }
         
         public object Clone()
@@ -158,7 +159,7 @@ namespace VVVV.Hosting.IO.Streams
             {
                 if (value != FLength)
                 {
-                    FSetDstLengthAction(value);
+                    FPluginOut.SliceCount = value;
                     FLength = value;
                     FDstLength = value * FDimension;
                 }
@@ -197,8 +198,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector2DOutStream(double** ppDst, Action<int> setDstLengthAction)
-            : base(2, ppDst, setDstLengthAction)
+        public Vector2DOutStream(double** ppDst, IPluginOut pluginOut)
+            : base(2, ppDst, pluginOut)
         {
             
         }
@@ -233,8 +234,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector3DOutStream(double** ppDst, Action<int> setDstLengthAction)
-            : base(3, ppDst, setDstLengthAction)
+        public Vector3DOutStream(double** ppDst, IPluginOut pluginOut)
+            : base(3, ppDst, pluginOut)
         {
             
         }
@@ -269,8 +270,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector4DOutStream(double** ppDst, Action<int> setDstLengthAction)
-            : base(4, ppDst, setDstLengthAction)
+        public Vector4DOutStream(double** ppDst, IPluginOut pluginOut)
+            : base(4, ppDst, pluginOut)
         {
             
         }
@@ -305,8 +306,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector2OutStream(double** ppDst, Action<int> setDstLengthAction)
-            : base(2, ppDst, setDstLengthAction)
+        public Vector2OutStream(double** ppDst, IPluginOut pluginOut)
+            : base(2, ppDst, pluginOut)
         {
             
         }
@@ -341,8 +342,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector3OutStream(double** ppDst, Action<int> setDstLengthAction)
-            : base(3, ppDst, setDstLengthAction)
+        public Vector3OutStream(double** ppDst, IPluginOut pluginOut)
+            : base(3, ppDst, pluginOut)
         {
             
         }
@@ -377,8 +378,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector4OutStream(double** ppDst, Action<int> setDstLengthAction)
-            : base(4, ppDst, setDstLengthAction)
+        public Vector4OutStream(double** ppDst, IPluginOut pluginOut)
+            : base(4, ppDst, pluginOut)
         {
             
         }

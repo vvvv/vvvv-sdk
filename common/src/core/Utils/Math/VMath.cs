@@ -10,6 +10,7 @@
  */
  
 using System;
+using System.Diagnostics.Contracts;
 
 /// <summary>
 /// VVVV Math Utilities 
@@ -175,6 +176,24 @@ namespace VVVV.Utils.VMath
         {
             if (n < 0) { n = -n; }
             return Factorial(n) / (Factorial(k) * Factorial(n - k));
+        }
+        
+        /// <summary>
+        /// Raises x to the power of y.
+        /// </summary>
+        /// <param name="x">The base.</param>
+        /// <param name="y">The exponent.</param>
+        /// <returns>Returns x raised to the power of y.</returns>
+        /// <remarks>This method should be considerably faster than Math.Pow for small y.</remarks>
+        public static double Pow(double x, int y)
+        {
+            Contract.Requires(y >= 0);
+            var result = 1.0;
+            for (int i = 0; i < y; i++)
+            {
+                result *= x;
+            }
+            return result;
         }
 
         #endregion numeric functions

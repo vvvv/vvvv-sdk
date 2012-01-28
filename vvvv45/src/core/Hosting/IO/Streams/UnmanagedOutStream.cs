@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SlimDX;
+using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
@@ -78,13 +79,13 @@ namespace VVVV.Hosting.IO.Streams
 			}
 		}
 		
-		private readonly Action<int> FSetDstLengthAction;
+		private readonly IPluginOut FPluginOut;
 		protected int FLength;
 		protected int FRefCount;
 		
-		public UnmanagedOutStream(Action<int> setDstLengthAction)
+		public UnmanagedOutStream(IPluginOut pluginOut)
 		{
-			FSetDstLengthAction = setDstLengthAction;
+			FPluginOut = pluginOut;
 		}
 		
 		public int Length
@@ -97,7 +98,7 @@ namespace VVVV.Hosting.IO.Streams
 			{
 				if (value != FLength)
 				{
-					FSetDstLengthAction(value);
+					FPluginOut.SliceCount = value;
 					FLength = value;
 				}
 			}
@@ -161,8 +162,8 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly double** FPPDst;
 		
-		public DoubleOutStream(double** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+		public DoubleOutStream(double** ppDst, IPluginOut pluginOut)
+			: base(pluginOut)
 		{
 			FPPDst = ppDst;
 		}
@@ -210,8 +211,8 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly double** FPPDst;
 		
-		public FloatOutStream(double** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+		public FloatOutStream(double** ppDst, IPluginOut pluginOut)
+			: base(pluginOut)
 		{
 			FPPDst = ppDst;
 		}
@@ -259,8 +260,8 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly double** FPPDst;
 		
-		public IntOutStream(double** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+		public IntOutStream(double** ppDst, IPluginOut pluginOut)
+			: base(pluginOut)
 		{
 			FPPDst = ppDst;
 		}
@@ -308,8 +309,8 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly double** FPPDst;
 		
-		public UIntOutStream(double** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+		public UIntOutStream(double** ppDst, IPluginOut pluginOut)
+			: base(pluginOut)
 		{
 			FPPDst = ppDst;
 		}
@@ -357,8 +358,8 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly double** FPPDst;
 		
-		public BoolOutStream(double** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+		public BoolOutStream(double** ppDst, IPluginOut pluginOut)
+			: base(pluginOut)
 		{
 			FPPDst = ppDst;
 		}
@@ -406,8 +407,8 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly RGBAColor** FPPDst;
 		
-		public ColorOutStream(RGBAColor** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+		public ColorOutStream(RGBAColor** ppDst, IPluginOut pluginOut)
+			: base(pluginOut)
 		{
 			FPPDst = ppDst;
 		}
@@ -455,8 +456,8 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly Matrix** FPPDst;
 		
-		public MatrixOutStream(Matrix** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+		public MatrixOutStream(Matrix** ppDst, IPluginOut pluginOut)
+			: base(pluginOut)
 		{
 			FPPDst = ppDst;
 		}
@@ -504,8 +505,8 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly Matrix** FPPDst;
 		
-		public Matrix4x4OutStream(Matrix** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+		public Matrix4x4OutStream(Matrix** ppDst, IPluginOut pluginOut)
+			: base(pluginOut)
 		{
 			FPPDst = ppDst;
 		}

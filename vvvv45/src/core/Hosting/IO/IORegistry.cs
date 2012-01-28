@@ -348,87 +348,87 @@ namespace VVVV.Hosting.IO
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new DoubleOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new DoubleOutStream(ppDoubleData, valueOut), valueOut);
                            });
             
             RegisterOutput(typeof(IOutStream<float>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new FloatOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new FloatOutStream(ppDoubleData, valueOut), valueOut);
                            });
             
             RegisterOutput(typeof(IOutStream<int>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new IntOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new IntOutStream(ppDoubleData, valueOut), valueOut);
                            });
             
             RegisterOutput(typeof(IOutStream<uint>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new UIntOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new UIntOutStream(ppDoubleData, valueOut), valueOut);
                            });
             
             RegisterOutput(typeof(IOutStream<bool>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new BoolOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new BoolOutStream(ppDoubleData, valueOut), valueOut);
                            });
 
             RegisterOutput(typeof(IOutStream<Matrix4x4>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var transformOut = host.CreateTransformOutput(attribute, t);
                                transformOut.GetMatrixPointer(out ppFloatData);
-                               return IOHandler.Create(new Matrix4x4OutStream((Matrix**) ppFloatData, GetSetMatrixLengthAction(transformOut)), transformOut);
+                               return IOHandler.Create(new Matrix4x4OutStream((Matrix**) ppFloatData, transformOut), transformOut);
                            });
             
             RegisterOutput(typeof(IOutStream<Matrix>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var transformOut = host.CreateTransformOutput(attribute, t);
                                transformOut.GetMatrixPointer(out ppFloatData);
-                               return IOHandler.Create(new MatrixOutStream((Matrix**) ppFloatData, GetSetMatrixLengthAction(transformOut)), transformOut);
+                               return IOHandler.Create(new MatrixOutStream((Matrix**) ppFloatData, transformOut), transformOut);
                            });
 
             RegisterOutput(typeof(IOutStream<Vector2D>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new Vector2DOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new Vector2DOutStream(ppDoubleData, valueOut), valueOut);
                            });
             RegisterOutput(typeof(IOutStream<Vector3D>),(factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new Vector3DOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new Vector3DOutStream(ppDoubleData, valueOut), valueOut);
                            });
             RegisterOutput(typeof(IOutStream<Vector4D>),(factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new Vector4DOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new Vector4DOutStream(ppDoubleData, valueOut), valueOut);
                            });
 
             RegisterOutput(typeof(IOutStream<Vector2>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new Vector2OutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new Vector2OutStream(ppDoubleData, valueOut), valueOut);
                            });
             RegisterOutput(typeof(IOutStream<Vector3>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new Vector3OutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new Vector3OutStream(ppDoubleData, valueOut), valueOut);
                            });
             RegisterOutput(typeof(IOutStream<Vector4>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var valueOut = host.CreateValueOutput(attribute, t);
                                valueOut.GetValuePointer(out ppDoubleData);
-                               return IOHandler.Create(new Vector4OutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
+                               return IOHandler.Create(new Vector4OutStream(ppDoubleData, valueOut), valueOut);
                            });
 
             RegisterOutput(typeof(IOutStream<string>), (factory, attribute, t) => {
@@ -441,7 +441,7 @@ namespace VVVV.Hosting.IO
                                var host = factory.PluginHost;
                                var colorOut = host.CreateColorOutput(attribute, t);
                                colorOut.GetColorPointer(out ppDoubleData);
-                               return IOHandler.Create(new ColorOutStream((RGBAColor**) ppDoubleData, GetSetColorLengthAction(colorOut)), colorOut);
+                               return IOHandler.Create(new ColorOutStream((RGBAColor**) ppDoubleData, colorOut), colorOut);
                            });
 
             RegisterOutput(typeof(IOutStream<EnumEntry>), (factory, attribute, t) => {
@@ -675,30 +675,6 @@ namespace VVVV.Hosting.IO
         static private Func<bool> GetValidateFunc(IPluginFastIn pluginFastIn)
         {
             return () => { return pluginFastIn.Validate(); };
-        }
-        
-        static unsafe private Action<int> GetSetValueLengthAction(IValueOut valueOut)
-        {
-            return (newLength) =>
-            {
-                valueOut.SliceCount = newLength;
-            };
-        }
-        
-        static unsafe private Action<int> GetSetColorLengthAction(IColorOut colorOut)
-        {
-            return (newLength) =>
-            {
-                colorOut.SliceCount = newLength;
-            };
-        }
-        
-        static unsafe private Action<int> GetSetMatrixLengthAction(ITransformOut transformOut)
-        {
-            return (newLength) =>
-            {
-                transformOut.SliceCount = newLength;
-            };
         }
         
         static private Func<bool> GetValidateFunc(IValueConfig valueConfig)
