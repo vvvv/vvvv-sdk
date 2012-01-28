@@ -7,7 +7,7 @@ namespace VVVV.Utils.Streams
 	{
 		private static readonly Dictionary<int, Stack<T[]>> FPool = new Dictionary<int, Stack<T[]>>();
 		
-		public static T[] GetArray(int length)
+		public static T[] GetArray(int length = StreamUtils.BUFFER_SIZE)
 		{
 			lock (FPool)
 			{

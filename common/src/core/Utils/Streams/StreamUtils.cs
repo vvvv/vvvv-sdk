@@ -311,14 +311,14 @@ namespace VVVV.Utils.Streams
         
         public static void AssignFrom<T>(this IOutStream<T> outStream, IInStream<T> inStream)
         {
-			var buffer = MemoryPool<T>.GetArray(StreamUtils.BUFFER_SIZE);
-			try
+            var buffer = MemoryPool<T>.GetArray();
+            try
             {
-				outStream.AssignFrom(inStream, buffer);
-			}
-			finally
-			{
-				MemoryPool<T>.PutArray(buffer);
+                outStream.AssignFrom(inStream, buffer);
+            }
+            finally
+            {
+                MemoryPool<T>.PutArray(buffer);
             }
         }
         
@@ -335,6 +335,97 @@ namespace VVVV.Utils.Streams
             for (int i = 1; i < sizeof(int) * 8; i <<= 1)
                 k = k | k >> i;
             return k + 1;
+        }
+        
+        public static void ResizeAndDismiss<T>(this IIOStream<T> stream, int length)
+            where T : new()
+        {
+            stream.ResizeAndDismiss(length, () => new T());
+        }
+        
+        public static void ResizeAndDismiss<T>(this IIOStream<T> stream, int length, Func<T> constructor)
+        {
+            var initialPosition = stream.Length;
+            stream.Length = length;
+            
+            var buffer = MemoryPool<T>.GetArray();
+            try
+            {
+                using (var writer = stream.GetWriter())
+                {
+                    writer.Position = initialPosition;
+                    var numSlicesToWrite = writer.Length - writer.Position;
+                    while (numSlicesToWrite > 0)
+                    {
+                        var blockSize = Math.Min(StreamUtils.BUFFER_SIZE, numSlicesToWrite);
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            buffer[i] = constructor();
+                        }
+                        numSlicesToWrite -= writer.Write(buffer, 0, blockSize);
+                    }
+                }
+            }
+            finally
+            {
+                MemoryPool<T>.PutArray(buffer);
+            }
+        }
+        
+        public static void ResizeAndDispose<T>(this IIOStream<T> stream, int length, Func<T> constructor)
+            where T : IDisposable
+        {
+            stream.Resize(length, constructor, (t) => t.Dispose());
+        }
+        
+        public static void ResizeAndDispose<T>(this IIOStream<T> stream, int length)
+            where T : IDisposable, new()
+        {
+            stream.Resize(length, () => new T(), (t) => t.Dispose());
+        }
+        
+        public static void Resize<T>(this IIOStream<T> stream, int length, Func<T> constructor, Action<T> destructor)
+        {
+            var buffer = MemoryPool<T>.GetArray();
+            try
+            {
+                using (var reader = stream.GetReader())
+                {
+                    reader.Position = length;
+                    var numSlicesToRead = reader.Length - reader.Position;
+                    while (numSlicesToRead > 0)
+                    {
+                        var blockSize = reader.Read(buffer, 0, StreamUtils.BUFFER_SIZE);
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            destructor(buffer[i]);
+                        }
+                        numSlicesToRead -= blockSize;
+                    }
+                }
+                
+                var initialPosition = stream.Length;
+                stream.Length = length;
+                
+                using (var writer = stream.GetWriter())
+                {
+                    writer.Position = initialPosition;
+                    var numSlicesToWrite = writer.Length - writer.Position;
+                    while (numSlicesToWrite > 0)
+                    {
+                        var blockSize = Math.Min(StreamUtils.BUFFER_SIZE, numSlicesToWrite);
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            buffer[i] = constructor();
+                        }
+                        numSlicesToWrite -= writer.Write(buffer, 0, blockSize);
+                    }
+                }
+            }
+            finally
+            {
+                MemoryPool<T>.PutArray(buffer);
+            }
         }
     }
 }
