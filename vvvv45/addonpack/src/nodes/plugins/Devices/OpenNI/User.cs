@@ -42,7 +42,7 @@ namespace VVVV.Nodes
 		Pin<Context> FContextIn;
 		
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
-		ISpread<bool> FEnabledIn;
+		IDiffSpread<bool> FEnabledIn;
 
 		[Output("User ID", Order = int.MaxValue-1)]
 		ISpread<int> FUserIdOut;
@@ -86,9 +86,6 @@ namespace VVVV.Nodes
 							//Reinitalie the vvvv texture
 							Reinitialize();
 							
-							//start generating data
-							FUserGenerator.StartGenerating();
-							
 							FContextChanged = false;
 						}
 						catch (Exception ex)
@@ -104,37 +101,46 @@ namespace VVVV.Nodes
 				}
 			}
 			
-			if (FUserGenerator != null && FEnabledIn[0])
+			if (FUserGenerator != null)
 			{
-				if (FUserGenerator.NumberOfUsers > 0)
+				if (FEnabledIn.IsChanged)
+					if (FEnabledIn[0])
+						FUserGenerator.StartGenerating();
+					else
+						FUserGenerator.StopGenerating();
+				
+				if (FUserGenerator.IsDataNew && FEnabledIn[0])
 				{
-					//copies a list of all users and sort them
-					int[] tUsers = FUserGenerator.GetUsers();
-					int[] Users = (int[])tUsers.Clone();
-					Array.Sort(Users);
-					
-					FUserIdOut.SliceCount = Users.Length;
-					FPositionOut.SliceCount = Users.Length;
-					FTextureOut.SliceCount = Users.Length;
-					
-					for (int i = 0; i < Users.Length; i++)
+					if (FUserGenerator.NumberOfUsers > 0)
 					{
-						FUserIdOut[i] = Users[i];
-						try
+						//copies a list of all users and sort them
+						int[] tUsers = FUserGenerator.GetUsers();
+						int[] Users = (int[])tUsers.Clone();
+						Array.Sort(Users);
+						
+						FUserIdOut.SliceCount = Users.Length;
+						FPositionOut.SliceCount = Users.Length;
+						FTextureOut.SliceCount = Users.Length;
+						
+						for (int i = 0; i < Users.Length; i++)
 						{
-							//middle point of the User
-							Point3D Point = FUserGenerator.GetCoM(Users[i]);
-							Vector3D Position = new Vector3D(Point.X, Point.Y, Point.Z);
-							
-							//map postion values to vvvv coordinates
-							FPositionOut[i] = Position / 1000;
-						}
-						catch (StatusException ex)
-						{
-							FLogger.Log(ex);
+							FUserIdOut[i] = Users[i];
+							try
+							{
+								//middle point of the User
+								Point3D Point = FUserGenerator.GetCoM(Users[i]);
+								Vector3D Position = new Vector3D(Point.X, Point.Y, Point.Z);
+								
+								//map postion values to vvvv coordinates
+								FPositionOut[i] = Position / 1000;
+							}
+							catch (StatusException ex)
+							{
+								FLogger.Log(ex);
+							}
 						}
 					}
-					
+
 					//update the vvvv texture
 					Update();
 				}
@@ -154,11 +160,7 @@ namespace VVVV.Nodes
 
 		private void CleanUp()
 		{
-			if (FUserGenerator != null)
-			{
-				FUserGenerator.Dispose();
-				FUserGenerator = null;
-			}
+			FUserGenerator = null;
 		}
 		#endregion
 

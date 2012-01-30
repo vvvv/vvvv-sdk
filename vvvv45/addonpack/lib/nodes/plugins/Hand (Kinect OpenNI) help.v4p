@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Hand (Kinect OpenNI) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Hand (Kinect OpenNI) help.v4p" systemname="Hand (Kinect OpenNI) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Hand (Kinect OpenNI) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Hand (Kinect OpenNI) help.v4p" systemname="Hand (Kinect OpenNI) help">
    <BOUNDS height="7980" left="7620" top="1305" type="Window" width="10440">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
@@ -42,48 +42,8 @@
    </NODE>
    <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="0" srcpinname="Status">
    </LINK>
-   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="5280" top="465" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="480" left="5280" top="465" type="Box" width="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <LINK dstnodeid="0" dstpinname="Enabled" srcnodeid="15" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="8760" top="2895" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="480" left="8760" top="2895" type="Box" width="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="180" top="150" type="Node" width="915">
    </BOUNDS>
@@ -331,7 +291,7 @@
    </BOUNDS>
    <BOUNDS height="480" left="7335" top="1455" type="Box" width="480">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="2" values="1,0">
+   <PIN pinname="Y Input Value" slicecount="2" values="1,1">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -345,7 +305,7 @@
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="2" values="1,0">
+   <PIN pinname="X Input Value" slicecount="2" values="1,1">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -361,8 +321,6 @@
    <LINK dstnodeid="31" dstpinname="Y Input Value" srcnodeid="26" srcpinname="ID">
    </LINK>
    <LINK dstnodeid="43" dstpinname="Input" srcnodeid="26" srcpinname="ID">
-   </LINK>
-   <LINK dstnodeid="26" dstpinname="Enabled" srcnodeid="17" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="26" dstpinname="Start PositionXYZ" srcnodeid="40" srcpinname="Output">
    </LINK>
@@ -384,12 +342,12 @@
    </NODE>
    <LINK dstnodeid="46" dstpinname="Y Input Value" srcnodeid="26" srcpinname="Start Position Is Tracked">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="48" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="180" top="570" width="2520" height="270">
+   <NODE componentmode="InABox" id="48" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="180" top="570" type="Node" width="2520">
    </BOUNDS>
-   <BOUNDS type="Box" left="180" top="570" width="2520" height="270">
+   <BOUNDS height="270" left="180" top="570" type="Box" width="2520">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Hand recognition from the Kinect|" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Hand tracking.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -398,12 +356,12 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="49" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="3225" top="3825" width="0" height="0">
+   <NODE componentmode="InABox" id="49" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3225" top="3825" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3225" top="3825" width="705" height="735">
+   <BOUNDS height="735" left="3225" top="3825" type="Box" width="705">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -414,6 +372,22 @@
    <PIN pinname="Y Input Value">
    </PIN>
    </NODE>
-   <LINK srcnodeid="26" srcpinname="PositionXYZ" dstnodeid="49" dstpinname="Y Input Value">
+   <LINK dstnodeid="49" dstpinname="Y Input Value" srcnodeid="26" srcpinname="PositionXYZ">
    </LINK>
+   <LINK dstnodeid="26" dstpinname="Enabled" srcnodeid="45" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="50" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="7950" top="1245" type="Node" width="2490">
+   </BOUNDS>
+   <BOUNDS height="1785" left="7950" top="1245" type="Box" width="1890">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; values are in real world meters&cr;&lf;&cr;&lf;multiple points of interest can be specified and tracking can be enabled/disabled for them individually.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

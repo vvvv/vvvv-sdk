@@ -26,11 +26,13 @@ using System.Drawing.Imaging;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
+	/*
 	[PluginInfo(Name = "AllInOne",
 	            Category = "Kinect",
 	            Version ="OpenNI",
 	            Help = "Depth + Handtracker",
 	            Tags = "ex9, texture")]
+	*/
 	#endregion PluginInfo
 	public class AllInOne: DXTextureOutPluginBase, IPluginEvaluate, IDisposable
 	{

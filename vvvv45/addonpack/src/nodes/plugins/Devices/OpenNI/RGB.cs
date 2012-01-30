@@ -28,7 +28,8 @@ namespace VVVV.Nodes
 	            Version = "OpenNI",
 	            Help = "Returns an X8R8G8B8 formatted texture from the kinects RGB camera",
 	            Tags = "ex9, texture",
-	            Author = "Phlegma, joreg")]
+	            Author = "Phlegma, joreg",
+	            AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class Texture_Image: DXTextureOutPluginBase, IPluginEvaluate, IPluginConnections, IDisposable
 	{
@@ -37,7 +38,7 @@ namespace VVVV.Nodes
 		Pin<Context> FContextIn;
 		
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
-		ISpread<bool> FEnabledIn;
+		IDiffSpread<bool> FEnabledIn;
 		
 		[Import()]
 		ILogger FLogger;
@@ -48,8 +49,6 @@ namespace VVVV.Nodes
 		private int FTexHeight;
 
 		private bool FContextChanged = false;
-		
-		private IntPtr FBufferedImage = new IntPtr();
 		#endregion fields & pins
 		
 		// import host and hand it to base constructor
@@ -69,22 +68,19 @@ namespace VVVV.Nodes
 					{
 						try
 						{
-							FImageGenerator = (ImageGenerator) FContextIn[0].GetProductionNodeByName("Image1"); //new ImageGenerator(FContextIn[0]);
+							FImageGenerator = new ImageGenerator(FContextIn[0]);
 							
 							//Set the resolution of the texture
 							var mapMode = FImageGenerator.MapOutputMode;
 							FTexWidth = mapMode.XRes;
 							FTexHeight = mapMode.YRes;
 							
-							//allocate data for the RGB Image
-							FBufferedImage = Marshal.AllocCoTaskMem(FTexWidth * FTexHeight * 4);
-							
 							//Reinitalie the vvvv texture
 							Reinitialize();
 							
 							FContextChanged = false;
 						}
-						catch (Exception ex)
+						catch (Exception ex)	
 						{
 							FLogger.Log(ex);
 						}
@@ -97,8 +93,17 @@ namespace VVVV.Nodes
 				}
 			}
 			
-			if (FImageGenerator != null && FImageGenerator.IsDataNew && FEnabledIn[0])
-				Update();
+			if (FImageGenerator != null)
+			{
+				if (FEnabledIn.IsChanged)
+					if (FEnabledIn[0])
+						FImageGenerator.StartGenerating();
+					else
+						FImageGenerator.StopGenerating();
+				
+				if (FImageGenerator.IsDataNew)
+					Update();
+			}
 		}
 		#endregion
 
@@ -110,9 +115,11 @@ namespace VVVV.Nodes
 		
 		private void CleanUp()
 		{
-			Marshal.FreeCoTaskMem(FBufferedImage);
-			
-			FImageGenerator = null;
+			if (FImageGenerator != null)
+			{
+				FImageGenerator.Dispose();
+				FImageGenerator = null;
+			}
 		}
 		#endregion
 

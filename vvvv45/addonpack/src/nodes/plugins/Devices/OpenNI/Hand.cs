@@ -21,7 +21,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Hand",
 	            Category = "Kinect",
 	            Version = "OpenNI",
-	            Help = "Hand recognition from the Kinect",
+	            Help = "Hand tracking",
 	            Tags = "tracking, hand")]
 	#endregion PluginInfo
 	public class HandOpenNI: IPluginEvaluate, IPluginConnections, IDisposable
@@ -34,7 +34,7 @@ namespace VVVV.Nodes
 		ISpread<Vector3D> FStartPositionIn;
 		
 		[Input("Enabled")]
-		ISpread<bool> FDoTrackStartPosition;
+		IDiffSpread<bool> FDoTrackStartPosition;
 		
 		[Output("Position")]
 		ISpread<Vector3D> FHandPositionOut;
@@ -72,9 +72,6 @@ namespace VVVV.Nodes
 							FHandGenerator.HandDestroy += FHands_HandDestroy;
 							FHandGenerator.HandUpdate += FHands_HandUpdate;
 							
-							//Start the Nodes to generate data
-							FHandGenerator.StartGenerating();
-							
 							FContextChanged = false;
 						}
 						catch (Exception ex)
@@ -92,6 +89,19 @@ namespace VVVV.Nodes
 			
 			if (FHandGenerator != null)
 			{
+				if (FDoTrackStartPosition.IsChanged)
+				{
+					bool disable = false;
+					for (int i = 0; i < FDoTrackStartPosition.SliceCount; i++)
+						disable |= FDoTrackStartPosition[i];
+
+					//disable when all slices are 0
+					if (disable)
+						FHandGenerator.StartGenerating();
+					else
+						FHandGenerator.StopGenerating();
+				}
+				
 				if (FHandGenerator.IsDataNew)
 				{
 					FIsTrackedOut.SliceCount = FHandIdOut.SliceCount = FHandPositionOut.SliceCount = FStartPositionIn.SliceCount;
@@ -102,9 +112,8 @@ namespace VVVV.Nodes
 						{
 							//find userID in FTrackedStartPositions
 							int userID = -1;
-							lock(FTrackedStartPositions)
-								foreach (var tracker in FTrackedStartPositions)
-									if (tracker.Value == FStartPositionIn[i])
+							foreach (var tracker in FTrackedStartPositions)
+								if (tracker.Value == FStartPositionIn[i])
 							{
 								userID = tracker.Key;
 								break;
@@ -133,9 +142,8 @@ namespace VVVV.Nodes
 							//find the userID corresponding to the StartPosition
 							//and stop tracking it
 							int userID = -1;
-							lock(FTrackedStartPositions)
-								foreach (var tracker in FTrackedStartPositions)
-									if (tracker.Value == FStartPositionIn[i])
+							foreach (var tracker in FTrackedStartPositions)
+								if (tracker.Value == FStartPositionIn[i])
 							{
 								userID = tracker.Key;
 								break;
@@ -163,32 +171,27 @@ namespace VVVV.Nodes
 			//add it to TrckedStartPositions
 			//with the original position of this hand which is found in FTrackedHands[e.UserID]
 			//before this is updated!
-			lock(FTrackedStartPositions)
-				if (FTrackedHands.ContainsKey(e.UserID) && !FTrackedStartPositions.ContainsKey(e.UserID))
-					FTrackedStartPositions.Add(e.UserID, FTrackedHands[e.UserID]);
+			if (FTrackedHands.ContainsKey(e.UserID) && !FTrackedStartPositions.ContainsKey(e.UserID))
+				FTrackedStartPositions.Add(e.UserID, FTrackedHands[e.UserID]);
 			
-			lock(FTrackedHands)
-				if (FTrackedHands.ContainsKey(e.UserID))
-					FTrackedHands[e.UserID] = new Vector3D(e.Position.X / 1000, e.Position.Y / 1000, e.Position.Z / 1000);
+			if (FTrackedHands.ContainsKey(e.UserID))
+				FTrackedHands[e.UserID] = new Vector3D(e.Position.X / 1000, e.Position.Y / 1000, e.Position.Z / 1000);
 		}
 
 		void FHands_HandDestroy(object sender, HandDestroyEventArgs e)
 		{
-			lock(FTrackedHands)
-				if (FTrackedHands.ContainsKey(e.UserID))
-					FTrackedHands.Remove(e.UserID);
+			if (FTrackedHands.ContainsKey(e.UserID))
+				FTrackedHands.Remove(e.UserID);
 			
-			lock(FTrackedStartPositions)
-				if (FTrackedStartPositions.ContainsKey(e.UserID))
-					FTrackedStartPositions.Remove(e.UserID);
+			if (FTrackedStartPositions.ContainsKey(e.UserID))
+				FTrackedStartPositions.Remove(e.UserID);
 		}
 
 		void FHands_HandCreate(object sender, HandCreateEventArgs e)
 		{
 			var v = new Vector3D(e.Position.X / 1000, e.Position.Y / 1000, e.Position.Z / 1000);
-			lock(FTrackedHands)
-				if (!FTrackedHands.ContainsValue(v))
-					FTrackedHands.Add(e.UserID, v);
+			if (!FTrackedHands.ContainsValue(v))
+				FTrackedHands.Add(e.UserID, v);
 		}
 		
 		#region Dispose

@@ -36,7 +36,8 @@ namespace VVVV.Nodes
 	            Version ="OpenNI",
 	            Help = "Returns a 16bit depthmap in two flavors: histogram or depth in mm (where only the first 13bit are being used).",
 	            Tags = "ex9, texture",
-	            Author = "Phlegma, joreg")]
+	            Author = "Phlegma, joreg",
+	            AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class Texture_Depth: DXTextureOutPluginBase, IPluginEvaluate, IPluginConnections, IDisposable
 	{
@@ -51,11 +52,14 @@ namespace VVVV.Nodes
 		[Input("Context", IsSingle=true)]
 		Pin<Context> FContextIn;
 		
-		[Input("Depth Mode")]
+		[Input("Depth Mode", IsSingle = true)]
 		IDiffSpread<DepthMode> FDepthMode;
+		
+		[Input("Adapt to RGB View", IsSingle = true, DefaultValue = 1)]
+		IDiffSpread<bool> FAdaptView;
 
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
-		ISpread<bool> FEnabledIn;
+		IDiffSpread<bool> FEnabledIn;
 		
 		[Output("FOV", Order = int.MaxValue)]
 		ISpread<Vector2D> FFov;
@@ -65,13 +69,12 @@ namespace VVVV.Nodes
 
 		private int[] FHistogram;
 		private DepthGenerator FDepthGenerator;
+		private ImageGenerator FImageGenerator;
 		
 		private int FTexWidth;
 		private int FTexHeight;
 		
 		private bool FContextChanged = false;
-		
-		private IntPtr FBufferedImage = new IntPtr();
 		#endregion fields & pins
 
 		// import host and hand it to base constructor
@@ -93,17 +96,14 @@ namespace VVVV.Nodes
 						try
 						{
 							FDepthGenerator = (DepthGenerator) FContextIn[0].GetProductionNodeByName("Depth1");
-							
 							FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle);
+							
 							FHistogram = new int[FDepthGenerator.DeviceMaxDepth];
 							
 							//Set the resolution of the texture
 							var mapMode = FDepthGenerator.MapOutputMode;
 							FTexWidth = mapMode.XRes;
 							FTexHeight = mapMode.YRes;
-							
-							//allocate data for the Depth Image
-							FBufferedImage = Marshal.AllocCoTaskMem(FTexWidth * FTexHeight * 2);
 							
 							//Reinitalie the vvvv texture
 							Reinitialize();
@@ -123,8 +123,38 @@ namespace VVVV.Nodes
 				}
 			}
 			
-			if (FDepthGenerator != null && FDepthGenerator.IsDataNew && FEnabledIn[0])
-				Update();
+			if (FDepthGenerator != null)
+			{
+				if (FEnabledIn.IsChanged)
+					if (FEnabledIn[0])
+						FDepthGenerator.StartGenerating();
+					else
+						FDepthGenerator.StopGenerating();
+				
+				bool imageGeneratorChanged = false;
+				try
+				{
+					var imageGenerator =  (ImageGenerator) FContextIn[0].GetProductionNodeByName("Image1");
+					if (FImageGenerator != imageGenerator)
+					{
+						FImageGenerator = imageGenerator;
+						imageGeneratorChanged = true;
+					}
+				}
+				catch
+				{}
+				
+				if (FAdaptView.IsChanged || imageGeneratorChanged)
+				{
+					if (FImageGenerator == null || !FAdaptView[0])
+						FDepthGenerator.AlternativeViewpointCapability.ResetViewpoint();
+					else
+						FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
+				}
+				
+				if (FDepthGenerator.IsDataNew)
+						Update();
+			}
 		}
 		#endregion
 		
@@ -136,9 +166,8 @@ namespace VVVV.Nodes
 		
 		private void CleanUp()
 		{
-			Marshal.FreeCoTaskMem(FBufferedImage);
-			
 			FDepthGenerator = null;
+			FImageGenerator = null;
 		}
 		#endregion
 

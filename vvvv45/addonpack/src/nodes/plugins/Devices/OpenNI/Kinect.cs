@@ -21,7 +21,7 @@ namespace VVVV.Nodes
 	            Category = "Devices",
 	            Version = "OpenNI",
 	            Help = "Provides access to a Kinect through the OpenNI API",
-	            Author = "Phlegma")]
+	            Author = "Phlegma, joreg")]
 	#endregion PluginInfo
 	public class KinectContext: IPluginEvaluate, IDisposable
 	{
@@ -29,10 +29,7 @@ namespace VVVV.Nodes
 		//vvvv
 		[Input("Mirrored", IsSingle = true, DefaultValue = 1)]
 		IDiffSpread<bool> FMirrored;
-
-		//[Input("Enabled", IsSingle = true, DefaultValue = 1)]
-		//IDiffSpread<bool> FUpdateIn;
-
+		
 		[Output("Context")]
 		ISpread<Context> FContextOut;
 		
@@ -44,8 +41,8 @@ namespace VVVV.Nodes
 
 		//Kinect
 		private Context FContext;
-		private ImageGenerator FImageGenerator;
 		private DepthGenerator FDepthGenerator;
+		private ImageGenerator FImageGenerator;
 
 		private string FOpenNI;
 		private string FSensor;
@@ -90,11 +87,11 @@ namespace VVVV.Nodes
 				FContext = new Context();
 				FContext.ErrorStateChanged += FContext_ErrorStateChanged;
 				
-				//FImageGenerator = (ImageGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Image, null);
+				//here is one central depth generator that is used by downstream nodes like depth, user, hand, skeleton,..
 				FDepthGenerator = (DepthGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Depth, null);
-				//FDepthGenerator.AlternativeViewpointCapability.SetViewpoint(FImageGenerator);
-
-				FContext.StartGeneratingAll();
+				
+				//creation of usergenerators requires generation of depthgenerator
+				//depth node needs imagegenerator to adaptview 
 				
 				//read out driver versions:
 				var v = OpenNI.Version.Current;
@@ -106,8 +103,8 @@ namespace VVVV.Nodes
 				FMiddleware = user.Info.Description.Vendor + " " + user.Info.Description.Name + ": " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;
 				user.Dispose();
 				
-				v = FImageGenerator.Info.Description.Version;
-				FSensor = FImageGenerator.Info.Description.Vendor + " " + FImageGenerator.Info.Description.Name + ": " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;
+				v = FDepthGenerator.Info.Description.Version;
+				FSensor = FDepthGenerator.Info.Description.Vendor + " " + FDepthGenerator.Info.Description.Name + ": " + v.Major + "." + v.Minor + "." + v.Maintenance + "." + v.Build;
 			}
 			catch (Exception e)
 			{
@@ -122,10 +119,11 @@ namespace VVVV.Nodes
 				FContext.StopGeneratingAll();
 				FContext.ErrorStateChanged -= FContext_ErrorStateChanged;
 				
-				if (FImageGenerator != null)
-					FImageGenerator.Dispose();
 				if (FDepthGenerator != null)
+				{
 					FDepthGenerator.Dispose();
+					FDepthGenerator = null;
+				}
 				
 				FContext.Release();
 				FContext = null;
