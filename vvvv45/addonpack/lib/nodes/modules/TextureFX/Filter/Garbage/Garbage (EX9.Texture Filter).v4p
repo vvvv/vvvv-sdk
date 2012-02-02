@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="D:\Program Files\vvvv_45beta26\addonpack\modules\common\TextureFX\Filter\Garbage\Garbage (EX9.Texture Filter).v4p">
-   <BOUNDS height="10125" left="13905" top="3765" type="Window" width="13440">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="D:\Program Files\vvvv_45beta27\addonpack\lib\nodes\modules\TextureFX\Filter\Garbage\Garbage (EX9.Texture Filter).v4p">
+   <BOUNDS height="11415" left="4800" top="2355" type="Window" width="16020">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Filter\Garbage\Garbage.fx" id="37" nodename="Garbage.fx" systemname="Garbage (EX9.Effect)">
    <BOUNDS height="270" left="2025" top="3915" type="Node" width="5055">
@@ -77,12 +77,12 @@
    </BOUNDS>
    <BOUNDS height="160" left="8325" top="7905" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Input" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Input">
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="35" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="35" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="2040" top="4830" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="2040" top="4830" type="Box" width="2400">
@@ -102,6 +102,16 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="35" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="37" srcpinname="Layer">
@@ -201,7 +211,7 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enabled">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -235,7 +245,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6945" top="10350" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Output" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Output">
    </PIN>
    <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
    </PIN>
@@ -314,7 +324,7 @@
    </NODE>
    <LINK dstnodeid="35" dstpinname="View" srcnodeid="19" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="18" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="18" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="1845" top="6705" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="1845" top="6705" type="Box" width="2400">
@@ -329,11 +339,21 @@
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="17" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
@@ -366,32 +386,6 @@
    </LINK>
    <LINK dstnodeid="18" dstpinname="Enabled" srcnodeid="29" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="15" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
-   <BOUNDS height="0" left="3600" top="6630" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="XYZ" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="18" dstpinname="View" srcnodeid="15" srcpinname="Transform Out">
-   </LINK>
-   <NODE componentmode="Hidden" id="14" nodename="Quad (DX9)" systemname="Quad (DX9)">
-   <BOUNDS height="0" left="1890" top="5880" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Render State" visible="1">
-   </PIN>
-   <PIN pinname="Texture" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="18" dstpinname="Layers" srcnodeid="14" srcpinname="Layer">
-   </LINK>
-   <LINK dstnodeid="14" dstpinname="Render State" srcnodeid="30" srcpinname="Render State Out">
-   </LINK>
-   <LINK dstnodeid="14" dstpinname="Texture" srcnodeid="27" srcpinname="Texture Out">
-   </LINK>
    <NODE componentmode="InABox" id="13" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="3840" top="510" type="Node" width="0">
    </BOUNDS>
@@ -399,7 +393,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="18900" top="4920" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="X" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="X">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -413,7 +407,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="19725" top="4785" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Y" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Y">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -443,7 +437,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="8325" top="7905" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
@@ -469,7 +463,7 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Reset" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Reset">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -533,7 +527,7 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Zoom" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Zoom">
    </PIN>
    </NODE>
    <LINK dstnodeid="37" dstpinname="Zoom" srcnodeid="5" srcpinname="Y Output Value">
@@ -545,7 +539,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="24210" top="6165" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Mode" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Mode">
    </PIN>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
@@ -565,7 +559,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Fade" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Fade">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="0.99">
    </PIN>
@@ -583,7 +577,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="20295" top="4365" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Rotate" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Rotate">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -609,7 +603,7 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Keep Aspect Ratio|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Keep Aspect Ratio|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -639,7 +633,7 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Filter" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Filter">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -677,5 +671,51 @@
    <LINK dstnodeid="37" dstpinname="Aspect" srcnodeid="40" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="7" dstpinname="Set" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="44" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="100" left="2805" top="5670" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\Constant.fx" id="43" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
+   <BOUNDS height="100" left="1830" top="6000" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="42" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="100" left="2295" top="5670" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="43" dstpinname="Mesh" srcnodeid="42" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="43" dstpinname="Transform" srcnodeid="44" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="41" nodename="Blend (EX9.RenderState Advanced)" systemname="Blend (EX9.RenderState Advanced)">
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1620" top="5700" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Alpha Blending" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="43" dstpinname="Render State" srcnodeid="41" srcpinname="Render State Out">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Texture Out" dstnodeid="43" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Layer" dstnodeid="18" dstpinname="Layers">
    </LINK>
    </PATCH>
