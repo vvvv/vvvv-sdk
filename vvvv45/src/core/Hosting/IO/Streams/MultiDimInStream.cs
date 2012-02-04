@@ -251,7 +251,7 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly IInStream<T> FDataStream;
 		private readonly IInStream<int> FBinSizeStream;
-		private readonly IIOStream<int> FNormBinSizeStream;
+		private readonly ManagedIOStream<int> FNormBinSizeStream;
 		private readonly int[] FBinSizeBuffer;
 		private int FRefCount;
 		

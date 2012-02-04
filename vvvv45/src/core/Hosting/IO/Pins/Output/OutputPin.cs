@@ -22,7 +22,7 @@ namespace VVVV.Hosting.Pins.Output
 	
 	class OutputIOStream<T> : IIOStream<T>
 	{
-		private readonly IIOStream<T> FIOStream;
+		private readonly ManagedIOStream<T> FIOStream;
 		private readonly IOutStream<T> FOutStream;
 		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
 		private bool FNeedsFlush;

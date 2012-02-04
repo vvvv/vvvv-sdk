@@ -10,7 +10,7 @@ namespace VVVV.Hosting.Pins.Input
 	{
 		private readonly IInStream<int> FBinSizeStream;
 		protected readonly IInStream<T> FDataStream;
-		protected readonly IIOStream<int> FNormBinSizeStream;
+		protected readonly ManagedIOStream<int> FNormBinSizeStream;
 		protected readonly int[] FBinSizeBuffer = new int[StreamUtils.BUFFER_SIZE];
 		protected readonly T[] FDataBuffer = new T[StreamUtils.BUFFER_SIZE];
 		
