@@ -24,7 +24,7 @@ namespace VVVV.Nodes
 			int maxInputStreamLength = FInputStreams.GetMaxLength();
 			FOutputStream.Length = maxInputStreamLength * inputStreamsLength;
 			
-			var buffer = MemoryPool<T>.GetArray(StreamUtils.BUFFER_SIZE);
+			var buffer = MemoryPool<T>.GetArray();
 			try
 			{
 				using (var writer = FOutputStream.GetWriter())

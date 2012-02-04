@@ -20,7 +20,7 @@ namespace VVVV.Nodes
 		{
 			FOutputStreams.SetLengthBy(FInputStream);
 	
-			var buffer = MemoryPool<T>.GetArray(StreamUtils.BUFFER_SIZE);			
+			var buffer = MemoryPool<T>.GetArray();			
 			try
 			{
 				var outputStreamsLength = FOutputStreams.Length;

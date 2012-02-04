@@ -8,7 +8,6 @@ namespace VVVV.Hosting.IO.Streams
 	{
 		private readonly IOutStream<T> FDataStream;
 		private readonly IOutStream<int> FBinSizeStream;
-		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
 		
 		public MultiDimOutStream(IIOFactory ioFactory, OutputAttribute attribute)
 		{
@@ -31,17 +30,21 @@ namespace VVVV.Hosting.IO.Streams
 				}
 			}
 			
-			FDataStream.Length = binSizeSum;
-			using (var dataWriter = FDataStream.GetWriter())
+			var buffer = MemoryPool<T>.GetArray();
+			try 
 			{
-				foreach (var outputStream in this)
-				{
-					using (var reader = outputStream.GetReader())
-					{
-						int numSlicesRead = reader.Read(FBuffer, 0, FBuffer.Length);
-						dataWriter.Write(FBuffer, 0, numSlicesRead);
-					}
-				}
+			    FDataStream.Length = binSizeSum;
+    			using (var dataWriter = FDataStream.GetWriter())
+    			{
+    				foreach (var outputStream in this)
+    				{
+    				    dataWriter.Write(outputStream, buffer);
+    				}
+    			}
+			} 
+			finally 
+			{
+			    MemoryPool<T>.PutArray(buffer);
 			}
 			
 			base.Flush();
