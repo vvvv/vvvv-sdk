@@ -19,10 +19,10 @@ namespace VVVV.Nodes
 		public void Evaluate(int SpreadMax)
 		{
 			FOutputStreams.SetLengthBy(FInputStream);
-			
-			using (var memory = MemoryPool<T>.GetMemory(StreamUtils.BUFFER_SIZE))
+	
+			var buffer = MemoryPool<T>.GetArray(StreamUtils.BUFFER_SIZE);			
+			try
 			{
-				var buffer = memory.Array;
 				var outputStreamsLength = FOutputStreams.Length;
 				
 				using (var reader = FInputStream.GetCyclicReader())
@@ -43,6 +43,10 @@ namespace VVVV.Nodes
 						}
 					}
 				}
+			}
+			finally
+			{
+				MemoryPool<T>.PutArray(buffer);
 			}
 		}
 	}
