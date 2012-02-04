@@ -4,11 +4,11 @@ namespace VVVV.Utils
 {
     public static class ArrayExtensions
     {
-    	/// <summary>
-    	/// Initializes the array with the defaultValue.
-    	/// </summary>
-    	/// <param name="array">The array to initialize.</param>
-    	/// <param name="defaultVaue">The value to initialize the array with.</param>
+        /// <summary>
+        /// Initializes the array with the defaultValue.
+        /// </summary>
+        /// <param name="array">The array to initialize.</param>
+        /// <param name="defaultVaue">The value to initialize the array with.</param>
         public static void Init<T>(this T[] array, T defaultVaue)
         {
             for (int i = 0; i < array.Length; i++)
@@ -40,16 +40,16 @@ namespace VVVV.Utils
         /// <param name="endIndex">Defines where to end the replication.</param>
         /// <param name="times">Defines the number of replications of the values between startIndex and endIndex.</param>
         public static void Replicate<T>(this T[] array, int startIndex, int endIndex, int times)
-		{
-			int dst = endIndex;
-			for (int i = 0; i < times; i++)
-			{
-				for (int j = startIndex; j < endIndex; j++)
-				{
-					array[dst++] = array[j];
-				}
-			}
-		}
+        {
+            int dst = endIndex;
+            for (int i = 0; i < times; i++)
+            {
+                for (int j = startIndex; j < endIndex; j++)
+                {
+                    array[dst++] = array[j];
+                }
+            }
+        }
     }
 
 }

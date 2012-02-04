@@ -19,7 +19,7 @@ namespace VVVV.Hosting.Pins.Input
 	class InputIOStream<T> : IIOStream<T>
 	{
 		private readonly IInStream<T> FInStream;
-		private readonly IIOStream<T> FIOStream;
+		private readonly ManagedIOStream<T> FIOStream;
 		private IInStream<T> FCurrentInStream;
 		
 		public InputIOStream(IInStream<T> inStream)

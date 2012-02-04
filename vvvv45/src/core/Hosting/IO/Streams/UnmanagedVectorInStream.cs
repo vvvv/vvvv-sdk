@@ -27,8 +27,6 @@ namespace VVVV.Hosting.IO.Streams
                 FUnderFlow = stream.FUnderFlow;
                 FSrcLength = srcLength;
                 FPSrc = pSrc;
-                
-                FStream.FRefCount++;
             }
             
             public bool Eos
@@ -199,7 +197,7 @@ namespace VVVV.Hosting.IO.Streams
             
             public void Dispose()
             {
-                FStream.FRefCount--;
+                
             }
             
             public void Reset()
@@ -217,7 +215,6 @@ namespace VVVV.Hosting.IO.Streams
         protected readonly int FDimension;
         protected readonly int* FPLength;
         protected readonly double** FPPSrc;
-        protected int FRefCount;
         protected int FUnderFlow;
         
         public VectorInStream(int dimension, int* pLength, double** ppSrc, Func<bool> validateFunc)

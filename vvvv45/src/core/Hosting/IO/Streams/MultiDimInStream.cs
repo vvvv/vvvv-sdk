@@ -100,16 +100,10 @@ namespace VVVV.Hosting.IO.Streams
 				// TODO: Is there a faster solution?
 				return StreamUtils.Read(this, buffer, index, length, stride);
 			}
-			
-//			public void ReadCyclic(IInStream<T>[] buffer, int index, int length, int stride)
-//			{
-//				StreamUtils.ReadCyclic(this, buffer, index, length, stride);
-//			}
-			
+
 			public void Dispose()
 			{
 				FBinSizeReader.Dispose();
-				FStream.FRefCount--;
 			}
 			
 			public void Reset()
@@ -251,9 +245,8 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly IInStream<T> FDataStream;
 		private readonly IInStream<int> FBinSizeStream;
-		private readonly IIOStream<int> FNormBinSizeStream;
+		private readonly ManagedIOStream<int> FNormBinSizeStream;
 		private readonly int[] FBinSizeBuffer;
-		private int FRefCount;
 		
 		public MultiDimInStream(IIOFactory factory, InputAttribute attribute)
 		{
@@ -313,7 +306,6 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public IStreamReader<IInStream<T>> GetReader()
 		{
-			FRefCount++;
 			return new MultiDimReader(this);
 		}
 		

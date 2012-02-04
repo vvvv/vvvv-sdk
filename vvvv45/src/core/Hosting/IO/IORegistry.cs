@@ -44,7 +44,7 @@ namespace VVVV.Hosting.IO
                               {
                                   var valueFastIn = host.CreateValueFastInput(attribute, t);
                                   valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new DoubleInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                                  var stream = new DoubleInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                                   return IOHandler.Create(stream, valueFastIn);
                               }
                           });
@@ -62,7 +62,7 @@ namespace VVVV.Hosting.IO
                               {
                                   var valueFastIn = host.CreateValueFastInput(attribute, t);
                                   valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new FloatInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                                  var stream = new FloatInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                                   return IOHandler.Create(stream, valueFastIn);
                               }
                           });
@@ -80,7 +80,7 @@ namespace VVVV.Hosting.IO
                               {
                                   var valueFastIn = host.CreateValueFastInput(attribute, t);
                                   valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new IntInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                                  var stream = new IntInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                                   return IOHandler.Create(stream, valueFastIn);
                               }
                           });
@@ -98,7 +98,7 @@ namespace VVVV.Hosting.IO
                               {
                                   var valueFastIn = host.CreateValueFastInput(attribute, t);
                                   valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new UIntInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                                  var stream = new UIntInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                                   return IOHandler.Create(stream, valueFastIn);
                               }
                           });
@@ -116,7 +116,7 @@ namespace VVVV.Hosting.IO
                               {
                                   var valueFastIn = host.CreateValueFastInput(attribute, t);
                                   valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new BoolInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                                  var stream = new BoolInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                                   return IOHandler.Create(stream, valueFastIn);
                               }
                           });
@@ -141,21 +141,21 @@ namespace VVVV.Hosting.IO
                               var host = factory.PluginHost;
                               var valueFastIn = host.CreateValueFastInput(attribute, t);
                               valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector2DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                              var stream = new Vector2DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                               return IOHandler.Create(stream, valueFastIn);
                           });
             RegisterInput(typeof(IInStream<Vector3D>),(factory, attribute, t) => {
                               var host = factory.PluginHost;
                               var valueFastIn = host.CreateValueFastInput(attribute, t);
                               valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector3DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                              var stream = new Vector3DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                               return IOHandler.Create(stream, valueFastIn);
                           });
             RegisterInput(typeof(IInStream<Vector4D>),(factory, attribute, t) => {
                               var host = factory.PluginHost;
                               var valueFastIn = host.CreateValueFastInput(attribute, t);
                               valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector4DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                              var stream = new Vector4DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                               return IOHandler.Create(stream, valueFastIn);
                           });
 
@@ -163,21 +163,21 @@ namespace VVVV.Hosting.IO
                               var host = factory.PluginHost;
                               var valueFastIn = host.CreateValueFastInput(attribute, t);
                               valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector2InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                              var stream = new Vector2InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                               return IOHandler.Create(stream, valueFastIn);
                           });
             RegisterInput(typeof(IInStream<Vector3>), (factory, attribute, t) => {
                               var host = factory.PluginHost;
                               var valueFastIn = host.CreateValueFastInput(attribute, t);
                               valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector3InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                              var stream = new Vector3InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                               return IOHandler.Create(stream, valueFastIn);
                           });
             RegisterInput(typeof(IInStream<Vector4>), (factory, attribute, t) => {
                               var host = factory.PluginHost;
                               var valueFastIn = host.CreateValueFastInput(attribute, t);
                               valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector4InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn));
+                              var stream = new Vector4InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, attribute));
                               return IOHandler.Create(stream, valueFastIn);
                           });
 
@@ -672,8 +672,11 @@ namespace VVVV.Hosting.IO
             return () => { return pluginIn.Validate(); };
         }
         
-        static private Func<bool> GetValidateFunc(IPluginFastIn pluginFastIn)
+        static private Func<bool> GetValidateFunc(IPluginFastIn pluginFastIn, InputAttribute attribute)
         {
+            if (attribute.AutoValidate)
+                return () => { return true; };
+            }
             return () => { return pluginFastIn.Validate(); };
         }
         

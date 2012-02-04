@@ -9,7 +9,14 @@ namespace VVVV.Utils.Streams
 		
 		internal CyclicStreamReader(IInStream<T> stream)
 		{
-			FReader = stream.GetReader();
+		    if (stream.Length == 0)
+		    {
+		        FReader = StreamUtils.GetEmptyStream<T>().GetReader();
+		    }
+		    else
+		    {
+		        FReader = stream.GetReader();
+		    }
 			Eos = stream.Length == 0;
 			Length = stream.Length;
 		}
@@ -28,17 +35,7 @@ namespace VVVV.Utils.Streams
 			}
 			set
 			{
-				if (value < 0)
-				{
-					value = VMath.VMath.Zmod(value, FReader.Length);
-				}
-				
-				if (value >= FReader.Length)
-				{
-					value %= FReader.Length;
-				}
-				
-				FReader.Position = value;
+				FReader.Position = VMath.VMath.Zmod(value, Length);
 			}
 		}
 		
@@ -50,10 +47,8 @@ namespace VVVV.Utils.Streams
 		
 		public T Current 
 		{
-			get 
-			{
-				return Read(0);
-			}
+			get;
+			private set;
 		}
 		
 		object System.Collections.IEnumerator.Current 
@@ -64,7 +59,7 @@ namespace VVVV.Utils.Streams
 			}
 		}
 		
-		public T Read(int stride)
+		public T Read(int stride = 1)
 		{
 			var result = FReader.Read(stride);
 			if (FReader.Eos)
@@ -74,9 +69,9 @@ namespace VVVV.Utils.Streams
 			return result;
 		}
 		
-		public int Read(T[] buffer, int index, int length, int stride)
+		public int Read(T[] buffer, int index, int length, int stride = 1)
 		{
-			int readerLength = FReader.Length;
+			int readerLength = Length;
 			
 			// Normalize the stride
 			stride %= readerLength;
@@ -110,6 +105,11 @@ namespace VVVV.Utils.Streams
 						numSlicesRead += FReader.Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 						// Exit the loop once Position is back at beginning
 						if ((FReader.Position %= readerLength) == 0) break;
+					}
+					
+					if (numSlicesRead == length)
+					{
+					    break;
 					}
 					
 					if (numSlicesRead == length)
@@ -151,13 +151,12 @@ namespace VVVV.Utils.Streams
 		
 		public bool MoveNext()
 		{
-			Position++;
+		    Current = Read();
 			return true;
 		}
 		
 		public void Reset()
 		{
-			Position = 0;
 			FReader.Reset();
 		}
 	}

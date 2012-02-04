@@ -23,8 +23,6 @@ namespace VVVV.Hosting.IO.Streams
 			{
 				FStream = stream;
 				Length = stream.Length;
-				
-				FStream.FRefCount++;
 			}
 			
 			public bool Eos
@@ -119,7 +117,7 @@ namespace VVVV.Hosting.IO.Streams
 			
 			public void Dispose()
 			{
-				FStream.FRefCount--;
+			    
 			}
 			
 			public void Reset()
@@ -130,7 +128,6 @@ namespace VVVV.Hosting.IO.Streams
 		
 		protected readonly int* FPLength;
 		protected readonly Func<bool> FValidateFunc;
-		protected int FRefCount;
 		
 		public UnmanagedInStream(int* pLength, Func<bool> validateFunc)
 		{
@@ -220,7 +217,6 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override IStreamReader<double> GetReader()
 		{
-			FRefCount++;
 			return new DoubleInStreamReader(this, *FPPData);
 		}
 		
@@ -276,7 +272,6 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override IStreamReader<float> GetReader()
 		{
-			FRefCount++;
 			return new FloatInStreamReader(this, *FPPData);
 		}
 		
@@ -332,7 +327,6 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override IStreamReader<int> GetReader()
 		{
-			FRefCount++;
 			return new IntInStreamReader(this, *FPPData);
 		}
 		
@@ -388,7 +382,6 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override IStreamReader<uint> GetReader()
 		{
-			FRefCount++;
 			return new UIntInStreamReader(this, *FPPData);
 		}
 		
@@ -445,7 +438,6 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override IStreamReader<bool> GetReader()
 		{
-			FRefCount++;
 			return new BoolInStreamReader(this, *FPPData);
 		}
 		
@@ -501,7 +493,6 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override IStreamReader<RGBAColor> GetReader()
 		{
-			FRefCount++;
 			return new ColorInStreamReader(this, *FPPData);
 		}
 		
@@ -557,7 +548,6 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override IStreamReader<Matrix> GetReader()
 		{
-			FRefCount++;
 			return new MatrixInStreamReader(this, *FPPData);
 		}
 		
@@ -613,7 +603,6 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public override IStreamReader<Matrix4x4> GetReader()
 		{
-			FRefCount++;
 			return new Matrix4x4InStreamReader(this, *FPPData);
 		}
 		
