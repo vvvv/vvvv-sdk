@@ -35,17 +35,7 @@ namespace VVVV.Utils.Streams
 			}
 			set
 			{
-				if (value < 0)
-				{
-					value = VMath.VMath.Zmod(value, FReader.Length);
-				}
-				
-				if (value >= FReader.Length)
-				{
-					value %= FReader.Length;
-				}
-				
-				FReader.Position = value;
+				FReader.Position = VMath.VMath.Zmod(value, Length);
 			}
 		}
 		
@@ -57,10 +47,8 @@ namespace VVVV.Utils.Streams
 		
 		public T Current 
 		{
-			get 
-			{
-				return Read(0);
-			}
+			get;
+			private set;
 		}
 		
 		object System.Collections.IEnumerator.Current 
@@ -83,7 +71,7 @@ namespace VVVV.Utils.Streams
 		
 		public int Read(T[] buffer, int index, int length, int stride = 1)
 		{
-			int readerLength = FReader.Length;
+			int readerLength = Length;
 			
 			// Normalize the stride
 			stride %= readerLength;
@@ -158,13 +146,12 @@ namespace VVVV.Utils.Streams
 		
 		public bool MoveNext()
 		{
-			Position++;
+		    Current = Read();
 			return true;
 		}
 		
 		public void Reset()
 		{
-			Position = 0;
 			FReader.Reset();
 		}
 	}
