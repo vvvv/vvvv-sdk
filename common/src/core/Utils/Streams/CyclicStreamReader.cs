@@ -9,7 +9,14 @@ namespace VVVV.Utils.Streams
 		
 		internal CyclicStreamReader(IInStream<T> stream)
 		{
-			FReader = stream.GetReader();
+		    if (stream.Length == 0)
+		    {
+		        FReader = StreamUtils.GetEmptyStream<T>().GetReader();
+		    }
+		    else
+		    {
+		        FReader = stream.GetReader();
+		    }
 			Eos = stream.Length == 0;
 			Length = stream.Length;
 		}
@@ -64,7 +71,7 @@ namespace VVVV.Utils.Streams
 			}
 		}
 		
-		public T Read(int stride)
+		public T Read(int stride = 1)
 		{
 			var result = FReader.Read(stride);
 			if (FReader.Eos)
@@ -74,7 +81,7 @@ namespace VVVV.Utils.Streams
 			return result;
 		}
 		
-		public int Read(T[] buffer, int index, int length, int stride)
+		public int Read(T[] buffer, int index, int length, int stride = 1)
 		{
 			int readerLength = FReader.Length;
 			

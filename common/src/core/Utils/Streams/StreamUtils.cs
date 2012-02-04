@@ -190,16 +190,9 @@ namespace VVVV.Utils.Streams
             return new EmptyStream<T>();
         }
         
-        public static IStreamReader<T> GetCyclicReader<T>(this IInStream<T> stream)
+        public static CyclicStreamReader<T> GetCyclicReader<T>(this IInStream<T> stream)
         {
-            if (stream.Length > 0)
-            {
-                return new CyclicStreamReader<T>(stream);
-            }
-            else
-            {
-                return GetEmptyStream<T>().GetReader();
-            }
+            return new CyclicStreamReader<T>(stream);
         }
         
         public static int GetNumSlicesAhead(IStreamer streamer, int index, int length, int stride)
