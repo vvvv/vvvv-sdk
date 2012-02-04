@@ -25,8 +25,6 @@ namespace VVVV.Hosting.IO.Streams
                 FPDst = pDst;
                 FDimension = stream.FDimension;
                 FDstLength = Length * FDimension;
-                
-                FStream.FRefCount++;
             }
             
             public bool Eos
@@ -51,7 +49,7 @@ namespace VVVV.Hosting.IO.Streams
             
             public void Dispose()
             {
-                FStream.FRefCount--;
+                
             }
             
             public void Reset()
@@ -135,7 +133,6 @@ namespace VVVV.Hosting.IO.Streams
         protected readonly double** FPPDst;
         protected int FDstLength;
         protected int FLength;
-        protected int FRefCount;
         
         public VectorOutStream(int dimension, double** ppDst, IPluginOut pluginOut)
         {

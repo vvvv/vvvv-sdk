@@ -21,8 +21,6 @@ namespace VVVV.Hosting.IO.Streams
 			{
 				FStream = stream;
 				Length = stream.Length;
-				
-				FStream.FRefCount++;
 			}
 			
 			public bool Eos
@@ -75,13 +73,12 @@ namespace VVVV.Hosting.IO.Streams
 			
 			public void Dispose()
 			{
-				FStream.FRefCount--;
+			    
 			}
 		}
 		
 		private readonly IPluginOut FPluginOut;
 		protected int FLength;
-		protected int FRefCount;
 		
 		public UnmanagedOutStream(IPluginOut pluginOut)
 		{
