@@ -501,6 +501,65 @@ namespace VVVV.Hosting.IO.Streams
 			return new ColorInStream(FPLength, FPPData, FValidateFunc);
 		}
 	}
+	
+	unsafe class SlimDXColorInStream : UnmanagedInStream<Color4>
+	{
+		class SlimDXColorInStreamReader : UnmanagedInStreamReader
+		{
+			private readonly RGBAColor* FPData;
+			
+			public SlimDXColorInStreamReader(SlimDXColorInStream stream, RGBAColor* pData)
+				: base(stream)
+			{
+				FPData = pData;
+			}
+			
+			public override Color4 Read(int stride)
+			{
+				Debug.Assert(Position < Length);
+				RGBAColor* src = FPData + Position;
+				Position += stride;
+				return new Color4((float) src->R, (float) src->G, (float) src->B, (float) src->A);
+			}
+			
+			protected override void Copy(Color4[] destination, int destinationIndex, int length, int stride)
+			{
+				fixed (Color4* destinationPtr = destination)
+				{
+					Color4* dst = destinationPtr + destinationIndex;
+					RGBAColor* src = FPData + Position;
+					
+					for (int i = 0; i < length; i++)
+					{
+					    dst->Red = (float) src->R;
+					    dst->Green = (float) src->G;
+					    dst->Blue = (float) src->B;
+					    dst->Alpha = (float) src->A;
+						dst++;
+						src += stride;
+					}
+				}
+			}
+		}
+		
+		private readonly RGBAColor** FPPData;
+		
+		public SlimDXColorInStream(int* pLength, RGBAColor** ppData, Func<bool> validateFunc)
+			: base(pLength, validateFunc)
+		{
+			FPPData = ppData;
+		}
+		
+		public override IStreamReader<Color4> GetReader()
+		{
+			return new SlimDXColorInStreamReader(this, *FPPData);
+		}
+		
+		public override object Clone()
+		{
+			return new SlimDXColorInStream(FPLength, FPPData, FValidateFunc);
+		}
+	}
 
 	unsafe class MatrixInStream : UnmanagedInStream<Matrix>
 	{

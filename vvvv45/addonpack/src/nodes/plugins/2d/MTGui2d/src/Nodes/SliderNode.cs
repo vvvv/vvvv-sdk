@@ -65,7 +65,7 @@ namespace VVVV.Nodes
 			{
 				//fill out nodes info
 				IPluginInfo Info = new PluginInfo();
-				Info.Name = "MTSlider";
+				Info.Name = "Slider";
 				Info.Category = "GUI";
 				Info.Version = "Multitouch";
 				Info.Help = "A spread of sliders for multi touch";

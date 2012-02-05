@@ -92,7 +92,7 @@ namespace VVVV.Nodes
 
         private List<int> FLastKeyState;        
 
-        private Dictionary<int, Sprite> FSprites = new Dictionary<int, Sprite>();
+        private Dictionary<Device, Sprite> FSprites = new Dictionary<Device, Sprite>();
         bool _NeedsUpdate;
         private int FSpreadCount;
         
@@ -358,7 +358,7 @@ namespace VVVV.Nodes
         #endregion mainloop
 
         #region DXLayer
-        private void LoadSWF(int pOnDevice)
+        private void LoadSWF(Device tDevice)
         {
             if (_FNUIFlashPlayer != null)
             {
@@ -404,9 +404,6 @@ namespace VVVV.Nodes
 
             FFrameRateOutput[0] = (int)_FrameRate;
 
-            IntPtr tPointer = new IntPtr(pOnDevice);
-            Device tDevice = Device.FromPointer(tPointer);
-
             _Texture1 = new Texture(tDevice, _Width, _Height, 1, 0, Format.A8R8G8B8, Pool.Managed);
             _Texture2 = new Texture(tDevice, _Width, _Height, 1, 0, Format.A8R8G8B8, Pool.Managed);
 
@@ -429,7 +426,7 @@ namespace VVVV.Nodes
             }
         }
 
-        private void RemoveResource(int OnDevice)
+        private void RemoveResource(Device OnDevice)
         {
             //Debug.WriteLine("RemoveResource");
 
@@ -444,7 +441,7 @@ namespace VVVV.Nodes
             _NeedsUpdate = true;
         }
 
-        public void UpdateResource(IPluginOut ForPin, int OnDevice)
+        public void UpdateResource(IPluginOut ForPin, Device OnDevice)
         {
             try
             {
@@ -490,14 +487,9 @@ namespace VVVV.Nodes
             {
                 RemoveResource(OnDevice);
 
-                Device tDevice = Device.FromPointer(new IntPtr(OnDevice));
-
-                Sprite tSprite = new Sprite(tDevice);
+                Sprite tSprite = new Sprite(OnDevice);
 
                 FSprites.Add(OnDevice, tSprite);
-
-                //dispose device
-                tDevice.Dispose();
 
                 LoadSWF(OnDevice);
 
@@ -507,7 +499,7 @@ namespace VVVV.Nodes
             }
         }
 
-        public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+        public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
         {
             //Debug.WriteLine("DestroyResource");
             //Called by the PluginHost whenever a resource for a specific pin needs to be destroyed on a specific device. 
@@ -523,7 +515,7 @@ namespace VVVV.Nodes
 			FRenderStatePin.SetRenderState(RenderState.DestinationBlend, (int) Blend.InverseSourceAlpha);
 		}
 
-        public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
+        public void Render(IDXLayerIO ForPin, Device tDevice)
         {
             //Called by the PluginHost everytime the plugin is supposed to render itself.
             //This is called from the PluginHost from within DirectX BeginScene/EndScene,
@@ -531,8 +523,6 @@ namespace VVVV.Nodes
 
             if (_FNUIFlashPlayer == null || FSprites.Count < 1)
                 return;
-
-            double tEnabled;
 
             if (FEnabledInput[0])
                 _FNUIFlashPlayer.DisableFlashRendering(false);            
@@ -544,9 +534,8 @@ namespace VVVV.Nodes
                 
             try
             {
-                Device tDevice = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
                 tDevice.SetTransform(TransformState.World, Matrix.Identity);
-                Sprite tSprite = FSprites[DXDevice.DevicePointer()];
+                Sprite tSprite = FSprites[tDevice];
                 FTransformIn.SetRenderSpace();
 
                 FRenderStatePin.SetSliceStates(0);

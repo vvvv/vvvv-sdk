@@ -4,17 +4,17 @@ using System.Runtime.InteropServices;
 
 using SlimDX.Direct3D9;
 
-namespace VVVV.Hosting.Interfaces.EX9
+namespace VVVV.PluginInterfaces.InteropServices.EX9
 {
     [ComVisible(false)]
-    public class DeviceMarshaler : ICustomMarshaler
+    internal class MeshMarshaler : ICustomMarshaler
     {
-        private static DeviceMarshaler marshaler = null;
+        private static MeshMarshaler marshaler = null;
         public static ICustomMarshaler GetInstance(string cookie)
         {
             if (marshaler == null)
             {
-                marshaler = new DeviceMarshaler();
+                marshaler = new MeshMarshaler();
             }
             return marshaler;
         }
@@ -24,15 +24,19 @@ namespace VVVV.Hosting.Interfaces.EX9
             if (pNativeData == IntPtr.Zero)
                 return null;
             else
-                return Device.FromPointer(pNativeData);
+                return Mesh.FromPointer(pNativeData);
         }
         
         public IntPtr MarshalManagedToNative(object ManagedObj)
         {
-            Device device = ManagedObj as Device;
-            if (device != null)
-                return device.ComPointer;
-            else
+            Mesh mesh = ManagedObj as Mesh;
+            if (mesh != null)
+            {
+                // TODO: We need to do this. Find out why!
+                Marshal.AddRef(mesh.ComPointer);
+                return mesh.ComPointer;
+            }
+            else    
                 return IntPtr.Zero;
         }
         
@@ -43,8 +47,7 @@ namespace VVVV.Hosting.Interfaces.EX9
         
         public void CleanUpManagedData(object ManagedObj)
         {
-            var device = ManagedObj as Device;
-            device.Dispose();
+            // Do nothing
         }
         
         public int GetNativeDataSize()

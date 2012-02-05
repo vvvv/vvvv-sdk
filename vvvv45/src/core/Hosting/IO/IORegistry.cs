@@ -199,6 +199,14 @@ namespace VVVV.Hosting.IO
                               var stream = new ColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorIn));
                               return IOHandler.Create(stream, colorIn);
                           });
+            
+            RegisterInput(typeof(IInStream<Color4>), (factory, attribute, t) => {
+                              var host = factory.PluginHost;
+                              var colorIn = host.CreateColorInput(attribute, t);
+                              colorIn.GetColorPointer(out pLength, out ppDoubleData);
+                              var stream = new SlimDXColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorIn));
+                              return IOHandler.Create(stream, colorIn);
+                          });
 
             RegisterInput(typeof(IInStream<EnumEntry>), (factory, attribute, t) => {
                               var host = factory.PluginHost;
@@ -443,6 +451,13 @@ namespace VVVV.Hosting.IO
                                colorOut.GetColorPointer(out ppDoubleData);
                                return IOHandler.Create(new ColorOutStream((RGBAColor**) ppDoubleData, colorOut), colorOut);
                            });
+            
+            RegisterOutput(typeof(IOutStream<Color4>), (factory, attribute, t) => {
+                               var host = factory.PluginHost;
+                               var colorOut = host.CreateColorOutput(attribute, t);
+                               colorOut.GetColorPointer(out ppDoubleData);
+                               return IOHandler.Create(new SlimDXColorOutStream((RGBAColor**) ppDoubleData, colorOut), colorOut);
+                           });
 
             RegisterOutput(typeof(IOutStream<EnumEntry>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
@@ -550,6 +565,13 @@ namespace VVVV.Hosting.IO
                                var host = factory.PluginHost;
                                var colorConfig = host.CreateColorConfig(attribute, t);
                                var stream = new ColorConfigStream(colorConfig);
+                               return IOHandler.Create(stream, colorConfig, null, null, s => s.Sync());
+                           });
+            
+            RegisterConfig(typeof(IIOStream<Color4>), (factory, attribute, t) => {
+                               var host = factory.PluginHost;
+                               var colorConfig = host.CreateColorConfig(attribute, t);
+                               var stream = new SlimDXColorConfigStream(colorConfig);
                                return IOHandler.Create(stream, colorConfig, null, null, s => s.Sync());
                            });
 
