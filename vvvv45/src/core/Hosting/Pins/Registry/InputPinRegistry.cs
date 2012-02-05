@@ -21,6 +21,7 @@ namespace VVVV.Hosting.Pins
             this.RegisterType(typeof(double), (host, attribute, t) => new DoubleInputPin(host, attribute));
             this.RegisterType(typeof(float), (host, attribute, t) => new FloatInputPin(host, attribute));
             this.RegisterType(typeof(int), (host, attribute, t) => new IntInputPin(host, attribute));
+            this.RegisterType(typeof(uint), (host, attribute, t) => new UIntInputPin(host, attribute));
             this.RegisterType(typeof(bool), (host, attribute, t) => new BoolInputPin(host, attribute));
 
             this.RegisterType(typeof(Matrix4x4), (host, attribute, t) => new Matrix4x4InputPin(host, attribute));
@@ -33,9 +34,12 @@ namespace VVVV.Hosting.Pins
             this.RegisterType(typeof(Vector2), (host, attribute, t) => new Vector2InputPin(host, attribute));
             this.RegisterType(typeof(Vector3), (host, attribute, t) => new Vector3InputPin(host, attribute));
             this.RegisterType(typeof(Vector4), (host, attribute, t) => new Vector4InputPin(host, attribute));
+            this.RegisterType(typeof(Quaternion), (host, attribute, t) => new QuaternionInputPin(host, attribute));
 
             this.RegisterType(typeof(string), (host, attribute, t) => new StringInputPin(host, attribute));
+
             this.RegisterType(typeof(RGBAColor), (host, attribute, t) => new ColorInputPin(host, attribute));
+            this.RegisterType(typeof(Color4), (host, attribute, t) => new SlimDXColorInputPin(host, attribute));
 
             this.RegisterType(typeof(EnumEntry), (host, attribute, t) => new DynamicEnumInputPin(host, attribute));
         }

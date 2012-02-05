@@ -118,6 +118,46 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 	}
+
+    [ComVisible(false)]
+    public class QuaternionInputPin : VectorInputPin<Quaternion>
+    {
+        public QuaternionInputPin(IPluginHost host, InputAttribute attribute)
+            : base(host, attribute, 4, float.MinValue, float.MaxValue, 0.01)
+        {
+        }
+
+        unsafe protected override void CopyToBuffer(Quaternion[] buffer, double* source, int length, int underFlow)
+        {
+            fixed (Quaternion* destination = buffer)
+            {
+                Quaternion* dst = destination;
+                double* src = source;
+
+                for (int i = 0; i < length / FDimension; i++)
+                {
+                    dst->X = (float)*src;
+                    src++;
+                    dst->Y = (float)*src;
+                    src++;
+                    dst->Z = (float)*src;
+                    src++;
+                    dst->W = (float)*src;
+                    src++;
+                    dst++;
+                }
+
+                if (underFlow > 0)
+                {
+                    int i = length - underFlow;
+                    dst->X = (float)*(source + i++ % length);
+                    dst->Y = (float)*(source + i++ % length);
+                    dst->Z = (float)*(source + i++ % length);
+                    dst->W = (float)*(source + i++ % length);
+                }
+            }
+        }
+    }
 	
 	[ComVisible(false)]
 	public class DiffVector2InputPin : DiffVectorInputPin<Vector2>
@@ -229,4 +269,44 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 	}
+
+    [ComVisible(false)]
+    public class DiffQuaternionInputPin : DiffVectorInputPin<Quaternion>
+    {
+        public DiffQuaternionInputPin(IPluginHost host, InputAttribute attribute)
+            : base(host, attribute, 4, float.MinValue, float.MaxValue, 0.01)
+        {
+        }
+
+        unsafe protected override void CopyToBuffer(Quaternion[] buffer, double* source, int length, int underFlow)
+        {
+            fixed (Quaternion* destination = buffer)
+            {
+                Quaternion* dst = destination;
+                double* src = source;
+
+                for (int i = 0; i < length / FDimension; i++)
+                {
+                    dst->X = (float)*src;
+                    src++;
+                    dst->Y = (float)*src;
+                    src++;
+                    dst->Z = (float)*src;
+                    src++;
+                    dst->W = (float)*src;
+                    src++;
+                    dst++;
+                }
+
+                if (underFlow > 0)
+                {
+                    int i = length - underFlow;
+                    dst->X = (float)*(source + i++ % length);
+                    dst->Y = (float)*(source + i++ % length);
+                    dst->Z = (float)*(source + i++ % length);
+                    dst->W = (float)*(source + i++ % length);
+                }
+            }
+        }
+    }
 }

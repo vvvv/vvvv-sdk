@@ -21,6 +21,15 @@ namespace VVVV.TodoMap.Nodes.Presets
         [Input("Do Load", IsBang = true)]
         ISpread<bool> FInDoLoad;
 
+        //[Input("Apply")]
+        //ISpread<bool> FInApply;
+
+        //[Output("Variable Name")]
+        //ISpread<string> FOutVarName;
+
+        //[Output("Preset Value")]
+        //ISpread<double> FOutValue;
+
         #region IPluginEvaluate Members
         public void Evaluate(int SpreadMax)
         {

@@ -42,9 +42,14 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		protected abstract void Render(Device device, T deviceData);
 		public virtual void SetStates(){}
 		
-		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
+		public void Render(IDXLayerIO ForPin, Device DXDevice)
 		{
-			Render(Device.FromPointer(new IntPtr(DXDevice.DevicePointer())), FDeviceData[DXDevice.DevicePointer()]);
+			Render(DXDevice, FDeviceData[DXDevice]);
+		}
+		
+		protected override void SetResourcePinsChanged()
+		{
+			//nothing to do
 		}
 	}
 }

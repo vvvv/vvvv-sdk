@@ -1,0 +1,129 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_45beta27\myplugins\lib\nodes\plugins\TodoGetClock (TodoMap) help.v4p" filename="C:\Users\vux\Desktop\plugins\StringTest\UGRParserTest.v4p" systemname="UGRParserTest">
+   <BOUNDS height="8715" left="1575" top="1395" type="Window" width="9780">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="675" left="255" top="525" type="Box" width="3375">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Retrieves midi clock time if enabled in mapper engine|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|TodoGetClock (TodoMap)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" filename="%VVVV%\myplugins\lib\nodes\plugins\VVVV.Nodes.TodoMap.dll" id="17" nodename="TodoMap (TodoMap)" systemname="TodoMap (TodoMap)">
+   <BOUNDS height="270" left="3300" top="2820" type="Node" width="2220">
+   </BOUNDS>
+   <BOUNDS height="8805" left="6675" top="525" type="Window" width="16935">
+   </BOUNDS>
+   <PIN pinname="Engine" visible="1">
+   </PIN>
+   <PIN pinname="Learn Mode" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="Load" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Save" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="OSC Ignore List" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Clear Mappings" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Clear Variables" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Auto Load" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Save On Exit" slicecount="1" visible="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="4020" top="2190" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="4020" top="2190" type="Box" width="1785">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="TodoMap.xml">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Path">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Path" srcnodeid="20" srcpinname="Output String">
+   </LINK>
+   <NODE systemname="TodoGetClock (TodoMap)" filename="%VVVV%\myplugins\lib\nodes\plugins\VVVV.Nodes.TodoMap.dll" nodename="TodoGetClock (TodoMap)" componentmode="Hidden" id="43">
+   <BOUNDS type="Node" left="3315" top="3915" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Engine" visible="1">
+   </PIN>
+   <PIN pinname="Is Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Engine" dstnodeid="43" dstpinname="Engine">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="44">
+   <BOUNDS type="Node" left="4410" top="4620" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4410" top="4620" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Is Enabled" dstnodeid="44" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="45">
+   <BOUNDS type="Node" left="3315" top="4800" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3315" top="4800" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Time" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Output" dstnodeid="45" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="46" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5325" top="3210" width="1230" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5325" top="3210" width="3210" height="1365">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|To Enable Clock:&cr;&lf;-Go on the midi tab&cr;&lf;-Make sure device is started in input devices.&cr;&lf;-Select device in clock tab and enable.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>
