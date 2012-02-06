@@ -283,8 +283,11 @@ namespace VVVV.Core
                     (AcceptNodesThatWorkWithUnclonableTypes || type.IsClonable())
                 from method in type.Methods
                 where
+                    ((method.Visibility & TypeMemberVisibility.Public) == TypeMemberVisibility.Public) &&
+                    (
                     (method.IsStatic && AcceptFunctionNodes) ||
                     (!method.IsStatic && AcceptFunctorNodes && functortype)
+                   )
                 from node in Collect(method)
                 select node;
         }
