@@ -4,7 +4,9 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+
 using SlimDX;
+using SlimDX.Direct3D9;
 using VVVV.Hosting.Interfaces;
 using VVVV.Hosting.IO.Streams;
 using VVVV.Hosting.Pins.Config;
@@ -12,6 +14,7 @@ using VVVV.Hosting.Pins.Input;
 using VVVV.Hosting.Pins.Output;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
@@ -467,13 +470,37 @@ namespace VVVV.Hosting.IO
             
             RegisterOutput(typeof(IOutStream<>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
-                               if (t.IsGenericType && t.GetGenericArguments().Length == 1)
+                               
+                               var genericArguments = t.GetGenericArguments();
+                               if (t.IsGenericType)
                                {
-                                   if (typeof(IInStream<>).MakeGenericType(t.GetGenericArguments()).IsAssignableFrom(t))
-                                   {
-                                       var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
-                                       var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
-                                       return IOHandler.Create(stream, null, null, s => s.Flush());
+                                   switch (genericArguments.Length) {
+                                       case 1:
+                                           if (typeof(IInStream<>).MakeGenericType(genericArguments).IsAssignableFrom(t))
+                                           {
+                                               var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
+                                               var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
+                                               return IOHandler.Create(stream, null, null, s => s.Flush());
+                                           }
+                                           break;
+                                       case 2:
+                                           if (typeof(DXResource<,>).MakeGenericType(genericArguments).IsAssignableFrom(t))
+                                           {
+                                               var resourceType = genericArguments[0];
+                                               var metadataType = genericArguments[1];
+                                               if (resourceType == typeof(Texture))
+                                               {
+                                                   var textureOutStreamType = typeof(TextureOutStream<,>);
+                                                   textureOutStreamType = textureOutStreamType.MakeGenericType(t, metadataType);
+                                                   var stream = Activator.CreateInstance(textureOutStreamType, host, attribute) as IOutStream;
+                                                   return IOHandler.Create(stream, null, null, s => s.Flush());
+                                               }
+                                               else
+                                               {
+                                                   throw new NotImplementedException();
+                                               }
+                                           }
+                                           break;
                                    }
                                }
                                
