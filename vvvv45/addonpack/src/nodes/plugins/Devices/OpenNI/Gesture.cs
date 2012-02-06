@@ -28,7 +28,7 @@ namespace VVVV.Nodes
 		[Input("Context", IsSingle=true)]
 		Pin<Context> FContextIn;
 		
-		[Input("Active Gesture", EnumName = "KinectGestures")]
+		[Input("Active Gesture", EnumName = "OpenNIGestures")]
 		IDiffSpread<EnumEntry> FActiveGestureIn;
 		
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
@@ -70,7 +70,7 @@ namespace VVVV.Nodes
 
 							//Write all possible gestures to the Output Pin
 							var gestures = FGestureGenerator.EnumerateAllGestures();
-							EnumManager.UpdateEnum("KinectGestures", gestures[0], gestures);
+							EnumManager.UpdateEnum("OpenNIGestures", gestures[0], gestures);
 
 							FContextChanged = false;
 						}
