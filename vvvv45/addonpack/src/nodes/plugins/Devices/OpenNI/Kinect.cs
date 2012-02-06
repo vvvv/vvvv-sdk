@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Collections.Generic;
 using System.Threading;
 using System.Diagnostics;
+using System.Xml.Linq;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -30,6 +31,9 @@ namespace VVVV.Nodes
 		[Input("Mirrored", IsSingle = true, DefaultValue = 1)]
 		IDiffSpread<bool> FMirrored;
 		
+		[Input("Device", IsSingle = true, EnumName = "OpenNIDevices")]
+		IDiffSpread<EnumEntry> FDevice;
+		
 		[Output("Context")]
 		ISpread<Context> FContextOut;
 		
@@ -47,6 +51,8 @@ namespace VVVV.Nodes
 		private string FOpenNI;
 		private string FSensor;
 		private string FMiddleware;
+		
+		private Dictionary<string, NodeInfo> FDevices = new Dictionary<string, NodeInfo>();
 		#endregion fields & pins
 		
 		public KinectContext()
@@ -66,16 +72,20 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			//writes the Context Object to the Output
-			//as it is required for other generators
-			FContextOut[0] = FContext;
-			FDriver[0] = FOpenNI + "\n" + FMiddleware + "\n" + FSensor;
-			
-			if (FMirrored.IsChanged)
-				FContext.GlobalMirror = FMirrored[0];
-			
-			FContext.WaitNoneUpdateAll();
+			if (FContext != null)
+			{
+				//writes the Context Object to the Output
+				//as it is required for other generators
+				FContextOut[0] = FContext;
+				FDriver[0] = FOpenNI + "\n" + FMiddleware + "\n" + FSensor;
+				
+				if (FMirrored.IsChanged)
+					FContext.GlobalMirror = FMirrored[0];
+				
+				FContext.WaitNoneUpdateAll();
+			}
 		}
+		
 		#endregion
 		
 		#region Open and close Context
@@ -87,11 +97,25 @@ namespace VVVV.Nodes
 				FContext = new Context();
 				FContext.ErrorStateChanged += FContext_ErrorStateChanged;
 				
+				var devices = FContext.EnumerateProductionTrees(OpenNI.NodeType.Depth, null);
+
+				foreach (var device in devices)
+					FDevices.Add(device.CreationInfo, device);
+				
+				string[] deviceNames = new string[FDevices.Count];
+				FDevices.Keys.CopyTo(deviceNames, 0);
+				EnumManager.UpdateEnum("OpenNIDevices", deviceNames[0], deviceNames);
+				
+				Query q = new Query();
+				q.SetCreationInfo(deviceNames[0]);
+				var depths = FContext.EnumerateProductionTrees(OpenNI.NodeType.Depth, q);
+				
 				//here is one central depth generator that is used by downstream nodes like depth, user, hand, skeleton,..
-				FDepthGenerator = (DepthGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Depth, null);
+				foreach (var depth in depths)
+					FDepthGenerator = (DepthGenerator) FContext.CreateProductionTree(depth);
 				
 				//creation of usergenerators requires generation of depthgenerator
-				//depth node needs imagegenerator to adaptview 
+				//depth node needs imagegenerator to adaptview
 				
 				//read out driver versions:
 				var v = OpenNI.Version.Current;
