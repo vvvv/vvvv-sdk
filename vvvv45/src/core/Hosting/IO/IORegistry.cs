@@ -676,7 +676,6 @@ namespace VVVV.Hosting.IO
         {
             if (attribute.AutoValidate)
                 return () => { return true; };
-            }
             return () => { return pluginFastIn.Validate(); };
         }
         
