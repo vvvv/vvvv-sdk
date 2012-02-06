@@ -18,29 +18,29 @@ using VVVV.Core.Viewer;
 
 namespace VVVV.HDE.Viewer.WinFormsViewer
 {
-    public delegate void ClickHandler(IModelMapper sender, MouseEventArgs e);
+    public delegate void ClickHandler(ModelMapper sender, MouseEventArgs e);
     
     public partial class TreeViewer : Viewer, ILabelEditor, ISelectionProvider
     {
 //		private MapperTreeNode FRootNode;
-        private IModelMapper FRootMapper;
+        private ModelMapper FRootMapper;
         private MapperTreeNode FLastTooltipNode;
         private Synchronizer<object, object> FSynchronizer;
         
         public new event ClickHandler Click;
-        protected void OnClick(IModelMapper sender, MouseEventArgs e)
+        protected void OnClick(ModelMapper sender, MouseEventArgs e)
         {
             if (Click != null)
                 Click(sender, e);
         }
         public new event ClickHandler DoubleClick;
-        protected void OnDoubleClick(IModelMapper sender, MouseEventArgs e)
+        protected void OnDoubleClick(ModelMapper sender, MouseEventArgs e)
         {
             if (DoubleClick != null)
                 DoubleClick(sender, e);
         }
         public new event ClickHandler MouseDown;
-        protected virtual void OnMouseDown(IModelMapper sender, MouseEventArgs e)
+        protected virtual void OnMouseDown(ModelMapper sender, MouseEventArgs e)
         {
             if (MouseDown != null) {
                 MouseDown(sender, e);

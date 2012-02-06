@@ -36,20 +36,20 @@ namespace VVVV.Core
         }
 
         public TypeMappings(IUnityContainer container, Type sourcetype)
-	    {
+        {
             SourceType = sourcetype;
             Container = container;
 
             // Create our own registration lookup table (IsRegistered method from Unity is terrible slow).
             FLookup = new Dictionary<Type, string>();
-        }   
+        }
 
         internal void InitLookupTable()
         {
             // Clear the lookup table
             FLookup.Clear();
 
-            // Create a table containing our type hierachy and assign a 
+            // Create a table containing our type hierachy and assign a
             // priority to each entry (lower is better).
             var myTypes = new Dictionary<Type, int>();
             int priority = 0;
@@ -138,7 +138,7 @@ namespace VVVV.Core
         public void RegisterMapping(Type modelType, Type fromType, Type toType)
         {
             var name = modelType.FullName;
-            BeginRegister();                            
+            BeginRegister();
             Container.RegisterType(fromType, toType, name, new HierarchicalLifetimeManager());
             EndRegister();
         }
@@ -154,10 +154,10 @@ namespace VVVV.Core
                 if (destType.IsAssignableFrom(SourceType)) //&& FLookup.ContainsKey(SourceType.FullName))
                     return Container.Resolve(SourceType);
                 else
-                {
-                    var msg = string.Format("Can't find mapping to {0}.", destType);
-                    throw new Exception(msg);
-                }
+            {
+                var msg = string.Format("Can't find mapping to {0}.", destType);
+                throw new Exception(msg);
+            }
         }
 
         public TDEST Map<TDEST>(object source)
@@ -175,7 +175,7 @@ namespace VVVV.Core
             {
                 var msg = string.Format("Can't find mapping from {0} to {1}.", source, typeof(TDEST));
                 throw new Exception(msg);
-//                return Container.Resolve<TDEST>();
+                //                return Container.Resolve<TDEST>();
             }
         }
 
@@ -208,7 +208,7 @@ namespace VVVV.Core
         {
             FRegistering--;
             if (FRegistering == 0)
-                InitLookupTable();               
+                InitLookupTable();
         }
 
         public void Dispose()
@@ -228,13 +228,13 @@ namespace VVVV.Core
         {
             var cache = new Dictionary<string, Type>();
             
-            foreach (var registration in Container.Registrations) 
+            foreach (var registration in Container.Registrations)
             {
                 var name = registration.Name;
                 if (name != null && !cache.ContainsKey(name))
                 {
                     Type t = null;
-                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) 
+                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
                     {
                         t = assembly.GetType(name);
                         if (t != null)
@@ -250,9 +250,11 @@ namespace VVVV.Core
         }
     }
 
-
-    public class ModelMapper : IModelMapper
-    {               
+    /// <summary>
+    /// A ModelMapper provides mappings for a model element.
+    /// </summary>
+    public class ModelMapper : IDisposable
+    {
         /// <summary>
         /// The MappingRegistry containing all the mapping info.
         /// </summary>
@@ -264,23 +266,23 @@ namespace VVVV.Core
         public object Model { get; private set; }
 
         private TypeMappings TypeMappings;
-		private bool FDisposed;
+        private bool FDisposed;
         
         protected ModelMapper(object model, IUnityContainer parentContainer, MappingRegistry registry)
         {
             Model = model;
             Registry = registry;
-                      
+            
             // Create a child container out of parent container so newly mapped objects live
             // in its own scope for this model element.
             var container = parentContainer.CreateChildContainer();
 
             TypeMappings = new TypeMappings(container, model.GetType());
-   
+            
             // Register this ModelMapper once, so that child mappers can access their parent mapper at their construction
             container.RegisterInstance<ModelMapper>(this, new ExternallyControlledLifetimeManager());
-            container.RegisterInstance<IModelMapper>(this, new ExternallyControlledLifetimeManager());
-    
+            // container.RegisterInstance<IModelMapper>(this, new ExternallyControlledLifetimeManager());
+            
             // Register model, so that implementors can fetch it on construction
             container.RegisterInstance(model, new ExternallyControlledLifetimeManager());
             container.RegisterInstance(model.GetType(), model, new ExternallyControlledLifetimeManager());
@@ -290,7 +292,7 @@ namespace VVVV.Core
             // Register the model in the container under the name registrations were made for it.
             // For example if a mapping from A to B was provided for T,
             // we wanna be able to fetch T in the constructor of B as T.
-            foreach (var t in TypeMappings.GetRegisteredModelTypes()) 
+            foreach (var t in TypeMappings.GetRegisteredModelTypes())
             {
                 // model is t
                 if (t.IsAssignableFrom(model.GetType()))
@@ -307,48 +309,72 @@ namespace VVVV.Core
 
             TypeMappings.InitLookupTable();
         }
-    
+        
         public ModelMapper(object model, ModelMapper parentMapper)
             
-            : this(model, parentMapper.TypeMappings.Container, parentMapper.Registry) 
+            : this(model, parentMapper.TypeMappings.Container, parentMapper.Registry)
         {}
 
         public ModelMapper(object model, MappingRegistry registry)
-    
-            : this(model, registry.Container, registry) 
+            
+            : this(model, registry.Container, registry)
         {}
 
+        /// <summary>
+        /// Registers mapping from Type fromType to instance toInstance.
+        /// The mapping is only valid for this model class and subclasses.
+        /// </summary>
         public void RegisterMapping(Type fromType, object toInstance)
         {
             TypeMappings.RegisterMapping(Model.GetType(), fromType, toInstance);
         }
         
+        /// <summary>
+        /// Registers mapping from Type fromType to instance toInstance.
+        /// The mapping is valid for this model object and child objects.
+        /// </summary>
         public void RegisterDefault(Type fromType, object toInstance)
         {
             TypeMappings.RegisterMapping(fromType, toInstance);
         }
         
+        /// <summary>
+        /// Registers mapping for Type forType from Type fromType to Type toType.
+        /// The mapping is only valid for model objects of type forType.
+        /// </summary>
         public void RegisterMapping(Type forType, Type fromType, Type toType)
         {
             TypeMappings.RegisterMapping(forType, fromType, toType);
         }
-            
+        
+        /// <summary>
+        /// Maps the containing model element to TDEST.
+        /// </summary>
         public TDEST Map<TDEST>()
         {
             return TypeMappings.Map<TDEST>(Model);
         }
 
+        /// <summary>
+        /// Whether or not the containing model element can be mapped to TDEST.
+        /// </summary>
         public bool CanMap<TDEST>()
         {
             return TypeMappings.CanMap<TDEST>(Model);
         }
         
-        public IModelMapper CreateChildMapper(object model)
+        /// <summary>
+        /// Creates a new mapper for the specified model element which inherits
+        /// all mappings from this mapper.
+        /// </summary>
+        /// <param name="model">The model element to create a new mapper for.</param>
+        /// <returns>A new model mapper which wraps itself around the specified model element.</returns>
+        public ModelMapper CreateChildMapper(object model)
         {
-			Debug.Assert(!FDisposed, "Tried to create model mapper on already disposed object graph!", string.Format("Model: {0}", Model.ToString()));
+            Debug.Assert(!FDisposed, "Tried to create model mapper on already disposed object graph!", string.Format("Model: {0}", Model.ToString()));
             return new ModelMapper(model, this);
         }
-                
+        
         protected bool IsRegistered<TDEST>()
         {
             return TypeMappings.IsRegistered<TDEST>();
@@ -357,11 +383,39 @@ namespace VVVV.Core
         public void Dispose()
         {
             TypeMappings.Dispose();
-			FDisposed = true;
+            FDisposed = true;
         }
-    }         
+    }
 
-
+    public static class ModelMapperExtensions
+    {
+        /// <summary>
+        /// Registers mapping from TInterface to instance.
+        /// The mapping is only valid for this model class and subclasses.
+        /// </summary>
+        public static void RegisterMapping<TInterface>(this ModelMapper mapper, TInterface instance)
+        {
+            mapper.RegisterMapping(typeof(TInterface), instance);
+        }
+        
+        /// <summary>
+        /// Registers mapping from TInterface to instance.
+        /// The mapping is valid for this model object and child objects.
+        /// </summary>
+        public static void RegisterDefault<TInterface>(this ModelMapper mapper, TInterface instance)
+        {
+            mapper.RegisterDefault(typeof(TInterface), instance);
+        }
+        
+        /// <summary>
+        /// Registers mapping for TFor from TFrom to TTo.
+        /// The mapping is only valid for TFor.
+        /// </summary>
+        public static void RegisterMapping<TFor, TFrom, TTo>(this ModelMapper mapper)
+        {
+            mapper.RegisterMapping(typeof(TFor), typeof(TFrom), typeof(TTo));
+        }
+    }
 
     public class Mapper
     {
@@ -399,17 +453,17 @@ namespace VVVV.Core
         protected Mapper(IUnityContainer parentContainer, MappingRegistry registry)
         {
             Registry = registry;
-                      
+            
             // Create a child container out of parent container so newly mapped objects live
             // in its own scope for this model element.
             //var container = parentContainer.CreateChildContainer();
 
             FTypeMappings = new Dictionary<Type, TypeMappings>();
         }
-    
+        
         public Mapper(MappingRegistry registry)
-    
-            : this(registry.Container, registry) 
+            
+            : this(registry.Container, registry)
         {}
 
         public TDEST Map<TDEST>(object source)
@@ -459,6 +513,6 @@ namespace VVVV.Core
 
             FTypeMappings.Clear();
         }
- 
+        
     }
 }

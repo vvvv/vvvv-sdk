@@ -8,22 +8,15 @@ namespace VVVV.Core.Model
 {
     public class IDItem : IIDItem, IDisposable
     {
-        public IDItem(string name, bool isRooted)
+        public IDItem(string name, bool isRooted = false)
         {
             FName = name;
-            Mapper = new LazyModelMapper(this);
             IsRooted = isRooted;
-        }
-        
-        public IDItem(string name)
-            : this(name, false)
-        {
-            
         }
 
         #region IIDItem Members
         
-        public IModelMapper Mapper
+        public ModelMapper Mapper
         {
             get;
             protected set;
@@ -55,12 +48,6 @@ namespace VVVV.Core.Model
                 
                 if (FOwner != null)
                 {
-                    var lazyMapper = Mapper as LazyModelMapper;
-                    if (lazyMapper != null)
-                    {
-                        lazyMapper.Initialize(FOwner.Mapper);
-                    }
-
                     // Subscribe to new owner
                     FOwner.RootingChanged += FOwner_RootingChanged;
                     
@@ -109,6 +96,7 @@ namespace VVVV.Core.Model
         {
             if (args.Rooting == RootingAction.Rooted)
             {
+                Mapper = FOwner.Mapper.CreateChildMapper(this);
                 OnRootingChanged(RootingAction.Rooted);
             }
             
@@ -120,6 +108,7 @@ namespace VVVV.Core.Model
             if (args.Rooting == RootingAction.ToBeUnrooted)
             {
                 OnRootingChanged(RootingAction.ToBeUnrooted);
+                Mapper.Dispose();
             }
         }
         
