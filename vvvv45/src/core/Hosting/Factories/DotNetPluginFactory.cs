@@ -527,6 +527,36 @@ namespace VVVV.Hosting.Factories
                 {
                     pluginHost.Win32Window = win32Window;
                 }
+                var pluginConnections = PluginBase as IPluginConnections;
+                if (pluginConnections != null)
+                {
+                    pluginHost.Connections = pluginConnections;
+                }
+                var pluginDXLayer = PluginBase as IPluginDXLayer;
+                if (pluginDXLayer != null)
+                {
+                    pluginHost.DXLayer = pluginDXLayer;
+                }
+                var pluginDXMesh = PluginBase as IPluginDXMesh;
+                if (pluginDXMesh != null)
+                {
+                    pluginHost.DXMesh = pluginDXMesh;
+                }
+                var pluginDXResource = PluginBase as IPluginDXResource;
+                if (pluginDXResource != null)
+                {
+                    pluginHost.DXResource = pluginDXResource;
+                }
+                var pluginTexture = PluginBase as IPluginDXTexture;
+                if (pluginTexture != null)
+                {
+                    pluginHost.DXTexture = pluginTexture;
+                }
+                var pluginTexture2 = PluginBase as IPluginDXTexture2;
+                if (pluginTexture2 != null)
+                {
+                    pluginHost.DXTexture2 = pluginTexture2;
+                }
             }
         }
         

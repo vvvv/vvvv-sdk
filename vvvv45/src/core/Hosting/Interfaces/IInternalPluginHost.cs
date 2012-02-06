@@ -7,22 +7,51 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Interfaces
 {
-	[Guid("21230B31-1929-44F8-B8C0-03E5C2AA42EF"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IInternalPluginHost : IPluginHost2
-	{
-		IPluginBase Plugin
-		{
-			get;
-			set;
-		}
-		
-		IWin32Window Win32Window
-		{
-		    get;
-		    set;
-		}
-		
-		IDXTextureOut CreateTextureOutput2(IDXTexturePin texturePin, string name, TSliceMode sliceMode, TPinVisibility visibility);
-	}
+    [Guid("21230B31-1929-44F8-B8C0-03E5C2AA42EF"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IInternalPluginHost : IPluginHost2
+    {
+        IPluginBase Plugin
+        {
+            get;
+            set;
+        }
+        
+        IWin32Window Win32Window
+        {
+            set;
+        }
+        
+        IPluginConnections Connections
+        {
+            set;
+        }
+        
+        IPluginDXLayer DXLayer
+        {
+            set;
+        }
+        
+        IPluginDXMesh DXMesh
+        {
+            set;
+        }
+        
+        IPluginDXResource DXResource
+        {
+            set;
+        }
+        
+        IPluginDXTexture DXTexture
+        {
+            set;
+        }
+        
+        IPluginDXTexture2 DXTexture2
+        {
+            set;
+        }
+        
+        IDXTextureOut CreateTextureOutput2(IDXTexturePin texturePin, string name, TSliceMode sliceMode, TPinVisibility visibility);
+    }
 }
