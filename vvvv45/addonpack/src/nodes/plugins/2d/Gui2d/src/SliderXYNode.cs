@@ -102,7 +102,7 @@ namespace VVVV.Nodes
 			//create inputs:
 			
 			//transform
-			FHost.CreateTransformInput("Tarnsform In", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
+			FHost.CreateTransformInput("Transform In", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
 			
 			//value
 			FHost.CreateValueInput("Value Input ", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueIn);

@@ -14,7 +14,7 @@ using SlimDX;
 namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "Depth", Category = "Kinect", Version = "Microsoft", Author = "vux", Tags = "directx,texture")]
-    public class KinectDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture
+    public class KinectDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]
         private Pin<KinectRuntime> FInRuntime;
@@ -34,7 +34,7 @@ namespace VVVV.MSKinect.Nodes
         private byte[] depthimage;
         private object m_lock = new object();
 
-        private Dictionary<int, Texture> FDepthTex = new Dictionary<int, Texture>();
+        private Dictionary<Device, Texture> FDepthTex = new Dictionary<Device, Texture>();
 
         [ImportingConstructor()]
         public KinectDepthTextureNode(IPluginHost host)
@@ -82,17 +82,21 @@ namespace VVVV.MSKinect.Nodes
             }
         }
 
-        public void GetTexture(IDXTextureOut ForPin, int OnDevice, out int tex)
+        public Texture GetTexture(IDXTextureOut ForPin, Device OnDevice, int Slice)
         {
-            tex = 0;
-            if (this.FDepthTex.ContainsKey(OnDevice)) { tex = this.FDepthTex[OnDevice].ComPointer.ToInt32(); }
+            if (this.FDepthTex.ContainsKey(OnDevice)) 
+            { 
+            	return this.FDepthTex[OnDevice];
+            }
+            else
+            	return null;
         }
 
-        public void UpdateResource(IPluginOut ForPin, int OnDevice)
+        public void UpdateResource(IPluginOut ForPin, Device OnDevice)
         {
             if (!this.FDepthTex.ContainsKey(OnDevice))
             {
-                Texture t = new Texture(Device.FromPointer(new IntPtr(OnDevice)), 320, 240, 1, Usage.None, Format.L8, Pool.Managed);
+                Texture t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.L8, Pool.Managed);
                 this.FDepthTex.Add(OnDevice, t);
             }
 
@@ -114,7 +118,7 @@ namespace VVVV.MSKinect.Nodes
             }
         }
 
-        public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+        public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
         {
             if (this.FDepthTex.ContainsKey(OnDevice))
             {
@@ -130,13 +134,36 @@ namespace VVVV.MSKinect.Nodes
             byte[] d16 = e.ImageFrame.Image.Bits;
             lock (m_lock)
             {
-                for (int i = 0, i16 = 0; i < 320 * 240; i++, i16 += 2)
+                if (hasplayer)
                 {
-                    int realDepth = hasplayer ? (d16[i16 + 1] << 5) | (d16[i16] >> 3) : (d16[i16 + 1] << 8) | (d16[i16]);
-                    byte intensity =   (byte)(255 - (255 * realDepth / 0x0fff));
-                    this.depthimage[i] = intensity;
-                    
+                    for (int i = 0, i16 = 0; i < 320 * 240; i++, i16 += 2)
+                    {
+                        int realDepth = (d16[i16 + 1] << 5) | (d16[i16] >> 3);
+                        byte intensity = (byte)(255 - (255 * realDepth / 0x0fff));
+                        this.depthimage[i] = intensity;
+                    }
                 }
+                else
+                {
+                    /*int i16 = 0;
+                    for (int i = 0; i < 240; i++)
+                    {
+                        for (int j = 0; j < 320; j++)
+                        {
+                            int realDepth = (d16[i16 + 1] << 8) | (d16[i16]);
+                            byte intensity = (byte)(255 - (255 * realDepth / 0x0fff));
+                            this.depthimage[(319-j)+  i * 240] = intensity;
+                            i16 += 2;
+                        }
+                    }*/
+                    for (int i = 0, i16 = 0; i < 320 * 240; i++, i16 += 2)
+                    {
+                        int realDepth = (d16[i16 + 1] << 8) | (d16[i16]);
+                        byte intensity = (byte)(255 - (255 * realDepth / 0x0fff));
+                        this.depthimage[i] = intensity;
+                    }
+                }
+
                 //Marshal.Copy(e.ImageFrame.Image.Bits, 0, this.depthimage, 640 * 480);
             }
             this.FInvalidate = true;

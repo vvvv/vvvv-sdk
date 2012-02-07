@@ -165,7 +165,7 @@ namespace VVVV.TodoMap.Lib.Persist
 
             if (var.Category == null) { var.Category = "Global"; }
             else { if (var.Category.Length == 0) { var.Category = "Global"; } }
-            engine.RegisterVariable(var);
+            engine.RegisterVariable(var,false);
             var.SetDefault();
             
             //foreach (AbstractTodoInput ti in var.Inputs)

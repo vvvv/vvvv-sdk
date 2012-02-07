@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using SlimDX.Direct3D9;
+using VVVV.PluginInterfaces.InteropServices.EX9;
 
 namespace VVVV.Hosting.Interfaces.EX9
 {

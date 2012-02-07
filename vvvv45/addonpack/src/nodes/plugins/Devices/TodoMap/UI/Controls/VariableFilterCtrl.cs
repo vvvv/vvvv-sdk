@@ -101,7 +101,7 @@ namespace VVVV.TodoMap.UI.Controls
                 {
                     var.Category = "Global";
                 }
-                this.engine.RegisterVariable(var);  
+                this.engine.RegisterVariable(var,true);  
             }           
         }
 

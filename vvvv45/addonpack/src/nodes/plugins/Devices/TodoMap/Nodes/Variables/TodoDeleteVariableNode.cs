@@ -41,7 +41,7 @@ namespace VVVV.TodoMap.Nodes.Variables
                         }
                         else
                         {
-                            this.FInEngine[0].DeleteVariable(var);
+                            this.FInEngine[0].DeleteVariable(var,false);
                             this.FOutIsFound[i] = true;
                         }
                     }

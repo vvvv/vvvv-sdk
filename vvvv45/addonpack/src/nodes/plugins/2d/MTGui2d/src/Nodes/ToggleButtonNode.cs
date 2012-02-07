@@ -57,7 +57,7 @@ namespace VVVV.Nodes
 			{
 				//fill out nodes info
 				IPluginInfo Info = new PluginInfo();
-				Info.Name = "MTToggleButton";
+				Info.Name = "ToggleButton";
 				Info.Category = "GUI";
 				Info.Version = "Multitouch";
 				Info.Help = "A spread of toggle buttons for multi touch";
