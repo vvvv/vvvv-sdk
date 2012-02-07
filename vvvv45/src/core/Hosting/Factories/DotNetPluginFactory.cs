@@ -61,6 +61,8 @@ namespace VVVV.Hosting.Factories
         private readonly Type FReflectionOnlyPluginBaseType;
         protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 
+        private StartableRegistry FStartableRegistry;
+
         public Dictionary<string, IPluginBase> FNodesPath = new Dictionary<string, IPluginBase>();
         public Dictionary<IPluginBase, IPluginHost2> FNodes = new Dictionary<IPluginBase, IPluginHost2>();
         
@@ -84,6 +86,8 @@ namespace VVVV.Hosting.Factories
             var pluginInterfacesAssemblyName = typeof(IPluginBase).Assembly.FullName;
             var pluginInterfacesAssembly = Assembly.ReflectionOnlyLoad(pluginInterfacesAssemblyName);
             FReflectionOnlyPluginBaseType = pluginInterfacesAssembly.GetExportedTypes().Where(t => t.Name == typeof(IPluginBase).Name).First();
+
+            FStartableRegistry = new StartableRegistry(pluginInterfacesAssembly);
         }
 
         public event PluginCreatedDelegate PluginCreated;
@@ -158,6 +162,7 @@ namespace VVVV.Hosting.Factories
             if (!IsDotNetAssembly(filename)) return;
 
             bool containsV1Plugins = false;
+            bool nonLazyStartable = false;
             
             // Remember the current directory for later assembly resolution
             FCurrentAssemblyDir = Path.GetDirectoryName(filename);
@@ -183,6 +188,14 @@ namespace VVVV.Hosting.Factories
                         containsV1Plugins = true;
                     }
                 }
+
+
+                bool nonlazy = FStartableRegistry.ProcessType(type, assembly);
+
+                if (nonlazy)
+                {
+                    nonLazyStartable = true;
+                }
             }
             
             // V1 plugins need to be loaded in LoadFrom context in order to instantiate the
@@ -206,6 +219,13 @@ namespace VVVV.Hosting.Factories
                     }
                 }
             }
+
+            if (nonLazyStartable)
+            {
+                var assemblyload = Assembly.LoadFrom(filename);
+                FStartableRegistry.ProcessAssembly(assemblyload);
+            }
+            
             
             foreach (var nodeInfo in nodeInfos)
             {
@@ -331,6 +351,10 @@ namespace VVVV.Hosting.Factories
             }
             
             var assembly = Assembly.LoadFrom(assemblyLocation);
+
+            //Check if need to start anything before rest is loaded
+            FStartableRegistry.ProcessAssembly(assembly);
+
             var type = assembly.GetType(nodeInfo.Arguments);
             var attribute = GetPluginInfoAttributeData(type);
             if (attribute != null)
