@@ -1,5 +1,6 @@
 ﻿
 using System;
+using SlimDX;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
@@ -348,6 +349,46 @@ namespace VVVV.Hosting.IO.Streams
         protected override void SetSlice(int index, RGBAColor value)
         {
             FColorConfig.SetColor(index, value);
+        }
+        
+        public override int Length
+        {
+            get
+            {
+                return FColorConfig.SliceCount;
+            }
+            set
+            {
+                FColorConfig.SliceCount = value;
+            }
+        }
+        
+        public override bool Sync()
+        {
+            return FColorConfig.PinIsChanged;
+        }
+    }
+    
+    class SlimDXColorConfigStream : PluginConfigStream<Color4>
+    {
+        private readonly IColorConfig FColorConfig;
+        
+        public SlimDXColorConfigStream(IColorConfig colorConfig)
+        {
+            FColorConfig = colorConfig;
+        }
+        
+        protected override Color4 GetSlice(int index)
+        {
+            RGBAColor result;
+            FColorConfig.GetColor(index, out result);
+            return new Color4((float) result.R, (float) result.G, (float) result.B, (float) result.A);
+        }
+        
+        protected override void SetSlice(int index, Color4 value)
+        {
+            var dst = new RGBAColor(value.Red, value.Green, value.Blue, value.Alpha);
+            FColorConfig.SetColor(index, dst);
         }
         
         public override int Length

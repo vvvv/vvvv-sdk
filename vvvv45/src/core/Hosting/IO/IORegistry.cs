@@ -4,7 +4,9 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+
 using SlimDX;
+using SlimDX.Direct3D9;
 using VVVV.Hosting.Interfaces;
 using VVVV.Hosting.IO.Streams;
 using VVVV.Hosting.Pins.Config;
@@ -12,6 +14,7 @@ using VVVV.Hosting.Pins.Input;
 using VVVV.Hosting.Pins.Output;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
@@ -197,6 +200,14 @@ namespace VVVV.Hosting.IO
                               var colorIn = host.CreateColorInput(attribute, t);
                               colorIn.GetColorPointer(out pLength, out ppDoubleData);
                               var stream = new ColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorIn));
+                              return IOHandler.Create(stream, colorIn);
+                          });
+            
+            RegisterInput(typeof(IInStream<Color4>), (factory, attribute, t) => {
+                              var host = factory.PluginHost;
+                              var colorIn = host.CreateColorInput(attribute, t);
+                              colorIn.GetColorPointer(out pLength, out ppDoubleData);
+                              var stream = new SlimDXColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorIn));
                               return IOHandler.Create(stream, colorIn);
                           });
 
@@ -443,6 +454,13 @@ namespace VVVV.Hosting.IO
                                colorOut.GetColorPointer(out ppDoubleData);
                                return IOHandler.Create(new ColorOutStream((RGBAColor**) ppDoubleData, colorOut), colorOut);
                            });
+            
+            RegisterOutput(typeof(IOutStream<Color4>), (factory, attribute, t) => {
+                               var host = factory.PluginHost;
+                               var colorOut = host.CreateColorOutput(attribute, t);
+                               colorOut.GetColorPointer(out ppDoubleData);
+                               return IOHandler.Create(new SlimDXColorOutStream((RGBAColor**) ppDoubleData, colorOut), colorOut);
+                           });
 
             RegisterOutput(typeof(IOutStream<EnumEntry>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
@@ -452,13 +470,37 @@ namespace VVVV.Hosting.IO
             
             RegisterOutput(typeof(IOutStream<>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
-                               if (t.IsGenericType && t.GetGenericArguments().Length == 1)
+                               
+                               var genericArguments = t.GetGenericArguments();
+                               if (t.IsGenericType)
                                {
-                                   if (typeof(IInStream<>).MakeGenericType(t.GetGenericArguments()).IsAssignableFrom(t))
-                                   {
-                                       var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
-                                       var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
-                                       return IOHandler.Create(stream, null, null, s => s.Flush());
+                                   switch (genericArguments.Length) {
+                                       case 1:
+                                           if (typeof(IInStream<>).MakeGenericType(genericArguments).IsAssignableFrom(t))
+                                           {
+                                               var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
+                                               var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
+                                               return IOHandler.Create(stream, null, null, s => s.Flush());
+                                           }
+                                           break;
+                                       case 2:
+                                           if (typeof(DXResource<,>).MakeGenericType(genericArguments).IsAssignableFrom(t))
+                                           {
+                                               var resourceType = genericArguments[0];
+                                               var metadataType = genericArguments[1];
+                                               if (resourceType == typeof(Texture))
+                                               {
+                                                   var textureOutStreamType = typeof(TextureOutStream<,>);
+                                                   textureOutStreamType = textureOutStreamType.MakeGenericType(t, metadataType);
+                                                   var stream = Activator.CreateInstance(textureOutStreamType, host, attribute) as IOutStream;
+                                                   return IOHandler.Create(stream, null, null, s => s.Flush());
+                                               }
+                                               else
+                                               {
+                                                   throw new NotImplementedException();
+                                               }
+                                           }
+                                           break;
                                    }
                                }
                                
@@ -550,6 +592,13 @@ namespace VVVV.Hosting.IO
                                var host = factory.PluginHost;
                                var colorConfig = host.CreateColorConfig(attribute, t);
                                var stream = new ColorConfigStream(colorConfig);
+                               return IOHandler.Create(stream, colorConfig, null, null, s => s.Sync());
+                           });
+            
+            RegisterConfig(typeof(IIOStream<Color4>), (factory, attribute, t) => {
+                               var host = factory.PluginHost;
+                               var colorConfig = host.CreateColorConfig(attribute, t);
+                               var stream = new SlimDXColorConfigStream(colorConfig);
                                return IOHandler.Create(stream, colorConfig, null, null, s => s.Sync());
                            });
 
