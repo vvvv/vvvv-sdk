@@ -156,6 +156,7 @@ namespace VVVV.Hosting
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
             DeviceMarshaler.Initialize(vvvvHost.DeviceService);
+            GraphEventService = new GraphEventService(vvvvHost.GraphEventService);
             
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
@@ -194,7 +195,6 @@ namespace VVVV.Hosting
             FNodeBrowser = (INodeBrowser) PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
             FNodeBrowser.IsStandalone = false;
             FNodeBrowser.DragDrop(false);
-            GraphEventService = new GraphEventService(vvvvHost.GraphEventService);
         }
         
         private INodeInfo GetNodeInfo(string systemName)
