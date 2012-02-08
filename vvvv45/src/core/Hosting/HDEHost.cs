@@ -268,6 +268,11 @@ namespace VVVV.Hosting
             NodeCollection.AddCombined(path, false);
             NodeCollection.Collect();
         }
+        
+        public void Shutdown()
+        {
+            // Call shutdown method of StartableRegistry here
+        }
 
         #endregion IInternalHDEHost
         
