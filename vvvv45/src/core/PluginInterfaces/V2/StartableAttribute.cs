@@ -12,6 +12,15 @@ namespace VVVV.PluginInterfaces.V2
     [ComVisible(false)]
     public class StartableAttribute : ExportAttribute
     {
+        /// <summary>
+        /// Friendly name for Startable Elements
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// If Lazy, it will only start when assemly loads, 
+        /// otherwise it will force assmebly to load on startup
+        /// </summary>
         public bool Lazy { get; set; }
     }
 }
