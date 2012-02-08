@@ -12,6 +12,8 @@ namespace VVVV.PluginInterfaces.V2
     [ComVisible(false)]
     public class StartableAttribute : ExportAttribute
     {
+        public StartableAttribute() : base(typeof(IStartable)) { }
+
         /// <summary>
         /// Friendly name for Startable Elements
         /// </summary>

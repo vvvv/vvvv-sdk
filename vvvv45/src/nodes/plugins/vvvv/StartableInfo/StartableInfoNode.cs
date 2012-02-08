@@ -27,21 +27,21 @@ namespace VVVV.Nodes.vvvv.StartableInfo
         [Output("Type Name",Visibility=PinVisibility.Hidden)]
         ISpread<string> FOutTypeName;
 
-        DotNetPluginFactory FDNFactory;
+        IStartableRegistry FStartableRegistry;
 
         bool FFirstFrame = true;
 
         [ImportingConstructor()]
-        public StartableInfoNode(DotNetPluginFactory dnFactory)
+        public StartableInfoNode(IStartableRegistry startableRegistry)
         {
-            FDNFactory = dnFactory;
+            FStartableRegistry = startableRegistry;
         }
 
         public void Evaluate(int SpreadMax)
         {
             if (FInUpdate[0] || FFirstFrame)
             {
-                List<StartableStatus> status = FDNFactory.StartableRegistry.Status;
+                List<IStartableStatus> status = FStartableRegistry.Status;
                 int cnt = status.Count;
                 FOutMessage.SliceCount = cnt;
                 FOutName.SliceCount = cnt;
@@ -50,11 +50,11 @@ namespace VVVV.Nodes.vvvv.StartableInfo
 
                 for (int i = 0; i < cnt; i++)
                 {
-                    StartableStatus s = status[i];
-                    FOutTypeName[i] = s.Info.Type.FullName;
+                    IStartableStatus s = status[i];
+                    FOutTypeName[i] = s.TypeName;
                     FOutStarted[i] = s.Success;
                     FOutMessage[i] = s.Message;
-                    FOutName[i] = s.Info.Name;
+                    FOutName[i] = s.Name;
                 }
 
                 FFirstFrame = false;
