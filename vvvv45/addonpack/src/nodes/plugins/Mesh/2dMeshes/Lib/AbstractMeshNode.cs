@@ -16,7 +16,7 @@ namespace VVVV.Lib
 
         protected List<Vertex[]> FVertex = new List<Vertex[]>();
         protected List<short[]> FIndices = new List<short[]>();
-        private bool FInvalidate;
+        protected bool FInvalidate;
 
         private IDXMeshOut FPinOutMesh;
         private Dictionary<Device, Mesh> FMeshes = new Dictionary<Device, Mesh>();
@@ -124,8 +124,6 @@ namespace VVVV.Lib
                     {
                         m.Dispose();
                     }
-
-                    this.FInvalidate = false;
                 }
             }
         }
