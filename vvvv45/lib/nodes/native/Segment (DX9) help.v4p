@@ -1,0 +1,2049 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Segment (DX9) help.v4p">
+   <BOUNDS height="8655" left="3330" top="975" type="Window" width="19485">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="11" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="150" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="7380" left="11160" top="1425" type="Window" width="7080">
+   </BOUNDS>
+   <BOUNDS height="3150" left="150" top="3480" type="Box" width="3030">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.49571,0.49571,0.49571,1.00000|">
+   </PIN>
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="3330">
+   </BOUNDS>
+   <BOUNDS height="160" left="9630" top="37440" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Renders a circular segment in the dx window|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="2670">
+   </BOUNDS>
+   <BOUNDS height="160" left="9630" top="37440" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Segment - DX9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="12" srcpinname="Layer">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="12" managers="" nodename="Segment (DX9)" systemname="Segment (DX9)">
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Resolution" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Inner Radius" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Cycles" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="0" left="150" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Sampler State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Coord Mapping" pintype="Input" slicecount="1" visible="0" values="OnShape_UV">
+   </PIN>
+   <PIN pinname="Color" pintype="Input" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Draw Slicewise" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Space" pintype="Input" slicecount="1" values="World">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="0" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Resolution" srcnodeid="13" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="13" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1740" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="1740" top="2505" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="45">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Integer">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Inner Radius" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="14" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1410" top="2205" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="1410" top="2205" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Cycles" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="15" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1260" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="1260" top="1905" type="Box" width="675">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="75" top="885" type="Node" width="11475">
+   </BOUNDS>
+   <BOUNDS height="705" left="75" top="885" type="Box" width="4005">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Segment is a quite versatile primitive. With a high resolution it can be used as a circle or ring or also only a part of those. Of course it also can be textured.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="19" nodename="Pillow (DX9)" systemname="Pillow (DX9)">
+   <BOUNDS height="100" left="315" top="7695" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="20" nodename="Rope (DX9)" systemname="Rope (DX9)">
+   <BOUNDS height="100" left="2400" top="7320" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="21" nodename="Sphere (DX9)" systemname="Sphere (DX9)">
+   <BOUNDS height="100" left="2400" top="7695" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="22" nodename="Grid (DX9)" systemname="Grid (DX9)">
+   <BOUNDS height="100" left="4575" top="7695" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="23" nodename="Triangle (DX9 Indexed)" systemname="Triangle (DX9 Indexed)">
+   <BOUNDS height="100" left="6300" top="7695" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="24" nodename="GridSegment (DX9)" systemname="GridSegment (DX9)">
+   <BOUNDS height="100" left="315" top="7320" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="150" top="6990" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="270" left="150" top="6990" type="Box" width="2565">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|For mor primitive geometries see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="27" managers="" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2280" top="1905" type="Node" width="1110">
+   </BOUNDS>
+   <BOUNDS height="270" left="2280" top="1905" type="Box" width="1110">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="0" values="Cycles">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="MultiLine">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Character Encoding" pintype="Configuration" slicecount="1" values="ANSI">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="28" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2280" top="2205" type="Node" width="1035">
+   </BOUNDS>
+   <BOUNDS height="270" left="2280" top="2205" type="Box" width="1035">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Inner Radius|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="29" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2280" top="2505" type="Node" width="900">
+   </BOUNDS>
+   <BOUNDS height="270" left="2280" top="2505" type="Box" width="900">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Resolution">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="37" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="3450" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="7380" left="11160" top="1425" type="Window" width="7080">
+   </BOUNDS>
+   <BOUNDS height="3150" left="3450" top="3480" type="Box" width="3030">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.49571,0.49571,0.49571,1.00000|">
+   </PIN>
+   <PIN pinname="Global Visual Range">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="37" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="36" srcpinname="Layer">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="36" managers="" nodename="Segment (DX9)" systemname="Segment (DX9)">
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Resolution" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Inner Radius" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Cycles" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="0" left="3450" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Sampler State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Coord Mapping" pintype="Input" slicecount="1" visible="0" values="OnShape_UV">
+   </PIN>
+   <PIN pinname="Color" pintype="Input" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Draw Slicewise" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Space" pintype="Input" slicecount="1" values="World">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="0" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="36" dstpinname="Resolution" srcnodeid="35" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="35" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="5040" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="5040" top="2505" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="9">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Integer">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="36" dstpinname="Inner Radius" srcnodeid="34" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="34" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="4710" top="2205" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="4710" top="2205" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="0.78">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="36" dstpinname="Cycles" srcnodeid="33" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="33" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="4560" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4560" top="1905" type="Box" width="675">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="32" managers="" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5580" top="1905" type="Node" width="1110">
+   </BOUNDS>
+   <BOUNDS height="270" left="5580" top="1905" type="Box" width="1110">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="0" values="Cycles">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="MultiLine">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Character Encoding" pintype="Configuration" slicecount="1" values="ANSI">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="31" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5580" top="2205" type="Node" width="1035">
+   </BOUNDS>
+   <BOUNDS height="270" left="5580" top="2205" type="Box" width="1035">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Inner Radius|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="30" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5580" top="2505" type="Node" width="900">
+   </BOUNDS>
+   <BOUNDS height="270" left="5580" top="2505" type="Box" width="900">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Resolution">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="45" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="6750" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="7380" left="11160" top="1425" type="Window" width="7080">
+   </BOUNDS>
+   <BOUNDS height="3150" left="6750" top="3480" type="Box" width="3030">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.49571,0.49571,0.49571,1.00000|">
+   </PIN>
+   <PIN pinname="Global Visual Range">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="45" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="44" srcpinname="Layer">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="44" managers="" nodename="Segment (DX9)" systemname="Segment (DX9)">
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Resolution" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Inner Radius" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Cycles" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="0" left="6750" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Sampler State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Coord Mapping" pintype="Input" slicecount="1" visible="0" values="OnShape_UV">
+   </PIN>
+   <PIN pinname="Color" pintype="Input" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Draw Slicewise" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Space" pintype="Input" slicecount="1" values="World">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="0" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Resolution" srcnodeid="43" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="43" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="8340" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="8340" top="2505" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="30">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Integer">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Inner Radius" srcnodeid="42" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="42" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="8010" top="2205" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="8010" top="2205" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Cycles" srcnodeid="41" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="41" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="7860" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="7860" top="1905" type="Box" width="675">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="0.25">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="40" managers="" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="8880" top="1905" type="Node" width="1110">
+   </BOUNDS>
+   <BOUNDS height="270" left="8880" top="1905" type="Box" width="1110">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="0" values="Cycles">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="MultiLine">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Character Encoding" pintype="Configuration" slicecount="1" values="ANSI">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="39" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="8880" top="2205" type="Node" width="1035">
+   </BOUNDS>
+   <BOUNDS height="270" left="8880" top="2205" type="Box" width="1035">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Inner Radius|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="38" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="8880" top="2505" type="Node" width="900">
+   </BOUNDS>
+   <BOUNDS height="270" left="8880" top="2505" type="Box" width="900">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Resolution">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="46" nodename="Fill (EX9.RenderState)" systemname="Fill (EX9.RenderState)">
+   <BOUNDS height="100" left="150" top="2565" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Render State" hiddenwhenlocked="1" srcnodeid="46" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="47" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="165" top="1875" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="630" left="165" top="1875" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="46" dstpinname="Fill Mode" srcnodeid="47" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="36" dstpinname="Render State" hiddenwhenlocked="1" srcnodeid="46" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="44" dstpinname="Render State" hiddenwhenlocked="1" srcnodeid="46" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="48" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="100" left="4575" top="7320" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="56" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="11100" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="7380" left="11160" top="1425" type="Window" width="7080">
+   </BOUNDS>
+   <BOUNDS height="3150" left="11100" top="3480" type="Box" width="3030">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.49571,0.49571,0.49571,1.00000|">
+   </PIN>
+   <PIN pinname="Global Visual Range">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="56" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="55" srcpinname="Layer">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="55" managers="" nodename="Segment (DX9)" systemname="Segment (DX9)">
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Resolution" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Inner Radius" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Cycles" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="0" left="11100" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Sampler State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Coord Mapping" pintype="Input" visible="0">
+   </PIN>
+   <PIN pinname="Color" pintype="Input" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Draw Slicewise" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Space" pintype="Input" slicecount="1" values="World">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="0" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="55" dstpinname="Resolution" srcnodeid="54" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="54" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="12690" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="12690" top="2505" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="30">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Integer">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="55" dstpinname="Inner Radius" srcnodeid="53" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="53" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="12360" top="2205" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="12360" top="2205" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="55" dstpinname="Cycles" srcnodeid="52" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="52" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="12210" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="12210" top="1905" type="Box" width="675">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="51" managers="" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="13230" top="1905" type="Node" width="1110">
+   </BOUNDS>
+   <BOUNDS height="270" left="13230" top="1905" type="Box" width="1110">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="0" values="Cycles">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="MultiLine">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Character Encoding" pintype="Configuration" slicecount="1" values="ANSI">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="50" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="13230" top="2205" type="Node" width="1035">
+   </BOUNDS>
+   <BOUNDS height="270" left="13230" top="2205" type="Box" width="1035">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Inner Radius|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="49" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="13230" top="2505" type="Node" width="900">
+   </BOUNDS>
+   <BOUNDS height="270" left="13230" top="2505" type="Box" width="900">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Resolution">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="57" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="100" left="10845" top="2385" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Filename" slicecount="1" values="..\..\assets\images\earth_512x512.jpg">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="55" dstpinname="Texture" srcnodeid="57" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="58" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="11880" top="750" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1035" left="11880" top="750" type="Box" width="1470">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="FrontProjected_XY">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="55" dstpinname="Texture Coord Mapping" srcnodeid="58" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="69" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="15300" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="7380" left="11160" top="1425" type="Window" width="7080">
+   </BOUNDS>
+   <BOUNDS height="3150" left="15300" top="3480" type="Box" width="3030">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.49571,0.49571,0.49571,1.00000|">
+   </PIN>
+   <PIN pinname="Global Visual Range">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="69" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="68" srcpinname="Layer">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="68" managers="" nodename="Segment (DX9)" systemname="Segment (DX9)">
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Resolution" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Inner Radius" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Cycles" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="0" left="15300" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Sampler State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Coord Mapping" pintype="Input" slicecount="1" visible="0" values="FrontProjected_XY">
+   </PIN>
+   <PIN pinname="Color" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Draw Slicewise" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Space" pintype="Input" slicecount="1" values="World">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="0" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="68" dstpinname="Resolution" srcnodeid="67" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="67" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="16890" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="16890" top="2505" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="6">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Integer">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="68" dstpinname="Inner Radius" srcnodeid="66" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="66" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="16560" top="2205" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="16560" top="2205" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="68" dstpinname="Cycles" srcnodeid="65" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="65" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="16410" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="16410" top="1905" type="Box" width="675">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Vector Size" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="64" managers="" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="17430" top="1905" type="Node" width="1110">
+   </BOUNDS>
+   <BOUNDS height="270" left="17430" top="1905" type="Box" width="1110">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="0" values="Cycles">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="MultiLine">
+   </PIN>
+   <BOUNDS height="0" left="0" top="0" type="Window" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN encoded="0" pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Character Encoding" pintype="Configuration" slicecount="1" values="ANSI">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="63" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="17430" top="2205" type="Node" width="1035">
+   </BOUNDS>
+   <BOUNDS height="270" left="17430" top="2205" type="Box" width="1035">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Inner Radius|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="62" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="17430" top="2505" type="Node" width="900">
+   </BOUNDS>
+   <BOUNDS height="270" left="17430" top="2505" type="Box" width="900">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Resolution">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="70" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="100" left="15840" top="585" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1095" left="15840" top="585" type="Box" width="2310">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="5" values="|0.00000,1.00000,0.00000,1.00000|,|0.83271,0.00000,1.00000,1.00000|,|1.00000,0.48360,0.00000,1.00000|,|0.97962,0.00000,0.04701,1.00000|,|0.00000,0.30469,0.85727,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="68" dstpinname="Color" srcnodeid="70" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="InABox" id="71" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15345" top="6870" type="Node" width="8490">
+   </BOUNDS>
+   <BOUNDS height="675" left="15345" top="6870" type="Box" width="3255">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Colors are specifed per triangle. Note this is different to the GridSegment (DX9) where Color is specified per instance.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>

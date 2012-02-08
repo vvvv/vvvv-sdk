@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Cci.AssertionAdder</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Cci.AssertAssumeAdderVisitor">
+            <summary>
+            A visitor that traverses a code model and generates explicit assert and assume statements based on implicit checks and assumptions
+            that are present in the object model. For example, any array index expression implicitly asserts that the array index is within bounds.
+            The purpose of this visitor is to produce an object model that can be checked by a static checker, without requiring the static checker to
+            have special cases for all of the implicit assertions and assumes in the code.
+            </summary>
+            <remarks>This class is basically obsolete. It should be replaced by a mutator. It is also mostly incomplete.</remarks>
+        </member>
+        <member name="M:Microsoft.Cci.AssertAssumeAdderVisitor.#ctor(Microsoft.Cci.INameTable,System.Nullable{System.UInt32})">
+            <summary>
+            Allocates a visitor that traverses a code model and generates explicit assert and assume statements based on implicit checks and assumptions
+            that are present in the object model. For example, any array index expression implicitly asserts that the array index is within bounds.
+            The purpose of this visitor is to produce an object model that can be checked by a static checker, without requiring the static checker to
+            have special cases for all of the implicit assertions and assumes in the code.
+            </summary>
+            <param name="nameTable">A collection of IName instances that represent names that are commonly used during compilation.
+            This is a provided as a parameter to the host environment in order to allow more than one host
+            environment to co-exist while agreeing on how to map strings to IName instances.</param>
+            <param name="insertAssumeFalseAtLine"></param>
+        </member>
+        <member name="M:Microsoft.Cci.AssertAssumeAdderVisitor.Visit(Microsoft.Cci.IAssembly)">
+            <summary>
+            Visits the specified assembly.
+            </summary>
+            <param name="assembly">The assembly.</param>
+        </member>
+        <member name="M:Microsoft.Cci.AssertAssumeAdderVisitor.Visit(Microsoft.Cci.IMethodDefinition)">
+            <summary>
+            Visits the specified method.
+            </summary>
+            <param name="method">The method.</param>
+        </member>
+        <member name="M:Microsoft.Cci.AssertAssumeAdderVisitor.Visit(Microsoft.Cci.IModule)">
+            <summary>
+            Visits the specified module.
+            </summary>
+            <param name="module">The module.</param>
+        </member>
+        <member name="M:Microsoft.Cci.AssertAssumeAdderVisitor.Visit(Microsoft.Cci.IPointerCall)">
+            <summary>
+            Visits the specified pointer call.
+            </summary>
+            <param name="pointerCall">The pointer call.</param>
+        </member>
+        <member name="M:Microsoft.Cci.AssertAssumeAdderVisitor.Visit(Microsoft.Cci.IStatement)">
+            <summary>
+            Visits the specified statement.
+            </summary>
+            <param name="statement">The statement.</param>
+        </member>
+        <member name="M:Microsoft.Cci.AssertAssumeAdderVisitor.Visit(Microsoft.Cci.IBlockStatement)">
+            <summary>
+            Visits the specified block.
+            </summary>
+            <param name="block">The block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.AssertAssumeAdderVisitor.Visit(Microsoft.Cci.IUnit)">
+            <summary>
+            Visits the specified unit.
+            </summary>
+            <param name="unit">The unit.</param>
+        </member>
+        <member name="P:Microsoft.Cci.AssertAssumeAdderVisitor.AddedStmts">
+            <summary>
+            A map from statements to collections of statements that should precede them. The preceding statements will be assert/assume statements
+            that make explicit the checks that are implicit in the statement they precede.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,215 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\LED (Devices Phidget) help.v4p" filename="D:\-= Plugins =-\Devices\PhidgetsIO\HelpPatches\LED (Devices Phidget) help.v4p" systemname="LED (Devices Phidget) help">
+   <BOUNDS height="7665" left="3855" top="3630" type="Window" width="10320">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="100" left="2610" top="3105" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="2610" top="3105" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Brightnes">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="100" left="4335" top="3135" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="4335" top="3135" type="Box" width="1530">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="VOLTAGE_2_75V">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Voltage">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="100" left="6030" top="3135" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="6030" top="3135" type="Box" width="1860">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="CURRENT_LIMIT_40mA">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Current Limit|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="100" left="2205" top="4140" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="2205" top="4140" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Attached">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="4890" top="4605" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="330" left="4890" top="4605" type="Box" width="1230">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="5895" top="5100" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="315" left="5895" top="5100" type="Box" width="1905">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="11" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="100" left="2610" top="1830" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="WaveShaper (Value)" systemname="WaveShaper (Value)">
+   <BOUNDS height="100" left="2610" top="2550" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Shape" slicecount="1" values="Triangle">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="13" nodename="RandomSpread (Spreads)" systemname="RandomSpread (Spreads)">
+   <BOUNDS height="100" left="3210" top="4620" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="14" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <BOUNDS height="100" left="2490" top="5925" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output">
+   <LINKPOINT x="3085" y="5543">
+   </LINKPOINT>
+   <LINKPOINT x="2660" y="5273">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|vvvv integration of the 1031 - PhidgetLED-64 Advanced.&cr;&lf;Allows you to control 64 LEDs separately.&cr;&lf;Before connecting LED check the voltage and ampere|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|LED (Devices Phidget)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="100" left="7050" top="2370" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="7050" top="2370" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Serial">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Period" linkstyle="Bezier" srcnodeid="14" srcpinname="Output 1">
+   <LINKPOINT x="2490" y="4935">
+   </LINKPOINT>
+   <LINKPOINT x="120" y="4935">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="25" nodename="Max (Value)" systemname="Max (Value)">
+   <BOUNDS height="100" left="4320" top="4140" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Spread Count" srcnodeid="25" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\PhidgetDeploy\PhidgetDevices.dll" id="15" nodename="LED (Devices Phidget)" systemname="LED (Devices Phidget)">
+   <BOUNDS height="270" left="2640" top="3705" type="Node" width="5190">
+   </BOUNDS>
+   <PIN pinname="Brightnes" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   <PIN pinname="Attached" visible="1">
+   </PIN>
+   <PIN pinname="Serial" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="15" srcpinname="Attached">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input String" srcnodeid="15" srcpinname="Voltage">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input String" srcnodeid="15" srcpinname="Currnet Limit">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Voltage" srcnodeid="3" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Current Limit" srcnodeid="4" srcpinname="Output Enum">
+   <LINKPOINT x="6023" y="3968">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Serial" srcnodeid="21" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Brightnes" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Input 1" srcnodeid="15" srcpinname="Count">
+   </LINK>
+   </PATCH>

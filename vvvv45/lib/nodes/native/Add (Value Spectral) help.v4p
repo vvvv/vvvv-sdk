@@ -1,0 +1,211 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Add (Value Spectral) help.v4p">
+   <BOUNDS height="5340" left="2355" top="1350" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="750" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5940" top="3540" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="750" left="750" top="2115" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="5,2,2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="750" top="3705" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6540" top="4140" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="750" top="3705" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="765" top="4050" type="Node" width="1020">
+   </BOUNDS>
+   <BOUNDS height="240" left="765" top="4050" type="Box" width="1185">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|5 + 2 + 2 = 9|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1725" top="2625" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5415" top="2925" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1725" top="2625" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Add (Value Spectral)" systemname="Add (Value Spectral)">
+   <BOUNDS height="0" left="750" top="3210" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Bin Size" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="375" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="375" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="6360" top="13920" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns the sum of the incoming spread|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="2910">
+   </BOUNDS>
+   <BOUNDS height="160" left="6360" top="13920" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Add - Value Spectral|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4380" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5940" top="3540" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="720" left="4380" top="2115" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="5,2,2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4380" top="3705" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6540" top="4140" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="690" left="4380" top="3705" type="Box" width="720">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5340" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5415" top="2925" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="720" left="5340" top="2115" type="Box" width="435">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="1,2,3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Add (Value Spectral)" systemname="Add (Value Spectral)">
+   <BOUNDS height="0" left="4380" top="3210" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Bin Size" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="180" top="1155" width="6750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="180" top="1155" width="2655" height="690">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The default usage is with the nodes BinSize set to -1, which lets it return the sum of all slices:|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4215" top="1155" width="4305" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4215" top="1155" width="4455" height="585">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|More advanced use requires the understanding of BinSizes, &cr;&lf; http://vvvv.org/documentation/binsize|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5100" top="3705" width="2070" height="690">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5100" top="3705" width="2070" height="690">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|= the first slice&cr;&lf;= the 2nd + 3rd slice&cr;&lf;= the 1st + 2nd + 3rd slice|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>
