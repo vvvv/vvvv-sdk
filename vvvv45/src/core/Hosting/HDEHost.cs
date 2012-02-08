@@ -271,7 +271,7 @@ namespace VVVV.Hosting
         
         public void Shutdown()
         {
-            // Call shutdown method of StartableRegistry here
+            PluginFactory.StartableRegistry.ShutDown();
         }
 
         #endregion IInternalHDEHost

@@ -92,6 +92,11 @@ namespace VVVV.Hosting.Factories
 
         public event PluginCreatedDelegate PluginCreated;
         public event PluginDeletedDelegate PluginDeleted;
+
+        public StartableRegistry StartableRegistry
+        {
+            get { return this.FStartableRegistry; }
+        }
         
         public override string JobStdSubPath
         {
@@ -234,7 +239,7 @@ namespace VVVV.Hosting.Factories
                     nodeInfo.CommitUpdate();
             }
         }
-        
+
         private static CustomAttributeData GetPluginInfoAttributeData(Type type)
         {
             var attributes = CustomAttributeData.GetCustomAttributes(type).Where(ca => ca.Constructor.DeclaringType.FullName == typeof(PluginInfoAttribute).FullName).ToArray();
