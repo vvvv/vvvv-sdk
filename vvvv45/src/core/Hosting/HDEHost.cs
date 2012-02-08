@@ -82,6 +82,9 @@ namespace VVVV.Hosting
 
         [Import]
         public NodeCollection NodeCollection {get; protected set;}
+
+        [Import]
+        private IStartableRegistry FStartableRegistry;
         
         public HDEHost()
         {
@@ -271,7 +274,7 @@ namespace VVVV.Hosting
         
         public void Shutdown()
         {
-            PluginFactory.StartableRegistry.ShutDown();
+            FStartableRegistry.ShutDown();
         }
 
         #endregion IInternalHDEHost
