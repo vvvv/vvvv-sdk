@@ -201,11 +201,19 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
-		/// Get the full path to the vvvv.exe
+		/// Gets the full path to the vvvv.exe
 		/// </summary>
 		string ExePath
 		{
 			get;
+		}
+		
+		/// <summary>
+		/// Gets the graph event service, which exposes graph events.
+		/// </summary>
+		IGraphEventService GraphEventService
+		{
+		    get;
 		}
 	}
 	#endregion IHDEHost

@@ -191,6 +191,7 @@ namespace VVVV.Hosting
             FNodeBrowser.DragDrop(false);
             
             DeviceMarshaler.Initialize(vvvvHost.DeviceService);
+            GraphEventService = new GraphEventService(vvvvHost.GraphEventService);
         }
         
         private INodeInfo GetNodeInfo(string systemName)
@@ -458,6 +459,12 @@ namespace VVVV.Hosting
                 return FActivePatchWindow;
             }
         }
+        
+        public IGraphEventService GraphEventService
+		{
+		    get;
+		    private set;
+		}
         
         #endregion
         
