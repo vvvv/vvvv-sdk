@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <ProjectGuid>{716F4773-5590-4DD6-A9BC-3FE905D22DA5}</ProjectGuid>
@@ -101,7 +101,9 @@
     <Compile Include="Spreads\Lindenmayer\Lindenmayer.cs" />
     <Compile Include="Spreads\Lindenmayer\LindenmayerNode.cs" />
     <Compile Include="SVG\SVGGeomNodes.cs" />
-    <Compile Include="SVG\SVGTextureNode.cs" />
+    <Compile Include="SVG\SVGTextureNode.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Transform\Decompose\DecomposeNode.cs" />
     <Compile Include="Value\DifferentialNode.cs" />
     <Compile Include="Value\IntegralNode.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="vvvv\ProjectExplorer\ProjectExplorerPlugin.Designer.cs">
       <DependentUpon>ProjectExplorerPlugin.cs</DependentUpon>
     </Compile>
+    <Compile Include="vvvv\StartableInfo\StartableInfoNode.cs" />
     <Compile Include="vvvv\WindowSwitcher\WindowSwitcherNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
