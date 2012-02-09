@@ -67,6 +67,8 @@ namespace VVVV.Nodes
 
         public void Evaluate(int SpreadMax)
         {
+            this.FInvalidate = false;
+
             if (this.FPinInCycles.PinIsChanged
                 || this.FPinInInnerRadius.PinIsChanged
                 || this.FPinInM.PinIsChanged
