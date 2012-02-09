@@ -12,7 +12,7 @@ namespace VVVV.Assimp.Nodes
     [PluginInfo(Name = "Material", Category = "Assimp", Author = "vux,flateric")]
     public class AssimpMaterialNode : IPluginEvaluate
     {
-        [Input("Material", IsSingle = true)]
+        [Input("Material")]
         DiffPin<AssimpMaterial> FInMaterials;
 
         [Output("Ambient Color")]
