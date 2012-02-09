@@ -51,8 +51,8 @@ namespace VVVV.Nodes
 		HandsGenerator FHandGenerator;
 
 		private bool FContextChanged = false;
-		private Dictionary<int, Vector3D> FTrackedHands = new Dictionary<int, Vector3D>();
-		private Dictionary<int, Vector3D> FTrackedStartPositions = new Dictionary<int, Vector3D>();
+		private Dictionary<int, Point3D> FTrackedHands = new Dictionary<int, Point3D>();
+		private Dictionary<int, Point3D> FTrackedStartPositions = new Dictionary<int, Point3D>();
 		#endregion fields & pins
 
 		//called when data for any output pin is requested
@@ -93,12 +93,12 @@ namespace VVVV.Nodes
 			{
 				if (FDoTrackStartPosition.IsChanged)
 				{
-					bool disable = false;
+					bool enable = false;
 					for (int i = 0; i < FDoTrackStartPosition.SliceCount; i++)
-						disable |= FDoTrackStartPosition[i];
+						enable |= FDoTrackStartPosition[i];
 
-					//disable when all slices are 0
-					if (disable)
+					//enable if any slice is 1
+					if (enable)
 						FHandGenerator.StartGenerating();
 					else
 						FHandGenerator.StopGenerating();
@@ -115,10 +115,13 @@ namespace VVVV.Nodes
 							//find userID in FTrackedStartPositions
 							int userID = -1;
 							foreach (var tracker in FTrackedStartPositions)
-								if (tracker.Value == FStartPositionIn[i])
 							{
-								userID = tracker.Key;
-								break;
+								var p = new Point3D((float)(FStartPositionIn[i].x * 1000), (float)(FStartPositionIn[i].y * 1000), (float)(FStartPositionIn[i].z * 1000));
+								if (tracker.Value.Equals(p))
+								{
+									userID = tracker.Key;
+									break;
+								}
 							}
 							
 							//if present return tracking info
@@ -126,7 +129,9 @@ namespace VVVV.Nodes
 							{
 								FIsTrackedOut[i] = true;
 								FHandIdOut[i] = userID;
-								FHandPositionOut[i] = FTrackedHands[userID];
+								
+								var p = FTrackedHands[userID];
+								FHandPositionOut[i] = new Vector3D(p.X / 1000, p.Y / 1000, p.Z / 1000);
 							}
 							//else start tracking
 							else
@@ -141,14 +146,17 @@ namespace VVVV.Nodes
 						}
 						else
 						{
-							//find the userID corresponding to the StartPosition
+							//find the handID corresponding to the StartPosition
 							//and stop tracking it
 							int userID = -1;
 							foreach (var tracker in FTrackedStartPositions)
-								if (tracker.Value == FStartPositionIn[i])
-							{
-								userID = tracker.Key;
-								break;
+							{	
+								var p = new Point3D((float)(FStartPositionIn[i].x * 1000), (float)(FStartPositionIn[i].y * 1000), (float)(FStartPositionIn[i].z * 1000));
+								if (tracker.Value.Equals(p))
+								{
+									userID = tracker.Key;
+									break;
+								}
 							}
 							
 							if (userID > -1)
@@ -170,14 +178,14 @@ namespace VVVV.Nodes
 		void FHands_HandUpdate(object sender, HandUpdateEventArgs e)
 		{
 			//if this hand is updated for the first time
-			//add it to TrckedStartPositions
+			//add it to TrackedStartPositions
 			//with the original position of this hand which is found in FTrackedHands[e.UserID]
 			//before this is updated!
 			if (FTrackedHands.ContainsKey(e.UserID) && !FTrackedStartPositions.ContainsKey(e.UserID))
 				FTrackedStartPositions.Add(e.UserID, FTrackedHands[e.UserID]);
 			
 			if (FTrackedHands.ContainsKey(e.UserID))
-				FTrackedHands[e.UserID] = new Vector3D(e.Position.X / 1000, e.Position.Y / 1000, e.Position.Z / 1000);
+				FTrackedHands[e.UserID] = e.Position;//new Vector3D(e.Position.X / 1000, e.Position.Y / 1000, e.Position.Z / 1000);
 		}
 
 		void FHands_HandDestroy(object sender, HandDestroyEventArgs e)
@@ -191,9 +199,9 @@ namespace VVVV.Nodes
 
 		void FHands_HandCreate(object sender, HandCreateEventArgs e)
 		{
-			var v = new Vector3D(e.Position.X / 1000, e.Position.Y / 1000, e.Position.Z / 1000);
-			if (!FTrackedHands.ContainsValue(v))
-				FTrackedHands.Add(e.UserID, v);
+//			var v = new Vector3D(e.Position.X / 1000, e.Position.Y / 1000, e.Position.Z / 1000);
+			if (!FTrackedHands.ContainsValue(e.Position))
+				FTrackedHands.Add(e.UserID, e.Position);
 		}
 		
 		#region Dispose
