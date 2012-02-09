@@ -124,8 +124,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// therefore the plugin shouldn't be doing much here other than handing back the right mesh.
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin via which the mesh is accessed.</param>
-		/// <param name="OnDevice">Pointer to the device for which the mesh is accessed.</param>
-		/// <param name="Mesh">The retrieved mesh</param>
+		/// <param name="OnDevice">The device for which the mesh is accessed.</param>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(MeshMarshaler))]
 		Mesh GetMesh(
 		    IDXMeshOut ForPin, 
@@ -145,10 +144,9 @@ namespace VVVV.PluginInterfaces.V1
 		/// therefore the plugin shouldn't be doing much here other than handing back the right texture.
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin via which the texture is accessed.</param>
-		/// <param name="OnDevice">Pointer to the device for which the texture is accessed.</param>
-		/// <param name="Texture">The retrieved texture</param>
+		/// <param name="OnDevice">The device for which the texture is accessed.</param>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(TextureMarshaler))]
-		void GetTexture(
+		Texture GetTexture(
 		    IDXTextureOut ForPin, 
 		    [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice);
 	}
@@ -166,9 +164,8 @@ namespace VVVV.PluginInterfaces.V1
 		/// therefore the plugin shouldn't be doing much here other than handing back the right texture.
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin via which the texture is accessed.</param>
-		/// <param name="OnDevice">Pointer to the device for which the texture is accessed.</param>
-		/// /// <param name="Slice">Slice Index of the texture to be accessed.</param>
-		/// <param name="Texture">The retrieved texture</param>
+		/// <param name="OnDevice">The device for which the texture is accessed.</param>
+		/// <param name="Slice">Slice Index of the texture to be accessed.</param>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(TextureMarshaler))]
 		Texture GetTexture(
 		    IDXTextureOut ForPin, 

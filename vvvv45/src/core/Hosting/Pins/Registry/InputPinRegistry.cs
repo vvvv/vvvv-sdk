@@ -37,7 +37,9 @@ namespace VVVV.Hosting.Pins
             this.RegisterType(typeof(Quaternion), (host, attribute, t) => new QuaternionInputPin(host, attribute));
 
             this.RegisterType(typeof(string), (host, attribute, t) => new StringInputPin(host, attribute));
+
             this.RegisterType(typeof(RGBAColor), (host, attribute, t) => new ColorInputPin(host, attribute));
+            this.RegisterType(typeof(Color4), (host, attribute, t) => new SlimDXColorInputPin(host, attribute));
 
             this.RegisterType(typeof(EnumEntry), (host, attribute, t) => new DynamicEnumInputPin(host, attribute));
         }

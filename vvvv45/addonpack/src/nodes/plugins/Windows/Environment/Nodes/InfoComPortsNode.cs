@@ -15,15 +15,19 @@ using VVVV.Core.Logging;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Info", Category = "System ComPorts", Help = "get active ComPortsNames from Windows", Tags = "")]
+	[PluginInfo(Name = "Info",
+	            Category = "System",
+	            Version = "ComPorts",
+	            Help = "get active ComPortsNames from Windows",
+	            Tags = "")]
 	#endregion PluginInfo
 	
 	//u7angel
 	
 	public class InfoComPorts : IPluginEvaluate
 	{
-		[Input("Refresh")]
-		IDiffSpread<int> FInput;
+		[Input("Update", IsBang=true)]
+		IDiffSpread<bool> FInput;
 
 		[Output("Output")]
 		ISpread<string> FOutput;
@@ -31,21 +35,17 @@ namespace VVVV.Nodes
 		[Import()]
 		ILogger FLogger;
 		
-		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			
-			if (FInput.IsChanged ){
-			string[] ports = SerialPort.GetPortNames();
-			SpreadMax = ports.GetLength(0);
-			FOutput.SliceCount = SpreadMax;
-			for (int i = 0; i < SpreadMax; i++)
-				FOutput[i] = ports[i];
+			if (FInput.IsChanged)
+			{
+				string[] ports = SerialPort.GetPortNames();
+				SpreadMax = ports.GetLength(0);
+				FOutput.SliceCount = SpreadMax;
+				for (int i = 0; i < SpreadMax; i++)
+					FOutput[i] = ports[i];
 			}
-			
-
-			//FLogger.Log(LogType.Debug, "Logging to Renderer (TTY)");
 		}
 	}
 }

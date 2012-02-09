@@ -82,6 +82,9 @@ namespace VVVV.Hosting
 
         [Import]
         public NodeCollection NodeCollection {get; protected set;}
+
+        [Import]
+        private IStartableRegistry FStartableRegistry;
         
         public HDEHost()
         {
@@ -152,6 +155,8 @@ namespace VVVV.Hosting
             // Route log messages to vvvv
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
+            DeviceMarshaler.Initialize(vvvvHost.DeviceService);
+            
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
             KommunikatorHost = kommunikatorHost;
@@ -189,8 +194,6 @@ namespace VVVV.Hosting
             FNodeBrowser = (INodeBrowser) PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
             FNodeBrowser.IsStandalone = false;
             FNodeBrowser.DragDrop(false);
-            
-            DeviceMarshaler.Initialize(vvvvHost.DeviceService);
         }
         
         private INodeInfo GetNodeInfo(string systemName)
@@ -267,6 +270,11 @@ namespace VVVV.Hosting
         {
             NodeCollection.AddCombined(path, false);
             NodeCollection.Collect();
+        }
+        
+        public void Shutdown()
+        {
+            FStartableRegistry.ShutDown();
         }
 
         #endregion IInternalHDEHost
