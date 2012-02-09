@@ -86,6 +86,8 @@ namespace VVVV.Nodes
 							//Reinitalie the vvvv texture
 							Reinitialize();
 							
+							FUserGenerator.StartGenerating();
+							
 							FContextChanged = false;
 						}
 						catch (Exception ex)
@@ -109,7 +111,7 @@ namespace VVVV.Nodes
 					else
 						FUserGenerator.StopGenerating();
 				
-				if (FUserGenerator.IsDataNew && FEnabledIn[0])
+				if (FUserGenerator.IsDataNew)
 				{
 					if (FUserGenerator.NumberOfUsers > 0)
 					{

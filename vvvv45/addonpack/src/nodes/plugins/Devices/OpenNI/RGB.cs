@@ -78,6 +78,8 @@ namespace VVVV.Nodes
 							//Reinitalie the vvvv texture
 							Reinitialize();
 							
+							FImageGenerator.StartGenerating();
+							
 							FContextChanged = false;
 						}
 						catch (Exception ex)	

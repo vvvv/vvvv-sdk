@@ -71,6 +71,8 @@ namespace VVVV.Nodes
 							//Write all possible gestures to the Output Pin
 							var gestures = FGestureGenerator.EnumerateAllGestures();
 							EnumManager.UpdateEnum("OpenNIGestures", gestures[0], gestures);
+							
+							FGestureGenerator.StartGenerating();
 
 							FContextChanged = false;
 						}

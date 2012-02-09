@@ -96,6 +96,8 @@ namespace VVVV.Nodes
 							FSkeletonCapability.SetSkeletonProfile(FSkeletonProfileIn[0]);
 							FJoints = new Dictionary<int, Dictionary<SkeletonJoint, SkeletonJointTransformation>>();
 							
+							FUserGenerator.StartGenerating();
+							
 							FContextChanged = false;
 						}
 						catch (Exception ex)

@@ -72,6 +72,8 @@ namespace VVVV.Nodes
 							FHandGenerator.HandDestroy += FHands_HandDestroy;
 							FHandGenerator.HandUpdate += FHands_HandUpdate;
 							
+							FHandGenerator.StartGenerating();
+							
 							FContextChanged = false;
 						}
 						catch (Exception ex)
