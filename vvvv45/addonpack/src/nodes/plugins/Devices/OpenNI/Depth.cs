@@ -55,7 +55,7 @@ namespace VVVV.Nodes
 		[Input("Depth Mode", IsSingle = true)]
 		IDiffSpread<DepthMode> FDepthMode;
 		
-		[Input("Adapt to RGB View", IsSingle = true, DefaultValue = 1)]
+		[Input("Adapt to RGB View", IsSingle = true, DefaultValue = 0)]
 		IDiffSpread<bool> FAdaptView;
 
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
