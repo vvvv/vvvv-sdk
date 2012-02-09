@@ -31,8 +31,8 @@ namespace VVVV.Nodes
 		[Input("Mirrored", IsSingle = true, DefaultValue = 1)]
 		IDiffSpread<bool> FMirrored;
 		
-		[Input("Device", IsSingle = true, EnumName = "OpenNIDevices")]
-		IDiffSpread<EnumEntry> FDevice;
+//		[Input("Device", IsSingle = true, EnumName = "OpenNIDevices")]
+//		IDiffSpread<EnumEntry> FDevice;
 		
 		[Output("Context")]
 		ISpread<Context> FContextOut;
@@ -52,7 +52,7 @@ namespace VVVV.Nodes
 		private string FSensor;
 		private string FMiddleware;
 		
-		private Dictionary<string, NodeInfo> FDevices = new Dictionary<string, NodeInfo>();
+//		private Dictionary<string, NodeInfo> FDevices = new Dictionary<string, NodeInfo>();
 		#endregion fields & pins
 		
 		public KinectContext()
@@ -97,7 +97,7 @@ namespace VVVV.Nodes
 				FContext = new Context();
 				FContext.ErrorStateChanged += FContext_ErrorStateChanged;
 				
-				var devices = FContext.EnumerateProductionTrees(OpenNI.NodeType.Depth, null);
+			/*	var devices = FContext.EnumerateProductionTrees(OpenNI.NodeType.Depth, null);
 
 				foreach (var device in devices)
 					FDevices.Add(device.CreationInfo, device);
@@ -111,8 +111,10 @@ namespace VVVV.Nodes
 				var depths = FContext.EnumerateProductionTrees(OpenNI.NodeType.Depth, q);
 				
 				//here is one central depth generator that is used by downstream nodes like depth, user, hand, skeleton,..
-				foreach (var depth in depths)
-					FDepthGenerator = (DepthGenerator) FContext.CreateProductionTree(depth);
+				//since this is one central generator it should not be allowed to disable it downstream
+				foreach (var depth in depths)*/
+				FDepthGenerator = (DepthGenerator) FContext.CreateAnyProductionTree(OpenNI.NodeType.Depth, null);// .CreateProductionTree(depth);
+				FDepthGenerator.StartGenerating();
 				
 				//creation of usergenerators requires generation of depthgenerator
 				//depth node needs imagegenerator to adaptview
