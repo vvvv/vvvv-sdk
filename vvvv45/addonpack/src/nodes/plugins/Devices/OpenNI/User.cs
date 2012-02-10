@@ -23,6 +23,12 @@ using System.Drawing.Imaging;
 
 namespace VVVV.Nodes
 {
+	public enum UserTexturetMode
+	{
+		Viewable,
+		Raw,
+	}
+	
 	#region PluginInfo
 	[PluginInfo(Name = "User",
 	            Category = "Kinect",
@@ -40,6 +46,9 @@ namespace VVVV.Nodes
 		#region fields & pins
 		[Input("Context", IsSingle=true)]
 		Pin<Context> FContextIn;
+		
+		[Input("Output Mode", IsSingle = true)]
+		IDiffSpread<UserTexturetMode> FOutputMode;
 		
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
 		IDiffSpread<bool> FEnabledIn;
@@ -181,7 +190,24 @@ namespace VVVV.Nodes
 		unsafe protected override void UpdateTexture(int Slice, Texture texture)
 		{
 			var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
-			CopyMemory(rect.DataPointer, FUserGenerator.GetUserPixels(Slice).LabelMapPtr, FTexHeight * FTexWidth * 2);
+			
+			if (FOutputMode[0] == UserTexturetMode.Raw)
+				CopyMemory(rect.DataPointer, FUserGenerator.GetUserPixels(Slice).LabelMapPtr, FTexHeight * FTexWidth * 2);
+			else
+			{
+				//DepthMetaData DepthMD = FUserGenerator.GetMetaData();
+
+				ushort* pSrc = (ushort*)FUserGenerator.GetUserPixels(Slice).LabelMapPtr;
+				ushort* pDest = (ushort*)rect.DataPointer;
+
+				// write the Depth pointer to Destination pointer
+				for (int y = 0; y < FTexHeight; y++)
+				{
+					for (int x = 0; x < FTexWidth; x++, pSrc++, pDest++)
+						pDest[0] = (ushort) (*pSrc * ushort.MaxValue);
+				}
+			}
+			
 			texture.UnlockRectangle(0);
 		}
 
