@@ -1,0 +1,393 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\GiggelzGoggelz\extras\effects\polarCoordinates\polarCoordinates help.v4p" locked="0">
+   <BOUNDS height="9210" left="10905" top="600" type="Window" width="12930">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="17" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="420" top="5370" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4890" left="17910" top="6480" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="3300" left="420" top="5370" type="Box" width="3435">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.36888,0.50233,0.90659,1.00000|">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="210" top="225" type="Node" width="1170">
+   </BOUNDS>
+   <BOUNDS height="465" left="210" top="225" type="Box" width="3975">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|PolarCoordinates help|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="1110" left="465" top="645" type="Node" width="6150">
+   </BOUNDS>
+   <BOUNDS height="720" left="465" top="645" type="Box" width="5865">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Polar coordinates basically converts an incomings textures mapping coordinates from cartesian space to circular (or polar) space or vice versa. The effect is the same as found in  the photoshop or gimp filter of the same name.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="1320" top="1860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Filename" slicecount="1" values="images\cartesian.png">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="4200" top="6615" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4890" left="18510" top="7080" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="2040" left="4200" top="6615" type="Box" width="1965">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.36888,0.50233,0.90659,1.00000|">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="4200" top="6195" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Texture" linkstyle="Bezier" srcnodeid="12" srcpinname="Texture Out">
+   <LINKPOINT x="1350" y="3270">
+   </LINKPOINT>
+   <LINKPOINT x="4560" y="3270">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Layers" srcnodeid="10" srcpinname="Layer">
+   </LINK>
+   <NODE id="9" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS height="0" left="4305" top="5820" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2190" top="2430" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="19545" top="3690" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="495" left="2190" top="2430" type="Box" width="495">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Clamp">
+   </PIN>
+   <PIN pinname="X Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Constraints" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="855" top="3195" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="20565" top="3315" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="855" top="3195" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="repeats">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2820" top="3705" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="20940" top="5220" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2820" top="3705" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Y offset|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3405" top="3195" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="20790" top="4725" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3405" top="3195" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|X offset|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1020" top="3735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="19710" top="4365" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1020" top="3735" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Scale">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="8280" top="75" type="Node" width="645">
+   </BOUNDS>
+   <BOUNDS height="360" left="8280" top="75" type="Box" width="1365">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Inputs">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="1320" left="8250" top="540" type="Node" width="6060">
+   </BOUNDS>
+   <BOUNDS height="6570" left="8250" top="540" type="Box" width="4245">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|interpolation - mix between source and destination coordinate systems&cr;&lf;&cr;&lf;Clamp (bool)- determines if the texture should be clmaped at the edge or repeated&cr;&lf;&cr;&lf;x offset - offsets the texture in the horizontal plane&cr;&lf;&cr;&lf;y offset - offsets the texture in the vertical plane&cr;&lf;&cr;&lf;repeats - changes how many times the texture repeats (stretches) around the circle&cr;&lf;&cr;&lf;twirl - rotate around the center&cr;&lf;&cr;&lf;squeeze - compress&cr;&lf;&cr;&lf;zoom - exactly that&cr;&lf;&cr;&lf;lens - slight fisheye effect&cr;&lf;&cr;&lf;scale - scales the texture in and out&cr;&lf;&cr;&lf;technique - which way to convert?|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="6630" top="1830" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="6630" top="1830" type="Box" width="1470">
+   </BOUNDS>
+   <BOUNDS height="160" left="22890" top="2820" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Technique">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="570" top="2625" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="570" top="2625" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="14385" top="4140" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="interpolation">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="24" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="3405" top="1770" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="3405" top="1770" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="10845" top="2580" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Twirl">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="3810" top="2220" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="3810" top="2220" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="10845" top="2580" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.89">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Squeeze">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="2.63000011444092">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="27" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="4215" top="2670" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="4215" top="2670" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="10845" top="2580" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Zoom">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="28" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="5475" top="2190" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="5475" top="2190" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="10845" top="2580" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Lens">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="polarCoordinates (EX9.Texture Filter).v4p" id="23" nodename="polarCoordinates (EX9.Texture Filter)" systemname="polarCoordinates (EX9.Texture Filter)">
+   <BOUNDS height="270" left="405" top="4275" type="Node" width="2190">
+   </BOUNDS>
+   <BOUNDS height="7830" left="6585" top="2475" type="Window" width="10290">
+   </BOUNDS>
+   <BOUNDS height="3600" left="405" top="4275" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Squeeze" visible="1">
+   </PIN>
+   <PIN pinname="Zoom" visible="1">
+   </PIN>
+   <PIN pinname="Twirl" visible="1">
+   </PIN>
+   <PIN pinname="Lens" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="repeats" visible="1">
+   </PIN>
+   <PIN pinname="X offset" visible="1">
+   </PIN>
+   <PIN pinname="Y offset" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Scale" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Clamp" srcnodeid="7" srcpinname="X Output Value">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Technique" srcnodeid="0" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="interpolation" srcnodeid="19" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Twirl" srcnodeid="24" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Squeeze" srcnodeid="26" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Zoom" srcnodeid="27" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Lens" srcnodeid="28" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="33" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="90" top="4995" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="32" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS height="0" left="195" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="33" dstpinname="Transform" srcnodeid="32" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="33" dstpinname="Texture" srcnodeid="23" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Layers" srcnodeid="33" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Input" linkstyle="Bezier" srcnodeid="12" srcpinname="Texture Out">
+   <LINKPOINT x="1320" y="3203">
+   </LINKPOINT>
+   <LINKPOINT x="435" y="3203">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="repeats" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="X offset" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Y offset" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   </PATCH>
