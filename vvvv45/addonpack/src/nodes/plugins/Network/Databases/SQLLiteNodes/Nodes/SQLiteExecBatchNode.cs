@@ -20,7 +20,7 @@ namespace SQLLiteNodes.Nodes
                 {
                     FPluginInfo = new PluginInfo();
                     FPluginInfo.Name = "QueryBatch";
-                    FPluginInfo.Category = "SQlite";
+                    FPluginInfo.Category = "SQLite";
                     FPluginInfo.Version = "Network";
                     FPluginInfo.Author = "vux";
                     FPluginInfo.Help = "Executes a batch of queries on a sqlite database";
