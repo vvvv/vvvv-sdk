@@ -26,7 +26,7 @@ float4 p1(float2 vp:vpos):COLOR0{float2 x=(vp+.5)/R;
        cmax=lerp(1,cmax,AutoMax);
        cavg=(cavg-cmin)/max(cmax-cmin,.00000001);
        float4 c=(tex2D(s0,x)-cmin)/max(cmax-cmin,.00000001);
-       c.rgb=pow((c.rgb),pow(.5/cavg,AutoGamma));
+       c.rgb=sign(c.rgb)*pow(abs(c.rgb),pow(.5/cavg,AutoGamma));
        c.a=tex2D(s0,x).a;
        return c;
 }
