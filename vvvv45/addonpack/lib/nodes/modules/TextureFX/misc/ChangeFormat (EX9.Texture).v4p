@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
-   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\misc\ChangeFormat (EX9.Texture).v4p">
-   <BOUNDS height="8505" left="9990" top="5145" type="Window" width="13560">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="D:\Program Files\vvvv_45beta27\addonpack\lib\nodes\modules\TextureFX\misc\ChangeFormat (EX9.Texture).v4p">
+   <BOUNDS height="11415" left="4800" top="2355" type="Window" width="16020">
    </BOUNDS>
    <NODE componentmode="InABox" id="19" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="345" top="75" type="Node" width="0">
@@ -29,7 +29,7 @@
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
@@ -86,14 +86,6 @@
    </NODE>
    <LINK dstnodeid="17" dstpinname="Texture" linkstyle="PolyLine" srcnodeid="19" srcpinname="Output Node">
    </LINK>
-   <NODE componentmode="Hidden" id="14" nodename="Blend (EX9.RenderState Advanced)" systemname="Blend (EX9.RenderState Advanced)">
-   <BOUNDS height="0" left="2010" top="3225" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Alpha Blending" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Render State Out" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="13" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="0" left="3795" top="4365" type="Node" width="0">
    </BOUNDS>
@@ -188,34 +180,6 @@
    </LINK>
    <LINK dstnodeid="18" dstpinname="Enabled" srcnodeid="13" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="8" nodename="Quad (DX9)" systemname="Quad (DX9)">
-   <BOUNDS height="0" left="2025" top="4020" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Render State" visible="1">
-   </PIN>
-   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Sampler State" visible="1" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="18" dstpinname="Layers" srcnodeid="8" srcpinname="Layer">
-   </LINK>
-   <LINK dstnodeid="8" dstpinname="Render State" srcnodeid="14" srcpinname="Render State Out">
-   </LINK>
-   <NODE componentmode="Hidden" id="7" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
-   <BOUNDS height="0" left="3705" top="4005" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" slicecount="1" values="2">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="18" dstpinname="View" srcnodeid="7" srcpinname="Transform Out">
-   </LINK>
-   <LINK dstnodeid="8" dstpinname="Texture" srcnodeid="19" srcpinname="Output Node">
-   </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
    <BOUNDS height="0" left="4770" top="315" type="Node" width="0">
    </BOUNDS>
@@ -236,18 +200,64 @@
    </LINK>
    <LINK dstnodeid="11" dstpinname="Height" srcnodeid="15" srcpinname="Y">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="XY" dstnodeid="15" dstpinname="XY">
+   <LINK dstnodeid="15" dstpinname="XY" srcnodeid="16" srcpinname="XY">
    </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="22" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Node" left="3225" top="315" width="0" height="0">
+   <NODE componentmode="InABox" id="22" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="3225" top="315" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3225" top="315" width="1140" height="240">
+   <BOUNDS height="240" left="3225" top="315" type="Box" width="1140">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="|No Specific|">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Format" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Format">
    </PIN>
    </NODE>
-   <LINK srcnodeid="22" srcpinname="Output Enum" dstnodeid="11" dstpinname="Format">
+   <LINK dstnodeid="11" dstpinname="Format" srcnodeid="22" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="Hidden" id="26" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="100" left="3000" top="3765" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\Constant.fx" id="25" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
+   <BOUNDS height="100" left="2025" top="4095" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="24" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="100" left="2490" top="3765" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Mesh" srcnodeid="24" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Transform" srcnodeid="26" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="23" nodename="Blend (EX9.RenderState Advanced)" systemname="Blend (EX9.RenderState Advanced)">
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1815" top="3795" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Alpha Blending" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Render State" srcnodeid="23" srcpinname="Render State Out">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Output Node" dstnodeid="25" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Layer" dstnodeid="18" dstpinname="Layers">
    </LINK>
    </PATCH>

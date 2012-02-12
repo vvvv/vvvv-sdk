@@ -3,7 +3,7 @@ float Opacity <float uimin=0.0; float uimax=1.0;> = 1.0;
 texture tex0,tex1;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 sampler s1=sampler_state{Texture=(tex1);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
-#define bld(op,c0,c1) float4(lerp((c0*c0.a+c1*c1.a*(1-c0.a))/saturate(c0.a+c1.a*(1-c0.a)),saturate(op),c0.a*c1.a).rgb,saturate(c0.a+c1.a*(1-c0.a)))
+#define bld(op,c0,c1) float4(lerp((c0*c0.a+c1*c1.a*(1-c0.a))/saturate(c0.a+c1.a*(1-c0.a)),(op),c0.a*c1.a).rgb,saturate(c0.a+c1.a*(1-c0.a)))
 
 float4 pNORMAL(float2 x:TEXCOORD0):color{float4 c0=tex2D(s0,x);float4 c1=tex2D(s1,x)*float4(1,1,1,Opacity);
     float4 c=bld(c1,c1,c0);
@@ -77,6 +77,10 @@ float4 pHEAT(float2 x:TEXCOORD0):color{float4 c0=tex2D(s0,x);float4 c1=tex2D(s1,
     float4 c=bld((c0==0)?0:1-pow(1-c1,2)/c0,c0,c1);
     return c;
 }
+float4 pDIVIDE(float2 x:TEXCOORD0):color{float4 c0=tex2D(s0,x);float4 c1=tex2D(s1,x)*float4(1,1,1,Opacity);
+    float4 c=bld(c0/c1,c0,c1);
+    return c;
+}
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
 technique Normal{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 pNORMAL();}}
 technique Screen{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 pSCREEN();}}
@@ -96,3 +100,4 @@ technique Reflect{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compil
 technique Glow{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 pGLOW();}}
 technique Freeze{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 pFREEZE();}}
 technique Heat{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 pHEAT();}}
+technique Divide{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 pDIVIDE();}}
