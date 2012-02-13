@@ -3,11 +3,11 @@ using System.Collections.Concurrent;
 
 namespace VVVV.Nodes.ImagePlayer
 {
-	static class MemoryPool
+    class MemoryPool : IDisposable
 	{
-	    private static readonly ConcurrentDictionary<int, ObjectPool<byte[]>> FMemoryPools = new ConcurrentDictionary<int, ObjectPool<byte[]>>();
+	    private readonly ConcurrentDictionary<int, ObjectPool<byte[]>> FMemoryPools = new ConcurrentDictionary<int, ObjectPool<byte[]>>();
 		
-	    public static byte[] GetMemory(int length)
+	    public byte[] GetMemory(int length)
 		{
 	        ObjectPool<byte[]> memoryPool = null;
 			if (!FMemoryPools.TryGetValue(length, out memoryPool))
@@ -19,10 +19,19 @@ namespace VVVV.Nodes.ImagePlayer
 			return memoryPool.GetObject();
 		}
 		
-	    public static void PutMemory(byte[] array)
+	    public void PutMemory(byte[] array)
 		{
 			var memoryPool = FMemoryPools[array.Length];
 			memoryPool.PutObject(array);
 		}
+        
+        public void Dispose()
+        {
+            foreach (var memoryPool in FMemoryPools.Values)
+            {
+                memoryPool.ToArrayAndClear();
+            }
+            FMemoryPools.Clear();
+        }
 	}
 }

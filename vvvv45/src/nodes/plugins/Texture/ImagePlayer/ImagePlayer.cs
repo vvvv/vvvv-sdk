@@ -28,7 +28,7 @@ namespace VVVV.Nodes.ImagePlayer
     /// try to preload the next couple of images based on the given frame
     /// number in order to provide fast access.
     /// </summary>
-    public class ImagePlayer : IDisposable
+    class ImagePlayer : IDisposable
     {
         public const string DEFAULT_FILEMASK = "*";
         public const int DEFAULT_BUFFER_SIZE = 0x2000;
@@ -44,8 +44,8 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly ILogger FLogger;
         private readonly IDXDeviceService FDeviceService;
         private readonly ObjectPool<Stream> FStreamPool;
-        private readonly IOTaskScheduler FIOTaskScheduler;
         private readonly TexturePool FTexturePool;
+        private readonly MemoryPool FMemoryPool;
         private readonly BufferBlock<FrameInfo> FFrameInfoBuffer;
         private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>> FFilePreloader;
         private readonly TransformBlock<Tuple<FrameInfo, Stream>, Frame> FFramePreloader;
@@ -53,7 +53,14 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
         private readonly Spread<Frame> FVisibleFrames = new Spread<Frame>(0);
         
-        public ImagePlayer(int threadsIO, int threadsTexture, ILogger logger, IDXDeviceService deviceService)
+        public ImagePlayer(
+            int threadsIO, 
+            int threadsTexture, 
+            ILogger logger, 
+            IDXDeviceService deviceService, 
+            IOTaskScheduler ioTaskScheduler,
+            MemoryPool memoryPool
+           )
         {
             FThreadsIO = threadsIO;
             FThreadsTexture = threadsTexture;
@@ -62,16 +69,17 @@ namespace VVVV.Nodes.ImagePlayer
             
             FDeviceService.DeviceDisabled += HandleDeviceDisabled;
             FDeviceService.DeviceRemoved += HandleDeviceRemoved;
+            
             FStreamPool = new ObjectPool<Stream>(() => new MemoryStream());
             FTexturePool = new TexturePool();
-            FIOTaskScheduler = new IOTaskScheduler();
+            FMemoryPool = memoryPool;
             
             FFrameInfoBuffer = new BufferBlock<FrameInfo>();
             
             var filePreloaderOptions = new ExecutionDataflowBlockOptions()
             {
                 MaxDegreeOfParallelism = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : threadsIO,
-                TaskScheduler = FIOTaskScheduler,
+                TaskScheduler = ioTaskScheduler,
                 BoundedCapacity = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : threadsIO
             };
             
@@ -141,7 +149,6 @@ namespace VVVV.Nodes.ImagePlayer
                 }
                 
                 FTexturePool.Dispose();
-                FIOTaskScheduler.Dispose();
             }
             
             FDeviceService.DeviceDisabled -= HandleDeviceDisabled;
@@ -410,7 +417,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 using (var stream = new FileStream(frameInfo.Filename, FileMode.Open, FileAccess.Read))
                 {
-                    decoder = FrameDecoder.Create(frameInfo.Filename, FTexturePool, stream);
+                    decoder = FrameDecoder.Create(frameInfo.Filename, FTexturePool, FMemoryPool, stream);
                     return decoder.Decode(device);
                 }
             }
@@ -484,7 +491,7 @@ namespace VVVV.Nodes.ImagePlayer
             var bufferSize = frameInfo.BufferSize;
             var cancellationToken = frameInfo.Token;
             var memoryStream = FStreamPool.GetObject();
-            var buffer = MemoryPool.GetMemory(bufferSize);
+            var buffer = FMemoryPool.GetMemory(bufferSize);
             
             try
             {
@@ -521,7 +528,7 @@ namespace VVVV.Nodes.ImagePlayer
             finally
             {
                 // Put the buffer back in the pool so other blocks can use it
-                MemoryPool.PutMemory(buffer);
+                FMemoryPool.PutMemory(buffer);
             }
             
             timer.Stop();
@@ -553,7 +560,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                decoder = FrameDecoder.Create(frameInfo.Filename, FTexturePool, stream);
+                decoder = FrameDecoder.Create(frameInfo.Filename, FTexturePool, FMemoryPool, stream);
                 
                 EX9.Device[] devices = null;
                 lock (FDevices)

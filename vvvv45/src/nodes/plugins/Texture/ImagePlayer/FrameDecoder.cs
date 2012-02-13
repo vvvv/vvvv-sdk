@@ -13,14 +13,14 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.ImagePlayer
 {
-    public abstract class FrameDecoder
+    abstract class FrameDecoder
     {
         class BitmapFrameDecoder : FrameDecoder
         {
             private readonly BitmapSource FBitmapSource;
             
-            public BitmapFrameDecoder(TexturePool texturePool, Stream stream)
-                : base(texturePool, stream)
+            public BitmapFrameDecoder(TexturePool texturePool, MemoryPool memoryPool, Stream stream)
+                : base(texturePool, memoryPool, stream)
             {
                 var decoder = BitmapDecoder.Create(
                     FStream,
@@ -86,14 +86,14 @@ namespace VVVV.Nodes.ImagePlayer
         {
             private readonly ImageInformation FImageInformation;
             
-            public Direct3D9FrameDecoder(TexturePool texturePool, Stream stream)
-                : base(texturePool, stream)
+            public Direct3D9FrameDecoder(TexturePool texturePool, MemoryPool memoryPool, Stream stream)
+                : base(texturePool, memoryPool, stream)
             {
                 // This is stupid...but FromStream will trigger GC far too often.
-                var buffer = MemoryPool.GetMemory((int) stream.Length);
+                var buffer = FMemoryPool.GetMemory((int) stream.Length);
                 stream.Read(buffer, 0, buffer.Length);
                 stream.Position = 0;
-                MemoryPool.PutMemory(buffer);
+                FMemoryPool.PutMemory(buffer);
                 FImageInformation = ImageInformation.FromMemory(buffer);
             }
             
@@ -146,33 +146,33 @@ namespace VVVV.Nodes.ImagePlayer
             }
         }
         
-        private static Dictionary<string, Func<TexturePool, Stream, FrameDecoder>> FDecoderFactories = new Dictionary<string, Func<TexturePool, Stream, FrameDecoder>>();
+        private static Dictionary<string, Func<TexturePool, MemoryPool, Stream, FrameDecoder>> FDecoderFactories = new Dictionary<string, Func<TexturePool, MemoryPool, Stream, FrameDecoder>>();
         
         static FrameDecoder()
         {
             Register(
                 Direct3D9FrameDecoder.SupportedFileExtensions, 
-                (texturePool, stream) => new Direct3D9FrameDecoder(texturePool, stream)
+                (texturePool, memoryPool, stream) => new Direct3D9FrameDecoder(texturePool, memoryPool, stream)
                );
             Register(
                 BitmapFrameDecoder.SupportedFileExtensions, 
-                (texturePool, stream) => new BitmapFrameDecoder(texturePool, stream)
+                (texturePool, memoryPool, stream) => new BitmapFrameDecoder(texturePool, memoryPool, stream)
                );
         }
         
-        public static FrameDecoder Create(string filename, TexturePool texturePool, Stream stream)
+        public static FrameDecoder Create(string filename, TexturePool texturePool, MemoryPool memoryPool, Stream stream)
         {
             var extension = Path.GetExtension(filename);
             
-            Func<TexturePool, Stream, FrameDecoder> decoderFactory = null;
+            Func<TexturePool, MemoryPool, Stream, FrameDecoder> decoderFactory = null;
             if (!FDecoderFactories.TryGetValue(extension, out decoderFactory))
             {
-                return new BitmapFrameDecoder(texturePool, stream);
+                return new BitmapFrameDecoder(texturePool, memoryPool, stream);
             }
-            return decoderFactory(texturePool, stream);
+            return decoderFactory(texturePool, memoryPool, stream);
         }
         
-        public static void Register(IEnumerable<string> extensions, Func<TexturePool, Stream, FrameDecoder> decoderFactory)
+        public static void Register(IEnumerable<string> extensions, Func<TexturePool, MemoryPool, Stream, FrameDecoder> decoderFactory)
         {
             foreach (var extension in extensions)
             {
@@ -181,11 +181,13 @@ namespace VVVV.Nodes.ImagePlayer
         }
         
         protected readonly TexturePool FTexturePool;
+        protected readonly MemoryPool FMemoryPool;
         protected readonly Stream FStream;
         
-        public FrameDecoder(TexturePool texturePool, Stream stream)
+        public FrameDecoder(TexturePool texturePool, MemoryPool memoryPool, Stream stream)
         {
             FTexturePool = texturePool;
+            FMemoryPool = memoryPool;
             FStream = stream;
         }
         

@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks.Schedulers;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -56,6 +57,8 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
         private readonly ILogger FLogger;
         private readonly IDXDeviceService FDeviceService;
+        private readonly IOTaskScheduler FIOTaskScheduler = new IOTaskScheduler();
+        private readonly MemoryPool FMemoryPool = new MemoryPool();
         
         [ImportingConstructor]
         public PlayerNode(IPluginHost pluginHost, ILogger logger, IDXDeviceService deviceService)
@@ -91,7 +94,7 @@ namespace VVVV.Nodes.ImagePlayer
             // Create new image players
             for (int i = previosSliceCount; i < spreadMax; i++)
             {
-                FImagePlayers[i] = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService);
+                FImagePlayers[i] = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService, FIOTaskScheduler, FMemoryPool);
             }
             
             for (int i = 0; i < spreadMax; i++)
@@ -106,7 +109,7 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 if (imagePlayer == null)
                 {
-                    imagePlayer = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService);
+                    imagePlayer = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService, FIOTaskScheduler, FMemoryPool);
                     FImagePlayers[i] = imagePlayer;
                 }
                 
@@ -145,6 +148,8 @@ namespace VVVV.Nodes.ImagePlayer
                 }
             }
             FImagePlayers.SliceCount = 0;
+            FIOTaskScheduler.Dispose();
+            FMemoryPool.Dispose();
         }
     }
 }
