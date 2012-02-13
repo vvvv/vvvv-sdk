@@ -1,0 +1,85 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\_legacy\PeakSpread (Spreads Legacy).v4p">
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="345" top="225" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10305" top="6945" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="345" top="225" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="360" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10605" top="7245" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="360" top="2115" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1290" top="225" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12180" top="6840" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1290" top="225" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Spread Count|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Multiply (Value)" systemname="Multiply (Value)">
+   <BOUNDS height="0" left="1095" top="840" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input 1" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input 2" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="1" nodename="Frac (Value)" systemname="Frac (Value)">
+   <BOUNDS height="0" left="1095" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Whole Part" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <BOUNDS height="3315" left="1830" top="4860" type="Window" width="2700">
+   </BOUNDS>
+   <NODE id="0" nodename="PeakSpread (Spreads)" systemname="PeakSpread (Spreads)">
+   <BOUNDS height="0" left="1095" top="1620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="1" srcpinname="Whole Part">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Spread Count" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   </PATCH>

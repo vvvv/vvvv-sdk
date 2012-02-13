@@ -1,0 +1,75 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv45\lib\nodes\modules\Network\OpenURL (Network) help.v4p" systemname="OpenURL (Network) help" filename="C:\Dev\vvvv\vvvv45\lib\nodes\modules\Network\OpenURL (Network) help.v4p">
+   <BOUNDS type="Window" left="8100" top="4875" width="4290" height="3795">
+   </BOUNDS>
+   <NODE systemname="OpenURL (Network)" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" nodename="OpenURL (Network)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="930" top="2685" width="2070" height="270">
+   </BOUNDS>
+   <PIN pinname="Open" visible="1">
+   </PIN>
+   <PIN pinname="Url" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="1" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="240" top="225" width="1080" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="240" top="225" width="3075" height="480">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|OpenURL (Network)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="2">
+   <BOUNDS type="Node" left="930" top="1725" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="930" top="1725" width="1425" height="300">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output String" dstnodeid="0" dstpinname="Url">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="3">
+   <BOUNDS type="Node" left="2505" top="1725" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2505" top="1725" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Open">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Open">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="4" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="270" top="735" width="3390" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="270" top="735" width="3570" height="540">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Opens a given URL with the default application. &cr;&lf;Can be a weblink or a file.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

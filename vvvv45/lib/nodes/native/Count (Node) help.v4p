@@ -1,0 +1,89 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33special9.1.dtd" >
+   <PATCH nodename="X:\vvvv33\help\Count (Node) help.v4p">
+   <BOUNDS type="Window" left="3810" top="1515" width="4230" height="4365">
+   </BOUNDS>
+   <NODE id="14" nodename="Count (Node)">
+   <BOUNDS height="0" left="1410" top="2910" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="1650" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="1410" top="2385" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="X" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="945" top="3405" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5865" top="5865" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="945" top="3405" type="Box" width="525">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="14" srcpinname="Count">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2220" top="1365" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6570" top="4245" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2220" top="1365" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Spread Count" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="210" top="165" type="Node" width="540">
+   </BOUNDS>
+   <BOUNDS height="450" left="210" top="165" type="Box" width="2010">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Count (Node)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="210" top="660" type="Node" width="3690">
+   </BOUNDS>
+   <BOUNDS height="240" left="210" top="660" type="Box" width="3690">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Count the number of slices of a spreaded node pin|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>
