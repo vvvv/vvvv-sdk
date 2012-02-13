@@ -19,10 +19,10 @@ namespace VVVV.Nodes.ImagePlayer
     public class PlayerNode : IPluginEvaluate, IDisposable
     {
         [Input("Directory", StringType = StringType.Directory)]
-        public ISpread<string> FDirectoryIn;
+        public IDiffSpread<ISpread<string>> FDirectoryIn;
         
         [Input("Filemask", DefaultString = ImagePlayer.DEFAULT_FILEMASK)]
-        public ISpread<string> FFilemaskIn;
+        public IDiffSpread<ISpread<string>> FFilemaskIn;
         
         [Input("Buffer Size IO", DefaultValue = ImagePlayer.DEFAULT_BUFFER_SIZE, Visibility = PinVisibility.Hidden)]
         public ISpread<int> FBufferSizeIn;
@@ -114,8 +114,12 @@ namespace VVVV.Nodes.ImagePlayer
                     FImagePlayers[i] = imagePlayer;
                 }
                 
-                imagePlayer.Directory = FDirectoryIn[i];
-                imagePlayer.Filemask = FFilemaskIn[i];
+                if (FDirectoryIn.IsChanged || FFilemaskIn.IsChanged)
+                {
+                    imagePlayer.Directories = FDirectoryIn[i];
+                    imagePlayer.Filemasks = FFilemaskIn[i];
+                    imagePlayer.Reload();
+                }
                 
                 if (FReloadIn[i])
                 {

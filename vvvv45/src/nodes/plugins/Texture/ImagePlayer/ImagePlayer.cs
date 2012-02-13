@@ -33,8 +33,6 @@ namespace VVVV.Nodes.ImagePlayer
         public const string DEFAULT_FILEMASK = "*";
         public const int DEFAULT_BUFFER_SIZE = 0x2000;
         
-        private string FDirectory = string.Empty;
-        private string FFilemask = DEFAULT_FILEMASK;
         private string[] FFiles = new string[0];
         private int FUnusedFrames;
         
@@ -54,10 +52,10 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly Spread<Frame> FVisibleFrames = new Spread<Frame>(0);
         
         public ImagePlayer(
-            int threadsIO, 
-            int threadsTexture, 
-            ILogger logger, 
-            IDXDeviceService deviceService, 
+            int threadsIO,
+            int threadsTexture,
+            ILogger logger,
+            IDXDeviceService deviceService,
             IOTaskScheduler ioTaskScheduler,
             MemoryPool memoryPool,
             ObjectPool<MemoryStream> streamPool
@@ -156,45 +154,37 @@ namespace VVVV.Nodes.ImagePlayer
             FDeviceService.DeviceRemoved -= HandleDeviceRemoved;
         }
         
-        public string Directory
+        public ISpread<string> Directories
         {
-            get
-            {
-                return FDirectory;
-            }
-            set
-            {
-                Contract.Requires(System.IO.Directory.Exists(value));
-                
-                if (value != FDirectory)
-                {
-                    FDirectory = value;
-                    Reload();
-                }
-            }
+            get;
+            set;
         }
         
-        public string Filemask
+        public ISpread<string> Filemasks
         {
-            get
-            {
-                return FFilemask;
-            }
-            set
-            {
-                Contract.Requires(value != null);
-                
-                if (value != FFilemask)
-                {
-                    FFilemask = value;
-                    Reload();
-                }
-            }
+            get;
+            set;
         }
         
         public void Reload()
         {
-            FFiles = System.IO.Directory.GetFiles(FDirectory, FFilemask);
+            var files = new Spread<string>[Directories.SliceCount];
+            int maxCount = 1;
+            for (int i = 0; i < files.Length; i++)
+            {
+                files[i] = System.IO.Directory.GetFiles(Directories[i], Filemasks[i]).ToSpread();
+                maxCount = maxCount.CombineWith(files[i]);
+            }
+            FFiles = new string[files.Length * maxCount];
+            for (int i = 0; i < files.Length; i++)
+            {
+                int k = i;
+                for (int j = 0; j < maxCount; j++)
+                {
+                    FFiles[k] = files[i][j];
+                    k += files.Length;
+                }
+            }
         }
         
         public int ThreadsIO
