@@ -109,9 +109,6 @@ namespace VVVV.Assimp.Nodes
                 {
                     m.Dispose();
                 }
-
-                OnDevice.Dispose();
-
             }          
         }
 
