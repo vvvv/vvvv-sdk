@@ -43,12 +43,12 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly List<EX9.Device> FDevices = new List<EX9.Device>();
         private readonly ILogger FLogger;
         private readonly IDXDeviceService FDeviceService;
-        private readonly ObjectPool<Stream> FStreamPool;
+        private readonly ObjectPool<MemoryStream> FStreamPool;
         private readonly TexturePool FTexturePool;
         private readonly MemoryPool FMemoryPool;
         private readonly BufferBlock<FrameInfo> FFrameInfoBuffer;
-        private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>> FFilePreloader;
-        private readonly TransformBlock<Tuple<FrameInfo, Stream>, Frame> FFramePreloader;
+        private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>> FFilePreloader;
+        private readonly TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame> FFramePreloader;
         private readonly BufferBlock<Frame> FFrameBuffer;
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
         private readonly Spread<Frame> FVisibleFrames = new Spread<Frame>(0);
@@ -59,7 +59,8 @@ namespace VVVV.Nodes.ImagePlayer
             ILogger logger, 
             IDXDeviceService deviceService, 
             IOTaskScheduler ioTaskScheduler,
-            MemoryPool memoryPool
+            MemoryPool memoryPool,
+            ObjectPool<MemoryStream> streamPool
            )
         {
             FThreadsIO = threadsIO;
@@ -70,7 +71,7 @@ namespace VVVV.Nodes.ImagePlayer
             FDeviceService.DeviceDisabled += HandleDeviceDisabled;
             FDeviceService.DeviceRemoved += HandleDeviceRemoved;
             
-            FStreamPool = new ObjectPool<Stream>(() => new MemoryStream());
+            FStreamPool = streamPool;
             FTexturePool = new TexturePool();
             FMemoryPool = memoryPool;
             
@@ -83,8 +84,8 @@ namespace VVVV.Nodes.ImagePlayer
                 BoundedCapacity = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : threadsIO
             };
             
-            FFilePreloader = new TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>>(
-                (Func<FrameInfo, Tuple<FrameInfo, Stream>>) PreloadFile,
+            FFilePreloader = new TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>>(
+                (Func<FrameInfo, Tuple<FrameInfo, MemoryStream>>) PreloadFile,
                 filePreloaderOptions
                );
             
@@ -94,8 +95,8 @@ namespace VVVV.Nodes.ImagePlayer
                 BoundedCapacity = threadsTexture <= 0 ? DataflowBlockOptions.Unbounded : threadsTexture
             };
             
-            FFramePreloader = new TransformBlock<Tuple<FrameInfo, Stream>, Frame>(
-                (Func<Tuple<FrameInfo, Stream>, Frame>) PreloadFrame,
+            FFramePreloader = new TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame>(
+                (Func<Tuple<FrameInfo, MemoryStream>, Frame>) PreloadFrame,
                 framePreloaderOptions
                );
             
@@ -481,7 +482,7 @@ namespace VVVV.Nodes.ImagePlayer
             emptyFrameInfo.Dispose();
         }
         
-        private Tuple<FrameInfo, Stream> PreloadFile(FrameInfo frameInfo)
+        private Tuple<FrameInfo, MemoryStream> PreloadFile(FrameInfo frameInfo)
         {
             // TODO: Consider using CopyStreamToStreamAsync from TPL extensions
             var timer = new HiPerfTimer();
@@ -500,6 +501,10 @@ namespace VVVV.Nodes.ImagePlayer
                 using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize))
                 {
                     memoryStream.Position = 0;
+                    if (fileStream.Length > memoryStream.Capacity)
+                    {
+                        memoryStream.Capacity = (int) fileStream.Length;
+                    }
                     if (fileStream.Length != memoryStream.Length)
                     {
                         memoryStream.SetLength(fileStream.Length);
@@ -537,7 +542,7 @@ namespace VVVV.Nodes.ImagePlayer
             return Tuple.Create(frameInfo, memoryStream);
         }
         
-        private Frame PreloadFrame(Tuple<FrameInfo, Stream> tuple)
+        private Frame PreloadFrame(Tuple<FrameInfo, MemoryStream> tuple)
         {
             var timer = new HiPerfTimer();
             timer.Start();

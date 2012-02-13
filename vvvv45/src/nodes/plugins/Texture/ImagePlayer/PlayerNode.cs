@@ -59,6 +59,7 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly IDXDeviceService FDeviceService;
         private readonly IOTaskScheduler FIOTaskScheduler = new IOTaskScheduler();
         private readonly MemoryPool FMemoryPool = new MemoryPool();
+        private readonly ObjectPool<MemoryStream> FStreamPool = new ObjectPool<MemoryStream>(() => new MemoryStream());
         
         [ImportingConstructor]
         public PlayerNode(IPluginHost pluginHost, ILogger logger, IDXDeviceService deviceService)
@@ -94,7 +95,7 @@ namespace VVVV.Nodes.ImagePlayer
             // Create new image players
             for (int i = previosSliceCount; i < spreadMax; i++)
             {
-                FImagePlayers[i] = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService, FIOTaskScheduler, FMemoryPool);
+                FImagePlayers[i] = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService, FIOTaskScheduler, FMemoryPool, FStreamPool);
             }
             
             for (int i = 0; i < spreadMax; i++)
@@ -109,7 +110,7 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 if (imagePlayer == null)
                 {
-                    imagePlayer = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService, FIOTaskScheduler, FMemoryPool);
+                    imagePlayer = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService, FIOTaskScheduler, FMemoryPool, FStreamPool);
                     FImagePlayers[i] = imagePlayer;
                 }
                 
@@ -150,6 +151,7 @@ namespace VVVV.Nodes.ImagePlayer
             FImagePlayers.SliceCount = 0;
             FIOTaskScheduler.Dispose();
             FMemoryPool.Dispose();
+            FStreamPool.ToArrayAndClear();
         }
     }
 }
