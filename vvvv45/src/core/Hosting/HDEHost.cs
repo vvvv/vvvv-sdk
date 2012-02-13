@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
-
 using VVVV.Core;
 using VVVV.Core.Commands;
 using VVVV.Core.Logging;
@@ -24,6 +23,7 @@ using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.InteropServices.EX9;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
 
@@ -155,7 +155,7 @@ namespace VVVV.Hosting
             // Route log messages to vvvv
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
-            DeviceMarshaler.Initialize(vvvvHost.DeviceService);
+            DeviceService = new DeviceService(vvvvHost.DeviceService);
             
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
@@ -460,6 +460,13 @@ namespace VVVV.Hosting
                 
                 return FActivePatchWindow;
             }
+        }
+        
+        [Export(typeof(IDXDeviceService))]
+        public IDXDeviceService DeviceService
+        {
+            get;
+            private set;
         }
         
         #endregion
