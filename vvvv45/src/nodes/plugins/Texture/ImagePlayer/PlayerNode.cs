@@ -55,11 +55,13 @@ namespace VVVV.Nodes.ImagePlayer
         
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
         private readonly ILogger FLogger;
+        private readonly IDXDeviceService FDeviceService;
         
         [ImportingConstructor]
-        public PlayerNode(IPluginHost pluginHost, ILogger logger)
+        public PlayerNode(IPluginHost pluginHost, ILogger logger, IDXDeviceService deviceService)
         {
             FLogger = logger;
+            FDeviceService = deviceService;
         }
         
         public void Evaluate(int spreadMax)
@@ -89,7 +91,7 @@ namespace VVVV.Nodes.ImagePlayer
             // Create new image players
             for (int i = previosSliceCount; i < spreadMax; i++)
             {
-                FImagePlayers[i] = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger);
+                FImagePlayers[i] = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService);
             }
             
             for (int i = 0; i < spreadMax; i++)
@@ -104,7 +106,7 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 if (imagePlayer == null)
                 {
-                    imagePlayer = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger);
+                    imagePlayer = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService);
                     FImagePlayers[i] = imagePlayer;
                 }
                 

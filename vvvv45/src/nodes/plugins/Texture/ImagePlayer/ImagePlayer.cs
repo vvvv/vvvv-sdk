@@ -42,6 +42,7 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly int FThreadsTexture;
         private readonly List<EX9.Device> FDevices = new List<EX9.Device>();
         private readonly ILogger FLogger;
+        private readonly IDXDeviceService FDeviceService;
         private readonly ObjectPool<Stream> FStreamPool;
         private readonly IOTaskScheduler FIOTaskScheduler;
         private readonly TexturePool FTexturePool;
@@ -52,12 +53,15 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
         private readonly Spread<Frame> FVisibleFrames = new Spread<Frame>(0);
         
-        public ImagePlayer(int threadsIO, int threadsTexture, ILogger logger)
+        public ImagePlayer(int threadsIO, int threadsTexture, ILogger logger, IDXDeviceService deviceService)
         {
             FThreadsIO = threadsIO;
             FThreadsTexture = threadsTexture;
             FLogger = logger;
+            FDeviceService = deviceService;
             
+            FDeviceService.DeviceDisabled += HandleDeviceDisabled;
+            FDeviceService.DeviceRemoved += HandleDeviceRemoved;
             FStreamPool = new ObjectPool<Stream>(() => new MemoryStream());
             FTexturePool = new TexturePool();
             FIOTaskScheduler = new IOTaskScheduler();
@@ -98,7 +102,7 @@ namespace VVVV.Nodes.ImagePlayer
             FFilePreloader.LinkTo(FFramePreloader, linkOptions);
             FFramePreloader.LinkTo(FFrameBuffer, linkOptions);
         }
-        
+
         public void Dispose()
         {
             // Cancel all scheduled frames
@@ -114,8 +118,8 @@ namespace VVVV.Nodes.ImagePlayer
                 frame.Metadata.Dispose();
             }
             
-            // Stall the pipeline
-            Stall();
+            // Flush the pipeline
+            Flush();
             
             // Mark head of pipeline as completed
             FFrameInfoBuffer.Complete();
@@ -139,6 +143,9 @@ namespace VVVV.Nodes.ImagePlayer
                 FTexturePool.Dispose();
                 FIOTaskScheduler.Dispose();
             }
+            
+            FDeviceService.DeviceDisabled -= HandleDeviceDisabled;
+            FDeviceService.DeviceRemoved -= HandleDeviceRemoved;
         }
         
         public string Directory
@@ -424,27 +431,47 @@ namespace VVVV.Nodes.ImagePlayer
                     FTexturePool.PutTexture(texture);
                     break;
                 case DestroyReason.DeviceLost:
-                    Stall();
-                    
-                    lock (FDevices)
-                    {
-                        FDevices.Remove(texture.Device);
-                    }
-                    
+                    Flush();
+                    FDevices.Remove(texture.Device);
                     FTexturePool.PutTexture(texture);
                     FTexturePool.Release(texture.Device);
                     break;
             }
         }
         
-        private void Stall()
+        private void HandleDeviceDisabled(object sender, DeviceEventArgs e)
         {
-            var dummyFrameInfo = GetEmptyFrameInfo();
-            dummyFrameInfo.Cancel();
-            Enqueue(dummyFrameInfo);
-            var dummyFrame = Dequeue(dummyFrameInfo);
-            dummyFrame.Dispose();
-            dummyFrameInfo.Dispose();
+            ReleaseDevice(e.Device);
+        }
+        
+        private void HandleDeviceRemoved(object sender, DeviceEventArgs e)
+        {
+            ReleaseDevice(e.Device);
+        }
+        
+        private void ReleaseDevice(EX9.Device device)
+        {
+            bool doRelease = false;
+            lock (FDevices)
+            {
+                doRelease = FDevices.Contains(device);
+            }
+            if (doRelease)
+            {
+                Flush();
+                FDevices.Remove(device);
+                FTexturePool.Release(device);
+            }
+        }
+        
+        private void Flush()
+        {
+            var emptyFrameInfo = GetEmptyFrameInfo();
+            emptyFrameInfo.Cancel();
+            Enqueue(emptyFrameInfo);
+            var emptyFrame = Dequeue(emptyFrameInfo);
+            emptyFrame.Dispose();
+            emptyFrameInfo.Dispose();
         }
         
         private Tuple<FrameInfo, Stream> PreloadFile(FrameInfo frameInfo)
