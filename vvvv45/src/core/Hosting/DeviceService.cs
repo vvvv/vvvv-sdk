@@ -31,6 +31,18 @@ namespace VVVV.Hosting
                 FDeviceService.OnDeviceRemoved(new DeviceEventArgs(device));
                 device.Dispose();
             }
+            
+            public void DeviceEnabledCB(IntPtr devicePtr)
+            {
+                var device = Device.FromPointer(devicePtr);
+                FDeviceService.OnDeviceEnabled(new DeviceEventArgs(device));
+            }
+            
+            public void DeviceDisabledCB(IntPtr devicePtr)
+            {
+                var device = Device.FromPointer(devicePtr);
+                FDeviceService.OnDeviceDisabled(new DeviceEventArgs(device));
+            }
         }
         
         private readonly IInternalDXDeviceService FDeviceService;
@@ -65,6 +77,26 @@ namespace VVVV.Hosting
             if (DeviceRemoved != null) 
             {
                 DeviceRemoved(this, e);
+            }
+        }
+        
+        public event EventHandler<DeviceEventArgs> DeviceEnabled;
+        
+        protected virtual void OnDeviceEnabled(DeviceEventArgs e)
+        {
+            if (DeviceEnabled != null) 
+            {
+                DeviceEnabled(this, e);
+            }
+        }
+        
+        public event EventHandler<DeviceEventArgs> DeviceDisabled;
+        
+        protected virtual void OnDeviceDisabled(DeviceEventArgs e)
+        {
+            if (DeviceDisabled != null) 
+            {
+                DeviceDisabled(this, e);
             }
         }
         

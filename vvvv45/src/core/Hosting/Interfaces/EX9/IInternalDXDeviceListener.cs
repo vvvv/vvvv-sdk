@@ -12,5 +12,7 @@ namespace VVVV.Hosting.Interfaces.EX9
     {
         void DeviceAddedCB(IntPtr devicePtr);
         void DeviceRemovedCB(IntPtr devicePtr);
+        void DeviceEnabledCB(IntPtr devicePtr);
+        void DeviceDisabledCB(IntPtr devicePtr);
     }
 }

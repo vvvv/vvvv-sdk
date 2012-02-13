@@ -462,6 +462,7 @@ namespace VVVV.Hosting
             }
         }
         
+        [Export(typeof(IDXDeviceService))]
         public IDXDeviceService DeviceService
         {
             get;

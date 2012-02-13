@@ -18,6 +18,8 @@ namespace VVVV.PluginInterfaces.V2.EX9
         
         event EventHandler<DeviceEventArgs> DeviceAdded;
         event EventHandler<DeviceEventArgs> DeviceRemoved;
+        event EventHandler<DeviceEventArgs> DeviceEnabled;
+        event EventHandler<DeviceEventArgs> DeviceDisabled;
     }
     
     [ComVisible(false)]
