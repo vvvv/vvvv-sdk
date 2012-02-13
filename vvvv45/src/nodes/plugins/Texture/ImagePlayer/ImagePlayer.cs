@@ -172,7 +172,7 @@ namespace VVVV.Nodes.ImagePlayer
             int maxCount = 1;
             for (int i = 0; i < files.Length; i++)
             {
-                files[i] = System.IO.Directory.GetFiles(Directories[i], Filemasks[i]).ToSpread();
+                files[i] = System.IO.Directory.GetFiles(Directories[i], Filemasks[i]).OrderBy(f => f).ToSpread();
                 maxCount = maxCount.CombineWith(files[i]);
             }
             FFiles = new string[files.Length * maxCount];
@@ -265,7 +265,8 @@ namespace VVVV.Nodes.ImagePlayer
             int bufferSize,
             out double durationIO,
             out double durationTexture,
-            out int unusedFrames)
+            out int unusedFrames,
+            ref ISpread<bool> loadedFrames)
         {
             durationIO = 0.0;
             durationTexture = 0.0;
@@ -275,6 +276,7 @@ namespace VVVV.Nodes.ImagePlayer
             if (FFiles.Length == 0)
             {
                 unusedFrames = FUnusedFrames;
+                loadedFrames.SliceCount = 0;
                 return new Spread<Frame>(0);
             }
             
@@ -364,10 +366,12 @@ namespace VVVV.Nodes.ImagePlayer
                 FUnusedFrames++;
             }
             
+            loadedFrames.SliceCount = preloadFrameNrs.SliceCount;
             var scheduledFrameInfosEnumerator = FScheduledFrameInfos.Where(frameInfo => !frameInfo.IsCanceled).GetEnumerator();
             for (int i = 0; i < preloadFrameNrs.SliceCount; i++)
             {
                 var newFrameInfo = CreateFrameInfo(preloadFrameNrs[i], bufferSize);
+                loadedFrames[i] = false;
                 
                 while (scheduledFrameInfosEnumerator.MoveNext())
                 {
@@ -377,6 +381,7 @@ namespace VVVV.Nodes.ImagePlayer
                     {
                         newFrameInfo.Dispose();
                         newFrameInfo = null;
+                        loadedFrames[i] = scheduledFrameInfo.IsLoaded;
                         break;
                     }
                     

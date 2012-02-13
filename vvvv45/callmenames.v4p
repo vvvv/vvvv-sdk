@@ -1,15 +1,17 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.dtd" >
-   <PATCH nodename="F:\vvvv\vvvv\public\vvvv45\callmenames.v4p" filename="C:\Users\nsynk\vvvv\public\vvvv45\callmenames.v4p" systemname="callmenames">
-   <BOUNDS height="9885" left="2160" top="1905" type="Window" width="13275">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="D:\vvvv_dev\vvvv\public\vvvv45\callmenames.v4p" filename="C:\Users\nsynk\vvvv\public\vvvv45\callmenames.v4p" systemname="callmenames">
+   <BOUNDS height="9885" left="2160" top="1905" type="Window" width="14625">
    </BOUNDS>
    <NODE componentmode="Hidden" id="-6" nodename="MainLoop (VVVV)" systemname="MainLoop (VVVV)">
-   <BOUNDS height="100" left="6045" top="210" type="Node" width="100">
+   <BOUNDS height="100" left="2895" top="1665" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Maximum background fpsS" slicecount="1" values="120">
+   <PIN pinname="Maximum background fpsS" visible="1">
    </PIN>
    <PIN pinname="Increase Timing Precision" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Time Mode" slicecount="1" values="Raw">
+   </PIN>
+   <PIN pinname="Maximum forground fps" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Debug\PerfMeter (Debug).v4p" id="1" nodename="PerfMeter (Debug)" systemname="PerfMeter (Debug)">
@@ -30,12 +32,12 @@
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="FullScreen" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="100" left="690" top="8850" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="1800" left="690" top="8850" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS height="5685" left="15900" top="1875" type="Window" width="7545">
+   <BOUNDS height="5685" left="33600" top="2730" type="Window" width="7545">
    </BOUNDS>
    <PIN pinname="Projection" visible="1">
    </PIN>
@@ -79,7 +81,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="540" top="525" type="Box" width="795">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" values="C:\testvideo">
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="..\..\..\..\testvideos\720p_bmp">
    </PIN>
    <PIN encoded="0" pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -111,7 +113,7 @@
    </BOUNDS>
    <BOUNDS height="480" left="2940" top="195" type="Box" width="480">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -121,7 +123,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -183,7 +185,7 @@
    </BOUNDS>
    <BOUNDS height="285" left="1800" top="375" type="Box" width="705">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="25">
+   <PIN pinname="Y Input Value" slicecount="1" values="20">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -351,6 +353,8 @@
    </PIN>
    <PIN pinname="Position Out" visible="1">
    </PIN>
+   <PIN pinname="FilterTime" slicecount="1" values="0.5">
+   </PIN>
    </NODE>
    <LINK dstnodeid="59" dstpinname="Y Input Value" srcnodeid="60" srcpinname="Position Out">
    </LINK>
@@ -360,6 +364,8 @@
    <PIN pinname="Go To Position" visible="1">
    </PIN>
    <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="FilterTime" slicecount="1" values="0.5">
    </PIN>
    </NODE>
    <LINK dstnodeid="58" dstpinname="Y Input Value" srcnodeid="61" srcpinname="Position Out">
@@ -399,7 +405,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="3000" top="3090" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="9">
+   <PIN pinname="Y Input Value" slicecount="1" values="120">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -413,7 +419,7 @@
    <LINK dstnodeid="42" dstpinname="Frame Count" srcnodeid="68" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="Hidden" id="69" nodename="Subtract (Value)" systemname="Subtract (Value)">
-   <BOUNDS height="100" left="3240" top="3900" type="Node" width="100">
+   <BOUNDS height="100" left="3045" top="4110" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -503,13 +509,23 @@
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="77" nodename="Player (EX9.Texture)" systemname="Player (EX9.Texture)">
    <BOUNDS height="100" left="1020" top="5595" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Duration IO" visible="1" pintype="Output">
+   <PIN pinname="Duration IO" pintype="Output" visible="1">
    </PIN>
-   <PIN pinname="Duration Texture" visible="1" pintype="Output">
+   <PIN pinname="Duration Texture" pintype="Output" visible="1">
    </PIN>
-   <PIN pinname="Unused Frames Count" visible="0" pintype="Output">
+   <PIN pinname="Unused Frames Count" pintype="Output" visible="0">
    </PIN>
    <PIN pinname="Threads Texture" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Preload Frames" visible="1">
+   </PIN>
+   <PIN pinname="Buffer Size IO" slicecount="1" values="262144">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Loaded" visible="1">
+   </PIN>
+   <PIN pinname="Threads IO" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="77" dstpinname="Directory" srcnodeid="6" srcpinname="Output String">
@@ -518,12 +534,32 @@
    </LINK>
    <LINK dstnodeid="4" dstpinname="Texture" srcnodeid="77" srcpinname="Texture">
    </LINK>
-   <LINK dstnodeid="77" dstpinname="Preload Frames" srcnodeid="67" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="77" dstpinname="Visible Frames" srcnodeid="66" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="77" srcpinname="Duration IO" dstnodeid="61" dstpinname="Go To Position">
+   <LINK dstnodeid="61" dstpinname="Go To Position" srcnodeid="77" srcpinname="Duration IO">
    </LINK>
-   <LINK srcnodeid="77" srcpinname="Duration Texture" dstnodeid="60" dstpinname="Go To Position">
+   <LINK dstnodeid="60" dstpinname="Go To Position" srcnodeid="77" srcpinname="Duration Texture">
+   </LINK>
+   <LINK dstnodeid="-6" dstpinname="Maximum forground fps" srcnodeid="26" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="-6" dstpinname="Maximum background fpsS" srcnodeid="26" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="77" dstpinname="Preload Frames" srcnodeid="67" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="78" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="4035" top="8445" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="315" left="4035" top="8445" type="Box" width="10110">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="119">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="78" dstpinname="Y Input Value" srcnodeid="77" srcpinname="Loaded">
    </LINK>
    </PATCH>

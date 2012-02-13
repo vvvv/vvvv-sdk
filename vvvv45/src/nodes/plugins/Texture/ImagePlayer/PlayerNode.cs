@@ -54,6 +54,9 @@ namespace VVVV.Nodes.ImagePlayer
         [Output("Unused Frames Count", Visibility = PinVisibility.OnlyInspector)]
         public ISpread<int> FUnusedFramesOut;
         
+        [Output("Loaded")]
+        public ISpread<ISpread<bool>> FLoadedOut;
+        
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
         private readonly ILogger FLogger;
         private readonly IDXDeviceService FDeviceService;
@@ -91,15 +94,12 @@ namespace VVVV.Nodes.ImagePlayer
             FDurationIOOut.SliceCount = spreadMax;
             FDurationTextureOut.SliceCount = spreadMax;
             FUnusedFramesOut.SliceCount = spreadMax;
-            
-            // Create new image players
-            for (int i = previosSliceCount; i < spreadMax; i++)
-            {
-                FImagePlayers[i] = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService, FIOTaskScheduler, FMemoryPool, FStreamPool);
-            }
+            FLoadedOut.SliceCount = spreadMax;
             
             for (int i = 0; i < spreadMax; i++)
             {
+                bool reload = FReloadIn[i] || FDirectoryIn.IsChanged || FFilemaskIn.IsChanged;
+                
                 var imagePlayer = FImagePlayers[i];
                 
                 if (imagePlayer != null && (imagePlayer.ThreadsIO != FThreadsIOConfig[i] || imagePlayer.ThreadsTexture != FThreadsTextureConfig[i]))
@@ -112,16 +112,13 @@ namespace VVVV.Nodes.ImagePlayer
                 {
                     imagePlayer = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService, FIOTaskScheduler, FMemoryPool, FStreamPool);
                     FImagePlayers[i] = imagePlayer;
+                    reload = true;
                 }
                 
-                if (FDirectoryIn.IsChanged || FFilemaskIn.IsChanged)
-                {
-                    imagePlayer.Directories = FDirectoryIn[i];
-                    imagePlayer.Filemasks = FFilemaskIn[i];
-                    imagePlayer.Reload();
-                }
+                imagePlayer.Directories = FDirectoryIn[i];
+                imagePlayer.Filemasks = FFilemaskIn[i];
                 
-                if (FReloadIn[i])
+                if (reload)
                 {
                     imagePlayer.Reload();
                 }
@@ -129,13 +126,15 @@ namespace VVVV.Nodes.ImagePlayer
                 double durationIO = 0.0;
                 double durationTexture = 0.0;
                 int unusedFrames = 0;
+                var loadedFrames = FLoadedOut[i];
                 FTextureOut[i] = imagePlayer.Preload(
                     FVisibleFramesIn[i],
                     FPreloadFramesIn[i],
                     FBufferSizeIn[i],
                     out durationIO,
                     out durationTexture,
-                    out unusedFrames);
+                    out unusedFrames,
+                    ref loadedFrames);
                 
                 FDurationIOOut[i] = durationIO;
                 FDurationTextureOut[i] = durationTexture;

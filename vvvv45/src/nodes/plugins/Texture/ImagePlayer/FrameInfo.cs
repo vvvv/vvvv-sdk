@@ -35,6 +35,14 @@ namespace VVVV.Nodes.ImagePlayer
             }
         }
         
+        public bool IsLoaded
+        {
+            get
+            {
+                return DurationTexture > 0;
+            }
+        }
+        
         public int BufferSize
         {
             get
