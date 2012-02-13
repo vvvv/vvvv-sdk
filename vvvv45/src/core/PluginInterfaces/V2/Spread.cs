@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-
 using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2
@@ -151,9 +151,14 @@ namespace VVVV.PluginInterfaces.V2
 	[ComVisible(false)]
 	public static class SpreadExtensions_
 	{
-		public static ISpread<T> ToSpread<T>(this List<T> list)
+		public static Spread<T> ToSpread<T>(this List<T> list)
 		{
 			return new Spread<T>(list);
+		}
+		
+		public static Spread<T> ToSpread<T>(this IEnumerable<T> enumerable)
+		{
+		    return new Spread<T>(enumerable.ToList());
 		}
 	}
 }

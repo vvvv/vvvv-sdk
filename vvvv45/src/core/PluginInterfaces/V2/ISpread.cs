@@ -394,5 +394,15 @@ namespace VVVV.PluginInterfaces.V2
             }
             spread.SliceCount = size;
         }
+        
+        public static T[] ToArray<T>(this ISpread<T> spread, int length)
+        {
+            var result = new T[length];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = spread[i];
+            }
+            return result;
+        }
     }
 }
