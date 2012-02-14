@@ -26,10 +26,9 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;float2 asp=lerp(1,min(R.x,R.y
 	float2 dx=(x-.5)*2;
 	float4 c=0;
 	float f2=f0(vp);
-	c=smoothstep(0.49999-fwidth(f2),.5,f2);
+	c=smoothstep(0.9999-fwidth(f2),1.0,f2);
 	if(Field)c=f2;
-	c=lerp(ColorB,ColorA,c);
-	c.a=1;
+	c=lerp(ColorB,ColorA,saturate(c));
 	return c;
 }
 
