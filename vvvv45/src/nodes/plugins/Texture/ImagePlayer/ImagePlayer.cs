@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Security;
 using System.Threading;
@@ -356,6 +357,7 @@ namespace VVVV.Nodes.ImagePlayer
                     newFrameInfo.Dispose();
                 }
             }
+            visibleFramesEnumerator.Dispose();
             
             var canceledFrameInfos = FScheduledFrameInfos.TakeWhile(frameInfo => frameInfo.IsCanceled);
             foreach (var frameInfo in canceledFrameInfos.ToArray())
@@ -393,6 +395,7 @@ namespace VVVV.Nodes.ImagePlayer
                     Enqueue(newFrameInfo);
                 }
             }
+            scheduledFrameInfosEnumerator.Dispose();
             
             unusedFrames = FUnusedFrames;
             
@@ -493,19 +496,20 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 
-                using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize))
+                using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, FileOptions.SequentialScan))
                 {
+                    var length = fileStream.Length;
                     memoryStream.Position = 0;
-                    if (fileStream.Length > memoryStream.Capacity)
+                    if (length > memoryStream.Capacity)
                     {
-                        memoryStream.Capacity = (int) fileStream.Length;
+                        memoryStream.Capacity = (int) length;
                     }
-                    if (fileStream.Length != memoryStream.Length)
+                    if (length != memoryStream.Length)
                     {
-                        memoryStream.SetLength(fileStream.Length);
+                        memoryStream.SetLength(length);
                     }
                     
-                    while (fileStream.Position < fileStream.Length)
+                    while (fileStream.Position < length)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
