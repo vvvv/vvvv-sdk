@@ -29,6 +29,8 @@
    </PIN>
    <PIN pinname="Mask" visible="1">
    </PIN>
+   <PIN pinname="BorderCol">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="23" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="615" top="615" type="Node" width="0">
@@ -339,9 +341,11 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.11">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.3">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Width">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.100000001490116">
    </PIN>
    </NODE>
    <LINK dstnodeid="24" dstpinname="Width" srcnodeid="0" srcpinname="Y Output Value">
@@ -369,7 +373,7 @@
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\Constant.fx" id="30" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
    <BOUNDS height="100" left="2115" top="3195" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -401,5 +405,19 @@
    <LINK dstnodeid="17" dstpinname="Layers" srcnodeid="30" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="24" dstpinname="tex0" srcnodeid="18" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="32" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="8475" top="4545" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="8475" top="4545" type="Box" width="660">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Border Color|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="BorderCol" srcnodeid="32" srcpinname="Color Output">
    </LINK>
    </PATCH>

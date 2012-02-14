@@ -45,6 +45,8 @@
    </PIN>
    <PIN pinname="Colored" visible="1">
    </PIN>
+   <PIN pinname="BorderCol">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="30" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="615" top="615" type="Node" width="0">
@@ -213,9 +215,9 @@
    <INFO author="unc" description="Bump map / Emboss" tags="fx">
    </INFO>
    <NODE componentmode="InABox" id="14" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="12480" top="4125" type="Node" width="0">
+   <BOUNDS height="0" left="13770" top="4275" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="12480" top="4125" type="Box" width="480">
+   <BOUNDS height="480" left="13770" top="4275" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="10680" top="11325" type="Window" width="215">
    </BOUNDS>
@@ -321,7 +323,7 @@
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
@@ -536,8 +538,22 @@
    </NODE>
    <LINK dstnodeid="38" dstpinname="Render State" srcnodeid="36" srcpinname="Render State Out">
    </LINK>
-   <LINK srcnodeid="11" srcpinname="Output Node" dstnodeid="38" dstpinname="Texture">
+   <LINK dstnodeid="38" dstpinname="Texture" srcnodeid="11" srcpinname="Output Node">
    </LINK>
-   <LINK srcnodeid="38" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
+   <LINK dstnodeid="8" dstpinname="Layers" srcnodeid="38" srcpinname="Layer">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="40" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="12480" top="4365" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12480" top="4365" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Border Color|" encoded="0">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Color Output" dstnodeid="31" dstpinname="BorderCol">
    </LINK>
    </PATCH>

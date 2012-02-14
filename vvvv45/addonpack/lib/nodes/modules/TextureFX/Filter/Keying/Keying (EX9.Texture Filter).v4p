@@ -53,6 +53,8 @@
    </PIN>
    <PIN pinname="Mode" visible="1">
    </PIN>
+   <PIN pinname="Invert">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="27" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="360" top="90" type="Node" width="0">
@@ -273,7 +275,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="12225" top="9450" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Smooth/Invert">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Smooth">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -325,7 +327,7 @@
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
    </PIN>
@@ -389,9 +391,9 @@
    <LINK dstnodeid="28" dstpinname="Technique" srcnodeid="6" srcpinname="Output Enum">
    </LINK>
    <NODE componentmode="InABox" id="3" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="5820" top="1890" type="Node" width="0">
+   <BOUNDS height="0" left="6780" top="1650" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="5820" top="1890" type="Box" width="480">
+   <BOUNDS height="480" left="6780" top="1650" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="14235" top="7950" type="Window" width="215">
    </BOUNDS>
@@ -415,9 +417,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="6720" top="1440" type="Node" width="0">
+   <BOUNDS height="0" left="7395" top="1650" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="6720" top="1440" type="Box" width="480">
+   <BOUNDS height="480" left="7395" top="1650" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="15135" top="7860" type="Window" width="215">
    </BOUNDS>
@@ -441,7 +443,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="1" nodename="AND (Boolean)" systemname="AND (Boolean)">
-   <BOUNDS height="0" left="5895" top="2790" type="Node" width="0">
+   <BOUNDS height="0" left="6720" top="2445" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -453,7 +455,7 @@
    <LINK dstnodeid="28" dstpinname="SourceAlpha" srcnodeid="1" srcpinname="Output">
    </LINK>
    <NODE componentmode="Hidden" id="0" nodename="AND (Boolean)" systemname="AND (Boolean)">
-   <BOUNDS height="0" left="7125" top="2370" type="Node" width="0">
+   <BOUNDS height="0" left="7470" top="2490" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -512,8 +514,30 @@
    </NODE>
    <LINK dstnodeid="31" dstpinname="Render State" srcnodeid="29" srcpinname="Render State Out">
    </LINK>
-   <LINK srcnodeid="27" srcpinname="Output Node" dstnodeid="31" dstpinname="Texture">
+   <LINK dstnodeid="31" dstpinname="Texture" srcnodeid="27" srcpinname="Output Node">
    </LINK>
-   <LINK srcnodeid="31" srcpinname="Layer" dstnodeid="12" dstpinname="Layers">
+   <LINK dstnodeid="12" dstpinname="Layers" srcnodeid="31" srcpinname="Layer">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="28" dstpinname="Smooth">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="33" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="5850" top="2055" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5850" top="2055" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Invert" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="28" dstpinname="Invert">
    </LINK>
    </PATCH>
