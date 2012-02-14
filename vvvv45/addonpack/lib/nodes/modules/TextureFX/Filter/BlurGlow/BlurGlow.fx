@@ -1,20 +1,24 @@
 float2 R;
 float Brightness =1.0;
-float Width <float uimin=0.0;float uimax=1.0;> =0.2;
+float Shape=0.0;
+float Radius <float uimin=0.0;float uimax=1.0;> =0.8;
 float4 BorderCol:COLOR ={0.0,0.0,0.0,1.0};
+bool Alpha=0;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
+	float lod=log2(max(R.x,R.y));
     float4 c=0;
 	float kk=0;
-	for(float i=0;i<min(log2(max(R.x,R.y)),14);i++){
+	for(float i=0;i<min(lod-(1-Radius*lod),14);i++){
 		float4 nc=tex2Dlod(s0,float4(x,0,1+i));
-		float k=pow(2,i*Width*2-2);
+		float k=pow(2,i*Shape-lod+1)*saturate(Radius*lod-i+1);
 		c+=nc*k;
 		kk+=k;
 	}
 	c/=kk;
-	c*=Brightness;
+	c.rgb*=Brightness;
+	if(!Alpha)c.a=tex2D(s0,x).a;
     return c;
 }
 
