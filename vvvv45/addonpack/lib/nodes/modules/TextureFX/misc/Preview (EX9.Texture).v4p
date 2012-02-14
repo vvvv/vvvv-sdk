@@ -314,32 +314,26 @@
    </NODE>
    <LINK dstnodeid="21" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Is Fullscreen">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\Constant.fx" id="25" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
-   <BOUNDS height="100" left="3900" top="1260" type="Node" width="100">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\Constant.fx" id="22" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
+   <BOUNDS height="100" left="3315" top="2130" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Render State" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
-   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="24" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
-   <BOUNDS height="100" left="4365" top="930" type="Node" width="100">
+   <LINK dstnodeid="22" dstpinname="Texture" srcnodeid="10" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="Hidden" id="23" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="100" left="3480" top="1770" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="25" dstpinname="Mesh" srcnodeid="24" srcpinname="Mesh">
+   <LINK dstnodeid="22" dstpinname="Mesh" srcnodeid="23" srcpinname="Mesh">
    </LINK>
-   <LINK srcnodeid="10" srcpinname="Output Node" dstnodeid="25" dstpinname="Texture">
-   </LINK>
-   <LINK srcnodeid="25" srcpinname="Layer" dstnodeid="4" dstpinname="Layer 2">
+   <LINK dstnodeid="4" dstpinname="Layer 2" srcnodeid="22" srcpinname="Layer">
    </LINK>
    </PATCH>

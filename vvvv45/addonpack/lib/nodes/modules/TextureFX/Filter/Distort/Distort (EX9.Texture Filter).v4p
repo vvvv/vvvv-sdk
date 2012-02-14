@@ -37,8 +37,6 @@
    </PIN>
    <PIN pinname="NormalizeMap" visible="1">
    </PIN>
-   <PIN pinname="BorderCol">
-   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="29" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="615" top="615" type="Node" width="0">
@@ -231,9 +229,9 @@
    <INFO author="unc" description="Distortion" tags="fx">
    </INFO>
    <NODE componentmode="InABox" id="12" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="12210" top="4980" type="Node" width="0">
+   <BOUNDS height="0" left="10380" top="4980" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="12210" top="4980" type="Box" width="480">
+   <BOUNDS height="480" left="10380" top="4980" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="10680" top="11325" type="Window" width="215">
    </BOUNDS>
@@ -339,7 +337,7 @@
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
-   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
@@ -409,7 +407,7 @@
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\Constant.fx" id="34" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
    <BOUNDS height="100" left="6495" top="2370" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   <PIN pinname="Texture" visible="1">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -417,7 +415,7 @@
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
-   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   <PIN pinname="Render State" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="33" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
@@ -430,32 +428,18 @@
    </LINK>
    <LINK dstnodeid="34" dstpinname="Transform" srcnodeid="35" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="34" srcpinname="Layer">
+   <LINK srcnodeid="34" srcpinname="Layer" dstnodeid="3" dstpinname="Layers">
    </LINK>
-   <LINK dstnodeid="34" dstpinname="Texture" srcnodeid="9" srcpinname="Output Node">
+   <LINK srcnodeid="9" srcpinname="Output Node" dstnodeid="34" dstpinname="Texture">
    </LINK>
-   <NODE componentmode="Hidden" id="32" nodename="Blend (EX9.RenderState Advanced)" systemname="Blend (EX9.RenderState Advanced)">
+   <NODE id="32" componentmode="Hidden" nodename="Blend (EX9.RenderState Advanced)" systemname="Blend (EX9.RenderState Advanced)">
    <PIN pinname="Render State Out" visible="1">
    </PIN>
-   <BOUNDS height="0" left="6285" top="2070" type="Node" width="0">
+   <BOUNDS type="Node" height="0" left="6285" top="2070" width="0">
    </BOUNDS>
    <PIN pinname="Alpha Blending" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="34" dstpinname="Render State" srcnodeid="32" srcpinname="Render State Out">
-   </LINK>
-   <NODE componentmode="InABox" id="36" nodename="IOBox (Color)" systemname="IOBox (Color)">
-   <BOUNDS height="0" left="10800" top="5205" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="240" left="10800" top="5205" type="Box" width="615">
-   </BOUNDS>
-   <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
-   </PIN>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Border Color|">
-   </PIN>
-   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="30" dstpinname="BorderCol" srcnodeid="36" srcpinname="Color Output">
+   <LINK srcnodeid="32" srcpinname="Render State Out" dstnodeid="34" dstpinname="Render State">
    </LINK>
    </PATCH>

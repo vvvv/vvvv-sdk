@@ -50,6 +50,9 @@ namespace VVVV.Nodes
 		[Input("Output Mode", IsSingle = true)]
 		IDiffSpread<UserTexturetMode> FOutputMode;
 		
+		[Input("Viewable User Color", DefaultColor = new double[] {0, 0, 1, 1})]
+		ISpread<RGBAColor> FUserColor;
+		
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
 		IDiffSpread<bool> FEnabledIn;
 
@@ -112,6 +115,10 @@ namespace VVVV.Nodes
 				}
 			}
 			
+			//create new texture if outputmode changed
+			if (FOutputMode.IsChanged)
+				Reinitialize();
+			
 			if (FUserGenerator != null)
 			{
 				if (FEnabledIn.IsChanged)
@@ -131,7 +138,6 @@ namespace VVVV.Nodes
 						
 						FUserIdOut.SliceCount = Users.Length;
 						FPositionOut.SliceCount = Users.Length;
-						FTextureOut.SliceCount = Users.Length;
 						
 						for (int i = 0; i < Users.Length; i++)
 						{
@@ -180,7 +186,10 @@ namespace VVVV.Nodes
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int Slice, SlimDX.Direct3D9.Device device)
 		{
-			return new Texture(device, FTexWidth, FTexHeight, 1, Usage.None, Format.L16, Pool.Managed);
+			if (FOutputMode[0] == UserTexturetMode.Raw)
+				return new Texture(device, FTexWidth, FTexHeight, 1, Usage.None, Format.L16, Pool.Managed);
+			else
+				return new Texture(device, FTexWidth, FTexHeight, 1, Usage.None, Format.A8R8G8B8, Pool.Managed);
 		}
 
 		//this method gets called, when Update() was called in evaluate,
@@ -192,19 +201,29 @@ namespace VVVV.Nodes
 			var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
 			
 			if (FOutputMode[0] == UserTexturetMode.Raw)
-				CopyMemory(rect.DataPointer, FUserGenerator.GetUserPixels(Slice).LabelMapPtr, FTexHeight * FTexWidth * 2);
+				CopyMemory(rect.DataPointer, FUserGenerator.GetUserPixels(0).LabelMapPtr, FTexHeight * FTexWidth * 2);
 			else
 			{
-				//DepthMetaData DepthMD = FUserGenerator.GetMetaData();
-
-				ushort* pSrc = (ushort*)FUserGenerator.GetUserPixels(Slice).LabelMapPtr;
-				ushort* pDest = (ushort*)rect.DataPointer;
+				ushort* pSrc = (ushort*)FUserGenerator.GetUserPixels(0).LabelMapPtr;
+				byte* pDest = (byte*)rect.DataPointer;
 
 				// write the Depth pointer to Destination pointer
 				for (int y = 0; y < FTexHeight; y++)
 				{
-					for (int x = 0; x < FTexWidth; x++, pSrc++, pDest++)
-						pDest[0] = (ushort) (*pSrc * ushort.MaxValue);
+					for (int x = 0; x < FTexWidth; x++, pSrc++, pDest+=4)
+					{
+						var color = VColor.Black;
+						
+						if (*pSrc == 0)
+							color.A = 0;
+						else
+							color = FUserColor[*pSrc - 1];
+
+						pDest[0] = (byte) (color.B * 255);
+						pDest[1] = (byte) (color.G * 255);
+						pDest[2] = (byte) (color.R * 255);
+						pDest[3] = (byte) (color.A * 255);
+					}
 				}
 			}
 			
