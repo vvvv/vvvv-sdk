@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
-   <PATCH nodename="W:\Dropbox\TextureFX\modules\NormalGlow\NormalGlow (EX9.Texture Filter).v4p">
+   <PATCH nodename="D:\Program Files\vvvv_45beta27\addonpack\lib\nodes\modules\TextureFX\Filter\NormalGlow\NormalGlow (EX9.Texture Filter).v4p">
    <BOUNDS height="11220" left="6360" top="3990" type="Window" width="8685">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="NormalGlow.fx" id="21" nodename="NormalGlow.fx" systemname="NormalGlow (EX9.Effect)">
@@ -34,6 +34,8 @@
    <PIN pinname="Depth" visible="1">
    </PIN>
    <PIN pinname="Gamma">
+   </PIN>
+   <PIN pinname="BorderCol">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="20" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -205,9 +207,9 @@
    <LINK dstnodeid="21" dstpinname="Mesh" srcnodeid="8" srcpinname="Mesh">
    </LINK>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
-   <BOUNDS height="0" left="6315" top="5235" type="Node" width="0">
+   <BOUNDS height="0" left="7815" top="4875" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="6315" top="5235" type="Box" width="1485">
+   <BOUNDS height="240" left="7815" top="4875" type="Box" width="825">
    </BOUNDS>
    <BOUNDS height="160" left="14370" top="8940" type="Window" width="215">
    </BOUNDS>
@@ -225,9 +227,9 @@
    <LINK dstnodeid="21" dstpinname="Radius" srcnodeid="9" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="7320" top="5730" type="Node" width="0">
+   <BOUNDS height="0" left="10380" top="5700" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="7320" top="5730" type="Box" width="480">
+   <BOUNDS height="480" left="10380" top="5700" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="11895" top="10140" type="Window" width="215">
    </BOUNDS>
@@ -341,7 +343,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="5865" top="4260" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.03">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -480,6 +482,20 @@
    </NODE>
    <LINK dstnodeid="21" dstpinname="Radius" srcnodeid="34" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="21" dstpinname="tex0">
+   <LINK dstnodeid="21" dstpinname="tex0" srcnodeid="28" srcpinname="Output">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="35" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="9075" top="4815" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9075" top="4815" width="705" height="240">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Border Color|" encoded="0">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Color Output" dstnodeid="21" dstpinname="BorderCol">
    </LINK>
    </PATCH>
