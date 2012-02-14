@@ -1,0 +1,359 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\MoCapDecoder (Network EyesWeb) help.v4p">
+   <BOUNDS height="10425" left="2370" top="1320" type="Window" width="15060">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="16" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="1380" top="3495" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7755" top="5610" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1380" top="3495" type="Box" width="1035">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="320">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Screen X|" encoded="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="4230" top="3690" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8955" top="5580" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4230" top="3690" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="240">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Screen Y|" encoded="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5280" top="1935" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12405" top="7080" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3570" left="5280" top="1935" type="Box" width="3375">
+   </BOUNDS>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|EyesWeb Motion Capture&cr;&lf;&cr;&lf;This node retrieve data from Eyesweb using &cr;&lf;their built-in network protocol.&cr;&lf;&cr;&lf;This retrieves MoCap data, which is used by &cr;&lf;the Motion Analysis library.&cr;&lf;&cr;&lf;To start viewing the data just run the:&cr;&lf;mocap-sample.eyw patch on eyesweb.&cr;&lf;&cr;&lf;Any comment, question, please send me a message on the tiki (user name: vux) or at this email address:&cr;&lf;julien@mrvux.com|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Sphere (DX9)">
+   <BOUNDS height="0" left="1080" top="6090" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Resolution X" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Resolution Y" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="1950" top="4965" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="870" top="4800" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="Render State In" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Render State" srcnodeid="11" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="RENDERER (EX9)">
+   <BOUNDS height="0" left="735" top="6600" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="11205" top="8085" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="2670" left="735" top="6600" type="Box" width="3525">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Layers" srcnodeid="13" srcpinname="Layer">
+   </LINK>
+   <NODE id="9" nodename="Scale (Transform Vector)">
+   <BOUNDS height="0" left="1815" top="5490" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="0.15,0.15,0.15">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="8" nodename=":PLUGINS:\EyesWebAPI.dll|vvvv.Nodes.EyesWebMoCapDecoderNode">
+   <BOUNDS height="0" left="810" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="10095" top="5265" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="810" top="3000" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Value1" visible="1">
+   </PIN>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Value2" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Exclude" visible="1">
+   </PIN>
+   <PIN pinname="Name" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Map (Value)">
+   <BOUNDS height="0" left="975" top="4245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source Maximum" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Mapping" slicecount="1" values="Wrap">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="X" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Source Maximum" srcnodeid="16" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Transform In" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="6" nodename="Map (Value)">
+   <BOUNDS height="0" left="3360" top="4410" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Source Maximum" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Mapping" slicecount="1" values="Wrap">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Y" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Source Maximum" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="5" nodename="TCP (Network Server)">
+   <BOUNDS height="0" left="675" top="1680" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Local Port" slicecount="1" values="7777">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2340" top="1545" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10680" top="2550" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="525" left="2340" top="1545" type="Box" width="1830">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" values="Area,Bounding_Rect" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Exclude" srcnodeid="4" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="8" srcpinname="Value1">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="8" srcpinname="Value2">
+   <LINKPOINT x="3120" y="3570">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="3" nodename="Length (String)">
+   <BOUNDS height="0" left="1185" top="2100" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE id="2" nodename="GT (Value)">
+   <BOUNDS height="0" left="1230" top="2490" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input 1" srcnodeid="3" srcpinname="Count">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Bang" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="240" top="780" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="240" top="780" type="Box" width="5985">
+   </BOUNDS>
+   <BOUNDS height="160" left="2415" top="11250" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Decodes Eyeweb network mocap structures|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="240" top="270" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="240" top="270" type="Box" width="5865">
+   </BOUNDS>
+   <BOUNDS height="160" left="2415" top="11250" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MoCapDecoder (Network EyesWeb)|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="21" nodename="ShellExecute (Windows)">
+   <BOUNDS height="0" left="9495" top="6990" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="File" visible="1">
+   </PIN>
+   <PIN pinname="Do Execute" visible="1">
+   </PIN>
+   <PIN pinname="Commandline Arguments" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <BOUNDS height="0" left="9360" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12810" top="4995" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="9360" top="2880" type="Box" width="4305">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|C:\Program Files\EyesWeb 3.3.0\Binaries\EyesWeb.exe|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="File" srcnodeid="20" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="10455" top="5325" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="15000" top="6705" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1215" left="10455" top="5325" type="Box" width="1350">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Start Eyeweb|" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Do Execute" srcnodeid="19" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="18" nodename="SystemFolder (File)">
+   <BOUNDS height="0" left="9840" top="3510" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Folder" slicecount="1" values="CurrentPatch">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="MakePath (String)" filename="%VVVV%\addonpack\lib\nodes\plugins\MakePath.dll" nodename="MakePath (String)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="9840" top="4470" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Input 2">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="22" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10650" top="4020" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10650" top="4020" width="2310" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="..\..\assets\mocap-sample.eyw" encoded="0">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Output String" dstnodeid="22" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="21" dstpinname="Commandline Arguments">
+   </LINK>
+   </PATCH>
