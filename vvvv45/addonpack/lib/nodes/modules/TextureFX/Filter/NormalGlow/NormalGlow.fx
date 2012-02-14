@@ -17,7 +17,7 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
 		float k=pow(2,i*Shape-lod+1)*saturate(Radius*lod-i+1);;
 		float dx=(mx(tex2Dlod(s0,float4(x-off*float2(1,0),0,i)))-mx(tex2Dlod(s0,float4(x+off*float2(1,0),0,i))))*k;
 		float dy=(mx(tex2Dlod(s0,float4(x-off*float2(0,1),0,i)))-mx(tex2Dlod(s0,float4(x+off*float2(0,1),0,i))))*k;
-		c.xy+=float2(dx,dy);
+		c.xy+=float2(dx,dy)*sqrt(R.x/R);
 		c.z+=length(float2(dx,dy));
 		kk+=k;
     }
