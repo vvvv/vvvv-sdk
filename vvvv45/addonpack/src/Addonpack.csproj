@@ -11,7 +11,8 @@
 	<!-- IDE seems to need this line, MSBuild not? -->
 	<ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\plugins\*\*\*.csproj;
-                               $(MSBuildThisFileDirectory)nodes\plugins\Network\Databases\*\*.csproj">
+                               $(MSBuildThisFileDirectory)nodes\plugins\Network\Databases\*\*.csproj;
+                               $(MSBuildThisFileDirectory)nodes\plugins\Mesh\Assimp\Nodes\*.csproj">
       <OutputDir>$(AddonPluginsOutputDir)</OutputDir>
     </ProjectReference>
   </ItemGroup>
