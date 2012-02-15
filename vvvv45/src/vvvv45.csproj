@@ -44,6 +44,7 @@
     <MSBuild Projects="@(ProjectReference)" 
              Properties="OutputPath=%(ProjectReference.OutputDir);
                          BuildingInsideVisualStudio=false"
+             ContinueOnError="$(BuildingInsideVisualStudio)"
              Condition=" !Exists('%(ProjectReference.RootDir)%(ProjectReference.Directory)ignore') " />
     <!-- Copy shared dependencies to lib/core -->
     <CreateItem Include="$(PluginsOutputDir)Sanford*">
