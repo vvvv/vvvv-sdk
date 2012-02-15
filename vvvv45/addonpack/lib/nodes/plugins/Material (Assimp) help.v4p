@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.1.dtd" >
-   <PATCH nodename="C:\work\repositories\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Mesh\Assimp\Nodes\bin\Debug\Material (Assimp) help.v4p" filename="C:\Users\vux\Desktop\BoneAngleXZ (3d).v4p" systemname="BoneAngleXZ (3d)">
+   <PATCH nodename="C:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Material (Assimp) help.v4p" filename="C:\Users\vux\Desktop\BoneAngleXZ (3d).v4p" systemname="BoneAngleXZ (3d)">
    <BOUNDS height="9630" left="2895" top="1305" type="Window" width="9900">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="14" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
@@ -75,7 +75,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN encoded="0" pinname="Input String" slicecount="1" values="Suzanne_248.blend">
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="..\..\assets\Suzanne_248.blend">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Path">
    </PIN>
@@ -260,8 +260,8 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE systemname="Material (Assimp)" filename="VVVV.Assimp.Nodes.dll" nodename="Material (Assimp)" componentmode="Hidden" id="105">
-   <BOUNDS type="Node" left="3285" top="5580" width="100" height="100">
+   <NODE componentmode="Hidden" filename="VVVV.Assimp.Nodes.dll" id="105" nodename="Material (Assimp)" systemname="Material (Assimp)">
+   <BOUNDS height="100" left="3285" top="5580" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Material" visible="1">
    </PIN>
@@ -274,8 +274,8 @@
    <PIN pinname="Specular Power" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="GetSlice (Node)" nodename="GetSlice (Node)" componentmode="Hidden" id="106">
-   <BOUNDS type="Node" left="3285" top="5100" width="100" height="100">
+   <NODE componentmode="Hidden" id="106" nodename="GetSlice (Node)" systemname="GetSlice (Node)">
+   <BOUNDS height="100" left="3285" top="5100" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Index" visible="1">
    </PIN>
@@ -284,45 +284,45 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="94" srcpinname="Material Index" dstnodeid="106" dstpinname="Index" linkstyle="Bezier">
+   <LINK dstnodeid="106" dstpinname="Index" linkstyle="Bezier" srcnodeid="94" srcpinname="Material Index">
    <LINKPOINT x="1920" y="4920">
    </LINKPOINT>
    <LINKPOINT x="3960" y="4920">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="92" srcpinname="Materials" dstnodeid="106" dstpinname="Input Node" linkstyle="Bezier">
+   <LINK dstnodeid="106" dstpinname="Input Node" linkstyle="Bezier" srcnodeid="92" srcpinname="Materials">
    <LINKPOINT x="2190" y="4080">
    </LINKPOINT>
    <LINKPOINT x="3285" y="4080">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="106" srcpinname="Output Node" dstnodeid="105" dstpinname="Material">
+   <LINK dstnodeid="105" dstpinname="Material" srcnodeid="106" srcpinname="Output Node">
    </LINK>
-   <LINK srcnodeid="105" srcpinname="Ambient Color" dstnodeid="16" dstpinname="Ambient Color" linkstyle="Bezier">
+   <LINK dstnodeid="16" dstpinname="Ambient Color" linkstyle="Bezier" srcnodeid="105" srcpinname="Ambient Color">
    <LINKPOINT x="3285" y="6598">
    </LINKPOINT>
    <LINKPOINT x="1875" y="6258">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="105" srcpinname="Diffuse Color" dstnodeid="16" dstpinname="Diffuse Color" linkstyle="Bezier">
+   <LINK dstnodeid="16" dstpinname="Diffuse Color" linkstyle="Bezier" srcnodeid="105" srcpinname="Diffuse Color">
    <LINKPOINT x="3450" y="6598">
    </LINKPOINT>
    <LINKPOINT x="2025" y="6258">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="105" srcpinname="Specular Color" dstnodeid="16" dstpinname="Specular Color" linkstyle="Bezier">
+   <LINK dstnodeid="16" dstpinname="Specular Color" linkstyle="Bezier" srcnodeid="105" srcpinname="Specular Color">
    <LINKPOINT x="3600" y="6598">
    </LINKPOINT>
    <LINKPOINT x="2190" y="6258">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="105" srcpinname="Specular Power" dstnodeid="16" dstpinname="Power" linkstyle="Bezier">
+   <LINK dstnodeid="16" dstpinname="Power" linkstyle="Bezier" srcnodeid="105" srcpinname="Specular Power">
    <LINKPOINT x="3765" y="6598">
    </LINKPOINT>
    <LINKPOINT x="2340" y="6258">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Layer" dstnodeid="14" dstpinname="Layers" linkstyle="Bezier">
+   <LINK dstnodeid="14" dstpinname="Layers" linkstyle="Bezier" srcnodeid="16" srcpinname="Layer">
    <LINKPOINT x="1260" y="7995">
    </LINKPOINT>
    <LINKPOINT x="2790" y="7995">

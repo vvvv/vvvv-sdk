@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.1.dtd" >
-   <PATCH nodename="C:\work\repositories\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Mesh\Assimp\Nodes\bin\Debug\Camera (Assimp) help.v4p" filename="C:\Users\vux\Desktop\BoneAngleXZ (3d).v4p" systemname="BoneAngleXZ (3d)">
+   <PATCH nodename="C:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Camera (Assimp) help.v4p" filename="C:\Users\vux\Desktop\BoneAngleXZ (3d).v4p" systemname="BoneAngleXZ (3d)">
    <BOUNDS height="9630" left="2895" top="1305" type="Window" width="9900">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="14" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
@@ -63,13 +63,13 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="61" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="100" left="3495" top="2145" type="Node" width="100">
+   <BOUNDS height="100" left="1995" top="2070" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="3495" top="2145" type="Box" width="2175">
+   <BOUNDS height="285" left="1995" top="2070" type="Box" width="3135">
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN encoded="0" pinname="Input String" slicecount="1" values="Suzanne_248.blend">
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="..\..\assets\Suzanne_248.blend">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Path">
    </PIN>
@@ -79,7 +79,7 @@
    </BOUNDS>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
-   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
+   <PIN pinname="Layer 2" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -171,9 +171,9 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="92" dstpinname="Path" linkstyle="Bezier" srcnodeid="61" srcpinname="Output String">
-   <LINKPOINT x="3480" y="3398">
+   <LINKPOINT x="2480" y="3348">
    </LINKPOINT>
-   <LINKPOINT x="1560" y="3398">
+   <LINKPOINT x="1060" y="3373">
    </LINKPOINT>
    </LINK>
    <NODE componentmode="Hidden" filename="VVVV.Assimp.Nodes.dll" id="94" nodename="Mesh (EX9.Geometry Assimp)" systemname="Mesh (EX9.Geometry Assimp)">
@@ -236,8 +236,8 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE systemname="Camera (Assimp Transform)" filename="VVVV.Assimp.Nodes.dll" nodename="Camera (Assimp Transform)" componentmode="Hidden" id="105">
-   <BOUNDS type="Node" left="4545" top="5535" width="2925" height="270">
+   <NODE componentmode="Hidden" filename="VVVV.Assimp.Nodes.dll" id="105" nodename="Camera (Assimp Transform)" systemname="Camera (Assimp Transform)">
+   <BOUNDS height="270" left="4545" top="5535" type="Node" width="2925">
    </BOUNDS>
    <PIN pinname="Camera" visible="1">
    </PIN>
@@ -248,35 +248,35 @@
    <PIN pinname="Projection" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="92" srcpinname="Cameras" dstnodeid="105" dstpinname="Camera" linkstyle="VHV">
+   <LINK dstnodeid="105" dstpinname="Camera" linkstyle="VHV" srcnodeid="92" srcpinname="Cameras">
    <LINKPOINT x="2715" y="5100">
    </LINKPOINT>
    <LINKPOINT x="4545" y="5100">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="107">
-   <BOUNDS type="Node" left="4545" top="6600" width="100" height="100">
+   <NODE componentmode="InABox" id="107" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="4545" top="6600" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="4545" top="6600" width="795" height="240">
+   <BOUNDS height="240" left="4545" top="6600" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Input String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Camera Name|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Camera Name|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="105" srcpinname="Name" dstnodeid="107" dstpinname="Input String">
+   <LINK dstnodeid="107" dstpinname="Input String" srcnodeid="105" srcpinname="Name">
    </LINK>
-   <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="108">
-   <BOUNDS type="Node" left="5970" top="6615" width="100" height="100">
+   <NODE componentmode="InABox" id="108" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="100" left="5970" top="6615" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="5970" top="6615" width="795" height="240">
+   <BOUNDS height="240" left="5970" top="6615" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="View" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="View">
    </PIN>
    </NODE>
-   <LINK srcnodeid="105" srcpinname="View" dstnodeid="108" dstpinname="Input Node">
+   <LINK dstnodeid="108" dstpinname="Input Node" srcnodeid="105" srcpinname="View">
    </LINK>
    <NODE componentmode="InABox" id="109" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="100" left="7425" top="6570" type="Node" width="100">
@@ -285,9 +285,13 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Projection" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Projection">
    </PIN>
    </NODE>
-   <LINK srcnodeid="105" srcpinname="Projection" dstnodeid="109" dstpinname="Input Node">
+   <LINK dstnodeid="109" dstpinname="Input Node" srcnodeid="105" srcpinname="Projection">
    </LINK>
+   <NODE systemname="Material (Assimp)" filename="VVVV.Assimp.Nodes.dll" nodename="Material (Assimp)" componentmode="Hidden" id="110">
+   <BOUNDS type="Node" left="5325" top="8100" width="100" height="100">
+   </BOUNDS>
+   </NODE>
    </PATCH>
