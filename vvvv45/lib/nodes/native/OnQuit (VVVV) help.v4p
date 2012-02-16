@@ -1,0 +1,139 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha20.1.dtd" >
+   <PATCH nodename="Y:\vvvv_trunk\help\OnQuit (VVVV) help.v4p">
+   <BOUNDS height="6615" left="10290" top="1320" type="Window" width="3885">
+   </BOUNDS>
+   <NODE id="11" nodename="Decay (Animation)">
+   <BOUNDS height="0" left="540" top="2130" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Attack" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Decay" slicecount="1" values="1.5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="540" top="2760" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5200" top="5418" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1560" left="540" top="2760" type="Box" width="750">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Y Input Value" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="585" left="1710" top="1410" type="Node" width="1890">
+   </BOUNDS>
+   <BOUNDS height="2265" left="1710" top="1410" type="Box" width="1935">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|OnQuit bangs when you hit Alt+F4, when you select Quit from the menu or, when a DoQuitNode gets triggered.&cr;&lf;&cr;&lf;Hitting Alt+F4 now to see the effect will not quit the program due to the FinallyNode below.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="255" left="150" top="5760" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="270" left="150" top="5760" type="Box" width="705">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="OnActivate (VVVV)">
+   <BOUNDS height="0" left="1635" top="5760" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="6" nodename="OnQuit (VVVV)">
+   <BOUNDS height="0" left="540" top="1440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input" srcnodeid="6" srcpinname="Bang">
+   </LINK>
+   <NODE id="5" nodename="OnOpen (VVVV)">
+   <BOUNDS height="0" left="2625" top="5760" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="4" nodename="Finally (VVVV)">
+   <BOUNDS height="0" left="1245" top="4905" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Finally" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="DoQuit (VVVV)">
+   <BOUNDS height="0" left="900" top="5760" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Quit VVVV" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="EQ (Value)">
+   <BOUNDS height="0" left="1245" top="4500" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input 1" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Finally" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="15" top="390" type="Box" width="3510">
+   </BOUNDS>
+   <BOUNDS height="160" left="-360" top="20070" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Bangs once, when the program is about to quit|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="4035">
+   </BOUNDS>
+   <BOUNDS height="160" left="-360" top="20070" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|OnQuit - VVVV|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>

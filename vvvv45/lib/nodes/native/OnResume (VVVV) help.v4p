@@ -1,0 +1,91 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.dtd" >
+   <PATCH nodename="A:\v\vvvv\public\vvvv45\lib\nodes\native\OnResume (VVVV) help.v4p" filename="A:\v\vvvv\public\vvvv45\lib\nodes\native\OnResume (VVVV) help.v4p" systemname="OnResume (VVVV) help">
+   <BOUNDS height="4485" left="4500" top="4740" type="Window" width="4515">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\native\resumed.v4p" id="2" nodename="%VVVV%\lib\nodes\native\resumed.v4p" systemname="resumed">
+   <BOUNDS height="100" left="1320" top="3315" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3615" left="1320" top="3315" type="Box" width="3225">
+   </BOUNDS>
+   <BOUNDS height="4485" left="9060" top="4740" type="Window" width="4260">
+   </BOUNDS>
+   <PIN pinname="Evaluate" pintype="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="1" nodename="Counter (Animation)" systemname="Counter (Animation)">
+   <BOUNDS height="100" left="1320" top="1380" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="60">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Up" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="0" nodename="LT (Value)" systemname="LT (Value)">
+   <BOUNDS height="100" left="1320" top="1890" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="30">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input 1" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="330" top="465" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="645" left="330" top="465" type="Box" width="2955">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Bangs when the specified patch resumes evaluation.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="330" top="105" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="330" left="330" top="105" type="Box" width="3330">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|OnResume (VVVV)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="5" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1320" top="2610" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1320" top="2610" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="5" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Evaluate">
+   </LINK>
+   </PATCH>

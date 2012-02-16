@@ -1,0 +1,241 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="V:\releases\vvvv_33beta9a\help\Count (EX9.Geometry Mesh) help.v4p">
+   <BOUNDS height="4890" left="225" top="2985" type="Window" width="10065">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="14" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="5685" top="270" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5820" left="9150" top="2925" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3795" left="5685" top="270" type="Box" width="3960">
+   </BOUNDS>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="2310" top="2535" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="2310" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Blend">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Count (EX9.Geometry Mesh)">
+   <BOUNDS height="0" left="1275" top="3195" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Width " visible="1">
+   </PIN>
+   <PIN pinname="Heigth " visible="1">
+   </PIN>
+   <PIN pinname="Depth " visible="1">
+   </PIN>
+   <PIN pinname="FaceCount" visible="1">
+   </PIN>
+   <PIN pinname="VertexCount" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Sphere (EX9.Geometry)">
+   <BOUNDS height="0" left="3000" top="2220" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Stacks " visible="1">
+   </PIN>
+   <PIN pinname="Slices " visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Mesh" linkstyle="PolyLine" srcnodeid="10" srcpinname="Mesh">
+   <LINKPOINT x="3030" y="3015">
+   </LINKPOINT>
+   <LINKPOINT x="1305" y="3015">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="630" top="3915" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2640" top="7005" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="630" top="3915" type="Box" width="570">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="11" srcpinname="FaceCount">
+   <LINKPOINT x="1575" y="3690">
+   </LINKPOINT>
+   <LINKPOINT x="1170" y="3690">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2025" top="3915" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2940" top="7305" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2025" top="3915" type="Box" width="600">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="11" srcpinname="VertexCount">
+   <LINKPOINT x="1845" y="3690">
+   </LINKPOINT>
+   <LINKPOINT x="2595" y="3690">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="7" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="3600" top="1005" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Map (Value)">
+   <BOUNDS height="0" left="3585" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="WaveShaper (Value)">
+   <BOUNDS height="0" left="3600" top="1365" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Shape" slicecount="1" values="Sine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="135" top="3915" type="Node" width="645">
+   </BOUNDS>
+   <BOUNDS height="240" left="135" top="3915" type="Box" width="465">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="faces">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1320" top="3915" type="Node" width="795">
+   </BOUNDS>
+   <BOUNDS height="240" left="1320" top="3915" type="Box" width="690">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="vertices">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="15" top="390" type="Box" width="4140">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="11010" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|outputs number of subsets, faces and vertices of a mesh|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="11010" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Count - EX9.Geometry Mesh|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename=":EFFECTS:\FlatDirectional.fx">
+   <BOUNDS height="0" left="2850" top="3315" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.44334,0.81241,0.93136,1.00000|">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.00000,0.84398,1.00000,1.00000|">
+   </PIN>
+   <BOUNDS left="2850" top="3315" type="Box">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Mesh" linkstyle="VHV" srcnodeid="10" srcpinname="Mesh">
+   <LINKPOINT x="3030" y="2895">
+   </LINKPOINT>
+   <LINKPOINT x="3030" y="2895">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Render State" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Render State Out">
+   <LINKPOINT x="2385" y="3285">
+   </LINKPOINT>
+   <LINKPOINT x="2880" y="3090">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Render State In" srcnodeid="12" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   <LINKPOINT x="2880" y="4035">
+   </LINKPOINT>
+   <LINKPOINT x="5310" y="4035">
+   </LINKPOINT>
+   <LINKPOINT x="5310" y="165">
+   </LINKPOINT>
+   <LINKPOINT x="5640" y="165">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
