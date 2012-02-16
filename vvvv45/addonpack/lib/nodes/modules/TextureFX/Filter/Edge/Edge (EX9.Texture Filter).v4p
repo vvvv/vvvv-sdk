@@ -31,6 +31,8 @@
    </PIN>
    <PIN pinname="Bright" visible="1">
    </PIN>
+   <PIN pinname="BorderCol">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="20" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="345" top="1095" type="Node" width="0">
@@ -149,7 +151,7 @@
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
@@ -253,9 +255,9 @@
    <LINK dstnodeid="21" dstpinname="Bright" srcnodeid="6" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="7845" top="5730" type="Node" width="0">
+   <BOUNDS height="0" left="8715" top="5730" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="7845" top="5730" type="Box" width="480">
+   <BOUNDS height="480" left="8715" top="5730" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="11895" top="10140" type="Window" width="215">
    </BOUNDS>
@@ -375,7 +377,7 @@
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\Constant.fx" id="24" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
    <BOUNDS height="100" left="1875" top="3795" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -406,8 +408,22 @@
    </NODE>
    <LINK dstnodeid="24" dstpinname="Render State" srcnodeid="22" srcpinname="Render State Out">
    </LINK>
-   <LINK srcnodeid="20" srcpinname="Output Node" dstnodeid="24" dstpinname="Texture">
+   <LINK dstnodeid="24" dstpinname="Texture" srcnodeid="20" srcpinname="Output Node">
    </LINK>
-   <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="14" dstpinname="Layers">
+   <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="24" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="7905" top="5310" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="7905" top="5310" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Border Color|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="BorderCol" srcnodeid="26" srcpinname="Color Output">
    </LINK>
    </PATCH>
