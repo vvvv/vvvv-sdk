@@ -9,193 +9,46 @@ using VVVV.Utils.VColor;
 namespace VVVV.Hosting.IO.Streams
 {
     // Slow
-    abstract class PluginConfigStream<T> : IIOStream<T>
-    {
-        class PluginConfigReader : IStreamReader<T>
-        {
-            private readonly PluginConfigStream<T> FStream;
-            
-            public PluginConfigReader(PluginConfigStream<T> stream)
-            {
-                FStream = stream;
-            }
-            
-            public bool Eos
-            {
-                get
-                {
-                    return Position >= Length;
-                }
-            }
-            
-            public int Position
-            {
-                get;
-                set;
-            }
-            
-            public int Length
-            {
-                get
-                {
-                    return FStream.Length;
-                }
-            }
-            
-            public T Current
-            {
-                get;
-                private set;
-            }
-            
-            object System.Collections.IEnumerator.Current
-            {
-                get
-                {
-                    return Current;
-                }
-            }
-            
-            public bool MoveNext()
-            {
-                var result = !Eos;
-                if (result)
-                {
-                    Current = Read();
-                }
-                return result;
-            }
-            
-            public T Read(int stride = 1)
-            {
-                var result = FStream.GetSlice(Position);
-                Position += stride;
-                return result;
-            }
-            
-            public int Read(T[] buffer, int index, int length, int stride)
-            {
-                var numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-                for (int i = index; i < index + numSlicesToRead; i++)
-                {
-                    buffer[i] = Read(stride);
-                }
-                return numSlicesToRead;
-            }
-            
-            public void Dispose()
-            {
-                // Nothing to do here
-            }
-            
-            public void Reset()
-            {
-                Position = 0;
-            }
-        }
+    abstract class PluginConfigStream<T> : ManagedIOStream<T>
+    {  
+        private readonly IPluginConfig FPluginConfig;
         
-        class PluginConfigWriter : IStreamWriter<T>
+        public PluginConfigStream(IPluginConfig pluginConfig)
         {
-            private readonly PluginConfigStream<T> FStream;
-            
-            public PluginConfigWriter(PluginConfigStream<T> stream)
-            {
-                FStream = stream;
-            }
-            
-            public bool Eos
-            {
-                get
-                {
-                    return Position >= Length;
-                }
-            }
-            
-            public int Position
-            {
-                get;
-                set;
-            }
-            
-            public int Length
-            {
-                get
-                {
-                    return FStream.Length;
-                }
-                set
-                {
-                    FStream.Length = value;
-                }
-            }
-            
-            public void Reset()
-            {
-                Position = 0;
-            }
-            
-            public void Write(T value, int stride)
-            {
-                FStream.SetSlice(Position, value);
-                Position += stride;
-            }
-            
-            public int Write(T[] buffer, int index, int length, int stride)
-            {
-                var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-                for (int i = index; i < index + numSlicesToWrite; i++)
-                {
-                    Write(buffer[i], stride);
-                }
-                return numSlicesToWrite;
-            }
-            
-            public void Dispose()
-            {
-                // Nothing to do here
-            }
-        }
-        
-        public abstract int Length
-        {
-            get;
-            set;
+            FPluginConfig = pluginConfig;
         }
         
         protected abstract T GetSlice(int index);
         
         protected abstract void SetSlice(int index, T value);
         
-        public object Clone()
+        public override sealed bool Sync()
         {
-            throw new NotImplementedException();
+            if (FPluginConfig.PinIsChanged)
+            {
+                Length = FPluginConfig.SliceCount;
+                var writer = GetWriter();
+                for (int i = 0; i < Length; i++)
+                {
+                    writer.Write(GetSlice(i));
+                }
+                return true;
+            }
+            return false;
         }
         
-        public abstract bool Sync();
-        
-        public void Flush()
+        public override sealed void Flush()
         {
-            // Nothing to do
-        }
-        
-        public IStreamReader<T> GetReader()
-        {
-            return new PluginConfigReader(this);
-        }
-        
-        public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-        {
-            return GetReader();
-        }
-        
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-        
-        public IStreamWriter<T> GetWriter()
-        {
-            return new PluginConfigWriter(this);
+            if (FChanged)
+            {
+                FPluginConfig.SliceCount = Length;
+                var reader = GetReader();
+                for (int i = 0; i < Length; i++)
+                {
+                    SetSlice(i, reader.Read());
+                }
+            }
+            base.Flush();
         }
     }
     
@@ -204,6 +57,7 @@ namespace VVVV.Hosting.IO.Streams
         private readonly IStringConfig FStringConfig;
         
         public StringConfigStream(IStringConfig stringConfig)
+            : base(stringConfig)
         {
             FStringConfig = stringConfig;
         }
@@ -220,23 +74,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             FStringConfig.SetString(index, value);
         }
-        
-        public override int Length
-        {
-            get
-            {
-                return FStringConfig.SliceCount;
-            }
-            set
-            {
-                FStringConfig.SliceCount = value;
-            }
-        }
-        
-        public override bool Sync()
-        {
-            return FStringConfig.PinIsChanged;
-        }
     }
     
     class ValueConfigStream<T> : PluginConfigStream<T> where T : struct
@@ -245,6 +82,7 @@ namespace VVVV.Hosting.IO.Streams
         private readonly TypeCode FTypeCode;
         
         public ValueConfigStream(IValueConfig valueConfig)
+            : base(valueConfig)
         {
             FValueConfig = valueConfig;
             FTypeCode = Type.GetTypeCode(typeof(T));
@@ -311,23 +149,6 @@ namespace VVVV.Hosting.IO.Streams
                     throw new Exception("Invalid value for TypeCode");
             }
         }
-        
-        public override int Length
-        {
-            get
-            {
-                return FValueConfig.SliceCount;
-            }
-            set
-            {
-                FValueConfig.SliceCount = value;
-            }
-        }
-        
-        public override bool Sync()
-        {
-            return FValueConfig.PinIsChanged;
-        }
     }
     
     class ColorConfigStream : PluginConfigStream<RGBAColor>
@@ -335,6 +156,7 @@ namespace VVVV.Hosting.IO.Streams
         private readonly IColorConfig FColorConfig;
         
         public ColorConfigStream(IColorConfig colorConfig)
+            : base(colorConfig)
         {
             FColorConfig = colorConfig;
         }
@@ -350,23 +172,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             FColorConfig.SetColor(index, value);
         }
-        
-        public override int Length
-        {
-            get
-            {
-                return FColorConfig.SliceCount;
-            }
-            set
-            {
-                FColorConfig.SliceCount = value;
-            }
-        }
-        
-        public override bool Sync()
-        {
-            return FColorConfig.PinIsChanged;
-        }
     }
     
     class SlimDXColorConfigStream : PluginConfigStream<Color4>
@@ -374,6 +179,7 @@ namespace VVVV.Hosting.IO.Streams
         private readonly IColorConfig FColorConfig;
         
         public SlimDXColorConfigStream(IColorConfig colorConfig)
+            : base(colorConfig)
         {
             FColorConfig = colorConfig;
         }
@@ -390,23 +196,6 @@ namespace VVVV.Hosting.IO.Streams
             var dst = new RGBAColor(value.Red, value.Green, value.Blue, value.Alpha);
             FColorConfig.SetColor(index, dst);
         }
-        
-        public override int Length
-        {
-            get
-            {
-                return FColorConfig.SliceCount;
-            }
-            set
-            {
-                FColorConfig.SliceCount = value;
-            }
-        }
-        
-        public override bool Sync()
-        {
-            return FColorConfig.PinIsChanged;
-        }
     }
     
     class EnumConfigStream<T> : PluginConfigStream<T>
@@ -414,6 +203,7 @@ namespace VVVV.Hosting.IO.Streams
         protected readonly IEnumConfig FEnumConfig;
         
         public EnumConfigStream(IEnumConfig enumConfig)
+            : base(enumConfig)
         {
             FEnumConfig = enumConfig;
         }
@@ -421,18 +211,6 @@ namespace VVVV.Hosting.IO.Streams
         protected override void SetSlice(int index, T value)
         {
             FEnumConfig.SetString(index, value.ToString());
-        }
-        
-        public override int Length
-        {
-            get
-            {
-                return FEnumConfig.SliceCount;
-            }
-            set
-            {
-                FEnumConfig.SliceCount = value;
-            }
         }
         
         protected override T GetSlice(int index)
@@ -447,11 +225,6 @@ namespace VVVV.Hosting.IO.Streams
             {
                 return default(T);
             }
-        }
-        
-        public override bool Sync()
-        {
-            return FEnumConfig.PinIsChanged;
         }
     }
     

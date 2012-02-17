@@ -81,7 +81,7 @@ namespace VVVV.Hosting.Pins
 		
 		public override bool Sync()
 		{
-			var changed = base.Sync();
+			var changed = false;
 			foreach (var spread in Stream)
 			{
 				changed |= spread.Sync();

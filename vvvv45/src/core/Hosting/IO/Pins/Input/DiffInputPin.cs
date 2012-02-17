@@ -9,7 +9,7 @@ namespace VVVV.Hosting.Pins.Input
     [ComVisible(false)]
 	class DiffInputPin<T> : InputPin<T>, IDiffSpread<T>
 	{
-		public DiffInputPin(IPluginHost host, IPluginIn pluginIn, IInStream<T> stream)
+		public DiffInputPin(IPluginHost host, IPluginIn pluginIn, ManagedIOStream<T> stream)
 			: base(host, pluginIn, stream)
 		{
 		}

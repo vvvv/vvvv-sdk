@@ -8,23 +8,43 @@ namespace VVVV.Hosting.Pins.Output
 {
 	class OutputPin<T> : Pin<T>
 	{
-		public OutputPin(IPluginHost host, IPluginOut pluginOut, IIOStream<T> stream)
+		public OutputPin(IPluginHost host, IPluginOut pluginOut, ManagedIOStream<T> stream)
 			: base(host, pluginOut, stream)
 		{
 			SliceCount = 1;
 		}
 		
 		public OutputPin(IPluginHost host, IPluginOut pluginOut, IOutStream<T> outStream)
-			: this(host, pluginOut, new OutputIOStream<T>(outStream))
+			: this(host, pluginOut, new ManagedOutputIOStream<T>(outStream))
 		{
 		}
+	}
+	
+	class ManagedOutputIOStream<T> : ManagedIOStream<T>
+	{
+	    private readonly IOutStream<T> FOutStream;
+	    
+	    public ManagedOutputIOStream(IOutStream<T> outStream)
+	    {
+	        FOutStream = outStream;
+	    }
+	    
+        public override void Flush()
+        {
+            if (FChanged)
+            {
+                // Write the buffered data to the out stream.
+                FOutStream.AssignFrom(this);
+                FOutStream.Flush();
+            }
+            base.Flush();
+        }
 	}
 	
 	class OutputIOStream<T> : IIOStream<T>
 	{
 		private readonly ManagedIOStream<T> FIOStream;
 		private readonly IOutStream<T> FOutStream;
-		private readonly T[] FBuffer = new T[StreamUtils.BUFFER_SIZE];
 		private bool FNeedsFlush;
 		
 		public OutputIOStream(IOutStream<T> outStream)
@@ -67,19 +87,8 @@ namespace VVVV.Hosting.Pins.Output
 				FNeedsFlush = false;
 				
 				// Write the buffered data to the out stream.
-				FOutStream.Length = FIOStream.Length;
-				
-				using (var reader = FIOStream.GetReader())
-				{
-					using (var writer = FOutStream.GetWriter())
-					{
-						while (!reader.Eos)
-						{
-							int n = reader.Read(FBuffer, 0, FBuffer.Length);
-							writer.Write(FBuffer, 0, n);
-						}
-					}
-				}
+				FOutStream.AssignFrom(FIOStream);
+				FOutStream.Flush();
 			}
 		}
 		

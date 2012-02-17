@@ -12,7 +12,7 @@ namespace VVVV.Hosting.Pins.Config
 	{
 		private readonly IPluginConfig FPluginConfig;
 		
-		public ConfigPin(IPluginHost host, IPluginConfig pluginConfig, IIOStream<T> stream)
+		public ConfigPin(IPluginHost host, IPluginConfig pluginConfig, ManagedIOStream<T> stream)
 			: base(host, pluginConfig, stream)
 		{
 			FPluginConfig = pluginConfig;

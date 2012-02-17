@@ -39,7 +39,7 @@ namespace VVVV.PluginInterfaces.V2
 		private readonly IPluginHost FHost;
 		private readonly IPluginIO FPluginIO;
 		
-		public Pin(IPluginHost host, IPluginIO pluginIO, IIOStream<T> stream)
+		public Pin(IPluginHost host, IPluginIO pluginIO, ManagedIOStream<T> stream)
 			: base(stream)
 		{
 			FHost = host;

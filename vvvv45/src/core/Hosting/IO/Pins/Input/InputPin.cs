@@ -9,10 +9,30 @@ namespace VVVV.Hosting.Pins.Input
 	[ComVisible(false)]
 	class InputPin<T> : Pin<T>
 	{
-		public InputPin(IPluginHost host, IPluginIO pluginIO, IInStream<T> inStream)
-			: base(host, pluginIO, new InputIOStream<T>(inStream))
+		public InputPin(IPluginHost host, IPluginIO pluginIO, ManagedIOStream<T> stream)
+			: base(host, pluginIO, stream)
 		{
 		}
+	}
+	
+	class ManagedInputIOStream<T> : ManagedIOStream<T>
+	{
+	    private readonly IInStream<T> FInStream;
+	    
+	    public ManagedInputIOStream(IInStream<T> inStream)
+	    {
+	        FInStream = inStream;
+	    }
+	    
+        public override bool Sync()
+        {
+            if (FInStream.Sync())
+            {
+                this.AssignFrom(FInStream);
+                return true;
+            }
+            return false;
+        }
 	}
 	
 	[ComVisible(false)]
