@@ -32,7 +32,7 @@ namespace VVVV.Nodes
 		public void Evaluate(int SpreadMax)
 		{
 			FOutput.AssignFrom(FInput);
-			foreach (int i in FIndex.Distinct().OrderByDescending(x => x))
+			foreach (int i in FIndex.Select(x => x%FInput.SliceCount).Distinct().OrderByDescending(x => x))
 				FOutput.RemoveAt(i);
 		}
 	}
