@@ -573,5 +573,41 @@ namespace Hoster
 				throw new NotImplementedException();
 			}
 		}
+	    
+        public IPluginConnections Connections {
+            set {
+                throw new NotImplementedException();
+            }
+        }
+	    
+        public IPluginDXLayer DXLayer {
+            set {
+                throw new NotImplementedException();
+            }
+        }
+	    
+        public IPluginDXMesh DXMesh {
+            set {
+                throw new NotImplementedException();
+            }
+        }
+	    
+        public IPluginDXResource DXResource {
+            set {
+                throw new NotImplementedException();
+            }
+        }
+	    
+        public IPluginDXTexture DXTexture {
+            set {
+                throw new NotImplementedException();
+            }
+        }
+	    
+        public IPluginDXTexture2 DXTexture2 {
+            set {
+                throw new NotImplementedException();
+            }
+        }
 	}
 }
