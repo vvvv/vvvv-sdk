@@ -169,70 +169,80 @@ namespace VVVV.Nodes
 																GraphicsUnit.Pixel);		
 			
 			string text = FTextInput[Slice];
+			
 			int renderingMode = FTextRenderingModeInput[Slice].Index;
 			RectangleF layout = new RectangleF(0,0,0,0);
-			switch (renderingMode)
-            {
-                case 0: text = text.Replace("\n"," ").Replace("\n",string.Empty); break;
-                case 1: break;
-                case 2: layout.Size= new SizeF(width,height);break;
-            }
-			if (FCharEncoding[Slice] == "UTF8")
-            {
-                byte[] utf8bytes = Encoding.Default.GetBytes(text);
-                text = Encoding.UTF8.GetString(utf8bytes);
-            }			
-					
 			StringFormat format = new StringFormat();
-			format.LineAlignment = StringAlignment.Near;
-            switch (FHorizontalAlignInput[Slice].Index)
-            {
-                case 0: format.Alignment = StringAlignment.Near;break;
-                case 1: 
-            		format.Alignment = StringAlignment.Center;
-            		layout.X = width/2;
-            		break;
-                case 2: 
-            		format.Alignment = StringAlignment.Far;
-            		layout.X = width;
-            		break;
-            }
+			if (!string.IsNullOrEmpty(text))
+			{
+				switch (renderingMode)
+	            {
+	                case 0: text = text.Replace("\n"," ").Replace("\n",string.Empty); break;
+	                case 1: break;
+	                case 2: layout.Size= new SizeF(width,height);break;
+	            }
+				if (FCharEncoding[Slice] == "UTF8")
+	            {
+	                byte[] utf8bytes = Encoding.Default.GetBytes(text);
+	                text = Encoding.UTF8.GetString(utf8bytes);
+	            }			
+						
+				
+				format.LineAlignment = StringAlignment.Near;
+	            switch (FHorizontalAlignInput[Slice].Index)
+	            {
+	                case 0: format.Alignment = StringAlignment.Near;break;
+	                case 1: 
+	            		format.Alignment = StringAlignment.Center;
+	            		layout.X = width/2;
+	            		break;
+	                case 2: 
+	            		format.Alignment = StringAlignment.Far;
+	            		layout.X = width;
+	            		break;
+	            }
+				
+				switch (FVerticalAlignInput[Slice].Index)
+	            {
+	                case 0: format.LineAlignment = StringAlignment.Near;break;
+	                case 1: 
+	            		format.LineAlignment = StringAlignment.Center;
+	            		layout.Y = height/2;
+	            		break;
+	                case 2: 
+	            		format.LineAlignment = StringAlignment.Far;
+	            		layout.Y = height;
+	            		break;
+	            }
 			
-			switch (FVerticalAlignInput[Slice].Index)
-            {
-                case 0: format.LineAlignment = StringAlignment.Near;break;
-                case 1: 
-            		format.LineAlignment = StringAlignment.Center;
-            		layout.Y = height/2;
-            		break;
-                case 2: 
-            		format.LineAlignment = StringAlignment.Far;
-            		layout.Y = height;
-            		break;
-            }
-		
-			SizeF size = g.MeasureString(text, objFont, layout.Size, format);
-			FSizeOutput[Slice] = new Vector2D(width/size.Width,height/size.Height);
+				SizeF size = g.MeasureString(text, objFont, layout.Size, format);
+				FSizeOutput[Slice] = new Vector2D(width/size.Width,height/size.Height);
+				
+				float scx = 1; float scy = 1;
+				switch (FNormalizeInput[Slice].Index)
+	            {
+	                case 0: break;
+	                case 1: scx = width/size.Width;	break;
+	                case 2: scy = height/size.Height; break;
+	            	case 3:
+	            		scx = width/size.Width;	
+	            		scy = height/size.Height;
+	            		break;
+	            }
+				FScaleOutput[Slice]=new Vector2D(scx,scy);
+								
+				g.TranslateTransform(layout.X,layout.Y);
+				g.ScaleTransform(scx,scy);
+				g.TranslateTransform(-layout.X,-layout.Y);
+				
+				
+				if (renderingMode ==2)
+					layout.Location = new PointF(0,0);
 			
-			float scx = 1; float scy = 1;
-			switch (FNormalizeInput[Slice].Index)
-            {
-                case 0: break;
-                case 1: scx = width/size.Width;	break;
-                case 2: scy = height/size.Height; break;
-            	case 3:
-            		scx = width/size.Width;	
-            		scy = height/size.Height;
-            		break;
-            }
-			FScaleOutput[Slice]=new Vector2D(scx,scy);
+			}
+			else
+				FScaleOutput[Slice]=new Vector2D(0,0);
 			
-			g.TranslateTransform(layout.X,layout.Y);
-			g.ScaleTransform(scx,scy);
-			g.TranslateTransform(-layout.X,-layout.Y);
-			
-			if (renderingMode ==2)
-				layout.Location = new PointF(0,0);
 			
 			RGBAColor tmpBrush = FColorInput[Slice];
 			tmpBrush.A=0;
