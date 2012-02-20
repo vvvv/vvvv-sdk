@@ -156,12 +156,15 @@ namespace VVVV.Utils.Streams
             
             public void Write(T value, int stride = 1)
             {
+                FStream.FChanged = true;
                 FBuffer[Position] = value;
                 Position += stride;
             }
             
             public int Write(T[] buffer, int index, int length, int stride = 1)
             {
+                FStream.FChanged = true;
+                
                 int slicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
                 
                 switch (stride)
@@ -238,7 +241,6 @@ namespace VVVV.Utils.Streams
         
         public StreamWriter GetWriter()
         {
-            FChanged = true;
             return new StreamWriter(this);
         }
         

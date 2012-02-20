@@ -12,8 +12,8 @@ namespace VVVV.Hosting.Pins.Config
 	{
 		private readonly IPluginConfig FPluginConfig;
 		
-		public ConfigPin(IPluginHost host, IPluginConfig pluginConfig, ManagedIOStream<T> stream)
-			: base(host, pluginConfig, stream)
+		public ConfigPin(IPluginConfig pluginConfig, ManagedIOStream<T> stream)
+			: base(pluginConfig, stream)
 		{
 			FPluginConfig = pluginConfig;
 			SliceCount = 1;

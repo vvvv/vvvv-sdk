@@ -34,15 +34,13 @@ namespace VVVV.PluginInterfaces.V2
 	}
 	
 	[ComVisible(false)]
-	public class Pin<T> : Spread<T>, IDisposable
+	public class Pin<T> : Spread<T>
 	{
-		private readonly IPluginHost FHost;
 		private readonly IPluginIO FPluginIO;
 		
-		public Pin(IPluginHost host, IPluginIO pluginIO, ManagedIOStream<T> stream)
+		public Pin(IPluginIO pluginIO, ManagedIOStream<T> stream)
 			: base(stream)
 		{
-			FHost = host;
 			FPluginIO = pluginIO;
 		}
 		
@@ -62,10 +60,5 @@ namespace VVVV.PluginInterfaces.V2
 		public event PinConnectionEventHandler Connected;
 		
 		public event PinConnectionEventHandler Disconnected;
-		
-		public void Dispose()
-		{
-			FHost.DeletePin(this.PluginIO);
-		}
 	}
 }

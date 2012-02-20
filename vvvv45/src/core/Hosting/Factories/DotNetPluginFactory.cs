@@ -533,28 +533,28 @@ namespace VVVV.Hosting.Factories
             {
                 if (config.Metadata == configPin)
                 {
-                    config.Configurate();
+                    config.Action(IOActionType.Configuring);
                     break;
                 }
             }
         }
         
-        void IPlugin.Evaluate(int SpreadMax)
+        void IPlugin.Evaluate(int spreadMax)
         {
             foreach (var input in FIOFactory.FPreHandlers)
             {
-                input.PreEvaluate();
+                input.Action(IOActionType.Evaluating);
             }
             
             // HACK: Can we remove this? Maybe by seperating...
             if (FPlugin != null)
             {
-                FPlugin.Evaluate(SpreadMax);
+                FPlugin.Evaluate(spreadMax);
             }
             
             foreach (var output in FIOFactory.FPostHandlers)
             {
-                output.PostEvaluate();
+                output.Action(IOActionType.Evaluated);
             }
         }
         
