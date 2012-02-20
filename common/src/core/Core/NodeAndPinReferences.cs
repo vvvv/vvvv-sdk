@@ -18,11 +18,6 @@ namespace VVVV.Core
         string Name { get; }
 
         /// <summary>
-        /// the 2d position within the patch.
-        /// </summary>
-        PointF Position { get; }
-
-        /// <summary>
         /// gets the node definition that this refernce was made of
         /// </summary>
         INodeDefinition Definition { get; }
@@ -31,7 +26,7 @@ namespace VVVV.Core
     /// <summary>
     /// a rich node reference can be used in patches. it was defined by a node that is not primitive thus was either programmed visually or textually
     /// </summary>
-    public interface IRichNodeReference
+    public interface IRichNodeReference : INodeReference
     {
         /// <summary>
         /// gets the node definition that this refernce was made of
@@ -42,8 +37,13 @@ namespace VVVV.Core
     /// <summary>
     /// a dataflow node reference can be used in patches
     /// </summary>
-    public interface IDataFlowNodeReference : IRichNodeReference
+    public interface IDataflowNodeReference : IRichNodeReference
     {
+        ///// <summary>
+        ///// pins of the node
+        ///// </summary>
+        //IEnumerable<IDataflowPinReference> Pins { get; }
+
         /// <summary>
         /// inputs of the node
         /// </summary>
@@ -60,6 +60,28 @@ namespace VVVV.Core
         new IDataflowNodeDefinition Definition { get; }
     }
 
+    /// <summary>
+    /// a function node reference can be used in all dataflow patches
+    /// </summary>
+    public interface IFunctionNodeReference : IDataflowNodeReference
+    {
+        /// <summary>
+        /// gets the node definition that this refernce was made of
+        /// </summary>
+        new IFunctionNodeDefinition Definition { get; }
+    }
+
+    /// <summary>
+    /// a step node reference can be used in step patches (step node definitions)
+    /// </summary>
+    public interface IStepNodeReference : IDataflowNodeReference
+    {
+        /// <summary>
+        /// gets the node definition that this refernce was made of
+        /// </summary>
+        new IStepNodeDefinition Definition { get; }
+    }
+
 
 
 
@@ -69,8 +91,13 @@ namespace VVVV.Core
     /// <summary>
     /// used by dataflow nodes in a patch (which are of type IDataFlowNodeReference)
     /// </summary>
-    public interface IDataFlowPinReference : IDataflowLocation
+    public interface IDataflowPinReference //: IDataflowLocation
     {
+        /// <summary>
+        /// the type of values that can be stored in that pin
+        /// </summary>
+        ITypeReference Type { get; }
+
         /// <summary>
         /// gets the pin definition that this refernce was made of
         /// </summary>
@@ -80,7 +107,7 @@ namespace VVVV.Core
     /// <summary>
     /// used by dataflow nodes in a patch (which are of type IDataFlowNodeReference)
     /// </summary>
-    public interface IInputPinReference : IDataFlowPinReference, IDataflowSink
+    public interface IInputPinReference : IDataflowPinReference //, IDataflowSink
     {
         /// <summary>
         /// input is cancelled out, thus no value is given, value needs to be specified otherwise (e.g. a sink somewhere downstream)
@@ -102,7 +129,7 @@ namespace VVVV.Core
     /// <summary>
     /// used by dataflow nodes in a patch (which are of type IDataFlowNodeReference)
     /// </summary>
-    public interface IOutputPinReference : IDataFlowPinReference, IDataflowSource
+    public interface IOutputPinReference : IDataflowPinReference //, IDataflowSource
     {
         /// <summary>
         /// gets the pin definition that this refernce was made of
@@ -110,4 +137,11 @@ namespace VVVV.Core
         new IOutputPinDefinition Definition { get; }
     }
 
+    public static class ReferenceExtensions
+    {
+        public static string GetName(this IDataflowPinReference pinref)
+        {
+            return pinref.Definition.Name;
+        }
+    }
 }

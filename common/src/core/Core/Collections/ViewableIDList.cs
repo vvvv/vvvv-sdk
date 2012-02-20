@@ -165,7 +165,7 @@ namespace VVVV.Core.Collections
             }
         }
 
-        public IModelMapper Mapper
+        public ModelMapper Mapper
         {
             get
             {

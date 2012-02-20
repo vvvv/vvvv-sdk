@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Cci;
+using System.Drawing;
 
 namespace VVVV.Core
 {
     /// <summary>
-    /// a node definition returns basic information about a node. it also knows how to create a refernce onto it.
+    /// a node definition returns basic information about a node. it also knows how to create a reference onto it.
     /// </summary>
     public interface INodeDefinition
     {
@@ -37,10 +38,9 @@ namespace VVVV.Core
         string Systemname { get; }
 
         /// <summary>
-        /// Creates a node reference defined by this node definition; typically used to build up patches
+        /// Creates a reference on the node definition, typically used in a patch.
         /// </summary>
-        /// <returns> a fresh node reference pointing to this definition </returns>
-        INodeReference CreateReference();
+        INodeReference CreateReference(string name);
     }
 
     /// <summary>
@@ -81,13 +81,6 @@ namespace VVVV.Core
         /// the Namespace
         /// </summary>
         string Namespace { get; }
-
-
-        /// <summary>
-        /// Creates a node reference defined by this node definition; typically used to build up patches
-        /// </summary>
-        /// <returns> a fresh node reference pointing to this definition </returns>
-        new IRichNodeReference CreateReference();
     }
 
     /// <summary>
@@ -95,6 +88,11 @@ namespace VVVV.Core
     /// </summary>
     public interface IDataflowNodeDefinition : IRichNodeDefinition
     {
+        ///// <summary>
+        ///// pins defined by the node
+        ///// </summary>
+        //IEnumerable<IDataflowPinDefinition> Pins { get; }
+
         /// <summary>
         /// inputs defined by the node
         /// </summary>
@@ -115,9 +113,14 @@ namespace VVVV.Core
         /// the type of the state
         /// </summary>
         ITypeReference StateType { get; }
+        /// <summary>
+        /// Creates a reference on the node definition, typically used in a patch.
+        /// </summary>
+        IFunctionNodeReference CreateReference(string name, IEnumerable<IInputPinReference> inputs, IEnumerable<IOutputPinReference> outputs);
 
         /// <summary>
         /// Creates a node reference defined by this node definition; typically used to build up patches
+    /// the step node is part of a stepper that also defines the type of the state
         /// </summary>
         /// <returns> a fresh node reference pointing to this definition </returns>
         new IDataFlowNodeReference CreateReference();
@@ -147,12 +150,11 @@ namespace VVVV.Core
         /// the node that defined the pin as one of its pins
         /// </summary>
         IDataflowNodeDefinition Node { get; }
-
+        
         /// <summary>
-        /// Creates a pin reference defined by this pin definition; typically used to build up dataflow node references used in patches
+        /// Creates a reference on the pin definition, typically used by a node definition that needs to create a node reference. 
         /// </summary>
-        /// <returns> a fresh pin reference pointing to this definition </returns>
-        IDataFlowPinReference CreateReference();
+        IDataflowPinReference CreateReference(ITypeReference type);
     }
 
 
@@ -180,6 +182,11 @@ namespace VVVV.Core
         /// if this is true the resulting pin reference will be striked out on creation
         /// </summary>
         bool StrikedOutByDefault { get; }
+
+        /// <summary>
+        /// Creates a reference on the pin definition, typically used by a node definition that needs to create a node reference. 
+        /// </summary>
+        IInputPinReference CreateReference(ITypeReference type, IMetadataConstant defaultValue, bool strikedOut);
     }
 
     /// <summary>
@@ -187,6 +194,10 @@ namespace VVVV.Core
     /// </summary>
     public interface IOutputPinDefinition : IDataflowPinDefinition
     {
+        /// <summary>
+        /// Creates a reference on the pin definition, typically used by a node definition that needs to create a node reference. 
+        /// </summary>
+        IOutputPinReference CreateReference(ITypeReference type);
     }
 
 
