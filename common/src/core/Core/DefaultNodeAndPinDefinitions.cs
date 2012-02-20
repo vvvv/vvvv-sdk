@@ -79,7 +79,7 @@ namespace VVVV.Core
         
         public Microsoft.Cci.ITypeReference StateType { get; set; }
 
-        public new IDataFlowNodeReference CreateReference()
+        public IDataflowNodeReference CreateReference(string name, IEnumerable<IInputPinReference> inputs, IEnumerable<IOutputPinReference> outputs)
         {
             return new DefaultDataflowNodeReference(this, name, inputs, outputs);
         }
@@ -90,19 +90,7 @@ namespace VVVV.Core
         }
     }
 
-    public class DefaultFunctionNodeDefinition : DefaultDataflowNodeDefinition, IFunctionNodeDefinition
-    {
-        public IFunctionNodeReference CreateReference(string name, IEnumerable<IInputPinReference> inputs, IEnumerable<IOutputPinReference> outputs)
-        {
-            return new DefaultFunctionNodeReference(this, name, inputs, outputs);
-        }
-    }
-
-    public class DefaultStepNodeDefinition : DefaultDataflowNodeDefinition, IStepNodeDefinition
-    {
-        public Microsoft.Cci.ITypeReference StateType { get; set; }
-    }
-
+    
     
     public class DefaultDataflowPinDefinition : IDataflowPinDefinition
     {
@@ -138,7 +126,7 @@ namespace VVVV.Core
 
     public class DefaultOutputPinDefinition : DefaultDataflowPinDefinition, IOutputPinDefinition
     {
-        public IOutputPinReference CreateReference(ITypeReference type)
+        new public IOutputPinReference CreateReference(ITypeReference type)
         {
             return new DefaultOutputPinReference(this, type);
         }

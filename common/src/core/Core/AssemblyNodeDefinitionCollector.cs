@@ -217,15 +217,11 @@ namespace VVVV.Core
 
             if (AcceptNodesWithoutNodeAttribute || nodeattribute != null)
             {
-                DefaultDataflowNodeDefinition node;
+                DefaultDataflowNodeDefinition node = new DefaultDataflowNodeDefinition();
+                
                 // TODO: Find out if this method is an extension method. How?
-                if (methodDefinition.IsStatic)
-                    node = new DefaultFunctionNodeDefinition();
-                else    
-                {
-                    node = new DefaultStepNodeDefinition()
+                if (!methodDefinition.IsStatic)
                     node.StateType = methodDefinition.ContainingTypeDefinition;
-                }
 
                 node.MethodDefinition = methodDefinition;
 

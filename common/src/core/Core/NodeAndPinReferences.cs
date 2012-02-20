@@ -60,32 +60,6 @@ namespace VVVV.Core
         new IDataflowNodeDefinition Definition { get; }
     }
 
-    /// <summary>
-    /// a function node reference can be used in all dataflow patches
-    /// </summary>
-    public interface IFunctionNodeReference : IDataflowNodeReference
-    {
-        /// <summary>
-        /// gets the node definition that this refernce was made of
-        /// </summary>
-        new IFunctionNodeDefinition Definition { get; }
-    }
-
-    /// <summary>
-    /// a step node reference can be used in step patches (step node definitions)
-    /// </summary>
-    public interface IStepNodeReference : IDataflowNodeReference
-    {
-        /// <summary>
-        /// gets the node definition that this refernce was made of
-        /// </summary>
-        new IStepNodeDefinition Definition { get; }
-    }
-
-
-
-
-
 
 
     /// <summary>

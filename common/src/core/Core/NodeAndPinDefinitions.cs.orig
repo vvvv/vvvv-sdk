@@ -115,13 +115,43 @@ namespace VVVV.Core
         ITypeReference StateType { get; }
 
         /// <summary>
-        /// Creates a node reference defined by this node definition; typically used to build up patches
+        /// Creates a reference on the node definition, typically used in a patch.
         /// </summary>
-        /// <returns> a fresh node reference pointing to this definition </returns>
         IDataflowNodeReference CreateReference(string name, IEnumerable<IInputPinReference> inputs, IEnumerable<IOutputPinReference> outputs);
     }
 
     /// <summary>
+<<<<<<< HEAD
+=======
+    /// a function node definition defines a pure dataflow node with nothing but inputs and outputs
+    /// </summary>
+    public interface IFunctionNodeDefinition : IDataflowNodeDefinition
+    {
+        /// <summary>
+        /// Creates a reference on the node definition, typically used in a patch.
+        /// </summary>
+        IFunctionNodeReference CreateReference(string name, IEnumerable<IInputPinReference> inputs, IEnumerable<IOutputPinReference> outputs);
+    }
+
+    /// <summary>
+    /// a step node definition refers to a node that needs a state to run on. 
+    /// the step node is part of a stepper that also defines the type of the state
+    /// </summary>
+    public interface IStepNodeDefinition : IDataflowNodeDefinition
+    {
+        /// <summary>
+        /// the type of the state
+        /// </summary>
+        ITypeReference StateType { get; }
+    }
+
+
+
+
+
+
+    /// <summary>
+>>>>>>> clean50
     /// a pin as defined by source code (textually via an method parameter or visually via a hub (inlet,outlet))
     /// </summary>
     public interface IDataflowPinDefinition

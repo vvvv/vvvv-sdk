@@ -71,17 +71,8 @@ namespace VVVV.Core
 
         new IEnumerable<IOutletSymbol> Outputs { get; }
 
-        IEnumerable<IFunctionNodeReference> FunctionNodes { get; }
+        IEnumerable<IDataflowNodeReference> DataflowNodes { get; }
     }
-
-    public interface IFunctionSymbol : IDataflowPatchSymbol, IFunctionNodeDefinition
-    {
-    }
-
-    public interface IStepSymbol : IDataflowPatchSymbol, IStepNodeDefinition
-    {
-    }
-
 
 
 
