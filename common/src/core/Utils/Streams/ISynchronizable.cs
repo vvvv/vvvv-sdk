@@ -2,10 +2,14 @@
 
 namespace VVVV.Utils.Streams
 {
+    /// <summary>
+    /// Interface which provides the ability to synchronize a stream
+    /// with its backing data source.
+    /// </summary>
     public interface ISynchronizable
     {
         /// <summary>
-        /// Synchronizes this object with the internal data source.
+        /// Synchronizes this object with the backing data source.
         /// </summary>
         /// <returns>
         /// Whether or not the data changed.

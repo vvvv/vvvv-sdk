@@ -3,6 +3,11 @@ using System.Diagnostics;
 
 namespace VVVV.Utils.Streams
 {
+    /// <summary>
+    /// A stream reader which reads a stream in a cyclic fashion.
+    /// It will therefor never go into an end of stream state.
+    /// Exceptions to this rule is if the stream is empty.
+    /// </summary>
 	public class CyclicStreamReader<T> : IStreamReader<T>
 	{
 		private readonly IStreamReader<T> FReader;
@@ -21,13 +26,13 @@ namespace VVVV.Utils.Streams
 			Length = stream.Length;
 		}
 		
-		public bool Eos 
+		public bool Eos
 		{
 			get;
 			private set;
 		}
 		
-		public int Position 
+		public int Position
 		{
 			get
 			{
@@ -39,19 +44,19 @@ namespace VVVV.Utils.Streams
 			}
 		}
 		
-		public int Length 
+		public int Length
 		{
 			get;
 			private set;
 		}
 		
-		public T Current 
+		public T Current
 		{
 			get;
 			private set;
 		}
 		
-		object System.Collections.IEnumerator.Current 
+		object System.Collections.IEnumerator.Current
 		{
 			get 
 			{

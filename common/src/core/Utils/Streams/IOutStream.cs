@@ -3,8 +3,15 @@ using System;
 
 namespace VVVV.Utils.Streams
 {
+    /// <summary>
+    /// Base interface for all output streams. It provides the ability
+    /// to set the length of an output stream.
+    /// </summary>
 	public interface IOutStream : IStream, IFlushable
 	{
+	    /// <summary>
+	    /// Gets or sets the length of the output stream.
+	    /// </summary>
 		new int Length
 		{
 			get;
@@ -12,27 +19,17 @@ namespace VVVV.Utils.Streams
 		}
 	}
 	
+	/// <summary>
+	/// Defines an output stream. Output streams can be written to by
+	/// by retrieving a <see cref="IStreamWriter{T}"/>.
+	/// </summary>
 	public interface IOutStream<T> : IOutStream
 	{
+	    /// <summary>
+	    /// Gets a <see cref="IStreamWriter{T}"/> which can be used to write
+	    /// to this output stream.
+	    /// </summary>
+	    /// <returns>A <see cref="IStreamWriter{T}"/> to write to this stream.</returns>
 		IStreamWriter<T> GetWriter();
-	}
-	
-	public static class OutStreamExtensions
-	{
-		public static T[] CreateWriteBuffer<T>(this IOutStream<T> inStream)
-		{
-			return new T[Math.Max(8, Math.Min(inStream.Length, 512))];
-		}
-		
-		internal static void CyclicWrite<T>(this IStreamWriter<T> writer, T[] buffer, int index, int length, int stride = 1)
-		{
-			int numSlicesWritten = writer.Write(buffer, index, length, stride);
-			
-			for (int i = numSlicesWritten; i < length; i++)
-			{
-				writer.Position %= writer.Length;
-				numSlicesWritten += writer.Write(buffer, index + i, length - numSlicesWritten, stride);
-			}
-		}
 	}
 }

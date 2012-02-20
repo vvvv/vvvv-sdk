@@ -110,7 +110,7 @@ namespace VVVV.Hosting.IO.Streams
         
         public override void Flush()
         {
-            if (FChanged)
+            if (Changed)
             {
                 FStringOut.SliceCount = Length;
                 
@@ -234,7 +234,7 @@ namespace VVVV.Hosting.IO.Streams
         
         public override void Flush()
         {
-            if (FChanged)
+            if (Changed)
             {
                 FInternalTextureOut.SliceCount = Length;
                 FInternalTextureOut.MarkPinAsChanged();

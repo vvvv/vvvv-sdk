@@ -39,7 +39,7 @@ namespace VVVV.Hosting.IO.Streams
         
         public override sealed void Flush()
         {
-            if (FChanged)
+            if (Changed)
             {
                 FPluginConfig.SliceCount = Length;
                 var reader = GetReader();

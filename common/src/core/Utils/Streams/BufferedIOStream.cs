@@ -3,7 +3,7 @@
 namespace VVVV.Utils.Streams
 {
     /// <summary>
-    /// Implemention of IIOStream{T} using an array as storage.
+    /// Implemention of <see cref="IIOStream{T}"/> using an array as storage.
     /// Useful as wrapper if a stream is accessed randomly.
     /// </summary>
     public class BufferedIOStream<T> : IIOStream<T>
@@ -159,14 +159,14 @@ namespace VVVV.Utils.Streams
             
             public void Write(T value, int stride = 1)
             {
-                FStream.FChanged = true;
+                FStream.Changed = true;
                 FBuffer[Position] = value;
                 Position += stride;
             }
             
             public int Write(T[] buffer, int index, int length, int stride = 1)
             {
-                FStream.FChanged = true;
+                FStream.Changed = true;
                 
                 int slicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
                 
@@ -194,14 +194,12 @@ namespace VVVV.Utils.Streams
         
         private T[] FBuffer;
         private int FLength;
-        private int FLowerThreshold;
-        private int FUpperThreshold;
-        protected bool FChanged;
+        private int FCapacity;
         
         public BufferedIOStream()
         {
             FBuffer = new T[0];
-            FChanged = true;
+            Changed = true;
         }
         
         public virtual bool Sync()
@@ -212,7 +210,13 @@ namespace VVVV.Utils.Streams
         
         public virtual void Flush()
         {
-            FChanged = false;
+            Changed = false;
+        }
+        
+        protected bool Changed
+        {
+            get;
+            private set;
         }
         
         public int Length
@@ -232,7 +236,7 @@ namespace VVVV.Utils.Streams
                 {
                     FLength = value;
                     ResizeInternalBuffer();
-                    FChanged = true;
+                    Changed = true;
                 }
             }
         }
@@ -257,23 +261,21 @@ namespace VVVV.Utils.Streams
         
         private void ResizeInternalBuffer()
         {
-            if (FLength > FUpperThreshold)
+            if (FLength > FCapacity)
             {
-                FUpperThreshold = StreamUtils.NextHigher(FLength);
-                FLowerThreshold = FUpperThreshold / 2;
+                FCapacity = StreamUtils.NextHigher(FLength);
 
                 var oldBuffer = FBuffer;
-                FBuffer = new T[FUpperThreshold];
+                FBuffer = new T[FCapacity];
 
                 BufferIncreased(oldBuffer, FBuffer);
             }
-            else if (FLength < FLowerThreshold)
+            else if (FLength < FCapacity / 2)
             {
-                FUpperThreshold = FUpperThreshold / 2;
-                FLowerThreshold = FUpperThreshold / 2;
+                FCapacity = Math.Max(FCapacity / 2, 4);
 
                 var oldBuffer = FBuffer;
-                FBuffer = new T[FUpperThreshold];
+                FBuffer = new T[FCapacity];
 
                 BufferDecreased(oldBuffer, FBuffer);
             }

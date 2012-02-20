@@ -31,7 +31,7 @@ namespace VVVV.Hosting.Pins.Output
 	    
         public override void Flush()
         {
-            if (FChanged)
+            if (Changed)
             {
                 // Write the buffered data to the out stream.
                 FOutStream.AssignFrom(this);
