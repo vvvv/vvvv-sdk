@@ -4,7 +4,7 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO.Streams
 {
-	class MultiDimOutStream<T> : ManagedIOStream<IInStream<T>>
+	class MultiDimOutStream<T> : BufferedIOStream<IInStream<T>>
 	{
 		private readonly IOutStream<T> FDataStream;
 		private readonly IOutStream<int> FBinSizeStream;

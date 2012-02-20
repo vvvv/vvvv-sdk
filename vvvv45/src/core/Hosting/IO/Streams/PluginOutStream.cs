@@ -99,7 +99,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class StringOutStream : ManagedIOStream<string>
+    class StringOutStream : BufferedIOStream<string>
     {
         private readonly IStringOut FStringOut;
         
@@ -217,7 +217,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class TextureOutStream<T, TMetadata> : ManagedIOStream<T>, IDXTexturePin
+    class TextureOutStream<T, TMetadata> : BufferedIOStream<T>, IDXTexturePin
         where T : DXResource<Texture, TMetadata>
     {
         private readonly IDXTextureOut FInternalTextureOut;

@@ -13,7 +13,7 @@ namespace VVVV.Hosting.Pins.Input
         private readonly bool FAutoValidate;
         private readonly bool FManagesChanges;
         
-        public InputPin(IPluginIn pluginIn, ManagedIOStream<T> stream)
+        public InputPin(IPluginIn pluginIn, BufferedIOStream<T> stream)
             : base(pluginIn, stream)
         {
             FPluginIn = pluginIn;
@@ -22,7 +22,7 @@ namespace VVVV.Hosting.Pins.Input
         }
         
         public InputPin(IPluginIn pluginIn, IInStream<T> stream)
-            : this(pluginIn, new ManagedInputIOStream<T>(stream))
+            : this(pluginIn, new BufferedInputIOStream<T>(stream))
         {
             
         }
@@ -40,11 +40,11 @@ namespace VVVV.Hosting.Pins.Input
         }
     }
     
-    class ManagedInputIOStream<T> : ManagedIOStream<T>
+    class BufferedInputIOStream<T> : BufferedIOStream<T>
     {
         private readonly IInStream<T> FInStream;
         
-        public ManagedInputIOStream(IInStream<T> inStream)
+        public BufferedInputIOStream(IInStream<T> inStream)
         {
             FInStream = inStream;
         }
@@ -64,13 +64,13 @@ namespace VVVV.Hosting.Pins.Input
     class InputIOStream<T> : IIOStream<T>
     {
         private readonly IInStream<T> FInStream;
-        private readonly ManagedIOStream<T> FIOStream;
+        private readonly BufferedIOStream<T> FIOStream;
         private IInStream<T> FCurrentInStream;
         
         public InputIOStream(IInStream<T> inStream)
         {
             FInStream = inStream;
-            FIOStream = new ManagedIOStream<T>();
+            FIOStream = new BufferedIOStream<T>();
             FCurrentInStream = FInStream;
         }
         

@@ -38,7 +38,7 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		private readonly IPluginIO FPluginIO;
 		
-		public Pin(IPluginIO pluginIO, ManagedIOStream<T> stream)
+		public Pin(IPluginIO pluginIO, BufferedIOStream<T> stream)
 			: base(stream)
 		{
 			FPluginIO = pluginIO;

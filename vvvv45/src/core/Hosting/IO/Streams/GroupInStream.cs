@@ -7,7 +7,7 @@ namespace VVVV.Hosting.IO.Streams
 {
 	class GroupInStream<T> : IInStream<IInStream<T>>
 	{
-		private readonly ManagedIOStream<IInStream<T>> FStreams = new ManagedIOStream<IInStream<T>>();
+		private readonly BufferedIOStream<IInStream<T>> FStreams = new BufferedIOStream<IInStream<T>>();
 		private readonly List<IIOHandler> FIOHandlers = new List<IIOHandler>();
 		private readonly IDiffSpread<int> FCountSpread;
 		private readonly IIOFactory FFactory;

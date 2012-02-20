@@ -245,14 +245,14 @@ namespace VVVV.Hosting.IO.Streams
 		
 		private readonly IInStream<T> FDataStream;
 		private readonly IInStream<int> FBinSizeStream;
-		private readonly ManagedIOStream<int> FNormBinSizeStream;
+		private readonly BufferedIOStream<int> FNormBinSizeStream;
 		private readonly int[] FBinSizeBuffer;
 		
 		public MultiDimInStream(IIOFactory factory, InputAttribute attribute)
 		{
 			FDataStream = factory.CreateIO<IInStream<T>>(attribute);
 			FBinSizeStream = factory.CreateIO<IInStream<int>>(attribute.GetBinSizeInputAttribute());
-			FNormBinSizeStream = new ManagedIOStream<int>();
+			FNormBinSizeStream = new BufferedIOStream<int>();
 			FBinSizeBuffer = new int[16]; // 64 byte
 		}
 		

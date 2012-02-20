@@ -14,11 +14,11 @@ namespace VVVV.PluginInterfaces.V2
     [ComVisible(false)]
     public class Spread<T> : ISpread<T>
     {
-        private readonly ManagedIOStream<T> FStream;
-        private ManagedIOStream<T>.StreamReader FStreamReader;
-        private ManagedIOStream<T>.StreamWriter FStreamWriter;
+        private readonly BufferedIOStream<T> FStream;
+        private BufferedIOStream<T>.StreamReader FStreamReader;
+        private BufferedIOStream<T>.StreamWriter FStreamWriter;
         
-        public Spread(ManagedIOStream<T> stream)
+        public Spread(BufferedIOStream<T> stream)
         {
             FStream = stream;
             FStreamReader = FStream.GetReader();
@@ -26,7 +26,7 @@ namespace VVVV.PluginInterfaces.V2
         }
         
         public Spread(int size)
-            : this(new ManagedIOStream<T>())
+            : this(new BufferedIOStream<T>())
         {
             SliceCount = size;
         }
@@ -133,7 +133,7 @@ namespace VVVV.PluginInterfaces.V2
 
         }
         
-        public ManagedIOStream<T>.StreamReader GetEnumerator()
+        public BufferedIOStream<T>.StreamReader GetEnumerator()
         {
             return FStream.GetEnumerator();
         }
@@ -150,7 +150,7 @@ namespace VVVV.PluginInterfaces.V2
         
         public object Clone()
         {
-            return new Spread<T>(FStream.Clone() as ManagedIOStream<T>);
+            return new Spread<T>(FStream.Clone() as BufferedIOStream<T>);
         }
     }
 

@@ -8,23 +8,23 @@ namespace VVVV.Hosting.Pins.Output
 {
 	class OutputPin<T> : Pin<T>
 	{
-		public OutputPin(IPluginOut pluginOut, ManagedIOStream<T> stream)
+		public OutputPin(IPluginOut pluginOut, BufferedIOStream<T> stream)
 			: base(pluginOut, stream)
 		{
 			SliceCount = 1;
 		}
 		
 		public OutputPin(IPluginOut pluginOut, IOutStream<T> outStream)
-			: this(pluginOut, new ManagedOutputIOStream<T>(outStream))
+			: this(pluginOut, new BufferedOutputIOStream<T>(outStream))
 		{
 		}
 	}
 	
-	class ManagedOutputIOStream<T> : ManagedIOStream<T>
+	class BufferedOutputIOStream<T> : BufferedIOStream<T>
 	{
 	    private readonly IOutStream<T> FOutStream;
 	    
-	    public ManagedOutputIOStream(IOutStream<T> outStream)
+	    public BufferedOutputIOStream(IOutStream<T> outStream)
 	    {
 	        FOutStream = outStream;
 	    }
@@ -43,13 +43,13 @@ namespace VVVV.Hosting.Pins.Output
 	
 	class OutputIOStream<T> : IIOStream<T>
 	{
-		private readonly ManagedIOStream<T> FIOStream;
+		private readonly BufferedIOStream<T> FIOStream;
 		private readonly IOutStream<T> FOutStream;
 		private bool FNeedsFlush;
 		
 		public OutputIOStream(IOutStream<T> outStream)
 		{
-			FIOStream = new ManagedIOStream<T>();
+			FIOStream = new BufferedIOStream<T>();
 			FOutStream = outStream;
 		}
 		

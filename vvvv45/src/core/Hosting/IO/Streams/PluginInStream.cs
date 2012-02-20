@@ -129,7 +129,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class StringInStream : ManagedIOStream<string>
+    class StringInStream : BufferedIOStream<string>
     {
         private readonly IStringIn FStringIn;
         
@@ -160,7 +160,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class EnumInStream<T> : ManagedIOStream<T>
+    class EnumInStream<T> : BufferedIOStream<T>
     {
         protected readonly IEnumIn FEnumIn;
         

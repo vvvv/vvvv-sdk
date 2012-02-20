@@ -2,16 +2,19 @@
 
 namespace VVVV.Utils.Streams
 {
-    // TODO: This should not be public
-    public class ManagedIOStream<T> : IIOStream<T>
+    /// <summary>
+    /// Implemention of IIOStream{T} using an array as storage.
+    /// Useful as wrapper if a stream is accessed randomly.
+    /// </summary>
+    public class BufferedIOStream<T> : IIOStream<T>
     {
         public class StreamReader : IStreamReader<T>
         {
-            private readonly ManagedIOStream<T> FStream;
+            private readonly BufferedIOStream<T> FStream;
             private readonly T[] FBuffer;
             private readonly int FLength;
             
-            internal StreamReader(ManagedIOStream<T> stream)
+            internal StreamReader(BufferedIOStream<T> stream)
             {
                 FStream = stream;
                 FBuffer = stream.FBuffer;
@@ -111,11 +114,11 @@ namespace VVVV.Utils.Streams
         
         public class StreamWriter : IStreamWriter<T>
         {
-            private readonly ManagedIOStream<T> FStream;
+            private readonly BufferedIOStream<T> FStream;
             private readonly T[] FBuffer;
             private readonly int FLength;
             
-            internal StreamWriter(ManagedIOStream<T> stream)
+            internal StreamWriter(BufferedIOStream<T> stream)
             {
                 FStream = stream;
                 FBuffer = stream.FBuffer;
@@ -195,7 +198,7 @@ namespace VVVV.Utils.Streams
         private int FUpperThreshold;
         protected bool FChanged;
         
-        public ManagedIOStream()
+        public BufferedIOStream()
         {
             FBuffer = new T[0];
             FChanged = true;
@@ -246,7 +249,7 @@ namespace VVVV.Utils.Streams
         
         public object Clone()
         {
-            var stream = new ManagedIOStream<T>();
+            var stream = new BufferedIOStream<T>();
             stream.Length = Length;
             Array.Copy(FBuffer, stream.FBuffer, stream.FBuffer.Length);
             return stream;

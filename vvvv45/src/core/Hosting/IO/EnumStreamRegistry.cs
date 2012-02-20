@@ -12,9 +12,9 @@ namespace VVVV.Hosting.IO
     {
         public EnumStreamRegistry()
         {
-            RegisterInput(typeof(ManagedIOStream<>), CreateInput);
+            RegisterInput(typeof(BufferedIOStream<>), CreateInput);
             RegisterOutput(typeof(IOutStream<>), CreateOutput);
-            RegisterConfig(typeof(ManagedIOStream<>), CreateConfig);
+            RegisterConfig(typeof(BufferedIOStream<>), CreateConfig);
         }
         
         private static IIOHandler CreateInput(IIOFactory factory, InputAttribute attribute, Type t)

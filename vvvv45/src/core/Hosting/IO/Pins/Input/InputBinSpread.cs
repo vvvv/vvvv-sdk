@@ -10,7 +10,7 @@ namespace VVVV.Hosting.Pins.Input
 	{
 		private readonly IInStream<int> FBinSizeStream;
 		protected readonly IInStream<T> FDataStream;
-		protected readonly ManagedIOStream<int> FNormBinSizeStream;
+		protected readonly BufferedIOStream<int> FNormBinSizeStream;
 		protected readonly int[] FBinSizeBuffer = new int[StreamUtils.BUFFER_SIZE];
 		protected readonly T[] FDataBuffer = new T[StreamUtils.BUFFER_SIZE];
 		
@@ -22,7 +22,7 @@ namespace VVVV.Hosting.Pins.Input
 			attribute.AutoValidate = false;
 			FDataStream = FIOFactory.CreateIO<IInStream<T>>(attribute);
 			FBinSizeStream = FIOFactory.CreateIO<IInStream<int>>(attribute.GetBinSizeInputAttribute());
-			FNormBinSizeStream = new ManagedIOStream<int>();
+			FNormBinSizeStream = new BufferedIOStream<int>();
 		}
 		
 		protected virtual InputAttribute ManipulateAttribute(InputAttribute attribute)

@@ -172,7 +172,7 @@ namespace VVVV.Hosting.IO
                               return IOHandler.Create(stream, valueFastIn);
                           });
             
-            RegisterInput<ManagedIOStream<string>>(
+            RegisterInput<BufferedIOStream<string>>(
                 (factory, attribute, t) =>
                 {
                     var host = factory.PluginHost;
@@ -201,7 +201,7 @@ namespace VVVV.Hosting.IO
                               return IOHandler.Create(stream, colorIn);
                           });
 
-            RegisterInput<ManagedIOStream<EnumEntry>>(
+            RegisterInput<BufferedIOStream<EnumEntry>>(
                 (factory, attribute, t) =>
                 {
                     var host = factory.PluginHost;
@@ -345,7 +345,7 @@ namespace VVVV.Hosting.IO
                                return IOHandler.Create(new Vector4OutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), valueOut);
                            });
 
-            RegisterOutput<ManagedIOStream<string>>(
+            RegisterOutput<BufferedIOStream<string>>(
                 (factory, attribute, t) =>
                 {
                     var host = factory.PluginHost;
@@ -447,33 +447,33 @@ namespace VVVV.Hosting.IO
                            },
                            false);
             
-            RegisterConfig(typeof(ManagedIOStream<string>), (factory, attribute, t) => {
+            RegisterConfig(typeof(BufferedIOStream<string>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var stringConfig = host.CreateStringConfig(attribute, t);
                                return IOHandler.Create(new StringConfigStream(stringConfig), stringConfig, null, s => s.Flush(), s => s.Sync());
                            });
             
-            RegisterConfig(typeof(ManagedIOStream<RGBAColor>), (factory, attribute, t) => {
+            RegisterConfig(typeof(BufferedIOStream<RGBAColor>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var colorConfig = host.CreateColorConfig(attribute, t);
                                var stream = new ColorConfigStream(colorConfig);
                                return IOHandler.Create(stream, colorConfig, null, s => s.Flush(), s => s.Sync());
                            });
             
-            RegisterConfig(typeof(ManagedIOStream<Color4>), (factory, attribute, t) => {
+            RegisterConfig(typeof(BufferedIOStream<Color4>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var colorConfig = host.CreateColorConfig(attribute, t);
                                var stream = new SlimDXColorConfigStream(colorConfig);
                                return IOHandler.Create(stream, colorConfig, null, s => s.Flush(), s => s.Sync());
                            });
 
-            RegisterConfig(typeof(ManagedIOStream<EnumEntry>), (factory, attribute, t) => {
+            RegisterConfig(typeof(BufferedIOStream<EnumEntry>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                var enumConfig = host.CreateEnumConfig(attribute, t);
                                return IOHandler.Create(new DynamicEnumConfigStream(enumConfig), enumConfig, null, s => s.Flush(), s => s.Sync());
                            });
             
-            RegisterConfig(typeof(ManagedIOStream<>), (factory, attribute, t) => {
+            RegisterConfig(typeof(BufferedIOStream<>), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                if (t.IsPrimitive)
                                {
