@@ -198,12 +198,13 @@ namespace VVVV.Core
         {
             if (methodDefinition.Type.TypeCode == PrimitiveTypeCode.Pointer)
                 yield break;
-            
+
+            if (!AcceptConstructorsAsSteps && methodDefinition.IsConstructor)
+                yield break;
+                
             if (methodDefinition.Parameters.Where(p => p.Type.TypeCode == PrimitiveTypeCode.Pointer).Any())
                 yield break;
             
-                yield break;
-
             if (!AcceptNodesThatHaveRefParams && methodDefinition.Parameters.Any(param => !param.IsOut && param.IsByReference))
                 yield break;
 
