@@ -37,16 +37,18 @@ namespace VVVV.Core.Service
                     if (newRegType != r.RegisteredType)
                     {
                         Tuple<Type, Type>[] typeParams;
-                        var can = concrete.CanBeMadeOf(cc, out typeParams);
-                        Type newMapToType = r.MappedToType.CloseBySubstitution(typeParams);
+                        if (concrete.CanBeMadeOf(cc, out typeParams))
+                        {
+                            Type newMapToType = r.MappedToType.CloseBySubstitution(typeParams);
                             //r.MappedToType.CloseByParameterization(typeParams);
 
-                        container.RegisterType(
-                            newRegType,
-                            newMapToType,
-                            defaultmapping ? null : r.Name,
-                            r.LifetimeManager.Clone()
-                            );
+                            container.RegisterType(
+                                newRegType,
+                                newMapToType,
+                                defaultmapping ? null : r.Name,
+                                r.LifetimeManager.Clone()
+                               );
+                        }
                     }
                     else
                     {
@@ -59,7 +61,7 @@ namespace VVVV.Core.Service
                                 newMapToType,
                                 defaultmapping ? null : r.Name,
                                 r.LifetimeManager.Clone()
-                                );
+                               );
                     }
                 }
             }
@@ -76,7 +78,7 @@ namespace VVVV.Core.Service
                         r.MappedToType,
                         null,
                         r.LifetimeManager.Clone()
-                        );
+                       );
             }
         }
     }
