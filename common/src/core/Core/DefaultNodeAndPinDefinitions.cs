@@ -102,10 +102,6 @@ namespace VVVV.Core
 
         public IDataflowNodeDefinition Node { get; set; }
 
-        public IDataflowPinReference CreateReference(ITypeReference type)
-        {
-            return new DefaultDataflowPinReference(this, type);
-        }
     }
 
     public class DefaultInputPinDefinition : DefaultDataflowPinDefinition, IInputPinDefinition
@@ -122,13 +118,23 @@ namespace VVVV.Core
         {
             return new DefaultInputPinReference(this, type, defaultValue, strikedOut);
         }
+
+        public IInputPinReference CreateReference(IMetadataConstant defaultValue, bool strikedOut)
+        {
+            return new DefaultInputPinReference(this, Type, defaultValue, strikedOut);
+        }
     }
 
     public class DefaultOutputPinDefinition : DefaultDataflowPinDefinition, IOutputPinDefinition
     {
-        new public IOutputPinReference CreateReference(ITypeReference type)
+        public IOutputPinReference CreateReference(ITypeReference type)
         {
             return new DefaultOutputPinReference(this, type);
+        }
+
+        public IOutputPinReference CreateReference()
+        {
+            return new DefaultOutputPinReference(this, Type);
         }
     }
 }

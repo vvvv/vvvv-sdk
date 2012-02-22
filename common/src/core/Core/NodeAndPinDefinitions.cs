@@ -145,11 +145,16 @@ namespace VVVV.Core
         /// the node that defined the pin as one of its pins
         /// </summary>
         IDataflowNodeDefinition Node { get; }
-        
-        /// <summary>
-        /// Creates a reference on the pin definition, typically used by a node definition that needs to create a node reference. 
-        /// </summary>
-        IDataflowPinReference CreateReference(ITypeReference type);
+
+        ///// <summary>
+        ///// Creates a reference on the pin definition, typically used by a node definition that needs to create a node reference. 
+        ///// </summary>
+        //IDataflowPinReference CreateReference(ITypeReference type);
+
+        ///// <summary>
+        ///// Creates a reference on the pin definition, typically used by a node definition that needs to create a node reference. 
+        ///// </summary>
+        //IDataflowPinReference CreateReference();
     }
 
 
@@ -182,6 +187,11 @@ namespace VVVV.Core
         /// Creates a reference on the pin definition, typically used by a node definition that needs to create a node reference. 
         /// </summary>
         IInputPinReference CreateReference(ITypeReference type, IMetadataConstant defaultValue, bool strikedOut);
+
+        /// <summary>
+        /// Creates a reference on the pin definition, typically used by a node definition that needs to create a node reference. 
+        /// </summary>
+        IInputPinReference CreateReference(IMetadataConstant defaultValue, bool strikedOut);
     }
 
     /// <summary>
@@ -193,6 +203,11 @@ namespace VVVV.Core
         /// Creates a reference on the pin definition, typically used by a node definition that needs to create a node reference. 
         /// </summary>
         IOutputPinReference CreateReference(ITypeReference type);
+
+        /// <summary>
+        /// Creates a reference on the pin definition, typically used by a node definition that needs to create a node reference. 
+        /// </summary>
+        IOutputPinReference CreateReference();
     }
 
 
