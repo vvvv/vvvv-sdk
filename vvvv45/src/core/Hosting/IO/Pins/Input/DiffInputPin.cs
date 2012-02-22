@@ -43,22 +43,14 @@ namespace VVVV.Hosting.Pins.Input
 			    FChanged(this);
 		}
 		
-		public bool IsChanged
-		{
-			get;
-			private set;
-		}
-		
 		public override bool Sync()
 		{
-			IsChanged = base.Sync();
-			
-			if (IsChanged)
+		    var isChanged = base.Sync();
+			if (isChanged)
 			{
 				OnChanged();
 			}
-			
-			return IsChanged;
+			return isChanged;
 		}
 	}
 }

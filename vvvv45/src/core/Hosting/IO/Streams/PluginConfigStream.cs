@@ -24,7 +24,8 @@ namespace VVVV.Hosting.IO.Streams
         
         public override sealed bool Sync()
         {
-            if (FPluginConfig.PinIsChanged)
+            IsChanged = FPluginConfig.PinIsChanged;
+            if (IsChanged)
             {
                 Length = FPluginConfig.SliceCount;
                 var writer = GetWriter();
@@ -32,14 +33,13 @@ namespace VVVV.Hosting.IO.Streams
                 {
                     writer.Write(GetSlice(i));
                 }
-                return true;
             }
-            return false;
+            return base.Sync();
         }
         
         public override sealed void Flush()
         {
-            if (Changed)
+            if (IsChanged)
             {
                 FPluginConfig.SliceCount = Length;
                 var reader = GetReader();

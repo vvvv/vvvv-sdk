@@ -38,7 +38,10 @@ namespace VVVV.Hosting.IO.Streams
     			{
     				foreach (var outputStream in this)
     				{
-    				    dataWriter.Write(outputStream, buffer);
+    				    if (outputStream.IsChanged)
+    				        dataWriter.Write(outputStream, buffer);
+    				    else
+    				        dataWriter.Position += outputStream.Length;
     				}
     			}
 			} 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.Pins
 {
@@ -12,6 +12,28 @@ namespace VVVV.Hosting.Pins
 	[ComVisible(false)]
 	abstract class SpreadList<T> : Spread<ISpread<T>>, IDisposable
 	{
+	    class SpreadListStream : BufferedIOStream<ISpread<T>>
+	    {
+            public override bool Sync()
+            {
+                var isChanged = base.Sync();
+                foreach (var spread in this)
+                {
+                    isChanged |= spread.Sync();
+                }
+                return isChanged;
+            }
+            
+            public override void Flush()
+            {
+                foreach (var spread in this)
+                {
+                    spread.Flush();
+                }
+                base.Flush();
+            }
+	    }
+	    
 		protected readonly IIOFactory FFactory;
 		protected readonly IOAttribute FAttribute;
 		private readonly List<IIOHandler> FIOHandlers = new List<IIOHandler>();
@@ -20,7 +42,7 @@ namespace VVVV.Hosting.Pins
 		protected static int FInstanceCounter = 1;
 		
 		public SpreadList(IIOFactory factory, IOAttribute attribute)
-			: base(0)
+		    : base(new SpreadListStream())
 		{
 			//store fields
 			FFactory = factory;
@@ -58,7 +80,7 @@ namespace VVVV.Hosting.Pins
 				var attribute = CreateAttribute(i + 1);
 				attribute.IsPinGroup = false;
 				attribute.Order = FAttribute.Order + FOffsetCounter * 1000 + i;
-				var io = FFactory.CreateIOHandler<ISpread<T>>(attribute);
+				var io = FFactory.CreateIOHandler<ISpread<T>>(attribute, false);
 				FIOHandlers.Add(io);
 			}
 			
@@ -77,25 +99,6 @@ namespace VVVV.Hosting.Pins
 					writer.Write(io.RawIOObject as ISpread<T>);
 				}
 			}
-		}
-		
-		public override bool Sync()
-		{
-			var changed = false;
-			foreach (var spread in Stream)
-			{
-				changed |= spread.Sync();
-			}
-			return changed;
-		}
-		
-		public override void Flush()
-		{
-			foreach (var spread in Stream)
-			{
-				spread.Flush();
-			}
-			base.Flush();
 		}
 		
 		protected abstract IOAttribute CreateAttribute(int position);

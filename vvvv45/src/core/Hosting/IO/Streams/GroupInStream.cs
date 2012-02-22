@@ -83,13 +83,15 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public bool Sync()
 		{
-			var changed = false;
+			IsChanged = false;
 			foreach (var stream in FStreams)
 			{
-				changed |= stream.Sync();
+				IsChanged |= stream.Sync();
 			}
-			return changed;
+			return IsChanged;
 		}
+		
+		public bool IsChanged { get; private set; }
 		
 		public object Clone()
 		{

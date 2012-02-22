@@ -231,9 +231,16 @@ namespace VVVV.Hosting.IO.Streams
         }
         
         public bool Sync()
-        {
-            return FValidateFunc();
-        }
+		{
+			IsChanged = FValidateFunc();
+			return IsChanged;
+		}
+		
+		public bool IsChanged
+		{
+		    get;
+		    private set;
+		}
         
         public int Length
         {

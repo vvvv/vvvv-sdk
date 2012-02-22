@@ -17,5 +17,10 @@ namespace VVVV.Utils.Streams
         /// cost to check if the data changed might be too high.
         /// </returns>
         bool Sync();
+        
+        /// <summary>
+        /// Whether or not the data changed during last synchronization.
+        /// </summary>
+        bool IsChanged { get; }
     }
 }

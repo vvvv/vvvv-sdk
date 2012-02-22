@@ -159,14 +159,14 @@ namespace VVVV.Utils.Streams
             
             public void Write(T value, int stride = 1)
             {
-                FStream.Changed = true;
+                FStream.IsChanged = true;
                 FBuffer[Position] = value;
                 Position += stride;
             }
             
             public int Write(T[] buffer, int index, int length, int stride = 1)
             {
-                FStream.Changed = true;
+                FStream.IsChanged = true;
                 
                 int slicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
                 
@@ -199,24 +199,23 @@ namespace VVVV.Utils.Streams
         public BufferedIOStream()
         {
             FBuffer = new T[0];
-            Changed = true;
+            IsChanged = true;
         }
         
         public virtual bool Sync()
         {
-            // Nothing to do
-            return true;
+            return IsChanged;
         }
         
         public virtual void Flush()
         {
-            Changed = false;
+            IsChanged = false;
         }
         
-        protected bool Changed
+        public bool IsChanged
         {
             get;
-            private set;
+            protected set;
         }
         
         public int Length
@@ -236,7 +235,7 @@ namespace VVVV.Utils.Streams
                 {
                     FLength = value;
                     ResizeInternalBuffer();
-                    Changed = true;
+                    IsChanged = true;
                 }
             }
         }

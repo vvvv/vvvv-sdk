@@ -49,13 +49,21 @@ namespace VVVV.PluginInterfaces.V2
         
         public virtual bool Sync()
         {
-            if (FStream.Sync())
+            var isChanged = FStream.Sync();
+            if (isChanged)
             {
                 FStreamReader = FStream.GetReader();
                 FStreamWriter = FStream.GetWriter();
-                return true;
             }
-            return false;
+            return isChanged;
+        }
+        
+        public bool IsChanged
+        {
+            get
+            {
+                return FStream.IsChanged;
+            }
         }
         
         public virtual void Flush()

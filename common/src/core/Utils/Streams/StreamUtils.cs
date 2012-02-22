@@ -12,41 +12,10 @@ namespace VVVV.Utils.Streams
         {
             class EmptyStreamReader : IStreamReader<T>
             {
-                public bool Eos
-                {
-                    get
-                    {
-                        return true;
-                    }
-                }
-                
-                public int Position
-                {
-                    get
-                    {
-                        return 0;
-                    }
-                    set
-                    {
-                        
-                    }
-                }
-                
-                public int Length
-                {
-                    get
-                    {
-                        return 0;
-                    }
-                }
-                
-                public T Current
-                {
-                    get
-                    {
-                        return default(T);
-                    }
-                }
+                public bool Eos { get { return true; } }
+                public int Position { get { return 0; } set { } }
+                public int Length { get { return 0; } }
+                public T Current { get { return default(T); } }
                 
                 object System.Collections.IEnumerator.Current
                 {
@@ -85,33 +54,9 @@ namespace VVVV.Utils.Streams
             class EmptyStreamWriter : IStreamWriter<T>
             {
                 
-                public bool Eos
-                {
-                    get
-                    {
-                        return true;
-                    }
-                }
-                
-                public int Position
-                {
-                    get
-                    {
-                        return 0;
-                    }
-                    set
-                    {
-                        
-                    }
-                }
-                
-                public int Length
-                {
-                    get
-                    {
-                        return 0;
-                    }
-                }
+                public bool Eos { get { return true; } }
+                public int Position { get { return 0; } set { } }
+                public int Length { get { return 0; } }
                 
                 public void Reset()
                 {
@@ -134,17 +79,7 @@ namespace VVVV.Utils.Streams
                 }
             }
             
-            public int Length
-            {
-                get
-                {
-                    return 0;
-                }
-                set
-                {
-                    
-                }
-            }
+            public int Length { get { return 0; } set { } }
             
             public object Clone()
             {
@@ -153,8 +88,10 @@ namespace VVVV.Utils.Streams
             
             public bool Sync()
             {
-                return false;
+                return IsChanged;
             }
+            
+            public bool IsChanged { get { return false; } }
             
             public void Flush()
             {

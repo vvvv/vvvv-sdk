@@ -5,7 +5,7 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO.Streams
 {
-	class GroupOutStream<T> : IInStream<IOutStream<T>>
+	class GroupOutStream<T> : IInStream<IOutStream<T>>, IFlushable
 	{
 		private readonly BufferedIOStream<IOutStream<T>> FStreams = new BufferedIOStream<IOutStream<T>>();
 		private readonly List<IIOHandler> FIOHandlers = new List<IIOHandler>();
@@ -82,7 +82,20 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public bool Sync()
 		{
-			return true;
+			return IsChanged;
+		}
+		
+		public bool IsChanged 
+		{ 
+		    get
+		    {
+		        return FStreams.IsChanged;
+		    }
+		}
+		
+		public void Flush()
+		{
+		    FStreams.Flush();
 		}
 		
 		public object Clone()

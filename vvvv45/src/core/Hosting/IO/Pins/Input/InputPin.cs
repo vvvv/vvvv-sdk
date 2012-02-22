@@ -9,34 +9,15 @@ namespace VVVV.Hosting.Pins.Input
     [ComVisible(false)]
     class InputPin<T> : Pin<T>
     {
-        private readonly IPluginIn FPluginIn;
-        private readonly bool FAutoValidate;
-        private readonly bool FManagesChanges;
-        
         public InputPin(IPluginIn pluginIn, BufferedIOStream<T> stream)
             : base(pluginIn, stream)
         {
-            FPluginIn = pluginIn;
-            FAutoValidate = pluginIn.AutoValidate;
-            FManagesChanges = !(FPluginIn is IPluginFastIn);
         }
         
         public InputPin(IPluginIn pluginIn, IInStream<T> stream)
             : this(pluginIn, new BufferedInputIOStream<T>(stream))
         {
             
-        }
-        
-        public override bool Sync()
-        {
-            if (FAutoValidate)
-            {
-                if (FManagesChanges && !FPluginIn.PinIsChanged)
-                {
-                    return false;
-                }
-            }
-            return base.Sync();
         }
     }
     
@@ -51,12 +32,12 @@ namespace VVVV.Hosting.Pins.Input
         
         public override bool Sync()
         {
-            if (FInStream.Sync())
+            IsChanged = FInStream.Sync();
+            if (IsChanged)
             {
                 this.AssignFrom(FInStream);
-                return true;
             }
-            return false;
+            return base.Sync();
         }
     }
     
@@ -95,6 +76,14 @@ namespace VVVV.Hosting.Pins.Input
             var changed = FInStream.Sync();
             FCurrentInStream = FInStream;
             return changed;
+        }
+        
+        public bool IsChanged
+        {
+            get
+            {
+                return FCurrentInStream.IsChanged;
+            }
         }
         
         public object Clone()

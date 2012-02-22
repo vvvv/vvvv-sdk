@@ -428,8 +428,8 @@ namespace VVVV.Hosting.IO
                                            throw new NotSupportedException("IInStream<IOutStream<T>> can only be used as a pin group.");
                                        }
                                        
-                                       var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IInStream;
-                                       return IOHandler.Create(stream, null);
+                                       var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IFlushable;
+                                       return IOHandler.Create(stream, null, null, s => s.Flush());
                                    }
                                }
                                
@@ -440,7 +440,7 @@ namespace VVVV.Hosting.IO
                            (factory, attribute, t) =>
                            {
                                var outStreamType = typeof(IOutStream<>).MakeGenericType(t);
-                               var ioStreamType = typeof(OutputIOStream<>).MakeGenericType(t);
+                               var ioStreamType = typeof(BufferedOutputIOStream<>).MakeGenericType(t);
                                var outStream = factory.CreateIO(outStreamType, attribute, false);
                                var ioStream = (IIOStream) Activator.CreateInstance(ioStreamType, outStream);
                                return IOHandler.Create(ioStream, outStream, null, s => s.Flush());

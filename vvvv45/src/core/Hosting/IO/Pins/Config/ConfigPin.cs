@@ -42,23 +42,14 @@ namespace VVVV.Hosting.Pins.Config
 				FChanged(this);
 		}
 		
-		public bool IsChanged
-		{
-			get
-			{
-				return FPluginConfig.PinIsChanged;
-			}
-		}
-		
 		public override bool Sync()
 		{
-			if (base.Sync())
+		    var isChanged = base.Sync();
+			if (isChanged)
 			{
 				OnChanged();
-				return true;
 			}
-			
-			return false;
+			return isChanged;
 		}
 	}
 }

@@ -17,8 +17,7 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			return new InputAttribute(FAttribute.Name + " " + position)
 			{
-				IsPinGroup = false,
-				AutoValidate = false
+				IsPinGroup = false
 			};
 		}
 	}

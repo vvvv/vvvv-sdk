@@ -31,7 +31,7 @@ namespace VVVV.Hosting.Pins.Output
 	    
         public override void Flush()
         {
-            if (Changed)
+            if (IsChanged)
             {
                 // Write the buffered data to the out stream.
                 FOutStream.AssignFrom(this);
@@ -39,78 +39,5 @@ namespace VVVV.Hosting.Pins.Output
             }
             base.Flush();
         }
-	}
-	
-	class OutputIOStream<T> : IIOStream<T>
-	{
-		private readonly BufferedIOStream<T> FIOStream;
-		private readonly IOutStream<T> FOutStream;
-		private bool FNeedsFlush;
-		
-		public OutputIOStream(IOutStream<T> outStream)
-		{
-			FIOStream = new BufferedIOStream<T>();
-			FOutStream = outStream;
-		}
-		
-		public int Length
-		{
-			get
-			{
-				return FIOStream.Length;
-			}
-			set
-			{
-				if (FIOStream.Length != value)
-				{
-					FNeedsFlush = true;
-					FIOStream.Length = value;
-				}
-			}
-		}
-		
-		public bool Sync()
-		{
-			// Nothing to do here.
-			return true;
-		}
-		
-		public object Clone()
-		{
-			return new OutputIOStream<T>(FOutStream.Clone() as IOutStream<T>);
-		}
-		
-		public void Flush()
-		{
-			if (FNeedsFlush)
-			{
-				FNeedsFlush = false;
-				
-				// Write the buffered data to the out stream.
-				FOutStream.AssignFrom(FIOStream);
-				FOutStream.Flush();
-			}
-		}
-		
-		public IStreamReader<T> GetReader()
-		{
-			return FIOStream.GetReader();
-		}
-		
-		public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-		{
-			return FIOStream.GetEnumerator();
-		}
-		
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
-		
-		public IStreamWriter<T> GetWriter()
-		{
-			FNeedsFlush = true;
-			return FIOStream.GetWriter();
-		}
 	}
 }
