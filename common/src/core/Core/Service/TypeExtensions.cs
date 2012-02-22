@@ -341,7 +341,12 @@ namespace VVVV.Core.Service
                     return td;
             }
             else
-                return td;
+            {
+                if (from.IsGenericParameter && td.Name == from.Name)
+                    return to;
+                else
+                    return td;
+            }
         }
 
         public static Type CloseBySubstitution(this Type td, Tuple<Type, Type>[] mappings)
