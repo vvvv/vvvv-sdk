@@ -31,9 +31,8 @@ namespace VVVV.Hosting.Pins.Output
                 {
                     foreach (var spread in this)
                     {
-                        var stream = spread.Stream;
-                        dataStreamLength += stream.Length;
-                        binSizeWriter.Write(stream.Length);
+                        dataStreamLength += spread.SliceCount;
+                        binSizeWriter.Write(spread.SliceCount);
                     }
                 }
                 

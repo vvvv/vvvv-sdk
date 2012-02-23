@@ -240,6 +240,19 @@ namespace VVVV.Utils.Streams
             }
         }
         
+        public T this[int index]
+        {
+            get
+            {
+                return FBuffer[index];
+            }
+            set
+            {
+                IsChanged = true;
+                FBuffer[index] = value;
+            }
+        }
+        
         public StreamReader GetReader()
         {
             return new StreamReader(this);

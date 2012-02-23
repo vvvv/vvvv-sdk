@@ -61,7 +61,7 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
-		IIOStream<T> Stream
+		BufferedIOStream<T> Stream
 		{
 			get;
 		}

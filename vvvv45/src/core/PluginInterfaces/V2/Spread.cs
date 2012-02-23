@@ -15,14 +15,10 @@ namespace VVVV.PluginInterfaces.V2
     public class Spread<T> : ISpread<T>
     {
         private readonly BufferedIOStream<T> FStream;
-        private BufferedIOStream<T>.StreamReader FStreamReader;
-        private BufferedIOStream<T>.StreamWriter FStreamWriter;
         
         public Spread(BufferedIOStream<T> stream)
         {
             FStream = stream;
-            FStreamReader = FStream.GetReader();
-            FStreamWriter = FStream.GetWriter();
         }
         
         public Spread(int size)
@@ -49,13 +45,7 @@ namespace VVVV.PluginInterfaces.V2
         
         public virtual bool Sync()
         {
-            var isChanged = FStream.Sync();
-            if (isChanged)
-            {
-                FStreamReader = FStream.GetReader();
-                FStreamWriter = FStream.GetWriter();
-            }
-            return isChanged;
+            return FStream.Sync();
         }
         
         public bool IsChanged
@@ -71,7 +61,7 @@ namespace VVVV.PluginInterfaces.V2
             FStream.Flush();
         }
         
-        public IIOStream<T> Stream
+        public BufferedIOStream<T> Stream
         {
             get
             {
@@ -83,13 +73,11 @@ namespace VVVV.PluginInterfaces.V2
         {
             get
             {
-                FStreamReader.Position = VMath.Zmod(index, FStream.Length);
-                return FStreamReader.Read();
+                return FStream[VMath.Zmod(index, FStream.Length)];
             }
             set
             {
-                FStreamWriter.Position = VMath.Zmod(index, FStream.Length);
-                FStreamWriter.Write(value);
+                FStream[VMath.Zmod(index, FStream.Length)] = value;
             }
         }
         
@@ -122,8 +110,6 @@ namespace VVVV.PluginInterfaces.V2
                         SliceCountDecreasing(oldSliceCount, newSliceCount);
                     
                     FStream.Length = newSliceCount;
-                    FStreamReader = FStream.GetReader();
-                    FStreamWriter = FStream.GetWriter();
                     
                     if (newSliceCount > oldSliceCount)
                         SliceCountIncreased(oldSliceCount, newSliceCount);

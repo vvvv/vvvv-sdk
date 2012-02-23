@@ -7,98 +7,10 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.Streams;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    // Slow
-    abstract class PluginOutStream<T> : IOutStream<T>
-    {
-        class PluginOutWriter : IStreamWriter<T>
-        {
-            private readonly PluginOutStream<T> FStream;
-            
-            public PluginOutWriter(PluginOutStream<T> stream)
-            {
-                FStream = stream;
-            }
-            
-            public bool Eos
-            {
-                get
-                {
-                    return Position >= Length;
-                }
-            }
-            
-            public int Position
-            {
-                get;
-                set;
-            }
-            
-            public int Length
-            {
-                get
-                {
-                    return FStream.Length;
-                }
-                set
-                {
-                    FStream.Length = value;
-                }
-            }
-            
-            public void Write(T value, int stride)
-            {
-                FStream.SetSlice(Position, value);
-                Position += stride;
-            }
-            
-            public int Write(T[] buffer, int index, int length, int stride)
-            {
-                var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-                for (int i = index; i < index + numSlicesToWrite; i++)
-                {
-                    Write(buffer[i], stride);
-                }
-                return numSlicesToWrite;
-            }
-            
-            public void Dispose()
-            {
-                // Nothing to do
-            }
-            
-            public void Reset()
-            {
-                Position = 0;
-            }
-        }
-        
-        public object Clone()
-        {
-            throw new NotImplementedException();
-        }
-        
-        public abstract int Length
-        {
-            get;
-            set;
-        }
-        
-        protected abstract void SetSlice(int index, T value);
-        
-        public void Flush()
-        {
-            // Nothing to do
-        }
-        
-        public IStreamWriter<T> GetWriter()
-        {
-            return new PluginOutWriter(this);
-        }
-    }
-    
     class StringOutStream : BufferedIOStream<string>
     {
         private readonly IStringOut FStringOut;
@@ -113,22 +25,16 @@ namespace VVVV.Hosting.IO.Streams
             if (IsChanged)
             {
                 FStringOut.SliceCount = Length;
-                
-                int i = 0;
-                using (var reader = GetReader())
+                for (int i = 0; i < Length; i++)
                 {
-                    while (!reader.Eos)
-                    {
-                        FStringOut.SetString(i++, reader.Read());
-                    }
+                    FStringOut.SetString(i, this[i]);
                 }
             }
-            
             base.Flush();
         }
     }
     
-    class EnumOutStream<T> : PluginOutStream<T>
+    class EnumOutStream<T> : BufferedIOStream<T>
     {
         protected readonly IEnumOut FEnumOut;
         
@@ -137,21 +43,22 @@ namespace VVVV.Hosting.IO.Streams
             FEnumOut = enumOut;
         }
         
-        protected override void SetSlice(int index, T value)
+        public override void Flush()
         {
-            FEnumOut.SetString(index, value.ToString());
+            if (IsChanged)
+            {
+                FEnumOut.SliceCount = Length;
+                for (int i = 0; i < Length; i++)
+                {
+                    SetSlice(i, this[i]);
+                }
+            }
+            base.Flush();
         }
         
-        public override int Length
+        protected virtual void SetSlice(int index, T value)
         {
-            get
-            {
-                return FEnumOut.SliceCount;
-            }
-            set
-            {
-                FEnumOut.SliceCount = value;
-            }
+            FEnumOut.SetString(index, value.ToString());
         }
     }
     
@@ -168,10 +75,9 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class NodeOutStream<T> : PluginOutStream<T>, IGenericIO
+    class NodeOutStream<T> : BufferedIOStream<T>, IGenericIO
     {
         private readonly INodeOut FNodeOut;
-        private readonly ISpread<T> FDataStore;
         
         public NodeOutStream(INodeOut nodeOut)
             : this(nodeOut, new DefaultConnectionHandler())
@@ -180,40 +86,25 @@ namespace VVVV.Hosting.IO.Streams
         }
         
         public NodeOutStream(INodeOut nodeOut, IConnectionHandler handler)
-            : this(nodeOut, new Spread<T>(), handler)
-        {
-            
-        }
-        
-        private NodeOutStream(INodeOut nodeOut, ISpread<T> dataStore, IConnectionHandler handler)
         {
             FNodeOut = nodeOut;
             FNodeOut.SetInterface(this);
             FNodeOut.SetConnectionHandler(handler, this);
-            FDataStore = dataStore;
         }
         
         object IGenericIO.GetSlice(int index)
         {
-            return FDataStore[index];
+            return this[VMath.Zmod(index, Length)];
         }
         
-        protected override void SetSlice(int index, T value)
+        public override void Flush()
         {
-            FDataStore[index] = value;
-        }
-        
-        public override int Length
-        {
-            get
+            if (IsChanged)
             {
-                return FNodeOut.SliceCount;
+                FNodeOut.SliceCount = Length;
+                FNodeOut.MarkPinAsChanged();
             }
-            set
-            {
-                FNodeOut.SliceCount = value;
-                FDataStore.SliceCount = value;
-            }
+            base.Flush();
         }
     }
     
@@ -225,9 +116,9 @@ namespace VVVV.Hosting.IO.Streams
         public TextureOutStream(IInternalPluginHost host, OutputAttribute attribute)
         {
             FInternalTextureOut = host.CreateTextureOutput2(
-                this, 
-                attribute.Name, 
-                (TSliceMode) attribute.SliceMode, 
+                this,
+                attribute.Name,
+                (TSliceMode) attribute.SliceMode,
                 (TPinVisibility) attribute.Visibility
                );
         }
@@ -246,11 +137,7 @@ namespace VVVV.Hosting.IO.Streams
         {
             get
             {
-                using (var reader = GetReader())
-                {
-                    reader.Position = slice;
-                    return reader.Read()[device];
-                }
+                return this[slice][device];
             }
         }
         
