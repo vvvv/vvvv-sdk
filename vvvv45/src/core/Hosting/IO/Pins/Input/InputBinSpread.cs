@@ -9,10 +9,8 @@ namespace VVVV.Hosting.Pins.Input
     class InputBinSpread<T> : BinSpread<T>
     {
         private readonly IInStream<int> FBinSizeStream;
-        protected readonly IInStream<T> FDataStream;
-        protected readonly BufferedIOStream<int> FNormBinSizeStream;
-        protected readonly int[] FBinSizeBuffer = new int[StreamUtils.BUFFER_SIZE];
-        protected readonly T[] FDataBuffer = new T[StreamUtils.BUFFER_SIZE];
+        private readonly IInStream<T> FDataStream;
+        private readonly BufferedIOStream<int> FNormBinSizeStream;
         
         public InputBinSpread(IIOFactory ioFactory, InputAttribute attribute)
             : base(ioFactory, attribute)
@@ -44,51 +42,62 @@ namespace VVVV.Hosting.Pins.Input
                 int dataStreamLength = FDataStream.Length;
                 int binSizeSum = 0;
                 
-                FNormBinSizeStream.Length = FBinSizeStream.Length;
-                using (var binSizeReader = FBinSizeStream.GetReader())
+                var binSizeBuffer = MemoryPool<int>.GetArray();
+                var dataBuffer = MemoryPool<T>.GetArray();
+                
+                try 
                 {
-                    using (var binSizeWriter = FNormBinSizeStream.GetWriter())
+                    FNormBinSizeStream.Length = FBinSizeStream.Length;
+                    using (var binSizeReader = FBinSizeStream.GetReader())
                     {
-                        while (!binSizeReader.Eos)
+                        using (var binSizeWriter = FNormBinSizeStream.GetWriter())
                         {
-                            int binSizeCount = binSizeReader.Read(FBinSizeBuffer, 0, FBinSizeBuffer.Length);
-                            for (int i = 0; i < binSizeCount; i++)
+                            while (!binSizeReader.Eos)
                             {
-                                FBinSizeBuffer[i] = SpreadUtils.NormalizeBinSize(dataStreamLength, FBinSizeBuffer[i]);
-                                binSizeSum += FBinSizeBuffer[i];
+                                int blockSize = binSizeReader.Read(binSizeBuffer, 0, binSizeBuffer.Length);
+                                for (int i = 0; i < blockSize; i++)
+                                {
+                                    binSizeBuffer[i] = SpreadUtils.NormalizeBinSize(dataStreamLength, binSizeBuffer[i]);
+                                    binSizeSum += binSizeBuffer[i];
+                                }
+                                
+                                binSizeWriter.Write(binSizeBuffer, 0, blockSize);
                             }
-                            
-                            binSizeWriter.Write(FBinSizeBuffer, 0, binSizeCount);
                         }
                     }
-                }
-                
-
-                int binTimes = SpreadUtils.DivByBinSize(dataStreamLength, binSizeSum);
-                binTimes = binTimes > 0 ? binTimes : 1;
-                SliceCount = binTimes * FBinSizeStream.Length;
-                
-                using (var binSizeReader = FNormBinSizeStream.GetCyclicReader())
-                {
-                    using (var dataReader = FDataStream.GetCyclicReader())
+                    
+    
+                    int binTimes = SpreadUtils.DivByBinSize(dataStreamLength, binSizeSum);
+                    binTimes = binTimes > 0 ? binTimes : 1;
+                    SliceCount = binTimes * FBinSizeStream.Length;
+                    
+                    using (var binSizeReader = FNormBinSizeStream.GetCyclicReader())
                     {
-                        foreach (var spread in this)
+                        using (var dataReader = FDataStream.GetCyclicReader())
                         {
-                            spread.SliceCount = binSizeReader.Read();
-                            
-                            var stream = spread.Stream;
-                            using (var writer = stream.GetWriter())
+                            foreach (var spread in this)
                             {
-                                while (!writer.Eos)
+                                spread.SliceCount = binSizeReader.Read();
+                                
+                                var stream = spread.Stream;
+                                using (var writer = stream.GetWriter())
                                 {
-                                    // Since we're using cyclic readers we need to limit the amount
-                                    // of data we request.
-                                    int numSlicesRead = dataReader.Read(FDataBuffer, 0, Math.Min(FDataBuffer.Length, writer.Length));
-                                    writer.Write(FDataBuffer, 0, numSlicesRead);
+                                    while (!writer.Eos)
+                                    {
+                                        // Since we're using cyclic readers we need to limit the amount
+                                        // of data we request.
+                                        int numSlicesRead = dataReader.Read(dataBuffer, 0, Math.Min(dataBuffer.Length, writer.Length));
+                                        writer.Write(dataBuffer, 0, numSlicesRead);
+                                    }
                                 }
                             }
                         }
                     }
+                } 
+                finally
+                {
+                    MemoryPool<int>.PutArray(binSizeBuffer);
+                    MemoryPool<T>.PutArray(dataBuffer);
                 }
             }
             

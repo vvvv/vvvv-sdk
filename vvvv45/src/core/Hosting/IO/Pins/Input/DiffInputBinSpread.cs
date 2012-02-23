@@ -20,14 +20,14 @@ namespace VVVV.Hosting.Pins.Input
 		
 		public override bool Sync()
 		{
-			IsChanged = base.Sync();
+			var isChanged = base.Sync();
 			
-			if (IsChanged)
+			if (isChanged)
 			{
 				OnChanged();
 			}
 			
-			return IsChanged;
+			return isChanged;
 		}
 		
 		protected virtual void OnChanged()
@@ -52,11 +52,5 @@ namespace VVVV.Hosting.Pins.Input
                 FChanged -= value;
             }
         }
-		
-		public bool IsChanged 
-		{
-			get;
-			private set;
-		}
 	}
 }

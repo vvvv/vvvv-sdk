@@ -10,9 +10,10 @@ namespace VVVV.Hosting.Pins
 	/// base class for spread lists
 	/// </summary>
 	[ComVisible(false)]
-	abstract class SpreadList<T> : Spread<ISpread<T>>, IDisposable
+	abstract class SpreadList<TSpread> : Spread<TSpread>, IDisposable
+	    where TSpread : class, ISynchronizable, IFlushable
 	{
-	    class SpreadListStream : BufferedIOStream<ISpread<T>>
+	    class SpreadListStream : BufferedIOStream<TSpread>
 	    {
             public override bool Sync()
             {
@@ -80,7 +81,7 @@ namespace VVVV.Hosting.Pins
 				var attribute = CreateAttribute(i + 1);
 				attribute.IsPinGroup = false;
 				attribute.Order = FAttribute.Order + FOffsetCounter * 1000 + i;
-				var io = FFactory.CreateIOHandler<ISpread<T>>(attribute, false);
+				var io = FFactory.CreateIOHandler<TSpread>(attribute, false);
 				FIOHandlers.Add(io);
 			}
 			
@@ -96,7 +97,7 @@ namespace VVVV.Hosting.Pins
 			{
 				foreach (var io in FIOHandlers)
 				{
-					writer.Write(io.RawIOObject as ISpread<T>);
+					writer.Write(io.RawIOObject as TSpread);
 				}
 			}
 		}

@@ -104,18 +104,5 @@ namespace VVVV.Hosting.Pins
             if (FChanged != null)
                 FChanged(this);
         }
-        
-        public bool IsChanged
-        {
-            get
-            {
-                foreach (IDiffSpread<T> spread in this)
-                {
-                    if (spread.IsChanged) return true;
-                }
-                
-                return false;
-            }
-        }
     }
 }

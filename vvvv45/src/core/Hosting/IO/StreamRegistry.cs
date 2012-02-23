@@ -214,7 +214,7 @@ namespace VVVV.Hosting.IO
                         return IOHandler.Create(stream, enumIn);
                 });
             
-            // InputIOStream can fullfill this contract a little more memory efficient than ManagedIOStream
+            // InputIOStream can fullfill this contract a little more memory efficient than BufferedIOStream
             RegisterInput(typeof(IIOStream<>),
                           (factory, attribute, t) =>
                           {
