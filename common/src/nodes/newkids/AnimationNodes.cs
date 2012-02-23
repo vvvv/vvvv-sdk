@@ -144,6 +144,7 @@ namespace VVVV.Nodes
         ChangeDetector<double> FGoalPosition = new ChangeDetector<double>();
         ChangeDetector<FilterType> FFilterType = new ChangeDetector<FilterType>();
 
+        [Node]
         private void SetLinearFilterCurve(double goalposition = 0, double filtertime = 1, bool restart = false)
         {
             if (restart | FGoalPosition.IsChanged(goalposition) | FFilterTime.IsChanged(filtertime))
@@ -157,6 +158,7 @@ namespace VVVV.Nodes
             }
         }
 
+        [Node]
         private void SetOscillatingFilterCurve(double goalposition = 0, double filtertime = 1, bool restart = false)
         {
             if (restart | FGoalPosition.IsChanged(goalposition) | FFilterTime.IsChanged(filtertime))
@@ -190,6 +192,7 @@ namespace VVVV.Nodes
             }
         }
 
+        [Node]
         public double Sample(double samplepos)
         {
             FPos = FCurve.Sample(samplepos);
