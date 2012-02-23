@@ -78,9 +78,12 @@ namespace VVVV.Hosting.IO.Streams
     
     class DynamicEnumInStream : EnumInStream<EnumEntry>
     {
-        public DynamicEnumInStream(IEnumIn enumIn)
+        private readonly string FEnumName;
+        
+        public DynamicEnumInStream(IEnumIn enumIn, string enumName)
             : base(enumIn)
         {
+            FEnumName = enumName;
         }
         
         public override bool Sync()
@@ -96,9 +99,7 @@ namespace VVVV.Hosting.IO.Streams
                         int ord;
                         string name;
                         FEnumIn.GetOrd(i, out ord);
-                        // TODO: Was not used. FEnumName.
-                        FEnumIn.GetString(i, out name);
-                        writer.Write(new EnumEntry(name, ord));
+                        writer.Write(new EnumEntry(FEnumName, ord));
                     }
                 }
             }

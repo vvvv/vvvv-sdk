@@ -206,7 +206,7 @@ namespace VVVV.Hosting.IO
                 {
                     var host = factory.PluginHost;
                     var enumIn = host.CreateEnumInput(attribute, t);
-                    var stream = new DynamicEnumInStream(enumIn);
+                    var stream = new DynamicEnumInStream(enumIn, attribute.EnumName);
                     // Using ManagedIOStream -> needs to be synced on managed side.
                     if (attribute.AutoValidate)
                         return IOHandler.Create(stream, enumIn, s => s.Sync());
