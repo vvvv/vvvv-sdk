@@ -17,33 +17,33 @@ namespace VVVV.Hosting.IO
             RegisterConfig(typeof(BufferedIOStream<>), CreateConfig);
         }
         
-        private static IIOHandler CreateInput(IIOFactory factory, InputAttribute attribute, Type t)
+        private static IIOContainer CreateInput(IIOFactory factory, InputAttribute attribute, Type t)
         {
             var host = factory.PluginHost;
             var enumIn = host.CreateEnumInput(attribute, t);
             var stream = Activator.CreateInstance(typeof(EnumInStream<>).MakeGenericType(t), new object[] { enumIn }) as IInStream;
             // Using ManagedIOStream -> needs to be synced on managed side.
             if (attribute.AutoValidate)
-                return IOHandler.Create(stream, enumIn, s => s.Sync());
+                return IOContainer.Create(stream, enumIn, s => s.Sync());
             else
-                return IOHandler.Create(stream, enumIn);
+                return IOContainer.Create(stream, enumIn);
         }
         
-        private static IIOHandler CreateOutput(IIOFactory factory, OutputAttribute attribute, Type t)
+        private static IIOContainer CreateOutput(IIOFactory factory, OutputAttribute attribute, Type t)
         {
             var host = factory.PluginHost;
             var enumOut = host.CreateEnumOutput(attribute, t);
             var stream = Activator.CreateInstance(typeof(EnumOutStream<>).MakeGenericType(t), new object[] { enumOut }) as IOutStream;
-            return IOHandler.Create(stream, enumOut, null, s => s.Flush());
+            return IOContainer.Create(stream, enumOut, null, s => s.Flush());
         }
         
-        private static IIOHandler CreateConfig(IIOFactory factory, ConfigAttribute attribute, Type t)
+        private static IIOContainer CreateConfig(IIOFactory factory, ConfigAttribute attribute, Type t)
         {
             var host = factory.PluginHost;
             var enumConfig = host.CreateEnumConfig(attribute, t);
             var streamType = typeof(EnumConfigStream<>).MakeGenericType(t);
             var stream = Activator.CreateInstance(streamType, new object[] { enumConfig }) as IIOStream;
-            return IOHandler.Create(stream, enumConfig, null, s => s.Flush(), s => s.Sync());
+            return IOContainer.Create(stream, enumConfig, null, s => s.Flush(), s => s.Sync());
         }
         
         public override bool CanCreate(Type ioType, IOAttribute attribute)

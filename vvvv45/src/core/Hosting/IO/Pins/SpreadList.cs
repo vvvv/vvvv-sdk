@@ -37,7 +37,7 @@ namespace VVVV.Hosting.Pins
 	    
 		protected readonly IIOFactory FFactory;
 		protected readonly IOAttribute FAttribute;
-		private readonly List<IIOHandler> FIOHandlers = new List<IIOHandler>();
+		private readonly List<IIOContainer> FIOHandlers = new List<IIOContainer>();
 		protected IDiffSpread<int> FCountSpread;
 		protected int FOffsetCounter;
 		protected static int FInstanceCounter = 1;
@@ -81,14 +81,14 @@ namespace VVVV.Hosting.Pins
 				var attribute = CreateAttribute(i + 1);
 				attribute.IsPinGroup = false;
 				attribute.Order = FAttribute.Order + FOffsetCounter * 1000 + i;
-				var io = FFactory.CreateIOHandler<TSpread>(attribute, false);
+				var io = FFactory.CreateIOContainer<TSpread>(attribute, false);
 				FIOHandlers.Add(io);
 			}
 			
 			for (int i = oldCount - 1; i >= newCount; i--)
 			{
 				var io = FIOHandlers[i];
-				FFactory.DestroyIOHandler(io);
+				FFactory.DestroyIOContainer(io);
 				FIOHandlers.Remove(io);
 			}
 			
@@ -97,7 +97,7 @@ namespace VVVV.Hosting.Pins
 			{
 				foreach (var io in FIOHandlers)
 				{
-					writer.Write(io.RawIOObject as TSpread);
+					writer.Write(io.IOObject as TSpread);
 				}
 			}
 		}

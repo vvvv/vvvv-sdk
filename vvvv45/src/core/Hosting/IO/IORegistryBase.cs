@@ -25,11 +25,11 @@ namespace VVVV.Hosting.IO
     class IORegistryBase : IIORegistry
     {
         protected readonly List<IIORegistry> FRegistries = new List<IIORegistry>();
-        protected readonly Dictionary<Type, Func<IIOFactory, InputAttribute, Type, IIOHandler>> FInputDelegates = new Dictionary<Type, Func<IIOFactory, InputAttribute, Type, IIOHandler>>();
-        protected readonly Dictionary<Type, Func<IIOFactory, OutputAttribute, Type, IIOHandler>> FOutputDelegates = new Dictionary<Type, Func<IIOFactory, OutputAttribute, Type, IIOHandler>>();
-        protected readonly Dictionary<Type, Func<IIOFactory, ConfigAttribute, Type, IIOHandler>> FConfigDelegates = new Dictionary<Type, Func<IIOFactory, ConfigAttribute, Type, IIOHandler>>();
+        protected readonly Dictionary<Type, Func<IIOFactory, InputAttribute, Type, IIOContainer>> FInputDelegates = new Dictionary<Type, Func<IIOFactory, InputAttribute, Type, IIOContainer>>();
+        protected readonly Dictionary<Type, Func<IIOFactory, OutputAttribute, Type, IIOContainer>> FOutputDelegates = new Dictionary<Type, Func<IIOFactory, OutputAttribute, Type, IIOContainer>>();
+        protected readonly Dictionary<Type, Func<IIOFactory, ConfigAttribute, Type, IIOContainer>> FConfigDelegates = new Dictionary<Type, Func<IIOFactory, ConfigAttribute, Type, IIOContainer>>();
         
-        public void RegisterInput(Type ioType, Func<IIOFactory, InputAttribute, Type, IIOHandler> createInputFunc, bool registerInterfaces = true)
+        public void RegisterInput(Type ioType, Func<IIOFactory, InputAttribute, Type, IIOContainer> createInputFunc, bool registerInterfaces = true)
         {
             FInputDelegates.Add(ioType, createInputFunc);
             if (registerInterfaces)
@@ -45,12 +45,12 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        public void RegisterInput<TIO>(Func<IIOFactory, InputAttribute, Type, IIOHandler> createInputFunc, bool registerInterfaces = true)
+        public void RegisterInput<TIO>(Func<IIOFactory, InputAttribute, Type, IIOContainer> createInputFunc, bool registerInterfaces = true)
         {
             RegisterInput(typeof(TIO), createInputFunc, registerInterfaces);
         }
         
-        public void RegisterOutput(Type ioType, Func<IIOFactory, OutputAttribute, Type, IIOHandler> createOutputFunc, bool registerInterfaces = true)
+        public void RegisterOutput(Type ioType, Func<IIOFactory, OutputAttribute, Type, IIOContainer> createOutputFunc, bool registerInterfaces = true)
         {
             FOutputDelegates.Add(ioType, createOutputFunc);
             if (registerInterfaces)
@@ -66,12 +66,12 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        public void RegisterOutput<TIO>(Func<IIOFactory, OutputAttribute, Type, IIOHandler> createOutputFunc, bool registerInterfaces = true)
+        public void RegisterOutput<TIO>(Func<IIOFactory, OutputAttribute, Type, IIOContainer> createOutputFunc, bool registerInterfaces = true)
         {
             RegisterOutput(typeof(TIO), createOutputFunc, registerInterfaces);
         }
         
-        public void RegisterConfig(Type ioType, Func<IIOFactory, ConfigAttribute, Type, IIOHandler> createConfigFunc, bool registerInterfaces = true)
+        public void RegisterConfig(Type ioType, Func<IIOFactory, ConfigAttribute, Type, IIOContainer> createConfigFunc, bool registerInterfaces = true)
         {
             FConfigDelegates.Add(ioType, createConfigFunc);
             if (registerInterfaces)
@@ -87,7 +87,7 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        public void RegisterConfig<TIO>(Func<IIOFactory, ConfigAttribute, Type, IIOHandler> createConfigFunc, bool registerInterfaces = true)
+        public void RegisterConfig<TIO>(Func<IIOFactory, ConfigAttribute, Type, IIOContainer> createConfigFunc, bool registerInterfaces = true)
         {
             RegisterConfig(typeof(TIO), createConfigFunc, registerInterfaces);
         }
@@ -129,13 +129,13 @@ namespace VVVV.Hosting.IO
             return false;
         }
         
-        public virtual IIOHandler CreateIOHandler(Type ioType, IIOFactory factory, IOAttribute attribute)
+        public virtual IIOContainer CreateIOContainer(Type ioType, IIOFactory factory, IOAttribute attribute)
         {
             foreach (var registry in FRegistries)
             {
                 if (registry.CanCreate(ioType, attribute))
                 {
-                    return registry.CreateIOHandler(ioType, factory, attribute);
+                    return registry.CreateIOContainer(ioType, factory, attribute);
                 }
             }
             

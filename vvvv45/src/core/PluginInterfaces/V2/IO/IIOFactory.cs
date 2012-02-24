@@ -8,22 +8,22 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
-		IIOHandler CreateIOHandler(Type type, IOAttribute attribute, bool hookHandlers = true);
-		void DestroyIOHandler(IIOHandler ioHandler);
-		bool CanCreateIOHandler(Type type, IOAttribute attribute);
+		IIOContainer CreateIOContainer(Type type, IOAttribute attribute, bool hookHandlers = true);
+		void DestroyIOContainer(IIOContainer ioHandler);
+		bool CanCreateIOContainer(Type type, IOAttribute attribute);
 	}
 	
 	public static class IOFactoryExtensions
 	{
-		public static IIOHandler<T> CreateIOHandler<T>(this IIOFactory factory, IOAttribute attribute, bool hookHandlers = true)
+		public static IIOContainer<T> CreateIOContainer<T>(this IIOFactory factory, IOAttribute attribute, bool hookHandlers = true)
 			where T : class
 		{
-			return (IIOHandler<T>) factory.CreateIOHandler(typeof(T), attribute, hookHandlers);
+			return (IIOContainer<T>) factory.CreateIOContainer(typeof(T), attribute, hookHandlers);
 		}
 		
 		public static object CreateIO(this IIOFactory factory, Type type, IOAttribute attribute, bool hookHandlers = true)
 		{
-			return factory.CreateIOHandler(type, attribute, hookHandlers).RawIOObject;
+			return factory.CreateIOContainer(type, attribute, hookHandlers).IOObject;
 		}
 		
 		public static T CreateIO<T>(this IIOFactory factory, IOAttribute attribute, bool hookHandlers = true)

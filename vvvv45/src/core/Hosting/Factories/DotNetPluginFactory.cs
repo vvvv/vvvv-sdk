@@ -531,9 +531,9 @@ namespace VVVV.Hosting.Factories
         {
             foreach (var config in FIOFactory.FConfigHandlers)
             {
-                if (config.Metadata == configPin)
+                if (config.PluginIO == configPin)
                 {
-                    config.Action(IOActionType.Configuring);
+                    config.Action(IOAction.Config);
                     break;
                 }
             }
@@ -543,7 +543,7 @@ namespace VVVV.Hosting.Factories
         {
             foreach (var input in FIOFactory.FPreHandlers)
             {
-                input.Action(IOActionType.Evaluating);
+                input.Action(IOAction.Sync);
             }
             
             // HACK: Can we remove this? Maybe by seperating...
@@ -554,7 +554,7 @@ namespace VVVV.Hosting.Factories
             
             foreach (var output in FIOFactory.FPostHandlers)
             {
-                output.Action(IOActionType.Evaluated);
+                output.Action(IOAction.Flush);
             }
         }
         

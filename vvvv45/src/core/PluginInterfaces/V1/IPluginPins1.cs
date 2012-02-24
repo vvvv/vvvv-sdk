@@ -52,6 +52,10 @@ namespace VVVV.PluginInterfaces.V1
 		/// Specifies whether the pin is connected in the patch or not.
 		/// </summary>
 		bool IsConnected{get;}
+		/// <summary>
+		/// Gets the plugin host which created this plugin io.
+		/// </summary>
+		IPluginHost PluginHost{get;}
 	}
 	
 	/// <summary>

@@ -13,12 +13,12 @@ namespace VVVV.Hosting.IO
     {
         private readonly IInternalPluginHost FPluginHost;
         private readonly IORegistry FIORegistry;
-        private readonly List<IIOHandler> FCreatedHandlers = new List<IIOHandler>();
+        private readonly List<IIOContainer> FCreatedHandlers = new List<IIOContainer>();
         private readonly Dictionary<IPluginIO, int> FPluginIORefCount = new Dictionary<IPluginIO, int>();
         // used by internal class PluginContainer
-        internal readonly List<IIOHandler> FPreHandlers = new List<IIOHandler>();
-        internal readonly List<IIOHandler> FPostHandlers = new List<IIOHandler>();
-        internal readonly List<IIOHandler> FConfigHandlers = new List<IIOHandler>();
+        internal readonly List<IIOContainer> FPreHandlers = new List<IIOContainer>();
+        internal readonly List<IIOContainer> FPostHandlers = new List<IIOContainer>();
+        internal readonly List<IIOContainer> FConfigHandlers = new List<IIOContainer>();
         
         public IOFactory(IInternalPluginHost pluginHost, IORegistry streamRegistry)
         {
@@ -30,7 +30,7 @@ namespace VVVV.Hosting.IO
         {
             foreach (var ioHandler in FCreatedHandlers.ToArray())
             {
-                DestroyIOHandler(ioHandler);
+                DestroyIOContainer(ioHandler);
             }
         }
         
@@ -42,9 +42,9 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        public IIOHandler CreateIOHandler(Type type, IOAttribute attribute, bool hookHandlers = true)
+        public IIOContainer CreateIOContainer(Type type, IOAttribute attribute, bool hookHandlers = true)
         {
-            var io = FIORegistry.CreateIOHandler(
+            var io = FIORegistry.CreateIOContainer(
                 type,
                 this,
                 attribute
@@ -58,7 +58,7 @@ namespace VVVV.Hosting.IO
             FCreatedHandlers.Add(io);
             
             // Would be much nicer if we could simply call pluginIO.AddRef()
-            var pluginIO = io.Metadata as IPluginIO;
+            var pluginIO = io.PluginIO as IPluginIO;
             if (pluginIO != null)
             {
                 if (FPluginIORefCount.ContainsKey(pluginIO))
@@ -69,15 +69,15 @@ namespace VVVV.Hosting.IO
             
             if (hookHandlers)
             {
-                if (io.NeedsAction(IOActionType.Evaluating))
+                if (io.NeedsAction(IOAction.Sync))
                 {
                     FPreHandlers.Add(io);
                 }
-                if (io.NeedsAction(IOActionType.Evaluated))
+                if (io.NeedsAction(IOAction.Flush))
                 {
                     FPostHandlers.Add(io);
                 }
-                if (io.NeedsAction(IOActionType.Configuring))
+                if (io.NeedsAction(IOAction.Config))
                 {
                     FConfigHandlers.Add(io);
                 }
@@ -86,7 +86,7 @@ namespace VVVV.Hosting.IO
             return io;
         }
         
-        public bool CanCreateIOHandler(Type type, IOAttribute attribute)
+        public bool CanCreateIOContainer(Type type, IOAttribute attribute)
         {
             if (!FIORegistry.CanCreate(type, attribute))
             {
@@ -103,17 +103,17 @@ namespace VVVV.Hosting.IO
         }
         
         // HACK: IIOHandler should implement IDisposable
-        public void DestroyIOHandler(IIOHandler io)
+        public void DestroyIOContainer(IIOContainer io)
         {
-            if (io.NeedsAction(IOActionType.Evaluating))
+            if (io.NeedsAction(IOAction.Sync))
             {
                 FPreHandlers.Remove(io);
             }
-            if (io.NeedsAction(IOActionType.Evaluated))
+            if (io.NeedsAction(IOAction.Flush))
             {
                 FPostHandlers.Remove(io);
             }
-            if (io.NeedsAction(IOActionType.Configuring))
+            if (io.NeedsAction(IOAction.Config))
             {
                 FConfigHandlers.Remove(io);
             }
@@ -127,7 +127,7 @@ namespace VVVV.Hosting.IO
             }
             
             // Would be much nicer if we could simply call pluginIO.Release()
-            var pluginIO = io.Metadata as IPluginIO;
+            var pluginIO = io.PluginIO as IPluginIO;
             if (pluginIO != null)
             {
                 FPluginIORefCount[pluginIO]--;
