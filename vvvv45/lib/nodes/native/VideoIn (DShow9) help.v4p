@@ -1,0 +1,119 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\VideoIn (DShow9) help.v4p">
+   <BOUNDS height="7455" left="3345" top="2595" type="Window" width="4920">
+   </BOUNDS>
+   <NODE id="8" nodename="VideoIn (DShow9)">
+   <BOUNDS height="0" left="525" top="2040" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Driver" visible="1">
+   </PIN>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="1830" top="1365" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6120" top="4530" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="1830" top="1365" type="Box" width="2160">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Device / Driver|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Driver" srcnodeid="7" srcpinname="Output Enum">
+   </LINK>
+   <NODE id="5" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="180" top="4035" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="1755" top="4455" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="5745" top="6780" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="2340" left="1755" top="4455" type="Box" width="2430">
+   </BOUNDS>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="3" nodename="UniformScale (Transform)">
+   <BOUNDS height="0" left="3135" top="4140" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="View Transform" srcnodeid="3" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1800" top="2970" type="Node" width="6255">
+   </BOUNDS>
+   <BOUNDS height="735" left="1800" top="2970" type="Box" width="2805">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Video Texture converts the Direct Show stream to a Texture, that can be mapped onto any kind of geometry|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="525" left="15" top="390" type="Box" width="4245">
+   </BOUNDS>
+   <BOUNDS height="160" left="10530" top="45690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Gets a video signal from a directshow compatible device.&cr;&lf;You have to select a device to get a video stream!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10530" top="45690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|VideoIn - DShow9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="VideoTexture (EX9.Texture VMR9)" id="9">
+   <BOUNDS type="Node" left="525" top="3465" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Texture Out" dstnodeid="5" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Video" dstnodeid="9" dstpinname="Video">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Layer" dstnodeid="4" dstpinname="Layers">
+   </LINK>
+   </PATCH>
