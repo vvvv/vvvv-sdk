@@ -16,12 +16,12 @@ namespace VVVV.Core
         /// <summary>
         /// get all the links that start or end here
         /// </summary>
-        IEnumerable<IDataFlowLink> Links { get; }
+        IEnumerable<IDataflowLink> Links { get; }
 
         /// <summary>
         /// returns the patch that holds the specific location
         /// </summary>
-        IDataflowPatch Patch { get; }
+        IDataflowPatchSymbol Patch { get; }
     }
 
     public interface IDataflowSource : IDataflowLocation
@@ -36,7 +36,7 @@ namespace VVVV.Core
     /// <summary>
     /// a link in a dataflow graph connects a source with a sink
     /// </summary>
-    public interface IDataFlowLink
+    public interface IDataflowLink
     {
         /// <summary>
         /// get the source (= starting point) of the dataflow link
@@ -49,21 +49,36 @@ namespace VVVV.Core
         IDataflowSink Sink { get; }
     }
 
-    public interface IDataflowPatch : IDataflowNodeDefinition
+    public interface IHubSymbol : INodeReference, IDataflowPinDefinition//, IDataflowLocation
+    { }
+
+    public interface IInletSymbol : IHubSymbol, IInputPinDefinition//, IDataflowSource
+    { }
+
+    public interface IOutletSymbol : IHubSymbol, IOutputPinDefinition//, IDataflowSink
+    { }
+
+    public interface IPatchSymbol : INodeDefinition
     {
-        IEnumerable<IDataFlowLink> Links { get; }
+        IEnumerable<INodeReference> Nodes { get; }
+    }
+
+    public interface IDataflowPatchSymbol : IPatchSymbol, IDataflowNodeDefinition
+    {
+        IEnumerable<IDataflowLink> Links { get; }
+
+        new IEnumerable<IInletSymbol> Inputs { get; }
+
+        new IEnumerable<IOutletSymbol> Outputs { get; }
+
+        IEnumerable<IDataflowNodeReference> DataflowNodes { get; }
     }
 
 
 
-
-
-
-
-
-    public static class DataflowHelpers
+    public static class PatchAndDataflowHelpers
     {
-        static DataflowHelpers()
+        static PatchAndDataflowHelpers()
         {
         }
 

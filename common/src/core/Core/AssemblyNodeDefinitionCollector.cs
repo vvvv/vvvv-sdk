@@ -61,11 +61,11 @@ namespace VVVV.Core
     {
         // PLAY AROUND WITH THOSE:
         public bool AcceptFunctionNodes = true;
-        public bool AcceptFunctorNodes = false;
+        public bool AcceptStepNodes = true;
         public bool AcceptNodesWithoutNodeAttribute = true;        // why not import everything that can be worked with(?)
         public bool AcceptNodesThatHaveRefParams = false;           // not supported yet
         public bool AcceptNodesThatWorkWithUnclonableTypes = true;  // in the best case patch view will take care that only one connection is allowed when values aren't clonable
-        public bool AcceptConstructorsAsFunctors = false;           // keep it like that
+        public bool AcceptConstructorsAsSteps = false;           // keep it like that
 
         private MetadataReaderHost FHost;
         private IName FctorName;
@@ -121,15 +121,15 @@ namespace VVVV.Core
 
             // todo: ref params should result in both in and output pins or in a ref pin(?), for now only input is created
 
-            DataflowPinDefinition pin;
+            DefaultDataflowPinDefinition pin;
             if (param.IsOut)
             {
-                var output = new OutputPinDefinition();
+                var output = new DefaultOutputPinDefinition();
                 pin = output;
             }
             else
             {
-                var input = new InputPinDefinition();
+                var input = new DefaultInputPinDefinition();
                 
                 input.ParameterDefinition = param;
 
@@ -155,11 +155,11 @@ namespace VVVV.Core
             yield return pin;
         }
 
-        private IEnumerable<IDataflowPinDefinition> ReturnValueToOutputDefinition(DataflowNodeDefinition node)
+        private IEnumerable<IDataflowPinDefinition> ReturnValueToOutputDefinition(DefaultDataflowNodeDefinition node)
         {
             if (node.MethodDefinition.Type.TypeCode != PrimitiveTypeCode.Void)
             {
-                var pin = new OutputPinDefinition();
+                var pin = new DefaultOutputPinDefinition();
 
                 var pinattribute = node.MethodDefinition.ReturnValueAttributes.FirstOrDefault(attribute => attribute.Type.TypeName() == "PinAttribute");
                 var namearg = pinattribute.GetArgument("Name");
@@ -180,7 +180,7 @@ namespace VVVV.Core
             }
         }
 
-        public void CollectInputsAndOutpus(IMethodDefinition methodDefinition, DataflowNodeDefinition node)
+        public void CollectInputsAndOutpus(IMethodDefinition methodDefinition, DefaultDataflowNodeDefinition node)
         {
             IEnumerable<IDataflowPinDefinition> stdpindefs =
                 from param in methodDefinition.Parameters
@@ -198,13 +198,13 @@ namespace VVVV.Core
         {
             if (methodDefinition.Type.TypeCode == PrimitiveTypeCode.Pointer)
                 yield break;
-            
+
+            if (!AcceptConstructorsAsSteps && methodDefinition.IsConstructor)
+                yield break;
+                
             if (methodDefinition.Parameters.Where(p => p.Type.TypeCode == PrimitiveTypeCode.Pointer).Any())
                 yield break;
             
-            if (!AcceptConstructorsAsFunctors && methodDefinition.IsConstructor)
-                yield break;
-
             if (!AcceptNodesThatHaveRefParams && methodDefinition.Parameters.Any(param => !param.IsOut && param.IsByReference))
                 yield break;
 
@@ -218,12 +218,11 @@ namespace VVVV.Core
 
             if (AcceptNodesWithoutNodeAttribute || nodeattribute != null)
             {
-                var node = new DataflowNodeDefinition();
+                DefaultDataflowNodeDefinition node = new DefaultDataflowNodeDefinition();
+                
                 // TODO: Find out if this method is an extension method. How?
                 if (!methodDefinition.IsStatic)
-                {
                     node.StateType = methodDefinition.ContainingTypeDefinition;
-                }
 
                 node.MethodDefinition = methodDefinition;
 
@@ -276,9 +275,9 @@ namespace VVVV.Core
                     (!type.IsInterface) &&
                     (
                         (type.IsStatic && AcceptFunctionNodes) ||
-                        (!type.IsStatic && (AcceptFunctionNodes || AcceptFunctorNodes))
+                        (!type.IsStatic && (AcceptFunctionNodes || AcceptStepNodes))
                     )
-                let functortype =
+                let steppertype = 
                     (type.IsValueType || type.HasDefaultConstructor(FHost)) &&
                     (AcceptNodesThatWorkWithUnclonableTypes || type.IsClonable())
                 from method in type.Methods
@@ -286,7 +285,7 @@ namespace VVVV.Core
                     ((method.Visibility & TypeMemberVisibility.Public) == TypeMemberVisibility.Public) &&
                     (
                     (method.IsStatic && AcceptFunctionNodes) ||
-                    (!method.IsStatic && AcceptFunctorNodes && functortype)
+                    (!method.IsStatic && AcceptStepNodes && steppertype)
                    )
                 from node in Collect(method)
                 select node;

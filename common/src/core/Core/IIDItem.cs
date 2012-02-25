@@ -36,7 +36,7 @@ namespace VVVV.Core
             set;
         }
 
-        IModelMapper Mapper
+        ModelMapper Mapper
         {
             get;
         }

@@ -5,7 +5,7 @@ namespace VVVV.Core.Model
 {
 	public abstract class PersistentIDContainer : IDContainer, IPersistent
 	{
-		public PersistentIDContainer(string name, Uri location, bool isRooted)
+		public PersistentIDContainer(string name, Uri location, bool isRooted = false)
 			: base(name, isRooted)
 		{
 			Location = location;
@@ -15,12 +15,6 @@ namespace VVVV.Core.Model
 			{
 				IsLoaded = true;
 			}
-		}
-		
-		public PersistentIDContainer(string name, Uri location)
-			: this(name, location, false)
-		{
-			
 		}
 		
 		public event EventHandler Loaded;

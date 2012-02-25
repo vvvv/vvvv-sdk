@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.Core.Collections;
+using Microsoft.Cci;
+using System.Drawing;
 
 namespace VVVV.Core
 {
-    public class BasicNodeDefinition : INodeDefinition
+    public class DefaultNodeDefinition : INodeDefinition
     {
         public string Name { get; set; }
 
@@ -28,20 +30,21 @@ namespace VVVV.Core
         { 
             get
             {
-                if (Version != "")
+                //todo: caching of get property
+                if (Version != "" && Version != null)
                     return Name + " (" + Category + " " + Version + ")"; //todo: more performatant string creation
                 else
                     return Name + " (" + Category + ")"; //todo: more performatant string creation
             }
         }
 
-        public INodeReference CreateReference()
+        public virtual INodeReference CreateReference(string name)
         {
-            throw new NotImplementedException();
+            return new DefaultNodeReference(this, name);
         }
     }
 
-    public class RichNodeDefinition : BasicNodeDefinition, IRichNodeDefinition
+    public class DefaultRichNodeDefinition : DefaultNodeDefinition, IRichNodeDefinition
     {
         public string Tags { get; set; }
 
@@ -58,20 +61,15 @@ namespace VVVV.Core
         public string NameInTextualCode { get; set; }
 
         public string Namespace { get; set; }
-
-        IRichNodeReference IRichNodeDefinition.CreateReference()
-        {
-            throw new NotImplementedException();
-        }
     }
 
-    public class DataflowNodeDefinition : RichNodeDefinition, IDataflowNodeDefinition
+    public class DefaultDataflowNodeDefinition : DefaultRichNodeDefinition, IDataflowNodeDefinition
     {
         public IEnumerable<IInputPinDefinition> Inputs { get; set; }
 
         public IEnumerable<IOutputPinDefinition> Outputs { get; set; }
 
-        public DataflowNodeDefinition()
+        public DefaultDataflowNodeDefinition()
         {
             Inputs = new EditableList<IInputPinDefinition>();
             Outputs = new EditableList<IOutputPinDefinition>();
@@ -81,9 +79,9 @@ namespace VVVV.Core
         
         public Microsoft.Cci.ITypeReference StateType { get; set; }
 
-        public new IDataFlowNodeReference CreateReference()
+        public IDataflowNodeReference CreateReference(string name, IEnumerable<IInputPinReference> inputs, IEnumerable<IOutputPinReference> outputs)
         {
-            throw new NotImplementedException();
+            return new DefaultDataflowNodeReference(this, name, inputs, outputs);
         }
         
         public override string ToString()
@@ -92,11 +90,11 @@ namespace VVVV.Core
         }
     }
 
-
-    public class DataflowPinDefinition : IDataflowPinDefinition
+    
+    
+    public class DefaultDataflowPinDefinition : IDataflowPinDefinition
     {
-
-        public Microsoft.Cci.ITypeReference Type { get; set; }
+        public ITypeReference Type { get; set; }
 
         public string Name { get; set; }
 
@@ -104,26 +102,33 @@ namespace VVVV.Core
 
         public IDataflowNodeDefinition Node { get; set; }
 
-        public IDataFlowPinReference CreateReference()
+        public IDataflowPinReference CreateReference(ITypeReference type)
         {
-            throw new NotImplementedException();
+            return new DefaultDataflowPinReference(this, type);
         }
     }
 
-    public class InputPinDefinition : DataflowPinDefinition, IInputPinDefinition
+    public class DefaultInputPinDefinition : DefaultDataflowPinDefinition, IInputPinDefinition
     {
-
         public bool HasDefaultValue { get; set; }
 
-        public Microsoft.Cci.IMetadataConstant DefaultValue { get; set; }
+        public IMetadataConstant DefaultValue { get; set; }
 
         public bool StrikedOutByDefault { get; set; }
         
         public Microsoft.Cci.IParameterDefinition ParameterDefinition { get; set; }
+
+        public IInputPinReference CreateReference(ITypeReference type, IMetadataConstant defaultValue, bool strikedOut)
+        {
+            return new DefaultInputPinReference(this, type, defaultValue, strikedOut);
+        }
     }
 
-    public class OutputPinDefinition : DataflowPinDefinition, IOutputPinDefinition
+    public class DefaultOutputPinDefinition : DefaultDataflowPinDefinition, IOutputPinDefinition
     {
-      
+        new public IOutputPinReference CreateReference(ITypeReference type)
+        {
+            return new DefaultOutputPinReference(this, type);
+        }
     }
 }
