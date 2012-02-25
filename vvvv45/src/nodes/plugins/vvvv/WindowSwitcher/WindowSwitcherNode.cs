@@ -217,7 +217,7 @@ namespace VVVV.Nodes.WindowSwitcher
             FWindowLIFO.Insert(0, FActiveWindow);
         }
         
-        void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+        void FHierarchyViewerClick(ModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (sender != null)
             {
