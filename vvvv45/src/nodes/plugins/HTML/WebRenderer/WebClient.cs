@@ -1,5 +1,7 @@
 ﻿using System;
 using CefGlue;
+using VVVV.Core;
+using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.HTML
 {
@@ -14,6 +16,24 @@ namespace VVVV.Nodes.HTML
                 FRenderer = renderer;
             }
             
+            protected override bool GetScreenPoint(CefBrowser browser, int viewX, int viewY, out int screenX, out int screenY)
+            {
+                Shell.Instance.Logger.Log(LogType.Debug, string.Format("GetScreenPoint ({0}, {0})", viewX, viewY));
+                return base.GetScreenPoint(browser, viewX, viewY, out screenX, out screenY);
+            }
+            
+            protected override bool GetScreenRect(CefBrowser browser, out CefRect rect)
+            {
+                Shell.Instance.Logger.Log(LogType.Debug, string.Format("GetScreenRect"));
+                return base.GetScreenRect(browser, out rect);
+            }
+            
+            protected override bool GetViewRect(CefBrowser browser, out CefRect rect)
+            {
+                Shell.Instance.Logger.Log(LogType.Debug, string.Format("GetViewRect"));
+                return base.GetViewRect(browser, out rect);
+            }
+            
             protected override void OnPaint(CefBrowser browser, CefPaintElementType type, CefRect[] dirtyRects, IntPtr buffer)
             {
                 int width, height;
@@ -21,9 +41,7 @@ namespace VVVV.Nodes.HTML
                 switch (type) {
                     case CefPaintElementType.View:
                         browser.GetSize(CefPaintElementType.View, out width, out height);
-                        for (int i = 0; i < dirtyRects.Length; i++) {
-                            FRenderer.Paint(dirtyRects[i], buffer, width * 4);
-                        }
+                        FRenderer.Paint(dirtyRects, buffer, width * 4);
                         break;
                     case CefPaintElementType.Popup:
                         
@@ -56,6 +74,24 @@ namespace VVVV.Nodes.HTML
             }
         }
         
+//        class DomEventEventListener : CefDomEventListener
+//        {
+//            protected override void HandleEvent(CefDomEvent e)
+//            {
+//                var currentTarget = e.GetCurrentTarget();
+//                var target = e.GetTarget();
+//            }
+//        }
+//        
+//        class DomVisitor : CefDomVisitor
+//        {
+//            protected override void Visit(CefDomDocument document)
+//            {
+//                var rootNode = document.GetDocument();
+//                rootNode.AddEventListener("mouseover", new DomEventEventListener(), false);
+//            }
+//        }
+        
         class LoadHandler : CefLoadHandler
         {
             private readonly WebRenderer FRenderer;
@@ -84,6 +120,7 @@ namespace VVVV.Nodes.HTML
                 FRenderer.FFrameLoadCount--;
                 FRenderer.FErrorText = string.Empty;
                 base.OnLoadEnd(browser, frame, httpStatusCode);
+//                frame.VisitDom(new DomVisitor());
             }
         }
         

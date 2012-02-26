@@ -9,6 +9,7 @@ using CefGlue.WebBrowser;
 using CefGlue.Windows.Forms;
 using SlimDX.Direct3D9;
 using VVVV.Core;
+using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.VMath;
 
@@ -27,6 +28,7 @@ namespace VVVV.Nodes.HTML
         private string FUrl;
         private double FZoomLevel;
         private MouseEvent FMouseEvent;
+        private Form FForm;
         internal int FFrameLoadCount;
         internal string FErrorText;
         
@@ -36,14 +38,15 @@ namespace VVVV.Nodes.HTML
 
             var settings = new CefBrowserSettings();
             settings.DeveloperToolsDisabled = true;
-            settings.DragDropDisabled = true;
             // TODO: Needs to be disabled or WebGL won't work at all.
             settings.AcceleratedCompositingEnabled = false;
             settings.FileAccessFromFileUrlsAllowed = true;
             settings.UniversalAccessFromFileUrlsAllowed = true;
             
+//            FForm = new Form();
             using (var windowInfo = new CefWindowInfo())
             {
+//                windowInfo.SetAsOffScreen(FForm.Handle);
                 windowInfo.SetAsOffScreen(IntPtr.Zero);
                 CefBrowser.Create(windowInfo, new WebClient(this), DEFAULT_URL, settings);
             }
@@ -158,15 +161,28 @@ namespace VVVV.Nodes.HTML
             }
         }
         
-        internal void Paint(CefRect cefRect, IntPtr buffer, int stride)
+        internal void Paint(CefRect[] cefRects, IntPtr buffer, int stride)
         {
             lock (FTextures)
             {
                 try
                 {
-                    var rect = new Rectangle(cefRect.X, cefRect.Y, cefRect.Width, cefRect.Height);
+                    // TODO: This feature is broken in current version. See http://code.google.com/p/chromiumembedded/issues/detail?id=469
+                    // We therefor need to redraw the whole area.
+                    //                    for (int i = 0; i < cefRects.Length; i++)
+                    //                    {
+                    //                        var rect = new Rectangle(cefRects[i].X, cefRects[i].Y, cefRects[i].Width, cefRects[i].Height);
+                    //                        foreach (var texture in FTextures)
+                    //                        {
+                    //                            WriteToTexture(rect, buffer, stride, texture);
+                    //                        }
+                    //                    }
+                    
+                    int width, height;
+                    FBrowser.GetSize(CefPaintElementType.View, out width, out height);
                     foreach (var texture in FTextures)
                     {
+                        var rect = new Rectangle(0, 0, width, height);
                         WriteToTexture(rect, buffer, stride, texture);
                     }
                 }
@@ -180,7 +196,8 @@ namespace VVVV.Nodes.HTML
         private void WriteToTexture(Rectangle rect, IntPtr buffer, int stride, Texture texture)
         {
             // TODO: Do not lock entire surface.
-            var dataRect = texture.LockRectangle(0, LockFlags.Discard);
+            Shell.Instance.Logger.Log(LogType.Debug, string.Format("Dirty rect: {0}", rect));
+            var dataRect = texture.LockRectangle(0, rect, LockFlags.None);
             try
             {
                 var dataStream = dataRect.Data;
@@ -192,7 +209,8 @@ namespace VVVV.Nodes.HTML
                 {
                     for (int y = rect.Y; y < rect.Y + rect.Height; y++)
                     {
-                        dataStream.Position = y * dataRect.Pitch + 4 * rect.X;
+                        //                        dataStream.Position = y * dataRect.Pitch + 4 * rect.X;
+                        dataStream.Position = (y - rect.Y) * dataRect.Pitch;
                         dataStream.WriteRange(buffer + y * stride + 4 * rect.X, rect.Width * 4);
                     }
                 }
@@ -211,7 +229,7 @@ namespace VVVV.Nodes.HTML
                 var buffer = Marshal.AllocHGlobal(FWidth * FHeight * 4);
                 try
                 {
-                    var texture = new Texture(device, FWidth, FHeight, 1, Usage.Dynamic & ~Usage.AutoGenerateMipMap, Format.A8R8G8B8, Pool.Default);
+                    var texture = new Texture(device, FWidth, FHeight, 1, Usage.None & ~Usage.AutoGenerateMipMap, Format.A8R8G8B8, Pool.Managed);
                     var rect = new CefRect(0, 0, FWidth, FHeight);
                     if (FBrowser != null)
                     {
@@ -229,6 +247,10 @@ namespace VVVV.Nodes.HTML
         
         private void UpdateTexture(CefBrowser browser, Texture texture)
         {
+            //            IntPtr buffer = Marshal.AllocHGlobal(FWidth * FHeight * 4);
+            //            FBrowser.GetImage(CefPaintElementType.View, FWidth, FHeight, buffer);
+            //            WriteToTexture(new Rectangle(0, 0, FWidth, FHeight), buffer, FWidth * 4, texture);
+            //            Marshal.FreeHGlobal(buffer);
         }
         
         private void DestroyTexture(CefBrowser browser, Texture texture)
