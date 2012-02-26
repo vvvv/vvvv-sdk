@@ -1,6 +1,6 @@
 Version info:
-CEF: 365
-CefGlue: 0.5.0.1
+CEF: 1.963.439
+CefGlue: changeset 115
 
 Get CEF from http://code.google.com/p/chromiumembedded/downloads/list
 Get CefGlue from https://bitbucket.org/fddima/cefglue/downloads

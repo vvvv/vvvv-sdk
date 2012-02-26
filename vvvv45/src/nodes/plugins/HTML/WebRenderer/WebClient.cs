@@ -14,20 +14,22 @@ namespace VVVV.Nodes.HTML
                 FRenderer = renderer;
             }
             
-            protected override void OnPaint(CefBrowser browser, CefPaintElementType type, CefRect dirtyRect, IntPtr buffer)
+            protected override void OnPaint(CefBrowser browser, CefPaintElementType type, CefRect[] dirtyRects, IntPtr buffer)
             {
                 int width, height;
                 
                 switch (type) {
                     case CefPaintElementType.View:
                         browser.GetSize(CefPaintElementType.View, out width, out height);
-                        FRenderer.Paint(dirtyRect, buffer, width * 4);
+                        for (int i = 0; i < dirtyRects.Length; i++) {
+                            FRenderer.Paint(dirtyRects[i], buffer, width * 4);
+                        }
                         break;
                     case CefPaintElementType.Popup:
                         
                         break;
                 }
-                base.OnPaint(browser, type, dirtyRect, buffer);
+                base.OnPaint(browser, type, dirtyRects, buffer);
             }
         }
         
@@ -82,9 +84,9 @@ namespace VVVV.Nodes.HTML
             return base.GetFocusHandler();
         }
         
-        protected override CefJSBindingHandler GetJSBindingHandler()
+        protected override CefV8ContextHandler GetV8ContextHandler()
         {
-            return base.GetJSBindingHandler();
+            return base.GetV8ContextHandler();
         }
         
         protected override CefJSDialogHandler GetJSDialogHandler()

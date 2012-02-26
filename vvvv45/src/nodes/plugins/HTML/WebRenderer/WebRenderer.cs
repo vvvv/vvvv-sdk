@@ -21,37 +21,24 @@ namespace VVVV.Nodes.HTML
         private readonly DXResource<Texture, CefBrowser> FTextureResource;
         private readonly List<Texture> FTextures = new List<Texture>();
         private CefBrowser FBrowser;
-        //        private Bitmap FBitmap;
         private int FWidth = DEFAULT_WIDTH;
         private int FHeight = DEFAULT_HEIGHT;
         private string FLastUrl;
         
         public WebRenderer()
         {
-            // TODO: Move this to a more central location
-            var cefSettings = new CefSettings();
-            cefSettings.MultiThreadedMessageLoop = true;
-            cefSettings.CachePath = Path.GetDirectoryName(Application.ExecutablePath) + "/cache";
-            cefSettings.LogFile = Path.GetDirectoryName(Application.ExecutablePath) + "/CEF.log";
-            cefSettings.LogSeverity = CefLogSeverity.Verbose;
-            Cef.Initialize(cefSettings);
+            CefService.AddRef();
 
             var settings = new CefBrowserSettings();
-            //            settings.JavaDisabled = true;
-            //            settings.JavaScriptDisabled = true;
-            //            settings.WebGLDisabled = true;
+            settings.DeveloperToolsDisabled = true;
+            settings.DragDropDisabled = true;
+            settings.FileAccessFromFileUrlsAllowed = true;
+            settings.UniversalAccessFromFileUrlsAllowed = true;
             
             using (var windowInfo = new CefWindowInfo())
             {
-                //windowInfo.SetAsOffScreen(IntPtr.Zero);
-                //                var control = new Form();
-                //                control.Show();
                 windowInfo.SetAsOffScreen(IntPtr.Zero);
                 CefBrowser.Create(windowInfo, new WebClient(this), DEFAULT_URL, settings);
-                //                var browser = new CefWebBrowser();
-                //                browser.LoadUrl(DEFAULT_URL);
-                //                var browser = new CefWebBrowserCore(this, settings, DEFAULT_URL);
-                //                browser.Create(windowInfo);
             }
             
             FTextureResource = new DXResource<Texture, CefBrowser>(
@@ -65,12 +52,11 @@ namespace VVVV.Nodes.HTML
         public void Dispose()
         {
             FTextureResource.Dispose();
-            
-            // TODO: Move this to a more central location
-            Cef.Shutdown();
+            FBrowser.Dispose();
+            CefService.Release();
         }
         
-        [Node]
+        [Node(Name = "Renderer")]
         public DXResource<Texture, CefBrowser> Render(string url, int width = DEFAULT_WIDTH, int height = DEFAULT_HEIGHT)
         {
             if (FBrowser == null) return FTextureResource;
@@ -85,7 +71,6 @@ namespace VVVV.Nodes.HTML
             if (FLastUrl != url)
             {
                 FBrowser.GetMainFrame().LoadURL(url);
-                FBrowser.GetMainFrame().
                 FLastUrl = url;
             }
             return FTextureResource;
@@ -115,28 +100,29 @@ namespace VVVV.Nodes.HTML
         {
             lock (FTextures)
             {
+                var rect = new Rectangle(cefRect.X, cefRect.Y, cefRect.Width, cefRect.Height);
                 foreach (var texture in FTextures)
                 {
-                    try {
-                        var rect = new Rectangle(cefRect.X, cefRect.Y, cefRect.Width, cefRect.Height);
-                        var dataRect = texture.LockRectangle(0, new Rectangle(0, 0, FWidth, FHeight), LockFlags.None);
-                        try
-                        {
-                            var dataStream = dataRect.Data;
-                            for (int y = rect.Y; y < rect.Y + rect.Height; y++)
-                            {
-                                dataStream.Position = y * dataRect.Pitch + 4 * rect.X;
-                                dataStream.WriteRange(buffer + y * stride + 4 * rect.X, rect.Width * 4);
-                            }
-                        }
-                        finally
-                        {
-                            texture.UnlockRectangle(0);
-                        }
-                    } catch (Exception e) {
-                        throw;
-                    }
+                    WriteToTexture(rect, buffer, stride, texture);
                 }
+            }
+        }
+        
+        private void WriteToTexture(Rectangle rect, IntPtr buffer, int stride, Texture texture)
+        {
+            var dataRect = texture.LockRectangle(0, new Rectangle(0, 0, FWidth, FHeight), LockFlags.None);
+            try
+            {
+                var dataStream = dataRect.Data;
+                for (int y = rect.Y; y < rect.Y + rect.Height; y++)
+                {
+                    dataStream.Position = y * dataRect.Pitch + 4 * rect.X;
+                    dataStream.WriteRange(buffer + y * stride + 4 * rect.X, rect.Width * 4);
+                }
+            }
+            finally
+            {
+                texture.UnlockRectangle(0);
             }
         }
         
@@ -144,9 +130,28 @@ namespace VVVV.Nodes.HTML
         {
             lock (FTextures)
             {
-                var texture = new Texture(device, FWidth, FHeight, 1, Usage.Dynamic, Format.A8R8G8B8, Pool.Default);
-                FTextures.Add(texture);
-                return texture;
+                var buffer = Marshal.AllocHGlobal(FWidth * FHeight * 4);
+                try
+                {
+                    var texture = new Texture(device, FWidth, FHeight, 1, Usage.Dynamic, Format.A8R8G8B8, Pool.Default);
+                    // This method always returns false?
+                    if (FBrowser.GetImage(CefPaintElementType.View, FWidth, FHeight, buffer))
+                    {
+                        var rect = new Rectangle(0, 0, FWidth, FHeight);
+                        WriteToTexture(rect, buffer, FWidth * 4, texture);
+                    }
+                    else
+                    {
+                        var rect = new CefRect(0, 0, FWidth, FHeight);
+                        FBrowser.Invalidate(rect);
+                    }
+                    FTextures.Add(texture);
+                    return texture;
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(buffer);
+                }
             }
         }
         
