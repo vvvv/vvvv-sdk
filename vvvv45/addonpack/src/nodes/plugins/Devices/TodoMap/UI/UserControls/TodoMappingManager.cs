@@ -511,6 +511,11 @@ namespace VVVV.TodoMap.UI.UserControls
         private void lblLearnMode_Click(object sender, EventArgs e)
         {
             this.engine.LearnMode = !this.engine.LearnMode;
+            this.LearnModeUpdated();
+        }
+
+        public void LearnModeUpdated()
+        {
             if (this.engine.LearnMode) { this.lblLearnMode.BackColor = Color.LightGreen; }
             else { this.lblLearnMode.BackColor = Color.White; }
         }
