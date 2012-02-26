@@ -44,6 +44,7 @@ namespace VVVV.Nodes.HTML
             
             protected override void OnAfterCreated(CefBrowser browser)
             {
+                FRenderer.FErrorText = string.Empty;
                 FRenderer.Attach(browser);
                 base.OnAfterCreated(browser);
             }
@@ -55,13 +56,46 @@ namespace VVVV.Nodes.HTML
             }
         }
         
+        class LoadHandler : CefLoadHandler
+        {
+            private readonly WebRenderer FRenderer;
+            
+            public LoadHandler(WebRenderer renderer)
+            {
+                FRenderer = renderer;
+            }
+            
+            protected override void OnLoadStart(CefBrowser browser, CefFrame frame)
+            {
+                FRenderer.FFrameLoadCount++;
+                FRenderer.FErrorText = string.Empty;
+                base.OnLoadStart(browser, frame);
+            }
+            
+            protected override bool OnLoadError(CefBrowser browser, CefFrame frame, CefHandlerErrorCode errorCode, string failedUrl, ref string errorText)
+            {
+                FRenderer.FFrameLoadCount = 0;
+                FRenderer.FErrorText = errorText;
+                return base.OnLoadError(browser, frame, errorCode, failedUrl, ref errorText);
+            }
+            
+            protected override void OnLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode)
+            {
+                FRenderer.FFrameLoadCount--;
+                FRenderer.FErrorText = string.Empty;
+                base.OnLoadEnd(browser, frame, httpStatusCode);
+            }
+        }
+        
         private readonly CefRenderHandler FRenderHandler;
         private readonly CefLifeSpanHandler FLifeSpanHandler;
+        private readonly CefLoadHandler FLoadHandler;
         
         public WebClient(WebRenderer renderer)
         {
             FRenderHandler = new RenderHandler(renderer);
             FLifeSpanHandler = new LifeSpanHandler(renderer);
+            FLoadHandler = new LoadHandler(renderer);
         }
         
         protected override CefDisplayHandler GetDisplayHandler()
@@ -106,7 +140,7 @@ namespace VVVV.Nodes.HTML
         
         protected override CefLoadHandler GetLoadHandler()
         {
-            return base.GetLoadHandler();
+            return FLoadHandler;
         }
         
         protected override CefMenuHandler GetMenuHandler()

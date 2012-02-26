@@ -15,6 +15,7 @@ namespace VVVV.Nodes.HTML
             if (FRefCount == 0)
             {
                 var cefSettings = new CefSettings();
+                cefSettings.GraphicsImplementation = CefGraphicsImplementation.DesktopInProcess;
                 cefSettings.MultiThreadedMessageLoop = true;
                 //            cefSettings.CachePath = Path.GetDirectoryName(Application.ExecutablePath) + "/cache";
                 //            cefSettings.LogFile = Path.GetDirectoryName(Application.ExecutablePath) + "/CEF.log";
