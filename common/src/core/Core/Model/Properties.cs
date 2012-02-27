@@ -61,6 +61,7 @@ namespace VVVV.Core.Model
         public event PropertyDelegate<T> ValueChanged;
 
         #endregion
+        
 
         #region IEditableProperty Members
 
@@ -73,6 +74,7 @@ namespace VVVV.Core.Model
             set
             {
                 Value = (T)value;
+                MarkChanged();
             }
         }
 

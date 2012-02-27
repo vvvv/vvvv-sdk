@@ -54,7 +54,13 @@ namespace VVVV.Core
         {
             get;
         }
-        
+
+        void MarkChanged();
+
+        bool Changed { get; }
+
+        object Symbol { get; }
+
         void Dispatch(IVisitor visitor);
     }
 

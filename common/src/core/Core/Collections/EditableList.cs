@@ -60,7 +60,8 @@ namespace VVVV.Core.Collections
                 if (currentItem != null)
                     if (!Remove(currentItem))
                         throw new Exception(string.Format("Can't remove {0} from list {1}.", currentItem, this));
-                
+
+                MarkChanged();
                 FList[index] = value;
             }
         }

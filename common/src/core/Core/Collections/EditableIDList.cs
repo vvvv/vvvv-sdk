@@ -153,6 +153,16 @@ namespace VVVV.Core.Collections
             FItems.ChangeKey((T)sender, newName);
             OnItemRenamed(sender, newName);
         }
+
+        public override void MarkChanged()
+        {
+            base.MarkChanged();
+
+            if (Owner != null)
+            {
+                Owner.MarkChanged();
+            }
+        }
         
         #region IEditableIDList<T> Members
         
@@ -273,6 +283,8 @@ namespace VVVV.Core.Collections
         {
             visitor.Visit(this);
         }
+
+        public object Symbol { get; private set; }
 
         private void CheckIfRootingChanged(RootingChangedEventArgs args)
         {

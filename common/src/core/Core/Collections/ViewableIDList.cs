@@ -188,6 +188,15 @@ namespace VVVV.Core.Collections
             }
         }
 
+        public void MarkChanged()
+        {
+            throw new Exception("viewable lists should never be changed. so don't mark them as changed");
+        }
+
+        public bool Changed { get { return false; } }
+
+        public object Symbol { get; private set; }
+
         #endregion
         
         #region INamed Members
