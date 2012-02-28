@@ -38,6 +38,7 @@ namespace VVVV.Nodes
         private IPluginHost FHost;
 
         private IValueConfig FPinCfgInputCount;
+        private IValueIn FPinInAllowEmpty;
         private List<IValueFastIn> FPinInputList = new List<IValueFastIn>();
 
         private IValueOut FPinOutput;
@@ -55,6 +56,9 @@ namespace VVVV.Nodes
         {
             //assign host
             this.FHost = Host;
+
+            this.FHost.CreateValueInput("Allow Empty Spreads", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out this.FPinInAllowEmpty);
+            this.FPinInAllowEmpty.SetSubType(0, 1, 1, 0, false, true, false);
 
             this.FHost.CreateValueConfig("Input Count", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinCfgInputCount);
             this.FPinCfgInputCount.SetSubType(2, double.MaxValue, 1, 2, false, false, true);
@@ -107,36 +111,59 @@ namespace VVVV.Nodes
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
+            double allowempty;
+            this.FPinInAllowEmpty.GetValue(0, out allowempty);
 
-            if (SpreadMax > 0)
+            //Early exit
+            if (allowempty <= 0.5 && SpreadMax == 0)
             {
-                int outcount = SpreadMax * this.FPinInputList.Count;
-                this.FPinOutput.SliceCount = outcount;
+                this.FPinOutput.SliceCount = 0;
+                return;
+            }
 
-                double*[] ptrs = new double*[this.FPinInputList.Count];
-                int[] cnts = new int[this.FPinInputList.Count];
-                int vcount = this.FPinInputList.Count;
-
-                for (int i = 0; i < this.FPinInputList.Count; i++)
+            List<IValueFastIn> pins = new List<IValueFastIn>();
+            int max = 0;
+            if (allowempty > 0.5)
+            {
+                foreach (IValueFastIn fin in this.FPinInputList)
                 {
-                    this.FPinInputList[i].GetValuePointer(out cnts[i], out ptrs[i]);
-                }
-
-                double* outptr;
-                this.FPinOutput.GetValuePointer(out outptr);
-
-                for (int i = 0; i < SpreadMax; i++)
-                {
-                    for (int j = 0; j < vcount; j++)
+                    if (fin.SliceCount > 0)
                     {
-                        *outptr = ptrs[j][i % cnts[j]];
-                        outptr++;
+                        pins.Add(fin);
                     }
+
+                    max = Math.Max(fin.SliceCount, max);
                 }
             }
             else
             {
-                this.FPinOutput.SliceCount = 0;
+                pins = this.FPinInputList;
+                max = SpreadMax;
+            }
+
+
+            int outcount = max * pins.Count;
+            this.FPinOutput.SliceCount = outcount;
+
+            double*[] ptrs = new double*[pins.Count];
+            int[] cnts = new int[pins.Count];
+            int vcount = pins.Count;
+
+            for (int i = 0; i < pins.Count; i++)
+            {
+                pins[i].GetValuePointer(out cnts[i], out ptrs[i]);
+            }
+
+            double* outptr;
+            this.FPinOutput.GetValuePointer(out outptr);
+
+            for (int i = 0; i < max; i++)
+            {
+                for (int j = 0; j < vcount; j++)
+                {
+                    *outptr = ptrs[j][i % cnts[j]];
+                    outptr++;
+                }
             }
         }
         #endregion
