@@ -21,12 +21,11 @@ using VVVV.Utils.OSC;
 #endregion usings
 
 namespace VVVV.Nodes
-{	
+{
 	#region PluginInfo
 	[PluginInfo(Name = "Kontrolleur",
-	Category = "Network",
-	Help = "Communicates with the Kontrolleur Android app",
-	Tags = "remote")]
+	            Category = "VVVV",
+	            Help = "Communicates with the Kontrolleur Android app")]
 	#endregion PluginInfo
 	public class StringOSC2PatchNode: IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
 	{
@@ -43,16 +42,9 @@ namespace VVVV.Nodes
 		[Input("Prefix", IsSingle=true)]
 		IDiffSpread<string> FPrefix;
 		
-		[Output("Patch")]
-		ISpread<string> FPatchOut;
-		
-		[Output("Patch Message")]
-		ISpread<string> FMessageOut;
-		
 		[Output("Kontrolleur Resolution")]
 		ISpread<Vector2D> FKontrolleurResolution;
 		
-		private IHDEHost FHost;
 		private INode2 FRoot;
 		private OSCTransmitter FOSCTransmitter;
 		private IPAddress FTargetIP;
@@ -64,7 +56,7 @@ namespace VVVV.Nodes
 		private bool FFirstFrame = true;
 		private List<string> FPrefixes = new List<string>();
 		// Track whether Dispose has been called.
-        private bool FDisposed = false;
+		private bool FDisposed = false;
 		
 		[Import]
 		ILogger FLogger;
@@ -72,8 +64,7 @@ namespace VVVV.Nodes
 		private Timer FTimer = new Timer(2000);
 		private bool FAllowUpdates = true;
 		private XmlDocument FXML = new XmlDocument();
-		private Dictionary<string, string> FMessages = new Dictionary<string, string>();
-		private Dictionary<string, string> FBangs = new Dictionary<string, string>();
+		private List<IPin2> FBangs = new List<IPin2>();
 		private Dictionary<string, RemoteValue> FTargets = new Dictionary<string, RemoteValue>();
 		#endregion fields & pins
 		
@@ -94,34 +85,34 @@ namespace VVVV.Nodes
 		}
 		
 		public void Dispose()
-	    {
-	        Dispose(true);
-	    }
+		{
+			Dispose(true);
+		}
 		
-        protected void Dispose(bool disposing)
-        {
-            // Check to see if Dispose has already been called.
-            if(!FDisposed)
-            {
-                if(disposing)
-                {
-                    // Dispose managed resources.
-                    FPrefix.Changed -= PrefixChangedCB;
+		protected void Dispose(bool disposing)
+		{
+			// Check to see if Dispose has already been called.
+			if(!FDisposed)
+			{
+				if(disposing)
+				{
+					// Dispose managed resources.
+					FPrefix.Changed -= PrefixChangedCB;
 					UnRegisterPatch(FRoot);
-                }
-                // Release unmanaged resources. If disposing is false,
-                // only the following code is executed.
-                
-            }
-            FDisposed = true;
-        }
-        #endregion constructor/destructor
+				}
+				// Release unmanaged resources. If disposing is false,
+				// only the following code is executed.
+				
+			}
+			FDisposed = true;
+		}
+		#endregion constructor/destructor
 		
 		#region events
-		public void OnImportsSatisfied() 
-	    {
-	      FPrefix.Changed += PrefixChangedCB;
-	    } 
+		public void OnImportsSatisfied()
+		{
+			FPrefix.Changed += PrefixChangedCB;
+		}
 		
 		private void PrefixChangedCB(IDiffSpread spread)
 		{
@@ -165,19 +156,19 @@ namespace VVVV.Nodes
 				
 				if (FTargetIP != null)
 					try
-					{
-						if (FOSCTransmitter != null)
-							FOSCTransmitter.Close();
-						FOSCTransmitter = new OSCTransmitter(FTargetIP.ToString(), FTargetPort);
-						FOSCTransmitter.Connect();
+				{
+					if (FOSCTransmitter != null)
+						FOSCTransmitter.Close();
+					FOSCTransmitter = new OSCTransmitter(FTargetIP.ToString(), FTargetPort);
+					FOSCTransmitter.Connect();
 
-						FLogger.Log(LogType.Debug, "connected to Kontrolleur on: " + FTargetIP.ToString() + ":" + FTargetPort.ToString());
-					}
-					catch (Exception e)
-					{
-						FLogger.Log(LogType.Warning, "Kontrolleur: failed to open port " + FTargetPort.ToString());
-						FLogger.Log(LogType.Warning, "Kontrolleur: " + e.Message);
-					}
+					FLogger.Log(LogType.Debug, "connected to Kontrolleur on: " + FTargetIP.ToString() + ":" + FTargetPort.ToString());
+				}
+				catch (Exception e)
+				{
+					FLogger.Log(LogType.Warning, "Kontrolleur: failed to open port " + FTargetPort.ToString());
+					FLogger.Log(LogType.Warning, "Kontrolleur: " + e.Message);
+				}
 			}
 		}
 		#endregion network
@@ -192,7 +183,7 @@ namespace VVVV.Nodes
 					node.Added += new CollectionDelegate<INode2>(NodeAddedCB);
 					node.Removed += NodeRemovedCB;
 					RegisterPatch(node);
-				}					
+				}
 				else if (node.Name.Contains("IOBox"))
 					RegisterIOBox(node);
 			}
@@ -207,12 +198,12 @@ namespace VVVV.Nodes
 			//now see if this box already wants to be exposed
 			CheckExposeIOBox(io);
 			
-			//register for labelchanges 
+			//register for labelchanges
 			io.LabelPin.Changed += LabelChangedCB;
 		}
 		
 		private void UnRegisterPatch(INode2 patch)
-		{   
+		{
 			foreach (INode2 node in patch)
 			{
 				if (node.HasPatch)
@@ -220,7 +211,7 @@ namespace VVVV.Nodes
 					node.Added -= NodeAddedCB;
 					node.Removed -= NodeRemovedCB;
 					UnRegisterPatch(node);
-				}					
+				}
 				else if (node.Name.Contains("IOBox"))
 					UnRegisterIOBox(node);
 			}
@@ -234,7 +225,7 @@ namespace VVVV.Nodes
 			
 			UnExposeIOBox(io);
 			
-			//unregister from labelchanges 
+			//unregister from labelchanges
 			io.LabelPin.Changed -= LabelChangedCB;
 		}
 		
@@ -245,7 +236,7 @@ namespace VVVV.Nodes
 			if (node.HasPatch)
 				RegisterPatch(node);
 			else if (node.Name.Contains("IOBox"))
-				RegisterIOBox(node);			
+				RegisterIOBox(node);
 		}
 		
 		private void NodeRemovedCB(IViewableCollection collection, object item)
@@ -255,21 +246,21 @@ namespace VVVV.Nodes
 			if (node.HasPatch)
 				UnRegisterPatch(node);
 			else if (node.Name.Contains("IOBox"))
-				UnRegisterIOBox(node);	
+				UnRegisterIOBox(node);
 		}
 		
 		private void CheckExposeIOBox(INode2 node)
 		{
 			bool unexpose = false;
 			
-			if (string.IsNullOrEmpty(node.LabelPin[0]))
+			if (string.IsNullOrEmpty(node.LabelPin.GetSlice(0)))
 				unexpose = true;
 			else
 			{
-				var name = node.LabelPin[0];
+				var name = node.LabelPin.GetSlice(0);
 				
 				if ((FPrefixes.Count == 0)
-				|| ((FPrefixes.Count > 0) && name.StartsWith(FPrefix[0])))
+				    || ((FPrefixes.Count > 0) && name.StartsWith(FPrefix[0])))
 				{
 					var target = new RemoteValue(node, FPrefixes);
 					
@@ -320,35 +311,26 @@ namespace VVVV.Nodes
 			else if (!message.Address.StartsWith("/k/"))
 				return;
 			
-			var address = message.Address.Split('/');
-			if (!FMessages.ContainsKey(address[2]))
-				FMessages.Add(address[2], "<PATCH></PATCH>");
-			
-			var m = FMessages[address[2]];
-			FXML.LoadXml(m);
-			var patch = FXML.SelectSingleNode(@"//PATCH");
-			
-			var node = FXML.CreateElement("NODE");
-			patch.AppendChild(node);
-			var id = FXML.CreateAttribute("id");
-			id.Value = address[3];
-			node.Attributes.Append(id);
-			
-			//var values = string.Join(",", message.Values.ToArray(typeof(string)));
-			var values = "";
-			foreach(var v in message.Values)
-				values += v.ToString().Replace(',', '.') + ",";
-			values = values.TrimEnd(',');
-			
-			if (values == "bang")
+			var address = "/" + message.Address.Trim('/','k');
+			if (FTargets.ContainsKey(address))
 			{
-				node.InnerXml = "<PIN pinname=\"Y Input Value\" values=\"1\" />";
-				FBangs.Add(address[2], patch.OuterXml);
-			}	
-			else
-				node.InnerXml = "<PIN pinname=\"Y Input Value\" values=\"" + values + "\" />";
-			
-			FMessages[address[2]] = patch.OuterXml;
+				var pin = FTargets[address].Node.FindPin("Y Input Value");
+				
+				//var values = string.Join(",", message.Values.ToArray(typeof(string)));
+				var values = "";
+				foreach(var v in message.Values)
+					values += v.ToString().Replace(',', '.') + ",";
+				values = values.TrimEnd(',');
+				
+				if (values == "bang")
+				{
+					values = "1";
+					//save pin for sending 0 next frame
+					FBangs.Add(pin);
+				}
+				
+				pin.SetSpread(values, false);
+			}
 		}
 		#endregion OSC
 		
@@ -374,24 +356,22 @@ namespace VVVV.Nodes
 			//return multiple slices, one per patch addressed
 			//ie. multiple nodes addressed in one patch go to the same slice
 			var message = FOSCIn[0];
-			FMessages.Clear();
-			//special treatment for bangs 
+			//special treatment for bangs
 			//which cause 2 patch messages in consecutive frames to be sent
-			foreach (var bang in FBangs)
+			foreach (var pin in FBangs)
 			{
 				//set all the bangs values to 0
-				var b = bang.Value.Replace("values=\"1\"", "values=\"0\"");
-				FMessages.Add(bang.Key, b);
-			}	
+				pin.SetSpread("0", false);
+			}
 			FBangs.Clear();
-					
+			
 			if (!string.IsNullOrEmpty(message))
 			{
 				FAllowUpdates = false;
 				
 				var bundlePos = message.IndexOf("#bundle");
 				if (bundlePos == -1)
-				return;
+					return;
 				
 				while ((bundlePos = message.IndexOf("#bundle")) >= 0)
 				{
@@ -423,7 +403,7 @@ namespace VVVV.Nodes
 				
 				FTimer.Start();
 			}
-			else 
+			else
 			{
 				//send targets to kontrolleur
 				OSCBundle bundle = new OSCBundle();
@@ -452,7 +432,7 @@ namespace VVVV.Nodes
 						osc.Append(target.Stepsize);
 						osc.Append(target.Value);
 						bundle.Append(osc);
-					}	
+					}
 					else if (FAllowUpdates && target.State == RemoteValueState.Update)
 					{
 						osc = new OSCMessage("/k/update");
@@ -470,13 +450,13 @@ namespace VVVV.Nodes
 				
 				if (FOSCTransmitter != null)
 					try
-					{
-						FOSCTransmitter.Send(bundle);
-					}
-					catch (Exception ex)
-					{
-						FLogger.Log(LogType.Warning, "Kontrolleur: " + ex.Message);
-					}
+				{
+					FOSCTransmitter.Send(bundle);
+				}
+				catch (Exception ex)
+				{
+					FLogger.Log(LogType.Warning, "Kontrolleur: " + ex.Message);
+				}
 				
 				//remove unused targets
 				foreach (var target in FTargets.ToArray())
@@ -485,10 +465,6 @@ namespace VVVV.Nodes
 					else
 						target.Value.InvalidateState();
 			}
-			
-			//return patch messages
-			FPatchOut.AssignFrom(FMessages.Keys);
-			FMessageOut.AssignFrom(FMessages.Values);
 		}
 		#endregion MainLoop
 	}
