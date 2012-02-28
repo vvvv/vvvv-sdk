@@ -304,6 +304,14 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <returns>Returns this nodes ID.</returns>
 		int GetID();
+		
+		/// <summary>
+		/// Returns a slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.
+		/// </summary>
+		/// <param name="useDescriptiveNames">If TRUE descriptive node names are used where available instead of the node ID.</param>
+		/// <returns>A slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.</returns>
+		string GetNodePath(bool useDescriptiveNames);
+		
 		/// <summary>
 		/// Get the nodes info.
 		/// </summary>
@@ -350,7 +358,7 @@ namespace VVVV.PluginInterfaces.V2
 		
 		//todo: check GetPins mem leak?!
 		IPin[] GetPins();
-		IPin GetPin(string Name);
+		IPin GetPin(string name);
 		
 		/// <summary>
 		/// Allows a plugin to register an INodeListener on a specific vvvv node.
@@ -403,15 +411,43 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPin
 	{
-	    string GetName();
-	    string GetValue(int index);
-		
-		StatusCode Status
+	    string Name
+	    {
+	    	get;
+	    }
+	    
+	    PinDirection Direction
+	    {
+	    	get;
+	    }
+	    
+	    string Type
+	    {
+	    	get;
+	    }
+	    
+	    INode ParentNode
 		{
 			get;
 		}
 	    
-	    /// <summary>
+	    StatusCode Status
+		{
+			get;
+		}
+	    
+		int SliceCount
+		{
+			get;
+		}
+		
+	    string GetSlice(int sliceIndex);
+		void SetSlice(int sliceIndex, string slice, bool undoable);
+		
+		string GetSpread();
+		void SetSpread(string spread, bool undoable);
+		
+		/// <summary>
 		/// Allows a plugin to register an IPinListener on a specific pin.
 		/// </summary>
 		/// <param name="listener">The listener to register.</param>
@@ -422,15 +458,6 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <param name="listener">The listener to unregister.</param>
 		void RemoveListener(IPinListener listener);
-		
-		INode ParentNode
-		{
-			get;
-		}
-	    
-	    //int GetSliceCount();
-	    //enum GetDirection();
-	    //Enum GetType();*/
 	}
 
 	[Guid("F8D09D3D-D988-434D-9AD4-8AD4C94001E7"),
