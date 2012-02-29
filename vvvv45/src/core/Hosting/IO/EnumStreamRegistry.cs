@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using VVVV.Hosting.IO.Streams;
+using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 
@@ -21,12 +21,13 @@ namespace VVVV.Hosting.IO
         {
             var host = factory.PluginHost;
             var enumIn = host.CreateEnumInput(attribute, t);
-            var stream = Activator.CreateInstance(typeof(EnumInStream<>).MakeGenericType(t), new object[] { enumIn }) as IInStream;
+            var enumContainer = factory.CreateIOContainer<IEnumIn>(attribute);
+            var stream = Activator.CreateInstance(typeof(EnumInStream<>).MakeGenericType(t), enumContainer.IOObject) as IInStream;
             // Using ManagedIOStream -> needs to be synced on managed side.
             if (attribute.AutoValidate)
-                return IOContainer.Create(stream, enumIn, s => s.Sync());
+                return IOContainer.Create(factory, stream, enumContainer, s => s.Sync());
             else
-                return IOContainer.Create(stream, enumIn);
+                return IOContainer.Create(factory, stream, enumContainer);
         }
         
         private static IIOContainer CreateOutput(IIOFactory factory, OutputAttribute attribute, Type t)
@@ -34,7 +35,7 @@ namespace VVVV.Hosting.IO
             var host = factory.PluginHost;
             var enumOut = host.CreateEnumOutput(attribute, t);
             var stream = Activator.CreateInstance(typeof(EnumOutStream<>).MakeGenericType(t), new object[] { enumOut }) as IOutStream;
-            return IOContainer.Create(stream, enumOut, null, s => s.Flush());
+            return IOContainer.Create(factory, stream, enumOut, null, s => s.Flush());
         }
         
         private static IIOContainer CreateConfig(IIOFactory factory, ConfigAttribute attribute, Type t)
@@ -43,7 +44,7 @@ namespace VVVV.Hosting.IO
             var enumConfig = host.CreateEnumConfig(attribute, t);
             var streamType = typeof(EnumConfigStream<>).MakeGenericType(t);
             var stream = Activator.CreateInstance(streamType, new object[] { enumConfig }) as IIOStream;
-            return IOContainer.Create(stream, enumConfig, null, s => s.Flush(), s => s.Sync());
+            return IOContainer.Create(factory, stream, enumConfig, null, s => s.Flush(), s => s.Sync());
         }
         
         public override bool CanCreate(Type ioType, IOAttribute attribute)

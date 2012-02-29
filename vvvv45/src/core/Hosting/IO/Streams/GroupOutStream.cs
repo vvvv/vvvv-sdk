@@ -53,8 +53,8 @@ namespace VVVV.Hosting.IO.Streams
 			for (int i = oldCount - 1; i >= newCount; i--)
 			{
 				var io = FIOHandlers[i];
-				FFactory.DestroyIOContainer(io);
 				FIOHandlers.Remove(io);
+				io.Dispose();
 			}
 			
 			FStreams.Length = FIOHandlers.Count;
@@ -62,7 +62,7 @@ namespace VVVV.Hosting.IO.Streams
 			{
 				foreach (var io in FIOHandlers)
 				{
-					writer.Write(io.IOObject as IOutStream<T>);
+					writer.Write(io.RawIOObject as IOutStream<T>);
 				}
 			}
 		}

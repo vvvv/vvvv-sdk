@@ -13,12 +13,12 @@ namespace VVVV.Hosting.IO
     {
         private readonly IInternalPluginHost FPluginHost;
         private readonly IORegistry FIORegistry;
-        private readonly List<IIOContainer> FCreatedHandlers = new List<IIOContainer>();
+        private readonly List<IIOContainer> FCreatedContainers = new List<IIOContainer>();
         private readonly Dictionary<IPluginIO, int> FPluginIORefCount = new Dictionary<IPluginIO, int>();
         // used by internal class PluginContainer
-        internal readonly List<IIOContainer> FPreHandlers = new List<IIOContainer>();
-        internal readonly List<IIOContainer> FPostHandlers = new List<IIOContainer>();
-        internal readonly List<IIOContainer> FConfigHandlers = new List<IIOContainer>();
+        internal readonly List<IIOContainer> FSyncContainers = new List<IIOContainer>();
+        internal readonly List<IIOContainer> FFlushContainers = new List<IIOContainer>();
+        internal readonly List<IIOContainer> FConfigContainers = new List<IIOContainer>();
         
         public IOFactory(IInternalPluginHost pluginHost, IORegistry streamRegistry)
         {
@@ -28,10 +28,11 @@ namespace VVVV.Hosting.IO
         
         public void Dispose()
         {
-            foreach (var ioHandler in FCreatedHandlers.ToArray())
+            foreach (var ioContainer in FCreatedContainers.ToArray())
             {
-                DestroyIOContainer(ioHandler);
+                ioContainer.Dispose();
             }
+            FCreatedContainers.Clear();
         }
         
         public IPluginHost2 PluginHost
@@ -42,7 +43,7 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        public IIOContainer CreateIOContainer(Type type, IOAttribute attribute, bool hookHandlers = true)
+        public IIOContainer CreateIOContainer(Type type, IOAttribute attribute, bool register = true)
         {
             var io = FIORegistry.CreateIOContainer(
                 type,
@@ -55,37 +56,11 @@ namespace VVVV.Hosting.IO
                 throw new NotSupportedException(string.Format("Can't create {0} of type '{1}'.", attribute, type));
             }
             
-            FCreatedHandlers.Add(io);
-            
-            // Would be much nicer if we could simply call pluginIO.AddRef()
-            var pluginIO = io.PluginIO as IPluginIO;
-            if (pluginIO != null)
-            {
-                if (FPluginIORefCount.ContainsKey(pluginIO))
-                    FPluginIORefCount[pluginIO]++;
-                else
-                    FPluginIORefCount[pluginIO] = 1;
-            }
-            
-            if (hookHandlers)
-            {
-                if (io.NeedsAction(IOAction.Sync))
-                {
-                    FPreHandlers.Add(io);
-                }
-                if (io.NeedsAction(IOAction.Flush))
-                {
-                    FPostHandlers.Add(io);
-                }
-                if (io.NeedsAction(IOAction.Config))
-                {
-                    FConfigHandlers.Add(io);
-                }
-            }
-            
+            FCreatedContainers.Add(io);
+            io.Disposed += HandleDisposed;            
             return io;
         }
-        
+
         public bool CanCreateIOContainer(Type type, IOAttribute attribute)
         {
             if (!FIORegistry.CanCreate(type, attribute))
@@ -102,41 +77,41 @@ namespace VVVV.Hosting.IO
             return true;
         }
         
-        // HACK: IIOHandler should implement IDisposable
-        public void DestroyIOContainer(IIOContainer io)
+        public event EventHandler Synchronizing;
+        
+        internal void OnSynchronizing(EventArgs e)
         {
-            if (io.NeedsAction(IOAction.Sync))
+            if (Synchronizing != null) 
             {
-                FPreHandlers.Remove(io);
+                Synchronizing(this, e);
             }
-            if (io.NeedsAction(IOAction.Flush))
+        }
+        
+        public event EventHandler Flushing;
+        
+        internal void OnFlushing(EventArgs e)
+        {
+            if (Flushing != null) 
             {
-                FPostHandlers.Remove(io);
+                Flushing(this, e);
             }
-            if (io.NeedsAction(IOAction.Config))
+        }
+        
+        public event EventHandler<ConfigEventArgs> Configuring;
+        
+        internal void OnConfiguring(ConfigEventArgs e)
+        {
+            if (Configuring != null) 
             {
-                FConfigHandlers.Remove(io);
+                Configuring(this, e);
             }
-            
-            FCreatedHandlers.Remove(io);
-            
-            var disposableIO = io as IDisposable;
-            if (disposableIO != null)
-            {
-                disposableIO.Dispose();
-            }
-            
-            // Would be much nicer if we could simply call pluginIO.Release()
-            var pluginIO = io.PluginIO as IPluginIO;
-            if (pluginIO != null)
-            {
-                FPluginIORefCount[pluginIO]--;
-                if (FPluginIORefCount[pluginIO] == 0)
-                {
-                    FPluginIORefCount.Remove(pluginIO);
-                    FPluginHost.DeletePin(pluginIO);
-                }
-            }
+        }
+        
+        void HandleDisposed(object sender, EventArgs e)
+        {
+            var io = (IIOContainer) sender;
+            FCreatedContainers.Remove(io);
+            io.Disposed -= HandleDisposed;
         }
     }
 }

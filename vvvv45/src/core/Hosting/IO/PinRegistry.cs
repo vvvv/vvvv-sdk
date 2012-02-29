@@ -28,18 +28,18 @@ namespace VVVV.Hosting.IO
                                       
                                       spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
                                       if (attribute.AutoValidate)
-                                          return IOContainer.Create(spread, null, p => p.Sync());
+                                          return IOContainer.Create(factory, spread, null, p => p.Sync());
                                       else
-                                          return IOContainer.Create(spread, null);
+                                          return IOContainer.Create(factory, spread, null);
                                   }
                               }
                               var ioHandler = factory.CreateIOContainer(typeof(IInStream<>).MakeGenericType(t), attribute, false);
                               var pinType = typeof(InputPin<>).MakeGenericType(t);
-                              spread = Activator.CreateInstance(pinType, ioHandler.PluginIO, ioHandler.IOObject) as ISpread;
+                              spread = Activator.CreateInstance(pinType, ioHandler.PluginIO, ioHandler.RawIOObject) as ISpread;
                               if (attribute.AutoValidate)
-                                  return IOContainer.Create(spread, ioHandler.PluginIO, p => p.Sync());
+                                  return IOContainer.Create(factory, spread, ioHandler.PluginIO, p => p.Sync());
                               else
-                                  return IOContainer.Create(spread, ioHandler.PluginIO);
+                                  return IOContainer.Create(factory, spread, ioHandler.PluginIO);
                           });
             
             RegisterInput(typeof(IDiffSpread<>),
@@ -61,18 +61,18 @@ namespace VVVV.Hosting.IO
                                       
                                       spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
                                       if (attribute.AutoValidate)
-                                          return IOContainer.Create(spread, null, p => p.Sync());
+                                          return IOContainer.Create(factory, spread, null, p => p.Sync());
                                       else
-                                          return IOContainer.Create(spread, null);
+                                          return IOContainer.Create(factory, spread, null);
                                   }
                               }
                               var ioBuilder = factory.CreateIOContainer(typeof(IInStream<>).MakeGenericType(t), attribute, false);
                               var pinType = typeof(DiffInputPin<>).MakeGenericType(t);
-                              spread = Activator.CreateInstance(pinType, ioBuilder.PluginIO, ioBuilder.IOObject) as ISpread;
+                              spread = Activator.CreateInstance(pinType, ioBuilder.PluginIO, ioBuilder.RawIOObject) as ISpread;
                               if (attribute.AutoValidate)
-                                  return IOContainer.Create(spread, ioBuilder.PluginIO, p => p.Sync());
+                                  return IOContainer.Create(factory, spread, ioBuilder.PluginIO, p => p.Sync());
                               else
-                                  return IOContainer.Create(spread, ioBuilder.PluginIO);
+                                  return IOContainer.Create(factory, spread, ioBuilder.PluginIO);
                           },
                           false);
             
@@ -80,14 +80,14 @@ namespace VVVV.Hosting.IO
                               var host = factory.PluginHost;
                               IDXRenderStateIn pin;
                               host.CreateRenderStateInput((TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out pin);
-                              return IOContainer.Create(pin, pin);
+                              return IOContainer.Create(factory, pin, pin);
                           });
             
             RegisterInput(typeof(IDXSamplerStateIn), (factory, attribute, t) => {
                               var host = factory.PluginHost;
                               IDXSamplerStateIn pin;
                               host.CreateSamplerStateInput((TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out pin);
-                              return IOContainer.Create(pin, pin);
+                              return IOContainer.Create(factory, pin, pin);
                           });
             
             
@@ -95,21 +95,21 @@ namespace VVVV.Hosting.IO
                                var host = factory.PluginHost;
                                IDXLayerIO pin;
                                host.CreateLayerOutput(attribute.Name, (TPinVisibility)attribute.Visibility, out pin);
-                               return IOContainer.Create(pin, pin);
+                               return IOContainer.Create(factory, pin, pin);
                            });
             
             RegisterOutput(typeof(IDXMeshOut), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                IDXMeshOut pin;
                                host.CreateMeshOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out pin);
-                               return IOContainer.Create(pin, pin);
+                               return IOContainer.Create(factory, pin, pin);
                            });
             
             RegisterOutput(typeof(IDXTextureOut), (factory, attribute, t) => {
                                var host = factory.PluginHost;
                                IDXTextureOut pin;
                                host.CreateTextureOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out pin);
-                               return IOContainer.Create(pin, pin);
+                               return IOContainer.Create(factory, pin, pin);
                            });
             
             RegisterOutput(typeof(ISpread<>), (factory, attribute, t) => {
@@ -125,20 +125,20 @@ namespace VVVV.Hosting.IO
                                        }
                                        
                                        var stream = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
-                                       return IOContainer.Create(stream, null, null, p => p.Flush());
+                                       return IOContainer.Create(factory, stream, null, null, p => p.Flush());
                                    }
                                }
                                var ioBuilder = factory.CreateIOContainer(typeof(IOutStream<>).MakeGenericType(t), attribute, false);
                                var pinType = typeof(OutputPin<>).MakeGenericType(t);
-                               var pin = Activator.CreateInstance(pinType, ioBuilder.PluginIO, ioBuilder.IOObject) as ISpread;
-                               return IOContainer.Create(pin, ioBuilder.PluginIO, null, p => p.Flush());
+                               var pin = Activator.CreateInstance(pinType, ioBuilder.PluginIO, ioBuilder.RawIOObject) as ISpread;
+                               return IOContainer.Create(factory, pin, ioBuilder.PluginIO, null, p => p.Flush());
                            });
             
             RegisterConfig(typeof(ISpread<>), (factory, attribute, t) => {
                                var ioBuilder = factory.CreateIOContainer(typeof(IIOStream<>).MakeGenericType(t), attribute, false);
                                var pinType = typeof(ConfigPin<>).MakeGenericType(t);
-                               var spread = (ISpread) Activator.CreateInstance(pinType, ioBuilder.PluginIO, ioBuilder.IOObject);
-                               return IOContainer.Create(spread, ioBuilder.PluginIO, null, s => s.Flush(), p => p.Sync());
+                               var spread = (ISpread) Activator.CreateInstance(pinType, ioBuilder.PluginIO, ioBuilder.RawIOObject);
+                               return IOContainer.Create(factory, spread, ioBuilder.PluginIO, null, s => s.Flush(), p => p.Sync());
                            });
             
             RegisterConfig(typeof(IDiffSpread<>),
@@ -146,8 +146,8 @@ namespace VVVV.Hosting.IO
                            {
                                var ioBuilder = factory.CreateIOContainer(typeof(IIOStream<>).MakeGenericType(t), attribute, false);
                                var pinType = typeof(ConfigPin<>).MakeGenericType(t);
-                               var spread = (IDiffSpread) Activator.CreateInstance(pinType, ioBuilder.PluginIO, ioBuilder.IOObject);
-                               return IOContainer.Create(spread, ioBuilder.PluginIO, null, s => s.Flush(), p => p.Sync());
+                               var spread = (IDiffSpread) Activator.CreateInstance(pinType, ioBuilder.PluginIO, ioBuilder.RawIOObject);
+                               return IOContainer.Create(factory, spread, ioBuilder.PluginIO, null, s => s.Flush(), p => p.Sync());
                            },
                            false);
         }

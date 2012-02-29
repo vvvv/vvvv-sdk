@@ -26,6 +26,7 @@ namespace VVVV.Hosting.IO
     {
         public IORegistry()
         {
+            Register(new PluginIORegistry());
             // Give enums a chance before using node pin
             Register(new EnumStreamRegistry());
             // Streams are more low level than spreads, so register them first

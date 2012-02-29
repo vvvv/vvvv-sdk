@@ -88,8 +88,8 @@ namespace VVVV.Hosting.Pins
 			for (int i = oldCount - 1; i >= newCount; i--)
 			{
 				var io = FIOHandlers[i];
-				FFactory.DestroyIOContainer(io);
 				FIOHandlers.Remove(io);
+				io.Dispose();
 			}
 			
 			SliceCount = FIOHandlers.Count;
@@ -97,7 +97,7 @@ namespace VVVV.Hosting.Pins
 			{
 				foreach (var io in FIOHandlers)
 				{
-					writer.Write(io.IOObject as TSpread);
+					writer.Write(io.RawIOObject as TSpread);
 				}
 			}
 		}

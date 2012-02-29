@@ -529,22 +529,12 @@ namespace VVVV.Hosting.Factories
         
         void IPlugin.Configurate(IPluginConfig configPin)
         {
-            foreach (var config in FIOFactory.FConfigHandlers)
-            {
-                if (config.PluginIO == configPin)
-                {
-                    config.Action(IOAction.Config);
-                    break;
-                }
-            }
+            FIOFactory.OnConfiguring(new ConfigEventArgs(configPin));
         }
         
         void IPlugin.Evaluate(int spreadMax)
         {
-            foreach (var input in FIOFactory.FPreHandlers)
-            {
-                input.Action(IOAction.Sync);
-            }
+            FIOFactory.OnSynchronizing(EventArgs.Empty);
             
             // HACK: Can we remove this? Maybe by seperating...
             if (FPlugin != null)
@@ -552,10 +542,7 @@ namespace VVVV.Hosting.Factories
                 FPlugin.Evaluate(spreadMax);
             }
             
-            foreach (var output in FIOFactory.FPostHandlers)
-            {
-                output.Action(IOAction.Flush);
-            }
+            FIOFactory.OnFlushing(EventArgs.Empty);
         }
         
         bool IPlugin.AutoEvaluate
