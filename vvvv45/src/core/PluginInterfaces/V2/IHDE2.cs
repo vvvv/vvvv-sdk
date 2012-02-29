@@ -85,7 +85,7 @@ namespace VVVV.PluginInterfaces.V2
 	public interface IHDEHost
 	{
 	    /// <summary>
-	    /// Returns an interface to the graphs root node
+	    /// Returns an interface to the graphs root node.
 	    /// </summary>
 	    /// <remarks>Deprecated: Use RootNode instead.</remarks>
 	    /// <returns>The graphs root node.</returns>
@@ -95,13 +95,20 @@ namespace VVVV.PluginInterfaces.V2
 	    }
 	    
 		/// <summary>
-	    /// Returns an interface to the graphs root node
+	    /// Returns an interface to the graphs root node.
 	    /// </summary>
 	    /// <returns>The graphs root node.</returns>
 	    INode2 RootNode
 	    {
 	        get;
 	    }
+	    
+	    /// <summary>
+	    /// Returns an INode2 given a slash-separated string of node IDs that uniquely identifies that node. 
+	    /// </summary>
+	    /// <param name="NodePath">A slash-separated string of node IDs.</param>
+	    /// <returns></returns>
+	    INode2 GetNodeFromPath(string nodePath);
 	    
 	    event NodeSelectionEventHandler NodeSelectionChanged;
 	    event MouseEventHandler MouseUp;
@@ -119,27 +126,27 @@ namespace VVVV.PluginInterfaces.V2
 	    }
 	    
 	    /// <summary>
-		/// Allows a plugin to create/update an Enum with vvvv
+		/// Allows a plugin to create/update an Enum with vvvv.
 		/// </summary>
-		/// <param name="EnumName">The Enums name.</param>
-		/// <param name="Default">The Enums default value.</param>
-		/// <param name="EnumEntries">An array of strings that specify the enums entries.</param>
-		void UpdateEnum(string EnumName, string Default, string[] EnumEntries);
+		/// <param name="enumName">The Enums name.</param>
+		/// <param name="defaultEntry">The Enums default value.</param>
+		/// <param name="enumEntries">An array of strings that specify the enums entries.</param>
+		void UpdateEnum(string enumName, string defaultEntry, string[] enumEntries);
 		
 		/// <summary>
 		/// Returns the number of entries for a given Enum.
 		/// </summary>
-		/// <param name="EnumName">The name of the Enum to get the EntryCount of.</param>
+		/// <param name="enumName">The name of the Enum to get the EntryCount of.</param>
 		/// <returns>Number of entries in the Enum.</returns>
-		int GetEnumEntryCount(string EnumName);
+		int GetEnumEntryCount(string enumName);
 		
 		/// <summary>
 		/// Returns the name of a given EnumEntry of a given Enum.
 		/// </summary>
-		/// <param name="EnumName">The name of the Enum to get the EntryName of.</param>
-		/// <param name="Index">Index of the EnumEntry.</param>
+		/// <param name="enumName">The name of the Enum to get the EntryName of.</param>
+		/// <param name="index">Index of the EnumEntry.</param>
 		/// <returns>String representation of the EnumEntry.</returns>
-		string GetEnumEntry(string EnumName, int Index);
+		string GetEnumEntry(string enumName, int index);
 		
 		/// <summary>
 		/// Returns the current time which the plugin should use if it does timebased calculations.
@@ -209,7 +216,7 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
-		/// Get the full path to the vvvv.exe
+		/// Get the full path to the vvvv.exe.
 		/// </summary>
 		string ExePath
 		{

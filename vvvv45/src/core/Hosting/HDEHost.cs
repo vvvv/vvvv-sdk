@@ -367,6 +367,28 @@ namespace VVVV.Hosting
             }
         }
         
+        public INode2 GetNodeFromPath(string nodePath)
+        {
+        	var ids = nodePath.Split('/');
+        	
+        	var result = RootNode[0];
+        	for (int i = 1; i < ids.Count(); i++)
+        	{
+        		try
+        		{
+        			var id = int.Parse(ids[i]);
+        			result = (from node in result where node.ID == id select node).First();
+        		}
+        		catch
+        		{
+        			result = null;
+        			break;
+        		}       			
+        	}
+
+            return result;
+        }
+        
         public void UpdateEnum(string EnumName, string Default, string[] EnumEntries)
         {
             FVVVVHost.UpdateEnum(EnumName, Default, EnumEntries);
