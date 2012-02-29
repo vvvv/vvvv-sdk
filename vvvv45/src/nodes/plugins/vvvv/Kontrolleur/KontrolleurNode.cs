@@ -25,7 +25,8 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Kontrolleur",
 	            Category = "VVVV",
-	            Help = "Communicates with the Kontrolleur Android app")]
+	            Help = "Communicates with the Kontrolleur Android app",
+	            AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class StringOSC2PatchNode: IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
 	{
@@ -279,7 +280,7 @@ namespace VVVV.Nodes
 		
 		private void UnExposeIOBox(INode2 node)
 		{
-			var address = "/" + node.Parent.NodeInfo.Filename + "/" + node.ID;
+			var address = node.GetNodePath(false);
 			
 			if (FTargets.ContainsKey(address))
 				FTargets[address].State = RemoteValueState.Remove;
@@ -318,7 +319,7 @@ namespace VVVV.Nodes
 			var address = "/" + message.Address.Trim('/','k');
 			if (FTargets.ContainsKey(address))
 			{
-				var pin = FTargets[address].Node.FindPin("Y Input Value");
+				var pin = FTargets[address].Pin;
 				
 				//var values = string.Join(",", message.Values.ToArray(typeof(string)));
 				var values = "";

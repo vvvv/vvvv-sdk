@@ -28,6 +28,13 @@ namespace VVVV.Nodes
 		public RemoteValueState State;
 		public static System.Globalization.NumberFormatInfo FNumberFormat = new System.Globalization.NumberFormatInfo();
 		
+		public IPin2 Pin
+		{
+			get
+			{
+				return FValuePin;
+			}
+		}
 		public string Name
 		{
 			get
@@ -51,7 +58,7 @@ namespace VVVV.Nodes
 			FNumberFormat.NumberDecimalSeparator = ".";
 			Node = node;
 			FPrefixes = prefixes;
-			Address = "/" + Node.Parent.NodeInfo.Filename + "/" + Node.ID;
+			Address = Node.GetNodePath(false); //"/" + Node.Parent.NodeInfo.Filename + "/" + Node.ID;
 			
 			FNamePin = node.LabelPin;
 			FNamePin.Changed += ValueChangedCB;
