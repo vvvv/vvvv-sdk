@@ -51,6 +51,14 @@ namespace VVVV.PluginInterfaces.V2.Graph
         }
         
         /// <summary>
+        /// Returns the pins subtype.
+        /// </summary>
+        string SubType
+	    {
+	    	get;
+	    }
+        
+        /// <summary>
         /// Returns the pins direction. 
         /// </summary>
         PinDirection Direction
@@ -75,9 +83,14 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		}
         
         /// <summary>
-        /// The changed event occurs when the pin's data changed.
+        /// The changed event occurs when the pins data changed.
         /// </summary>
         event EventHandler Changed;
+        
+        /// <summary>
+        /// The SubtypeChanged event occurs when the pins subtype changed.
+        /// </summary>
+        event EventHandler SubtypeChanged;
     }
 	
     [ComVisible(false)]

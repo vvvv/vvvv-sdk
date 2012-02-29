@@ -426,6 +426,11 @@ namespace VVVV.PluginInterfaces.V2
 	    	get;
 	    }
 	    
+	    string SubType
+	    {
+	    	get;
+	    }
+	    
 	    INode ParentNode
 		{
 			get;
@@ -466,6 +471,7 @@ namespace VVVV.PluginInterfaces.V2
     {
         void ChangedCB();
 		void StatusChangedCB();
+		void SubtypeChangedCB();
     }
 	#endregion IPin
 	

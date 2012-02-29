@@ -36,6 +36,11 @@ namespace VVVV.Hosting.Graph
 			{
 				FPin.OnStatusChanged();
 			}
+			
+			public void SubtypeChangedCB()
+			{
+				FPin.OnSubtypeChanged();
+			}
 		}
 		
 		#endregion
@@ -185,6 +190,14 @@ namespace VVVV.Hosting.Graph
 			}
 		}
 		
+		public string SubType
+		{
+			get
+			{
+				return FInternalCOMInterf.SubType;
+			}
+		}
+		
 		public string Name
 		{
 			get
@@ -220,6 +233,27 @@ namespace VVVV.Hosting.Graph
 		{
 			if (FStatusChanged != null)
 				FStatusChanged(this, EventArgs.Empty);
+		}
+		
+		private event EventHandler FSubtypeChanged;
+		public event EventHandler SubtypeChanged
+		{
+			add
+			{
+				IncObserverCount();
+				FSubtypeChanged += value;
+			}
+			remove
+			{
+				FSubtypeChanged -= value;
+				DecObserverCount();
+			}
+		}
+		
+		protected virtual void OnSubtypeChanged()
+		{
+			if (FSubtypeChanged != null)
+				FSubtypeChanged(this, EventArgs.Empty);
 		}
 	}
 }

@@ -266,6 +266,8 @@ namespace VVVV.Nodes
 					
 					if (!FTargets.ContainsKey(target.Address))
 						FTargets.Add(target.Address, target);
+					else
+						target.Kill();
 				}
 				else
 					unexpose = true;
@@ -295,6 +297,8 @@ namespace VVVV.Nodes
 		{
 			if (message.Address == "/k/init")
 			{
+				foreach (var target in FTargets.ToArray())
+					target.Value.Kill();
 				FTargets.Clear();
 				
 				FAutoIP = IPAddress.Parse((string)message.Values[0]);
@@ -461,7 +465,11 @@ namespace VVVV.Nodes
 				//remove unused targets
 				foreach (var target in FTargets.ToArray())
 					if (target.Value.State == RemoteValueState.Remove)
-						FTargets.Remove(target.Key);
+				{
+					target.Value.Kill();
+					FTargets.Remove(target.Key);
+				}
+					
 					else
 						target.Value.InvalidateState();
 			}
