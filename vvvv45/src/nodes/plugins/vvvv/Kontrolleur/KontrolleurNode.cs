@@ -320,10 +320,6 @@ namespace VVVV.Nodes
 		#region OSC
 		private void ProcessOSCMessage(OSCMessage message)
 		{
-			FTouchID.SliceCount = 0;
-			FTouchXY.SliceCount = 0;
-			FTouchPressure.SliceCount = 0;
-			
 			if (message.Address == "/k/init")
 			{
 				foreach (var target in FTargets.ToArray())
@@ -396,35 +392,37 @@ namespace VVVV.Nodes
 					t += 4;
 				}
 			}
-			else if (!message.Address.StartsWith("/k/"))
-				return;
-			
-			var address = "/" + message.Address.Trim('/','k');
-			if (FTargets.ContainsKey(address))
+			else if (message.Address.StartsWith("/k/"))
 			{
-				var pin = FTargets[address].Pin;
+				FAllowUpdates = false;
 				
-				//var values = string.Join(",", message.Values.ToArray(typeof(string)));
-				var values = "";
-				foreach(var v in message.Values)
-					values += v.ToString().Replace(',', '.') + ",";
-				values = values.TrimEnd(',');
-				
-				if (values == "bang")
+				var address = "/" + message.Address.Trim('/','k');
+				if (FTargets.ContainsKey(address))
 				{
-					values = "1";
-					//save pin for sending 0 next frame
-					FBangs.Add(pin);
+					var pin = FTargets[address].Pin;
+					
+					//var values = string.Join(",", message.Values.ToArray(typeof(string)));
+					var values = "";
+					foreach(var v in message.Values)
+						values += v.ToString().Replace(',', '.') + ",";
+					values = values.TrimEnd(',');
+					
+					if (values == "bang")
+					{
+						values = "1";
+						//save pin for sending 0 next frame
+						FBangs.Add(pin);
+					}
+					
+					//save last value sent per path (for optional later saving to patch)
+					if (FSaveTargets.ContainsKey(FTargets[address].SourceNodePath))
+						FSaveTargets[FTargets[address].SourceNodePath] = values;
+					else
+						if (!(FTargets[address].Type == "Bang"))
+							FSaveTargets.Add(FTargets[address].SourceNodePath, values);
+					
+					pin.Spread = values;
 				}
-				
-				//save last value sent per path (for optional later saving to patch)
-				if (FSaveTargets.ContainsKey(FTargets[address].SourceNodePath))
-					FSaveTargets[FTargets[address].SourceNodePath] = values;
-				else
-					if (!(FTargets[address].Type == "Bang"))
-						FSaveTargets.Add(FTargets[address].SourceNodePath, values);
-				
-				pin.Spread = values;
 			}
 		}
 		#endregion OSC
@@ -432,6 +430,10 @@ namespace VVVV.Nodes
 		#region MainLoop
 		public void Evaluate(int SpreadMax)
 		{
+			FTouchID.SliceCount = 0;
+			FTouchXY.SliceCount = 0;
+			FTouchPressure.SliceCount = 0;
+			
 			//re/init udp
 			if (FKontrolleurIP.IsChanged || FKontrolleurPort.IsChanged)
 			{
@@ -465,10 +467,9 @@ namespace VVVV.Nodes
 			}
 			FBangs.Clear();
 			
+			//parse incoming OSC
 			if (!string.IsNullOrEmpty(message))
 			{
-				FAllowUpdates = false;
-				
 				var bundlePos = message.IndexOf("#bundle");
 				if (bundlePos == -1)
 					return;
@@ -476,19 +477,19 @@ namespace VVVV.Nodes
 				while ((bundlePos = message.IndexOf("#bundle")) >= 0)
 				{
 					var nextpos = message.IndexOf("#bundle", bundlePos + 1);
-					var bundle = "";
+					var bundleMessage = "";
 					if (nextpos == -1)
 					{
-						bundle = message;
+						bundleMessage = message;
 						message = "";
 					}
 					else
 					{
-						bundle = message.Substring(bundlePos, nextpos - bundlePos);
+						bundleMessage = message.Substring(bundlePos, nextpos - bundlePos);
 						message = message.Substring(nextpos);
 					}
 					
-					var packet = OSCPacket.Unpack(Encoding.Default.GetBytes(bundle));
+					var packet = OSCPacket.Unpack(Encoding.Default.GetBytes(bundleMessage));
 					if (packet.IsBundle())
 					{
 						ArrayList messages = packet.Values;
@@ -503,73 +504,71 @@ namespace VVVV.Nodes
 				
 				FTimer.Start();
 			}
-			else
+			
+			//send targets to kontrolleur
+			var bundle = new OSCBundle();
+			foreach (var target in FTargets.Values)
 			{
-				//send targets to kontrolleur
-				OSCBundle bundle = new OSCBundle();
-				foreach (var target in FTargets.Values)
-				{
-					if (target.State == RemoteValueState.Idle)
-						continue;
-					
-					OSCMessage osc;
-					if (target.State == RemoteValueState.Remove)
-					{
-						osc = new OSCMessage("/k/remove");
-						osc.Append(target.RuntimeNodePath);
-						bundle.Append(osc);
-						continue;
-					}
-					else if (target.State == RemoteValueState.Add)
-					{
-						osc = new OSCMessage("/k/add");
-						osc.Append(target.RuntimeNodePath);
-						osc.Append(target.Name);
-						osc.Append(target.Type);
-						osc.Append(target.Default);
-						osc.Append(target.Minimum);
-						osc.Append(target.Maximum);
-						osc.Append(target.Stepsize);
-						osc.Append(target.Value);
-						bundle.Append(osc);
-					}
-					else if (FAllowUpdates && target.State == RemoteValueState.Update)
-					{
-						osc = new OSCMessage("/k/update");
-						osc.Append(target.RuntimeNodePath);
-						osc.Append(target.Name);
-						osc.Append(target.Type);
-						osc.Append(target.Default);
-						osc.Append(target.Minimum);
-						osc.Append(target.Maximum);
-						osc.Append(target.Stepsize);
-						osc.Append(target.Value);
-						bundle.Append(osc);
-					}
-				}
+				if (target.State == RemoteValueState.Idle)
+					continue;
 				
-				if (FOSCTransmitter != null)
-					try
+				OSCMessage osc;
+				if (target.State == RemoteValueState.Remove)
 				{
-					FOSCTransmitter.Send(bundle);
+					osc = new OSCMessage("/k/remove");
+					osc.Append(target.RuntimeNodePath);
+					bundle.Append(osc);
+					continue;
 				}
-				catch (Exception ex)
+				else if (target.State == RemoteValueState.Add)
 				{
-					FLogger.Log(LogType.Warning, "Kontrolleur: " + ex.Message);
+					osc = new OSCMessage("/k/add");
+					osc.Append(target.RuntimeNodePath);
+					osc.Append(target.Name);
+					osc.Append(target.Type);
+					osc.Append(target.Default);
+					osc.Append(target.Minimum);
+					osc.Append(target.Maximum);
+					osc.Append(target.Stepsize);
+					osc.Append(target.Value);
+					bundle.Append(osc);
 				}
-				
-				//remove unused targets
-				foreach (var target in FTargets.ToArray())
-					if (target.Value.State == RemoteValueState.Remove)
+				else if (FAllowUpdates && target.State == RemoteValueState.Update)
 				{
-					target.Value.Kill();
-					FTargets.Remove(target.Key);
+					osc = new OSCMessage("/k/update");
+					osc.Append(target.RuntimeNodePath);
+					osc.Append(target.Name);
+					osc.Append(target.Type);
+					osc.Append(target.Default);
+					osc.Append(target.Minimum);
+					osc.Append(target.Maximum);
+					osc.Append(target.Stepsize);
+					osc.Append(target.Value);
+					bundle.Append(osc);
 				}
-				
-				else
-					target.Value.InvalidateState();
 			}
+			
+			if (FOSCTransmitter != null)
+				try
+			{
+				FOSCTransmitter.Send(bundle);
+			}
+			catch (Exception ex)
+			{
+				FLogger.Log(LogType.Warning, "Kontrolleur: " + ex.Message);
+			}
+			
+			//remove unused targets
+			foreach (var target in FTargets.ToArray())
+				if (target.Value.State == RemoteValueState.Remove)
+			{
+				target.Value.Kill();
+				FTargets.Remove(target.Key);
+			}
+			
+			else
+				target.Value.InvalidateState();
 		}
-		#endregion MainLoop
 	}
+	#endregion MainLoop
 }

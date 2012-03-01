@@ -73,20 +73,7 @@ namespace VVVV.Nodes
 			FValuePin.SubtypeChanged += SubtypeChangedCB;
 			
 			Value = float.Parse(FValuePin[0], FNumberFormat);
-			
-		/*	
-			FMinimumPin = Node.FindPin("Minimum");
-			FMinimumPin.Changed += ValueChangedCB;
-			Minimum = float.Parse(FMinimumPin.GetSlice(0));
-			
-			FMaximumPin = Node.FindPin("Maximum");
-			FMaximumPin.Changed += ValueChangedCB;
-			Maximum = float.Parse(FMaximumPin.GetSlice(0));
-			
-			FTypePin = Node.FindPin("Slider Behavior");
-			FTypePin.Changed += ValueChangedCB;
-			Type = FTypePin.GetSlice(0);*/
-		
+
 			var subtype = FValuePin.SubType.Split(',');
 			Type = subtype[0];
 			Default = float.Parse(subtype[2], FNumberFormat);
@@ -117,12 +104,6 @@ namespace VVVV.Nodes
 				Value = float.Parse(FValuePin[0], FNumberFormat);
 			else if (pin == FNamePin)
 				Name = FNamePin[0];
-			/*else if (pin == FMinimumPin)
-				Minimum = float.Parse(FMinimumPin.GetSlice(0));
-			else if (pin == FMaximumPin)
-				Maximum = float.Parse(FMaximumPin.GetSlice(0));
-			else if (pin == FTypePin)
-				Type = FTypePin.GetSlice(0);*/
 			
 			State = RemoteValueState.Update;
 		}
