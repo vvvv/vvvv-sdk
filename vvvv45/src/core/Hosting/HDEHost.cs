@@ -372,7 +372,7 @@ namespace VVVV.Hosting
         	var ids = nodePath.Split('/');
         	
         	var result = RootNode[0];
-        	for (int i = 1; i < ids.Count(); i++)
+        	for (int i = 1; i < ids.Length; i++)
         	{
         		try
         		{
