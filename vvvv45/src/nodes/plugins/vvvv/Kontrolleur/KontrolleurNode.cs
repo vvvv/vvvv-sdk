@@ -24,11 +24,11 @@ namespace VVVV.Nodes
 {
 	#region PluginInfo
 	[PluginInfo(Name = "Kontrolleur",
-	            Category = "VVVV",
+	            Category = "Network",
 	            Help = "Communicates with the Kontrolleur Android app",
 	            AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class StringOSC2PatchNode: IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+	public class KontrolleurNode: IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
 	{
 		#region fields & pins
 		[Config("Kontrolleur IP", IsSingle=true, DefaultString="")]
@@ -43,9 +43,25 @@ namespace VVVV.Nodes
 		[Input("Prefix", IsSingle=true)]
 		IDiffSpread<string> FPrefix;
 		
-		[Output("Kontrolleur Resolution")]
-		ISpread<Vector2D> FKontrolleurResolution;
+		[Output("Touch ID")]
+		ISpread<int> FTouchID;
 		
+		[Output("Touch")]
+		ISpread<Vector2D> FTouchXY;
+		
+		[Output("Touch Pressure")]
+		ISpread<double> FTouchPressure;
+		
+		[Output("Acceleration")]
+		ISpread<Vector3D> FAcceleration;
+		
+		[Output("Orientation")]
+		ISpread<Vector3D> FOrientation;
+		
+		[Output("Magnetism")]
+		ISpread<Vector3D> FMagnetism;
+		
+		private Vector2D FResolution;
 		private INode2 FRoot;
 		private OSCTransmitter FOSCTransmitter;
 		private IPAddress FTargetIP;
@@ -76,7 +92,7 @@ namespace VVVV.Nodes
 		
 		#region constructor/destructor
 		[ImportingConstructor]
-		public StringOSC2PatchNode(IHDEHost host)
+		public KontrolleurNode(IHDEHost host)
 		{
 			FRoot = host.RootNode;
 
@@ -85,7 +101,7 @@ namespace VVVV.Nodes
 			FTimer.Elapsed += new ElapsedEventHandler(FTimer_Elapsed);
 		}
 		
-		~StringOSC2PatchNode()
+		~KontrolleurNode()
 		{
 			Dispose(false);
 		}
@@ -103,6 +119,9 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
+					FTimer.Enabled = false;
+					FTimer.Dispose();
+					
 					FPrefix.Changed -= PrefixChangedCB;
 					UnRegisterPatch(FRoot);
 				}
@@ -301,6 +320,10 @@ namespace VVVV.Nodes
 		#region OSC
 		private void ProcessOSCMessage(OSCMessage message)
 		{
+			FTouchID.SliceCount = 0;
+			FTouchXY.SliceCount = 0;
+			FTouchPressure.SliceCount = 0;
+			
 			if (message.Address == "/k/init")
 			{
 				foreach (var target in FTargets.ToArray())
@@ -310,8 +333,8 @@ namespace VVVV.Nodes
 				
 				FAutoIP = IPAddress.Parse((string)message.Values[0]);
 				FAutoPort = (int) message.Values[1];
-				FKontrolleurResolution[0] = new Vector2D((int) message.Values[2], (int) message.Values[3]);
-				
+				FResolution = new Vector2D((int) message.Values[2], (int) message.Values[3]);
+
 				InitNetwork();
 				
 				UnRegisterPatch(FRoot);
@@ -344,6 +367,34 @@ namespace VVVV.Nodes
 				
 				foreach (var pm in FPatchMessages)
 					FHDEHost.SendPatchMessage(pm.Key, pm.Value.ToString(), true);
+			}
+			else if (message.Address == "/acceleration")
+			{
+				FAcceleration[0] = new Vector3D((float)message.Values[0], (float)message.Values[1], (float)message.Values[2]);
+			}
+			else if (message.Address == "/magnetism")
+			{
+				FMagnetism[0] = new Vector3D((float)message.Values[0], (float)message.Values[1], (float)message.Values[2]);
+			}
+			else if (message.Address == "/orientation")
+			{
+				FOrientation[0] = new Vector3D((float)message.Values[0], (float)message.Values[1], (float)message.Values[2]);
+			}
+			else if (message.Address == "/touches")
+			{
+				int touchCount = message.Values.Count / 4;
+				int t = 0;
+				FTouchID.SliceCount = touchCount;
+				FTouchXY.SliceCount = touchCount;
+				FTouchPressure.SliceCount = touchCount;
+				
+				for (int i = 0; i < touchCount; i++)
+				{
+					FTouchID[i] = (int) message.Values[t];
+					FTouchXY[i] = new Vector2D((float)message.Values[t + 1] / FResolution.x * 2 - 1, (float)message.Values[t + 2] / FResolution.y * -2 + 1);
+					FTouchPressure[i] = (float) message.Values[t + 3];
+					t += 4;
+				}
 			}
 			else if (!message.Address.StartsWith("/k/"))
 				return;
