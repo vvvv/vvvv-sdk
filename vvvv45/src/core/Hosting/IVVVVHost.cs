@@ -85,10 +85,10 @@ namespace VVVV.Hosting
         /// <summary>
         /// Allows sending of XML-message snippets to patches. 
         /// </summary>
-        /// <param name="patch">The patch to send the message to.</param>
+        /// <param name="fileName">Filename of the patch to send the message to.</param>
         /// <param name="message">The XML-message snippet.</param>
         /// <param name="undoable">If TRUE the operation performed by this message can be undone by the user using the UNDO command.</param>
-        void SendPatchMessage(INode patch, string message, bool undoable);
+        void SendPatchMessage(string fileName, string message, bool undoable);
         
         /// <summary>
         /// Selects the given nodes in their patch.

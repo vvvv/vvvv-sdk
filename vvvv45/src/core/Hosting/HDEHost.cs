@@ -463,9 +463,9 @@ namespace VVVV.Hosting
             FVVVVHost.SetComponentMode(node.InternalCOMInterf, componentMode);
         }
         
-        public void SendPatchMessage(INode2 patch, string message, bool undoable)
+        public void SendPatchMessage(string fileName, string message, bool undoable)
         {
-            FVVVVHost.SendPatchMessage(patch.InternalCOMInterf, message, undoable);
+            FVVVVHost.SendPatchMessage(fileName, message, undoable);
         }
         
         public string ExePath
