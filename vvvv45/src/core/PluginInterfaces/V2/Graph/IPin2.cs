@@ -5,36 +5,83 @@ using VVVV.Core;
 namespace VVVV.PluginInterfaces.V2.Graph
 {
     [ComVisible(false)]
-    public interface IPin2 : INamed
+    public interface IPin2: INamed
     {
+    	/// <summary>
+    	/// Gets/Sets a string representation of the specified slice.
+    	/// </summary>
+    	string this[int sliceIndex]
+    	{
+    		get;
+    		set;
+    	}
+
+    	/// <summary>
+    	/// Gets/Sets the whole spread as a string with commaseparated slices.
+    	/// </summary>
+    	string Spread
+    	{
+    		get;
+    		set;
+    	}
+        
         /// <summary>
-        /// Gets the value at specified slice in a string representation.
+        /// Returns the pins slicecount.
         /// </summary>
-        string this[int sliceIndex]
+        int SliceCount
         {
-            get;
+        	get;
+        }
+        
+        /// <summary>
+        /// Returns the pins datatype.
+        /// </summary>
+        string Type
+        {
+        	get;
+        }
+        
+        /// <summary>
+        /// Returns the pins subtype.
+        /// </summary>
+        string SubType
+	    {
+	    	get;
+	    }
+        
+        /// <summary>
+        /// Returns the pins direction. 
+        /// </summary>
+        PinDirection Direction
+        {
+        	get;
         }
 		
 		/// <summary>
-		/// Gets the status of the pin.
+		/// Returns the status of the pin.
 		/// </summary>
-		/// <value>
-		/// The status.
-		/// </value>
 		StatusCode Status
 		{
 			get;
 		}
 		
+		/// <summary>
+		/// Returns the pins parent node.
+		/// </summary>
 		INode2 ParentNode
 		{
 			get;
 		}
         
         /// <summary>
-        /// The changed event occurs when the pin's data changed.
+        /// The changed event occurs when the pins data changed.
         /// </summary>
         event EventHandler Changed;
+        
+        /// <summary>
+        /// The SubtypeChanged event occurs when the pins subtype changed.
+        /// </summary>
+        event EventHandler SubtypeChanged;
     }
 	
     [ComVisible(false)]
