@@ -62,11 +62,16 @@ namespace VVVV.Nodes
 		[Import]
 		ILogger FLogger;
 		
+		[Import]
+		IHDEHost FHDEHost;
+		
 		private Timer FTimer = new Timer(2000);
 		private bool FAllowUpdates = true;
 		private XmlDocument FXML = new XmlDocument();
 		private List<IPin2> FBangs = new List<IPin2>();
 		private Dictionary<string, RemoteValue> FTargets = new Dictionary<string, RemoteValue>();
+		private Dictionary<string, string> FSaveTargets = new Dictionary<string, string>();
+		private Dictionary<string, PatchMessage> FPatchMessages = new Dictionary<string, PatchMessage>();
 		#endregion fields & pins
 		
 		#region constructor/destructor
@@ -265,8 +270,8 @@ namespace VVVV.Nodes
 				{
 					var target = new RemoteValue(node, FPrefixes);
 					
-					if (!FTargets.ContainsKey(target.Address))
-						FTargets.Add(target.Address, target);
+					if (!FTargets.ContainsKey(target.RuntimeNodePath))
+						FTargets.Add(target.RuntimeNodePath, target);
 					else
 						target.Kill();
 				}
@@ -301,6 +306,7 @@ namespace VVVV.Nodes
 				foreach (var target in FTargets.ToArray())
 					target.Value.Kill();
 				FTargets.Clear();
+				FSaveTargets.Clear();
 				
 				FAutoIP = IPAddress.Parse((string)message.Values[0]);
 				FAutoPort = (int) message.Values[1];
@@ -312,6 +318,32 @@ namespace VVVV.Nodes
 				RegisterPatch(FRoot);
 				
 				return;
+			}
+			else if (message.Address == "/k/save")
+			{
+				//save all savetargets to patch by sending a patchmessage
+				//savetargets can be scattered over many patches so potentially this needs to send multiple patchmessages
+				
+				FPatchMessages.Clear();
+				foreach (var target in FSaveTargets) 
+				{
+					var patchClass = target.Key.Split('/');
+					PatchMessage pm;
+					if (FPatchMessages.ContainsKey(patchClass[0]))
+						pm = FPatchMessages[patchClass[0]];
+					else
+					{
+						pm = new PatchMessage(patchClass[0]);
+						FPatchMessages.Add(patchClass[0], pm);
+					}
+					
+					var node = pm.AddNode(int.Parse(patchClass[1]));
+					var pin = node.AddPin("Y Input Value");
+					pin.AddAttribute("values", target.Value);
+				}
+				
+				foreach (var pm in FPatchMessages)
+					FHDEHost.SendPatchMessage(pm.Key, pm.Value.ToString(), true);
 			}
 			else if (!message.Address.StartsWith("/k/"))
 				return;
@@ -333,6 +365,13 @@ namespace VVVV.Nodes
 					//save pin for sending 0 next frame
 					FBangs.Add(pin);
 				}
+				
+				//save last value sent per path (for optional later saving to patch)
+				if (FSaveTargets.ContainsKey(FTargets[address].SourceNodePath))
+					FSaveTargets[FTargets[address].SourceNodePath] = values;
+				else
+					if (!(FTargets[address].Type == "Bang"))
+						FSaveTargets.Add(FTargets[address].SourceNodePath, values);				
 				
 				pin.SetSpread(values, false);
 			}
@@ -421,14 +460,14 @@ namespace VVVV.Nodes
 					if (target.State == RemoteValueState.Remove)
 					{
 						osc = new OSCMessage("/k/remove");
-						osc.Append(target.Address);
+						osc.Append(target.RuntimeNodePath);
 						bundle.Append(osc);
 						continue;
 					}
 					else if (target.State == RemoteValueState.Add)
 					{
 						osc = new OSCMessage("/k/add");
-						osc.Append(target.Address);
+						osc.Append(target.RuntimeNodePath);
 						osc.Append(target.Name);
 						osc.Append(target.Type);
 						osc.Append(target.Default);
@@ -441,7 +480,7 @@ namespace VVVV.Nodes
 					else if (FAllowUpdates && target.State == RemoteValueState.Update)
 					{
 						osc = new OSCMessage("/k/update");
-						osc.Append(target.Address);
+						osc.Append(target.RuntimeNodePath);
 						osc.Append(target.Name);
 						osc.Append(target.Type);
 						osc.Append(target.Default);

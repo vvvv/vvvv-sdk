@@ -18,7 +18,8 @@ namespace VVVV.Nodes
 		private string FName;
 		
 		public INode2 Node;
-		public string Address;
+		public string SourceNodePath;
+		public string RuntimeNodePath;
 		public string Type;
 		public float Default;
 		public float Minimum;
@@ -58,7 +59,10 @@ namespace VVVV.Nodes
 			FNumberFormat.NumberDecimalSeparator = ".";
 			Node = node;
 			FPrefixes = prefixes;
-			Address = Node.GetNodePath(false); //"/" + Node.Parent.NodeInfo.Filename + "/" + Node.ID;
+			
+			//note: this will break if patches are renamed!
+			RuntimeNodePath = Node.GetNodePath(false); 
+			SourceNodePath = Node.Parent.NodeInfo.Filename + "/" + node.ID;
 			
 			FNamePin = node.LabelPin;
 			FNamePin.Changed += ValueChangedCB;
