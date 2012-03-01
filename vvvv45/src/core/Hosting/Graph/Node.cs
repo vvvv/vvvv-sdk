@@ -244,7 +244,7 @@ namespace VVVV.Hosting.Graph
         
         private string ComputeName()
         {
-        	string label = FLabelPin.Value.GetSlice(0);
+        	string label = FLabelPin.Value[0];
             string suffix = string.IsNullOrEmpty(label) ? string.Empty : " -- " + label;
             
             if (string.IsNullOrEmpty(FNodeInfo.Name))

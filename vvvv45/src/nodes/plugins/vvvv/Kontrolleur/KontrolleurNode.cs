@@ -259,11 +259,11 @@ namespace VVVV.Nodes
 		{
 			bool unexpose = false;
 			
-			if (string.IsNullOrEmpty(node.LabelPin.GetSlice(0)))
+			if (string.IsNullOrEmpty(node.LabelPin[0]))
 				unexpose = true;
 			else
 			{
-				var name = node.LabelPin.GetSlice(0);
+				var name = node.LabelPin[0];
 				
 				if ((FPrefixes.Count == 0)
 				    || ((FPrefixes.Count > 0) && name.StartsWith(FPrefix[0])))
@@ -325,7 +325,7 @@ namespace VVVV.Nodes
 				//savetargets can be scattered over many patches so potentially this needs to send multiple patchmessages
 				
 				FPatchMessages.Clear();
-				foreach (var target in FSaveTargets) 
+				foreach (var target in FSaveTargets)
 				{
 					var patchClass = target.Key.Split('/');
 					PatchMessage pm;
@@ -371,9 +371,9 @@ namespace VVVV.Nodes
 					FSaveTargets[FTargets[address].SourceNodePath] = values;
 				else
 					if (!(FTargets[address].Type == "Bang"))
-						FSaveTargets.Add(FTargets[address].SourceNodePath, values);				
+						FSaveTargets.Add(FTargets[address].SourceNodePath, values);
 				
-				pin.SetSpread(values, false);
+				pin.Spread = values;
 			}
 		}
 		#endregion OSC
@@ -384,9 +384,14 @@ namespace VVVV.Nodes
 			//re/init udp
 			if (FKontrolleurIP.IsChanged || FKontrolleurPort.IsChanged)
 			{
-				FManualIP = IPAddress.Parse(FKontrolleurIP[0]);
-				FManualPort = FKontrolleurPort[0];
-				InitNetwork();
+				try
+				{
+					FManualIP = IPAddress.Parse(FKontrolleurIP[0]);
+					FManualPort = FKontrolleurPort[0];
+					InitNetwork();
+				}
+				catch
+				{}
 			}
 			
 			if (FFirstFrame)
@@ -405,7 +410,7 @@ namespace VVVV.Nodes
 			foreach (var pin in FBangs)
 			{
 				//set all the bangs values to 0
-				pin.SetSpread("0", false);
+				pin.Spread = "0";
 			}
 			FBangs.Clear();
 			
@@ -509,9 +514,9 @@ namespace VVVV.Nodes
 					target.Value.Kill();
 					FTargets.Remove(target.Key);
 				}
-					
-					else
-						target.Value.InvalidateState();
+				
+				else
+					target.Value.InvalidateState();
 			}
 		}
 		#endregion MainLoop

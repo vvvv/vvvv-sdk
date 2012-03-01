@@ -462,10 +462,10 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 	    string GetSlice(int sliceIndex);
-		void SetSlice(int sliceIndex, string slice, bool undoable);
+		void SetSlice(int sliceIndex, string slice);
 		
 		string GetSpread();
-		void SetSpread(string spread, bool undoable);
+		void SetSpread(string spread);
 		
 		/// <summary>
 		/// Allows a plugin to register an IPinListener on a specific pin.

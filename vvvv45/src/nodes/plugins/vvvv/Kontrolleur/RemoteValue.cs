@@ -66,13 +66,13 @@ namespace VVVV.Nodes
 			
 			FNamePin = node.LabelPin;
 			FNamePin.Changed += ValueChangedCB;
-			Name = FNamePin.GetSlice(0);
+			Name = FNamePin[0];
 			
 			FValuePin = Node.FindPin("Y Input Value");
 			FValuePin.Changed += ValueChangedCB;
 			FValuePin.SubtypeChanged += SubtypeChangedCB;
 			
-			Value = float.Parse(FValuePin.GetSlice(0), FNumberFormat);
+			Value = float.Parse(FValuePin[0], FNumberFormat);
 			
 		/*	
 			FMinimumPin = Node.FindPin("Minimum");
@@ -114,9 +114,9 @@ namespace VVVV.Nodes
 			
 			var pin = sender as IPin2;
 			if (pin == FValuePin)
-				Value = float.Parse(FValuePin.GetSlice(0), FNumberFormat);
+				Value = float.Parse(FValuePin[0], FNumberFormat);
 			else if (pin == FNamePin)
-				Name = FNamePin.GetSlice(0);
+				Name = FNamePin[0];
 			/*else if (pin == FMinimumPin)
 				Minimum = float.Parse(FMinimumPin.GetSlice(0));
 			else if (pin == FMaximumPin)

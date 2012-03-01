@@ -6,7 +6,7 @@ using VVVV.Utils;
 
 namespace VVVV.Hosting.Graph
 {
-	internal class Pin : Disposable, IPin2
+	internal class Pin: Disposable, IPin2
 	{
 		#region IPinListener implementation
 		
@@ -132,40 +132,46 @@ namespace VVVV.Hosting.Graph
 			}
 		}
 		
-		public string GetSlice(int sliceIndex)
+		public string this[int sliceIndex]
 		{
-			try
+			get
 			{
-				return FInternalCOMInterf.GetSlice(sliceIndex);
+				try
+				{
+					return FInternalCOMInterf.GetSlice(sliceIndex);
+				}
+				catch
+				{
+					return string.Empty;
+				}
 			}
-			catch
+			
+			set
 			{
-				return string.Empty;
+				FInternalCOMInterf.SetSlice(sliceIndex, value);
 			}
 		}
 		
-		public void SetSlice(int sliceIndex, string slice, bool undoable)
+		public string Spread
 		{
-			FInternalCOMInterf.SetSlice(sliceIndex, slice, undoable);
-		}
-		
-		public string GetSpread()
-		{
-			try
+			get
+			{
+				try
 			{
 				return FInternalCOMInterf.GetSpread();
 			}
 			catch
 			{
 				return string.Empty;
+			}	
+			}
+			
+			set
+			{
+				FInternalCOMInterf.SetSpread(value);	
 			}
 		}
-		
-		public void SetSpread(string spread, bool undoable)
-		{
-			FInternalCOMInterf.SetSpread(spread, undoable);
-		}
-		
+
 		public int SliceCount
 		{
 			get
