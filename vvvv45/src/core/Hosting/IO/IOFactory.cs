@@ -43,14 +43,10 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        public IIOContainer CreateIOContainer(Type type, IOAttribute attribute, bool register = true)
+        public IIOContainer CreateIOContainer(IOBuildContext context)
         {
-            var io = FIORegistry.CreateIOContainer(
-                type,
-                this,
-                attribute
-               );
-            
+            context.Factory = this;
+            var io = FIORegistry.CreateIOContainer(context);
             if (io == null)
             {
                 throw new NotSupportedException(string.Format("Can't create {0} of type '{1}'.", attribute, type));
@@ -61,14 +57,24 @@ namespace VVVV.Hosting.IO
             return io;
         }
 
-        public bool CanCreateIOContainer(Type type, IOAttribute attribute)
+        public bool CanCreateIOContainer(IOBuildContext context)
         {
-            if (!FIORegistry.CanCreate(type, attribute))
+            if (!FIORegistry.CanCreate(context))
             {
+                var type = context.IOType;
                 if (type.IsGenericType)
                 {
                     var openGenericType = type.GetGenericTypeDefinition();
-                    return FIORegistry.CanCreate(openGenericType, attribute);
+                    return FIORegistry.CanCreate(
+                        new IOBuildContext()
+                        {
+                            DataType = context.DataType,
+                            Factory = context.Factory,
+                            IOAttribute = context.IOAttribute,
+                            IOType = openGenericType,
+                            SubscribeToIOEvents = context.SubscribeToIOEvents
+                        }
+                       );
                 }
                 
                 return false;

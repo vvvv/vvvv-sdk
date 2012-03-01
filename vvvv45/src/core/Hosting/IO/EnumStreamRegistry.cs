@@ -17,28 +17,28 @@ namespace VVVV.Hosting.IO
             RegisterConfig(typeof(BufferedIOStream<>), CreateConfig);
         }
         
-        private static IIOContainer CreateInput(IIOFactory factory, InputAttribute attribute, Type t)
+        private static IIOContainer CreateInput(IOBuildContext<InputAttribute> context)
         {
-            var host = factory.PluginHost;
-            var enumIn = host.CreateEnumInput(attribute, t);
-            var enumContainer = factory.CreateIOContainer<IEnumIn>(attribute);
-            var stream = Activator.CreateInstance(typeof(EnumInStream<>).MakeGenericType(t), enumContainer.IOObject) as IInStream;
+            var factory = context.Factory;
+            var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumIn)));
+            var streamType = typeof(EnumInStream<>).MakeGenericType(context.DataType);
+            var stream = Activator.CreateInstance(streamType, container.RawIOObject) as IInStream;
             // Using ManagedIOStream -> needs to be synced on managed side.
-            if (attribute.AutoValidate)
-                return IOContainer.Create(factory, stream, enumContainer, s => s.Sync());
+            if (context.IOAttribute.AutoValidate)
+                return IOContainer.Create(context, stream, container, s => s.Sync());
             else
-                return IOContainer.Create(factory, stream, enumContainer);
+                return IOContainer.Create(context, stream, container);
         }
         
-        private static IIOContainer CreateOutput(IIOFactory factory, OutputAttribute attribute, Type t)
+        private static IIOContainer CreateOutput(IOBuildContext<OutputAttribute> context)
         {
-            var host = factory.PluginHost;
-            var enumOut = host.CreateEnumOutput(attribute, t);
+            var factory = context.Factory;
+            var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumOut)));
             var stream = Activator.CreateInstance(typeof(EnumOutStream<>).MakeGenericType(t), new object[] { enumOut }) as IOutStream;
             return IOContainer.Create(factory, stream, enumOut, null, s => s.Flush());
         }
         
-        private static IIOContainer CreateConfig(IIOFactory factory, ConfigAttribute attribute, Type t)
+        private static IIOContainer CreateConfig(IOBuildContext<ConfigAttribute> context)
         {
             var host = factory.PluginHost;
             var enumConfig = host.CreateEnumConfig(attribute, t);
@@ -47,12 +47,13 @@ namespace VVVV.Hosting.IO
             return IOContainer.Create(factory, stream, enumConfig, null, s => s.Flush(), s => s.Sync());
         }
         
-        public override bool CanCreate(Type ioType, IOAttribute attribute)
+        public override bool CanCreate(IOBuildContext context)
         {
-            var ioDataType = ioType.GetGenericArguments().FirstOrDefault();
-            if (ioDataType != null)
+            var ioType = context.IOType;
+            var dataType = context.DataType;
+            if (dataType != null)
             {
-                var baseType = ioDataType.BaseType;
+                var baseType = dataType.BaseType;
                 if (baseType != null && baseType == typeof(Enum))
                 {
                     var openIOType = ioType.GetGenericTypeDefinition();

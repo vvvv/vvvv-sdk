@@ -9,7 +9,7 @@ namespace VVVV.Hosting.IO
     static class IOContainer
     {
         public static IIOContainer Create<TIOObject>(
-            IIOFactory factory,
+            IOBuildContext context,
             TIOObject iOObject,
             IIOContainer baseIOContainer,
             Action<TIOObject> preEvalAction = null,
@@ -19,7 +19,7 @@ namespace VVVV.Hosting.IO
         {
             // We need to construct with runtime type here, as compiletime type might be too simple (cast exceptions later).
             var ioHandlerType = typeof(IOContainer<>).MakeGenericType(iOObject.GetType());
-            return (IIOContainer) Activator.CreateInstance(ioHandlerType, factory, iOObject, baseIOContainer, preEvalAction, postEvalAction, configAction);
+            return (IIOContainer) Activator.CreateInstance(ioHandlerType, context, iOObject, baseIOContainer, preEvalAction, postEvalAction, configAction);
 //			return new IOHandler<TIOObject>(iOObject, metadata, preEvalAction, postEvalAction, configAction);
         }
     }
@@ -34,7 +34,7 @@ namespace VVVV.Hosting.IO
         public TIOObject IOObject { get; private set; }
         
         public IOContainer(
-            IIOFactory factory,
+            IOBuildContext context,
             TIOObject iOObject,
             IIOContainer baseIOContainer,
             Action<TIOObject> syncAction,
@@ -42,23 +42,26 @@ namespace VVVV.Hosting.IO
             Action<TIOObject> configAction)
             : base(baseIOContainer, iOObject)
         {
-            FFactory = factory;
+            FFactory = context.Factory;
             IOObject = iOObject;
             SyncAction = syncAction;
             FlushAction = flushAction;
             ConfigAction = configAction;
             
-            if (SyncAction != null)
+            if (context.SubscribeToIOEvents)
             {
-                FFactory.Synchronizing += HandleSynchronizing;
-            }
-            if (FlushAction != null)
-            {
-                FFactory.Flushing += HandleFlushing;
-            }
-            if (ConfigAction != null)
-            {
-                FFactory.Configuring += HandleConfiguring;
+                if (SyncAction != null)
+                {
+                    FFactory.Synchronizing += HandleSynchronizing;
+                }
+                if (FlushAction != null)
+                {
+                    FFactory.Flushing += HandleFlushing;
+                }
+                if (ConfigAction != null)
+                {
+                    FFactory.Configuring += HandleConfiguring;
+                }
             }
         }
         
@@ -118,19 +121,19 @@ namespace VVVV.Hosting.IO
         
         protected virtual void OnDisposed(EventArgs e)
         {
-            if (Disposed != null) 
+            if (Disposed != null)
             {
                 Disposed(this, e);
             }
         }
         
-        public object RawIOObject 
+        public object RawIOObject
         {
             get;
             private set;
         }
         
-        public IIOContainer BaseContainer 
+        public IIOContainer BaseContainer
         {
             get;
             private set;

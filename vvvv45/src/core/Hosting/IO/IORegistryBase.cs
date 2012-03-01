@@ -25,11 +25,11 @@ namespace VVVV.Hosting.IO
     class IORegistryBase : IIORegistry
     {
         protected readonly List<IIORegistry> FRegistries = new List<IIORegistry>();
-        protected readonly Dictionary<Type, Func<IIOFactory, InputAttribute, Type, IIOContainer>> FInputDelegates = new Dictionary<Type, Func<IIOFactory, InputAttribute, Type, IIOContainer>>();
-        protected readonly Dictionary<Type, Func<IIOFactory, OutputAttribute, Type, IIOContainer>> FOutputDelegates = new Dictionary<Type, Func<IIOFactory, OutputAttribute, Type, IIOContainer>>();
-        protected readonly Dictionary<Type, Func<IIOFactory, ConfigAttribute, Type, IIOContainer>> FConfigDelegates = new Dictionary<Type, Func<IIOFactory, ConfigAttribute, Type, IIOContainer>>();
+        protected readonly Dictionary<Type, Func<IOBuildContext<InputAttribute>, IIOContainer>> FInputDelegates = new Dictionary<Type, Func<IOBuildContext<InputAttribute>, IIOContainer>>();
+        protected readonly Dictionary<Type, Func<IOBuildContext<OutputAttribute>, IIOContainer>> FOutputDelegates = new Dictionary<Type, Func<IOBuildContext<OutputAttribute>, IIOContainer>>();
+        protected readonly Dictionary<Type, Func<IOBuildContext<ConfigAttribute>, IIOContainer>> FConfigDelegates = new Dictionary<Type, Func<IOBuildContext<ConfigAttribute>, IIOContainer>>();
         
-        public void RegisterInput(Type ioType, Func<IIOFactory, InputAttribute, Type, IIOContainer> createInputFunc, bool registerInterfaces = true)
+        public void RegisterInput(Type ioType, Func<IOBuildContext<InputAttribute>, IIOContainer> createInputFunc, bool registerInterfaces = true)
         {
             FInputDelegates.Add(ioType, createInputFunc);
             if (registerInterfaces)
@@ -45,12 +45,12 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        public void RegisterInput<TIO>(Func<IIOFactory, InputAttribute, Type, IIOContainer> createInputFunc, bool registerInterfaces = true)
+        public void RegisterInput<TIO>(Func<IOBuildContext<InputAttribute>, IIOContainer> createInputFunc, bool registerInterfaces = true)
         {
             RegisterInput(typeof(TIO), createInputFunc, registerInterfaces);
         }
         
-        public void RegisterOutput(Type ioType, Func<IIOFactory, OutputAttribute, Type, IIOContainer> createOutputFunc, bool registerInterfaces = true)
+        public void RegisterOutput(Type ioType, Func<IOBuildContext<OutputAttribute>, IIOContainer> createOutputFunc, bool registerInterfaces = true)
         {
             FOutputDelegates.Add(ioType, createOutputFunc);
             if (registerInterfaces)
@@ -66,12 +66,12 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        public void RegisterOutput<TIO>(Func<IIOFactory, OutputAttribute, Type, IIOContainer> createOutputFunc, bool registerInterfaces = true)
+        public void RegisterOutput<TIO>(Func<IOBuildContext<OutputAttribute>, IIOContainer> createOutputFunc, bool registerInterfaces = true)
         {
             RegisterOutput(typeof(TIO), createOutputFunc, registerInterfaces);
         }
         
-        public void RegisterConfig(Type ioType, Func<IIOFactory, ConfigAttribute, Type, IIOContainer> createConfigFunc, bool registerInterfaces = true)
+        public void RegisterConfig(Type ioType, Func<IOBuildContext<ConfigAttribute>, IIOContainer> createConfigFunc, bool registerInterfaces = true)
         {
             FConfigDelegates.Add(ioType, createConfigFunc);
             if (registerInterfaces)
@@ -87,7 +87,7 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        public void RegisterConfig<TIO>(Func<IIOFactory, ConfigAttribute, Type, IIOContainer> createConfigFunc, bool registerInterfaces = true)
+        public void RegisterConfig<TIO>(Func<IOBuildContext<ConfigAttribute>, IIOContainer> createConfigFunc, bool registerInterfaces = true)
         {
             RegisterConfig(typeof(TIO), createConfigFunc, registerInterfaces);
         }
@@ -97,16 +97,18 @@ namespace VVVV.Hosting.IO
             FRegistries.Add(registry);
         }
         
-        public virtual bool CanCreate(Type ioType, IOAttribute attribute)
+        public virtual bool CanCreate(IOBuildContext context)
         {
             foreach (var registry in FRegistries)
             {
-                if (registry.CanCreate(ioType, attribute))
+                if (registry.CanCreate(context))
                 {
                     return true;
                 }
             }
             
+            var ioType = context.IOType;
+            var attribute = context.IOAttribute;
             var openIOType = ioType.GetGenericTypeDefinition();
             var inputAttribute = attribute as InputAttribute;
             if (inputAttribute != null)
@@ -129,44 +131,46 @@ namespace VVVV.Hosting.IO
             return false;
         }
         
-        public virtual IIOContainer CreateIOContainer(Type ioType, IIOFactory factory, IOAttribute attribute)
+        public virtual IIOContainer CreateIOContainer(IOBuildContext context)
         {
             foreach (var registry in FRegistries)
             {
-                if (registry.CanCreate(ioType, attribute))
+                if (registry.CanCreate(context))
                 {
-                    return registry.CreateIOContainer(ioType, factory, attribute);
+                    return registry.CreateIOContainer(context);
                 }
             }
             
-            var ioDataType = ioType.GetGenericArguments().FirstOrDefault();
+            var ioType = context.IOType;
+            var attribute = context.IOAttribute;
+            var dataType = context.DataType;
             var openIOType = ioType.IsGenericType ? ioType.GetGenericTypeDefinition() : ioType;
             
             var inputAttribute = attribute as InputAttribute;
             if (inputAttribute != null)
             {
                 if (FInputDelegates.ContainsKey(ioType))
-                    return FInputDelegates[ioType](factory, inputAttribute, ioDataType);
+                    return FInputDelegates[ioType](factory, inputAttribute, dataType);
                 else if (FInputDelegates.ContainsKey(openIOType))
-                    return FInputDelegates[openIOType](factory, inputAttribute, ioDataType);
+                    return FInputDelegates[openIOType](factory, inputAttribute, dataType);
             }
             
             var outputAttribute = attribute as OutputAttribute;
             if (outputAttribute != null)
             {
                 if (FOutputDelegates.ContainsKey(ioType))
-                    return FOutputDelegates[ioType](factory, outputAttribute, ioDataType);
+                    return FOutputDelegates[ioType](factory, outputAttribute, dataType);
                 else if (FOutputDelegates.ContainsKey(openIOType))
-                    return FOutputDelegates[openIOType](factory, outputAttribute, ioDataType);
+                    return FOutputDelegates[openIOType](factory, outputAttribute, dataType);
             }
             
             var configAttribute = attribute as ConfigAttribute;
             if (configAttribute != null)
             {
                 if (FConfigDelegates.ContainsKey(ioType))
-                    return FConfigDelegates[ioType](factory, configAttribute, ioDataType);
+                    return FConfigDelegates[ioType](factory, configAttribute, dataType);
                 else if (FConfigDelegates.ContainsKey(openIOType))
-                    return FConfigDelegates[openIOType](factory, configAttribute, ioDataType);
+                    return FConfigDelegates[openIOType](factory, configAttribute, dataType);
             }
             
             throw new NotSupportedException(string.Format("Can't create {0} of type '{1}'.", attribute, ioType));
