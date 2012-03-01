@@ -37,7 +37,7 @@ namespace VVVV.Hosting.Pins
 	    
 		protected readonly IIOFactory FFactory;
 		protected readonly IOAttribute FAttribute;
-		private readonly List<IIOContainer> FIOHandlers = new List<IIOContainer>();
+		private readonly List<IIOContainer> FIOContainers = new List<IIOContainer>();
 		protected IDiffSpread<int> FCountSpread;
 		protected int FOffsetCounter;
 		protected static int FInstanceCounter = 1;
@@ -66,14 +66,18 @@ namespace VVVV.Hosting.Pins
 		
 		public virtual void Dispose()
 		{
-			FCountSpread.Changed -= HandleCountSpreadChanged;
-			SliceCount = 0;
+		    FCountSpread.Changed -= HandleCountSpreadChanged;
+		    foreach (var container in FIOContainers)
+		    {
+		        container.Dispose();
+		    }
+		    FIOContainers.Clear();
 		}
 		
 		//pin management
 		void HandleCountSpreadChanged(IDiffSpread<int> spread)
 		{
-			int oldCount = FIOHandlers.Count;
+			int oldCount = FIOContainers.Count;
 			int newCount = Math.Max(spread[0], 0);
 			
 			for (int i = oldCount; i < newCount; i++)
@@ -82,20 +86,20 @@ namespace VVVV.Hosting.Pins
 				attribute.IsPinGroup = false;
 				attribute.Order = FAttribute.Order + FOffsetCounter * 1000 + i;
 				var io = FFactory.CreateIOContainer<TSpread>(attribute, false);
-				FIOHandlers.Add(io);
+				FIOContainers.Add(io);
 			}
 			
 			for (int i = oldCount - 1; i >= newCount; i--)
 			{
-				var io = FIOHandlers[i];
-				FIOHandlers.Remove(io);
+				var io = FIOContainers[i];
+				FIOContainers.Remove(io);
 				io.Dispose();
 			}
 			
-			SliceCount = FIOHandlers.Count;
+			SliceCount = FIOContainers.Count;
 			using (var writer = Stream.GetWriter())
 			{
-				foreach (var io in FIOHandlers)
+				foreach (var io in FIOContainers)
 				{
 					writer.Write(io.RawIOObject as TSpread);
 				}

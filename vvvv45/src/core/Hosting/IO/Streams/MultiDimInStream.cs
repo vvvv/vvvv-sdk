@@ -5,7 +5,7 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    class MultiDimInStream<T> : IInStream<IInStream<T>>
+    class MultiDimInStream<T> : IInStream<IInStream<T>>, IDisposable
     {
         class MultiDimReader : IStreamReader<IInStream<T>>
         {
@@ -250,6 +250,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
+        private readonly IIOContainer<IInStream<T>> FDataContainer;
+        private readonly IIOContainer<IInStream<int>> FBinSizeContainer;
         private readonly IInStream<T> FDataStream;
         private readonly IInStream<int> FBinSizeStream;
         private readonly BufferedIOStream<int> FNormBinSizeStream;
@@ -257,10 +259,18 @@ namespace VVVV.Hosting.IO.Streams
         
         public MultiDimInStream(IIOFactory factory, InputAttribute attribute)
         {
-            FDataStream = factory.CreateIO<IInStream<T>>(attribute);
-            FBinSizeStream = factory.CreateIO<IInStream<int>>(attribute.GetBinSizeInputAttribute());
+            FDataContainer = factory.CreateIOContainer<IInStream<T>>(attribute, false);
+            FBinSizeContainer = factory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
+            FDataStream = FDataContainer.IOObject;
+            FBinSizeStream = FBinSizeContainer.IOObject;
             FNormBinSizeStream = new BufferedIOStream<int>();
             FBinSizeBuffer = new int[16]; // 64 byte
+        }
+        
+        public void Dispose()
+        {
+            FDataContainer.Dispose();
+            FBinSizeContainer.Dispose();
         }
         
         public int Length

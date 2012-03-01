@@ -6,6 +6,6 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		void Register(IIORegistry registry);
 		bool CanCreate(IOBuildContext context);
-		IIOContainer CreateIOContainer(IOBuildContext context);
+		IIOContainer CreateIOContainer(IIOFactory factory, IOBuildContext context);
 	}
 }

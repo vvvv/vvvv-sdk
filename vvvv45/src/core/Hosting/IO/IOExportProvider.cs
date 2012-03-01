@@ -35,9 +35,10 @@ namespace VVVV.Hosting.IO
 					var ioAttribute = attribute as IOAttribute;
 					if (ioAttribute == null) continue;
 					
-					if (FIOFactory.CanCreateIOContainer(typeToExport, ioAttribute))
+					var context = IOBuildContext.Create(typeToExport, ioAttribute);
+					if (FIOFactory.CanCreateIOContainer(context))
 					{
-						yield return new Export(contractName, () => FIOFactory.CreateIO(typeToExport, ioAttribute));
+					    yield return new Export(contractName, () => FIOFactory.CreateIO(context));
 						yield break;
 					}
 				}

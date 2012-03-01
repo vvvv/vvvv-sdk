@@ -20,14 +20,15 @@ namespace VVVV.PluginInterfaces.V2
         object RawIOObject { get; }
                
         /// <summary>
-        /// Gets the native interface which was used to create the io object
-        /// this container holds on to. Some containers might return null here
-        /// as their containing io object might not even use a native interface
-        /// to do its work.
+        /// Gets the base io container, whose io object is used by the
+        /// io object this container holds on to.
         /// </summary>
         IIOContainer BaseContainer { get; }
         
-        event EventHandler Disposed;
+        /// <summary>
+        /// Gets the io factory which was used to create this container.
+        /// </summary>
+        IIOFactory Factory { get; }
     }
     
     public interface IIOContainer<out T> : IIOContainer
@@ -35,9 +36,27 @@ namespace VVVV.PluginInterfaces.V2
         /// <summary>
         /// Gets the io object this container holds on to.
         /// </summary>
-//        T IOObject
-//        {
-//            get;
-//        }
+        T IOObject
+        {
+            get;
+        }
+    }
+    
+    public static class IOContainerExtensions
+    {
+        /// <summary>
+        /// Returns the native plugin io interface if any.
+        /// </summary>
+        public static IPluginIO GetPluginIO(this IIOContainer container)
+        {
+            IPluginIO pluginIO = null;
+            while (container != null)
+            {
+                pluginIO = container.RawIOObject as IPluginIO;
+                if (pluginIO != null) break;
+                container = container.BaseContainer;
+            }
+            return pluginIO;
+        }
     }
 }

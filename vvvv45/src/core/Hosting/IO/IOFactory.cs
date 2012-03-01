@@ -28,11 +28,7 @@ namespace VVVV.Hosting.IO
         
         public void Dispose()
         {
-            foreach (var ioContainer in FCreatedContainers.ToArray())
-            {
-                ioContainer.Dispose();
-            }
-            FCreatedContainers.Clear();
+            OnDisposing(EventArgs.Empty);
         }
         
         public IPluginHost2 PluginHost
@@ -45,15 +41,11 @@ namespace VVVV.Hosting.IO
         
         public IIOContainer CreateIOContainer(IOBuildContext context)
         {
-            context.Factory = this;
-            var io = FIORegistry.CreateIOContainer(context);
+            var io = FIORegistry.CreateIOContainer(this, context);
             if (io == null)
             {
-                throw new NotSupportedException(string.Format("Can't create {0} of type '{1}'.", attribute, type));
+                throw new NotSupportedException(string.Format("Can't create container for build context '{1}'.", context));
             }
-            
-            FCreatedContainers.Add(io);
-            io.Disposed += HandleDisposed;            
             return io;
         }
 
@@ -65,16 +57,7 @@ namespace VVVV.Hosting.IO
                 if (type.IsGenericType)
                 {
                     var openGenericType = type.GetGenericTypeDefinition();
-                    return FIORegistry.CanCreate(
-                        new IOBuildContext()
-                        {
-                            DataType = context.DataType,
-                            Factory = context.Factory,
-                            IOAttribute = context.IOAttribute,
-                            IOType = openGenericType,
-                            SubscribeToIOEvents = context.SubscribeToIOEvents
-                        }
-                       );
+                    return FIORegistry.CanCreate(context.ReplaceIOType(openGenericType));
                 }
                 
                 return false;
@@ -113,11 +96,14 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        void HandleDisposed(object sender, EventArgs e)
+        public event EventHandler Disposing;
+        
+        protected virtual void OnDisposing(EventArgs e)
         {
-            var io = (IIOContainer) sender;
-            FCreatedContainers.Remove(io);
-            io.Disposed -= HandleDisposed;
+            if (Disposing != null) 
+            {
+                Disposing(this, e);
+            }
         }
     }
 }

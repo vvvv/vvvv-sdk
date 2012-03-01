@@ -275,7 +275,7 @@ namespace VVVV.Utils.Streams
         {
             if (FLength > FCapacity)
             {
-                FCapacity = StreamUtils.NextHigher(FLength);
+                FCapacity = Math.Max(StreamUtils.NextHigher(FLength), 4);
 
                 var oldBuffer = FBuffer;
                 FBuffer = new T[FCapacity];

@@ -26,6 +26,11 @@ namespace VVVV.PluginInterfaces.V2
 		/// The Configuring event takes place after a user changed a config pin.
 		/// </summary>
 		event EventHandler<ConfigEventArgs> Configuring;
+		
+		/// <summary>
+		/// The Disposing event takes place when calling the Dispose method.
+		/// </summary>
+		event EventHandler Disposing;
 	}
 	
 	public class ConfigEventArgs : EventArgs
@@ -47,14 +52,24 @@ namespace VVVV.PluginInterfaces.V2
 		public static IIOContainer<T> CreateIOContainer<T>(this IIOFactory factory, IOAttribute attribute, bool subscribe = true)
 			where T : class
 		{
-		    var context = IOBuildContext.Create(typeof(T), attribute, subscribe);
-			return (IIOContainer<T>) factory.CreateIOContainer(context);
+		    return (IIOContainer<T>) factory.CreateIOContainer(typeof(T), attribute, subscribe);
+		}
+		
+		public static IIOContainer CreateIOContainer(this IIOFactory factory, Type ioType, IOAttribute attribute, bool subscribe = true)
+		{
+		    var context = IOBuildContext.Create(ioType, attribute, subscribe);
+			return factory.CreateIOContainer(context);
+		}
+		
+		public static object CreateIO(this IIOFactory factory, IOBuildContext context)
+		{
+			return factory.CreateIOContainer(context).RawIOObject;
 		}
 		
 		public static object CreateIO(this IIOFactory factory, Type type, IOAttribute attribute, bool subscribe = true)
 		{
 		    var context = IOBuildContext.Create(type, attribute, subscribe);
-			return factory.CreateIOContainer(context).RawIOObject;
+			return factory.CreateIO(context);
 		}
 		
 		public static T CreateIO<T>(this IIOFactory factory, IOAttribute attribute, bool subscribe = true)

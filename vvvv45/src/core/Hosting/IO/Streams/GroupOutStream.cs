@@ -5,10 +5,10 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO.Streams
 {
-	class GroupOutStream<T> : IInStream<IOutStream<T>>, IFlushable
+	class GroupOutStream<T> : IInStream<IOutStream<T>>, IFlushable, IDisposable
 	{
 		private readonly BufferedIOStream<IOutStream<T>> FStreams = new BufferedIOStream<IOutStream<T>>();
-		private readonly List<IIOContainer> FIOHandlers = new List<IIOContainer>();
+		private readonly List<IIOContainer> FIOContainers = new List<IIOContainer>();
 		private readonly IDiffSpread<int> FCountSpread;
 		private readonly IIOFactory FFactory;
 		private readonly OutputAttribute FOutputAttribute;
@@ -36,7 +36,7 @@ namespace VVVV.Hosting.IO.Streams
 
 		void HandleCountSpreadChanged(IDiffSpread<int> spread)
 		{
-			int oldCount = FIOHandlers.Count;
+			int oldCount = FIOContainers.Count;
 			int newCount = Math.Max(spread[0], 0);
 			
 			for (int i = oldCount; i < newCount; i++)
@@ -46,21 +46,21 @@ namespace VVVV.Hosting.IO.Streams
 					IsPinGroup = false,
 					Order = FOutputAttribute.Order + FOffsetCounter * 1000 + i
 				};
-				var io = FFactory.CreateIOContainer(typeof(IOutStream<T>), attribute);
-				FIOHandlers.Add(io);
+				var io = FFactory.CreateIOContainer(typeof(IOutStream<T>), attribute, false);
+				FIOContainers.Add(io);
 			}
 			
 			for (int i = oldCount - 1; i >= newCount; i--)
 			{
-				var io = FIOHandlers[i];
-				FIOHandlers.Remove(io);
+				var io = FIOContainers[i];
+				FIOContainers.Remove(io);
 				io.Dispose();
 			}
 			
-			FStreams.Length = FIOHandlers.Count;
+			FStreams.Length = FIOContainers.Count;
 			using (var writer = FStreams.GetWriter())
 			{
-				foreach (var io in FIOHandlers)
+				foreach (var io in FIOContainers)
 				{
 					writer.Write(io.RawIOObject as IOutStream<T>);
 				}
@@ -112,5 +112,15 @@ namespace VVVV.Hosting.IO.Streams
 		{
 			return GetEnumerator();
 		}
+	    
+        public void Dispose()
+        {
+            FCountSpread.Changed -= HandleCountSpreadChanged;
+            foreach (var container in FIOContainers)
+            {
+                container.Dispose();
+            }
+            FIOContainers.Clear();
+        }
 	}
 }

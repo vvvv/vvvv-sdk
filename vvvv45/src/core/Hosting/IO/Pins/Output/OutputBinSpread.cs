@@ -6,18 +6,28 @@ using VVVV.Utils.Streams;
 namespace VVVV.Hosting.Pins.Output
 {
     [ComVisible(false)]
-    class OutputBinSpread<T> : BinSpread<T>
+    class OutputBinSpread<T> : BinSpread<T>, IDisposable
     {
+        private readonly IIOContainer<IOutStream<T>> FDataContainer;
+        private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
         private readonly IOutStream<T> FDataStream;
         private readonly IOutStream<int> FBinSizeStream;
         
         public OutputBinSpread(IIOFactory ioFactory, OutputAttribute attribute)
             : base(ioFactory, attribute)
         {
-            FDataStream = FIOFactory.CreateIO<IOutStream<T>>(attribute, false);
-            FBinSizeStream = FIOFactory.CreateIO<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(), false);
+            FDataContainer = FIOFactory.CreateIOContainer<IOutStream<T>>(attribute, false);
+            FBinSizeContainer = FIOFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(), false);
+            FDataStream = FDataContainer.IOObject;
+            FBinSizeStream = FBinSizeContainer.IOObject;
             
             SliceCount = 1;
+        }
+        
+        public void Dispose()
+        {
+            FDataContainer.Dispose();
+            FBinSizeContainer.Dispose();
         }
         
         public override void Flush()

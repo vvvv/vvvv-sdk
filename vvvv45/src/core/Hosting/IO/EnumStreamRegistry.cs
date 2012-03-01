@@ -17,9 +17,8 @@ namespace VVVV.Hosting.IO
             RegisterConfig(typeof(BufferedIOStream<>), CreateConfig);
         }
         
-        private static IIOContainer CreateInput(IOBuildContext<InputAttribute> context)
+        private static IIOContainer CreateInput(IIOFactory factory, IOBuildContext<InputAttribute> context)
         {
-            var factory = context.Factory;
             var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumIn)));
             var streamType = typeof(EnumInStream<>).MakeGenericType(context.DataType);
             var stream = Activator.CreateInstance(streamType, container.RawIOObject) as IInStream;
@@ -30,27 +29,27 @@ namespace VVVV.Hosting.IO
                 return IOContainer.Create(context, stream, container);
         }
         
-        private static IIOContainer CreateOutput(IOBuildContext<OutputAttribute> context)
+        private static IIOContainer CreateOutput(IIOFactory factory, IOBuildContext<OutputAttribute> context)
         {
-            var factory = context.Factory;
             var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumOut)));
-            var stream = Activator.CreateInstance(typeof(EnumOutStream<>).MakeGenericType(t), new object[] { enumOut }) as IOutStream;
-            return IOContainer.Create(factory, stream, enumOut, null, s => s.Flush());
+            var streamType = typeof(EnumOutStream<>).MakeGenericType(context.DataType);
+            var stream = Activator.CreateInstance(streamType, container.RawIOObject) as IOutStream;
+            return IOContainer.Create(context, stream, container, null, s => s.Flush());
         }
         
-        private static IIOContainer CreateConfig(IOBuildContext<ConfigAttribute> context)
+        private static IIOContainer CreateConfig(IIOFactory factory, IOBuildContext<ConfigAttribute> context)
         {
-            var host = factory.PluginHost;
-            var enumConfig = host.CreateEnumConfig(attribute, t);
-            var streamType = typeof(EnumConfigStream<>).MakeGenericType(t);
-            var stream = Activator.CreateInstance(streamType, new object[] { enumConfig }) as IIOStream;
-            return IOContainer.Create(factory, stream, enumConfig, null, s => s.Flush(), s => s.Sync());
+            var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumConfig)));
+            var streamType = typeof(EnumConfigStream<>).MakeGenericType(context.DataType);
+            var stream = Activator.CreateInstance(streamType, container.RawIOObject) as IIOStream;
+            return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
         }
         
         public override bool CanCreate(IOBuildContext context)
         {
             var ioType = context.IOType;
             var dataType = context.DataType;
+            var attribute = context.IOAttribute;
             if (dataType != null)
             {
                 var baseType = dataType.BaseType;

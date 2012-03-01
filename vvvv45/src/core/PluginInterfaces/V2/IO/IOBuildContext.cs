@@ -4,16 +4,60 @@ using System.Linq;
 
 namespace VVVV.PluginInterfaces.V2
 {
+    /// <summary>
+    /// An io build context is used during the build process of an io object.
+    /// It contains all the necessary information of how to configure
+    /// an io object and its container object when creating it.
+    /// </summary>
     public abstract class IOBuildContext
     {
-        public static IOBuildContext<TAttribute> Create<TAttribute>(Type ioType, TAttribute ioAttribute, bool subscribe = true)
+        public enum IODirection
+        {
+            Input,
+            Output,
+            Config
+        }
+        
+        #region static factory methods
+        
+        public static IOBuildContext<InputAttribute> Create(Type ioType, InputAttribute ioAttribute, bool subscribe = true)
+        {
+            return Create(ioType, ioAttribute, subscribe);
+        }
+        
+        public static IOBuildContext<OutputAttribute> Create(Type ioType, OutputAttribute ioAttribute, bool subscribe = true)
+        {
+            return Create(ioType, ioAttribute, subscribe);
+        }
+        
+        public static IOBuildContext<ConfigAttribute> Create(Type ioType, ConfigAttribute ioAttribute, bool subscribe = true)
+        {
+            return Create(ioType, ioAttribute, subscribe);
+        }
+        
+        private static IOBuildContext<TAttribute> Create<TAttribute>(Type ioType, TAttribute ioAttribute, bool subscribe = true)
             where TAttribute : IOAttribute
         {
             var dataType = ioType.GetGenericArguments().FirstOrDefault();
             return Create(ioType, dataType, ioAttribute);
         }
         
-        public static IOBuildContext<TAttribute> Create<TAttribute>(Type ioType, Type dataType, TAttribute ioAttribute, bool subscribe = true)
+        public static IOBuildContext<InputAttribute> Create<TAttribute>(Type ioType, Type dataType, InputAttribute ioAttribute, bool subscribe = true)
+        {
+            return Create(ioType, dataType, ioAttribute, subscribe);
+        }
+        
+        public static IOBuildContext<OutputAttribute> Create<TAttribute>(Type ioType, Type dataType, OutputAttribute ioAttribute, bool subscribe = true)
+        {
+            return Create(ioType, dataType, ioAttribute, subscribe);
+        }
+        
+        public static IOBuildContext<ConfigAttribute> Create<TAttribute>(Type ioType, Type dataType, ConfigAttribute ioAttribute, bool subscribe = true)
+        {
+            return Create(ioType, dataType, ioAttribute, subscribe);
+        }
+        
+        private static IOBuildContext<TAttribute> Create<TAttribute>(Type ioType, Type dataType, TAttribute ioAttribute, bool subscribe = true)
             where TAttribute : IOAttribute
         {
             return new IOBuildContext<TAttribute>()
@@ -25,17 +69,30 @@ namespace VVVV.PluginInterfaces.V2
             };
         }
         
-        /// <summary>
-        /// Gets or sets the io factory which is used during the build process.
-        /// </summary>
-        public IIOFactory Factory
+        public static IOBuildContext Create(Type ioType, IOAttribute attribute, bool subscribe = true)
         {
-            get;
-            set;
+            var dataType = ioType.GetGenericArguments().FirstOrDefault();
+            return Create(ioType, dataType, attribute, subscribe);
         }
         
+        public static IOBuildContext Create(Type ioType, Type dataType, IOAttribute attribute, bool subscribe = true)
+        {
+            var inputAttribute = attribute as InputAttribute;
+            if (inputAttribute != null)
+                return IOBuildContext.Create(ioType, dataType, inputAttribute, subscribe);
+            var outputAttribute = attribute as OutputAttribute;
+            if (outputAttribute != null)
+                return IOBuildContext.Create(ioType, dataType, outputAttribute, subscribe);
+            var configAttribute = attribute as ConfigAttribute;
+            if (configAttribute != null)
+                return IOBuildContext.Create(ioType, dataType, configAttribute, subscribe);
+            return null;
+        }
+        
+        #endregion
+        
         /// <summary>
-        /// Gets or sets the io attribute.
+        /// Gets the io attribute.
         /// </summary>
         public IOAttribute IOAttribute
         {
@@ -44,28 +101,28 @@ namespace VVVV.PluginInterfaces.V2
         }
         
         /// <summary>
-        /// Gets or sets the type of the io object to build.
+        /// Gets the type of the io object to build.
         /// For example: ISpread{double} or IValueIn.
         /// </summary>
         public Type IOType
         {
             get;
-            set;
+            internal set;
         }
         
         /// <summary>
-        /// Gets or sets the data type which the io object should handle.
+        /// Gets the data type which the io object should handle.
         /// For example: double or T.
         /// </summary>
         public Type DataType
         {
             get;
-            set;
+            internal set;
         }
         
         /// <summary>
-        /// Gets or sets whether or not the io container should subscribe
-        /// to the sync and flush events of the io factory.
+        /// Gets whether or not the io container should subscribe
+        /// to the sync, flush and dispose events of the io factory.
         /// In most cases only the outer most container will subscribe
         /// to those events as its containing io object will trigger
         /// the sync and flush methods of its inner io objects manually.
@@ -73,15 +130,33 @@ namespace VVVV.PluginInterfaces.V2
         public bool SubscribeToIOEvents
         {
             get;
-            set;
+            internal set;
+        }
+        
+        public IOBuildContext ReplaceIOType(Type ioType)
+        {
+            return Create(ioType, this.DataType, this.IOAttribute, false);
+        }
+        
+        public IOBuildContext ReplaceDataType(Type dataType)
+        {
+            return Create(this.IOType, dataType, this.IOAttribute, false);
+        }
+        
+        public IODirection Direction
+        {
+            get
+            {
+                if (IOAttribute is InputAttribute)
+                    return IODirection.Input;
+                else if (IOAttribute is OutputAttribute)
+                    return IODirection.Output;
+                else
+                    return IODirection.Config;
+            }
         }
     }
     
-    /// <summary>
-    /// An io build context is used during the build process of an io object.
-    /// It contains all the necessary information of how to configure
-    /// an io object and its container object when creating it.
-    /// </summary>
     public class IOBuildContext<TAttribute> : IOBuildContext
         where TAttribute : IOAttribute
     {
@@ -98,34 +173,20 @@ namespace VVVV.PluginInterfaces.V2
             {
                 return (TAttribute) base.IOAttribute;
             }
-            set
+            internal set
             {
                 base.IOAttribute = value;
             }
         }
         
-        public IOBuildContext<TAttribute> ReplaceIOType(Type ioType)
+        public new IOBuildContext<TAttribute> ReplaceIOType(Type ioType)
         {
-            return new IOBuildContext<TAttribute>()
-            {
-                DataType = this.DataType,
-                Factory = this.Factory,
-                IOAttribute = this.IOAttribute,
-                IOType = ioType,
-                SubscribeToIOEvents = this.SubscribeToIOEvents
-            };
+            return (IOBuildContext<TAttribute>) base.ReplaceIOType(ioType);
         }
         
-        public IOBuildContext<TAttribute> ReplaceDataType(Type dataType)
+        public new IOBuildContext<TAttribute> ReplaceDataType(Type dataType)
         {
-            return new IOBuildContext<TAttribute>()
-            {
-                DataType = dataType,
-                Factory = this.Factory,
-                IOAttribute = this.IOAttribute,
-                IOType = this.IOType,
-                SubscribeToIOEvents = this.SubscribeToIOEvents
-            };
+            return (IOBuildContext<TAttribute>) base.ReplaceDataType(dataType);
         }
     }
 }

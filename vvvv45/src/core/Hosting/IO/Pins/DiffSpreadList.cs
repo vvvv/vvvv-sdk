@@ -33,14 +33,11 @@ namespace VVVV.Hosting.Pins
             
             FCountSpread = ioFactory.CreateIO<IDiffSpread<int>>(att);
             FCountSpread.Changed += UpdatePins;
-            
-//            FCountSpread.Update();
         }
 
         public virtual void Dispose()
         {
             FCountSpread.Changed -= UpdatePins;
-//            FCountSpread.Dispose();
             SliceCount = 0;
         }
         

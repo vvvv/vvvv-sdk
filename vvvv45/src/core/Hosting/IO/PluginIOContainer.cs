@@ -8,10 +8,10 @@ namespace VVVV.Hosting.IO
     {
         private readonly IPluginHost FPluginHost;
         
-        public PluginIOContainer(IPluginHost pluginHost, IPluginIO pluginIO)
-            : base(pluginIO)
+        public PluginIOContainer(IOBuildContext context, IIOFactory factory, IPluginIO pluginIO)
+            : base(context, factory, pluginIO)
         {
-            FPluginHost = pluginHost;
+            FPluginHost = factory.PluginHost;
             IOObject = pluginIO;
         }
         
@@ -21,10 +21,10 @@ namespace VVVV.Hosting.IO
             private set;
         }
         
-        protected override void OnDisposed(EventArgs e)
+        public override void Dispose()
         {
-            base.OnDisposed(e);
             FPluginHost.DeletePin(IOObject);
+            base.Dispose();
         }
     }
 }

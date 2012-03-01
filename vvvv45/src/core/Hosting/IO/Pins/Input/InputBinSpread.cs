@@ -6,8 +6,10 @@ using VVVV.Utils.Streams;
 namespace VVVV.Hosting.Pins.Input
 {
     [ComVisible(false)]
-    class InputBinSpread<T> : BinSpread<T>
+    class InputBinSpread<T> : BinSpread<T>, IDisposable
     {
+        private readonly IIOContainer<IInStream<T>> FDataContainer;
+        private readonly IIOContainer<IInStream<int>> FBinSizeContainer;
         private readonly IInStream<int> FBinSizeStream;
         private readonly IInStream<T> FDataStream;
         private readonly BufferedIOStream<int> FNormBinSizeStream;
@@ -18,9 +20,17 @@ namespace VVVV.Hosting.Pins.Input
             attribute = ManipulateAttribute(attribute);
             
             attribute.AutoValidate = false;
-            FDataStream = FIOFactory.CreateIO<IInStream<T>>(attribute, false);
-            FBinSizeStream = FIOFactory.CreateIO<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
+            FDataContainer = FIOFactory.CreateIOContainer<IInStream<T>>(attribute, false);
+            FBinSizeContainer = FIOFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
+            FDataStream = FDataContainer.IOObject;
+            FBinSizeStream = FBinSizeContainer.IOObject;
             FNormBinSizeStream = new BufferedIOStream<int>();
+        }
+        
+        public void Dispose()
+        {
+            FDataContainer.Dispose();
+            FBinSizeContainer.Dispose();
         }
         
         protected virtual InputAttribute ManipulateAttribute(InputAttribute attribute)
