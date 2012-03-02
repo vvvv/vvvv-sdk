@@ -8,7 +8,7 @@ namespace VVVV.PluginInterfaces.V2
     /// <summary>
     /// IO containers are used by the IO registry and IO factory to create and
     /// destroy all different types of in- and output classes like for example
-    /// spreads and streams. Each of those classes is wrapped by an IO container
+    /// spreads and streams. Each of those classes are wrapped by an IO container
     /// in order to have one common interface to deal with in the registration
     /// process and to relieve those classes from additional dependencies to
     /// the plugin interface.

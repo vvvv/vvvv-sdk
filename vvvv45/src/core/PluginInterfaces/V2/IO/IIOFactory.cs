@@ -4,23 +4,37 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2
 {
+    /// <summary>
+    /// An io factory provides methods to create io containers.
+    /// </summary>
     [ComVisible(false)]
 	public interface IIOFactory : IDisposable
 	{
+	    /// <summary>
+	    /// The plugin host used to create all native interfaces.
+	    /// </summary>
 		IPluginHost2 PluginHost
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// Creates a new IO container as described by the build context.
+		/// </summary>
 		IIOContainer CreateIOContainer(IOBuildContext context);
+		
+		/// <summary>
+		/// Whether or not an IO container can be created for the given build context.
+		/// </summary>
 		bool CanCreateIOContainer(IOBuildContext context);
 		
 		/// <summary>
-		/// The Synchronizing event takes place before a node gets evaluated.
+		/// The Synchronizing event takes place before the plugin gets evaluated.
 		/// </summary>
 		event EventHandler Synchronizing;
 		
 		/// <summary>
-		/// The Flushing event takes place after a node has been evaluated.
+		/// The Flushing event takes place after the plugin has been evaluated.
 		/// </summary>
 		event EventHandler Flushing;
 		
@@ -40,7 +54,7 @@ namespace VVVV.PluginInterfaces.V2
 		event EventHandler<ConnectionEventArgs> Disconnected;
 		
 		/// <summary>
-		/// The Disposing event takes place when calling the Dispose method.
+		/// The Disposing event takes place before the plugin is being disposed.
 		/// </summary>
 		event EventHandler Disposing;
 	}

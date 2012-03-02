@@ -13,12 +13,6 @@ namespace VVVV.Hosting.IO
     {
         private readonly IInternalPluginHost FPluginHost;
         private readonly IORegistry FIORegistry;
-        private readonly List<IIOContainer> FCreatedContainers = new List<IIOContainer>();
-        private readonly Dictionary<IPluginIO, int> FPluginIORefCount = new Dictionary<IPluginIO, int>();
-        // used by internal class PluginContainer
-        internal readonly List<IIOContainer> FSyncContainers = new List<IIOContainer>();
-        internal readonly List<IIOContainer> FFlushContainers = new List<IIOContainer>();
-        internal readonly List<IIOContainer> FConfigContainers = new List<IIOContainer>();
         
         public IOFactory(IInternalPluginHost pluginHost, IORegistry streamRegistry)
         {

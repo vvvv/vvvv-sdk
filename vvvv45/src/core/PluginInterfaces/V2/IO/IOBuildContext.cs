@@ -13,13 +13,6 @@ namespace VVVV.PluginInterfaces.V2
     [ComVisible(false)]
     public abstract class IOBuildContext
     {
-        public enum IODirection
-        {
-            Input,
-            Output,
-            Config
-        }
-        
         #region static factory methods
         
         public static IOBuildContext<InputAttribute> Create(Type ioType, InputAttribute ioAttribute, bool subscribe = true)
@@ -145,16 +138,16 @@ namespace VVVV.PluginInterfaces.V2
             return Create(this.IOType, dataType, this.IOAttribute, false);
         }
         
-        public IODirection Direction
+        public PinDirection Direction
         {
             get
             {
                 if (IOAttribute is InputAttribute)
-                    return IODirection.Input;
+                    return PinDirection.Input;
                 else if (IOAttribute is OutputAttribute)
-                    return IODirection.Output;
+                    return PinDirection.Output;
                 else
-                    return IODirection.Config;
+                    return PinDirection.Configuration;
             }
         }
     }

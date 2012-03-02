@@ -109,11 +109,11 @@ namespace VVVV.Hosting.IO
             var ioType = context.IOType;
             var openIOType = ioType.IsGenericType ? ioType.GetGenericTypeDefinition() : ioType;
             switch (context.Direction) {
-                case IOBuildContext.IODirection.Input:
+                case PinDirection.Input:
                     return FInputDelegates.ContainsKey(ioType) || FInputDelegates.ContainsKey(openIOType);
-                case IOBuildContext.IODirection.Output:
+                case PinDirection.Output:
                     return FOutputDelegates.ContainsKey(ioType) || FOutputDelegates.ContainsKey(openIOType);
-                case IOBuildContext.IODirection.Config:
+                case PinDirection.Configuration:
                     return FConfigDelegates.ContainsKey(ioType) || FConfigDelegates.ContainsKey(openIOType);
                 default:
                     return false;
@@ -136,19 +136,19 @@ namespace VVVV.Hosting.IO
             
             switch (context.Direction) 
             {
-                case IOBuildContext.IODirection.Input:
+                case PinDirection.Input:
                     if (FInputDelegates.ContainsKey(ioType))
                         return FInputDelegates[ioType](factory, context as IOBuildContext<InputAttribute>);
                     else if (FInputDelegates.ContainsKey(openIOType))
                         return FInputDelegates[openIOType](factory, context as IOBuildContext<InputAttribute>);
                     break;
-                case IOBuildContext.IODirection.Output:
+                case PinDirection.Output:
                     if (FOutputDelegates.ContainsKey(ioType))
                         return FOutputDelegates[ioType](factory, context as IOBuildContext<OutputAttribute>);
                     else if (FOutputDelegates.ContainsKey(openIOType))
                         return FOutputDelegates[openIOType](factory, context as IOBuildContext<OutputAttribute>);
                     break;
-                case IOBuildContext.IODirection.Config:
+                case PinDirection.Configuration:
                     if (FConfigDelegates.ContainsKey(ioType))
                         return FConfigDelegates[ioType](factory, context as IOBuildContext<ConfigAttribute>);
                     else if (FConfigDelegates.ContainsKey(openIOType))
