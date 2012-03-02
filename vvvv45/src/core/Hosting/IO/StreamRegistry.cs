@@ -177,6 +177,14 @@ namespace VVVV.Hosting.IO
                               return IOContainer.Create(context, stream, container);
                           });
             
+            RegisterInput(typeof(IInStream<Quaternion>), (factory, context) => {
+                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
+                              var valueFastIn = container.RawIOObject as IValueFastIn;
+                              valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+                              var stream = new QuaternionInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
+                              return IOContainer.Create(context, stream, container);
+                          });
+            
             RegisterInput(typeof(IInStream<RGBAColor>), (factory, context) => {
                               var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorIn)));
                               var colorIn = container.RawIOObject as IColorIn;
@@ -349,6 +357,13 @@ namespace VVVV.Hosting.IO
                                var valueOut = container.RawIOObject as IValueOut;
                                valueOut.GetValuePointer(out ppDoubleData);
                                return IOContainer.Create(context, new Vector4OutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), container);
+                           });
+            
+            RegisterOutput(typeof(IOutStream<Quaternion>), (factory, context) => {
+                               var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueOut)));
+                               var valueOut = container.RawIOObject as IValueOut;
+                               valueOut.GetValuePointer(out ppDoubleData);
+                               return IOContainer.Create(context, new QuaternionOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), container);
                            });
 
             RegisterOutput(typeof(IOutStream<RGBAColor>), (factory, context) => {

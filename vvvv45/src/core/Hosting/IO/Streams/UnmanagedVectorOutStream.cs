@@ -385,4 +385,40 @@ namespace VVVV.Hosting.IO.Streams
             return new Vector4OutStreamWriter(this, *FPPDst);
         }
     }
+    
+    unsafe class QuaternionOutStream : VectorOutStream<Quaternion>
+    {
+        class QuaternionOutStreamWriter : VectorOutStreamWriter
+        {
+            public QuaternionOutStreamWriter(QuaternionOutStream stream, double* pDst)
+                : base(stream, pDst)
+            {
+                
+            }
+            
+            public override int Write(Quaternion[] buffer, int index, int length, int stride)
+            {
+                fixed (Quaternion* source = buffer)
+                {
+                    return Write((float*) source, index, length, stride);
+                }
+            }
+            
+            public override void Write(Quaternion value, int stride)
+            {
+                Write((float*) &value, stride);
+            }
+        }
+        
+        public QuaternionOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(4, ppDst, setDstLengthAction)
+        {
+            
+        }
+        
+        public override IStreamWriter<Quaternion> GetWriter()
+        {
+            return new QuaternionOutStreamWriter(this, *FPPDst);
+        }
+    }
 }
