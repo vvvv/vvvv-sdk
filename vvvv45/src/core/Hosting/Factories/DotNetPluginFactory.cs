@@ -341,11 +341,17 @@ namespace VVVV.Hosting.Factories
             var attribute = GetPluginInfoAttributeData(type);
             if (attribute != null)
             {
-            	var pluginContainer = new PluginContainer(pluginHost as IInternalPluginHost, FIORegistry, FParentContainer, type, nodeInfo);
+                var pluginContainer = new PluginContainer(pluginHost as IInternalPluginHost, FIORegistry, FParentContainer, type, nodeInfo);
 
                 // We intercept the plugin to manage IOHandlers.
                 plugin = pluginContainer;
                 FPluginContainers[pluginContainer.PluginBase] = pluginContainer;
+                
+                // HACK: FPluginHost is null in case of WindowSwitcher and friends
+                if (pluginHost != null)
+                {
+                    AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, pluginContainer.PluginBase);
+                }
                 
                 // Send event, clients are not interested in wrapping plugin, so send original here.
                 if (this.PluginCreated != null) { this.PluginCreated(pluginContainer.PluginBase, pluginHost); }
@@ -357,6 +363,12 @@ namespace VVVV.Hosting.Factories
                 v1Plugin.SetPluginHost(pluginHost);
                 
                 plugin = v1Plugin;
+                
+                // HACK: FPluginHost is null in case of WindowSwitcher and friends
+                if (pluginHost != null)
+                {
+                    AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, plugin);
+                }
                 
                 // Send event
                 if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
@@ -382,12 +394,51 @@ namespace VVVV.Hosting.Factories
             }
         }
         
+        private static void AssignOptionalPluginInterfaces(IInternalPluginHost pluginHost, IPluginBase pluginBase)
+        {
+            var win32Window = pluginBase as IWin32Window;
+            if (win32Window != null)
+            {
+                pluginHost.Win32Window = win32Window;
+            }
+            var pluginConnections = pluginBase as IPluginConnections;
+            if (pluginConnections != null)
+            {
+                pluginHost.Connections = pluginConnections;
+            }
+            var pluginDXLayer = pluginBase as IPluginDXLayer;
+            if (pluginDXLayer != null)
+            {
+                pluginHost.DXLayer = pluginDXLayer;
+            }
+            var pluginDXMesh = pluginBase as IPluginDXMesh;
+            if (pluginDXMesh != null)
+            {
+                pluginHost.DXMesh = pluginDXMesh;
+            }
+            var pluginDXResource = pluginBase as IPluginDXResource;
+            if (pluginDXResource != null)
+            {
+                pluginHost.DXResource = pluginDXResource;
+            }
+            var pluginTexture = pluginBase as IPluginDXTexture;
+            if (pluginTexture != null)
+            {
+                pluginHost.DXTexture = pluginTexture;
+            }
+            var pluginTexture2 = pluginBase as IPluginDXTexture2;
+            if (pluginTexture2 != null)
+            {
+                pluginHost.DXTexture2 = pluginTexture2;
+            }
+        }
+        
         protected virtual bool GetAssemblyLocation (INodeInfo nodeInfo, out string assemblyLocation)
         {
             assemblyLocation = nodeInfo.Filename;
             return true;
         }
-              
+        
         // From http://www.anastasiosyal.com/archive/2007/04/17/3.aspx
         private static bool IsDotNetAssembly(string fileName)
         {
@@ -444,7 +495,7 @@ namespace VVVV.Hosting.Factories
     
     class PluginContainer : IPlugin, IPluginConnections, IDisposable
     {
-    	private readonly IOFactory FIOFactory;
+        private readonly IOFactory FIOFactory;
         private readonly CompositionContainer FContainer;
         private readonly IPluginEvaluate FPlugin;
         private readonly bool FAutoEvaluate;
@@ -457,14 +508,14 @@ namespace VVVV.Hosting.Factories
         }
         
         public PluginContainer(
-        	IInternalPluginHost pluginHost,
+            IInternalPluginHost pluginHost,
             IORegistry ioRegistry,
             CompositionContainer parentContainer,
             Type pluginType,
             INodeInfo nodeInfo
            )
         {
-        	FIOFactory = new IOFactory(pluginHost, ioRegistry);
+            FIOFactory = new IOFactory(pluginHost, ioRegistry);
             
             var catalog = new TypeCatalog(pluginType);
             var ioExportProvider = new IOExportProvider(FIOFactory);
@@ -474,52 +525,12 @@ namespace VVVV.Hosting.Factories
             FContainer.ComposeParts(this);
             FPlugin = PluginBase as IPluginEvaluate;
             FAutoEvaluate = nodeInfo.AutoEvaluate;
-            
-            // HACK: FPluginHost is null in case of WindowSwitcher and friends
-            if (pluginHost != null)
-            {
-                var win32Window = PluginBase as IWin32Window;
-                if (win32Window != null)
-                {
-                    pluginHost.Win32Window = win32Window;
-                }
-                var pluginConnections = PluginBase as IPluginConnections;
-                if (pluginConnections != null)
-                {
-                    pluginHost.Connections = pluginConnections;
-                }
-                var pluginDXLayer = PluginBase as IPluginDXLayer;
-                if (pluginDXLayer != null)
-                {
-                    pluginHost.DXLayer = pluginDXLayer;
-                }
-                var pluginDXMesh = PluginBase as IPluginDXMesh;
-                if (pluginDXMesh != null)
-                {
-                    pluginHost.DXMesh = pluginDXMesh;
-                }
-                var pluginDXResource = PluginBase as IPluginDXResource;
-                if (pluginDXResource != null)
-                {
-                    pluginHost.DXResource = pluginDXResource;
-                }
-                var pluginTexture = PluginBase as IPluginDXTexture;
-                if (pluginTexture != null)
-                {
-                    pluginHost.DXTexture = pluginTexture;
-                }
-                var pluginTexture2 = PluginBase as IPluginDXTexture2;
-                if (pluginTexture2 != null)
-                {
-                    pluginHost.DXTexture2 = pluginTexture2;
-                }
-            }
         }
         
         public void Dispose()
         {
-        	FContainer.Dispose();
-        	FIOFactory.Dispose();
+            FContainer.Dispose();
+            FIOFactory.Dispose();
         }
         
         void IPlugin.SetPluginHost(IPluginHost Host)
