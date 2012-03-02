@@ -17,12 +17,12 @@ namespace VVVV.Hosting.Pins
 	    {
             public override bool Sync()
             {
-                var isChanged = base.Sync();
+                IsChanged = false;
                 foreach (var spread in this)
                 {
-                    isChanged |= spread.Sync();
+                    IsChanged |= spread.Sync();
                 }
-                return isChanged;
+                return base.Sync();
             }
             
             public override void Flush()

@@ -509,7 +509,8 @@ namespace VVVV.Hosting.IO
             {
                 return () => { return true; };
             }
-            return () => { return pluginFastIn.Validate(); };
+            // Fast value pins always return false for PinIsChanged, we therefor need to return true here manually.
+            return () => { pluginFastIn.Validate(); return true; };
         }
         
         static private Action<int> GetSetValueLengthAction(IValueOut valueOut)
