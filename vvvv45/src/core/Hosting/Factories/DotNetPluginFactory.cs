@@ -493,7 +493,7 @@ namespace VVVV.Hosting.Factories
         }
     }
     
-    class PluginContainer : IPlugin, IPluginConnections, IDisposable
+    class PluginContainer : IPlugin, IDisposable
     {
         private readonly IOFactory FIOFactory;
         private readonly CompositionContainer FContainer;
@@ -562,16 +562,6 @@ namespace VVVV.Hosting.Factories
             {
                 return FAutoEvaluate;
             }
-        }
-        
-        void IPluginConnections.ConnectPin(IPluginIO pin)
-        {
-            // TODO: Implement this
-        }
-        
-        void IPluginConnections.DisconnectPin(IPluginIO pin)
-        {
-            // TODO: Implement this
         }
     }
 }
