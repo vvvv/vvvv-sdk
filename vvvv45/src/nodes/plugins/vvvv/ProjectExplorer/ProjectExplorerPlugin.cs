@@ -146,6 +146,7 @@ namespace VVVV.HDE.ProjectExplorer
 		void FHideUnusedProjectsCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
 			this.FHideUnusedProjectsIn[0] = FHideUnusedProjectsCheckBox.Checked;
+			this.FHideUnusedProjectsIn.Flush();
 		}
 
 		void FHideUnusedProjectsIn_Changed(IDiffSpread<bool> spread)
@@ -198,6 +199,7 @@ namespace VVVV.HDE.ProjectExplorer
 		{
 			var buildConfig = (BuildConfiguration) FBuildConfigComboBox.SelectedIndex;
 			FBuildConfigIn[0] = buildConfig;
+			FBuildConfigIn.Flush();
 		}
 	}
 }
