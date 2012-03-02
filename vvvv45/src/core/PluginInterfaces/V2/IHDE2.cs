@@ -222,6 +222,14 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// Provides access to nodes that have been exposed for being remotely controlled
+		/// </summary>
+		IExposedNodeService ExposedNodeService
+		{
+			get;
+		}
 	}
 	#endregion IHDEHost
 	

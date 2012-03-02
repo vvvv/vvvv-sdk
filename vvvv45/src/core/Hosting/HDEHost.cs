@@ -157,6 +157,8 @@ namespace VVVV.Hosting
             
             DeviceMarshaler.Initialize(vvvvHost.DeviceService);
             
+            ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService);
+            
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
             KommunikatorHost = kommunikatorHost;
@@ -487,6 +489,12 @@ namespace VVVV.Hosting
                 
                 return FActivePatchWindow;
             }
+        }
+        
+        public IExposedNodeService ExposedNodeService
+        {
+        	get;
+        	private set;
         }
         
         #endregion
