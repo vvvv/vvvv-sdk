@@ -9,13 +9,13 @@ namespace VVVV.Hosting.Pins.Input
     [ComVisible(false)]
 	class DiffInputPin<T> : InputPin<T>, IDiffSpread<T>
 	{
-		public DiffInputPin(IPluginIn pluginIn,  BufferedIOStream<T> stream)
-			: base(pluginIn, stream)
+		public DiffInputPin(IIOFactory factory, IPluginIn pluginIn, BufferedIOStream<T> stream)
+			: base(factory, pluginIn, stream)
 		{
 		}
 		
-		public DiffInputPin(IPluginIn pluginIn, IInStream<T> stream)
-		    : this(pluginIn, new BufferedInputIOStream<T>(stream))
+		public DiffInputPin(IIOFactory factory, IPluginIn pluginIn, IInStream<T> stream)
+		    : this(factory, pluginIn, new BufferedInputIOStream<T>(stream))
 		{
 		    
 		}

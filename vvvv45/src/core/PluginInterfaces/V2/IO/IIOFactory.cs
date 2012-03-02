@@ -30,6 +30,16 @@ namespace VVVV.PluginInterfaces.V2
 		event EventHandler<ConfigEventArgs> Configuring;
 		
 		/// <summary>
+		/// The Connected event takes place after a pin has been connected.
+		/// </summary>
+		event EventHandler<ConnectionEventArgs> Connected;
+		
+		/// <summary>
+		/// The Disconnected event takes place after a pin has been disconnected.
+		/// </summary>
+		event EventHandler<ConnectionEventArgs> Disconnected;
+		
+		/// <summary>
 		/// The Disposing event takes place when calling the Dispose method.
 		/// </summary>
 		event EventHandler Disposing;
@@ -44,6 +54,28 @@ namespace VVVV.PluginInterfaces.V2
 	    }
 	    
 	    public IPluginIO PluginConfig
+	    {
+	        get;
+	        private set;
+	    }
+	}
+	
+	[ComVisible(false)]
+	public class ConnectionEventArgs : EventArgs
+	{
+	    public ConnectionEventArgs(IPluginIO pluginIO, IPin otherPin)
+	    {
+	        PluginIO = pluginIO;
+	        OtherPin = otherPin;
+	    }
+	    
+	    public IPluginIO PluginIO
+	    {
+	        get;
+	        private set;
+	    }
+	    
+	    public IPin OtherPin
 	    {
 	        get;
 	        private set;

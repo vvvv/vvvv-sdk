@@ -9,7 +9,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.IO
 {
-    class IOFactory : IIOFactory, IDisposable
+    class IOFactory : IIOFactory, IInternalPluginHostListener, IDisposable
     {
         private readonly IInternalPluginHost FPluginHost;
         private readonly IORegistry FIORegistry;
@@ -24,10 +24,20 @@ namespace VVVV.Hosting.IO
         {
             FPluginHost = pluginHost;
             FIORegistry = streamRegistry;
+            // HACK
+            if (FPluginHost != null)
+            {
+                FPluginHost.Subscribe(this);
+            }
         }
         
         public void Dispose()
         {
+            // HACK
+            if (FPluginHost != null)
+            {
+                FPluginHost.Unsubscribe(this);
+            }
             OnDisposing(EventArgs.Empty);
         }
         
@@ -96,6 +106,26 @@ namespace VVVV.Hosting.IO
             }
         }
         
+        public event EventHandler<ConnectionEventArgs> Connected;
+        
+        protected virtual void OnConnected(ConnectionEventArgs e)
+        {
+            if (Connected != null) 
+            {
+                Connected(this, e);
+            }
+        }
+        
+        public event EventHandler<ConnectionEventArgs> Disconnected;
+        
+        protected virtual void OnDisconnected(ConnectionEventArgs e)
+        {
+            if (Disconnected != null) 
+            {
+                Disconnected(this, e);
+            }
+        }
+        
         public event EventHandler Disposing;
         
         protected virtual void OnDisposing(EventArgs e)
@@ -104,6 +134,16 @@ namespace VVVV.Hosting.IO
             {
                 Disposing(this, e);
             }
+        }
+        
+        void IInternalPluginHostListener.ConnectCB(IPluginIO pluginIO, IPin otherPin)
+        {
+            OnConnected(new ConnectionEventArgs(pluginIO, otherPin));
+        }
+        
+        void IInternalPluginHostListener.DisconnectCB(IPluginIO pluginIO, IPin otherPin)
+        {
+            OnDisconnected(new ConnectionEventArgs(pluginIO, otherPin));
         }
     }
 }

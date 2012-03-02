@@ -52,6 +52,9 @@ namespace VVVV.Hosting.Interfaces
             set;
         }
         
+        void Subscribe(IInternalPluginHostListener listener);
+        void Unsubscribe(IInternalPluginHostListener listener);
+        
         IDXTextureOut CreateTextureOutput2(IDXTexturePin texturePin, string name, TSliceMode sliceMode, TPinVisibility visibility);
     }
 }

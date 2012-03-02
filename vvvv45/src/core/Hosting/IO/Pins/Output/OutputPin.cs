@@ -8,14 +8,14 @@ namespace VVVV.Hosting.Pins.Output
 {
 	class OutputPin<T> : Pin<T>
 	{
-		public OutputPin(IPluginOut pluginOut, BufferedIOStream<T> stream)
-			: base(pluginOut, stream)
+		public OutputPin(IIOFactory factory, IPluginOut pluginOut, BufferedIOStream<T> stream)
+			: base(factory, pluginOut, stream)
 		{
 			SliceCount = 1;
 		}
 		
-		public OutputPin(IPluginOut pluginOut, IOutStream<T> outStream)
-			: this(pluginOut, new BufferedOutputIOStream<T>(outStream))
+		public OutputPin(IIOFactory factory, IPluginOut pluginOut, IOutStream<T> outStream)
+			: this(factory, pluginOut, new BufferedOutputIOStream<T>(outStream))
 		{
 		}
 	}

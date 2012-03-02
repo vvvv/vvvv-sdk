@@ -9,13 +9,13 @@ namespace VVVV.Hosting.Pins.Input
     [ComVisible(false)]
     class InputPin<T> : Pin<T>
     {
-        public InputPin(IPluginIn pluginIn, BufferedIOStream<T> stream)
-            : base(pluginIn, stream)
+        public InputPin(IIOFactory factory, IPluginIn pluginIn, BufferedIOStream<T> stream)
+            : base(factory, pluginIn, stream)
         {
         }
         
-        public InputPin(IPluginIn pluginIn, IInStream<T> stream)
-            : this(pluginIn, new BufferedInputIOStream<T>(stream))
+        public InputPin(IIOFactory factory, IPluginIn pluginIn, IInStream<T> stream)
+            : this(factory, pluginIn, new BufferedInputIOStream<T>(stream))
         {
             
         }
