@@ -1,11 +1,11 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
     // Base class with various utility functions.
+    [ComVisible(false)]
     public static class StreamUtils
     {
         class EmptyStream<T> : IIOStream<T>

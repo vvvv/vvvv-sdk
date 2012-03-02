@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.Streams;
 
@@ -12,6 +13,7 @@ namespace VVVV.PluginInterfaces.V2
     /// process and to relieve those classes from additional dependencies to
     /// the plugin interface.
     /// </summary>
+    [ComVisible(false)]
     public interface IIOContainer : IDisposable
     {
         /// <summary>
@@ -31,6 +33,7 @@ namespace VVVV.PluginInterfaces.V2
         IIOFactory Factory { get; }
     }
     
+    [ComVisible(false)]
     public interface IIOContainer<out T> : IIOContainer
     {
         /// <summary>
@@ -42,6 +45,7 @@ namespace VVVV.PluginInterfaces.V2
         }
     }
     
+    [ComVisible(false)]
     public static class IOContainerExtensions
     {
         /// <summary>

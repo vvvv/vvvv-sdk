@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2
 {
+    [ComVisible(false)]
 	public interface IIOFactory : IDisposable
 	{
 		IPluginHost2 PluginHost
@@ -33,6 +35,7 @@ namespace VVVV.PluginInterfaces.V2
 		event EventHandler Disposing;
 	}
 	
+	[ComVisible(false)]
 	public class ConfigEventArgs : EventArgs
 	{
 	    public ConfigEventArgs(IPluginConfig pluginConfig)
@@ -47,6 +50,7 @@ namespace VVVV.PluginInterfaces.V2
 	    }
 	}
 	
+	[ComVisible(false)]
 	public static class IOFactoryExtensions
 	{
 		public static IIOContainer<T> CreateIOContainer<T>(this IIOFactory factory, IOAttribute attribute, bool subscribe = true)

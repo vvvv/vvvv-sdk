@@ -1,12 +1,13 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
     /// <summary>
     /// Base interface for all input streams.
     /// </summary>
+    [ComVisible(false)]
 	public interface IInStream : IStream, ISynchronizable
 	{
 	}
@@ -16,6 +17,7 @@ namespace VVVV.Utils.Streams
 	/// either retrieving a <see cref="IStreamReader{T}"/> or
 	/// or by iterating it with <see cref="IEnumerable{T}"/>.
 	/// </summary>
+	[ComVisible(false)]
 	public interface IInStream<T> : IInStream, IEnumerable<T>
 	{
 	    /// <summary>

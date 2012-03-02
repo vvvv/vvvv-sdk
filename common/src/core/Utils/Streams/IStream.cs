@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
@@ -7,6 +8,7 @@ namespace VVVV.Utils.Streams
     /// of a stream. It acts as the base interface for all stream
     /// implementations.
     /// </summary>
+    [ComVisible(false)]
 	public interface IStream : ICloneable
 	{
 	    /// <summary>

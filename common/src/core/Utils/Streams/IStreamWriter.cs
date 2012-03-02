@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
     /// <summary>
     /// Interface which provides the ability to write to an output stream.
     /// </summary>
+    [ComVisible(false)]
 	public interface IStreamWriter<T> : IStreamer
 	{
 	    /// <summary>
@@ -36,6 +38,7 @@ namespace VVVV.Utils.Streams
 		void Reset();
 	}
 	
+	[ComVisible(false)]
 	public static class StreamWriterExtensions
 	{
 		/// <summary>

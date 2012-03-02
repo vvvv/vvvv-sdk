@@ -1,5 +1,5 @@
-﻿
-using System;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
@@ -7,6 +7,7 @@ namespace VVVV.Utils.Streams
     /// Base interface for all output streams. It provides the ability
     /// to set the length of an output stream.
     /// </summary>
+    [ComVisible(false)]
 	public interface IOutStream : IStream, IFlushable
 	{
 	    /// <summary>
@@ -23,6 +24,7 @@ namespace VVVV.Utils.Streams
 	/// Defines an output stream. Output streams can be written to by
 	/// by retrieving a <see cref="IStreamWriter{T}"/>.
 	/// </summary>
+	[ComVisible(false)]
 	public interface IOutStream<T> : IOutStream
 	{
 	    /// <summary>

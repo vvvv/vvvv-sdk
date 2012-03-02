@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
+    [ComVisible(false)]
 	public static class MemoryPool<T>
 	{
 		private static readonly Dictionary<int, Stack<T[]>> FPool = new Dictionary<int, Stack<T[]>>();

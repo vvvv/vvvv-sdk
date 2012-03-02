@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
@@ -6,6 +7,7 @@ namespace VVVV.Utils.Streams
     /// Interface which provides the ability to synchronize a stream
     /// with its backing data source.
     /// </summary>
+    [ComVisible(false)]
     public interface ISynchronizable
     {
         /// <summary>

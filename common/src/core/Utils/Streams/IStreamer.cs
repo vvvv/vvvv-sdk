@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
@@ -7,6 +8,7 @@ namespace VVVV.Utils.Streams
     /// It provides the ability to test whether or not the end
     /// of the stream is reached or to seek in the stream.
     /// </summary>
+    [ComVisible(false)]
 	public interface IStreamer: IDisposable
 	{
 	    /// <summary>

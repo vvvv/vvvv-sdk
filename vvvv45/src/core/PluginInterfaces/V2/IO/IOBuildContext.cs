@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace VVVV.PluginInterfaces.V2
 {
@@ -9,6 +10,7 @@ namespace VVVV.PluginInterfaces.V2
     /// It contains all the necessary information of how to configure
     /// an io object and its container object when creating it.
     /// </summary>
+    [ComVisible(false)]
     public abstract class IOBuildContext
     {
         public enum IODirection
@@ -157,6 +159,7 @@ namespace VVVV.PluginInterfaces.V2
         }
     }
     
+    [ComVisible(false)]
     public class IOBuildContext<TAttribute> : IOBuildContext
         where TAttribute : IOAttribute
     {

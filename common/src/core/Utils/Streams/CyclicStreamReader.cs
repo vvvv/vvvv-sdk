@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
@@ -8,6 +9,7 @@ namespace VVVV.Utils.Streams
     /// It will therefor never go into an end of stream state.
     /// Exceptions to this rule is if the stream is empty.
     /// </summary>
+    [ComVisible(false)]
 	public class CyclicStreamReader<T> : IStreamReader<T>
 	{
 		private readonly IStreamReader<T> FReader;

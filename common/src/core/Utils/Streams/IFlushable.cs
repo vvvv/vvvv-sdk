@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
@@ -6,6 +7,7 @@ namespace VVVV.Utils.Streams
     /// Interface which provides the ability to flush all buffered data
     /// of a stream to its backing data sink.
     /// </summary>
+    [ComVisible(false)]
     public interface IFlushable
     {
         /// <summary>

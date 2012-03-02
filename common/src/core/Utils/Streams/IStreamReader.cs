@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
     /// <summary>
     /// Interface which provides the ability to read from an input stream.
     /// </summary>
+    [ComVisible(false)]
 	public interface IStreamReader<T> : IStreamer, IEnumerator<T>
 	{
 	    /// <summary>
@@ -33,6 +35,7 @@ namespace VVVV.Utils.Streams
 		int Read(T[] buffer, int offset, int length, int stride = 1);
 	}
 	
+	[ComVisible(false)]
 	public static class StreamReaderExtensions
 	{
 		/// <summary>

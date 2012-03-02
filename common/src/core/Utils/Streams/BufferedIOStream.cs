@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
@@ -6,8 +7,10 @@ namespace VVVV.Utils.Streams
     /// Implemention of <see cref="IIOStream{T}"/> using an array as storage.
     /// Useful as wrapper if a stream is accessed randomly.
     /// </summary>
+    [ComVisible(false)]
     public class BufferedIOStream<T> : IIOStream<T>
     {
+        [ComVisible(false)]
         public class StreamReader : IStreamReader<T>
         {
             private readonly BufferedIOStream<T> FStream;
@@ -112,6 +115,7 @@ namespace VVVV.Utils.Streams
             }
         }
         
+        [ComVisible(false)]
         public class StreamWriter : IStreamWriter<T>
         {
             private readonly BufferedIOStream<T> FStream;
