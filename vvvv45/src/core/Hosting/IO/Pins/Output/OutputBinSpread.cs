@@ -8,33 +8,31 @@ namespace VVVV.Hosting.Pins.Output
     [ComVisible(false)]
     class OutputBinSpread<T> : BinSpread<T>, IDisposable
     {
-        private readonly IIOContainer<IOutStream<T>> FDataContainer;
-        private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
-        private readonly IOutStream<T> FDataStream;
-        private readonly IOutStream<int> FBinSizeStream;
-        
-        public OutputBinSpread(IIOFactory ioFactory, OutputAttribute attribute)
-            : base(ioFactory, attribute)
+        internal class OutputBinSpreadStream : BinSpreadStream, IDisposable
         {
-            FDataContainer = FIOFactory.CreateIOContainer<IOutStream<T>>(attribute, false);
-            FBinSizeContainer = FIOFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(), false);
-            FDataStream = FDataContainer.IOObject;
-            FBinSizeStream = FBinSizeContainer.IOObject;
+            private readonly IIOContainer<IOutStream<T>> FDataContainer;
+            private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
+            private readonly IOutStream<T> FDataStream;
+            private readonly IOutStream<int> FBinSizeStream;
             
-            SliceCount = 1;
-        }
-        
-        public void Dispose()
-        {
-            FDataContainer.Dispose();
-            FBinSizeContainer.Dispose();
-        }
-        
-        public override void Flush()
-        {
-            if (IsChanged)
+            public OutputBinSpreadStream(IIOFactory ioFactory, OutputAttribute attribute)
             {
-                FBinSizeStream.Length = SliceCount;
+                FDataContainer = ioFactory.CreateIOContainer<IOutStream<T>>(attribute, false);
+                FBinSizeContainer = ioFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(), false);
+                FDataStream = FDataContainer.IOObject;
+                FBinSizeStream = FBinSizeContainer.IOObject;
+                Length = 1;
+            }
+            
+            public void Dispose()
+            {
+                FDataContainer.Dispose();
+                FBinSizeContainer.Dispose();
+            }
+            
+            public override void Flush()
+            {
+                FBinSizeStream.Length = Length;
                 
                 int dataStreamLength = 0;
                 using (var binSizeWriter = FBinSizeStream.GetWriter())
@@ -69,9 +67,28 @@ namespace VVVV.Hosting.Pins.Output
                 
                 FDataStream.Flush();
                 FBinSizeStream.Flush();
+                
+                base.Flush();
             }
+        }
+        
+        private readonly OutputBinSpreadStream FStream;
+        
+        public OutputBinSpread(IIOFactory ioFactory, OutputAttribute attribute)
+            : this(ioFactory, attribute, new OutputBinSpreadStream(ioFactory, attribute))
+        {
             
-            base.Flush();
+        }
+        
+        public OutputBinSpread(IIOFactory ioFactory, OutputAttribute attribute, OutputBinSpreadStream stream)
+            : base(ioFactory, attribute, stream)
+        {
+            FStream = stream;
+        }
+        
+        public void Dispose()
+        {
+            FStream.Dispose();
         }
     }
 }

@@ -8,110 +8,128 @@ namespace VVVV.Hosting.Pins.Input
     [ComVisible(false)]
     class InputBinSpread<T> : BinSpread<T>, IDisposable
     {
-        private readonly IIOContainer<IInStream<T>> FDataContainer;
-        private readonly IIOContainer<IInStream<int>> FBinSizeContainer;
-        private readonly IInStream<int> FBinSizeStream;
-        private readonly IInStream<T> FDataStream;
-        private readonly BufferedIOStream<int> FNormBinSizeStream;
-        
-        public InputBinSpread(IIOFactory ioFactory, InputAttribute attribute)
-            : base(ioFactory, attribute)
+        internal class InputBinSpreadStream : BinSpreadStream, IDisposable
         {
-            attribute = ManipulateAttribute(attribute);
+            private readonly IIOContainer<IInStream<T>> FDataContainer;
+            private readonly IIOContainer<IInStream<int>> FBinSizeContainer;
+            private readonly IInStream<T> FDataStream;
+            private readonly IInStream<int> FBinSizeStream;
+            private readonly BufferedIOStream<int> FNormBinSizeStream;
             
-            attribute.AutoValidate = false;
-            FDataContainer = FIOFactory.CreateIOContainer<IInStream<T>>(attribute, false);
-            FBinSizeContainer = FIOFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
-            FDataStream = FDataContainer.IOObject;
-            FBinSizeStream = FBinSizeContainer.IOObject;
-            FNormBinSizeStream = new BufferedIOStream<int>();
-        }
-        
-        public void Dispose()
-        {
-            FDataContainer.Dispose();
-            FBinSizeContainer.Dispose();
-        }
-        
-        protected virtual InputAttribute ManipulateAttribute(InputAttribute attribute)
-        {
-            // Do nothing by default
-            return attribute;
-        }
-        
-        public override bool Sync()
-        {
-            // Sync source
-            var isChanged = base.Sync();
-            isChanged |= FBinSizeStream.Sync();
-            isChanged |= FDataStream.Sync();
-            
-            if (isChanged)
+            public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
             {
-                // Normalize bin size and compute sum
-                int dataStreamLength = FDataStream.Length;
-                int binSizeSum = 0;
+                attribute = ManipulateAttribute(attribute);
+                attribute.AutoValidate = false;
+                FDataContainer = ioFactory.CreateIOContainer<IInStream<T>>(attribute, false);
+                FBinSizeContainer = ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
+                FDataStream = FDataContainer.IOObject;
+                FBinSizeStream = FBinSizeContainer.IOObject;
+                FNormBinSizeStream = new BufferedIOStream<int>();
+            }
+            
+            public void Dispose()
+            {
+                FDataContainer.Dispose();
+                FBinSizeContainer.Dispose();
+            }
+            
+            protected virtual InputAttribute ManipulateAttribute(InputAttribute attribute)
+            {
+                // Do nothing by default
+                return attribute;
+            }
+            
+            public override bool Sync()
+            {
+                // Sync source
+                IsChanged = FBinSizeStream.Sync() | FDataStream.Sync();
                 
-                var binSizeBuffer = MemoryPool<int>.GetArray();
-                var dataBuffer = MemoryPool<T>.GetArray();
-                
-                try 
+                if (IsChanged)
                 {
-                    FNormBinSizeStream.Length = FBinSizeStream.Length;
-                    using (var binSizeReader = FBinSizeStream.GetReader())
+                    // Normalize bin size and compute sum
+                    int dataStreamLength = FDataStream.Length;
+                    int binSizeSum = 0;
+                    
+                    var binSizeBuffer = MemoryPool<int>.GetArray();
+                    var dataBuffer = MemoryPool<T>.GetArray();
+                    
+                    try
                     {
-                        using (var binSizeWriter = FNormBinSizeStream.GetWriter())
+                        FNormBinSizeStream.Length = FBinSizeStream.Length;
+                        using (var binSizeReader = FBinSizeStream.GetReader())
                         {
-                            while (!binSizeReader.Eos)
+                            using (var binSizeWriter = FNormBinSizeStream.GetWriter())
                             {
-                                int blockSize = binSizeReader.Read(binSizeBuffer, 0, binSizeBuffer.Length);
-                                for (int i = 0; i < blockSize; i++)
+                                while (!binSizeReader.Eos)
                                 {
-                                    binSizeBuffer[i] = SpreadUtils.NormalizeBinSize(dataStreamLength, binSizeBuffer[i]);
-                                    binSizeSum += binSizeBuffer[i];
+                                    int blockSize = binSizeReader.Read(binSizeBuffer, 0, binSizeBuffer.Length);
+                                    for (int i = 0; i < blockSize; i++)
+                                    {
+                                        binSizeBuffer[i] = SpreadUtils.NormalizeBinSize(dataStreamLength, binSizeBuffer[i]);
+                                        binSizeSum += binSizeBuffer[i];
+                                    }
+                                    
+                                    binSizeWriter.Write(binSizeBuffer, 0, blockSize);
                                 }
-                                
-                                binSizeWriter.Write(binSizeBuffer, 0, blockSize);
                             }
                         }
-                    }
-                    
-    
-                    int binTimes = SpreadUtils.DivByBinSize(dataStreamLength, binSizeSum);
-                    binTimes = binTimes > 0 ? binTimes : 1;
-                    SliceCount = binTimes * FBinSizeStream.Length;
-                    
-                    using (var binSizeReader = FNormBinSizeStream.GetCyclicReader())
-                    {
-                        using (var dataReader = FDataStream.GetCyclicReader())
+                        
+                        
+                        int binTimes = SpreadUtils.DivByBinSize(dataStreamLength, binSizeSum);
+                        binTimes = binTimes > 0 ? binTimes : 1;
+                        Length = binTimes * FBinSizeStream.Length;
+                        
+                        using (var binSizeReader = FNormBinSizeStream.GetCyclicReader())
                         {
-                            foreach (var spread in this)
+                            using (var dataReader = FDataStream.GetCyclicReader())
                             {
-                                spread.SliceCount = binSizeReader.Read();
-                                
-                                var stream = spread.Stream;
-                                using (var writer = stream.GetWriter())
+                                foreach (var spread in this)
                                 {
-                                    while (!writer.Eos)
+                                    spread.SliceCount = binSizeReader.Read();
+                                    
+                                    var stream = spread.Stream;
+                                    using (var writer = stream.GetWriter())
                                     {
-                                        // Since we're using cyclic readers we need to limit the amount
-                                        // of data we request.
-                                        int numSlicesRead = dataReader.Read(dataBuffer, 0, Math.Min(dataBuffer.Length, writer.Length));
-                                        writer.Write(dataBuffer, 0, numSlicesRead);
+                                        while (!writer.Eos)
+                                        {
+                                            // Since we're using cyclic readers we need to limit the amount
+                                            // of data we request.
+                                            int numSlicesRead = dataReader.Read(dataBuffer, 0, Math.Min(dataBuffer.Length, writer.Length));
+                                            writer.Write(dataBuffer, 0, numSlicesRead);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                } 
-                finally
-                {
-                    MemoryPool<int>.PutArray(binSizeBuffer);
-                    MemoryPool<T>.PutArray(dataBuffer);
+                    finally
+                    {
+                        MemoryPool<int>.PutArray(binSizeBuffer);
+                        MemoryPool<T>.PutArray(dataBuffer);
+                    }
                 }
+                
+                return base.Sync();
             }
+        }
+        
+        private readonly InputBinSpreadStream FStream;
+        
+        public InputBinSpread(IIOFactory ioFactory, InputAttribute attribute)
+            : this(ioFactory, attribute, new InputBinSpreadStream(ioFactory, attribute))
+        {
             
-            return isChanged;
+        }
+        
+        public InputBinSpread(IIOFactory ioFactory, InputAttribute attribute, InputBinSpreadStream stream)
+            : base(ioFactory, attribute, stream)
+        {
+            FStream = stream;
+        }
+        
+        public void Dispose()
+        {
+            FStream.Dispose();
         }
     }
 }
