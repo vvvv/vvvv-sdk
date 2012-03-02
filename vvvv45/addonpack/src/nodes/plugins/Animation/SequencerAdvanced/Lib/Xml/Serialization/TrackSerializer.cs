@@ -60,7 +60,7 @@ namespace VVVV.Lib
                         Convert.ToDouble(node.Attributes["Value"].Value));
                 }
 
-                trck.StopRecording(Convert.ToDouble(elem.Attributes["LastRecordTime"].Value));
+                trck.StopRecording(Convert.ToDouble(elem.Attributes["LastRecordTime"].Value),false);
                 trck.Play = false;
 
                 //reader.Close();
