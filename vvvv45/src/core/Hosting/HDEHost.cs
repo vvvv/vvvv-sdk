@@ -367,6 +367,28 @@ namespace VVVV.Hosting
             }
         }
         
+        public INode2 GetNodeFromPath(string nodePath)
+        {
+        	var ids = nodePath.Split('/');
+        	
+        	var result = RootNode[0];
+        	for (int i = 1; i < ids.Length; i++)
+        	{
+        		try
+        		{
+        			var id = int.Parse(ids[i]);
+        			result = (from node in result where node.ID == id select node).First();
+        		}
+        		catch
+        		{
+        			result = null;
+        			break;
+        		}       			
+        	}
+
+            return result;
+        }
+        
         public void UpdateEnum(string EnumName, string Default, string[] EnumEntries)
         {
             FVVVVHost.UpdateEnum(EnumName, Default, EnumEntries);
@@ -439,6 +461,11 @@ namespace VVVV.Hosting
         public void SetComponentMode(INode2 node, ComponentMode componentMode)
         {
             FVVVVHost.SetComponentMode(node.InternalCOMInterf, componentMode);
+        }
+        
+        public void SendPatchMessage(string fileName, string message, bool undoable)
+        {
+            FVVVVHost.SendPatchMessage(fileName, message, undoable);
         }
         
         public string ExePath
