@@ -1,0 +1,157 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\EX9\MultiViewport (EX9).v4p">
+   <BOUNDS height="5985" left="7395" top="6630" type="Window" width="6300">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2865" top="405" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12375" top="5505" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2865" top="405" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Screen Count X|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="1680" top="3795" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="18030" top="7695" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1680" top="3795" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Viewports">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Cross (2d)" systemname="Cross (2d)">
+   <BOUNDS height="0" left="1635" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3960" top="405" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12675" top="5805" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3960" top="405" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Screen Count Y|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="LinearSpread (Spreads)" systemname="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="1515" top="1290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="Centered">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Spread Count" linkstyle="Bezier" srcnodeid="8" srcpinname="Y Output Value">
+   <LINKPOINT x="2535" y="1080">
+   </LINKPOINT>
+   <LINKPOINT x="3960" y="1200">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="3" nodename="LinearSpread (Spreads)" systemname="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="1815" top="1590" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="-2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Spread Count" linkstyle="Bezier" srcnodeid="5" srcpinname="Y Output Value">
+   <LINKPOINT x="3630" y="1230">
+   </LINKPOINT>
+   <LINKPOINT x="4650" y="1380">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="X In" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="2" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="0" left="1680" top="3165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="CenterX" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="CenterY" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Rotate" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="TranslateX" srcnodeid="6" srcpinname="X Out">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="TranslateY" srcnodeid="6" srcpinname="Y Out">
+   </LINK>
+   <NODE id="1" nodename="Divide (Value)" systemname="Divide (Value)">
+   <BOUNDS height="0" left="2865" top="2520" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Divide (Value)" systemname="Divide (Value)">
+   <BOUNDS height="0" left="3210" top="2520" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input 2" linkstyle="Bezier" srcnodeid="8" srcpinname="Y Output Value">
+   <LINKPOINT x="2535" y="1695">
+   </LINKPOINT>
+   <LINKPOINT x="6135" y="1695">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Input 2" linkstyle="Bezier" srcnodeid="5" srcpinname="Y Output Value">
+   <LINKPOINT x="3630" y="1695">
+   </LINKPOINT>
+   <LINKPOINT x="6480" y="1695">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="ScaleX" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="ScaleY" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input Node" srcnodeid="2" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y In" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <INFO author="vvvv group" description="Specify Viewports within the renderer" tags="screen, projection">
+   </INFO>
+   </PATCH>

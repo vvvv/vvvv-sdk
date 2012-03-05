@@ -1,0 +1,157 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Dir (File) help.v4p">
+   <BOUNDS height="4695" left="330" top="4530" type="Window" width="11295">
+   </BOUNDS>
+   <NODE id="7" nodename="Dir (File)">
+   <BOUNDS height="0" left="3480" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mask" slicecount="1" visible="1" values="*.*">
+   </PIN>
+   <PIN pinname="Filenames" visible="1">
+   </PIN>
+   <PIN pinname="Short Filenames" visible="1">
+   </PIN>
+   <PIN pinname="Include Hidden" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Include Subdirectories" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="doRescan" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Directory" slicecount="1" values="..\">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="60" top="2385" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5490" top="6975" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1590" left="60" top="2385" type="Box" width="6855">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="full_path">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input String" srcnodeid="7" srcpinname="Filenames" linkstyle="PolyLine">
+   <LINKPOINT x="3510" y="2280">
+   </LINKPOINT>
+   <LINKPOINT x="6885" y="2280">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="7335" top="2400" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5790" top="7275" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1605" left="7335" top="2400" type="Box" width="1500">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="short_filenames">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input String" srcnodeid="7" srcpinname="Short Filenames" linkstyle="PolyLine">
+   <LINKPOINT x="4200" y="2145">
+   </LINKPOINT>
+   <LINKPOINT x="8805" y="2145">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3480" top="1095" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6090" top="5445" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3480" top="1095" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="*.*">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="750" left="6225" top="1065" type="Node" width="7620">
+   </BOUNDS>
+   <BOUNDS height="945" left="6225" top="1065" type="Box" width="4770">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The Mask pin allows to concentrate on certain filetypes or names.&cr;&lf;The asterisk (*) is used as a wildcard, meaning that it stands for zero or more unspecified characters&cr;&lf;the ? replaces one unspecified character.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4440" top="1095" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6390" top="5745" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4440" top="1095" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="*.exe">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5385" top="1095" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6690" top="6045" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5385" top="1095" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="v*.*">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2610" top="1095" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6990" top="6345" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2610" top="1095" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="?i*.*">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Mask" srcnodeid="0" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="510" left="15" top="390" type="Box" width="3960">
+   </BOUNDS>
+   <BOUNDS height="160" left="4740" top="4830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|displays the contents of given directories and returns a spread with as many slices as files in the folder(s).|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="5340" top="5430" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Dir - File|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
