@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using VVVV.Hosting.Interfaces;
 using VVVV.Hosting.Interfaces.EX9;
 using VVVV.PluginInterfaces.InteropServices.EX9;
 using VVVV.PluginInterfaces.V1;
@@ -140,6 +141,14 @@ namespace VVVV.Hosting
         /// Gets the Direct3D9 device service.
         /// </summary>
         IDXDeviceService DeviceService
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// Gets the main loop.
+        /// </summary>
+        IInternalMainLoop MainLoop
         {
             get;
         }
