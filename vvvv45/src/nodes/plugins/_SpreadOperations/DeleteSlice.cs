@@ -18,6 +18,7 @@ namespace VVVV.Nodes
 	public class DeleteSlice<T> : IPluginEvaluate
 	{
 		#region fields & pins	
+		#pragma warning disable 649
 		[Input("Input", BinSize =  1, BinName = "Bin Size")]
 		IDiffSpread<ISpread<T>> FInput;
 		
@@ -26,6 +27,7 @@ namespace VVVV.Nodes
 
 		[Output("Output")]
 		ISpread<ISpread<T>> FOutput;
+		#pragma warning restore
 		#endregion fields & pins
 
 		//called when data for any output pin is requested
