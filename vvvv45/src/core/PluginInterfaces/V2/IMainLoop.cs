@@ -9,7 +9,7 @@ namespace VVVV.PluginInterfaces.V2
     /// If this is a boygroup client, OnNetworkSync will be the last event.
     /// </summary>
     [ComVisible(false)]
-    public interface IGraphEventService
+    public interface IMainLoop
     {
         bool PresentUpFront
         {

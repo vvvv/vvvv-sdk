@@ -146,9 +146,9 @@ namespace VVVV.Hosting
         }
         
         /// <summary>
-        /// Gets the graph event service.
+        /// Gets the main loop.
         /// </summary>
-        IInternalGraphEventService GraphEventService
+        IInternalMainLoop MainLoop
         {
             get;
         }

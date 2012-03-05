@@ -5,9 +5,9 @@ namespace VVVV.Hosting.Interfaces
 {
     [Guid("7F2C3A3C-6600-43E5-8572-F962CFB3171F"),
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IInternalGraphEvent
+    public interface IInternalMainLoopEvent
     {
-        void Subscribe(IInternalGraphEventListener listener);
-        void Unsubscribe(IInternalGraphEventListener listener);
+        void Subscribe(IInternalMainLoopEventListener listener);
+        void Unsubscribe(IInternalMainLoopEventListener listener);
     }
 }

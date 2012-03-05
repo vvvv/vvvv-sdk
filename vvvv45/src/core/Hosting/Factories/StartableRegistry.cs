@@ -15,12 +15,14 @@ using System.ComponentModel.Composition.Hosting;
 
 namespace VVVV.Hosting.Factories
 {
+    [ComVisible(false)]
     public class StartableInfo
     {
         public Type Type { get; set; }
         public string Name { get; set; }
     }
 
+    [ComVisible(false)]
     public class StartableStatus : IStartableStatus
     {
         public IStartable Startable { get; set; }

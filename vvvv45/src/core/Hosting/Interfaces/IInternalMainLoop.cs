@@ -10,44 +10,44 @@ namespace VVVV.Hosting.Interfaces
     /// </summary>
     [Guid("DC614E85-007C-46E1-98F3-15D6612601D5"),
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IInternalGraphEventService
+    public interface IInternalMainLoop
     {
         bool PresentUpFront
         {
             get;
         }
         
-        IInternalGraphEvent OnPrepareGraph
+        IInternalMainLoopEvent OnPrepareGraph
         {
             get;
         }
         
-        IInternalGraphEvent OnUpdateView
+        IInternalMainLoopEvent OnUpdateView
         {
             get;
         }
         
-        IInternalGraphEvent OnRender
+        IInternalMainLoopEvent OnRender
         {
             get;
         }
         
-        IInternalGraphEvent OnPresent
+        IInternalMainLoopEvent OnPresent
         {
             get;
         }
         
-        IInternalGraphEvent OnDebug
+        IInternalMainLoopEvent OnDebug
         {
             get;
         }
         
-        IInternalGraphEvent OnNetworkSync
+        IInternalMainLoopEvent OnNetworkSync
         {
             get;
         }
         
-        IInternalGraphEvent OnResetCache
+        IInternalMainLoopEvent OnResetCache
         {
             get;
         }

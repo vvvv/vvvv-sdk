@@ -156,7 +156,7 @@ namespace VVVV.Hosting
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
             DeviceMarshaler.Initialize(vvvvHost.DeviceService);
-            GraphEventService = new GraphEventService(vvvvHost.GraphEventService);
+            MainLoop = new MainLoop(vvvvHost.MainLoop);
             
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
@@ -490,7 +490,7 @@ namespace VVVV.Hosting
             }
         }
         
-        public IGraphEventService GraphEventService
+        public IMainLoop MainLoop
 		{
 		    get;
 		    private set;

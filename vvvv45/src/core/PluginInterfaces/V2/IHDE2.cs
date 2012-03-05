@@ -224,9 +224,9 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
-		/// Gets the graph event service, which exposes graph events.
+		/// Gets the main loop, which exposes events from the main loop.
 		/// </summary>
-		IGraphEventService GraphEventService
+		IMainLoop MainLoop
 		{
 		    get;
 		}

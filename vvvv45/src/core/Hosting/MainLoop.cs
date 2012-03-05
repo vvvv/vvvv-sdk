@@ -6,114 +6,114 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Hosting
 {
     [ComVisible(false)]
-    class GraphEventService : IGraphEventService
+    class MainLoop : IMainLoop
     {
-        class PrepareGraphListener : IInternalGraphEventListener
+        class PrepareGraphListener : IInternalMainLoopEventListener
         {
-            private readonly GraphEventService FService;
+            private readonly MainLoop FMainLoop;
             
-            public PrepareGraphListener(GraphEventService service)
+            public PrepareGraphListener(MainLoop mainLoop)
             {
-                FService = service;
+                FMainLoop = mainLoop;
             }
             
             public void HandleEvent()
             {
-                FService.CallOnPrepareGraph(EventArgs.Empty);
+                FMainLoop.CallOnPrepareGraph(EventArgs.Empty);
             }
         }
         
-        class UpdateViewListener : IInternalGraphEventListener
+        class UpdateViewListener : IInternalMainLoopEventListener
         {
-            private readonly GraphEventService FService;
+            private readonly MainLoop FMainLoop;
             
-            public UpdateViewListener(GraphEventService service)
+            public UpdateViewListener(MainLoop mainLoop)
             {
-                FService = service;
+                FMainLoop = mainLoop;
             }
             
             public void HandleEvent()
             {
-                FService.CallOnUpdateView(EventArgs.Empty);
+                FMainLoop.CallOnUpdateView(EventArgs.Empty);
             }
         }
         
-        class RenderListener : IInternalGraphEventListener
+        class RenderListener : IInternalMainLoopEventListener
         {
-            private readonly GraphEventService FService;
+            private readonly MainLoop FMainLoop;
             
-            public RenderListener(GraphEventService service)
+            public RenderListener(MainLoop mainLoop)
             {
-                FService = service;
+                FMainLoop = mainLoop;
             }
             
             public void HandleEvent()
             {
-                FService.CallOnRender(EventArgs.Empty);
+                FMainLoop.CallOnRender(EventArgs.Empty);
             }
         }
         
-        class PresentListener : IInternalGraphEventListener
+        class PresentListener : IInternalMainLoopEventListener
         {
-            private readonly GraphEventService FService;
+            private readonly MainLoop FMainLoop;
             
-            public PresentListener(GraphEventService service)
+            public PresentListener(MainLoop mainLoop)
             {
-                FService = service;
+                FMainLoop = mainLoop;
             }
             
             public void HandleEvent()
             {
-                FService.CallOnPresent(EventArgs.Empty);
+                FMainLoop.CallOnPresent(EventArgs.Empty);
             }
         }
         
-        class DebugListener : IInternalGraphEventListener
+        class DebugListener : IInternalMainLoopEventListener
         {
-            private readonly GraphEventService FService;
+            private readonly MainLoop FMainLoop;
             
-            public DebugListener(GraphEventService service)
+            public DebugListener(MainLoop mainLoop)
             {
-                FService = service;
+                FMainLoop = mainLoop;
             }
             
             public void HandleEvent()
             {
-                FService.CallOnDebug(EventArgs.Empty);
+                FMainLoop.CallOnDebug(EventArgs.Empty);
             }
         }
         
-        class NetworkSyncListener : IInternalGraphEventListener
+        class NetworkSyncListener : IInternalMainLoopEventListener
         {
-            private readonly GraphEventService FService;
+            private readonly MainLoop FMainLoop;
             
-            public NetworkSyncListener(GraphEventService service)
+            public NetworkSyncListener(MainLoop mainLoop)
             {
-                FService = service;
+                FMainLoop = mainLoop;
             }
             
             public void HandleEvent()
             {
-                FService.CallOnNetworkSync(EventArgs.Empty);
+                FMainLoop.CallOnNetworkSync(EventArgs.Empty);
             }
         }
         
-        class ResetCacheListener : IInternalGraphEventListener
+        class ResetCacheListener : IInternalMainLoopEventListener
         {
-            private readonly GraphEventService FService;
+            private readonly MainLoop FMainLoop;
             
-            public ResetCacheListener(GraphEventService service)
+            public ResetCacheListener(MainLoop mainLoop)
             {
-                FService = service;
+                FMainLoop = mainLoop;
             }
             
             public void HandleEvent()
             {
-                FService.CallOnResetCache(EventArgs.Empty);
+                FMainLoop.CallOnResetCache(EventArgs.Empty);
             }
         }
         
-        private readonly IInternalGraphEventService FGraphEventService;
+        private readonly IInternalMainLoop FMainLoop;
         private readonly PrepareGraphListener FPrepareGraphListener;
         private readonly UpdateViewListener FUpdateViewListener;
         private readonly RenderListener FRenderListener;
@@ -122,9 +122,9 @@ namespace VVVV.Hosting
         private readonly NetworkSyncListener FNetworkSyncListener;
         private readonly ResetCacheListener FResetCacheListener;
         
-        public GraphEventService(IInternalGraphEventService graphEventService)
+        public MainLoop(IInternalMainLoop mainLoop)
         {
-            FGraphEventService = graphEventService;
+            FMainLoop = mainLoop;
             FPrepareGraphListener = new PrepareGraphListener(this);
             FUpdateViewListener = new UpdateViewListener(this);
             FRenderListener = new RenderListener(this);
@@ -142,7 +142,7 @@ namespace VVVV.Hosting
             {
                 if (FOnPrepareGraphCount == 0)
                 {
-                    FGraphEventService.OnPrepareGraph.Subscribe(FPrepareGraphListener);
+                    FMainLoop.OnPrepareGraph.Subscribe(FPrepareGraphListener);
                 }
                 FOnPrepareGraphCount++;
                 FOnPrepareGraph += value;
@@ -153,7 +153,7 @@ namespace VVVV.Hosting
                 FOnPrepareGraphCount--;
                 if (FOnPrepareGraphCount == 0)
                 {
-                    FGraphEventService.OnPrepareGraph.Unsubscribe(FPrepareGraphListener);
+                    FMainLoop.OnPrepareGraph.Unsubscribe(FPrepareGraphListener);
                 }
             }
         }
@@ -174,7 +174,7 @@ namespace VVVV.Hosting
             {
                 if (FOnUpdateViewCount == 0)
                 {
-                    FGraphEventService.OnUpdateView.Subscribe(FUpdateViewListener);
+                    FMainLoop.OnUpdateView.Subscribe(FUpdateViewListener);
                 }
                 FOnUpdateViewCount++;
                 FOnUpdateView += value;
@@ -185,7 +185,7 @@ namespace VVVV.Hosting
                 FOnUpdateViewCount--;
                 if (FOnUpdateViewCount == 0)
                 {
-                    FGraphEventService.OnUpdateView.Unsubscribe(FUpdateViewListener);
+                    FMainLoop.OnUpdateView.Unsubscribe(FUpdateViewListener);
                 }
             }
         }
@@ -206,7 +206,7 @@ namespace VVVV.Hosting
             {
                 if (FOnRenderCount == 0)
                 {
-                    FGraphEventService.OnRender.Subscribe(FRenderListener);
+                    FMainLoop.OnRender.Subscribe(FRenderListener);
                 }
                 FOnRenderCount++;
                 FOnRender += value;
@@ -217,7 +217,7 @@ namespace VVVV.Hosting
                 FOnRenderCount--;
                 if (FOnRenderCount == 0)
                 {
-                    FGraphEventService.OnRender.Unsubscribe(FRenderListener);
+                    FMainLoop.OnRender.Unsubscribe(FRenderListener);
                 }
             }
         }
@@ -238,7 +238,7 @@ namespace VVVV.Hosting
             {
                 if (FOnPresentCount == 0)
                 {
-                    FGraphEventService.OnPresent.Subscribe(FPresentListener);
+                    FMainLoop.OnPresent.Subscribe(FPresentListener);
                 }
                 FOnPresentCount++;
                 FOnPresent += value;
@@ -249,7 +249,7 @@ namespace VVVV.Hosting
                 FOnPresentCount--;
                 if (FOnPresentCount == 0)
                 {
-                    FGraphEventService.OnPresent.Unsubscribe(FPresentListener);
+                    FMainLoop.OnPresent.Unsubscribe(FPresentListener);
                 }
             }
         }
@@ -270,7 +270,7 @@ namespace VVVV.Hosting
             {
                 if (FOnDebugCount == 0)
                 {
-                    FGraphEventService.OnDebug.Subscribe(FDebugListener);
+                    FMainLoop.OnDebug.Subscribe(FDebugListener);
                 }
                 FOnDebugCount++;
                 FOnDebug += value;
@@ -281,7 +281,7 @@ namespace VVVV.Hosting
                 FOnDebugCount--;
                 if (FOnDebugCount == 0)
                 {
-                    FGraphEventService.OnDebug.Unsubscribe(FDebugListener);
+                    FMainLoop.OnDebug.Unsubscribe(FDebugListener);
                 }
             }
         }
@@ -302,7 +302,7 @@ namespace VVVV.Hosting
             {
                 if (FOnNetworkSyncCount == 0)
                 {
-                    FGraphEventService.OnNetworkSync.Subscribe(FNetworkSyncListener);
+                    FMainLoop.OnNetworkSync.Subscribe(FNetworkSyncListener);
                 }
                 FOnNetworkSyncCount++;
                 FOnNetworkSync += value;
@@ -313,7 +313,7 @@ namespace VVVV.Hosting
                 FOnNetworkSyncCount--;
                 if (FOnNetworkSyncCount == 0)
                 {
-                    FGraphEventService.OnNetworkSync.Unsubscribe(FNetworkSyncListener);
+                    FMainLoop.OnNetworkSync.Unsubscribe(FNetworkSyncListener);
                 }
             }
         }
@@ -334,7 +334,7 @@ namespace VVVV.Hosting
             {
                 if (FOnResetCacheCount == 0)
                 {
-                    FGraphEventService.OnResetCache.Subscribe(FResetCacheListener);
+                    FMainLoop.OnResetCache.Subscribe(FResetCacheListener);
                 }
                 FOnResetCacheCount++;
                 FOnResetCache += value;
@@ -345,7 +345,7 @@ namespace VVVV.Hosting
                 FOnResetCacheCount--;
                 if (FOnResetCacheCount == 0)
                 {
-                    FGraphEventService.OnResetCache.Unsubscribe(FResetCacheListener);
+                    FMainLoop.OnResetCache.Unsubscribe(FResetCacheListener);
                 }
             }
         }
@@ -362,7 +362,7 @@ namespace VVVV.Hosting
         {
             get
             {
-                return FGraphEventService.PresentUpFront;
+                return FMainLoop.PresentUpFront;
             }
         }
     }
