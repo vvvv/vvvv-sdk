@@ -84,6 +84,14 @@ namespace VVVV.Hosting
         void SetComponentMode(INode node, ComponentMode componentMode);
         
         /// <summary>
+        /// Allows sending of XML-message snippets to patches. 
+        /// </summary>
+        /// <param name="fileName">Filename of the patch to send the message to.</param>
+        /// <param name="message">The XML-message snippet.</param>
+        /// <param name="undoable">If TRUE the operation performed by this message can be undone by the user using the UNDO command.</param>
+        void SendPatchMessage(string fileName, string message, bool undoable);
+        
+        /// <summary>
         /// Selects the given nodes in their patch.
         /// </summary>
         /// <param name="nodes">The nodes to be selected.</param>
