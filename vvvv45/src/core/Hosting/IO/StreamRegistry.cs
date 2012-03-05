@@ -398,9 +398,9 @@ namespace VVVV.Hosting.IO
                                var host = factory.PluginHost;
                                var t = context.DataType;
                                var attribute = context.IOAttribute;
-                               var genericArguments = t.GetGenericArguments();
                                if (t.IsGenericType)
                                {
+                                   var genericArguments = t.GetGenericArguments();
                                    switch (genericArguments.Length) {
                                        case 1:
                                            if (typeof(IInStream<>).MakeGenericType(genericArguments).IsAssignableFrom(t))
@@ -411,21 +411,28 @@ namespace VVVV.Hosting.IO
                                            }
                                            break;
                                        case 2:
-                                           if (typeof(DXResource<,>).MakeGenericType(genericArguments).IsAssignableFrom(t))
+                                           try 
                                            {
-                                               var resourceType = genericArguments[0];
-                                               var metadataType = genericArguments[1];
-                                               if (resourceType == typeof(Texture))
+                                               if (typeof(DXResource<,>).MakeGenericType(genericArguments).IsAssignableFrom(t))
                                                {
-                                                   var textureOutStreamType = typeof(TextureOutStream<,>);
-                                                   textureOutStreamType = textureOutStreamType.MakeGenericType(t, metadataType);
-                                                   var stream = Activator.CreateInstance(textureOutStreamType, host, attribute) as IOutStream;
-                                                   return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                                   var resourceType = genericArguments[0];
+                                                   var metadataType = genericArguments[1];
+                                                   if (resourceType == typeof(Texture))
+                                                   {
+                                                       var textureOutStreamType = typeof(TextureOutStream<,>);
+                                                       textureOutStreamType = textureOutStreamType.MakeGenericType(t, metadataType);
+                                                       var stream = Activator.CreateInstance(textureOutStreamType, host, attribute) as IOutStream;
+                                                       return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                                   }
+                                                   else
+                                                   {
+                                                       throw new NotImplementedException();
+                                                   }
                                                }
-                                               else
-                                               {
-                                                   throw new NotImplementedException();
-                                               }
+                                           }
+                                           catch (ArgumentException)
+                                           {
+                                               // Type constraints weren't satisfied.
                                            }
                                            break;
                                    }
