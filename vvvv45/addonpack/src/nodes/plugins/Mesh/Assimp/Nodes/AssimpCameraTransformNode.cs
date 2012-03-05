@@ -12,7 +12,7 @@ namespace VVVV.Assimp.Nodes
     public class AssimpCameraTransformNode : IPluginEvaluate
     {
         [Input("Camera")]
-        DiffPin<AssimpCamera> FInCameras;
+        Pin<AssimpCamera> FInCameras;
 
         [Output("Name")]
         ISpread<string> FOutName;

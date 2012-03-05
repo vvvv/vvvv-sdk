@@ -32,6 +32,7 @@ namespace VVVV.Hosting.IO
             // Streams are more low level than spreads, so register them first
             Register(new StreamRegistry());
             Register(new PinRegistry());
+            Register(new SpreadRegistry());
         }
     }
 }

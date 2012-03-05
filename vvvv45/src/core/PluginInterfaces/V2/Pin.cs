@@ -34,7 +34,7 @@ namespace VVVV.PluginInterfaces.V2
 	}
 	
 	[ComVisible(false)]
-	public class Pin<T> : Spread<T>, IDisposable
+	public class Pin<T> : Spread<T>, ISpread<T>, IDisposable
 	{
 	    private readonly IIOFactory FFactory;
 		private readonly IPluginIO FPluginIO;

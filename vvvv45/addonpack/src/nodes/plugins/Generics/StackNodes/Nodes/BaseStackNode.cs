@@ -14,6 +14,7 @@ namespace VVVV.Nodes
     public class BaseStackNode<T> : IPluginEvaluate
     {
         #region Fields
+        #pragma warning disable 649
         [Import()]
         private IIOFactory FIOFactory;
 
@@ -46,11 +47,13 @@ namespace VVVV.Nodes
 
 		[Output("Stack Size")]
 		ISpread<int> FPinOutStackSize;
+		#pragma warning restore 649
 
-        private IIOHandler<ISpread<ISpread<T>>> FOutputFull;
+        private IIOContainer<ISpread<ISpread<T>>> FOutputFull;
 
         private Stack<List<T>> FStack;
 		private int FStackSize = -1;
+		
         #endregion
 
 
@@ -71,14 +74,14 @@ namespace VVVV.Nodes
                         OutputAttribute attr = new OutputAttribute("Stack");
                         attr.Order = 10000;
 
-                        this.FOutputFull = this.FIOFactory.CreateIOHandler<ISpread<ISpread<T>>>(attr);
+                        this.FOutputFull = this.FIOFactory.CreateIOContainer<ISpread<ISpread<T>>>(attr);
                     }
                 }
                 else
                 {
                     if (this.FOutputFull != null)
                     {
-                    	this.FIOFactory.DestroyIOHandler(this.FOutputFull);
+                        this.FOutputFull.Dispose();
                         this.FOutputFull = null;
                     }
                 }
