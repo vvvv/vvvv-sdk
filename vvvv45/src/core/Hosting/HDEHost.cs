@@ -157,7 +157,7 @@ namespace VVVV.Hosting
             
             DeviceMarshaler.Initialize(vvvvHost.DeviceService);
             
-            ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService);
+            ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService, NodeInfoFactory);
             
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;

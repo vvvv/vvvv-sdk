@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
+using VVVV.Hosting.Graph;
 using VVVV.Hosting.Interfaces;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
@@ -14,30 +14,34 @@ namespace VVVV.Hosting
         class ExposedNodeListener: IInternalExposedNodeListener
         {
             private readonly ExposedNodeService FExposedNodeService;
+            private readonly ProxyNodeInfoFactory FProxyNodeInfoFactory;
             
-            public ExposedNodeListener(ExposedNodeService exposedNodeService)
+            public ExposedNodeListener(ExposedNodeService exposedNodeService, ProxyNodeInfoFactory proxyNodeInfoFactory)
             {
                 FExposedNodeService = exposedNodeService;
+                FProxyNodeInfoFactory = proxyNodeInfoFactory;
             }
             
             public void NodeAddedCB(INode node)
             {
-                FExposedNodeService.OnNodeAdded(node);
+            	FExposedNodeService.OnNodeAdded(Node.Create(node, FProxyNodeInfoFactory));
             }
             
             public void NodeRemovedCB(INode node)
             {
-                FExposedNodeService.OnNodeRemoved(node);
+            	FExposedNodeService.OnNodeRemoved(Node.Create(node, FProxyNodeInfoFactory));
             }
         }
         
         private readonly IInternalExposedNodeService FExposedNodeService;
         private readonly ExposedNodeListener FExposedNodeListener;
+        private readonly ProxyNodeInfoFactory FProxyNodeInfoFactory;
         
-        public ExposedNodeService(IInternalExposedNodeService exposedNodeService)
+        public ExposedNodeService(IInternalExposedNodeService exposedNodeService, ProxyNodeInfoFactory proxyNodeInfoFactory)
         {
             FExposedNodeService = exposedNodeService;
-            FExposedNodeListener = new ExposedNodeListener(this);
+            FProxyNodeInfoFactory = proxyNodeInfoFactory;
+            FExposedNodeListener = new ExposedNodeListener(this, proxyNodeInfoFactory);
             FExposedNodeService.Subscribe(FExposedNodeListener);
         }
         
@@ -47,20 +51,20 @@ namespace VVVV.Hosting
         }
         
         public event NodeEventHandler NodeAdded;
-        protected virtual void OnNodeAdded(NodeEventHandler e)
+        protected virtual void OnNodeAdded(INode2 node)
         {
             if (NodeAdded != null) 
             {
-                NodeAdded(e);
+                NodeAdded(node);
             }
         }
         
         public event NodeEventHandler NodeRemoved;
-        protected virtual void OnNodeRemoved(NodeEventHandler e)
+        protected virtual void OnNodeRemoved(INode2 node)
         {
             if (NodeRemoved != null) 
             {
-                NodeRemoved(e);
+                NodeRemoved(node);
             }
         }
         
@@ -70,7 +74,7 @@ namespace VVVV.Hosting
             {
                 foreach (var node in FExposedNodeService.Nodes)
                 {
-                    yield return node;
+                    yield return Node.Create(node, FProxyNodeInfoFactory);
                 }
             }
         }
