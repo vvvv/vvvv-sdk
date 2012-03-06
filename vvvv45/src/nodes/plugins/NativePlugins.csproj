@@ -108,6 +108,7 @@
     <Compile Include="Transform\Decompose\DecomposeNode.cs" />
     <Compile Include="Value\DifferentialNode.cs" />
     <Compile Include="Value\IntegralNode.cs" />
+    <Compile Include="vvvv\ActivePatch\VVVVActivePatchNode.cs" />
     <Compile Include="vvvv\Finder\Enums.cs" />
     <Compile Include="vvvv\Finder\FinderNode.cs">
       <SubType>UserControl</SubType>
@@ -172,6 +173,7 @@
     <Compile Include="vvvv\ProjectExplorer\ProjectExplorerPlugin.Designer.cs">
       <DependentUpon>ProjectExplorerPlugin.cs</DependentUpon>
     </Compile>
+    <Compile Include="vvvv\Server\VVVVServerNode.cs" />
     <Compile Include="vvvv\StartableInfo\StartableInfoNode.cs" />
     <Compile Include="vvvv\WindowSwitcher\WindowSwitcherNode.cs">
       <SubType>UserControl</SubType>
@@ -185,7 +187,6 @@
     <Compile Include="_SpreadOperations\UnzipNode.cs" />
     <Compile Include="_SpreadOperations\ZipNode.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="vvvv\Finder\FinderNode.resx">
       <DependentUpon>FinderNode.cs</DependentUpon>
@@ -243,6 +244,10 @@
       <Name>WinFormsViewer</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="vvvv\ActivePatch" />
+    <Folder Include="vvvv\Server" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

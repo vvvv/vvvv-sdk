@@ -16,7 +16,7 @@ using VVVV.Core;
 
 namespace VVVV.Nodes
 {
-	enum AcceptMode {None, OnlyExposed, OnlyCached, Any};
+	enum AcceptMode {None, OnlyExposed, OnlyCached, ExposedAndCached, Any};
 	
 	#region PluginInfo
 	[PluginInfo(Name = "Server", 
@@ -31,10 +31,10 @@ namespace VVVV.Nodes
 		[Input("Listening UDP Port", IsSingle = true, DefaultValue = 44444)]
 		IDiffSpread<int> FUDPPort;
 		
-		[Input("Target IP", IsSingle=true, DefaultString="192.168.255.255")]
+		[Input("Target IP", IsSingle=true, DefaultString="127.0.0.1")]
 		IDiffSpread<string> FTargetIP;
 		
-		[Input("Target UDP Port", IsSingle=true, DefaultValue=44444)]
+		[Input("Target UDP Port", IsSingle=true, DefaultValue=55555)]
 		IDiffSpread<int> FTargetPort;
 		
 		[Input("Accept", IsSingle = true, DefaultEnumEntry = "OnlyExposed")]
@@ -43,7 +43,7 @@ namespace VVVV.Nodes
 		[Input("Clear Cache", IsSingle = true, IsBang = true)]
 		IDiffSpread<bool> FClearCache;
 		
-		[Input("Feedback", IsSingle = true, DefaultValue = 1)]
+		[Input("Feedback Accepted", IsSingle = true, DefaultValue = 1)]
 		ISpread<bool> FFeedback;
 
 		[Output("Exposed Pins")]
@@ -232,6 +232,15 @@ namespace VVVV.Nodes
 						pin = FExposedPins[message.Address];
 					break;
 				}
+					
+				case AcceptMode.ExposedAndCached:
+				{
+					if (FExposedPins.ContainsKey(message.Address))
+						pin = FExposedPins[message.Address];
+					else if (FCachedPins.ContainsKey(message.Address))
+						pin = FCachedPins[message.Address];
+					break;
+				}
 				
 				case AcceptMode.Any:
 				{
@@ -362,10 +371,5 @@ namespace VVVV.Nodes
 			FExposedPinsOut.AssignFrom(FExposedPins.Keys);
 			FCachedPinsOut.AssignFrom(FCachedPins.Keys);
 		}
-	}
-	
-	public class NodeServer
-	{
-		
 	}
 }
