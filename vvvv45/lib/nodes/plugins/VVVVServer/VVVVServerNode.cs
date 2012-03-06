@@ -1,5 +1,6 @@
 #region usings
 using System;
+using System.Net;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.OSC;
 using VVVV.Core.Logging;
+using VVVV.Core;
 #endregion usings
 
 namespace VVVV.Nodes
@@ -26,14 +28,23 @@ namespace VVVV.Nodes
 	public class VVVVServerNode: IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
-		[Input("UDP Port", IsSingle=true, DefaultValue = 44444)]
+		[Input("Listening UDP Port", IsSingle = true, DefaultValue = 44444)]
 		IDiffSpread<int> FUDPPort;
 		
-		[Input("Clear Cache", IsSingle=true, IsBang=true)]
+		[Input("Target IP", IsSingle=true, DefaultString="192.168.255.255")]
+		IDiffSpread<string> FTargetIP;
+		
+		[Input("Target UDP Port", IsSingle=true, DefaultValue=44444)]
+		IDiffSpread<int> FTargetPort;
+		
+		[Input("Accept", IsSingle = true, DefaultEnumEntry = "OnlyExposed")]
+		IDiffSpread<AcceptMode> FAcceptMode;
+		
+		[Input("Clear Cache", IsSingle = true, IsBang = true)]
 		IDiffSpread<bool> FClearCache;
 		
-		[Input("Accept", IsSingle=true, DefaultEnumEntry="Any")]
-		IDiffSpread<AcceptMode> FAcceptMode;
+		[Input("Feedback", IsSingle = true, DefaultValue = 1)]
+		ISpread<bool> FFeedback;
 
 		[Output("Exposed Pins")]
 		ISpread<string> FExposedPinsOut;
@@ -50,18 +61,33 @@ namespace VVVV.Nodes
 		private OSCReceiver FOSCReceiver;
 		private bool FListening;
 		private Thread FThread;
-		private bool FDisposed;
-		private INode2 FRoot;
+		
+		private OSCTransmitter FOSCTransmitter;
+		private IPAddress FIP;
 		
 		private Dictionary<string, IPin2> FCachedPins = new Dictionary<string, IPin2>();
+		private Dictionary<string, IPin2> FExposedPins = new Dictionary<string, IPin2>();
 		private List<OSCMessage> FMessageQueue = new List<OSCMessage>();
+		
+		private bool FDisposed;
 		#endregion fields & pins
 		
 		#region constructor/destructor
 		[ImportingConstructor]
 		public VVVVServerNode(IHDEHost host)
 		{
-			FRoot = host.RootNode;
+			FHDEHost = host;
+			FHDEHost.ExposedNodeService.NodeAdded += NodeAddedCB;
+			FHDEHost.ExposedNodeService.NodeRemoved += NodeRemovedCB;
+			
+			//get initial list of exposed ioboxes
+			var pinName = "Y Input Value";
+			foreach (var node in FHDEHost.ExposedNodeService.Nodes)
+			{
+				var pin = node.FindPin(pinName);
+				pin.Changed += PinChanged;
+				FExposedPins.Add(node.GetNodePath(false) + "/" + pinName, pin);
+			}
 		}
 		
 		~VVVVServerNode()
@@ -92,7 +118,52 @@ namespace VVVV.Nodes
 		}
 		#endregion
 
-		#region OSC
+		private void NodeAddedCB(INode2 node)
+		{
+			var pinName = "Y Input Value";
+			var pin = node.FindPin(pinName);
+			pin.Changed += PinChanged;
+			FExposedPins.Add(node.GetNodePath(false) + "/" + pinName, pin);
+		}
+		
+		private void NodeRemovedCB(INode2 node)
+		{
+			var pinName = "Y Input Value";
+			var pin = node.FindPin(pinName);
+			pin.Changed -= PinChanged;
+			FExposedPins.Remove(node.GetNodePath(false) + "/" + pinName);
+		}
+		
+		private void PinChanged(object sender, EventArgs e)
+		{
+			if (FFeedback[0])
+			{
+				var pin = sender as IPin2;
+				var pinPath = pin.ParentNode.GetNodePath(false) + "/" + pin.Name;
+				
+				var bundle = new OSCBundle();
+				var message = new OSCMessage(pinPath);
+				var spread = pin[0];
+				if (spread.IndexOf(",") > -1)
+					message.Values.AddRange(pin.Spread.Split(','));
+				else
+				    message.Append(spread);
+				
+				bundle.Append(message);
+				
+				if (FOSCTransmitter != null)
+				try
+				{
+					FOSCTransmitter.Send(bundle);
+				}
+				catch (Exception ex)
+				{
+					FLogger.Log(LogType.Warning, "PinServer: " + ex.Message);
+				}
+			}
+		}
+		
+		#region Network Input
 		private void StartListeningOSC()
 		{
 			FOSCReceiver = new OSCReceiver(FUDPPort[0]);
@@ -103,10 +174,17 @@ namespace VVVV.Nodes
 		
 		private void StopListeningOSC()
 		{
-			FListening = false;
+			if (FThread != null && FThread.IsAlive)
+			{
+				FListening = false;
+				//FOSCReceiver is blocking the thread
+				//so waiting would freeze
+				//shouldn't be necessary here anyway...
+				//FThread.Join();
+			}	
+
 			if (FOSCReceiver != null)
 				FOSCReceiver.Close();
-			
 			FOSCReceiver = null;
 		}
 		
@@ -117,8 +195,8 @@ namespace VVVV.Nodes
 				try
 				{
 					OSCPacket packet = FOSCReceiver.Receive();
-					if (packet!=null)
-					{
+					if (packet != null)
+					{ 
 						if (packet.IsBundle())
 						{
 							ArrayList messages = packet.Values;
@@ -128,8 +206,6 @@ namespace VVVV.Nodes
 						else
 							FMessageQueue.Add((OSCMessage)packet);
 					}
-					else
-						FLogger.Log(LogType.Debug, "UDP: null packet received!");
 				}
 				catch (Exception e)
 				{
@@ -147,6 +223,13 @@ namespace VVVV.Nodes
 				{
 					if (FCachedPins.ContainsKey(message.Address))
 						pin = FCachedPins[message.Address];
+					break;
+				}
+				
+				case AcceptMode.OnlyExposed:
+				{
+					if (FExposedPins.ContainsKey(message.Address))
+						pin = FExposedPins[message.Address];
 					break;
 				}
 				
@@ -192,7 +275,10 @@ namespace VVVV.Nodes
 								pin = node.FindPin(pinName.Trim());
 								
 								if (pin != null)
+								{
 									FCachedPins.Add(message.Address, pin);
+									pin.Changed += PinChanged;
+								}
 								else
 									FLogger.Log(LogType.Warning, "No pin available under: \"" + message.Address + "\"!");
 							}
@@ -219,6 +305,25 @@ namespace VVVV.Nodes
 		}
 		#endregion OSC
 		
+		#region Network Output
+		private void InitNetwork()
+		{
+			if (FIP != null)
+				try
+			{
+				if (FOSCTransmitter != null)
+					FOSCTransmitter.Close();
+				FOSCTransmitter = new OSCTransmitter(FIP.ToString(), FTargetPort[0]);
+				FOSCTransmitter.Connect();
+			}
+			catch (Exception e)
+			{
+				FLogger.Log(LogType.Warning, "PinServer: failed to open port " + FTargetPort.ToString());
+				FLogger.Log(LogType.Warning, "PinServer: " + e.Message);
+			}
+		}
+		#endregion network
+		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
@@ -227,9 +332,25 @@ namespace VVVV.Nodes
 				StopListeningOSC();
 				StartListeningOSC();
 			}
+					
+			//re/init udp
+			if (FTargetIP.IsChanged || FTargetPort.IsChanged)
+			{
+				try
+				{
+					FIP = IPAddress.Parse(FTargetIP[0]);
+					InitNetwork();
+				}
+				catch
+				{}
+			}
 			
 			if (FClearCache[0])
+			{
+				foreach (var pin in FCachedPins)
+					pin.Value.Changed -= PinChanged;
 				FCachedPins.Clear();
+			}
 			
 			//process messagequeue 
 			//in order to handle all messages from main thread
@@ -238,7 +359,13 @@ namespace VVVV.Nodes
 				ProcessOSCMessage(message);
 			FMessageQueue.Clear();
 			
+			FExposedPinsOut.AssignFrom(FExposedPins.Keys);
 			FCachedPinsOut.AssignFrom(FCachedPins.Keys);
 		}
+	}
+	
+	public class NodeServer
+	{
+		
 	}
 }
