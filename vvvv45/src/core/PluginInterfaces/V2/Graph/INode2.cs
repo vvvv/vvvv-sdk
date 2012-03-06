@@ -134,6 +134,11 @@ namespace VVVV.PluginInterfaces.V2.Graph
 			return (node.Status & StatusCode.IsBoygrouped) == StatusCode.IsBoygrouped;
 		}
         
+        public static bool IsExposed(this INode2 node)
+		{
+			return (node.Status & StatusCode.IsExposed) == StatusCode.IsExposed;
+		}
+        
         public static bool HasProblem(this INode2 node)
         {
             return (node.Status & (StatusCode.IsMissing | StatusCode.HasInvalidData | StatusCode.HasRuntimeError)) > 0;
