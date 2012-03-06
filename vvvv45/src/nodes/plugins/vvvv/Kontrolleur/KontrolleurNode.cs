@@ -8,6 +8,7 @@ using System.Xml;
 using System.Linq;
 using System.Timers;
 using System.Net;
+using System.Threading;
 
 using VVVV.Core;
 using VVVV.Core.Logging;
@@ -31,14 +32,8 @@ namespace VVVV.Nodes
 	public class KontrolleurNode: IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
 	{
 		#region fields & pins
-		[Config("Kontrolleur IP", IsSingle=true, DefaultString="")]
-		IDiffSpread<string> FKontrolleurIP;
-		
-		[Config("Kontrolleur Port", IsSingle=true, DefaultValue=0)]
-		IDiffSpread<int> FKontrolleurPort;
-		
-		[Input("OSC Message")]
-		ISpread<string> FOSCIn;
+		[Input("Listening UDP Port", IsSingle = true, DefaultValue = 44444)]
+		IDiffSpread<int> FUDPPort;
 		
 		[Input("Patch Filter", IsSingle=true)]
 		IDiffSpread<string> FPatchFilter;
@@ -64,6 +59,10 @@ namespace VVVV.Nodes
 		private Vector2D FResolution;
 		private INode2 FRoot;
 		private OSCTransmitter FOSCTransmitter;
+		private OSCReceiver FOSCReceiver;
+		private bool FListening;
+		private Thread FThread;
+		
 		private IPAddress FTargetIP;
 		private int FTargetPort;
 		private IPAddress FAutoIP;
@@ -81,15 +80,15 @@ namespace VVVV.Nodes
 		[Import]
 		IHDEHost FHDEHost;
 		
-		private Timer FTimer = new Timer(2000);
+		private System.Timers.Timer FTimer = new System.Timers.Timer(2000);
 		private bool FAllowUpdates = true;
 		private XmlDocument FXML = new XmlDocument();
 		private List<IPin2> FBangs = new List<IPin2>();
 		private Dictionary<string, RemoteValue> FTargets = new Dictionary<string, RemoteValue>();
 		private Dictionary<string, string> FSaveTargets = new Dictionary<string, string>();
 		private Dictionary<string, PatchMessage> FPatchMessages = new Dictionary<string, PatchMessage>();
-		
 		private Dictionary<string, IPin2> FExposedPins = new Dictionary<string, IPin2>();
+		private List<OSCMessage> FMessageQueue = new List<OSCMessage>();
 		#endregion fields & pins
 		
 		#region constructor/destructor
@@ -128,6 +127,8 @@ namespace VVVV.Nodes
 					FTimer.Enabled = false;
 					FTimer.Dispose();
 					
+					StopListeningOSC();
+					
 					FPatchFilter.Changed -= PrefixChangedCB;
 				}
 				// Release unmanaged resources. If disposing is false,
@@ -137,16 +138,6 @@ namespace VVVV.Nodes
 			FDisposed = true;
 		}
 		#endregion constructor/destructor
-		
-		private void NodeAddedCB(INode2 node)
-		{
-			ExposeIOBox(node);
-		}
-		
-		private void NodeRemovedCB(INode2 node)
-		{
-			UnExposeIOBox(node);
-		}
 		
 		#region events
 		public void OnImportsSatisfied()
@@ -168,31 +159,25 @@ namespace VVVV.Nodes
 		{
 			FAllowUpdates = true;
 		}
+		
+		private void NodeAddedCB(INode2 node)
+		{
+			ExposeIOBox(node);
+		}
+		
+		private void NodeRemovedCB(INode2 node)
+		{
+			UnExposeIOBox(node);
+		}
 		#endregion events
 		
 		#region network
 		private void InitNetwork()
 		{
-			IPAddress newIP = null;
-			int newPort = 0;
-			
-			if (FAutoIP != null)
-				newIP = FAutoIP;
-			
-			if (FAutoPort > 0)
-				newPort = FAutoPort;
-			
-			//manual settings take precedence
-			if (FManualIP != null)
-				newIP = FManualIP;
-			
-			if (FManualPort > 0)
-				newPort = FManualPort;
-			
-			if (!newIP.Equals(FTargetIP) || newPort != FTargetPort)
+			if (!FAutoIP.Equals(FTargetIP) || FAutoPort != FTargetPort)
 			{
-				FTargetIP = newIP;
-				FTargetPort = newPort;
+				FTargetIP = FAutoIP;
+				FTargetPort = FAutoPort;
 				
 				if (FTargetIP != null)
 					try
@@ -211,6 +196,57 @@ namespace VVVV.Nodes
 				}
 			}
 		}
+		
+		private void StartListeningOSC()
+		{
+			FOSCReceiver = new OSCReceiver(FUDPPort[0]);
+			FListening = true;
+			FThread = new Thread(new ThreadStart(ListenToOSC));
+			FThread.Start();
+		}
+		
+		private void StopListeningOSC()
+		{
+			if (FThread != null && FThread.IsAlive)
+			{
+				FListening = false;
+				//FOSCReceiver is blocking the thread
+				//so waiting would freeze
+				//shouldn't be necessary here anyway...
+				//FThread.Join();
+			}	
+
+			if (FOSCReceiver != null)
+				FOSCReceiver.Close();
+			FOSCReceiver = null;
+		}
+		
+		private void ListenToOSC()
+		{
+			while(FListening)
+			{
+				try
+				{
+					OSCPacket packet = FOSCReceiver.Receive();
+					if (packet != null)
+					{ 
+						if (packet.IsBundle())
+						{
+							ArrayList messages = packet.Values;
+							for (int i=0; i<messages.Count; i++)
+								FMessageQueue.Add((OSCMessage)messages[i]);
+						}
+						else
+							FMessageQueue.Add((OSCMessage)packet);
+					}
+				}
+				catch (Exception e)
+				{
+					FLogger.Log(LogType.Debug, "UDP: " + e.Message);
+				}
+			}
+		}
+		
 		#endregion network
 		
 		#region exposing IOBoxes
@@ -335,6 +371,7 @@ namespace VVVV.Nodes
 			else if (message.Address.StartsWith("/k/"))
 			{
 				FAllowUpdates = false;
+				FTimer.Start();
 				
 				var address = "/" + message.Address.Trim('/','k');
 				if (FTargets.ContainsKey(address))
@@ -370,27 +407,16 @@ namespace VVVV.Nodes
 		#region MainLoop
 		public void Evaluate(int SpreadMax)
 		{
+			if (FUDPPort.IsChanged)
+			{
+				StopListeningOSC();
+				StartListeningOSC();
+			}
+			
 			FTouchID.SliceCount = 0;
 			FTouchXY.SliceCount = 0;
 			FTouchPressure.SliceCount = 0;
 			
-			//re/init udp
-			if (FKontrolleurIP.IsChanged || FKontrolleurPort.IsChanged)
-			{
-				try
-				{
-					FManualIP = IPAddress.Parse(FKontrolleurIP[0]);
-					FManualPort = FKontrolleurPort[0];
-					InitNetwork();
-				}
-				catch
-				{}
-			}
-			
-			//convert the incoming oscmessage to vvvv xml patch messages
-			//return multiple slices, one per patch addressed
-			//ie. multiple nodes addressed in one patch go to the same slice
-			var message = FOSCIn[0];
 			//special treatment for bangs
 			//which cause 2 patch messages in consecutive frames to be sent
 			foreach (var pin in FBangs)
@@ -400,44 +426,13 @@ namespace VVVV.Nodes
 			}
 			FBangs.Clear();
 			
-			//parse incoming OSC
-			if (!string.IsNullOrEmpty(message))
-			{
-				var bundlePos = message.IndexOf("#bundle");
-				if (bundlePos == -1)
-					return;
-				
-				while ((bundlePos = message.IndexOf("#bundle")) >= 0)
-				{
-					var nextpos = message.IndexOf("#bundle", bundlePos + 1);
-					var bundleMessage = "";
-					if (nextpos == -1)
-					{
-						bundleMessage = message;
-						message = "";
-					}
-					else
-					{
-						bundleMessage = message.Substring(bundlePos, nextpos - bundlePos);
-						message = message.Substring(nextpos);
-					}
-					
-					var packet = OSCPacket.Unpack(Encoding.Default.GetBytes(bundleMessage));
-					if (packet.IsBundle())
-					{
-						ArrayList messages = packet.Values;
-						for (int i = 0; i < messages.Count; i++)
-						{
-							ProcessOSCMessage((OSCMessage)messages[i]);
-						}
-					}
-					else
-						ProcessOSCMessage((OSCMessage)packet);
-				}
-				
-				FTimer.Start();
-			}
-			
+			//process messagequeue 
+			//in order to handle all messages from main thread
+			//since all COM-access is single threaded
+			foreach (var message in FMessageQueue)
+				ProcessOSCMessage(message);
+			FMessageQueue.Clear();
+						
 			//send targets to kontrolleur
 			var bundle = new OSCBundle();
 			foreach (var target in FTargets.Values)
