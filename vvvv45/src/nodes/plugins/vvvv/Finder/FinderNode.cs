@@ -358,6 +358,7 @@ namespace VVVV.Nodes.Finder
             tip += "v\t VST Plugins\n";
             tip += "a\t all Addons\n";
             tip += "i\t IOBoxes (Pins of Patches/Modules)\n";
+            tip += "e\t exposed IOBoxes\n";
             tip += "s\t Send/Receive Nodes\n";
             tip += "/\t Comments\n";
             tip += "t\t Patches\n";
