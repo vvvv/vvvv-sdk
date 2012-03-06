@@ -40,8 +40,8 @@ namespace VVVV.Nodes
 		[Input("OSC Message")]
 		ISpread<string> FOSCIn;
 		
-		[Input("Prefix", IsSingle=true)]
-		IDiffSpread<string> FPrefix;
+		[Input("Patch Filter", IsSingle=true)]
+		IDiffSpread<string> FPatchFilter;
 		
 		[Output("Touch ID")]
 		ISpread<int> FTouchID;
@@ -88,12 +88,18 @@ namespace VVVV.Nodes
 		private Dictionary<string, RemoteValue> FTargets = new Dictionary<string, RemoteValue>();
 		private Dictionary<string, string> FSaveTargets = new Dictionary<string, string>();
 		private Dictionary<string, PatchMessage> FPatchMessages = new Dictionary<string, PatchMessage>();
+		
+		private Dictionary<string, IPin2> FExposedPins = new Dictionary<string, IPin2>();
 		#endregion fields & pins
 		
 		#region constructor/destructor
 		[ImportingConstructor]
 		public KontrolleurNode(IHDEHost host)
 		{
+			FHDEHost = host;
+			FHDEHost.ExposedNodeService.NodeAdded += NodeAddedCB;
+			FHDEHost.ExposedNodeService.NodeRemoved += NodeRemovedCB;
+			
 			FRoot = host.RootNode;
 
 			FTimer.Enabled = true;
@@ -122,8 +128,7 @@ namespace VVVV.Nodes
 					FTimer.Enabled = false;
 					FTimer.Dispose();
 					
-					FPrefix.Changed -= PrefixChangedCB;
-					UnRegisterPatch(FRoot);
+					FPatchFilter.Changed -= PrefixChangedCB;
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
@@ -133,20 +138,30 @@ namespace VVVV.Nodes
 		}
 		#endregion constructor/destructor
 		
+		private void NodeAddedCB(INode2 node)
+		{
+			ExposeIOBox(node);
+		}
+		
+		private void NodeRemovedCB(INode2 node)
+		{
+			UnExposeIOBox(node);
+		}
+		
 		#region events
 		public void OnImportsSatisfied()
 		{
-			FPrefix.Changed += PrefixChangedCB;
+			FPatchFilter.Changed += PrefixChangedCB;
 		}
 		
 		private void PrefixChangedCB(IDiffSpread spread)
 		{
 			FPrefixes.Clear();
 			foreach (string prefix in spread)
-				FPrefixes.Add(prefix);
+				if (!string.IsNullOrEmpty(prefix))
+					FPrefixes.Add(prefix);
 			
-			UnRegisterPatch(FRoot);
-			RegisterPatch(FRoot);
+			ReExposeIOBoxes();
 		}
 		
 		private void FTimer_Elapsed(object Sender, ElapsedEventArgs e)
@@ -199,107 +214,26 @@ namespace VVVV.Nodes
 		#endregion network
 		
 		#region exposing IOBoxes
-		private void RegisterPatch(INode2 patch)
+		private void ExposeIOBox(INode2 node)
 		{
-			foreach (var node in patch)
-			{
-				if (node.HasPatch)
-				{
-					node.Added += new CollectionDelegate<INode2>(NodeAddedCB);
-					node.Removed += NodeRemovedCB;
-					RegisterPatch(node);
-				}
-				else if (node.Name.Contains("IOBox"))
-					RegisterIOBox(node);
-			}
-		}
-		
-		private void RegisterIOBox(INode2 io)
-		{
-			//for now only accepts value-IOBoxes
-			if (!io.Name.Contains("Value"))
-				return;
-			
-			//now see if this box already wants to be exposed
-			CheckExposeIOBox(io);
-			
-			//register for labelchanges
-			io.LabelPin.Changed += LabelChangedCB;
-		}
-		
-		private void UnRegisterPatch(INode2 patch)
-		{
-			foreach (INode2 node in patch)
-			{
-				if (node.HasPatch)
-				{
-					node.Added -= NodeAddedCB;
-					node.Removed -= NodeRemovedCB;
-					UnRegisterPatch(node);
-				}
-				else if (node.Name.Contains("IOBox"))
-					UnRegisterIOBox(node);
-			}
-		}
-		
-		private void UnRegisterIOBox(INode2 io)
-		{
-			//for now only accepts value-IOBoxes
-			if (!io.Name.Contains("Value"))
-				return;
-			
-			UnExposeIOBox(io);
-			
-			//unregister from labelchanges
-			io.LabelPin.Changed -= LabelChangedCB;
-		}
-		
-		private void NodeAddedCB(IViewableCollection collection, object item)
-		{
-			var node = item as INode2;
-			
-			if (node.HasPatch)
-				RegisterPatch(node);
-			else if (node.Name.Contains("IOBox"))
-				RegisterIOBox(node);
-		}
-		
-		private void NodeRemovedCB(IViewableCollection collection, object item)
-		{
-			var node = item as INode2;
+			var target = new RemoteValue(node, FPrefixes);
 
-			if (node.HasPatch)
-				UnRegisterPatch(node);
-			else if (node.Name.Contains("IOBox"))
-				UnRegisterIOBox(node);
-		}
-		
-		private void CheckExposeIOBox(INode2 node)
-		{
-			bool unexpose = false;
-			
-			if (string.IsNullOrEmpty(node.LabelPin[0]))
-				unexpose = true;
-			else
+			if (!FTargets.ContainsKey(target.RuntimeNodePath))
 			{
-				var name = node.LabelPin[0];
-				
-				if ((FPrefixes.Count == 0)
-				    || ((FPrefixes.Count > 0) && name.StartsWith(FPrefix[0])))
-				{
-					var target = new RemoteValue(node, FPrefixes);
-					
-					if (!FTargets.ContainsKey(target.RuntimeNodePath))
-						FTargets.Add(target.RuntimeNodePath, target);
-					else
-						target.Kill();
-				}
-				else
-					unexpose = true;
+				if (FPrefixes.Count == 0
+				    || (FPrefixes.Count > 0 && FPrefixes.Contains(target.Node.Parent.NodeInfo.Filename)))
+				FTargets.Add(target.RuntimeNodePath, target);
 			}
-			
-			if (unexpose)
-				UnExposeIOBox(node);
+			else if (FTargets.ContainsKey(target.RuntimeNodePath))
+			{
+				if (FPrefixes.Count == 0
+				    || (FPrefixes.Count > 0 && FPrefixes.Contains(target.Node.Parent.NodeInfo.Filename)))
+				FTargets[target.RuntimeNodePath].State = RemoteValueState.Add;
+				
+				target.Kill();
+			}
+			else
+				target.Kill();					
 		}
 		
 		private void UnExposeIOBox(INode2 node)
@@ -313,7 +247,16 @@ namespace VVVV.Nodes
 		private void LabelChangedCB(object Sender, EventArgs e)
 		{
 			var labelPin = Sender as IPin2;
-			CheckExposeIOBox(labelPin.ParentNode);
+			ExposeIOBox(labelPin.ParentNode);
+		}
+		
+		private void ReExposeIOBoxes()
+		{
+			foreach (var target in FTargets.ToArray())
+				target.Value.State = RemoteValueState.Remove;
+				
+			foreach (var node in FHDEHost.ExposedNodeService.Nodes)
+				ExposeIOBox(node);
 		}
 		#endregion exposing IOBoxes
 		
@@ -322,9 +265,6 @@ namespace VVVV.Nodes
 		{
 			if (message.Address == "/k/init")
 			{
-				foreach (var target in FTargets.ToArray())
-					target.Value.Kill();
-				FTargets.Clear();
 				FSaveTargets.Clear();
 				
 				FAutoIP = IPAddress.Parse((string)message.Values[0]);
@@ -333,8 +273,8 @@ namespace VVVV.Nodes
 
 				InitNetwork();
 				
-				UnRegisterPatch(FRoot);
-				RegisterPatch(FRoot);
+				//get initial list of exposed ioboxes
+				ReExposeIOBoxes();
 				
 				return;
 			}
@@ -445,13 +385,6 @@ namespace VVVV.Nodes
 				}
 				catch
 				{}
-			}
-			
-			if (FFirstFrame)
-			{
-				//go down recursively and register with every patch and IOBox
-				RegisterPatch(FRoot);
-				FFirstFrame = false;
 			}
 			
 			//convert the incoming oscmessage to vvvv xml patch messages
@@ -565,7 +498,6 @@ namespace VVVV.Nodes
 				target.Value.Kill();
 				FTargets.Remove(target.Key);
 			}
-			
 			else
 				target.Value.InvalidateState();
 		}
