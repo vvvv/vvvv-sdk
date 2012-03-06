@@ -156,6 +156,7 @@ namespace VVVV.Hosting
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
             DeviceService = new DeviceService(vvvvHost.DeviceService);
+            MainLoop = new MainLoop(vvvvHost.MainLoop);
             
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
@@ -367,6 +368,28 @@ namespace VVVV.Hosting
             }
         }
         
+        public INode2 GetNodeFromPath(string nodePath)
+        {
+        	var ids = nodePath.Split('/');
+        	
+        	var result = RootNode[0];
+        	for (int i = 1; i < ids.Length; i++)
+        	{
+        		try
+        		{
+        			var id = int.Parse(ids[i]);
+        			result = (from node in result where node.ID == id select node).First();
+        		}
+        		catch
+        		{
+        			result = null;
+        			break;
+        		}       			
+        	}
+
+            return result;
+        }
+        
         public void UpdateEnum(string EnumName, string Default, string[] EnumEntries)
         {
             FVVVVHost.UpdateEnum(EnumName, Default, EnumEntries);
@@ -441,6 +464,11 @@ namespace VVVV.Hosting
             FVVVVHost.SetComponentMode(node.InternalCOMInterf, componentMode);
         }
         
+        public void SendPatchMessage(string fileName, string message, bool undoable)
+        {
+            FVVVVHost.SendPatchMessage(fileName, message, undoable);
+        }
+        
         public string ExePath
         {
             get;
@@ -468,6 +496,12 @@ namespace VVVV.Hosting
             get;
             private set;
         }
+        
+        public IMainLoop MainLoop
+		{
+		    get;
+		    private set;
+		}
         
         #endregion
         
