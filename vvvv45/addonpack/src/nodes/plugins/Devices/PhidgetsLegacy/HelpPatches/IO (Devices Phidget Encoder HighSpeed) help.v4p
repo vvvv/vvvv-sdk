@@ -1,0 +1,161 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.dtd" >
+   <PATCH nodename="D:\PluginsVVVV\Devices\PhidgetsIO\IO (Devices Phidget Encoder HighSpeed) help.v4p">
+   <BOUNDS height="4950" left="3060" top="450" type="Window" width="7470">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="8" nodename=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.PhidgetEncoder">
+   <BOUNDS height="270" left="1650" top="2490" type="Node" width="3240">
+   </BOUNDS>
+   <BOUNDS height="0" left="1650" top="2490" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="13365" top="4695" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   <PIN pinname="Enable" visible="1">
+   </PIN>
+   <PIN pinname="Serial" visible="1">
+   </PIN>
+   <PIN pinname="SetPosition" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="1785">
+   </BOUNDS>
+   <BOUNDS height="420" left="15" top="15" type="Box" width="6150">
+   </BOUNDS>
+   <BOUNDS height="160" left="3660" top="5220" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|IO (Devices Phidget Encoder HighSpeed )|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="1530" left="15" top="4320" type="Node" width="4365">
+   </BOUNDS>
+   <BOUNDS height="4395" left="15" top="4320" type="Box" width="6705">
+   </BOUNDS>
+   <BOUNDS height="160" left="3660" top="5220" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Infos:&cr;&lf;With the Serial Number you can connected the IO to one specific Phidget Device. This is important if  you use more than one Device on one PC. If you change the Serial number you have to disable/ enable the Node.&cr;&lf;If the Serial Number is zero the IO connects to the device witch was first connected to the computer. &cr;&lf;Have a look at IOSniffer (Phidget)&cr;&lf;&cr;&lf;Drivers and Manuals can you find under:&cr;&lf;http://www.phidgets.com/&cr;&lf;&cr;&lf;Havvvve Fun!&cr;&lf;&cr;&lf;It&apos;s developed with driver version 2.1.4|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="615" top="3045" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11115" top="6405" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="615" top="3045" type="Box" width="1095">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Position Out|">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="60" top="405" type="Node" width="4020">
+   </BOUNDS>
+   <BOUNDS height="255" left="60" top="405" type="Box" width="5760">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sends and receives the position from the Phidget Encoder HighSpeed|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Position">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1980" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="1980" top="1710" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="11430" top="3360" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Position In|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Position" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4845" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4845" top="1710" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="11730" top="3660" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Serial">
+   </PIN>
+   <PIN pinname="X Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="915" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="915" top="1710" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="12030" top="3960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
+   </PIN>
+   <PIN pinname="X Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Enable" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Serial" srcnodeid="2" srcpinname="X Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3045" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="3045" top="1710" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="11730" top="3660" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Set Position|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="SetPosition" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   </PATCH>

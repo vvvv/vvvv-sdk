@@ -1,0 +1,1887 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.1.dtd" >
+   <PATCH nodename="C:\_vvvv\public sources\_TRUNK vvvv\girlpower\( web interface )\Web Interface (VVVV).v4p">
+   <BOUNDS height="15540" left="8520" top="30" type="Window" width="13770">
+   </BOUNDS>
+   <NODE id="122" nodename=":MODULES:\vvvv group\_legacy\XPath (XML Legacy).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\_legacy\">
+   <BOUNDS height="0" left="1260" top="4095" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XPath Query" slicecount="1" visible="1" values="/PATCH/BOX/VALUES">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE debug="0" id="121" nodename="XSLT (XML)">
+   <BOUNDS height="270" left="570" top="2880" type="Node" width="600">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XSLT Stylesheet" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Validate on Parse" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="120" nodename="Separate (String)">
+   <BOUNDS height="0" left="1245" top="6015" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Keep Quotes" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Ignore between" slicecount="1" values="Pipe">
+   </PIN>
+   <PIN pinname="Former Index" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="119" nodename="Substitute (String)">
+   <BOUNDS height="0" left="1260" top="6915" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" slicecount="1" values="||||||">
+   </PIN>
+   <PIN pinname="To" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="118" nodename="Subtract (String)">
+   <BOUNDS height="0" left="1230" top="7470" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Operand 1" visible="1">
+   </PIN>
+   <PIN pinname="Operand 2" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="118" dstpinname="Operand 1" srcnodeid="119" srcpinname="Output">
+   </LINK>
+   <NODE id="117" nodename="Subtract (String)">
+   <BOUNDS height="0" left="1755" top="7470" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Operand 1" visible="1">
+   </PIN>
+   <PIN pinname="Operand 2" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="Occurence Mode" slicecount="1" values="Last">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="117" dstpinname="Operand 1" srcnodeid="118" srcpinname="Result">
+   </LINK>
+   <LINK dstnodeid="119" dstpinname="Input" srcnodeid="120" srcpinname="Output">
+   </LINK>
+   <NODE id="116" nodename=":MODULES:\vvvv group\_legacy\XPath (XML Legacy).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\_legacy\">
+   <BOUNDS height="0" left="2250" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XPath Query" slicecount="1" visible="1" values="/PATCH/BOX/@datatype">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="115" nodename="EQ (String)">
+   <BOUNDS height="0" left="2925" top="5085" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="Color">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="115" dstpinname="Input 1" srcnodeid="116" srcpinname="Output">
+   </LINK>
+   <NODE id="114" nodename="Select (String)">
+   <BOUNDS height="0" left="2805" top="5505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="114" dstpinname="Select" srcnodeid="115" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="114" dstpinname="Input" srcnodeid="122" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="113" nodename=":MODULES:\vvvv group\String\AsColor (String).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\String\">
+   <BOUNDS height="0" left="2820" top="6000" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="8580" left="24555" top="2580" type="Window" width="10740">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2820" top="6000" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Input color String" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="113" dstpinname="Input color String" srcnodeid="114" srcpinname="Output">
+   </LINK>
+   <NODE id="112" nodename="AsString (Color Hex)">
+   <BOUNDS height="0" left="2835" top="6825" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="112" dstpinname="Input" srcnodeid="113" srcpinname="Output">
+   </LINK>
+   <NODE id="111" nodename="CountIndices (Spreads)">
+   <BOUNDS height="0" left="3240" top="6405" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Index Hit Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="111" dstpinname="Indices" srcnodeid="113" srcpinname="Former Index">
+   </LINK>
+   <NODE id="110" nodename="Count (String)">
+   <BOUNDS height="0" left="3855" top="6015" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="111" dstpinname="Spread Count" srcnodeid="110" srcpinname="Count">
+   </LINK>
+   <NODE id="109" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="3030" top="8205" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <NODE id="108" nodename="Add (String)">
+   <BOUNDS height="270" left="3015" top="7740" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="&lt;SLICE&gt;&lt;HEX&gt;">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="&lt;/HEX&gt;&lt;ALPHA&gt;">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" slicecount="1" values="&lt;/ALPHA&gt;&lt;/SLICE&gt;">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="108" dstpinname="Input 2" srcnodeid="112" srcpinname="Output">
+   </LINK>
+   <NODE id="107" nodename="AsString (Value)">
+   <BOUNDS height="0" left="3540" top="7260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="107" dstpinname="Input" srcnodeid="112" srcpinname="Alpha">
+   </LINK>
+   <LINK dstnodeid="108" dstpinname="Input 4" srcnodeid="107" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="109" dstpinname="Input" srcnodeid="108" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="109" dstpinname="Bin Size" srcnodeid="111" srcpinname="Index Hit Count">
+   </LINK>
+   <LINK dstnodeid="110" dstpinname="Input" srcnodeid="114" srcpinname="Output">
+   </LINK>
+   <NODE id="106" nodename="EQ (String)">
+   <BOUNDS height="0" left="1380" top="5205" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="106" dstpinname="Input 1" srcnodeid="116" srcpinname="Output">
+   </LINK>
+   <NODE id="105" nodename="Select (String)">
+   <BOUNDS height="0" left="1245" top="5580" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="105" dstpinname="Select" srcnodeid="106" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="105" dstpinname="Input" srcnodeid="122" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="120" dstpinname="Input" srcnodeid="105" srcpinname="Output">
+   </LINK>
+   <NODE id="104" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="1260" top="8475" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <NODE id="103" nodename="Add (String)">
+   <BOUNDS height="270" left="1575" top="8010" type="Node" width="600">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="&lt;SLICE&gt;">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="&lt;/SLICE&gt;">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="104" dstpinname="Input" srcnodeid="103" srcpinname="Output">
+   </LINK>
+   <NODE id="102" nodename="CountIndices (Spreads)">
+   <BOUNDS height="0" left="1440" top="6450" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Index Hit Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="102" dstpinname="Indices" srcnodeid="120" srcpinname="Former Index">
+   </LINK>
+   <NODE id="101" nodename="Count (String)">
+   <BOUNDS height="0" left="2100" top="6015" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="102" dstpinname="Spread Count" srcnodeid="101" srcpinname="Count">
+   </LINK>
+   <LINK dstnodeid="101" dstpinname="Input" srcnodeid="105" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="104" dstpinname="Bin Size" srcnodeid="102" srcpinname="Index Hit Count">
+   </LINK>
+   <LINK dstnodeid="103" dstpinname="Input 2" srcnodeid="117" srcpinname="Result">
+   </LINK>
+   <NODE id="100" nodename="Substitute (String)">
+   <BOUNDS height="270" left="555" top="10230" type="Node" width="1170">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" visible="1">
+   </PIN>
+   <PIN pinname="To" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="99" nodename="Cons (String)">
+   <BOUNDS height="0" left="1680" top="8910" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="98" nodename="Cons (String)">
+   <BOUNDS height="0" left="810" top="9045" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="98" dstpinname="Input 2" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="114" srcpinname="Output">
+   <LINKPOINT x="2835" y="7785">
+   </LINKPOINT>
+   <LINKPOINT x="1470" y="7785">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="99" dstpinname="Input 2" srcnodeid="109" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="99" dstpinname="Input 1" srcnodeid="104" srcpinname="Output">
+   </LINK>
+   <NODE id="97" nodename="XSLT (XML)">
+   <BOUNDS height="0" left="570" top="11325" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XSLT Stylesheet" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Validate on Parse" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="96" nodename="HTTP (Network Server)">
+   <BOUNDS height="0" left="2430" top="13980" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="95" nodename="Reader (File)">
+   <BOUNDS height="0" left="10710" top="17100" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Do Read" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="94" nodename="IOBox (String)">
+   <BOUNDS height="0" left="10140" top="15060" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="16650" top="11670" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1710" left="10140" top="15060" type="Box" width="2145">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="9" values="Sources\bg.gif,Sources\bottom.gif,Sources\colorPickerAdv.html,Sources\edge.gif,Sources\header.gif,Sources\logout.gif,Sources\pick.gif,Sources\scripts.js,Sources\styles.css">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="9">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="95" dstpinname="Filename" srcnodeid="94" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="93" nodename="IOBox (String)">
+   <BOUNDS height="0" left="10425" top="17580" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="16950" top="11970" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1770" left="10425" top="17580" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="9">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="93" dstpinname="Input String" srcnodeid="95" srcpinname="Content">
+   </LINK>
+   <NODE id="92" nodename="Reader (File)">
+   <BOUNDS height="0" left="12960" top="17160" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Do Read" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="91" nodename="IOBox (String)">
+   <BOUNDS height="0" left="12420" top="15075" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="16950" top="11970" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="855" left="12420" top="15075" type="Box" width="2910">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="4" values="Sources\images\close.jpg,Sources\images\grayScale.jpg,Sources\images\spacer.gif,Sources\images\spectrum_small.jpg">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="92" dstpinname="Filename" srcnodeid="91" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="90" nodename="IOBox (String)">
+   <BOUNDS height="0" left="12660" top="18990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="17250" top="12270" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="810" left="12660" top="18990" type="Box" width="375">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="90" dstpinname="Input String" srcnodeid="92" srcpinname="Content">
+   </LINK>
+   <NODE id="89" nodename="Subtract (String)">
+   <BOUNDS height="0" left="10155" top="17085" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Operand 1" visible="1">
+   </PIN>
+   <PIN pinname="Operand 2" slicecount="1" values="Sources\">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="89" dstpinname="Operand 1" srcnodeid="94" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="88" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="10905" top="17580" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12765" top="4125" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1740" left="10905" top="17580" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="9" values="image/gif,image/gif,text/html,image/gif,image/gif,image/gif,image/gif,text/plain,text/css">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="9">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="87" nodename="Subtract (String)">
+   <BOUNDS height="0" left="12405" top="17190" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Operand 1" visible="1">
+   </PIN>
+   <PIN pinname="Operand 2" slicecount="1" values="Sources\">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="87" dstpinname="Operand 1" srcnodeid="91" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="86" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="13080" top="18990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13065" top="4425" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="795" left="13080" top="18990" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="4" values="image/jpeg,image/jpeg,image/gif,image/jpeg">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="85" nodename="Substitute (String)">
+   <BOUNDS height="0" left="12405" top="17670" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" slicecount="1" values="\">
+   </PIN>
+   <PIN pinname="To" slicecount="1" values="/">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="85" dstpinname="Input" srcnodeid="87" srcpinname="Result">
+   </LINK>
+   <NODE id="84" nodename="HTTP (Network Server)">
+   <BOUNDS height="0" left="10170" top="19635" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   <PIN pinname="MimeType" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="84" dstpinname="URL" srcnodeid="89" srcpinname="Result">
+   </LINK>
+   <LINK dstnodeid="84" dstpinname="Content" srcnodeid="93" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="84" dstpinname="MimeType" srcnodeid="88" srcpinname="Output Enum">
+   </LINK>
+   <NODE id="83" nodename="HTTP (Network Server)">
+   <BOUNDS height="270" left="12390" top="19995" type="Node" width="600">
+   </BOUNDS>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="MimeType" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="83" dstpinname="URL" srcnodeid="85" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="83" dstpinname="Content" srcnodeid="90" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="83" dstpinname="MimeType" srcnodeid="86" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="82" nodename="IOBox (String)">
+   <BOUNDS height="270" left="10875" top="19590" type="Node" width="1215">
+   </BOUNDS>
+   <BOUNDS height="630" left="10875" top="19590" type="Box" width="1305">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|serving images and scripts|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="81" nodename="HTTP (Network Receiver)">
+   <BOUNDS height="0" left="10425" top="14130" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ReceiveURL" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   <PIN pinname="Name" visible="1">
+   </PIN>
+   <PIN pinname="Method" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="97" dstpinname="XML Input" srcnodeid="100" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="116" dstpinname="XML Input" linkstyle="Bezier" srcnodeid="121" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="122" dstpinname="XML Input" linkstyle="Bezier" srcnodeid="121" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="100" dstpinname="Input" srcnodeid="121" srcpinname="Output">
+   </LINK>
+   <NODE id="80" nodename="GetPatch (VVVV)">
+   <BOUNDS height="0" left="555" top="1200" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Patch Description" visible="1">
+   </PIN>
+   <PIN pinname="Patch" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="79" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="540" top="600" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2595" top="1890" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="540" top="600" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Patch">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="80" dstpinname="Patch" srcnodeid="79" srcpinname="Output Node">
+   </LINK>
+   <NODE id="78" nodename="Add (String)">
+   <BOUNDS height="0" left="900" top="9705" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" visible="1" values="&lt;/VALUES&gt;">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="&lt;VALUES&gt;">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="78" dstpinname="Input 2" srcnodeid="98" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="100" dstpinname="From" srcnodeid="78" srcpinname="Output">
+   </LINK>
+   <NODE id="77" nodename="Add (String)">
+   <BOUNDS height="0" left="1680" top="9720" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" visible="1" values="&lt;/VALUES&gt;">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="&lt;VALUES&gt;">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="77" dstpinname="Input 2" srcnodeid="99" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="100" dstpinname="To" srcnodeid="77" srcpinname="Output">
+   </LINK>
+   <NODE id="76" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="570" top="11625" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="76" dstpinname="Input" srcnodeid="97" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="92" dstpinname="Do Read" srcnodeid="81" srcpinname="On Data">
+   </LINK>
+   <LINK dstnodeid="95" dstpinname="Do Read" srcnodeid="81" srcpinname="On Data">
+   </LINK>
+   <LINK dstnodeid="121" dstpinname="XML Input" srcnodeid="80" srcpinname="Patch Description">
+   </LINK>
+   <NODE componentmode="InABox" id="75" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2460" top="11010" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4260" top="2565" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2460" top="11010" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="URL">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="test.v4w">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="96" dstpinname="URL" srcnodeid="75" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="74" nodename="IOBox (String)">
+   <BOUNDS height="0" left="765" top="1950" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4575" top="3795" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="660" left="765" top="1950" type="Box" width="2190">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&cr;&lf;&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;&cr;&lf;&tab;&lt;xsl:output method=&quot;xml&quot; version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; indent=&quot;yes&quot; omit-xml-declaration=&quot;yes&quot;/&gt;&cr;&lf;&tab;&lt;xsl:template name=&quot;Split&quot;&gt;&cr;&lf;&tab;&tab;&lt;!--This template will recursively break apart a comma-delimited string into child elements--&gt;&cr;&lf;&tab;&tab;&lt;xsl:param name=&quot;strInput&quot; select=&quot;&amp;apos;&amp;apos;&quot;/&gt;&cr;&lf;&tab;&tab;&lt;xsl:param name=&quot;strDelimiter&quot; select=&quot;&amp;apos;,&amp;apos;&quot;/&gt;&cr;&lf;&tab;&tab;&lt;xsl:variable name=&quot;strNextItem&quot; select=&quot;substring-before($strInput, $strDelimiter)&quot;/&gt;&cr;&lf;&tab;&tab;&lt;xsl:variable name=&quot;strOutput&quot; select=&quot;substring-after($strInput, $strDelimiter)&quot;/&gt;&cr;&lf;&tab;&tab;&lt;xsl:variable name=&quot;strLen&quot; select=&quot;string-length($strNextItem)&quot;/&gt;&cr;&lf;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&lt;xsl:when test=&quot;contains($strInput,$strDelimiter)&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;$strNextItem&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;!-- At this point, the template will recursively call itself until the last comma is found --&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;xsl:call-template name=&quot;Split&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:with-param name=&quot;strInput&quot; select=&quot;$strOutput&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:with-param name=&quot;strDelimiter&quot; select=&quot;$strDelimiter&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/xsl:call-template&gt;&cr;&lf;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;!-- The otherwise clause will be reached when a comma is not located using contains() --&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;$strInput&quot; /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/SLICE&gt;&cr;&lf;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&lt;/xsl:template&gt;&cr;&lf;&tab;&lt;xsl:template match=&quot;/PATCH&quot;&gt;&cr;&lf;&tab;&tab;&lt;PATCH&gt;&cr;&lf;&tab;&tab;&tab;&lt;xsl:attribute name=&quot;name&quot;&gt;&lt;xsl:value-of select=&quot;@nodename&quot;/&gt;&lt;/xsl:attribute&gt;&cr;&lf;&tab;&tab;&tab;&lt;xsl:for-each select=&quot;NODE[starts-with (@nodename,&apos;IOBox&apos;) and PIN[@pinname=&apos;Descriptive Name&apos;]/@values!=&apos;||||&apos; ]/PIN[@pinname=&apos;Descriptive Name&apos;]/..&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;xsl:variable name=&quot;id&quot; select=&quot;@id&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;xsl:variable name=&quot;Datatype&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(String)&apos; &quot;&gt;String&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(Value Advanced)&apos; &quot;&gt;Value&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(Color)&apos; &quot;&gt;Color&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(Enumerations)&apos; &quot;&gt;Enum&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/xsl:variable&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;../LINK[@dstnodeid=$id]=false()&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;BOX&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:attribute name=&quot;name&quot;&gt;&lt;xsl:value-of select=&quot;PIN[@pinname=&apos;Descriptive Name&apos;]/@values&quot;/&gt;&lt;/xsl:attribute&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:attribute name=&quot;id&quot;&gt;&lt;xsl:value-of select=&quot;@id&quot;/&gt;&lt;/xsl:attribute&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:attribute name=&quot;datatype&quot;&gt;&lt;xsl:value-of select=&quot;$Datatype&quot;/&gt;&lt;/xsl:attribute&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:attribute name=&quot;pinname&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;String&apos; &quot;&gt;Input String&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Value&apos; &quot;&gt;Y Input Value&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Color&apos; &quot;&gt;Color Input&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Enum&apos; &quot;&gt;Input Enum&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:attribute&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;GROUP&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;contains(PIN[@pinname=&apos;Descriptive Name&apos;]/@values, &apos;:&apos;)&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;translate(substring-before(PIN[@pinname=&apos;Descriptive Name&apos;]/@values, &apos;:&apos;),&apos;||&apos;,&apos;&apos;) &quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[@pinname=&apos;Descriptive Name&apos;]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/GROUP&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;SLICECOUNT&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@slicecount&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@slicecount&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;PIN[contains(@pinname,&apos;Input&apos;)]&quot;&gt;0&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;1&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/SLICECOUNT&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;VALUES&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@pinname&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;String&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Value&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:call-template name=&quot;Split&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:with-param name=&quot;strInput&quot; select=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:with-param name=&quot;strDelimiter&quot; select=&quot;&apos;,&apos;&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:call-template&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Color&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Enum&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;String&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;SLICE/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Value&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;SLICE&gt;0&lt;/SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Color&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;SLICE&gt;||0.00000,1.00000,0.00000,1.00000||&lt;/SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Enum&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;SLICE&gt;nil&lt;/SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/VALUES&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;MIN&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;PIN[@pinname=&apos;Minimum&apos;]&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[@pinname=&apos;Minimum&apos;]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(Value Advanced)&apos; &quot;&gt;-1&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/MIN&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;MAX&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;PIN[@pinname=&apos;Maximum&apos;]&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[@pinname=&apos;Maximum&apos;]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(Value Advanced)&apos; &quot;&gt;1&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/MAX&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;/BOX&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&lt;/xsl:for-each&gt;&cr;&lf;&tab;&tab;&lt;/PATCH&gt;&cr;&lf;&tab;&lt;/xsl:template&gt;&cr;&lf;&lt;/xsl:stylesheet&gt;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="121" dstpinname="XSLT Stylesheet" srcnodeid="74" srcpinname="Output String">
+   </LINK>
+   <NODE id="73" nodename="HTTP (Network Receiver)">
+   <BOUNDS height="0" left="6930" top="75" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Method" slicecount="1" values="POST">
+   </PIN>
+   <PIN pinname="Name" visible="1">
+   </PIN>
+   <PIN pinname="Value" visible="1">
+   </PIN>
+   <PIN pinname="ValueType" visible="1">
+   </PIN>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="72" nodename=":MODULES:\vvvv group\_legacy\XPath (XML Legacy).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\_legacy\">
+   <BOUNDS height="0" left="6300" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XPath Query" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Query Index" visible="1">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Validate on Parse" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="72" dstpinname="XML Input" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="121" srcpinname="Output">
+   <LINKPOINT x="600" y="3675">
+   </LINKPOINT>
+   <LINKPOINT x="7050" y="3675">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="71" nodename="Add (String)">
+   <BOUNDS height="0" left="6480" top="3195" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" values="/PATCH/BOX[@name=&apos;">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="&apos;]/@id">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="72" dstpinname="XPath Query" srcnodeid="71" srcpinname="Output">
+   </LINK>
+   <NODE id="70" nodename=":MODULES:\vvvv group\_legacy\XPath (XML Legacy).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\_legacy\">
+   <BOUNDS height="0" left="6585" top="4290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XPath Query" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="69" nodename="Add (String)">
+   <BOUNDS height="0" left="6750" top="3945" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" values="/PATCH/BOX[@id=&apos;">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="&apos;]/@datatype">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="70" dstpinname="XPath Query" srcnodeid="69" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="70" dstpinname="XML Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="121" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="69" dstpinname="Input 2" srcnodeid="72" srcpinname="Output">
+   </LINK>
+   <NODE id="68" nodename="EQ (String)">
+   <BOUNDS height="0" left="6885" top="4635" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="Color">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="67" nodename="Select (String)">
+   <BOUNDS height="0" left="7050" top="5160" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="67" dstpinname="Select" linkstyle="VHV" srcnodeid="68" srcpinname="Output">
+   <LINKPOINT x="7920" y="4995">
+   </LINKPOINT>
+   <LINKPOINT x="8385" y="4995">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="66" nodename="Add (String)">
+   <BOUNDS height="270" left="7395" top="9000" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="|&lt;NODE id=&quot;|">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="|&quot;&gt;&lt;PIN pinname=&quot;Color Input&quot; values=&quot;|">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" slicecount="1" values="&quot;&gt;&lt;/PIN&gt;&lt;/NODE&gt;">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="65" nodename="AsString (Value)">
+   <BOUNDS height="270" left="7560" top="8265" type="Node" width="750">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (0 .. MaxInt)|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="68" dstpinname="Input 1" linkstyle="VHV" srcnodeid="70" srcpinname="Output">
+   <LINKPOINT x="6645" y="4515">
+   </LINKPOINT>
+   <LINKPOINT x="7920" y="4515">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="64" nodename="Select (String)">
+   <BOUNDS height="0" left="12060" top="1920" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="64" dstpinname="Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="73" srcpinname="Value">
+   <LINKPOINT x="7605" y="780">
+   </LINKPOINT>
+   <LINKPOINT x="8685" y="780">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="63" nodename="Sift (String)">
+   <BOUNDS height="0" left="6525" top="5670" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Filter" slicecount="1" values="alpha">
+   </PIN>
+   <PIN pinname="Comparison" slicecount="1" values="ContainsAny">
+   </PIN>
+   <PIN pinname="Hits" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="63" dstpinname="Input" linkstyle="VHV" srcnodeid="67" srcpinname="Output">
+   <LINKPOINT x="7845" y="5910">
+   </LINKPOINT>
+   <LINKPOINT x="6555" y="5910">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="62" nodename="Select (String)">
+   <BOUNDS height="0" left="5985" top="6285" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="62" dstpinname="Select" linkstyle="VHV" srcnodeid="63" srcpinname="Hits">
+   </LINK>
+   <NODE id="61" nodename="EQ (Value)">
+   <BOUNDS height="0" left="7440" top="6165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="61" dstpinname="Input 1" linkstyle="VHV" srcnodeid="63" srcpinname="Hits">
+   <LINKPOINT x="6555" y="6045">
+   </LINKPOINT>
+   <LINKPOINT x="7470" y="6045">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="60" nodename="Select (String)">
+   <BOUNDS height="0" left="6915" top="6780" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="Select" linkstyle="VHV" srcnodeid="61" srcpinname="Output">
+   </LINK>
+   <NODE id="59" nodename="Select (String)">
+   <BOUNDS height="0" left="7875" top="5160" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="59" dstpinname="Select" linkstyle="VHV" srcnodeid="68" srcpinname="Output">
+   <LINKPOINT x="7920" y="4995">
+   </LINKPOINT>
+   <LINKPOINT x="9120" y="4995">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="62" dstpinname="Input" linkstyle="VHV" srcnodeid="59" srcpinname="Output">
+   <LINKPOINT x="8580" y="5505">
+   </LINKPOINT>
+   <LINKPOINT x="6015" y="5505">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="60" dstpinname="Input" linkstyle="VHV" srcnodeid="59" srcpinname="Output">
+   <LINKPOINT x="8580" y="6585">
+   </LINKPOINT>
+   <LINKPOINT x="6945" y="6585">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="58" nodename=":MODULES:\vvvv group\Color\AsString (Color).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\Color\">
+   <BOUNDS height="0" left="5985" top="8205" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="8850" left="11730" top="2475" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="5985" top="8205" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Input color String" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Index" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="57" nodename="AsColor (String Hex)">
+   <BOUNDS height="0" left="5985" top="7590" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="57" dstpinname="Input" linkstyle="VHV" srcnodeid="60" srcpinname="Output">
+   <LINKPOINT x="6945" y="7320">
+   </LINKPOINT>
+   <LINKPOINT x="6015" y="7320">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="58" dstpinname="Input" linkstyle="VHV" srcnodeid="57" srcpinname="Output">
+   </LINK>
+   <NODE id="56" nodename="Select (String)">
+   <BOUNDS height="0" left="6690" top="1725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="56" dstpinname="Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="73" srcpinname="Name">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="55" managers="" nodename="EQ (Value)">
+   <PIN pinname="Input 1" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="270" left="7305" top="555" type="Node" width="450">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Epsilon" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Inverse Output" pintype="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="55" dstpinname="Input 1" srcnodeid="73" srcpinname="ValueType">
+   </LINK>
+   <NODE id="54" nodename="Select (String)">
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="6315" top="5130" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="54" dstpinname="Input" srcnodeid="72" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="54" dstpinname="Select" linkstyle="VHV" srcnodeid="68" srcpinname="Output">
+   <LINKPOINT x="7920" y="4995">
+   </LINKPOINT>
+   <LINKPOINT x="7620" y="4995">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="59" dstpinname="Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="64" srcpinname="Output">
+   <LINKPOINT x="9450" y="3555">
+   </LINKPOINT>
+   <LINKPOINT x="8580" y="3555">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="53" nodename="AsValue (String)">
+   <BOUNDS height="0" left="6000" top="6795" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="53" dstpinname="Input" linkstyle="VHV" srcnodeid="62" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="57" dstpinname="Alpha" linkstyle="VHV" srcnodeid="53" srcpinname="Output">
+   </LINK>
+   <NODE id="52" nodename="AsValue (String)">
+   <BOUNDS height="0" left="7590" top="7110" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="66" dstpinname="Input 2" srcnodeid="65" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="66" dstpinname="Input 4" srcnodeid="58" srcpinname="Output">
+   </LINK>
+   <NODE id="51" nodename="Add (String)">
+   <BOUNDS height="0" left="8925" top="11280" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="&lt;PATCH&gt;">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="&lt;/PATCH&gt;">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="50" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="7410" top="9465" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="50" dstpinname="Input" srcnodeid="66" srcpinname="Output">
+   </LINK>
+   <NODE id="49" nodename="SetPatch (VVVV)">
+   <BOUNDS height="0" left="6645" top="12345" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="49" dstpinname="Patch" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="79" srcpinname="Output Node">
+   </LINK>
+   <NODE id="48" nodename="Select (String)">
+   <BOUNDS height="0" left="7605" top="6750" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="48" dstpinname="Input" linkstyle="VHV" srcnodeid="54" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Select" linkstyle="VHV" srcnodeid="61" srcpinname="Output">
+   <LINKPOINT x="7470" y="6570">
+   </LINKPOINT>
+   <LINKPOINT x="8175" y="6570">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="52" dstpinname="Input" linkstyle="VHV" srcnodeid="48" srcpinname="Output">
+   </LINK>
+   <NODE id="47" nodename="EQ (String)">
+   <BOUNDS height="0" left="10380" top="6585" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="Value">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="46" nodename="Select (String)">
+   <BOUNDS height="0" left="10425" top="7035" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="46" dstpinname="Select" linkstyle="VHV" srcnodeid="47" srcpinname="Output">
+   <LINKPOINT x="10410" y="6930">
+   </LINKPOINT>
+   <LINKPOINT x="10995" y="6930">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="45" nodename="Select (String)">
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="9540" top="7020" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="45" dstpinname="Select" linkstyle="VHV" srcnodeid="47" srcpinname="Output">
+   <LINKPOINT x="10410" y="6930">
+   </LINKPOINT>
+   <LINKPOINT x="10110" y="6930">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="47" dstpinname="Input 1" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="70" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="45" dstpinname="Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="72" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="46" dstpinname="Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="64" srcpinname="Output">
+   </LINK>
+   <NODE id="44" nodename="AsValue (String)">
+   <BOUNDS height="0" left="9570" top="7500" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Input" srcnodeid="45" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="43" nodename="Clean (Value Spreads).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\girlpower\( web interface )\">
+   <BOUNDS height="100" left="6855" top="7575" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="6855" top="7575" type="Box">
+   </BOUNDS>
+   <BOUNDS height="9705" left="12780" top="2070" type="Window" width="7170">
+   </BOUNDS>
+   <PIN pinname="in" visible="1">
+   </PIN>
+   <PIN pinname="out" visible="1">
+   </PIN>
+   <PIN pinname="count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="43" dstpinname="in" linkstyle="VHV" srcnodeid="52" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="65" dstpinname="Input" linkstyle="VHV" srcnodeid="43" srcpinname="out">
+   <LINKPOINT x="7575" y="8055">
+   </LINKPOINT>
+   <LINKPOINT x="7530" y="8055">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="58" dstpinname="Bin Size" linkstyle="VHV" srcnodeid="43" srcpinname="count">
+   </LINK>
+   <NODE componentmode="Hidden" id="42" nodename="Clean (Value Spreads).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\girlpower\( web interface )\">
+   <BOUNDS height="100" left="9585" top="8100" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="9585" top="8100" type="Box">
+   </BOUNDS>
+   <BOUNDS height="9705" left="13080" top="2370" type="Window" width="7170">
+   </BOUNDS>
+   <PIN pinname="in" visible="1">
+   </PIN>
+   <PIN pinname="out" visible="1">
+   </PIN>
+   <PIN pinname="count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="42" dstpinname="in" srcnodeid="44" srcpinname="Output">
+   </LINK>
+   <NODE id="41" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="9375" top="8535" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="41" dstpinname="Input" srcnodeid="46" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="41" dstpinname="Bin Size" srcnodeid="42" srcpinname="count">
+   </LINK>
+   <NODE id="40" nodename="Add (String)">
+   <BOUNDS height="270" left="9405" top="9045" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="|&lt;NODE id=&quot;|">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="|&quot;&gt;&lt;PIN pinname=&quot;Y Input Value&quot; values=&quot;|">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" slicecount="1" values="&quot;&gt;&lt;/PIN&gt;&lt;/NODE&gt;">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="39" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="9405" top="9495" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="39" dstpinname="Input" srcnodeid="40" srcpinname="Output">
+   </LINK>
+   <NODE id="38" nodename="AsString (Value)">
+   <BOUNDS height="0" left="10275" top="8610" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (0 .. MaxInt)|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="Input" srcnodeid="42" srcpinname="out">
+   </LINK>
+   <LINK dstnodeid="40" dstpinname="Input 2" srcnodeid="38" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="40" dstpinname="Input 4" srcnodeid="41" srcpinname="Output">
+   </LINK>
+   <NODE id="37" nodename="Cons (String)">
+   <BOUNDS height="0" left="9120" top="10440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="37" dstpinname="Input 1" srcnodeid="50" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="37" dstpinname="Input 2" srcnodeid="39" srcpinname="Output">
+   </LINK>
+   <NODE id="36" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="9120" top="10845" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="36" dstpinname="Input" srcnodeid="37" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="51" dstpinname="Input 2" srcnodeid="36" srcpinname="Output">
+   </LINK>
+   <NODE id="35" nodename="EQ (String)">
+   <BOUNDS height="0" left="12615" top="6630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="34" nodename="Select (String)">
+   <BOUNDS height="0" left="12735" top="7065" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="34" dstpinname="Select" linkstyle="VHV" srcnodeid="35" srcpinname="Output">
+   <LINKPOINT x="10410" y="6930">
+   </LINKPOINT>
+   <LINKPOINT x="10995" y="6930">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="33" nodename="Select (String)">
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="11700" top="7050" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="33" dstpinname="Select" linkstyle="VHV" srcnodeid="35" srcpinname="Output">
+   <LINKPOINT x="10410" y="6930">
+   </LINKPOINT>
+   <LINKPOINT x="10110" y="6930">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="32" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="12720" top="8490" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="31" nodename="Add (String)">
+   <BOUNDS height="270" left="11385" top="8880" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="|&lt;NODE id=&quot;|">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="|&quot;&gt;&lt;PIN pinname=&quot;Input String&quot; values=&quot;|">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" slicecount="1" values="&quot;&gt;&lt;/PIN&gt;&lt;/NODE&gt;">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="30" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="11415" top="9300" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="30" dstpinname="Input" srcnodeid="31" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="35" dstpinname="Input 1" srcnodeid="70" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="33" dstpinname="Input" srcnodeid="72" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="34" dstpinname="Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="64" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="29" nodename="Clean (Value Spreads).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\girlpower\( web interface )\">
+   <BOUNDS height="100" left="11715" top="7845" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="11715" top="7845" type="Box">
+   </BOUNDS>
+   <BOUNDS height="9705" left="13380" top="2670" type="Window" width="7170">
+   </BOUNDS>
+   <PIN pinname="in" visible="1">
+   </PIN>
+   <PIN pinname="out" visible="1">
+   </PIN>
+   <PIN pinname="count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="28" nodename="AsValue (String)">
+   <BOUNDS height="0" left="11715" top="7440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="28" dstpinname="Input" srcnodeid="33" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="29" dstpinname="in" srcnodeid="28" srcpinname="Output">
+   </LINK>
+   <NODE id="27" nodename="AsString (Value)">
+   <BOUNDS height="0" left="11415" top="8355" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (0 .. MaxInt)|">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="32" dstpinname="Bin Size" srcnodeid="29" srcpinname="count">
+   </LINK>
+   <LINK dstnodeid="27" dstpinname="Input" srcnodeid="29" srcpinname="out">
+   </LINK>
+   <LINK dstnodeid="31" dstpinname="Input 2" srcnodeid="27" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="37" dstpinname="Input 3" srcnodeid="30" srcpinname="Output">
+   </LINK>
+   <NODE id="26" nodename="Add (String)">
+   <BOUNDS height="0" left="12735" top="8010" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="None">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="31" dstpinname="Input 4" srcnodeid="32" srcpinname="Output">
+   </LINK>
+   <NODE id="25" nodename="Substitute (String)">
+   <BOUNDS height="0" left="12915" top="7620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="To" slicecount="1" values="||||||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Input" srcnodeid="34" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="26" dstpinname="Input 2" srcnodeid="25" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="32" dstpinname="Input" srcnodeid="26" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (String)">
+   <BOUNDS height="0" left="750" top="10650" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3300" top="11430" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="480" left="750" top="10650" type="Box" width="1200">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&cr;&lf;&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;&cr;&lf;&tab;&lt;xsl:output method=&quot;html&quot; version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; indent=&quot;yes&quot; omit-xml-declaration=&quot;yes&quot; doctype-public=&quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; doctype-system=&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;/&gt;&cr;&lf;&tab;&cr;&lf;&tab;&cr;&lf;&tab;&lt;xsl:key name=&quot;PATCH&quot; match=&quot;BOX&quot; use=&quot;GROUP&quot;/&gt;&cr;&lf;&tab;&cr;&lf;&tab;&cr;&lf;&tab;&cr;&lf;&tab;&lt;xsl:template match=&quot;/PATCH&quot;&gt;&cr;&lf;&tab;&tab;&lt;!-- &tab;&cr;&lf;&tab;&tab;Begin  HTML&cr;&lf;&tab;&tab;Output&cr;&lf;&tab;&tab; --&gt;&cr;&lf;&tab;&tab;&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;de&quot;&gt;&cr;&lf;&tab;&tab;&lt;head&gt;&cr;&lf;&tab;&tab;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;styles.css&quot; /&gt;&cr;&lf;&tab;&tab;&lt;title&gt;VVVV Patch Remoting&lt;/title&gt;&cr;&lf;&tab;&tab;&tab;&lt;script src=&quot;scripts.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;&cr;&lf;&tab;&tab;&lt;/head&gt;&cr;&lf;&tab;&tab;&lt;body&gt;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&lt;div class=&quot;container&quot;&gt;&cr;&lf;&tab;&tab;&tab;&lt;div class=&quot;header&quot;&gt;&lt;xsl:value-of select=&quot;/PATCH/@name&quot;/&gt;&lt;/div&gt;&cr;&lf;&tab;&tab;&tab;&lt;div class=&quot;content&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;h1&gt;Welcome &lt;/h1&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;p&gt;This is a web-interface for a vvvv patch! You need valid username and a valid password to change values.&lt;/p&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;hr /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;h1 style=&quot;margin-top: 20px;&quot;&gt;Web Interface&lt;/h1&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;form action=&quot;&quot; method=&quot;post&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;!-- Here we start generating output. &cr;&lf;&tab;&tab;&tab;&tab;&tab;For every Group we create one HTML table --&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:for-each select=&quot;//BOX[generate-id(.)=generate-id(key(&apos;PATCH&apos;,GROUP))]&quot;&gt;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &lt;table cellspacing=&quot;0&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab; &lt;tr&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;th colspan=&quot;5&quot;&gt;&lt;xsl:value-of select=&quot;GROUP&quot;/&gt;&lt;/th&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab; &lt;/tr&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab; &lt;!--Go through the IOBoxes and Sort at the  secondary key &quot; IOBox Name&quot;,  sorted by name--&gt;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab; &lt;xsl:for-each select=&quot;key(&apos;PATCH&apos;,GROUP)&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:sort select=&quot;@name&quot;/&gt; &cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:variable name=&quot;slicecount&quot; select=&quot;SLICECOUNT&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:variable name=&quot;datatype&quot; select=&quot;@datatype&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:for-each select=&quot;VALUES/SLICE&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;tr&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;position()=1&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;td class=&quot;ioboxName&quot; rowspan=&quot;{$slicecount}&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;contains(../../@name, &apos;:&apos;)&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;translate(substring-after(../../@name, &apos;:&apos;),&apos;||&apos;,&apos;&apos;) &quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;../../@name&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab; (&lt;xsl:value-of select=&quot;../../@datatype&quot;/&gt;)&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/td&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;td class=&quot;sliceindex&quot;&gt;&lt;xsl:value-of select=&quot;position()&quot;/&gt;&lt;/td&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;td class=&quot;value&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$datatype=&apos;Color&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;Alpha: &lt;input name=&quot;{../../@name}---{position()}-alpha&quot; id=&quot;{../../@name}&quot; value=&quot;{ALPHA}&quot; maxlength=&quot;100&quot; class=&quot;alpha&quot; onblur=&quot;return chkValues(this.id,0,1)&quot; /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;input name=&quot;{../../@name}---{position()}&quot; id=&quot;{../../@name}---{position()}&quot; value=&quot;{HEX}&quot; maxlength=&quot;100&quot; class=&quot;color&quot; style=&quot;background-color: {HEX};&quot; onblur=&quot;return updateColor(this.id)&quot;  /&gt;&lt;span&gt;&lt;/span&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;a href=&quot;javascript:openColorPickerAdv(&apos;{../../@name}---{position()}&apos;);&quot;&gt;&lt;img src=&quot;pick.gif&quot; /&gt;&lt;/a&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$datatype=&apos;String&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;input name=&quot;{../../@name}---{position()}&quot; id=&quot;{../../@name}---{position()}&quot;  maxlength=&quot;100&quot; class=&quot;string&quot; value=&quot;{.}&quot; /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$datatype=&apos;Value&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;input name=&quot;{../../@name}---{position()}&quot; id=&quot;{../../@name}---{position()}&quot;  maxlength=&quot;100&quot; class=&quot;Value&quot; value=&quot;{.}&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/td&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/tr&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:for-each&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;  &cr;&lf;&tab;&tab;&tab;  &cr;&lf;&tab;&tab;&tab;  &cr;&lf;&tab;&tab;&tab;  &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:for-each&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&cr;&lf;  &tab;&tab;&lt;/table&gt;&cr;&lf;&tab;&tab;&lt;br/&gt;&lt;br/&gt;&cr;&lf;&tab;&lt;/xsl:for-each&gt;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab;  &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab;Username: &lt;input name=&quot;username&quot;  maxlength=&quot;100&quot; class=&quot;value&quot; value=&quot;&quot; /&gt;&lt;br /&gt;&lt;br /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;Password: &lt;input name=&quot;password&quot;  maxlength=&quot;100&quot; class=&quot;value&quot; value=&quot;&quot; type=&quot;password&quot; /&gt;&lt;br /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;input type=&quot;submit&quot; value=&quot;submit&quot; class=&quot;submit&quot; /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/form&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/div&gt;&cr;&lf;&tab;&tab;&tab;&lt;div class=&quot;footer&quot;&gt;&lt;/div&gt;&cr;&lf;&tab;&tab;&lt;/div&gt;&cr;&lf;&tab;&tab;&lt;/body&gt;&cr;&lf;&tab;&tab;&lt;/html&gt;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&tab;&lt;/xsl:template&gt;&cr;&lf;&lt;/xsl:stylesheet&gt;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="97" dstpinname="XSLT Stylesheet" srcnodeid="24" srcpinname="Output String">
+   </LINK>
+   <NODE id="23" nodename="AND (Boolean)">
+   <BOUNDS height="0" left="7215" top="1080" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="22" nodename="EQ (String)">
+   <BOUNDS height="0" left="6180" top="555" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="username">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Input 1" srcnodeid="73" srcpinname="Name">
+   </LINK>
+   <NODE id="21" nodename="EQ (String)">
+   <BOUNDS height="0" left="6765" top="555" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="password">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Input 1" srcnodeid="73" srcpinname="Name">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Input 3" srcnodeid="55" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Input 1" srcnodeid="22" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Input 2" srcnodeid="21" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="56" dstpinname="Select" srcnodeid="23" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="64" dstpinname="Select" linkstyle="VHV" srcnodeid="23" srcpinname="Output">
+   <LINKPOINT x="7245" y="1545">
+   </LINKPOINT>
+   <LINKPOINT x="12630" y="1545">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="20" nodename="Select (String)">
+   <BOUNDS height="0" left="5280" top="1725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="73" srcpinname="Value">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Select" srcnodeid="22" srcpinname="Output">
+   </LINK>
+   <NODE id="19" nodename="Select (String)">
+   <BOUNDS height="0" left="5985" top="1725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Select" srcnodeid="21" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="73" srcpinname="Value">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4530" top="195" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4005" top="1485" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4530" top="195" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="username">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="david">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5025" top="525" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4305" top="1785" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5025" top="525" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="password">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="test">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="EQ (String)">
+   <BOUNDS height="0" left="4575" top="2625" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Cons (String)">
+   <BOUNDS height="0" left="4560" top="2175" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Input 1" srcnodeid="18" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Input 2" srcnodeid="17" srcpinname="Output String">
+   </LINK>
+   <NODE id="14" nodename="Cons (String)">
+   <BOUNDS height="0" left="5280" top="2175" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input 1" srcnodeid="20" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input 2" srcnodeid="19" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Input 1" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Input 2" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE id="13" nodename="Switch (String Input)">
+   <BOUNDS height="0" left="7365" top="11820" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input 2" linkstyle="VHV" srcnodeid="51" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="49" dstpinname="XML Input" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="12" managers="" nodename="Add (Value Spectral)">
+   <PIN pinname="Input" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="4575" top="3060" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Bin Size" pintype="Input" slicecount="1" visible="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE id="11" nodename="EQ (Value)">
+   <BOUNDS height="0" left="4575" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input 1" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3270" top="11925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="16170" top="6495" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="375" left="3270" top="11925" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|  &lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;&cr;&lf;&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;de&quot;&gt;&cr;&lf;&lt;head&gt;&cr;&lf;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;styles.css&quot; /&gt;&cr;&lf;&lt;title&gt;VVVV Patch Remoting&lt;/title&gt;&cr;&lf;&lt;script language=&quot;Javascript&quot;&gt;&cr;&lf;&lt;!--&cr;&lf;var URL   = &quot;{BaseURL}&quot;&cr;&lf;var speed = 3000&cr;&lf;&cr;&lf;function reload() {&cr;&lf;location = URL&cr;&lf;}&cr;&lf;&cr;&lf;setTimeout(&quot;reload()&quot;, speed);&cr;&lf;//--&gt;&cr;&lf;&lt;/script&gt;&cr;&lf;&cr;&lf;&lt;/head&gt;&cr;&lf;&cr;&lf;&lt;body&gt;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&cr;&lf;&lt;div class=&quot;container&quot;&gt;&cr;&lf;&tab;&lt;div class=&quot;header&quot;&gt;Reloading Interface....&lt;/div&gt;&cr;&lf;&tab;&lt;div class=&quot;content&quot;&gt;&cr;&lf;&tab;&tab;{Text}&cr;&lf;&tab;&tab;&lt;/div&gt;&cr;&lf;&tab;&lt;div class=&quot;footer&quot;&gt;&lt;/div&gt;&cr;&lf;&lt;/div&gt;&cr;&lf;&lt;/body&gt;&cr;&lf;&lt;/html&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Switch (String Input)">
+   <BOUNDS height="0" left="2730" top="13440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input 1" linkstyle="VHV" srcnodeid="76" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="96" dstpinname="Content" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE id="8" nodename="Substitute (String)">
+   <BOUNDS height="0" left="3270" top="12690" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="From" slicecount="2" values="{BaseURL},{Text}">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="To" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="10" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input 2" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Switch" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="73" srcpinname="On Data">
+   </LINK>
+   <NODE id="7" nodename="Cons (String)">
+   <BOUNDS height="0" left="4080" top="11910" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input 1" linkstyle="VHV" srcnodeid="75" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="To" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE id="6" nodename="Switch (String Input)">
+   <BOUNDS height="0" left="4590" top="11295" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="|&lt;H1&gt;Proceeded!&lt;/h1&gt;Interface is reloading|">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="|&lt;h1&gt;Invalid username or password&lt;/h1&gt;|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input 2" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Switch" srcnodeid="11" srcpinname="Inverse Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2040" top="300" type="Node" width="1170">
+   </BOUNDS>
+   <BOUNDS height="270" left="2040" top="300" type="Box" width="1170">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|patch by david|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="AND (Boolean)">
+   <BOUNDS height="0" left="7350" top="11220" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="11" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input 2" srcnodeid="73" srcpinname="On Data">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Switch" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="Substitute (String)">
+   <BOUNDS height="0" left="6675" top="2085" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" slicecount="1" values="---">
+   </PIN>
+   <PIN pinname="To" slicecount="1" visible="1" values="|&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="56" srcpinname="Output">
+   </LINK>
+   <NODE id="2" nodename="Separate (String)">
+   <BOUNDS height="0" left="6675" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="NewLineAutoDetection">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE id="1" nodename="Select (String)">
+   <BOUNDS height="0" left="6675" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" slicecount="2" values="1,0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="71" dstpinname="Input 2" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE id="0" nodename="Select (String)">
+   <BOUNDS height="0" left="7800" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" slicecount="2" values="0,1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="67" dstpinname="Input" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="98" dstpinname="Input 1" srcnodeid="105" srcpinname="Output">
+   </LINK>
+   </PATCH>
