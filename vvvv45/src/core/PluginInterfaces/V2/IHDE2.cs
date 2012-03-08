@@ -216,11 +216,19 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
-		/// Get the full path to the vvvv.exe.
+		/// Gets the full path to the vvvv.exe.
 		/// </summary>
 		string ExePath
 		{
 			get;
+		}
+		
+		/// <summary>
+		/// Gets the main loop, which exposes events from the main loop.
+		/// </summary>
+		IMainLoop MainLoop
+		{
+		    get;
 		}
 	}
 	#endregion IHDEHost

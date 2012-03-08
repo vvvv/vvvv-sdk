@@ -156,6 +156,7 @@ namespace VVVV.Hosting
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
             DeviceMarshaler.Initialize(vvvvHost.DeviceService);
+            MainLoop = new MainLoop(vvvvHost.MainLoop);
             
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
@@ -488,6 +489,12 @@ namespace VVVV.Hosting
                 return FActivePatchWindow;
             }
         }
+        
+        public IMainLoop MainLoop
+		{
+		    get;
+		    private set;
+		}
         
         #endregion
         

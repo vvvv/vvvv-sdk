@@ -48,8 +48,10 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class DucumentSvgStringReaderNode : DucumentSvgReaderNode
 	{
+	    #pragma warning disable 649
 		[Input("XML", DefaultString = "<SVG></SVG>")]
 		IDiffSpread<string> FXMLIn;
+		#pragma warning restore
 		
 		protected override SvgDocument ReadDocument(int slice)
 		{
@@ -81,8 +83,10 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class DucumentSvgFileReaderNode : DucumentSvgReaderNode
 	{
+	    #pragma warning disable 649
 		[Input("Filename", StringType = StringType.Filename, DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg")]
 		IDiffSpread<string> FFilenameIn;
+		#pragma warning restore
 		
 		protected override SvgDocument ReadDocument(int slice)
 		{
@@ -108,7 +112,7 @@ namespace VVVV.Nodes
 	public abstract class DucumentSvgReaderNode : IPluginEvaluate
 	{
 		#region fields & pins
-		
+		#pragma warning disable 649,169
 		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 0 })]
 		IDiffSpread<RGBAColor> FBackgroundIn;
 		
@@ -135,6 +139,7 @@ namespace VVVV.Nodes
 
 		[Import()]
 		protected ILogger FLogger;
+		#pragma warning restore
 		#endregion fields & pins
  
 		//called when data for any output pin is requested
@@ -222,6 +227,7 @@ namespace VVVV.Nodes
 	
 	public abstract class DucumentSvgWriterNode : IPluginEvaluate
 	{
+	    #pragma warning disable 649
 		[Input("Document")]
 		ISpread<SvgDoc> FDocIn;
 		
@@ -230,6 +236,7 @@ namespace VVVV.Nodes
 		
 		[Input("Write", IsBang = true, Order = 20)]
 		ISpread<bool> FDoWriteIn;
+		#pragma warning restore
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
@@ -269,8 +276,10 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class DucumentSvgFileWriterNode : DucumentSvgWriterNode
 	{	
+	    #pragma warning disable 649
 		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
 		ISpread<string> FFilenameIn;
+		#pragma warning restore
 		
 		protected override void WriteDoc(SvgDocument doc, int slice)
 		{
@@ -287,8 +296,10 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class DucumentSvgStringWriterNode : DucumentSvgWriterNode
 	{	
+	    #pragma warning disable 649
 		[Output("XML")]
 		ISpread<string> FStringOut;
+		#pragma warning restore
 		 
 		protected override void WriteDoc(SvgDocument doc, int slice)
 		{
@@ -318,6 +329,7 @@ namespace VVVV.Nodes
 	public class SvgRendererNode : UserControl, IPluginEvaluate
 	{
 		#region fields & pins
+		#pragma warning disable 649,169
 		[Input("Layer")]
 		IDiffSpread<SvgElement> FSVGIn;
 		
@@ -349,6 +361,7 @@ namespace VVVV.Nodes
 		
 		[Import]
 		INode FThisNode;
+		#pragma warning restore
 		
 		#endregion fields & pins
 		
@@ -453,7 +466,7 @@ namespace VVVV.Nodes
 	public class EX9_TextureSVGTextureNode : DXTextureOutPluginBase, IPluginEvaluate
 	{
 		#region fields & pins
-
+        #pragma warning disable 649,169
 		[Input("Document")]
 		IDiffSpread<SvgDoc> FSVGIn;
 		
@@ -465,6 +478,7 @@ namespace VVVV.Nodes
 
 		[Import()]
 		ILogger FLogger;
+		#pragma warning restore
 		
 		List<Bitmap> FBitmaps = new List<Bitmap>();
 		List<Size> FSizes = new List<Size>();
