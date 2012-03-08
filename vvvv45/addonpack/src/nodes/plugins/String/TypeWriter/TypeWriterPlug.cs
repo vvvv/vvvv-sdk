@@ -23,16 +23,11 @@ namespace TypeWriter
     /// Способ разбиения последовательности вводимых символов
     /// </summary>
     public enum eSeparate { None = 1, Return, Word, Character, Key, Text };
-    
-    /// <summary>
-    /// Тип вводимых строк
-    /// </summary>
-    public enum eValidate { None, E_mail, HTTP, FileName, IP_Address, Key };
 
     /// <summary>
     /// Параметр удаления
     /// </summary>
-    public enum eDelete { Character, Word, Slice, All };
+    public enum eDelete {Character, Word, Slice, All};
 
     [PluginInfo(Name = "Typewriter", 
                 Category = "String", 
@@ -96,16 +91,54 @@ namespace TypeWriter
             return sbString.ToString();
         }
 
-        const string EMailRule = @"\b\w+([\.\w]+)*\w@\w((\.\w)*\w+)*\.\w{2,3}\b"; //@"^([a-z0-9\._\-]+)@([a-z0-9\.\-]+)(\.[a-z]{2,3})";
-        const string HTTPRule1 = @"(\b\w+:\/\/\w+((\.\w)*\w+)*\.\w{2,3}(\/\w*|\.\w*|\?\w*\=\w*)*)";
-        const string HTTPRule2 = @"(\w+((\.\w)*\w+)*\.\w{2,3}(\/\w*|\.\w*|\?\w*\=\w*)*)";
-        const string IPRule = @"^([0-9]|[0-9][0-9]|[01][0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[0-9][0-9]|[01][0-9][0-9]|2[0-4][0-9]|25[0-5])){3}$";
-        const string FileNameRule1 = @"([A-Za-z]\:\\)([^/]+[\\])(\w+\.\w+$)";
-        const string FileNameRule2 = @"([A-Za-z]\:\\)(\w+\.\w+$)";
-        const string FileNameRule3 = @"\w+\.\w+$";
-        const string NumbersRule = @"-?\d+[\.|\,]?\d+|\d";
+        #region field declaration
+        //input pin declaration
+        [Input("String")]
+        IDiffSpread<string> FKeyboardInput;
+        
+        [Input("KeyCode", DefaultValue = 0)]
+        IDiffSpread<double> FInputKey;
+        
+        [Input("Doubles Speed", MinValue = 0, MaxValue = 1, StepSize = 0.01d, DefaultValue = 0)]
+        IDiffSpread<double> FDoublesSpeed;
+        
+        [Input("Text")]
+        IDiffSpread<string> FText;
+        
+        [Input("Replace", IsSingle = true, IsBang = true, AsInt = true, DefaultValue = 0)]
+        IDiffSpread<bool> FReplace;
+        
+        [Input("Cursor Position", IsSingle = true, MinValue = 0, MaxValue = double.MaxValue, StepSize = 1, DefaultValue = 0, AsInt = true)]
+        IDiffSpread<int> FCursorPosition;
+        
+        [Input("Separate by")]
+        protected IDiffSpread<eSeparate> FSeparateEnum;
+        
+        [Input("Cursor")]
+        IDiffSpread<string> FCursor;
+        
+        [Input("Delete by")]
+        IDiffSpread<eDelete> FDeleteEnum;
+        
+        [Input("Delete", IsSingle = true, IsBang = true, AsInt = true, DefaultValue = 0)]
+        IDiffSpread<bool> FDelete;
 
-        public const string Ver = "v3.0";
+        //output pin declaration
+        [Output("Output")]
+        ISpread<string> FUsedOutput;
+        
+        [Output("Output with Cursor")]
+        ISpread<string> FViewOutput;
+        
+        [Output("Active Slice", IsSingle = true, MinValue = 0, MaxValue = double.MaxValue)]
+        ISpread<int> FActiveSlice;
+        
+        [Output("Error", IsSingle = true, MinValue = 0, MaxValue = 1, DefaultValue = 0, IsBang = false, AsInt = true)]
+        ISpread<bool> FError;
+
+        [Import()]
+        ILogger Flogger;
+        
         /// <summary>
         /// Рабочий список
         /// </summary>
@@ -122,10 +155,7 @@ namespace TypeWriter
         /// Разделитель
         /// </summary>
         public eSeparate SeparateEnum;
-        /// <summary>
-        /// Правила проверки
-        /// </summary>
-        public eValidate ValidateEnum;
+        
         /// <summary>
         /// Контрольный ключ
         /// </summary>
@@ -170,53 +200,9 @@ namespace TypeWriter
         /// </summary>
         private System.Threading.Timer RepeatTimer;
         private int timerdelay = 0;
-
-        #region field declaration
+        
         // Track whether Dispose has been called.
         private bool FDisposed = false;
-
-        //input pin declaration
-        [Input("String")]
-        IDiffSpread<string> FKeyboardInput;
-        [Input("KeyCode", DefaultValue = 0)]
-        IDiffSpread<double> FInputKey;
-        [Input("Doubles Speed", MinValue = 0, MaxValue = 1, StepSize = 0.01d, DefaultValue = 0)]
-        IDiffSpread<double> FDoublesSpeed;
-        [Input("Text")]
-        IDiffSpread<string> FText;
-        [Input("Replace", IsSingle = true, IsBang = true, AsInt = true, DefaultValue = 0)]
-        IDiffSpread<bool> FReplace;
-        [Input("Cursor Position", IsSingle = true, MinValue = 0, MaxValue = double.MaxValue, StepSize = 1, DefaultValue = 0, AsInt = true)]
-        IDiffSpread<int> FCursorPosition;
-        [Input("Separate by")]
-        protected IDiffSpread<eSeparate> FSeparateEnum;
-        [Input("Validate as")]
-        IDiffSpread<eValidate> FValidateEnum;
-        [Input("Key")]
-        IDiffSpread<string> FKey;
-        [Input("Cursor")]
-        IDiffSpread<string> FCursor;
-        [Input("Delete by")]
-        IDiffSpread<eDelete> FDeleteEnum;
-        [Input("Delete", IsSingle = true, IsBang = true, AsInt = true, DefaultValue = 0)]
-        IDiffSpread<bool> FDelete;
-
-        //output pin declaration
-        [Output("ViewOutput")]
-        ISpread<string> FViewOutput;
-        [Output("UsedOutput")]
-        ISpread<string> FUsedOutput;
-        [Output("ActiveSlice", IsSingle = true, MinValue = 0, MaxValue = double.MaxValue)]
-        ISpread<int> FActiveSlice;
-        [Output("As Value", IsSingle = false, MinValue = double.MinValue, MaxValue = double.MaxValue, DefaultValue = double.MinValue)]
-        ISpread<double> FAsValue;
-        [Output("Validated", IsSingle = true, MinValue = 0, MaxValue = 1, DefaultValue = 0, IsBang = false, AsInt = true)]
-        ISpread<bool> FValidated;
-        [Output("Error", IsSingle = true, MinValue = 0, MaxValue = 1, DefaultValue = 0, IsBang = false, AsInt = true)]
-        ISpread<bool> FError;
-
-        [Import()]
-        ILogger Flogger;
         #endregion field declaration
 
         #region constructor/destructor
@@ -225,7 +211,6 @@ namespace TypeWriter
         public TypeWriterE(IPluginHost pluginHost)
         {
             pluginHost.UpdateEnum("Separate", "None", Enum.GetNames(typeof(eSeparate)));
-            pluginHost.UpdateEnum("Validate", "None", Enum.GetNames(typeof(eValidate)));
             pluginHost.UpdateEnum("Delete", "Character", Enum.GetNames(typeof(eDelete)));
         }
 
@@ -301,224 +286,6 @@ namespace TypeWriter
             Dispose(false);
         }
         #endregion constructor/destructor
-
-        #region валидаторы | Validators
-        /// <summary>
-        /// Список проверки валидаторов
-        /// </summary>
-        /// <returns></returns>
-        public bool ValidateSlice()
-        {
-            try
-            {
-                if (ValidateEnum == eValidate.None) return true;
-                if (ValidateEnum == eValidate.E_mail)
-                    return ValidateEmail(SlicesString[ActiveSlice][yCur]);
-                if (ValidateEnum == eValidate.FileName)
-                    return ValidateFileName(SlicesString[ActiveSlice][yCur]);
-                if (ValidateEnum == eValidate.HTTP)
-                    return ValidateHTTP(SlicesString[ActiveSlice][yCur]);
-                if (ValidateEnum == eValidate.IP_Address)
-                    return ValidateIP(SlicesString[ActiveSlice][yCur]);
-                if (ValidateEnum == eValidate.Key)
-                    return ValidateKey(SlicesString[ActiveSlice][yCur]);
-            }
-            catch { };
-            return false;
-        }
-        private bool IsName(string str)
-        {
-            if (str == null || str == "") return false;
-            /// количество символов от 2 до 63
-            if (str.Length < 2 || str.Length > 63) return false;
-            /// не допускается повтора разделителя
-            if (str.Contains("--")) return false;
-            /// первый символ и последний символ не должен быть разделителем
-            if (str[0] == '-' || str[str.Length - 1] == '-') return false;
-            /// проверка на допустимые символы
-            for (int i = 0; i < str.Length; i++)
-            {
-                if (!char.IsLetterOrDigit(str[i]) && str[i] != '-')
-                    return false;
-            }
-            return true;
-        }
-        private bool IsZone(string str)
-        {
-            if (str == null || str == "") return false;
-            /// количество символов от 2 до 4
-            if (str.Length < 2 || str.Length > 4) return false;
-            /// проверка на допустимые символы
-            for (int i = 0; i < str.Length; i++)
-            {
-                if (!char.IsLetter(str[i]))
-                    return false;
-            }
-            return true;
-        }
-        /// <summary>
-        /// Проверка адреса электронной почты
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public bool ValidateEmail(string str)
-        {
-            if (str == null || str == "") return false;
-            if (str.Contains(" ")) return false;
-            string[] valstr = str.Split('@');
-            if (valstr.Length != 2) return false;
-            /// проверяем имя пользователя
-            /// имя пользователя не может быть пустым и больше 80
-            if (valstr[0].Length == 0 || valstr[0].Length > 80) return false;
-            /// имя пользователя не может содержать несколько разделительных символов подряд
-            if (valstr[0].Contains("--")) return false;
-            if (valstr[0].Contains("__")) return false;
-            if (valstr[0].Contains("..")) return false;
-
-            /// первый символ и последний символ не должен быть разделителем
-            if (valstr[0][0] == '-' || valstr[0][0] == '_' || valstr[0][0] == '.' ||
-                valstr[0][valstr[0].Length - 1] == '-' || valstr[0][valstr[0].Length - 1] == '_' || valstr[0][valstr[0].Length - 1] == '.')
-                return false;
-
-            /// проверка на допустимые символы
-            for (int i = 0; i < valstr[0].Length; i++)
-            {
-                if (!char.IsLetterOrDigit(valstr[0][i]) && valstr[0][i] != '-' && valstr[0][i] != '_' && valstr[0][i] != '.')
-                    return false;
-            }
-            /// проверяем название домена
-            string[] domen = valstr[1].Split('.');
-            /// проверяем количество от 2 до 5
-            if (domen.Length < 2 || domen.Length > 5) return false;
-            /// начинается обязательно именем заканчивается зоной
-            if (IsName(domen[0]) == false) return false;
-            if (IsZone(domen[domen.Length - 1]) == false) return false;
-            for (int i = 1; i < domen.Length - 1; i++)
-            {
-                if (IsName(domen[i]) == false && IsZone(domen[i]) == false) return false;
-            }
-            return true;
-        }
-        /// <summary>
-        /// Проверка адреса HTTP
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public bool ValidateHTTP(string str)
-        {
-            if (str == null || str == "") return false;
-            /// адрес не может содержать несколько разделительных символов подряд
-            if (str.Contains("--")) return false;
-            if (str.Contains("..")) return false;
-            if (str.Contains(" ")) return false;
-            /// проверка на последний символ /
-            if (str.Length > 0 && str[str.Length - 1] == '/')
-                str = str.Substring(0, str.Length - 2);
-
-            /// проверка на префикс
-            if (str.Contains("http://") || str.Contains("HTTP://"))
-            {
-                string prefix = str.Substring(0, 7);
-                if (prefix == "http://" || prefix == "HTTP://")
-                    str = str.Substring(7, str.Length - 7);
-            }
-            else if (str.Contains("ftp://") || str.Contains("FTP://"))
-            {
-                string prefix = str.Substring(0, 6);
-                if (prefix == "ftp://" || prefix == "FTP://")
-                    str = str.Substring(6, str.Length - 6);
-            }
-            /// разбираем на имена и зоны
-            string[] valstr = str.Split('.');
-            if (valstr.Length < 2) return false;
-            if (valstr[0] == "www" || valstr[0] == "WWW")
-            {
-                /// вырезаем второй префикс
-                str = str.Substring(4, str.Length - 4);
-                valstr = str.Split('.');
-                if (valstr.Length < 2) return false;
-            }
-            /// проверяем количество от 2 до 5
-            if (valstr.Length < 2 || valstr.Length > 5) return false;
-            /// начинается обязательно именем заканчивается зоной
-            if (IsName(valstr[0]) == false) return false;
-            if (IsZone(valstr[valstr.Length - 1]) == false) return false;
-            for (int i = 1; i < valstr.Length - 1; i++)
-            {
-                if (IsName(valstr[i]) == false && IsZone(valstr[i]) == false) return false;
-            }
-            return true;
-        }
-        /// <summary>
-        /// Проверка адреса IP
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public bool ValidateIP(string str)
-        {
-            if (str == null || str == "") return false;
-            string[] valstr = str.Split('.');
-            if (valstr.Length != 4) return false;
-            for (int i = 0; i < valstr.Length; i++)
-            {
-                if (valstr[i].Length < 1 || valstr[i].Length > 3) return false;
-                /// проверка символов
-                for (int j = 0; j < valstr[i].Length; j++)
-                    if (!char.IsDigit(valstr[i][j])) return false;
-            }
-            return true;
-        }
-        /// <summary>
-        /// Проверка имени файла
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public bool ValidateFileName(string str)
-        {
-            if (str == null || str == "") return false;
-            if (str.Length > 0 && str[0] == ' ') return false;
-            /// обрабатываем входной префикс
-            if (str.Length > 3 && str.Contains(":\\"))
-            {
-                string prefix = str.Substring(0, 3);
-                if (prefix.Contains(":\\") && char.IsLetter(prefix[0]))
-                    str = str.Substring(3, str.Length - 3);
-                else
-                    return false;
-            }
-            /// проверяем путь и имя на символы
-            for (int i = 0; i < str.Length; i++)
-            {
-                if (str[i] == '/') return false;
-                if (str[i] == '|') return false;
-                if (str[i] == '?') return false;
-                if (str[i] == '*') return false;
-                if (str[i] == '<') return false;
-                if (str[i] == '>') return false;
-                if (str[i] == '"') return false;
-                if (str[i] == ':') return false;
-            }
-            /// разбираем на каталоги
-            string[] dirs = str.Split('\\');
-            if (dirs.Length < 1 || dirs.Length > 256) return false;
-            /// проверяем имя файла
-            string[] filename = dirs[dirs.Length - 1].Split('.');
-            if (filename.Length < 1 || filename.Length > 2) return false;
-            for (int i = 0; i < filename.Length; i++)
-                if (filename[i].Length < 1 || filename[i].Length > 255) return false;
-            return true;
-        }
-        /// <summary>
-        /// Проверка по ключу
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public bool ValidateKey(string str)
-        {
-            if (str != PKey) return false;
-            return true;
-        }
-        #endregion
 
         #region Ошибки
         /// <summary>
@@ -686,44 +453,6 @@ namespace TypeWriter
                 if (str[i] != PKey[i]) return true;
             }
             return false;
-        }
-        #endregion
-
-        #region разбор чисел
-        public static Single ConvertStringToSingle(string str)
-        {
-            if (str == null || str.Length == 0)
-                return 0;
-            string separat = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator;
-            str = str.Replace('.', separat[0]);
-            str = str.Replace(',', separat[0]);
-
-            return Convert.ToSingle(str);
-        }
-        /// <summary>
-        /// Разбор строк
-        /// </summary>
-        /// <returns></returns>
-        public List<double> GetNumbers()
-        {
-            Regex rx = new Regex(NumbersRule);
-            List<double> res = new List<double>();
-            try
-            {
-                for (int i = 0; i < SlicesString.Count; i++)
-                {
-                    for (int j = 0; j < SlicesString[i].Count; j++)
-                    {
-                        MatchCollection matches = rx.Matches(SlicesString[i][j]);
-                        for (int k = 0; k < matches.Count; k++)
-                        {
-                            res.Add(ConvertStringToSingle(matches[k].ToString()));
-                        }
-                    }
-                }
-            }
-            catch { };
-            return res;
         }
         #endregion
 
@@ -923,8 +652,6 @@ namespace TypeWriter
         {
             try
             {
-                if (!ValidateSlice()) return;
-                // новый слайс
                 List<string> st = new List<string>();
                 st.Add(string.Empty);
                 SlicesString.Add(st);
@@ -1249,26 +976,12 @@ namespace TypeWriter
                         usedstr += cr;
                     }
                 }
-                if (ValidateEnum == eValidate.E_mail)
-                    ValidateEmail(viewstr);
+
                 FViewOutput[i] = viewstr;
                 FUsedOutput[i] = usedstr;
             }
             FActiveSlice.SliceCount = 1;
             FActiveSlice[0] = ActiveSlice;
-
-            /// вывод чисел
-            List<double> dres = GetNumbers();
-            FAsValue.SliceCount = dres.Count;
-            for (int i = 0; i < dres.Count; i++)
-                FAsValue[i] = dres[i];
-            dres.Clear();
-
-            /// вывод валидаторов
-            if (ValidateSlice())
-                FValidated[0] = true;
-            else
-                FValidated[0] = false;
 
             /// вывод ошибок
             if (ErrorSlice())
@@ -1323,16 +1036,6 @@ namespace TypeWriter
                 SeparateEnum = (eSeparate)FSeparateEnum[0];
             }
 
-            if (FValidateEnum.IsChanged)
-            {
-                ValidateEnum = (eValidate)FValidateEnum[0];
-            }
-
-            if (FKey.IsChanged)
-            {
-                PKey = FKey[0];
-            }
-
             if (FCursor.IsChanged)
             {
                 Cursor = FCursor[0];
@@ -1379,10 +1082,7 @@ namespace TypeWriter
                     RepeatTimer.Change(Timeout.Infinite, Timeout.Infinite);
                 };
             }
-            /*if (FKeyboardInput.IsConnected)
-                FlagStringConnected = true;
-            else
-                FlagStringConnected = false;*/
+
             /// входной текст
             //if ((FText.IsChanged && FText.IsConnected) || (FText.IsConnected && FlagTextConnected == false))
             if (FText.IsChanged || FlagTextConnected == false)
@@ -1429,10 +1129,6 @@ namespace TypeWriter
                     FlagTextConnected = true;
                 };
             }
-            /*if (FText.IsConnected)
-                FlagTextConnected = true;
-            else
-                FlagTextConnected = false;*/
 
             if (FInputKey.IsChanged)
             {
