@@ -1,0 +1,259 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Tokenizer (String) help.v4p">
+   <BOUNDS height="9120" left="105" top="1650" type="Window" width="9600">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1455" top="2595" type="Node" width="795">
+   </BOUNDS>
+   <BOUNDS height="480" left="1455" top="2595" type="Box" width="2805">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|concatenates the incoming string stream and splits out defined tokens|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="255" left="450" top="1215" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="315" left="450" top="1215" type="Box" width="8745">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Streng dem definierten Wesen des Blindtextes folgend, fungiere ich als solcher und gebe mich unverbindlich inhaltsleer. |">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Tokenizer (String)">
+   <BOUNDS height="0" left="435" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Separator" slicecount="1" visible="1" values="| |">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="PrefixFixedLength">
+   </PIN>
+   <PIN pinname="Queue Mode" slicecount="1" values="Spread">
+   </PIN>
+   <PIN pinname="Update" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Token Length" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="255" left="195" top="3660" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="4830" left="195" top="3660" type="Box" width="3945">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="19.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input String" linkstyle="VHV" srcnodeid="12" srcpinname="Output">
+   <LINKPOINT x="465" y="3270">
+   </LINKPOINT>
+   <LINKPOINT x="4110" y="3270">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="0" left="615" top="2130" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6075" top="4995" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="615" top="2130" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="e">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Separator" srcnodeid="10" srcpinname="Output String">
+   </LINK>
+   <NODE id="9" nodename="RS232 (Devices)">
+   <BOUNDS height="0" left="6795" top="2760" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ComPort" slicecount="1" visible="1" values="COM2">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Baud Rate" slicecount="1" values="9600">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Do Send" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Tokenizer (String)">
+   <BOUNDS height="0" left="6795" top="3660" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Separator" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Queue Length" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Queue Mode" slicecount="1" values="Enqueue">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Switch (String Input)">
+   <BOUNDS height="0" left="6780" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Switch" srcnodeid="9" srcpinname="On Data">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input 2" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7680" top="4125" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12030" top="12150" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7680" top="4125" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Queue Length">
+   </LINK>
+   <NODE id="5" nodename="SpellValue (String)">
+   <BOUNDS height="0" left="7530" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" values="10.00000">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="Ascii">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Separator" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE id="4" nodename="EQ (String)">
+   <BOUNDS height="0" left="7065" top="4125" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="RegExpr (String)">
+   <BOUNDS height="0" left="6795" top="5040" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Regular Expression" slicecount="1" values="|\[ (\d*) ; (\d*) ; (\d)  (R||F) |">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Match 1" visible="1">
+   </PIN>
+   <PIN pinname="Match 2" visible="1">
+   </PIN>
+   <PIN pinname="Match 3" visible="1">
+   </PIN>
+   <PIN pinname="Match 4" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="S+H (String)">
+   <BOUNDS height="0" left="6810" top="4605" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Set" srcnodeid="4" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE id="1" nodename="Change (String)">
+   <BOUNDS height="0" left="6945" top="2385" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Do Send" srcnodeid="1" srcpinname="OnChange">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="13" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4695" top="5505" type="Node" width="4935">
+   </BOUNDS>
+   <BOUNDS height="3045" left="4695" top="5505" type="Box" width="4635">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|One way to use Tokenizer is to split static strings. Use the &quot;SpreadMode&quot; for this. (Example on the left side)&cr;&lf;Another use for it is the analysis of incoming streams (from a touchscreen or other kinds of sensors) as seen above. This is a not working excerpt out of a patch where Tokenizer used to analyse the data of a touchscreen (the RS232 node).&cr;&lf;When the Queue Mode is set to &quot;Enqueue&quot;, it stores all incoming strings, splits them as defined and forwards one item per frame to the connected nodes. Every queue item that can&apos;t be forwarded, because it comes in faster than it can be delivered, is stored into a queue that will be delivered as soon as the input stream allows this. If the Queue Mode is set to &quot;Discard&quot; all items, that can&apos;t be delivered in frametime to connected nodes will be discarded.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="390" type="Box" width="5145">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="45030" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|concatenates the incoming string stream and splits out defined tokens|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="45030" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tokenizer - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

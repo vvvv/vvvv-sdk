@@ -1,0 +1,201 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Group (SVG) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Group (SVG) help.v4p" systemname="Group (SVG) help">
+   <BOUNDS height="8190" left="12615" top="2010" type="Window" width="8070">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="195" top="495" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="465" left="195" top="495" type="Box" width="3135">
+   </BOUNDS>
+   <BOUNDS height="160" left="2400" top="41700" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Groups multiple SVG layers to be rendered one after the other|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="195" top="120" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="195" top="120" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="2400" top="41700" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Group (SVG)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="16" nodename="Renderer (SVG)" systemname="Renderer (SVG)">
+   <BOUNDS height="100" left="840" top="4620" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="2910" left="840" top="4620" type="Box" width="2895">
+   </BOUNDS>
+   <BOUNDS height="4500" left="14745" top="5955" type="Window" width="6000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Document" visible="1">
+   </PIN>
+   </NODE>
+   <NODE filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="2" nodename="Quad (SVG)" systemname="Quad (SVG)">
+   <BOUNDS height="0" left="1620" top="3375" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Resolution X">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Resolution Y">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Inner Radius">
+   </PIN>
+   <PIN pinname="Cycles">
+   </PIN>
+   <PIN pinname="Round Edges" visible="1">
+   </PIN>
+   <PIN pinname="Fade Amount" visible="1">
+   </PIN>
+   <PIN pinname="Priority">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Fill" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Stroke" slicecount="1" values="|0.49658,0.49658,0.49658,1.00000|">
+   </PIN>
+   <PIN pinname="Stroke Width" slicecount="1" values="0.1">
+   </PIN>
+   <PIN pinname="Corner Radius XY" slicecount="2" values="0,0">
+   </PIN>
+   <BOUNDS left="1620" top="3375" type="Box">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="25" nodename="Group (SVG)" systemname="Group (SVG)">
+   <BOUNDS height="270" left="840" top="4125" type="Node" width="2340">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Layer" srcnodeid="25" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Input 1" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="26" nodename="Circle (SVG)" systemname="Circle (SVG)">
+   <BOUNDS height="100" left="2925" top="3375" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <BOUNDS left="2925" top="3375" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Input 2" srcnodeid="26" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="27" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="100" left="1620" top="2955" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="-0.33">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="27" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="28" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="100" left="2925" top="2955" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0.4">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-0.67">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Transform" srcnodeid="28" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="29" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="100" left="840" top="1740" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Transform" srcnodeid="29" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="30" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="100" left="1830" top="1275" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="XYZ" srcnodeid="30" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="31" nodename="Text (SVG)" systemname="Text (SVG)">
+   <BOUNDS height="100" left="4230" top="3375" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Text" slicecount="1" values="vvvv">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <BOUNDS left="4230" top="3375" type="Box">
+   </BOUNDS>
+   <PIN pinname="Size" slicecount="1" values="0.59">
+   </PIN>
+   <PIN pinname="Stroke Width" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Stroke" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Input 3" srcnodeid="31" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="33" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="100" left="4230" top="2955" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="TranslateX" slicecount="1" values="-0.91">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="0.4">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="31" dstpinname="Transform" srcnodeid="33" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="34" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2910" top="1710" type="Node" width="5265">
+   </BOUNDS>
+   <BOUNDS height="525" left="2910" top="1710" type="Box" width="3315">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; Allows you to apply transformations (and spreading) to the whole group of SVG layers.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>
