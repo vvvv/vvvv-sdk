@@ -200,6 +200,7 @@ namespace VVVV.Hosting
             
             //start time server of client
             FNetTimeSync = FVVVVHost.IsBoygroupClient ? new UDPTimeClient(FVVVVHost.BoygroupServerIP, 3334) : new UDPTimeServer(3334);
+            FNetTimeSync.Start();
             
         }
         
