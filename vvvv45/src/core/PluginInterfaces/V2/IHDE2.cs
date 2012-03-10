@@ -152,14 +152,28 @@ namespace VVVV.PluginInterfaces.V2
 		/// Returns the current frame time which the plugin should use if it does timebased calculations.
 		/// </summary>
 		/// <returns>The hosts current frame time.</returns>
+		[Obsolete("Use new property FrameTime now")]
 		double GetCurrentTime();
 		
+
 		/// <summary>
-		/// Returns the realtime since the IHDEHost was created. On boygroup clients this ist the time 
-		/// since the server IHDEHost was created, synced over network.
+		/// The current host frame time which the plugin should use if it does timebased calculations.
 		/// </summary>
-		/// <returns>The hosts realtime of the high resolution counter (not framebased)</returns>
-		double GetRealtime();
+		double FrameTime 
+		{
+			get;
+		}
+		
+	
+		/// <summary>
+		/// The realtime in seconds since the IHDEHost was created. On boygroup clients this ist the time 
+		/// since the server IHDEHost was created, synced over network. This time is not frame based,
+		/// each call will return a new time.
+		/// </summary>
+		double RealTime 
+		{
+			get;
+		}
 	    
 		/// <summary>
 		/// Opens the given file.

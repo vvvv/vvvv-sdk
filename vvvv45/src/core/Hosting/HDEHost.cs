@@ -423,10 +423,23 @@ namespace VVVV.Hosting
             return currentTime;
         }
         
-        public double GetRealtime()
-		{
-			return FNetTimeSync.ElapsedSeconds;
-		}
+        public double FrameTime
+        {
+        	get
+        	{
+        		double currentTime;
+        		FVVVVHost.GetCurrentTime(out currentTime);
+        		return currentTime;
+        	}
+        }
+        
+        public double RealTime
+        {
+        	get
+        	{
+        		return FNetTimeSync.ElapsedSeconds;
+        	}
+        }
         
         public void Open(string file, bool inActivePatch, IWindow window)
         {
