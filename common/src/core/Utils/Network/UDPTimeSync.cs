@@ -29,6 +29,8 @@ namespace VVVV.Utils.Network
 		protected Stopwatch FStopWatch;
 		protected UdpClient FServer;
 		
+		protected IPEndPoint FSender;
+		
 		#region clock
 	 	private double FOffset;
 
@@ -64,6 +66,9 @@ namespace VVVV.Utils.Network
 			FStopWatch.Start();
 			
 			CreateServer(port);
+			
+			//create empty sender object
+			FSender = new IPEndPoint(IPAddress.Any, 0);
 		}
 		
 		//setup server
@@ -94,15 +99,14 @@ namespace VVVV.Utils.Network
 		//message callback
 		protected virtual void ReceiveCallback(IAsyncResult ar)
 		{
-			var sender = new IPEndPoint(IPAddress.Any, 0);
 			
 			try
 			{
-				Byte[] receiveBytes = FServer.EndReceive(ar, ref sender);
+				Byte[] receiveBytes = FServer.EndReceive(ar, ref FSender);
 				//string receiveString = Encoding.ASCII.GetString(receiveBytes);
 				//FLogger.Log(LogType.Message, "Received: {0} from {1}", receiveString, sender);
 				
-				FServer.Send(BitConverter.GetBytes(ElapsedSeconds), 8, sender);
+				FServer.Send(BitConverter.GetBytes(ElapsedSeconds), 8, FSender);
 				
 			} 
 			catch (Exception e)
@@ -143,6 +147,8 @@ namespace VVVV.Utils.Network
 		IPEndPoint FRemoteServer;
 		
 		double FSendTime;
+		IIRFilter FNetDelayFilter;
+		IIRFilter FTimeOffsetFilter;
 		
 		public UDPTimeClient(string serverIP, int port)
 			: base(port+1)
@@ -153,11 +159,11 @@ namespace VVVV.Utils.Network
 			
 			FRemoteServer = new IPEndPoint(IPAddress.Parse(serverIP), port);
 			
-			FNetDelay.Alpha = 0.9;
-			FNetDelay.Thresh = 0.001;
+			FNetDelayFilter.Alpha = 0.9;
+			FNetDelayFilter.Thresh = 0.001;
 			
-			FOffset.Alpha = 0.9;
-			FOffset.Thresh = 0.1;
+			FTimeOffsetFilter.Alpha = 0.9;
+			FTimeOffsetFilter.Thresh = 0.1;
 		}
 		
 		private void OnTimer(object source, ElapsedEventArgs e)
@@ -187,29 +193,22 @@ namespace VVVV.Utils.Network
 			}
 		}
 		
-		IIRFilter FNetDelay;
-		IIRFilter FOffset;
-		
 		protected override void ReceiveCallback(IAsyncResult ar)
 		{
 			//check network delay
 			var receiveTime = FStopWatch.Elapsed.TotalSeconds;
 			var netDelay = (receiveTime - FSendTime) * 0.5;
-			netDelay = FNetDelay.Update(netDelay);
-			
-			var sender = new IPEndPoint(IPAddress.Any, 0);
+			netDelay = FNetDelayFilter.Update(netDelay);
 			
 			try
 			{
-				Byte[] receiveBytes = FServer.EndReceive(ar, ref sender);
+				Byte[] receiveBytes = FServer.EndReceive(ar, ref FSender);
 				double serverTime = BitConverter.ToDouble(receiveBytes, 0);
 				
 				//estimate offset
 				var offset = serverTime - (receiveTime - netDelay);
 				
-				offset = FOffset.Update(offset);
-				
-				Offset = offset;
+				Offset = FTimeOffsetFilter.Update(offset);
 				
 				//FLogger.Log(LogType.Message, "Offset {0} from {1} with network delay of {2}", offset, sender, netDelay);
 				
