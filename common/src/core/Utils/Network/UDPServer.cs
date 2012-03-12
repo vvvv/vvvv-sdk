@@ -93,14 +93,14 @@ namespace VVVV.Utils.Network
 			{
 				FReceivedBytes = FInternalServer.EndReceive(ar, ref FRemoteSender);
 				
+				//immediately restart listening
+				Start();
+				
 				//rise message received event
 				if (MessageReceived != null)
 					MessageReceived(this, new UDPReceivedEventArgs(FRemoteSender, FReceivedBytes));
 				
 				FReceiveSuccess = true;
-				
-				//restart listening
-				Start();
 				
 			}
 			catch
