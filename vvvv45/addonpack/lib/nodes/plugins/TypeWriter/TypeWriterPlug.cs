@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Diagnostics;
 using System.Threading;
 using System.ComponentModel.Composition;
+using System.Linq;
 
 using VVVV.Utils;
 using VVVV.Utils.VMath;
@@ -22,7 +23,7 @@ namespace TypeWriter
 {
 	[PluginInfo(Name = "Typewriter",
 	            Category = "String",
-				Credits = "bo27, Yuri Dolgov",
+				Credits = "Based on an original version by bo27, Yuri Dolgov",
 				Author = "vvvv group",
 	            Help = "Takes all keyboardinput including keyboard commands and returns a resulting string",
 	            Tags = "keyboard")]
@@ -388,8 +389,18 @@ namespace TypeWriter
 			}
 			else
 			{
+				//remove keys from the buffer that are not currently pressed
+				var keysToDelete = new List<string>();
+				var inputKeys = FInputKey.Select(x => VKCodeToUnicode(x)).ToList();
+				foreach (var key in FBufferedKeys)
+					if (!inputKeys.Contains(key.Key)) 
+						keysToDelete.Add(key.Key);
+			
+				foreach (string key in keysToDelete)
+					FBufferedKeys.Remove(key);
+				
 				var now = FHDEHost.GetCurrentTime();
-				//make current keyboardstate i1!1nto a string
+				//make current keyboardstate into a string
 				//access FInputKey[-1] since earlier slices would be ctrl or shift
 				var newChar = VKCodeToUnicode(FInputKey[-1]);
 				
@@ -413,7 +424,7 @@ namespace TypeWriter
 					
 				//check if any of the buffered keys/commands need to executed
 				foreach (var key in FBufferedKeys)
-					if (now - key.Value == 0 || now - key.Value > 0.4)
+					if (now - key.Value == 0 || now - key.Value > 0.3)
 						AddNewChar(key.Key);
 				
 				foreach (var key in FBufferedCommands)
