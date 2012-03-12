@@ -33,7 +33,7 @@ namespace VVVV.Nodes
 		[Input("Time", IsSingle = true)]
 		ISpread<double> FTime;
 
-		[Input("Port", DefaultValue = 4336, IsSingle = true)]
+		[Input("Port", DefaultValue = 3336, IsSingle = true)]
 		IDiffSpread<int> FPort;
 		
 		[Output("Do Seek")]
@@ -90,7 +90,7 @@ namespace VVVV.Nodes
 				{
 					FServer = FHost.IsBoygroupClient ? new UDPServer(FPort[0] + 1) : new UDPServer(FPort[0]);
 					FServer.MessageReceived += FServer_MessageReceived;
-					//FServer.Start();
+					FServer.Start();
 				}
 				else
 				{
@@ -153,7 +153,7 @@ namespace VVVV.Nodes
 			lock(FLock)
 			{
 				var offset = FHost.RealTime - FReceivedTimeStamp;
-				var streamDiff = FStreamTime - (FReceivedStreamTime + offset);
+				var streamDiff = (FReceivedStreamTime + offset) - FStreamTime;
 				var doSeek = Math.Abs(streamDiff) > 2;
 				
 				FDoSeekOut[0] = doSeek;
@@ -161,7 +161,7 @@ namespace VVVV.Nodes
 				
 				if(!doSeek)
 				{
-					FAdjustTimeOut[0] = (int)FAdjustTimeFilter.Update(streamDiff * 1000);
+					FAdjustTimeOut[0] = (int)FAdjustTimeFilter.Update(streamDiff) * 1000;
 				}
 				else
 				{
