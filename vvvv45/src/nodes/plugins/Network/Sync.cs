@@ -32,7 +32,7 @@ namespace VVVV.Nodes
 		[Input("Time", IsSingle = true)]
 		ISpread<double> FTime;
 
-		[Input("Port", DefaultValue = 3336, IsSingle = true)]
+		[Input("Port", DefaultValue = 4336, IsSingle = true)]
 		IDiffSpread<int> FPort;
 		
 		[Output("Do Seek")]
@@ -78,7 +78,7 @@ namespace VVVV.Nodes
 				{
 					FServer = FHost.IsBoygroupClient ? new UDPServer(FPort[0] + 1) : new UDPServer(FPort[0]);
 					FServer.MessageReceived += FServer_MessageReceived;
-					FServer.Start();
+					//FServer.Start();
 				}
 				else
 				{
