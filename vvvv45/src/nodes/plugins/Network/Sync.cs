@@ -1,5 +1,6 @@
 ﻿#region usings
 using System;
+using System.Net;
 using System.Text;
 using System.ComponentModel.Composition;
 
@@ -25,7 +26,7 @@ namespace VVVV.Nodes
 	Tags = "",
 	AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class FileStreamNetworkSyncNode : IPluginEvaluate
+	public class FileStreamNetworkSyncNode : IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
 		[Input("Time", IsSingle = true)]
@@ -47,8 +48,10 @@ namespace VVVV.Nodes
 		double FStreamTime;
 		double FReceivedStreamTime;
 		double FReceivedTimeStamp;
+		double FLastUpdateTime;
 		IIRFilter FAdjustTimeFilter;
 		UDPServer FServer;
+		IPEndPoint FRemoteServer; 
 		
 		[Import]
 		IHDEHost FHost;
@@ -80,6 +83,8 @@ namespace VVVV.Nodes
 				{
 					FServer.Port = FHost.IsBoygroupClient ? FPort[0] + 1 : FPort[0];
 				}
+				
+				FRemoteServer = new IPEndPoint(IPAddress.Parse(FHost.BoygroupServerIP), FPort[0]);
 			}
 			
 			//read stream time
@@ -133,6 +138,14 @@ namespace VVVV.Nodes
 		
 		protected void ClientEvaluate()
 		{
+						
+			//request sync data
+			if((FHost.RealTime - FLastUpdateTime) > 0.5)
+			{
+				FLastUpdateTime = FHost.RealTime;
+				FServer.Send(Encoding.ASCII.GetBytes("videosync"), FRemoteServer);
+			}
+			
 			lock(FLock)
 			{
 				var offset = FHost.RealTime - FReceivedTimeStamp;
@@ -152,6 +165,7 @@ namespace VVVV.Nodes
 					FAdjustTimeFilter.Value = 0;
 				}
 			}
+			
 		}
 		#endregion client code
 		
@@ -164,6 +178,12 @@ namespace VVVV.Nodes
 			}
 		}
 		#endregion server code
+		
+		public void Dispose()
+		{
+			FServer.Close();
+		}
+		
 	}
 	
 }

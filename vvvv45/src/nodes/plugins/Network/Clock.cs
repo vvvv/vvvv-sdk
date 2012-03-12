@@ -15,10 +15,6 @@ using VVVV.Core.Logging;
 namespace VVVV.Nodes
 {
 	
-	
-	
-	
-	
 	#region PluginInfo
 	[PluginInfo(Name = "Clock", 
 	Category = "Network", 
