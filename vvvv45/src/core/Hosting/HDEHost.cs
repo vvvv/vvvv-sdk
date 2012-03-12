@@ -198,8 +198,11 @@ namespace VVVV.Hosting
             FNodeBrowser.IsStandalone = false;
             FNodeBrowser.DragDrop(false);
             
+            this.IsBoygroupClient = FVVVVHost.IsBoygroupClient;
+            this.BoygroupServerIP = FVVVVHost.BoygroupServerIP;
+            
             //start time server of client
-            FNetTimeSync = FVVVVHost.IsBoygroupClient ? new UDPTimeClient(FVVVVHost.BoygroupServerIP, 3334) : new UDPTimeServer(3334);
+            FNetTimeSync = IsBoygroupClient ? new UDPTimeClient(BoygroupServerIP, 3334) : new UDPTimeServer(3334);
             FNetTimeSync.Start();
             
         }
@@ -528,18 +531,14 @@ namespace VVVV.Hosting
         
 		public bool IsBoygroupClient 
 		{
-			get 
-			{
-				return FVVVVHost.IsBoygroupClient;
-			}
+			get; 
+			private set;
 		}
     	
 		public string BoygroupServerIP 
 		{
-			get 
-			{
-				return FVVVVHost.BoygroupServerIP;
-			}
+			get;
+			private set;
 		}
         
         #endregion 
