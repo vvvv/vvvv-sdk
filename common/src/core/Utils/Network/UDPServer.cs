@@ -100,11 +100,14 @@ namespace VVVV.Utils.Network
 				if (MessageReceived != null)
 					MessageReceived(this, new UDPReceivedEventArgs(FRemoteSender, FReceivedBytes));
 				
+				FReceiveSuccess = true;
+				
 			}
 			catch
 			{
 				//restart
 				Start();
+				FReceiveSuccess = false;
 			}
 
 		}
