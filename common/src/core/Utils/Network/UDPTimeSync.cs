@@ -1,22 +1,29 @@
-﻿#region usings
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.Timers;
 
 using VVVV.Utils.Animation;
 
-#endregion usings
+
 
 namespace VVVV.Utils.Network
 {
+	/// <summary>
+	/// Common interface for network time server and client
+	/// </summary>
 	public interface INetworkTimeSync
 	{
+		/// <summary>
+		/// Start serving or requesting time data
+		/// </summary>
 		void Start();
 		
+		/// <summary>
+		/// The elapsed seconds since the time server was started.
+		/// </summary>
 		double ElapsedSeconds
 		{
 			get;
@@ -24,16 +31,30 @@ namespace VVVV.Utils.Network
 	}
 	
 	#region timing server
-	public class UDPTimeServer : INetworkTimeSync
+	/// <summary>
+	/// UDP Time server
+	/// </summary>
+	public class UDPTimeServer : UDPServer, INetworkTimeSync
 	{
 		protected Stopwatch FStopWatch;
-		protected UdpClient FServer;
-		
-		protected IPEndPoint FSender;
+
+		/// <summary>
+		/// Create the UDP server
+		/// </summary>
+		/// <param name="port">The listening port</param>
+		public UDPTimeServer(int port)
+			: base(port)
+		{
+			//init clock
+			FStopWatch = new Stopwatch();
+		}
 		
 		#region clock
 	 	private double FOffset;
 
+	 	/// <summary>
+	 	/// The elapsed time in seconds.
+	 	/// </summary>
 		public double ElapsedSeconds
 		{
 			get
@@ -45,111 +66,53 @@ namespace VVVV.Utils.Network
 			}
 		}
 		
+		/// <summary>
+		/// Clock offset
+		/// </summary>
 		public double Offset
 		{
 			get {return FOffset;}
 			set {FOffset = value;}
 		}
 		
-		public void ResetTime(double offset)
+		/// <summary>
+		/// Reset time
+		/// </summary>
+		/// <param name="offset">Optionally set the time to given value</param>
+		public void ResetTime(double offset = 0)
 		{
 			FOffset = offset;
 			FStopWatch.Restart();
 		}
 		#endregion clock
 		
-		public UDPTimeServer(int port)
-		{
-			
-			//init clock
-			FStopWatch = new Stopwatch();
-			FStopWatch.Start();
-			
-			CreateServer(port);
-			
-			//create empty sender object
-			FSender = new IPEndPoint(IPAddress.Any, 0);
-		}
-		
-		//setup server
-		protected void CreateServer(int port)
-		{
-			if(FServer != null)
-			{
-				FServer.Close();
-			}
-			
-			//FLogger.Log(LogType.Message, "Creating new socket on port: " + port);
-			
-			//server socket
-			IPEndPoint ipep = new IPEndPoint(IPAddress.Any, port);
-			FServer = new UdpClient(ipep);
-		}
-		
-		//set port and restart server
-		public virtual int Port
-		{
-			set
-			{
-				CreateServer(value);
-				Start();
-			}
-		}
-		
 		//message callback
-		protected virtual void ReceiveCallback(IAsyncResult ar)
+		protected override void ReceiveCallback(IAsyncResult ar)
 		{
+			base.ReceiveCallback(ar);
 			
-			try
-			{
-				Byte[] receiveBytes = FServer.EndReceive(ar, ref FSender);
-				//string receiveString = Encoding.ASCII.GetString(receiveBytes);
-				//FLogger.Log(LogType.Message, "Received: {0} from {1}", receiveString, sender);
-				
-				FServer.Send(BitConverter.GetBytes(ElapsedSeconds), 8, FSender);
-				
-			} 
-			catch (Exception e)
-			{
-				//FLogger.Log(LogType.Message, "End Receive Aborted");
-			}
-			
-			
-			//restart
-			Start();
+			if(FReceiveSuccess)
+				FServer.Send(BitConverter.GetBytes(ElapsedSeconds), 8, FRemoteSender);
 		}
-		
-		//start callback loop
-		public virtual void Start()
-		{
-			try
-			{
-				FServer.BeginReceive(new AsyncCallback(ReceiveCallback), null);
-			}
-			catch (Exception e)
-			{
-				//FLogger.Log(LogType.Message, "Start Receive Aborted");
-			}
-		}
-		
-		public void Close()
-		{
-			FServer.Close();
-		}
-		
 	}
+	
 	#endregion timing server
 	
 	#region timing client
 	public class UDPTimeClient : UDPTimeServer
 	{
 		System.Timers.Timer FTimer;
-		IPEndPoint FRemoteServer;
+		IPEndPoint FRemoteTimeServer;
 		
 		double FSendTime;
 		IIRFilter FNetDelayFilter;
 		IIRFilter FTimeOffsetFilter;
 		
+		/// <summary>
+		/// Create UDP time client
+		/// </summary>
+		/// <param name="serverIP">Server IP</param>
+		/// <param name="port">Server port (internal listening port is set to server port+1)</param>
 		public UDPTimeClient(string serverIP, int port)
 			: base(port+1)
 		{
@@ -157,7 +120,7 @@ namespace VVVV.Utils.Network
 			FTimer.Elapsed += OnTimer;
 			FTimer.Start();
 			
-			FRemoteServer = new IPEndPoint(IPAddress.Parse(serverIP), port);
+			FRemoteTimeServer = new IPEndPoint(IPAddress.Parse(serverIP), port);
 			
 			FNetDelayFilter.Alpha = 0.9;
 			FNetDelayFilter.Thresh = 0.001;
@@ -171,25 +134,30 @@ namespace VVVV.Utils.Network
 			var data = Encoding.ASCII.GetBytes("time");
 			
 			FSendTime = FStopWatch.Elapsed.TotalSeconds;
-			FServer.Send(data, data.Length, FRemoteServer);
+			Send(data, FRemoteTimeServer);
 		}
 		
-		//internal upd client has server port + 1
+		/// <summary>
+		/// Set port of time server (internal listening port is set to server port+1)
+		/// </summary>
 		public override int Port
 		{
 			set
 			{
 				base.Port = value + 1;
-				FRemoteServer.Port = value;
+				FRemoteTimeServer.Port = value;
 			}
 		}
 		
+		/// <summary>
+		/// Set IP if time server
+		/// </summary>
 		public string IP
 		{
 			set
 			{
 				if (value == "localhost") value = "127.0.0.1";
-				FRemoteServer.Address = IPAddress.Parse(value);
+				FRemoteTimeServer.Address = IPAddress.Parse(value);
 			}
 		}
 		
@@ -200,26 +168,17 @@ namespace VVVV.Utils.Network
 			var netDelay = (receiveTime - FSendTime) * 0.5;
 			netDelay = FNetDelayFilter.Update(netDelay);
 			
-			try
+			base.ReceiveCallback(ar);
+			
+			if(FReceiveSuccess)
 			{
-				Byte[] receiveBytes = FServer.EndReceive(ar, ref FSender);
-				double serverTime = BitConverter.ToDouble(receiveBytes, 0);
+				double serverTime = BitConverter.ToDouble(FReceivedBytes, 0);
 				
 				//estimate offset
 				var offset = serverTime - (receiveTime - netDelay);
 				
 				Offset = FTimeOffsetFilter.Update(offset);
-				
-				//FLogger.Log(LogType.Message, "Offset {0} from {1} with network delay of {2}", offset, sender, netDelay);
-				
-			} 
-			catch (Exception e)
-			{
-				//FLogger.Log(LogType.Message, "End Receive Aborted");
 			}
-			
-			//restart
-			Start();
 		}
 		
 	}
