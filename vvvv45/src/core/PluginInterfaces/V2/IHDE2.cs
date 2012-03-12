@@ -106,7 +106,7 @@ namespace VVVV.PluginInterfaces.V2
 	    /// <summary>
 	    /// Returns an INode2 given a slash-separated string of node IDs that uniquely identifies that node. 
 	    /// </summary>
-	    /// <param name="NodePath">A slash-separated string of node IDs.</param>
+	    /// <param name="nodePath">A slash-separated string of node IDs.</param>
 	    /// <returns></returns>
 	    INode2 GetNodeFromPath(string nodePath);
 	    
