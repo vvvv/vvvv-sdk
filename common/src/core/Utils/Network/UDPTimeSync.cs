@@ -26,6 +26,12 @@ namespace VVVV.Utils.Network
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// If on server, this sets the time to a given value
+		/// </summary>
+		/// <param name="time"></param>
+		void SetTime(double time = 0);
 	}
 	
 	#region timing server
@@ -45,6 +51,7 @@ namespace VVVV.Utils.Network
 		{
 			//init clock
 			FStopWatch = new Stopwatch();
+			FStopWatch.Start();
 		}
 		
 		#region clock
@@ -76,10 +83,10 @@ namespace VVVV.Utils.Network
 		/// <summary>
 		/// Reset time
 		/// </summary>
-		/// <param name="offset">Optionally set the time to given value</param>
-		public void ResetTime(double offset = 0)
+		/// <param name="time">Optionally set the time to given value</param>
+		public virtual void SetTime(double time = 0)
 		{
-			FOffset = offset;
+			FOffset = time;
 			FStopWatch.Restart();
 		}
 		#endregion clock
@@ -121,7 +128,7 @@ namespace VVVV.Utils.Network
 			FRemoteTimeServer = new IPEndPoint(IPAddress.Parse(serverIP), port);
 			
 			FNetDelayFilter.Alpha = 0.9;
-			FNetDelayFilter.Thresh = 0.001;
+			FNetDelayFilter.Thresh = 0.01;
 			
 			FTimeOffsetFilter.Alpha = 0.9;
 			FTimeOffsetFilter.Thresh = 0.1;
@@ -177,6 +184,11 @@ namespace VVVV.Utils.Network
 				
 				Offset = FTimeOffsetFilter.Update(offset);
 			}
+		}
+		
+		public override void SetTime(double time = 0)
+		{
+			//client can't change the time offset
 		}
 		
 	}

@@ -441,6 +441,11 @@ namespace VVVV.Hosting
         	}
         }
         
+        public void SetRealTime(double time = 0)
+		{
+        	FNetTimeSync.SetTime(time);
+		}
+        
         public void Open(string file, bool inActivePatch, IWindow window)
         {
             FVVVVHost.Open(file, inActivePatch, window);

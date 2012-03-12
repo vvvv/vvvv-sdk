@@ -174,6 +174,12 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// Initialize the internal realtime clock to a specific value
+		/// </summary>
+		/// <param name="time">New time value</param>
+		void SetRealTime(double time = 0);
 	    
 		/// <summary>
 		/// Opens the given file.
