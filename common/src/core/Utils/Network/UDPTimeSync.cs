@@ -7,8 +7,6 @@ using System.Timers;
 
 using VVVV.Utils.Animation;
 
-
-
 namespace VVVV.Utils.Network
 {
 	/// <summary>
@@ -92,7 +90,7 @@ namespace VVVV.Utils.Network
 			base.ReceiveCallback(ar);
 			
 			if(FReceiveSuccess)
-				FServer.Send(BitConverter.GetBytes(ElapsedSeconds), 8, FRemoteSender);
+				FInternalServer.Send(BitConverter.GetBytes(ElapsedSeconds), 8, FRemoteSender);
 		}
 	}
 	

@@ -31,7 +31,8 @@ namespace VVVV.Utils.Network
 	/// </summary>
 	public class UDPServer
 	{
-		protected UdpClient FServer;
+		protected UdpClient FInternalServer;
+		protected IPEndPoint FLocalIPEndPoint;
 		protected IPEndPoint FRemoteSender;
 		protected bool FReceiveSuccess;
 		protected byte[] FReceivedBytes;
@@ -60,14 +61,17 @@ namespace VVVV.Utils.Network
 		//setup server
 		protected void CreateServer(int port)
 		{
-			if(FServer != null)
+			if(FInternalServer != null)
 			{
-				FServer.Close();
+				FInternalServer.Close();
 			}
 			
 			//server socket
-			IPEndPoint ipep = new IPEndPoint(IPAddress.Any, port);
-			FServer = new UdpClient(ipep);
+			FLocalIPEndPoint = new IPEndPoint(IPAddress.Any, port);
+			FInternalServer = new UdpClient(FLocalIPEndPoint);
+			
+			//avoid WSAECONNRESET error when sending to a closed/invalid end point, SIO_UDP_CONNRESET
+			FInternalServer.Client.IOControl(-1744830452, new byte[]{0, 0, 0, 0}, new byte[]{0, 0, 0, 0});
 		}
 		
 		/// <summary>
@@ -87,30 +91,45 @@ namespace VVVV.Utils.Network
 		{
 			try
 			{
-				FReceivedBytes = FServer.EndReceive(ar, ref FRemoteSender);
+				FReceivedBytes = FInternalServer.EndReceive(ar, ref FRemoteSender);
 				
+				//immediately restart listening
+				Start();
+				
+				//rise message received event
 				if (MessageReceived != null)
 					MessageReceived(this, new UDPReceivedEventArgs(FRemoteSender, FReceivedBytes));
 				
-				FReceiveSuccess = true;
 			}
 			catch
 			{
-				FReceiveSuccess = false;
+				//restart
+				Start();
 			}
-			
-			//restart
-			Start();
+
 		}
 		
 		/// <summary>
-		/// Starts the listening callback loop on the configurated port.
+		/// Starts the listening callback loop on the configurated port
 		/// </summary>
 		public virtual void Start()
 		{
 			try
 			{
-				FServer.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+				FInternalServer.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+			}
+			catch
+			{}
+		}
+		
+		/// <summary>
+		/// Stop the listening callback loop
+		/// </summary>
+		public virtual void Stop()
+		{
+			try
+			{
+				CreateServer(FLocalIPEndPoint.Port);
 			}
 			catch
 			{}
@@ -125,7 +144,7 @@ namespace VVVV.Utils.Network
 		{
 			try
 			{
-				FServer.Send(data, data.Length, receiver);
+				FInternalServer.Send(data, data.Length, receiver);
 			}
 			catch
 			{}
@@ -136,7 +155,7 @@ namespace VVVV.Utils.Network
 		/// </summary>
 		public void Close()
 		{
-			FServer.Close();
+			FInternalServer.Close();
 		}
 	}
 }
