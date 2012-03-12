@@ -78,6 +78,7 @@ namespace VVVV.Nodes
 				{
 					FServer = FHost.IsBoygroupClient ? new UDPServer(FPort[0] + 1) : new UDPServer(FPort[0]);
 					FServer.MessageReceived += FServer_MessageReceived;
+					FServer.Start();
 				}
 				else
 				{
