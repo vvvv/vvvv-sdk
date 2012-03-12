@@ -1,5 +1,6 @@
 ﻿#region usings
 using System;
+using System.Timers;
 using System.Net;
 using System.Text;
 using System.ComponentModel.Composition;
@@ -51,7 +52,8 @@ namespace VVVV.Nodes
 		double FLastUpdateTime;
 		IIRFilter FAdjustTimeFilter;
 		UDPServer FServer;
-		IPEndPoint FRemoteServer; 
+		IPEndPoint FRemoteServer;
+		Timer FTimer;
 		
 		[Import]
 		IHDEHost FHost;
@@ -65,6 +67,16 @@ namespace VVVV.Nodes
 			FAdjustTimeFilter.Value = 0;
 			FAdjustTimeFilter.Thresh = 500;
 			FAdjustTimeFilter.Alpha = 0.9;
+			
+			FTimer = new Timer(1600);
+			FTimer.Elapsed += FTimer_Elapsed;
+			FTimer.Start();
+		}
+
+		void FTimer_Elapsed(object sender, ElapsedEventArgs e)
+		{
+			//request sync data
+			FServer.Send(Encoding.ASCII.GetBytes("videosync"), FRemoteServer);
 		}
 			
 		
@@ -85,7 +97,8 @@ namespace VVVV.Nodes
 					FServer.Port = FHost.IsBoygroupClient ? FPort[0] + 1 : FPort[0];
 				}
 				
-				FRemoteServer = new IPEndPoint(IPAddress.Parse(FHost.BoygroupServerIP), FPort[0]);
+				if(FHost.IsBoygroupClient)
+					FRemoteServer = new IPEndPoint(IPAddress.Parse(FHost.BoygroupServerIP), FPort[0]);
 			}
 			
 			//read stream time
@@ -132,21 +145,11 @@ namespace VVVV.Nodes
 			{
 				FReceivedStreamTime = Double.Parse(s[0]);
 				FReceivedTimeStamp = Double.Parse(s[1]);
-				
-				FLogger.Log(LogType.Debug, "Received stream time = {0} and time stamp = {1}", FReceivedStreamTime, FReceivedTimeStamp);
 			}
 		}
 		
 		protected void ClientEvaluate()
 		{
-						
-			//request sync data
-			if((FHost.RealTime - FLastUpdateTime) > 0.5)
-			{
-				FLastUpdateTime = FHost.RealTime;
-				FServer.Send(Encoding.ASCII.GetBytes("videosync"), FRemoteServer);
-			}
-			
 			lock(FLock)
 			{
 				var offset = FHost.RealTime - FReceivedTimeStamp;
@@ -173,15 +176,14 @@ namespace VVVV.Nodes
 		#region server code
 		protected void ServerEvaluate()
 		{
-			lock(FLock)
-			{
-				FStreamTime = FTime[0];
-			}
+			
 		}
 		#endregion server code
 		
 		public void Dispose()
 		{
+			FServer.MessageReceived -= FServer_MessageReceived;
+			FTimer.Elapsed -= FTimer_Elapsed;
 			FServer.Close();
 		}
 		
