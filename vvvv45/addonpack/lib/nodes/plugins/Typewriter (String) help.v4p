@@ -125,9 +125,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="69" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="5415" top="3330" width="0" height="0">
+   <BOUNDS type="Node" left="5280" top="3330" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="5415" top="3330" width="465" height="240">
+   <BOUNDS type="Box" left="5280" top="3330" width="465" height="240">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="15">
    </PIN>
@@ -155,9 +155,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="73" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1860" top="4230" width="0" height="0">
+   <BOUNDS type="Node" left="1770" top="4215" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1860" top="4230" width="2805" height="1065">
+   <BOUNDS type="Box" left="1770" top="4215" width="2760" height="720">
    </BOUNDS>
    <PIN pinname="Default" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -183,7 +183,7 @@
    <NODE componentmode="InAWindow" id="21" nodename="Typewriter (String)" systemname="Typewriter (String)" filename="%VVVV%\addonpack\lib\nodes\plugins\TypeWriter\TypeWriter.csproj">
    <BOUNDS height="270" left="1635" top="3825" type="Node" width="3705">
    </BOUNDS>
-   <PIN pinname="Text" visible="1">
+   <PIN pinname="Text" visible="1" slicecount="1" encoded="0" values="@">
    </PIN>
    <PIN pinname="KeyCode" visible="1">
    </PIN>
@@ -234,6 +234,8 @@
    <PIN pinname="Output with Cursor" visible="1">
    </PIN>
    <PIN pinname="Set Cursor Position" visible="1">
+   </PIN>
+   <PIN pinname="Insert Text" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="21" dstpinname="Cursor" srcnodeid="61" srcpinname="Output">
@@ -317,9 +319,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="98" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5940" top="3330" width="1665" height="270">
+   <BOUNDS type="Node" left="5805" top="3330" width="1665" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5940" top="3330" width="1740" height="270">
+   <BOUNDS type="Box" left="5805" top="3330" width="1740" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; set cursor position|">
    </PIN>
@@ -468,4 +470,52 @@
    </NODE>
    <LINK srcnodeid="106" srcpinname="Output Enum" dstnodeid="71" dstpinname="Text Rendering Mode">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="108" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1815" top="2700" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1815" top="2700" width="750" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="@" encoded="0">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="108" srcpinname="Output String" dstnodeid="21" dstpinname="Text">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="109" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2100" top="3000" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2100" top="3000" width="465" height="465">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="109" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Insert Text">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="110" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2655" top="2745" width="3975" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2655" top="2745" width="1635" height="705">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; text to insert independently of keyboard interaction|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

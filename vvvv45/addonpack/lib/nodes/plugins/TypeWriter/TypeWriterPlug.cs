@@ -88,13 +88,19 @@ namespace TypeWriter
 		#region field declaration
 		//input pin declaration
 		[Input("KeyCode", DefaultValue = 0)]
-		IDiffSpread<uint> FInputKey;
+		IDiffSpread<uint> FInputKeyCode;
+		
+		[Input("Text", DefaultString = "", IsSingle = true)]
+		ISpread<string> FInputText;
+		
+		[Input("Insert Text", IsBang = true, IsSingle = true)]
+		ISpread<bool> FInsertText;
 		
 		[Input("Initial Text", IsSingle = true)]
 		ISpread<string> FInitialText;
 		
 		[Input("Initialize", IsSingle = true, IsBang = true)]
-		IDiffSpread<bool> FInitialize;
+		ISpread<bool> FInitialize;
 		
 		[Input("Set Cursor Position", IsSingle = true, MinValue = 0, MaxValue = int.MaxValue)]
 		IDiffSpread<int> FSetCursorPosition;
@@ -380,9 +386,12 @@ namespace TypeWriter
 				CursorToTextEnd();
 			}
 			
-			if (FInputKey[0] == 0 
-			|| (FInputKey.SliceCount == 1 && FInputKey[0] == (uint)Keys.ControlKey)
-			|| (FInputKey.SliceCount == 1 && FInputKey[0] == (uint)Keys.ShiftKey))
+			if (FInsertText[0])
+				AddNewChar(FInputText[0]);
+			
+			if (FInputKeyCode[0] == 0 
+			|| (FInputKeyCode.SliceCount == 1 && FInputKeyCode[0] == (uint)Keys.ControlKey)
+			|| (FInputKeyCode.SliceCount == 1 && FInputKeyCode[0] == (uint)Keys.ShiftKey))
 			{
 				FBufferedKeys.Clear();
 				FBufferedCommands.Clear();
@@ -391,7 +400,7 @@ namespace TypeWriter
 			{
 				//remove keys from the buffer that are not currently pressed
 				var keysToDelete = new List<string>();
-				var inputKeys = FInputKey.Select(x => VKCodeToUnicode(x)).ToList();
+				var inputKeys = FInputKeyCode.Select(x => VKCodeToUnicode(x)).ToList();
 				foreach (var key in FBufferedKeys)
 					if (!inputKeys.Contains(key.Key)) 
 						keysToDelete.Add(key.Key);
@@ -400,24 +409,29 @@ namespace TypeWriter
 					FBufferedKeys.Remove(key);
 				
 				var now = FHDEHost.GetCurrentTime();
-				//make current keyboardstate into a string
-				//access FInputKey[-1] since earlier slices would be ctrl or shift
-				var newChar = VKCodeToUnicode(FInputKey[-1]);
 				
+				//first find out if the current keystate is a command
+				//ie. ctrl key, cursorkeys, tab...
+				//for this try to convert the input into a string by 
+				//accessing FInputKey[-1] since earlier slices would be ctrl or shift
+				var newChar = VKCodeToUnicode(FInputKeyCode[-1]);
+
+				var lastKeyCode = FInputKeyCode[-1];
 				//if this is a command
-				if (FInputKey[-1] < 48 || string.IsNullOrEmpty(newChar.Trim()))
+				if (lastKeyCode < 48 || string.IsNullOrEmpty(newChar.Trim()))
 				{
 					//add this to buffered commands
-					if (FInputKey[-1] != 17)
-						if (!FBufferedCommands.ContainsKey(FInputKey[-1]))
-							FBufferedCommands.Add(FInputKey[-1], now);
+					if (lastKeyCode != 17)
+						if (!FBufferedCommands.ContainsKey(lastKeyCode))
+							FBufferedCommands.Add(lastKeyCode, now);
 
 					FBufferedKeys.Clear();
 				}
-				else //this is a string
+				else //interpret all slices as strings
 				{
-					if (!FBufferedKeys.ContainsKey(newChar))
-						FBufferedKeys.Add(newChar, now);
+					foreach(var character in inputKeys)
+						if (!FBufferedKeys.ContainsKey(character))
+							FBufferedKeys.Add(character, now);
 					
 					FBufferedCommands.Clear();
 				}
