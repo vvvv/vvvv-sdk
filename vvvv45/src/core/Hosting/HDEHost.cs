@@ -199,7 +199,11 @@ namespace VVVV.Hosting
             FNodeBrowser.DragDrop(false);
             
             this.IsBoygroupClient = FVVVVHost.IsBoygroupClient;
-            this.BoygroupServerIP = FVVVVHost.BoygroupServerIP;
+            if(IsBoygroupClient)
+            {
+            	this.BoygroupServerIP = FVVVVHost.BoygroupServerIP;
+            }
+           
             
             //start time server of client
             FNetTimeSync = IsBoygroupClient ? new UDPTimeClient(BoygroupServerIP, 3334) : new UDPTimeServer(3334);

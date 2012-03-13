@@ -33,8 +33,14 @@ namespace VVVV.Nodes
 		[Input("Time", IsSingle = true)]
 		ISpread<double> FTime;
 		
-		[Input("Clock", IsSingle = true)]
-		ISpread<double> FClock;
+		[Input("Stream Length", IsSingle = true)]
+		ISpread<double> FLength;
+		
+		[Input("Is Client", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
+		ISpread<bool> FIsClient;
+		
+		[Input("Server IP", DefaultString = "127.0.0.1", IsSingle = true, StringType = StringType.IP, Visibility = PinVisibility.OnlyInspector)]
+		ISpread<string> FServerIP;
 
 		[Input("Port", DefaultValue = 3336, IsSingle = true)]
 		IDiffSpread<int> FPort;
@@ -46,7 +52,7 @@ namespace VVVV.Nodes
 		ISpread<double> FSeekTimeOut;
 		
 		[Output("Adjust System Time")]
-		ISpread<int> FAdjustTimeOut;
+		ISpread<double> FAdjustTimeOut;
 		
 		[Output("Offset")]
 		ISpread<double> FOffsetOut;
@@ -59,7 +65,7 @@ namespace VVVV.Nodes
 		double FTimeStamp;
 		double FReceivedStreamTime;
 		double FReceivedTimeStamp;
-		double FLastUpdateTime;
+		int FFrameCounter;
 		IIRFilter FAdjustTimeFilter;
 		IIRFilter FStreamDiffFilter;
 		UDPServer FServer;
@@ -81,9 +87,9 @@ namespace VVVV.Nodes
 			
 			FStreamDiffFilter.Value = 0;
 			FStreamDiffFilter.Thresh = 1;
-			FStreamDiffFilter.Alpha = 0.9;
+			FStreamDiffFilter.Alpha = 0.97;
 			
-			FTimer = new Timer(500);
+			FTimer = new Timer(100);
 			FTimer.Elapsed += FTimer_Elapsed;
 			FTimer.Start();
 		}
@@ -103,28 +109,28 @@ namespace VVVV.Nodes
 			{
 				if(FServer == null)
 				{
-					FServer = FHost.IsBoygroupClient ? new UDPServer(FPort[0] + 1) : new UDPServer(FPort[0]);
+					FServer = (FIsClient[0] || FHost.IsBoygroupClient) ? new UDPServer(FPort[0] + 1) : new UDPServer(FPort[0]);
 					FServer.MessageReceived += FServer_MessageReceived;
 					FServer.Start();
 				}
 				else
 				{
-					FServer.Port = FHost.IsBoygroupClient ? FPort[0] + 1 : FPort[0];
+					FServer.Port = (FIsClient[0] || FHost.IsBoygroupClient) ? FPort[0] + 1 : FPort[0];
 				}
 				
-				if(FHost.IsBoygroupClient)
-					FRemoteServer = new IPEndPoint(IPAddress.Parse(FHost.BoygroupServerIP), FPort[0]);
+				if(FIsClient[0] || FHost.IsBoygroupClient)
+					FRemoteServer = new IPEndPoint(IPAddress.Parse( FIsClient[0] ? FServerIP[0] : FHost.BoygroupServerIP), FPort[0]);
 			}
 			
 			//read stream time
 			lock(FLock)
 			{
 				FStreamTime = FTime[0];
-				FTimeStamp = FClock[0];
+				FTimeStamp = FHost.RealTime;
 			}
 			
 			//do the evaluation for client or server
-			if(FHost.IsBoygroupClient)
+			if(FIsClient[0] || FHost.IsBoygroupClient)
 			{
 				ClientEvaluate();
 			}
@@ -137,7 +143,7 @@ namespace VVVV.Nodes
 		//respond to udp message
 		void FServer_MessageReceived(object sender, UDPReceivedEventArgs e)
 		{
-			if(FHost.IsBoygroupClient)
+			if(FIsClient[0] || FHost.IsBoygroupClient)
 			{
 				ReceiveServerAnswer(e.Data);
 			}
@@ -152,7 +158,6 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		#region client code
 		void ReceiveServerAnswer(byte[] data)
 		{
 			var s = Encoding.ASCII.GetString(data).Split(';');
@@ -166,40 +171,50 @@ namespace VVVV.Nodes
 		
 		protected void ClientEvaluate()
 		{
+			var fCount = 0;
 			lock(FLock)
 			{
-				var offset = FTimeStamp - FReceivedTimeStamp;
-				var streamDiff = (FReceivedStreamTime - offset) - FStreamTime;
-				var doSeek = Math.Abs(streamDiff) > 2;
 				
-				FStreamDiffFilter.Update(streamDiff);
-				
-				FDoSeekOut[0] = doSeek;
-				FSeekTimeOut[0] = FReceivedStreamTime + offset + 0.05;
-				
-				if(!doSeek)
+				if(FFrameCounter == fCount && FStreamTime > 1 && FStreamTime < FLength[0] - 1)
 				{
-					FAdjustTimeOut[0] = Math.Sign(FStreamDiffFilter.Value) * 1;
+					var offset = FTimeStamp - FReceivedTimeStamp;
+					var streamDiff = FReceivedStreamTime - FStreamTime + offset;
+					var doSeek = Math.Abs(streamDiff) > 1;
+					
+					FStreamDiffFilter.Update(streamDiff);
+					
+					FDoSeekOut[0] = doSeek;
+					FSeekTimeOut[0] = FReceivedStreamTime + offset + 0.05;
+					
+					if(!doSeek)
+					{
+						
+						FAdjustTimeOut[0] = FStreamDiffFilter.Value * 1000;
+					}
+					else
+					{
+						FAdjustTimeOut[0] = 0;
+					}
+					FStreamOffsetOut[0] = streamDiff;
 				}
 				else
 				{
 					FAdjustTimeOut[0] = 0;
-					FAdjustTimeFilter.Value = 0;
+					FDoSeekOut[0] = false;
 				}
 				
-				FOffsetOut[0] = offset;
-				FStreamOffsetOut[0] = streamDiff;
+				FOffsetOut[0] = FStreamDiffFilter.Value;
+				
+				FFrameCounter++;
+				FFrameCounter %= fCount + 1;
 			}
 			
 		}
-		#endregion client code
 		
-		#region server code
 		protected void ServerEvaluate()
 		{
 			
 		}
-		#endregion server code
 		
 		public void Dispose()
 		{
