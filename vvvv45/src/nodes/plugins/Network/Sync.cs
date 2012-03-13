@@ -87,9 +87,9 @@ namespace VVVV.Nodes
 			
 			FStreamDiffFilter.Value = 0;
 			FStreamDiffFilter.Thresh = 1;
-			FStreamDiffFilter.Alpha = 0.99;
+			FStreamDiffFilter.Alpha = 0.97;
 			
-			FTimer = new Timer(50);
+			FTimer = new Timer(100);
 			FTimer.Elapsed += FTimer_Elapsed;
 			FTimer.Start();
 		}
@@ -189,14 +189,13 @@ namespace VVVV.Nodes
 					if(!doSeek)
 					{
 						
-						FAdjustTimeOut[0] = FStreamDiffFilter.Value * 100 + Math.Sign(FStreamDiffFilter.Value) * 0.01;
+						FAdjustTimeOut[0] = FStreamDiffFilter.Value * 1000;
 					}
 					else
 					{
 						FAdjustTimeOut[0] = 0;
 					}
 					FStreamOffsetOut[0] = streamDiff;
-					FOffsetOut[0] = offset;
 				}
 				else
 				{
@@ -204,7 +203,7 @@ namespace VVVV.Nodes
 					FDoSeekOut[0] = false;
 				}
 				
-				
+				FOffsetOut[0] = FStreamDiffFilter.Value;
 				
 				FFrameCounter++;
 				FFrameCounter %= fCount + 1;
