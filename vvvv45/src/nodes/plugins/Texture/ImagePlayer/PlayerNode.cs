@@ -45,13 +45,13 @@ namespace VVVV.Nodes.ImagePlayer
         [Output("Texture")]
         public ISpread<ISpread<Frame>> FTextureOut;
         
-        [Output("Duration IO", Visibility = PinVisibility.OnlyInspector)]
+        [Output("Duration IO", Visibility = PinVisibility.Hidden)]
         public ISpread<double> FDurationIOOut;
         
-        [Output("Duration Texture", Visibility = PinVisibility.OnlyInspector)]
+        [Output("Duration Texture", Visibility = PinVisibility.Hidden)]
         public ISpread<double> FDurationTextureOut;
         
-        [Output("Unused Frames Count", Visibility = PinVisibility.OnlyInspector)]
+        [Output("Unused Frames Count", Visibility = PinVisibility.Hidden)]
         public ISpread<int> FUnusedFramesOut;
         
         [Output("Loaded")]
