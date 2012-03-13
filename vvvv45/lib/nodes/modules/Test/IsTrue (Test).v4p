@@ -13,6 +13,8 @@
    </PIN>
    <PIN pinname="Enabled">
    </PIN>
+   <PIN pinname="Success" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="2760" top="1170" width="0" height="0">
@@ -69,25 +71,27 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Failed">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Success">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Failed" dstnodeid="5" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="6" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4965" top="4020" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="4965" top="4020" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Default" slicecount="1" values="text" encoded="0">
+   <PIN pinname="Default" slicecount="1" encoded="0" values="text">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Message" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Message">
    </PIN>
    </NODE>
    <LINK srcnodeid="1" srcpinname="Message" dstnodeid="6" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Success" dstnodeid="5" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

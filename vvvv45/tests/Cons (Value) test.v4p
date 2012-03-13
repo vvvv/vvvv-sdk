@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
    <PATCH nodename="D:\vvvv_dev\vvvv\public\vvvv45\tests\Cons (Value) test.v4p" systemname="Cons (Value))" filename="D:\vvvv_dev\vvvv\public\vvvv45\tests\Cons (Value) test.v4p">
    <BOUNDS type="Window" left="9900" top="6000" width="9000" height="6645">
    </BOUNDS>
@@ -85,6 +85,10 @@
    </BOUNDS>
    <PIN pinname="Enabled" visible="1">
    </PIN>
+   <BOUNDS type="Window" left="14625" top="2295" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Success" visible="1">
+   </PIN>
    </NODE>
    <NODE systemname="AreEqual (Test Value)" filename="%VVVV%\lib\nodes\modules\Test\AreEqual (Test Value).v4p" nodename="AreEqual (Test Value)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="2580" top="4755" width="100" height="100">
@@ -96,6 +100,8 @@
    <BOUNDS type="Box" left="2580" top="4755">
    </BOUNDS>
    <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Success" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="5" dstpinname="Actual">
@@ -115,9 +121,9 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Failed" dstnodeid="7" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="2580" top="5310" width="0" height="0">
    </BOUNDS>
@@ -131,9 +137,9 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Failed" dstnodeid="8" dstpinname="Y Input Value">
-   </LINK>
    <LINK srcnodeid="0" srcpinname="Output Bin Size" dstnodeid="6" dstpinname="Actual">
    </LINK>
    <NODE systemname="NIL (Spreads)" filename="%VVVV%\lib\nodes\modules\Spreads\NIL (Spreads).v4p" nodename="NIL (Spreads)" componentmode="Hidden" id="10">
@@ -181,5 +187,9 @@
    </LINKPOINT>
    <LINKPOINT x="1625" y="4535">
    </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Success" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Success" dstnodeid="8" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
