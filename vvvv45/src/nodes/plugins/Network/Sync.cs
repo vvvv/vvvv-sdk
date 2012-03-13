@@ -32,6 +32,9 @@ namespace VVVV.Nodes
 		#region fields & pins
 		[Input("Time", IsSingle = true)]
 		ISpread<double> FTime;
+		
+		[Input("Clock", IsSingle = true)]
+		ISpread<double> FClock;
 
 		[Input("Port", DefaultValue = 3336, IsSingle = true)]
 		IDiffSpread<int> FPort;
@@ -45,12 +48,20 @@ namespace VVVV.Nodes
 		[Output("Adjust System Time")]
 		ISpread<int> FAdjustTimeOut;
 		
+		[Output("Offset")]
+		ISpread<double> FOffsetOut;
+		
+		[Output("Stream Offset")]
+		ISpread<double> FStreamOffsetOut;
+		
 		object FLock = new object();
 		double FStreamTime;
+		double FTimeStamp;
 		double FReceivedStreamTime;
 		double FReceivedTimeStamp;
 		double FLastUpdateTime;
 		IIRFilter FAdjustTimeFilter;
+		IIRFilter FStreamDiffFilter;
 		UDPServer FServer;
 		IPEndPoint FRemoteServer;
 		Timer FTimer;
@@ -68,7 +79,11 @@ namespace VVVV.Nodes
 			FAdjustTimeFilter.Thresh = 500;
 			FAdjustTimeFilter.Alpha = 0.9;
 			
-			FTimer = new Timer(1600);
+			FStreamDiffFilter.Value = 0;
+			FStreamDiffFilter.Thresh = 1;
+			FStreamDiffFilter.Alpha = 0.9;
+			
+			FTimer = new Timer(500);
 			FTimer.Elapsed += FTimer_Elapsed;
 			FTimer.Start();
 		}
@@ -105,6 +120,7 @@ namespace VVVV.Nodes
 			lock(FLock)
 			{
 				FStreamTime = FTime[0];
+				FTimeStamp = FClock[0];
 			}
 			
 			//do the evaluation for client or server
@@ -129,7 +145,7 @@ namespace VVVV.Nodes
 			{
 				lock(FLock)
 				{
-					FServer.Send(Encoding.ASCII.GetBytes(FStreamTime.ToString() + ";" + FHost.RealTime.ToString()), e.RemoteSender);
+					FServer.Send(Encoding.ASCII.GetBytes(FStreamTime.ToString() + ";" + FTimeStamp.ToString()), e.RemoteSender);
 					
 					FLogger.Log(LogType.Debug, FStreamTime.ToString() + ";" + FHost.RealTime.ToString());
 				}
@@ -152,22 +168,27 @@ namespace VVVV.Nodes
 		{
 			lock(FLock)
 			{
-				var offset = FHost.RealTime - FReceivedTimeStamp;
-				var streamDiff = (FReceivedStreamTime + offset) - FStreamTime;
+				var offset = FTimeStamp - FReceivedTimeStamp;
+				var streamDiff = (FReceivedStreamTime - offset) - FStreamTime;
 				var doSeek = Math.Abs(streamDiff) > 2;
+				
+				FStreamDiffFilter.Update(streamDiff);
 				
 				FDoSeekOut[0] = doSeek;
 				FSeekTimeOut[0] = FReceivedStreamTime + offset + 0.05;
 				
 				if(!doSeek)
 				{
-					FAdjustTimeOut[0] = (int)FAdjustTimeFilter.Update(streamDiff) * 1000;
+					FAdjustTimeOut[0] = Math.Sign(FStreamDiffFilter.Value) * 1;
 				}
 				else
 				{
 					FAdjustTimeOut[0] = 0;
 					FAdjustTimeFilter.Value = 0;
 				}
+				
+				FOffsetOut[0] = offset;
+				FStreamOffsetOut[0] = streamDiff;
 			}
 			
 		}
