@@ -35,6 +35,9 @@ namespace VVVV.Nodes
 		[Input("Stream Length", IsSingle = true)]
 		ISpread<double> FLength;
 		
+		[Input("Fine Offset", IsSingle = true)]
+		ISpread<int> FFineOffset;
+		
 		[Input("Is Client", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
 		ISpread<bool> FIsClient;
 		
@@ -173,7 +176,7 @@ namespace VVVV.Nodes
 				if(FStreamTime > 0.5 && FStreamTime < FLength[0] - 0.5)
 				{
 					var offset = FTimeStamp - FReceivedTimeStamp;
-					var streamDiff = FReceivedStreamTime - FStreamTime + offset - 0.07;
+					var streamDiff = FReceivedStreamTime - FStreamTime + offset + FFineOffset[0] * 0.001;
 					var doSeek = Math.Abs(streamDiff) > 1;
 					
 					FStreamDiffFilter.Update(streamDiff);
