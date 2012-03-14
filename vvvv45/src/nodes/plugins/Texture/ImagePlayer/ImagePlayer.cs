@@ -48,7 +48,6 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly BufferBlock<FrameInfo> FFrameInfoBuffer;
         private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>> FFilePreloader;
         private readonly TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame> FFramePreloader;
-        private readonly BufferBlock<Frame> FFrameBuffer;
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
         private readonly Spread<Frame> FVisibleFrames = new Spread<Frame>(0);
         
@@ -80,7 +79,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 MaxDegreeOfParallelism = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : threadsIO,
                 TaskScheduler = ioTaskScheduler,
-                BoundedCapacity = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : threadsIO
+                BoundedCapacity = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : 2 * threadsIO
             };
             
             FFilePreloader = new TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>>(
@@ -90,16 +89,13 @@ namespace VVVV.Nodes.ImagePlayer
             
             var framePreloaderOptions = new ExecutionDataflowBlockOptions()
             {
-                MaxDegreeOfParallelism = threadsTexture <= 0 ? DataflowBlockOptions.Unbounded : threadsTexture,
-                BoundedCapacity = threadsTexture <= 0 ? DataflowBlockOptions.Unbounded : threadsTexture
+                MaxDegreeOfParallelism = threadsTexture <= 0 ? DataflowBlockOptions.Unbounded : threadsTexture
             };
             
             FFramePreloader = new TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame>(
                 (Func<Tuple<FrameInfo, MemoryStream>, Frame>) PreloadFrame,
                 framePreloaderOptions
                );
-            
-            FFrameBuffer = new BufferBlock<Frame>();
             
             var linkOptions = new DataflowLinkOptions()
             {
@@ -108,7 +104,6 @@ namespace VVVV.Nodes.ImagePlayer
             
             FFrameInfoBuffer.LinkTo(FFilePreloader, linkOptions);
             FFilePreloader.LinkTo(FFramePreloader, linkOptions);
-            FFramePreloader.LinkTo(FFrameBuffer, linkOptions);
         }
 
         public void Dispose()
@@ -135,7 +130,7 @@ namespace VVVV.Nodes.ImagePlayer
             try
             {
                 // Wait for last elements in pipeline till completed
-                FFrameBuffer.Completion.Wait();
+                FFramePreloader.Completion.Wait();
             }
             catch (AggregateException)
             {
@@ -241,7 +236,7 @@ namespace VVVV.Nodes.ImagePlayer
         private Frame Dequeue()
         {
             FScheduledFrameInfos.RemoveFirst();
-            return FFrameBuffer.Receive();
+            return FFramePreloader.Receive();
         }
         
         private FrameInfo CreateFrameInfo(int frameNr, int bufferSize)
