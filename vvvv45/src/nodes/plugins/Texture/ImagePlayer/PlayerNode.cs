@@ -33,7 +33,7 @@ namespace VVVV.Nodes.ImagePlayer
         [Input("Preload Frames")]
         public ISpread<ISpread<int>> FPreloadFramesIn;
         
-        [Input("Reload")]
+        [Input("Reload", IsBang = true)]
         public ISpread<bool> FReloadIn;
         
         [Config("Threads IO", DefaultValue = 1.0, MinValue = -1.0)]
@@ -44,6 +44,9 @@ namespace VVVV.Nodes.ImagePlayer
         
         [Output("Texture")]
         public ISpread<ISpread<Frame>> FTextureOut;
+        
+        [Output("Frame Count")]
+        public ISpread<int> FFrameCountOut;
         
         [Output("Duration IO", Visibility = PinVisibility.Hidden)]
         public ISpread<double> FDurationIOOut;
@@ -91,6 +94,7 @@ namespace VVVV.Nodes.ImagePlayer
             
             FImagePlayers.SliceCount = spreadMax;
             FTextureOut.SliceCount = spreadMax;
+            FFrameCountOut.SliceCount = spreadMax;
             FDurationIOOut.SliceCount = spreadMax;
             FDurationTextureOut.SliceCount = spreadMax;
             FUnusedFramesOut.SliceCount = spreadMax;
@@ -123,6 +127,7 @@ namespace VVVV.Nodes.ImagePlayer
                     imagePlayer.Reload();
                 }
                 
+                int frameCount = 0;
                 double durationIO = 0.0;
                 double durationTexture = 0.0;
                 int unusedFrames = 0;
@@ -131,11 +136,13 @@ namespace VVVV.Nodes.ImagePlayer
                     FVisibleFramesIn[i],
                     FPreloadFramesIn[i],
                     FBufferSizeIn[i],
+                    out frameCount,
                     out durationIO,
                     out durationTexture,
                     out unusedFrames,
                     ref loadedFrames);
                 
+                FFrameCountOut[i] = frameCount;
                 FDurationIOOut[i] = durationIO;
                 FDurationTextureOut[i] = durationTexture;
                 FUnusedFramesOut[i] = unusedFrames;

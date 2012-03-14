@@ -259,11 +259,13 @@ namespace VVVV.Nodes.ImagePlayer
             ISpread<int> visibleFrameNrs,
             ISpread<int> preloadFrameNrs,
             int bufferSize,
+            out int frameCount,
             out double durationIO,
             out double durationTexture,
             out int unusedFrames,
             ref ISpread<bool> loadedFrames)
         {
+            frameCount = FFiles.Length;
             durationIO = 0.0;
             durationTexture = 0.0;
             FUnusedFrames = 0;
