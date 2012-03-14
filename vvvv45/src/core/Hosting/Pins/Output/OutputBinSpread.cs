@@ -100,14 +100,15 @@ namespace VVVV.Hosting.Pins.Output
 				
 				FSpreadPin.SliceCount = count;
 				
-				var outputBuffer = FSpreadPin.Buffer;
+				// Can't use this as changed flag of SpreadPin won't get touched.
+				//var outputBuffer = FSpreadPin.Buffer;
 				int offset = 0;
 				for(int i = 0; i < SliceCount; i++)
 				{
 					var spread = this[i];
 					
 					for(int j = 0; j < spread.SliceCount; j++)
-						outputBuffer[offset + j] = spread[j];
+						FSpreadPin[offset + j] = spread[j];
 					
 					offset += spread.SliceCount;
 				}
