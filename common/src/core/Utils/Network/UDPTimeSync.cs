@@ -52,6 +52,8 @@ namespace VVVV.Utils.Network
 			//init clock
 			FStopWatch = new Stopwatch();
 			FStopWatch.Start();
+			
+			Debug.WriteLine(Stopwatch.Frequency.ToString());
 		}
 		
 		#region clock
@@ -96,7 +98,7 @@ namespace VVVV.Utils.Network
 		{
 			base.ReceiveCallback(ar);
 			
-			if(FReceiveSuccess)
+			if(FReceiveSuccess && !(this is UDPTimeClient))
 				FInternalServer.Send(BitConverter.GetBytes(ElapsedSeconds), 8, FRemoteSender);
 		}
 	}
@@ -127,10 +129,11 @@ namespace VVVV.Utils.Network
 			
 			FRemoteTimeServer = new IPEndPoint(IPAddress.Parse(serverIP), port);
 			
-			FNetDelayFilter.Alpha = 0.9;
+			FNetDelayFilter.Alpha = 0.95;
 			FNetDelayFilter.Thresh = 0.01;
+			FNetDelayFilter.Value = -1;
 			
-			FTimeOffsetFilter.Alpha = 0.9;
+			FTimeOffsetFilter.Alpha = 0.98;
 			FTimeOffsetFilter.Thresh = 0.1;
 		}
 		
@@ -179,10 +182,16 @@ namespace VVVV.Utils.Network
 			{
 				double serverTime = BitConverter.ToDouble(FReceivedBytes, 0);
 				
+				Debug.WriteLine(serverTime);
+				
 				//estimate offset
 				var offset = serverTime - (receiveTime - netDelay);
 				
-				Offset = FTimeOffsetFilter.Update(offset);
+				FTimeOffsetFilter.Update(offset);
+				Debug.WriteLine("offset: " + FTimeOffsetFilter.Value);
+				
+				if(Math.Abs(FTimeOffsetFilter.Value) > 0.01)
+					Offset = FTimeOffsetFilter.Value;
 			}
 		}
 		

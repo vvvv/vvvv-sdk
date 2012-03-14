@@ -1,18 +1,17 @@
 ﻿#region usings
 using System;
-using System.Timers;
+using System.ComponentModel.Composition;
 using System.Net;
 using System.Text;
-using System.ComponentModel.Composition;
-
-using VVVV.PluginInterfaces.V1;
-using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
-using VVVV.Utils.Network;
-using VVVV.Utils.Animation;
+using System.Timers;
 
 using VVVV.Core.Logging;
+using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Animation;
+using VVVV.Utils.Network;
+using VVVV.Utils.VColor;
+using VVVV.Utils.VMath;
 
 #endregion usings
 
@@ -66,7 +65,6 @@ namespace VVVV.Nodes
 		double FReceivedStreamTime;
 		double FReceivedTimeStamp;
 		int FFrameCounter;
-		IIRFilter FAdjustTimeFilter;
 		IIRFilter FStreamDiffFilter;
 		UDPServer FServer;
 		IPEndPoint FRemoteServer;
@@ -81,17 +79,15 @@ namespace VVVV.Nodes
 		
 		public FileStreamNetworkSyncNode()
 		{
-			FAdjustTimeFilter.Value = 0;
-			FAdjustTimeFilter.Thresh = 500;
-			FAdjustTimeFilter.Alpha = 0.9;
-			
+
 			FStreamDiffFilter.Value = 0;
 			FStreamDiffFilter.Thresh = 1;
 			FStreamDiffFilter.Alpha = 0.97;
 			
-			FTimer = new Timer(100);
+			FTimer = new Timer(500);
 			FTimer.Elapsed += FTimer_Elapsed;
 			FTimer.Start();
+			
 		}
 
 		void FTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -171,14 +167,13 @@ namespace VVVV.Nodes
 		
 		protected void ClientEvaluate()
 		{
-			var fCount = 0;
+			var fCount = 10;
 			lock(FLock)
 			{
-				
-				if(FFrameCounter == fCount && FStreamTime > 1 && FStreamTime < FLength[0] - 1)
+				if(FStreamTime > 0.5 && FStreamTime < FLength[0] - 0.5)
 				{
 					var offset = FTimeStamp - FReceivedTimeStamp;
-					var streamDiff = FReceivedStreamTime - FStreamTime + offset;
+					var streamDiff = FReceivedStreamTime - FStreamTime + offset - 0.07;
 					var doSeek = Math.Abs(streamDiff) > 1;
 					
 					FStreamDiffFilter.Update(streamDiff);
@@ -186,27 +181,29 @@ namespace VVVV.Nodes
 					FDoSeekOut[0] = doSeek;
 					FSeekTimeOut[0] = FReceivedStreamTime + offset + 0.05;
 					
-					if(!doSeek)
+					var doAdjust = Math.Abs(FStreamDiffFilter.Value) > 0.005 ? 1 : 0;
+					
+					if(!doSeek && FFrameCounter == 0)
 					{
-						
-						FAdjustTimeOut[0] = FStreamDiffFilter.Value * 1000;
+						FAdjustTimeOut[0] = FStreamDiffFilter.Value * 100 * doAdjust;
 					}
 					else
 					{
 						FAdjustTimeOut[0] = 0;
 					}
+					
 					FStreamOffsetOut[0] = streamDiff;
+					FOffsetOut[0] = offset;
+					
+					FFrameCounter = (++FFrameCounter) % fCount;
+					
 				}
-				else
+				else //near loop
 				{
 					FAdjustTimeOut[0] = 0;
 					FDoSeekOut[0] = false;
+					FFrameCounter = 0;
 				}
-				
-				FOffsetOut[0] = FStreamDiffFilter.Value;
-				
-				FFrameCounter++;
-				FFrameCounter %= fCount + 1;
 			}
 			
 		}
