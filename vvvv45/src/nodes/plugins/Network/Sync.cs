@@ -87,7 +87,7 @@ namespace VVVV.Nodes
 			FStreamDiffFilter.Thresh = 1;
 			FStreamDiffFilter.Alpha = 0.97;
 			
-			FTimer = new Timer(500);
+			FTimer = new Timer(50);
 			FTimer.Elapsed += FTimer_Elapsed;
 			FTimer.Start();
 			
@@ -170,7 +170,7 @@ namespace VVVV.Nodes
 		
 		protected void ClientEvaluate()
 		{
-			var fCount = 10;
+			var fCount = 5;
 			lock(FLock)
 			{
 				if(FStreamTime > 0.5 && FStreamTime < FLength[0] - 0.5)
@@ -184,11 +184,11 @@ namespace VVVV.Nodes
 					FDoSeekOut[0] = doSeek;
 					FSeekTimeOut[0] = FReceivedStreamTime + offset + 0.05;
 					
-					var doAdjust = Math.Abs(FStreamDiffFilter.Value) > 0.005 ? 1 : 0;
+					var doAdjust = Math.Abs(FStreamDiffFilter.Value) > 0.001 ? 1 : 0;
 					
 					if(!doSeek && FFrameCounter == 0)
 					{
-						FAdjustTimeOut[0] = FStreamDiffFilter.Value * 100 * doAdjust;
+						FAdjustTimeOut[0] = FStreamDiffFilter.Value * 50 * doAdjust;
 					}
 					else
 					{
