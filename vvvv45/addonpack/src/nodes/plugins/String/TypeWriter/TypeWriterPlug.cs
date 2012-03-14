@@ -118,7 +118,8 @@ namespace TypeWriter
 		[Import()]
 		IHDEHost FHDEHost;
 		
-		public string FText = "";
+		private string FLastCapitalKey;
+		private string FText = "";
 		private int FCursorCharPos = 0;
 		//defined as string but must be only one character:
 		private string FNewlineSymbol = Environment.NewLine;
@@ -226,9 +227,9 @@ namespace TypeWriter
 			FCursorCharPos = GetStartOfLine(line) + GetLengthOfLine(line);
 		}
 
-		void CursorStepsRight()
+		void CursorStepsRight(int steps = 1)
 		{
-			var newPos = Math.Min(FText.Length, FCursorCharPos + 1);
+			var newPos = Math.Min(FText.Length, FCursorCharPos + steps);
 			//cursor may currently be on \r when coming from cursorDownOneLine
 			//or it may now jump to \r
 			//in both cases we need to jump 2 steps to take \n into account
@@ -287,7 +288,10 @@ namespace TypeWriter
 		{
 			FText = FText.Insert(FCursorCharPos, str);
 				
-			CursorStepsRight();
+			if (str.ToUpper() == str)		
+				FLastCapitalKey = str;
+			
+			CursorStepsRight(str.Length);
 		}
 		
 		private void DeleteLeftChar()
@@ -388,10 +392,11 @@ namespace TypeWriter
 			
 			if (FInsertText[0])
 				AddNewChar(FInputText[0]);
+
+//			Flogger.Log(LogType.Debug, "capital");
 			
 			if (FInputKeyCode[0] == 0 
-			|| (FInputKeyCode.SliceCount == 1 && FInputKeyCode[0] == (uint)Keys.ControlKey)
-			|| (FInputKeyCode.SliceCount == 1 && FInputKeyCode[0] == (uint)Keys.ShiftKey))
+			|| (FInputKeyCode.SliceCount == 1 && FInputKeyCode[0] == (uint)Keys.ControlKey))
 			{
 				FBufferedKeys.Clear();
 				FBufferedCommands.Clear();
@@ -408,8 +413,6 @@ namespace TypeWriter
 				foreach (string key in keysToDelete)
 					FBufferedKeys.Remove(key);
 				
-				var now = FHDEHost.GetCurrentTime();
-				
 				//first find out if the current keystate is a command
 				//ie. ctrl key, cursorkeys, tab...
 				//for this try to convert the input into a string by 
@@ -417,8 +420,11 @@ namespace TypeWriter
 				var newChar = VKCodeToUnicode(FInputKeyCode[-1]);
 
 				var lastKeyCode = FInputKeyCode[-1];
+				var now = FHDEHost.GetCurrentTime();
+				var keyOff = 0.4; //time in s that double keypress must be off
+				
 				//if this is a command
-				if (lastKeyCode < 48 || string.IsNullOrEmpty(newChar.Trim()))
+				if (IsKeyPressed(Keys.ControlKey) || lastKeyCode < 48 || string.IsNullOrEmpty(newChar.Trim()))
 				{
 					//add this to buffered commands
 					if (lastKeyCode != 17)
@@ -431,18 +437,26 @@ namespace TypeWriter
 				{
 					foreach(var character in inputKeys)
 						if (!FBufferedKeys.ContainsKey(character))
-							FBufferedKeys.Add(character, now);
-					
+						{
+							if (character.ToUpper() == FLastCapitalKey)
+							{
+								FBufferedKeys.Add(character, now + keyOff);
+								FLastCapitalKey = "";
+							}
+							else
+								FBufferedKeys.Add(character, now);
+						}	
+						
 					FBufferedCommands.Clear();
 				}
 					
-				//check if any of the buffered keys/commands need to executed
+				//check if any of the buffered keys/commands need to execute
 				foreach (var key in FBufferedKeys)
-					if (now - key.Value == 0 || now - key.Value > 0.3)
+					if (now == key.Value || now - key.Value > keyOff)
 						AddNewChar(key.Key);
 				
 				foreach (var key in FBufferedCommands)
-					if (now - key.Value == 0 || now - key.Value > 0.4)
+					if (now == key.Value || now - key.Value > keyOff)
 						RunCommand(key.Key);
 			}	
 			
