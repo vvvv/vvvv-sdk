@@ -445,14 +445,42 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
-		public static ISpread<T> ToSpread<T>(this List<T> list)
+		public static Spread<T> ToSpread<T>(this List<T> list)
         {
             return new Spread<T>(list);
         }
 		
-		public static ISpread<T> ToSpread<T>(this IEnumerable<T> enumerable)
+		public static Spread<T> ToSpread<T>(this IEnumerable<T> enumerable)
         {
 		    return new Spread<T>(enumerable.ToList());
+        }
+		
+		public static void ResizeAndDismiss<T>(this ISpread<T> spread, int sliceCount)
+            where T : new()
+        {
+            spread.ResizeAndDismiss(sliceCount, () => new T());
+        }
+        
+        public static void ResizeAndDismiss<T>(this ISpread<T> spread, int sliceCount, Func<T> constructor)
+        {
+            spread.Stream.ResizeAndDismiss(sliceCount, constructor);
+        }
+        
+        public static void ResizeAndDispose<T>(this ISpread<T> spread, int sliceCount, Func<T> constructor)
+            where T : IDisposable
+        {
+            spread.Resize(sliceCount, constructor, (t) => t.Dispose());
+        }
+        
+        public static void ResizeAndDispose<T>(this ISpread<T> spread, int sliceCount)
+            where T : IDisposable, new()
+        {
+            spread.Resize(sliceCount, () => new T(), (t) => t.Dispose());
+        }
+		
+		public static void Resize<T>(this ISpread<T> spread, int sliceCount, Func<T> constructor, Action<T> destructor)
+        {
+		    spread.Stream.Resize(sliceCount, constructor, destructor);
         }
 		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(
