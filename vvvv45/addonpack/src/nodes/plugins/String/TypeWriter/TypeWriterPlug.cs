@@ -88,13 +88,19 @@ namespace TypeWriter
 		#region field declaration
 		//input pin declaration
 		[Input("KeyCode", DefaultValue = 0)]
-		IDiffSpread<uint> FInputKey;
+		IDiffSpread<uint> FInputKeyCode;
+		
+		[Input("Text", DefaultString = "", IsSingle = true)]
+		ISpread<string> FInputText;
+		
+		[Input("Insert Text", IsBang = true, IsSingle = true)]
+		ISpread<bool> FInsertText;
 		
 		[Input("Initial Text", IsSingle = true)]
 		ISpread<string> FInitialText;
 		
 		[Input("Initialize", IsSingle = true, IsBang = true)]
-		IDiffSpread<bool> FInitialize;
+		ISpread<bool> FInitialize;
 		
 		[Input("Set Cursor Position", IsSingle = true, MinValue = 0, MaxValue = int.MaxValue)]
 		IDiffSpread<int> FSetCursorPosition;
@@ -112,7 +118,8 @@ namespace TypeWriter
 		[Import()]
 		IHDEHost FHDEHost;
 		
-		public string FText = "";
+		private string FLastCapitalKey;
+		private string FText = "";
 		private int FCursorCharPos = 0;
 		//defined as string but must be only one character:
 		private string FNewlineSymbol = Environment.NewLine;
@@ -220,9 +227,9 @@ namespace TypeWriter
 			FCursorCharPos = GetStartOfLine(line) + GetLengthOfLine(line);
 		}
 
-		void CursorStepsRight()
+		void CursorStepsRight(int steps = 1)
 		{
-			var newPos = Math.Min(FText.Length, FCursorCharPos + 1);
+			var newPos = Math.Min(FText.Length, FCursorCharPos + steps);
 			//cursor may currently be on \r when coming from cursorDownOneLine
 			//or it may now jump to \r
 			//in both cases we need to jump 2 steps to take \n into account
@@ -281,7 +288,10 @@ namespace TypeWriter
 		{
 			FText = FText.Insert(FCursorCharPos, str);
 				
-			CursorStepsRight();
+			if (str.ToUpper() == str)		
+				FLastCapitalKey = str;
+			
+			CursorStepsRight(str.Length);
 		}
 		
 		private void DeleteLeftChar()
@@ -380,9 +390,13 @@ namespace TypeWriter
 				CursorToTextEnd();
 			}
 			
-			if (FInputKey[0] == 0 
-			|| (FInputKey.SliceCount == 1 && FInputKey[0] == (uint)Keys.ControlKey)
-			|| (FInputKey.SliceCount == 1 && FInputKey[0] == (uint)Keys.ShiftKey))
+			if (FInsertText[0])
+				AddNewChar(FInputText[0]);
+
+//			Flogger.Log(LogType.Debug, "capital");
+			
+			if (FInputKeyCode[0] == 0 
+			|| (FInputKeyCode.SliceCount == 1 && FInputKeyCode[0] == (uint)Keys.ControlKey))
 			{
 				FBufferedKeys.Clear();
 				FBufferedCommands.Clear();
@@ -391,7 +405,7 @@ namespace TypeWriter
 			{
 				//remove keys from the buffer that are not currently pressed
 				var keysToDelete = new List<string>();
-				var inputKeys = FInputKey.Select(x => VKCodeToUnicode(x)).ToList();
+				var inputKeys = FInputKeyCode.Select(x => VKCodeToUnicode(x)).ToList();
 				foreach (var key in FBufferedKeys)
 					if (!inputKeys.Contains(key.Key)) 
 						keysToDelete.Add(key.Key);
@@ -399,36 +413,50 @@ namespace TypeWriter
 				foreach (string key in keysToDelete)
 					FBufferedKeys.Remove(key);
 				
+				//first find out if the current keystate is a command
+				//ie. ctrl key, cursorkeys, tab...
+				//for this try to convert the input into a string by 
+				//accessing FInputKey[-1] since earlier slices would be ctrl or shift
+				var newChar = VKCodeToUnicode(FInputKeyCode[-1]);
+
+				var lastKeyCode = FInputKeyCode[-1];
 				var now = FHDEHost.GetCurrentTime();
-				//make current keyboardstate into a string
-				//access FInputKey[-1] since earlier slices would be ctrl or shift
-				var newChar = VKCodeToUnicode(FInputKey[-1]);
+				var keyOff = 0.4; //time in s that double keypress must be off
 				
 				//if this is a command
-				if (FInputKey[-1] < 48 || string.IsNullOrEmpty(newChar.Trim()))
+				if (IsKeyPressed(Keys.ControlKey) || lastKeyCode < 48 || string.IsNullOrEmpty(newChar.Trim()))
 				{
 					//add this to buffered commands
-					if (FInputKey[-1] != 17)
-						if (!FBufferedCommands.ContainsKey(FInputKey[-1]))
-							FBufferedCommands.Add(FInputKey[-1], now);
+					if (lastKeyCode != 17)
+						if (!FBufferedCommands.ContainsKey(lastKeyCode))
+							FBufferedCommands.Add(lastKeyCode, now);
 
 					FBufferedKeys.Clear();
 				}
-				else //this is a string
+				else //interpret all slices as strings
 				{
-					if (!FBufferedKeys.ContainsKey(newChar))
-						FBufferedKeys.Add(newChar, now);
-					
+					foreach(var character in inputKeys)
+						if (!FBufferedKeys.ContainsKey(character))
+						{
+							if (character.ToUpper() == FLastCapitalKey)
+							{
+								FBufferedKeys.Add(character, now + keyOff);
+								FLastCapitalKey = "";
+							}
+							else
+								FBufferedKeys.Add(character, now);
+						}	
+						
 					FBufferedCommands.Clear();
 				}
 					
-				//check if any of the buffered keys/commands need to executed
+				//check if any of the buffered keys/commands need to execute
 				foreach (var key in FBufferedKeys)
-					if (now - key.Value == 0 || now - key.Value > 0.3)
+					if (now == key.Value || now - key.Value > keyOff)
 						AddNewChar(key.Key);
 				
 				foreach (var key in FBufferedCommands)
-					if (now - key.Value == 0 || now - key.Value > 0.4)
+					if (now == key.Value || now - key.Value > keyOff)
 						RunCommand(key.Key);
 			}	
 			
