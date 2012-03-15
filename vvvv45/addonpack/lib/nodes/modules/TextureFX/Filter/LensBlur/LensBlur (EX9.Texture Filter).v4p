@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="D:\Program Files\vvvv_45beta26\addonpack\modules\common\TextureFX\Filter\LensBlur\LensBlur (EX9.Texture Filter).v4p">
-   <BOUNDS height="12120" left="11010" top="2820" type="Window" width="14970">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="D:\Program Files\vvvv_45beta27\addonpack\lib\nodes\modules\TextureFX\Filter\LensBlur\LensBlur (EX9.Texture Filter).v4p">
+   <BOUNDS height="12120" left="12885" top="2490" type="Window" width="14970">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Filter\LensBlur\LensBlur.fx" id="53" nodename="LensBlur.fx" systemname="LensBlur (EX9.Effect)">
    <BOUNDS height="270" left="1935" top="5865" type="Node" width="5055">
@@ -37,6 +37,8 @@
    </PIN>
    <PIN pinname="SamplePos XY" visible="1">
    </PIN>
+   <PIN pinname="BorderCol" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="52" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="615" top="615" type="Node" width="0">
@@ -45,12 +47,12 @@
    </BOUNDS>
    <BOUNDS height="160" left="8325" top="7905" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Input" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Input">
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="51" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="51" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="1935" top="6795" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="1935" top="6795" type="Box" width="2400">
@@ -70,6 +72,16 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="51" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="53" srcpinname="Layer">
@@ -143,11 +155,11 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Format" visible="1" pintype="Input">
+   <PIN pinname="Format" pintype="Input" visible="1">
    </PIN>
-   <PIN pinname="Width" visible="1" pintype="Input">
+   <PIN pinname="Width" pintype="Input" visible="1">
    </PIN>
-   <PIN pinname="Height" visible="1" pintype="Input">
+   <PIN pinname="Height" pintype="Input" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="45" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -157,7 +169,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6945" top="10350" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Output" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Output">
    </PIN>
    <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
    </PIN>
@@ -169,7 +181,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="8070" top="7275" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Width" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Width">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -197,9 +209,9 @@
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="| Clamp|">
+   <PIN pinname="Input Enum" slicecount="1" values="| Mirror|">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Mode" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Mode">
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
@@ -227,9 +239,9 @@
    <INFO author="unc" description="Bokeh-like texture blur" tags="fx">
    </INFO>
    <NODE componentmode="InABox" id="40" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="12855" top="3570" type="Node" width="0">
+   <BOUNDS height="0" left="14415" top="3165" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="12855" top="3570" type="Box" width="480">
+   <BOUNDS height="480" left="14415" top="3165" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="10680" top="11325" type="Window" width="215">
    </BOUNDS>
@@ -245,7 +257,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enabled">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
@@ -283,7 +295,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="8325" top="7905" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Control" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Control">
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
@@ -363,8 +375,10 @@
    </PIN>
    <PIN pinname="SamplePos XY" slicecount="24" visible="1" values="0.0267574999999999,0,0.023172674741762,0.01337875,0.01337875,0.023172674741762,1.63837022562011E-018,0.0267574999999999,-0.01337875,0.0231726747417621,-0.023172674741762,0.01337875,-0.0267574999999999,3.27674045124022E-018,-0.023172674741762,-0.01337875,-0.01337875,-0.023172674741762,-4.91511067686032E-018,-0.0267574999999999,0.01337875,-0.023172674741762,0.023172674741762,-0.01337875">
    </PIN>
+   <PIN pinname="BorderCol">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="33" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="33" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="1935" top="3945" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="1935" top="3945" type="Box" width="2400">
@@ -384,6 +398,16 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="33" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="34" srcpinname="Layer">
@@ -483,7 +507,7 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Gamma" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Gamma">
    </PIN>
    </NODE>
    <LINK dstnodeid="34" dstpinname="Gamma" srcnodeid="27" srcpinname="Y Output Value">
@@ -585,8 +609,10 @@
    </PIN>
    <PIN pinname="SamplePos XY" visible="1">
    </PIN>
+   <PIN pinname="BorderCol" visible="1">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="21" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="21" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="1995" top="8670" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="1995" top="8670" type="Box" width="2400">
@@ -606,6 +632,16 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="21" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="22" srcpinname="Layer">
@@ -727,8 +763,10 @@
    </PIN>
    <PIN pinname="SamplePos XY" slicecount="24" visible="1" values="0.0267574999999999,0,0.023172674741762,0.01337875,0.01337875,0.023172674741762,1.63837022562011E-018,0.0267574999999999,-0.01337875,0.0231726747417621,-0.023172674741762,0.01337875,-0.0267574999999999,3.27674045124022E-018,-0.023172674741762,-0.01337875,-0.01337875,-0.023172674741762,-4.91511067686032E-018,-0.0267574999999999,0.01337875,-0.023172674741762,0.023172674741762,-0.01337875">
    </PIN>
+   <PIN pinname="BorderCol" visible="1">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="14" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="14" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="2025" top="10545" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="2025" top="10545" type="Box" width="2400">
@@ -737,9 +775,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Backbuffer Width" visible="1" slicecount="1" values="0">
+   <PIN pinname="Backbuffer Width" slicecount="1" visible="1" values="0">
    </PIN>
-   <PIN pinname="Backbuffer Height" visible="1" slicecount="1" values="0">
+   <PIN pinname="Backbuffer Height" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
@@ -748,6 +786,16 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="14" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="15" srcpinname="Layer">
@@ -976,10 +1024,32 @@
    </LINK>
    <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="44" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="13" srcpinname="X" dstnodeid="46" dstpinname="Width">
+   <LINK dstnodeid="46" dstpinname="Width" srcnodeid="13" srcpinname="X">
    </LINK>
-   <LINK srcnodeid="13" srcpinname="Y" dstnodeid="46" dstpinname="Height">
+   <LINK dstnodeid="46" dstpinname="Height" srcnodeid="13" srcpinname="Y">
    </LINK>
-   <LINK srcnodeid="50" srcpinname="Format" dstnodeid="46" dstpinname="Format">
+   <LINK dstnodeid="46" dstpinname="Format" srcnodeid="50" srcpinname="Format">
+   </LINK>
+   <NODE componentmode="InABox" id="54" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="12795" top="360" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="12795" top="360" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Border Color|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="34" dstpinname="BorderCol" srcnodeid="54" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="53" dstpinname="BorderCol" srcnodeid="54" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="BorderCol" srcnodeid="54" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="BorderCol" srcnodeid="54" srcpinname="Color Output">
    </LINK>
    </PATCH>

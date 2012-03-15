@@ -51,6 +51,13 @@ namespace VVVV.PluginInterfaces.V2
 		Unknown		    
 	};
 	
+	public enum PinDirection
+	{
+		Configuration,
+		Input,
+		Output,
+	}
+	
 	/// <summary>
 	/// Used in the pin creating functions of <see cref="VVVV.PluginInterfaces.V1.IPluginHost">IPluginHost</see> to specifiy possible SliceCounts.
 	/// </summary>

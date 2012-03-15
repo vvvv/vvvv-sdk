@@ -18,6 +18,7 @@ using VVVV.Core.Model;
 using VVVV.Hosting;
 using VVVV.Hosting.Factories;
 using VVVV.Hosting.Graph;
+using VVVV.Hosting.IO;
 using VVVV.Hosting.Interfaces.EX9;
 using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.InteropServices.EX9;
@@ -42,8 +43,7 @@ namespace VVVV.Hosting
         const string NODE_BROWSER = "NodeBrowser (VVVV)";
         
         private IVVVVHost FVVVVHost;
-        private INodeBrowser FNodeBrowser;
-        private IPluginBase FWindowSwitcher, FKommunikator;
+        private IPluginBase FWindowSwitcher, FKommunikator, FNodeBrowser;
         private readonly List<Window> FWindows = new List<Window>();
         
         [Export]
@@ -156,6 +156,7 @@ namespace VVVV.Hosting
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
             DeviceService = new DeviceService(vvvvHost.DeviceService);
+            MainLoop = new MainLoop(vvvvHost.MainLoop);
             
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
@@ -191,9 +192,7 @@ namespace VVVV.Hosting
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             FWindowSwitcher = PluginFactory.CreatePlugin(windowSwitcherNodeInfo, null);
             FKommunikator = PluginFactory.CreatePlugin(kommunikatorNodeInfo, null);
-            FNodeBrowser = (INodeBrowser) PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
-            FNodeBrowser.IsStandalone = false;
-            FNodeBrowser.DragDrop(false);
+            FNodeBrowser = PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
         }
         
         private INodeInfo GetNodeInfo(string systemName)
@@ -203,9 +202,12 @@ namespace VVVV.Hosting
 
         public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
         {
-            nodeBrowser = FNodeBrowser;
-            windowSwitcher = FWindowSwitcher;
-            kommunikator = FKommunikator;
+        	// HACK hack hack :/
+        	nodeBrowser = ((PluginContainer) FNodeBrowser).PluginBase;
+        	((INodeBrowser) nodeBrowser).IsStandalone = false;
+            ((INodeBrowser) nodeBrowser).DragDrop(false);
+            windowSwitcher = ((PluginContainer) FWindowSwitcher).PluginBase;
+            kommunikator = ((PluginContainer) FKommunikator).PluginBase;
         }
         
         public void ExtractNodeInfos(string filename, string arguments, out INodeInfo[] result)
@@ -367,6 +369,28 @@ namespace VVVV.Hosting
             }
         }
         
+        public INode2 GetNodeFromPath(string nodePath)
+        {
+        	var ids = nodePath.Split('/');
+        	
+        	var result = RootNode[0];
+        	for (int i = 1; i < ids.Length; i++)
+        	{
+        		try
+        		{
+        			var id = int.Parse(ids[i]);
+        			result = (from node in result where node.ID == id select node).First();
+        		}
+        		catch
+        		{
+        			result = null;
+        			break;
+        		}       			
+        	}
+
+            return result;
+        }
+        
         public void UpdateEnum(string EnumName, string Default, string[] EnumEntries)
         {
             FVVVVHost.UpdateEnum(EnumName, Default, EnumEntries);
@@ -441,6 +465,11 @@ namespace VVVV.Hosting
             FVVVVHost.SetComponentMode(node.InternalCOMInterf, componentMode);
         }
         
+        public void SendPatchMessage(string fileName, string message, bool undoable)
+        {
+            FVVVVHost.SendPatchMessage(fileName, message, undoable);
+        }
+        
         public string ExePath
         {
             get;
@@ -468,6 +497,12 @@ namespace VVVV.Hosting
             get;
             private set;
         }
+        
+        public IMainLoop MainLoop
+		{
+		    get;
+		    private set;
+		}
         
         #endregion
         

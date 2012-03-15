@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\BlurPerfector\BlurPerfector (EX9.Texture Filter).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="D:\Program Files\vvvv_45beta27\addonpack\lib\nodes\modules\TextureFX\Filter\BlurPerfector\BlurPerfector (EX9.Texture Filter).v4p">
    <BOUNDS height="11520" left="14175" top="2130" type="Window" width="11220">
    </BOUNDS>
    <NODE componentmode="InABox" id="40" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -109,7 +109,7 @@
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="tex0" visible="1">
+   <PIN pinname="tex0" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Width" slicecount="1" visible="1" values="1.036328125">
    </PIN>
@@ -169,6 +169,8 @@
    </PIN>
    <PIN pinname="Threshold">
    </PIN>
+   <PIN pinname="BorderCol">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="18" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="2085" top="7815" type="Node" width="0">
@@ -190,6 +192,16 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="17" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
@@ -259,9 +271,9 @@
    <LINK dstnodeid="13" dstpinname="Source" srcnodeid="18" srcpinname="EX9 Out">
    </LINK>
    <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="0" left="8910" top="405" type="Node" width="0">
+   <BOUNDS height="0" left="9675" top="390" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="8910" top="405" type="Box" width="480">
+   <BOUNDS height="480" left="9675" top="390" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="20865" top="2955" type="Window" width="215">
    </BOUNDS>
@@ -289,7 +301,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="2" nodename="OR (Boolean)" systemname="OR (Boolean)">
-   <BOUNDS height="0" left="8955" top="1185" type="Node" width="0">
+   <BOUNDS height="0" left="9720" top="1170" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -378,6 +390,20 @@
    </NODE>
    <LINK dstnodeid="19" dstpinname="Threshold" srcnodeid="48" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Switch">
+   <LINK dstnodeid="29" dstpinname="Switch" srcnodeid="32" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="49" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="8640" top="345" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="8640" top="345" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Border Color|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="BorderCol" srcnodeid="49" srcpinname="Color Output">
    </LINK>
    </PATCH>

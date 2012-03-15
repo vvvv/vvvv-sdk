@@ -173,7 +173,7 @@ namespace VVVV.Hosting.Graph
         
         public override string ToString()
         {
-            return FName;
+            return Name;
         }
         
         public INode InternalCOMInterf
@@ -244,7 +244,7 @@ namespace VVVV.Hosting.Graph
         
         private string ComputeName()
         {
-            string label = FLabelPin.Value[0];
+        	string label = FLabelPin.Value[0];
             string suffix = string.IsNullOrEmpty(label) ? string.Empty : " -- " + label;
             
             if (string.IsNullOrEmpty(FNodeInfo.Name))
@@ -277,6 +277,12 @@ namespace VVVV.Hosting.Graph
                 return FInternalCOMInterf.GetID();
             }
         }
+        
+        public string GetNodePath(bool UseDescriptiveNames)
+        {
+        	return FInternalCOMInterf.GetNodePath(UseDescriptiveNames);
+        }
+        	
         
         public IViewableCollection<IPin2> Pins
         {

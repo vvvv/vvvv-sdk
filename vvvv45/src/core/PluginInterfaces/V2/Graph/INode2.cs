@@ -26,6 +26,13 @@ namespace VVVV.PluginInterfaces.V2.Graph
             get;
         }
         
+        /// <summary>
+		/// Returns a slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.
+		/// </summary>
+		/// <param name="useDescriptiveNames">If TRUE descriptive node names are used where available instead of the node ID.</param>
+		/// <returns>A slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.</returns>
+		string GetNodePath(bool useDescriptiveNames);
+        
         IViewableCollection<IPin2> Pins
         {
             get;

@@ -12,13 +12,13 @@ namespace VVVV.PluginInterfaces.V2
 	/// Note that not all properties make sense for every pin data type.
 	/// </summary>
 	[ComVisible(false)]
-	public abstract class PinAttribute : ImportAttribute
+	public abstract class IOAttribute : ImportAttribute, ICloneable
 	{
 		public static readonly double DefaultMinValue = double.MinValue;
 		public static readonly double DefaultMaxValue = double.MaxValue;
 		public static readonly double DefaultStepSize = 1.0;
 		
-		public PinAttribute(string name)
+		public IOAttribute(string name)
 		{
 			//pin
 			Name = name;
@@ -43,6 +43,8 @@ namespace VVVV.PluginInterfaces.V2
 			
 			//enum
 			EnumName = "Empty";
+			
+			Dimension = 1;
 		}
 		
 		//pin
@@ -152,6 +154,15 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
+		/// This is used for bool pins.
+		/// </summary>
+		public bool IsToggle
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
 		/// Displays the value of this pin as an integer in the gui, regardless of the actual type.
 		/// </summary>
 		public bool AsInt
@@ -252,15 +263,42 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
-		/// <summary>
-		/// Whether to do lazy loading. The user is responsible to call Load(). This is not
-		/// supported by all classes, so you might get a NotImplementedException.
-		/// Note: Classes of type ISpread&lt;ISpread&lt;T&gt;&gt; do the lazy loading automatically if enabled.
-		/// </summary>
-		public bool Lazy
+		internal int Dimension
 		{
 			get;
 			set;
+		}
+		
+		public abstract object Clone();
+		
+		protected object Clone(IOAttribute clonedInstance)
+		{
+			clonedInstance.AllowDefault = AllowDefault;
+			clonedInstance.AllowRecomposition = AllowRecomposition;
+			clonedInstance.AsInt = AsInt;
+			clonedInstance.DefaultColor = DefaultColor;
+			clonedInstance.DefaultEnumEntry = DefaultEnumEntry;
+			clonedInstance.DefaultString = DefaultString;
+			clonedInstance.DefaultValue = DefaultValue;
+			clonedInstance.DefaultValues = DefaultValues;
+			clonedInstance.DimensionNames = DimensionNames;
+			clonedInstance.EnumName = EnumName;
+			clonedInstance.FileMask = FileMask;
+			clonedInstance.HasAlpha = HasAlpha;
+			clonedInstance.IsBang = IsBang;
+			clonedInstance.IsPinGroup = IsPinGroup;
+			clonedInstance.IsSingle = IsSingle;
+			clonedInstance.MaxChars = MaxChars;
+			clonedInstance.MaxValue = MaxValue;
+			clonedInstance.MinValue = MinValue;
+			clonedInstance.Name = Name;
+			clonedInstance.Order = Order;
+			clonedInstance.RequiredCreationPolicy = RequiredCreationPolicy;
+			clonedInstance.StepSize = StepSize;
+			clonedInstance.StringType = StringType;
+			clonedInstance.Visibility = Visibility;
+			
+			return clonedInstance;
 		}
 	}
 }

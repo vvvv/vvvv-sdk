@@ -106,7 +106,8 @@ namespace VVVV.HDE.ProjectExplorer
                 FTreeViewer.Input = Solution;
                 
                 // Workaround because config pins do not send changed on reload :/
-				FHideUnusedProjectsCheckBox.Checked = true;
+                FHideUnusedProjectsIn.Sync();
+                FBuildConfigIn.Sync();
 			}
 			catch (Exception e)
 			{
@@ -145,6 +146,7 @@ namespace VVVV.HDE.ProjectExplorer
 		void FHideUnusedProjectsCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
 			this.FHideUnusedProjectsIn[0] = FHideUnusedProjectsCheckBox.Checked;
+			this.FHideUnusedProjectsIn.Flush();
 		}
 
 		void FHideUnusedProjectsIn_Changed(IDiffSpread<bool> spread)
@@ -197,6 +199,7 @@ namespace VVVV.HDE.ProjectExplorer
 		{
 			var buildConfig = (BuildConfiguration) FBuildConfigComboBox.SelectedIndex;
 			FBuildConfigIn[0] = buildConfig;
+			FBuildConfigIn.Flush();
 		}
 	}
 }

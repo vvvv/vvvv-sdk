@@ -21,26 +21,27 @@ namespace VVVV.Nodes.Bullet
 		public void Evaluate(int SpreadMax)
 		{
 			//int i = this.FShapesIn.SliceCount;
-			bool allconnected = true;
-			int maxslice = int.MinValue;
-			for (int i = 0; i < this.FShapesIn.SliceCount; i++)
-			{
-				if (((GenericInputPin<AbstractRigidShapeDefinition>)this.FShapesIn[0]).PluginIO.IsConnected)
-				{
-					maxslice = this.FShapesIn[i].SliceCount > maxslice ? this.FShapesIn[i].SliceCount : maxslice;
-					if (this.FShapesIn[i].SliceCount == 0) { allconnected = false; }
-				}
-				else
-				{
-					allconnected = false;
-				}
-			}
+//			bool allconnected = true;
+//			int maxslice = int.MinValue;
+//			for (int i = 0; i < this.FShapesIn.SliceCount; i++)
+//			{
+//				if (((InputPin<AbstractRigidShapeDefinition>)this.FShapesIn[0]).PluginIO.IsConnected)
+//				{
+//					maxslice = this.FShapesIn[i].SliceCount > maxslice ? this.FShapesIn[i].SliceCount : maxslice;
+//					if (this.FShapesIn[i].SliceCount == 0) { allconnected = false; }
+//				}
+//				else
+//				{
+//					allconnected = false;
+//				}
+//			}
+			this.FShapesOut.SliceCount = FShapesIn.GetMaxSliceCount();
 
-			if (allconnected)
-			{
-				this.FShapesOut.SliceCount = maxslice;
+//			if (allconnected)
+//			{
+//				this.FShapesOut.SliceCount = maxslice;
 
-				for (int i = 0; i < maxslice; i++)
+				for (int i = 0; i < this.FShapesOut.SliceCount; i++)
 				{
 					List<AbstractRigidShapeDefinition> childs = new List<AbstractRigidShapeDefinition>();
 
@@ -54,11 +55,11 @@ namespace VVVV.Nodes.Bullet
 					CompoundShapeDefinition def = new CompoundShapeDefinition(childs);
 					this.FShapesOut[i] = def;
 				}
-			}
-			else
-			{
-				this.FShapesOut.SliceCount = 0;
-			}
+//			}
+//			else
+//			{
+//				this.FShapesOut.SliceCount = 0;
+//			}
 		}
 	}
 }
