@@ -23,8 +23,8 @@ namespace TypeWriter
 {
 	[PluginInfo(Name = "Typewriter",
 	            Category = "String",
-				Credits = "Based on an original version by bo27, Yuri Dolgov",
-				Author = "vvvv group",
+	            Credits = "Based on an original version by bo27, Yuri Dolgov",
+	            Author = "vvvv group",
 	            Help = "Takes all keyboardinput including keyboard commands and returns a resulting string",
 	            Tags = "keyboard")]
 	public class TypeWriterPlugin: IPluginEvaluate
@@ -81,7 +81,9 @@ namespace TypeWriter
 			uint lScanCode = MapVirtualKey(VKCode, 0);
 			IntPtr HKL = GetKeyboardLayout(0);
 
-			ToUnicodeEx(VKCode, lScanCode, bKeyState, sbString, (int)5, (uint)0, HKL);
+			if (VKCode > 47)
+				ToUnicodeEx(VKCode, lScanCode, bKeyState, sbString, (int)5, (uint)0, HKL);
+			
 			return sbString.ToString();
 		}
 
@@ -198,7 +200,9 @@ namespace TypeWriter
 				var posInLine = FCursorCharPos - startOfLine;
 				var newLine = line - 1;
 				
-				FCursorCharPos = GetStartOfLine(newLine) + Math.Min(posInLine, GetLengthOfLine(newLine));
+				var newPos = GetStartOfLine(newLine) + Math.Min(posInLine, GetLengthOfLine(newLine));
+				
+				FCursorCharPos = EnsureCorrectCursorPlacement(newPos);
 			}
 		}
 
@@ -211,8 +215,25 @@ namespace TypeWriter
 				var posInLine = FCursorCharPos - startOfLine;
 				var newLine = line + 1;
 				
-				FCursorCharPos = GetStartOfLine(newLine) + Math.Min(posInLine, GetLengthOfLine(newLine));
+				var newPos = GetStartOfLine(newLine) + Math.Min(posInLine, GetLengthOfLine(newLine));
+				
+				FCursorCharPos = EnsureCorrectCursorPlacement(newPos);
 			}
+		}
+		
+		int EnsureCorrectCursorPlacement(int newPos)
+		{
+			try
+			{
+				if (FText[newPos] == '\n' && FText[newPos - 1] == '\r')
+					newPos -= 1;
+			}
+			catch
+			{
+				//FText[newPos] may access out of range char..nevermind
+			}
+			
+			return Math.Max(0, Math.Min(FText.Length, newPos));
 		}
 
 		void CursorToLineStart()
@@ -230,14 +251,11 @@ namespace TypeWriter
 		void CursorStepsRight(int steps = 1)
 		{
 			var newPos = Math.Min(FText.Length, FCursorCharPos + steps);
-			//cursor may currently be on \r when coming from cursorDownOneLine
-			//or it may now jump to \r
-			//in both cases we need to jump 2 steps to take \n into account
+			//if cursor lands on an \r and the next symbol is an \n make sure to step one more
 			try
 			{
-				if ((FText[FCursorCharPos] == '\r' || FText[newPos] == '\r')
-					&& FNewlineSymbol.Length > 1)
-					newPos += FNewlineSymbol.Length-1;
+				if (FText[newPos] == '\n' && FText[newPos - 1] == '\r')
+					newPos += 1;
 			}
 			catch
 			{
@@ -250,18 +268,15 @@ namespace TypeWriter
 		void CursorStepsLeft()
 		{
 			var newPos = Math.Max(0, FCursorCharPos - 1);
-			//cursor may currently be on \n when coming from cursorUpOneLine
-			//or it may now jump to \n
-			//in both cases we need to jump 2 steps to take \r into account
+			//if cursor lands on an \n and the previouse symbol is an \r make sure to step one more
 			try
 			{
-				if ((FText[FCursorCharPos] == '\n' || FText[newPos] == '\n')
-					&& FNewlineSymbol.Length > 1)
-					newPos -= FNewlineSymbol.Length-1;
+				if (FText[newPos] == '\n' && FText[newPos - 1] == '\r')
+					newPos -= 1;
 			}
 			catch
 			{
-				//FText[FCursorCharPos] may access out of range char..nevermind
+				//FText[newPos] may access out of range char..nevermind
 			}
 			
 			FCursorCharPos = Math.Max(0, newPos);
@@ -287,8 +302,8 @@ namespace TypeWriter
 		private void AddNewChar(string str)
 		{
 			FText = FText.Insert(FCursorCharPos, str);
-				
-			if (str.ToUpper() == str)		
+			
+			if (str.ToUpper() == str)
 				FLastCapitalKey = str;
 			
 			CursorStepsRight(str.Length);
@@ -380,7 +395,7 @@ namespace TypeWriter
 		//all data handling should be in here
 		public void Evaluate(int SpreadMax)
 		{
-            if (FSetCursorPosition.IsChanged)
+			if (FSetCursorPosition.IsChanged)
 				FCursorCharPos = Math.Min(FText.Length, Math.Max(0, FSetCursorPosition[0]));
 
 			//initializing with text
@@ -395,8 +410,8 @@ namespace TypeWriter
 
 //			Flogger.Log(LogType.Debug, "capital");
 			
-			if (FInputKeyCode[0] == 0 
-			|| (FInputKeyCode.SliceCount == 1 && FInputKeyCode[0] == (uint)Keys.ControlKey))
+			if (FInputKeyCode[0] == 0
+			    || (FInputKeyCode.SliceCount == 1 && FInputKeyCode[0] == (uint)Keys.ControlKey))
 			{
 				FBufferedKeys.Clear();
 				FBufferedCommands.Clear();
@@ -407,27 +422,27 @@ namespace TypeWriter
 				var keysToDelete = new List<string>();
 				var inputKeys = FInputKeyCode.Select(x => VKCodeToUnicode(x)).ToList();
 				foreach (var key in FBufferedKeys)
-					if (!inputKeys.Contains(key.Key)) 
+					if (!inputKeys.Contains(key.Key))
 						keysToDelete.Add(key.Key);
-			
+				
 				foreach (string key in keysToDelete)
 					FBufferedKeys.Remove(key);
 				
 				//first find out if the current keystate is a command
 				//ie. ctrl key, cursorkeys, tab...
-				//for this try to convert the input into a string by 
+				//for this try to convert the input into a string by
 				//accessing FInputKey[-1] since earlier slices would be ctrl or shift
 				var newChar = VKCodeToUnicode(FInputKeyCode[-1]);
 
 				var lastKeyCode = FInputKeyCode[-1];
 				var now = FHDEHost.GetCurrentTime();
-				var keyOff = 0.4; //time in s that double keypress must be off
+				var keyDelay = 0.5; //character repeat delay in s
 				
 				//if this is a command
-				if (IsKeyPressed(Keys.ControlKey) || lastKeyCode < 48 || string.IsNullOrEmpty(newChar.Trim()))
+				if ((IsKeyPressed(Keys.ControlKey) && !IsKeyPressed(Keys.Menu)) || lastKeyCode < 48 || string.IsNullOrEmpty(newChar.Trim()))
 				{
 					//add this to buffered commands
-					if (lastKeyCode != 17)
+					if (lastKeyCode != (int)Keys.ControlKey)
 						if (!FBufferedCommands.ContainsKey(lastKeyCode))
 							FBufferedCommands.Add(lastKeyCode, now);
 
@@ -437,28 +452,28 @@ namespace TypeWriter
 				{
 					foreach(var character in inputKeys)
 						if (!FBufferedKeys.ContainsKey(character))
+					{
+						if (character.ToUpper() == FLastCapitalKey)
 						{
-							if (character.ToUpper() == FLastCapitalKey)
-							{
-								FBufferedKeys.Add(character, now + keyOff);
-								FLastCapitalKey = "";
-							}
-							else
-								FBufferedKeys.Add(character, now);
-						}	
-						
+							FBufferedKeys.Add(character, now + keyDelay);
+							FLastCapitalKey = "";
+						}
+						else
+							FBufferedKeys.Add(character, now);
+					}
+					
 					FBufferedCommands.Clear();
 				}
-					
+				
 				//check if any of the buffered keys/commands need to execute
 				foreach (var key in FBufferedKeys)
-					if (now == key.Value || now - key.Value > keyOff)
+					if (now == key.Value || now - key.Value > keyDelay)
 						AddNewChar(key.Key);
 				
 				foreach (var key in FBufferedCommands)
-					if (now == key.Value || now - key.Value > keyOff)
+					if (now == key.Value || now - key.Value > keyDelay)
 						RunCommand(key.Key);
-			}	
+			}
 			
 			FOutput[0] = FText;
 			FCursorPosition[0] = FCursorCharPos;
