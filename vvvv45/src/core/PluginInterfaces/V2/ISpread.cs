@@ -381,6 +381,11 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
+		/// <summary>
+		/// Returns the max slice count of all spreads or zero if one of the slice counts is zero.
+		/// </summary>
+		/// <param name="spreads">A spread of spreads for which to return the max slice count.</param>
+		/// <returns>The max slice count of all spreads.</returns>
 		public static int GetMaxSliceCount<T>(this ISpread<ISpread<T>> spreads)
 		{
 			switch (spreads.SliceCount)
@@ -399,6 +404,11 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
+		/// <summary>
+		/// Returns the sum of all slice counts of the given spreads.
+		/// </summary>
+		/// <param name="spreads">A spread of spreads for which to return the slice count sum.</param>
+		/// <returns>The sum of all slice counts.</returns>
 		public static int GetSliceCountSum<T>(this ISpread<ISpread<T>> spreads)
 		{
 			int result = 0;
@@ -411,6 +421,12 @@ namespace VVVV.PluginInterfaces.V2
 			return result;
 		}
 		
+		/// <summary>
+		/// Takes the max slice count of the input spreads, multiplies it with the slice count of the
+		/// outer spread and assigns it to the output spread.
+		/// </summary>
+		/// <param name="outputSpread">The spread to set the slice count on.</param>
+		/// <param name="inputSpreads">The spread of spreads to use for the slice count computation.</param>
 		public static void SetSliceCountBy<T>(this ISpread<T> outputSpread, ISpread<ISpread<T>> inputSpreads)
 		{
 			outputSpread.SliceCount = inputSpreads.GetMaxSliceCount() * inputSpreads.SliceCount;
@@ -428,6 +444,16 @@ namespace VVVV.PluginInterfaces.V2
 				outputSpreads[i].SliceCount = sliceCountPerSpread;
 			}
 		}
+		
+		public static ISpread<T> ToSpread<T>(this List<T> list)
+        {
+            return new Spread<T>(list);
+        }
+		
+		public static ISpread<T> ToSpread<T>(this IEnumerable<T> enumerable)
+        {
+		    return new Spread<T>(enumerable.ToList());
+        }
 		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(
 //			this ISpread<TSource> source,

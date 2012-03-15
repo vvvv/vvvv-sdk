@@ -147,13 +147,4 @@ namespace VVVV.PluginInterfaces.V2
             return new Spread<T>(FStream.Clone() as BufferedIOStream<T>);
         }
     }
-
-    [ComVisible(false)]
-    public static class SpreadExtensions_
-    {
-        public static ISpread<T> ToSpread<T>(this List<T> list)
-        {
-            return new Spread<T>(list);
-        }
-    }
 }
