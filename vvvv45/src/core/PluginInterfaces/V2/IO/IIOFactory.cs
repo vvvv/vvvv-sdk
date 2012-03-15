@@ -54,6 +54,11 @@ namespace VVVV.PluginInterfaces.V2
 		event EventHandler<ConnectionEventArgs> Disconnected;
 		
 		/// <summary>
+		/// The Created event takes place after the plugin has been created.
+		/// </summary>
+		event EventHandler Created;
+		
+		/// <summary>
 		/// The Disposing event takes place before the plugin is being disposed.
 		/// </summary>
 		event EventHandler Disposing;

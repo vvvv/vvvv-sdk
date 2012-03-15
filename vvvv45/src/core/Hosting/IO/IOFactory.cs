@@ -120,6 +120,16 @@ namespace VVVV.Hosting.IO
             }
         }
         
+        public event EventHandler Created;
+        
+        internal virtual void OnCreated(EventArgs e)
+        {
+            if (Created != null) 
+            {
+                Created(this, e);
+            }
+        }
+        
         public event EventHandler Disposing;
         
         protected virtual void OnDisposing(EventArgs e)

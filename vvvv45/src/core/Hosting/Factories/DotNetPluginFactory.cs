@@ -526,6 +526,7 @@ namespace VVVV.Hosting.Factories
             FContainer.ComposeParts(this);
             FPlugin = PluginBase as IPluginEvaluate;
             FAutoEvaluate = nodeInfo.AutoEvaluate;
+            FIOFactory.OnCreated(EventArgs.Empty);
         }
         
         public void Dispose()

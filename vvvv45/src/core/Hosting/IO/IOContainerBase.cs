@@ -58,6 +58,7 @@ namespace VVVV.Hosting.IO
                 if (ConfigAction != null)
                 {
                     Factory.Configuring += HandleConfiguring;
+                    Factory.Created += HandleCreated;
                 }
             }
         }
@@ -75,7 +76,9 @@ namespace VVVV.Hosting.IO
             if (ConfigAction != null)
             {
                 Factory.Configuring -= HandleConfiguring;
+                Factory.Created -= HandleCreated;
             }
+            
             var disposableIOObject = RawIOObject as IDisposable;
             if (disposableIOObject != null)
             {
@@ -102,6 +105,11 @@ namespace VVVV.Hosting.IO
             {
                 ConfigAction(IOObject);
             }
+        }
+        
+        private void HandleCreated(object sender, EventArgs args)
+        {
+            ConfigAction(IOObject);
         }
     }
     
