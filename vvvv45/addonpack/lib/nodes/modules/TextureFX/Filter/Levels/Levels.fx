@@ -3,12 +3,13 @@ float4 fromBlack:COLOR;
 float4 fromWhite:COLOR;
 float4 toBlack:COLOR;
 float4 toWhite:COLOR;
-float Gamma=1;
+float4 Gamma=1;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float4 c=tex2D(s0,x);
-    c=pow(saturate((c-fromBlack)/(fromWhite-fromBlack)),Gamma)*(toWhite-toBlack)+toBlack;
+	c=((c-fromBlack)/(fromWhite-fromBlack));
+    c=sign(c)*pow(abs(c),Gamma)*(toWhite-toBlack)+toBlack;
     return c;
 }
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}

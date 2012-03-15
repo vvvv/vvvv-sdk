@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 namespace VVVV.Nodes.Timeliner
 {
+	public enum TLMouseState {msIdle, msSelecting, msDragging, msDraggingXOnly, msDraggingYOnly, msPanning, msEditing, msDraggingTimeBar};
+	
 	public partial class TLSliceArea : UserControl
 	{
 		private Point FLastMousePoint = new Point();
@@ -21,8 +23,8 @@ namespace VVVV.Nodes.Timeliner
 		{
 			set {FOutputPins = value;}
 		}
-		private enum TLMouseState {msIdle, msSelecting, msDragging, msDraggingXOnly, msDraggingYOnly, msPanning, msEditing, msDraggingTimeBar};
-		private static TLMouseState FMouseState = TLMouseState.msIdle;
+		
+		public TLMouseState MouseState {get; set;}
 		
 		private TLEditor FEditor;
 		private TLTransformer FTransformer;
@@ -233,7 +235,7 @@ namespace VVVV.Nodes.Timeliner
 			
 			SaveAllKeyFrames();
 			
-			FMouseState = TLMouseState.msIdle;
+			MouseState = TLMouseState.msIdle;
 		}
 		
 		public void HideSliceMenu()
@@ -509,7 +511,7 @@ namespace VVVV.Nodes.Timeliner
 		
 		protected override void OnMouseDoubleClick (MouseEventArgs e)
 		{
-			switch(FMouseState)
+			switch(MouseState)
 			{
 				case TLMouseState.msSelecting://not msIdle, because on mousedown state has already become msSelecting
 					{
@@ -610,7 +612,7 @@ namespace VVVV.Nodes.Timeliner
 							this.ActiveControl = FEditor;
 							this.Focus();
 							
-							FMouseState = TLMouseState.msEditing;
+							MouseState = TLMouseState.msEditing;
 						}
 						
 						break;
@@ -643,7 +645,7 @@ namespace VVVV.Nodes.Timeliner
 			//call bases mousedown to select the control and make OnMousWheel event fire
 			base.OnMouseDown(e);
 			
-			switch(FMouseState)
+			switch(MouseState)
 			{
 				case TLMouseState.msIdle:
 					{
@@ -654,7 +656,7 @@ namespace VVVV.Nodes.Timeliner
 						if (e.Button == MouseButtons.Left && pin is TLRulerPin)
 						{
 							FTimer.SetTime(0, FTransformer.XPosToTime(e.X));
-							FMouseState = TLMouseState.msDraggingTimeBar;
+							MouseState = TLMouseState.msDraggingTimeBar;
 							break;
 						}
 						
@@ -669,16 +671,16 @@ namespace VVVV.Nodes.Timeliner
 						{
 							if (e.Button == MouseButtons.Left && FTimeBar.IsVisible(e.Location))
 							{
-								FMouseState = TLMouseState.msDraggingTimeBar;
+								MouseState = TLMouseState.msDraggingTimeBar;
 							}
 							else if (e.Button == MouseButtons.Right) //and rightclicking -> start panning
 							{
-								FMouseState = TLMouseState.msPanning;
+								MouseState = TLMouseState.msPanning;
 								this.Cursor = Cursors.NoMove2D;;
 							}
 							else if (e.Button == MouseButtons.Left)	//and leftclicking -> start marching ants
 							{
-								FMouseState = TLMouseState.msSelecting;
+								MouseState = TLMouseState.msSelecting;
 								FSelectionArea.Location = e.Location;
 								
 								if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift
@@ -694,18 +696,18 @@ namespace VVVV.Nodes.Timeliner
 							Cursor.Hide();
 							
 							if (e.Button == MouseButtons.Left)	//mouse is hovering a keyframe -> go drag
-								FMouseState = TLMouseState.msDraggingXOnly;
+								MouseState = TLMouseState.msDraggingXOnly;
 							else if (e.Button == MouseButtons.Right)	//mouse is hovering a keyframe -> go drag Y only
 							{
 								//if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
 								//	FExpandToRight = CheckExpansionToRight(e.Location);
-								FMouseState = TLMouseState.msDraggingYOnly;
+								MouseState = TLMouseState.msDraggingYOnly;
 							}
 							else if (e.Button == MouseButtons.Middle)	//mouse is hovering a keyframe -> go drag X only
 							{
 								//if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
 								//	FExpandToRight = CheckExpansionToRight(e.Location);
-								FMouseState = TLMouseState.msDragging;
+								MouseState = TLMouseState.msDragging;
 							}
 							
 							//if ctrl is pressed toggle selection of only this keyframe
@@ -835,7 +837,7 @@ namespace VVVV.Nodes.Timeliner
 				FLastMousePoint = new Point(pt.X - ptDelta, FLastMousePoint.Y);
 			}
 			
-			switch(FMouseState)
+			switch(MouseState)
 			{
 				case TLMouseState.msIdle:
 					{
@@ -1207,7 +1209,7 @@ namespace VVVV.Nodes.Timeliner
 		{
 			FMouseDownKeyFrame = null;
 			
-			switch(FMouseState)
+			switch(MouseState)
 			{
 				case TLMouseState.msSelecting:
 					{
@@ -1217,7 +1219,7 @@ namespace VVVV.Nodes.Timeliner
 						this.Invalidate(r);
 						
 						FSelectionArea.Size = new Size(0, 0);
-						FMouseState = TLMouseState.msIdle;
+						MouseState = TLMouseState.msIdle;
 						
 						bool pinAdded;
 						foreach (TLBasePin bp in FOutputPins)
@@ -1241,7 +1243,7 @@ namespace VVVV.Nodes.Timeliner
 					}
 				case TLMouseState.msDragging:
 					{
-						FMouseState = TLMouseState.msIdle;
+						MouseState = TLMouseState.msIdle;
 						
 						SaveAllKeyFrames();
 						
@@ -1250,7 +1252,7 @@ namespace VVVV.Nodes.Timeliner
 					}
 				case TLMouseState.msDraggingYOnly:
 					{
-						FMouseState = TLMouseState.msIdle;
+						MouseState = TLMouseState.msIdle;
 						
 						SaveAllKeyFrames();
 						
@@ -1259,7 +1261,7 @@ namespace VVVV.Nodes.Timeliner
 					}
 				case TLMouseState.msDraggingXOnly:
 					{
-						FMouseState = TLMouseState.msIdle;
+						MouseState = TLMouseState.msIdle;
 						
 						SaveAllKeyFrames();
 						
@@ -1269,13 +1271,13 @@ namespace VVVV.Nodes.Timeliner
 				case TLMouseState.msPanning:
 					{
 						this.Cursor = null;
-						FMouseState = TLMouseState.msIdle;
+						MouseState = TLMouseState.msIdle;
 						break;
 					}
 					
 				case TLMouseState.msDraggingTimeBar:
 					{
-						FMouseState = TLMouseState.msIdle;
+						MouseState = TLMouseState.msIdle;
 						break;
 					}
 			}

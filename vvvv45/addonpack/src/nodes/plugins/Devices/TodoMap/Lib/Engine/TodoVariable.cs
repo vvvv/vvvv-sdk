@@ -17,7 +17,7 @@ namespace VVVV.TodoMap.Lib
     /// Delegate when new variable is registered
     /// </summary>
     /// <param name="var">New Variable instance</param>
-    public delegate void TodoVariableEventDelegate(TodoVariable var);
+    public delegate void TodoVariableEventDelegate(TodoVariable var, bool gui);
 
     /// <summary>
     /// Variable class, contains all required data
@@ -100,11 +100,11 @@ namespace VVVV.TodoMap.Lib
             this.OnValueChanged(null);
         }
 
-        public void MarkForUpdate()
+        public void MarkForUpdate(bool gui)
         {
             if (this.VariableUpdated != null)
             {
-                this.VariableUpdated(this);
+                this.VariableUpdated(this,gui);
             }
         }
 

@@ -73,6 +73,7 @@ namespace VVVV.Nodes
 		private IValueOut FTimeOut;
 		private IValueOut FPlayingOut;
 		private IValueOut FSeekingOut;
+		private IValueOut FScratchingOut;
 
 		// VAIRABLES
 		///////////////////////
@@ -544,7 +545,6 @@ namespace VVVV.Nodes
 			FScaleInput.SetSubType(0.1, 1000, 0.1, 50, false, false, false);
 			FScaleInput.Order = -99994;
 			
-			
 			// ONLY VISIBLE IN INSPECTOR
 			FHost.CreateStringConfig("GUI Settings", TSliceMode.Dynamic, TPinVisibility.Hidden, out FGUISettings);
 			//FGUISettings.SliceCount = 0;
@@ -571,6 +571,10 @@ namespace VVVV.Nodes
 			FHost.CreateValueOutput("Seeking", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FSeekingOut);
 			FSeekingOut.SetSubType(0, 1, 1, 0, true, false, true);
 			FSeekingOut.Order = -99997;
+			
+			FHost.CreateValueOutput("Scratching", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FScratchingOut);
+			FScratchingOut.SetSubType(0, 1, 1, 0, true, false, true);
+			FScratchingOut.Order = -99996;
 		}
 		
 		#endregion pin creation
@@ -688,7 +692,13 @@ namespace VVVV.Nodes
 				FDoSetTime = dval > 0.5;
 			}
 			
-			if (FDoSetTime)
+			var isScratching = SliceArea.MouseState == TLMouseState.msDraggingTimeBar;
+
+			if (isScratching)
+			{
+				//this is handled in SliceArea.MouseDown
+			}
+			else if (FDoSetTime)
 			{
 				FTimer.TimeCount = Math.Min(FOutputPins.Count, FTimeInput.SliceCount);
 				for (int i=0; i<FTimeInput.SliceCount; i++)
@@ -710,6 +720,7 @@ namespace VVVV.Nodes
 			
 			//update time
 			FSeekingOut.SetValue(0, System.Convert.ToDouble(FTimer.IsSeeking));
+			FScratchingOut.SetValue(0, System.Convert.ToDouble(SliceArea.MouseState == TLMouseState.msDraggingTimeBar));
 			FTimer.Evaluate();
 			FTimeOut.SliceCount = FTimer.TimeCount;
 			for (int i=0; i<FTimer.TimeCount; i++)
@@ -1209,8 +1220,8 @@ namespace VVVV.Nodes
 		
 		private void TransformationChangedCB(double Translation, double Scaling)
 		{
-			FTranslateInput.SetValue(0, Translation);
-			FScaleInput.SetValue(0, Scaling);
+			FTranslateInput.SetValue(0, Math.Round(Translation, 4));
+			FScaleInput.SetValue(0, Math.Round(Scaling, 4));
 		}
 
 		void StopButtonClick(object sender, EventArgs e)

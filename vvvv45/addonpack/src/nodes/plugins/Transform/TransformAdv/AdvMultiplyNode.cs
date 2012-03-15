@@ -15,7 +15,7 @@ namespace VVVV.Nodes
             get
             {
                 IPluginInfo Info = new PluginInfo();
-                Info.Name = "*";							//use CamelCaps and no spaces
+                Info.Name = "Multiply";							//use CamelCaps and no spaces
                 Info.Category = "Transform";						//try to use an existing one
                 Info.Version = "Priority";						//versions are optional. leave blank if not needed
                 Info.Help = "Multiplies transform with priority";

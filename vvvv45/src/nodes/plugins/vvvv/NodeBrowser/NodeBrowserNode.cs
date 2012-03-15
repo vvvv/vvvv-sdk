@@ -28,8 +28,8 @@ namespace VVVV.Nodes.NodeBrowser
                 Help = "The NodeInfo Browser",
                 InitialBoxWidth = 200,
                 InitialBoxHeight = 250,
-                InitialWindowWidth = 300,
-                InitialWindowHeight = 500,
+                InitialWindowWidth = 340,
+                InitialWindowHeight = 550,
                 InitialComponentMode = TComponentMode.InAWindow)]
     public class NodeBrowserPluginNode: UserControl, INodeBrowser, IPartImportsSatisfiedNotification
     {
@@ -134,12 +134,12 @@ namespace VVVV.Nodes.NodeBrowser
         [ImportingConstructor]
         public NodeBrowserPluginNode(IHDEHost host, INodeInfoFactory nodeInfoFactory, NodeCollection nodeCollection)
         {
-            DefaultConstructor();
-
             HDEHost = host;            
             NodeInfoFactory = nodeInfoFactory;
             FNodeCollection = nodeCollection;
             IsStandalone = true;
+            
+            DefaultConstructor();
         }
 
         private void DefaultConstructor()
@@ -359,7 +359,7 @@ namespace VVVV.Nodes.NodeBrowser
         public void Initialize(string text)
         {
             IsStandalone = false;
-            
+            FTagPanel.NodeBrowser = this;
             FInitialText = text;
             FTagPanel.Initialize(FInitialText);
             HandleOnPanelChange(NodeBrowserPage.ByTags, null);

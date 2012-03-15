@@ -53,6 +53,9 @@ namespace VVVV.Hosting.Factories
         
         [Import]
         protected IHDEHost FHost;
+
+        [Import]
+        private StartableRegistry FStartableRegistry;
         
         private PluginImporter FPluginImporter = new PluginImporter();
         private readonly Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts;
@@ -60,6 +63,8 @@ namespace VVVV.Hosting.Factories
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
         protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
+
+
 
         public Dictionary<string, IPluginBase> FNodesPath = new Dictionary<string, IPluginBase>();
         public Dictionary<IPluginBase, IPluginHost2> FNodes = new Dictionary<IPluginBase, IPluginHost2>();
@@ -78,9 +83,6 @@ namespace VVVV.Hosting.Factories
             FPinExportProviders = new Dictionary<IPluginBase, HostExportProvider>();
             FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
             
-            AppDomain.CurrentDomain.AssemblyResolve += HandleAssemblyResolve;
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += HandleReflectionOnlyAssemblyResolve;
-            
             var pluginInterfacesAssemblyName = typeof(IPluginBase).Assembly.FullName;
             var pluginInterfacesAssembly = Assembly.ReflectionOnlyLoad(pluginInterfacesAssemblyName);
             FReflectionOnlyPluginBaseType = pluginInterfacesAssembly.GetExportedTypes().Where(t => t.Name == typeof(IPluginBase).Name).First();
@@ -88,7 +90,7 @@ namespace VVVV.Hosting.Factories
 
         public event PluginCreatedDelegate PluginCreated;
         public event PluginDeletedDelegate PluginDeleted;
-        
+
         public override string JobStdSubPath
         {
             get
@@ -158,6 +160,7 @@ namespace VVVV.Hosting.Factories
             if (!IsDotNetAssembly(filename)) return;
 
             bool containsV1Plugins = false;
+            bool nonLazyStartable = false;
             
             // Remember the current directory for later assembly resolution
             FCurrentAssemblyDir = Path.GetDirectoryName(filename);
@@ -183,6 +186,14 @@ namespace VVVV.Hosting.Factories
                         containsV1Plugins = true;
                     }
                 }
+
+
+                bool nonlazy = FStartableRegistry.ProcessType(type, assembly);
+
+                if (nonlazy)
+                {
+                    nonLazyStartable = true;
+                }
             }
             
             // V1 plugins need to be loaded in LoadFrom context in order to instantiate the
@@ -206,6 +217,13 @@ namespace VVVV.Hosting.Factories
                     }
                 }
             }
+
+            if (nonLazyStartable)
+            {
+                var assemblyload = Assembly.LoadFrom(filename);
+                FStartableRegistry.ProcessAssembly(assemblyload);
+            }
+            
             
             foreach (var nodeInfo in nodeInfos)
             {
@@ -214,7 +232,7 @@ namespace VVVV.Hosting.Factories
                     nodeInfo.CommitUpdate();
             }
         }
-        
+
         private static CustomAttributeData GetPluginInfoAttributeData(Type type)
         {
             var attributes = CustomAttributeData.GetCustomAttributes(type).Where(ca => ca.Constructor.DeclaringType.FullName == typeof(PluginInfoAttribute).FullName).ToArray();
@@ -331,6 +349,10 @@ namespace VVVV.Hosting.Factories
             }
             
             var assembly = Assembly.LoadFrom(assemblyLocation);
+
+            //Check if need to start anything before rest is loaded
+            FStartableRegistry.ProcessAssembly(assembly);
+
             var type = assembly.GetType(nodeInfo.Arguments);
             var attribute = GetPluginInfoAttributeData(type);
             if (attribute != null)
@@ -387,73 +409,7 @@ namespace VVVV.Hosting.Factories
             assemblyLocation = nodeInfo.Filename;
             return true;
         }
-        
-        private Assembly HandleAssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            string fullName = args.Name.Trim();
-            string partialName = GetPartialAssemblyName(fullName);
-            
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                AssemblyName name = assembly.GetName();
-                if (name.Name == partialName)
-                    return assembly;
-            }
-            
-            return null;
-        }
-        
-        private Assembly HandleReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            string fullName = args.Name.Trim();
-            string partialName = GetPartialAssemblyName(fullName);
-            
-            foreach (Assembly assembly in AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
-            {
-                AssemblyName name = assembly.GetName();
-                if (name.Name == partialName)
-                    return assembly;
-            }
-
-            string fileName = partialName + ".dll";
-            string path = Path.Combine(FCurrentAssemblyDir, fileName);
-            if (File.Exists(path))
-            {
-                return Assembly.ReflectionOnlyLoadFrom(path);
-            }
-            
-            path = Path.Combine(Shell.CallerPath, fileName);
-            if (File.Exists(path))
-            {
-                return Assembly.ReflectionOnlyLoadFrom(path);
-            }
-            
-            return Assembly.ReflectionOnlyLoad(fullName);
-        }
-        
-        private static string GetPartialAssemblyName(string fullName)
-        {
-            fullName = fullName.Trim();
-            if (fullName.IndexOf(',') >= 0)
-                return ReplaceLegacyAssemblyNames(fullName.Substring(0, fullName.IndexOf(',')));
-            else
-                return ReplaceLegacyAssemblyNames(fullName);
-        }
-        
-        private static string ReplaceLegacyAssemblyNames(string partialName)
-        {
-            switch (partialName)
-            {
-                case "_PluginInterfaces":
-                case "PluginInterfaces":
-                    return "VVVV.PluginInterfaces";
-                case "_Utils":
-                    return "VVVV.Utils";
-                default:
-                    return partialName;
-            }
-        }
-        
+              
         // From http://www.anastasiosyal.com/archive/2007/04/17/3.aspx
         private static bool IsDotNetAssembly(string fileName)
         {

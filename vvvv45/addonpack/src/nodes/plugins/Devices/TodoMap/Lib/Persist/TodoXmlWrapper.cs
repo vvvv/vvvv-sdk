@@ -16,6 +16,7 @@ namespace VVVV.TodoMap.Lib.Persist
             //Modules
             sb.AppendLine("<TodoModules>");
             PersistOsc(sb, engine.Osc);
+            PersistMidi(sb, engine.Midi);
             sb.AppendLine("</TodoModules>");
 
 
@@ -40,10 +41,10 @@ namespace VVVV.TodoMap.Lib.Persist
             string inputline = "<Input AutoStart=\"[inputauto]\" Port=\"[inputport]\" />";
             string outputline = "<Output AutoStart=\"[outputauto]\" Port=\"[outputport]\" />";
 
-            inputline = inputline.Replace("[inputauto]", osc.AutoStartInput.ToString());
+            inputline = inputline.Replace("[inputauto]", osc.AutoStartInput.ToStringEnglish());
             inputline = inputline.Replace("[inputport]", osc.LocalPort.ToString());
 
-            outputline = outputline.Replace("[outputauto]", osc.AutoStartOutput.ToString());
+            outputline = outputline.Replace("[outputauto]", osc.AutoStartOutput.ToStringEnglish());
             outputline = outputline.Replace("[outputport]", osc.RemotePort.ToString());
 
             sb.AppendLine(inputline);
@@ -52,13 +53,37 @@ namespace VVVV.TodoMap.Lib.Persist
             sb.AppendLine("</Osc>");
         }
 
+        private static void PersistMidi(StringBuilder sb, TodoMidiDevice midi)
+        {
+            sb.AppendLine("<Midi>");
+            
+            sb.AppendLine("<Inputs>");
+            foreach (string s in midi.InputAuto)
+            {
+                string inputline = "<Input AutoStart=\"[inputname]\" />";
+                inputline = inputline.Replace("[inputname]", s);
+                sb.AppendLine(inputline);
+            }
+            sb.AppendLine("</Inputs>");
+
+            sb.AppendLine("<Outputs>");
+            foreach (string s in midi.OutputAuto)
+            {
+                string outputline = "<Output AutoStart=\"[outputname]\" />";
+                outputline = outputline.Replace("[outputname]", s);
+                sb.AppendLine(outputline);
+            }
+            sb.AppendLine("</Outputs>");
+            sb.AppendLine("</Midi>");
+        }
+
         private static void PersistVariable(StringBuilder sb, TodoVariable var)
         {
           
             sb.AppendLine("<TodoVariable>");
             sb.AppendLine("<Name>" + var.Name + "</Name>");
             sb.AppendLine("<Category>" + var.Category + "</Category>");
-            sb.AppendLine("<AllowFeedBack>" + var.AllowFeedBack.ToString() + "</AllowFeedBack>");
+            sb.AppendLine("<AllowFeedBack>" + var.AllowFeedBack.ToStringEnglish() + "</AllowFeedBack>");
             sb.AppendLine("<TakeOverMode>" + var.TakeOverMode.ToString() + "</TakeOverMode>");
             sb.AppendLine("<Default>" + var.Default + "</Default>");
             sb.AppendLine("<MinValue>" + var.Mapper.MinValue + "</MinValue>");

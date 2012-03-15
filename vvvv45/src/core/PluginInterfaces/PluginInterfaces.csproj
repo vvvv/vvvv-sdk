@@ -63,6 +63,11 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="InteropServices\EX9\DeviceMarshaler.cs" />
+    <Compile Include="InteropServices\EX9\IDXDeviceListener.cs" />
+    <Compile Include="InteropServices\EX9\IDXDeviceService.cs" />
+    <Compile Include="InteropServices\EX9\MeshMarshaler.cs" />
+    <Compile Include="InteropServices\EX9\TextureMarshaler.cs" />
     <Compile Include="V1\Enumerations1.cs" />
     <Compile Include="V1\IPlugin1.cs" />
     <Compile Include="V1\IPluginHost1.cs" />
@@ -85,12 +90,15 @@
     <Compile Include="V2\IAddonFactory.cs" />
     <Compile Include="V2\IDiffSpread.cs" />
     <Compile Include="V2\IEffectHost.cs" />
+    <Compile Include="V2\IMainLoop.cs" />
     <Compile Include="V2\IHDE2.cs" />
     <Compile Include="V2\INodeInfoFactory.cs" />
     <Compile Include="V2\InputAttribute.cs" />
     <Compile Include="V2\IPinFactory.cs" />
     <Compile Include="V2\IPluginHost2.cs" />
     <Compile Include="V2\IPlugin2.cs" />
+    <Compile Include="V2\IStartable.cs" />
+    <Compile Include="V2\IStartableRegistry.cs" />
     <Compile Include="V2\Resource.cs" />
     <Compile Include="V2\NodeCollection.cs" />
     <Compile Include="V2\NodeInfo.cs" />
@@ -100,6 +108,7 @@
     <Compile Include="V2\PinAttribute.cs" />
     <Compile Include="V2\PluginInfoAttribute.cs" />
     <Compile Include="V2\Spread.cs" />
+    <Compile Include="V2\StartableAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SlimDX">
@@ -125,4 +134,5 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
 </Project>

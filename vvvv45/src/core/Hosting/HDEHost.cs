@@ -7,10 +7,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 using VVVV.Core;
 using VVVV.Core.Commands;
@@ -19,7 +19,9 @@ using VVVV.Core.Model;
 using VVVV.Hosting;
 using VVVV.Hosting.Factories;
 using VVVV.Hosting.Graph;
+using VVVV.Hosting.Interfaces.EX9;
 using VVVV.Hosting.Pins;
+using VVVV.PluginInterfaces.InteropServices.EX9;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
@@ -80,6 +82,9 @@ namespace VVVV.Hosting
 
         [Import]
         public NodeCollection NodeCollection {get; protected set;}
+
+        [Import]
+        private IStartableRegistry FStartableRegistry;
         
         public HDEHost()
         {
@@ -150,6 +155,9 @@ namespace VVVV.Hosting
             // Route log messages to vvvv
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
+            DeviceMarshaler.Initialize(vvvvHost.DeviceService);
+            MainLoop = new MainLoop(vvvvHost.MainLoop);
+            
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
             KommunikatorHost = kommunikatorHost;
@@ -159,7 +167,7 @@ namespace VVVV.Hosting
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(NodeCollection).Assembly.Location));
             //allow plugin writers to add their own factories
-            var factoriesPath = Path.GetDirectoryName(ExePath.ConcatPath(@"lib\factories"));
+            var factoriesPath = ExePath.ConcatPath(@"lib\factories");
             if (Directory.Exists(factoriesPath))
                 catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
             Container = new CompositionContainer(catalog);
@@ -264,6 +272,11 @@ namespace VVVV.Hosting
             NodeCollection.AddCombined(path, false);
             NodeCollection.Collect();
         }
+        
+        public void Shutdown()
+        {
+            FStartableRegistry.ShutDown();
+        }
 
         #endregion IInternalHDEHost
         
@@ -355,6 +368,28 @@ namespace VVVV.Hosting
             }
         }
         
+        public INode2 GetNodeFromPath(string nodePath)
+        {
+        	var ids = nodePath.Split('/');
+        	
+        	var result = RootNode[0];
+        	for (int i = 1; i < ids.Length; i++)
+        	{
+        		try
+        		{
+        			var id = int.Parse(ids[i]);
+        			result = (from node in result where node.ID == id select node).First();
+        		}
+        		catch
+        		{
+        			result = null;
+        			break;
+        		}       			
+        	}
+
+            return result;
+        }
+        
         public void UpdateEnum(string EnumName, string Default, string[] EnumEntries)
         {
             FVVVVHost.UpdateEnum(EnumName, Default, EnumEntries);
@@ -429,6 +464,11 @@ namespace VVVV.Hosting
             FVVVVHost.SetComponentMode(node.InternalCOMInterf, componentMode);
         }
         
+        public void SendPatchMessage(string fileName, string message, bool undoable)
+        {
+            FVVVVHost.SendPatchMessage(fileName, message, undoable);
+        }
+        
         public string ExePath
         {
             get;
@@ -449,6 +489,12 @@ namespace VVVV.Hosting
                 return FActivePatchWindow;
             }
         }
+        
+        public IMainLoop MainLoop
+		{
+		    get;
+		    private set;
+		}
         
         #endregion
         

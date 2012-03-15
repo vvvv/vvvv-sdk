@@ -583,7 +583,7 @@ namespace VVVV.HDE.CodeEditor
 				FSearchBar.ShowSearchBar();
 				return true;
 			}
-			else if (ke.Control && (ke.KeyCode == Keys.Add || ke.KeyCode == Keys.Oemplus))
+			else if ((ke.Control && !ke.Alt) && (ke.KeyCode == Keys.Add || ke.KeyCode == Keys.Oemplus))
 			{
 				if (!FNeedsKeyUp)
 				{
@@ -592,7 +592,7 @@ namespace VVVV.HDE.CodeEditor
 				}
 				return true;
 			}
-			else if (ke.Control && (ke.KeyCode == Keys.Subtract || ke.KeyCode == Keys.OemMinus))
+			else if ((ke.Control && !ke.Alt) && (ke.KeyCode == Keys.Subtract || ke.KeyCode == Keys.OemMinus))
 			{
 				if (!FNeedsKeyUp)
 				{
@@ -604,6 +604,14 @@ namespace VVVV.HDE.CodeEditor
 			else if ((ke.Control && !ke.Alt) && (ke.KeyCode == Keys.NumPad0 || ke.KeyCode == Keys.D0))
 			{
 				this.Font = new Font(this.Font.Name, 10);
+				return true;
+			}
+			else if (ke.KeyCode == Keys.F1 && m.Msg == 0x100)
+			{
+				if (TextDocument is CSDocument)
+					Process.Start("http://vvvv.org/documentation/plugins");
+				else
+					Process.Start("http://vvvv.org/documentation/effects");						
 				return true;
 			}
 			else

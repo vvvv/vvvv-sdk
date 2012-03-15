@@ -185,7 +185,7 @@ namespace VVVV.Nodes
 			//create inputs:
 			
 			//transform
-			FHost.CreateTransformInput("Tarnsform In", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
+			FHost.CreateTransformInput("Transform In", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
 			
 			//value
 			FHost.CreateValueInput("Value Input", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueIn);
@@ -255,7 +255,6 @@ namespace VVVV.Nodes
 			FInternalValueConfig.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 			
 			FControllerGroups = new ArrayList();
-			
 		}
 		
 		#endregion pin creation
@@ -281,8 +280,6 @@ namespace VVVV.Nodes
 		}
 		
 		#endregion mainloop
-		
-
 	}
 	
 
