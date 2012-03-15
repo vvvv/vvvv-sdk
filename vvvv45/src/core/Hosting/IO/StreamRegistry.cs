@@ -479,13 +479,16 @@ namespace VVVV.Hosting.IO
             RegisterConfig(typeof(BufferedIOStream<string>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringConfig)));
                                var stringConfig = container.RawIOObject as IStringConfig;
-                               return IOContainer.Create(context, new StringConfigStream(stringConfig), container, null, s => s.Flush(), s => s.Sync());
+                               var stream = new StringConfigStream(stringConfig);
+                               stream.Sync();
+                               return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
             
             RegisterConfig(typeof(BufferedIOStream<RGBAColor>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorConfig)));
                                var colorConfig = container.RawIOObject as IColorConfig;
                                var stream = new ColorConfigStream(colorConfig);
+                               stream.Sync();
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
             
@@ -493,13 +496,16 @@ namespace VVVV.Hosting.IO
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorConfig)));
                                var colorConfig = container.RawIOObject as IColorConfig;
                                var stream = new SlimDXColorConfigStream(colorConfig);
+                               stream.Sync();
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
 
             RegisterConfig(typeof(BufferedIOStream<EnumEntry>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumConfig)));
                                var enumConfig = container.RawIOObject as IEnumConfig;
-                               return IOContainer.Create(context, new DynamicEnumConfigStream(enumConfig), container, null, s => s.Flush(), s => s.Sync());
+                               var stream = new DynamicEnumConfigStream(enumConfig);
+                               stream.Sync();
+                               return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
             
             RegisterConfig(typeof(BufferedIOStream<>), (factory, context) => {
@@ -510,6 +516,7 @@ namespace VVVV.Hosting.IO
                                    var valueConfig = container.RawIOObject as IValueConfig;
                                    var streamType = typeof(ValueConfigStream<>).MakeGenericType(context.DataType);
                                    var stream = Activator.CreateInstance(streamType, new object[] { valueConfig }) as IIOStream;
+                                   stream.Sync();
                                    return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                                }
                                throw new NotSupportedException(string.Format("Config pin of type '{0}' is not supported.", t));

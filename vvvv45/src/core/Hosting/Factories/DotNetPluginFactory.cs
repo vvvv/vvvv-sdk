@@ -495,6 +495,7 @@ namespace VVVV.Hosting.Factories
     
     class PluginContainer : IPlugin, IDisposable
     {
+        [Export(typeof(IIOFactory))]
         private readonly IOFactory FIOFactory;
         private readonly CompositionContainer FContainer;
         private readonly IPluginEvaluate FPlugin;
