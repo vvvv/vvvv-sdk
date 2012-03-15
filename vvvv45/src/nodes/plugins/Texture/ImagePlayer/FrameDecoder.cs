@@ -13,7 +13,7 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.ImagePlayer
 {
-    abstract class FrameDecoder
+    abstract class FrameDecoder : IDisposable
     {
         class BitmapFrameDecoder : FrameDecoder
         {
@@ -39,14 +39,19 @@ namespace VVVV.Nodes.ImagePlayer
             
             public override Texture Decode(Device device)
             {
+                var usage = Usage.Dynamic & ~Usage.AutoGenerateMipMap;
+//                var usage = Usage.None & ~Usage.AutoGenerateMipMap;
+                var pool = Pool.Default;
+//                var pool = Pool.Managed;
+                
                 var texture = FTexturePool.GetTexture(
                     device,
                     FBitmapSource.PixelWidth,
                     FBitmapSource.PixelHeight,
                     1,
-                    Usage.Dynamic & ~Usage.AutoGenerateMipMap,
+                    usage,
                     Format.A8R8G8B8,
-                    Pool.Default);
+                    pool);
                 
                 var dataRectangle = texture.LockRectangle(0, LockFlags.Discard);
 
@@ -85,22 +90,31 @@ namespace VVVV.Nodes.ImagePlayer
         class Direct3D9FrameDecoder : FrameDecoder
         {
             private readonly ImageInformation FImageInformation;
+            private readonly byte[] FBuffer;
             
             public Direct3D9FrameDecoder(TexturePool texturePool, MemoryPool memoryPool, Stream stream)
                 : base(texturePool, memoryPool, stream)
             {
                 // This is stupid...but FromStream will trigger GC far too often.
-                var buffer = FMemoryPool.GetMemory((int) stream.Length);
-                stream.Read(buffer, 0, buffer.Length);
+                FBuffer = FMemoryPool.GetMemory((int) stream.Length);
+                stream.Read(FBuffer, 0, FBuffer.Length);
                 stream.Position = 0;
-                FMemoryPool.PutMemory(buffer);
-                FImageInformation = ImageInformation.FromMemory(buffer);
+                FImageInformation = ImageInformation.FromMemory(FBuffer);
+            }
+            
+            public override void Dispose()
+            {
+                FMemoryPool.PutMemory(FBuffer);
+                base.Dispose();
             }
             
             public override Texture Decode(Device device)
             {
                 var format = FImageInformation.Format;
                 var usage = Usage.Dynamic & ~Usage.AutoGenerateMipMap;
+//                var usage = Usage.None & ~Usage.AutoGenerateMipMap;
+                var pool = Pool.Default;
+//                var pool = Pool.Managed;
                 
                 Texture texture = null;
                 
@@ -113,7 +127,7 @@ namespace VVVV.Nodes.ImagePlayer
                         FImageInformation.MipLevels,
                         usage,
                         format,
-                        Pool.Default);
+                        pool);
                 } 
                 catch (SlimDXException) 
                 {
@@ -125,12 +139,12 @@ namespace VVVV.Nodes.ImagePlayer
                         FImageInformation.MipLevels,
                         usage,
                         Format.A8R8G8B8,
-                        Pool.Default);
+                        pool);
                 }
                 
                 var surface = texture.GetSurfaceLevel(0);
                 
-                Surface.FromFileInStream(surface, FStream, Filter.None, 0);
+                Surface.FromFileInMemory(surface, FBuffer, Filter.None, 0);
                 
                 return texture;
             }
@@ -189,6 +203,11 @@ namespace VVVV.Nodes.ImagePlayer
             FTexturePool = texturePool;
             FMemoryPool = memoryPool;
             FStream = stream;
+        }
+        
+        public virtual void Dispose()
+        {
+            
         }
         
         public abstract Texture Decode(Device device);
