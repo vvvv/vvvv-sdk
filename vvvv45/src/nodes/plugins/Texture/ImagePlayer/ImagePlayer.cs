@@ -281,6 +281,7 @@ namespace VVVV.Nodes.ImagePlayer
             // Dispose old visible frames
             FVisibleFrames.Resize(
                 visibleFrameNrs.SliceCount,
+                () => null,
                 frame =>
                 {
                     frame.Dispose();
@@ -414,7 +415,9 @@ namespace VVVV.Nodes.ImagePlayer
                 using (var stream = new FileStream(frameInfo.Filename, FileMode.Open, FileAccess.Read))
                 {
                     decoder = FrameDecoder.Create(frameInfo.Filename, FTexturePool, FMemoryPool, stream);
-                    return decoder.Decode(device);
+                    var texture = decoder.Decode(device);
+                    decoder.Dispose();
+                    return texture;
                 }
             }
             
@@ -469,6 +472,10 @@ namespace VVVV.Nodes.ImagePlayer
         
         private void Flush()
         {
+            foreach (var frameInfo in FScheduledFrameInfos)
+            {
+                frameInfo.Cancel();
+            }
             var emptyFrameInfo = GetEmptyFrameInfo();
             emptyFrameInfo.Cancel();
             Enqueue(emptyFrameInfo);
@@ -563,17 +570,13 @@ namespace VVVV.Nodes.ImagePlayer
 
                 decoder = FrameDecoder.Create(frameInfo.Filename, FTexturePool, FMemoryPool, stream);
                 
-                EX9.Device[] devices = null;
                 lock (FDevices)
                 {
-                    devices = FDevices.ToArray();
-                }
-                
-                foreach (var device in devices)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    frame.UpdateResource(device);
+                    foreach (var device in FDevices)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+                        frame.UpdateResource(device);
+                    }
                 }
             }
             catch (OperationCanceledException)
@@ -587,7 +590,11 @@ namespace VVVV.Nodes.ImagePlayer
             }
             finally
             {
-                decoder = null;
+                if (decoder != null)
+                {
+                    decoder.Dispose();
+                    decoder = null;
+                }
                 // We're done with this frame, put used memory stream back in the pool
                 FStreamPool.PutObject(stream);
             }

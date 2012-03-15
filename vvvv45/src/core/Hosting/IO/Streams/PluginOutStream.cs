@@ -153,7 +153,7 @@ namespace VVVV.Hosting.IO.Streams
         {
             foreach (var resource in this)
             {
-                resource.DestroyResource(device);
+                resource.DestroyResource(device, onlyUnmanaged);
             }
         }
     }
