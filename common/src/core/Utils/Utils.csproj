@@ -73,10 +73,14 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation\Particle.cs" />
     <Compile Include="Application\AppInfo.cs" />
+    <Compile Include="Array\ArrayExtensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="Color\RGBAColor.cs" />
@@ -112,11 +116,26 @@
     <Compile Include="SharedMemory\Win32Native.cs" />
     <Compile Include="Skeleton\ISkeleton.cs" />
     <Compile Include="Win32\HiPerfTimer.cs" />
+    <Compile Include="Streams\CyclicStreamReader.cs" />
+    <Compile Include="Streams\IFlushable.cs" />
+    <Compile Include="Streams\IInStream.cs" />
+    <Compile Include="Streams\IIOStream.cs" />
+    <Compile Include="Streams\IOutStream.cs" />
+    <Compile Include="Streams\IStream.cs" />
+    <Compile Include="Streams\IStreamer.cs" />
+    <Compile Include="Streams\IStreamReader.cs" />
+    <Compile Include="Streams\IStreamWriter.cs" />
+    <Compile Include="Streams\ISynchronizable.cs" />
+    <Compile Include="Streams\BufferedIOStream.cs" />
+    <Compile Include="Streams\MemoryPool.cs" />
+    <Compile Include="Streams\StreamUtils.cs" />
     <EmbeddedResource Include="ManagedVCL\ManagedVCLControl.resx">
       <DependentUpon>ManagedVCLControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Array" />
+    <Folder Include="Streams" />
     <Folder Include="Skeleton" />
     <Folder Include="Win32" />
   </ItemGroup>

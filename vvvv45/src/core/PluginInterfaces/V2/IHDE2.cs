@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
 using VVVV.Core;
 using VVVV.Core.Model;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.PluginInterfaces.V2
@@ -221,6 +221,14 @@ namespace VVVV.PluginInterfaces.V2
 		string ExePath
 		{
 			get;
+		}
+		
+		/// <summary>
+		/// Provides access to Direct3D9 devices created by vvvv.
+		/// </summary>
+		IDXDeviceService DeviceService
+		{
+		    get;
 		}
 		
 		/// <summary>

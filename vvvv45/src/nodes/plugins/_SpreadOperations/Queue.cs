@@ -39,7 +39,7 @@ namespace VVVV.Nodes
                 FBuffer.Clear();
 
         	if (FDoInsert[0])
-        		FBuffer.Insert(0, FInput.Clone());
+        		FBuffer.Insert(0, FInput.Clone() as ISpread<T>);
 			
         	var frameCount = FFrameCount[0];
         	if (frameCount >= 0 && FBuffer.Count > frameCount)

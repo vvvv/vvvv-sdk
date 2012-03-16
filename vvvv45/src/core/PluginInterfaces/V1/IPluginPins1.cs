@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Security;
 
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -22,21 +23,6 @@ using VVVV.Utils.VMath;
 namespace VVVV.PluginInterfaces.V1
 {
 	#region basic pins
-	/// <summary>
-	/// Helper interface for having a callback mechanism between host and pin.
-	/// </summary>
-	[Guid("60842D2E-FBA6-456C-A7AE-C3708D06B5C1"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPinUpdater
-	{
-	    //Called by the host before Evaluate for Inputs and after Evaluate for Outputs.
-	    void Update();
-	    
-	    void Connect(IPin otherPin);
-	    
-	    void Disconnect(IPin otherPin);
-	}
-	
 	[Guid("19D25C40-AE80-4960-9847-4FECF661522B"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IConnectionHandler
@@ -50,7 +36,8 @@ namespace VVVV.PluginInterfaces.V1
 	/// Base interface of all pin interfaces. Never used directly.
 	/// </summary>
 	[Guid("D3C5CB5C-C054-4AB6-AC04-6BDB34692B25"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	public interface IPluginIO
 	{
 		/// <summary>
@@ -66,9 +53,9 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		bool IsConnected{get;}
 		/// <summary>
-		/// Called by the plugin to set a callback on the host for the pin to be called to updat before/after Evaluate.
+		/// Gets the plugin host which created this plugin io.
 		/// </summary>
-		void SetPinUpdater(IPinUpdater pinUpdater);
+		IPluginHost PluginHost{get;}
 	}
 	
 	/// <summary>
@@ -113,13 +100,16 @@ namespace VVVV.PluginInterfaces.V1
 		/// further processing is needed or can be ommited.
 		/// </summary>
 		bool PinIsChanged{get;}
+		bool Validate();
+		bool AutoValidate{get;set;}
 	}
 	
 	/// <summary>
 	/// Base interface of all fast InputPin interfaces. Never used directly.
 	/// </summary>
 	[Guid("9AFAD289-7C11-4296-B232-8B33FAC3E27D"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	public interface IPluginFastIn: IPluginIO
 	{
 		/// <summary>
@@ -130,6 +120,8 @@ namespace VVVV.PluginInterfaces.V1
 		/// Returns a String of the pins concatenated Values. Typcally used internally only to save a pins state to disk.
 		/// </summary>
 		string SpreadAsString{get;}
+		bool Validate();
+		bool AutoValidate{get;set;}
 	}
 	
 	/// <summary>
@@ -239,6 +231,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetValuePointer(out int SliceCount, out double* Value);
+		void GetValuePointer(out int* length, out double** dataPointer);
 
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
@@ -350,6 +343,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetValuePointer(out int SliceCount, out double* Value);
+		void GetValuePointer(out int* length, out double** dataPointer);
 		
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
@@ -415,7 +409,8 @@ namespace VVVV.PluginInterfaces.V1
 	/// Interface to a fast InputPin of type Value.
 	/// </summary>
 	[Guid("095081B7-D929-4459-83C0-18AA809E6635"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	unsafe public interface IValueFastIn: IPluginFastIn		//fast value input pin
 	{
 		/// <summary>
@@ -461,6 +456,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetValuePointer(out int SliceCount, out double* Value);
+		void GetValuePointer(out int* length, out double** dataPointer);
 		
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
@@ -526,7 +522,8 @@ namespace VVVV.PluginInterfaces.V1
 	/// Interface to an OutputPin of type Value.
 	/// </summary>
 	[Guid("B55B70E8-9C3D-408D-B9F9-A90CF8288FC7"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	unsafe public interface IValueOut: IPluginOut			//value output pin
 	{
 		/// <summary>
@@ -571,6 +568,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetValuePointer(out double* Value);
+		void GetValuePointer(out double** Value);
 
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
@@ -767,6 +765,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
 		
 		void GetColorPointer(out int SliceCount, out double* Value);
+		void GetColorPointer(out int* pLength, out double** ppData);
 
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
@@ -799,6 +798,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceCount">The pins current SliceCount, specifying the number of colors accessible via the Pointer.</param>
 		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
 		void GetColorPointer(out int SliceCount, out double* Value);
+		void GetColorPointer(out int* pLength, out double** ppData);
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
@@ -837,6 +837,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Default">The Color the pin is initialized with and can be reset to at any time.</param>
 		/// <param name="HasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
 		void SetSubType(RGBAColor Default, bool HasAlpha);
+		void GetColorPointer(out double** ppDst);
 	}
 	
 	#endregion color pins
@@ -1044,6 +1045,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetMatrixPointer(out int SliceCount, out float* Value);
+		void GetMatrixPointer(out int* pLength, out float** ppData);
 		/// <summary>
 		/// Used to retrieve a World Matrix from the pin at the specified slice. 
 		/// You should call this method only from within your Render method when supporting the IPluginDXLayer interface.
@@ -1084,6 +1086,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetMatrixPointer(out float* Value);
+		void GetMatrixPointer(out float** ppDst);
 	}
 	#endregion node pins	
 	
