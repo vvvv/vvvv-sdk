@@ -1,0 +1,237 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\help\SharedMemory (EX9.Texture) help.v4p">
+   <BOUNDS height="6000" left="7470" top="5610" type="Window" width="12450">
+   </BOUNDS>
+   <NODE id="10" nodename="SharedMemory (EX9.Texture)" systemname="SharedMemory (EX9.Texture)">
+   <BOUNDS height="270" left="960" top="2730" type="Node" width="1170">
+   </BOUNDS>
+   <PIN pinname="Shared Memory Name" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="X8R8G8B8">
+   </PIN>
+   <PIN pinname="Repair" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Flip Vertically" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Bytes per Pixel" visible="1">
+   </PIN>
+   <PIN pinname="Shared Memory NamePin" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="630" top="3990" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Sampler State" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Texture" srcnodeid="10" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InAWindow" id="8" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="630" top="4530" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="7485" top="570" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="630" top="4530" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Layers" srcnodeid="9" srcpinname="Layer">
+   </LINK>
+   <NODE id="6" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS height="0" left="1920" top="3975" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Projection Transform" srcnodeid="6" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="4" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
+   <BOUNDS height="0" left="3615" top="3990" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Format" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Texture" srcnodeid="10" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="2235" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="16965" top="11805" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="2235" top="4515" type="Box" width="5670">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input String" srcnodeid="4" srcpinname="Format">
+   </LINK>
+   <NODE id="1" nodename="VideoOut (DShow9 SharedMemory)" systemname="VideoOut (DShow9 SharedMemory)">
+   <BOUNDS height="0" left="8595" top="4485" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Shared Name" slicecount="1" visible="1" values="|any name for the shared memory location|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="300" top="960" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14535" top="6525" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="300" top="960" type="Box" width="3030">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|any name for the shared memory location|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Shared Memory Name" srcnodeid="0" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="390" type="Box" width="2925">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="3150" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Converts Shared Memory into a texture|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="15" top="15" type="Box" width="3630">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="3150" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SharedMemory - EX9.Texture|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="8520" top="4155" type="Node" width="1605">
+   </BOUNDS>
+   <BOUNDS height="270" left="8520" top="4155" type="Box" width="1605">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see the helppatch of|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="735" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10125" top="5355" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="735" top="1380" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="320">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="735" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11115" top="5310" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="735" top="1740" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="240">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Width" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Height" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1080" top="2085" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11820" top="5475" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1080" top="2085" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Bytes per Pixel" srcnodeid="16" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1620" top="1545" type="Node" width="2775">
+   </BOUNDS>
+   <BOUNDS height="270" left="1620" top="1545" type="Box" width="2775">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|width and height of the source image|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1605" top="2100" type="Node" width="3420">
+   </BOUNDS>
+   <BOUNDS height="270" left="1605" top="2100" type="Box" width="3420">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|number of bytes per pixel of the source image|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="10" dstpinname="Shared Memory NamePin">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6060" top="480" width="16725" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6060" top="480" width="4380" height="3030">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|note that here width*height*bytes specifies the number of bytes to read from the shared memory location. ie. 230400bytes in this example. if the shared memory location has less bytes allocated an error will occur! see Renderer (TTY).&cr;&lf;&cr;&lf;also note the configuration pins of ShareMemory (EX9.Texture) that let you specify the expected memory layout via the Format pin.&cr;&lf;&cr;&lf;the node only interprets plain pixelbytearrays which must not be confused with the output of AsString (EX9.Texture) which always returns the plain file representations including headers and pallettes.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

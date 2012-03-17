@@ -1,0 +1,245 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta22.dtd" >
+   <PATCH nodename="D:\work\personal\builds\vvvv\plugins\SystemNodes\1.1\Watcher (File) help.v4p">
+   <BOUNDS height="8610" left="4440" top="255" type="Window" width="9210">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="14" nodename=":PLUGINS:\SystemNodes.dll|VVVV.Nodes.FileSystemWatcherNode">
+   <BOUNDS height="270" left="1545" top="3240" type="Node" width="1605">
+   </BOUNDS>
+   <BOUNDS height="0" left="1545" top="3240" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7455" top="4410" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="Event Type" visible="1">
+   </PIN>
+   <PIN pinname="Recurse Subdirectories" visible="1">
+   </PIN>
+   <PIN pinname="Filter" visible="1">
+   </PIN>
+   <PIN pinname="Include Subdirectories" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="13" nodename="Length (String)">
+   <BOUNDS height="0" left="1920" top="4305" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="S+H (String)">
+   <BOUNDS height="0" left="1530" top="4950" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input" linkstyle="Bezier" srcnodeid="14" srcpinname="Path">
+   <LINKPOINT x="1590" y="3908">
+   </LINKPOINT>
+   <LINKPOINT x="1935" y="3908">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Set" srcnodeid="13" srcpinname="Count">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="14" srcpinname="Path">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="0" left="705" top="6735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="705" top="6735" type="Box" width="6780">
+   </BOUNDS>
+   <BOUNDS height="160" left="7275" top="6915" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Path">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input String" linkstyle="VHV" srcnodeid="12" srcpinname="Output">
+   <LINKPOINT x="1590" y="5835">
+   </LINKPOINT>
+   <LINKPOINT x="3105" y="5835">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="10" nodename="Length (String)">
+   <BOUNDS height="0" left="3900" top="3900" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="9" nodename="S+H (String)">
+   <BOUNDS height="0" left="3105" top="4440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Set" linkstyle="VHV" srcnodeid="10" srcpinname="Count">
+   <LINKPOINT x="3900" y="4290">
+   </LINKPOINT>
+   <LINKPOINT x="3570" y="4290">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input" linkstyle="Bezier" srcnodeid="14" srcpinname="Event Type">
+   <LINKPOINT x="3150" y="3690">
+   </LINKPOINT>
+   <LINKPOINT x="3900" y="3690">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="14" srcpinname="Event Type">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2310" top="5190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="270" left="2310" top="5190" type="Box" width="870">
+   </BOUNDS>
+   <BOUNDS height="160" left="11610" top="7020" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Event Type|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input String" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="255" left="195" top="480" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="195" top="480" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="7410" top="14610" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Detects creation/modification/deletion of files in the system.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="195" top="120" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="195" top="120" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="7410" top="14610" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Watcher - File|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="6975" top="7350" type="Node" width="615">
+   </BOUNDS>
+   <BOUNDS height="270" left="6975" top="7350" type="Box" width="615">
+   </BOUNDS>
+   <BOUNDS height="160" left="750" top="1740" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="7005" top="7710" type="Node" width="1785">
+   </BOUNDS>
+   <BOUNDS height="270" left="7005" top="7710" type="Box" width="1785">
+   </BOUNDS>
+   <BOUNDS height="160" left="750" top="1740" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="3" nodename="SystemFolder (File)">
+   <BOUNDS height="0" left="1545" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Folder" slicecount="1" values="CurrentPatch">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Path" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2310" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="2310" top="2505" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="7695" top="1500" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="*.*">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Filter">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Filter" srcnodeid="2" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4080" top="2085" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="4080" top="2085" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="8685" top="1875" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Include Subdirectories|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4680" top="2145" type="Node" width="3750">
+   </BOUNDS>
+   <BOUNDS height="270" left="4680" top="2145" type="Box" width="3750">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;-- This can impact performances on large folders|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Include Subdirectories" linkstyle="VHV">
+   <LINKPOINT x="4500" y="2888">
+   </LINKPOINT>
+   <LINKPOINT x="3150" y="2888">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

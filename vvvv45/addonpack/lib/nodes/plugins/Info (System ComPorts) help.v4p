@@ -1,0 +1,91 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Info (System ComPorts) help.v4p" filename="C:\Users\chris\Desktop\infoComPort\plugins\infoComPorts\info(ComPort Help).v4p" systemname="info (ComPort Help)">
+   <BOUNDS height="4605" left="3690" top="2040" type="Window" width="3975">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="infoComPorts.csproj" id="2" nodename="Info (System ComPorts)" systemname="INFO (SYSTEM COMPORTS)">
+   <BOUNDS height="100" left="1995" top="2145" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Update" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="100" left="1575" top="1410" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="1575" top="1410" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Update" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Update" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="765" top="2595" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="795" left="765" top="2595" type="Box" width="1305">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input String" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="105" top="45" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="420" left="105" top="45" type="Box" width="3705">
+   </BOUNDS>
+   <BOUNDS height="160" left="3165" top="960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Info (System ComPorts)|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="45" top="555" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="240" left="45" top="555" type="Box" width="4320">
+   </BOUNDS>
+   <BOUNDS height="160" left="3165" top="960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|retrieves installed com ports aka serial ports|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2535" top="3780" type="Node" width="735">
+   </BOUNDS>
+   <BOUNDS height="330" left="2535" top="3780" type="Box" width="1110">
+   </BOUNDS>
+   <BOUNDS height="160" left="-1320" top="-1755" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|2011, u7angel|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

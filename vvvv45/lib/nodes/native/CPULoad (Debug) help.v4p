@@ -1,0 +1,299 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\CPULoad (Debug) help.v4p">
+   <BOUNDS height="8040" left="4230" top="1590" type="Window" width="7200">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="585" left="195" top="7275" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="330" left="195" top="7275" type="Box" width="4545">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Credits: based on code by Alexey A. Dynnikov &lt;aldyn@chat.ru&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Queue (Spreads)">
+   <BOUNDS height="0" left="195" top="2865" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Frame Count" slicecount="1" values="60.00000">
+   </PIN>
+   <PIN pinname="do Insert" visible="1" slicecount="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="195" top="1515" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="TogEdge (Animation)">
+   <BOUNDS height="0" left="195" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Down Edge" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE id="5" nodename="CPULoad (Debug)">
+   <BOUNDS height="0" left="195" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Do Check" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="CPU Load" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Do Check" linkstyle="VHV" srcnodeid="6" srcpinname="Down Edge">
+   <LINKPOINT x="1215" y="2265">
+   </LINKPOINT>
+   <LINKPOINT x="330" y="2265">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="195" top="3975" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5166" top="4085" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2895" left="195" top="3975" type="Box" width="6330">
+   </BOUNDS>
+   <PIN pinname="Show Connections" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="60.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="60" visible="1" values="0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000,0.00000">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="7" values="-0.90000,-0.82500,-0.70000,-0.51250,0.61250,0.75000,0.86250">
+   </PIN>
+   <PIN pinname="Slider Constraints" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="5" srcpinname="CPU Load">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="6540" top="6630" type="Node" width="510">
+   </BOUNDS>
+   <BOUNDS height="255" left="6540" top="6630" type="Box" width="510">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|0 %|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="6525" top="3990" type="Node" width="510">
+   </BOUNDS>
+   <BOUNDS height="255" left="6525" top="3990" type="Box" width="510">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|100 %|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Reverse (Spreads)">
+   <BOUNDS height="0" left="195" top="3285" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="195" top="6930" type="Node" width="6165">
+   </BOUNDS>
+   <BOUNDS height="240" left="195" top="6930" type="Box" width="6360">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;-----------------------------         60 seconds           -----------------------------&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="1" srcpinname="Output">
+   <LINKPOINT x="210" y="3765">
+   </LINKPOINT>
+   <LINKPOINT x="6465" y="3765">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="540" left="15" top="390" type="Box" width="5205">
+   </BOUNDS>
+   <BOUNDS height="160" left="-270" top="11700" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|outputs the current cpu load in percent. &cr;&lf;Beware of Heisenberg style effects when setting doCheck to permanent 1|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="-270" top="11700" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CPULoad - Debug|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Down Edge" dstnodeid="8" dstpinname="do Insert">
+   <LINKPOINT x="1245" y="2670">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="Bounds (Spectral)" id="12">
+   <BOUNDS type="Node" left="2760" top="1575" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Center" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" visible="1">
+   </PIN>
+   <PIN pinname="Maximum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="12" dstpinname="Input">
+   <LINKPOINT x="675" y="3210">
+   </LINKPOINT>
+   <LINKPOINT x="1800" y="2880">
+   </LINKPOINT>
+   <LINKPOINT x="2565" y="1455">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="Multiply (Value)" id="13">
+   <BOUNDS type="Node" left="2760" top="2355" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="100.00000">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Center" dstnodeid="13" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14">
+   <BOUNDS type="Node" left="2010" top="2805" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6825" top="4995" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2010" top="2805" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="average">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Output" dstnodeid="14" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="Multiply (Value)" id="16">
+   <BOUNDS type="Node" left="3585" top="2355" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="100.00000">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15">
+   <BOUNDS type="Node" left="2835" top="2805" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7125" top="5295" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2835" top="2805" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="min">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="15" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Minimum" dstnodeid="16" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="Multiply (Value)" id="18">
+   <BOUNDS type="Node" left="4440" top="2355" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="100.00000">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="3690" top="2805" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7425" top="5595" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3690" top="2805" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="max">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="17" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Maximum" dstnodeid="18" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="19">
+   <BOUNDS type="Node" left="4545" top="2775" width="690" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4545" top="2775" width="690" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="percent">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
