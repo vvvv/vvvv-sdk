@@ -90,12 +90,18 @@ namespace VVVV.PluginInterfaces.V2
         
         void HandleConnected(object sender, ConnectionEventArgs e)
 		{
-            OnConnected(new PinConnectionEventArgs(e.OtherPin));
+            if (e.PluginIO == FPluginIO)
+            {
+                OnConnected(new PinConnectionEventArgs(e.OtherPin));
+            }
 		}
 		
 		void HandleDisconnected(object sender, ConnectionEventArgs e)
 		{
-		    OnDisconnected(new PinConnectionEventArgs(e.OtherPin));
+		    if (e.PluginIO == FPluginIO)
+		    {
+		      OnDisconnected(new PinConnectionEventArgs(e.OtherPin));
+		    }
 		}
 	}
 }
