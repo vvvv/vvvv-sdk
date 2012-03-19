@@ -6,7 +6,7 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Hosting.IO
 {
     [ComVisible(false)]
-    static class IOContainer
+    public static class IOContainer
     {
         public static IIOContainer Create<TIOObject>(
             IOBuildContext context,
@@ -24,7 +24,7 @@ namespace VVVV.Hosting.IO
     }
     
     [ComVisible(false)]
-    class IOContainer<TIOObject> : IOContainerBase, IIOContainer<TIOObject>
+    public class IOContainer<TIOObject> : IOContainerBase, IIOContainer<TIOObject>
     {
         private readonly Action<TIOObject> SyncAction;
         private readonly Action<TIOObject> FlushAction;
@@ -114,7 +114,7 @@ namespace VVVV.Hosting.IO
     }
     
     [ComVisible(false)]
-    abstract class IOContainerBase : IIOContainer
+    public abstract class IOContainerBase : IIOContainer
     {
         public IOContainerBase(IOBuildContext context, IIOFactory factory, IIOContainer baseContainer, object rawIOObject)
         {

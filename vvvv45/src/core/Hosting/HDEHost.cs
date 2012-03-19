@@ -51,6 +51,9 @@ namespace VVVV.Hosting
         
         [Export(typeof(ILogger))]
         public DefaultLogger Logger { get; private set; }
+
+        [Export(typeof(IORegistry))]
+        public IORegistry IORegistry { get; private set; }
         
         [Export]
         public INodeBrowserHost NodeBrowserHost { get; protected set; }
@@ -118,6 +121,8 @@ namespace VVVV.Hosting
             EnumManager.SetHDEHost(this);
             
             Logger = new DefaultLogger();
+
+            IORegistry = new IORegistry();
         }
 
         private HashSet<ProxyNodeInfo> LoadNodeInfos(string filename, string arguments)

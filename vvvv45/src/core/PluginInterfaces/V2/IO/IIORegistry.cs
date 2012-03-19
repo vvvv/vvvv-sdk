@@ -16,7 +16,7 @@ namespace VVVV.PluginInterfaces.V2
 	    /// Register a new IO registry which will be used by IO factories
 	    /// to lookup and create custom IO classes.
 	    /// </summary>
-		void Register(IIORegistry registry);
+		void Register(IIORegistry registry, bool first);
 		
 		/// <summary>
 		/// Whether or not this registry can create the IO class as described
