@@ -42,11 +42,14 @@ namespace VVVV.Hosting.Factories
 
         [Import]
         private StartableRegistry FStartableRegistry;
+
+        [Import]
+        private IORegistry FIORegistry;
         
         private readonly Dictionary<IPluginBase, PluginContainer> FPluginContainers;
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
-        private readonly IORegistry FIORegistry = new IORegistry();
+        
         protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 
 

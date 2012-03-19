@@ -22,7 +22,7 @@ using VVVV.Utils.VMath;
 namespace VVVV.Hosting.IO
 {
     [ComVisible(false)]
-    class IORegistry : IORegistryBase
+    public class IORegistry : IORegistryBase
     {
         public IORegistry()
         {
