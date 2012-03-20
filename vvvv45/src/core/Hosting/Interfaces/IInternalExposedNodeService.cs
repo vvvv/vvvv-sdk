@@ -8,7 +8,7 @@ namespace VVVV.Hosting.Interfaces
     /// <summary>
     /// Provides access to nodes that have been exposed for being remotely controlled
     /// </summary>
-    [Guid("60C92F66-6EF7-4017-9D5C-8DAF508CB405"),
+    [Guid("B032ADF8-DAD9-4046-A8FE-B4D2907C917D"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IInternalExposedNodeService
     {

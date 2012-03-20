@@ -8,7 +8,7 @@ namespace VVVV.Hosting.Interfaces
     /// <summary>
     /// IInternalExposedNodeListener is the callback interface used by IDXInternalExposedNodeService.
     /// </summary>
-    [Guid("98B82B7E-487B-476A-A174-37FA07C1D408"),
+    [Guid("56671E96-EA42-4544-9927-D1ED86A6741A"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IInternalExposedNodeListener
     {
