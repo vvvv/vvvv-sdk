@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
 using VVVV.Core;
 using VVVV.Core.Model;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.PluginInterfaces.V2
@@ -106,7 +106,7 @@ namespace VVVV.PluginInterfaces.V2
 	    /// <summary>
 	    /// Returns an INode2 given a slash-separated string of node IDs that uniquely identifies that node. 
 	    /// </summary>
-	    /// <param name="NodePath">A slash-separated string of node IDs.</param>
+	    /// <param name="nodePath">A slash-separated string of node IDs.</param>
 	    /// <returns></returns>
 	    INode2 GetNodeFromPath(string nodePath);
 	    
@@ -216,11 +216,27 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
-		/// Get the full path to the vvvv.exe.
+		/// Gets the full path to the vvvv.exe.
 		/// </summary>
 		string ExePath
 		{
 			get;
+		}
+		
+		/// <summary>
+		/// Provides access to Direct3D9 devices created by vvvv.
+		/// </summary>
+		IDXDeviceService DeviceService
+		{
+		    get;
+		}
+		
+		/// <summary>
+		/// Gets the main loop, which exposes events from the main loop.
+		/// </summary>
+		IMainLoop MainLoop
+		{
+		    get;
 		}
 		
 		/// <summary>

@@ -140,7 +140,15 @@ namespace VVVV.Hosting
         /// <summary>
         /// Gets the Direct3D9 device service.
         /// </summary>
-        IDXDeviceService DeviceService
+        IInternalDXDeviceService DeviceService
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// Gets the main loop.
+        /// </summary>
+        IInternalMainLoop MainLoop
         {
             get;
         }

@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace VVVV.PluginInterfaces.V2
 {
     [ComVisible(false)]
-	public sealed class OutputAttribute : PinAttribute
+	public sealed class OutputAttribute : IOAttribute
 	{
 	  public static readonly string DefaultBinName = " Bin Size";
 	  
@@ -43,5 +43,28 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 			set;
 		}
+		
+		public override object Clone()
+		{
+		    var clonedInstance = new OutputAttribute(Name);
+		    clonedInstance.BinName = BinName;
+		    clonedInstance.BinVisibility = BinVisibility;
+		    clonedInstance.BinOrder = BinOrder;
+			return base.Clone(clonedInstance);
+		}
+		
+		public override string ToString()
+		{
+			return "Output";
+		}
+
+		public OutputAttribute GetBinSizeOutputAttribute()
+        {
+            return new OutputAttribute(BinName == DefaultBinName ? string.Format("{0} Bin Size", Name) : BinName)
+            {
+                Order = BinOrder,
+                Visibility = BinVisibility
+            };
+        }
 	}
 }

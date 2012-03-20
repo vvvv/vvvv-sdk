@@ -48,6 +48,11 @@ namespace VVVV.Nodes.NodeBrowser
             }
             set
             {
+                if (FNodeBrowser != null)
+                {
+                    this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
+                }
+                
                 FNodeBrowser = value;
                 
                 if (FNodeBrowser != null && FNodeBrowser.IsStandalone)

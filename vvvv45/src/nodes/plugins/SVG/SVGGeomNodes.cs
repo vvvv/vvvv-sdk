@@ -23,6 +23,7 @@ namespace VVVV.Nodes
 	public abstract class SVGVisualElementNode<T> : IPluginEvaluate where T : SvgVisualElement
 	{
 		#region fields & pins
+		#pragma warning disable 649
 		[Input("Transform", Order = 0)]
 		protected IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
@@ -37,6 +38,7 @@ namespace VVVV.Nodes
 		
 		[Output("Layer")]
 		ISpread<T> FOutput;
+		#pragma warning restore
 		
 		bool FFirstFrame = true;
 		
@@ -193,8 +195,10 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgRectNode : SVGVisualElementFillNode<SvgRectangle>
 	{
+	    #pragma warning disable 649
 		[Input("Corner Radius ", Order = 23, MinValue = 0, MaxValue = 1)]
 		IDiffSpread<Vector2> FCornerRadiusIn;
+		#pragma warning restore
 		
 		protected override SvgRectangle CreateElement()
 		{
@@ -250,8 +254,10 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgPolylineNode : SVGVisualElementFillNode<SvgPolyline>
 	{
+	    #pragma warning disable 649
 		[Input("Vertices", Order = -1)]
 		IDiffSpread<ISpread<Vector2>> FVerticesIn;
+		#pragma warning restore
 		
 		protected override SvgPolyline CreateElement()
 		{
@@ -297,8 +303,10 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgPolygonNode : SVGVisualElementFillNode<SvgPolygon>
 	{
+	    #pragma warning disable 649
 		[Input("Vertices", Order = -1)]
 		IDiffSpread<ISpread<Vector2>> FVerticesIn;
+		#pragma warning restore
 		
 		protected override SvgPolygon CreateElement()
 		{
@@ -344,6 +352,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgTextNode : SVGVisualElementFillNode<SvgText>
 	{
+	    #pragma warning disable 649
 		[Input("Text", Order = 1, DefaultString = "vvvv")]
 		IDiffSpread<string> FTextIn;
 		
@@ -355,6 +364,7 @@ namespace VVVV.Nodes
 		
 		[Input("Anchor", Order = 4)]
 		IDiffSpread<SvgTextAnchor> FTextAnchorIn;
+		#pragma warning restore
 		
 		protected override SvgText CreateElement()
 		{
@@ -376,7 +386,7 @@ namespace VVVV.Nodes
 				elem.FontFamily = (new Font(FFontIn[slice].Name, 1)).FontFamily.Name;
 				
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				elem.FontFamily = (new Font("Arial", 1)).FontFamily.Name;
 			}
@@ -396,6 +406,7 @@ namespace VVVV.Nodes
 	public class SVGCameraNode : IPluginEvaluate
 	{
 		#region fields & pins
+		#pragma warning disable 649, 169
 		[Input("Center")]
 		IDiffSpread<Vector2> FViewCenterIn;
 		
@@ -407,6 +418,7 @@ namespace VVVV.Nodes
 
 		[Import()]
 		ILogger FLogger;
+		#pragma warning restore
 		
 		#endregion fields & pins
 
@@ -439,6 +451,7 @@ namespace VVVV.Nodes
 	public class SVGCameraSplitNode : IPluginEvaluate
 	{
 		#region fields & pins
+		#pragma warning disable 649, 169
 		[Input("View Box")]
 		IDiffSpread<SvgViewBox> FInput;
 		
@@ -450,6 +463,7 @@ namespace VVVV.Nodes
 
 		[Import()]
 		ILogger FLogger;
+		#pragma warning restore
 		
 		#endregion fields & pins
 
@@ -483,6 +497,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SVGGetPathNode : IPluginEvaluate
 	{
+	    #pragma warning disable 649
 		[Input("Layer")]
 		ISpread<SvgElement> FInput;
 		
@@ -500,6 +515,7 @@ namespace VVVV.Nodes
 		
 		[Output("Path Type")]
 		ISpread<ISpread<int>> FPathTypeOutput;
+		#pragma warning restore
 		
 		public void Evaluate(int SpreadMax)
 		{
@@ -555,6 +571,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SVGGetElementsNode : IPluginEvaluate
 	{
+	    #pragma warning disable 649
 		[Input("Layer")]
 		IDiffSpread<SvgElement> FInput;
 		
@@ -566,6 +583,7 @@ namespace VVVV.Nodes
 		
 		[Output("Level")]
 		ISpread<int> FElementLevelOut;
+		#pragma warning restore
 		
 		public void Evaluate(int SpreadMax)
 		{
@@ -617,6 +635,7 @@ namespace VVVV.Nodes
 	public class SVGNormalizeNode : IPluginEvaluate
 	{
 		#region fields & pins
+		#pragma warning disable 649,169
 		[Input("Transform")]
 		IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
@@ -631,6 +650,7 @@ namespace VVVV.Nodes
 
 		[Import()]
 		ILogger FLogger;
+		#pragma warning restore
 		
 		List<SvgGroup> FGroups = new List<SvgGroup>();
 		#endregion fields & pins
@@ -734,6 +754,7 @@ namespace VVVV.Nodes
 	public class SVGGroupNode : IPluginEvaluate
 	{
 		#region fields & pins
+		#pragma warning disable 649,169
 		[Input("Transform")]
 		IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
@@ -748,6 +769,7 @@ namespace VVVV.Nodes
 
 		[Import()]
 		ILogger FLogger;
+		#pragma warning restore
 		
 		List<SvgElement> FGroups = new List<SvgElement>();
 		#endregion fields & pins
