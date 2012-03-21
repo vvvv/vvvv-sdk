@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.Pins
 {
@@ -10,17 +10,40 @@ namespace VVVV.Hosting.Pins
 	/// base class for spread lists
 	/// </summary>
 	[ComVisible(false)]
-	abstract class SpreadList<T> : Spread<ISpread<T>>, IDisposable
+	abstract class SpreadList<TSpread> : Spread<TSpread>, IDisposable
+	    where TSpread : class, ISynchronizable, IFlushable
 	{
+	    class SpreadListStream : BufferedIOStream<TSpread>
+	    {
+            public override bool Sync()
+            {
+                IsChanged = false;
+                foreach (var spread in this)
+                {
+                    IsChanged |= spread.Sync();
+                }
+                return base.Sync();
+            }
+            
+            public override void Flush()
+            {
+                foreach (var spread in this)
+                {
+                    spread.Flush();
+                }
+                base.Flush();
+            }
+	    }
+	    
 		protected readonly IIOFactory FFactory;
 		protected readonly IOAttribute FAttribute;
-		private readonly List<IIOHandler> FIOHandlers = new List<IIOHandler>();
+		private readonly List<IIOContainer> FIOContainers = new List<IIOContainer>();
 		protected IDiffSpread<int> FCountSpread;
 		protected int FOffsetCounter;
 		protected static int FInstanceCounter = 1;
 		
 		public SpreadList(IIOFactory factory, IOAttribute attribute)
-			: base(0)
+		    : base(new SpreadListStream())
 		{
 			//store fields
 			FFactory = factory;
@@ -43,14 +66,18 @@ namespace VVVV.Hosting.Pins
 		
 		public virtual void Dispose()
 		{
-			FCountSpread.Changed -= HandleCountSpreadChanged;
-			SliceCount = 0;
+		    FCountSpread.Changed -= HandleCountSpreadChanged;
+		    foreach (var container in FIOContainers)
+		    {
+		        container.Dispose();
+		    }
+		    FIOContainers.Clear();
 		}
 		
 		//pin management
 		void HandleCountSpreadChanged(IDiffSpread<int> spread)
 		{
-			int oldCount = FIOHandlers.Count;
+			int oldCount = FIOContainers.Count;
 			int newCount = Math.Max(spread[0], 0);
 			
 			for (int i = oldCount; i < newCount; i++)
@@ -58,44 +85,25 @@ namespace VVVV.Hosting.Pins
 				var attribute = CreateAttribute(i + 1);
 				attribute.IsPinGroup = false;
 				attribute.Order = FAttribute.Order + FOffsetCounter * 1000 + i;
-				var io = FFactory.CreateIOHandler<ISpread<T>>(attribute);
-				FIOHandlers.Add(io);
+				var io = FFactory.CreateIOContainer<TSpread>(attribute, false);
+				FIOContainers.Add(io);
 			}
 			
 			for (int i = oldCount - 1; i >= newCount; i--)
 			{
-				var io = FIOHandlers[i];
-				FFactory.DestroyIOHandler(io);
-				FIOHandlers.Remove(io);
+				var io = FIOContainers[i];
+				FIOContainers.Remove(io);
+				io.Dispose();
 			}
 			
-			SliceCount = FIOHandlers.Count;
+			SliceCount = FIOContainers.Count;
 			using (var writer = Stream.GetWriter())
 			{
-				foreach (var io in FIOHandlers)
+				foreach (var io in FIOContainers)
 				{
-					writer.Write(io.RawIOObject as ISpread<T>);
+					writer.Write(io.RawIOObject as TSpread);
 				}
 			}
-		}
-		
-		public override bool Sync()
-		{
-			var changed = base.Sync();
-			foreach (var spread in Stream)
-			{
-				changed |= spread.Sync();
-			}
-			return changed;
-		}
-		
-		public override void Flush()
-		{
-			foreach (var spread in Stream)
-			{
-				spread.Flush();
-			}
-			base.Flush();
 		}
 		
 		protected abstract IOAttribute CreateAttribute(int position);

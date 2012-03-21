@@ -11,7 +11,7 @@ namespace VVVV.Hosting.Pins
 	[ComVisible(false)]
 	abstract class BinSpread<T> : Spread<ISpread<T>>
 	{
-		class BinSpreadStream : ManagedIOStream<ISpread<T>>
+		internal class BinSpreadStream : BufferedIOStream<ISpread<T>>
 		{
 			protected override void BufferIncreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)
 			{
@@ -39,8 +39,8 @@ namespace VVVV.Hosting.Pins
 		
 		protected readonly IIOFactory FIOFactory;
 		
-		public BinSpread(IIOFactory ioFactory, IOAttribute attribute)
-			: base(new BinSpreadStream())
+		public BinSpread(IIOFactory ioFactory, IOAttribute attribute, BinSpreadStream stream)
+			: base(stream)
 		{
 			FIOFactory = ioFactory;
 		}

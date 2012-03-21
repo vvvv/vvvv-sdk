@@ -7,140 +7,21 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    // Slow
-    abstract class PluginInStream<T> : IInStream<T>
-    {
-        class PluginInReader : IStreamReader<T>
-        {
-            private readonly PluginInStream<T> FStream;
-            
-            public PluginInReader(PluginInStream<T> stream)
-            {
-                FStream = stream;
-            }
-            
-            public bool Eos
-            {
-                get
-                {
-                    return Position >= Length;
-                }
-            }
-            
-            public int Position
-            {
-                get;
-                set;
-            }
-            
-            public int Length
-            {
-                get
-                {
-                    return FStream.Length;
-                }
-            }
-            
-            public T Current
-            {
-                get;
-                private set;
-            }
-            
-            object System.Collections.IEnumerator.Current
-            {
-                get
-                {
-                    return Current;
-                }
-            }
-            
-            public bool MoveNext()
-            {
-                var result = !Eos;
-                if (result)
-                {
-                    Current = Read();
-                }
-                return result;
-            }
-            
-            public T Read(int stride = 1)
-            {
-                var result = FStream.GetSlice(Position);
-                Position += stride;
-                return result;
-            }
-            
-            public int Read(T[] buffer, int index, int length, int stride)
-            {
-                var numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-                for (int i = index; i < index + numSlicesToRead; i++)
-                {
-                    buffer[i] = Read(stride);
-                }
-                return numSlicesToRead;
-            }
-            
-//			public void ReadCyclic(T[] buffer, int index, int length, int stride)
-//			{
-//				// No need to optimize here as slow as it is already.
-//				StreamUtils.ReadCyclic(this, buffer, index, length, stride);
-//			}
-            
-            public void Dispose()
-            {
-                // Nothing to do
-            }
-            
-            public void Reset()
-            {
-                Position = 0;
-            }
-        }
-        
-        public object Clone()
-        {
-            throw new NotImplementedException();
-        }
-        
-        public abstract int Length
-        {
-            get;
-        }
-        
-        protected abstract T GetSlice(int index);
-        
-        public abstract bool Sync();
-        
-        public IStreamReader<T> GetReader()
-        {
-            return new PluginInReader(this);
-        }
-        
-        public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-        {
-            return GetReader();
-        }
-        
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-    }
-    
-    class StringInStream : ManagedIOStream<string>
+    class StringInStream : BufferedIOStream<string>
     {
         private readonly IStringIn FStringIn;
+        private readonly bool FAutoValidate;
         
         public StringInStream(IStringIn stringIn)
         {
             FStringIn = stringIn;
+            FAutoValidate = stringIn.AutoValidate;
         }
         
         public override bool Sync()
         {
-            if (FStringIn.Validate())
+            IsChanged = FAutoValidate ? FStringIn.PinIsChanged : FStringIn.Validate();
+            if (IsChanged)
             {
                 Length = FStringIn.SliceCount;
                 using (var writer = GetWriter())
@@ -152,26 +33,26 @@ namespace VVVV.Hosting.IO.Streams
                         writer.Write(result ?? string.Empty);
                     }
                 }
-                
-                return true;
             }
-            
-            return false;
+            return base.Sync();
         }
     }
     
-    class EnumInStream<T> : ManagedIOStream<T>
+    class EnumInStream<T> : BufferedIOStream<T>
     {
         protected readonly IEnumIn FEnumIn;
+        protected readonly bool FAutoValidate;
         
         public EnumInStream(IEnumIn enumIn)
         {
             FEnumIn = enumIn;
+            FAutoValidate = enumIn.AutoValidate;
         }
         
         public override bool Sync()
         {
-            if (FEnumIn.Validate())
+            IsChanged = FAutoValidate ? FEnumIn.PinIsChanged : FEnumIn.Validate();
+            if (IsChanged)
             {
                 Length = FEnumIn.SliceCount;
                 using (var writer = GetWriter())
@@ -190,24 +71,25 @@ namespace VVVV.Hosting.IO.Streams
                         }
                     }
                 }
-                
-                return true;
             }
-            
-            return false;
+            return base.Sync();
         }
     }
     
     class DynamicEnumInStream : EnumInStream<EnumEntry>
     {
-        public DynamicEnumInStream(IEnumIn enumIn)
+        private readonly string FEnumName;
+        
+        public DynamicEnumInStream(IEnumIn enumIn, string enumName)
             : base(enumIn)
         {
+            FEnumName = enumName;
         }
         
         public override bool Sync()
         {
-            if (FEnumIn.Validate())
+            IsChanged = FAutoValidate ? FEnumIn.PinIsChanged : FEnumIn.Validate();
+            if (IsChanged)
             {
                 Length = FEnumIn.SliceCount;
                 using (var writer = GetWriter())
@@ -217,27 +99,24 @@ namespace VVVV.Hosting.IO.Streams
                         int ord;
                         string name;
                         FEnumIn.GetOrd(i, out ord);
-                        // TODO: Was not used. FEnumName.
-                        FEnumIn.GetString(i, out name);
-                        writer.Write(new EnumEntry(name, ord));
+                        writer.Write(new EnumEntry(FEnumName, ord));
                     }
                 }
-                
-                return true;
             }
-            
-            return false;
+            return IsChanged;
         }
     }
     
-    class NodeInStream<T> : PluginInStream<T>
+    class NodeInStream<T> : BufferedIOStream<T>
     {
         private readonly INodeIn FNodeIn;
+        private readonly bool FAutoValidate;
         
         public NodeInStream(INodeIn nodeIn, IConnectionHandler handler)
         {
             FNodeIn = nodeIn;
             FNodeIn.SetConnectionHandler(handler, this);
+            FAutoValidate = nodeIn.AutoValidate;
         }
         
         public NodeInStream(INodeIn nodeIn)
@@ -245,35 +124,32 @@ namespace VVVV.Hosting.IO.Streams
         {
         }
         
-        public override int Length
-        {
-            get
-            {
-                return FNodeIn.SliceCount;
-            }
-        }
-        
-        protected override T GetSlice(int index)
-        {
-            object usI;
-            FNodeIn.GetUpstreamInterface(out usI);
-            var upstreamInterface = usI as IGenericIO;
-            
-            int usS;
-            if (upstreamInterface != null)
-            {
-                FNodeIn.GetUpsreamSlice(index, out usS);
-                return (T) upstreamInterface.GetSlice(usS);
-            }
-            else
-            {
-                return default(T);
-            }
-        }
-        
         public override bool Sync()
         {
-            return FNodeIn.Validate();
+            IsChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
+            if (IsChanged)
+            {
+                Length = FNodeIn.SliceCount;
+                using (var writer = GetWriter())
+                {
+                    object usI;
+                    FNodeIn.GetUpstreamInterface(out usI);
+                    var upstreamInterface = usI as IGenericIO;
+                    
+                    for (int i = 0; i < Length; i++)
+                    {
+                        int usS;
+                        var result = default(T);
+                        if (upstreamInterface != null)
+                        {
+                            FNodeIn.GetUpsreamSlice(i, out usS);
+                            result = (T) upstreamInterface.GetSlice(usS);
+                        }
+                        writer.Write(result);
+                    }
+                }
+            }
+            return base.Sync();
         }
     }
 }

@@ -9,28 +9,30 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.IO
 {
-    class IOFactory : IIOFactory, IDisposable
+    public class IOFactory : IIOFactory, IInternalPluginHostListener, IDisposable
     {
         private readonly IInternalPluginHost FPluginHost;
-        private readonly IORegistry FIORegistry;
-        private readonly List<IIOHandler> FCreatedHandlers = new List<IIOHandler>();
-        // used by internal class PluginContainer
-        internal readonly List<IOHandler> FPreHandlers = new List<IOHandler>();
-        internal readonly List<IOHandler> FPostHandlers = new List<IOHandler>();
-        internal readonly List<IOHandler> FConfigHandlers = new List<IOHandler>();
+        private readonly IIORegistry FIORegistry;
         
-        public IOFactory(IInternalPluginHost pluginHost, IORegistry streamRegistry)
+        public IOFactory(IInternalPluginHost pluginHost, IIORegistry streamRegistry)
         {
             FPluginHost = pluginHost;
             FIORegistry = streamRegistry;
+            // HACK
+            if (FPluginHost != null)
+            {
+                FPluginHost.Subscribe(this);
+            }
         }
         
         public void Dispose()
         {
-            foreach (var ioHandler in FCreatedHandlers.ToArray())
+            // HACK
+            if (FPluginHost != null)
             {
-                DestroyIOHandler(ioHandler);
+                FPluginHost.Unsubscribe(this);
             }
+            OnDisposing(EventArgs.Empty);
         }
         
         public IPluginHost2 PluginHost
@@ -41,46 +43,25 @@ namespace VVVV.Hosting.IO
             }
         }
         
-        public IIOHandler CreateIOHandler(Type type, IOAttribute attribute)
+        public IIOContainer CreateIOContainer(IOBuildContext context)
         {
-            var io = FIORegistry.CreateIOHandler(
-                type.IsGenericType ? type.GetGenericTypeDefinition() : type,
-                type,
-                this,
-                attribute
-               );
-            
+            var io = FIORegistry.CreateIOContainer(this, context);
             if (io == null)
             {
-                throw new NotSupportedException(string.Format("Can't create {0} of type '{1}'.", attribute, type));
+                throw new NotSupportedException(string.Format("Can't create container for build context '{1}'.", context));
             }
-            
-            if (io.NeedsPreEvaluation)
-            {
-                FPreHandlers.Add(io);
-            }
-            if (io.NeedsPostEvaluation)
-            {
-                FPostHandlers.Add(io);
-            }
-            if (io.NeedsConfiguration)
-            {
-                FConfigHandlers.Add(io);
-            }
-            
-            FCreatedHandlers.Add(io);
-            
             return io;
         }
-        
-        public bool CanCreateIOHandler(Type type, IOAttribute attribute)
+
+        public bool CanCreateIOContainer(IOBuildContext context)
         {
-            if (!FIORegistry.CanCreate(type, attribute))
+            if (!FIORegistry.CanCreate(context))
             {
+                var type = context.IOType;
                 if (type.IsGenericType)
                 {
                     var openGenericType = type.GetGenericTypeDefinition();
-                    return FIORegistry.CanCreate(openGenericType, attribute);
+                    return FIORegistry.CanCreate(context.ReplaceIOType(openGenericType));
                 }
                 
                 return false;
@@ -89,38 +70,84 @@ namespace VVVV.Hosting.IO
             return true;
         }
         
-        // HACK: IIOHandler should implement IDisposable
-        public void DestroyIOHandler(IIOHandler io_interface)
+        public event EventHandler Synchronizing;
+        
+        internal void OnSynchronizing(EventArgs e)
         {
-            // HACK: Remove this cast
-            var io = (IOHandler) io_interface;
-            
-            if (io.NeedsPreEvaluation)
+            if (Synchronizing != null) 
             {
-                FPreHandlers.Remove(io);
+                Synchronizing(this, e);
             }
-            if (io.NeedsPostEvaluation)
+        }
+        
+        public event EventHandler Flushing;
+        
+        internal void OnFlushing(EventArgs e)
+        {
+            if (Flushing != null) 
             {
-                FPostHandlers.Remove(io);
+                Flushing(this, e);
             }
-            if (io.NeedsConfiguration)
+        }
+        
+        public event EventHandler<ConfigEventArgs> Configuring;
+        
+        internal void OnConfiguring(ConfigEventArgs e)
+        {
+            if (Configuring != null) 
             {
-                FConfigHandlers.Remove(io);
+                Configuring(this, e);
             }
-            
-            FCreatedHandlers.Remove(io);
-            
-            var disposableIO = io as IDisposable;
-            if (disposableIO != null)
+        }
+        
+        public event EventHandler<ConnectionEventArgs> Connected;
+        
+        protected virtual void OnConnected(ConnectionEventArgs e)
+        {
+            if (Connected != null) 
             {
-                disposableIO.Dispose();
+                Connected(this, e);
             }
-            
-            var pluginIO = io.Metadata as IPluginIO;
-            if (pluginIO != null)
+        }
+        
+        public event EventHandler<ConnectionEventArgs> Disconnected;
+        
+        protected virtual void OnDisconnected(ConnectionEventArgs e)
+        {
+            if (Disconnected != null) 
             {
-                FPluginHost.DeletePin(pluginIO);
+                Disconnected(this, e);
             }
+        }
+        
+        public event EventHandler Created;
+        
+        internal virtual void OnCreated(EventArgs e)
+        {
+            if (Created != null) 
+            {
+                Created(this, e);
+            }
+        }
+        
+        public event EventHandler Disposing;
+        
+        protected virtual void OnDisposing(EventArgs e)
+        {
+            if (Disposing != null) 
+            {
+                Disposing(this, e);
+            }
+        }
+        
+        void IInternalPluginHostListener.ConnectCB(IPluginIO pluginIO, IPin otherPin)
+        {
+            OnConnected(new ConnectionEventArgs(pluginIO, otherPin));
+        }
+        
+        void IInternalPluginHostListener.DisconnectCB(IPluginIO pluginIO, IPin otherPin)
+        {
+            OnDisconnected(new ConnectionEventArgs(pluginIO, otherPin));
         }
     }
 }

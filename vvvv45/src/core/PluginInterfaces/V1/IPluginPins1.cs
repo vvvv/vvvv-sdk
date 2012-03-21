@@ -23,7 +23,6 @@ using VVVV.Utils.VMath;
 namespace VVVV.PluginInterfaces.V1
 {
 	#region basic pins
-	/// <summary>
 	[Guid("19D25C40-AE80-4960-9847-4FECF661522B"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IConnectionHandler
@@ -33,6 +32,7 @@ namespace VVVV.PluginInterfaces.V1
 		string GetFriendlyNameForSource([In, MarshalAs(UnmanagedType.IUnknown)] object source);
 	}
 	
+	/// <summary>
 	/// Base interface of all pin interfaces. Never used directly.
 	/// </summary>
 	[Guid("D3C5CB5C-C054-4AB6-AC04-6BDB34692B25"),
@@ -52,6 +52,10 @@ namespace VVVV.PluginInterfaces.V1
 		/// Specifies whether the pin is connected in the patch or not.
 		/// </summary>
 		bool IsConnected{get;}
+		/// <summary>
+		/// Gets the plugin host which created this plugin io.
+		/// </summary>
+		IPluginHost PluginHost{get;}
 	}
 	
 	/// <summary>

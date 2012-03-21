@@ -5,10 +5,10 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO.Streams
 {
-	class GroupInStream<T> : IInStream<IInStream<T>>
+	class GroupInStream<T> : IInStream<IInStream<T>>//, IDisposable
 	{
-		private readonly ManagedIOStream<IInStream<T>> FStreams = new ManagedIOStream<IInStream<T>>();
-		private readonly List<IIOHandler> FIOHandlers = new List<IIOHandler>();
+		private readonly BufferedIOStream<IInStream<T>> FStreams = new BufferedIOStream<IInStream<T>>();
+		private readonly List<IIOContainer> FIOContainers = new List<IIOContainer>();
 		private readonly IDiffSpread<int> FCountSpread;
 		private readonly IIOFactory FFactory;
 		private readonly InputAttribute FInputAttribute;
@@ -36,7 +36,7 @@ namespace VVVV.Hosting.IO.Streams
 
 		void HandleCountSpreadChanged(IDiffSpread<int> spread)
 		{
-			int oldCount = FIOHandlers.Count;
+			int oldCount = FIOContainers.Count;
 			int newCount = Math.Max(spread[0], 0);
 			
 			for (int i = oldCount; i < newCount; i++)
@@ -47,21 +47,21 @@ namespace VVVV.Hosting.IO.Streams
 					Order = FInputAttribute.Order + FOffsetCounter * 1000 + i,
 					AutoValidate = FInputAttribute.AutoValidate
 				};
-				var io = FFactory.CreateIOHandler(typeof(IInStream<T>), attribute);
-				FIOHandlers.Add(io);
+				var io = FFactory.CreateIOContainer(typeof(IInStream<T>), attribute);
+				FIOContainers.Add(io);
 			}
 			
 			for (int i = oldCount - 1; i >= newCount; i--)
 			{
-				var io = FIOHandlers[i];
-				FFactory.DestroyIOHandler(io);
-				FIOHandlers.Remove(io);
+				var io = FIOContainers[i];
+				FIOContainers.Remove(io);
+				io.Dispose();
 			}
 			
-			FStreams.Length = FIOHandlers.Count;
+			FStreams.Length = FIOContainers.Count;
 			using (var writer = FStreams.GetWriter())
 			{
-				foreach (var io in FIOHandlers)
+				foreach (var io in FIOContainers)
 				{
 					writer.Write(io.RawIOObject as IInStream<T>);
 				}
@@ -83,13 +83,15 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public bool Sync()
 		{
-			var changed = false;
+			IsChanged = false;
 			foreach (var stream in FStreams)
 			{
-				changed |= stream.Sync();
+				IsChanged |= stream.Sync();
 			}
-			return changed;
+			return IsChanged;
 		}
+		
+		public bool IsChanged { get; private set; }
 		
 		public object Clone()
 		{
@@ -105,5 +107,15 @@ namespace VVVV.Hosting.IO.Streams
 		{
 			return GetEnumerator();
 		}
+	    
+//        public void Dispose()
+//        {
+//            FCountSpread.Changed -= HandleCountSpreadChanged;
+//            foreach (var container in FIOContainers)
+//            {
+//                container.Dispose();
+//            }
+//            FIOContainers.Clear();
+//        }
 	}
 }

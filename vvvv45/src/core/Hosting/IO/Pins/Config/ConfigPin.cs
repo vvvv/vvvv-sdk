@@ -12,8 +12,8 @@ namespace VVVV.Hosting.Pins.Config
 	{
 		private readonly IPluginConfig FPluginConfig;
 		
-		public ConfigPin(IPluginHost host, IPluginConfig pluginConfig, IIOStream<T> stream)
-			: base(host, pluginConfig, stream)
+		public ConfigPin(IIOFactory factory, IPluginConfig pluginConfig, BufferedIOStream<T> stream)
+			: base(factory, pluginConfig, stream)
 		{
 			FPluginConfig = pluginConfig;
 			SliceCount = 1;
@@ -42,23 +42,14 @@ namespace VVVV.Hosting.Pins.Config
 				FChanged(this);
 		}
 		
-		public bool IsChanged
-		{
-			get
-			{
-				return FPluginConfig.PinIsChanged;
-			}
-		}
-		
 		public override bool Sync()
 		{
-			if (base.Sync())
+		    var isChanged = base.Sync();
+			if (isChanged)
 			{
 				OnChanged();
-				return true;
 			}
-			
-			return false;
+			return isChanged;
 		}
 	}
 }

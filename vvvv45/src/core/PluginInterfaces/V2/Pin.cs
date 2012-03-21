@@ -34,18 +34,27 @@ namespace VVVV.PluginInterfaces.V2
 	}
 	
 	[ComVisible(false)]
-	public class Pin<T> : Spread<T>, IDisposable
+	public class Pin<T> : Spread<T>, ISpread<T>, IDisposable
 	{
-		private readonly IPluginHost FHost;
+	    private readonly IIOFactory FFactory;
 		private readonly IPluginIO FPluginIO;
 		
-		public Pin(IPluginHost host, IPluginIO pluginIO, IIOStream<T> stream)
+		public Pin(IIOFactory factory, IPluginIO pluginIO, BufferedIOStream<T> stream)
 			: base(stream)
 		{
-			FHost = host;
+		    FFactory = factory;
 			FPluginIO = pluginIO;
+			
+			FFactory.Connected += HandleConnected;
+			FFactory.Disconnected += HandleDisconnected;
 		}
 		
+		public void Dispose()
+		{
+		    FFactory.Connected -= HandleConnected;
+			FFactory.Disconnected -= HandleDisconnected;
+		}
+
 		public override string ToString()
 		{
 			return base.ToString() + ": " + FPluginIO.Name;
@@ -61,11 +70,38 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public event PinConnectionEventHandler Connected;
 		
+        protected virtual void OnConnected(PinConnectionEventArgs args)
+        {
+            if (Connected != null) 
+            {
+                Connected(this, args);
+            }
+        }
+		
 		public event PinConnectionEventHandler Disconnected;
 		
-		public void Dispose()
+        protected virtual void OnDisconnected(PinConnectionEventArgs args)
+        {
+            if (Disconnected != null) 
+            {
+                Disconnected(this, args);
+            }
+        }
+        
+        void HandleConnected(object sender, ConnectionEventArgs e)
 		{
-			FHost.DeletePin(this.PluginIO);
+            if (e.PluginIO == FPluginIO)
+            {
+                OnConnected(new PinConnectionEventArgs(e.OtherPin));
+            }
+		}
+		
+		void HandleDisconnected(object sender, ConnectionEventArgs e)
+		{
+		    if (e.PluginIO == FPluginIO)
+		    {
+		      OnDisconnected(new PinConnectionEventArgs(e.OtherPin));
+		    }
 		}
 	}
 }

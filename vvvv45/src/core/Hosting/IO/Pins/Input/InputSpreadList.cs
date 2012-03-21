@@ -5,7 +5,7 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Hosting.Pins.Input
 {
     [ComVisible(false)]
-	class InputSpreadList<T> : SpreadList<T>
+	class InputSpreadList<T> : SpreadList<ISpread<T>>
 	{
 		public InputSpreadList(IIOFactory ioFactory, InputAttribute attribute)
 			: base(ioFactory, attribute)
@@ -17,8 +17,7 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			return new InputAttribute(FAttribute.Name + " " + position)
 			{
-				IsPinGroup = false,
-				AutoValidate = false
+				IsPinGroup = false
 			};
 		}
 	}
