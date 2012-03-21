@@ -45,7 +45,7 @@ namespace VVVV.Utils.VMidiScore
 		public List<TMidiNote> FNotesOfBar = new List<TMidiNote>();
 		public List<TMidiNote> FNotesOfWindow = new List<TMidiNote>();
 		public List<TMidiNote> FNotesFound = new List<TMidiNote>();
-		
+ 		
 		public int TrackCount
 		{
 			get{return FSequence.Count;}
@@ -184,14 +184,14 @@ namespace VVVV.Utils.VMidiScore
 			FSequence.Save(FFilename);
 		}
 		
-		public List<TMidiNote> GetNotesOfChannel(int Channel)
+		public List<TMidiNote> GetNotesOfTrack(int track)
 		{
-			return FMidiNotes.FindAll(delegate (TMidiNote mn) {return mn.Channel == Channel;});
+			return FMidiNotes.FindAll(delegate (TMidiNote mn) {return mn.Track == track;});
 		}
 		
-		public string GetTrackName(int Track)
+		public string GetTrackName(int track)
 		{
-			return FTrackNames[Track];
+			return FTrackNames[track];
 		}
 		
 		private void HandleLoadCompleted(object sender, AsyncCompletedEventArgs e)
@@ -396,6 +396,11 @@ namespace VVVV.Utils.VMidiScore
 						
 						switch (mmMessage.MetaType)
 						{
+							case MetaType.InstrumentName:
+								{
+									
+									break;
+								}
 							case MetaType.TrackName:
 								{
 									FTrackNames[trackID] = System.Text.Encoding.UTF8.GetString(data);

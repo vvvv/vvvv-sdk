@@ -464,6 +464,15 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
                 e.DrawDefault = true;
         }
         
+        void InvalidateTreeNode(TreeNode treeNode)
+        {
+        	if (treeNode != null)
+        	{
+        		var bounds = new Rectangle(0, treeNode.Bounds.Y, FTreeView.Width, treeNode.Bounds.Height);
+            	FTreeView.Invalidate(bounds);
+        	}
+        }
+        
         void FTreeViewMouseMove(object sender, MouseEventArgs e)
         {
             if (!ShowTooltip) return;
@@ -472,7 +481,9 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             
             if (treeNode != FLastTooltipNode)
             {
-                FLastTooltipNode = treeNode;
+            	InvalidateTreeNode(FLastTooltipNode);
+            	FLastTooltipNode = treeNode;
+            	InvalidateTreeNode(FLastTooltipNode);
                 
                 if (treeNode != null)
                 {
@@ -482,7 +493,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
                         string tip = mapper.Map<IDescripted>().Description;
                         if (!string.IsNullOrEmpty(tip))
                         {
-                            FToolTip.Show(tip, FTreeView, treeNode.Bounds.X, treeNode.Bounds.Y + 30);
+                            FToolTip.Show(tip, FTreeView, e.X + 15, treeNode.Bounds.Y + 30);
                             return;
                         }
                     }
