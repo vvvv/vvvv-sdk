@@ -54,14 +54,14 @@ namespace VVVV.Core.Collections
 
         public bool Changed { get; private set; }
 
-        public void AcknowledgeChange()
-        {
-            Changed = false;
-        }
-
         public virtual void MarkChanged()
         {
             Changed = true;
+        }
+
+        public virtual void AckowledgeChanges()
+        {
+            Changed = false;
         }
 
         #region IEditableCollection<T> Members

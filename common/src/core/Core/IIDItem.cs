@@ -57,6 +57,8 @@ namespace VVVV.Core
 
         void MarkChanged();
 
+        void AckowledgeChanges();
+
         bool Changed { get; }
 
         void Dispatch(IVisitor visitor);

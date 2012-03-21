@@ -28,6 +28,11 @@ namespace VVVV.Core.Model
                     Owner.MarkChanged();
             }
         }
+
+        public virtual void AckowledgeChanges()
+        {
+            Changed = false;
+        }
         
         public ModelMapper Mapper
         {

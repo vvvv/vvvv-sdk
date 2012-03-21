@@ -163,6 +163,16 @@ namespace VVVV.Core.Collections
                 Owner.MarkChanged();
             }
         }
+
+        public override void AckowledgeChanges()
+        {
+            base.AckowledgeChanges();
+
+            foreach (IIDItem item in this)
+            {
+                item.AckowledgeChanges();
+            }
+        }
         
         #region IEditableIDList<T> Members
         
