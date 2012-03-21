@@ -43,7 +43,7 @@ namespace VVVV.Nodes
 		[Input("Clear Cache", IsSingle = true, IsBang = true)]
 		IDiffSpread<bool> FClearCache;
 		
-		[Input("Feedback Accepted", IsSingle = true, DefaultValue = 1)]
+		[Input("Feedback Accepted", IsSingle = true, DefaultValue = 0)]
 		ISpread<bool> FFeedback;
 
 		[Output("Exposed Pins")]
@@ -172,6 +172,7 @@ namespace VVVV.Nodes
 				
 				var bundle = new OSCBundle();
 				var message = new OSCMessage(pinPath);
+//				var spread = pin.Spread;
 				var spread = pin[0];
 				if (spread.IndexOf(",") > -1)
 					message.Values.AddRange(pin.Spread.Split(','));
@@ -229,11 +230,13 @@ namespace VVVV.Nodes
 						if (packet.IsBundle())
 						{
 							ArrayList messages = packet.Values;
-							for (int i=0; i<messages.Count; i++)
-								FMessageQueue.Add((OSCMessage)messages[i]);
+							lock(FMessageQueue)
+								for (int i=0; i<messages.Count; i++)
+									FMessageQueue.Add((OSCMessage)messages[i]);
 						}
 						else
-							FMessageQueue.Add((OSCMessage)packet);
+							lock(FMessageQueue)
+								FMessageQueue.Add((OSCMessage)packet);
 					}
 				}
 				catch (Exception e)
@@ -335,7 +338,7 @@ namespace VVVV.Nodes
 			{
 				var values = "";
 				foreach(var v in message.Values)
-					values += v.ToString().Replace(',', '.') + ",";
+					values += v.ToString() + ",";
 				values = values.TrimEnd(',');
 				
 				pin.Spread = values;
@@ -393,9 +396,12 @@ namespace VVVV.Nodes
 			//process messagequeue
 			//in order to handle all messages from main thread
 			//since all COM-access is single threaded
-			foreach (var message in FMessageQueue)
-				ProcessOSCMessage(message);
-			FMessageQueue.Clear();
+			lock(FMessageQueue)
+			{
+				foreach (var message in FMessageQueue)
+					ProcessOSCMessage(message);
+				FMessageQueue.Clear();
+			}
 			
 			FExposedPinsOut.AssignFrom(FExposedPins.Keys);
 			FCachedPinsOut.AssignFrom(FCachedPins.Keys);
