@@ -13,7 +13,7 @@ namespace VVVV.Assimp.Nodes
     public class AssimpMaterialNode : IPluginEvaluate
     {
         [Input("Material")]
-        DiffPin<AssimpMaterial> FInMaterials;
+        Pin<AssimpMaterial> FInMaterials;
 
         [Output("Ambient Color")]
         ISpread<RGBAColor> FOutAmbient;

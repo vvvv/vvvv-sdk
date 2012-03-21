@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
+using BulletSharp;
+using VVVV.DataTypes.Bullet;
+using VVVV.Hosting.Pins.Input;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
-using VVVV.DataTypes.Bullet;
-
-using BulletSharp;
-
 
 namespace VVVV.Nodes.Bullet
 {
@@ -30,7 +29,7 @@ namespace VVVV.Nodes.Bullet
 		protected IDiffSpread<string> FCustom;
 
 		[Input("Custom Object")]
-		protected DiffPin<ICloneable> FCustomObj;
+		protected IDiffSpread<ICloneable> FCustomObj;
 
 		[Output("Shape")]
 		protected ISpread<AbstractRigidShapeDefinition> FShapes;
@@ -72,14 +71,7 @@ namespace VVVV.Nodes.Bullet
 			sd.Rotation = this.FRotate[sliceindex].ToBulletQuaternion();
 			sd.Scaling = this.FScaling[sliceindex].Abs().ToBulletVector();
 			sd.CustomString = this.FCustom[sliceindex];
-			if (this.FCustomObj.PluginIO.IsConnected)
-			{
-				sd.CustomObject = this.FCustomObj[sliceindex];
-			}
-			else
-			{
-				sd.CustomObject = null;
-			}
+			sd.CustomObject = this.FCustomObj[sliceindex];
 		}
 		#endregion
 	}

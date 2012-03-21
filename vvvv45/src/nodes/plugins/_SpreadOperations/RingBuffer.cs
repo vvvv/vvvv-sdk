@@ -63,7 +63,7 @@ namespace VVVV.Nodes
                 FCurrentPos++;
                 if (FCurrentPos > frameCount - 1)
                     FCurrentPos = 0;
-                FOutput[FCurrentPos] = FInput.Clone();
+                FOutput[FCurrentPos] = FInput.Clone() as ISpread<T>;
             }
 
             FCurrentFrame[0] = Math.Min(Math.Max(FCurrentPos, 0), frameCount - 1);

@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
-using System.ComponentModel.Composition.ReflectionModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+
 using VVVV.Core;
 using VVVV.Core.Logging;
-using VVVV.Core.Model;
-using VVVV.Core.Runtime;
-using VVVV.Hosting;
+using VVVV.Hosting.Interfaces;
+using VVVV.Hosting.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Collections;
@@ -29,12 +27,6 @@ namespace VVVV.Hosting.Factories
     [ComVisible(false)]
     public delegate void PluginDeletedDelegate(IPluginBase plugin);
 
-    enum PluginVersion
-    {
-        V1,
-        V2
-    }
-    
     /// <summary>
     /// DotNetPluginFactory for V1 and V2 style plugins.
     /// V1 style plugins need to be loaded manually
@@ -45,23 +37,19 @@ namespace VVVV.Hosting.Factories
     [ComVisible(false)]
     public class DotNetPluginFactory : AbstractFileFactory<IInternalPluginHost>
     {
-        class PluginImporter
-        {
-            [Import(typeof(IPluginBase), AllowRecomposition=true)]
-            public ExportFactory<IPluginBase> PluginExportFactory { get; set; }
-        }
-        
         [Import]
         protected IHDEHost FHost;
 
         [Import]
         private StartableRegistry FStartableRegistry;
+
+        [Import]
+        private IORegistry FIORegistry;
         
-        private PluginImporter FPluginImporter = new PluginImporter();
-        private readonly Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts;
-        private readonly Dictionary<IPluginBase, HostExportProvider> FPinExportProviders;
+        private readonly Dictionary<IPluginBase, PluginContainer> FPluginContainers;
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
+        
         protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 
 
@@ -80,8 +68,7 @@ namespace VVVV.Hosting.Factories
             : base(fileExtension)
         {
             FParentContainer = parentContainer;
-            FPinExportProviders = new Dictionary<IPluginBase, HostExportProvider>();
-            FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
+            FPluginContainers = new Dictionary<IPluginBase, PluginContainer>();
             
             var pluginInterfacesAssemblyName = typeof(IPluginBase).Assembly.FullName;
             var pluginInterfacesAssembly = Assembly.ReflectionOnlyLoad(pluginInterfacesAssemblyName);
@@ -357,18 +344,20 @@ namespace VVVV.Hosting.Factories
             var attribute = GetPluginInfoAttributeData(type);
             if (attribute != null)
             {
-                var catalog = new TypeCatalog(type);
-                var pinExportProvider = new HostExportProvider(pluginHost);
-                var exportProviders = new ExportProvider[] { pinExportProvider, FParentContainer };
-                var container = new CompositionContainer(catalog, exportProviders);
-                container.ComposeParts(FPluginImporter);
+                var pluginContainer = new PluginContainer(pluginHost as IInternalPluginHost, FIORegistry, FParentContainer, type, nodeInfo);
+
+                // We intercept the plugin to manage IOHandlers.
+                plugin = pluginContainer;
+                FPluginContainers[pluginContainer.PluginBase] = pluginContainer;
                 
-                var lifetimeContext = FPluginImporter.PluginExportFactory.CreateExport();
+                // HACK: FPluginHost is null in case of WindowSwitcher and friends
+                if (pluginHost != null)
+                {
+                    AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, pluginContainer.PluginBase);
+                }
                 
-                plugin = lifetimeContext.Value;
-                
-                FPluginLifetimeContexts[plugin] = lifetimeContext;
-                FPinExportProviders[plugin] = pinExportProvider;
+                // Send event, clients are not interested in wrapping plugin, so send original here.
+                if (this.PluginCreated != null) { this.PluginCreated(pluginContainer.PluginBase, pluginHost); }
             }
             else
             {
@@ -377,10 +366,16 @@ namespace VVVV.Hosting.Factories
                 v1Plugin.SetPluginHost(pluginHost);
                 
                 plugin = v1Plugin;
+                
+                // HACK: FPluginHost is null in case of WindowSwitcher and friends
+                if (pluginHost != null)
+                {
+                    AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, plugin);
+                }
+                
+                // Send event
+                if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
             }
-            
-            //Send event
-            if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
             
             return plugin;
         }
@@ -391,16 +386,53 @@ namespace VVVV.Hosting.Factories
             if (this.PluginDeleted != null) { this.PluginDeleted(plugin); }
 
             var disposablePlugin = plugin as IDisposable;
-            if (FPluginLifetimeContexts.ContainsKey(plugin))
+            if (FPluginContainers.ContainsKey(plugin))
             {
-                FPluginLifetimeContexts[plugin].Dispose();
-                FPluginLifetimeContexts.Remove(plugin);
-                FPinExportProviders[plugin].Dispose();
-                FPinExportProviders.Remove(plugin);
+                FPluginContainers[plugin].Dispose();
+                FPluginContainers.Remove(plugin);
             }
             else if (disposablePlugin != null)
             {
                 disposablePlugin.Dispose();
+            }
+        }
+        
+        private static void AssignOptionalPluginInterfaces(IInternalPluginHost pluginHost, IPluginBase pluginBase)
+        {
+            var win32Window = pluginBase as IWin32Window;
+            if (win32Window != null)
+            {
+                pluginHost.Win32Window = win32Window;
+            }
+            var pluginConnections = pluginBase as IPluginConnections;
+            if (pluginConnections != null)
+            {
+                pluginHost.Connections = pluginConnections;
+            }
+            var pluginDXLayer = pluginBase as IPluginDXLayer;
+            if (pluginDXLayer != null)
+            {
+                pluginHost.DXLayer = pluginDXLayer;
+            }
+            var pluginDXMesh = pluginBase as IPluginDXMesh;
+            if (pluginDXMesh != null)
+            {
+                pluginHost.DXMesh = pluginDXMesh;
+            }
+            var pluginDXResource = pluginBase as IPluginDXResource;
+            if (pluginDXResource != null)
+            {
+                pluginHost.DXResource = pluginDXResource;
+            }
+            var pluginTexture = pluginBase as IPluginDXTexture;
+            if (pluginTexture != null)
+            {
+                pluginHost.DXTexture = pluginTexture;
+            }
+            var pluginTexture2 = pluginBase as IPluginDXTexture2;
+            if (pluginTexture2 != null)
+            {
+                pluginHost.DXTexture2 = pluginTexture2;
             }
         }
         
@@ -409,7 +441,7 @@ namespace VVVV.Hosting.Factories
             assemblyLocation = nodeInfo.Filename;
             return true;
         }
-              
+        
         // From http://www.anastasiosyal.com/archive/2007/04/17/3.aspx
         private static bool IsDotNetAssembly(string fileName)
         {
@@ -461,6 +493,80 @@ namespace VVVV.Hosting.Factories
         private bool IsDynamicAssembly(string filename)
         {
             return FDynamicRegExp.IsMatch(filename);
+        }
+    }
+    
+    class PluginContainer : IPlugin, IDisposable
+    {
+        [Export(typeof(IIOFactory))]
+        private readonly IOFactory FIOFactory;
+        private readonly CompositionContainer FContainer;
+        private readonly IPluginEvaluate FPlugin;
+        private readonly bool FAutoEvaluate;
+        
+        [Import(typeof(IPluginBase))]
+        public IPluginBase PluginBase
+        {
+            get;
+            private set;
+        }
+        
+        public PluginContainer(
+            IInternalPluginHost pluginHost,
+            IORegistry ioRegistry,
+            CompositionContainer parentContainer,
+            Type pluginType,
+            INodeInfo nodeInfo
+           )
+        {
+            FIOFactory = new IOFactory(pluginHost, ioRegistry);
+            
+            var catalog = new TypeCatalog(pluginType);
+            var ioExportProvider = new IOExportProvider(FIOFactory);
+            var hostExportProvider = new HostExportProvider() { PluginHost = pluginHost };
+            var exportProviders = new ExportProvider[] { hostExportProvider, ioExportProvider, parentContainer };
+            FContainer = new CompositionContainer(catalog, exportProviders);
+            FContainer.ComposeParts(this);
+            FPlugin = PluginBase as IPluginEvaluate;
+            FAutoEvaluate = nodeInfo.AutoEvaluate;
+            FIOFactory.OnCreated(EventArgs.Empty);
+        }
+        
+        public void Dispose()
+        {
+            FContainer.Dispose();
+            FIOFactory.Dispose();
+        }
+        
+        void IPlugin.SetPluginHost(IPluginHost Host)
+        {
+            throw new NotImplementedException();
+        }
+        
+        void IPlugin.Configurate(IPluginConfig configPin)
+        {
+            FIOFactory.OnConfiguring(new ConfigEventArgs(configPin));
+        }
+        
+        void IPlugin.Evaluate(int spreadMax)
+        {
+            FIOFactory.OnSynchronizing(EventArgs.Empty);
+            
+            // HACK: Can we remove this? Maybe by seperating...
+            if (FPlugin != null)
+            {
+                FPlugin.Evaluate(spreadMax);
+            }
+            
+            FIOFactory.OnFlushing(EventArgs.Empty);
+        }
+        
+        bool IPlugin.AutoEvaluate
+        {
+            get
+            {
+                return FAutoEvaluate;
+            }
         }
     }
 }
