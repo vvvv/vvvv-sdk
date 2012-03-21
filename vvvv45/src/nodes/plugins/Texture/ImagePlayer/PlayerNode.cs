@@ -42,6 +42,9 @@ namespace VVVV.Nodes.ImagePlayer
         [Config("Threads Texture", DefaultValue = 2.0, MinValue = -1.0)]
         public ISpread<int> FThreadsTextureConfig;
         
+        [Config("Allocate On GPU Only", DefaultValue = 0)]
+        public ISpread<bool> FAllocateOnGpu;
+        
         [Output("Texture")]
         public ISpread<ISpread<Frame>> FTextureOut;
         
@@ -74,6 +77,24 @@ namespace VVVV.Nodes.ImagePlayer
             FDeviceService = deviceService;
         }
         
+        private ImagePlayer CreateImagePlayer(int index)
+        {
+        	return new ImagePlayer(
+        		FThreadsIOConfig[index], 
+        		FThreadsTextureConfig[index], 
+        		FLogger, 
+        		FDeviceService, 
+        		FIOTaskScheduler, 
+        		FMemoryPool, 
+        		FStreamPool
+        	);
+        }
+        
+        private void DestroyImagePlayer(ImagePlayer imagePlayer)
+        {
+        	imagePlayer.Dispose();
+        }
+        
         public void Evaluate(int spreadMax)
         {
             // SpreadMax is not correct (should be correct in streams branch).
@@ -84,13 +105,7 @@ namespace VVVV.Nodes.ImagePlayer
                 .CombineWith(FPreloadFramesIn)
                 .CombineWith(FReloadIn);
             
-            int previosSliceCount = FImagePlayers.SliceCount;
-            
-            // Dispose unused image players
-            for (int i = spreadMax; i < FImagePlayers.SliceCount ; i++)
-            {
-                FImagePlayers[i].Dispose();
-            }
+            FImagePlayers.Resize(spreadMax, CreateImagePlayer, DestroyImagePlayer);
             
             FImagePlayers.SliceCount = spreadMax;
             FTextureOut.SliceCount = spreadMax;
@@ -106,21 +121,17 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 var imagePlayer = FImagePlayers[i];
                 
-                if (imagePlayer != null && (imagePlayer.ThreadsIO != FThreadsIOConfig[i] || imagePlayer.ThreadsTexture != FThreadsTextureConfig[i]))
+                if (imagePlayer.ThreadsIO != FThreadsIOConfig[i] || imagePlayer.ThreadsTexture != FThreadsTextureConfig[i])
                 {
-                    imagePlayer.Dispose();
-                    imagePlayer = null;
-                }
-                
-                if (imagePlayer == null)
-                {
-                    imagePlayer = new ImagePlayer(FThreadsIOConfig[i], FThreadsTextureConfig[i], FLogger, FDeviceService, FIOTaskScheduler, FMemoryPool, FStreamPool);
-                    FImagePlayers[i] = imagePlayer;
-                    reload = true;
+                	DestroyImagePlayer(imagePlayer);
+                	imagePlayer = CreateImagePlayer(i);
+                	reload = true;
+                	FImagePlayers[i] = imagePlayer;
                 }
                 
                 imagePlayer.Directories = FDirectoryIn[i];
                 imagePlayer.Filemasks = FFilemaskIn[i];
+                imagePlayer.AllocateOnGPU = FAllocateOnGpu[i];
                 
                 if (reload)
                 {

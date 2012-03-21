@@ -33,6 +33,7 @@ namespace VVVV.Nodes.ImagePlayer
     {
         public const string DEFAULT_FILEMASK = "*";
         public const int DEFAULT_BUFFER_SIZE = 0x2000;
+        public const bool DEFAULT_ALLOCATE_ON_GPU = false; // AMD cards don't play well when texture size not power of two.
         
         private string[] FFiles = new string[0];
         private int FUnusedFrames;
@@ -63,6 +64,7 @@ namespace VVVV.Nodes.ImagePlayer
         {
             FThreadsIO = threadsIO;
             FThreadsTexture = threadsTexture;
+            AllocateOnGPU = DEFAULT_ALLOCATE_ON_GPU;
             FLogger = logger;
             FDeviceService = deviceService;
             
@@ -199,6 +201,27 @@ namespace VVVV.Nodes.ImagePlayer
             }
         }
         
+        private bool FAllocateOnGPU;
+        public bool AllocateOnGPU 
+        {
+        	get
+        	{
+        		return FAllocateOnGPU;
+        	}
+        	set
+        	{
+        		if (FAllocateOnGPU != value)
+        		{
+        			Flush();
+        			foreach (var device in FDevices)
+        			{
+        				FTexturePool.Release(device);
+        			}
+        			FAllocateOnGPU = value;
+        		}
+        	}
+        }
+        
         private void Enqueue(FrameInfo frameInfo)
         {
             if (FFrameInfoBuffer.Post(frameInfo))
@@ -281,7 +304,7 @@ namespace VVVV.Nodes.ImagePlayer
             // Dispose old visible frames
             FVisibleFrames.Resize(
                 visibleFrameNrs.SliceCount,
-                () => null,
+                (i) => null,
                 frame =>
                 {
                     frame.Dispose();
@@ -414,7 +437,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 using (var stream = new FileStream(frameInfo.Filename, FileMode.Open, FileAccess.Read))
                 {
-                    decoder = FrameDecoder.Create(frameInfo.Filename, FTexturePool, FMemoryPool, stream);
+                    decoder = FrameDecoder.Create(frameInfo.Filename, CreateTextureForDecoder, FMemoryPool, stream);
                     var texture = decoder.Decode(device);
                     decoder.Dispose();
                     return texture;
@@ -443,6 +466,18 @@ namespace VVVV.Nodes.ImagePlayer
                     FTexturePool.Release(texture.Device);
                     break;
             }
+        }
+        
+        private EX9.Texture CreateTextureForDecoder(EX9.Device device, int width, int height, int levels, EX9.Format format)
+        {
+        	if (AllocateOnGPU)
+        	{
+        		return FTexturePool.GetTexture(device, width, height, levels, EX9.Usage.Dynamic & ~EX9.Usage.AutoGenerateMipMap, format, EX9.Pool.Default);
+        	}
+        	else
+        	{
+        		return FTexturePool.GetTexture(device, width, height, levels, EX9.Usage.None & ~EX9.Usage.AutoGenerateMipMap, format, EX9.Pool.Managed);
+        	}
         }
         
         private void HandleDeviceDisabled(object sender, DeviceEventArgs e)
@@ -568,7 +603,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                decoder = FrameDecoder.Create(frameInfo.Filename, FTexturePool, FMemoryPool, stream);
+                decoder = FrameDecoder.Create(frameInfo.Filename, CreateTextureForDecoder, FMemoryPool, stream);
                 
                 lock (FDevices)
                 {
