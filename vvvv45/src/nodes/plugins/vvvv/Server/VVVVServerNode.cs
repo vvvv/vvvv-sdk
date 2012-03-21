@@ -19,11 +19,11 @@ namespace VVVV.Nodes
 	enum AcceptMode {None, OnlyExposed, OnlyCached, ExposedAndCached, Any};
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Server", 
-				Category = "VVVV", 
-				Help = "Accepts values for pins via OSC", 
-				Tags = "remote",
-				AutoEvaluate = true)]
+	[PluginInfo(Name = "Server",
+	            Category = "VVVV",
+	            Help = "Accepts values for pins via OSC",
+	            Tags = "remote",
+	            AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class VVVVServerNode: IPluginEvaluate, IDisposable
 	{
@@ -108,6 +108,9 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
+					FHDEHost.ExposedNodeService.NodeAdded -= NodeAddedCB;
+					FHDEHost.ExposedNodeService.NodeRemoved -= NodeRemovedCB;
+					
 					StopListeningOSC();
 				}
 				// Release unmanaged resources. If disposing is false,
@@ -120,18 +123,44 @@ namespace VVVV.Nodes
 
 		private void NodeAddedCB(INode2 node)
 		{
-			var pinName = "Y Input Value";
+			string pinName = "";
+			if (node.Name == "IOBox (Value Advanced)")
+				pinName = "Y Input Value";
+			else if (node.Name == "IOBox (String)")
+				pinName = "Input String";
+			else if (node.Name == "IOBox (Color)")
+				pinName = "Color Input";
+			else if (node.Name == "IOBox (Enumerations)")
+				pinName = "Input Enum";
+			
 			var pin = node.FindPin(pinName);
-			pin.Changed += PinChanged;
-			FExposedPins.Add(node.GetNodePath(false) + "/" + pinName, pin);
+			
+			if (pin != null)
+			{
+				pin.Changed += PinChanged;
+				FExposedPins.Add(node.GetNodePath(false) + "/" + pinName, pin);
+			}
 		}
 		
 		private void NodeRemovedCB(INode2 node)
 		{
-			var pinName = "Y Input Value";
+			string pinName = "";
+			if (node.Name == "IOBox (Value Advanced)")
+				pinName = "Y Input Value";
+			else if (node.Name == "IOBox (String)")
+				pinName = "Input String";
+			else if (node.Name == "IOBox (Color)")
+				pinName = "Color Input";
+			else if (node.Name == "IOBox (Enumerations)")
+				pinName = "Input Enum";
+			
 			var pin = node.FindPin(pinName);
-			pin.Changed -= PinChanged;
-			FExposedPins.Remove(node.GetNodePath(false) + "/" + pinName);
+			
+			if (pin != null)
+			{
+				pin.Changed -= PinChanged;
+				FExposedPins.Remove(node.GetNodePath(false) + "/" + pinName);
+			}
 		}
 		
 		private void PinChanged(object sender, EventArgs e)
@@ -147,12 +176,12 @@ namespace VVVV.Nodes
 				if (spread.IndexOf(",") > -1)
 					message.Values.AddRange(pin.Spread.Split(','));
 				else
-				    message.Append(spread);
+					message.Append(spread);
 				
 				bundle.Append(message);
 				
 				if (FOSCTransmitter != null)
-				try
+					try
 				{
 					FOSCTransmitter.Send(bundle);
 				}
@@ -181,7 +210,7 @@ namespace VVVV.Nodes
 				//so waiting would freeze
 				//shouldn't be necessary here anyway...
 				//FThread.Join();
-			}	
+			}
 
 			if (FOSCReceiver != null)
 				FOSCReceiver.Close();
@@ -196,7 +225,7 @@ namespace VVVV.Nodes
 				{
 					OSCPacket packet = FOSCReceiver.Receive();
 					if (packet != null)
-					{ 
+					{
 						if (packet.IsBundle())
 						{
 							ArrayList messages = packet.Values;
@@ -220,85 +249,85 @@ namespace VVVV.Nodes
 			switch (FAcceptMode[0])
 			{
 				case AcceptMode.OnlyCached:
-				{
-					if (FCachedPins.ContainsKey(message.Address))
-						pin = FCachedPins[message.Address];
-					break;
-				}
-				
+					{
+						if (FCachedPins.ContainsKey(message.Address))
+							pin = FCachedPins[message.Address];
+						break;
+					}
+					
 				case AcceptMode.OnlyExposed:
-				{
-					if (FExposedPins.ContainsKey(message.Address))
-						pin = FExposedPins[message.Address];
-					break;
-				}
+					{
+						if (FExposedPins.ContainsKey(message.Address))
+							pin = FExposedPins[message.Address];
+						break;
+					}
 					
 				case AcceptMode.ExposedAndCached:
-				{
-					if (FExposedPins.ContainsKey(message.Address))
-						pin = FExposedPins[message.Address];
-					else if (FCachedPins.ContainsKey(message.Address))
-						pin = FCachedPins[message.Address];
-					break;
-				}
-				
-				case AcceptMode.Any:
-				{
-					if (FCachedPins.ContainsKey(message.Address))
-						pin = FCachedPins[message.Address];
-					else
 					{
-						//check if address is in the format of a nodepath
-						//ie. /4/545/46/pinname
-						var path = message.Address.Split('/');
-						var pinName = path[path.Length - 1];
-						
-						int id = 0;
-						//last entry in path has to be a string (ie. pinname) not a number
-						var validAddress = !string.IsNullOrEmpty(pinName) && !int.TryParse(pinName, out id);
-								
-						if (validAddress)
+						if (FExposedPins.ContainsKey(message.Address))
+							pin = FExposedPins[message.Address];
+						else if (FCachedPins.ContainsKey(message.Address))
+							pin = FCachedPins[message.Address];
+						break;
+					}
+					
+				case AcceptMode.Any:
+					{
+						if (FCachedPins.ContainsKey(message.Address))
+							pin = FCachedPins[message.Address];
+						else
 						{
-							var pathIDs = new int[path.Length - 1];
-							for (int i = 1; i < pathIDs.Length; i++)
+							//check if address is in the format of a nodepath
+							//ie. /4/545/46/pinname
+							var path = message.Address.Split('/');
+							var pinName = path[path.Length - 1];
+							
+							int id = 0;
+							//last entry in path has to be a string (ie. pinname) not a number
+							var validAddress = !string.IsNullOrEmpty(pinName) && !int.TryParse(pinName, out id);
+							
+							if (validAddress)
 							{
-								
-								if (int.TryParse(path[i], out id))
-									pathIDs[i] = id;
-								else
+								var pathIDs = new int[path.Length - 1];
+								for (int i = 1; i < pathIDs.Length; i++)
 								{
-									validAddress = false;
-									break;
+									
+									if (int.TryParse(path[i], out id))
+										pathIDs[i] = id;
+									else
+									{
+										validAddress = false;
+										break;
+									}
 								}
 							}
-						}
-						
-						if (validAddress)
-						{
-							//check if a pin is available under this address
-							var nodePath = message.Address.Substring(0, message.Address.LastIndexOf('/'));
-							var node = FHDEHost.GetNodeFromPath(nodePath);
-							if (node != null)
+							
+							if (validAddress)
 							{
-								//FLogger.Log(LogType.Warning, node.Name);
-								pin = node.FindPin(pinName.Trim());
-								
-								if (pin != null)
+								//check if a pin is available under this address
+								var nodePath = message.Address.Substring(0, message.Address.LastIndexOf('/'));
+								var node = FHDEHost.GetNodeFromPath(nodePath);
+								if (node != null)
 								{
-									FCachedPins.Add(message.Address, pin);
-									pin.Changed += PinChanged;
+									//FLogger.Log(LogType.Warning, node.Name);
+									pin = node.FindPin(pinName.Trim());
+									
+									if (pin != null)
+									{
+										FCachedPins.Add(message.Address, pin);
+										pin.Changed += PinChanged;
+									}
+									else
+										FLogger.Log(LogType.Warning, "No pin available under: \"" + message.Address + "\"!");
 								}
 								else
-									FLogger.Log(LogType.Warning, "No pin available under: \"" + message.Address + "\"!");
+									FLogger.Log(LogType.Warning, "No node available under: \"" + nodePath + "\"!");
 							}
 							else
-								FLogger.Log(LogType.Warning, "No node available under: \"" + nodePath + "\"!");
+								FLogger.Log(LogType.Warning, "\"" + message.Address + "\" is not a valid pin address!");
 						}
-						else
-							FLogger.Log(LogType.Warning, "\"" + message.Address + "\" is not a valid pin address!");
+						break;
 					}
-					break;
-				}
 			}
 
 			//send values to pin
@@ -341,7 +370,7 @@ namespace VVVV.Nodes
 				StopListeningOSC();
 				StartListeningOSC();
 			}
-					
+			
 			//re/init udp
 			if (FTargetIP.IsChanged || FTargetPort.IsChanged)
 			{
@@ -361,7 +390,7 @@ namespace VVVV.Nodes
 				FCachedPins.Clear();
 			}
 			
-			//process messagequeue 
+			//process messagequeue
 			//in order to handle all messages from main thread
 			//since all COM-access is single threaded
 			foreach (var message in FMessageQueue)
