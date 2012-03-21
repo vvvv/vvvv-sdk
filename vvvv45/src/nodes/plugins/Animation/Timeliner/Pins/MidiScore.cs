@@ -45,8 +45,6 @@ namespace VVVV.Utils.VMidiScore
 		public List<TMidiNote> FNotesOfBar = new List<TMidiNote>();
 		public List<TMidiNote> FNotesOfWindow = new List<TMidiNote>();
 		public List<TMidiNote> FNotesFound = new List<TMidiNote>();
-		
-		private Dictionary<int, int> FChannelToTrack = new Dictionary<int, int>();
  		
 		public int TrackCount
 		{
@@ -186,19 +184,14 @@ namespace VVVV.Utils.VMidiScore
 			FSequence.Save(FFilename);
 		}
 		
-		public List<TMidiNote> GetNotesOfChannel(int Channel)
+		public List<TMidiNote> GetNotesOfTrack(int track)
 		{
-			return FMidiNotes.FindAll(delegate (TMidiNote mn) {return mn.Channel == Channel;});
+			return FMidiNotes.FindAll(delegate (TMidiNote mn) {return mn.Track == track;});
 		}
 		
-		public string GetTrackName(int Track)
+		public string GetTrackName(int track)
 		{
-			return FTrackNames[Track];
-		}
-		
-		public string GetTrackNameByChannel(int Channel)
-		{
-			return FTrackNames[FChannelToTrack[Channel]];
+			return FTrackNames[track];
 		}
 		
 		private void HandleLoadCompleted(object sender, AsyncCompletedEventArgs e)
@@ -384,7 +377,6 @@ namespace VVVV.Utils.VMidiScore
 			FMidiNotes.Clear();
 
 			FTrackNames = new string[FSequence.Count];
-			FChannelToTrack.Clear();
 			
 			FDivision = FSequence.Division;
 			
@@ -442,16 +434,12 @@ namespace VVVV.Utils.VMidiScore
 						
 						if (cmMessage != null)
 						{
-							//this may break if a track has changing channels over time...
-							if (!FChannelToTrack.ContainsKey(cmMessage.MidiChannel))
-								FChannelToTrack.Add(cmMessage.MidiChannel, trackID);
-							
 							if (cmMessage.Command == ChannelCommand.NoteOn)
 							{
 								if (cmMessage.Data2 != 0)
 								{
 									TMidiNote mn = new TMidiNote();
-									mn.Track = cmMessage.MidiChannel;//trackID;
+									mn.Track = trackID;
 									mn.Channel = cmMessage.MidiChannel;
 									mn.Note = cmMessage.Data1;
 									mn.Velocity = cmMessage.Data2;
