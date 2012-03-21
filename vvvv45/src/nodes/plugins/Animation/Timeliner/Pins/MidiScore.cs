@@ -46,6 +46,8 @@ namespace VVVV.Utils.VMidiScore
 		public List<TMidiNote> FNotesOfWindow = new List<TMidiNote>();
 		public List<TMidiNote> FNotesFound = new List<TMidiNote>();
 		
+		private Dictionary<int, int> FChannelToTrack = new Dictionary<int, int>();
+ 		
 		public int TrackCount
 		{
 			get{return FSequence.Count;}
@@ -192,6 +194,11 @@ namespace VVVV.Utils.VMidiScore
 		public string GetTrackName(int Track)
 		{
 			return FTrackNames[Track];
+		}
+		
+		public string GetTrackNameByChannel(int Channel)
+		{
+			return FTrackNames[FChannelToTrack[Channel]];
 		}
 		
 		private void HandleLoadCompleted(object sender, AsyncCompletedEventArgs e)
@@ -377,6 +384,7 @@ namespace VVVV.Utils.VMidiScore
 			FMidiNotes.Clear();
 
 			FTrackNames = new string[FSequence.Count];
+			FChannelToTrack.Clear();
 			
 			FDivision = FSequence.Division;
 			
@@ -396,6 +404,11 @@ namespace VVVV.Utils.VMidiScore
 						
 						switch (mmMessage.MetaType)
 						{
+							case MetaType.InstrumentName:
+								{
+									
+									break;
+								}
 							case MetaType.TrackName:
 								{
 									FTrackNames[trackID] = System.Text.Encoding.UTF8.GetString(data);
@@ -429,12 +442,16 @@ namespace VVVV.Utils.VMidiScore
 						
 						if (cmMessage != null)
 						{
+							//this may break if a track has changing channels over time...
+							if (!FChannelToTrack.ContainsKey(cmMessage.MidiChannel))
+								FChannelToTrack.Add(cmMessage.MidiChannel, trackID);
+							
 							if (cmMessage.Command == ChannelCommand.NoteOn)
 							{
 								if (cmMessage.Data2 != 0)
 								{
 									TMidiNote mn = new TMidiNote();
-									mn.Track = trackID;
+									mn.Track = cmMessage.MidiChannel;//trackID;
 									mn.Channel = cmMessage.MidiChannel;
 									mn.Note = cmMessage.Data1;
 									mn.Velocity = cmMessage.Data2;
