@@ -52,19 +52,21 @@ namespace VVVV.Core.Collections.Sync
         //            yield return (U)el.Symbol;
         //}
 
-        private static IEnumerable<U> SyncCo<T, U>(EditableCollection<T> source, Func<T, U> creator) where T : IIDItem
+        private static IEnumerable<U> SyncCo<T, U>(EditableCollection<T> source, Func<T, U> creator, Func<T, U> lookup) 
+            where T : IIDItem 
         {
             foreach (var el in source)
                 if (el.Changed)
                     yield return creator(el);
                 else
-                    yield return (U)el.Symbol;
+                    yield return lookup(el);
         }
 
-        public static IEnumerable<U> Sync<T, U>(EditableCollection<T> source, IEnumerable<U> old, Func<T, U> creator) where T : IIDItem
+        public static IEnumerable<U> Sync<T, U>(EditableCollection<T> source, IEnumerable<U> old, Func<T, U> creator, Func<T, U> lookup)
+            where T : IIDItem
         {
             if (source.Changed || (old==null))
-                return SyncCo(source, creator);
+                return SyncCo(source, creator, lookup);
             else
                 return old;
         }

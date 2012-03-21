@@ -59,8 +59,6 @@ namespace VVVV.Core
 
         bool Changed { get; }
 
-        object Symbol { get; }
-
         void Dispatch(IVisitor visitor);
     }
 

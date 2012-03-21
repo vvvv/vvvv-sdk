@@ -13,7 +13,7 @@ namespace VVVV.Core
 
         public string Version { get; set; }
 
-        public string Help { get; set; }
+        //public string Help { get; set; } //better is to read /// help snippet
 
         public string Tags { get; set; }
 
@@ -25,6 +25,7 @@ namespace VVVV.Core
 
         public string Warnings { get; set; }
 
+        public bool AutoEvaluate { get; set; }
     }
 
     public class PinAttribute : Attribute

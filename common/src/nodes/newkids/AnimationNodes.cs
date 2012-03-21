@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using VVVV.Core;
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.Animation
 {
     public class ChangeDetector<T> //where T : IEquatable<T>
     {

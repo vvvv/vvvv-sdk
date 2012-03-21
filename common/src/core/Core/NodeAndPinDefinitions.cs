@@ -104,21 +104,24 @@ namespace VVVV.Core
         IEnumerable<IOutputPinDefinition> Outputs { get; }
 
         /// <summary>
-        /// the method that either initially was extracted from an assembly to form the dataflow node or
-        /// the outcome from a compilation of the visual source code of a patch that is a dataflow node definition
-        /// </summary>
-        IMethodDefinition MethodDefinition { get; }
-        
-        /// <summary>
-        /// the type of the state
-        /// </summary>
-        ITypeReference StateType { get; }
-
-        /// <summary>
         /// Creates a node reference defined by this node definition; typically used to build up patches
         /// </summary>
         /// <returns> a fresh node reference pointing to this definition </returns>
         IDataflowNodeReference CreateReference(string name, IEnumerable<IInputPinReference> inputs, IEnumerable<IOutputPinReference> outputs);
+    }
+
+    public interface ICILDataflowNodeDefinition : IDataflowNodeDefinition
+    {
+        /// <summary>
+        /// the method that either initially was extracted from an assembly to form the dataflow node or
+        /// the outcome from a compilation of the visual source code of a patch that is a dataflow node definition
+        /// </summary>
+        IMethodDefinition MethodDefinition { get; }
+
+        /// <summary>
+        /// the type of the state
+        /// </summary>
+        ITypeReference StateType { get; }
     }
 
     /// <summary>

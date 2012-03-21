@@ -195,8 +195,6 @@ namespace VVVV.Core.Collections
 
         public bool Changed { get { return false; } }
 
-        public object Symbol { get; private set; }
-
         #endregion
         
         #region INamed Members

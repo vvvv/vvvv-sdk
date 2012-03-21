@@ -284,8 +284,6 @@ namespace VVVV.Core.Collections
             visitor.Visit(this);
         }
 
-        public object Symbol { get; private set; }
-
         private void CheckIfRootingChanged(RootingChangedEventArgs args)
         {
             switch (args.Rooting)
