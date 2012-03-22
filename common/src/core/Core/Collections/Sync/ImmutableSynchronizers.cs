@@ -52,7 +52,7 @@ namespace VVVV.Core.Collections.Sync
         //            yield return (U)el.Symbol;
         //}
 
-        private static IEnumerable<U> SyncCo<T, U>(IViewableIDList<T> source, Func<T, U> creator, Func<T, U> lookup) 
+        private static IEnumerable<U> SyncCo<T, U>(IEnumerable<T> source, Func<T, U> creator, Func<T, U> lookup) 
             where T : IIDItem 
         {
             foreach (var el in source)
@@ -66,6 +66,15 @@ namespace VVVV.Core.Collections.Sync
             where T : IIDItem
         {
             if (source.Changed || (old==null))
+                return SyncCo(source, creator, lookup);
+            else
+                return old;
+        }
+
+        public static IEnumerable<U> Sync<T, U>(bool changed, IEnumerable<T> source, IEnumerable<U> old, Func<T, U> creator, Func<T, U> lookup)
+            where T : IIDItem
+        {
+            if (changed || (old == null))
                 return SyncCo(source, creator, lookup);
             else
                 return old;

@@ -17,7 +17,7 @@ namespace VVVV.Core
         event RenamedHandler ItemRenamed;
     }
 
-    public interface IIDContainer<T> : IIDItem, IIDContainer where T : IIDItem
+    public interface IIDContainer<out T> : IIDItem, IIDContainer where T : IIDItem
     {
         new T this[string name]
         {
