@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using VVVV.Core;
 using VVVV.Core.Model;
@@ -391,6 +392,8 @@ namespace VVVV.PluginInterfaces.V2
 		IPin[] GetPins();
 		IPin GetPin(string name);
 		
+		Rectangle GetBounds(BoundsType boundsType);
+		
 		/// <summary>
 		/// Allows a plugin to register an INodeListener on a specific vvvv node.
 		/// </summary>
@@ -431,6 +434,7 @@ namespace VVVV.PluginInterfaces.V2
         void LabelChangedCB();
 		void StatusChangedCB();
 		void InnerStatusChangedCB();
+		void BoundsChangedCB(BoundsType boundsType);
     }
 	#endregion INode
 	
@@ -482,6 +486,8 @@ namespace VVVV.PluginInterfaces.V2
 		
 		string GetSpread();
 		void SetSpread(string spread);
+		
+		IPin[] GetConnectedPins();
 		
 		/// <summary>
 		/// Allows a plugin to register an IPinListener on a specific pin.

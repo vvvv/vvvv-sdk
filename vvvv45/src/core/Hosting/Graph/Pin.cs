@@ -1,5 +1,7 @@
 ﻿using System;
+
 using VVVV.Core;
+using VVVV.Core.Collections;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils;
@@ -187,6 +189,20 @@ namespace VVVV.Hosting.Graph
 				return FInternalCOMInterf.Direction;
 			}
 		}
+		
+		public IViewableCollection<IPin2> ConnectedPins
+        {
+            get
+            {
+            	var pins = new ViewableCollection<IPin2>();
+	            foreach (var internalPin in FInternalCOMInterf.GetConnectedPins())
+	            {
+	            	var node = Node.Create(internalPin.ParentNode, FNodeInfoFactory);
+	                pins.Add(new Pin(node, internalPin, FNodeInfoFactory));
+	            }
+	            return pins;
+            }
+        }
 		
 		public string Type
 		{

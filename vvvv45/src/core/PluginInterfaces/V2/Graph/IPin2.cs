@@ -56,6 +56,14 @@ namespace VVVV.PluginInterfaces.V2.Graph
         {
         	get;
         }
+        
+        /// <summary>
+        /// Returns a list of connected pins. For Inputs this is a maximum of one.
+        /// </summary>
+        IViewableCollection<IPin2> ConnectedPins
+        {
+            get;
+        }
 		
 		/// <summary>
 		/// Returns the status of the pin.
