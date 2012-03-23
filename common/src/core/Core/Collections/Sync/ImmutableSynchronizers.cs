@@ -62,20 +62,20 @@ namespace VVVV.Core.Collections.Sync
                     yield return lookup(el);
         }
 
-        public static IEnumerable<U> Sync<T, U>(IViewableIDList<T> source, IEnumerable<U> old, Func<T, U> creator, Func<T, U> lookup)
-            where T : IIDItem
-        {
-            if (source.Changed || (old==null))
-                return SyncCo(source, creator, lookup);
-            else
-                return old;
-        }
+        //public static IEnumerable<U> Sync<T, U>(IViewableIDList<T> source, IEnumerable<U> old, Func<T, U> creator, Func<T, U> lookup)
+        //    where T : IIDItem
+        //{
+        //    if (source.Changed || (old==null))
+        //        return SyncCo(source, creator, lookup);
+        //    else
+        //        return old;
+        //}
 
         public static IEnumerable<U> Sync<T, U>(bool changed, IEnumerable<T> source, IEnumerable<U> old, Func<T, U> creator, Func<T, U> lookup)
             where T : IIDItem
         {
             if (changed || (old == null))
-                return SyncCo(source, creator, lookup);
+                return SyncCo(source, creator, lookup).ToArray();
             else
                 return old;
         }
