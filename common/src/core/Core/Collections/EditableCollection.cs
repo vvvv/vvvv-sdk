@@ -59,7 +59,7 @@ namespace VVVV.Core.Collections
             Changed = true;
         }
 
-        public virtual void AckowledgeChanges()
+        public virtual void AcknowledgeChanges()
         {
             Changed = false;
         }

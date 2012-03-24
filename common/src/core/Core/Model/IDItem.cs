@@ -29,7 +29,7 @@ namespace VVVV.Core.Model
             }
         }
 
-        public virtual void AckowledgeChanges()
+        public virtual void AcknowledgeChanges()
         {
             Changed = false;
         }

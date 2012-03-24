@@ -143,12 +143,12 @@ namespace VVVV.Core.Model
             base.DisposeManaged();
         }
 
-        public override void AckowledgeChanges()
+        public override void AcknowledgeChanges()
         {
-            base.AckowledgeChanges();
+            base.AcknowledgeChanges();
 
             foreach (var item in this)
-                item.AckowledgeChanges();
+                item.AcknowledgeChanges();
         }
 
         //public override string ToString()

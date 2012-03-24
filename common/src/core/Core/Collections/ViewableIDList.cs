@@ -193,7 +193,7 @@ namespace VVVV.Core.Collections
             throw new Exception("viewable lists should never be changed. so don't mark them as changed");
         }
 
-        public void AckowledgeChanges()
+        public void AcknowledgeChanges()
         {
             throw new Exception("viewable lists should never be changed. so don't acknowledge changes");
         }

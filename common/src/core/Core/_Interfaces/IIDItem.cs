@@ -57,7 +57,7 @@ namespace VVVV.Core
 
         void MarkChanged();
 
-        void AckowledgeChanges();
+        void AcknowledgeChanges();
 
         bool Changed { get; }
 

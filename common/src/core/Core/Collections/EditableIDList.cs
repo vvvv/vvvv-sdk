@@ -164,13 +164,13 @@ namespace VVVV.Core.Collections
             }
         }
 
-        public override void AckowledgeChanges()
+        public override void AcknowledgeChanges()
         {
-            base.AckowledgeChanges();
+            base.AcknowledgeChanges();
 
             foreach (IIDItem item in this)
             {
-                item.AckowledgeChanges();
+                item.AcknowledgeChanges();
             }
         }
         
