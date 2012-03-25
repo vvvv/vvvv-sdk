@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using VVVV.Core;
 
 namespace VVVV.Nodes.Math
@@ -27,6 +29,18 @@ namespace VVVV.Nodes.Math
         public static int Divide(int a, int b)
         {
             return a / b;
+        }
+        
+        [Node]
+        public static int AddS(IEnumerable<int> xs)
+        {
+            return xs.Aggregate(0, (x, y) => x + y);
+        }
+        
+        [Node]
+        public static T Identity<T>(T x)
+        {
+            return x;
         }
     }
 }
