@@ -84,7 +84,7 @@ namespace VVVV.Nodes.Animation
         public override double Sample(double samplePos)
         {
             var x = (samplePos - Ft0) / (Ft1 - Ft0);
-            x = Math.Min(Math.Max(x, 0), 1);
+            x = System.Math.Min(System.Math.Max(x, 0), 1);
             var y = Fp0 + x * (Fp1 - Fp0);
             return y;
         }
