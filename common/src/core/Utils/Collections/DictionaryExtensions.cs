@@ -32,5 +32,12 @@ namespace VVVV.Utils.Collections
             }
             return value;
         }
+
+        public static IEnumerable<TValue> FirstValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key)
+        {
+            TValue value;
+            if (dictionary.TryGetValue(key, out value))
+                yield return value;
+        }
     }
 }
