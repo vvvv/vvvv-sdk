@@ -121,8 +121,6 @@ namespace VVVV.Nodes
 			
 			if (FUserGenerator != null)
 			{
-				FUserGenerator.
-				
 				if (FEnabledIn.IsChanged)
 					if (FEnabledIn[0])
 						FUserGenerator.StartGenerating();
