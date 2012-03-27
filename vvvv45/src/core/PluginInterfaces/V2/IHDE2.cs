@@ -269,6 +269,7 @@ namespace VVVV.PluginInterfaces.V2
 	public interface INodeBrowserHost
 	{
 		void CreateNode(INodeInfo nodeInfo);
+		int CreateNode(INodeInfo nodeInfo, Point point);
 		void CloneNode(INodeInfo nodeInfo, string path, string Name, string Category, string Version);
 		void CreateComment(string comment);
 	}	
