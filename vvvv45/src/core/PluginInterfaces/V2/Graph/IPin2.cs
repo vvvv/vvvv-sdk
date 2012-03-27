@@ -43,6 +43,10 @@ namespace VVVV.PluginInterfaces.V2.Graph
         
         /// <summary>
         /// Returns the pins subtype.
+        	/// values: guitTpe, dimension, default, min, max, stepSize, unitName, precision
+        	/// strings: guiType, default, fileMask, maxChars
+        	/// colors: guiType, default, hasAlpha
+        	/// enums: guiType, default
         /// </summary>
         string SubType
 	    {
