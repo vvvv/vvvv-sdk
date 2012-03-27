@@ -42,7 +42,7 @@ namespace VVVV.Utils.Streams
 			}
 			set
 			{
-				FReader.Position = VMath.VMath.Zmod(value, Length);
+			    if (Length > 0) FReader.Position = VMath.VMath.Zmod(value, Length);
 			}
 		}
 		
