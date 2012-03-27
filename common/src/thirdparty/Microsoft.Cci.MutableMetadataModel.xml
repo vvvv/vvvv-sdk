@@ -4701,6 +4701,11 @@
             which are local to method.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.MutableCodeModel.MethodBody.Size">
+            <summary>
+            The size in bytes of the method body when serialized.
+            </summary>
+        </member>
         <member name="T:Microsoft.Cci.MutableCodeModel.ParameterDefinition">
             <summary>
             The metadata representation of a method or property parameter.
@@ -11682,6 +11687,11 @@
             A path to the debug information corresponding to this module. Can be absolute or relative to the file path of the module. Empty if not specified.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.MutableCodeModel.Module.DebugInformationVersion">
+            <summary>
+            A hexadecimal string that is used to store and retrieve the debugging symbols from a symbol store.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.MutableCodeModel.Module.DllCharacteristics">
             <summary>
             Flags that control the behavior of the target operating system. CLI implementations are supposed to ignore this, but some operating system pay attention.
@@ -11846,6 +11856,16 @@
             Gets or sets the strings.
             </summary>
             <value>The strings.</value>
+        </member>
+        <member name="P:Microsoft.Cci.MutableCodeModel.Module.SubsystemMajorVersion">
+            <summary>
+            The first part of a two part version number indicating the operating subsystem that is expected to be the target environment for this module.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.MutableCodeModel.Module.SubsystemMinorVersion">
+            <summary>
+            The second part of a two part version number indicating the operating subsystem that is expected to be the target environment for this module.
+            </summary>
         </member>
         <member name="P:Microsoft.Cci.MutableCodeModel.Module.TargetRuntimeVersion">
             <summary>
@@ -12172,6 +12192,11 @@
             </summary>
             <param name="assemblyReference"></param>
             <param name="internFactory"></param>
+        </member>
+        <member name="M:Microsoft.Cci.MutableCodeModel.AssemblyReference.DispatchAsReference(Microsoft.Cci.IMetadataVisitor)">
+            <summary>
+            Calls vistor.Visit(IAssemblyReference).
+            </summary>
         </member>
         <member name="M:Microsoft.Cci.MutableCodeModel.AssemblyReference.Resolve">
             <summary>

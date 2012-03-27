@@ -6,14 +6,12 @@
     <members>
         <member name="T:Microsoft.Cci.CodeModelToILConverter">
             <summary>
-            An object with a method that converts a given block of statements to a list of IL operations, exception information and possibly some private
-            helper types.
+            An object with a method that converts a given block of statements to a list of IL operations, exception information and possibly some private helper types.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.CodeModelToILConverter.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IMethodDefinition,Microsoft.Cci.ISourceLocationProvider)">
             <summary>
-            Initializes an object with a method that converts a given block of statements to a list of IL operations, exception information and possibly some private 
-            helper types.
+            Initializes an object with a method that converts a given block of statements to a list of IL operations, exception information and possibly some private helper types.
             </summary>
             <param name="host">An object representing the application that is hosting the converter. It is used to obtain access to some global
             objects and services such as the shared name table and the table for interning references.</param>
@@ -22,8 +20,7 @@
         </member>
         <member name="M:Microsoft.Cci.CodeModelToILConverter.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IMethodDefinition,Microsoft.Cci.ISourceLocationProvider,System.Collections.Generic.IDictionary{Microsoft.Cci.IBlockStatement,System.UInt32})">
             <summary>
-            Initializes an object with a method that converts a given block of statements to a list of IL operations, exception information and possibly some private 
-            helper types.
+            Initializes an object with a method that converts a given block of statements to a list of IL operations, exception information and possibly some private helper types.
             </summary>
             <param name="host">An object representing the application that is hosting the converter. It is used to obtain access to some global
             objects and services such as the shared name table and the table for interning references.</param>
@@ -39,6 +36,13 @@
         <member name="F:Microsoft.Cci.CodeModelToILConverter.currentContinueTarget">
             <summary>
             A label for the instruction to where a continue statement should currently branch to.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.CodeModelToILConverter.currentExpressionIsStatement">
+            <summary>
+            True when the binary expression currently being processed is the top level expression of an ExpressionStatement and it has
+            a target expression as its left operand (i.e. it is an assignment statement of the form tgt op= src).
+            Be sure to clear this flag before any sub expresions are processed.
             </summary>
         </member>
         <member name="F:Microsoft.Cci.CodeModelToILConverter.currentTryCatchFinallyEnd">
@@ -112,6 +116,11 @@
             An object that can map the ILocation objects found in the block of statements to IPrimarySourceLocation objects.
             </summary>
         </member>
+        <member name="F:Microsoft.Cci.CodeModelToILConverter.trackExpressionSourceLocations">
+            <summary>
+            If true, the generated IL keeps track of the source locations of expressions, not just statements.
+            </summary>
+        </member>
         <member name="F:Microsoft.Cci.CodeModelToILConverter.localVariables">
             <summary>
             A list of all the local variable definitions that were encountered during the translation to IL.
@@ -120,6 +129,12 @@
         <member name="F:Microsoft.Cci.CodeModelToILConverter.iteratorLocalCount">
             <summary>
             A map that indicates how many iterator locals are present in a given block. Only useful for generated MoveNext methods. May be null.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.CodeModelToILConverter.EmitSourceLocation(Microsoft.Cci.IExpression)">
+            <summary>
+            Report the current expression to the IL generator. The source locations of the current expression will be wrapped up
+            as an IExpressionSourceLocation object and stored in the Location property of the next IL instruction that is created by the IL generator.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.CodeModelToILConverter.GetParameterIndex(Microsoft.Cci.IParameterDefinition)">
@@ -267,6 +282,12 @@
             </summary>
             <param name="continueStatement">The continue statement.</param>
         </member>
+        <member name="M:Microsoft.Cci.CodeModelToILConverter.TraverseChildren(Microsoft.Cci.ICopyMemoryStatement)">
+            <summary>
+            Generates IL for the specified copy memory statement.
+            </summary>
+            <param name="copyMemoryStatement">The copy memory statement.</param>
+        </member>
         <member name="M:Microsoft.Cci.CodeModelToILConverter.TraverseChildren(Microsoft.Cci.IConversion)">
             <summary>
             Generates IL for the specified conversion.
@@ -344,6 +365,12 @@
             Generates IL for the specified expression statement.
             </summary>
             <param name="expressionStatement">The expression statement.</param>
+        </member>
+        <member name="M:Microsoft.Cci.CodeModelToILConverter.TraverseChildren(Microsoft.Cci.IFillMemoryStatement)">
+            <summary>
+            Generates IL for the specified fill memory statement.
+            </summary>
+            <param name="fillMemoryStatement">The fill memory statement.</param>
         </member>
         <member name="M:Microsoft.Cci.CodeModelToILConverter.TraverseChildren(Microsoft.Cci.IForEachStatement)">
             <summary>
@@ -659,6 +686,12 @@
             </summary>
             <param name="yieldReturnStatement">The yield return statement.</param>
         </member>
+        <member name="M:Microsoft.Cci.CodeModelToILConverter.GetBodySize">
+            <summary>
+            Returns the size in bytes of the serialized method body generated by this converter.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Microsoft.Cci.CodeModelToILConverter.GetIteratorScopes">
             <summary>
             Returns a local scope for each local variable in the iterator that generated the MoveNext method body that was
@@ -675,6 +708,14 @@
             <summary>
             Returns all of the local variables (including compiler generated temporary variables) that are local to the block
             of statements translated by this converter.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.CodeModelToILConverter.GetNamespaceScopes">
+            <summary>
+            Returns zero or more namespace scopes into which the namespace type containing the given method body has been nested.
+            These scopes determine how simple names are looked up inside the method body. There is a separate scope for each dotted
+            component in the namespace type name. For istance namespace type x.y.z will have two namespace scopes, the first is for the x and the second
+            is for the y.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.CodeModelToILConverter.GetOperations">
@@ -708,6 +749,16 @@
         <member name="P:Microsoft.Cci.CodeModelToILConverter.MaximumStackSizeNeeded">
             <summary>
             The maximum number of stack slots that will be needed by an interpreter of the IL produced by this converter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.CodeModelToILConverter.MinimizeCodeSize">
+            <summary>
+            If true, code generation emphasizes small code size over patterns that make debugging better.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.CodeModelToILConverter.TrackExpressionSourceLocations">
+            <summary>
+            If true, the generated IL keeps track of the source locations of expressions, not just statements.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.CodeModelToILConverter.GetTypeFromHandle">

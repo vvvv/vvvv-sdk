@@ -1408,6 +1408,11 @@
             A path to the debug information corresponding to this module. Can be absolute or relative to the file path of the module. Empty if not specified.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.IModule.DebugInformationVersion">
+            <summary>
+            A hexadecimal string that is used to store and retrieve the debugging symbols from a symbol store.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.IModule.DllCharacteristics">
             <summary>
             Flags that control the behavior of the target operating system. CLI implementations are supposed to ignore this, but some operating system pay attention.
@@ -1530,6 +1535,16 @@
         <member name="P:Microsoft.Cci.IModule.SizeOfStackReserve">
             <summary>
             The size of the virtual memory to reserve for the initial thread's stack.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IModule.SubsystemMajorVersion">
+            <summary>
+            The first part of a two part version number indicating the operating subsystem that is expected to be the target environment for this module.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IModule.SubsystemMinorVersion">
+            <summary>
+            The second part of a two part version number indicating the operating subsystem that is expected to be the target environment for this module.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.IModule.TargetRuntimeVersion">
@@ -2402,6 +2417,11 @@
             which are local to method.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.IMethodBody.Size">
+            <summary>
+            The size in bytes of the method body when serialized.
+            </summary>
+        </member>
         <member name="T:Microsoft.Cci.IName">
             <summary>
             The name of an entity. Typically name instances come from a common pool. Within the pool no two distinct instances will have the same Value or UniqueKey.
@@ -2517,7 +2537,7 @@
         </member>
         <member name="T:Microsoft.Cci.INameTable">
             <summary>
-            A collection of IName instances that represent names that are commonly used during compilation.
+            An extensible collection of IName instances that represent names that are commonly used during compilation.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.INameTable.GetNameFor(System.String)">
@@ -5809,6 +5829,11 @@
         <member name="F:Microsoft.Cci.OperationCode.Array_Addr">
             <summary>
             Instruction to get the address of element of a multidimensional array. The value will be Type reference to the matrix type.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.OperationCode.Invalid">
+            <summary>
+            Not a valid operation.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.PInvokeCallingConvention">

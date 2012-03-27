@@ -660,16 +660,16 @@
             Provides the host with an opportunity to add, remove or substitute assembly references in the given list.
             This avoids the cost of rewriting the entire unit in order to make such changes.
             </summary>
-            <param name="referringUnit">A reference to the unit that has these references.</param>
+            <param name="referringUnit">The unit that contains these references.</param>
             <param name="assemblyReferences">The assembly references to substitute.</param>
             <returns>Usually assemblyReferences, but occasionally a modified enumeration.</returns>
         </member>
-        <member name="M:Microsoft.Cci.MetadataReader.WindowsRuntimeMetadataReaderHost.Redirect(Microsoft.Cci.IUnit,Microsoft.Cci.ITypeReference)">
+        <member name="M:Microsoft.Cci.MetadataReader.WindowsRuntimeMetadataReaderHost.Redirect(Microsoft.Cci.IUnit,Microsoft.Cci.INamedTypeReference)">
             <summary>
             Provides the host with an opportunity to substitute one type reference for another during metadata reading.
             This avoids the cost of rewriting the entire unit in order to make such changes.
             </summary>
-            <param name="definingUnit">A reference to the unit that is defining the type.</param>
+            <param name="referringUnit">The unit that contains the reference.</param>
             <param name="typeReference">A type reference encountered during metadata reading.</param>
             <returns>
             Usually the value in typeReference, but occassionally something else.
@@ -680,7 +680,7 @@
             Provides the host with an opportunity to substitute a custom attribute with another during metadata reading.
             This avoids the cost of rewriting the entire unit in order to make such changes.
             </summary>
-            <param name="referringUnit">The unit that is referencing the type.</param>
+            <param name="referringUnit">The unit that contains the custom attribute.</param>
             <param name="customAttribute">The custom attribute to rewrite (fix up).</param>
             <returns>
             Usually the value in customAttribute, but occassionally another custom attribute.

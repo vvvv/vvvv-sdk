@@ -1745,9 +1745,14 @@
             map offsets in an IL stream to source locations.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.#ctor(System.Collections.Generic.Dictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ISourceLocationProvider})">
+        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.#ctor(System.Collections.Generic.IDictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ISourceLocationProvider})">
             <summary>
             Copies the contents of the table
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.#ctor(System.Collections.Generic.Dictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ISourceLocationProvider})">
+            <summary>
+            Uses the given dictionary to find the appropriate provider for a query.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.GetPrimarySourceLocationsFor(System.Collections.Generic.IEnumerable{Microsoft.Cci.ILocation})">
@@ -1789,10 +1794,16 @@
             map offsets in an IL stream to block scopes.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.#ctor(System.Collections.Generic.Dictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ILocalScopeProvider})">
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.#ctor(System.Collections.Generic.IDictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ILocalScopeProvider})">
             <summary>
             Copies the contents of the table
             </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.#ctor(System.Collections.Generic.Dictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ILocalScopeProvider})">
+            <summary>
+            Uses the given dictionary to find the appropriate provider for a query.
+            </summary>
+            <param name="unit2ProviderMap"></param>
         </member>
         <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetIteratorScopes(Microsoft.Cci.IMethodBody)">
             <summary>
