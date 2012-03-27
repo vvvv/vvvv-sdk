@@ -121,6 +121,8 @@ namespace VVVV.Nodes
 			
 			if (FUserGenerator != null)
 			{
+				FUserGenerator.
+				
 				if (FEnabledIn.IsChanged)
 					if (FEnabledIn[0])
 						FUserGenerator.StartGenerating();
@@ -131,7 +133,7 @@ namespace VVVV.Nodes
 				{
 					FUserIdOut.SliceCount = FUserGenerator.NumberOfUsers;
 					FPositionOut.SliceCount = FUserGenerator.NumberOfUsers;
-					FTextureOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FTextureOut.SliceCount = 1;
 						
 					if (FUserGenerator.NumberOfUsers > 0)
 					{
