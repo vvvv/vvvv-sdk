@@ -22,7 +22,7 @@ namespace VVVV.PluginInterfaces.V2
         }
         
         public Spread(int size)
-            : this(new BufferedIOStream<T>())
+            : this(new BufferedIOStream<T>(size))
         {
             SliceCount = size;
         }
