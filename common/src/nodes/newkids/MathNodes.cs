@@ -8,13 +8,25 @@ namespace VVVV.Nodes.Math
     public static class MathNodes
     {
         [Node]
+        public static int Inc(int a)
+        {
+            return ++a;
+        }
+        
+        [Node]
+        public static int Dec(int a)
+        {
+            return --a;
+        }
+        
+        [Node]
         public static int Add(int a, int b)
         {
             return a + b;
         }
         
         [Node]
-        public static int Substract(int a, int b)
+        public static int Subtract(int a, int b)
         {
             return a - b;
         }
@@ -29,6 +41,36 @@ namespace VVVV.Nodes.Math
         public static int Divide(int a, int b)
         {
             return a / b;
+        }
+        
+        [Node]
+        public static bool Eq(int a, int b)
+        {
+            return a == b;
+        }
+        
+        [Node]
+        public static int One()
+        {
+            return 1;
+        }
+        
+        [Node]
+        public static int Two()
+        {
+            return 2;
+        }
+        
+        [Node]
+        public static int Three()
+        {
+            return 3;
+        }
+        
+        [Node]
+        public static int Four()
+        {
+            return 4;
         }
         
         [Node]
