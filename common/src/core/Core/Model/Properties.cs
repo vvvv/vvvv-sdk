@@ -10,13 +10,20 @@ namespace VVVV.Core.Model
     public class Property<T> : IDItem, IDescripted //where T : IEquatable<T>
     {
         public Property(string name)
-            : base(name)
-        { }
-
+            : this(name, default(T))
+        { 
+        }
+        
         public Property(string name, T value)
+            : this(name, value, typeof(T))
+        {
+        }
+
+        public Property(string name, T value, Type valueType)
             : base(name)
         {
             FValue = value;
+            ValueType = valueType;
         }
 
         #region IEditableProperty<T> Members
@@ -98,10 +105,7 @@ namespace VVVV.Core.Model
         
         public Type ValueType
         {
-            get
-            {
-                return typeof(T);
-            }
+            get; private set;
         }
 
         #endregion
@@ -142,6 +146,10 @@ namespace VVVV.Core.Model
 
         public EditableProperty(string name, T value)
             : base(name, value)
+        { }
+        
+        public EditableProperty(string name, T value, Type valueType)
+            : base(name, value, valueType)
         { }
 
         public override bool AcceptValue(T newValue)
