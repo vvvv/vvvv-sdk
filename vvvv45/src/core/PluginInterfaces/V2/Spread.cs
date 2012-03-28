@@ -142,9 +142,19 @@ namespace VVVV.PluginInterfaces.V2
             return GetEnumerator();
         }
         
-        public object Clone()
+        public Spread<T> Clone()
         {
             return new Spread<T>(FStream.Clone() as BufferedIOStream<T>);
+        }
+        
+        ISpread<T> ISpread<T>.Clone()
+        {
+            return Clone();
+        }
+        
+        object ICloneable.Clone()
+        {
+            return Clone();
         }
     }
 }
