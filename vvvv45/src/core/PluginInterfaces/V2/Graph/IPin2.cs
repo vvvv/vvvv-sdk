@@ -15,6 +15,13 @@ namespace VVVV.PluginInterfaces.V2.Graph
     		get;
     		set;
     	}
+    	
+    	/// <summary>
+		/// Returns the pins name as seen by the given parent node. This makes sense for pins of modules which have two parents: the IOBox and the Module.
+		/// </summary>
+		/// <param name="parentNode">The node for which to ask the pinname from.</param>
+		/// <returns>The pins name.</returns>
+   		string NameByParent(INode2 parentNode);
 
     	/// <summary>
     	/// Gets/Sets the whole spread as a string with commaseparated slices.
@@ -84,7 +91,14 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		{
 			get;
 		}
-        
+		
+		/// <summary>
+		/// Returns the Pins parent node that lies in the give patch. This makes sense for pins of modules which have two parents: the IOBox and the Module.
+		/// </summary>
+		/// <param name="patch">The given patch.</param>
+		/// <returns>The pins parent in the given patch.</returns>
+		INode2 ParentNodeByPatch(INode2 patch);
+		        
         /// <summary>
         /// The changed event occurs when the pins data changed.
         /// </summary>

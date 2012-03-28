@@ -482,6 +482,9 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 		}
 		
+		string GetNameByParent(INode parent);
+		INode GetParentNodeByPatch(INode patch);
+		
 	    string GetSlice(int sliceIndex);
 		void SetSlice(int sliceIndex, string slice);
 		

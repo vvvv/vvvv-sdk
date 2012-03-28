@@ -122,6 +122,11 @@ namespace VVVV.Hosting.Graph
 			}
 		}
 		
+		public string NameByParent(INode2 parentNode)
+		{
+			return FInternalCOMInterf.GetNameByParent(parentNode.InternalCOMInterf);
+		}
+		
 		public INode2 ParentNode
 		{
 			get
@@ -132,6 +137,11 @@ namespace VVVV.Hosting.Graph
 				}
 				return FParentNode;
 			}
+		}
+		
+		public INode2 ParentNodeByPatch(INode2 patch)
+		{
+			return Node.Create(FInternalCOMInterf.GetParentNodeByPatch(patch.InternalCOMInterf), FNodeInfoFactory);
 		}
 		
 		public string this[int sliceIndex]
