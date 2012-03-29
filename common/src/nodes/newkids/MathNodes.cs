@@ -80,9 +80,21 @@ namespace VVVV.Nodes.Math
         }
         
         [Node]
+        public static T FoldL<T>(IEnumerable<T> xs, Func<T, T, T> func)
+        {
+            return xs.Aggregate(func);
+        }
+        
+        [Node]
         public static T Identity<T>(T x)
         {
             return x;
+        }
+        
+        [Node]
+        public static IEnumerable<int> Range(int start, int count)
+        {
+            return Enumerable.Range(start, count);
         }
     }
 }
