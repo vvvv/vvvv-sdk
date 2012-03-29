@@ -134,7 +134,11 @@ namespace Microsoft.Cci.ReflectionEmitter {
                     var genericMembers = genericContainingType.GetMember(methodReference.Name.Value, bindingFlags);
                     members = new MemberInfo[genericMembers.Length];
                     for (int i = 0; i < members.Length; i++) {
-                        members[i] = TypeBuilder.GetMethod(containingType, (MethodInfo) genericMembers[i]);
+                        var method = genericMembers[i] as MethodBase;
+                        if (method.IsConstructor)
+                            members[i] = TypeBuilder.GetConstructor(containingType, (ConstructorInfo) genericMembers[i]);
+                        else
+                            members[i] = TypeBuilder.GetMethod(containingType, (MethodInfo) genericMembers[i]);
                     }
                     // HACK: Returned methods do have wrong generic arguments (the ones from the generic type definition), therefor skip type check for now.
                     return this.GetMethodFrom(methodReference, members, true);
