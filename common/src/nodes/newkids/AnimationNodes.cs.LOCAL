@@ -29,17 +29,6 @@ namespace VVVV.Nodes.Animation
         }
     }
 
-    public class RandomGenerator
-    {
-        private readonly Random FRandom = new Random();
-
-        [Node]
-        public int Random()
-        {
-            return FRandom.Next(10);
-        }
-    }
-
 
     public class ToggleState
     {
@@ -53,6 +42,8 @@ namespace VVVV.Nodes.Animation
             return State;
         }
     }
+
+
 
 
     public abstract class Clock
@@ -119,7 +110,7 @@ namespace VVVV.Nodes.Animation
 
         // change nodes needed to check if new curve has to be evaluated
         protected ChangedState<double> FFilterTime = new ChangedState<double>();
-        protected ChangedState<double> FGoal = new ChangedState<double>();
+        protected ChangedState<double> FGoalPosition = new ChangedState<double>();
 
         [Node]
         public static double Sample(ICurve<double, double> curve, double samplepos)
@@ -147,15 +138,15 @@ namespace VVVV.Nodes.Animation
     public class LinearFilterState: Filter
     {
         [Node]
-        private ICurve<double, double> LinearFilterCreate(double goal = 0, double filterTime = 1, bool restart = false)
+        private ICurve<double, double> LinearFilterCreate(double goalposition = 0, double filtertime = 1, bool restart = false)
         {
-            if (restart | FGoal.Changed(goal) | FFilterTime.Changed(filterTime))
+            if (restart | FGoalPosition.Changed(goalposition) | FFilterTime.Changed(filtertime))
             {
                 restart |= FFirstFrame;
-                var t0 = FrameClock.Time();
-                var t1 = t0 + TimeSpan.FromSeconds(filterTime).Ticks;
-                var p0 = restart ? goal : FPos;
-                var p1 = goal;
+                var t0 = (double)DateTime.Now.Ticks;
+                var t1 = t0 + FrameClock.Time();
+                var p0 = restart ? goalposition : FPos;
+                var p1 = goalposition;
                 FCurve = new Linear(t0, p0, t1, p1);
             }
             FFirstFrame = false;            
@@ -163,10 +154,10 @@ namespace VVVV.Nodes.Animation
         }
 
         [Node]
-        public double LinearFilter(int goal = 0, double filtertime = 1,
+        public double LinearFilter(double goalposition = 0, double filtertime = 1,
             bool restart = false)
         {
-            LinearFilterCreate(goal, filtertime, restart);
+            LinearFilterCreate(goalposition, filtertime, restart);
             return Sample(FCurve, FrameClock.Time());
         }
     }

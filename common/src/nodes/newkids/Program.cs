@@ -28,7 +28,7 @@ namespace VVVV.Nodes
 
             // testing filternodes
             var fftor = new LinearFilterState();
-            var goal = 10.0;
+            var goal = 10;
             var time = 5.0;
 
             ConsoleKey c = ConsoleKey.Spacebar;
@@ -39,7 +39,7 @@ namespace VVVV.Nodes
                 if (Console.KeyAvailable)
                 {
                     c = Console.ReadKey(false).Key;
-                    goal = new Random().NextDouble() * 100;
+                    //goal = new Random().NextDouble() * 100;
                     time = new Random().NextDouble() * 5;
                 }
             }
