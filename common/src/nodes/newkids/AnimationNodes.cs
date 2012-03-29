@@ -6,19 +6,19 @@ using VVVV.Core;
 
 namespace VVVV.Nodes.Animation
 {
-    public class ChangeDetector<T> //where T : IEquatable<T>
+    public class ChangedState<T> //where T : IEquatable<T>
     {
         T LastInput;
         bool FirstFrame;
 
-        public ChangeDetector()
+        public ChangedState()
         {
             FirstFrame = true;
             LastInput = default(T);
         }
 
         [Node]
-        public bool IsChanged(T input)
+        public bool Changed(T input)
         {
             var changed = (FirstFrame || !LastInput.Equals(input));
 
@@ -30,14 +30,12 @@ namespace VVVV.Nodes.Animation
     }
 
 
-
-
-    public class Toggle
+    public class ToggleState
     {
         bool State;
 
-        [Node]
-        public bool DoToggle(bool toggle)
+        [Node] 
+        public bool Toggle(bool toggle)
         {
             if (toggle)
                 State = !State;
@@ -48,8 +46,36 @@ namespace VVVV.Nodes.Animation
 
 
 
+    public abstract class Clock
+    {
+        public double Now { get; protected set; }
+        public abstract double FromNow(double inSeconds);
+    }
 
-    public enum FilterType { Linear, Oscillator };
+
+
+    public class FrameClock : Clock
+    {
+        public double CheckNow()
+        {
+            Now = Time();
+            return Now;
+        }
+
+        [Node]
+        public static double Time()
+        {
+            return (double)DateTime.Now.Ticks;
+        }
+
+        public override double FromNow(double inSeconds)
+        {
+            return Now + TimeSpan.FromSeconds(inSeconds).Ticks;
+        }
+    }
+
+
+
 
     public interface ICurve<TOutRoom, TSampleRoom>
     {
@@ -75,6 +101,25 @@ namespace VVVV.Nodes.Animation
         }
     }
 
+    public class Filter
+    {
+        protected ICurve<double, double> FCurve;
+        protected double FPos;
+        protected double FVel;
+        protected bool FFirstFrame;
+
+        // change nodes needed to check if new curve has to be evaluated
+        protected ChangedState<double> FFilterTime = new ChangedState<double>();
+        protected ChangedState<double> FGoalPosition = new ChangedState<double>();
+
+        [Node]
+        public static double Sample(ICurve<double, double> curve, double samplepos)
+        {
+            return curve.Sample(samplepos);
+        }
+    }
+
+
 
     public class Linear : Curve<double, double>
     {
@@ -90,135 +135,72 @@ namespace VVVV.Nodes.Animation
         }
     }
 
-    public class Oscillator : Curve<double, double>
+    public class LinearFilterState: Filter
     {
-        double Fv0;
-        double Fv1;
-
-        public Oscillator(double t0, double p0, double t1, double p1, double v0 = 0, double v1 = 0)
-            : base(t0, p0, t1, p1)
-        {
-            Fv0 = v0;
-            Fv1 = v1;
-        }
-    }
-
-
-
-    public interface IClock
-    {
-        double Now { get; }
-        double FromNow(double inSeconds);
-    }
-
-    public class FrameClock : IClock
-    {
-        public double Now { get; private set; }
-
-        public void CheckNow()
-        {
-            Now = (double)DateTime.Now.Ticks;
-        }
-
-        public double Time()
-        {
-            CheckNow();
-            return Now;
-        }
-
-        public double FromNow(double inSeconds)
-        {
-            return Now + TimeSpan.FromSeconds(inSeconds).Ticks;
-        }
-    }
-
-    public class FilterNode
-    {
-        ICurve<double, double> FCurve;
-        double FPos;
-        double FVel;
-        bool FFirstFrame;
-
-        // change nodes needed to check if new curve has to be evaluated
-        ChangeDetector<double> FFilterTime = new ChangeDetector<double>();
-        ChangeDetector<double> FGoalPosition = new ChangeDetector<double>();
-        ChangeDetector<FilterType> FFilterType = new ChangeDetector<FilterType>();
-
         [Node]
-        private void SetLinearFilterCurve(double goalposition = 0, double filtertime = 1, bool restart = false)
+        private ICurve<double, double> LinearFilterCreate(double goalposition = 0, double filtertime = 1, bool restart = false)
         {
-            if (restart | FGoalPosition.IsChanged(goalposition) | FFilterTime.IsChanged(filtertime))
+            if (restart | FGoalPosition.Changed(goalposition) | FFilterTime.Changed(filtertime))
             {
                 restart |= FFirstFrame;
                 var t0 = (double)DateTime.Now.Ticks;
-                var t1 = t0 + TimeSpan.FromSeconds(filtertime).Ticks;
+                var t1 = t0 + FrameClock.Time();
                 var p0 = restart ? goalposition : FPos;
                 var p1 = goalposition;
                 FCurve = new Linear(t0, p0, t1, p1);
             }
+            FFirstFrame = false;            
+            return FCurve;
         }
 
         [Node]
-        private void SetOscillatingFilterCurve(double goalposition = 0, double filtertime = 1, bool restart = false)
-        {
-            if (restart | FGoalPosition.IsChanged(goalposition) | FFilterTime.IsChanged(filtertime))
-            {
-                restart |= FFirstFrame;
-                var t0 = (double)DateTime.Now.Ticks;
-                var t1 = t0 + TimeSpan.FromSeconds(filtertime).Ticks;
-                var p0 = restart ? goalposition : FPos;
-                var p1 = goalposition;
-                var v0 = restart ? 0 : FVel;
-                var v1 = 0;
-                FCurve = new Oscillator(t0, p0, t1, p1, v0, v1);
-            }
-        }
-
-        public void SetFilterCurve(double goalposition = 0, double filtertime = 1, FilterType filtertype = FilterType.Linear,
+        public double LinearFilter(double goalposition = 0, double filtertime = 1,
             bool restart = false)
         {
-            restart |= FFilterType.IsChanged(filtertype);
-
-            switch (filtertype)
-            {
-                case FilterType.Linear:
-                    SetLinearFilterCurve(goalposition, filtertime, restart);
-                    break;
-                case FilterType.Oscillator:
-                    SetOscillatingFilterCurve(goalposition, filtertime, restart);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        [Node]
-        public double Sample(double samplepos)
-        {
-            FPos = FCurve.Sample(samplepos);
-            FFirstFrame = false;
-            return FPos;
-        }
-
-        public double LinearFilterAndSample(double goalposition = 0, double filtertime = 1,
-            bool restart = false)
-        {
-            SetLinearFilterCurve(goalposition, filtertime, restart);
-            return Sample((double)DateTime.Now.Ticks);
-        }
-
-        public double OscillatorFilterAndSample(double goalposition = 0, double filtertime = 1,
-            bool restart = false)
-        {
-            SetOscillatingFilterCurve(goalposition, filtertime, restart);
-            return Sample((double)DateTime.Now.Ticks);
-        }
-
-        public double FilterAndSample(double goalposition = 0, double filtertime = 1, FilterType filtertype = FilterType.Linear,
-            bool restart = false)
-        {
-            SetFilterCurve(goalposition, filtertime, filtertype, restart);
-            return Sample((double)DateTime.Now.Ticks);
+            LinearFilterCreate(goalposition, filtertime, restart);
+            return Sample(FCurve, FrameClock.Time());
         }
     }
+
+
+
+    //public class Oscillator : Curve<double, double>
+    //{
+    //    double Fv0;
+    //    double Fv1;
+
+    //    public Oscillator(double t0, double p0, double t1, double p1, double v0 = 0, double v1 = 0)
+    //        : base(t0, p0, t1, p1)
+    //    {
+    //        Fv0 = v0;
+    //        Fv1 = v1;
+    //    }
+    //}
+
+
+    //public class Oscillator : Filter
+    //{
+    //    [Node]
+    //    private void SetOscillatingFilterCurve(double goalposition = 0, double filtertime = 1, bool restart = false)
+    //    {
+    //        if (restart | FGoalPosition.Changed(goalposition) | FFilterTime.Changed(filtertime))
+    //        {
+    //            restart |= FFirstFrame;
+    //            var t0 = (double)DateTime.Now.Ticks;
+    //            var t1 = t0 + TimeSpan.FromSeconds(filtertime).Ticks;
+    //            var p0 = restart ? goalposition : FPos;
+    //            var p1 = goalposition;
+    //            var v0 = restart ? 0 : FVel;
+    //            var v1 = 0;
+    //            FCurve = new Oscillator(t0, p0, t1, p1, v0, v1);
+    //        }
+    //    }
+    //    public double OscillatorFilterAndSample(double goalposition = 0, double filtertime = 1,
+    //        bool restart = false)
+    //    {
+    //        SetOscillatingFilterCurve(goalposition, filtertime, restart);
+    //        return Sample((double)DateTime.Now.Ticks);
+    //    }
+    //}
+
 }

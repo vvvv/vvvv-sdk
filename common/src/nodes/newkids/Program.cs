@@ -11,31 +11,31 @@ namespace VVVV.Nodes
         static void Main(string[] args)
         {
             // testing change nodes
-            var ftor = new ChangeDetector<string>();
-            Console.WriteLine(ftor.IsChanged("hu"));
-            Console.WriteLine(ftor.IsChanged("hu"));
+            var ftor = new ChangedState<string>();
+            Console.WriteLine(ftor.Changed("hu"));
+            Console.WriteLine(ftor.Changed("hu"));
 
-            var ftor2 = new ChangeDetector<double>();            
-            Console.WriteLine(ftor2.IsChanged(0));
-            Console.WriteLine(ftor2.IsChanged(0));
+            var ftor2 = new ChangedState<double>();
+            Console.WriteLine(ftor2.Changed(0));
+            Console.WriteLine(ftor2.Changed(0));
 
 
             // testing toggle
-            var bftor = new Toggle();
-            Console.WriteLine(bftor.DoToggle(true));
-            Console.WriteLine(bftor.DoToggle(true));
+            var bftor = new ToggleState();
+            Console.WriteLine(bftor.Toggle(true));
+            Console.WriteLine(bftor.Toggle(true));
 
 
             // testing filternodes
-            var fftor = new FilterNode();
+            var fftor = new LinearFilterState();
             var goal = 10.0;
             var time = 5.0;
-            
+
             ConsoleKey c = ConsoleKey.Spacebar;
             while (c != ConsoleKey.Escape)
             {
-                Console.WriteLine(fftor.FilterAndSample(goal, time));
-                
+                Console.WriteLine(fftor.LinearFilter(goal, time));
+
                 if (Console.KeyAvailable)
                 {
                     c = Console.ReadKey(false).Key;
