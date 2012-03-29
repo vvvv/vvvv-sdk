@@ -96,5 +96,11 @@ namespace VVVV.Nodes.Math
         {
             return Enumerable.Range(start, count);
         }
+        
+        [Node]
+        public static Func<int, int, int> AddFunc()
+        {
+            return Add;
+        }
     }
 }
