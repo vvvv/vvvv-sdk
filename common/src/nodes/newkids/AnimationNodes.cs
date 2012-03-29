@@ -29,6 +29,17 @@ namespace VVVV.Nodes.Animation
         }
     }
 
+    public class RandomGenerator
+    {
+        private readonly Random FRandom = new Random();
+
+        [Node]
+        public int Random()
+        {
+            return FRandom.Next(10);
+        }
+    }
+
 
     public class ToggleState
     {
