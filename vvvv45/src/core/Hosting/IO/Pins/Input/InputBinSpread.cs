@@ -24,7 +24,7 @@ namespace VVVV.Hosting.Pins.Input
                 FBinSizeContainer = ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
                 FDataStream = FDataContainer.IOObject;
                 FBinSizeStream = FBinSizeContainer.IOObject;
-                FNormBinSizeStream = new BufferedIOStream<int>();
+                FNormBinSizeStream = new BufferedIOStream<int>(FBinSizeStream.Length);
             }
             
             public void Dispose()
