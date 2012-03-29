@@ -1,0 +1,335 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\help\FFT (Bass) help.v4p">
+   <BOUNDS height="8970" left="2835" top="2130" type="Window" width="11850">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="18" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode">
+   <BOUNDS height="0" left="4965" top="2670" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7230" top="5220" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="4965" top="2670" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
+   <PIN pinname="Mono" visible="1">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Tempo" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="File End" visible="1">
+   </PIN>
+   <PIN pinname="CurrentPosition" visible="1">
+   </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="17" nodename=":PLUGINS:\BassSound.dll|BassSound.BassAudioOutNode">
+   <BOUNDS height="0" left="6330" top="4395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7530" top="7035" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="6330" top="4395" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="HandleIn" visible="1">
+   </PIN>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="0" left="6390" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9480" top="5625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6390" top="1710" type="Box" width="2985">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\..\..\..\Music\Prefuse 73\Piano overlord\04 track 04.mp3|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3690" top="1545" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7095" top="5835" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="3690" top="1545" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Play" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4995" top="1530" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8550" top="6285" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="4995" top="1530" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mono">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Mono" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="13" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.FFTChannelDataNode">
+   <BOUNDS height="0" left="2880" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="11505" top="8805" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2880" top="2505" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="HandleIn" visible="1">
+   </PIN>
+   <PIN pinname="FFTSize" visible="1">
+   </PIN>
+   <PIN pinname="Left" visible="1">
+   </PIN>
+   <PIN pinname="Right" visible="1">
+   </PIN>
+   <PIN pinname="Handle In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="900" top="3780" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="555" top="5925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="11145" top="9660" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="555" top="5925" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="3300" top="5925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="13905" top="10485" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="3300" top="5925" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2115" top="1800" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12660" top="7500" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2115" top="1800" type="Box" width="945">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|FFT Size|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="256">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="FFTSize" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="8" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="1125" top="5355" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Layers" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <NODE id="7" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="3315" top="5400" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Layers" srcnodeid="7" srcpinname="Layer">
+   </LINK>
+   <NODE id="6" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="1635" top="4905" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Divide (Value)">
+   <BOUNDS height="0" left="2865" top="3990" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input 2" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="ScaleX" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="6" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="TranslateX" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="ScaleY" srcnodeid="13" srcpinname="Left">
+   </LINK>
+   <NODE id="4" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="4290" top="3765" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="3360" top="4830" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Transform" srcnodeid="3" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="TranslateX" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="ScaleX" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="ScaleY" srcnodeid="13" srcpinname="Right">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Handle In" srcnodeid="18" srcpinname="Handle Out">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Handles In" srcnodeid="18" srcpinname="Handle Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="File Name" srcnodeid="16" srcpinname="Output String">
+   </LINK>
+   <NODE id="2" nodename="Count (Value)">
+   <BOUNDS height="0" left="1980" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="13" srcpinname="Left">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Spread Count" srcnodeid="2" srcpinname="Count">
+   </LINK>
+   <NODE id="1" nodename="Count (Value)">
+   <BOUNDS height="0" left="4185" top="3135" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="13" srcpinname="Right">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Spread Count" srcnodeid="1" srcpinname="Count">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="7860" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10785" top="3870" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1515" left="7860" top="2610" type="Box" width="2925">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|Note:&cr;&lf;&cr;&lf;if you use your streams in an asio context, fft gives better results if you connect your channel to a mixer node.|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <BOUNDS height="255" left="390" top="555" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="345" left="390" top="555" type="Box" width="4410">
+   </BOUNDS>
+   <BOUNDS height="160" left="12045" top="16725" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Computes Fast Fourier Transform on a Bass Stream|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="270" left="390" top="180" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="390" top="180" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="12045" top="16725" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|FFT - Bass|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>
