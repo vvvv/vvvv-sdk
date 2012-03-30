@@ -39,6 +39,17 @@ namespace VVVV.Nodes.Animation
             return FRandom.Next(10);
         }
     }
+    
+    public class FrameCounter
+    {
+        private int FCount;
+        
+        [Node]
+        public int FrameNr()
+        {
+            return FCount++;
+        }
+    }
 
 
     public class ToggleState
@@ -163,11 +174,12 @@ namespace VVVV.Nodes.Animation
         }
 
         [Node]
-        public double LinearFilter(int goal = 0, double filtertime = 1,
+        public double LinearFilter(int goal = 0, int filtertime = 1,
             bool restart = false)
         {
             LinearFilterCreate(goal, filtertime, restart);
-            return Sample(FCurve, FrameClock.Time());
+            FPos = Sample(FCurve, FrameClock.Time());
+            return FPos;
         }
     }
 

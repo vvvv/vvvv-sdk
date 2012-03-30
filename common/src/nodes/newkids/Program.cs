@@ -34,7 +34,7 @@ namespace VVVV.Nodes
             ConsoleKey c = ConsoleKey.Spacebar;
             while (c != ConsoleKey.Escape)
             {
-                Console.WriteLine(fftor.LinearFilter(goal, time));
+                //Console.WriteLine(fftor.LinearFilter(goal, time));
 
                 if (Console.KeyAvailable)
                 {
