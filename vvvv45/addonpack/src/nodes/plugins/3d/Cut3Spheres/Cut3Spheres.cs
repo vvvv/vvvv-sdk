@@ -88,7 +88,7 @@ namespace VVVV.Nodes
 	        	Info.Category = "3d";						//try to use an existing one
 	        	Info.Version = "Three";						//versions are optional. leave blank if not needed
 	        	Info.Help = "Ouputs the 2 points as the result of cutting 3 spheres.";
-	        	Info.Bugs = "";
+	        	Info.Bugs = "The 3 points cannot have the same z value";
 	        	Info.Credits = "";								//give credits to thirdparty code used
 	        	Info.Warnings = "";
 	        	Info.Tags = "intersect, intersection, cut, points, purely functional, deterministic, overlap";
