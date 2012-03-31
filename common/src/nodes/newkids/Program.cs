@@ -11,11 +11,11 @@ namespace VVVV.Nodes
         static void Main(string[] args)
         {
             // testing change nodes
-            var ftor = new ChangedState<string>();
+            var ftor = new SimpleStateRemindor<string>();
             Console.WriteLine(ftor.Changed("hu"));
             Console.WriteLine(ftor.Changed("hu"));
 
-            var ftor2 = new ChangedState<double>();
+            var ftor2 = new SimpleStateRemindor<double>();
             Console.WriteLine(ftor2.Changed(0));
             Console.WriteLine(ftor2.Changed(0));
 

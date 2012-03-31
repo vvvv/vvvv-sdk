@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.Core;
+using System.Diagnostics;
+using System.Timers;
 
 namespace VVVV.Nodes.Animation
 {
-    public class ChangedState<T> //where T : IEquatable<T>
+    public class SimpleStateRemindor<T> //where T : IEquatable<T>
     {
         T LastInput;
         bool FirstFrame;
 
-        public ChangedState()
+        public SimpleStateRemindor()
         {
             FirstFrame = true;
             LastInput = default(T);
@@ -27,6 +29,14 @@ namespace VVVV.Nodes.Animation
 
             return changed;
         }
+
+        [Node]
+        public T GetLast(T input)
+        {
+            var last = LastInput;
+            LastInput = input;
+            return last;
+        }
     }
 
     public class RandomGenerator
@@ -39,11 +49,11 @@ namespace VVVV.Nodes.Animation
             return FRandom.Next(10);
         }
     }
-    
+
     public class FrameCounter
     {
         private int FCount;
-        
+
         [Node]
         public int FrameNr()
         {
@@ -56,7 +66,7 @@ namespace VVVV.Nodes.Animation
     {
         bool State;
 
-        [Node] 
+        [Node]
         public bool Toggle(bool toggle)
         {
             if (toggle)
@@ -73,9 +83,17 @@ namespace VVVV.Nodes.Animation
     }
 
 
-
     public class FrameClock : Clock
     {
+        public static FrameClock GlobalFrameClock = new FrameClock();
+        protected Stopwatch Stopwatch;
+
+        public FrameClock()
+        {
+            Stopwatch = new Stopwatch();
+            Stopwatch.Start();
+        }
+
         public double CheckNow()
         {
             Now = Time();
@@ -83,17 +101,16 @@ namespace VVVV.Nodes.Animation
         }
 
         [Node]
-        public static double Time()
+        public double Time()
         {
-            return (double)DateTime.Now.Ticks;
+            return Stopwatch.Elapsed.TotalSeconds;
         }
 
         public override double FromNow(double inSeconds)
         {
-            return Now + TimeSpan.FromSeconds(inSeconds).Ticks;
+            return Now + inSeconds;
         }
     }
-
 
 
 
@@ -124,13 +141,10 @@ namespace VVVV.Nodes.Animation
     public class Filter
     {
         protected ICurve<double, double> FCurve;
-        protected double FPos;
-        protected double FVel;
-        protected bool FFirstFrame;
 
         // change nodes needed to check if new curve has to be evaluated
-        protected ChangedState<double> FFilterTime = new ChangedState<double>();
-        protected ChangedState<double> FGoal = new ChangedState<double>();
+        protected SimpleStateRemindor<double> FFilterTime = new SimpleStateRemindor<double>();
+        protected SimpleStateRemindor<double> FGoal = new SimpleStateRemindor<double>();
 
         [Node]
         public static double Sample(ICurve<double, double> curve, double samplepos)
@@ -155,31 +169,35 @@ namespace VVVV.Nodes.Animation
         }
     }
 
-    public class LinearFilterState: Filter
+    public class LinearFilterState : Filter
     {
         [Node]
-        private ICurve<double, double> LinearFilterCreate(double goal = 0, double filterTime = 1, bool restart = false)
+        private static ICurve<double, double> LinearFilterCreate(Clock clock, double startingpos = 0, double goal = 1, double filterTime = 1)
         {
+            var t0 = clock.Now;
+            var t1 = clock.FromNow(filterTime);
+            var p0 = startingpos;
+            var p1 = goal;
+            return new Linear(t0, p0, t1, p1);
+        }
+
+        //[Node]
+        public double LinearFilter(Clock clock, double goal = 0, double filterTime = 1, bool restart = false)
+        {
+            var now = clock.Now;
+            var currentpos = restart || (FCurve == null) ? goal : Sample(FCurve, now);
+            filterTime = System.Math.Max(filterTime, 1E-9);
+
             if (restart | FGoal.Changed(goal) | FFilterTime.Changed(filterTime))
-            {
-                restart |= FFirstFrame;
-                var t0 = FrameClock.Time();
-                var t1 = t0 + TimeSpan.FromSeconds(filterTime).Ticks;
-                var p0 = restart ? goal : FPos;
-                var p1 = goal;
-                FCurve = new Linear(t0, p0, t1, p1);
-            }
-            FFirstFrame = false;            
-            return FCurve;
+                FCurve = LinearFilterCreate(clock, currentpos, goal, filterTime);
+
+            return currentpos;
         }
 
         [Node]
-        public double LinearFilter(int goal = 0, int filtertime = 1,
-            bool restart = false)
+        public double LinearFilter(double goal = 0, double filterTime = 1, bool restart = false)
         {
-            LinearFilterCreate(goal, filtertime, restart);
-            FPos = Sample(FCurve, FrameClock.Time());
-            return FPos;
+            return LinearFilter(FrameClock.GlobalFrameClock, goal, filterTime, restart);
         }
     }
 

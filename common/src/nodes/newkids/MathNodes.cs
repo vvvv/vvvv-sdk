@@ -8,6 +8,12 @@ namespace VVVV.Nodes.Math
     public static class MathNodes
     {
         [Node]
+        public static double ToReal64(this int i)
+        {
+            return i;
+        }
+
+        [Node]
         public static int Inc(int a)
         {
             return ++a;
