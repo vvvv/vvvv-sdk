@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
-using System.ComponentModel.Composition;
+using System.Security;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -20,7 +20,6 @@ namespace VVVV.Hosting
 	public class PatchRefactorer
 	{
 		#region fields
-		[Import()]
 		ILogger FLogger;
 		
 		INodeInfoFactory FNodeInfoFactory;
@@ -119,7 +118,7 @@ namespace VVVV.Hosting
 						    || (pin.Type == "Color"))
 						{
 							var p = nodeMessage.AddPin(pin.NameByParent(node));
-							p.AddAttribute("values", pin.Spread);
+							p.AddAttribute("values", SecurityElement.Escape(pin.Spread));
 						}
 					}
 				}
