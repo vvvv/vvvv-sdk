@@ -37,16 +37,31 @@ namespace VVVV.Nodes.Animation
             LastInput = input;
             return last;
         }
+
+        [Node]
+        public T Hold(T input, bool sample)
+        {
+            if (sample)
+                LastInput = input;
+            return LastInput;
+        }
     }
 
     public class RandomGenerator
     {
-        private readonly Random FRandom = new Random();
+        private Random FRandom;
+
+        private static Random FSeed = new Random();
+
+        public RandomGenerator()
+        {
+            FRandom = new Random(FSeed.Next());
+        }
 
         [Node]
-        public int Random()
+        public int Random() //(int max = 10)
         {
-            return FRandom.Next(10);
+            return FRandom.Next(10);//(max);
         }
     }
 

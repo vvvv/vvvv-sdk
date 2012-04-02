@@ -14,6 +14,12 @@ namespace VVVV.Nodes.Math
         }
 
         [Node]
+        public static int Round(this double real)
+        {
+            return (int)System.Math.Round(real);
+        }
+
+        [Node]
         public static int Inc(int a)
         {
             return ++a;
