@@ -53,6 +53,15 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
+		/// Get/Set the size of this spread.
+		/// </summary>
+		new int SliceCount // Do not remove this or it will break pre-compiled plugins.
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
 		/// Create a copy of the <see cref="ISpread{T}"/>.
 		/// </summary>
 		/// <returns>A new copy of this <see cref="ISpread{T}"/>.</returns>
