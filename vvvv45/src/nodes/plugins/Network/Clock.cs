@@ -18,7 +18,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Clock", 
 	Category = "Network", 
-	Version = "",
+	Version = "Boygroup",
 	Help = "Basic template with one value in/out", 
 	Tags = "",
 	AutoEvaluate = true)]

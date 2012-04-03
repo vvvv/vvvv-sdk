@@ -29,13 +29,13 @@ namespace VVVV.Nodes
 	public class FileStreamNetworkSyncNode : IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
-		[Input("Time", IsSingle = true)]
-		ISpread<double> FTime;
-		
-		[Input("Stream Length", IsSingle = true)]
+		[Input("Duration", IsSingle = true)]
 		ISpread<double> FLength;
 		
-		[Input("Fine Offset", IsSingle = true)]
+		[Input("Position", IsSingle = true)]
+		ISpread<double> FTime;
+		
+		[Input("Fine Offset (ms)", IsSingle = true)]
 		ISpread<int> FFineOffset;
 		
 		[Input("Is Client", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
@@ -82,15 +82,13 @@ namespace VVVV.Nodes
 		
 		public FileStreamNetworkSyncNode()
 		{
-
 			FStreamDiffFilter.Value = 0;
 			FStreamDiffFilter.Thresh = 1;
-			FStreamDiffFilter.Alpha = 0.97;
+			FStreamDiffFilter.Alpha = 0.95;
 			
 			FTimer = new Timer(50);
 			FTimer.Elapsed += FTimer_Elapsed;
 			FTimer.Start();
-			
 		}
 
 		void FTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -173,47 +171,36 @@ namespace VVVV.Nodes
 			var fCount = 5;
 			lock(FLock)
 			{
-				if(FStreamTime > 0.5 && FStreamTime < FLength[0] - 0.5)
+				var offset = FTimeStamp - FReceivedTimeStamp;
+				var streamDiff = FReceivedStreamTime - FStreamTime + offset + FFineOffset[0] * 0.001;
+				streamDiff = Math.Abs(streamDiff) > FLength[0] * 0.5 ? streamDiff - FLength[0] * Math.Sign(streamDiff) : streamDiff;
+				var doSeek = Math.Abs(streamDiff) > 1;
+				
+				FStreamDiffFilter.Update(streamDiff);
+				
+				FDoSeekOut[0] = doSeek;
+				FSeekTimeOut[0] = FReceivedStreamTime + offset + 0.05;
+				
+				var doAdjust = Math.Abs(FStreamDiffFilter.Value) > 0.001;
+				
+				if(!doSeek && FFrameCounter == 0 && doAdjust)
 				{
-					var offset = FTimeStamp - FReceivedTimeStamp;
-					var streamDiff = FReceivedStreamTime - FStreamTime + offset + FFineOffset[0] * 0.001;
-					var doSeek = Math.Abs(streamDiff) > 1;
-					
-					FStreamDiffFilter.Update(streamDiff);
-					
-					FDoSeekOut[0] = doSeek;
-					FSeekTimeOut[0] = FReceivedStreamTime + offset + 0.05;
-					
-					var doAdjust = Math.Abs(FStreamDiffFilter.Value) > 0.001 ? 1 : 0;
-					
-					if(!doSeek && FFrameCounter == 0)
-					{
-						FAdjustTimeOut[0] = FStreamDiffFilter.Value * 50 * doAdjust;
-					}
-					else
-					{
-						FAdjustTimeOut[0] = 0;
-					}
-					
-					FStreamOffsetOut[0] = streamDiff;
-					FOffsetOut[0] = offset;
-					
-					FFrameCounter = (++FFrameCounter) % fCount;
-					
+					FAdjustTimeOut[0] = FStreamDiffFilter.Value * 50;
 				}
-				else //near loop
+				else
 				{
 					FAdjustTimeOut[0] = 0;
-					FDoSeekOut[0] = false;
-					FFrameCounter = 0;
 				}
+				
+				FStreamOffsetOut[0] = streamDiff;
+				FOffsetOut[0] = offset;
+				
+				FFrameCounter = (++FFrameCounter) % fCount;
 			}
-			
 		}
 		
 		protected void ServerEvaluate()
 		{
-			
 		}
 		
 		public void Dispose()
