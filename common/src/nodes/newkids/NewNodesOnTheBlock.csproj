@@ -59,6 +59,12 @@
     <BaseAddress>4194304</BaseAddress>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>..\..\..\..\public\vvvv45\src\thirdparty\OpenTK\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl">
+      <HintPath>..\..\..\..\public\vvvv45\src\thirdparty\OpenTK\OpenTK.GLControl.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -73,6 +79,10 @@
     <Compile Include="AnimationNodes.cs" />
     <Compile Include="Basics.cs" />
     <Compile Include="MathNodes.cs" />
+    <Compile Include="RendererState.cs" />
+    <Compile Include="RendererState.Designer.cs">
+      <DependentUpon>RendererState.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Window.cs">
@@ -97,6 +107,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="RendererState.resx">
+      <DependentUpon>RendererState.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Window.resx">
       <DependentUpon>Window.cs</DependentUpon>
     </EmbeddedResource>
