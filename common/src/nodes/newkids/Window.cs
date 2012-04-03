@@ -18,13 +18,13 @@ namespace VVVV.Nodes.Windows
         public WindowState()
         {
             InitializeComponent();
+            Visible = true;
         }
 
         [Node]
         public WindowState Window(int x, int y)
         {
-            //Location = new Point(x, y);
-            Visible = true;
+            Location = new Point(x, y);
             return this;
         }
     }

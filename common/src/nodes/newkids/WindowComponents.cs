@@ -17,6 +17,7 @@ namespace VVVV.Nodes.Windows
         public LabelState()
         {
             FLabel = new Label();
+            //FLabel.Text = "STATIC TEXT"; 
         }
 
         [Node]
@@ -24,7 +25,7 @@ namespace VVVV.Nodes.Windows
         {
             FLabel.Location = new Point(x, y);
 
-            FLabel.Text = "STATIC TEXT"; // text;
+            FLabel.Text = text;
             if (!window.Controls.Contains(FLabel))
                 window.Controls.Add(FLabel);
 
