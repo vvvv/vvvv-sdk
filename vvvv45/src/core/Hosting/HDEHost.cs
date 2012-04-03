@@ -7,11 +7,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
-
 using VVVV.Core;
 using VVVV.Core.Commands;
 using VVVV.Core.Logging;
@@ -19,9 +18,13 @@ using VVVV.Core.Model;
 using VVVV.Hosting;
 using VVVV.Hosting.Factories;
 using VVVV.Hosting.Graph;
+using VVVV.Hosting.IO;
+using VVVV.Hosting.Interfaces.EX9;
 using VVVV.Hosting.Pins;
+using VVVV.PluginInterfaces.InteropServices.EX9;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
 
@@ -40,8 +43,7 @@ namespace VVVV.Hosting
         const string NODE_BROWSER = "NodeBrowser (VVVV)";
         
         private IVVVVHost FVVVVHost;
-        private INodeBrowser FNodeBrowser;
-        private IPluginBase FWindowSwitcher, FKommunikator;
+        private IPluginBase FWindowSwitcher, FKommunikator, FNodeBrowser;
         private readonly List<Window> FWindows = new List<Window>();
         
         [Export]
@@ -49,6 +51,9 @@ namespace VVVV.Hosting
         
         [Export(typeof(ILogger))]
         public DefaultLogger Logger { get; private set; }
+
+        [Export(typeof(IORegistry))]
+        public IORegistry IORegistry { get; private set; }
         
         [Export]
         public INodeBrowserHost NodeBrowserHost { get; protected set; }
@@ -80,6 +85,9 @@ namespace VVVV.Hosting
 
         [Import]
         public NodeCollection NodeCollection {get; protected set;}
+
+        [Import]
+        private IStartableRegistry FStartableRegistry;
         
         public HDEHost()
         {
@@ -113,6 +121,8 @@ namespace VVVV.Hosting
             EnumManager.SetHDEHost(this);
             
             Logger = new DefaultLogger();
+
+            IORegistry = new IORegistry();
         }
 
         private HashSet<ProxyNodeInfo> LoadNodeInfos(string filename, string arguments)
@@ -150,6 +160,9 @@ namespace VVVV.Hosting
             // Route log messages to vvvv
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
+            DeviceService = new DeviceService(vvvvHost.DeviceService);
+            MainLoop = new MainLoop(vvvvHost.MainLoop);
+            
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
             KommunikatorHost = kommunikatorHost;
@@ -184,9 +197,7 @@ namespace VVVV.Hosting
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             FWindowSwitcher = PluginFactory.CreatePlugin(windowSwitcherNodeInfo, null);
             FKommunikator = PluginFactory.CreatePlugin(kommunikatorNodeInfo, null);
-            FNodeBrowser = (INodeBrowser) PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
-            FNodeBrowser.IsStandalone = false;
-            FNodeBrowser.DragDrop(false);
+            FNodeBrowser = PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
         }
         
         private INodeInfo GetNodeInfo(string systemName)
@@ -196,9 +207,12 @@ namespace VVVV.Hosting
 
         public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
         {
-            nodeBrowser = FNodeBrowser;
-            windowSwitcher = FWindowSwitcher;
-            kommunikator = FKommunikator;
+        	// HACK hack hack :/
+        	nodeBrowser = ((PluginContainer) FNodeBrowser).PluginBase;
+        	((INodeBrowser) nodeBrowser).IsStandalone = false;
+            ((INodeBrowser) nodeBrowser).DragDrop(false);
+            windowSwitcher = ((PluginContainer) FWindowSwitcher).PluginBase;
+            kommunikator = ((PluginContainer) FKommunikator).PluginBase;
         }
         
         public void ExtractNodeInfos(string filename, string arguments, out INodeInfo[] result)
@@ -263,6 +277,11 @@ namespace VVVV.Hosting
         {
             NodeCollection.AddCombined(path, false);
             NodeCollection.Collect();
+        }
+        
+        public void Shutdown()
+        {
+            FStartableRegistry.ShutDown();
         }
 
         #endregion IInternalHDEHost
@@ -355,6 +374,28 @@ namespace VVVV.Hosting
             }
         }
         
+        public INode2 GetNodeFromPath(string nodePath)
+        {
+        	var ids = nodePath.Split('/');
+        	
+        	var result = RootNode[0];
+        	for (int i = 1; i < ids.Length; i++)
+        	{
+        		try
+        		{
+        			var id = int.Parse(ids[i]);
+        			result = (from node in result where node.ID == id select node).First();
+        		}
+        		catch
+        		{
+        			result = null;
+        			break;
+        		}       			
+        	}
+
+            return result;
+        }
+        
         public void UpdateEnum(string EnumName, string Default, string[] EnumEntries)
         {
             FVVVVHost.UpdateEnum(EnumName, Default, EnumEntries);
@@ -429,6 +470,11 @@ namespace VVVV.Hosting
             FVVVVHost.SetComponentMode(node.InternalCOMInterf, componentMode);
         }
         
+        public void SendPatchMessage(string fileName, string message, bool undoable)
+        {
+            FVVVVHost.SendPatchMessage(fileName, message, undoable);
+        }
+        
         public string ExePath
         {
             get;
@@ -449,6 +495,19 @@ namespace VVVV.Hosting
                 return FActivePatchWindow;
             }
         }
+        
+        [Export(typeof(IDXDeviceService))]
+        public IDXDeviceService DeviceService
+        {
+            get;
+            private set;
+        }
+        
+        public IMainLoop MainLoop
+		{
+		    get;
+		    private set;
+		}
         
         #endregion
         

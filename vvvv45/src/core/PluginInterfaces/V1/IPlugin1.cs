@@ -1,11 +1,13 @@
 using System;
-using System.Runtime.InteropServices;
-using System.IO;
 using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
 
-using VVVV.Utils.VMath;
-using VVVV.Utils.VColor;
+using SlimDX.Direct3D9;
 using VVVV.Core.Model;
+using VVVV.PluginInterfaces.InteropServices.EX9;
+using VVVV.Utils.VColor;
+using VVVV.Utils.VMath;
 
 /// <summary>
 /// Version 1 of the VVVV PluginInterface.
@@ -98,7 +100,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin for which the function is called.</param>
 		/// <param name="OnDevice">Pointer to the device on which the resources is to be updated.</param>
-		void UpdateResource(IPluginOut ForPin, int OnDevice);
+		void UpdateResource(IPluginOut ForPin, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice);
 		/// <summary>
 		/// Called by the PluginHost whenever a resource for a specific pin needs to be destroyed on a specific device. 
 		/// This is also called when the plugin is destroyed, so don't dispose dxresources in the plugins destructor/Dispose()
@@ -106,7 +108,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="ForPin">Interface to the pin for which the function is called.</param>
 		/// <param name="OnDevice">Pointer to the device on which the resources is to be destroyed.</param>
 		/// <param name="OnlyUnManaged">If True only unmanaged DirectX resources need to be destroyed.</param>
-		void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged);
+		void DestroyResource(IPluginOut ForPin, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice, bool OnlyUnManaged);
 	}
 	
 	/// <summary>
@@ -122,9 +124,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// therefore the plugin shouldn't be doing much here other than handing back the right mesh.
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin via which the mesh is accessed.</param>
-		/// <param name="OnDevice">Pointer to the device for which the mesh is accessed.</param>
-		/// <param name="Mesh">The retrieved mesh</param>
-		void GetMesh(IDXMeshOut ForPin, int OnDevice, out int Mesh);
+		/// <param name="OnDevice">The device for which the mesh is accessed.</param>
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(MeshMarshaler))]
+		Mesh GetMesh(
+		    IDXMeshOut ForPin, 
+		    [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice);
 	}
 	
 	/// <summary>
@@ -140,9 +144,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// therefore the plugin shouldn't be doing much here other than handing back the right texture.
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin via which the texture is accessed.</param>
-		/// <param name="OnDevice">Pointer to the device for which the texture is accessed.</param>
-		/// <param name="Texture">The retrieved texture</param>
-		void GetTexture(IDXTextureOut ForPin, int OnDevice, out int Texture);
+		/// <param name="OnDevice">The device for which the texture is accessed.</param>
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(TextureMarshaler))]
+		Texture GetTexture(
+		    IDXTextureOut ForPin, 
+		    [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice);
 	}
 	
 	/// <summary>
@@ -158,10 +164,13 @@ namespace VVVV.PluginInterfaces.V1
 		/// therefore the plugin shouldn't be doing much here other than handing back the right texture.
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin via which the texture is accessed.</param>
-		/// <param name="OnDevice">Pointer to the device for which the texture is accessed.</param>
-		/// /// <param name="Slice">Slice Index of the texture to be accessed.</param>
-		/// <param name="Texture">The retrieved texture</param>
-		void GetTexture(IDXTextureOut ForPin, int OnDevice, int Slice, out int Texture);
+		/// <param name="OnDevice">The device for which the texture is accessed.</param>
+		/// <param name="Slice">Slice Index of the texture to be accessed.</param>
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(TextureMarshaler))]
+		Texture GetTexture(
+		    IDXTextureOut ForPin, 
+		    [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice, 
+		    int Slice);
 	}
 
 	/// <summary>
@@ -173,7 +182,7 @@ namespace VVVV.PluginInterfaces.V1
 	{
 		/// <summary>
 		/// Called by the PluginHost everytime it needs to update its StateBlock. Here the plugin
-		/// must specify all States it will set during <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.Render(IDXLayerIO, IPluginDXDevice)">IPluginDXLayer.Render</see>
+		/// must specify all States it will set during <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.Render(IDXLayerIO, Device)">IPluginDXLayer.Render</see>
 		/// via calls to <see cref="VVVV.PluginInterfaces.V1.IDXRenderStateIn">IDXRenderStateIn</see>'s and <see cref="VVVV.PluginInterfaces.V1.IDXSamplerStateIn">IDXSamplerStateIn</see>'s functions.
 		/// </summary>
 		void SetStates();
@@ -183,22 +192,8 @@ namespace VVVV.PluginInterfaces.V1
 		/// therefore the plugin shouldn't be doing much here other than some drawing calls.
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin for which the function is called.</param>
-		/// <param name="DXDevice">Pointer to the device on which the plugin is supposed to render.</param>
-		void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice);
-	}  
-	
-	/// <summary>
-	/// Interface to access the hosts current DirectX device. Available as input parameter to any of the IPluginDXResource functions. 
-	/// </summary>
-	[Guid("765B10CB-4CA9-4927-B1DF-A8FB67692267"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPluginDXDevice
-	{
-		/// <summary>
-		/// The current DirectX device.
-		/// </summary>
-		/// <returns>Address of current DirectX device.</returns>
-		int DevicePointer();
+		/// <param name="DXDevice">Device on which the plugin is supposed to render.</param>
+		void Render(IDXLayerIO ForPin, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device DXDevice);
 	}
 	#endregion PluginDXInterfaces
 }

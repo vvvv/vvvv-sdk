@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <ProjectGuid>{716F4773-5590-4DD6-A9BC-3FE905D22DA5}</ProjectGuid>
@@ -64,6 +64,7 @@
   <ItemGroup>
     <Reference Include="FSharp.Core">
       <HintPath>..\..\thirdparty\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
@@ -100,8 +101,11 @@
     <Compile Include="Layer\DrawText\DrawTextLegacy.cs" />
     <Compile Include="Spreads\Lindenmayer\Lindenmayer.cs" />
     <Compile Include="Spreads\Lindenmayer\LindenmayerNode.cs" />
+    <Compile Include="String\StringInsertNode.cs" />
     <Compile Include="SVG\SVGGeomNodes.cs" />
-    <Compile Include="SVG\SVGTextureNode.cs" />
+    <Compile Include="SVG\SVGTextureNode.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Transform\Decompose\DecomposeNode.cs" />
     <Compile Include="Value\DifferentialNode.cs" />
     <Compile Include="Value\IntegralNode.cs" />
@@ -119,6 +123,7 @@
     </Compile>
     <Compile Include="vvvv\Kommunikator\Uploader.cs" />
     <Compile Include="vvvv\Kontrolleur\KontrolleurNode.cs" />
+    <Compile Include="vvvv\Kontrolleur\PatchMessage.cs" />
     <Compile Include="vvvv\Kontrolleur\RemoteValue.cs" />
     <Compile Include="vvvv\NodeBrowser\CategoryEntry.cs" />
     <Compile Include="vvvv\NodeBrowser\CategoryPanel.cs">
@@ -168,6 +173,7 @@
     <Compile Include="vvvv\ProjectExplorer\ProjectExplorerPlugin.Designer.cs">
       <DependentUpon>ProjectExplorerPlugin.cs</DependentUpon>
     </Compile>
+    <Compile Include="vvvv\StartableInfo\StartableInfoNode.cs" />
     <Compile Include="vvvv\WindowSwitcher\WindowSwitcherNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -175,11 +181,11 @@
     <Compile Include="_SpreadOperations\Cons.cs" />
     <Compile Include="_SpreadOperations\Pairwise.cs" />
     <Compile Include="_SpreadOperations\Queue.cs" />
+    <Compile Include="_SpreadOperations\DeleteSlice.cs" />
     <Compile Include="_SpreadOperations\RingBuffer.cs" />
     <Compile Include="_SpreadOperations\UnzipNode.cs" />
     <Compile Include="_SpreadOperations\ZipNode.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="vvvv\Finder\FinderNode.resx">
       <DependentUpon>FinderNode.cs</DependentUpon>
@@ -237,6 +243,9 @@
       <Name>WinFormsViewer</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="String" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

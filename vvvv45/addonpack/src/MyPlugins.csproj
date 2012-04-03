@@ -6,8 +6,8 @@
     <AddonPluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</AddonPluginsOutputDir>
   </PropertyGroup>
   <ItemGroup>
-	<!-- IDE seems to need this line, MSBuild not? -->
-	<ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
+    <!-- IDE seems to need this line, MSBuild not? -->
+    <ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
   </ItemGroup>
   <ItemDefinitionGroup>
     <ProjectReference>
@@ -20,7 +20,6 @@
       AddonpackBuild
     </BuildDependsOn>
   </PropertyGroup>
-
   <Target Name="AddonpackBuild">
     <!-- Delete all files which are already in lib/core -->
     <Delete Files="@(CoreOutputFiles->'$(AddonPluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />

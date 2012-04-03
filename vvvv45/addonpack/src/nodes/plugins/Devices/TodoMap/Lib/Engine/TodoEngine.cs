@@ -81,7 +81,10 @@ namespace VVVV.TodoMap.Lib
             {
                 this.selectedvar = this.variables[name];
                 this.selectedinput = null;
-
+            }
+            else
+            {
+                this.selectedvar = null;
             }
         }
 

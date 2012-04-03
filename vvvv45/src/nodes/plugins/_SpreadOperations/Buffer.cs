@@ -54,7 +54,7 @@ namespace VVVV.Nodes
             {
                 FOutput.SliceCount = frameCount;
                 for (int i = 0; i < frameCount; i++)
-                    FOutput[i] = FDefault[i].Clone();
+                    FOutput[i] = FDefault[i].Clone() as ISpread<T>;
             }
       
             //set slice count
@@ -81,7 +81,7 @@ namespace VVVV.Nodes
 
                 if (FDoInsert[i])
                 {
-                    FOutput[bufferCounter] = FInput[i].Clone();
+                    FOutput[bufferCounter] = FInput[i].Clone() as ISpread<T>;
                     FPhase[i] = frameCount > 1 ? bufferCounter / (double)(frameCount - 1) : 0;
                 }  
             }

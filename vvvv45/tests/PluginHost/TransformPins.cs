@@ -132,7 +132,12 @@ namespace Hoster
 			SliceCount = this.SliceCount;
 		}
 		
-		public void GetRenderWorldMatrix(int Index, out SlimDX.Matrix Value)
+		unsafe public void GetRenderWorldMatrix(int Index, out SlimDX.Matrix Value)
+		{
+			throw new NotImplementedException();
+		}
+		
+		unsafe public void GetMatrixPointer(out int* pLength, out float** ppData)
 		{
 			throw new NotImplementedException();
 		}
@@ -256,6 +261,11 @@ namespace Hoster
 			{
 				Value = fp;
 			}
+		}
+		
+		unsafe public void GetMatrixPointer(out float** ppDst)
+		{
+			throw new NotImplementedException();
 		}
 	}	
 }
