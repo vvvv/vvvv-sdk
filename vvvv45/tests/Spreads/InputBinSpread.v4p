@@ -1,0 +1,321 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
+   <PATCH nodename="F:\vvvv\vvvv\public\vvvv45\tests\Spreads\InputBinSpread.v4p" systemname="InputBinSpread" filename="F:\vvvv\vvvv\public\vvvv45\tests\Spreads\InputBinSpread.v4p">
+   <BOUNDS type="Window" left="6255" top="5505" width="11355" height="6000">
+   </BOUNDS>
+   <NODE systemname="SyncInputBinSpread (Value Test)" filename="%VVVV%\tests\Spreads\plugins\TestValueSyncInputBinSpread\TestValueSyncInputBinSpread.csproj" nodename="SyncInputBinSpread (Value Test)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="705" top="1605" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Exception" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Bin Size" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="705" top="1605">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="IsEmpty (Test String)" filename="%VVVV%\lib\nodes\modules\Test\IsEmpty (Test String).v4p" componentmode="Hidden" id="5" nodename="%VVVV%\lib\nodes\modules\Test\IsEmpty (Test String).v4p">
+   <BOUNDS type="Node" left="705" top="2625" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="705" top="2625" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="15660" top="2040" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Exception" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="705" top="3300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="705" top="3300" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Success" dstnodeid="6" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="SyncInputBinSpread (Value Test)" filename="%VVVV%\tests\Spreads\plugins\TestValueSyncInputBinSpread\TestValueSyncInputBinSpread.csproj" nodename="SyncInputBinSpread (Value Test)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="2580" top="1605" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Exception" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Bin Size" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="2580" top="1605">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="IsEmpty (Test String)" filename="%VVVV%\lib\nodes\modules\Test\IsEmpty (Test String).v4p" componentmode="Hidden" id="8" nodename="%VVVV%\lib\nodes\modules\Test\IsEmpty (Test String).v4p">
+   <BOUNDS type="Node" left="2580" top="2625" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2580" top="2625" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="15660" top="2040" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Exception" dstnodeid="8" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2580" top="3300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2580" top="3300" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Success" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="NIL (Spreads)" filename="%VVVV%\lib\nodes\modules\Spreads\NIL (Spreads).v4p" nodename="NIL (Spreads)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="2580" top="690" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="2580" top="690">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="9" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="9" dstpinname="Input Bin Size">
+   </LINK>
+   <NODE systemname="SyncInputBinSpread (Value Test)" filename="%VVVV%\tests\Spreads\plugins\TestValueSyncInputBinSpread\TestValueSyncInputBinSpread.csproj" nodename="SyncInputBinSpread (Value Test)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="4440" top="1605" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Exception" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Bin Size">
+   </PIN>
+   <BOUNDS type="Box" left="4440" top="1605">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="IsEmpty (Test String)" filename="%VVVV%\lib\nodes\modules\Test\IsEmpty (Test String).v4p" componentmode="Hidden" id="13" nodename="%VVVV%\lib\nodes\modules\Test\IsEmpty (Test String).v4p">
+   <BOUNDS type="Node" left="4455" top="2625" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4455" top="2625" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="15660" top="2040" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Exception" dstnodeid="13" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4470" top="3300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4470" top="3300" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Success" dstnodeid="12" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="14" dstpinname="Input">
+   </LINK>
+   <NODE systemname="SyncInputBinSpread (Value Test)" filename="%VVVV%\tests\Spreads\plugins\TestValueSyncInputBinSpread\TestValueSyncInputBinSpread.csproj" nodename="SyncInputBinSpread (Value Test)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="6315" top="1605" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Exception" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Bin Size">
+   </PIN>
+   <BOUNDS type="Box" left="6315" top="1605">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="IsEmpty (Test String)" filename="%VVVV%\lib\nodes\modules\Test\IsEmpty (Test String).v4p" componentmode="Hidden" id="16" nodename="%VVVV%\lib\nodes\modules\Test\IsEmpty (Test String).v4p">
+   <BOUNDS type="Node" left="6330" top="2625" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6330" top="2625" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="15660" top="2040" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Exception" dstnodeid="16" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6345" top="3300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6345" top="3300" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Success" dstnodeid="15" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="17" dstpinname="Input">
+   </LINK>
+   <NODE systemname="SyncInputBinSpread (Value Test)" filename="%VVVV%\tests\Spreads\plugins\TestValueSyncInputBinSpread\TestValueSyncInputBinSpread.csproj" nodename="SyncInputBinSpread (Value Test)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="8175" top="1605" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Exception" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Bin Size">
+   </PIN>
+   <BOUNDS type="Box" left="8175" top="1605">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="IsEmpty (Test String)" filename="%VVVV%\lib\nodes\modules\Test\IsEmpty (Test String).v4p" componentmode="Hidden" id="20" nodename="%VVVV%\lib\nodes\modules\Test\IsEmpty (Test String).v4p">
+   <BOUNDS type="Node" left="8190" top="2625" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8190" top="2625" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="15660" top="2040" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Exception" dstnodeid="20" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="8205" top="3300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8205" top="3300" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Success" dstnodeid="19" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="21" dstpinname="Input">
+   </LINK>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="9060" top="1920" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Bang" dstnodeid="20" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Bang" dstnodeid="16" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Bang" dstnodeid="13" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Bang" dstnodeid="8" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Bang" dstnodeid="5" dstpinname="Enabled">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7920" top="510" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7920" top="510" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Input Bin Size">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="9765" top="510" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9765" top="510" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Input Bin Size">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="25" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6060" top="510" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6060" top="510" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input Bin Size">
+   </LINK>
+   <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="705" top="735" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Output" dstnodeid="1" dstpinname="Input">
+   </LINK>
+   <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="1155" top="1125" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Random Seed" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="50">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="27" srcpinname="Output" dstnodeid="1" dstpinname="Input Bin Size">
+   </LINK>
+   </PATCH>
