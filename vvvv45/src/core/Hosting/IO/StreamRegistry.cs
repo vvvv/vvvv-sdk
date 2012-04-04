@@ -479,7 +479,8 @@ namespace VVVV.Hosting.IO
             RegisterConfig(typeof(BufferedIOStream<string>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringConfig)));
                                var stringConfig = container.RawIOObject as IStringConfig;
-                               return IOContainer.Create(context, new StringConfigStream(stringConfig), container, null, s => s.Flush(), s => s.Sync());
+                               var stream = new StringConfigStream(stringConfig);
+                               return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
             
             RegisterConfig(typeof(BufferedIOStream<RGBAColor>), (factory, context) => {
@@ -499,7 +500,8 @@ namespace VVVV.Hosting.IO
             RegisterConfig(typeof(BufferedIOStream<EnumEntry>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumConfig)));
                                var enumConfig = container.RawIOObject as IEnumConfig;
-                               return IOContainer.Create(context, new DynamicEnumConfigStream(enumConfig), container, null, s => s.Flush(), s => s.Sync());
+                               var stream = new DynamicEnumConfigStream(enumConfig);
+                               return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
             
             RegisterConfig(typeof(BufferedIOStream<>), (factory, context) => {

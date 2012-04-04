@@ -22,7 +22,7 @@ namespace VVVV.PluginInterfaces.V2
         }
         
         public Spread(int size)
-            : this(new BufferedIOStream<T>())
+            : this(new BufferedIOStream<T>(size))
         {
             SliceCount = size;
         }
@@ -142,18 +142,19 @@ namespace VVVV.PluginInterfaces.V2
             return GetEnumerator();
         }
         
-        public object Clone()
+        public Spread<T> Clone()
         {
             return new Spread<T>(FStream.Clone() as BufferedIOStream<T>);
         }
-    }
-
-    [ComVisible(false)]
-    public static class SpreadExtensions_
-    {
-        public static ISpread<T> ToSpread<T>(this List<T> list)
+        
+        ISpread<T> ISpread<T>.Clone()
         {
-            return new Spread<T>(list);
+            return Clone();
+        }
+        
+        object ICloneable.Clone()
+        {
+            return Clone();
         }
     }
 }

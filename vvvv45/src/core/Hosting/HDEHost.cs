@@ -24,6 +24,7 @@ using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.InteropServices.EX9;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
 
@@ -50,6 +51,9 @@ namespace VVVV.Hosting
         
         [Export(typeof(ILogger))]
         public DefaultLogger Logger { get; private set; }
+
+        [Export(typeof(IORegistry))]
+        public IORegistry IORegistry { get; private set; }
         
         [Export]
         public INodeBrowserHost NodeBrowserHost { get; protected set; }
@@ -117,6 +121,8 @@ namespace VVVV.Hosting
             EnumManager.SetHDEHost(this);
             
             Logger = new DefaultLogger();
+
+            IORegistry = new IORegistry();
         }
 
         private HashSet<ProxyNodeInfo> LoadNodeInfos(string filename, string arguments)
@@ -154,7 +160,7 @@ namespace VVVV.Hosting
             // Route log messages to vvvv
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
-            DeviceMarshaler.Initialize(vvvvHost.DeviceService);
+            DeviceService = new DeviceService(vvvvHost.DeviceService);
             MainLoop = new MainLoop(vvvvHost.MainLoop);
             
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
@@ -488,6 +494,13 @@ namespace VVVV.Hosting
                 
                 return FActivePatchWindow;
             }
+        }
+        
+        [Export(typeof(IDXDeviceService))]
+        public IDXDeviceService DeviceService
+        {
+            get;
+            private set;
         }
         
         public IMainLoop MainLoop

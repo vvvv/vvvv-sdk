@@ -42,11 +42,14 @@ namespace VVVV.Hosting.Factories
 
         [Import]
         private StartableRegistry FStartableRegistry;
+
+        [Import]
+        private IORegistry FIORegistry;
         
         private readonly Dictionary<IPluginBase, PluginContainer> FPluginContainers;
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
-        private readonly IORegistry FIORegistry = new IORegistry();
+        
         protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 
 
@@ -495,6 +498,7 @@ namespace VVVV.Hosting.Factories
     
     class PluginContainer : IPlugin, IDisposable
     {
+        [Export(typeof(IIOFactory))]
         private readonly IOFactory FIOFactory;
         private readonly CompositionContainer FContainer;
         private readonly IPluginEvaluate FPlugin;
@@ -525,6 +529,7 @@ namespace VVVV.Hosting.Factories
             FContainer.ComposeParts(this);
             FPlugin = PluginBase as IPluginEvaluate;
             FAutoEvaluate = nodeInfo.AutoEvaluate;
+            FIOFactory.OnCreated(EventArgs.Empty);
         }
         
         public void Dispose()

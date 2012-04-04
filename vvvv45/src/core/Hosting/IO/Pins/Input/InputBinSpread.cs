@@ -19,12 +19,13 @@ namespace VVVV.Hosting.Pins.Input
             public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
             {
                 attribute = ManipulateAttribute(attribute);
-                attribute.AutoValidate = false;
+                // Don't do this, as spread max won't get computed for this pin
+//                attribute.AutoValidate = false;
                 FDataContainer = ioFactory.CreateIOContainer<IInStream<T>>(attribute, false);
                 FBinSizeContainer = ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
                 FDataStream = FDataContainer.IOObject;
                 FBinSizeStream = FBinSizeContainer.IOObject;
-                FNormBinSizeStream = new BufferedIOStream<int>();
+                FNormBinSizeStream = new BufferedIOStream<int>(FBinSizeStream.Length);
             }
             
             public void Dispose()
