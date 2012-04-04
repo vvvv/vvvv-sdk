@@ -477,9 +477,14 @@ namespace VVVV.Hosting
             FVVVVHost.SetComponentMode(node.InternalCOMInterf, componentMode);
         }
         
-        public void SendPatchMessage(string fileName, string message, bool undoable)
+        public string GetXMLSnippetFromSelection()
         {
-            FVVVVHost.SendPatchMessage(fileName, message, undoable);
+        	return FVVVVHost.GetXMLSnippetFromSelection();
+        }
+        
+        public void SendXMLSnippet(string fileName, string message, bool undoable)
+        {
+            FVVVVHost.SendXMLSnippet(fileName, message, undoable);
         }
         
         public string ExePath
