@@ -45,6 +45,7 @@ namespace VVVV.Hosting.IO.Streams
 				{
 					IsPinGroup = false,
 					Order = FInputAttribute.Order + FOffsetCounter * 1000 + i,
+					BinOrder = FInputAttribute.Order + FOffsetCounter * 1000 + i,
 					AutoValidate = FInputAttribute.AutoValidate
 				};
 				var io = FFactory.CreateIOContainer(typeof(IInStream<T>), attribute);
