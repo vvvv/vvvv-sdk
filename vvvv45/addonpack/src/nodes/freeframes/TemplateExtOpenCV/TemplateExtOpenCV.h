@@ -26,8 +26,8 @@
 #include "FreeFrame.h"
 
 //opencv includes
-#include <cv.h>
-#include <highgui.h>
+#include <opencv/cv.h>
+
 #include <string.h>
 #include <string>
 using namespace std;

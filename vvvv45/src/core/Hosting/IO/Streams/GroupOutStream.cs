@@ -44,7 +44,8 @@ namespace VVVV.Hosting.IO.Streams
                 var attribute = new OutputAttribute(string.Format("{0} {1}", FOutputAttribute.Name, i + 1))
                 {
                     IsPinGroup = false,
-                    Order = FOutputAttribute.Order + FOffsetCounter * 1000 + i
+                    Order = FOutputAttribute.Order + FOffsetCounter * 1000 + i,
+                    BinOrder = FOutputAttribute.Order + FOffsetCounter * 1000 + i
                 };
                 var io = FFactory.CreateIOContainer(typeof(IOutStream<T>), attribute, false);
                 FIOContainers.Add(io);

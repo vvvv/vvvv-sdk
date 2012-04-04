@@ -3,7 +3,7 @@
 
 //////description
 //freeframe plugin.
-//outputs location(x/y) width/height and rotation angle
+//returns location(x/y) width/height and rotation angle
 //of tracked object from image thresholded with parameters
 //extracted from image region.
 
@@ -13,18 +13,17 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//opencv v2.31
+//http://opencv.willowgarage.com/wiki
 
 //////initial author
 //Marc Sandner -> ms@saphmar.net
 
 //////edited by
 //your name here
-
 
 
 //includes

@@ -12,11 +12,11 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//opencv v2.31
+//http://opencv.willowgarage.com/wiki
 
 //////initiative stressing to do it + editing
 //benedikt -> benedikt@looksgood.de
@@ -204,7 +204,7 @@ plugClass::plugClass()
     FStorage = 0;
     FCascade = 0;
 
-    newCascade = true;
+    FNewCascade = false;
 
     FFaces_new = (Obj*) malloc(1 * sizeof(Obj));
     FFaces_old = (Obj*) malloc(1 * sizeof(Obj));
@@ -278,9 +278,9 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 	    int* ip = (int*)&f;
 	    char* cp = (char*)*ip;
 
-        memcpy(&Filename[0], cp, strlen(cp)+1);
+        FFilename = cp;
 
-        newCascade = true;
+        FNewCascade = true;
 	}
 	return FF_SUCCESS;
 }
@@ -294,16 +294,16 @@ void plugClass::loadCascade()
     if (FCascade)
       cvReleaseHaarClassifierCascade(&FCascade);
 
-    FCascade = (CvHaarClassifierCascade*)cvLoad(&Filename[0], 0, 0, 0 );
+    FCascade = (CvHaarClassifierCascade*)cvLoad(&FFilename[0], 0, 0, 0 );
 
     if(!FCascade)
     {
      char buffer[999];
-     sprintf(buffer, "ERROR: Could not load classifier cascade\n%s", &Filename[0]);
+     sprintf(buffer, "ERROR: Could not load classifier cascade\n%s", &FFilename[0]);
      OutputDebugString(buffer);
     }
 
-    newCascade = false;
+    FNewCascade = false;
 }
 
 // -> Function is called when spread input values (types 20, 21 or 22) are modified //
@@ -354,7 +354,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
     EnterCriticalSection(&CriticalSection);
 
-    if (newCascade)
+    if (FNewCascade)
         loadCascade();
 
     FCurrentImage->origin = 1;
