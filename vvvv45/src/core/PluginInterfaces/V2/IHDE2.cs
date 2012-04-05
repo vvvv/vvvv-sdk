@@ -149,10 +149,37 @@ namespace VVVV.PluginInterfaces.V2
 		string GetEnumEntry(string enumName, int index);
 		
 		/// <summary>
-		/// Returns the current time which the plugin should use if it does timebased calculations.
+		/// Returns the current frame time which the plugin should use if it does timebased calculations.
 		/// </summary>
-		/// <returns>The hosts current time.</returns>
+		/// <returns>The hosts current frame time.</returns>
+		[Obsolete("Use new property FrameTime now")]
 		double GetCurrentTime();
+		
+
+		/// <summary>
+		/// The current host frame time which the plugin should use if it does timebased calculations.
+		/// </summary>
+		double FrameTime 
+		{
+			get;
+		}
+		
+	
+		/// <summary>
+		/// The realtime in seconds since the IHDEHost was created. On boygroup clients this ist the time 
+		/// since the server IHDEHost was created, synced over network. This time is not frame based,
+		/// each call will return a new time.
+		/// </summary>
+		double RealTime 
+		{
+			get;
+		}
+		
+		/// <summary>
+		/// Initialize the internal realtime clock to a specific value
+		/// </summary>
+		/// <param name="time">New time value</param>
+		void SetRealTime(double time = 0);
 	    
 		/// <summary>
 		/// Opens the given file.
@@ -238,6 +265,23 @@ namespace VVVV.PluginInterfaces.V2
 		{
 		    get;
 		}
+		
+		/// <summary>
+		/// Indicates whether this IHDEHost is a client in a boygroup.
+		/// </summary>
+		bool IsBoygroupClient
+		{
+			get;
+		}
+		
+		/// <summary>
+		/// The IP adress of the boygroup server.
+		/// </summary>
+		string BoygroupServerIP
+		{
+			get;
+		}
+		
 	}
 	#endregion IHDEHost
 	
