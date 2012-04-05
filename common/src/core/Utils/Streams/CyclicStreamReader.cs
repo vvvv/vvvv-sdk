@@ -119,6 +119,11 @@ namespace VVVV.Utils.Streams
 					    break;
 					}
 					
+					if (numSlicesRead == length)
+					{
+					    break;
+					}
+					
 					// Save end of possible block
 					int endIndex = index + numSlicesRead;
 					

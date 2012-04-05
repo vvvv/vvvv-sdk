@@ -165,7 +165,7 @@ namespace VVVV.Core.Collections
             }
         }
 
-        public IModelMapper Mapper
+        public ModelMapper Mapper
         {
             get
             {
@@ -174,6 +174,11 @@ namespace VVVV.Core.Collections
         }
 
         public event RootingChangedEventHandler RootingChanged;
+        
+        public virtual void Dispatch(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
 
         protected virtual void OnRootingChanged(RootingChangedEventArgs args)
         {
@@ -182,6 +187,18 @@ namespace VVVV.Core.Collections
                 RootingChanged(this, args);
             }
         }
+
+        public void MarkChanged()
+        {
+            throw new Exception("viewable lists should never be changed. so don't mark them as changed");
+        }
+
+        public void AcknowledgeChanges()
+        {
+            throw new Exception("viewable lists should never be changed. so don't acknowledge changes");
+        }
+        
+        public bool Changed { get { return false; } }
 
         #endregion
         
