@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33alpha12.1.dtd" >
-   <PATCH nodename="Y:\freeframe\ARToolkitTracker\ARTK+Tracker help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\freeframes\ARTK+Tracker help.v4p">
    <BOUNDS height="10605" left="2760" top="5610" type="Window" width="12135">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="29" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="29" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="4050" top="9390" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="6705" top="615" type="Window" width="6120">
@@ -11,11 +11,19 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="28" nodename="Quad (DX9)">
@@ -34,7 +42,7 @@
    <PIN pinname="Render State" visible="1">
    </PIN>
    </NODE>
-   <NODE id="27" nodename="VideoIn (DShow9)">
+   <NODE id="27" nodename="VIDEOIN (DSHOW9)">
    <BOUNDS height="0" left="4770" top="660" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
@@ -43,15 +51,19 @@
    </PIN>
    <PIN pinname="Video Format" slicecount="1" values="RGB24">
    </PIN>
-   <PIN pinname="Driver" slicecount="1" values="|TM507A USB Camera|">
+   <PIN pinname="Driver" slicecount="1" values="UI222xSE-C_4002688906">
+   </PIN>
+   <PIN pinname="Force Preview Output (via SmartT)" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE id="26" nodename="VideoTexture (EX9.Texture VMR9)">
+   <NODE id="26" nodename="VIDEOTEXTURE (EX9.TEXTURE VMR9)">
    <BOUNDS height="0" left="1980" top="4335" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
    <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Texture Size Mode" slicecount="1" values="Pow2Stretched">
    </PIN>
    </NODE>
    <LINK dstnodeid="28" dstpinname="Texture" srcnodeid="26" srcpinname="Texture Out">
@@ -82,7 +94,7 @@
    <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="23" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4770" top="2445" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="24300" top="11640" type="Window" width="215">
@@ -145,7 +157,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="LogitechPro4000.dat">
+   <PIN pinname="Input String" slicecount="1" values="LogitechPro4000.dat" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="21" dstpinname="Camera File" srcnodeid="20" srcpinname="Output String">
@@ -188,7 +200,7 @@
    <PIN pinname="Set" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="16" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="7380" top="1785" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="18030" top="9780" type="Window" width="215">
@@ -290,7 +302,7 @@
    </NODE>
    <LINK dstnodeid="28" dstpinname="Render State" srcnodeid="10" srcpinname="Render State Out">
    </LINK>
-   <LINK dstnodeid="29" dstpinname="Projection Transform" srcnodeid="24" srcpinname="Transform Out">
+   <LINK dstnodeid="29" dstpinname="Projection" srcnodeid="24" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="18" dstpinname="Matrix In" srcnodeid="17" srcpinname="Output">
    </LINK>
@@ -303,7 +315,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|quad with videotexture is placed in projection space. &cr;&lf;therefore it is always visible as background. &cr;&lf;ZWriteEnable is disabled so the quad does not interfere with the depthbuffer|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|quad with videotexture is placed in projection space. &cr;&lf;therefore it is always visible as background. &cr;&lf;ZWriteEnable is disabled so the quad does not interfere with the depthbuffer|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -317,7 +329,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|detected marker ids|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|detected marker ids|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -331,7 +343,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|camera configuration file|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|camera configuration file|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -345,7 +357,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|projection matrix including correct aspectration (e.g. 4:3 depending on your capture source) from camera image|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|projection matrix including correct aspectration (e.g. 4:3 depending on your capture source) from camera image|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -357,7 +369,7 @@
    </BOUNDS>
    <BOUNDS height="270" left="5820" top="4740" type="Box" width="3015">
    </BOUNDS>
-   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="0" values="|modelview matrices of all found markers|">
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="0" values="|modelview matrices of all found markers|" encoded="0">
    </PIN>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -365,7 +377,7 @@
    </PIN>
    <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
    </PIN>
@@ -407,7 +419,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|markers matrices are already in viewspace. selecting viewspace on the quad prevents vvvv from transforming the quad with the renderers view-matrix during drawing.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|markers matrices are already in viewspace. selecting viewspace on the quad prevents vvvv from transforming the quad with the renderers view-matrix during drawing.|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -444,7 +456,7 @@
    <PIN pinname="X" slicecount="1" values="-0.09">
    </PIN>
    </NODE>
-   <LINK dstnodeid="29" dstpinname="View Transform" srcnodeid="1" srcpinname="Transform Out">
+   <LINK dstnodeid="29" dstpinname="View" srcnodeid="1" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="1" dstpinname="Transform In" srcnodeid="4" srcpinname="Transform Out">
    </LINK>
@@ -455,11 +467,41 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|camera transformation|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|camera transformation|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="31" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="60" top="465" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="735" left="60" top="465" type="Box" width="4230">
+   </BOUNDS>
+   <BOUNDS height="160" left="10830" top="45990" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|A wrapper around the AR-Toolkit Plus tracker:&cr;&lf;http://handheldar.icg.tugraz.at/stbtracker.php|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="30" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="60" top="90" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="60" top="90" type="Box" width="4395">
+   </BOUNDS>
+   <BOUNDS height="160" left="10830" top="45990" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|ARTK+Tracker (FreeFrame DShow9)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
    </PATCH>

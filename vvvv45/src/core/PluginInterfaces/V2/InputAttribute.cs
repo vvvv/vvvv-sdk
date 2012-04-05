@@ -103,7 +103,8 @@ namespace VVVV.PluginInterfaces.V2
             return new InputAttribute(BinName == DefaultBinName ? string.Format("{0} Bin Size", Name) : BinName)
             {
                 DefaultValue = BinSize,
-                AutoValidate = false,
+                // Don't do this, as spread max won't get computed for this pin
+//                AutoValidate = false,
                 Order = BinOrder,
                 Visibility = BinVisibility,
                 CheckIfChanged = CheckIfChanged
