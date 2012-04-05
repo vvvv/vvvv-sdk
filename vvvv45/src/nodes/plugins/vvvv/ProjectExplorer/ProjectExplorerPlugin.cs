@@ -167,7 +167,7 @@ namespace VVVV.HDE.ProjectExplorer
 			private set;
 		}
 
-		void FTreeViewer_DoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+		void FTreeViewer_DoubleClick(ModelMapper sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			string file = null;
 			
