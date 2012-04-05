@@ -240,12 +240,12 @@ namespace VVVV.Nodes.Timeliner
 			FOutputSlices.Clear();
 			for (int i=0; i<FMidiScore.TrackCount; i++)
 			{
-				notes = FMidiScore.GetNotesOfChannel(i);
+				notes = FMidiScore.GetNotesOfTrack(i);
 				if (notes.Count > 0)
 				{
 					AddSlice(FOutputSlices.Count);
-					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).InitializeNotes(FMidiScore.GetNotesOfChannel(i));
-					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).TrackName = FMidiScore.GetTrackNameByChannel(i);
+					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).InitializeNotes(FMidiScore.GetNotesOfTrack(i));
+					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).TrackName = FMidiScore.GetTrackName(i);
 					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).MinNote = (int) MinNote.Value;
 					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).MaxNote = (int) MaxNote.Value;
 				}

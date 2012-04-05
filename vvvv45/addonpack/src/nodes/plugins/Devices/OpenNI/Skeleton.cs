@@ -36,6 +36,9 @@ namespace VVVV.Nodes
 		[Input("Smoothing", DefaultValue = 0.5, MinValue = 0, MaxValue = 1, IsSingle = true)]
 		IDiffSpread<float> FSmoothingIn;
 		
+		[Input("Confidence CutOff", DefaultValue = 0.5, MinValue = 0, MaxValue = 1)]
+		ISpread<float> FConfidenceIn;
+		
 		[Input("Joint", DefaultEnumEntry = "Head")]
 		ISpread<ISpread<SkeletonJoint>> FJointIn;
 		
@@ -163,7 +166,7 @@ namespace VVVV.Nodes
 										FJointPositionOut[u][i] = new Vector3D(p.X, p.Y, p.Z) / 1000;
 									
 									var o = j.Orientation;
-									if (o.Confidence > 0.5)
+									if (o.Confidence > FConfidenceIn[slice])
 									{
 										FJointOrientationXOut[u][i] = new Vector3D(o.X1, o.Y1, o.Z1);
 										FJointOrientationYOut[u][i] = new Vector3D(o.X2, o.Y2, o.Z2);

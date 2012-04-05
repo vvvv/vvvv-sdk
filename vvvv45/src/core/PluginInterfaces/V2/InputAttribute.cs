@@ -81,12 +81,15 @@ namespace VVVV.PluginInterfaces.V2
         
         public override object Clone()
         {
-            var clonedInstance = new InputAttribute(Name);
-            clonedInstance.BinSize = BinSize;
-            clonedInstance.BinName = BinName;
-            clonedInstance.BinVisibility = BinVisibility;
-            clonedInstance.AutoValidate = AutoValidate;
-            clonedInstance.CheckIfChanged = CheckIfChanged;
+            var clonedInstance = new InputAttribute(Name)
+            {
+                BinName = this.BinName,
+                BinOrder = this.BinOrder,
+                BinSize = this.BinSize,
+                BinVisibility = this.BinVisibility,
+                AutoValidate = this.AutoValidate,
+                CheckIfChanged = this.CheckIfChanged
+            };
             return base.Clone(clonedInstance);
         }
         
