@@ -63,7 +63,7 @@ namespace VVVV.HDE.GraphicalEditing
                 //add linkpoint
                 FTempPath.AddPoint(e.Position);
             }
-            else if (target != null)
+            else if (target != null && e.Button == MouseButtons.Left)
             {
                 var t = target.Connectable;
 
