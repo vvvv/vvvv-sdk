@@ -30,7 +30,11 @@ namespace VVVV.Hosting
 		public string Filename
 		{
 			get {return FPatch.DocumentElement.GetAttribute("saveme");}
-			set {FPatch.DocumentElement.SetAttribute("saveme", value);}
+			set 
+			{
+				if (!string.IsNullOrEmpty(value))
+					FPatch.DocumentElement.SetAttribute("saveme", value);
+			}
 		}
 		
 		public NodeMessage AddNode(int id)
