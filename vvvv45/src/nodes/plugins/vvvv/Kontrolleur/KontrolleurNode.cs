@@ -362,7 +362,7 @@ namespace VVVV.Nodes
 				}
 				
 				foreach (var pm in FPatchMessages)
-					FHDEHost.SendPatchMessage(pm.Key, pm.Value.ToString(), true);
+					FHDEHost.SendXMLSnippet(pm.Key, pm.Value.ToString(), true);
 			}
 			else if (message.Address == "/acceleration")
 			{
