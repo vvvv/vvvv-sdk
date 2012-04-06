@@ -1,6 +1,7 @@
 #region usings
 using System;
 using System.IO;
+using System.Xml;
 using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,7 +24,9 @@ namespace VVVV.Hosting
 		ILogger FLogger;
 		
 		INodeInfoFactory FNodeInfoFactory;
+		private XmlDocument FDocument;
 		
+		private Dictionary<int, int> FOldID2NewID = new Dictionary<int, int>();
 		private List<string> FInputNames = new List<string>();
 		private List<string> FOutputNames = new List<string>();
 		#endregion fields & pins
@@ -54,13 +57,14 @@ namespace VVVV.Hosting
 				minY = Math.Min(minY, bounds.Y);
 			}
 			
-			var border = 1500;
-			int pinOffset = border / 3;
+			var CBorder = 1500;
+			int CPinOffset = CBorder / 3;
 			x /= selectedNodes.Length;
 			y /= selectedNodes.Length;
 			var selectionCenter = new Point (x, y);
-			var selectionSize = new Size((maxX - minX) + border * 2, (maxY - minY) + border * 2);
+			var selectionSize = new Size((maxX - minX) + CBorder * 2, (maxY - minY) + CBorder * 2);
 			
+			//create new nodinfo for subpatch
 			var patchPath = Path.GetDirectoryName(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename);
 			var patchName = GetUniquePatchName(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename);
 			
@@ -71,66 +75,57 @@ namespace VVVV.Hosting
 			ni.Type = NodeType.Patch;
 			ni.CommitUpdate();
 			
+			//modify the current selection XML
+			FDocument = new XmlDocument();
+			FDocument.LoadXml(hdeHost.GetXMLSnippetFromSelection());
+			
+			//create new subpatch
 			var subID = nodeBrowserHost.CreateNode(ni, selectionCenter);
 			var patch = new PatchMessage(patchPath);
-			
+
+			//in the new subpatch nodes will have new IDs and bounds
+			FOldID2NewID.Clear();
 			var newNodeID = 0;
-			var oldIDToNewID = new Dictionary<int, int>();
-			
-			//take over all selected nodes to the subpatch
-			foreach (var node in selectedNodes)
+			var origNodes = FDocument.SelectNodes("/PATCH/NODE");
+			foreach (XmlNode node in origNodes)
 			{
-				var nodeMessage = patch.AddNode(node.NodeInfo.Systemname);
+				//modify the ID
+				var idAttribute = node.Attributes.GetNamedItem("id");
+				var oldID = int.Parse(idAttribute.Value);
+				idAttribute.Value = newNodeID.ToString();
+				FOldID2NewID.Add(oldID, newNodeID);
+				newNodeID++;
 				
-				if (node.Name.StartsWith("IOBox ("))
+				//modify the bounds
+				var bounds = node.SelectNodes("BOUNDS");
+				foreach (XmlElement bound in bounds)
 				{
-					var bounds = node.GetBounds(BoundsType.Box);
-					nodeMessage.BoxBounds = new Rectangle(bounds.X - minX + border, bounds.Y - minY + border, bounds.Width, bounds.Height);
-					nodeMessage.NodeBounds = nodeMessage.BoxBounds;
-				}
-				else if (node.HasPatch || node.HasGUI)
-				{
-					var bounds = node.GetBounds(BoundsType.Node);
-					nodeMessage.NodeBounds = new Rectangle(bounds.X - minX + border, bounds.Y - minY + border, bounds.Width, bounds.Height);
-					bounds = node.GetBounds(BoundsType.Box);
-					nodeMessage.BoxBounds = new Rectangle(bounds.X - minX + border, bounds.Y - minY + border, bounds.Width, bounds.Height);
-					bounds = node.GetBounds(BoundsType.Window);
-					nodeMessage.WindowBounds = new Rectangle(bounds.X - minX + border, bounds.Y - minY + border, bounds.Width, bounds.Height);
-					
-					//nodeMessage.ComponentMode = node.Window
-				}
-				else
-				{
-					var bounds = node.GetBounds(BoundsType.Node);
-					nodeMessage.NodeBounds = new Rectangle(bounds.X - minX + border, bounds.Y - minY + border, bounds.Width, bounds.Height);
-				}
-				
-				foreach (var pin in node.Pins)
-				{
-					if (!pin.IsConnected())
+					if ((bound.GetAttribute("type") == "Node") || (bound.GetAttribute("type") == "Box"))
 					{
-						var def = pin.SubType.Split(',');
-						//only write pinmessage if value != default
+						var top = int.Parse(bound.GetAttribute("top"));
+						var left = int.Parse(bound.GetAttribute("left"));
 						
-						if ((pin.Type == "Value" && pin.Spread != def[2].Trim())
-						    || (pin.Type == "String" && pin.Spread != def[1].Trim())
-						    || (pin.Type == "Enumeration" && pin.Spread != def[1].Trim())
-						    || (pin.Type == "Color"))
-						{
-							var p = nodeMessage.AddPin(pin.NameByParent(node));
-							p.AddAttribute("values", SecurityElement.Escape(pin.Spread));
-						}
+						bound.SetAttribute("top", (top - minY + CBorder).ToString());
+						bound.SetAttribute("left", (left - minX + CBorder).ToString());
 					}
 				}
-				
-				nodeMessage.ID = newNodeID;
-				oldIDToNewID.Add(node.ID, newNodeID);
-				newNodeID++;
 			}
+			
+			//offset linkpoints
+			var origLinks = FDocument.SelectNodes("/PATCH/LINK");
+			foreach (XmlElement link in origLinks)
+				foreach (XmlElement point in link)
+				{
+					var px = int.Parse(point.GetAttribute("x"));
+					var py = int.Parse(point.GetAttribute("y"));
+					
+					point.SetAttribute("x", (px - minX + CBorder).ToString());
+					point.SetAttribute("y", (py - minY + CBorder).ToString());	
+				}
 			
 			var IOpins = new Dictionary<string, int>();
 			var minInputX = 0;
-			var minOutputX = 0;
+			var minOutputX = 0; 
 			
 			FInputNames.Clear();
 			FOutputNames.Clear();
@@ -146,13 +141,26 @@ namespace VVVV.Hosting
 				foreach (var pin in node.Pins)
 					foreach (var cpin in pin.ConnectedPins)
 						//..if there is a connection to another selected node
-						if (oldIDToNewID.ContainsKey(cpin.ParentNodeByPatch(node.Parent).ID))
+						if (FOldID2NewID.ContainsKey(cpin.ParentNodeByPatch(node.Parent).ID))
 			{
 				//this needs only be done for inputs
 				if (pin.Direction == PinDirection.Input)
 				{
 					var parent = cpin.ParentNodeByPatch(node.Parent);
-					patch.AddLink(oldIDToNewID[parent.ID], cpin.NameByParent(parent), oldIDToNewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
+					var fromID = parent.ID;
+					var toID = pin.ParentNodeByPatch(node.Parent).ID;
+					var fromName = cpin.NameByParent(parent);
+					var toName = pin.NameByParent(node);
+					var link = patch.AddLink(FOldID2NewID[fromID], fromName, FOldID2NewID[toID], toName);
+				
+					//copy linkpoints from selectionXML
+					var origLink = (from XmlElement l in origLinks where 
+					         (l.GetAttribute("srcnodeid") == fromID.ToString() 
+					          && l.GetAttribute("dstnodeid") == toID.ToString()
+					          && l.GetAttribute("srcpinname") == fromName
+					          && l.GetAttribute("dstpinname") == toName) select l).First();
+					foreach (XmlElement point in origLink)
+						link.AppendChild(link.OwnerDocument.ImportNode(point, true));
 				}
 			}
 			//..if there is a connection to a not selected node
@@ -170,8 +178,6 @@ namespace VVVV.Hosting
 				else if (pin.Direction == PinDirection.Output)
 					ident = node.ID.ToString() + pin.NameByParent(node);
 				
-//				FLogger.Log(LogType.Debug, ident);
-				
 				if (!IOpins.ContainsKey(ident))
 				{
 					var pinType = pin.Type;
@@ -183,46 +189,48 @@ namespace VVVV.Hosting
 					
 					//name the iobox
 					var labelPin = iobox.AddPin("Descriptive Name");
+					var boxBounds = iobox.AddBounds(BoundsType.Box);
 					
 					if (pin.Direction == PinDirection.Input)
 					{
-						iobox.BoxBounds = new Rectangle(Math.Max(minInputX, bounds.X - minX + border), pinOffset, 750, 225);
+						boxBounds.Rectangle = new Rectangle(Math.Max(minInputX, bounds.X - minX + CBorder), CPinOffset, 750, 225);
 						
 						//an input-pin may be connected to an output-pin
 						//that in turn is connected to multiple inputs
-						//in those cases name the iobox by concatenating the names of all those pins
+						//in those cases name the iobox by concatenating the names of all those pins (which are in the selection!)
 						//but leave out duplicates
 						var pinName = GetNameForInput(node.Parent, cpin);
-//						FLogger.Log(LogType.Debug, pinName);
 						pinName = GetUniqueInputName(pinName);
 						oldPinToNewPin.Add(ident, pinName);
-						labelPin.AddAttribute("values", "|" + pinName + "|");
+						labelPin.SetAttribute("values", "|" + pinName + "|");
 						
 						//save it for reference
 						var parent = cpin.ParentNodeByPatch(node.Parent);
 						IOpins.Add(parent.ID.ToString() + cpin.NameByParent(parent), newNodeID);
 						var ioboxOutput = GetIOBoxPinName(pinType, false);
-						patch.AddLink(newNodeID, ioboxOutput, oldIDToNewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
+						patch.AddLink(newNodeID, ioboxOutput, FOldID2NewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
 						
-						minInputX = iobox.BoxBounds.X + iobox.BoxBounds.Width + 150;
+						minInputX = boxBounds.Rectangle.X + boxBounds.Rectangle.Width + 150;
 					}
 					else if (pin.Direction == PinDirection.Output)
 					{
-						iobox.BoxBounds = new Rectangle(Math.Max(minOutputX, bounds.X - minX + border), (maxY  -minY) + pinOffset + border, 750, 225);
+						
+						boxBounds.Rectangle = new Rectangle(Math.Max(minOutputX, bounds.X - minX + CBorder), (maxY  -minY) + CPinOffset + CBorder, 750, 225);
 						var origName = pin.NameByParent(node);
 						var pinName = GetUniqueOutputName(origName);
 						oldPinToNewPin.Add(ident, pinName);
-						labelPin.AddAttribute("values", "|" + pinName + "|");
+						labelPin.SetAttribute("values", "|" + pinName + "|");
 						
 						//save it for reference
 						IOpins.Add(pin.ParentNodeByPatch(node.Parent).ID.ToString() + origName, newNodeID);
 						var ioboxInput = GetIOBoxPinName(pinType, true);
-						patch.AddLink(oldIDToNewID[node.ID], origName, newNodeID, ioboxInput);
+						patch.AddLink(FOldID2NewID[node.ID], origName, newNodeID, ioboxInput);
 						
-						minOutputX = iobox.BoxBounds.X + iobox.BoxBounds.Width + 150;
+						minOutputX = boxBounds.Rectangle.X + boxBounds.Rectangle.Width + 150;
 					}
 					
-					iobox.NodeBounds = iobox.BoxBounds;
+					var nodeBounds = iobox.AddBounds(BoundsType.Node);
+					nodeBounds.Rectangle = boxBounds.Rectangle;
 					newNodeID++;
 				}
 				else //IOpin already exists
@@ -230,11 +238,21 @@ namespace VVVV.Hosting
 					var srcID = IOpins[ident];
 					//this needs only be done for inputs
 					if (pin.Direction == PinDirection.Input)
-						patch.AddLink(srcID, GetIOBoxPinName(cpin.Type, false), oldIDToNewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
+						patch.AddLink(srcID, GetIOBoxPinName(cpin.Type, false), FOldID2NewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
 				}
 			}
 			
-			hdeHost.SendPatchMessage(patchPath, patch.ToString(), true);
+			//remove superfluous links from origXML
+			var linksToRemove = FDocument.DocumentElement.SelectNodes("/PATCH/LINK");
+			foreach (XmlElement link in linksToRemove)
+				FDocument.DocumentElement.RemoveChild(link);
+			
+			foreach (XmlElement node in patch.XML)
+			{
+				var n = FDocument.ImportNode(node, true);
+				FDocument.DocumentElement.AppendChild(n);
+			}
+			hdeHost.SendXMLSnippet(patchPath, FDocument.OuterXml, true);
 
 			//make connections to new subpatch
 			patch = new PatchMessage("");
@@ -243,7 +261,7 @@ namespace VVVV.Hosting
 				foreach (var pin in node.Pins)
 					foreach (var cpin in pin.ConnectedPins)
 						//..if there is a connection to a not selected node
-						if (!oldIDToNewID.ContainsKey(cpin.ParentNodeByPatch(node.Parent).ID))
+						if (!FOldID2NewID.ContainsKey(cpin.ParentNodeByPatch(node.Parent).ID))
 							if (pin.Direction == PinDirection.Input)
 			{
 				var parent = cpin.ParentNodeByPatch(node.Parent);
@@ -263,10 +281,14 @@ namespace VVVV.Hosting
 			}
 			
 			var nodeMsg = patch.AddNode(subID);
-			nodeMsg.WindowBounds = new Rectangle(300 + selectionCenter.X + hdeHost.ActivePatchWindow.Bounds.X * 15, 300 + selectionCenter.Y + hdeHost.ActivePatchWindow.Bounds.Y * 15, selectionSize.Width, selectionSize.Height);
-			nodeMsg.BoxBounds = new Rectangle(selectionCenter.X - selectionSize.Width / 2, selectionCenter.Y - selectionSize.Height / 2, selectionSize.Width, selectionSize.Height);
+//			var nodeB = nodeMsg.AddBounds(BoundsType.Node);
+//			nodeB.Rectangle = new Rectangle(selectionCenter.X, selectionCenter.Y, 0, 0);
+//			var boxB = nodeMsg.AddBounds(BoundsType.Node);
+//			boxB.Rectangle = new Rectangle(selectionCenter.X - selectionSize.Width / 2, selectionCenter.Y - selectionSize.Height / 2, selectionSize.Width, selectionSize.Height);
+			var windowB = nodeMsg.AddBounds(BoundsType.Window);
+			windowB.Rectangle = new Rectangle(300 + selectionCenter.X + hdeHost.ActivePatchWindow.Bounds.X * 15, 300 + selectionCenter.Y + hdeHost.ActivePatchWindow.Bounds.Y * 15, selectionSize.Width, selectionSize.Height);
 			
-			hdeHost.SendPatchMessage(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename, patch.ToString(), true);
+			hdeHost.SendXMLSnippet(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename, patch.ToString(), true);
 		}
 		//FLogger.Log(LogType.Debug, "hi tty!");
 		
@@ -364,14 +386,17 @@ namespace VVVV.Hosting
 		
 		private string GetNameForInput(INode2 patch, IPin2 pin)
 		{
-			//concatenate the names of all pins connected to this output
+			//concatenate the names of all pins connected to this output (which are in the selection)
 			var names = new List<string>();
 			foreach(var cpin in pin.ConnectedPins)
 			{
 				var parent = cpin.ParentNodeByPatch(patch);
-				var pinName = cpin.NameByParent(parent);
-				if (!names.Contains(pinName))
-					names.Add(pinName);
+				if (FOldID2NewID.ContainsKey(parent.ID))
+				{
+					var pinName = cpin.NameByParent(parent);
+					if (!names.Contains(pinName))
+						names.Add(pinName);
+				}
 			}
 			
 			return names.Aggregate((i, j) => i + " - " + j);
