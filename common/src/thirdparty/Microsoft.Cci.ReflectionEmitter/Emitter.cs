@@ -30,7 +30,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
       this.sourceLocationProvider = sourceLocationProvider;
       this.localScopeProvider = localScopeProvider;
       this.emitter = new Emitter(this, sourceLocationProvider, localScopeProvider);
-      this.initializingTraverser = new MetadataTraverser() { PostorderVisitor = this.emitter, TraverseIntoMethodBodies = true };
+      this.initializingTraverser = new Initializor(this.emitter);
       this.typeBuilderAllocator = new TypeBuilderAllocater(this);
       this.typeCreator = new TypeCreator(this);
       this.memberBuilderAllocator = new MemberBuilderAllocator(this);
@@ -41,7 +41,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
     ISourceLocationProvider/*?*/ sourceLocationProvider;
     ILocalScopeProvider/*?*/ localScopeProvider;
     Emitter emitter;
-    MetadataTraverser initializingTraverser; //TODO: need the traverser to traverse private helper types/members
+    Initializor initializingTraverser; //TODO: need the traverser to traverse private helper types/members
     TypeBuilderAllocater typeBuilderAllocator;
     TypeCreator typeCreator;
     MemberBuilderAllocator memberBuilderAllocator;
@@ -142,6 +142,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
 
       internal TypeBuilderAllocater(DynamicLoader loader) {
         this.loader = loader;
+        this.TraverseIntoMethodBodies = true;
       }
 
       DynamicLoader loader;
@@ -157,6 +158,13 @@ namespace Microsoft.Cci.ReflectionEmitter {
         foreach (var nestedType in namespaceTypeDefinition.NestedTypes)
           this.TraverseChildren(nestedType);
         //TODO: also look at private helper members and private helper types
+        base.TraverseChildren(namespaceTypeDefinition);
+      }
+      
+      public override void TraverseChildren(IMethodBody methodBody)
+      {
+        foreach (var privateHelperType in methodBody.PrivateHelperTypes)
+          this.TraverseChildren(privateHelperType);
       }
 
       public override void TraverseChildren(INestedTypeDefinition nestedTypeDefinition) {
@@ -225,6 +233,13 @@ namespace Microsoft.Cci.ReflectionEmitter {
       }
 
       DynamicLoader loader;
+
+      public override void TraverseChildren(ITypeDefinition typeDefinition)
+      {
+        foreach (var privateHelperMember in typeDefinition.PrivateHelperMembers)
+          this.Traverse(privateHelperMember);
+        base.TraverseChildren(typeDefinition);
+      }
 
       /// <summary>
       /// 
@@ -1611,6 +1626,28 @@ namespace Microsoft.Cci.ReflectionEmitter {
         this.TraverseChildren(nestedTypeReference.ResolvedType);
       }
 
+    }
+
+    class Initializor : MetadataTraverser {
+
+      internal Initializor(Emitter emitter) {
+        PostorderVisitor = emitter;
+        TraverseIntoMethodBodies = true;
+      }
+
+      public override void TraverseChildren(ITypeDefinition typeDefinition)
+      {
+        foreach (var privateHelperMember in typeDefinition.PrivateHelperMembers)
+          this.Traverse(privateHelperMember);
+        base.TraverseChildren(typeDefinition);
+      }
+
+      public override void TraverseChildren(IMethodBody methodBody)
+      {
+        foreach (var privateHelperType in methodBody.PrivateHelperTypes)
+          this.TraverseChildren(privateHelperType);
+        base.TraverseChildren(methodBody);
+      }
     }
 
   }
