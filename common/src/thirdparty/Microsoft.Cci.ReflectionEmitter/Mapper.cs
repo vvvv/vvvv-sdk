@@ -10,6 +10,7 @@
 //-----------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Microsoft.Cci.UtilityDataStructures;
@@ -94,6 +95,14 @@ namespace Microsoft.Cci.ReflectionEmitter {
             if (fieldReference == null) return null;
             var result = this.fieldMap.Find(fieldReference.ContainingType.InternedKey, (uint)fieldReference.Name.UniqueKey);
             if (result == null) {
+                // HACK: In case the containing type is generic we won't find a match for private helper fields
+                // See AnonymousDelegateRemover:616
+                var genericContainingType = fieldReference.ContainingType as IGenericTypeInstanceReference;
+                if (genericContainingType != null) {
+                    result = this.fieldMap.Find(genericContainingType.GenericType.InternedKey, (uint)fieldReference.Name.UniqueKey);
+                    this.fieldMap.Add(genericContainingType.GenericType.InternedKey, (uint)fieldReference.Name.UniqueKey, result);
+                    return result;
+                }
                 var containingType = this.GetType(fieldReference.ContainingType);
                 if (containingType == null) return null;
                 var fieldType = this.GetType(fieldReference.Type);
@@ -122,6 +131,23 @@ namespace Microsoft.Cci.ReflectionEmitter {
             MethodBase result = this.methodMap.Find(methodReference.InternedKey);
             if (result != null) return result;
             MemberInfo[] members = this.membersMap.Find(methodReference.ContainingType.InternedKey, (uint)methodReference.Name.UniqueKey);
+            // HACK: In case the containing type is generic we won't find a match for private helper methods as
+            // the AnonymousDelegateRemover creates a reference to the generic method. We therefor need to find the
+            // private helper in the containing generic type.
+            // See AnonymousDelegateRemover.cs:457
+            if (members == null && methodReference.ResolvedMethod == Dummy.MethodDefinition)
+            {
+              var containingGenericTypeInstance = methodReference.ContainingType as IGenericTypeInstanceReference;
+              if (containingGenericTypeInstance != null)
+              {
+                var containingGenericType = containingGenericTypeInstance.GenericType;
+                var methods = containingGenericType.ResolvedType.PrivateHelperMembers.Where(m => m is IMethodReference);
+                var canditateMethod = methods.First(m => m.Name.UniqueKey == methodReference.Name.UniqueKey) as IMethodReference;
+                result = this.methodMap.Find(canditateMethod.InternedKey);
+                this.methodMap.Add(methodReference.InternedKey, result);
+                return result;
+              }
+            }
             if (members == null) {
                 Type containingType = this.GetType(methodReference.ContainingType);
                 if (containingType == null) return null;
