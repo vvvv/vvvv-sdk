@@ -54,7 +54,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'vvvv Debug|AnyCPU' ">
-    <OutputPath>.\</OutputPath>
+    <OutputPath>..\..\..\..\..\lib\nodes\plugins\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
@@ -73,10 +73,12 @@
     <Reference Include="VVVV.PluginInterfaces, Version=2.0.4484.20715, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\core\PluginInterfaces\bin\Debug\VVVV.PluginInterfaces.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="VVVV.Utils, Version=1.0.4484.20713, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\core\PluginInterfaces\bin\Debug\VVVV.Utils.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +87,7 @@
     <Compile Include="OSC.NET\OSCPacket.cs" />
     <Compile Include="OSC.NET\OSCReceiver.cs" />
     <Compile Include="OSC.NET\OSCTransmitter.cs" />
+    <Compile Include="TUIO.NET\TuioBlob.cs" />
     <Compile Include="TUIO.NET\TuioClient.cs" />
     <Compile Include="TUIO.NET\TuioContainer.cs" />
     <Compile Include="TUIO.NET\TuioCursor.cs" />
