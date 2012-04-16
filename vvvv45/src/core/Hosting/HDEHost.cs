@@ -27,6 +27,7 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
+using VVVV.Utils.Network;
 
 namespace VVVV.Hosting
 {
@@ -45,6 +46,7 @@ namespace VVVV.Hosting
         private IVVVVHost FVVVVHost;
         private IPluginBase FWindowSwitcher, FKommunikator, FNodeBrowser;
         private readonly List<Window> FWindows = new List<Window>();
+        private INetworkTimeSync FNetTimeSync;
         private INode2[] FSelectedNodes;
         
         [Export]
@@ -92,7 +94,7 @@ namespace VVVV.Hosting
         
         public HDEHost()
         {
-            //            AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
+            //AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
             
             //set vvvv.exe path
             ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
@@ -199,6 +201,18 @@ namespace VVVV.Hosting
             FWindowSwitcher = PluginFactory.CreatePlugin(windowSwitcherNodeInfo, null);
             FKommunikator = PluginFactory.CreatePlugin(kommunikatorNodeInfo, null);
             FNodeBrowser = PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
+            
+            this.IsBoygroupClient = FVVVVHost.IsBoygroupClient;
+            if(IsBoygroupClient)
+            {
+            	this.BoygroupServerIP = FVVVVHost.BoygroupServerIP;
+            }
+           
+            
+            //start time server of client
+            FNetTimeSync = IsBoygroupClient ? new UDPTimeClient(BoygroupServerIP, 3334) : new UDPTimeServer(3334);
+            FNetTimeSync.Start();
+            
         }
         
         private INodeInfo GetNodeInfo(string systemName)
@@ -429,6 +443,29 @@ namespace VVVV.Hosting
             return currentTime;
         }
         
+        public double FrameTime
+        {
+        	get
+        	{
+        		double currentTime;
+        		FVVVVHost.GetCurrentTime(out currentTime);
+        		return currentTime;
+        	}
+        }
+        
+        public double RealTime
+        {
+        	get
+        	{
+        		return FNetTimeSync.ElapsedSeconds;
+        	}
+        }
+        
+        public void SetRealTime(double time = 0)
+		{
+        	FNetTimeSync.SetTime(time);
+		}
+        
         public void Open(string file, bool inActivePatch, IWindow window)
         {
             FVVVVHost.Open(file, inActivePatch, window);
@@ -521,7 +558,19 @@ namespace VVVV.Hosting
 		    private set;
 		}
         
-        #endregion
+		public bool IsBoygroupClient 
+		{
+			get; 
+			private set;
+		}
+    	
+		public string BoygroupServerIP 
+		{
+			get;
+			private set;
+		}
+        
+        #endregion 
         
         protected IEnumerable<INode2> GetAffectedNodes(INodeInfo nodeInfo)
         {
@@ -624,5 +673,6 @@ namespace VVVV.Hosting
         }
         
         #endregion
+   
     }
 }

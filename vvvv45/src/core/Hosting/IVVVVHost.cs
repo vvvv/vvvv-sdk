@@ -158,6 +158,16 @@ namespace VVVV.Hosting
         {
             get;
         }
+        
+        bool IsBoygroupClient 
+        {
+			get;
+		}
+    	
+		string BoygroupServerIP 
+		{
+			get;
+		}
     }
     
     #region Listeners
