@@ -5,11 +5,11 @@ using System.Text;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V1;
 using System.Runtime.InteropServices;
-using Microsoft.Research.Kinect.Nui;
 using VVVV.MSKinect.Lib;
 using System.ComponentModel.Composition;
 using SlimDX.Direct3D9;
 using SlimDX;
+using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Nodes
 {
@@ -31,7 +31,7 @@ namespace VVVV.MSKinect.Nodes
 
         private KinectRuntime runtime;
 
-        private IntPtr colorimage;
+        private byte[] colorimage;
         private object m_colorlock = new object();
 
 
@@ -42,7 +42,7 @@ namespace VVVV.MSKinect.Nodes
         [ImportingConstructor()]
         public KinectColorTextureNode(IPluginHost host)
         {
-            this.colorimage = Marshal.AllocCoTaskMem(640 * 480 * 4);
+            this.colorimage = new byte[640 * 480 * 4];
             host.CreateTextureOutput("Texture Out", TSliceMode.Single, TPinVisibility.True, out this.FOutTexture);
         }
 
@@ -110,7 +110,7 @@ namespace VVVV.MSKinect.Nodes
 
                 lock (this.m_colorlock)
                 {
-                    rect.Data.WriteRange(this.colorimage, 640 * 480 * 4);
+                    rect.Data.Write(this.colorimage,0, 640 * 480 * 4);
                 }
                 srf.UnlockRectangle();
 
@@ -128,14 +128,23 @@ namespace VVVV.MSKinect.Nodes
             }
         }
 
-        private void ColorFrameReady(object sender, ImageFrameReadyEventArgs e)
+        private void ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
-            lock (m_colorlock)
+            ColorImageFrame frame = e.OpenColorImageFrame();
+
+            if (frame != null)
             {
-                Marshal.Copy(e.ImageFrame.Image.Bits, 0, this.colorimage, 640 * 480 * 4);
-            }
-            this.FInvalidate = true;
-            this.frameindex = e.ImageFrame.FrameNumber;
+                this.FInvalidate = true;
+                //this.frameindex = frame.FrameNumber;
+
+                lock (m_colorlock)
+                {
+                    frame.CopyPixelDataTo(this.colorimage);
+                    //Marshal.Copy(frame..Image.Bits, 0, this.colorimage, 640 * 480 * 4);
+                }
+                this.FInvalidate = true;
+                this.frameindex = frame.FrameNumber;
+            }  
         }
     }
 }
