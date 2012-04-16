@@ -159,12 +159,14 @@ namespace Microsoft.Cci.ReflectionEmitter {
           this.TraverseChildren(nestedType);
         //TODO: also look at private helper members and private helper types
         base.TraverseChildren(namespaceTypeDefinition);
+        foreach (var privateHelperMember in namespaceTypeDefinition.PrivateHelperMembers)
+          this.Traverse(privateHelperMember);
       }
       
       public override void TraverseChildren(IMethodBody methodBody)
       {
         foreach (var privateHelperType in methodBody.PrivateHelperTypes)
-          this.TraverseChildren(privateHelperType);
+          this.Traverse(privateHelperType);
       }
 
       public override void TraverseChildren(INestedTypeDefinition nestedTypeDefinition) {
@@ -179,6 +181,9 @@ namespace Microsoft.Cci.ReflectionEmitter {
         this.loader.mapper.DefineMapping(nestedTypeDefinition, typeBuilder);
         foreach (var nestedType in nestedTypeDefinition.NestedTypes)
           this.TraverseChildren(nestedType);
+        base.TraverseChildren(nestedTypeDefinition);
+        foreach (var privateHelperMember in nestedTypeDefinition.PrivateHelperMembers)
+          this.Traverse(privateHelperMember);
       }
 
       private void AllocateGenericParametersIfNecessary(ITypeDefinition typeDefinition, TypeBuilder typeBuilder) {
@@ -230,6 +235,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
     class MemberBuilderAllocator : MetadataTraverser {
       internal MemberBuilderAllocator(DynamicLoader loader) {
         this.loader = loader;
+        this.TraverseIntoMethodBodies = true;
       }
 
       DynamicLoader loader;
@@ -239,6 +245,12 @@ namespace Microsoft.Cci.ReflectionEmitter {
         foreach (var privateHelperMember in typeDefinition.PrivateHelperMembers)
           this.Traverse(privateHelperMember);
         base.TraverseChildren(typeDefinition);
+      }
+
+      public override void TraverseChildren(IMethodBody methodBody)
+      {
+        foreach (var privateHelperType in methodBody.PrivateHelperTypes)
+          this.Traverse(privateHelperType);
       }
 
       /// <summary>
@@ -433,6 +445,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
         }
         this.loader.builderMap.Add(method, builder);
         this.loader.mapper.DefineMapping(method, builder);
+        base.TraverseChildren(method);
       }
 
       private System.Runtime.InteropServices.CallingConvention GetNativeCallingConvention(IMethodDefinition method) {
@@ -1558,6 +1571,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
 
       internal TypeCreator(DynamicLoader loader) {
         this.loader = loader;
+        this.TraverseIntoMethodBodies = true;
       }
 
       DynamicLoader loader;
@@ -1577,6 +1591,12 @@ namespace Microsoft.Cci.ReflectionEmitter {
         }
       }
 
+      public override void TraverseChildren(IMethodBody methodBody)
+      {
+        foreach (var privateHelperType in methodBody.PrivateHelperTypes)
+          this.Traverse(privateHelperType);
+      }
+
       /// <summary>
       /// Traverses the children of the namespace type definition.
       /// </summary>
@@ -1591,6 +1611,9 @@ namespace Microsoft.Cci.ReflectionEmitter {
         var type = typeBuilder.CreateType();
         this.loader.mapper.DefineMapping(namespaceTypeDefinition, type);
         this.Traverse(namespaceTypeDefinition.NestedTypes);
+        foreach (var privateHelperMember in namespaceTypeDefinition.PrivateHelperMembers)
+          this.Traverse(privateHelperMember);
+        base.TraverseChildren(namespaceTypeDefinition);
       }
 
       /// <summary>
@@ -1615,6 +1638,9 @@ namespace Microsoft.Cci.ReflectionEmitter {
         var type = typeBuilder.CreateType();
         this.loader.mapper.DefineMapping(nestedTypeDefinition, type);
         this.Traverse(nestedTypeDefinition.NestedTypes);
+        foreach (var privateHelperMember in nestedTypeDefinition.PrivateHelperMembers)
+          this.Traverse(privateHelperMember);
+        base.TraverseChildren(nestedTypeDefinition);
       }
 
       /// <summary>
@@ -1645,7 +1671,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
       public override void TraverseChildren(IMethodBody methodBody)
       {
         foreach (var privateHelperType in methodBody.PrivateHelperTypes)
-          this.TraverseChildren(privateHelperType);
+          this.Traverse(privateHelperType);
         base.TraverseChildren(methodBody);
       }
     }
