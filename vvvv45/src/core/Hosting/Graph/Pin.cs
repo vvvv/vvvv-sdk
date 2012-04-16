@@ -141,7 +141,11 @@ namespace VVVV.Hosting.Graph
 		
 		public INode2 ParentNodeByPatch(INode2 patch)
 		{
-			return Node.Create(FInternalCOMInterf.GetParentNodeByPatch(patch.InternalCOMInterf), FNodeInfoFactory);
+			var node = FInternalCOMInterf.GetParentNodeByPatch(patch.InternalCOMInterf);
+			if (node != null)
+				return Node.Create(node, FNodeInfoFactory);
+			else
+				return null;
 		}
 		
 		public string this[int sliceIndex]
