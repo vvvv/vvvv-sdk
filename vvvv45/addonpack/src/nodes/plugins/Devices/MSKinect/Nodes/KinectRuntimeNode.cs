@@ -3,34 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
-using Microsoft.Research.Kinect.Nui;
 using VVVV.MSKinect.Lib;
 using VVVV.Utils.VMath;
+using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "Kinect", Category = "Devices",Version="Microsoft", Author = "vux")]
     public class KinectRuntimeNode : IPluginEvaluate
     {
-        [Input("Motor Angle")]
+        [Input("Motor Angle", IsSingle = true,DefaultValue=0.5)]
         IDiffSpread<double> FInAngle;
 
-        [Input("Index")]
+        [Input("Index", IsSingle = true)]
         IDiffSpread<int> FInIndex;
 
-        [Input("Enable Color")]
+        [Input("Enable Color", IsSingle = true)]
         IDiffSpread<bool> FInEnableColor;
 
-        [Input("Depth Mode")]
+        [Input("Depth Mode", IsSingle = true)]
         IDiffSpread<eDepthMode> FInDepthMode;
-        
-        [Input("Enable Skeleton")]
+
+        [Input("Depth Range", IsSingle = true)]
+        IDiffSpread<DepthRange> FInDepthRange;
+
+
+        [Input("Enable Skeleton", IsSingle = true)]
         IDiffSpread<bool> FInEnableSkeleton;
 
-        [Input("Enabled")]
+        [Input("Enabled", IsSingle = true)]
         IDiffSpread<bool> FInEnabled;
 
-        [Input("Reset",IsBang = true)]
+        [Input("Reset", IsBang = true)]
         ISpread<bool> FInReset;
 
         [Output("Kinect Runtime",IsSingle=true)]
@@ -45,24 +49,27 @@ namespace VVVV.MSKinect.Nodes
         [Output("Is Started", IsSingle = true)]
         ISpread<bool> FOutStarted;
 
+        [Output("Color FOV")]
+        ISpread<Vector2D> FOutColorFOV;
+
+        [Output("Depth FOV")]
+        ISpread<Vector2D> FOutDepthFOV;
+
         private KinectRuntime runtime = new KinectRuntime();
 
         public void Evaluate(int SpreadMax)
         {
+            
             bool reset = false;
 
-            if (this.FInIndex.IsChanged || this.FInReset[0])
+            if (this.FInIndex.IsChanged || this.FInReset[0] || this.runtime.Runtime == null)
             {
                 this.runtime.Assign(this.FInIndex[0]);
                 reset = true;
             }
 
 
-            if (this.FInEnableColor.IsChanged
-                || this.FInEnabled.IsChanged
-                || this.FInDepthMode.IsChanged
-                || this.FInEnableSkeleton.IsChanged
-                || reset)
+            if (this.FInEnabled.IsChanged || reset)
             {
                 if (this.FInEnabled[0])
                 {
@@ -76,19 +83,54 @@ namespace VVVV.MSKinect.Nodes
                 reset = true;
             }
 
+            if (this.FInDepthMode.IsChanged || reset)
+            {
+                this.runtime.SetDepthMode(this.FInDepthMode[0]);
+            }
+
+            if (this.FInEnableColor.IsChanged || reset)
+            {
+                this.runtime.SetColor(this.FInEnableColor[0]);
+            }
+
+
+            if (this.FInDepthRange.IsChanged || reset)
+            {
+                try
+                {
+                    this.runtime.SetDepthRange(this.FInDepthRange[0]);
+                }
+                catch { }
+            }
+
+
+            if (this.FInEnableSkeleton.IsChanged || reset)
+            {
+                this.runtime.EnableSkeleton(this.FInEnableSkeleton[0]);
+            }
+
             if (this.FInAngle.IsChanged || reset)
             {
                 if (this.runtime.IsStarted)
                 {
-                    try { this.runtime.Runtime.NuiCamera.ElevationAngle = (int)VMath.Map(this.FInAngle[0], 0, 1, Camera.ElevationMinimum, Camera.ElevationMaximum, TMapMode.Clamp); }
+                    try { this.runtime.Runtime.ElevationAngle = (int)VMath.Map(this.FInAngle[0], 0, 1, this.runtime.Runtime.MinElevationAngle, this.runtime.Runtime.MaxElevationAngle, TMapMode.Clamp); }
                     catch { }
                 }
             }
 
-            this.FOutKCnt[0] = Runtime.Kinects.Count;
-            //this.FOutStatus[0] = runtime.Runtime.Status;
+            this.FOutKCnt[0] = KinectSensor.KinectSensors.Count;
+            this.FOutStatus[0] = runtime.Runtime.Status;
             this.FOutRuntime[0] = runtime;
             this.FOutStarted[0] = runtime.IsStarted;
+
+            this.FOutColorFOV.SliceCount = 1;
+            this.FOutDepthFOV.SliceCount = 1;
+
+            this.FOutColorFOV[0] = new Vector2D(this.runtime.Runtime.ColorStream.NominalHorizontalFieldOfView,
+                this.runtime.Runtime.ColorStream.NominalVerticalFieldOfView);
+
+            this.FOutDepthFOV[0] = new Vector2D(this.runtime.Runtime.DepthStream.NominalHorizontalFieldOfView,
+                this.runtime.Runtime.DepthStream.NominalVerticalFieldOfView);
         }
     }
 }
