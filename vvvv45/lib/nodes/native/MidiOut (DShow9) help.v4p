@@ -1,0 +1,69 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33debug8.1.dtd" >
+   <PATCH nodename="X:\vvvv33\help\MidiOut (DShow9) help.v4p">
+   <BOUNDS height="4200" left="8760" top="2160" type="Window" width="4860">
+   </BOUNDS>
+   <NODE id="2" nodename="FileStream (DShow9)">
+   <BOUNDS height="0" left="1050" top="1140" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="file.avi">
+   </PIN>
+   <PIN pinname="Midi" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="4665">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="6750" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Renders a midi stream on the specified device|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="6750" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MidiOut - DShow9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="MidiOut (DShow9)">
+   <BOUNDS height="0" left="1275" top="2025" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Midi" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Midi" dstnodeid="4" dstpinname="Midi">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="5">
+   <BOUNDS type="Node" left="705" top="2745" width="3225" height="690">
+   </BOUNDS>
+   <BOUNDS type="Box" left="705" top="2745" width="3225" height="690">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|you may want to use a midi loopback device&cr;&lf;to read the mididata back into vvvv&cr;&lf;via other midinodes.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
