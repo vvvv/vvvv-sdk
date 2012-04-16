@@ -129,15 +129,16 @@ namespace VVVV.Nodes
 				
 				if (FUserGenerator.IsDataNew)
 				{
+					FUserIdOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FPositionOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FTextureOut.SliceCount = 1;
+						
 					if (FUserGenerator.NumberOfUsers > 0)
 					{
 						//copies a list of all users and sort them
 						int[] tUsers = FUserGenerator.GetUsers();
 						int[] Users = (int[])tUsers.Clone();
 						Array.Sort(Users);
-						
-						FUserIdOut.SliceCount = Users.Length;
-						FPositionOut.SliceCount = Users.Length;
 						
 						for (int i = 0; i < Users.Length; i++)
 						{
@@ -166,6 +167,7 @@ namespace VVVV.Nodes
 			{
 				FUserIdOut.SliceCount = 0;
 				FPositionOut.SliceCount = 0;
+				FTextureOut.SliceCount = 0;
 			}
 		}
 		

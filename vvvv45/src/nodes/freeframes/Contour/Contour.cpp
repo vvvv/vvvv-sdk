@@ -3,7 +3,7 @@
 
 //////description
 //freeframe plugin.
-//outputs points(x/y) along contours found in the thresholded input.
+//returns points(x/y) along contours found in the thresholded input.
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -11,11 +11,11 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//opencv v2.31
+//http://opencv.willowgarage.com/wiki
 
 //////initial author
 //joreg -> joreg@gmx.at
@@ -25,7 +25,7 @@
 
 //includes
 #include "Contour.h"
-#include "cvmoments_mod.h"
+#include "moments_mod.h"
 #include <string.h>
 #include <stdio.h>
 

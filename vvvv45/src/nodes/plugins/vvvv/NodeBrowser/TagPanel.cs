@@ -323,7 +323,10 @@ namespace VVVV.Nodes.NodeBrowser
                     if (e.Button == MouseButtons.Middle)
                         OnShowNodeReference(selNode);
                     else
+                    {
+                    	FTagsTextBox.Text = "";
                         OnShowHelpPatch(selNode);
+                    }
                 }
                 catch //username is a filename..do nothing
                 {}
