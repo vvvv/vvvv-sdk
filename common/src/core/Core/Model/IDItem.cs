@@ -127,6 +127,7 @@ namespace VVVV.Core.Model
             {
                 OnRootingChanged(RootingAction.ToBeUnrooted);
                 Mapper.Dispose();
+                Mapper = null;
             }
         }
         
@@ -224,7 +225,9 @@ namespace VVVV.Core.Model
         
         protected virtual void DisposeManaged()
         {
-            Mapper.Dispose();
+            if (Mapper != null)
+                Mapper.Dispose();
+
             if (FOwner != null)
             {
                 FOwner.RootingChanged -= FOwner_RootingChanged;
