@@ -49,7 +49,7 @@
             <param name="handlerEnd">A label identifying the first instruction following the handler body.</param>
             <param name="filterStart">A label identifying the first instruction of the filter decision block. May be null.</param>
         </member>
-        <member name="M:Microsoft.Cci.ILGenerator.AdjustBranchSizesToBestFit">
+        <member name="M:Microsoft.Cci.ILGenerator.AdjustBranchSizesToBestFit(System.Boolean)">
             <summary>
             Performs one or more extra passes over the list of operations, changing long branches to short if possible and short branches to
             long branches if necessary.
@@ -188,7 +188,7 @@
             Puts the specified instruction onto the Microsoft intermediate language (MSIL) stream followed by the index of the given local variable.
             </summary>
             <param name="opcode">The Microsoft intermediate language (MSIL) instruction to be put onto the stream.</param>
-            <param name="parameter">A parameter definition.</param>
+            <param name="parameter">A parameter definition. May be null.</param>
         </member>
         <member name="M:Microsoft.Cci.ILGenerator.Emit(Microsoft.Cci.OperationCode,System.SByte)">
             <summary>
@@ -234,6 +234,12 @@
             <summary>
             Ends a lexical scope.
             </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILGenerator.MarkExpressionLocation(Microsoft.Cci.ILocation)">
+            <summary>
+            Marks the next IL operation as the final instruction of an expression, whose location is known and is provided as the argument.
+            </summary>
+            <param name="expressionLocation">The location of the expression whose value will be computed by the next IL instruction.</param>
         </member>
         <member name="M:Microsoft.Cci.ILGenerator.MarkLabel(Microsoft.Cci.ILGeneratorLabel)">
             <summary>
@@ -302,6 +308,11 @@
         <member name="P:Microsoft.Cci.ILGenerator.InTryBody">
             <summary>
             True if the ILGenerator is currently inside the body of a try statement.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ILGenerator.Method">
+            <summary>
+            The method for which this generator helps to produce a method body.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.ILGenerator.LocalScopeProvider">
@@ -599,6 +610,11 @@
             In case of AST to instructions conversion this lists the types produced.
             In case of instructions to AST decompilation this should ideally be list of all types
             which are local to method.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ILGeneratorMethodBody.Size">
+            <summary>
+            The size in bytes of the method body when serialized.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.ILGeneratorSourceInformationProvider">

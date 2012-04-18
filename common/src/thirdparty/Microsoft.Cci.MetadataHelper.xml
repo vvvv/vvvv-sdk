@@ -224,7 +224,7 @@
             to find an assembly that either requires 32 bit pointers or 64 bit pointers. If no such assembly is found, the default is 32 bit pointers.
             </param>
             <param name="searchPaths">
-            A collection of strings that are interpreted as valid paths which are used to search for units.
+            A collection of strings that are interpreted as valid paths which are used to search for units. May be null.
             </param>
             <param name="searchInGAC">
             Whether the GAC (Global Assembly Cache) should be searched when resolving references.
@@ -432,6 +432,11 @@
             The identity of the assembly containing Microsoft.Contracts.Contract.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.MetadataHostEnvironment.CoreIdentities">
+            <summary>
+            The set of identities that results from the individual opinions of all of the units loaded into this host.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.MetadataHostEnvironment.CoreAssemblySymbolicIdentity">
             <summary>
             The identity of the assembly containing the core system types such as System.Object.
@@ -516,17 +521,17 @@
             Provides the host with an opportunity to add, remove or substitute assembly references in the given list.
             This avoids the cost of rewriting the entire unit in order to make such changes.
             </summary>
-            <param name="referringUnit">A reference to the unit that has these references.</param>
+            <param name="referringUnit">The unit that contains these references.</param>
             <param name="assemblyReferences">The assembly references to substitute.</param>
             <returns>Usually assemblyReferences, but occasionally a modified enumeration.</returns>
         </member>
-        <member name="M:Microsoft.Cci.IMetadataReaderHost.Redirect(Microsoft.Cci.IUnit,Microsoft.Cci.ITypeReference)">
+        <member name="M:Microsoft.Cci.IMetadataReaderHost.Redirect(Microsoft.Cci.IUnit,Microsoft.Cci.INamedTypeReference)">
             <summary>
             Provides the host with an opportunity to substitute one type reference for another during metadata reading.
             This avoids the cost of rewriting the entire unit in order to make such changes.
             </summary>
-            <param name="definingUnit">A reference to the unit that is defining the type.</param>
-            <param name="typeReference">A type reference encountered during metadata reading.</param>
+            <param name="referringUnit">The unit that contains the reference.</param>
+            <param name="typeReference">A named type reference encountered during metadata reading.</param>
             <returns>Usually the value in typeReference, but occassionally something else.</returns>
         </member>
         <member name="M:Microsoft.Cci.IMetadataReaderHost.Rewrite(Microsoft.Cci.IUnit,Microsoft.Cci.ICustomAttribute)">
@@ -585,6 +590,113 @@
             </summary>
             <param name="reference">A type reference that cannot be resolved.</param>
             <returns>1, 2, 4 or 8.</returns>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.OpenBinaryDocument(Microsoft.Cci.IBinaryDocument)">
+            <summary>
+            Open the binary document as a memory block in host dependent fashion.
+            </summary>
+            <param name="sourceDocument">The binary document that is to be opened.</param>
+            <returns>
+            The unmanaged memory block corresponding to the source document.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.OpenBinaryDocument(Microsoft.Cci.IBinaryDocument,System.String)">
+            <summary>
+            Open the child binary document within the context of parent source document.as a memory block in host dependent fashion
+            For example: in multimodule assemblies the main module will be parentSourceDocument, where as other modules will be child
+            docuements.
+            </summary>
+            <param name="parentSourceDocument">The source document indicating the child document location.</param>
+            <param name="childDocumentName">The name of the child document.</param>
+            <returns>
+            The unmanaged memory block corresponding to the child document.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.Redirect(Microsoft.Cci.IUnit,System.Collections.Generic.IEnumerable{Microsoft.Cci.IAssemblyReference})">
+            <summary>
+            Provides the host with an opportunity to add, remove or substitute assembly references in the given list.
+            This avoids the cost of rewriting the entire unit in order to make such changes.
+            </summary>
+            <param name="referringUnit">The unit that contains these references.</param>
+            <param name="assemblyReferences">The assembly references to substitute.</param>
+            <returns>
+            Usually assemblyReferences, but occasionally a modified enumeration.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.Redirect(Microsoft.Cci.IUnit,Microsoft.Cci.INamedTypeReference)">
+            <summary>
+            Provides the host with an opportunity to substitute one type reference for another during metadata reading.
+            This avoids the cost of rewriting the entire unit in order to make such changes.
+            </summary>
+            <param name="referringUnit">The unit that contains the reference.</param>
+            <param name="typeReference">A named type reference encountered during metadata reading.</param>
+            <returns>
+            Usually the value in typeReference, but occassionally something else.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.Rewrite(Microsoft.Cci.IUnit,Microsoft.Cci.ICustomAttribute)">
+            <summary>
+            Provides the host with an opportunity to substitute a custom attribute with another during metadata reading.
+            This avoids the cost of rewriting the entire unit in order to make such changes.
+            </summary>
+            <param name="containingUnit">The unit that contains the custom attribute.</param>
+            <param name="customAttribute">The custom attribute to rewrite (fix up).</param>
+            <returns>
+            Usually the value in customAttribute, but occassionally another custom attribute.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.Rewrite(Microsoft.Cci.IUnit,Microsoft.Cci.IMethodDefinition)">
+            <summary>
+            Provides the host with an opportunity to substitute one method definition for another during metadata reading.
+            This avoids the cost of rewriting the entire unit in order to make such changes.
+            </summary>
+            <param name="containingUnit">The unit that is defines the method.</param>
+            <param name="methodDefinition">A method definition encountered during metadata reading.</param>
+            <returns>
+            Usually the value in methodDefinition, but occassionally something else.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.ResolvingAssemblyReference(Microsoft.Cci.IUnit,Microsoft.Cci.AssemblyIdentity)">
+            <summary>
+            This method is called when the assembly reference is being resolved and its not already loaded by the host.
+            </summary>
+            <param name="referringUnit">The unit that is referencing the assembly.</param>
+            <param name="referencedAssembly">Assembly identifier for the assembly being referenced.</param>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.ResolvingModuleReference(Microsoft.Cci.IUnit,Microsoft.Cci.ModuleIdentity)">
+            <summary>
+            This method is called when the module reference is being resolved and its not already loaded by the host.
+            </summary>
+            <param name="referringUnit">The unit that is referencing the module.</param>
+            <param name="referencedModule">Module identifier for the assembly being referenced.</param>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.StartGuessingGame">
+            <summary>
+            Called by the metadata reader when it is about to start parsing a custom attribute blob.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.TryNextPermutation">
+            <summary>
+            Called by the metadata reader when it has unsucessfully tried to parse a custom attribute blob and it now needs to try a new permutation.
+            Returns false if no more perumations are possible.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.WinGuessingGame">
+            <summary>
+            Called by the metadata reader when it has successfully parsed a custom attribute blob.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.IMetadataReaderHostContract.GuessUnderlyingTypeSizeOfUnresolvableReferenceToEnum(Microsoft.Cci.ITypeReference)">
+            <summary>
+            Returns a guess of the size of the underlying type of the given type reference to an enum type, which is assumed to be unresolvable
+            because it is defined an assembly that is not loaded into this host. Successive calls to the method will cycle through these values
+            with a periodicity determined by the number of types in the game and the successful guesses made in earlier games.
+            </summary>
+            <param name="reference">A type reference that cannot be resolved.</param>
+            <returns>
+            1, 2, 4 or 8.
+            </returns>
         </member>
         <member name="T:Microsoft.Cci.MetadataReaderHost">
             <summary>
@@ -672,17 +784,17 @@
             Provides the host with an opportunity to add, remove or substitute assembly references in the given list.
             This avoids the cost of rewriting the entire unit in order to make such changes.
             </summary>
-            <param name="referringUnit">A reference to the unit that has these references.</param>
+            <param name="referringUnit">The unit that contains these references.</param>
             <param name="assemblyReferences">The assembly references to substitute.</param>
             <returns>Usually assemblyReferences, but occasionally a modified enumeration.</returns>
         </member>
-        <member name="M:Microsoft.Cci.MetadataReaderHost.Redirect(Microsoft.Cci.IUnit,Microsoft.Cci.ITypeReference)">
+        <member name="M:Microsoft.Cci.MetadataReaderHost.Redirect(Microsoft.Cci.IUnit,Microsoft.Cci.INamedTypeReference)">
             <summary>
-            Provides the host with an opportunity to substitute one type reference for another during metadata reading.
+            Provides the host with an opportunity to substitute one named type reference for another during metadata reading.
             This avoids the cost of rewriting the entire unit in order to make such changes.
             </summary>
-            <param name="definingUnit">A reference to the unit that is defining the type.</param>
-            <param name="typeReference">A type reference encountered during metadata reading.</param>
+            <param name="referringUnit">The unit that contains the reference.</param>
+            <param name="typeReference">A named type reference encountered during metadata reading.</param>
             <returns>
             Usually the value in typeReference, but occassionally something else.
             </returns>
@@ -8456,7 +8568,7 @@
             Returns an event of the given declaring type that has the given name.
             If no such event can be found, Dummy.EventDefinition is returned.
             </summary>
-            <param name="declaringType">The type thats declares the field.</param>
+            <param name="declaringType">The type thats declares the event.</param>
             <param name="eventName">The name of the event.</param>
         </member>
         <member name="M:Microsoft.Cci.TypeHelper.GetField(Microsoft.Cci.ITypeDefinition,Microsoft.Cci.IName)">
@@ -8538,6 +8650,14 @@
             <param name="typeName">The name of the nested type to return.</param>
             <param name="genericParameterCount">The number of generic parameters. Zero if the type is not generic, larger than zero otherwise.</param>
             <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.TypeHelper.GetProperty(Microsoft.Cci.ITypeDefinition,Microsoft.Cci.IName)">
+            <summary>
+            Returns a property of the given declaring type that has the given name.
+            If no such property can be found, Dummy.PropertyDefinition is returned.
+            </summary>
+            <param name="declaringType">The type thats declares the property.</param>
+            <param name="propertyName">The name of the property.</param>
         </member>
         <member name="M:Microsoft.Cci.TypeHelper.TryGetFullyInstantiatedSpecializedTypeReference(Microsoft.Cci.ITypeDefinition,Microsoft.Cci.ITypeReference@)">
             <summary>
@@ -9376,6 +9496,11 @@
             Add element to MultiHashtable
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`1.Clear">
+            <summary>
+            Removes all entries from the table.
+            </summary>
+        </member>
         <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`1.Contains(System.UInt32,`0)">
             <summary>
             Checks if key and value is present in the MultiHashtable
@@ -9481,6 +9606,138 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2">
+            <summary>
+            Hashtable that can host multiple values for the same uint key.
+            </summary>
+            <typeparam name="InternalT"></typeparam>
+            <typeparam name="Key"></typeparam>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.#ctor">
+            <summary>
+            Constructor for MultiHashtable
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.#ctor(System.UInt32)">
+            <summary>
+            Constructor for MultiHashtable
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.Add(`0,`1)">
+            <summary>
+            Add element to MultiHashtable
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.Clear">
+            <summary>
+            Removes all entries from the table.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.Contains(`0,`1)">
+            <summary>
+            Checks if key and value is present in the MultiHashtable
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.ContainsKey(`0)">
+            <summary>
+            Checks if key is present in the MultiHashtable
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.NumberOfEntries(`0)">
+            <summary>
+            Returns the number of entries that are associated with the key
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.ReplaceEntry(`0,`1,`1)">
+            <summary>
+            Updates the hashtable so that newValue shows up in the place of oldValue.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.GetValuesFor(`0)">
+            <summary>
+            Enumeration to return all the values associated with the given key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.Count">
+            <summary>
+            Count of elements in MultiHashtable
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.Values">
+            <summary>
+            Enumeration of all the values
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.KeyedValuesEnumerator">
+            <summary>
+            Enumerator to enumerate values with given key.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.KeyedValuesEnumerator.MoveNext">
+            <summary>
+            Move to next element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.KeyedValuesEnumerator.Reset">
+            <summary>
+            Reset the enumeration.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.KeyedValuesEnumerator.Current">
+            <summary>
+            Get the current element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.KeyedValuesEnumerable">
+            <summary>
+            Enumerable to enumerate values with given key.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.KeyedValuesEnumerable.GetEnumerator">
+            <summary>
+            Return the enumerator.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.ValuesEnumerator">
+            <summary>
+            Enumerator to enumerate all values.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.ValuesEnumerator.MoveNext">
+            <summary>
+            Move to next element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.ValuesEnumerator.Reset">
+            <summary>
+            Reset the enumeration.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.ValuesEnumerator.Current">
+            <summary>
+            Get the current element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.ValuesEnumerable">
+            <summary>
+            Enumerable to enumerate all values.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.MultiHashtable`2.ValuesEnumerable.GetEnumerator">
+            <summary>
+            Return the enumerator.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Microsoft.Cci.UtilityDataStructures.Hashtable`2">
             <summary>
             Hashtable that can hold only single value per key.
@@ -9494,6 +9751,17 @@
         <member name="M:Microsoft.Cci.UtilityDataStructures.Hashtable`2.#ctor(System.UInt32)">
             <summary>
             Constructor for Hashtable
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.Hashtable`2.#ctor(Microsoft.Cci.UtilityDataStructures.Hashtable{`0,`1})">
+            <summary>
+            Constructs a hashtable that is a copy of the given hashtable.
+            </summary>
+            <param name="tableToClone"></param>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.Hashtable`2.Clear">
+            <summary>
+            Removes all entries from the table.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.UtilityDataStructures.Hashtable`2.Add(`0,`1)">
@@ -9524,6 +9792,12 @@
             <param name="value"></param>
             <returns></returns>
         </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.Hashtable`2.GetEnumerator">
+            <summary>
+            Get the enumerator
+            </summary>
+            <returns></returns>
+        </member>
         <member name="P:Microsoft.Cci.UtilityDataStructures.Hashtable`2.Count">
             <summary>
             Number of elements
@@ -9535,6 +9809,47 @@
             </summary>
             <param name="key"></param>
             <returns></returns>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.Hashtable`2.KeyValuePair">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.UtilityDataStructures.Hashtable`2.KeyValuePair.key">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.UtilityDataStructures.Hashtable`2.KeyValuePair.value">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.Hashtable`2.KeyValuePair.ToString">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.Hashtable`2.ValuesEnumerator">
+            <summary>
+            Enumerator for elements
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.Hashtable`2.ValuesEnumerator.MoveNext">
+            <summary>
+            Move to next element
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.Hashtable`2.ValuesEnumerator.Reset">
+            <summary>
+            Reset the enumerator
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.Hashtable`2.ValuesEnumerator.Current">
+            <summary>
+            Current element
+            </summary>
         </member>
         <member name="T:Microsoft.Cci.UtilityDataStructures.HashtableForUintValues`1">
             <summary>
@@ -9553,7 +9868,7 @@
         </member>
         <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableForUintValues`1.Clear">
             <summary>
-            
+            Removes all entries from the table.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableForUintValues`1.Add(`0,System.UInt32)">
@@ -9589,6 +9904,16 @@
             </summary>
             <param name="key"></param>
             <returns></returns>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.HashtableForUintValues`1.KeyValuePair">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableForUintValues`1.KeyValuePair.ToString">
+            <summary>
+            Returns a string containing the key and value.
+            </summary>
         </member>
         <member name="T:Microsoft.Cci.UtilityDataStructures.Hashtable`1">
             <summary>
@@ -9668,6 +9993,89 @@
             </summary>
         </member>
         <member name="M:Microsoft.Cci.UtilityDataStructures.Hashtable`1.ValuesEnumerable.GetEnumerator">
+            <summary>
+            Get the enumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1">
+            <summary>
+            Hashtable that can hold only single non null value per ulong key.
+            </summary>
+            <typeparam name="InternalT"></typeparam>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.#ctor">
+            <summary>
+            Constructor for Hashtable
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.#ctor(System.UInt32)">
+            <summary>
+            Constructor for Hashtable
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.Add(System.UInt64,`0)">
+            <summary>
+            Add element to the Hashtable
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.Clear">
+            <summary>
+            Removes all entries from the table.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.Find(System.UInt64)">
+            <summary>
+            Find element in the Hashtable. Returns null if the element is not found.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.Count">
+            <summary>
+            Number of elements
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.Item(System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.Values">
+            <summary>
+            Enumerable of all the values
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.ValuesEnumerator">
+            <summary>
+            Enumerator for elements
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.ValuesEnumerator.MoveNext">
+            <summary>
+            Move to next element
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.ValuesEnumerator.Reset">
+            <summary>
+            Reset the enumerator
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.ValuesEnumerator.Current">
+            <summary>
+            Current element
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.ValuesEnumerable">
+            <summary>
+            Enumerable for elements
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.HashtableUlong`1.ValuesEnumerable.GetEnumerator">
             <summary>
             Get the enumerator
             </summary>
@@ -9839,6 +10247,11 @@
             Constructor for SetOfObjects
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfObjects.#ctor(Microsoft.Cci.UtilityDataStructures.SetOfObjects)">
+            <summary>
+            Makes a clone of the given set.
+            </summary>
+        </member>
         <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfObjects.Clear">
             <summary>
             Removes all elements from the set.
@@ -9904,6 +10317,86 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.SetOfUints">
+            <summary>
+            A hash table used to keep track of a set of non zero uint values, providing methods to add values to the set and to determine if an value is a member of the set.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfUints.#ctor">
+            <summary>
+            Constructor for SetOfUints
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfUints.#ctor(System.UInt32)">
+            <summary>
+            Constructor for SetOfObjects
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfUints.Clear">
+            <summary>
+            Removes all elements from the set.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfUints.Add(System.UInt32)">
+            <summary>
+            Returns false if the element is already in the set. Otherwise returns true and adds the element.
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfUints.Contains(System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfUints.Remove(System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.SetOfUints.Count">
+            <summary>
+            Number of elements
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.SetOfUints.Values">
+            <summary>
+            Enumerable of all the values
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.SetOfUints.ValuesEnumerator">
+            <summary>
+            Enumerator for elements
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfUints.ValuesEnumerator.MoveNext">
+            <summary>
+            Move to next element
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfUints.ValuesEnumerator.Reset">
+            <summary>
+            Reset the enumerator
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.UtilityDataStructures.SetOfUints.ValuesEnumerator.Current">
+            <summary>
+            Current element
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.UtilityDataStructures.SetOfUints.ValuesEnumerable">
+            <summary>
+            Enumerable for elements
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.SetOfUints.ValuesEnumerable.GetEnumerator">
+            <summary>
+            Get the enumerator
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Microsoft.Cci.UtilityDataStructures.Sublist`1">
             <summary>
             A list of elements represented as a sublist of a master list. Use this to avoid allocating lots of little list objects.
@@ -9916,6 +10409,12 @@
             <param name="masterList">A list that contains this list as a sublist.</param>
             <param name="offset">The offset from masterList where this sublist starts.</param>
             <param name="count">The number of elements in this sublist.</param>
+        </member>
+        <member name="M:Microsoft.Cci.UtilityDataStructures.Sublist`1.Find(`0)">
+            <summary>
+            Returns the index of the given element if it occurs in this list. If not, returns -1.
+            The comparision uses object identity will, so do not use this method if the element type is a value type.
+            </summary>
         </member>
         <member name="M:Microsoft.Cci.UtilityDataStructures.Sublist`1.GetSublist(System.Int32,System.Int32)">
             <summary>

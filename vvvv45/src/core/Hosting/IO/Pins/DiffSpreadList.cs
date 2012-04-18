@@ -33,14 +33,11 @@ namespace VVVV.Hosting.Pins
             
             FCountSpread = ioFactory.CreateIO<IDiffSpread<int>>(att);
             FCountSpread.Changed += UpdatePins;
-            
-//            FCountSpread.Update();
         }
 
         public virtual void Dispose()
         {
             FCountSpread.Changed -= UpdatePins;
-//            FCountSpread.Dispose();
             SliceCount = 0;
         }
         
@@ -50,28 +47,7 @@ namespace VVVV.Hosting.Pins
             SliceCount = FCountSpread[0];
         }
         
-        public override int SliceCount 
-        {
-            get 
-            { 
-                return base.SliceCount; 
-            }
-            set
-            { 
-                int oldSliceCount = SliceCount;
-                int newSliceCount = value;
-                
-                if (newSliceCount < oldSliceCount)
-                    SliceCountDecreasing(oldSliceCount, newSliceCount);
-                
-                base.SliceCount = value; 
-                
-                if (newSliceCount > oldSliceCount)
-                    SliceCountIncreased(oldSliceCount, newSliceCount);
-            }
-        }
-        
-        private void SliceCountIncreased(int oldSliceCount, int newSliceCount)
+        protected override void SliceCountIncreased(int oldSliceCount, int newSliceCount)
         {
             for (int i = oldSliceCount; i < newSliceCount; i++)
             {
@@ -81,7 +57,7 @@ namespace VVVV.Hosting.Pins
             }
         }
         
-        private void SliceCountDecreasing(int oldSliceCount, int newSliceCount)
+        protected override void SliceCountDecreasing(int oldSliceCount, int newSliceCount)
         {
             for (int i = newSliceCount; i < oldSliceCount; i++)
             {
@@ -124,19 +100,6 @@ namespace VVVV.Hosting.Pins
                 Changed(this);
             if (FChanged != null)
                 FChanged(this);
-        }
-        
-        public bool IsChanged
-        {
-            get
-            {
-                foreach (IDiffSpread<T> spread in this)
-                {
-                    if (spread.IsChanged) return true;
-                }
-                
-                return false;
-            }
         }
     }
 }

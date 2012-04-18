@@ -271,11 +271,6 @@
             A condition that must be true at the start of every iteration of a loop.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.Contracts.ILoopVariant">
-            <summary>
-            A measure that must be reduced in every nonterminal iteration of a loop
-            </summary>
-        </member>
         <member name="T:Microsoft.Cci.Contracts.IMethodContract">
             <summary>
             A collection of collections of objects that augment the type signature of a method with additional information
@@ -360,11 +355,6 @@
         <member name="T:Microsoft.Cci.Contracts.IPostcondition">
             <summary>
             A condition that must be true at the end of a method.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.Contracts.IMethodVariant">
-            <summary>
-            A measure that must be decrease in every call from the method.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.Contracts.IThrownException">
@@ -629,6 +619,11 @@
             The arguments to pass to the method, after they have been converted to match the parameters of the resolved method.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.IMethodCall.IsJumpCall">
+            <summary>
+            True if this method call terminates the calling method and reuses the arguments of the calling method as the arguments of the called method.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.IMethodCall.IsVirtualCall">
             <summary>
             True if the method to call is determined at run time, based on the runtime type of ThisArgument.
@@ -722,6 +717,16 @@
             The local variable, parameter, field, property, array element or pointer target that this expression denotes.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.ITargetExpression.GetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose getter is virtual.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ITargetExpression.SetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose setter is virtual.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.ITargetExpression.Instance">
             <summary>
             The instance to be used if this.Definition is an instance field/property or array indexer.
@@ -749,6 +754,16 @@
             The target type does have to be an integral type. If it is not, this method always returns false.
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.ExpressionHelper.IsIntegralMinusOne(Microsoft.Cci.IExpression)">
+            <summary>
+            True if the given expression is a compile time constant with a value that is a boxed -1 of type byte, int, long, sbyte, short, uint, ulong or ushort.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ExpressionHelper.IsIntegralMinusOne(Microsoft.Cci.ICompileTimeConstant)">
+            <summary>
+            True if the value is a boxed -1 of type byte, int, long, sbyte, short, uint, ulong or ushort.
+            </summary>
+        </member>
         <member name="M:Microsoft.Cci.ExpressionHelper.IsIntegralNonzero(Microsoft.Cci.IExpression)">
             <summary>
             True if the given expression is a compile time constant with a value that is a boxed integer of type byte, int, long, sbyte, short, uint, ulong or ushort
@@ -770,6 +785,11 @@
             True if the value is a boxed 1 of type byte, int, long, sbyte, short, uint, ulong, ushort or bool.
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.ExpressionHelper.IsNumericOne(Microsoft.Cci.ICompileTimeConstant)">
+            <summary>
+            True if the value is a boxed zero of type byte, int, long, sbyte, short, uint, ulong, ushort, float, double or decimal.
+            </summary>
+        </member>
         <member name="M:Microsoft.Cci.ExpressionHelper.IsIntegralZero(Microsoft.Cci.IExpression)">
             <summary>
             True if the given expression is a compile time constant with a value that is a boxed zero of type byte, int, long, sbyte, short, uint, ulong, ushort or bool.
@@ -778,6 +798,11 @@
         <member name="M:Microsoft.Cci.ExpressionHelper.IsIntegralZero(Microsoft.Cci.ICompileTimeConstant)">
             <summary>
             True if the value is a boxed zero of type byte, int, long, sbyte, short, uint, ulong, ushort or bool.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ExpressionHelper.IsNumericZero(Microsoft.Cci.ICompileTimeConstant)">
+            <summary>
+            True if the value is a boxed zero of type byte, int, long, sbyte, short, uint, ulong, ushort, float, double or decimal.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.ExpressionHelper.IsNullLiteral(Microsoft.Cci.IExpression)">
@@ -809,6 +834,13 @@
         <member name="P:Microsoft.Cci.IBinaryOperation.RightOperand">
             <summary>
             The right operand.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IBinaryOperation.ResultIsUnmodifiedLeftOperand">
+            <summary>
+            If true, the left operand must be a target expression and the result of the binary operation is the
+            value of the target expression before it is assigned the value of the operation performed on
+            (right hand) values of the left and right operands.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.IAddition.CheckOverflow">
@@ -903,6 +935,13 @@
         <member name="P:Microsoft.Cci.IArrayIndexer.Indices">
             <summary>
             The array indices.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IBinaryOperationContract.ResultIsUnmodifiedLeftOperand">
+            <summary>
+            If true, the left operand must be a target expression and the result of the binary operation is the
+            value of the target expression before it is assigned the value of the operation performed on
+            (right hand) values of the left and right operands.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.IBitwiseAnd">
@@ -1050,6 +1089,11 @@
             An expression that evaluates to the instance (if any) on which this.MethodToCallViaDelegate must be called (via the delegate).
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.ICreateDelegateInstance.IsVirtualDelegate">
+            <summary>
+            True if the delegate encapsulates a virtual method.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.ICreateDelegateInstance.MethodToCallViaDelegate">
             <summary>
             The method that is to be be called when the delegate instance is invoked.
@@ -1103,6 +1147,17 @@
         <member name="T:Microsoft.Cci.IExclusiveOr">
             <summary>
             An expression that computes the bitwise exclusive or of the left and right operands. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.IExpressionSourceLocation">
+            <summary>
+            A source location to proffer from IOperation.Location and indicating the source extent (or extents) of an expression in the source language.
+            Such locations are ignored when producing a PDB file, since PDB files only record the source extents of statements.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IExpressionSourceLocation.PrimarySourceLocation">
+            <summary>
+            Zero or more locations that correspond to an expression.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.IGetTypeOfTypedReference">
@@ -1249,6 +1304,41 @@
             Returns either null or the parameter or property or field that corresponds to this argument.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.INamedArgument.GetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose getter is virtual.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.INamedArgument.SetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose setter is virtual.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.INamedArgumentContract.ArgumentName">
+            <summary>
+            The name of the parameter or property or field that corresponds to the argument.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.INamedArgumentContract.ArgumentValue">
+            <summary>
+            The value of the argument.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.INamedArgumentContract.ResolvedDefinition">
+            <summary>
+            Returns either null or the parameter or property or field that corresponds to this argument.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.INamedArgumentContract.GetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose getter is virtual.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.INamedArgumentContract.SetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose setter is virtual.
+            </summary>
+        </member>
         <member name="T:Microsoft.Cci.INotEquality">
             <summary>
             An expression that results in false if both operands represent the same value or object.
@@ -1373,6 +1463,16 @@
         <member name="P:Microsoft.Cci.ISubtraction.TreatOperandsAsUnsignedIntegers">
             <summary>
             If true the operands must be integers and are treated as being unsigned for the purpose of the subtraction. This only makes a difference if CheckOverflow is true as well.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ITargetExpressionContract.GetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose getter is virtual.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ITargetExpressionContract.SetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose setter is virtual.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.ITargetSliceExpression">
@@ -1624,6 +1724,27 @@
             Terminates execution of the loop body containing this statement directly or indirectly and continues on to the loop exit condition test.
             </summary>
         </member>
+        <member name="T:Microsoft.Cci.ICopyMemoryStatement">
+            <summary>
+            Represents the cpblk IL instruction, which copies a block of memory from one address to another.
+            The behavior of this instruction is undefined if the source block overlaps the target block.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ICopyMemoryStatement.TargetAddress">
+            <summary>
+            A pointer to the block of memory that is overwritten with the contents of block at SourceAddress.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ICopyMemoryStatement.SourceAddress">
+            <summary>
+            A pointer to the block of memory whose contents is to be copied to the block of memory at TargetAddress.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ICopyMemoryStatement.NumberOfBytesToCopy">
+            <summary>
+            The number of bytes to copy from SourceAddress to TargetAddress.
+            </summary>
+        </member>
         <member name="T:Microsoft.Cci.IDebuggerBreakStatement">
             <summary>
             Signals a breakpoint to an attached debugger.
@@ -1662,6 +1783,26 @@
         <member name="P:Microsoft.Cci.IExpressionStatement.Expression">
             <summary>
             The expression.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.IFillMemoryStatement">
+            <summary>
+            Represents the initblk IL instruction, which fills a block of memory with repeated copies of a given fill value.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IFillMemoryStatement.TargetAddress">
+            <summary>
+            A pointer to the block of memory that is overwritten with the repeated value of FillValue.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IFillMemoryStatement.FillValue">
+            <summary>
+            An expression resulting in an unsigned 8-bite value that will be used to fill the block at TargetAddress.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IFillMemoryStatement.NumberOfBytesToFill">
+            <summary>
+            The number of bytes to fill with FillValue.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.IForEachStatement">
@@ -1771,7 +1912,7 @@
         </member>
         <member name="P:Microsoft.Cci.IResourceUseStatement.ResourceAcquisitions">
             <summary>
-            Statements to initialize local definitions with the resources to use.
+            Either an IExpression statement whose expression of type IDisposable, or an ILocalDeclarationStatement whose variable is initialized and of type IDisposable.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.IRethrowStatement">
@@ -1976,6 +2117,11 @@
             Performs some computation with the given continue statement.
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.ICodeVisitor.Visit(Microsoft.Cci.ICopyMemoryStatement)">
+            <summary>
+            Performs some computation with the given copy memory statement.
+            </summary>
+        </member>
         <member name="M:Microsoft.Cci.ICodeVisitor.Visit(Microsoft.Cci.ICreateArray)">
             <summary>
             Performs some computation with the given array creation expression.
@@ -2035,6 +2181,11 @@
         <member name="M:Microsoft.Cci.ICodeVisitor.Visit(Microsoft.Cci.IExpressionStatement)">
             <summary>
             Performs some computation with the given expression statement.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ICodeVisitor.Visit(Microsoft.Cci.IFillMemoryStatement)">
+            <summary>
+            Performs some computation with the given fill memory statement.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.ICodeVisitor.Visit(Microsoft.Cci.IForEachStatement)">
@@ -2441,6 +2592,12 @@
             </summary>
             <param name="continueStatement"></param>
         </member>
+        <member name="M:Microsoft.Cci.CodeVisitor.Visit(Microsoft.Cci.ICopyMemoryStatement)">
+            <summary>
+            Performs some computation with the given copy memory statement.
+            </summary>
+            <param name="copyMemoryStatement"></param>
+        </member>
         <member name="M:Microsoft.Cci.CodeVisitor.Visit(Microsoft.Cci.ICreateArray)">
             <summary>
             Performs some computation with the given array creation expression.
@@ -2524,6 +2681,12 @@
             Performs some computation with the given expression statement.
             </summary>
             <param name="expressionStatement"></param>
+        </member>
+        <member name="M:Microsoft.Cci.CodeVisitor.Visit(Microsoft.Cci.IFillMemoryStatement)">
+            <summary>
+            Performs some computation with the given fill memory statement.
+            </summary>
+            <param name="fillMemoryStatement"></param>
         </member>
         <member name="M:Microsoft.Cci.CodeVisitor.Visit(Microsoft.Cci.IForEachStatement)">
             <summary>
@@ -2976,6 +3139,12 @@
             Traverses the conversion expression.
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.CodeTraverser.Traverse(Microsoft.Cci.ICopyMemoryStatement)">
+            <summary>
+            Traverses the copy memory statement.
+            </summary>
+            <param name="copyMemoryStatement"></param>
+        </member>
         <member name="M:Microsoft.Cci.CodeTraverser.Traverse(Microsoft.Cci.ICreateArray)">
             <summary>
             Traverses the array creation expression.
@@ -3040,6 +3209,12 @@
             <summary>
             Traverses the expression statement.
             </summary>
+        </member>
+        <member name="M:Microsoft.Cci.CodeTraverser.Traverse(Microsoft.Cci.IFillMemoryStatement)">
+            <summary>
+            Traverses the fill memory statement.
+            </summary>
+            <param name="fillMemoryStatement"></param>
         </member>
         <member name="M:Microsoft.Cci.CodeTraverser.Traverse(Microsoft.Cci.IForEachStatement)">
             <summary>
@@ -3455,6 +3630,11 @@
             Traverses the children of the continue statement.
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.CodeTraverser.TraverseChildren(Microsoft.Cci.ICopyMemoryStatement)">
+            <summary>
+            Traverses the children of the copy memory statement.
+            </summary>
+        </member>
         <member name="M:Microsoft.Cci.CodeTraverser.TraverseChildren(Microsoft.Cci.IConversion)">
             <summary>
             Traverses the children of the conversion expression.
@@ -3525,6 +3705,11 @@
         <member name="M:Microsoft.Cci.CodeTraverser.TraverseChildren(Microsoft.Cci.IExpressionStatement)">
             <summary>
             Traverses the children of the expression statement.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.CodeTraverser.TraverseChildren(Microsoft.Cci.IFillMemoryStatement)">
+            <summary>
+            Traverses the children of the fill memory statement.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.CodeTraverser.TraverseChildren(Microsoft.Cci.IForEachStatement)">
@@ -3953,6 +4138,12 @@
             </summary>
             <param name="continueStatement"></param>
         </member>
+        <member name="M:Microsoft.Cci.BaseCodeTraverser.Visit(Microsoft.Cci.ICopyMemoryStatement)">
+            <summary>
+            Traverses the given copy memory statement.
+            </summary>
+            <param name="copyMemoryStatement"></param>
+        </member>
         <member name="M:Microsoft.Cci.BaseCodeTraverser.Visit(Microsoft.Cci.ICreateArray)">
             <summary>
             Traverses the given array creation expression.
@@ -4054,6 +4245,12 @@
             Traverses the given expression statement.
             </summary>
             <param name="expressionStatement"></param>
+        </member>
+        <member name="M:Microsoft.Cci.BaseCodeTraverser.Visit(Microsoft.Cci.IFillMemoryStatement)">
+            <summary>
+            Traverses the given fill memory statement.
+            </summary>
+            <param name="fillMemoryStatement"></param>
         </member>
         <member name="M:Microsoft.Cci.BaseCodeTraverser.Visit(Microsoft.Cci.IForEachStatement)">
             <summary>
@@ -4568,6 +4765,12 @@
             </summary>
             <param name="continueStatement"></param>
         </member>
+        <member name="M:Microsoft.Cci.BaseCodeVisitor.Visit(Microsoft.Cci.ICopyMemoryStatement)">
+            <summary>
+            Performs some computation with the given copy memory statement.
+            </summary>
+            <param name="copyMemoryStatement"></param>
+        </member>
         <member name="M:Microsoft.Cci.BaseCodeVisitor.Visit(Microsoft.Cci.ICreateArray)">
             <summary>
             Performs some computation with the given array creation expression.
@@ -4651,6 +4854,12 @@
             Performs some computation with the given expression statement.
             </summary>
             <param name="expressionStatement"></param>
+        </member>
+        <member name="M:Microsoft.Cci.BaseCodeVisitor.Visit(Microsoft.Cci.IFillMemoryStatement)">
+            <summary>
+            Performs some computation with the given fill memory block statement.
+            </summary>
+            <param name="fillMemoryStatement"></param>
         </member>
         <member name="M:Microsoft.Cci.BaseCodeVisitor.Visit(Microsoft.Cci.IForEachStatement)">
             <summary>
@@ -4998,17 +5207,7 @@
             Performs some computation with the given loop invariant.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Contracts.ICodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.ILoopVariant)">
-            <summary>
-            Performs some computation with the given loop invariant.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.Contracts.ICodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.IMethodContract)">
-            <summary>
-            Performs some computation with the given method contract.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Contracts.ICodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.IMethodVariant)">
             <summary>
             Performs some computation with the given method contract.
             </summary>
@@ -5069,19 +5268,9 @@
             Visits the given loop invariant.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Contracts.CodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.ILoopVariant)">
-            <summary>
-            Visits the given loop variant.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.Contracts.CodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.IMethodContract)">
             <summary>
             Visits the given method contract.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Contracts.CodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.IMethodVariant)">
-            <summary>
-            Visits the given variant.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.Contracts.CodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.IPostcondition)">
@@ -5144,11 +5333,6 @@
             Traverses the enumeration of loop invariants.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.Traverse(System.Collections.Generic.IEnumerable{Microsoft.Cci.Contracts.ILoopVariant})">
-            <summary>
-            Traverses the enumeration of loop variants.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.Traverse(System.Collections.Generic.IEnumerable{Microsoft.Cci.Contracts.IPostcondition})">
             <summary>
             Traverses the enumeration of post conditions.
@@ -5169,11 +5353,6 @@
             Traverses the enumeration of addressable expressions.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.Traverse(System.Collections.Generic.IEnumerable{Microsoft.Cci.Contracts.IMethodVariant})">
-            <summary>
-            Traverses the enumeration of post conditions.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.Traverse(Microsoft.Cci.Contracts.ILoopContract)">
             <summary>
             Traverses the loop contract.
@@ -5184,19 +5363,9 @@
             Traverses the loop invariant.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.Traverse(Microsoft.Cci.Contracts.ILoopVariant)">
-            <summary>
-            Traverses the loop variant.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.Traverse(Microsoft.Cci.Contracts.IMethodContract)">
             <summary>
             Traverses the method contract.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.Traverse(Microsoft.Cci.Contracts.IMethodVariant)">
-            <summary>
-            Traverses the method variant.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.Traverse(Microsoft.Cci.Contracts.IPostcondition)">
@@ -5241,11 +5410,6 @@
             Traverses the children of the loop invariant.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.TraverseChildren(Microsoft.Cci.Contracts.ILoopVariant)">
-            <summary>
-            Traverses the children of the loop variant.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.TraverseChildren(Microsoft.Cci.IMethodCall)">
             <summary>
             Traverses the children of the method call.
@@ -5259,11 +5423,6 @@
         <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.TraverseChildren(Microsoft.Cci.IMethodDefinition)">
             <summary>
             Traverses the children of the method definition.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.TraverseChildren(Microsoft.Cci.Contracts.IMethodVariant)">
-            <summary>
-            Traverses the children of the method variant.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.Contracts.CodeAndContractTraverser.TraverseChildren(Microsoft.Cci.Contracts.IPostcondition)">
@@ -5356,16 +5515,6 @@
             Traverses the given loop invariant.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractTraverser.Visit(System.Collections.Generic.IEnumerable{Microsoft.Cci.Contracts.ILoopVariant})">
-            <summary>
-            Traverses the given list of loop variants.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractTraverser.Visit(Microsoft.Cci.Contracts.ILoopVariant)">
-            <summary>
-            Traverses the given loop variant.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractTraverser.Visit(Microsoft.Cci.Contracts.IMethodContract)">
             <summary>
             Traverses the given method contract.
@@ -5379,16 +5528,6 @@
         <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractTraverser.Visit(Microsoft.Cci.Contracts.IPostcondition)">
             <summary>
             Traverses the given postCondition.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractTraverser.Visit(System.Collections.Generic.IEnumerable{Microsoft.Cci.Contracts.IMethodVariant})">
-            <summary>
-            Traverses the given list of post conditions.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractTraverser.Visit(Microsoft.Cci.Contracts.IMethodVariant)">
-            <summary>
-            Traverses the given variant.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractTraverser.Visit(System.Collections.Generic.IEnumerable{Microsoft.Cci.Contracts.IPrecondition})">
@@ -5466,19 +5605,9 @@
             Visits the given loop invariant.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.ILoopVariant)">
-            <summary>
-            Visits the given loop variant.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.IMethodContract)">
             <summary>
             Visits the given method contract.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.IMethodVariant)">
-            <summary>
-            Visits the given variant.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.Contracts.BaseCodeAndContractVisitor.Visit(Microsoft.Cci.Contracts.IPostcondition)">

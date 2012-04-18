@@ -418,7 +418,6 @@ namespace VVVV.Nodes
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {
-        	
             double pinInputEnable, pinInputDigitizing;
             FPinInputEnable.GetValue(0, out pinInputEnable);
             FPinInputDigitizing.GetValue(0, out pinInputDigitizing);
@@ -444,11 +443,6 @@ namespace VVVV.Nodes
             if ((pinInputEnable == 1d))
             {
                 FPinOutputProximity.SetValue(0, InContext ? 1 : 0);
-                FPinOutputX.SliceCount = FPinOutputY.SliceCount = FPinOutputPressure.SliceCount
-                    = FPinOutputCursor.SliceCount = FPinOutputSerialNo.SliceCount
-                    = FPinOutputCursorType.SliceCount
-                    = FPinOutputCursorSubtype.SliceCount
-                    = FPinOutputCursorName.SliceCount = 1;
                 FPinOutputX.SetValue(0, X);
                 FPinOutputY.SetValue(0, Y);
                 FPinOutputPressure.SetValue(0, NormalPressure);
@@ -472,7 +466,6 @@ namespace VVVV.Nodes
 
         #endregion mainloop
     }
-
 }
 
     

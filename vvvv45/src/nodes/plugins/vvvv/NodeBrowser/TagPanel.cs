@@ -48,6 +48,11 @@ namespace VVVV.Nodes.NodeBrowser
             }
             set
             {
+                if (FNodeBrowser != null)
+                {
+                    this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
+                }
+                
                 FNodeBrowser = value;
                 
                 if (FNodeBrowser != null && FNodeBrowser.IsStandalone)
@@ -318,7 +323,10 @@ namespace VVVV.Nodes.NodeBrowser
                     if (e.Button == MouseButtons.Middle)
                         OnShowNodeReference(selNode);
                     else
+                    {
+                    	FTagsTextBox.Text = "";
                         OnShowHelpPatch(selNode);
+                    }
                 }
                 catch //username is a filename..do nothing
                 {}

@@ -1,7 +1,6 @@
 ﻿
 using System;
 using SlimDX;
-using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.SlimDX;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VColor;
@@ -128,17 +127,18 @@ namespace VVVV.Hosting.IO.Streams
             public abstract int Write(T[] buffer, int index, int length, int stride = 1);
         }
         
-        private readonly IPluginOut FPluginOut;
+        private readonly Action<int> FSetDstLengthAction;
         protected readonly int FDimension;
         protected readonly double** FPPDst;
         protected int FDstLength;
         protected int FLength;
         
-        public VectorOutStream(int dimension, double** ppDst, IPluginOut pluginOut)
+        public VectorOutStream(int dimension, double** ppDst, Action<int> setDstLengthAction)
         {
             FDimension = dimension;
             FPPDst = ppDst;
-            FPluginOut = pluginOut;
+            FSetDstLengthAction = setDstLengthAction;
+            FSetDstLengthAction(FLength);
         }
         
         public object Clone()
@@ -156,7 +156,7 @@ namespace VVVV.Hosting.IO.Streams
             {
                 if (value != FLength)
                 {
-                    FPluginOut.SliceCount = value;
+                    FSetDstLengthAction(value);
                     FLength = value;
                     FDstLength = value * FDimension;
                 }
@@ -195,8 +195,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector2DOutStream(double** ppDst, IPluginOut pluginOut)
-            : base(2, ppDst, pluginOut)
+        public Vector2DOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(2, ppDst, setDstLengthAction)
         {
             
         }
@@ -231,8 +231,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector3DOutStream(double** ppDst, IPluginOut pluginOut)
-            : base(3, ppDst, pluginOut)
+        public Vector3DOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(3, ppDst, setDstLengthAction)
         {
             
         }
@@ -267,8 +267,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector4DOutStream(double** ppDst, IPluginOut pluginOut)
-            : base(4, ppDst, pluginOut)
+        public Vector4DOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(4, ppDst, setDstLengthAction)
         {
             
         }
@@ -303,8 +303,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector2OutStream(double** ppDst, IPluginOut pluginOut)
-            : base(2, ppDst, pluginOut)
+        public Vector2OutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(2, ppDst, setDstLengthAction)
         {
             
         }
@@ -339,8 +339,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector3OutStream(double** ppDst, IPluginOut pluginOut)
-            : base(3, ppDst, pluginOut)
+        public Vector3OutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(3, ppDst, setDstLengthAction)
         {
             
         }
@@ -375,8 +375,8 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
         
-        public Vector4OutStream(double** ppDst, IPluginOut pluginOut)
-            : base(4, ppDst, pluginOut)
+        public Vector4OutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(4, ppDst, setDstLengthAction)
         {
             
         }
@@ -384,6 +384,42 @@ namespace VVVV.Hosting.IO.Streams
         public override IStreamWriter<Vector4> GetWriter()
         {
             return new Vector4OutStreamWriter(this, *FPPDst);
+        }
+    }
+    
+    unsafe class QuaternionOutStream : VectorOutStream<Quaternion>
+    {
+        class QuaternionOutStreamWriter : VectorOutStreamWriter
+        {
+            public QuaternionOutStreamWriter(QuaternionOutStream stream, double* pDst)
+                : base(stream, pDst)
+            {
+                
+            }
+            
+            public override int Write(Quaternion[] buffer, int index, int length, int stride)
+            {
+                fixed (Quaternion* source = buffer)
+                {
+                    return Write((float*) source, index, length, stride);
+                }
+            }
+            
+            public override void Write(Quaternion value, int stride)
+            {
+                Write((float*) &value, stride);
+            }
+        }
+        
+        public QuaternionOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(4, ppDst, setDstLengthAction)
+        {
+            
+        }
+        
+        public override IStreamWriter<Quaternion> GetWriter()
+        {
+            return new QuaternionOutStreamWriter(this, *FPPDst);
         }
     }
 }

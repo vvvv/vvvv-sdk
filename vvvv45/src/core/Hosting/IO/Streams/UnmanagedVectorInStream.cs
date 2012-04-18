@@ -231,9 +231,16 @@ namespace VVVV.Hosting.IO.Streams
         }
         
         public bool Sync()
-        {
-            return FValidateFunc();
-        }
+		{
+			IsChanged = FValidateFunc();
+			return IsChanged;
+		}
+		
+		public bool IsChanged
+		{
+		    get;
+		    private set;
+		}
         
         public int Length
         {
@@ -482,6 +489,44 @@ namespace VVVV.Hosting.IO.Streams
         public override IStreamReader<Vector4> GetReader()
         {
             return new Vector4InStreamReader(this, *FPLength, *FPPSrc);
+        }
+    }
+    
+    unsafe class QuaternionInStream : VectorInStream<Quaternion>
+    {
+        class QuaternionInStreamReader : VectorInStreamReader
+        {
+            public QuaternionInStreamReader(QuaternionInStream stream, int srcLength, double* pSrc)
+                : base(stream, srcLength, pSrc)
+            {
+                
+            }
+            
+            public override int Read(Quaternion[] buffer, int index, int length, int stride)
+            {
+                fixed (Quaternion* destination = buffer)
+                {
+                    return Read((float*) destination, index, length, stride);
+                }
+            }
+            
+            public override Quaternion Read(int stride)
+            {
+                Quaternion result;
+                Read((float*) &result, stride);
+                return result;
+            }
+        }
+        
+        public QuaternionInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(4, pLength, ppData, validateFunc)
+        {
+            
+        }
+        
+        public override IStreamReader<Quaternion> GetReader()
+        {
+            return new QuaternionInStreamReader(this, *FPLength, *FPPSrc);
         }
     }
 }

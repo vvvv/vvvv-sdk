@@ -1,8 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
 {
+    /// <summary>
+    /// A stream reader which reads a stream in a cyclic fashion.
+    /// It will therefor never go into an end of stream state.
+    /// Exceptions to this rule is if the stream is empty.
+    /// </summary>
+    [ComVisible(false)]
 	public class CyclicStreamReader<T> : IStreamReader<T>
 	{
 		private readonly IStreamReader<T> FReader;
@@ -21,13 +28,13 @@ namespace VVVV.Utils.Streams
 			Length = stream.Length;
 		}
 		
-		public bool Eos 
+		public bool Eos
 		{
 			get;
 			private set;
 		}
 		
-		public int Position 
+		public int Position
 		{
 			get
 			{
@@ -35,23 +42,23 @@ namespace VVVV.Utils.Streams
 			}
 			set
 			{
-				FReader.Position = VMath.VMath.Zmod(value, Length);
+			    if (Length > 0) FReader.Position = VMath.VMath.Zmod(value, Length);
 			}
 		}
 		
-		public int Length 
+		public int Length
 		{
 			get;
 			private set;
 		}
 		
-		public T Current 
+		public T Current
 		{
 			get;
 			private set;
 		}
 		
-		object System.Collections.IEnumerator.Current 
+		object System.Collections.IEnumerator.Current
 		{
 			get 
 			{

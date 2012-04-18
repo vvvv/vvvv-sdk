@@ -150,7 +150,7 @@ namespace VVVV.Nodes.NodeBrowser
                 Redraw();
             }
         }
-        
+       
         void HandleTreeViewerMouseDown(ModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (sender.Model is NodeInfoEntry)

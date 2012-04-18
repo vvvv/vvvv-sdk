@@ -153,6 +153,26 @@ namespace VVVV.Core.Collections
             FItems.ChangeKey((T)sender, newName);
             OnItemRenamed(sender, newName);
         }
+
+        public override void MarkChanged()
+        {
+            base.MarkChanged();
+
+            if (Owner != null)
+            {
+                Owner.MarkChanged();
+            }
+        }
+
+        public override void AcknowledgeChanges()
+        {
+            base.AcknowledgeChanges();
+
+            foreach (IIDItem item in this)
+            {
+                item.AcknowledgeChanges();
+            }
+        }
         
         #region IEditableIDList<T> Members
         

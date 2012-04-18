@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
-
 using VVVV.Core;
 using VVVV.Core.Model;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.PluginInterfaces.V2
@@ -85,7 +86,7 @@ namespace VVVV.PluginInterfaces.V2
 	public interface IHDEHost
 	{
 	    /// <summary>
-	    /// Returns an interface to the graphs root node
+	    /// Returns an interface to the graphs root node.
 	    /// </summary>
 	    /// <remarks>Deprecated: Use RootNode instead.</remarks>
 	    /// <returns>The graphs root node.</returns>
@@ -95,13 +96,20 @@ namespace VVVV.PluginInterfaces.V2
 	    }
 	    
 		/// <summary>
-	    /// Returns an interface to the graphs root node
+	    /// Returns an interface to the graphs root node.
 	    /// </summary>
 	    /// <returns>The graphs root node.</returns>
 	    INode2 RootNode
 	    {
 	        get;
 	    }
+	    
+	    /// <summary>
+	    /// Returns an INode2 given a slash-separated string of node IDs that uniquely identifies that node. 
+	    /// </summary>
+	    /// <param name="nodePath">A slash-separated string of node IDs.</param>
+	    /// <returns></returns>
+	    INode2 GetNodeFromPath(string nodePath);
 	    
 	    event NodeSelectionEventHandler NodeSelectionChanged;
 	    event MouseEventHandler MouseUp;
@@ -119,33 +127,60 @@ namespace VVVV.PluginInterfaces.V2
 	    }
 	    
 	    /// <summary>
-		/// Allows a plugin to create/update an Enum with vvvv
+		/// Allows a plugin to create/update an Enum with vvvv.
 		/// </summary>
-		/// <param name="EnumName">The Enums name.</param>
-		/// <param name="Default">The Enums default value.</param>
-		/// <param name="EnumEntries">An array of strings that specify the enums entries.</param>
-		void UpdateEnum(string EnumName, string Default, string[] EnumEntries);
+		/// <param name="enumName">The Enums name.</param>
+		/// <param name="defaultEntry">The Enums default value.</param>
+		/// <param name="enumEntries">An array of strings that specify the enums entries.</param>
+		void UpdateEnum(string enumName, string defaultEntry, string[] enumEntries);
 		
 		/// <summary>
 		/// Returns the number of entries for a given Enum.
 		/// </summary>
-		/// <param name="EnumName">The name of the Enum to get the EntryCount of.</param>
+		/// <param name="enumName">The name of the Enum to get the EntryCount of.</param>
 		/// <returns>Number of entries in the Enum.</returns>
-		int GetEnumEntryCount(string EnumName);
+		int GetEnumEntryCount(string enumName);
 		
 		/// <summary>
 		/// Returns the name of a given EnumEntry of a given Enum.
 		/// </summary>
-		/// <param name="EnumName">The name of the Enum to get the EntryName of.</param>
-		/// <param name="Index">Index of the EnumEntry.</param>
+		/// <param name="enumName">The name of the Enum to get the EntryName of.</param>
+		/// <param name="index">Index of the EnumEntry.</param>
 		/// <returns>String representation of the EnumEntry.</returns>
-		string GetEnumEntry(string EnumName, int Index);
+		string GetEnumEntry(string enumName, int index);
 		
 		/// <summary>
-		/// Returns the current time which the plugin should use if it does timebased calculations.
+		/// Returns the current frame time which the plugin should use if it does timebased calculations.
 		/// </summary>
-		/// <returns>The hosts current time.</returns>
+		/// <returns>The hosts current frame time.</returns>
+		[Obsolete("Use new property FrameTime now")]
 		double GetCurrentTime();
+		
+
+		/// <summary>
+		/// The current host frame time which the plugin should use if it does timebased calculations.
+		/// </summary>
+		double FrameTime 
+		{
+			get;
+		}
+		
+	
+		/// <summary>
+		/// The realtime in seconds since the IHDEHost was created. On boygroup clients this ist the time 
+		/// since the server IHDEHost was created, synced over network. This time is not frame based,
+		/// each call will return a new time.
+		/// </summary>
+		double RealTime 
+		{
+			get;
+		}
+		
+		/// <summary>
+		/// Initialize the internal realtime clock to a specific value
+		/// </summary>
+		/// <param name="time">New time value</param>
+		void SetRealTime(double time = 0);
 	    
 		/// <summary>
 		/// Opens the given file.
@@ -161,6 +196,20 @@ namespace VVVV.PluginInterfaces.V2
 		/// <param name="node">The node whose GUIs ComponentMode is to be changed.</param>
 		/// <param name="componentMode">The new ComponentMode.</param>
 		void SetComponentMode(INode2 node, ComponentMode componentMode);
+
+		/// <summary>
+		/// Gives access to the XML-snippet describing the current selection in the active patch. 
+		/// </summary>
+		/// <returns>An XML-message snippet describing the currently selected nodes in the active patch.</returns>
+		string GetXMLSnippetFromSelection();
+		
+		/// <summary>
+        /// Allows sending of XML-message snippets to patches. 
+        /// </summary>
+        /// <param name="fileName">Filename of the patch to send the message to.</param>
+        /// <param name="message">The XML-message snippet.</param>
+        /// <param name="undoable">If TRUE the operation performed by this message can be undone by the user using the UNDO command.</param>
+        void SendXMLSnippet(string fileName, string message, bool undoable);
 		
 		/// <summary>
 		/// Selects the given nodes in their patch.
@@ -201,12 +250,45 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
-		/// Get the full path to the vvvv.exe
+		/// Gets the full path to the vvvv.exe.
 		/// </summary>
 		string ExePath
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// Provides access to Direct3D9 devices created by vvvv.
+		/// </summary>
+		IDXDeviceService DeviceService
+		{
+		    get;
+		}
+		
+		/// <summary>
+		/// Gets the main loop, which exposes events from the main loop.
+		/// </summary>
+		IMainLoop MainLoop
+		{
+		    get;
+		}
+		
+		/// <summary>
+		/// Indicates whether this IHDEHost is a client in a boygroup.
+		/// </summary>
+		bool IsBoygroupClient
+		{
+			get;
+		}
+		
+		/// <summary>
+		/// The IP adress of the boygroup server.
+		/// </summary>
+		string BoygroupServerIP
+		{
+			get;
+		}
+		
 	}
 	#endregion IHDEHost
 	
@@ -237,6 +319,7 @@ namespace VVVV.PluginInterfaces.V2
 	public interface INodeBrowserHost
 	{
 		void CreateNode(INodeInfo nodeInfo);
+		int CreateNode(INodeInfo nodeInfo, Point point);
 		void CloneNode(INodeInfo nodeInfo, string path, string Name, string Category, string Version);
 		void CreateComment(string comment);
 	}	
@@ -304,6 +387,14 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <returns>Returns this nodes ID.</returns>
 		int GetID();
+		
+		/// <summary>
+		/// Returns a slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.
+		/// </summary>
+		/// <param name="useDescriptiveNames">If TRUE descriptive node names are used where available instead of the node ID.</param>
+		/// <returns>A slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.</returns>
+		string GetNodePath(bool useDescriptiveNames);
+		
 		/// <summary>
 		/// Get the nodes info.
 		/// </summary>
@@ -350,7 +441,9 @@ namespace VVVV.PluginInterfaces.V2
 		
 		//todo: check GetPins mem leak?!
 		IPin[] GetPins();
-		IPin GetPin(string Name);
+		IPin GetPin(string name);
+		
+		Rectangle GetBounds(BoundsType boundsType);
 		
 		/// <summary>
 		/// Allows a plugin to register an INodeListener on a specific vvvv node.
@@ -392,6 +485,7 @@ namespace VVVV.PluginInterfaces.V2
         void LabelChangedCB();
 		void StatusChangedCB();
 		void InnerStatusChangedCB();
+		void BoundsChangedCB(BoundsType boundsType);
     }
 	#endregion INode
 	
@@ -403,15 +497,53 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPin
 	{
-	    string GetName();
-	    string GetValue(int index);
-		
-		StatusCode Status
+	    string Name
+	    {
+	    	get;
+	    }
+	    
+	    PinDirection Direction
+	    {
+	    	get;
+	    }
+	    
+	    string Type
+	    {
+	    	get;
+	    }
+	    
+	    string SubType
+	    {
+	    	get;
+	    }
+	    
+	    INode ParentNode
 		{
 			get;
 		}
 	    
-	    /// <summary>
+	    StatusCode Status
+		{
+			get;
+		}
+	    
+		int SliceCount
+		{
+			get;
+		}
+		
+		string GetNameByParent(INode parent);
+		INode GetParentNodeByPatch(INode patch);
+		
+	    string GetSlice(int sliceIndex);
+		void SetSlice(int sliceIndex, string slice);
+		
+		string GetSpread();
+		void SetSpread(string spread);
+		
+		IPin[] GetConnectedPins();
+		
+		/// <summary>
 		/// Allows a plugin to register an IPinListener on a specific pin.
 		/// </summary>
 		/// <param name="listener">The listener to register.</param>
@@ -422,15 +554,6 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <param name="listener">The listener to unregister.</param>
 		void RemoveListener(IPinListener listener);
-		
-		INode ParentNode
-		{
-			get;
-		}
-	    
-	    //int GetSliceCount();
-	    //enum GetDirection();
-	    //Enum GetType();*/
 	}
 
 	[Guid("F8D09D3D-D988-434D-9AD4-8AD4C94001E7"),
@@ -439,6 +562,7 @@ namespace VVVV.PluginInterfaces.V2
     {
         void ChangedCB();
 		void StatusChangedCB();
+		void SubtypeChangedCB();
     }
 	#endregion IPin
 	

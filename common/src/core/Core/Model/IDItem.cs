@@ -12,9 +12,27 @@ namespace VVVV.Core.Model
         {
             FName = name;
             IsRooted = isRooted;
+            Changed = true;
         }
 
         #region IIDItem Members
+
+        public bool Changed { get; private set; }
+
+        public virtual void MarkChanged()
+        {
+            if (!Changed)
+            {
+                Changed = true;
+                if (Owner != null)
+                    Owner.MarkChanged();
+            }
+        }
+
+        public virtual void AcknowledgeChanges()
+        {
+            Changed = false;
+        }
         
         public ModelMapper Mapper
         {

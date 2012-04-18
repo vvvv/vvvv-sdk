@@ -9,9 +9,15 @@ namespace VVVV.Hosting.Pins.Input
     [ComVisible(false)]
 	class DiffInputPin<T> : InputPin<T>, IDiffSpread<T>
 	{
-		public DiffInputPin(IPluginHost host, IPluginIn pluginIn, IInStream<T> stream)
-			: base(host, pluginIn, stream)
+		public DiffInputPin(IIOFactory factory, IPluginIn pluginIn, BufferedIOStream<T> stream)
+			: base(factory, pluginIn, stream)
 		{
+		}
+		
+		public DiffInputPin(IIOFactory factory, IPluginIn pluginIn, IInStream<T> stream)
+		    : this(factory, pluginIn, new BufferedInputIOStream<T>(stream))
+		{
+		    
 		}
 		
 		public event SpreadChangedEventHander<T> Changed;
@@ -37,22 +43,14 @@ namespace VVVV.Hosting.Pins.Input
 			    FChanged(this);
 		}
 		
-		public bool IsChanged
-		{
-			get;
-			private set;
-		}
-		
 		public override bool Sync()
 		{
-			IsChanged = base.Sync();
-			
-			if (IsChanged)
+		    var isChanged = base.Sync();
+			if (isChanged)
 			{
 				OnChanged();
 			}
-			
-			return IsChanged;
+			return isChanged;
 		}
 	}
 }

@@ -4885,6 +4885,13 @@
             Returns the string used to identify the operator in error messages
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.Ast.BinaryOperation.ResultIsUnmodifiedLeftOperand">
+            <summary>
+            If true, the left operand must be a target expression and the result of the binary operation is the
+            value of the target expression before it is assigned the value of the operation performed on
+            (right hand) values of the left and right operands.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.Ast.BinaryOperation.StandardOperators">
             <summary>
             A list of dummy methods that correspond to operations that are built into IL. The dummy methods are used, via overload resolution,
@@ -5024,6 +5031,13 @@
         <member name="P:Microsoft.Cci.Ast.Addition.TreatOperandsAsUnsignedIntegers">
             <summary>
             If true the operands must be integers and are treated as being unsigned for the purpose of the addition. This only makes a difference if CheckOverflow is true as well.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.Addition.PointerAddition.ResultIsUnmodifiedLeftOperand">
+            <summary>
+            If true, the left operand must be a target expression and the result of the binary operation is the
+            value of the target expression before it is assigned the value of the operation performed on
+            (right hand) values of the left and right operands.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.Ast.Addition.PointerAddition.TreatOperandsAsUnsignedIntegers">
@@ -5602,6 +5616,16 @@
         <member name="P:Microsoft.Cci.Ast.TargetExpression.Definition">
             <summary>
             The local variable, parameter, field, property, array element or pointer target that this expression denotes.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.TargetExpression.GetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose getter is virtual.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.TargetExpression.SetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose setter is virtual.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.Ast.TargetExpression.IsUnaligned">
@@ -11357,6 +11381,16 @@
             Returns either null or the parameter or property or field that corresponds to this argument.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.Ast.NamedArgument.GetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose getter is virtual.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.NamedArgument.SetterIsVirtual">
+            <summary>
+            If true, the resolved definition is a property whose setter is virtual.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.Ast.NamedArgument.Type">
             <summary>
             The type of value that the expression will evaluate to, as determined at compile time.
@@ -13944,6 +13978,13 @@
         <member name="P:Microsoft.Cci.Ast.Subtraction.TreatOperandsAsUnsignedIntegers">
             <summary>
             If true the operands must be integers and are treated as being unsigned for the purpose of the subtraction. This only makes a difference if CheckOverflow is true as well.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.Subtraction.PointerSubtraction.ResultIsUnmodifiedLeftOperand">
+            <summary>
+            If true, the left operand must be a target expression and the result of the binary operation is the
+            value of the target expression before it is assigned the value of the operation performed on
+            (right hand) values of the left and right operands.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.Ast.SubtractionAssignment">
@@ -18733,6 +18774,11 @@
             In case of AST to instructions conversion this lists the types produced.
             In case of instructions to AST decompilation this should ideally be list of all types
             which are local to method.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.MethodBody.Size">
+            <summary>
+            The size in bytes of the method body when serialized.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.Ast.ParameterDefinition">
@@ -25698,6 +25744,11 @@
             A path to the debug information corresponding to this module. Can be absolute or relative to the file path of the module. Empty if not specified.
             </summary>
         </member>
+        <member name="P:Microsoft.Cci.Ast.Module.DebugInformationVersion">
+            <summary>
+            A hexadecimal string that is used to store and retrieve the debugging symbols from a symbol store.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.Ast.Module.DllCharacteristics">
             <summary>
             Flags that control the behavior of the target operating system. CLI implementations are supposed to ignore this, but some operating system pay attention.
@@ -25825,6 +25876,16 @@
         <member name="P:Microsoft.Cci.Ast.Module.StrongNameSigned">
             <summary>
             True if the module contains a hash of its contents, encrypted with the private key of an assembly strong name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.Module.SubsystemMajorVersion">
+            <summary>
+            The first part of a two part version number indicating the operating subsystem that is expected to be the target environment for this module.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Ast.Module.SubsystemMinorVersion">
+            <summary>
+            The second part of a two part version number indicating the operating subsystem that is expected to be the target environment for this module.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.Ast.Module.TargetRuntimeVersion">

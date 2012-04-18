@@ -142,7 +142,15 @@ namespace VVVV.Core.Model
             
             base.DisposeManaged();
         }
-        
+
+        public override void AcknowledgeChanges()
+        {
+            base.AcknowledgeChanges();
+
+            foreach (var item in this)
+                item.AcknowledgeChanges();
+        }
+
         //public override string ToString()
         //{
         //    return string.Format("IDContainer {0}", Name);
