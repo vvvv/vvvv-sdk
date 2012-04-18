@@ -1,0 +1,169 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH nodename="Y:\vvvv33\help\Gamma (Value) help.v4p">
+   <BOUNDS height="7575" left="1350" top="2010" type="Window" width="8610">
+   </BOUNDS>
+   <NODE id="9" nodename="Gamma (Value)">
+   <BOUNDS height="0" left="6450" top="6210" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Gamma" slicecount="1" visible="1" values="4.23000">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="6300" top="5550" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="91">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="Block">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE id="7" nodename="Point (GDI)">
+   <BOUNDS height="0" left="6285" top="6720" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Type" slicecount="1" values="Cross">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.86306,0.89704,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="345" top="795" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4515" left="12840" top="7905" type="Window" width="4590">
+   </BOUNDS>
+   <BOUNDS height="5955" left="345" top="795" type="Box" width="5865">
+   </BOUNDS>
+   <PIN pinname="Viewport Matrix Transformation" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="X" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Y" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7200" top="480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8145" top="4455" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="4350" left="7200" top="480" type="Box" width="1080">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-10">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-0.0699300699300687">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="-3.88888888888889">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="4995" top="450" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Viewport Matrix Transformation" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="3" nodename="Power (Value)">
+   <BOUNDS height="0" left="7665" top="5070" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input 2" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7395" top="5565" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8970" top="9015" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7395" top="5565" type="Box" width="885">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" linkstyle="PolyLine" srcnodeid="3" srcpinname="Output">
+   <LINKPOINT x="7695" y="5430">
+   </LINKPOINT>
+   <LINKPOINT x="8250" y="5430">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Gamma" linkstyle="PolyLine" srcnodeid="2" srcpinname="Y Output Value">
+   <LINKPOINT x="8250" y="5970">
+   </LINKPOINT>
+   <LINKPOINT x="7125" y="5970">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="4710">
+   </BOUNDS>
+   <BOUNDS height="160" left="90" top="9720" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|applies a gamma wave shaping functions to the value (range 0..1)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4575">
+   </BOUNDS>
+   <BOUNDS height="160" left="90" top="9720" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Gamma - Value|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Layers" srcnodeid="7" srcpinname="Layer">
+   </LINK>
+   </PATCH>

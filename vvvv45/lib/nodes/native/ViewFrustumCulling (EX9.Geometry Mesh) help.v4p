@@ -1,0 +1,195 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\ViewFrustumCulling (EX9.Geometry Mesh) help.v4p">
+   <BOUNDS height="4560" left="3525" top="4485" type="Window" width="6330">
+   </BOUNDS>
+   <NODE id="12" nodename="Teapot (EX9.Geometry)">
+   <BOUNDS height="0" left="3030" top="2040" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="ViewFrustumCulling (EX9.Geometry Mesh)">
+   <BOUNDS height="0" left="4365" top="2895" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh Out" visible="1">
+   </PIN>
+   <PIN pinname="Declaration" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="View Frustum Test" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Mesh" linkstyle="PolyLine" srcnodeid="12" srcpinname="Mesh">
+   <LINKPOINT x="3060" y="2760">
+   </LINKPOINT>
+   <LINKPOINT x="4395" y="2760">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="45" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="5070" top="6810" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="1800" left="45" top="1605" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="DrawFixed (EX9.Effect)">
+   <BOUNDS height="0" left="2865" top="2895" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Mesh" srcnodeid="12" srcpinname="Mesh">
+   </LINK>
+   <NODE id="8" nodename="UniformScale (Transform)">
+   <BOUNDS height="0" left="4830" top="1830" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="0.58">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Transform" linkstyle="VHV" srcnodeid="8" srcpinname="Transform Out">
+   <LINKPOINT x="4860" y="2490">
+   </LINKPOINT>
+   <LINKPOINT x="4860" y="2490">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Transform" linkstyle="PolyLine" srcnodeid="8" srcpinname="Transform Out">
+   <LINKPOINT x="4860" y="2595">
+   </LINKPOINT>
+   <LINKPOINT x="3210" y="2595">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3975" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6570" top="9270" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="390" left="3975" top="3615" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="11" srcpinname="View Frustum Test">
+   </LINK>
+   <NODE id="6" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="2190" top="960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="5055" top="690" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Map (Value)">
+   <BOUNDS height="0" left="5055" top="1050" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="-3">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="4830" top="1440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Transform In" srcnodeid="3" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="X" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="View Transform" srcnodeid="6" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="View Transform" linkstyle="Bezier" srcnodeid="6" srcpinname="Transform Out">
+   <LINKPOINT x="2220" y="1995">
+   </LINKPOINT>
+   <LINKPOINT x="5310" y="1995">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="525" left="15" top="390" type="Box" width="3885">
+   </BOUNDS>
+   <BOUNDS height="160" left="11100" top="44160" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|check if mesh lies in viewing frustum&cr;&lf;and outputs 0 if the mesh isn&apos;t visible in the renderer|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="15" top="15" type="Box" width="5835">
+   </BOUNDS>
+   <BOUNDS height="160" left="11100" top="44160" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ViewFrustumCulling - EX9.Geometry Mesh|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4470" top="3675" type="Node" width="660">
+   </BOUNDS>
+   <BOUNDS height="270" left="4470" top="3675" type="Box" width="660">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="visible?">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Layer" dstnodeid="10" dstpinname="Layers">
+   <LINKPOINT x="2880" y="3495">
+   </LINKPOINT>
+   <LINKPOINT x="45" y="3495">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

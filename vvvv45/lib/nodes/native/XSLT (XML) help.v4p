@@ -1,0 +1,331 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\XSLT (XML) help.v4p">
+   <BOUNDS height="12675" left="1005" top="1200" type="Window" width="12495">
+   </BOUNDS>
+   <NODE id="22" nodename="PatchAlias (VVVV)" systemname="PatchAlias (VVVV)">
+   <BOUNDS height="0" left="3960" top="915" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   <PIN pinname="Parent Level" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="21" nodename="GetPatch (VVVV)" systemname="GetPatch (VVVV)">
+   <BOUNDS height="0" left="3975" top="1305" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   <PIN pinname="Patch Description" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Patch" srcnodeid="22" srcpinname="Patch">
+   </LINK>
+   <NODE id="20" nodename="XSLT (XML)" systemname="XSLT (XML)">
+   <BOUNDS height="0" left="3960" top="1800" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XSLT Stylesheet" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Message" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="XML Input" srcnodeid="21" srcpinname="Patch Description">
+   </LINK>
+   <NODE componentmode="InAWindow" id="19" nodename="Renderer (HTML String)" systemname="Renderer (HTML String)">
+   <BOUNDS height="0" left="3960" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="12690" left="13560" top="1215" type="Window" width="4680">
+   </BOUNDS>
+   <BOUNDS height="1800" left="3960" top="3000" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Base" slicecount="1" visible="1" values="http://vvvv.meso.net" encoded="0">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Backbuffer Height" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Width" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="6855" top="210" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11625" top="8355" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="7140" left="6855" top="210" type="Box" width="4980">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&cr;&lf;&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; &gt;&cr;&lf;&lt;xsl:output method=&quot;xml&quot; version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; indent=&quot;yes&quot;/&gt;&cr;&lf;&lt;xsl:template match=&quot;/&quot;&gt;&cr;&lf;&lt;html&gt;&cr;&lf;&lt;head&gt;&cr;&lf;  &lt;title&gt;Nodes in my Patch&lt;/title&gt;&cr;&lf;  &lt;style type=&quot;text/css&quot;&gt;&cr;&lf;  h1 {font-family:Tahoma; font-size:14px; color:gray; padding:10px;}&cr;&lf;      th { font-family:Tahoma; font-size:10px; color:gray; text-align:left; padding:5px; border:1px solid;}&cr;&lf;      td {font-family:Tahoma; font-size:10px; color:red; padding:5px;}&cr;&lf;  &lt;/style&gt;&cr;&lf;&lt;/head&gt;&cr;&lf;&lt;body&gt;&cr;&lf;&lt;h1&gt;&lt;xsl:value-of select=&quot;/PATCH/@nodename&quot; /&gt;&lt;/h1&gt;&cr;&lf; &lt;table&gt;&cr;&lf; &lt;tr&gt;&lt;th&gt;name&lt;/th&gt;&lt;th&gt;Pos. Top&lt;/th&gt;&lt;th&gt;Pos. Left&lt;/th&gt;&lt;/tr&gt;&cr;&lf; &lt;xsl:for-each select=&quot;/PATCH/NODE&quot;&gt;&cr;&lf;    &lt;tr&gt;&cr;&lf;      &lt;td&gt;&lt;xsl:value-of select=&quot;@nodename&quot; /&gt;&lt;/td&gt;&cr;&lf;      &lt;td&gt;&lt;xsl:value-of select=&quot;BOUNDS/@left&quot; /&gt;&lt;/td&gt;&cr;&lf;      &lt;td&gt;&lt;xsl:value-of select=&quot;BOUNDS/@top&quot; /&gt;&lt;/td&gt;&cr;&lf;    &lt;/tr&gt;&cr;&lf; &lt;/xsl:for-each&gt;&cr;&lf;&lt;/table&gt;&cr;&lf;&lt;/body&gt;&cr;&lf;&lt;/html&gt;&cr;&lf;&lt;/xsl:template&gt;&cr;&lf;&lt;/xsl:stylesheet&gt;&cr;&lf;|" encoded="0">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="XSLT Stylesheet" linkstyle="Bezier" srcnodeid="18" srcpinname="Output String">
+   <LINKPOINT x="4140" y="9330">
+   </LINKPOINT>
+   <LINKPOINT x="7005" y="465">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Input" linkstyle="VHV" srcnodeid="20" srcpinname="Output">
+   <LINKPOINT x="3990" y="2700">
+   </LINKPOINT>
+   <LINKPOINT x="4650" y="2700">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="135" top="615" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="720" left="135" top="615" type="Box" width="2490">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="39930" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Does a XSL Transformation to the incoming XML String|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="150" top="225" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="435" left="150" top="225" type="Box" width="1995">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="39930" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|XSLT (XML)|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="225" top="1725" type="Node" width="5130">
+   </BOUNDS>
+   <BOUNDS height="7185" left="225" top="1725" type="Box" width="3210">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|To use this node, you should be familiar with (X)HTML, XML, XPath. Never heard about that X-Stuff? Ceck out www.w3schools.com.&cr;&lf;&cr;&lf;XSLT ist based on XSL, which is, what CSS is for HTML: a stylesheet language. Additional functions allow us to transform the Input Document. That is called XSLT then.&cr;&lf;&cr;&lf;With XSLT you can add/remove elements and attributes to or from the output file. You can also rearrange and sort elements, perform tests and make decisions about which elements to hide and display, and a lot more.&cr;&lf;&cr;&lf;XSLT uses XPath to navigate in the Document.&cr;&lf;&cr;&lf;Example:&cr;&lf;&lt;xsl:value-of select=&quot;BOUNDS/@top&quot; /&gt;&cr;&lf;&cr;&lf;Explanation:&cr;&lf;the &quot;value-of&quot;  Element returns output. Its attribute &quot;select&quot; contains the XPath Expression. This Expression tells us which Element should be returned. &cr;&lf;&cr;&lf;Error Msg. will be thrown out in the OS Language. Please check the Microsoft site for Error Code Informations|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4140" top="2205" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="31710" top="4740" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="255" left="4140" top="2205" type="Box" width="420">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="10905" top="9165" type="Node" width="705">
+   </BOUNDS>
+   <BOUNDS height="270" left="10905" top="9165" type="Box" width="705">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="1320" left="2565" top="10245" type="Node" width="3450">
+   </BOUNDS>
+   <BOUNDS height="1605" left="2565" top="10245" type="Box" width="2010">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;xsl:for-each select=&quot; &quot;&gt;&cr;&lf;  ... some other code&cr;&lf;&lt;/xsl:for-each&gt;&cr;&lf;&cr;&lf;Select every XML element of a specified node-set:&cr;&lf;|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="9195" type="Node" width="1770">
+   </BOUNDS>
+   <BOUNDS height="630" left="255" top="9195" type="Box" width="1770">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Some custom Elements|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="11">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="285" top="10260" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="855" left="285" top="10260" type="Box" width="1875">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;xsl:value-of select=&quot; &quot;/&gt;&cr;&lf;Outputs values|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="4935" top="10215" type="Node" width="2070">
+   </BOUNDS>
+   <BOUNDS height="1440" left="4935" top="10215" type="Box" width="1785">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;xsl:sort select=&quot; &quot;/&gt;&cr;&lf;Place the sort Element inside a for-each Element. The select attribute indicates what XML element to sort on|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="1110" left="7095" top="10200" type="Node" width="3150">
+   </BOUNDS>
+   <BOUNDS height="1260" left="7095" top="10200" type="Box" width="2040">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;xsl:if test=&quot;expression&quot;&gt;&cr;&lf;  ...something &cr;&lf;&lt;/xsl:if&gt;&cr;&lf;Conditionals|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="1740" left="9450" top="10185" type="Node" width="2355">
+   </BOUNDS>
+   <BOUNDS height="1740" left="9450" top="10185" type="Box" width="2355">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;xsl:choose&gt;&cr;&lf;  &lt;xsl:when test=&quot;expression&quot;&gt;&cr;&lf;    ... some output ...&cr;&lf;  &lt;/xsl:when&gt;&cr;&lf;  &lt;xsl:otherwise&gt;&cr;&lf;    ... some output ....&cr;&lf;  &lt;/xsl:otherwise&gt;&cr;&lf;&lt;/xsl:choose&gt;|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="225" top="11940" type="Node" width="11625">
+   </BOUNDS>
+   <BOUNDS height="270" left="225" top="11940" type="Box" width="11625">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="---------------------------------------------------------------------------------------------------------------------------------------------------------" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="180" top="9990" type="Node" width="11625">
+   </BOUNDS>
+   <BOUNDS height="270" left="180" top="9990" type="Box" width="11625">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="---------------------------------------------------------------------------------------------------------------------------------------------------------" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="4590" top="2235" type="Node" width="2100">
+   </BOUNDS>
+   <BOUNDS height="270" left="4590" top="2235" type="Box" width="2100">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;-- Throws Error Msg. too|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2115" top="9270" type="Node" width="4035">
+   </BOUNDS>
+   <BOUNDS height="525" left="2115" top="9270" type="Box" width="5040">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|All Elements: http://www.w3schools.com/xsl/xsl_w3celementref.asp&cr;&lf;All Functions: http://www.w3schools.com/xsl/xsl_functions.asp|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3210" top="315" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4500" top="1755" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3210" top="315" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Parent Level" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="4125" top="315" type="Node" width="1245">
+   </BOUNDS>
+   <BOUNDS height="300" left="4125" top="315" type="Box" width="1470">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;--Change Patch|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="20" srcpinname="Message">
+   </LINK>
+   <NODE id="13" nodename="XPath (XML)" systemname="XPath (XML)" filename="">
+   <BOUNDS height="0" left="10950" top="9495" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   </PATCH>

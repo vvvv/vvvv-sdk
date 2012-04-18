@@ -1,0 +1,271 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\help\MainLoop (VVVV) help.v4p">
+   <BOUNDS height="11325" left="60" top="15" type="Window" width="11760">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="420" left="4245" top="120" type="Node" width="7980">
+   </BOUNDS>
+   <BOUNDS height="5625" left="4245" top="120" type="Box" width="7080">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The mainloop defines, how fast vvvv can run. By default it runs as fast as possible with a maximum of 120 in foreground and 30 in background, which means that vvvv is sometimes a little faster and sometimes much slower, even if it tries to run at a constant framerate.&cr;&lf;&cr;&lf;The mainloop does not only affect drawing issues, but the whole application including the GUI.&cr;&lf;Try to set the Foreground FPS to a very low value (1 or 2), create some nodes and connect them. Notice how long it takes until things happen.&cr;&lf;&cr;&lf;MainLoop is the way to control the speed of operations and flow. &cr;&lf;&cr;&lf;the time modes are:&cr;&lf;&cr;&lf;- Raw&cr;&lf;vvvv requests the time from the high resolution counter of your mainboard and uses this value directly for all nodes. as it is on the windows scheduling architecture not sure when this will happen, the time intervals from frame to frame can vary a lot. this is not very good, because the graphics card renders in a very precise interval. &cr;&lf;&cr;&lf;- Filtered (default)&cr;&lf;same like Raw, but the time values are smoothed by a slow filter to have more constant time intervals for better animation quality. as the filter is really slow, you shouldn&apos;t use this mode, if the framerate of your patch has to change often by large amounts.&cr;&lf;&cr;&lf;- Increment&cr;&lf;the time is incremented every frame by a constamt value set on the MainLoop node no matter how fast vvvv runs in reality.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Timing (Debug)" systemname="Timing (Debug)">
+   <BOUNDS height="0" left="1125" top="3180" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="frames per second" visible="1">
+   </PIN>
+   <PIN pinname="Total Runnning Time" visible="1">
+   </PIN>
+   <PIN pinname="Total Clock Filter Time" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="375" top="3600" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6810" top="10890" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="450" left="375" top="3600" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="17">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="270" top="4200" type="Node" width="2760">
+   </BOUNDS>
+   <BOUNDS height="1260" left="270" top="4200" type="Box" width="1845">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|current framerate, this can differ from the framerate vvvv runs, if the time mode is Filtered or Increment|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="165" top="555" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="165" top="555" type="Box" width="2370">
+   </BOUNDS>
+   <BOUNDS height="160" left="570" top="10920" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Configure the mainloop|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="165" top="180" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="165" top="180" type="Box" width="2280">
+   </BOUNDS>
+   <BOUNDS height="160" left="570" top="10920" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MainLoop - VVVV|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Y Input Value" srcnodeid="16" srcpinname="frames per second">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="2430" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3390" top="4350" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="750" left="2430" top="1230" type="Box" width="975">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="Filtered">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="240" top="6135" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2820" top="8610" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="4725" left="240" top="6135" type="Box" width="9060">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="60">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="120">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Divide (Value)" systemname="Divide (Value)">
+   <BOUNDS height="0" left="2430" top="4800" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <BOUNDS height="0" left="2925" top="4005" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Subtract (Value)" systemname="Subtract (Value)">
+   <BOUNDS height="0" left="2685" top="4380" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input 2" srcnodeid="8" srcpinname="Output 1">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input 2" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE id="6" nodename="Cons (Spreads Legacy)" systemname="Cons (Spreads Legacy)">
+   <BOUNDS height="0" left="2685" top="3600" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input 1" srcnodeid="16" srcpinname="Total Clock Filter Time">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input 2" srcnodeid="16" srcpinname="Total Runnning Time">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input 1" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input 1" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE id="5" nodename="Queue (Spreads Legacy)" systemname="Queue (Spreads Legacy)">
+   <BOUNDS height="0" left="2430" top="5205" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="do Insert" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Frame Count" slicecount="1" values="60">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE id="4" nodename="SwapDim (Spreads)" systemname="SwapDim (Spreads)">
+   <BOUNDS height="0" left="2430" top="5595" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Column Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Row Count" slicecount="1" values="60">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="9510" top="7155" type="Node" width="1275">
+   </BOUNDS>
+   <BOUNDS height="330" left="9510" top="7155" type="Box" width="1590">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;-- Filtered interval|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="9525" top="9585" type="Node" width="1275">
+   </BOUNDS>
+   <BOUNDS height="330" left="9525" top="9585" type="Box" width="1590">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;-- Raw interval|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="135" top="1365" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="780" top="1980" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="510" left="135" top="1365" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="120">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="18">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="975" top="1380" type="Node" width="1755">
+   </BOUNDS>
+   <BOUNDS height="525" left="975" top="1380" type="Box" width="1170">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|try some changes here|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="MainLoop (VVVV)" nodename="MainLoop (VVVV)" componentmode="Hidden" id="-7">
+   <PIN pinname="Maximum forground fps" visible="1">
+   </PIN>
+   <PIN pinname="Time Mode" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="1890" top="2475" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="-7" dstpinname="Maximum forground fps">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output Enum" dstnodeid="-7" dstpinname="Time Mode">
+   </LINK>
+   </PATCH>
