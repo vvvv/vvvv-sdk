@@ -438,6 +438,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
         else {
           if (genericMethodBuilder != null) {
             genericMethodBuilder.SetSignature(returnType, rtReqMods, rtOptMods, parameterTypes, ptReqMods, ptOptMods);
+            base.TraverseChildren(method);
             return;
           }
           builder = containingType.DefineMethod(method.Name.Value, attributes, callingConvention, returnType, rtReqMods, rtOptMods,

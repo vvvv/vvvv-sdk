@@ -156,8 +156,11 @@ namespace Microsoft.Cci.ReflectionEmitter {
                     members = containingType.GetMember(methodReference.Name.Value, bindingFlags);
                     this.membersMap.Add(methodReference.ContainingType.InternedKey, (uint)methodReference.Name.UniqueKey, members);
                 } catch (NotSupportedException) {
-                    var genericContainingType = containingType.GetGenericTypeDefinition();
-                    var genericMembers = genericContainingType.GetMember(methodReference.Name.Value, bindingFlags);
+                    var containingGenericTypeInstanceReference = methodReference.ContainingType as IGenericTypeInstanceReference;
+                    var containingGenericTypeDefinition = containingGenericTypeInstanceReference.GenericType.ResolvedType;
+                    var genericMembers = containingGenericTypeDefinition.Members.Where(m => m.Name == methodReference.Name && m is IMethodReference).Select(m => this.GetMethod(m as IMethodReference)).ToArray();
+                    //var genericContainingType = containingType.GetGenericTypeDefinition() as TypeBuilder;
+                    //var genericMembers = genericContainingType.GetMember(methodReference.Name.Value, bindingFlags);
                     members = new MemberInfo[genericMembers.Length];
                     for (int i = 0; i < members.Length; i++) {
                         var method = genericMembers[i] as MethodBase;
@@ -166,6 +169,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
                         else
                             members[i] = TypeBuilder.GetMethod(containingType, (MethodInfo) genericMembers[i]);
                     }
+                    if (members.Length == 1) 
+                        return (MethodBase) members[0];
                     // HACK: Returned methods do have wrong generic arguments (the ones from the generic type definition), therefor skip type check for now.
                     return this.GetMethodFrom(methodReference, members, true);
                 }
