@@ -42,7 +42,7 @@ namespace VVVV.Utils.Streams
 			}
 			set
 			{
-				FReader.Position = VMath.VMath.Zmod(value, Length);
+			    if (Length > 0) FReader.Position = VMath.VMath.Zmod(value, Length);
 			}
 		}
 		
@@ -112,6 +112,11 @@ namespace VVVV.Utils.Streams
 						numSlicesRead += FReader.Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 						// Exit the loop once Position is back at beginning
 						if ((FReader.Position %= readerLength) == 0) break;
+					}
+					
+					if (numSlicesRead == length)
+					{
+					    break;
 					}
 					
 					if (numSlicesRead == length)

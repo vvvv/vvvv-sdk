@@ -22,7 +22,7 @@ using VVVV.Utils.VMath;
 namespace VVVV.Hosting.IO
 {
     [ComVisible(false)]
-    class IORegistryBase : IIORegistry
+    public class IORegistryBase : IIORegistry
     {
         protected readonly List<IIORegistry> FRegistries = new List<IIORegistry>();
         protected readonly Dictionary<Type, Func<IIOFactory, IOBuildContext<InputAttribute>, IIOContainer>> FInputDelegates = new Dictionary<Type, Func<IIOFactory, IOBuildContext<InputAttribute>, IIOContainer>>();
@@ -92,10 +92,18 @@ namespace VVVV.Hosting.IO
             RegisterConfig(typeof(TIO), createConfigFunc, registerInterfaces);
         }
         
-        public void Register(IIORegistry registry)
+        public void Register(IIORegistry registry, bool first = false)
         {
-            FRegistries.Add(registry);
+            if (first)
+            {
+                FRegistries.Insert(0, registry);
+            }
+            else
+            {
+                FRegistries.Add(registry);
+            }
         }
+
         
         public virtual bool CanCreate(IOBuildContext context)
         {

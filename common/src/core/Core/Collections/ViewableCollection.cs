@@ -13,6 +13,7 @@ namespace VVVV.Core.Collections
     {
         private readonly IEditableCollection<T> FInternalCollection;
         private readonly bool FOwnerOfInternalCollection;
+        private int FUpdating;
         
         public ViewableCollection()
             : this((IEditableCollection<T>)(new EditableCollection<T>()))
@@ -89,6 +90,20 @@ namespace VVVV.Core.Collections
         public void Clear()
         {
             FInternalCollection.Clear();
+        }
+        
+        public void BeginUpdate()
+        {
+        	if (FUpdating == 0) 
+        		OnUpdateBegun();
+        	FUpdating++;
+        }
+
+        public void EndUpdate()
+        {
+        	FUpdating--;
+        	if (FUpdating == 0) 
+        		OnUpdated();
         }
         
         #region IViewableCollection<T> Members
@@ -185,7 +200,22 @@ namespace VVVV.Core.Collections
         }
 
         public event CollectionUpdateDelegate UpdateBegun;
+        
+        protected virtual void OnUpdateBegun()
+        {
+            if (UpdateBegun != null) {
+                UpdateBegun(this);
+            }
+        }
+        
         public event CollectionUpdateDelegate Updated;
+        
+        protected virtual void OnUpdated()
+        {
+            if (Updated != null) {
+                Updated(this);
+            }
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {

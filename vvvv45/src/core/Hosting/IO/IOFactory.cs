@@ -9,12 +9,12 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.IO
 {
-    class IOFactory : IIOFactory, IInternalPluginHostListener, IDisposable
+    public class IOFactory : IIOFactory, IInternalPluginHostListener, IDisposable
     {
         private readonly IInternalPluginHost FPluginHost;
-        private readonly IORegistry FIORegistry;
+        private readonly IIORegistry FIORegistry;
         
-        public IOFactory(IInternalPluginHost pluginHost, IORegistry streamRegistry)
+        public IOFactory(IInternalPluginHost pluginHost, IIORegistry streamRegistry)
         {
             FPluginHost = pluginHost;
             FIORegistry = streamRegistry;

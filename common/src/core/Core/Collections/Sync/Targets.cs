@@ -68,6 +68,46 @@ namespace VVVV.Core.Collections.Sync
         }
     }
     
+    internal class ViewableCollectionTarget<T> : Target<T>
+    {
+        private readonly ViewableCollection<T> FCollection;
+        
+        public ViewableCollectionTarget(ViewableCollection<T> collection)
+        {
+            FCollection = collection;
+        }
+        
+        public override void Add(T item)
+        {
+            FCollection.Add(item);
+        }
+        
+        public override void Remove(T item)
+        {
+            FCollection.Remove(item);
+        }
+        
+        public override IEnumerator<T> GetEnumerator()
+        {
+            return FCollection.GetEnumerator();
+        }
+        
+        public override void Clear()
+        {
+            FCollection.Clear();
+        }
+        
+        public override void BeforeBatchUpdate()
+        {
+            FCollection.BeginUpdate();
+        }
+        
+        public override void AfterBatchUpdate()
+        {
+            FCollection.EndUpdate();
+        }
+    }
+    
     internal class NonGenericListTarget : Target<object>
     {
         private readonly IList FList;
