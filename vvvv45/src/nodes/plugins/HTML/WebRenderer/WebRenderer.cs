@@ -17,9 +17,9 @@ namespace VVVV.Nodes.HTML
 {
     public class WebRenderer : IDisposable
     {
-        const string DEFAULT_URL = "http://vvvv.org";
-        const int DEFAULT_WIDTH = 640;
-        const int DEFAULT_HEIGHT = 480;
+        public const string DEFAULT_URL = "http://vvvv.org";
+        public const int DEFAULT_WIDTH = 640;
+        public const int DEFAULT_HEIGHT = 480;
         private readonly DXResource<Texture, CefBrowser> FTextureResource;
         private readonly List<Texture> FTextures = new List<Texture>();
         private CefBrowser FBrowser;
