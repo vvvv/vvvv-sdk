@@ -29,7 +29,7 @@ namespace VVVV.MSKinect.Lib
             
         }
 
-        public void Assign(int idx)
+        public bool Assign(int idx)
         {
             if (this.Runtime != null)
             {
@@ -48,6 +48,11 @@ namespace VVVV.MSKinect.Lib
             if (KinectSensor.KinectSensors.Count > 0)
             {
                 this.Runtime = KinectSensor.KinectSensors[idx % KinectSensor.KinectSensors.Count];
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -75,18 +80,26 @@ namespace VVVV.MSKinect.Lib
             }
         }
 
-        public void EnableSkeleton(bool enable)
+        public void EnableSkeleton(bool enable, bool smooth, TransformSmoothParameters sp)
         {
             if (enable)
             {
-                TransformSmoothParameters sp = new TransformSmoothParameters();
-                sp.Correction = 0.5f;
-                sp.JitterRadius = 0.05f;
-                sp.MaxDeviationRadius = 0.04f;
-                sp.Prediction = 0.5f;
-                sp.Smoothing = 0.5f;
+                //Need to disable
+                if (this.Runtime.SkeletonStream.IsEnabled)
+                {
+                    this.Runtime.SkeletonStream.Disable();
+                }
 
-                this.Runtime.SkeletonStream.Enable(sp);
+                if (smooth)
+                {
+                    this.Runtime.SkeletonStream.Enable(sp);
+                }
+                else
+                {
+                    this.Runtime.SkeletonStream.Enable();
+                }
+
+
                 this.Runtime.SkeletonFrameReady += this.Runtime_SkeletonFrameReady;
             }
             else
@@ -94,6 +107,18 @@ namespace VVVV.MSKinect.Lib
                 this.Runtime.SkeletonStream.Disable();
                 this.Runtime.SkeletonFrameReady -= this.Runtime_SkeletonFrameReady;
             }
+        }
+
+        public TransformSmoothParameters DefaultSmooth()
+        {
+            TransformSmoothParameters sp = new TransformSmoothParameters();
+            sp.Correction = 0.5f;
+            sp.JitterRadius = 0.05f;
+            sp.MaxDeviationRadius = 0.04f;
+            sp.Prediction = 0.5f;
+            sp.Smoothing = 0.5f;
+
+            return sp;
         }
 
         public void SetDepthMode(eDepthMode mode)
@@ -176,6 +201,7 @@ namespace VVVV.MSKinect.Lib
                         this.Runtime.ColorFrameReady -= Runtime_ColorFrameReady;
                         this.Runtime.DepthFrameReady -= Runtime_DepthFrameReady;
                         this.Runtime.Stop();
+                        
                     }
                     catch
                     {
