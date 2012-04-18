@@ -66,7 +66,12 @@ namespace VVVV.MSKinect.Nodes
                 {
                     //Cache runtime node
                     this.runtime = this.FInRuntime[0];
-                    this.FInRuntime[0].SkeletonFrameReady += SkeletonReady;
+
+                    if (runtime != null)
+                    {
+                        this.FInRuntime[0].SkeletonFrameReady += SkeletonReady;
+                    }
+                    
                 }
 
                 this.FInvalidateConnect = false;

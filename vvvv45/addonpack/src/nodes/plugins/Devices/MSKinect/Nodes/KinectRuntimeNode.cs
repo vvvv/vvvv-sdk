@@ -10,7 +10,7 @@ using Microsoft.Kinect;
 namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "Kinect", Category = "Devices",Version="Microsoft", Author = "vux")]
-    public class KinectRuntimeNode : IPluginEvaluate
+    public class KinectRuntimeNode : IPluginEvaluate, IDisposable
     {
         [Input("Motor Angle", IsSingle = true,DefaultValue=0.5)]
         IDiffSpread<double> FInAngle;
@@ -27,9 +27,14 @@ namespace VVVV.MSKinect.Nodes
         [Input("Depth Range", IsSingle = true)]
         IDiffSpread<DepthRange> FInDepthRange;
 
-
         [Input("Enable Skeleton", IsSingle = true)]
         IDiffSpread<bool> FInEnableSkeleton;
+
+        [Input("Enable Skeleton Smoothing", IsSingle = true, DefaultValue = 1)]
+        IDiffSpread<bool> FInEnableSmooth;
+
+        [Input("Smooth Parameters", IsSingle = true)]
+        Pin<TransformSmoothParameters> FSmoothParams;
 
         [Input("Enabled", IsSingle = true)]
         IDiffSpread<bool> FInEnabled;
@@ -57,6 +62,8 @@ namespace VVVV.MSKinect.Nodes
 
         private KinectRuntime runtime = new KinectRuntime();
 
+        private bool haskinect = false;
+
         public void Evaluate(int SpreadMax)
         {
             
@@ -64,73 +71,97 @@ namespace VVVV.MSKinect.Nodes
 
             if (this.FInIndex.IsChanged || this.FInReset[0] || this.runtime.Runtime == null)
             {
-                this.runtime.Assign(this.FInIndex[0]);
-                reset = true;
+                this.haskinect = this.runtime.Assign(this.FInIndex[0]);
+                reset = true;   
             }
 
-
-            if (this.FInEnabled.IsChanged || reset)
+            if (this.haskinect)
             {
-                if (this.FInEnabled[0])
+
+                if (this.FInEnabled.IsChanged || reset)
                 {
-                    this.runtime.Start(this.FInEnableColor[0], this.FInEnableSkeleton[0],this.FInDepthMode[0]);
+                    if (this.FInEnabled[0])
+                    {
+                        this.runtime.Start(this.FInEnableColor[0], this.FInEnableSkeleton[0], this.FInDepthMode[0]);
+                    }
+                    else
+                    {
+                        this.runtime.Stop();
+                    }
+
+                    reset = true;
                 }
-                else
+
+                if (this.FInDepthMode.IsChanged || reset)
                 {
-                    this.runtime.Stop();
+                    this.runtime.SetDepthMode(this.FInDepthMode[0]);
                 }
 
-                reset = true;
-            }
-
-            if (this.FInDepthMode.IsChanged || reset)
-            {
-                this.runtime.SetDepthMode(this.FInDepthMode[0]);
-            }
-
-            if (this.FInEnableColor.IsChanged || reset)
-            {
-                this.runtime.SetColor(this.FInEnableColor[0]);
-            }
-
-
-            if (this.FInDepthRange.IsChanged || reset)
-            {
-                try
+                if (this.FInEnableColor.IsChanged || reset)
                 {
-                    this.runtime.SetDepthRange(this.FInDepthRange[0]);
+                    this.runtime.SetColor(this.FInEnableColor[0]);
                 }
-                catch { }
-            }
 
 
-            if (this.FInEnableSkeleton.IsChanged || reset)
-            {
-                this.runtime.EnableSkeleton(this.FInEnableSkeleton[0]);
-            }
-
-            if (this.FInAngle.IsChanged || reset)
-            {
-                if (this.runtime.IsStarted)
+                if (this.FInDepthRange.IsChanged || reset)
                 {
-                    try { this.runtime.Runtime.ElevationAngle = (int)VMath.Map(this.FInAngle[0], 0, 1, this.runtime.Runtime.MinElevationAngle, this.runtime.Runtime.MaxElevationAngle, TMapMode.Clamp); }
+                    try
+                    {
+                        this.runtime.SetDepthRange(this.FInDepthRange[0]);
+                    }
                     catch { }
                 }
+
+
+                if (this.FInEnableSkeleton.IsChanged || this.FInEnableSmooth.IsChanged || this.FSmoothParams.IsChanged || reset)
+                {
+                    TransformSmoothParameters sp;
+                    if (this.FSmoothParams.PluginIO.IsConnected)
+                    {
+                        sp = this.FSmoothParams[0];
+                    }
+                    else
+                    {
+                        sp = this.runtime.DefaultSmooth();
+                    }
+
+                    this.runtime.EnableSkeleton(this.FInEnableSkeleton[0],this.FInEnableSmooth[0],sp);
+                }
+
+                if (this.FInAngle.IsChanged || reset)
+                {
+                    if (this.runtime.IsStarted)
+                    {
+                        try { this.runtime.Runtime.ElevationAngle = (int)VMath.Map(this.FInAngle[0], 0, 1, this.runtime.Runtime.MinElevationAngle, this.runtime.Runtime.MaxElevationAngle, TMapMode.Clamp); }
+                        catch { }
+                    }
+                }
+
+                
+                this.FOutStatus[0] = runtime.Runtime.Status;
+                this.FOutRuntime[0] = runtime;
+                this.FOutStarted[0] = runtime.IsStarted;
+
+                this.FOutColorFOV.SliceCount = 1;
+                this.FOutDepthFOV.SliceCount = 1;
+
+                this.FOutColorFOV[0] = new Vector2D(this.runtime.Runtime.ColorStream.NominalHorizontalFieldOfView,
+                    this.runtime.Runtime.ColorStream.NominalVerticalFieldOfView);
+
+                this.FOutDepthFOV[0] = new Vector2D(this.runtime.Runtime.DepthStream.NominalHorizontalFieldOfView,
+                    this.runtime.Runtime.DepthStream.NominalVerticalFieldOfView);
             }
 
             this.FOutKCnt[0] = KinectSensor.KinectSensors.Count;
-            this.FOutStatus[0] = runtime.Runtime.Status;
-            this.FOutRuntime[0] = runtime;
-            this.FOutStarted[0] = runtime.IsStarted;
+        }
 
-            this.FOutColorFOV.SliceCount = 1;
-            this.FOutDepthFOV.SliceCount = 1;
-
-            this.FOutColorFOV[0] = new Vector2D(this.runtime.Runtime.ColorStream.NominalHorizontalFieldOfView,
-                this.runtime.Runtime.ColorStream.NominalVerticalFieldOfView);
-
-            this.FOutDepthFOV[0] = new Vector2D(this.runtime.Runtime.DepthStream.NominalHorizontalFieldOfView,
-                this.runtime.Runtime.DepthStream.NominalVerticalFieldOfView);
+        public void Dispose()
+        {
+            if (this.runtime != null)
+            {
+                this.runtime.Stop();
+                this.runtime.Runtime.Dispose();
+            }
         }
     }
 }

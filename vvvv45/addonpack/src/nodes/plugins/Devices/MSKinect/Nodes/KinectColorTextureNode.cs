@@ -59,7 +59,12 @@ namespace VVVV.MSKinect.Nodes
                 {
                     //Cache runtime node
                     this.runtime = this.FInRuntime[0];
-                    this.FInRuntime[0].ColorFrameReady += ColorFrameReady;
+
+                    if (runtime != null)
+                    {
+                        this.FInRuntime[0].ColorFrameReady += ColorFrameReady;
+                    }
+                    
                 }
 
                 this.FInvalidateConnect = false;
@@ -96,26 +101,30 @@ namespace VVVV.MSKinect.Nodes
 
         public void UpdateResource(IPluginOut ForPin, Device OnDevice)
         {
-            if (!this.FColorTex.ContainsKey(OnDevice))
+            if (this.runtime != null)
             {
-                Texture t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
-                this.FColorTex.Add(OnDevice, t);
-            }
 
-            if (this.FInvalidate)
-            {
-                Texture tx = this.FColorTex[OnDevice];
-                Surface srf = tx.GetSurfaceLevel(0);
-                DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
-
-                lock (this.m_colorlock)
+                if (!this.FColorTex.ContainsKey(OnDevice))
                 {
-                    rect.Data.Write(this.colorimage,0, 640 * 480 * 4);
+                    Texture t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
+                    this.FColorTex.Add(OnDevice, t);
                 }
-                srf.UnlockRectangle();
+
+                if (this.FInvalidate)
+                {
+                    Texture tx = this.FColorTex[OnDevice];
+                    Surface srf = tx.GetSurfaceLevel(0);
+                    DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
+
+                    lock (this.m_colorlock)
+                    {
+                        rect.Data.Write(this.colorimage, 0, 640 * 480 * 4);
+                    }
+                    srf.UnlockRectangle();
 
 
-                this.FInvalidate = false;
+                    this.FInvalidate = false;
+                }
             }
         }
 

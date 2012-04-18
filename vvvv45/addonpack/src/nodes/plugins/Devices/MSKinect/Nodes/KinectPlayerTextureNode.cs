@@ -84,7 +84,12 @@ namespace VVVV.MSKinect.Nodes
                 {
                     //Cache runtime node
                     this.runtime = this.FInRuntime[0];
-                    this.FInRuntime[0].DepthFrameReady += DepthFrameReady;
+
+                    if (runtime != null)
+                    {
+                        this.FInRuntime[0].DepthFrameReady += DepthFrameReady;
+                    }
+                    
                 }
 
                 this.FInvalidateConnect = false;
@@ -121,26 +126,30 @@ namespace VVVV.MSKinect.Nodes
 
         public void UpdateResource(IPluginOut ForPin, Device OnDevice)
         {
-            if (!this.FDepthTex.ContainsKey(OnDevice))
+            if (this.runtime != null)
             {
-                Texture t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
-                this.FDepthTex.Add(OnDevice, t);
-            }
 
-            if (this.FInvalidate)
-            {
-                Texture tx = this.FDepthTex[OnDevice];
-                Surface srf = tx.GetSurfaceLevel(0);
-                DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
-
-                lock (this.m_lock)
+                if (!this.FDepthTex.ContainsKey(OnDevice))
                 {
-                    rect.Data.WriteRange(this.playerimage);
+                    Texture t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
+                    this.FDepthTex.Add(OnDevice, t);
                 }
-                srf.UnlockRectangle();
+
+                if (this.FInvalidate)
+                {
+                    Texture tx = this.FDepthTex[OnDevice];
+                    Surface srf = tx.GetSurfaceLevel(0);
+                    DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
+
+                    lock (this.m_lock)
+                    {
+                        rect.Data.WriteRange(this.playerimage);
+                    }
+                    srf.UnlockRectangle();
 
 
-                this.FInvalidate = false;
+                    this.FInvalidate = false;
+                }
             }
         }
 
