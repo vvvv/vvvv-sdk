@@ -1,0 +1,183 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\String\Escape (String MySQL).v4p">
+   <BOUNDS height="6000" left="9105" top="7290" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="450" top="375" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8595" top="6540" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="450" top="375" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Substitute (String)" systemname="Substitute (String)">
+   <BOUNDS height="270" left="1110" top="6825" type="Node" width="1560">
+   </BOUNDS>
+   <PIN pinname="From" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="To" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1740" top="3300" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8715" top="8445" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2925" left="1740" top="3300" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="11">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4815" top="3330" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9015" top="8745" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2880" left="4815" top="3330" type="Box" width="2325">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="11">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="11" visible="1" values="backslash,|single quote|,|double quote|,backspace,linefeed,|carriage return|,tab,|ASCII 26 (Control-Z)|,percent,underscore,|ASCII 0 (NUL)|">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4050" top="3330" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9015" top="8745" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2895" left="4050" top="3330" type="Box" width="705">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="11">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="11" visible="1" values="\\,\&apos;,\&quot;,\b,\n,\r,\t,\Z,\%,\_,\0">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input" linkstyle="VHV" srcnodeid="8" srcpinname="Output String">
+   <LINKPOINT x="480" y="3945">
+   </LINKPOINT>
+   <LINKPOINT x="1140" y="3945">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="225" top="7425" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8895" top="6840" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="225" top="7425" type="Box" width="945">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input String" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE id="2" nodename="SpellValue (String)" systemname="SpellValue (String)">
+   <BOUNDS height="270" left="1725" top="2820" type="Node" width="855">
+   </BOUNDS>
+   <PIN pinname="Mode" slicecount="1" values="Ascii">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input String" linkstyle="VHV" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="To" linkstyle="VHV" srcnodeid="4" srcpinname="Output String">
+   <LINKPOINT x="4080" y="6750">
+   </LINKPOINT>
+   <LINKPOINT x="2640" y="6750">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="From" linkstyle="VHV" srcnodeid="6" srcpinname="Output String">
+   <LINKPOINT x="1770" y="6750">
+   </LINKPOINT>
+   <LINKPOINT x="1890" y="6750">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1755" top="375" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11385" top="4605" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2010" left="1755" top="375" type="Box" width="660">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="11">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="11" values="0,0,0,0,0,0,0,0,0,0,0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="11" visible="1" values="92,39,34,8,10,13,9,26,37,95,0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="480" left="4050" top="2805" type="Node" width="4635">
+   </BOUNDS>
+   <BOUNDS height="450" left="4050" top="2805" type="Box" width="3690">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MySQl recognizes the following escape sequences:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <INFO author="vvvv group" description="Creates a valid MySQL String by replacing special characters with their escape sequences." tags="Character, encode, validate">
+   </INFO>
+   </PATCH>

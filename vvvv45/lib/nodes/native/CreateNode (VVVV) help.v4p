@@ -1,0 +1,183 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\help\CreateNode (VVVV) help.v4p">
+   <BOUNDS height="7530" left="1305" top="1530" type="Window" width="13800">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="375" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="16710" top="11295" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="375" top="4110" type="Box" width="510">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="150" top="1620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="17625" top="11010" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1425" left="150" top="1620" type="Box" width="3360">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="6" values="|Add (Color) help.v4p|,|Add (Differential) help.v4p|,|Add (String Spectral) help.v4p|,|Add (String) help.v4p|,|Add (Value Spectral) help.v4p|,|Add (Value) help.v4p|">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="CreateNode (VVVV)" systemname="CreateNode (VVVV)">
+   <BOUNDS height="0" left="840" top="3555" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Node Name" visible="1">
+   </PIN>
+   <PIN pinname="Can Create" visible="1">
+   </PIN>
+   <PIN pinname="Node ID" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Create Node" visible="1">
+   </PIN>
+   <PIN pinname="Parent Patch" slicecount="1" values="self">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3525" top="1620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6630" top="5835" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1425" left="3525" top="1620" type="Box" width="570">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="6" values="0,0,0,0,0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="6" values="0,0,0,0,0,0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="9" srcpinname="Can Create">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Node Name" srcnodeid="10" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Create Node" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="7" nodename="Beep (Windows)" systemname="Beep (Windows)">
+   <BOUNDS height="0" left="945" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="DoBeep" visible="1">
+   </PIN>
+   <PIN pinname="Duration" slicecount="1" values="0.01">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="DoBeep" srcnodeid="9" srcpinname="Can Create">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="2325">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Creates and replaces nodes|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="2475">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CreateNode (VVVV)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="6330" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="6330" type="Box" width="735">
+   </BOUNDS>
+   <BOUNDS height="160" left="1200" top="1200" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="DeleteNode (VVVV)" systemname="DeleteNode (VVVV)">
+   <BOUNDS height="0" left="825" top="6345" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="690" left="15" top="4800" type="Node" width="6360">
+   </BOUNDS>
+   <BOUNDS height="1305" left="15" top="4800" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|If you specify -1 for &quot;Node ID&quot; a new node will be created&cr;&lf;otherwise the node with the existing id is replaced.&cr;&lf;&quot;Parent Patch&quot; takes the absolut path of the patch in which you want the magic to happen. You can also specify &apos;root&apos; of &apos;self&apos; here.&cr;&lf;Hover a node with the mouse to find out its id.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="975" top="1020" type="Node" width="4560">
+   </BOUNDS>
+   <BOUNDS height="510" left="975" top="1020" type="Box" width="2970">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|click the boxes below&cr;&lf;to load the corresponding patches ----v|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="0" managers="" nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\help\Add (Color) help.v4p" systemname="Add (Differential) help" filename="%VVVV%\help\Add (Differential) help.v4p">
+   <BOUNDS height="0" left="4575" top="285" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="8355" top="6660" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="6600" left="4575" top="285" type="Box" width="8850">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   </PATCH>
