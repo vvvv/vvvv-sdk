@@ -47,6 +47,7 @@ namespace VVVV.Hosting
         private IPluginBase FWindowSwitcher, FKommunikator, FNodeBrowser;
         private readonly List<Window> FWindows = new List<Window>();
         private INetworkTimeSync FNetTimeSync;
+        private INode2[] FSelectedNodes;
         
         [Export]
         public CompositionContainer Container { get; protected set; }
@@ -297,6 +298,12 @@ namespace VVVV.Hosting
         {
             FStartableRegistry.ShutDown();
         }
+        
+        public void RunRefactor()
+        {
+        	//run Refactorer
+        	var refactorer = new PatchRefactorer(this, FSelectedNodes, NodeBrowserHost, NodeInfoFactory);
+        }
 
         #endregion IInternalHDEHost
         
@@ -507,9 +514,14 @@ namespace VVVV.Hosting
             FVVVVHost.SetComponentMode(node.InternalCOMInterf, componentMode);
         }
         
-        public void SendPatchMessage(string fileName, string message, bool undoable)
+        public string GetXMLSnippetFromSelection()
         {
-            FVVVVHost.SendPatchMessage(fileName, message, undoable);
+        	return FVVVVHost.GetXMLSnippetFromSelection();
+        }
+        
+        public void SendXMLSnippet(string fileName, string message, bool undoable)
+        {
+            FVVVVHost.SendXMLSnippet(fileName, message, undoable);
         }
         
         public string ExePath
@@ -632,10 +644,10 @@ namespace VVVV.Hosting
         {
             if (internalNodes != null)
             {
-                INode2[] nodes = new INode2[internalNodes.Length];
-                for (int i = 0; i < nodes.Length; i++)
-                    nodes[i] = FindNode(internalNodes[i]);
-                OnNodeSelectionChanged(new NodeSelectionEventArgs(nodes));
+                FSelectedNodes = new INode2[internalNodes.Length];
+                for (int i = 0; i < FSelectedNodes.Length; i++)
+                    FSelectedNodes[i] = FindNode(internalNodes[i]);
+                OnNodeSelectionChanged(new NodeSelectionEventArgs(FSelectedNodes));
             }
             else
                 OnNodeSelectionChanged(new NodeSelectionEventArgs(new INode2[0]));
