@@ -41,6 +41,8 @@ namespace VVVV.PluginInterfaces.V2
 		private static T NormalizePinAttribute<T>(T attribute, Type type) where T : IOAttribute
 		{
 			attribute = attribute.Clone() as T;
+
+            if (type == null) { return attribute; }
 			
 			if (attribute.MinValue == IOAttribute.DefaultMinValue && FDefaultValues.ContainsKey(type))
 				attribute.MinValue = FDefaultValues[type].Item1;
