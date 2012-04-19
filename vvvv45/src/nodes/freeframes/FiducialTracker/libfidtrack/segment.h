@@ -1,6 +1,7 @@
 /*
   Fiducial tracking library.
   Copyright (C) 2004 Ross Bencina <rossb@audiomulch.com>
+  Maintainer (C) 2005-2008 Martin Kaltenbrunner <mkalten@iua.upf.edu>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -64,25 +65,39 @@ extern "C"
 */
 #define FRAGMENTED_REGION_FLAG          (8)
 
+#define LOST_SYMBOL_FLAG				(16)
+
+#define VALID_REGION_FLAG				(64)
+
 #define UNKNOWN_REGION_LEVEL            (-1)
+
+#define REGION_GATE_AREA				1
+
+typedef struct Span{
+	int start, end;
+	struct Span *next;
+} Span;
 
 typedef struct Region{
     struct Region *previous, *next;
-    int colour;
+    unsigned char colour;
     short left, top, right, bottom;
+    short center_x, center_y;
 
+	struct Span *first_span;
+	struct Span *last_span;
+	int area;
+	
     int flags;
 
     short level;                            /* initialized to UNKNOWN_REGION_LEVEL */
     short depth;                            /* initialized to 0 */
     short children_visited_count;           /* initialized to 0 */
     short descendent_count;                 /* initialized to 0x7FFF */
-    
     char *depth_string;                     /* not initialized by segmenter */
     
     short adjacent_region_count;
     struct Region *adjacent_regions[ 1 ];   /* variable length array of length max_adjacent_regions */
-
 } Region;
 
 
@@ -93,22 +108,22 @@ typedef struct RegionReference{
 
 
 
-#define REGIONREF_IS_REDIRECTED(r) ((r)->redirect != (r))
+//#define REGIONREF_IS_REDIRECTED(r) ((r)->redirect != (r))
+
 
 #define RESOLVE_REGIONREF_REDIRECTS( x, r )                                    \
 {                                                                              \
     if( r->redirect != r ){                                                    \
-        RegionReference *result = r;                                           \
-        do{                                                                    \
+        RegionReference *result = r;										   \
+		while( result->redirect != result )								       \
             result = result->redirect;                                         \
-        }while( result->redirect != result );                                  \
         r->redirect = result;                                                  \
         x = result;                                                            \
     }else{                                                                     \
         x = r;                                                                 \
     }                                                                          \
 }
-                 
+
 
 void initialize_head_region( Region *r );
 void link_region( Region *head, Region* r );
@@ -119,11 +134,14 @@ typedef struct Segmenter{
     RegionReference *region_refs;
     int region_ref_count;
     unsigned char *regions;     /* buffer containing raw region ptrs */
+    unsigned char *spans;		/* buffer containing raw span ptrs */
     int region_count;
     Region *freed_regions_head;
 
     int sizeof_region;
     int max_adjacent_regions;
+	
+	int width, height;
 
     RegionReference **regions_under_construction;
 }Segmenter;
@@ -131,11 +149,13 @@ typedef struct Segmenter{
 #define LOOKUP_SEGMENTER_REGION( s, index )\
     (Region*)(s->regions + (s->sizeof_region * (index)))
 
+#define LOOKUP_SEGMENTER_SPAN( s, index )\
+    (Span*)(s->spans + (sizeof(Span) * (index)))
+
 void initialize_segmenter( Segmenter *segments, int width, int height, int max_adjacent_regions );
 void terminate_segmenter( Segmenter *segments );
 
-void step_segmenter( Segmenter *segments, const unsigned char *source,
-        int width, int height );
+void step_segmenter( Segmenter *segments, const unsigned char *source );
 
 
 #ifdef __cplusplus

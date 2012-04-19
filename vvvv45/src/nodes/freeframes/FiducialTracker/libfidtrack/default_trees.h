@@ -1,3 +1,23 @@
+/*
+  Fiducial tracking library.
+  Copyright (C) 2004 Ross Bencina <rossb@audiomulch.com>
+  Maintainer (C) 2005-2008 Martin Kaltenbrunner <mkalten@iua.upf.edu>
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
 #ifndef INCLUDED_DEFAULT_TREE_H
 #define INCLUDED_DEFAULT_TREE_H
 
@@ -7,7 +27,7 @@ extern "C"
 #endif /* __cplusplus */
 
 const int default_tree_length = 216;
-char* default_tree[default_tree_length] = {
+const char* default_tree[default_tree_length] = {
 "w0122222212212121111",
 "w0122212221222121111",
 "w0122212221221221111",
@@ -98,6 +118,7 @@ char* default_tree[default_tree_length] = {
 "w0122222122222111111",
 "w0122122121212111111",
 "w0122222212211111111",
+		
 "w0122222222211111111",
 "w0122222222111111111",
 "w0122222221211111111",
@@ -115,7 +136,8 @@ char* default_tree[default_tree_length] = {
 "w0122122122121111111",
 "w0122212212211111111",
 "w0122121212121111111",
-"w0122212121211111111",
+"w0122212121211111111",	
+	
 "b0122222212212121111",
 "b0122212221222121111",
 "b0122212221221221111",
@@ -223,8 +245,7 @@ char* default_tree[default_tree_length] = {
 "b0122122122121111111",
 "b0122212212211111111",
 "b0122121212121111111",
-"b0122212121211111111",};
-
+"b0122212121211111111"};
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

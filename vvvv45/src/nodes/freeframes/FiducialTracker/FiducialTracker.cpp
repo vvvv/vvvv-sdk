@@ -290,7 +290,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     }
 
     //segmentation
-    step_segmenter(&FSegmenter, FThreshedImage, FWidth, FHeight);
+    step_segmenter(&FSegmenter, FThreshedImage);//, FWidth, FHeight);
 
     //fiducial recognition
     FFiducialCount = find_fiducialsX(FFiducials, MAX_FIDUCIAL_COUNT, &FFidtrackerx, &FSegmenter, FWidth, FHeight);
