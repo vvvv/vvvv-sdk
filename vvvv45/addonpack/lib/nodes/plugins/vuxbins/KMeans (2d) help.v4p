@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.4.dtd" >
-   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\ToComplete\KMeans\KMeans (2d) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.2.dtd" >
+   <PATCH nodename="D:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\vuxbins\KMeans (2d) help.v4p">
    <BOUNDS height="9780" left="900" top="75" type="Window" width="9735">
    </BOUNDS>
    <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Splits a set of vectors into a set of clusters.&cr;&lf;The more iterations, the more accurate is the result, but the worse the performances are.&cr;&lf;The lowest epsilon is, the more accurate is the result|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Splits a set of vectors into a set of clusters.&cr;&lf;The more iterations, the more accurate is the result, but the worse the performances are.&cr;&lf;The lowest epsilon is, the more accurate is the result|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|KMeans - 2d|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|KMeans - 2d|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -39,7 +39,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -53,32 +53,14 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE nodename="KMeans.dll|VVVV.Nodes.KMeansNode" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="2070" top="4530" width="2370" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2070" top="4530" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Window" left="3120" top="3945" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="InputXY" visible="1">
-   </PIN>
-   <PIN pinname="Iterations" visible="1">
-   </PIN>
-   <PIN pinname="Cluster Count" visible="1">
-   </PIN>
-   <PIN pinname="Cluster Id" visible="1">
-   </PIN>
-   <PIN pinname="Epsilon" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="Renderer (EX9)" componentmode="InAWindow" id="5">
+   <NODE nodename="RENDERER (EX9)" componentmode="InAWindow" id="5">
    <BOUNDS type="Node" left="1230" top="8430" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="1230" top="8430" width="2400" height="1800">
@@ -86,6 +68,16 @@
    <BOUNDS type="Window" left="9585" top="1155" width="6120" height="4860">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE nodename="Quad (DX9)" componentmode="Hidden" id="6">
@@ -116,7 +108,7 @@
    </NODE>
    <LINK srcnodeid="7" srcpinname="Transform Out" dstnodeid="6" dstpinname="Transform">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="8">
    <BOUNDS type="Node" left="1770" top="5415" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="1770" top="5415" width="795" height="240">
@@ -140,7 +132,7 @@
    <LINKPOINT x="2085" y="6015">
    </LINKPOINT>
    </LINK>
-   <NODE nodename="RandomSpread (Spreads)" componentmode="Hidden" id="9">
+   <NODE nodename="RandomSpread (Spreads Legacy)" componentmode="Hidden" id="9">
    <BOUNDS type="Node" left="2055" top="3330" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Spread Count" visible="1">
@@ -152,14 +144,14 @@
    <PIN pinname="Width" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="10">
    <BOUNDS type="Node" left="2445" top="1935" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="2445" top="1935" width="795" height="240">
    </BOUNDS>
    <BOUNDS type="Window" left="3720" top="1935" width="215" height="160">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Quad Count|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Quad Count|" encoded="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -200,8 +192,6 @@
    </NODE>
    <LINK srcnodeid="9" srcpinname="Output" dstnodeid="14" dstpinname="Go To Position">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Position Out" dstnodeid="4" dstpinname="InputXY">
-   </LINK>
    <NODE nodename="LinearSpread (Spreads)" componentmode="Hidden" id="15">
    <BOUNDS type="Node" left="3255" top="4965" width="2250" height="270">
    </BOUNDS>
@@ -210,14 +200,14 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="16">
    <BOUNDS type="Node" left="4725" top="2790" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="4725" top="2790" width="795" height="240">
    </BOUNDS>
    <BOUNDS type="Window" left="5100" top="1845" width="215" height="160">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Cluster Count|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cluster Count|" encoded="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -225,12 +215,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Spread Count">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Cluster Count" linkstyle="Bezier">
-   <LINKPOINT x="5490" y="3780">
-   </LINKPOINT>
-   <LINKPOINT x="2865" y="3780">
-   </LINKPOINT>
    </LINK>
    <NODE nodename="HSL (Color Join)" componentmode="Hidden" id="17">
    <BOUNDS type="Node" left="3240" top="5445" width="0" height="0">
@@ -256,12 +240,6 @@
    </NODE>
    <LINK srcnodeid="17" srcpinname="Output" dstnodeid="18" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="4" srcpinname="Cluster Id" dstnodeid="18" dstpinname="Index" linkstyle="VHV">
-   <LINKPOINT x="2100" y="5865">
-   </LINKPOINT>
-   <LINKPOINT x="3930" y="5865">
-   </LINKPOINT>
-   </LINK>
    <LINK srcnodeid="18" srcpinname="Output" dstnodeid="6" dstpinname="Color" linkstyle="VHV">
    <LINKPOINT x="3255" y="7470">
    </LINKPOINT>
@@ -278,12 +256,6 @@
    <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="14" srcpinname="Position Out" dstnodeid="19" dstpinname="XY" linkstyle="Bezier">
-   <LINKPOINT x="2100" y="4770">
-   </LINKPOINT>
-   <LINKPOINT x="1020" y="4770">
-   </LINKPOINT>
-   </LINK>
    <LINK srcnodeid="19" srcpinname="X" dstnodeid="7" dstpinname="TranslateX" linkstyle="Bezier">
    <LINKPOINT x="1020" y="5850">
    </LINKPOINT>
@@ -296,7 +268,7 @@
    <LINKPOINT x="1770" y="5850">
    </LINKPOINT>
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="20">
    <BOUNDS type="Node" left="2895" top="3615" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="2895" top="3615" width="795" height="240">
@@ -307,12 +279,10 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Epsilon">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Epsilon" encoded="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Epsilon">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="21">
    <BOUNDS type="Node" left="3675" top="2055" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="3675" top="2055" width="795" height="240">
@@ -323,9 +293,33 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Iterations">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Iterations" encoded="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Iterations">
+   <NODE nodename="KMeans (2d)" componentmode="Hidden" id="22" systemname="KMeans (2d)" filename="%VVVV%\addonpack\lib\nodes\plugins\vuxbins\VVVV.Nodes.Geometry.CV.dll">
+   <BOUNDS type="Node" left="2070" top="4530" width="2370" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2070" top="4530" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3120" top="3945" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="InputXY" visible="1">
+   </PIN>
+   <PIN pinname="Iterations" visible="1" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Cluster Count" visible="1">
+   </PIN>
+   <PIN pinname="Cluster Id" visible="1">
+   </PIN>
+   <PIN pinname="Epsilon" visible="1" slicecount="1" values="0.01">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Position Out" dstnodeid="22" dstpinname="InputXY">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Position Out" dstnodeid="19" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Cluster Count">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Cluster Id" dstnodeid="18" dstpinname="Index">
    </LINK>
    </PATCH>
