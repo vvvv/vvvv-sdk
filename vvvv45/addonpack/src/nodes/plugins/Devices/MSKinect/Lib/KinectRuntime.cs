@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Research.Kinect.Nui;
 using System.Runtime.InteropServices;
+using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Lib
 {
@@ -11,13 +11,13 @@ namespace VVVV.MSKinect.Lib
 
     public class KinectRuntime
     {
-        public Runtime Runtime { get; private set; }
+        public KinectSensor Runtime { get; private set; }
 
         public bool IsStarted { get; private set; }
 
         public event EventHandler<SkeletonFrameReadyEventArgs> SkeletonFrameReady;
-        public event EventHandler<ImageFrameReadyEventArgs> ColorFrameReady;
-        public event EventHandler<ImageFrameReadyEventArgs> DepthFrameReady;
+        public event EventHandler<ColorImageFrameReadyEventArgs> ColorFrameReady;
+        public event EventHandler<DepthImageFrameReadyEventArgs> DepthFrameReady;
 
         public KinectStatus LastStatus { get; private set; }
 
@@ -29,12 +29,13 @@ namespace VVVV.MSKinect.Lib
             
         }
 
-        public void Assign(int idx)
+        public bool Assign(int idx)
         {
             if (this.Runtime != null)
             {
+                
                 this.Runtime.SkeletonFrameReady -= Runtime_SkeletonFrameReady;
-                this.Runtime.VideoFrameReady -= Runtime_VideoFrameReady;
+                this.Runtime.ColorFrameReady -= Runtime_ColorFrameReady;
                 this.Runtime.DepthFrameReady -= Runtime_DepthFrameReady;
                 this.Runtime = null;
             }
@@ -44,13 +45,18 @@ namespace VVVV.MSKinect.Lib
                 this.Stop();
             }
 
-            if (Runtime.Kinects.Count > 0)
+            if (KinectSensor.KinectSensors.Count > 0)
             {
-                this.Runtime = Runtime.Kinects[idx % Runtime.Kinects.Count];
+                this.Runtime = KinectSensor.KinectSensors[idx % KinectSensor.KinectSensors.Count];
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
-        void Runtime_DepthFrameReady(object sender, ImageFrameReadyEventArgs e)
+        void Runtime_DepthFrameReady(object sender, DepthImageFrameReadyEventArgs e)
         {
             if (this.DepthFrameReady != null)
             {
@@ -58,7 +64,7 @@ namespace VVVV.MSKinect.Lib
             }             
         }
 
-        void Runtime_VideoFrameReady(object sender, ImageFrameReadyEventArgs e)
+        private void Runtime_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
             if (this.ColorFrameReady != null)
             {
@@ -72,6 +78,82 @@ namespace VVVV.MSKinect.Lib
             {
                 this.SkeletonFrameReady(sender, e);
             }
+        }
+
+        public void EnableSkeleton(bool enable, bool smooth, TransformSmoothParameters sp)
+        {
+            if (enable)
+            {
+                //Need to disable
+                if (this.Runtime.SkeletonStream.IsEnabled)
+                {
+                    this.Runtime.SkeletonStream.Disable();
+                }
+
+                if (smooth)
+                {
+                    this.Runtime.SkeletonStream.Enable(sp);
+                }
+                else
+                {
+                    this.Runtime.SkeletonStream.Enable();
+                }
+
+
+                this.Runtime.SkeletonFrameReady += this.Runtime_SkeletonFrameReady;
+            }
+            else
+            {
+                this.Runtime.SkeletonStream.Disable();
+                this.Runtime.SkeletonFrameReady -= this.Runtime_SkeletonFrameReady;
+            }
+        }
+
+        public TransformSmoothParameters DefaultSmooth()
+        {
+            TransformSmoothParameters sp = new TransformSmoothParameters();
+            sp.Correction = 0.5f;
+            sp.JitterRadius = 0.05f;
+            sp.MaxDeviationRadius = 0.04f;
+            sp.Prediction = 0.5f;
+            sp.Smoothing = 0.5f;
+
+            return sp;
+        }
+
+        public void SetDepthMode(eDepthMode mode)
+        {
+            if (mode != eDepthMode.Disabled)
+            {
+                this.Runtime.DepthStream.Enable(DepthImageFormat.Resolution320x240Fps30);
+                this.Runtime.DepthFrameReady += this.Runtime_DepthFrameReady;
+            }
+            else
+            {
+                this.Runtime.DepthFrameReady -= Runtime_DepthFrameReady;
+                this.Runtime.DepthStream.Disable();
+            }
+
+        }
+
+        public void SetColor(bool enable)
+        {
+            if (enable)
+            {
+                this.Runtime.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
+                this.Runtime.ColorFrameReady += this.Runtime_ColorFrameReady;
+            }
+            else
+            {
+                this.Runtime.ColorFrameReady -= Runtime_ColorFrameReady;
+                this.Runtime.ColorStream.Disable();
+            }
+
+        }
+
+        public void SetDepthRange(DepthRange range)
+        {
+            this.Runtime.DepthStream.Range = range;
         }
 
         #region Start
@@ -88,38 +170,9 @@ namespace VVVV.MSKinect.Lib
                 {
                     try
                     {
-                        RuntimeOptions options = (RuntimeOptions)0;
-                        if (color) { options |= RuntimeOptions.UseColor; }
-                        if (skeleton) 
-                        { 
-                            options |= RuntimeOptions.UseSkeletalTracking; 
-                        }
 
-                        if (depthmode == eDepthMode.DepthOnly) { options |= RuntimeOptions.UseDepth; }
-                        if (depthmode == eDepthMode.DepthAndPlayer) { options |= RuntimeOptions.UseDepthAndPlayerIndex; }
+                        this.Runtime.Start();
 
-
-                        this.Runtime.Initialize(options);
-
-                        if (color)
-                        {
-                            this.Runtime.VideoStream.Open(ImageStreamType.Video, 2, ImageResolution.Resolution640x480, ImageType.Color);
-                            this.Runtime.VideoFrameReady += Runtime_VideoFrameReady;
-                        }
-
-                        if (depthmode != eDepthMode.Disabled)
-                        {
-                            ImageType it = ImageType.Depth;
-                            if (depthmode == eDepthMode.DepthAndPlayer) { it = ImageType.DepthAndPlayerIndex; }
-                            this.Runtime.DepthStream.Open(ImageStreamType.Depth, 2, ImageResolution.Resolution320x240, it);
-                            this.Runtime.DepthFrameReady += Runtime_DepthFrameReady;
-                        }
-
-                        if (skeleton)
-                        {
-                            this.Runtime.SkeletonEngine.TransformSmooth = true;
-                            this.Runtime.SkeletonFrameReady += Runtime_SkeletonFrameReady;
-                        }
 
                         this.IsStarted = true;
                     }
@@ -132,6 +185,7 @@ namespace VVVV.MSKinect.Lib
                 this.DepthMode = depthmode;
             }
         }
+
         #endregion
 
         #region Stop
@@ -144,9 +198,10 @@ namespace VVVV.MSKinect.Lib
                     try
                     {
                         this.Runtime.SkeletonFrameReady -= Runtime_SkeletonFrameReady;
-                        this.Runtime.VideoFrameReady -= Runtime_VideoFrameReady;
+                        this.Runtime.ColorFrameReady -= Runtime_ColorFrameReady;
                         this.Runtime.DepthFrameReady -= Runtime_DepthFrameReady;
-                        this.Runtime.Uninitialize();
+                        this.Runtime.Stop();
+                        
                     }
                     catch
                     {
