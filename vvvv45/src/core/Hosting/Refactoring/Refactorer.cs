@@ -115,17 +115,17 @@ namespace VVVV.Hosting
 			var origLinks = FDocument.SelectNodes("/PATCH/LINK");
 			foreach (XmlElement link in origLinks)
 				foreach (XmlElement point in link)
-				{
-					var px = int.Parse(point.GetAttribute("x"));
-					var py = int.Parse(point.GetAttribute("y"));
-					
-					point.SetAttribute("x", (px - minX + CBorder).ToString());
-					point.SetAttribute("y", (py - minY + CBorder).ToString());	
-				}
+			{
+				var px = int.Parse(point.GetAttribute("x"));
+				var py = int.Parse(point.GetAttribute("y"));
+				
+				point.SetAttribute("x", (px - minX + CBorder).ToString());
+				point.SetAttribute("y", (py - minY + CBorder).ToString());
+			}
 			
 			var IOpins = new Dictionary<string, int>();
 			var minInputX = 0;
-			var minOutputX = 0; 
+			var minOutputX = 0;
 			
 			FInputNames.Clear();
 			FOutputNames.Clear();
@@ -140,105 +140,106 @@ namespace VVVV.Hosting
 			foreach (var node in nodes)
 				foreach (var pin in node.Pins)
 					foreach (var cpin in pin.ConnectedPins)
-						//..if there is a connection to another selected node
-						if (FOldID2NewID.ContainsKey(cpin.ParentNodeByPatch(node.Parent).ID))
 			{
-				//this needs only be done for inputs
-				if (pin.Direction == PinDirection.Input)
+				//..if there is a connection to another selected node in the same patch
+				//(pins of IOboxes can also be connected to nodes in parentpatches!)
+				var parent = cpin.ParentNodeByPatch(node.Parent);
+				if (parent != null)
+					if (FOldID2NewID.ContainsKey(parent.ID))
 				{
-					var parent = cpin.ParentNodeByPatch(node.Parent);
-					var fromID = parent.ID;
-					var toID = pin.ParentNodeByPatch(node.Parent).ID;
-					var fromName = cpin.NameByParent(parent);
-					var toName = pin.NameByParent(node);
-					var link = patch.AddLink(FOldID2NewID[fromID], fromName, FOldID2NewID[toID], toName);
-				
-					//copy linkpoints from selectionXML
-					var origLink = (from XmlElement l in origLinks where 
-					         (l.GetAttribute("srcnodeid") == fromID.ToString() 
-					          && l.GetAttribute("dstnodeid") == toID.ToString()
-					          && l.GetAttribute("srcpinname") == fromName
-					          && l.GetAttribute("dstpinname") == toName) select l).First();
-					foreach (XmlElement point in origLink)
-						link.AppendChild(link.OwnerDocument.ImportNode(point, true));
-				}
-			}
-			//..if there is a connection to a not selected node
-			else
-			{
-				//an IO pin needs to be created
-				//if it doesn't exist yet
-				//(multiple inputs may connect to an upstream pin and an IO pin may alread exist now)
-				string ident = "";
-				if (pin.Direction == PinDirection.Input)
-				{
-					var parent = cpin.ParentNodeByPatch(node.Parent);
-					ident = parent.ID.ToString() + cpin.NameByParent(parent);
-				}
-				else if (pin.Direction == PinDirection.Output)
-					ident = node.ID.ToString() + pin.NameByParent(node);
-				
-				if (!IOpins.ContainsKey(ident))
-				{
-					var pinType = pin.Type;
-					//create an iobox of the right type
-					var iobox = CreateIOBox(patch, pinType);
-					
-					iobox.ID = newNodeID;
-					var bounds = node.GetBounds(BoundsType.Node);
-					
-					//name the iobox
-					var labelPin = iobox.AddPin("Descriptive Name");
-					var boxBounds = iobox.AddBounds(BoundsType.Box);
-					
-					if (pin.Direction == PinDirection.Input)
-					{
-						boxBounds.Rectangle = new Rectangle(Math.Max(minInputX, bounds.X - minX + CBorder), CPinOffset, 750, 225);
-						
-						//an input-pin may be connected to an output-pin
-						//that in turn is connected to multiple inputs
-						//in those cases name the iobox by concatenating the names of all those pins (which are in the selection!)
-						//but leave out duplicates
-						var pinName = GetNameForInput(node.Parent, cpin);
-						pinName = GetUniqueInputName(pinName);
-						oldPinToNewPin.Add(ident, pinName);
-						labelPin.SetAttribute("values", "|" + pinName + "|");
-						
-						//save it for reference
-						var parent = cpin.ParentNodeByPatch(node.Parent);
-						IOpins.Add(parent.ID.ToString() + cpin.NameByParent(parent), newNodeID);
-						var ioboxOutput = GetIOBoxPinName(pinType, false);
-						patch.AddLink(newNodeID, ioboxOutput, FOldID2NewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
-						
-						minInputX = boxBounds.Rectangle.X + boxBounds.Rectangle.Width + 150;
-					}
-					else if (pin.Direction == PinDirection.Output)
-					{
-						
-						boxBounds.Rectangle = new Rectangle(Math.Max(minOutputX, bounds.X - minX + CBorder), (maxY  -minY) + CPinOffset + CBorder, 750, 225);
-						var origName = pin.NameByParent(node);
-						var pinName = GetUniqueOutputName(origName);
-						oldPinToNewPin.Add(ident, pinName);
-						labelPin.SetAttribute("values", "|" + pinName + "|");
-						
-						//save it for reference
-						IOpins.Add(pin.ParentNodeByPatch(node.Parent).ID.ToString() + origName, newNodeID);
-						var ioboxInput = GetIOBoxPinName(pinType, true);
-						patch.AddLink(FOldID2NewID[node.ID], origName, newNodeID, ioboxInput);
-						
-						minOutputX = boxBounds.Rectangle.X + boxBounds.Rectangle.Width + 150;
-					}
-					
-					var nodeBounds = iobox.AddBounds(BoundsType.Node);
-					nodeBounds.Rectangle = boxBounds.Rectangle;
-					newNodeID++;
-				}
-				else //IOpin already exists
-				{
-					var srcID = IOpins[ident];
 					//this needs only be done for inputs
 					if (pin.Direction == PinDirection.Input)
-						patch.AddLink(srcID, GetIOBoxPinName(cpin.Type, false), FOldID2NewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
+					{
+						var fromID = parent.ID;
+						var toID = pin.ParentNodeByPatch(node.Parent).ID;
+						var fromName = cpin.NameByParent(parent);
+						var toName = pin.NameByParent(node);
+						
+						//copy over complete link (including linkpoints)
+						var link = (from XmlElement l in origLinks where
+						            (l.GetAttribute("srcnodeid") == fromID.ToString()
+						             && l.GetAttribute("dstnodeid") == toID.ToString()
+						             && l.GetAttribute("srcpinname") == fromName
+						             && l.GetAttribute("dstpinname") == toName) select l).First() as XmlElement;
+						link.SetAttribute("srcnodeid", FOldID2NewID[fromID].ToString());
+						link.SetAttribute("dstnodeid", FOldID2NewID[toID].ToString());
+						
+						patch.XML.AppendChild(patch.XML.OwnerDocument.ImportNode(link, true));
+					}
+				}
+				//..if there is a connection to a not selected node
+				else
+				{
+					//an IO pin needs to be created
+					//if it doesn't exist yet
+					//(multiple inputs may connect to an upstream pin and an IO pin may alread exist now)
+					string ident = "";
+					if (pin.Direction == PinDirection.Input)
+						ident = parent.ID.ToString() + cpin.NameByParent(parent);
+					else if (pin.Direction == PinDirection.Output)
+						ident = node.ID.ToString() + pin.NameByParent(node);
+					
+					if (!IOpins.ContainsKey(ident))
+					{
+						var pinType = pin.Type;
+						//create an iobox of the right type
+						var iobox = CreateIOBox(patch, pinType);
+						
+						iobox.ID = newNodeID;
+						var bounds = node.GetBounds(BoundsType.Node);
+						
+						//name the iobox
+						var labelPin = iobox.AddPin("Descriptive Name");
+						var boxBounds = iobox.AddBounds(BoundsType.Box);
+						
+						if (pin.Direction == PinDirection.Input)
+						{
+							boxBounds.Rectangle = new Rectangle(Math.Max(minInputX, bounds.X - minX + CBorder), CPinOffset, 750, 225);
+							
+							//an input-pin may be connected to an output-pin
+							//that in turn is connected to multiple inputs
+							//in those cases name the iobox by concatenating the names of all those pins (which are in the selection!)
+							//but leave out duplicates
+							var pinName = GetNameForInput(node.Parent, cpin);
+							pinName = GetUniqueInputName(pinName);
+							oldPinToNewPin.Add(ident, pinName);
+							labelPin.SetAttribute("values", "|" + pinName + "|");
+							
+							//save it for reference
+							IOpins.Add(parent.ID.ToString() + cpin.NameByParent(parent), newNodeID);
+							var ioboxOutput = GetIOBoxPinName(pinType, false);
+							patch.AddLink(newNodeID, ioboxOutput, FOldID2NewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
+							
+							minInputX = boxBounds.Rectangle.X + boxBounds.Rectangle.Width + 150;
+						}
+						else if (pin.Direction == PinDirection.Output)
+						{
+							
+							boxBounds.Rectangle = new Rectangle(Math.Max(minOutputX, bounds.X - minX + CBorder), (maxY  -minY) + CPinOffset + CBorder, 750, 225);
+							var origName = pin.NameByParent(node);
+							var pinName = GetUniqueOutputName(origName);
+							oldPinToNewPin.Add(ident, pinName);
+							labelPin.SetAttribute("values", "|" + pinName + "|");
+							
+							//save it for reference
+							IOpins.Add(pin.ParentNodeByPatch(node.Parent).ID.ToString() + origName, newNodeID);
+							var ioboxInput = GetIOBoxPinName(pinType, true);
+							patch.AddLink(FOldID2NewID[node.ID], origName, newNodeID, ioboxInput);
+							
+							minOutputX = boxBounds.Rectangle.X + boxBounds.Rectangle.Width + 150;
+						}
+						
+						var nodeBounds = iobox.AddBounds(BoundsType.Node);
+						nodeBounds.Rectangle = boxBounds.Rectangle;
+						newNodeID++;
+					}
+					else //IOpin already exists
+					{
+						var srcID = IOpins[ident];
+						//this needs only be done for inputs
+						if (pin.Direction == PinDirection.Input)
+							patch.AddLink(srcID, GetIOBoxPinName(cpin.Type, false), FOldID2NewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
+					}
 				}
 			}
 			
@@ -260,27 +261,56 @@ namespace VVVV.Hosting
 			foreach (var node in selectedNodes)
 				foreach (var pin in node.Pins)
 					foreach (var cpin in pin.ConnectedPins)
-						//..if there is a connection to a not selected node
-						if (!FOldID2NewID.ContainsKey(cpin.ParentNodeByPatch(node.Parent).ID))
-							if (pin.Direction == PinDirection.Input)
+						//..if there is a connection to a not selected node..
 			{
 				var parent = cpin.ParentNodeByPatch(node.Parent);
-				patch.AddLink(parent.ID, cpin.NameByParent(parent), subID, oldPinToNewPin[parent.ID.ToString() + cpin.NameByParent(parent)]);
-			}
-			else if (pin.Direction == PinDirection.Output)
-			{
-				var parent = cpin.ParentNodeByPatch(node.Parent);
-				patch.AddLink(subID, oldPinToNewPin[pin.ParentNodeByPatch(node.Parent).ID.ToString() + pin.NameByParent(node)], parent.ID, cpin.NameByParent(parent));
+				//..in the same patch..
+				if (parent != null)
+				{
+					if (!FOldID2NewID.ContainsKey(parent.ID))
+						if (pin.Direction == PinDirection.Input)
+					{
+						patch.AddLink(parent.ID, cpin.NameByParent(parent), subID, oldPinToNewPin[parent.ID.ToString() + cpin.NameByParent(parent)]);
+					}
+					else if (pin.Direction == PinDirection.Output)
+						patch.AddLink(subID, oldPinToNewPin[pin.ParentNodeByPatch(node.Parent).ID.ToString() + pin.NameByParent(node)], parent.ID, cpin.NameByParent(parent));
+				}
+				else //..in the parentpatch
+				{
+					if (pin.Direction == PinDirection.Input)
+						patch.AddLink(node.ID, cpin.Name, subID, node.LabelPin.Spread.Trim('|'));
+					else if (pin.Direction == PinDirection.Output)
+						patch.AddLink(subID, node.LabelPin.Spread.Trim('|'), node.ID, cpin.Name);
+				}
 			}
 			
 			//..and remove selected nodes
+			//if they are not labeled ioboxes that are connected in a parentpatch!
 			foreach (var node in selectedNodes)
 			{
-				var nodeMessage = patch.AddNode(node.ID);
-				nodeMessage.DeleteMe = true;
+				var delete = true;
+				//if this is a labeled iobox check if any of its pins is connected in a parentpatch to not delete it in that case
+				if ((node.NodeInfo.Name == "IOBox")
+				    && (!string.IsNullOrEmpty(node.LabelPin.Spread)))
+				{
+					foreach (var pin in node.Pins)
+						foreach (var cpin in pin.ConnectedPins)
+							if (cpin.ParentNodeByPatch(node.Parent) == null)
+					{
+						delete  = false;
+						break;
+					}
+				}
+
+				if (delete)
+				{
+					var nodeMessage = patch.AddNode(node.ID);
+					nodeMessage.DeleteMe = true;
+				}
 			}
 			
 			var nodeMsg = patch.AddNode(subID);
+			//enabling this fukcs it up:
 //			var nodeB = nodeMsg.AddBounds(BoundsType.Node);
 //			nodeB.Rectangle = new Rectangle(selectionCenter.X, selectionCenter.Y, 0, 0);
 //			var boxB = nodeMsg.AddBounds(BoundsType.Node);

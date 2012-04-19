@@ -108,6 +108,16 @@ namespace VVVV.PluginInterfaces.V2.Graph
         /// The SubtypeChanged event occurs when the pins subtype changed.
         /// </summary>
         event EventHandler SubtypeChanged;
+        
+        /// <summary>
+        /// The connected event occurs when the pin gets connected.
+        /// </summary>
+        event PinConnectionEventHandler Connected;
+        
+        /// <summary>
+        /// The disconnected event occurs when the pin gets disconnected.
+        /// </summary>
+        event PinConnectionEventHandler Disconnected;
     }
 	
     [ComVisible(false)]
