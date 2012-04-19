@@ -32,6 +32,8 @@ namespace VVVV.Core.Model
 
             Projects.Added += Projects_Added;
             Projects.Removed += Projects_Removed;
+            
+            OnRootingChanged(RootingAction.Rooted);
         }
     	
         public event CompiledEventHandler ProjectCompiledSuccessfully;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 
 using VVVV.Core;
 using VVVV.Core.Collections;
@@ -53,14 +54,19 @@ namespace VVVV.Hosting.Graph
                 //FObservedNode.Name = FObservedNode.FInternalNode.GetPin("Descriptive Name").GetValue(0);
             }
 
-            public void StatusChangedCB ()
+            public void StatusChangedCB()
             {
                 FObservedNode.OnStatusChanged();
             }
 
-            public void InnerStatusChangedCB ()
+            public void InnerStatusChangedCB()
             {
                 FObservedNode.OnInnerStatusChanged();
+            }
+            
+            public void BoundsChangedCB(BoundsType boundsType)
+            {
+                FObservedNode.OnBoundsChanged(boundsType);
             }
 
             public void Dispose()
@@ -282,7 +288,11 @@ namespace VVVV.Hosting.Graph
         {
         	return FInternalCOMInterf.GetNodePath(UseDescriptiveNames);
         }
-        	
+
+		public Rectangle GetBounds(BoundsType boundsType)
+        {
+        	return FInternalCOMInterf.GetBounds(boundsType);
+        }        
         
         public IViewableCollection<IPin2> Pins
         {
@@ -385,6 +395,14 @@ namespace VVVV.Hosting.Graph
         {
             if (InnerStatusChanged != null)
                 InnerStatusChanged(this, EventArgs.Empty);
+        }
+        
+        public event EventHandler BoundsChanged;
+        
+        protected virtual void OnBoundsChanged(BoundsType boundsType)
+        {
+//            if (BoundsChanged != null)
+//            	BoundsChanged(this, boundsType);
         }
     }
 }

@@ -8,22 +8,33 @@ namespace VVVV.Core.Model
 {
     public class IDItem : IIDItem, IDisposable
     {
-        public IDItem(string name, bool isRooted)
+        public IDItem(string name, bool isRooted = false)
         {
             FName = name;
-            Mapper = new LazyModelMapper(this);
             IsRooted = isRooted;
-        }
-        
-        public IDItem(string name)
-            : this(name, false)
-        {
-            
+            Changed = true;
         }
 
         #region IIDItem Members
+
+        public bool Changed { get; private set; }
+
+        public virtual void MarkChanged()
+        {
+            if (!Changed)
+            {
+                Changed = true;
+                if (Owner != null)
+                    Owner.MarkChanged();
+            }
+        }
+
+        public virtual void AcknowledgeChanges()
+        {
+            Changed = false;
+        }
         
-        public IModelMapper Mapper
+        public ModelMapper Mapper
         {
             get;
             protected set;
@@ -55,12 +66,6 @@ namespace VVVV.Core.Model
                 
                 if (FOwner != null)
                 {
-                    var lazyMapper = Mapper as LazyModelMapper;
-                    if (lazyMapper != null)
-                    {
-                        lazyMapper.Initialize(FOwner.Mapper);
-                    }
-
                     // Subscribe to new owner
                     FOwner.RootingChanged += FOwner_RootingChanged;
                     
@@ -78,6 +83,11 @@ namespace VVVV.Core.Model
         public event RenamedHandler Renamed;
 
         public event RootingChangedEventHandler RootingChanged;
+        
+        public virtual void Dispatch(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
 
         private void CheckIfRootingChanged(RootingChangedEventArgs args)
         {
@@ -104,6 +114,7 @@ namespace VVVV.Core.Model
         {
             if (args.Rooting == RootingAction.Rooted)
             {
+                Mapper = FOwner.Mapper.CreateChildMapper(this);
                 OnRootingChanged(RootingAction.Rooted);
             }
             
@@ -115,6 +126,8 @@ namespace VVVV.Core.Model
             if (args.Rooting == RootingAction.ToBeUnrooted)
             {
                 OnRootingChanged(RootingAction.ToBeUnrooted);
+                Mapper.Dispose();
+                Mapper = null;
             }
         }
         
@@ -212,7 +225,9 @@ namespace VVVV.Core.Model
         
         protected virtual void DisposeManaged()
         {
-            Mapper.Dispose();
+            if (Mapper != null)
+                Mapper.Dispose();
+
             if (FOwner != null)
             {
                 FOwner.RootingChanged -= FOwner_RootingChanged;
