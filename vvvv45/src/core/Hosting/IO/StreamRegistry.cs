@@ -399,6 +399,62 @@ namespace VVVV.Hosting.IO
                                return IOContainer.Create(context, ioStream, container, null, s => s.Flush());
                            },
                            false);
+
+            RegisterConfig(typeof(BufferedIOStream<Vector2>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector2ConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+            RegisterConfig(typeof(BufferedIOStream<Vector3>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector3ConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+            RegisterConfig(typeof(BufferedIOStream<Vector4>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector4ConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+
+
+
+            RegisterConfig(typeof(BufferedIOStream<Quaternion>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new QuaternionConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+
+
+
+            RegisterConfig(typeof(BufferedIOStream<Vector2D>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector2DConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+            RegisterConfig(typeof(BufferedIOStream<Vector3D>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector3DConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+            RegisterConfig(typeof(BufferedIOStream<Vector4D>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector4DConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
             
             RegisterConfig(typeof(BufferedIOStream<string>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringConfig)));
