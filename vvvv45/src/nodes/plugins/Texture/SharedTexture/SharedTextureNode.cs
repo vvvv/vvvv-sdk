@@ -22,15 +22,15 @@ namespace VVVV.Nodes
 {
 	public enum TextureType
 	{
-		None, 
+		None,
 		RenderTarget,
 		Dynamic
 	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "SharedTexture", 
-				Category = "EX9.Texture", 
-				Help = "Returns a texture given a shared handle", Tags = "")]
+	[PluginInfo(Name = "SharedTexture",
+	            Category = "EX9.Texture",
+	            Help = "Returns a texture given a shared handle", Tags = "")]
 	#endregion PluginInfo
 	public class EX9_TextureSharedReaderNode : DXTextureOutPluginBase, IPluginEvaluate
 	{
@@ -70,7 +70,7 @@ namespace VVVV.Nodes
 			SetSliceCount(SpreadMax);
 
 			//recreate texture if any input changed
-			if (FUsage.IsChanged || FFormat.IsChanged || FWidthIn.IsChanged || FHeightIn.IsChanged || FHandleIn.IsChanged) 
+			if (FUsage.IsChanged || FFormat.IsChanged || FWidthIn.IsChanged || FHeightIn.IsChanged || FHandleIn.IsChanged)
 			{
 				Reinitialize();
 			}
@@ -90,9 +90,9 @@ namespace VVVV.Nodes
 				var usage = Usage.Dynamic;
 				if (FUsage[slice].Index == (int)(TextureType.RenderTarget))
 					usage = Usage.RenderTarget;
-				
+
 				texture = new Texture(device, Math.Max(FWidthIn[slice], 1), Math.Max(FHeightIn[slice], 1), 1, usage, format, Pool.Default, ref share);
-			}	
+			}
 			catch (Exception e)
 			{
 				FLogger.Log(LogType.Debug, e.Message + " Handle: " + FHandleIn[slice] + " Format: " + format.ToString());
