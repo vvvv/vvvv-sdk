@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using VVVV.Core;
 using VVVV.Lang.View;
@@ -38,10 +40,23 @@ namespace VVVV.Nodes.Graphics.OpenGL
         }
         
         [Node]
-        public static Action<RendererState> Quad(double x, double y, double width, double height)
+        public static Action<RendererState> Quad(double x, double y, double width, double height, ShaderProgram shaderProgram)
         {
             return (renderer) =>
             {
+                if (shaderProgram != null)
+                {
+                    GL.UseProgram(shaderProgram);
+                    
+                    // Set uniforms
+                    float aspectRatio = ClientSize.Width / (float)(ClientSize.Height);
+                    Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, aspectRatio, 1, 100, out projectionMatrix);
+                    modelviewMatrix = Matrix4.LookAt(new Vector3(0, 3, 5), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+
+                    GL.UniformMatrix4(shaderProgram.ProjectionMatrixLocation, false, ref projectionMatrix);
+                    GL.UniformMatrix4(shaderProgram.ModelviewMatrixLocation, false, ref modelviewMatrix);
+                }
+                
                 GL.Begin(BeginMode.Quads);
                 GL.Vertex2(x, y);
                 GL.Vertex2(x + width, y);
