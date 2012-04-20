@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using VVVV.Core;
 using VVVV.Core.Model;
@@ -195,6 +196,12 @@ namespace VVVV.PluginInterfaces.V2
 		/// <param name="node">The node whose GUIs ComponentMode is to be changed.</param>
 		/// <param name="componentMode">The new ComponentMode.</param>
 		void SetComponentMode(INode2 node, ComponentMode componentMode);
+
+		/// <summary>
+		/// Gives access to the XML-snippet describing the current selection in the active patch. 
+		/// </summary>
+		/// <returns>An XML-message snippet describing the currently selected nodes in the active patch.</returns>
+		string GetXMLSnippetFromSelection();
 		
 		/// <summary>
         /// Allows sending of XML-message snippets to patches. 
@@ -202,7 +209,7 @@ namespace VVVV.PluginInterfaces.V2
         /// <param name="fileName">Filename of the patch to send the message to.</param>
         /// <param name="message">The XML-message snippet.</param>
         /// <param name="undoable">If TRUE the operation performed by this message can be undone by the user using the UNDO command.</param>
-        void SendPatchMessage(string fileName, string message, bool undoable);
+        void SendXMLSnippet(string fileName, string message, bool undoable);
 		
 		/// <summary>
 		/// Selects the given nodes in their patch.
@@ -312,6 +319,7 @@ namespace VVVV.PluginInterfaces.V2
 	public interface INodeBrowserHost
 	{
 		void CreateNode(INodeInfo nodeInfo);
+		int CreateNode(INodeInfo nodeInfo, Point point);
 		void CloneNode(INodeInfo nodeInfo, string path, string Name, string Category, string Version);
 		void CreateComment(string comment);
 	}	
@@ -435,6 +443,8 @@ namespace VVVV.PluginInterfaces.V2
 		IPin[] GetPins();
 		IPin GetPin(string name);
 		
+		Rectangle GetBounds(BoundsType boundsType);
+		
 		/// <summary>
 		/// Allows a plugin to register an INodeListener on a specific vvvv node.
 		/// </summary>
@@ -464,6 +474,11 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		object Tag { [return: MarshalAs(UnmanagedType.IUnknown)] get; [param: MarshalAs(UnmanagedType.IUnknown)] set; }
 	}	
 	
 	[Guid("1ABB290D-9A96-4944-80CC-F544C8CDD14B"),
@@ -472,9 +487,12 @@ namespace VVVV.PluginInterfaces.V2
     {
         void AddedCB(INode childNode);
         void RemovedCB(INode childNode);
+        void PinAddedCB(IPin pin);
+        void PinRemovedCB(IPin pin);
         void LabelChangedCB();
 		void StatusChangedCB();
 		void InnerStatusChangedCB();
+		void BoundsChangedCB(BoundsType boundsType);
     }
 	#endregion INode
 	
@@ -521,11 +539,16 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 		}
 		
+		string GetNameByParent(INode parent);
+		INode GetParentNodeByPatch(INode patch);
+		
 	    string GetSlice(int sliceIndex);
 		void SetSlice(int sliceIndex, string slice);
 		
 		string GetSpread();
 		void SetSpread(string spread);
+		
+		IPin[] GetConnectedPins();
 		
 		/// <summary>
 		/// Allows a plugin to register an IPinListener on a specific pin.
@@ -538,6 +561,11 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <param name="listener">The listener to unregister.</param>
 		void RemoveListener(IPinListener listener);
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		object Tag { [return: MarshalAs(UnmanagedType.IUnknown)] get; [param: MarshalAs(UnmanagedType.IUnknown)] set; }
 	}
 
 	[Guid("F8D09D3D-D988-434D-9AD4-8AD4C94001E7"),
@@ -547,6 +575,8 @@ namespace VVVV.PluginInterfaces.V2
         void ChangedCB();
 		void StatusChangedCB();
 		void SubtypeChangedCB();
+		void ConnectedCB(IPin otherPin);
+		void DisconnectedCB(IPin otherPin);
     }
 	#endregion IPin
 	

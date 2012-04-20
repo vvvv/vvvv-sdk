@@ -373,7 +373,7 @@ namespace VVVV.Nodes.Finder
             FTooltip.Hide(FSearchTextBox);
         }
         
-        void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+        void FHierarchyViewerClick(ModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (sender == null)
             {
@@ -420,7 +420,7 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        void FHierarchyViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+        void FHierarchyViewerDoubleClick(ModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (sender != null)
             {
