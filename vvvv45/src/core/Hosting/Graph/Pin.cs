@@ -113,6 +113,14 @@ namespace VVVV.Hosting.Graph
                 FPinListener = null;
             }
         }
+
+        /// <summary>
+        /// Reference to the internal COM interface. Use with caution.
+        /// </summary>
+        public IPin InternalCOMInterf
+        {
+            get { return this.FInternalCOMInterf; }
+        }
         
         private event EventHandler FChanged;
         public event EventHandler Changed
