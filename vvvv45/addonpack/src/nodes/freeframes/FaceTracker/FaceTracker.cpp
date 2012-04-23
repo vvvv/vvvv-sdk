@@ -419,10 +419,14 @@ DWORD plugClass::processFrame(LPVOID pFrame)
 	//turn pFrame into opencv image
 	cv::Mat frame = cv::Mat(FImageSize.height, FImageSize.width, CV_8UC3, (char*)pFrame, 0);
 
+    //for some reason needs a vertically flipped image
+    cv::flip(frame, frame, 0);
+
 	//track da face
 	if (FTrackerLoaded)
         update(frame);
 
+    //and a vertical backflip
     cv::flip(frame, frame, 0);
 
 	return FF_SUCCESS;
