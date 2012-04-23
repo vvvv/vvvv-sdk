@@ -230,19 +230,19 @@ namespace VVVV.Hosting.IO.Streams
     
     class DynamicEnumConfigStream : EnumConfigStream<EnumEntry>
     {
-        public DynamicEnumConfigStream(IEnumConfig enumConfig)
+        private string FEnumName;
+
+        public DynamicEnumConfigStream(IEnumConfig enumConfig, string enumname)
             : base(enumConfig)
         {
+            this.FEnumName = enumname;
         }
         
         protected override EnumEntry GetSlice(int index)
         {
             int ord;
-            string name;
             FEnumConfig.GetOrd(index, out ord);
-            // TODO: Was not used. FEnumName.
-            FEnumConfig.GetString(index, out name);
-            return new EnumEntry(name, ord);
+            return new EnumEntry(FEnumName, ord);
         }
         
         protected override void SetSlice(int index, EnumEntry value)
