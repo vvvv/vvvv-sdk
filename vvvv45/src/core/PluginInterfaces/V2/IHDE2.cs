@@ -519,6 +519,11 @@ namespace VVVV.PluginInterfaces.V2
 	    	get;
 	    }
 	    
+	    Type CLRType 
+	    { 
+	    	get;
+	    }
+	    
 	    string SubType
 	    {
 	    	get;
