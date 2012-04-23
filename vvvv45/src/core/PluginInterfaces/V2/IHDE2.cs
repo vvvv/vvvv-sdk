@@ -474,6 +474,11 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		object Tag { [return: MarshalAs(UnmanagedType.IUnknown)] get; [param: MarshalAs(UnmanagedType.IUnknown)] set; }
 	}	
 	
 	[Guid("1ABB290D-9A96-4944-80CC-F544C8CDD14B"),
@@ -482,6 +487,8 @@ namespace VVVV.PluginInterfaces.V2
     {
         void AddedCB(INode childNode);
         void RemovedCB(INode childNode);
+        void PinAddedCB(IPin pin);
+        void PinRemovedCB(IPin pin);
         void LabelChangedCB();
 		void StatusChangedCB();
 		void InnerStatusChangedCB();
@@ -509,6 +516,11 @@ namespace VVVV.PluginInterfaces.V2
 	    
 	    string Type
 	    {
+	    	get;
+	    }
+	    
+	    Type CLRType 
+	    { 
 	    	get;
 	    }
 	    
@@ -554,6 +566,11 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <param name="listener">The listener to unregister.</param>
 		void RemoveListener(IPinListener listener);
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		object Tag { [return: MarshalAs(UnmanagedType.IUnknown)] get; [param: MarshalAs(UnmanagedType.IUnknown)] set; }
 	}
 
 	[Guid("F8D09D3D-D988-434D-9AD4-8AD4C94001E7"),
@@ -563,6 +580,8 @@ namespace VVVV.PluginInterfaces.V2
         void ChangedCB();
 		void StatusChangedCB();
 		void SubtypeChangedCB();
+		void ConnectedCB(IPin otherPin);
+		void DisconnectedCB(IPin otherPin);
     }
 	#endregion IPin
 	

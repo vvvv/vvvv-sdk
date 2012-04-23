@@ -1,22 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.4.dtd" >
-   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\ToComplete\GeometryNodes\MinimumSphere (3d) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.2.dtd" >
+   <PATCH nodename="D:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\vuxbins\MinimumSphere (3d) help.v4p">
    <BOUNDS height="9780" left="1380" top="870" type="Window" width="8640">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="13" nodename="GeometryNodes.dll|VVVV.Nodes.MinimumSphereNode">
-   <BOUNDS height="0" left="2010" top="4275" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="2010" top="4275" type="Box" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="6765" top="4815" type="Window" width="0">
-   </BOUNDS>
-   <PIN pinname="InputXYZ" visible="1">
-   </PIN>
-   <PIN pinname="CenterXYZ" visible="1">
-   </PIN>
-   <PIN pinname="Radius" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="12" nodename="RandomSpread (Spreads)">
+   <NODE componentmode="Hidden" id="12" nodename="RandomSpread (Spreads Legacy)">
    <BOUNDS height="0" left="3375" top="2820" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Spread Count" visible="1">
@@ -30,23 +16,33 @@
    <PIN pinname="Random Seed" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="11" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="11" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="2070" top="8340" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="2070" top="8340" type="Box" width="2400">
    </BOUNDS>
    <BOUNDS height="4860" left="10035" top="885" type="Window" width="6120">
    </BOUNDS>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="10" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\vvvv\beta21\modules\vvvv group\Transform\">
+   <NODE componentmode="Hidden" id="10" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p">
    <BOUNDS height="0" left="3030" top="7710" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="3600" left="3030" top="7710" type="Box" width="4800">
@@ -60,9 +56,9 @@
    <PIN pinname="Projection" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="11" dstpinname="View Transform" srcnodeid="10" srcpinname="View">
+   <LINK dstnodeid="11" dstpinname="View" srcnodeid="10" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="11" dstpinname="Projection Transform" srcnodeid="10" srcpinname="Projection">
+   <LINK dstnodeid="11" dstpinname="Projection" srcnodeid="10" srcpinname="Projection">
    </LINK>
    <NODE componentmode="Hidden" id="9" nodename="Sphere (DX9)">
    <BOUNDS height="0" left="1515" top="6315" type="Node" width="0">
@@ -108,12 +104,6 @@
    <PIN pinname="Scale XYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="Translate XYZ" srcnodeid="13" srcpinname="CenterXYZ" linkstyle="VHV">
-   <LINKPOINT x="2040" y="4980">
-   </LINKPOINT>
-   <LINKPOINT x="1920" y="4980">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="9" dstpinname="Transform" srcnodeid="7" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" id="6" nodename="Multiply (Value)">
@@ -126,8 +116,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="Input 1" srcnodeid="13" srcpinname="Radius">
-   </LINK>
    <LINK dstnodeid="7" dstpinname="Scale XYZ" srcnodeid="6" srcpinname="Output" linkstyle="VHV">
    <LINKPOINT x="3225" y="5190">
    </LINKPOINT>
@@ -208,7 +196,7 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="Color" srcnodeid="4" srcpinname="Output">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="14">
    <BOUNDS type="Node" left="3810" top="1575" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="3810" top="1575" width="795" height="240">
@@ -217,7 +205,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="50">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Point Count|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Point Count|" encoded="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -248,12 +236,6 @@
    <LINKPOINT x="4515" y="4125">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Position Out" dstnodeid="13" dstpinname="InputXYZ" linkstyle="Bezier">
-   <LINKPOINT x="3390" y="3900">
-   </LINKPOINT>
-   <LINKPOINT x="2040" y="3900">
-   </LINKPOINT>
-   </LINK>
    <NODE nodename="Multiply (Value)" componentmode="Hidden" id="17">
    <BOUNDS type="Node" left="4530" top="2160" width="0" height="0">
    </BOUNDS>
@@ -277,7 +259,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates the minimum enclosing sphere  fora set of&cr;&lf;3d points|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates the minimum enclosing sphere  fora set of&cr;&lf;3d points|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -291,7 +273,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|MinimumSphere - 3d|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MinimumSphere - 3d|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -307,7 +289,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="-1185" top="1875" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -321,11 +303,31 @@
    </BOUNDS>
    <BOUNDS height="160" left="-1185" top="1875" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" id="22" nodename="MinimumSphere (3d)" systemname="MinimumSphere (3d)" filename="%VVVV%\addonpack\lib\nodes\plugins\vuxbins\VVVV.Nodes.Geometry.dll">
+   <BOUNDS height="0" left="2010" top="4275" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2010" top="4275" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="6765" top="4815" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="InputXYZ" visible="1">
+   </PIN>
+   <PIN pinname="CenterXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Radius" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Position Out" dstnodeid="22" dstpinname="InputXYZ">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Radius" dstnodeid="6" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="CenterXYZ" dstnodeid="7" dstpinname="Translate XYZ">
+   </LINK>
    </PATCH>

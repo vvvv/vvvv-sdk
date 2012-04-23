@@ -41,9 +41,17 @@ namespace VVVV.PluginInterfaces.V2.Graph
         }
         
         /// <summary>
-        /// Returns the pins datatype.
+        /// Returns the pins datatype as a string.
         /// </summary>
         string Type
+        {
+        	get;
+        }
+        
+        /// <summary>
+        /// Returns the pins clr type and null in case of native pins.
+        /// </summary>
+        Type CLRType
         {
         	get;
         }
@@ -108,6 +116,16 @@ namespace VVVV.PluginInterfaces.V2.Graph
         /// The SubtypeChanged event occurs when the pins subtype changed.
         /// </summary>
         event EventHandler SubtypeChanged;
+        
+        /// <summary>
+        /// The connected event occurs when the pin gets connected.
+        /// </summary>
+        event PinConnectionEventHandler Connected;
+        
+        /// <summary>
+        /// The disconnected event occurs when the pin gets disconnected.
+        /// </summary>
+        event PinConnectionEventHandler Disconnected;
     }
 	
     [ComVisible(false)]

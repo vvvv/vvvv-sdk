@@ -61,17 +61,26 @@ namespace VVVV.Utils.Network
 		//setup server
 		protected void CreateServer(int port)
 		{
-			if(FInternalServer != null)
+			try 
 			{
-				FInternalServer.Close();
+				if(FInternalServer != null)
+				{
+					FInternalServer.Close();
+				}
+				
+				//server socket
+				FLocalIPEndPoint = new IPEndPoint(IPAddress.Any, port);
+				FInternalServer = new UdpClient(FLocalIPEndPoint);
+				
+				//avoid WSAECONNRESET error when sending to a closed/invalid end point, SIO_UDP_CONNRESET
+				FInternalServer.Client.IOControl(-1744830452, new byte[]{0, 0, 0, 0}, new byte[]{0, 0, 0, 0});
+				
+			} 
+			catch (Exception e)
+			{
+				System.Diagnostics.Debug.WriteLine(e.Message);
 			}
-			
-			//server socket
-			FLocalIPEndPoint = new IPEndPoint(IPAddress.Any, port);
-			FInternalServer = new UdpClient(FLocalIPEndPoint);
-			
-			//avoid WSAECONNRESET error when sending to a closed/invalid end point, SIO_UDP_CONNRESET
-			FInternalServer.Client.IOControl(-1744830452, new byte[]{0, 0, 0, 0}, new byte[]{0, 0, 0, 0});
+				
 		}
 		
 		/// <summary>
