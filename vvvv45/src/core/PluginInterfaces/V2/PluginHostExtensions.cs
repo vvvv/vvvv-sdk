@@ -330,7 +330,7 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			INodeIn result = null;
 			host.CreateNodeInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
-			result.SetSubType(new Guid[] { type.GUID }, type.GetCSharpName());
+			result.SetSubType2(type, new Guid[] { type.GUID }, type.GetCSharpName());
 			result.Order = attribute.Order;
 			result.AutoValidate = attribute.AutoValidate;
 			return result;
@@ -355,7 +355,7 @@ namespace VVVV.PluginInterfaces.V2
 				typeT = typeT.BaseType;
 			}
 
-			result.SetSubType(guids.ToArray(), type.GetCSharpName());
+			result.SetSubType2(type, guids.ToArray(), type.GetCSharpName());
 			result.Order = attribute.Order;
 			return result;
 		}

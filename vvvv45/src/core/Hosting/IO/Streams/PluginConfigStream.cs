@@ -12,6 +12,7 @@ namespace VVVV.Hosting.IO.Streams
     abstract class PluginConfigStream<T> : BufferedIOStream<T>
     {  
         private readonly IPluginConfig FPluginConfig;
+        private bool FIsFlushing;
         
         public PluginConfigStream(IPluginConfig pluginConfig)
         {
@@ -24,6 +25,8 @@ namespace VVVV.Hosting.IO.Streams
         
         public override sealed bool Sync()
         {
+            if (FIsFlushing) 
+                return false;
             IsChanged = FPluginConfig.PinIsChanged;
             if (IsChanged)
             {
@@ -39,16 +42,24 @@ namespace VVVV.Hosting.IO.Streams
         
         public override sealed void Flush()
         {
-            if (IsChanged)
+            FIsFlushing = true;
+            try 
             {
-                FPluginConfig.SliceCount = Length;
-                var reader = GetReader();
-                for (int i = 0; i < Length; i++)
+                if (IsChanged)
                 {
-                    SetSlice(i, reader.Read());
+                    FPluginConfig.SliceCount = Length;
+                    var reader = GetReader();
+                    for (int i = 0; i < Length; i++)
+                    {
+                        SetSlice(i, reader.Read());
+                    }
                 }
+                base.Flush();
+            } 
+            finally 
+            {
+                FIsFlushing = false;
             }
-            base.Flush();
         }
     }
     

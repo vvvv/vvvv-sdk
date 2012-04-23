@@ -66,6 +66,8 @@ namespace VVVV.Hosting
 			
 			//create new nodinfo for subpatch
 			var patchPath = Path.GetDirectoryName(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename);
+			if (!Path.IsPathRooted(patchPath))
+				patchPath = hdeHost.ExePath;
 			var patchName = GetUniquePatchName(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename);
 			
 			patchPath = Path.Combine(patchPath, patchName) + ".v4p";
@@ -87,6 +89,7 @@ namespace VVVV.Hosting
 			FOldID2NewID.Clear();
 			var newNodeID = 0;
 			var origNodes = FDocument.SelectNodes("/PATCH/NODE");
+
 			foreach (XmlNode node in origNodes)
 			{
 				//modify the ID
@@ -129,6 +132,20 @@ namespace VVVV.Hosting
 			
 			FInputNames.Clear();
 			FOutputNames.Clear();
+			
+			//extract all existing iobox names, as those must not be reused
+			foreach (var node in selectedNodes)
+			{
+				if (node.Name.StartsWith("IOBox"))
+				{
+					var inputConnected = node.FindPin(GetIOBoxPinName(node.NodeInfo.Category, true)).IsConnected();
+					var outputConnected = node.FindPin(GetIOBoxPinName(node.NodeInfo.Category, false)).IsConnected();
+					if (inputConnected && !outputConnected)
+						FOutputNames.Add(node.FindPin("Descriptive Name").Spread.Trim('|'));
+					else if (!inputConnected && outputConnected)
+						FInputNames.Add(node.FindPin("Descriptive Name").Spread.Trim('|'));
+				}
+			}
 			
 			//now sort the list of nodes in X from left to right
 			//in order to get IOBoxes of leftmost nodes also leftmost

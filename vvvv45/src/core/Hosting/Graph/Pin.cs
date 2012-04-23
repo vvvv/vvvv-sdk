@@ -257,6 +257,14 @@ namespace VVVV.Hosting.Graph
             }
         }
         
+        public Type CLRType
+        {
+            get
+            {
+                return FInternalCOMInterf.CLRType;
+            }
+        }
+        
         public string SubType
         {
             get
