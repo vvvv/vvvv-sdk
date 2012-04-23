@@ -1,0 +1,293 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Stallone (String) help.v4p">
+   <BOUNDS height="8145" left="1980" top="3195" type="Window" width="11130">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|use the Stallone to change relation between Slices and Pins&cr;&lf;&cr;&lf;In the example left, stallone takes one input with five &cr;&lf;slices to distribute them to five outputs whith one slice each.&cr;&lf;&cr;&lf;Stallone is a very flexible node, which allows you to merge slices from any number of inputs and distribute them to any number of slices on any &cr;&lf;number of outputs. &cr;&lf;&cr;&lf;learn more: &cr;&lf;&cr;&lf;Open an inspector and click on the Stallone node:  &cr;&lf;&cr;&lf;You will notice two configuration inputs for input and output count. Changing the values will change the number of input or output pins. Take care not to destroy the help patch by setting the output count to anything smaller than 5.&cr;&lf;&cr;&lf;With the Spread Count pin you can select how many output slices should be generated. If there are not enough input slices, Stallone just starts over from the first slice of the first pin and repeats the values. &cr;&lf;&cr;&lf;Internally Stallone has one large Spread which contains all slices from all inputs which gets distributed to the slices of all outputs.  &cr;&lf;The internal SliceCount is the product of the maximum of all inputs and the number of pins (except one of the pins has slicecount 0 - then it is also 0)&cr;&lf;&cr;&lf;The input slices are collected either by  a) first taking all slices from the first pin, then from the second pin etc. (Pin Sort Mode) or by b) first taking the first Slice of all Pins, then the second Slice of all Pins etc. (Slice Sort Mode)&cr;&lf;&cr;&lf;The output slices are distributed in a similar way: a) In Pin Sort mode the first bunch of slices is copied to the first pin, the second bunch to the second pin etc.  and b) In Slice Sort mode all pins get their first slice, then the second slice etc. &cr;&lf;|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="7275" left="4590" top="390" type="Box" width="5910">
+   </BOUNDS>
+   <BOUNDS height="1410" left="4590" top="390" type="Node" width="3990">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="420" left="1935" top="2850" type="Node" width="1680">
+   </BOUNDS>
+   <BOUNDS height="720" left="1935" top="2850" type="Box" width="2040">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Stallone transforms one input with ten slices to ten outputs with one slice|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Stallone (String)">
+   <BOUNDS height="0" left="705" top="3885" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Output Count" slicecount="1" values="10.00000">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 2" visible="1">
+   </PIN>
+   <PIN pinname="Output 3" visible="1">
+   </PIN>
+   <PIN pinname="Output 4" visible="1">
+   </PIN>
+   <PIN pinname="Output 5" visible="1">
+   </PIN>
+   <PIN pinname="Input Sort" slicecount="1" values="Slice">
+   </PIN>
+   <PIN pinname="Output Sort" slicecount="1" values="Pin">
+   </PIN>
+   <PIN pinname="Output 6" visible="1">
+   </PIN>
+   <PIN pinname="Output 7" visible="1">
+   </PIN>
+   <PIN pinname="Output 8" visible="1">
+   </PIN>
+   <PIN pinname="Output 9" visible="1">
+   </PIN>
+   <PIN pinname="Output 10" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="0" left="690" top="1215" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3765" top="4575" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2355" left="690" top="1215" type="Box" width="1200">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="10" values="All,work,and,no,play,makes,Jack,a,dull,boy">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10.00000">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input 1" srcnodeid="12" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="11" nodename="IOBox (String)">
+   <BOUNDS height="0" left="90" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2550" top="9225" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="90" top="4620" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input String" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output 1">
+   <LINKPOINT x="735" y="4380">
+   </LINKPOINT>
+   <LINKPOINT x="750" y="4380">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="10" nodename="IOBox (String)">
+   <BOUNDS height="0" left="795" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2850" top="9525" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="795" top="4620" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="9" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1500" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3555" top="9525" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="1500" top="4620" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2205" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4260" top="9525" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="2205" top="4620" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2910" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4965" top="9525" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="2910" top="4620" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="90" top="5025" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5670" top="9525" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="90" top="5025" type="Box" width="900">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input String" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output 2">
+   <LINKPOINT x="900" y="4380">
+   </LINKPOINT>
+   <LINKPOINT x="1455" y="4380">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input String" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output 3">
+   <LINKPOINT x="1050" y="4380">
+   </LINKPOINT>
+   <LINKPOINT x="2160" y="4380">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input String" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output 4">
+   <LINKPOINT x="1215" y="4380">
+   </LINKPOINT>
+   <LINKPOINT x="2865" y="4380">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input String" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output 5">
+   <LINKPOINT x="1380" y="4380">
+   </LINKPOINT>
+   <LINKPOINT x="3570" y="4380">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input String" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output 6">
+   <LINKPOINT x="1530" y="4590">
+   </LINKPOINT>
+   <LINKPOINT x="960" y="4590">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1005" top="5025" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5970" top="9825" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="1005" top="5025" type="Box" width="720">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input String" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output 7">
+   <LINKPOINT x="1695" y="4590">
+   </LINKPOINT>
+   <LINKPOINT x="1695" y="4590">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1725" top="5025" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6885" top="9825" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="1725" top="5025" type="Box" width="675">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="3" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2415" top="5025" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7800" top="9825" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="2415" top="5025" type="Box" width="630">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input String" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output 8">
+   <LINKPOINT x="1860" y="4590">
+   </LINKPOINT>
+   <LINKPOINT x="2370" y="4590">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input String" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output 9">
+   <LINKPOINT x="2010" y="4590">
+   </LINKPOINT>
+   <LINKPOINT x="3015" y="4590">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3045" top="5025" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8100" top="10125" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="3045" top="5025" type="Box" width="630">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input String" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output 10">
+   <LINKPOINT x="2175" y="4590">
+   </LINKPOINT>
+   <LINKPOINT x="3645" y="4590">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="225" top="7260" type="Node" width="855">
+   </BOUNDS>
+   <BOUNDS height="240" left="225" top="7260" type="Box" width="735">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Stallone (Spreads)">
+   <BOUNDS height="0" left="990" top="7260" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="720" left="15" top="390" type="Box" width="4080">
+   </BOUNDS>
+   <BOUNDS height="160" left="9660" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Stallone is a very flexible node, which allows you to merge slices from any number of inputs and distribute them to any number of slices on any number of outputs.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9660" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Stallone - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

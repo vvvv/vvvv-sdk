@@ -1,0 +1,155 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Substitute (String) help.v4p">
+   <BOUNDS height="6075" left="6210" top="6240" type="Window" width="5130">
+   </BOUNDS>
+   <NODE id="8" nodename="Substitute (String)">
+   <BOUNDS height="0" left="1995" top="3090" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="From" slicecount="1" visible="1" values="sd">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="To" slicecount="1" visible="1" values="__">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="525" top="870" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9645" top="8625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1350" left="525" top="870" type="Box" width="1755">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5.00000">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Input String" slicecount="5" values="abara,kadabara,bista,klassa,habara">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="7" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="285" top="3810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9945" top="8925" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1545" left="285" top="3810" type="Box" width="1785">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5.00000">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Input String" slicecount="5" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input String" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2370" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11145" top="9585" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="825" left="2370" top="1380" type="Box" width="1110">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Input String" slicecount="3" values="ab,ra,sa">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="From" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3450" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11445" top="9885" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="825" left="3450" top="1380" type="Box" width="1110">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Input String" slicecount="3" values="--,++,**">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="To" srcnodeid="4" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2370" top="1035" type="Node" width="630">
+   </BOUNDS>
+   <BOUNDS height="255" left="2370" top="1035" type="Box" width="630">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="from">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3480" top="1035" type="Node" width="465">
+   </BOUNDS>
+   <BOUNDS height="255" left="3480" top="1035" type="Box" width="465">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="to">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="2550">
+   </BOUNDS>
+   <BOUNDS height="160" left="9660" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Substitutes Strings|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9660" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Substitute - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
