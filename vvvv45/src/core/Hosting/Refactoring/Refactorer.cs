@@ -136,7 +136,7 @@ namespace VVVV.Hosting
 			//extract all existing iobox names, as those must not be reused
 			foreach (var node in selectedNodes)
 			{
-				if (node.Name.StartsWith("IOBox"))
+				if (node.NodeInfo.Name == "IOBox")
 				{
 					var inputConnected = node.FindPin(GetIOBoxPinName(node.NodeInfo.Category, true)).IsConnected();
 					var outputConnected = node.FindPin(GetIOBoxPinName(node.NodeInfo.Category, false)).IsConnected();
@@ -211,7 +211,7 @@ namespace VVVV.Hosting
 						
 						if (pin.Direction == PinDirection.Input)
 						{
-							boxBounds.Rectangle = new Rectangle(Math.Max(minInputX, bounds.X - minX + CBorder), CPinOffset, 750, 225);
+							boxBounds.Rectangle = new Rectangle(Math.Max(minInputX, bounds.X - minX + CBorder), CPinOffset, 750, 240);
 							
 							//an input-pin may be connected to an output-pin
 							//that in turn is connected to multiple inputs
@@ -231,8 +231,7 @@ namespace VVVV.Hosting
 						}
 						else if (pin.Direction == PinDirection.Output)
 						{
-							
-							boxBounds.Rectangle = new Rectangle(Math.Max(minOutputX, bounds.X - minX + CBorder), (maxY  -minY) + CPinOffset + CBorder, 750, 225);
+							boxBounds.Rectangle = new Rectangle(Math.Max(minOutputX, bounds.X - minX + CBorder), (maxY  -minY) + CPinOffset + CBorder, 750, 240);
 							var origName = pin.NameByParent(node);
 							var pinName = GetUniqueOutputName(origName);
 							oldPinToNewPin.Add(ident, pinName);
@@ -327,11 +326,12 @@ namespace VVVV.Hosting
 			}
 			
 			var nodeMsg = patch.AddNode(subID);
+			nodeMsg.ComponentMode = ComponentMode.Hidden;
 			//enabling this fukcs it up:
-//			var nodeB = nodeMsg.AddBounds(BoundsType.Node);
-//			nodeB.Rectangle = new Rectangle(selectionCenter.X, selectionCenter.Y, 0, 0);
-//			var boxB = nodeMsg.AddBounds(BoundsType.Node);
-//			boxB.Rectangle = new Rectangle(selectionCenter.X - selectionSize.Width / 2, selectionCenter.Y - selectionSize.Height / 2, selectionSize.Width, selectionSize.Height);
+			var nodeB = nodeMsg.AddBounds(BoundsType.Node);
+			nodeB.Rectangle = new Rectangle(selectionCenter.X, selectionCenter.Y, 0, 0);
+			var boxB = nodeMsg.AddBounds(BoundsType.Node);
+			boxB.Rectangle = new Rectangle(selectionCenter.X - selectionSize.Width / 2, selectionCenter.Y - selectionSize.Height / 2, selectionSize.Width, selectionSize.Height);
 			var windowB = nodeMsg.AddBounds(BoundsType.Window);
 			windowB.Rectangle = new Rectangle(300 + selectionCenter.X + hdeHost.ActivePatchWindow.Bounds.X * 15, 300 + selectionCenter.Y + hdeHost.ActivePatchWindow.Bounds.Y * 15, selectionSize.Width, selectionSize.Height);
 			
@@ -370,16 +370,20 @@ namespace VVVV.Hosting
 		
 		private NodeMessage CreateIOBox(PatchMessage patch, string pinType)
 		{
+			NodeMessage node;
 			if (pinType == "String")
-				return patch.AddNode("IOBox (String)");
+				node = patch.AddNode("IOBox (String)");
 			else if (pinType == "Value")
-				return patch.AddNode("IOBox (Value Advanced)");
+				node = patch.AddNode("IOBox (Value Advanced)");
 			else if (pinType == "Color")
-				return patch.AddNode("IOBox (Color)");
+				node = patch.AddNode("IOBox (Color)");
 			else if (pinType == "Enumeration")
-				return patch.AddNode("IOBox (Enumerations)");
+				node = patch.AddNode("IOBox (Enumerations)");
 			else //assume node
-				return patch.AddNode("IOBox (Node)");
+				node = patch.AddNode("IOBox (Node)");
+			
+			node.ComponentMode = ComponentMode.InABox;
+			return node;
 		}
 		
 		private string GetUniqueInputName(string pinName)

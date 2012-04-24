@@ -84,6 +84,12 @@ namespace VVVV.Hosting
 			set {SetAttribute("systemname", value);}
 		}
 		
+		public ComponentMode ComponentMode
+		{
+			//get {return ComponentMode.Parse(GetAttribute("componentmode"));}
+			set {SetAttribute("componentmode", value.ToString());}
+		}
+		
 		public bool DeleteMe 
 		{
 			get {return bool.Parse(GetAttribute("deleteme"));}
