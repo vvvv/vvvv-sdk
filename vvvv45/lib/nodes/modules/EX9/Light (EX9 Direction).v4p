@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9\Light (EX9 Direction).v4p">
-   <BOUNDS height="10005" left="2385" top="4500" type="Window" width="9360">
+   <BOUNDS height="6000" left="4650" top="4950" type="Window" width="9000">
    </BOUNDS>
    <NODE id="29" nodename="Fill (EX9.RenderState)" systemname="Fill (EX9.RenderState)">
    <BOUNDS height="0" left="330" top="6105" type="Node" width="0">
@@ -65,11 +65,11 @@
    </BOUNDS>
    <BOUNDS height="240" left="5445" top="1305" type="Box" width="1965">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="|Main Light|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="|Main Light|">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Name" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Name">
    </PIN>
    </NODE>
    <NODE id="23" nodename="Add (String)" systemname="Add (String)">
@@ -107,7 +107,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|This modules sole purpose is to visualise the direction of a directional light.&cr;&lf;|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|This modules sole purpose is to visualise the direction of a directional light.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -121,7 +121,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="8040" top="1305" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Enabled">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -137,35 +137,15 @@
    </BOUNDS>
    <BOUNDS height="240" left="4425" top="1305" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Scale" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Scale">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="3">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="0" left="60" top="3690" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="18105" top="9345" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="690" left="60" top="3690" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Light Direction Out|" encoded="0">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
-   </PIN>
-   </NODE>
    <NODE id="17" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="270" left="780" top="2655" type="Node" width="825">
+   <BOUNDS height="270" left="525" top="2700" type="Node" width="825">
    </BOUNDS>
    <PIN pinname="XYZ" visible="1">
    </PIN>
@@ -205,7 +185,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Pitch" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Pitch">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -221,7 +201,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Yaw" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Yaw">
    </PIN>
    </NODE>
    <LINK dstnodeid="16" dstpinname="Yaw" srcnodeid="14" srcpinname="Y Output Value">
@@ -233,8 +213,6 @@
    <LINK dstnodeid="17" dstpinname="Y" srcnodeid="16" srcpinname="Y">
    </LINK>
    <LINK dstnodeid="17" dstpinname="Z" srcnodeid="16" srcpinname="Z">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Y Input Value" srcnodeid="17" srcpinname="XYZ">
    </LINK>
    <NODE id="13" nodename="DRAWFIXED (EX9.EFFECT)" systemname="DrawFixed (EX9.Effect)">
    <BOUNDS height="0" left="1620" top="7320" type="Node" width="0">
@@ -319,7 +297,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="3495" top="1305" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Distance" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Distance">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -347,7 +325,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="1620" top="8535" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Layer" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Layer">
    </PIN>
    <PIN pinname="Input Node" visible="1">
    </PIN>
@@ -389,7 +367,7 @@
    </BOUNDS>
    <BOUNDS height="285" left="6600" top="3360" type="Box" width="1320">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="|Directional Light|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="|Directional Light|">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -407,7 +385,7 @@
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="..\..\..\assets\geometries\arrowZ.x" encoded="0">
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\..\..\assets\geometries\arrowZ.x">
    </PIN>
    <PIN pinname="Reload" slicecount="1" values="0">
    </PIN>
@@ -462,4 +440,24 @@
    </LINK>
    <INFO author="vvvv group" description="Helper to adjust a directional light within your 3d scene." tags="helper, shading, 3d">
    </INFO>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="30" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="525" top="3795" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="525" top="3795" width="795" height="720">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Input Value">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Light Direction Out|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="XYZ" dstnodeid="30" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>
