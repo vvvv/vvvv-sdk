@@ -480,7 +480,7 @@ namespace VVVV.Hosting.IO
             RegisterConfig(typeof(BufferedIOStream<EnumEntry>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumConfig)));
                                var enumConfig = container.RawIOObject as IEnumConfig;
-                               var stream = new DynamicEnumConfigStream(enumConfig);
+                               var stream = new DynamicEnumConfigStream(enumConfig,context.IOAttribute.EnumName);
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });        
             RegisterConfig(typeof(BufferedIOStream<>), (factory, context) => {
