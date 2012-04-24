@@ -128,25 +128,21 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		public static T CreateIO<T>(this IIOFactory factory, IOAttribute attribute, bool subscribe = true)
-			where T : class
 		{
 			return (T) factory.CreateIO(typeof(T), attribute, subscribe);
 		}
 
         public static Pin<T> CreatePin<T>(this IIOFactory factory, IOAttribute attribute, bool subscribe = true)
-            where T : class
         {
             return (Pin<T>)factory.CreateIO(typeof(Pin<T>), attribute, subscribe);
         }
 
         public static ISpread<T> CreateSpread<T>(this IIOFactory factory, IOAttribute attribute, bool subscribe = true)
-            where T : class
         {
             return (ISpread<T>)factory.CreateIO(typeof(ISpread<T>), attribute, subscribe);
         }
 
         public static IDiffSpread<T> CreateDiffSpread<T>(this IIOFactory factory, IOAttribute attribute, bool subscribe = true)
-            where T : class
         {
             return (IDiffSpread<T>)factory.CreateIO(typeof(IDiffSpread<T>), attribute, subscribe);
         }
