@@ -1,0 +1,269 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\+ Sound\waveplayer - multichannel.v4p">
+   <BOUNDS height="10605" left="5055" top="1740" type="Window" width="12660">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="15180" left="285" top="6225" type="Node" width="10785">
+   </BOUNDS>
+   <BOUNDS height="16065" left="285" top="6225" type="Box" width="7995">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Voices___________________________________________________________________________________________________&cr;&lf;&cr;&lf;The Waveplayer is able to play more than one audiostream at the same time. The concept is called Voice:&cr;&lf;&cr;&lf;play-pin   filenames &cr;&lf;0          A.wav     &cr;&lf;1          B.wav    &cr;&lf;1&cr;&lf;&cr;&lf;With all other Pins having a SliceCount of 1, this configuration generates three voices  because the slices &cr;&lf;of the Play-Pin are mapped in a cyclic manner over the files.&cr;&lf;&cr;&lf;Voice 0 File= A.wav Play=0&cr;&lf;Voice 1 File= B.wav Play=1&cr;&lf;Voice 2 File= A.wav Play=1&cr;&lf;&cr;&lf;Voice 0 and 2 are processing the same audiodata but can have different states (Play,Speed,Volume...).&cr;&lf;&cr;&lf;&cr;&lf;Routing__________________________________________________________________________________________________&cr;&lf;&cr;&lf;On a computer with a multichannel-soundcard it is possible to to route audio to different outputs:&cr;&lf;&cr;&lf;-1    DEFAULT&cr;&lf; 0    SPEAKER_FRONT_LEFT              &cr;&lf; 1    SPEAKER_FRONT_RIGHT&cr;&lf; 2    SPEAKER_FRONT_CENTER&cr;&lf; 3    SPEAKER_LOW_FREQUENCY&cr;&lf; 4    SPEAKER_BACK_LEFT&cr;&lf; 5    SPEAKER_BACK_RIGHT&cr;&lf; 6    SPEAKER_FRONT_LEFT_OF_CENTER&cr;&lf; 7    SPEAKER_FRONT_RIGHT_OF_CENTER&cr;&lf; 8    SPEAKER_BACK_CENTER&cr;&lf; 9    SPEAKER_SIDE_LEFT&cr;&lf; 10   SPEAKER_SIDE_RIGHT&cr;&lf; 11   SPEAKER_TOP_CENTER&cr;&lf; 12   SPEAKER_TOP_FRONT_LEFT&cr;&lf; 13   SPEAKER_TOP_FRONT_CENTER&cr;&lf; 14   SPEAKER_TOP_FRONT_RIGHT&cr;&lf; 15   SPEAKER_TOP_BACK_LEFT&cr;&lf; 16   SPEAKER_TOP_BACK_CENTER&cr;&lf; 17   SPEAKER_TOP_BACK_RIGHT&cr;&lf; &cr;&lf;The routing is done done channelwise (not per voice), so if you have three voices : &cr;&lf;&cr;&lf;Voice 0 File= A.wav Channels= 2&cr;&lf;Voice 1 File= B.wav Channels= 1&cr;&lf;Voice 2 File= A.wav Channels= 2&cr;&lf;&cr;&lf;so alltogether 5 channels and a Routing-Pin : &cr;&lf;0 &cr;&lf;1&cr;&lf;1&cr;&lf;3&cr;&lf;&tab;&tab; &cr;&lf;the outcome is (again cyclic mapped):&cr;&lf;&tab;&tab;                        &cr;&lf;    Voice 0 A.wav Kanal 0  Routing -&gt; 0 (=SPEAKER_FRONT_LEFT)&cr;&lf;    Voice 0 A.wav Kanal 1  Routing -&gt; 1 (=SPEAKER_FRONT_RIGHT)&cr;&lf;    Voice 1 A.wav Kanal 0  Routing -&gt; 1 (=SPEAKER_FRONT_RIGHT)&cr;&lf;    Voice 2 A.wav Kanal 0  Routing -&gt; 3 (=SPEAKER_LOW_FREQUENCY)&cr;&lf;    Voice 2 A.wav Kanal 1  Routing -&gt; 0 (=SPEAKER_FRONT_LEFT) &cr;&lf;&cr;&lf;Annotation________________________________________________________________________________________________&cr;&lf;&tab;&cr;&lf;If all values of the Routing-Pin are set to -1, than the default routing of a channel is used, for example &cr;&lf;SPEAKER_FRONT_LEFT for a monofile. Note that if you want to play a monofile stereo, you have to use &cr;&lf;two voices, one routed to 0, the other routed to 1. If you have a soundcard which has only two outputs,&cr;&lf;it tries to emulate the multichannels and mixes the audiostreams together. If more than one audiostream &cr;&lf;is routed to an output, the power of them is added and divided through the number of audiostreams. &cr;&lf;You might have to configurate your soundcard before you can use multichannel-routing. Also it is possible &cr;&lf;to use wavefiles with an arbitrary number of channels, they can be generated for example with cubase sx 3&cr;&lf;or besweet(not tested). Also try the two demopatches in \girlpower\+ Sound to see other possible applications&cr;&lf;of the waveplayer.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="WavePlayer (DShow9)" systemname="WavePlayer (DShow9)">
+   <BOUNDS height="0" left="330" top="3390" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Routing Info" visible="1">
+   </PIN>
+   <PIN pinname="Routing" visible="1">
+   </PIN>
+   <PIN pinname="Play" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Duration" visible="1">
+   </PIN>
+   <PIN pinname="End Time" visible="1">
+   </PIN>
+   <PIN pinname="Loop" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Speed" visible="1">
+   </PIN>
+   <PIN pinname="Do Seek" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1320" top="4545" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10215" top="2130" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="960" left="1320" top="4545" type="Box" width="3825">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input String" srcnodeid="11" srcpinname="Routing Info">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="3555" top="1875" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13155" top="2625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="885" left="3555" top="1875" type="Box" width="2865">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="4" visible="1" values="..\..\lib\assets\sounds\demo.wav,..\..\lib\assets\sounds\demo.wav,..\..\lib\assets\sounds\demo.wav,..\..\lib\assets\sounds\demo.wav" encoded="0">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Filename" srcnodeid="9" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1365" top="1545" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3585" top="1800" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="855" left="1365" top="1545" type="Box" width="900">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" values="0,1,3,15">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Routing" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="7" nodename="AudioOut (DShow9)" systemname="AudioOut (DShow9)">
+   <BOUNDS height="0" left="330" top="5250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Audio" srcnodeid="11" srcpinname="Audio">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="3540" top="1530" type="Node" width="465">
+   </BOUNDS>
+   <BOUNDS height="270" left="3540" top="1530" type="Box" width="465">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Files" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1365" top="1185" type="Node" width="705">
+   </BOUNDS>
+   <BOUNDS height="270" left="1365" top="1185" type="Box" width="705">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Routing" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="150" top="180" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="150" top="180" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="825" top="7800" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|WavePlayer - DShow9 |" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="180" top="615" type="Node" width="4095">
+   </BOUNDS>
+   <BOUNDS height="255" left="180" top="615" type="Box" width="5115">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Route audiostreams to different outputs of a multichannel-soundcard|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="2" managers="" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1380" top="2760" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="465" left="1380" top="2760" type="Box" width="570">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="2" visible="1" values="1,2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="2">
+   </PIN>
+   <BOUNDS height="160" left="960" top="3060" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="2" visible="0" values="0,0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Speed" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="60" top="2130" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1290" top="2865" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="60" top="2130" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="5.4688">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="End Time" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="60" top="1755" type="Node" width="1275">
+   </BOUNDS>
+   <BOUNDS height="270" left="60" top="1755" type="Box" width="1275">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|loop till the end|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="900" left="9495" top="8655" type="Node" width="285">
+   </BOUNDS>
+   <BOUNDS height="1020" left="9495" top="8655" type="Box" width="2160">
+   </BOUNDS>
+   <BOUNDS height="160" left="855" top="-2220" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="| || &cr;&lf; || scroll down&cr;&lf; ||&cr;&lf; v|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Lucida Console|">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="11">
+   </PIN>
+   </NODE>
+   </PATCH>

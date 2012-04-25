@@ -1,0 +1,209 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha24.9.dtd" >
+   <PATCH nodename="C:\Documents and Settings\Roman\Desktop\startuppatch_vvvv_beta24_2_2\background.v4p">
+   <BOUNDS height="6930" left="10035" top="7140" type="Window" width="7155">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\Halo.fx" id="0" nodename="Halo (EX9.Effect)" systemname="Halo (EX9.Effect)">
+   <BOUNDS height="100" left="585" top="4410" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="585" top="4410" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="6450" top="8805" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Inner Color" visible="1">
+   </PIN>
+   <PIN pinname="Outer Color" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Outer Radius" slicecount="1" values="0.489999999999999">
+   </PIN>
+   <PIN pinname="Inner Radius" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="100" left="585" top="5940" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="585" top="5940" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="6675" top="10785" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|background out (needs Renderer)|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input Node" srcnodeid="0" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="7" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="735" top="3885" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="4905" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4905" top="2880" type="Box" width="1185">
+   </BOUNDS>
+   <BOUNDS height="160" left="12450" top="12270" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="| TCosineHalo|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Mesh" srcnodeid="7" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="Hidden" id="10" nodename="Billboard (Transform)" systemname="Billboard (Transform)">
+   <BOUNDS height="100" left="915" top="1260" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="915" top="1260" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="6105" top="7440" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="100" left="900" top="2085" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="900" top="2085" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="6705" top="7920" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Transform In" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="13" nodename="Transform (Transform 3d)" systemname="Transform (Transform 3d)">
+   <BOUNDS height="100" left="900" top="3105" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="900" top="3105" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="6360" top="7560" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Transform In" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="630" top="2700" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="630" top="2700" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="6630" top="4155" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.44">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="TranslateZ" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Technique" linkstyle="Bezier" srcnodeid="6" srcpinname="Output Enum">
+   <LINKPOINT x="4905" y="3750">
+   </LINKPOINT>
+   <LINKPOINT x="2520" y="3750">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="1155" top="1710" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="1155" top="1710" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="4920" top="4935" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="158.33">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="XYZ" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="90" top="105" type="Node" width="2190">
+   </BOUNDS>
+   <BOUNDS height="435" left="90" top="105" type="Box" width="4245">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="background">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="36" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="100" left="4260" top="1935" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="4260" top="1935" type="Box" width="1755">
+   </BOUNDS>
+   <BOUNDS height="160" left="12900" top="11535" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Outer Color" linkstyle="Bezier" srcnodeid="36" srcpinname="Color Output">
+   <LINKPOINT x="4475" y="3525">
+   </LINKPOINT>
+   <LINKPOINT x="2155" y="3555">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="42" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="100" left="3615" top="1620" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="3615" top="1620" type="Box" width="2235">
+   </BOUNDS>
+   <BOUNDS height="160" left="12900" top="11535" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Inner Color" linkstyle="Bezier" srcnodeid="42" srcpinname="Color Output">
+   <LINKPOINT x="4045" y="3190">
+   </LINKPOINT>
+   <LINKPOINT x="1775" y="3170">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="43" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="90" top="510" type="Node" width="1995">
+   </BOUNDS>
+   <BOUNDS height="300" left="90" top="510" type="Box" width="3270">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Creates the halo effect in the background.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

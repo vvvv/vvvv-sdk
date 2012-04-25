@@ -1,0 +1,173 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\ModificationDate (File) help.v4p">
+   <BOUNDS height="5730" left="2175" top="3390" type="Window" width="4980">
+   </BOUNDS>
+   <NODE id="9" nodename="ModificationDate (File)">
+   <BOUNDS height="0" left="840" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" visible="1" values="|ModificationDate (File) help.v4p|">
+   </PIN>
+   <PIN pinname="doRead" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Date Accessed" visible="1">
+   </PIN>
+   <PIN pinname="Date Created" visible="1">
+   </PIN>
+   <PIN pinname="Modification Date" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="TimeToString (String)">
+   <BOUNDS height="0" left="315" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Time" srcnodeid="9" srcpinname="Date Accessed">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="345" top="3180" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3705" top="8805" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="345" top="3180" type="Box" width="1935">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Date Accessed|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input String" srcnodeid="8" srcpinname="String">
+   </LINK>
+   <NODE id="6" nodename="TimeToString (String)">
+   <BOUNDS height="0" left="1440" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="TimeToString (String)">
+   <BOUNDS height="0" left="2625" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Time" srcnodeid="9" srcpinname="Date Created">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Time" srcnodeid="9" srcpinname="Modification Date">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="345" top="3705" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4005" top="9105" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="345" top="3705" type="Box" width="1935">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Date Created|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="0" left="345" top="4230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3990" top="9630" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="345" top="4230" type="Box" width="1935">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Date Modified|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input String" srcnodeid="6" srcpinname="String">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input String" srcnodeid="5" srcpinname="String">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="855" top="1035" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4005" top="9105" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="855" top="1035" type="Box" width="2790">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|ModificationDate (File) help.v4p|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Filename" srcnodeid="2" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="315" top="4785" type="Node" width="3375">
+   </BOUNDS>
+   <BOUNDS height="375" left="315" top="4785" type="Box" width="3705">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|change something in here, save, and bang doRead|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3930" top="885" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="7305" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="390" left="3930" top="885" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="doRead">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="doRead" srcnodeid="0" srcpinname="Y Output Value" linkstyle="VHV">
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="3930">
+   </BOUNDS>
+   <BOUNDS height="160" left="45" top="12690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Get &quot;Created&quot;, &quot;Modified&quot; and &quot;Accessed&quot; Date of a File.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="45" top="12690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ModificationDate - File|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
