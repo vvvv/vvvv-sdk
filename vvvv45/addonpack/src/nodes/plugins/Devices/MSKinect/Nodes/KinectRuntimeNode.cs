@@ -34,7 +34,7 @@ namespace VVVV.MSKinect.Nodes
         IDiffSpread<bool> FInEnableSmooth;
 
         [Input("Smooth Parameters", IsSingle = true)]
-        Pin<TransformSmoothParameters> FSmoothParams;
+        DiffPin<TransformSmoothParameters> FSmoothParams;
 
         [Input("Enabled", IsSingle = true)]
         IDiffSpread<bool> FInEnabled;
