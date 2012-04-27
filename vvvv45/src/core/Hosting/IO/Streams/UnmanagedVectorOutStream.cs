@@ -138,6 +138,7 @@ namespace VVVV.Hosting.IO.Streams
             FDimension = dimension;
             FPPDst = ppDst;
             FSetDstLengthAction = setDstLengthAction;
+            FSetDstLengthAction(FLength);
         }
         
         public object Clone()

@@ -257,9 +257,9 @@ namespace VVVV.Core.View
 		protected IDroppable FDroppable;
 		protected Folder FRootFolder;
 		protected Dictionary<string, Folder> FFolderMap;
-		private IModelMapper FDocumentsMapper;
+		private ModelMapper FDocumentsMapper;
 		
-		public ProjectViewProvider(IProject project, IModelMapper mapper)
+		public ProjectViewProvider(IProject project, ModelMapper mapper)
 		{
 			FProject = project;
 			

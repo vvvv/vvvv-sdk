@@ -53,6 +53,15 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
+		/// Get/Set the size of this spread.
+		/// </summary>
+		new int SliceCount // Do not remove this or it will break pre-compiled plugins.
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
 		/// Create a copy of the <see cref="ISpread{T}"/>.
 		/// </summary>
 		/// <returns>A new copy of this <see cref="ISpread{T}"/>.</returns>
@@ -471,6 +480,22 @@ namespace VVVV.PluginInterfaces.V2
 		public static void Resize<T>(this ISpread<T> spread, int sliceCount, Func<T> constructor, Action<T> destructor)
         {
 		    spread.Stream.Resize(sliceCount, constructor, destructor);
+        }
+		
+		public static void Resize<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor, Action<T> destructor)
+		{
+		    spread.Stream.Resize(sliceCount, constructor, destructor);
+		}
+		
+		public static void ResizeAndDismiss<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+        {
+            spread.Stream.ResizeAndDismiss(sliceCount, constructor);
+        }
+        
+        public static void ResizeAndDispose<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+            where T : IDisposable
+        {
+            spread.Resize(sliceCount, constructor, (t) => t.Dispose());
         }
 		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(

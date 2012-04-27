@@ -12,6 +12,7 @@ namespace VVVV.Hosting.IO.Streams
     abstract class PluginConfigStream<T> : BufferedIOStream<T>
     {  
         private readonly IPluginConfig FPluginConfig;
+        private bool FIsFlushing;
         
         public PluginConfigStream(IPluginConfig pluginConfig)
         {
@@ -24,6 +25,8 @@ namespace VVVV.Hosting.IO.Streams
         
         public override sealed bool Sync()
         {
+            if (FIsFlushing) 
+                return false;
             IsChanged = FPluginConfig.PinIsChanged;
             if (IsChanged)
             {
@@ -39,16 +42,24 @@ namespace VVVV.Hosting.IO.Streams
         
         public override sealed void Flush()
         {
-            if (IsChanged)
+            FIsFlushing = true;
+            try 
             {
-                FPluginConfig.SliceCount = Length;
-                var reader = GetReader();
-                for (int i = 0; i < Length; i++)
+                if (IsChanged)
                 {
-                    SetSlice(i, reader.Read());
+                    FPluginConfig.SliceCount = Length;
+                    var reader = GetReader();
+                    for (int i = 0; i < Length; i++)
+                    {
+                        SetSlice(i, reader.Read());
+                    }
                 }
+                base.Flush();
+            } 
+            finally 
+            {
+                FIsFlushing = false;
             }
-            base.Flush();
         }
     }
     
@@ -230,19 +241,19 @@ namespace VVVV.Hosting.IO.Streams
     
     class DynamicEnumConfigStream : EnumConfigStream<EnumEntry>
     {
-        public DynamicEnumConfigStream(IEnumConfig enumConfig)
+        private string FEnumName;
+
+        public DynamicEnumConfigStream(IEnumConfig enumConfig, string enumname)
             : base(enumConfig)
         {
+            this.FEnumName = enumname;
         }
         
         protected override EnumEntry GetSlice(int index)
         {
             int ord;
-            string name;
             FEnumConfig.GetOrd(index, out ord);
-            // TODO: Was not used. FEnumName.
-            FEnumConfig.GetString(index, out name);
-            return new EnumEntry(name, ord);
+            return new EnumEntry(FEnumName, ord);
         }
         
         protected override void SetSlice(int index, EnumEntry value)

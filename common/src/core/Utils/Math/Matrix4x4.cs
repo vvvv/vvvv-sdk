@@ -740,7 +740,6 @@ namespace VVVV.Utils.VMath
         /// <summary>
         /// Transpose thi 4x4 matrix
         /// </summary>
-        /// <param name="A"></param>
         /// <returns>Transpose of this matrix</returns>
         public Matrix4x4 Transpose()
         {

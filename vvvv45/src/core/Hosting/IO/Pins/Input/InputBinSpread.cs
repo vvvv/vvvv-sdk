@@ -19,7 +19,8 @@ namespace VVVV.Hosting.Pins.Input
             public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
             {
                 attribute = ManipulateAttribute(attribute);
-                attribute.AutoValidate = false;
+                // Don't do this, as spread max won't get computed for this pin
+//                attribute.AutoValidate = false;
                 FDataContainer = ioFactory.CreateIOContainer<IInStream<T>>(attribute, false);
                 FBinSizeContainer = ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
                 FDataStream = FDataContainer.IOObject;
@@ -90,7 +91,7 @@ namespace VVVV.Hosting.Pins.Input
                                     var stream = spread.Stream;
                                     using (var writer = stream.GetWriter())
                                     {
-                                        while (!writer.Eos)
+                                        while (!writer.Eos && !dataReader.Eos)
                                         {
                                             // Since we're using cyclic readers we need to limit the amount
                                             // of data we request.

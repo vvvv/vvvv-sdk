@@ -156,6 +156,8 @@ namespace VVVV.HDE.GraphicalEditing
 	    		
 	    		AddChild(t);
     		}
+
+            Bounds = UnionOfChildrenBounds;
     	}
     	
     	protected Font FFont;
