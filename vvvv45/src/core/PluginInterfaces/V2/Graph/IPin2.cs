@@ -7,6 +7,14 @@ namespace VVVV.PluginInterfaces.V2.Graph
     [ComVisible(false)]
     public interface IPin2: INamed
     {
+        /// <summary>
+        /// Reference to the internal COM interface. Use with caution.
+        /// </summary>
+        IPin InternalCOMInterf
+        {
+            get;
+        }
+
     	/// <summary>
     	/// Gets/Sets a string representation of the specified slice.
     	/// </summary>
@@ -41,9 +49,17 @@ namespace VVVV.PluginInterfaces.V2.Graph
         }
         
         /// <summary>
-        /// Returns the pins datatype.
+        /// Returns the pins datatype as a string.
         /// </summary>
         string Type
+        {
+        	get;
+        }
+        
+        /// <summary>
+        /// Returns the pins clr type and null in case of native pins.
+        /// </summary>
+        Type CLRType
         {
         	get;
         }
