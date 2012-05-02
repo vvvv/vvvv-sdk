@@ -1,0 +1,71 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Count (String) help.v4p">
+   <BOUNDS height="3585" left="4305" top="4575" type="Window" width="4020">
+   </BOUNDS>
+   <NODE id="3" nodename="Count (String)">
+   <BOUNDS height="0" left="2475" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="6" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2490" top="285" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5700" top="5625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1590" left="2490" top="285" type="Box" width="1035">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="6" values="|string 1|,|string 2|,|string 3|,|string 4|,|string 5|,|string 6|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1755" top="2670" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6165" top="7785" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1755" top="2670" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="1" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Count">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="510" left="15" top="390" type="Box" width="2445">
+   </BOUNDS>
+   <BOUNDS height="160" left="4470" top="9960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns the number of slices in the given spread of strings|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="2220">
+   </BOUNDS>
+   <BOUNDS height="160" left="4470" top="9960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Count - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

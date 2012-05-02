@@ -1,0 +1,123 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33debug9.2.dtd" >
+   <PATCH nodename="C:\Documents and Settings\dave\Bureau\move your camera\IndexToPos (2d).v4p">
+   <BOUNDS height="6000" left="1155" top="3375" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5085" top="735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6795" top="4500" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5085" top="735" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Xres">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6480" top="735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7095" top="4800" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6480" top="735" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Yres">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1470" top="735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3030" top="4380" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1470" top="735" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Slice">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2325" top="3210" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4035" top="7005" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2325" top="3210" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="X">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3990" top="3210" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5700" top="6975" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3990" top="3210" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Y">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Mod (Value)">
+   <BOUNDS height="0" left="3075" top="1875" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input 2" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input 1" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE id="2" nodename="Divide (Value)">
+   <BOUNDS height="0" left="4965" top="1815" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Frac (Value)">
+   <BOUNDS height="0" left="4965" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Whole Part" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input 2" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Whole Part">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5850" top="1425" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7560" top="5190" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5850" top="1425" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   </PATCH>

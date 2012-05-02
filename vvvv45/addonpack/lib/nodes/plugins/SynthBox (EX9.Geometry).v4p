@@ -1,0 +1,119 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.dtd" >
+   <PATCH nodename="C:\Documents and Settings\Administrator\Desktop\SynthBox (EX9.Geometry).v4p">
+   <BOUNDS type="Window" left="1515" top="2805" width="9000" height="6000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="750" top="435" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1290" left="750" top="435" type="Box" width="2085">
+   </BOUNDS>
+   <BOUNDS height="160" left="3780" top="1755" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="24" values="1,1,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5535" top="345" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1890" left="5535" top="345" type="Box" width="2490">
+   </BOUNDS>
+   <BOUNDS height="160" left="7290" top="6240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="12">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="36" values="0,3,2,0,2,1,2,3,4,2,4,5,3,0,7,3,7,4,0,1,6,0,6,7,1,2,5,1,5,6,5,4,7,5,7,6">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="VertexBuffer (EX9.Geometry Join)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="2640" top="3240" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Texture Coordinate 0 XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Position XYZ">
+   </LINK>
+   <NODE nodename="Mesh (EX9.Geometry Join)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="3450" top="3825" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Vertex Buffer" dstnodeid="3" dstpinname="Vertex Buffer">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Indices">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="4">
+   <BOUNDS type="Node" left="3315" top="4830" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3315" top="4830" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5220" top="8805" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mesh">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Normals (EX9.Geometry Mesh)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="3600" top="4350" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Mesh" dstnodeid="5" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Mesh" dstnodeid="4" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="Box (EX9.Geometry)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="3375" top="1620" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Mesh (EX9.Geometry Split)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="3375" top="2100" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Mesh" dstnodeid="8" dstpinname="Mesh">
+   </LINK>
+   <NODE nodename="VertexBuffer (EX9.Geometry Split)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="3360" top="2520" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Enable Texture Coordinate 0" slicecount="1" values="|2D TexCoords|">
+   </PIN>
+   <PIN pinname="Texture Coordinate 0 XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Vertex Buffer" dstnodeid="9" dstpinname="Vertex Buffer">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Texture Coordinate 0 XY" dstnodeid="2" dstpinname="Texture Coordinate 0 XY">
+   </LINK>
+   </PATCH>

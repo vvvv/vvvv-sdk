@@ -1,0 +1,237 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
+   <PATCH nodename="C:\Users\woeishi\vvvv\vvvv45\addonpack\lib\nodes\Text (EX9.Texture) help.v4p" componentmode="InAWindow" systemname="Text (EX9.Texture) help" filename="C:\Users\woeishi\vvvv\vvvv45\addonpack\lib\nodes\Text (EX9.Texture) help.v4p">
+   <BOUNDS height="7950" left="6450" top="570" type="Window" width="6645">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="22" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="180" top="6825" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="180" top="6825" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="4860" left="300" top="570" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00334|">
+   </PIN>
+   <PIN pinname="Presentation Interval" slicecount="1" values="immediately">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="19" nodename="AspectRatio (Transform)" systemname="AspectRatio (Transform)">
+   <BOUNDS height="0" left="1605" top="7515" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Height" visible="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="FitHeight">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="585" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="405" left="255" top="585" type="Box" width="3600">
+   </BOUNDS>
+   <BOUNDS height="160" left="7020" top="13845" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Renders Text as a Texture|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="225" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="225" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="7020" top="13845" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Text - EX9.Texture|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Aspect Ratio" srcnodeid="19" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="2820" top="1395" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1695" left="2820" top="1395" type="Box" width="3270">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Input String" slicecount="4" values="|all i ever wanted|,|is a spreadable text texture|,|so i don&apos;t have to deal with|,|hundreds of renderpasses anymore|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\TextEX9Texture.dll" id="26" nodename="Text (EX9.Texture)" systemname="Text (EX9.Texture)">
+   <BOUNDS height="100" left="2520" top="4980" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="2520" top="4980" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="14955" top="8715" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Text Rendering Mode" slicecount="1" values="SingleLine">
+   </PIN>
+   <PIN pinname="Normalize" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="24">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Brush Color" slicecount="1" values="|0.40038,0.40038,0.40038,1.00000|">
+   </PIN>
+   <PIN pinname="Show Brush" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Lucida Console|">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="512">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="512">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Text" srcnodeid="24" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\PhongPoint.fx" id="28" nodename="PhongPoint (EX9.Effect)" systemname="PhongPoint (EX9.Effect)">
+   <BOUNDS height="100" left="180" top="5955" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Light Position XYZ" slicecount="3" visible="1" values="0,1.03,-2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Layers" srcnodeid="28" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="28" dstpinname="Texture" srcnodeid="26" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" id="31" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)">
+   <BOUNDS height="100" left="1155" top="6465" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Initial FOV" slicecount="1" values="0.1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="View" srcnodeid="31" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Projection" srcnodeid="31" srcpinname="Projection">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Aspect Width" srcnodeid="22" srcpinname="Actual Backbuffer Width">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Aspect Height" srcnodeid="22" srcpinname="Actual Backbuffer Height">
+   </LINK>
+   <NODE componentmode="Hidden" id="33" nodename="Transform (Transform 3d)" systemname="Transform (Transform 3d)">
+   <BOUNDS height="100" left="480" top="4980" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Yaw" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="0.58">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="28" dstpinname="Transform" srcnodeid="33" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="34" nodename="LinearSpread (Spreads)" systemname="LinearSpread (Spreads)">
+   <BOUNDS height="100" left="645" top="3195" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Spread Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="33" dstpinname="TranslateX" srcnodeid="34" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="35" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
+   <BOUNDS height="100" left="795" top="3810" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="-0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="33" dstpinname="TranslateY" srcnodeid="35" srcpinname="XY">
+   </LINK>
+   <NODE componentmode="Hidden" id="37" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="100" left="1725" top="4260" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="33" dstpinname="Yaw" srcnodeid="37" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="27" nodename="Sphere (EX9.Geometry)" systemname="Sphere (EX9.Geometry)">
+   <BOUNDS height="100" left="345" top="5565" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Radius 1">
+   </PIN>
+   <PIN pinname="Radius 2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="28" dstpinname="Mesh" srcnodeid="27" srcpinname="Mesh">
+   </LINK>
+   </PATCH>
