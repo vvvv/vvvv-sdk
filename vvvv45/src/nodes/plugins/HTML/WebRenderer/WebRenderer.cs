@@ -103,10 +103,8 @@ namespace VVVV.Nodes.HTML
             }
             if (FMouseEvent != mouseEvent)
             {
-                FMouseEvent = mouseEvent;
                 var x = (int) VMath.Map(mouseEvent.X, -1, 1, 0, FWidth, TMapMode.Clamp);
                 var y = (int) VMath.Map(mouseEvent.Y, 1, -1, 0, FHeight, TMapMode.Clamp);
-                
                 switch (mouseEvent.Button)
                 {
                     case MouseButton.Left:
@@ -125,6 +123,11 @@ namespace VVVV.Nodes.HTML
                             FBrowser.SendMouseMoveEvent(x, y, false);
                         break;
                 }
+                if (FMouseEvent.MouseWheelDelta != 0) 
+                {
+                    FBrowser.SendMouseWheelEvent(x, y, FMouseEvent.MouseWheelDelta);
+                }
+                FMouseEvent = mouseEvent;
             }
             
             isLoading = IsLoading;

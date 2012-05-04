@@ -26,6 +26,8 @@ namespace VVVV.Nodes.HTML
         public ISpread<bool> FMouseUpOut;
         [Output("Click Count")]
         public ISpread<int> FClickCountOut;
+        [Output("Mouse Wheel Delta")]
+        public ISpread<int> FMouseWheelDeltaOut;
 
         public void Evaluate(int spreadMax)
         {
@@ -36,14 +38,15 @@ namespace VVVV.Nodes.HTML
             FRightButtonOut.SliceCount = spreadMax;
             FMouseUpOut.SliceCount = spreadMax;
             FClickCountOut.SliceCount = spreadMax;
+            FMouseWheelDeltaOut.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
                 var mouseEvent = FInput[i];
                 double x, y;
                 bool leftButton, middleButton, rightButton, mouseUp;
-                int clickCount;
-                MouseEvent.Split(mouseEvent, out x, out y, out leftButton, out middleButton, out rightButton, out mouseUp, out clickCount);
+                int clickCount, mouseWheelDelta;
+                MouseEvent.Split(mouseEvent, out x, out y, out leftButton, out middleButton, out rightButton, out mouseUp, out clickCount, out mouseWheelDelta);
                 FXOut[i] = x;
                 FYOut[i] = y;
                 FLeftButtonOut[i] = leftButton;
@@ -51,6 +54,7 @@ namespace VVVV.Nodes.HTML
                 FRightButtonOut[i] = rightButton;
                 FMouseUpOut[i] = mouseUp;
                 FClickCountOut[i] = clickCount;
+                FMouseWheelDeltaOut[i] = mouseWheelDelta;
             }
         }
     }

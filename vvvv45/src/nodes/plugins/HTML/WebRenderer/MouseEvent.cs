@@ -1,12 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: elias
- * Date: 26.02.2012
- * Time: 03:13
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System;
 using VVVV.Core;
 
 namespace VVVV.Nodes.HTML
@@ -18,9 +10,7 @@ namespace VVVV.Nodes.HTML
         Middle,
         Right
     }
-    /// <summary>
-    /// Description of MouseEvent.
-    /// </summary>
+
     public struct MouseEvent : IEquatable<MouseEvent>
     {
         public double X;
@@ -28,14 +18,16 @@ namespace VVVV.Nodes.HTML
         public MouseButton Button;
         public bool MouseUp;
         public int ClickCount;
+        public int MouseWheelDelta;
         
-        public MouseEvent(double x, double y, MouseButton button, bool mouseUp, int clickCount)
+        public MouseEvent(double x, double y, MouseButton button, bool mouseUp, int clickCount, int mouseWheelDelta)
         {
             X = x;
             Y = y;
             Button = button;
             MouseUp = mouseUp;
             ClickCount = clickCount;
+            MouseWheelDelta = mouseWheelDelta;
         }
         
         [Node(Name = "MouseEvent", Category = "Join")]
@@ -46,7 +38,8 @@ namespace VVVV.Nodes.HTML
             bool middleButton,
             bool rightButton,
             bool mouseUp,
-            int clickCount)
+            int clickCount,
+            int mouseWheelDelta)
         {
             var button = MouseButton.None;
             if (leftButton)
@@ -55,7 +48,7 @@ namespace VVVV.Nodes.HTML
                 button = MouseButton.Middle;
             else if (rightButton)
                 button = MouseButton.Right;
-            return new MouseEvent(x, y, button, mouseUp, clickCount);
+            return new MouseEvent(x, y, button, mouseUp, clickCount, mouseWheelDelta);
         }
         
         [Node(Name = "MouseEvent", Category = "Split")]
@@ -67,7 +60,8 @@ namespace VVVV.Nodes.HTML
             out bool middleButton,
             out bool rightButton,
             out bool mouseUp,
-            out int clickCount
+            out int clickCount,
+            out int mouseWheelDelta
            )
         {
             x = mouseEvent.X;
@@ -77,6 +71,7 @@ namespace VVVV.Nodes.HTML
             rightButton = mouseEvent.Button == MouseButton.Right;
             mouseUp = mouseEvent.MouseUp;
             clickCount = mouseEvent.ClickCount;
+            mouseWheelDelta = mouseEvent.MouseWheelDelta;
         }
         
         #region Equals and GetHashCode implementation
@@ -94,13 +89,13 @@ namespace VVVV.Nodes.HTML
         public bool Equals(MouseEvent other)
         {
             // add comparisions for all members here
-            return this.X == other.X && this.Y == other.Y && this.Button == other.Button && this.ClickCount == other.ClickCount && this.MouseUp == other.MouseUp;
+            return this.X == other.X && this.Y == other.Y && this.Button == other.Button && this.ClickCount == other.ClickCount && this.MouseUp == other.MouseUp && this.MouseWheelDelta == other.MouseWheelDelta;
         }
         
         public override int GetHashCode()
         {
             // combine the hash codes of all members here (e.g. with XOR operator ^)
-            return X.GetHashCode() ^ Y.GetHashCode() ^ Button.GetHashCode() ^ ClickCount.GetHashCode() ^ MouseUp.GetHashCode();
+            return X.GetHashCode() ^ Y.GetHashCode() ^ Button.GetHashCode() ^ ClickCount.GetHashCode() ^ MouseUp.GetHashCode() ^ MouseWheelDelta.GetHashCode();
         }
         
         public static bool operator ==(MouseEvent left, MouseEvent right)
