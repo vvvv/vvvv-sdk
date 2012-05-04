@@ -26,7 +26,7 @@ namespace VVVV.Hosting.IO.Streams
         public override sealed bool Sync()
         {
             if (FIsFlushing) 
-                return false;
+                return IsChanged;
             IsChanged = FPluginConfig.PinIsChanged;
             if (IsChanged)
             {
