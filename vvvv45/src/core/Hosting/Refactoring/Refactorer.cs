@@ -356,16 +356,18 @@ namespace VVVV.Hosting
 					return "Color Input";
 				else
 					return "Color Output";}
-			else if (pinType == "Enumeration")
+			else if (pinType == "Enumerations")
 			{	if (input)
 					return "Input Enum";
 				else
 					return "Output Enum";}
 			else //assume node
-			{	if (input)
+			{	
+				if (input)
 					return "Input Node";
 				else
-					return "Output Node";}
+					return "Output Node";
+			}
 		}
 		
 		private NodeMessage CreateIOBox(PatchMessage patch, string pinType)
