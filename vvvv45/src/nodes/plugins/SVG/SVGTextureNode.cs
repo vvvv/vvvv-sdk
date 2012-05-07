@@ -234,6 +234,8 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
+			SetSlicecount(SpreadMax);
+			
 			for(int i=0; i<SpreadMax; i++)
 			{
 				//save to disc
@@ -257,6 +259,7 @@ namespace VVVV.Nodes
 			}
 		}
 		
+		protected abstract void SetSlicecount(int spreadMax);
 		protected abstract void WriteDoc(SvgDocument doc, int slice);
 	}
 	
@@ -271,6 +274,11 @@ namespace VVVV.Nodes
 	{	
 		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
 		ISpread<string> FFilenameIn;
+		
+		protected override void SetSlicecount(int spreadMax)
+		{
+			//nothing to do
+		}
 		
 		protected override void WriteDoc(SvgDocument doc, int slice)
 		{
@@ -289,6 +297,11 @@ namespace VVVV.Nodes
 	{	
 		[Output("XML")]
 		ISpread<string> FStringOut;
+		
+		protected override void SetSlicecount(int spreadMax)
+		{
+			FStringOut.SliceCount = spreadMax;
+		}
 		 
 		protected override void WriteDoc(SvgDocument doc, int slice)
 		{
@@ -297,7 +310,7 @@ namespace VVVV.Nodes
                 doc.Write(ms);
                 ms.Position = 0;
                 var sr = new StreamReader(ms);
-                FStringOut[0] = sr.ReadToEnd();
+                FStringOut[slice] = sr.ReadToEnd();
                 sr.Close();
             }
 		}
