@@ -155,8 +155,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
         this.AllocateGenericParametersIfNecessary(namespaceTypeDefinition, typeBuilder);
         this.loader.builderMap.Add(namespaceTypeDefinition, typeBuilder);
         this.loader.mapper.DefineMapping(namespaceTypeDefinition, typeBuilder); //so that typeBuilder references can be treated uniformly later on
-        foreach (var nestedType in namespaceTypeDefinition.NestedTypes)
-          this.TraverseChildren(nestedType);
+        //foreach (var nestedType in namespaceTypeDefinition.NestedTypes)
+          //this.TraverseChildren(nestedType);
         //TODO: also look at private helper members and private helper types
         base.TraverseChildren(namespaceTypeDefinition);
         foreach (var privateHelperMember in namespaceTypeDefinition.PrivateHelperMembers)
