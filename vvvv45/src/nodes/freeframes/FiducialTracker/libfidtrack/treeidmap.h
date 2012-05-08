@@ -1,6 +1,7 @@
 /*
   Fiducial tracking library.
   Copyright (C) 2004 Ross Bencina <rossb@audiomulch.com>
+  Maintainer (C) 2005-2008 Martin Kaltenbrunner <mkalten@iua.upf.edu>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -42,6 +43,9 @@ void initialize_treeidmap( TreeIdMap* treeidmap );
 void terminate_treeidmap( TreeIdMap* treeidmap );
 
 #define INVALID_TREE_ID     (-1)
+//#define FINGER_COUNT  (2)
+//#define FINGER_ID  (-10)
+
 
 // returns INVALID_TREE_ID for unfound id
 int treestring_to_id( TreeIdMap* treeidmap, const char *treestring );
