@@ -43,10 +43,10 @@ namespace VVVV.Nodes.HTML
             settings.FileAccessFromFileUrlsAllowed = true;
             settings.UniversalAccessFromFileUrlsAllowed = true;
             
-//            FForm = new Form();
+            //            FForm = new Form();
             using (var windowInfo = new CefWindowInfo())
             {
-//                windowInfo.SetAsOffScreen(FForm.Handle);
+                //                windowInfo.SetAsOffScreen(FForm.Handle);
                 windowInfo.SetAsOffScreen(IntPtr.Zero);
                 CefBrowser.Create(windowInfo, new WebClient(this), DEFAULT_URL, settings);
             }
@@ -123,7 +123,7 @@ namespace VVVV.Nodes.HTML
                             FBrowser.SendMouseMoveEvent(x, y, false);
                         break;
                 }
-                if (FMouseEvent.MouseWheelDelta != 0) 
+                if (FMouseEvent.MouseWheelDelta != 0)
                 {
                     FBrowser.SendMouseWheelEvent(x, y, FMouseEvent.MouseWheelDelta);
                 }
@@ -170,23 +170,13 @@ namespace VVVV.Nodes.HTML
             {
                 try
                 {
-                    // TODO: This feature is broken in current version. See http://code.google.com/p/chromiumembedded/issues/detail?id=469
-                    // We therefor need to redraw the whole area.
-                    //                    for (int i = 0; i < cefRects.Length; i++)
-                    //                    {
-                    //                        var rect = new Rectangle(cefRects[i].X, cefRects[i].Y, cefRects[i].Width, cefRects[i].Height);
-                    //                        foreach (var texture in FTextures)
-                    //                        {
-                    //                            WriteToTexture(rect, buffer, stride, texture);
-                    //                        }
-                    //                    }
-                    
-                    int width, height;
-                    FBrowser.GetSize(CefPaintElementType.View, out width, out height);
-                    foreach (var texture in FTextures)
+                    for (int i = 0; i < cefRects.Length; i++)
                     {
-                        var rect = new Rectangle(0, 0, width, height);
-                        WriteToTexture(rect, buffer, stride, texture);
+                        var rect = new Rectangle(cefRects[i].X, cefRects[i].Y, cefRects[i].Width, cefRects[i].Height);
+                        foreach (var texture in FTextures)
+                        {
+                            WriteToTexture(rect, buffer, stride, texture);
+                        }
                     }
                 }
                 catch (Exception e)
@@ -199,7 +189,6 @@ namespace VVVV.Nodes.HTML
         private void WriteToTexture(Rectangle rect, IntPtr buffer, int stride, Texture texture)
         {
             // TODO: Do not lock entire surface.
-            Shell.Instance.Logger.Log(LogType.Debug, string.Format("Dirty rect: {0}", rect));
             var dataRect = texture.LockRectangle(0, rect, LockFlags.None);
             try
             {
@@ -229,22 +218,14 @@ namespace VVVV.Nodes.HTML
             // TODO: Fix exceptions on start up.
             lock (FTextures)
             {
-                var buffer = Marshal.AllocHGlobal(FWidth * FHeight * 4);
-                try
+                var texture = new Texture(device, FWidth, FHeight, 1, Usage.None & ~Usage.AutoGenerateMipMap, Format.A8R8G8B8, Pool.Managed);
+                var rect = new CefRect(0, 0, FWidth, FHeight);
+                if (FBrowser != null)
                 {
-                    var texture = new Texture(device, FWidth, FHeight, 1, Usage.None & ~Usage.AutoGenerateMipMap, Format.A8R8G8B8, Pool.Managed);
-                    var rect = new CefRect(0, 0, FWidth, FHeight);
-                    if (FBrowser != null)
-                    {
-                        FBrowser.Invalidate(rect);
-                    }
-                    FTextures.Add(texture);
-                    return texture;
+                    FBrowser.Invalidate(rect);
                 }
-                finally
-                {
-                    Marshal.FreeHGlobal(buffer);
-                }
+                FTextures.Add(texture);
+                return texture;
             }
         }
         
