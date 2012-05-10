@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Utils to work with Linq.
@@ -32,5 +33,11 @@ namespace VVVV.Utils.Linq
 				}
 			}
 		}
+
+        public static bool None<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
+        {
+            // none means: tell me if a certain assumption is false for all elements
+            return enumerable.All(t => !predicate(t));
+        }
 	}
 }

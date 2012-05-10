@@ -263,10 +263,10 @@ namespace VVVV.HDE.GraphicalEditing
             
             if(IsClickable)
             {
-            	PNode.Click += new PInputEventHandler(PNode_Click);
-            	PNode.DoubleClick += new PInputEventHandler(PNode_DoubleClick);
-            	PNode.MouseDown += new PInputEventHandler(PNode_MouseDown);
-            	PNode.MouseUp += new PInputEventHandler(PNode_MouseUp);
+            	PNode.Click += PNode_Click;
+            	PNode.DoubleClick += PNode_DoubleClick;
+            	PNode.MouseDown += PNode_MouseDown;
+            	PNode.MouseUp += PNode_MouseUp;
             }
        }
 
@@ -292,41 +292,29 @@ namespace VVVV.HDE.GraphicalEditing
         	
         	//prevent click when mouse was dragged
         	if(Cursor.Position.GetDistanceTo(FMouseDownPos) < 3)
-        		Clickable.Click(e.Position, GetButton(e));
+                Clickable.Click(e.Position, Helpers.GetButton(e));
         }
         
         void PNode_DoubleClick(object sender, PInputEventArgs e)
         {
         	if(PreventEvent(e)) return;
-        	Clickable.DoubleClick(e.Position, GetButton(e));
+            Clickable.DoubleClick(e.Position, Helpers.GetButton(e));
         }
         
         void PNode_MouseDown(object sender, PInputEventArgs e)
         {
         	FMouseDownPos = Cursor.Position;
         	if(PreventEvent(e)) return;
-        	Clickable.MouseDown(e.Position, GetButton(e));
+        	Clickable.MouseDown(e.Position, Helpers.GetButton(e));
         }
         
         void PNode_MouseUp(object sender, PInputEventArgs e)
         {
         	if(PreventEvent(e)) return;
-        	Clickable.MouseUp(e.Position, GetButton(e));
+            Clickable.MouseUp(e.Position, Helpers.GetButton(e));
         }
         
-        protected Mouse_Buttons GetButton(PInputEventArgs e)
-        {
-        	Mouse_Buttons mb;
-        	
-        	switch(e.Button)
-        	{
-        		case MouseButtons.Right: mb = Mouse_Buttons.Right; break;
-        		case MouseButtons.Middle: mb = Mouse_Buttons.Middle; break;
-        		default: mb = Mouse_Buttons.Left; break;
-        	}	
-        	
-        	return mb;
-        }
+
 
         #endregion clickable
         
