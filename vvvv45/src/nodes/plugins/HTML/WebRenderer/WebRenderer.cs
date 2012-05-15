@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using CefGlue;
 using CefGlue.WebBrowser;
-using CefGlue.Windows.Forms;
 using SlimDX.Direct3D9;
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.VMath;
+using System.Threading;
 
 namespace VVVV.Nodes.HTML
 {
@@ -22,6 +22,7 @@ namespace VVVV.Nodes.HTML
         public const int DEFAULT_HEIGHT = 480;
         private readonly DXResource<Texture, CefBrowser> FTextureResource;
         private readonly List<Texture> FTextures = new List<Texture>();
+        private readonly WebClient FWebClient;
         private CefBrowser FBrowser;
         private int FWidth = DEFAULT_WIDTH;
         private int FHeight = DEFAULT_HEIGHT;
@@ -31,7 +32,7 @@ namespace VVVV.Nodes.HTML
         private Form FForm;
         internal int FFrameLoadCount;
         internal string FErrorText;
-        
+
         public WebRenderer()
         {
             CefService.AddRef();
@@ -42,15 +43,18 @@ namespace VVVV.Nodes.HTML
             settings.AcceleratedCompositingEnabled = false;
             settings.FileAccessFromFileUrlsAllowed = true;
             settings.UniversalAccessFromFileUrlsAllowed = true;
-            
-            //            FForm = new Form();
+            //settings.PluginsDisabled = true;
+
+            FForm = new Form();
             using (var windowInfo = new CefWindowInfo())
             {
-                //                windowInfo.SetAsOffScreen(FForm.Handle);
-                windowInfo.SetAsOffScreen(IntPtr.Zero);
-                CefBrowser.Create(windowInfo, new WebClient(this), DEFAULT_URL, settings);
+                windowInfo.SetAsOffScreen(FForm.Handle);
+                //windowInfo.SetAsOffScreen(IntPtr.Zero);
+
+                FWebClient = new WebClient(this);
+                CefBrowser.Create(windowInfo, FWebClient, DEFAULT_URL, settings);
             }
-            
+
             FTextureResource = new DXResource<Texture, CefBrowser>(
                 FBrowser,
                 CreateTexture,
@@ -58,14 +62,17 @@ namespace VVVV.Nodes.HTML
                 DestroyTexture
                );
         }
-        
+
         public void Dispose()
         {
+            if (FBrowser != null)
+            {
+                FBrowser.Close();
+            }
             FTextureResource.Dispose();
-            FBrowser.Dispose();
             CefService.Release();
         }
-        
+
         [Node(Name = "Renderer")]
         public DXResource<Texture, CefBrowser> Render(
             out bool isLoading,
@@ -83,7 +90,11 @@ namespace VVVV.Nodes.HTML
                 errorText = "Initializing ...";
                 return FTextureResource;
             }
-            
+
+            // Normalize inputs
+            width = Math.Max(1, width);
+            height = Math.Max(1, height);
+
             if (width != FWidth || height != FHeight)
             {
                 FTextureResource.Dispose();
@@ -94,7 +105,10 @@ namespace VVVV.Nodes.HTML
             if (FUrl != url)
             {
                 FUrl = url;
-                FBrowser.GetMainFrame().LoadURL(url);
+                using (var mainFrame = FBrowser.GetMainFrame())
+                {
+                    mainFrame.LoadURL(url);
+                }
             }
             if (FZoomLevel != zoomLevel)
             {
@@ -103,8 +117,8 @@ namespace VVVV.Nodes.HTML
             }
             if (FMouseEvent != mouseEvent)
             {
-                var x = (int) VMath.Map(mouseEvent.X, -1, 1, 0, FWidth, TMapMode.Clamp);
-                var y = (int) VMath.Map(mouseEvent.Y, 1, -1, 0, FHeight, TMapMode.Clamp);
+                var x = (int)VMath.Map(mouseEvent.X, -1, 1, 0, FWidth, TMapMode.Clamp);
+                var y = (int)VMath.Map(mouseEvent.Y, 1, -1, 0, FHeight, TMapMode.Clamp);
                 switch (mouseEvent.Button)
                 {
                     case MouseButton.Left:
@@ -129,13 +143,13 @@ namespace VVVV.Nodes.HTML
                 }
                 FMouseEvent = mouseEvent;
             }
-            
+
             isLoading = IsLoading;
             errorText = FErrorText;
-            
+
             return FTextureResource;
         }
-        
+
         public bool IsLoading
         {
             get
@@ -143,7 +157,7 @@ namespace VVVV.Nodes.HTML
                 return FFrameLoadCount > 0;
             }
         }
-        
+
         internal void Attach(CefBrowser browser)
         {
             if (FBrowser != null)
@@ -163,7 +177,7 @@ namespace VVVV.Nodes.HTML
                 FBrowser = null;
             }
         }
-        
+
         internal void Paint(CefRect[] cefRects, IntPtr buffer, int stride)
         {
             lock (FTextures)
@@ -185,7 +199,7 @@ namespace VVVV.Nodes.HTML
                 }
             }
         }
-        
+
         private void WriteToTexture(Rectangle rect, IntPtr buffer, int stride, Texture texture)
         {
             // TODO: Do not lock entire surface.
@@ -212,7 +226,7 @@ namespace VVVV.Nodes.HTML
                 texture.UnlockRectangle(0);
             }
         }
-        
+
         private Texture CreateTexture(CefBrowser browser, Device device)
         {
             // TODO: Fix exceptions on start up.
@@ -228,7 +242,7 @@ namespace VVVV.Nodes.HTML
                 return texture;
             }
         }
-        
+
         private void UpdateTexture(CefBrowser browser, Texture texture)
         {
             //            IntPtr buffer = Marshal.AllocHGlobal(FWidth * FHeight * 4);
@@ -236,7 +250,7 @@ namespace VVVV.Nodes.HTML
             //            WriteToTexture(new Rectangle(0, 0, FWidth, FHeight), buffer, FWidth * 4, texture);
             //            Marshal.FreeHGlobal(buffer);
         }
-        
+
         private void DestroyTexture(CefBrowser browser, Texture texture)
         {
             lock (FTextures)

@@ -41,11 +41,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CefGlue">
+    <Reference Include="CefGlue, Version=0.5.0.2, Culture=neutral, PublicKeyToken=e04ebe913885ce92, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\thirdparty\CefGlue\CefGlue.dll</HintPath>
-    </Reference>
-    <Reference Include="CefGlue.Windows.Forms">
-      <HintPath>..\..\..\..\thirdparty\CefGlue\CefGlue.Windows.Forms.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX">
       <HintPath>..\..\..\..\thirdparty\SlimDX.dll</HintPath>
@@ -71,6 +69,8 @@
     <Compile Include="MouseEventJoinNode.cs" />
     <Compile Include="MouseEventSplitNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemeHandler.cs" />
+    <Compile Include="SchemeHandlerFactory.cs" />
     <Compile Include="WebClient.cs" />
     <Compile Include="WebRenderer.cs" />
     <Compile Include="WebRendererNode.cs" />
@@ -93,51 +93,51 @@
   <ItemGroup>
     <None Include="..\..\..\..\thirdparty\CefGlue\avcodec-53.dll">
       <Link>avcodec-53.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\avformat-53.dll">
       <Link>avformat-53.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\avutil-51.dll">
       <Link>avutil-51.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\chrome.pak">
       <Link>chrome.pak</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\d3dcompiler_43.dll">
       <Link>d3dcompiler_43.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\d3dx9_43.dll">
       <Link>d3dx9_43.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\icudt.dll">
       <Link>icudt.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\libcef.dll">
       <Link>libcef.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\libEGL.dll">
       <Link>libEGL.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\libGLESv2.dll">
       <Link>libGLESv2.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\locales\de.pak">
       <Link>locales\de.pak</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\thirdparty\CefGlue\locales\en-US.pak">
       <Link>locales\en-US.pak</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />

@@ -2,6 +2,8 @@
 using CefGlue;
 using VVVV.Core;
 using VVVV.Core.Logging;
+using System.IO;
+using System.Text;
 
 namespace VVVV.Nodes.HTML
 {
@@ -69,8 +71,8 @@ namespace VVVV.Nodes.HTML
             
             protected override void OnBeforeClose(CefBrowser browser)
             {
+                browser.Dispose();
                 FRenderer.Detach();
-                base.OnBeforeClose(browser);
             }
         }
         
