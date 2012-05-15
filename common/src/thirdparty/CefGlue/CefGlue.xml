@@ -1858,6 +1858,52 @@
             will be fixed then this value must be false.
             </summary>
         </member>
+        <member name="M:CefGlue.CefWebPluginInfo.From(CefGlue.Interop.cef_web_plugin_info_t*)">
+            <summary>
+            Create CefWebPluginInfo proxy from pointer.
+            </summary>
+        </member>
+        <member name="M:CefGlue.CefWebPluginInfo.AddRef">
+            <summary>
+            The AddRef method increments the reference count for the object. It should
+            be called for every new copy of a pointer to a given object. The resulting
+            reference count value is returned and should be used for diagnostic/testing
+            purposes only.
+            </summary>
+        </member>
+        <member name="M:CefGlue.CefWebPluginInfo.ReleaseRef">
+            <summary>
+            The Release method decrements the reference count for the object. If the
+            reference count on the object falls to 0, then the object should free
+            itself from memory.  The resulting reference count value is returned and
+            should be used for diagnostic/testing purposes only.
+            </summary>
+        </member>
+        <member name="P:CefGlue.CefWebPluginInfo.Name">
+            <summary>
+            Returns the plugin name (i.e. Flash).
+            </summary>
+        </member>
+        <member name="P:CefGlue.CefWebPluginInfo.Path">
+            <summary>
+            Returns the plugin file path (DLL/bundle/library).
+            </summary>
+        </member>
+        <member name="P:CefGlue.CefWebPluginInfo.Version">
+            <summary>
+            Returns the version of the plugin (may be OS-specific).
+            </summary>
+        </member>
+        <member name="P:CefGlue.CefWebPluginInfo.Description">
+            <summary>
+            Returns a description of the plugin from the version information.
+            </summary>
+        </member>
+        <member name="P:CefGlue.CefWebPluginInfo.RefCount">
+            <summary>
+            Return the current number of references.
+            </summary>
+        </member>
         <member name="T:CefGlue.Interop.cef_time_t">
             
         </member>
@@ -4743,32 +4789,6 @@
             True if the value type is function.
             </summary>
         </member>
-        <member name="M:CefGlue.CefWebPluginInfo.From(CefGlue.Interop.cef_web_plugin_info_t*)">
-            <summary>
-            Create CefWebPluginInfo proxy from pointer.
-            </summary>
-        </member>
-        <member name="M:CefGlue.CefWebPluginInfo.AddRef">
-            <summary>
-            The AddRef method increments the reference count for the object. It should
-            be called for every new copy of a pointer to a given object. The resulting
-            reference count value is returned and should be used for diagnostic/testing
-            purposes only.
-            </summary>
-        </member>
-        <member name="M:CefGlue.CefWebPluginInfo.ReleaseRef">
-            <summary>
-            The Release method decrements the reference count for the object. If the
-            reference count on the object falls to 0, then the object should free
-            itself from memory.  The resulting reference count value is returned and
-            should be used for diagnostic/testing purposes only.
-            </summary>
-        </member>
-        <member name="P:CefGlue.CefWebPluginInfo.RefCount">
-            <summary>
-            Return the current number of references.
-            </summary>
-        </member>
         <member name="M:CefGlue.CefWebUrlRequest.From(CefGlue.Interop.cef_web_urlrequest_t*)">
             <summary>
             Create CefWebUrlRequest proxy from pointer.
@@ -5466,6 +5486,24 @@
             If |path| is empty data will be stored in memory only.
             By default the storage path is the same as the cache path.
             Returns false if the storage cannot be accessed.
+            </summary>
+        </member>
+        <member name="M:CefGlue.Cef.GetWebPluginCount">
+            <summary>
+            Returns the number of installed web plugins. This function must be
+            called on the UI thread.
+            </summary>
+        </member>
+        <member name="M:CefGlue.Cef.GetWebPluginInfo(System.Int32)">
+            <summary>
+            Returns information for web plugin at the specified zero-based index.
+            This function must be called on the UI thread.
+            </summary>
+        </member>
+        <member name="M:CefGlue.Cef.GetWebPluginInfo(System.String)">
+            <summary>
+            Returns information for web plugin with the specified name. This
+            function must be called on the UI thread.
             </summary>
         </member>
         <member name="T:CefGlue.Interop.cef_xml_node_type_t">
