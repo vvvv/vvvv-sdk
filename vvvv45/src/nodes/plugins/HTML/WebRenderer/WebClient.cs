@@ -75,24 +75,24 @@ namespace VVVV.Nodes.HTML
                 FRenderer.Detach();
             }
         }
-        
-//        class DomEventEventListener : CefDomEventListener
-//        {
-//            protected override void HandleEvent(CefDomEvent e)
-//            {
-//                var currentTarget = e.GetCurrentTarget();
-//                var target = e.GetTarget();
-//            }
-//        }
-//        
-//        class DomVisitor : CefDomVisitor
-//        {
-//            protected override void Visit(CefDomDocument document)
-//            {
-//                var rootNode = document.GetDocument();
-//                rootNode.AddEventListener("mouseover", new DomEventEventListener(), false);
-//            }
-//        }
+
+        class DomEventEventListener : CefDomEventListener
+        {
+            protected override void HandleEvent(CefDomEvent e)
+            {
+                var currentTarget = e.GetCurrentTarget();
+                var target = e.GetTarget();
+            }
+        }
+
+        class DomVisitor : CefDomVisitor
+        {
+            protected override void Visit(CefDomDocument document)
+            {
+                var rootNode = document.GetDocument();
+                rootNode.AddEventListener("mouseover", new DomEventEventListener(), false);
+            }
+        }
         
         class LoadHandler : CefLoadHandler
         {
@@ -125,16 +125,26 @@ namespace VVVV.Nodes.HTML
 //                frame.VisitDom(new DomVisitor());
             }
         }
+
+        class KeyboardHandler : CefKeyboardHandler
+        {
+            protected override bool OnKeyEvent(CefBrowser browser, CefHandlerKeyEventType type, int code, CefHandlerKeyEventModifiers modifiers, bool isSystemKey, bool isAfterJavaScript)
+            {
+                return base.OnKeyEvent(browser, type, code, modifiers, isSystemKey, isAfterJavaScript);
+            }
+        }
         
         private readonly CefRenderHandler FRenderHandler;
         private readonly CefLifeSpanHandler FLifeSpanHandler;
         private readonly CefLoadHandler FLoadHandler;
+        private readonly CefKeyboardHandler FKeyboardHandler;
         
         public WebClient(WebRenderer renderer)
         {
             FRenderHandler = new RenderHandler(renderer);
             FLifeSpanHandler = new LifeSpanHandler(renderer);
             FLoadHandler = new LoadHandler(renderer);
+            FKeyboardHandler = new KeyboardHandler();
         }
         
         protected override CefDisplayHandler GetDisplayHandler()
@@ -169,7 +179,7 @@ namespace VVVV.Nodes.HTML
         
         protected override CefKeyboardHandler GetKeyboardHandler()
         {
-            return base.GetKeyboardHandler();
+            return FKeyboardHandler;
         }
         
         protected override CefLifeSpanHandler GetLifeSpanHandler()

@@ -22,6 +22,8 @@ namespace VVVV.Nodes.HTML
         public ISpread<double> FZoomLevelIn;
         [Input("Mouse Event")]
         public ISpread<MouseEvent> FMouseEventIn;
+        [Input("Key Event")]
+        public ISpread<KeyEvent> FKeyEventIn;
 
         [Output("Output")]
         public ISpread<DXResource<Texture, CefBrowser>> FOutput;
@@ -48,9 +50,10 @@ namespace VVVV.Nodes.HTML
                 var height = FHeightIn[i];
                 var zoomLevel = FZoomLevelIn[i];
                 var mouseEvent = FMouseEventIn[i];
+                var keyEvent = FKeyEventIn[i];
                 bool isLoading;
                 string errorText;
-                var output = webRenderer.Render(out isLoading, out errorText, url, width, height, zoomLevel, mouseEvent);
+                var output = webRenderer.Render(out isLoading, out errorText, url, width, height, zoomLevel, mouseEvent, keyEvent);
                 FOutput[i] = output;
                 FIsLoadingOut[i] = isLoading;
                 FErrorTextOut[i] = errorText;

@@ -29,6 +29,7 @@ namespace VVVV.Nodes.HTML
         private string FUrl;
         private double FZoomLevel;
         private MouseEvent FMouseEvent;
+        private KeyEvent FKeyEvent;
         private Form FForm;
         internal int FFrameLoadCount;
         internal string FErrorText;
@@ -81,7 +82,8 @@ namespace VVVV.Nodes.HTML
             int width = DEFAULT_WIDTH,
             int height = DEFAULT_HEIGHT,
             double zoomLevel = 0,
-            MouseEvent mouseEvent = default(MouseEvent)
+            MouseEvent mouseEvent = default(MouseEvent),
+            KeyEvent keyEvent = default(KeyEvent)
            )
         {
             if (FBrowser == null)
@@ -142,6 +144,14 @@ namespace VVVV.Nodes.HTML
                     FBrowser.SendMouseWheelEvent(x, y, FMouseEvent.MouseWheelDelta);
                 }
                 FMouseEvent = mouseEvent;
+            }
+            if (FKeyEvent != keyEvent)
+            {
+                var keyType = keyEvent.IsKeyDown ? CefKeyType.KeyDown : CefKeyType.KeyUp;
+                //var modifiers = (CefHandlerKeyEventModifiers)((keyEvent.Key & (int)Keys.Modifiers) >> 16);
+                var modifiers = (CefHandlerKeyEventModifiers)0;
+                FBrowser.SendKeyEvent(keyType, keyEvent.Key, modifiers, false, false);
+                FKeyEvent = keyEvent;
             }
 
             isLoading = IsLoading;
