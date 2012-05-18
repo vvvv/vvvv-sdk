@@ -21,18 +21,18 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
     /// </summary>
     public partial class TableViewer : Viewer
     {
-        private IModelMapper FMapper;
+        private ModelMapper FMapper;
         private Synchronizer<object, object> FRowSynchronizer;
         
         public new event ClickHandler Click;
-        protected void OnClick(IModelMapper sender, MouseEventArgs e)
+        protected void OnClick(ModelMapper sender, MouseEventArgs e)
         {
             if (Click != null)
                 Click(sender, e);
         }
         
         public new event ClickHandler DoubleClick;
-        protected void OnDoubleClick(IModelMapper sender, MouseEventArgs e)
+        protected void OnDoubleClick(ModelMapper sender, MouseEventArgs e)
         {
             if (DoubleClick != null)
                 DoubleClick(sender, e);

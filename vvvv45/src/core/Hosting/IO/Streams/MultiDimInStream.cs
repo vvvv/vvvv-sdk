@@ -263,7 +263,7 @@ namespace VVVV.Hosting.IO.Streams
             FBinSizeContainer = factory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
             FDataStream = FDataContainer.IOObject;
             FBinSizeStream = FBinSizeContainer.IOObject;
-            FNormBinSizeStream = new BufferedIOStream<int>();
+            FNormBinSizeStream = new BufferedIOStream<int>(FBinSizeStream.Length);
             FBinSizeBuffer = new int[16]; // 64 byte
         }
         

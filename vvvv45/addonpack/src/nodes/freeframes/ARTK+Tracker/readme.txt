@@ -12,7 +12,7 @@
 //german: http://www.gnu.de/documents/gpl.de.html
 
 //////language/ide
-//c++/codeblocks
+//c++/codeblocks (using mingw 3.4.5)
 
 //////dependencies
 //ARToolkitPlus library:

@@ -131,7 +131,7 @@ namespace VVVV.Nodes
 				{
 					FUserIdOut.SliceCount = FUserGenerator.NumberOfUsers;
 					FPositionOut.SliceCount = FUserGenerator.NumberOfUsers;
-					FTextureOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FTextureOut.SliceCount = 1;
 						
 					if (FUserGenerator.NumberOfUsers > 0)
 					{

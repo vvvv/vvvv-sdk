@@ -55,7 +55,14 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		Configuration,
 		Input,
-		Output,
+		Output
+	}
+	
+	public enum BoundsType
+	{
+		Node,
+		Box,
+		Window
 	}
 	
 	/// <summary>

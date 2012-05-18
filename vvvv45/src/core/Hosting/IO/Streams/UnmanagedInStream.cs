@@ -526,7 +526,7 @@ namespace VVVV.Hosting.IO.Streams
 				Debug.Assert(Position < Length);
 				RGBAColor* src = FPData + Position;
 				Position += stride;
-				return new Color4((float) src->R, (float) src->G, (float) src->B, (float) src->A);
+				return new Color4((float) src->A, (float) src->R, (float) src->G, (float) src->B);
 			}
 			
 			protected override void Copy(Color4[] destination, int destinationIndex, int length, int stride)

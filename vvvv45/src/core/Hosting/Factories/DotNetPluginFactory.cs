@@ -496,7 +496,7 @@ namespace VVVV.Hosting.Factories
         }
     }
     
-    class PluginContainer : IPlugin, IDisposable
+    public class PluginContainer : IPlugin, IDisposable
     {
         [Export(typeof(IIOFactory))]
         private readonly IOFactory FIOFactory;
@@ -528,6 +528,7 @@ namespace VVVV.Hosting.Factories
             FContainer = new CompositionContainer(catalog, exportProviders);
             FContainer.ComposeParts(this);
             FPlugin = PluginBase as IPluginEvaluate;
+
             FAutoEvaluate = nodeInfo.AutoEvaluate;
             FIOFactory.OnCreated(EventArgs.Empty);
         }

@@ -18,7 +18,7 @@ namespace VVVV.PluginInterfaces.V2
 	public interface ISpread : IEnumerable, ICloneable, ISynchronizable, IFlushable
 	{
 		/// <summary>
-		/// Provides read/write access to the actual data.
+		/// Provides random read/write access to the actual data.
 		/// </summary>
 		object this[int index]
 		{
@@ -44,7 +44,7 @@ namespace VVVV.PluginInterfaces.V2
 	public interface ISpread<T> : IEnumerable<T>, ISpread
 	{
 		/// <summary>
-		/// Provides read/write access to the actual data.
+		/// Provides random read/write access to the actual data.
 		/// </summary>
 		new T this[int index]
 		{
@@ -55,12 +55,21 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Get/Set the size of this spread.
 		/// </summary>
-		new int SliceCount
+		new int SliceCount // Do not remove this or it will break pre-compiled plugins.
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Create a copy of the <see cref="ISpread{T}"/>.
+		/// </summary>
+		/// <returns>A new copy of this <see cref="ISpread{T}"/>.</returns>
+		new ISpread<T> Clone();
+		
+		/// <summary>
+		/// Gets the stream this spread uses for reading and writing.
+		/// </summary>
 		BufferedIOStream<T> Stream
 		{
 			get;
@@ -157,16 +166,6 @@ namespace VVVV.PluginInterfaces.V2
 			
 			for (int i = 0; i < list.Count; i++)
 				spread[i] = list[i];
-		}
-		
-		/// <summary>
-		/// Create a copy of the <see cref="ISpread{T}"/>.
-		/// </summary>
-		/// <param name="spread">The <see cref="ISpread{T}"/> to copy.</param>
-		/// <returns>A new copy of <see cref="ISpread{T}"/>.</returns>
-		public static ISpread<T> Clone<T>(this ISpread<T> spread)
-		{
-			return spread.Clone() as ISpread<T>;
 		}
 		
 		/// <summary>
@@ -481,6 +480,22 @@ namespace VVVV.PluginInterfaces.V2
 		public static void Resize<T>(this ISpread<T> spread, int sliceCount, Func<T> constructor, Action<T> destructor)
         {
 		    spread.Stream.Resize(sliceCount, constructor, destructor);
+        }
+		
+		public static void Resize<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor, Action<T> destructor)
+		{
+		    spread.Stream.Resize(sliceCount, constructor, destructor);
+		}
+		
+		public static void ResizeAndDismiss<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+        {
+            spread.Stream.ResizeAndDismiss(sliceCount, constructor);
+        }
+        
+        public static void ResizeAndDispose<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+            where T : IDisposable
+        {
+            spread.Resize(sliceCount, constructor, (t) => t.Dispose());
         }
 		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(
