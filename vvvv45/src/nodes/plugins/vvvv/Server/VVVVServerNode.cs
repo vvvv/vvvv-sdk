@@ -172,10 +172,13 @@ namespace VVVV.Nodes
 				
 				var bundle = new OSCBundle();
 				var message = new OSCMessage(pinPath);
-//				var spread = pin.Spread;
-				var spread = pin[0];
+				var spread = pin.Spread;
 				if (spread.IndexOf(",") > -1)
-					message.Values.AddRange(pin.Spread.Split(','));
+				{
+					var values = pin.Spread.Split(',');
+					foreach (var value in values)
+						message.Append(value);
+				}
 				else
 					message.Append(spread);
 				
