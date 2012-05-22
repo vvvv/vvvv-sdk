@@ -1242,7 +1242,7 @@ namespace VVVV.Utils.VMath
         	var dsqr = P1toP2 | P1toP2; // d^2 needed later
         	var d = Math.Sqrt(dsqr);
         	
-        	//assume, that sphere 1 an 2 intersect
+        	//assume, that sphere 1 and 2 intersect
         	if((d - r1 <= r2) && (r2 <= d + r1))
         	{
         		
