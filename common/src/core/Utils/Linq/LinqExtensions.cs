@@ -39,5 +39,11 @@ namespace VVVV.Utils.Linq
             // none means: tell me if a certain assumption is false for all elements
             return enumerable.All(t => !predicate(t));
         }
+
+        public static bool None<T>(this IEnumerable<T> enumerable)
+        {
+            // none means: tell me if there is no element
+            return !enumerable.Any();
+        }
 	}
 }
