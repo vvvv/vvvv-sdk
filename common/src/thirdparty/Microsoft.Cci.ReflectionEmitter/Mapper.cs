@@ -100,22 +100,30 @@ namespace Microsoft.Cci.ReflectionEmitter {
                 var genericContainingType = fieldReference.ContainingType as IGenericTypeInstanceReference;
                 if (genericContainingType != null) {
                     result = this.fieldMap.Find(genericContainingType.GenericType.InternedKey, (uint)fieldReference.Name.UniqueKey);
-                    this.fieldMap.Add(genericContainingType.GenericType.InternedKey, (uint)fieldReference.Name.UniqueKey, result);
-                    return result;
+                    if (result != null)
+                    {
+                        this.fieldMap.Add(genericContainingType.GenericType.InternedKey, (uint)fieldReference.Name.UniqueKey, result);
+                        return result;
+                    }
                 }
                 var containingType = this.GetType(fieldReference.ContainingType);
                 if (containingType == null) return null;
                 var fieldType = this.GetType(fieldReference.Type);
                 if (fieldType == null) return null;
-                foreach (var member in containingType.GetMember(fieldReference.Name.Value, BindingFlags.NonPublic|BindingFlags.DeclaredOnly)) {
+                var bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+                foreach (var member in containingType.GetMember(fieldReference.Name.Value, bindingAttr))
+                {
                     var field = (FieldInfo)member as FieldInfo;
                     if (field == null) continue;
                     if (field.FieldType != fieldType) continue;
                     if (fieldReference.IsModified) {
                         if (!this.ModifiersMatch(field.GetOptionalCustomModifiers(), field.GetRequiredCustomModifiers(), fieldReference.CustomModifiers)) continue;
                     }
+                    result = field;
+                    break;
                 }
-                this.fieldMap.Add(fieldReference.ContainingType.InternedKey, (uint)fieldReference.Name.UniqueKey, result);
+                if (result != null)
+                    this.fieldMap.Add(fieldReference.ContainingType.InternedKey, (uint)fieldReference.Name.UniqueKey, result);
             }
             return result;
         }
