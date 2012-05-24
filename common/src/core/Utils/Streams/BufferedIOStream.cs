@@ -221,7 +221,7 @@ namespace VVVV.Utils.Streams
         public bool IsChanged
         {
             get { return FChangeCount > 0; }
-            set { if (value) FChangeCount++; }
+            set { if (value) FChangeCount++; else FChangeCount = 0; }
         }
         
         public int Length
