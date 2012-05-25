@@ -13,6 +13,7 @@ namespace VVVV.Hosting.IO.Streams
     {  
         private readonly IPluginConfig FPluginConfig;
         private bool FIsFlushing;
+        private int FPreviousChangeCount;
         
         public PluginConfigStream(IPluginConfig pluginConfig)
         {
@@ -26,7 +27,7 @@ namespace VVVV.Hosting.IO.Streams
         public override sealed bool Sync()
         {
             if (FIsFlushing) 
-                return false;
+                return IsChanged;
             IsChanged = FPluginConfig.PinIsChanged;
             if (IsChanged)
             {
@@ -36,6 +37,8 @@ namespace VVVV.Hosting.IO.Streams
                 {
                     writer.Write(GetSlice(i));
                 }
+                // Remember the change count in order to avoid cyclic flush/sync behaviour
+                FPreviousChangeCount = FChangeCount;
             }
             return base.Sync();
         }
@@ -45,7 +48,7 @@ namespace VVVV.Hosting.IO.Streams
             FIsFlushing = true;
             try 
             {
-                if (IsChanged)
+                if (FPreviousChangeCount < FChangeCount)
                 {
                     FPluginConfig.SliceCount = Length;
                     var reader = GetReader();
@@ -54,11 +57,12 @@ namespace VVVV.Hosting.IO.Streams
                         SetSlice(i, reader.Read());
                     }
                 }
-                base.Flush();
             } 
             finally 
             {
+                base.Flush();
                 FIsFlushing = false;
+                FPreviousChangeCount = FChangeCount;
             }
         }
     }

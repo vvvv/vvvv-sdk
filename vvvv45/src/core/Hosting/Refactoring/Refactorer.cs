@@ -330,7 +330,7 @@ namespace VVVV.Hosting
 			//enabling this fukcs it up:
 			var nodeB = nodeMsg.AddBounds(BoundsType.Node);
 			nodeB.Rectangle = new Rectangle(selectionCenter.X, selectionCenter.Y, 0, 0);
-			var boxB = nodeMsg.AddBounds(BoundsType.Node);
+			var boxB = nodeMsg.AddBounds(BoundsType.Box);
 			boxB.Rectangle = new Rectangle(selectionCenter.X - selectionSize.Width / 2, selectionCenter.Y - selectionSize.Height / 2, selectionSize.Width, selectionSize.Height);
 			var windowB = nodeMsg.AddBounds(BoundsType.Window);
 			windowB.Rectangle = new Rectangle(300 + selectionCenter.X + hdeHost.ActivePatchWindow.Bounds.X * 15, 300 + selectionCenter.Y + hdeHost.ActivePatchWindow.Bounds.Y * 15, selectionSize.Width, selectionSize.Height);
@@ -356,16 +356,18 @@ namespace VVVV.Hosting
 					return "Color Input";
 				else
 					return "Color Output";}
-			else if (pinType == "Enumeration")
+			else if (pinType == "Enumerations")
 			{	if (input)
 					return "Input Enum";
 				else
 					return "Output Enum";}
 			else //assume node
-			{	if (input)
+			{	
+				if (input)
 					return "Input Node";
 				else
-					return "Output Node";}
+					return "Output Node";
+			}
 		}
 		
 		private NodeMessage CreateIOBox(PatchMessage patch, string pinType)
