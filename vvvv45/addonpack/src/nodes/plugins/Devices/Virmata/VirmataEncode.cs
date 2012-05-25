@@ -65,9 +65,9 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "FirmataEncode",
 	Category = "Devices",
-	Version = "Firmata v2.2",
-	Help = "Encodes pins, values and commands for Firmata (Protocol v2.2)",
-	Tags = "Devices,Encoders")]
+	Version = "1.0",
+	Help = "Encodes pins, values and commands for Firmata protocol version 2.x",
+	Tags = "Arduino")]
 	#endregion PluginInfo
 
 	public class FirmataEncode : IPluginEvaluate
