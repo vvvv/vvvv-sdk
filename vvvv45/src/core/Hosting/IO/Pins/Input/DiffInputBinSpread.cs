@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace VVVV.Hosting.Pins.Input
 {

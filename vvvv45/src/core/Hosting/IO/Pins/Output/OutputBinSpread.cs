@@ -6,9 +6,9 @@ using VVVV.Utils.Streams;
 namespace VVVV.Hosting.Pins.Output
 {
     [ComVisible(false)]
-    class OutputBinSpread<T> : BinSpread<T>, IDisposable
+    public class OutputBinSpread<T> : BinSpread<T>, IDisposable
     {
-        internal class OutputBinSpreadStream : BinSpreadStream, IDisposable
+        public class OutputBinSpreadStream : BinSpreadStream, IDisposable
         {
             private readonly IIOContainer<IOutStream<T>> FDataContainer;
             private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
