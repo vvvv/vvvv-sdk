@@ -89,8 +89,8 @@ namespace VVVV.Nodes
 		[Input("Reset",IsSingle = true, IsBang=true, DefaultValue = 0)]
 		IDiffSpread<bool> FResetSystem;
 
-		//// Use a default SamplingRate of 40ms
-		[Input("Samplerate", MinValue = 0, DefaultValue = 40,IsSingle = true, Visibility = PinVisibility.Hidden)]
+		//// Use a default SamplingRate of 16ms
+		[Input("Samplerate", MinValue = 0, DefaultValue = 16,IsSingle = true, Visibility = PinVisibility.Hidden)]
 		IDiffSpread<int> FSamplerate;
 
 //		Not yet used!
