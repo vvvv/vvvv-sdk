@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.1.dtd" >
-   <PATCH nodename="C:\Users\horst\DEV\vvvv-plugins\VVVVirmata\modules\Arduino (Devices StandardFirmata 2.2) help.v4p" bgcolor="15329769" filename="C:\Users\jens\devel\v4plugins\VirmataEncoder\Arduino (Devices StandardFirmata 2.2) (help).v4p" systemname="Arduino (Devices StandardFirmata 2.2)">
-   <BOUNDS height="12630" left="0" top="150" type="Window" width="11175">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
+   <PATCH nodename="C:\Users\horst\DEV\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.2) help.v4p" bgcolor="15329769" filename="C:\Users\jens\devel\v4plugins\VirmataEncoder\Arduino (Devices StandardFirmata 2.2) (help).v4p" systemname="Arduino (Devices StandardFirmata 2.2)">
+   <BOUNDS height="12630" left="2385" top="450" type="Window" width="11175">
    </BOUNDS>
    <NODE componentmode="InABox" id="101" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="1260" top="9675" type="Node" width="100">
@@ -93,9 +93,9 @@
    <NODE componentmode="InABox" id="53" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="14" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+   <PIN pinname="Y Input Value" slicecount="14" values="0,0,1,1,1,1,1,0,0,0,0,0,0,0">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="14" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+   <PIN pinname="X Input Value" slicecount="14" values="0,0,1,1,1,1,1,0,0,0,0,0,0,0">
    </PIN>
    <BOUNDS height="100" left="330" top="3090" type="Node" width="100">
    </BOUNDS>
@@ -143,7 +143,7 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0.931818181818182">
    </PIN>
    <BOUNDS height="100" left="2730" top="4590" type="Node" width="100">
    </BOUNDS>
@@ -171,7 +171,7 @@
    </BOUNDS>
    <BOUNDS height="600" left="3525" top="5460" type="Box" width="345">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="2" values="6,11">
+   <PIN pinname="Y Input Value" slicecount="2" values="9,11">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
@@ -235,11 +235,11 @@
    </PIN>
    <BOUNDS height="11910" left="5310" top="120" type="Window" width="8985">
    </BOUNDS>
-   <PIN pinname="Analog" visible="1">
+   <PIN pinname="Analog" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Digital" visible="1">
+   <PIN pinname="Digital" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Firmwareversion" visible="1">
+   <PIN pinname="Firmwareversion" visible="1" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="Pin Modes" visible="1">
    </PIN>
@@ -247,7 +247,7 @@
    </PIN>
    <PIN pinname="Report Digital" visible="1">
    </PIN>
-   <PIN pinname="I2C Data" visible="1">
+   <PIN pinname="I2C Data" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="116" dstpinname="Input" srcnodeid="61" srcpinname="Output">
@@ -257,7 +257,7 @@
    </BOUNDS>
    <BOUNDS height="3015" left="1110" top="3090" type="Box" width="900">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="14" values="OUTPUT,OUTPUT,OUTPUT,OUTPUT,OUTPUT,OUTPUT,SERVO,INPUT,OUTPUT,OUTPUT,OUTPUT,PWM,OUTPUT,OUTPUT">
+   <PIN pinname="Input Enum" slicecount="14" values="OUTPUT,OUTPUT,INPUT,INPUT,INPUT,INPUT,INPUT,OUTPUT,OUTPUT,SERVO,OUTPUT,PWM,OUTPUT,OUTPUT">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="14">
    </PIN>
@@ -283,6 +283,8 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="116" dstpinname="ReportAnalog" srcnodeid="118" srcpinname="Y Output Value">
    </LINK>
@@ -302,6 +304,8 @@
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="116" dstpinname="ReportDigital" srcnodeid="119" srcpinname="Y Output Value">
@@ -331,7 +335,7 @@
    </BOUNDS>
    <BOUNDS height="495" left="4185" top="7725" type="Box" width="480">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -341,7 +345,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="116" dstpinname="Enable" srcnodeid="121" srcpinname="Y Output Value">
@@ -351,7 +355,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="4950" top="7275" type="Box" width="1590">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="COM6">
+   <PIN pinname="Input Enum" slicecount="1" values="COM4">
    </PIN>
    </NODE>
    <LINK dstnodeid="116" dstpinname="ComPort" srcnodeid="122" srcpinname="Output Enum">
@@ -554,20 +558,12 @@
    </LINK>
    <LINK srcnodeid="119" srcpinname="Y Output Value" dstnodeid="116" dstpinname="Report Digital">
    </LINK>
-   <NODE componentmode="Hidden" filename="..\Virmata.csproj" id="136" nodename="I2CDecode (Devices Firmata v2.2)" systemname="I2CDecode (Devices Firmata v2.2)">
-   <BOUNDS height="100" left="4980" top="10500" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="I2CData" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="116" srcpinname="I2C Data" dstnodeid="136" dstpinname="I2CData">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="137" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6195" top="10515" width="4065" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="6195" top="10515" width="4065" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;&lt; experimental support for I2C - not granted to work|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt;&lt; experimental support for I2C - not granted to work|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -576,4 +572,12 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" id="136" nodename="I2CDecode (Devices)" systemname="I2CDecode (Devices)">
+   <BOUNDS height="100" left="4980" top="10500" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="I2CData" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="116" srcpinname="I2C Data" dstnodeid="136" dstpinname="I2CData">
+   </LINK>
    </PATCH>
