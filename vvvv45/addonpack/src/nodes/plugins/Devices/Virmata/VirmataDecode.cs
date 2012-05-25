@@ -68,7 +68,6 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "FirmataDecode",
 	            Category = "Devices",
-				Version = "1.0",
 	            Help = "Decodes the firmata protocol version 2.x",
 	            Tags = "Arduino")]
 	#endregion PluginInfo
@@ -219,7 +218,6 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "I2CDecode",
 	            Category = "Devices",
-				Version = "1.0",
 	            Help = "Decodes I2C data from Firmata messages",
 	            Tags = "Firmata,Arduino")]
 	#endregion PluginInfo

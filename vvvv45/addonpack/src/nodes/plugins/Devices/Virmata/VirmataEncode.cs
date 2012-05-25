@@ -65,7 +65,6 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "FirmataEncode",
 	Category = "Devices",
-	Version = "1.0",
 	Help = "Encodes pins, values and commands for Firmata protocol version 2.x",
 	Tags = "Arduino")]
 	#endregion PluginInfo
