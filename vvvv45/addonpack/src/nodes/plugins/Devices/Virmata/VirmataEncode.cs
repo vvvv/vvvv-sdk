@@ -235,8 +235,9 @@ namespace VVVV.Nodes
 						CommandBuffer.Enqueue((byte) src_index);
 						CommandBuffer.Enqueue((byte) mode);
 					}
-
-					output_port |= (byte)((mode == PinMode.OUTPUT ? 1:0)<<bit);
+					// using both both modes, enables configuring 
+					// of pullup mode (thx! to motzi)
+					output_port |= (byte)(((mode == PinMode.OUTPUT || mode == PinMode.INPUT) ? 1:0)<<bit);
 				}
 				OUTPUT_PORT_MASKS[i] = output_port;
 			}
@@ -284,6 +285,7 @@ namespace VVVV.Nodes
 					break;
 
 					case PinMode.OUTPUT:
+					case PinMode.INPUT:   // fixes PullUp enabling issue, thx to motzi!
 					int port_index = PortIndexForPin(i);
 					// Break, if we have no ouputports we can get
 					if (port_index >= digital_out.Length) break;
