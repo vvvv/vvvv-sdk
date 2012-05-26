@@ -182,7 +182,8 @@ namespace VVVV.Utils.Algorithm
 		public void SetRegion (Rect newRegion)
 		{
 			FRegion = newRegion;
-			Squarify (FRegion, FRoot.Children);
+			//Squarify (FRegion, FRoot.Children);
+			Split (FRegion, new List<Node>(FRoot.Children));
 		}
 		
 		const int PADX = 0;
@@ -219,6 +220,87 @@ namespace VVVV.Utils.Algorithm
 			}
 		}
 		
+		public void Split(Rect r, List<Node> items)
+		{
+
+			if (items.Count == 0) return;
+			
+			if (items.Count == 1)
+			{
+				items[0].Rect = r;
+				Split(r, items[0].Children); // Layout the children within
+				
+			}
+			else
+			{
+				List<Node> l1 = new List<Node>(), l2;
+				Rect r1, r2;
+				
+				double size = Sum(items);
+				double halfSize =  size * 0.5;
+				double w1 = 0, tmp = 0;
+				
+				// Pick out half the weight into l1, half into l2
+				for (int i = items.Count - 1; i >= 0; i--)
+				{
+					var front = items[i];
+					tmp = w1 + front.Size;
+					// Test if it got worse by picking another item
+					if (Math.Abs(halfSize - tmp) > Math.Abs(halfSize - w1))
+						break;
+					// It was good to pick another
+					l1.Add(front);
+					items.RemoveAt(i);
+					w1 = tmp;
+				}
+				
+				// The rest of the items go into l2
+				l2 = items;
+				
+				if(r.Width > r.Height)
+				{
+					
+					r1 = new Rect(r.X,
+					              r.Y,
+					              r.Width * (Sum(l1) / size),
+					              r.Height);
+					
+					r2 = new Rect(r.X + r1.Width,
+					              r.Y,
+					              r.Width - r1.Width,
+					              r.Height);
+				}
+				else
+				{
+					// horizontally
+					r1 = new Rect(
+						r.X,
+					    r.Y,
+						r.Width,
+						r.Height * (Sum(l1)/size));
+					
+					r2 = new Rect(
+						r.X,
+						r.Y + r1.Height,
+						r.Width,
+						r.Height - r1.Height);
+				}
+				Split(r1, l1);
+				Split(r2, l2);
+			}
+
+		}
+		
+		public static double Sum(List<Node> children)
+		{
+			double fullArea = 0;
+			foreach (Node child in children)
+			{
+				fullArea += child.Size;
+			}
+			return fullArea;
+		}
+		
 		public static double GetShortestSide (Rect r)
 		{
 			return Math.Min (r.Width, r.Height);
@@ -226,11 +308,7 @@ namespace VVVV.Utils.Algorithm
 		
 		static void Squarify (Rect emptyArea, List<Node> children)
 		{
-			double fullArea = 0;
-			foreach (Node child in children)
-			{
-				fullArea += child.Size;
-			}
+			double fullArea = Sum(children);
 			
 			double area = emptyArea.Width * emptyArea.Height;
 			foreach (Node child in children)
