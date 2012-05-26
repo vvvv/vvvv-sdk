@@ -316,5 +316,11 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             }
             base.Dispose(disposing);
         }
+
+
+        private void TableViewer_BackColorChanged(object sender, EventArgs e)
+        {
+            FDataGridView.BackgroundColor = BackColor;
+        }
     }
 }
