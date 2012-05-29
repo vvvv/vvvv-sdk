@@ -10,26 +10,21 @@ namespace VVVV.Nodes.HTML
     public class KeyEventSplitNode : IPluginEvaluate
     {
         [Input("Input")]
-        public ISpread<KeyEvent> FInput;
+        public ISpread<KeyState> FInput;
 
         [Output("Key")]
         public ISpread<ISpread<int>> FKeyOut;
-        [Output("Is Key Down")]
-        public ISpread<bool> FIsKeyDownOut;
 
         public void Evaluate(int spreadMax)
         {
             FKeyOut.SliceCount = spreadMax;
-            FIsKeyDownOut.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
                 var keyEvent = FInput[i];
                 ISpread<int> key;
-                bool isKeyDown;
-                KeyEvent.Split(keyEvent, out key, out isKeyDown);
+                KeyState.Split(keyEvent, out key);
                 FKeyOut[i] = key;
-                FIsKeyDownOut[i] = isKeyDown;
             }
         }
     }

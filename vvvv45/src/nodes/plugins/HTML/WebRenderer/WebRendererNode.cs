@@ -23,7 +23,7 @@ namespace VVVV.Nodes.HTML
         [Input("Mouse Event")]
         public ISpread<MouseEvent> FMouseEventIn;
         [Input("Key Event")]
-        public ISpread<KeyEvent> FKeyEventIn;
+        public ISpread<KeyState> FKeyEventIn;
 
         [Output("Output")]
         public ISpread<DXResource<Texture, CefBrowser>> FOutput;

@@ -29,7 +29,7 @@ namespace VVVV.Nodes.HTML
         private string FUrl;
         private double FZoomLevel;
         private MouseEvent FMouseEvent;
-        private KeyEvent FKeyEvent;
+        private KeyState FKeyEvent;
         private Form FForm;
         internal int FFrameLoadCount;
         internal string FErrorText;
@@ -83,7 +83,7 @@ namespace VVVV.Nodes.HTML
             int height = DEFAULT_HEIGHT,
             double zoomLevel = 0,
             MouseEvent mouseEvent = default(MouseEvent),
-            KeyEvent keyEvent = default(KeyEvent)
+            KeyState keyEvent = default(KeyState)
            )
         {
             if (FBrowser == null)
@@ -145,12 +145,32 @@ namespace VVVV.Nodes.HTML
                 }
                 FMouseEvent = mouseEvent;
             }
+
             if (FKeyEvent != keyEvent)
             {
-                var keyType = keyEvent.IsKeyDown ? CefKeyType.KeyDown : CefKeyType.KeyUp;
-                //var modifiers = (CefHandlerKeyEventModifiers)((keyEvent.Key & (int)Keys.Modifiers) >> 16);
-                var modifiers = (CefHandlerKeyEventModifiers)0;
-                FBrowser.SendKeyEvent(keyType, keyEvent.Key, modifiers, false, false);
+                if (keyEvent.IsKeyDown)
+                {
+                    var modifiers = (CefHandlerKeyEventModifiers)((int)(keyEvent.KeyCode & Keys.Modifiers) >> 16);
+                    var key = keyEvent.IsKeyPress ? (int)keyEvent.Key : (int)(keyEvent.KeyCode & ~Keys.Modifiers);
+                    var keyType = keyEvent.IsKeyPress && !(keyEvent.Key == '\t' || keyEvent.Key == '\b') ? CefKeyType.Char : CefKeyType.KeyDown;
+                    FBrowser.SendKeyEvent(keyType, key, modifiers, false, false);
+                }
+                //else
+                //{
+                //    if (FKeyEvent.IsKeyDown)
+                //    {
+                //        var modifiers = (CefHandlerKeyEventModifiers)((int)(FKeyEvent.KeyCode & Keys.Modifiers) >> 16);
+                //        var key = FKeyEvent.IsKeyPress ? (int)FKeyEvent.Key : (int)(FKeyEvent.KeyCode & ~Keys.Modifiers);
+                //        if (FKeyEvent.IsKeyPress)
+                //        {
+                //            FBrowser.SendKeyEvent(CefKeyType.KeyUp, key, modifiers, false, false);
+                //        }
+                //        else
+                //        {
+                //            FBrowser.SendKeyEvent(CefKeyType.KeyUp, key, modifiers, false, false);
+                //        }
+                //    }
+                //}
                 FKeyEvent = keyEvent;
             }
 
