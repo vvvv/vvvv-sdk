@@ -32,6 +32,26 @@ namespace VVVV.Utils.VMath
 		/// </summary>
 		public double z;
 		
+		/// <summary>
+		/// (0, 0, 0) Vector
+		/// </summary>
+		public static readonly Vector3D Zero = new Vector3D();
+		
+		/// <summary>
+		/// (1, 0, 0) basis vector in x direction
+		/// </summary>
+		public static readonly Vector3D eX = new Vector3D(1, 0, 0);
+		
+		/// <summary>
+		/// (0, 1, 0) basis vector in y direction
+		/// </summary>
+		public static readonly Vector3D eY = new Vector3D(0, 1, 0);
+		
+		/// <summary>
+		/// (0, 0, 1) basis vector in z direction
+		/// </summary>
+		public static readonly Vector3D eZ = new Vector3D(0, 0, 1);
+		
 		#endregion data fields
 		
 		#region constructors
@@ -404,7 +424,7 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// 3d-vector &amp; 3d-vector, performs a 3d cross product
+		/// 3d-vector &amp; 3d-vector, performs a left handed 3d cross product
 		/// 
 		/// code is:
 		/// <c>
@@ -430,6 +450,23 @@ namespace VVVV.Utils.VMath
 		public static double operator |(Vector3D v1, Vector3D v2)
 		{
 			return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+		}
+		
+		/// <summary>
+		/// performs a righ handed 3d cross product
+		/// 
+		/// code is:
+		/// <c>
+		/// x = v1.y * v2.z - v2.y * v1.z;
+		/// y = v1.z * v2.x - v2.z * v1.x;
+		///	z = v1.x * v2.y - v2.x * v1.y;
+		/// </c>
+		/// </summary>
+		/// <param name="v">right vector</param>
+		/// <returns>New vector which is orthogonal to this and v</returns>
+		public Vector3D CrossRH(Vector3D v)
+		{
+			return new Vector3D(this.y * v.z - v.y * this.z, this.z * v.x - v.z * this.x, this.x * v.y - v.x * this.y);
 		}
 		
 		#endregion binary operators
