@@ -91,7 +91,7 @@ namespace VVVV.Hosting.Pins.Input
                                     var stream = spread.Stream;
                                     using (var writer = stream.GetWriter())
                                     {
-                                        while (!writer.Eos)
+                                        while (!writer.Eos && !dataReader.Eos)
                                         {
                                             // Since we're using cyclic readers we need to limit the amount
                                             // of data we request.

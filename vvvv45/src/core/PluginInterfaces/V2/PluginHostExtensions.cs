@@ -41,6 +41,8 @@ namespace VVVV.PluginInterfaces.V2
 		private static T NormalizePinAttribute<T>(T attribute, Type type) where T : IOAttribute
 		{
 			attribute = attribute.Clone() as T;
+
+            if (type == null) { return attribute; }
 			
 			if (attribute.MinValue == IOAttribute.DefaultMinValue && FDefaultValues.ContainsKey(type))
 				attribute.MinValue = FDefaultValues[type].Item1;
@@ -328,7 +330,7 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			INodeIn result = null;
 			host.CreateNodeInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
-			result.SetSubType(new Guid[] { type.GUID }, type.GetCSharpName());
+			result.SetSubType2(type, new Guid[] { type.GUID }, type.GetCSharpName());
 			result.Order = attribute.Order;
 			result.AutoValidate = attribute.AutoValidate;
 			return result;
@@ -353,7 +355,7 @@ namespace VVVV.PluginInterfaces.V2
 				typeT = typeT.BaseType;
 			}
 
-			result.SetSubType(guids.ToArray(), type.GetCSharpName());
+			result.SetSubType2(type, guids.ToArray(), type.GetCSharpName());
 			result.Order = attribute.Order;
 			return result;
 		}

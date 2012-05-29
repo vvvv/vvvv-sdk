@@ -35,6 +35,10 @@ namespace TUIO.NET
 		void updateTuioCursor(TuioCursor tuioCursor);
 		void removeTuioCursor(TuioCursor tuioCursor);
 
+        void addTuioBlob(TuioBlob tuioBlob);
+        void updateTuioBlob(TuioBlob tuioBlob);
+        void removeTuioBlob(TuioBlob tuioBlob);
+
 		void refresh(long timestamp);
 	}
 }

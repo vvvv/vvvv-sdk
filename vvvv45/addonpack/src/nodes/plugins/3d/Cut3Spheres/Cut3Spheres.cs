@@ -88,7 +88,7 @@ namespace VVVV.Nodes
 	        	Info.Category = "3d";						//try to use an existing one
 	        	Info.Version = "Three";						//versions are optional. leave blank if not needed
 	        	Info.Help = "Ouputs the 2 points as the result of cutting 3 spheres.";
-	        	Info.Bugs = "";
+	        	Info.Bugs = "The 3 points cannot have the same z value";
 	        	Info.Credits = "";								//give credits to thirdparty code used
 	        	Info.Warnings = "";
 	        	Info.Tags = "intersect, intersection, cut, points, purely functional, deterministic, overlap";
@@ -216,71 +216,76 @@ namespace VVVV.Nodes
 
         	FP1.SliceCount = SpreadMax;
         	FP2.SliceCount = SpreadMax;
+        	FIntersections.SliceCount = SpreadMax;
         	
-        	double Ax, Ay, Az;
-        	double Bx, By, Bz;
-        	double Cx, Cy, Cz;
-        
-        	FA.GetValue3D(0, out Ax, out Ay, out Az);
-        	FB.GetValue3D(0, out Bx, out By, out Bz);
-        	FC.GetValue3D(0, out Cx, out Cy, out Cz);
-        	
-    		double r_a, r_b, r_c;
-        	
-        	FRA.GetValue(0, out r_a);
-        	FRB.GetValue(0, out r_b);
-        	FRC.GetValue(0, out r_c);
-        	
-        	double P1x = 0, P1y = 0, P1z = 0;
-        	double P2x = 0, P2y = 0, P2z = 0;
+        	for(int i=0; i<SpreadMax; i++)
+        	{
+        		
+        		double Ax, Ay, Az;
+        		double Bx, By, Bz;
+        		double Cx, Cy, Cz;
+        		
+        		FA.GetValue3D(0, out Ax, out Ay, out Az);
+        		FB.GetValue3D(0, out Bx, out By, out Bz);
+        		FC.GetValue3D(0, out Cx, out Cy, out Cz);
+        		
+        		double r_a, r_b, r_c;
+        		
+        		FRA.GetValue(i, out r_a);
+        		FRB.GetValue(i, out r_b);
+        		FRC.GetValue(i, out r_c);
+        		
+        		double P1x = 0, P1y = 0, P1z = 0;
+        		double P2x = 0, P2y = 0, P2z = 0;
 
-        	double Asquare = Math.Pow(Ax, 2) + Math.Pow(Ay, 2) + Math.Pow(Az, 2);
-        	double Bsquare = Math.Pow(Bx, 2) + Math.Pow(By, 2) + Math.Pow(Bz, 2);
-        	double Csquare = Math.Pow(Cx, 2) + Math.Pow(Cy, 2) + Math.Pow(Cz, 2);
+        		double Asquare = Math.Pow(Ax, 2) + Math.Pow(Ay, 2) + Math.Pow(Az, 2);
+        		double Bsquare = Math.Pow(Bx, 2) + Math.Pow(By, 2) + Math.Pow(Bz, 2);
+        		double Csquare = Math.Pow(Cx, 2) + Math.Pow(Cy, 2) + Math.Pow(Cz, 2);
+        		
+        		double ABx = Bx - Ax;
+        		double ABy = By - Ay;
+        		double ABz = Bz - Az;
+        		
+        		double ACx = Cx - Ax;
+        		double ACy = Cy - Ay;
+        		double ACz = Cz - Az;
+        		
+        		double m = (Math.Pow(r_a, 2) - Math.Pow(r_b, 2) - Asquare + Bsquare) * ACz;
+        		double n = (Math.Pow(r_a, 2) - Math.Pow(r_c, 2) - Asquare + Csquare) * ABz;
+        		double o = ABy*ACz - ACy*ABz;
+        		double q = ACx*ABz - ABx*ACz;
+        		
+        		double v = (Math.Pow(r_a, 2) - Math.Pow(r_b, 2) - Asquare + Bsquare) / (2*ABz) - Az;
+        		double w = (1+Math.Pow(ABy, 2)/Math.Pow(ABz, 2));
+
+        		double r = ABx/ABz;
+        		double s = ABy/ABz;
+
+        		double t = Math.Pow(Ax, 2) + Math.Pow(Ay, 2) + Math.Pow(v, 2) - Math.Pow(r_a, 2);
+        		double a = (m-n) / (2*o);
+        		double b = q / o;
+        		
+        		//(1+r^2+b^2*w+2brs)P.x^2 + (2abw+2ars-2A.x-2rv-2b(A.y + sv))P.x + w*a^2 - 2a(A.y + sv) + t = 0
+        		
+        		int solutions;
+        		QuadraticEquation(1 + Math.Pow(r, 2) + Math.Pow(b, 2)*w + 2*b*r*s,
+        		                  2*a*b*w + 2*a*r*s - 2*Ax - 2*r*v - 2*b*(Ay + s*v),
+        		                  w*Math.Pow(a, 2) - 2*a*(Ay + s*v) + t,
+        		                  out P1x, out P2x, out solutions);
+        		
+        		FIntersections.SetValue(i, solutions);
+
+        		P1y = P1x * b + a;
+        		//P.z = (r_a^2 - r_b^2 - 2*P.x*AB.x - 2*P.y*AB.y - |A|^2 + |B|^2) / (2*AB.z)
+        		P1z = (Math.Pow(r_a, 2) - Math.Pow(r_b, 2) - 2*P1x*ABx - 2*P1y*ABy - Asquare + Bsquare) / (2*ABz);
+
+        		P2y = P2x * b + a;
+        		P2z = (Math.Pow(r_a, 2) - Math.Pow(r_b, 2) - 2*P2x*ABx - 2*P2y*ABy - Asquare + Bsquare) / (2*ABz);
+        		
+        		FP1.SetValue3D(i, P1x, P1y, P1z);
+        		FP2.SetValue3D(i, P2x, P2y, P2z);
+        	}
         	
-        	double ABx = Bx - Ax;
-        	double ABy = By - Ay;
-        	double ABz = Bz - Az;
-        	
-        	double ACx = Cx - Ax;
-        	double ACy = Cy - Ay;
-        	double ACz = Cz - Az;
-        	
-        	double m = (Math.Pow(r_a, 2) - Math.Pow(r_b, 2) - Asquare + Bsquare) * ACz;
-			double n = (Math.Pow(r_a, 2) - Math.Pow(r_c, 2) - Asquare + Csquare) * ABz;
-  			double o = ABy*ACz - ACy*ABz;
-  			double q = ACx*ABz - ABx*ACz;
-  			
-  			double v = (Math.Pow(r_a, 2) - Math.Pow(r_b, 2) - Asquare + Bsquare) / (2*ABz) - Az;
-  			double w = (1+Math.Pow(ABy, 2)/Math.Pow(ABz, 2));
-
-			double r = ABx/ABz;
-			double s = ABy/ABz;
-
-			double t = Math.Pow(Ax, 2) + Math.Pow(Ay, 2) + Math.Pow(v, 2) - Math.Pow(r_a, 2);
-            double a = (m-n) / (2*o);
-            double b = q / o;
-            
-            //(1+r^2+b^2*w+2brs)P.x^2 + (2abw+2ars-2A.x-2rv-2b(A.y + sv))P.x + w*a^2 - 2a(A.y + sv) + t = 0  
-			
-            int solutions;
-            QuadraticEquation(1 + Math.Pow(r, 2) + Math.Pow(b, 2)*w + 2*b*r*s,
-                              2*a*b*w + 2*a*r*s - 2*Ax - 2*r*v - 2*b*(Ay + s*v),
-                              w*Math.Pow(a, 2) - 2*a*(Ay + s*v) + t, 
-                              out P1x, out P2x, out solutions);
-                           
-        	FIntersections.SetValue(0, solutions);
-
-        	P1y = P1x * b + a;
-        	//P.z = (r_a^2 - r_b^2 - 2*P.x*AB.x - 2*P.y*AB.y - |A|^2 + |B|^2) / (2*AB.z)
-        	P1z = (Math.Pow(r_a, 2) - Math.Pow(r_b, 2) - 2*P1x*ABx - 2*P1y*ABy - Asquare + Bsquare) / (2*ABz);                          
-
-        	P2y = P2x * b + a;
-        	P2z = (Math.Pow(r_a, 2) - Math.Pow(r_b, 2) - 2*P2x*ABx - 2*P2y*ABy - Asquare + Bsquare) / (2*ABz);                          
-       	
-        	FP1.SetValue3D(0, P1x, P1y, P1z);
-        	FP2.SetValue3D(0, P2x, P2y, P2z);
-	              	
         }
              
         #endregion mainloop  

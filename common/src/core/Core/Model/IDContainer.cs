@@ -43,7 +43,7 @@ namespace VVVV.Core.Model
         
         public event RenamedHandler ItemRenamed;
         
-        public IDContainer(string name, bool isRooted)
+        public IDContainer(string name, bool isRooted = false)
             : base(name, isRooted)
         {
             FItems = new KeyedIDCollection<IIDItem>();
@@ -53,14 +53,20 @@ namespace VVVV.Core.Model
             else
                 FNameProperty = new ViewableProperty<string>("Name", name);
             FNameProperty.ValueChanged += FNameProperty_ValueChanged;
-            
-            Add(FNameProperty);
         }
         
-        public IDContainer(string name)
-            : this(name, false)
+        protected override void OnRootingChanged(RootingAction rooting)
         {
-            
+            switch (rooting) 
+            {
+                case RootingAction.Rooted:
+                    Add(FNameProperty);
+                    break;
+                case RootingAction.ToBeUnrooted:
+                    Remove(FNameProperty);
+                    break;
+            }
+            base.OnRootingChanged(rooting);
         }
 
         void FNameProperty_ValueChanged(IViewableProperty<string> property, string newValue, string oldValue)
@@ -83,6 +89,13 @@ namespace VVVV.Core.Model
             FItems.Add(item);
             item.Owner = this;
             item.Renamed += item_Renamed;
+        }
+        
+        public void Remove(IIDItem item)
+        {
+            item.Renamed -= item_Renamed;
+            item.Owner = null;
+            FItems.Remove(item);
         }
 
         void item_Renamed(INamed sender, string newName)
@@ -129,7 +142,15 @@ namespace VVVV.Core.Model
             
             base.DisposeManaged();
         }
-        
+
+        public override void AcknowledgeChanges()
+        {
+            base.AcknowledgeChanges();
+
+            foreach (var item in this)
+                item.AcknowledgeChanges();
+        }
+
         //public override string ToString()
         //{
         //    return string.Format("IDContainer {0}", Name);

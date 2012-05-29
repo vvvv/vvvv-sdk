@@ -12,6 +12,8 @@ namespace VVVV.Hosting.IO.Streams
     abstract class PluginConfigStream<T> : BufferedIOStream<T>
     {  
         private readonly IPluginConfig FPluginConfig;
+        private bool FIsFlushing;
+        private int FPreviousChangeCount;
         
         public PluginConfigStream(IPluginConfig pluginConfig)
         {
@@ -24,6 +26,8 @@ namespace VVVV.Hosting.IO.Streams
         
         public override sealed bool Sync()
         {
+            if (FIsFlushing) 
+                return IsChanged;
             IsChanged = FPluginConfig.PinIsChanged;
             if (IsChanged)
             {
@@ -33,22 +37,33 @@ namespace VVVV.Hosting.IO.Streams
                 {
                     writer.Write(GetSlice(i));
                 }
+                // Remember the change count in order to avoid cyclic flush/sync behaviour
+                FPreviousChangeCount = FChangeCount;
             }
             return base.Sync();
         }
         
         public override sealed void Flush()
         {
-            if (IsChanged)
+            FIsFlushing = true;
+            try 
             {
-                FPluginConfig.SliceCount = Length;
-                var reader = GetReader();
-                for (int i = 0; i < Length; i++)
+                if (FPreviousChangeCount < FChangeCount)
                 {
-                    SetSlice(i, reader.Read());
+                    FPluginConfig.SliceCount = Length;
+                    var reader = GetReader();
+                    for (int i = 0; i < Length; i++)
+                    {
+                        SetSlice(i, reader.Read());
+                    }
                 }
+            } 
+            finally 
+            {
+                base.Flush();
+                FIsFlushing = false;
+                FPreviousChangeCount = FChangeCount;
             }
-            base.Flush();
         }
     }
     
@@ -230,19 +245,19 @@ namespace VVVV.Hosting.IO.Streams
     
     class DynamicEnumConfigStream : EnumConfigStream<EnumEntry>
     {
-        public DynamicEnumConfigStream(IEnumConfig enumConfig)
+        private string FEnumName;
+
+        public DynamicEnumConfigStream(IEnumConfig enumConfig, string enumname)
             : base(enumConfig)
         {
+            this.FEnumName = enumname;
         }
         
         protected override EnumEntry GetSlice(int index)
         {
             int ord;
-            string name;
             FEnumConfig.GetOrd(index, out ord);
-            // TODO: Was not used. FEnumName.
-            FEnumConfig.GetString(index, out name);
-            return new EnumEntry(name, ord);
+            return new EnumEntry(FEnumName, ord);
         }
         
         protected override void SetSlice(int index, EnumEntry value)
