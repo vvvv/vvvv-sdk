@@ -15,16 +15,22 @@ namespace VVVV.Nodes.HTML
         [Output("Key")]
         public ISpread<ISpread<int>> FKeyOut;
 
+        [Output("Time")]
+        public ISpread<int> FTimeOut;
+
         public void Evaluate(int spreadMax)
         {
             FKeyOut.SliceCount = spreadMax;
+            FTimeOut.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
                 var keyEvent = FInput[i];
                 ISpread<int> key;
-                KeyState.Split(keyEvent, out key);
+                int time;
+                KeyState.Split(keyEvent, out key, out time);
                 FKeyOut[i] = key;
+                FTimeOut[i] = time;
             }
         }
     }

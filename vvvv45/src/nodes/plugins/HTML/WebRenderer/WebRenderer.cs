@@ -155,29 +155,27 @@ namespace VVVV.Nodes.HTML
 
             if (FKeyState != keyState)
             {
-                if (keyState.IsKeyDown)
+                var isKeyUp = FKeyState.KeyCode != Keys.None;
+                if (isKeyUp)
+                {
+                    var modifiers = (CefHandlerKeyEventModifiers)((int)(FKeyState.KeyCode & Keys.Modifiers) >> 16);
+                    var key = (int)(FKeyState.KeyCode & ~Keys.Modifiers);
+                    FBrowser.SendKeyEvent(CefKeyType.KeyUp, key, modifiers, false, false);
+                }
+                var isKeyDown = keyState.KeyCode != Keys.None;
+                if (isKeyDown)
                 {
                     var modifiers = (CefHandlerKeyEventModifiers)((int)(keyState.KeyCode & Keys.Modifiers) >> 16);
-                    var key = keyState.IsKeyPress ? (int)keyState.Key : (int)(keyState.KeyCode & ~Keys.Modifiers);
-                    var keyType = keyState.IsKeyPress && !(keyState.Key == '\t' || keyState.Key == '\b') ? CefKeyType.Char : CefKeyType.KeyDown;
-                    FBrowser.SendKeyEvent(keyType, key, modifiers, false, false);
+                    var key = (int)(keyState.KeyCode & ~Keys.Modifiers);
+                    FBrowser.SendKeyEvent(CefKeyType.KeyDown, key, modifiers, false, false);
                 }
-                //else
-                //{
-                //    if (FKeyEvent.IsKeyDown)
-                //    {
-                //        var modifiers = (CefHandlerKeyEventModifiers)((int)(FKeyEvent.KeyCode & Keys.Modifiers) >> 16);
-                //        var key = FKeyEvent.IsKeyPress ? (int)FKeyEvent.Key : (int)(FKeyEvent.KeyCode & ~Keys.Modifiers);
-                //        if (FKeyEvent.IsKeyPress)
-                //        {
-                //            FBrowser.SendKeyEvent(CefKeyType.KeyUp, key, modifiers, false, false);
-                //        }
-                //        else
-                //        {
-                //            FBrowser.SendKeyEvent(CefKeyType.KeyUp, key, modifiers, false, false);
-                //        }
-                //    }
-                //}
+                var isKeyPress = keyState.Key.HasValue && !(keyState.Key == '\t' || keyState.Key == '\b');
+                if (isKeyPress)
+                {
+                    var modifiers = (CefHandlerKeyEventModifiers)((int)(keyState.KeyCode & Keys.Modifiers) >> 16);
+                    var key = (int)keyState.Key;
+                    FBrowser.SendKeyEvent(CefKeyType.Char, key, modifiers, false, false);
+                }
                 FKeyState = keyState;
             }
 

@@ -48,30 +48,30 @@ namespace VVVV.Nodes.HTML
 
         #endregion
 
-        private readonly int FKeyValue;
+        private readonly Keys FKeyCode;
         private readonly char? FKeyChar;
+        private readonly int FTime;
 
-        public KeyState(int keyValue = 0)
+        public KeyState(Keys keyCode = 0, int time = 0)
         {
-            FKeyValue = keyValue;
-            FKeyChar = keyValue > 0 ? FromKeys((Keys)keyValue) : null;
+            FKeyCode = keyCode;
+            FKeyChar = keyCode > 0 ? FromKeys((Keys)keyCode) : null;
+            FTime = time;
         }
 
-        public int KeyValue { get { return FKeyValue; } }
-        public Keys KeyCode { get { return (Keys)KeyValue; } }
-        public bool IsKeyDown { get { return KeyValue != 0; } }
-        public bool IsKeyPress { get { return FKeyChar.HasValue; } }
-        public char Key { get { return FKeyChar.HasValue ? FKeyChar.Value : (char)0; } }
+        public Keys KeyCode { get { return FKeyCode; } }
+        public char? Key { get { return FKeyChar; } }
+        public int Time { get { return FTime; } }
 
         [Node(Name = "KeyState", Category = "Join")]
-        public static KeyState Join(ISpread<int> keys)
+        public static KeyState Join(ISpread<int> keys, int time)
         {
             switch (keys.SliceCount)
             {
                 case 0:
-                    return new KeyState();
+                    return new KeyState(Keys.None, time);
                 case 1:
-                    return new KeyState(keys[0]);
+                    return new KeyState((Keys)keys[0], time);
                 default:
                     Keys keyCode = Keys.None;
                     foreach (Keys key in keys)
@@ -98,19 +98,20 @@ namespace VVVV.Nodes.HTML
                                 break;
                         }
                     }
-                    return new KeyState((int)keyCode);
+                    return new KeyState(keyCode, time);
             }
         }
 
         [Node(Name = "KeyState", Category = "Split")]
-        public static void Split(KeyState keyEvent, out ISpread<int> keys)
+        public static void Split(KeyState keyState, out ISpread<int> keys, out int time)
         {
             keys = new Spread<int>();
-            Keys keyCode = (Keys)keyEvent.KeyValue;
+            Keys keyCode = keyState.KeyCode;
             if ((keyCode & Keys.Shift) > 0) keys.Add((int)Keys.ShiftKey);
             if ((keyCode & Keys.Control) > 0) keys.Add((int)Keys.ControlKey);
             if ((keyCode & Keys.Alt) > 0) keys.Add((int)Keys.Menu);
             if ((keyCode & ~Keys.Modifiers) != Keys.None) keys.Add((int)(keyCode & ~Keys.Modifiers));
+            time = keyState.Time;
         }
 
         #region Equals and GetHashCode implementation
@@ -128,13 +129,13 @@ namespace VVVV.Nodes.HTML
         public bool Equals(KeyState other)
         {
             // add comparisions for all members here
-            return this.KeyValue == other.KeyValue;
+            return this.FKeyCode == other.FKeyCode && this.FTime == other.FTime;
         }
 
         public override int GetHashCode()
         {
             // combine the hash codes of all members here (e.g. with XOR operator ^)
-            return KeyValue.GetHashCode();
+            return FKeyCode.GetHashCode() ^ FTime.GetHashCode();
         }
 
         public static bool operator ==(KeyState left, KeyState right)

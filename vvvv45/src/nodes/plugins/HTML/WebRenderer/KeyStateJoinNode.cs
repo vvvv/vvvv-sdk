@@ -11,15 +11,17 @@ namespace VVVV.Nodes.HTML
     {
         [Input("Key")]
         public ISpread<ISpread<int>> FKeyIn;
+        [Input("Time")]
+        public ISpread<int> FTimeIn;
         [Output("Output")]
         public ISpread<KeyState> FOutput;
 
         public void Evaluate(int spreadMax)
         {
-            FOutput.SliceCount = FKeyIn.SliceCount;
+            FOutput.SliceCount = FKeyIn.CombineWith(FTimeIn);
             for (int i = 0; i < FOutput.SliceCount; i++)
             {
-                FOutput[i] = KeyState.Join(FKeyIn[i]);
+                FOutput[i] = KeyState.Join(FKeyIn[i], FTimeIn[i]);
             }
         }
     }
