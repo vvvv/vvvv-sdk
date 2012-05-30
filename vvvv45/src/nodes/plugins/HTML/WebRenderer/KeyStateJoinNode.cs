@@ -6,8 +6,8 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.HTML
 {
-    [PluginInfo(Name = "KeyEvent", Category = "HTML", Version = "Join")]
-    public class KeyEventJoinNode : IPluginEvaluate
+    [PluginInfo(Name = "KeyState", Category = "HTML", Version = "Join")]
+    public class KeyStateJoinNode : IPluginEvaluate
     {
         [Input("Key")]
         public ISpread<ISpread<int>> FKeyIn;

@@ -63,7 +63,7 @@ namespace VVVV.Nodes.HTML
         public bool IsKeyPress { get { return FKeyChar.HasValue; } }
         public char Key { get { return FKeyChar.HasValue ? FKeyChar.Value : (char)0; } }
 
-        [Node(Name = "KeyEvent", Category = "Join")]
+        [Node(Name = "KeyState", Category = "Join")]
         public static KeyState Join(ISpread<int> keys)
         {
             switch (keys.SliceCount)
@@ -102,7 +102,7 @@ namespace VVVV.Nodes.HTML
             }
         }
 
-        [Node(Name = "KeyEvent", Category = "Split")]
+        [Node(Name = "KeyState", Category = "Split")]
         public static void Split(KeyState keyEvent, out ISpread<int> keys)
         {
             keys = new Spread<int>();

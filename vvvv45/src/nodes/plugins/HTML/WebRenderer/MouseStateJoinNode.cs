@@ -6,41 +6,35 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.HTML
 {
-    [PluginInfo(Name = "MouseEvent", Category = "HTML", Version = "Join")]
-    public class MouseEventJoinNode : IPluginEvaluate
+    [PluginInfo(Name = "MouseState", Category = "HTML", Version = "Join")]
+    public class MouseStateJoinNode : IPluginEvaluate
     {
         [Input("X")]
         public ISpread<double> FXIn;
         [Input("Y")]
         public ISpread<double> FYIn;
+        [Input("Mouse Wheel Delta")]
+        public ISpread<int> FMouseWheelDeltaIn;
         [Input("Left Button")]
         public ISpread<bool> FLeftButtonIn;
         [Input("Middle Button")]
         public ISpread<bool> FMiddleButtonIn;
         [Input("Right Button")]
         public ISpread<bool> FRightButtonIn;
-        [Input("Mouse Up")]
-        public ISpread<bool> FMouseUpIn;
-        [Input("Click Count")]
-        public ISpread<int> FClickCountIn;
-        [Input("Mouse Wheel Delta")]
-        public ISpread<int> FMouseWheelDeltaIn;
         [Output("Output")]
-        public ISpread<MouseEvent> FOutput;
+        public ISpread<MouseState> FOutput;
 
         public void Evaluate(int spreadMax)
         {
             FOutput.SliceCount = spreadMax;
             for (int i = 0; i < spreadMax; i++)
             {
-                FOutput[i] = MouseEvent.Join(
+                FOutput[i] = MouseState.Join(
                     FXIn[i], 
                     FYIn[i], 
                     FLeftButtonIn[i], 
                     FMiddleButtonIn[i], 
-                    FRightButtonIn[i], 
-                    FMouseUpIn[i], 
-                    FClickCountIn[i], 
+                    FRightButtonIn[i],  
                     FMouseWheelDeltaIn[i]
                    );
             }

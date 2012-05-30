@@ -21,7 +21,7 @@ namespace VVVV.Nodes.HTML
         [Input("Zoom Level")]
         public ISpread<double> FZoomLevelIn;
         [Input("Mouse Event")]
-        public ISpread<MouseEvent> FMouseEventIn;
+        public ISpread<MouseState> FMouseEventIn;
         [Input("Key Event")]
         public ISpread<KeyState> FKeyEventIn;
 

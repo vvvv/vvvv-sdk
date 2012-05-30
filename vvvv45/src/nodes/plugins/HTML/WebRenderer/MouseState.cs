@@ -11,34 +11,28 @@ namespace VVVV.Nodes.HTML
         Right
     }
 
-    public struct MouseEvent : IEquatable<MouseEvent>
+    public struct MouseState : IEquatable<MouseState>
     {
         public double X;
         public double Y;
         public MouseButton Button;
-        public bool MouseUp;
-        public int ClickCount;
         public int MouseWheelDelta;
         
-        public MouseEvent(double x, double y, MouseButton button, bool mouseUp, int clickCount, int mouseWheelDelta)
+        public MouseState(double x, double y, MouseButton button, int mouseWheelDelta)
         {
             X = x;
             Y = y;
             Button = button;
-            MouseUp = mouseUp;
-            ClickCount = clickCount;
             MouseWheelDelta = mouseWheelDelta;
         }
         
-        [Node(Name = "MouseEvent", Category = "Join")]
-        public static MouseEvent Join(
+        [Node(Name = "MouseState", Category = "Join")]
+        public static MouseState Join(
             double x,
             double y,
             bool leftButton,
             bool middleButton,
             bool rightButton,
-            bool mouseUp,
-            int clickCount,
             int mouseWheelDelta)
         {
             var button = MouseButton.None;
@@ -48,19 +42,17 @@ namespace VVVV.Nodes.HTML
                 button = MouseButton.Middle;
             else if (rightButton)
                 button = MouseButton.Right;
-            return new MouseEvent(x, y, button, mouseUp, clickCount, mouseWheelDelta);
+            return new MouseState(x, y, button, mouseWheelDelta);
         }
-        
-        [Node(Name = "MouseEvent", Category = "Split")]
+
+        [Node(Name = "MouseState", Category = "Split")]
         public static void Split(
-            MouseEvent mouseEvent,
+            MouseState mouseEvent,
             out double x,
             out double y,
             out bool leftButton,
             out bool middleButton,
             out bool rightButton,
-            out bool mouseUp,
-            out int clickCount,
             out int mouseWheelDelta
            )
         {
@@ -69,8 +61,6 @@ namespace VVVV.Nodes.HTML
             leftButton = mouseEvent.Button == MouseButton.Left;
             middleButton = mouseEvent.Button == MouseButton.Middle;
             rightButton = mouseEvent.Button == MouseButton.Right;
-            mouseUp = mouseEvent.MouseUp;
-            clickCount = mouseEvent.ClickCount;
             mouseWheelDelta = mouseEvent.MouseWheelDelta;
         }
         
@@ -80,30 +70,30 @@ namespace VVVV.Nodes.HTML
         
         public override bool Equals(object obj)
         {
-            if (obj is MouseEvent)
-                return Equals((MouseEvent)obj); // use Equals method below
+            if (obj is MouseState)
+                return Equals((MouseState)obj); // use Equals method below
             else
                 return false;
         }
         
-        public bool Equals(MouseEvent other)
+        public bool Equals(MouseState other)
         {
             // add comparisions for all members here
-            return this.X == other.X && this.Y == other.Y && this.Button == other.Button && this.ClickCount == other.ClickCount && this.MouseUp == other.MouseUp && this.MouseWheelDelta == other.MouseWheelDelta;
+            return this.X == other.X && this.Y == other.Y && this.Button == other.Button && this.MouseWheelDelta == other.MouseWheelDelta;
         }
         
         public override int GetHashCode()
         {
             // combine the hash codes of all members here (e.g. with XOR operator ^)
-            return X.GetHashCode() ^ Y.GetHashCode() ^ Button.GetHashCode() ^ ClickCount.GetHashCode() ^ MouseUp.GetHashCode() ^ MouseWheelDelta.GetHashCode();
+            return X.GetHashCode() ^ Y.GetHashCode() ^ Button.GetHashCode() ^ MouseWheelDelta.GetHashCode();
         }
         
-        public static bool operator ==(MouseEvent left, MouseEvent right)
+        public static bool operator ==(MouseState left, MouseState right)
         {
             return left.Equals(right);
         }
         
-        public static bool operator !=(MouseEvent left, MouseEvent right)
+        public static bool operator !=(MouseState left, MouseState right)
         {
             return !left.Equals(right);
         }

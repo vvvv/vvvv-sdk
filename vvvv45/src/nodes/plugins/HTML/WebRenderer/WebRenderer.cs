@@ -28,8 +28,8 @@ namespace VVVV.Nodes.HTML
         private int FHeight = DEFAULT_HEIGHT;
         private string FUrl;
         private double FZoomLevel;
-        private MouseEvent FMouseEvent;
-        private KeyState FKeyEvent;
+        private MouseState FMouseState;
+        private KeyState FKeyState;
         private Form FForm;
         internal int FFrameLoadCount;
         internal string FErrorText;
@@ -82,8 +82,8 @@ namespace VVVV.Nodes.HTML
             int width = DEFAULT_WIDTH,
             int height = DEFAULT_HEIGHT,
             double zoomLevel = 0,
-            MouseEvent mouseEvent = default(MouseEvent),
-            KeyState keyEvent = default(KeyState)
+            MouseState mouseState = default(MouseState),
+            KeyState keyState = default(KeyState)
            )
         {
             if (FBrowser == null)
@@ -117,42 +117,49 @@ namespace VVVV.Nodes.HTML
                 FZoomLevel = zoomLevel;
                 FBrowser.ZoomLevel = zoomLevel;
             }
-            if (FMouseEvent != mouseEvent)
+            if (FMouseState != mouseState)
             {
-                var x = (int)VMath.Map(mouseEvent.X, -1, 1, 0, FWidth, TMapMode.Clamp);
-                var y = (int)VMath.Map(mouseEvent.Y, 1, -1, 0, FHeight, TMapMode.Clamp);
-                switch (mouseEvent.Button)
+                var x = (int)VMath.Map(mouseState.X, -1, 1, 0, FWidth, TMapMode.Clamp);
+                var y = (int)VMath.Map(mouseState.Y, 1, -1, 0, FHeight, TMapMode.Clamp);
+                var mouseDown = FMouseState.Button == MouseButton.None && mouseState.Button != MouseButton.None;
+                var mouseUp = FMouseState.Button != MouseButton.None && mouseState.Button == MouseButton.None;
+                var button = mouseState.Button;
+                if (mouseUp) button = FMouseState.Button;
+                if (mouseDown || mouseUp)
                 {
-                    case MouseButton.Left:
-                        FBrowser.SendMouseClickEvent(x, y, CefMouseButtonType.Left, mouseEvent.MouseUp, mouseEvent.ClickCount);
-                        break;
-                    case MouseButton.Middle:
-                        FBrowser.SendMouseClickEvent(x, y, CefMouseButtonType.Middle, mouseEvent.MouseUp, mouseEvent.ClickCount);
-                        break;
-                    case MouseButton.Right:
-                        FBrowser.SendMouseClickEvent(x, y, CefMouseButtonType.Right, mouseEvent.MouseUp, mouseEvent.ClickCount);
-                        break;
-                    default:
-                        if (mouseEvent.MouseUp)
-                            FBrowser.SendMouseClickEvent(x, y, CefMouseButtonType.Left, mouseEvent.MouseUp, mouseEvent.ClickCount);
-                        else
-                            FBrowser.SendMouseMoveEvent(x, y, false);
-                        break;
+                    switch (button)
+                    {
+                        case MouseButton.Left:
+                            FBrowser.SendMouseClickEvent(x, y, CefMouseButtonType.Left, mouseUp, 1);
+                            break;
+                        case MouseButton.Middle:
+                            FBrowser.SendMouseClickEvent(x, y, CefMouseButtonType.Middle, mouseUp, 1);
+                            break;
+                        case MouseButton.Right:
+                            FBrowser.SendMouseClickEvent(x, y, CefMouseButtonType.Right, mouseUp, 1);
+                            break;
+                        default:
+                            throw new Exception(string.Format("Unknown mouse button {0}.", button));
+                    }
                 }
-                if (FMouseEvent.MouseWheelDelta != 0)
+                else
                 {
-                    FBrowser.SendMouseWheelEvent(x, y, FMouseEvent.MouseWheelDelta);
+                    FBrowser.SendMouseMoveEvent(x, y, false);
                 }
-                FMouseEvent = mouseEvent;
+                if (FMouseState.MouseWheelDelta != 0)
+                {
+                    FBrowser.SendMouseWheelEvent(x, y, FMouseState.MouseWheelDelta);
+                }
+                FMouseState = mouseState;
             }
 
-            if (FKeyEvent != keyEvent)
+            if (FKeyState != keyState)
             {
-                if (keyEvent.IsKeyDown)
+                if (keyState.IsKeyDown)
                 {
-                    var modifiers = (CefHandlerKeyEventModifiers)((int)(keyEvent.KeyCode & Keys.Modifiers) >> 16);
-                    var key = keyEvent.IsKeyPress ? (int)keyEvent.Key : (int)(keyEvent.KeyCode & ~Keys.Modifiers);
-                    var keyType = keyEvent.IsKeyPress && !(keyEvent.Key == '\t' || keyEvent.Key == '\b') ? CefKeyType.Char : CefKeyType.KeyDown;
+                    var modifiers = (CefHandlerKeyEventModifiers)((int)(keyState.KeyCode & Keys.Modifiers) >> 16);
+                    var key = keyState.IsKeyPress ? (int)keyState.Key : (int)(keyState.KeyCode & ~Keys.Modifiers);
+                    var keyType = keyState.IsKeyPress && !(keyState.Key == '\t' || keyState.Key == '\b') ? CefKeyType.Char : CefKeyType.KeyDown;
                     FBrowser.SendKeyEvent(keyType, key, modifiers, false, false);
                 }
                 //else
@@ -171,7 +178,7 @@ namespace VVVV.Nodes.HTML
                 //        }
                 //    }
                 //}
-                FKeyEvent = keyEvent;
+                FKeyState = keyState;
             }
 
             isLoading = IsLoading;

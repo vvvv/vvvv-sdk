@@ -6,8 +6,8 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.HTML
 {
-    [PluginInfo(Name = "KeyEvent", Category = "HTML", Version = "Split")]
-    public class KeyEventSplitNode : IPluginEvaluate
+    [PluginInfo(Name = "KeyState", Category = "HTML", Version = "Split")]
+    public class KeyStateSplitNode : IPluginEvaluate
     {
         [Input("Input")]
         public ISpread<KeyState> FInput;
