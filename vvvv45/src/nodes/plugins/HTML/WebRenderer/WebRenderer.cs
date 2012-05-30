@@ -23,6 +23,7 @@ namespace VVVV.Nodes.HTML
         private readonly DXResource<Texture, CefBrowser> FTextureResource;
         private readonly List<Texture> FTextures = new List<Texture>();
         private readonly WebClient FWebClient;
+        private volatile bool FEnabled;
         private CefBrowser FBrowser;
         private int FWidth = DEFAULT_WIDTH;
         private int FHeight = DEFAULT_HEIGHT;
@@ -85,13 +86,22 @@ namespace VVVV.Nodes.HTML
             int height = DEFAULT_HEIGHT,
             double zoomLevel = 0,
             MouseState mouseState = default(MouseState),
-            KeyState keyState = default(KeyState)
+            KeyState keyState = default(KeyState),
+            bool enabled = true
            )
         {
             if (FBrowser == null)
             {
                 isLoading = IsLoading;
                 errorText = "Initializing ...";
+                return FTextureResource;
+            }
+
+            Enabled = enabled;
+            if (!Enabled)
+            {
+                isLoading = false;
+                errorText = "Disabled";
                 return FTextureResource;
             }
 
@@ -106,6 +116,7 @@ namespace VVVV.Nodes.HTML
                 FHeight = height;
                 FBrowser.SetSize(CefPaintElementType.View, width, height);
             }
+
             if (FUrl != url)
             {
                 FUrl = url;
@@ -196,6 +207,22 @@ namespace VVVV.Nodes.HTML
             }
         }
 
+        public bool Enabled
+        {
+            get { return FEnabled; }
+            set
+            {
+                if (FEnabled != value)
+                {
+                    FEnabled = value;
+                    if (FEnabled)
+                    {
+                        FBrowser.Invalidate(new CefRect(0, 0, FWidth, FHeight));
+                    }
+                }
+            }
+        }
+
         internal void Attach(CefBrowser browser)
         {
             if (FBrowser != null)
@@ -218,6 +245,7 @@ namespace VVVV.Nodes.HTML
 
         internal void Paint(CefRect[] cefRects, IntPtr buffer, int stride)
         {
+            if (!FEnabled) return;
             lock (FTextures)
             {
                 try
@@ -255,7 +283,6 @@ namespace VVVV.Nodes.HTML
                     var source = buffer + offset;
                     for (int y = 0; y < rect.Height; y++)
                     {
-                        //                        dataStream.Position = y * dataRect.Pitch + 4 * rect.X;
                         dataStream.Position = y * dataRect.Pitch;
                         dataStream.WriteRange(source + y * stride, rect.Width * 4);
                     }
