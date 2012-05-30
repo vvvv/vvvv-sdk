@@ -14,6 +14,8 @@ namespace VVVV.Nodes.HTML
     {
         [Input("Url", DefaultString = WebRenderer.DEFAULT_URL)]
         public ISpread<string> FUrlIn;
+        [Input("Reload", IsBang = true)]
+        public ISpread<bool> FReloadIn;
         [Input("Width", DefaultValue = WebRenderer.DEFAULT_WIDTH)]
         public ISpread<int> FWidthIn;
         [Input("Height", DefaultValue = WebRenderer.DEFAULT_HEIGHT)]
@@ -46,6 +48,7 @@ namespace VVVV.Nodes.HTML
             {
                 var webRenderer = FWebRenderers[i];
                 var url = FUrlIn[i];
+                var reload = FReloadIn[i];
                 var width = FWidthIn[i];
                 var height = FHeightIn[i];
                 var zoomLevel = FZoomLevelIn[i];
@@ -53,7 +56,7 @@ namespace VVVV.Nodes.HTML
                 var keyEvent = FKeyEventIn[i];
                 bool isLoading;
                 string errorText;
-                var output = webRenderer.Render(out isLoading, out errorText, url, width, height, zoomLevel, mouseEvent, keyEvent);
+                var output = webRenderer.Render(out isLoading, out errorText, url, reload, width, height, zoomLevel, mouseEvent, keyEvent);
                 FOutput[i] = output;
                 FIsLoadingOut[i] = isLoading;
                 FErrorTextOut[i] = errorText;

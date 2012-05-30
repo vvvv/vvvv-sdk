@@ -49,6 +49,7 @@ namespace VVVV.Nodes.HTML
             FForm = new Form();
             using (var windowInfo = new CefWindowInfo())
             {
+                windowInfo.TransparentPainting = true;
                 windowInfo.SetAsOffScreen(FForm.Handle);
                 //windowInfo.SetAsOffScreen(IntPtr.Zero);
 
@@ -79,6 +80,7 @@ namespace VVVV.Nodes.HTML
             out bool isLoading,
             out string errorText,
             string url = DEFAULT_URL,
+            bool reload = false,
             int width = DEFAULT_WIDTH,
             int height = DEFAULT_HEIGHT,
             double zoomLevel = 0,
@@ -112,6 +114,7 @@ namespace VVVV.Nodes.HTML
                     mainFrame.LoadURL(url);
                 }
             }
+            if (reload) FBrowser.Reload();
             if (FZoomLevel != zoomLevel)
             {
                 FZoomLevel = zoomLevel;
