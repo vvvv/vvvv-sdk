@@ -19,14 +19,20 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Treemap",
 	Category = "2d", 
 	Help = "Returns a spread of packed rectangles whose size corresponds to the input values",
-	Tags = "squarify",
+	Tags = "squarify, split, layout, rectangles",
 	AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class C2dTreemapNode : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Input", IsBang = true)]
-		ISpread<double> FInput;
+		[Input("Input")]
+		IDiffSpread<double> FInput;
+		
+		[Input("Sort", IsSingle = true, DefaultValue = 1)]
+		IDiffSpread<bool> FSortIn;
+		
+		[Input("Algorithm", IsSingle = true)]
+		IDiffSpread<TreemapAlgorithm> FAlgorithmIn;
 		
 		[Output("Center")]
 		ISpread<Vector2D> FCenterOut;
@@ -47,19 +53,19 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if(FInput.IsChanged)
+			if(FInput.IsChanged || FSortIn.IsChanged || FAlgorithmIn.IsChanged)
 			{
 				var n = MakeTree(SpreadMax);
-				FTreeMap = new Treemap(n);
-				var area = new Rect(-0.5, -0.5, 1, 1);
-				FTreeMap.SetRegion(area);
+				FTreeMap = new Treemap(n, FSortIn[0]);
+				FTreeMap.Algorithm = FAlgorithmIn[0];
+				FTreeMap.DoLayout();
 				FLogger.Log(LogType.Debug, "new treemap");
 				
 				FCenterOut.SliceCount = SpreadMax;
 				FSizeOut.SliceCount = SpreadMax;
 				FFormerSliceOut.SliceCount = SpreadMax;
 				
-				var childs = FTreeMap.FRoot.Children;
+				var childs = FTreeMap.Root.Children;
 				for (int i = 0; i < SpreadMax; i++) 
 				{
 					var c = childs[i];

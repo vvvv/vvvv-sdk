@@ -7,6 +7,12 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Utils.Algorithm
 {
+	public enum TreemapAlgorithm
+	{
+		Squarify,
+		Split
+	}
+	
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Rect
 	{
@@ -138,85 +144,101 @@ namespace VVVV.Utils.Algorithm
 			
 			Children = new List<Node> (re.Children.Count);
 			foreach (Node rec in re.Children)
-			Children.Add (rec);
-			
+			{
+				Children.Add (rec);
+			}
 		}
 	}
 	
 	public class Treemap
 	{
-		public Node FRoot;
+		Node FRoot;
 		Rect FRegion;
-		Treemap FActiveChild;
 		
-		public Treemap (Node source)
+		public Treemap (Node root, bool sort)
 		{
-			this.FRoot = source.Clone ();
-			Sort (FRoot);
+			this.FRoot = root.Clone ();
+			if(sort) Sort (FRoot);
+			FRegion = new Rect(-0.5, -0.5, 1, 1);
 		}
 		
-		public Size Arrange(Size finalSize)
+		public Node Root
 		{
-			
-			Rect newRegion = new Rect (0, 0, finalSize.Width, finalSize.Height);
-			if (newRegion != FRegion && newRegion.Width > 0 && newRegion.Height > 0) 
+			get
 			{
-				Treemap t = this, child;
-				
-				while (true)
-				{
-					child = t.FActiveChild;
-					if (child == null)
-					{
-						t.SetRegion (newRegion);
-						break;
-					}
-					t = child;
-				}
+				return FRoot;
 			}
-			
-			return finalSize;
-			
 		}
 		
-		public void SetRegion (Rect newRegion)
+		public Rect Region
 		{
-			FRegion = newRegion;
-			//Squarify (FRegion, FRoot.Children);
-			Split (FRegion, new List<Node>(FRoot.Children));
+			get
+			{
+				return FRegion;
+			}
+			set
+			{
+				FRegion = value;
+			}
 		}
 		
-		const int PADX = 0;
-		const int PADY = 0;
+		public TreemapAlgorithm Algorithm
+		{
+			get;
+			set;
+		}
+		
+		public void DoLayout()
+		{
+			switch (Algorithm) 
+			{
+				case TreemapAlgorithm.Squarify:
+					Squarify (FRegion, FRoot.Children);
+					break;
+				case TreemapAlgorithm.Split:
+					Split (FRegion, new List<Node>(FRoot.Children));
+					break;
+				default:
+					throw new Exception("Invalid value for TreemapAlgorithm");
+			}
+		}
 
-		// Render a child
-		void Clicked (Node n)
+		public static double Sum(List<Node> children)
 		{
-			Treemap c = new Treemap (n);
-			
-			Size ns = new Size(FRegion.Width, FRegion.Height);
-			c.Arrange(ns);
-			FActiveChild = c;
+			double fullArea = 0;
+			foreach (Node child in children)
+			{
+				fullArea += child.Size;
+			}
+			return fullArea;
 		}
 		
-		public void Back()
+		public static double GetShortestSide (Rect r)
 		{
-			Treemap last = this, child = FActiveChild;
+			return Math.Min (r.Width, r.Height);
+		}
+		
+		static void Squarify (Rect emptyArea, List<Node> children)
+		{
+			double fullArea = Sum(children);
 			
-			while (child != null && child.FActiveChild != null) 
+			double area = emptyArea.Width * emptyArea.Height;
+			foreach (Node child in children)
 			{
-				last = child;
-				child = child.FActiveChild;
+				child.Area = (area * child.Size / fullArea);
 			}
-			if (child != null) 
+			
+			Squarify (emptyArea, children, new List<Node> (), GetShortestSide (emptyArea));
+			
+			foreach (Node child in children)
 			{
-				Rect childRegion = child.FRegion;
+				if (child.Area < 9000 || child.Children.Count == 0)
+				{
+					//Console.WriteLine ("Passing on this {0} {1} {2}", child.Area, child.Children, child.Children.Count);
+					continue;
+				}
 				
-				last.FActiveChild = null;
-				
-				// In case layout changed while we were rendering the child
-				if (childRegion != FRegion)
-					SetRegion (childRegion);
+				Squarify (child.Rect, child.Children);
 			}
 		}
 		
@@ -229,7 +251,6 @@ namespace VVVV.Utils.Algorithm
 			{
 				items[0].Rect = r;
 				Split(r, items[0].Children); // Layout the children within
-				
 			}
 			else
 			{
@@ -273,61 +294,21 @@ namespace VVVV.Utils.Algorithm
 				else
 				{
 					// horizontally
-					r1 = new Rect(
-						r.X,
-					    r.Y,
-						r.Width,
-						r.Height * (Sum(l1)/size));
+					r1 = new Rect(r.X,
+					              r.Y,
+					              r.Width,
+					              r.Height * (Sum(l1)/size));
 					
-					r2 = new Rect(
-						r.X,
-						r.Y + r1.Height,
-						r.Width,
-						r.Height - r1.Height);
+					r2 = new Rect(r.X,
+					              r.Y + r1.Height,
+					              r.Width,
+					              r.Height - r1.Height);
 				}
+				
 				Split(r1, l1);
 				Split(r2, l2);
 			}
 
-		}
-		
-		public static double Sum(List<Node> children)
-		{
-			double fullArea = 0;
-			foreach (Node child in children)
-			{
-				fullArea += child.Size;
-			}
-			return fullArea;
-		}
-		
-		public static double GetShortestSide (Rect r)
-		{
-			return Math.Min (r.Width, r.Height);
-		}
-		
-		static void Squarify (Rect emptyArea, List<Node> children)
-		{
-			double fullArea = Sum(children);
-			
-			double area = emptyArea.Width * emptyArea.Height;
-			foreach (Node child in children)
-			{
-				child.Area = (area * child.Size / fullArea);
-			}
-			
-			Squarify (emptyArea, children, new List<Node> (), GetShortestSide (emptyArea));
-			
-			foreach (Node child in children)
-			{
-				if (child.Area < 9000 || child.Children.Count == 0)
-				{
-					//Console.WriteLine ("Passing on this {0} {1} {2}", child.Area, child.Children, child.Children.Count);
-					//continue;
-				}
-				
-				Squarify (child.Rect, child.Children);
-			}
 		}
 		
 		static void Squarify (Rect emptyArea, List<Node> children, List<Node> row, double w)
