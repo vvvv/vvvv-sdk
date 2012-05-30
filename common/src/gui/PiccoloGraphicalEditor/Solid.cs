@@ -40,12 +40,12 @@ namespace VVVV.HDE.GraphicalEditing
         /// </summary>
         public PointF Position
         {
-        	get
-        	{
-        		return PNode.Offset;
-        	}
-        	set
-        	{
+            get
+            {
+                return PNode.Offset;
+            }
+            set
+            {
                 FMoving = true;
                 try
                 {
@@ -55,38 +55,47 @@ namespace VVVV.HDE.GraphicalEditing
                 {
                     FMoving = false;
                 }
-        	}
+            }
         }
 
         public PointF GlobalMiddle
         {
             get
             {
-            	return PNode.GlobalBounds.GetCenter();
+                return PNode.GlobalBounds.GetCenter();
             }
         }
 
         public virtual SizeF Size
         {
-        	get
-        	{
-        		return PNode.Bounds.Size;
-        	}
-        	set
-        	{
-        		
-        		PNode.Width = value.Width;
-        		PNode.Height = value.Height;
-        		
-        		//move topleft if in center mode
-        		if(FPositionMode == PositionMode.Center)
-        		{
-        			PNode.X = value.Width * -0.5f;
-        			PNode.Y = value.Height * -0.5f;
-        		}
-        	}
+            get
+            {
+                return PNode.Bounds.Size;
+            }
+            set
+            {
+                FMoving = true;
+                try
+                {
+                    PNode.Width = value.Width;
+                    PNode.Height = value.Height;
+
+                    //move topleft if in center mode
+                    if (FPositionMode == PositionMode.Center)
+                    {
+                        PNode.X = value.Width * -0.5f;
+                        PNode.Y = value.Height * -0.5f;
+                    }
+                    BoundsChanged(PNode, null);
+                    //PNode.SignalBoundsChanged();
+                }
+                finally
+                {
+                    FMoving = false;
+                }
+            }
         }
-        
+
         public RectangleF GlobalBounds
         {
             get
@@ -94,33 +103,34 @@ namespace VVVV.HDE.GraphicalEditing
                 return PNode.GlobalBounds;
             }
         }
-        
+
         protected PositionMode FPositionMode;
         public virtual PositionMode PositionMode
         {
-        	get
-        	{
-        		return FPositionMode;
-        	}
-        	set
-        	{
-        		if(FPositionMode != value)
-        		{
-        			FPositionMode = value;
-        			
-        			//set new position if mode changed
-        			if(FPositionMode == PositionMode.TopLeft)
-        			{
-        				PNode.X = 0;
-        				PNode.Y = 0;
-        			}
-        			else
-        			{
-        				PNode.X = Size.Width * -0.5f;
-        				PNode.Y = Size.Height * -0.5f;
-        			}
-        		}
-        	}
+            get
+            {
+                return FPositionMode;
+            }
+            set
+            {
+                if (FPositionMode != value)
+                {
+                    FPositionMode = value;
+
+                    //set new position if mode changed
+                    if (FPositionMode == PositionMode.TopLeft)
+                    {
+                        PNode.X = 0;
+                        PNode.Y = 0;
+                    }
+                    else
+                    {
+                        PNode.X = Size.Width * -0.5f;
+                        PNode.Y = Size.Height * -0.5f;
+                    }
+                    //BoundsChanged(PNode, null);
+                }
+            }
         }
     }
 }
