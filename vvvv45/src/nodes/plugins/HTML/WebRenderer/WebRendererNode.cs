@@ -33,6 +33,8 @@ namespace VVVV.Nodes.HTML
         public ISpread<DXResource<Texture, CefBrowser>> FOutput;
         [Output("Is Loading")]
         public ISpread<bool> FIsLoadingOut;
+        [Output("Current Url")]
+        public ISpread<string> FCurrentUrlOut;
         [Output("Error Text")]
         public ISpread<string> FErrorTextOut;
 
@@ -58,10 +60,11 @@ namespace VVVV.Nodes.HTML
                 var keyEvent = FKeyEventIn[i];
                 var enabled = FEnabledIn[i];
                 bool isLoading;
-                string errorText;
-                var output = webRenderer.Render(out isLoading, out errorText, url, reload, width, height, zoomLevel, mouseEvent, keyEvent, enabled);
+                string currentUrl, errorText;
+                var output = webRenderer.Render(out isLoading, out currentUrl, out errorText, url, reload, width, height, zoomLevel, mouseEvent, keyEvent, enabled);
                 FOutput[i] = output;
                 FIsLoadingOut[i] = isLoading;
+                FCurrentUrlOut[i] = currentUrl;
                 FErrorTextOut[i] = errorText;
             }
         }

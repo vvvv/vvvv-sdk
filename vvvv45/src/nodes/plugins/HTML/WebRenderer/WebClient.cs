@@ -46,7 +46,6 @@ namespace VVVV.Nodes.HTML
                         FRenderer.Paint(dirtyRects, buffer, width * 4);
                         break;
                     case CefPaintElementType.Popup:
-                        
                         break;
                 }
                 base.OnPaint(browser, type, dirtyRects, buffer);
@@ -55,10 +54,12 @@ namespace VVVV.Nodes.HTML
         
         class LifeSpanHandler : CefLifeSpanHandler
         {
+            private readonly WebClient FWebClient;
             private readonly WebRenderer FRenderer;
             
-            public LifeSpanHandler(WebRenderer renderer)
+            public LifeSpanHandler(WebClient webClient, WebRenderer renderer)
             {
+                FWebClient = webClient;
                 FRenderer = renderer;
             }
             
@@ -71,8 +72,9 @@ namespace VVVV.Nodes.HTML
             
             protected override void OnBeforeClose(CefBrowser browser)
             {
+                FRenderer.Detach(browser);
                 browser.Dispose();
-                FRenderer.Detach();
+                base.OnBeforeClose(browser);
             }
         }
 
@@ -107,6 +109,7 @@ namespace VVVV.Nodes.HTML
             {
                 FRenderer.FFrameLoadCount++;
                 FRenderer.FErrorText = string.Empty;
+                if (frame.IsMain) FRenderer.FCurrentUrl = frame.GetURL();
                 base.OnLoadStart(browser, frame);
             }
             
@@ -142,7 +145,7 @@ namespace VVVV.Nodes.HTML
         public WebClient(WebRenderer renderer)
         {
             FRenderHandler = new RenderHandler(renderer);
-            FLifeSpanHandler = new LifeSpanHandler(renderer);
+            FLifeSpanHandler = new LifeSpanHandler(this, renderer);
             FLoadHandler = new LoadHandler(renderer);
             FKeyboardHandler = new KeyboardHandler();
         }

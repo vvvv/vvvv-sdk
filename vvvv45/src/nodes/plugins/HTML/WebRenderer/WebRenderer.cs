@@ -31,8 +31,8 @@ namespace VVVV.Nodes.HTML
         private double FZoomLevel;
         private MouseState FMouseState;
         private KeyState FKeyState;
-        private Form FForm;
         internal int FFrameLoadCount;
+        internal string FCurrentUrl;
         internal string FErrorText;
 
         public WebRenderer()
@@ -47,12 +47,10 @@ namespace VVVV.Nodes.HTML
             settings.UniversalAccessFromFileUrlsAllowed = true;
             //settings.PluginsDisabled = true;
 
-            FForm = new Form();
             using (var windowInfo = new CefWindowInfo())
             {
                 windowInfo.TransparentPainting = true;
-                windowInfo.SetAsOffScreen(FForm.Handle);
-                //windowInfo.SetAsOffScreen(IntPtr.Zero);
+                windowInfo.SetAsOffScreen(IntPtr.Zero);
 
                 FWebClient = new WebClient(this);
                 CefBrowser.Create(windowInfo, FWebClient, DEFAULT_URL, settings);
@@ -79,6 +77,7 @@ namespace VVVV.Nodes.HTML
         [Node(Name = "Renderer")]
         public DXResource<Texture, CefBrowser> Render(
             out bool isLoading,
+            out string currentUrl,
             out string errorText,
             string url = DEFAULT_URL,
             bool reload = false,
@@ -93,6 +92,7 @@ namespace VVVV.Nodes.HTML
             if (FBrowser == null)
             {
                 isLoading = IsLoading;
+                currentUrl = string.Empty;
                 errorText = "Initializing ...";
                 return FTextureResource;
             }
@@ -101,6 +101,7 @@ namespace VVVV.Nodes.HTML
             if (!Enabled)
             {
                 isLoading = false;
+                currentUrl = FCurrentUrl;
                 errorText = "Disabled";
                 return FTextureResource;
             }
@@ -194,6 +195,7 @@ namespace VVVV.Nodes.HTML
             }
 
             isLoading = IsLoading;
+            currentUrl = FCurrentUrl;
             errorText = FErrorText;
 
             return FTextureResource;
@@ -214,6 +216,10 @@ namespace VVVV.Nodes.HTML
             {
                 if (FEnabled != value)
                 {
+                    if (FEnabled)
+                    {
+                        FBrowser.StopLoad();
+                    }
                     FEnabled = value;
                     if (FEnabled)
                     {
@@ -234,7 +240,7 @@ namespace VVVV.Nodes.HTML
             FBrowser.SetSize(CefPaintElementType.View, FWidth, FHeight);
         }
 
-        internal void Detach()
+        internal void Detach(CefBrowser browser)
         {
             if (FBrowser != null)
             {
