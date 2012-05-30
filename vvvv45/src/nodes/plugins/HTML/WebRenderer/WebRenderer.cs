@@ -146,9 +146,9 @@ namespace VVVV.Nodes.HTML
                 {
                     FBrowser.SendMouseMoveEvent(x, y, false);
                 }
-                if (FMouseState.MouseWheelDelta != 0)
+                if (mouseState.MouseWheelDelta != 0)
                 {
-                    FBrowser.SendMouseWheelEvent(x, y, FMouseState.MouseWheelDelta);
+                    FBrowser.SendMouseWheelEvent(x, y, mouseState.MouseWheelDelta);
                 }
                 FMouseState = mouseState;
             }
@@ -248,11 +248,13 @@ namespace VVVV.Nodes.HTML
                 }
                 else
                 {
-                    for (int y = rect.Y; y < rect.Y + rect.Height; y++)
+                    var offset = stride * rect.Y + 4 * rect.X;
+                    var source = buffer + offset;
+                    for (int y = 0; y < rect.Height; y++)
                     {
                         //                        dataStream.Position = y * dataRect.Pitch + 4 * rect.X;
-                        dataStream.Position = (y - rect.Y) * dataRect.Pitch;
-                        dataStream.WriteRange(buffer + y * stride + 4 * rect.X, rect.Width * 4);
+                        dataStream.Position = y * dataRect.Pitch;
+                        dataStream.WriteRange(source + y * stride, rect.Width * 4);
                     }
                 }
             }
