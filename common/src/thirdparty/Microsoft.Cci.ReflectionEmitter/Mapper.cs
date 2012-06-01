@@ -150,10 +150,13 @@ namespace Microsoft.Cci.ReflectionEmitter {
               {
                 var containingGenericType = containingGenericTypeInstance.GenericType;
                 var methods = containingGenericType.ResolvedType.PrivateHelperMembers.Where(m => m is IMethodReference);
-                var canditateMethod = methods.First(m => m.Name.UniqueKey == methodReference.Name.UniqueKey) as IMethodReference;
-                result = this.methodMap.Find(canditateMethod.InternedKey);
-                this.methodMap.Add(methodReference.InternedKey, result);
-                return result;
+                var canditateMethod = methods.FirstOrDefault(m => m.Name.UniqueKey == methodReference.Name.UniqueKey) as IMethodReference;
+                if (canditateMethod != null)
+                {
+                    result = this.methodMap.Find(canditateMethod.InternedKey);
+                    this.methodMap.Add(methodReference.InternedKey, result);
+                    return result;
+                }
               }
             }
             if (members == null) {
