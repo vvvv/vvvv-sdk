@@ -59,7 +59,6 @@ namespace VVVV.Nodes
 				FTreeMap = new Treemap(n, FSortIn[0]);
 				FTreeMap.Algorithm = FAlgorithmIn[0];
 				FTreeMap.DoLayout();
-				FLogger.Log(LogType.Debug, "new treemap");
 				
 				FCenterOut.SliceCount = SpreadMax;
 				FSizeOut.SliceCount = SpreadMax;
