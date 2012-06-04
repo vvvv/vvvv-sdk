@@ -51,9 +51,11 @@ namespace VVVV.Hosting.Pins.Output
                 {
                     using (var dataWriter = FDataStream.GetWriter())
                     {
+                        bool anyChanged = false;
                         foreach (var spread in this)
                         {
-                            if (spread.IsChanged)
+                            anyChanged |= spread.IsChanged;
+                            if (anyChanged)
                                 dataWriter.Write(spread.Stream, buffer);
                             else
                                 dataWriter.Position += spread.SliceCount;
