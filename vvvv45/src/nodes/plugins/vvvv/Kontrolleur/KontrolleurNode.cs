@@ -19,6 +19,7 @@ using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Utils.OSC;
+using VVVV.Hosting;
 #endregion usings
 
 namespace VVVV.Nodes
@@ -279,13 +280,7 @@ namespace VVVV.Nodes
 			if (FTargets.ContainsKey(address))
 				FTargets[address].State = RemoteValueState.Remove;
 		}
-		
-		private void LabelChangedCB(object Sender, EventArgs e)
-		{
-			var labelPin = Sender as IPin2;
-			ExposeIOBox(labelPin.ParentNode);
-		}
-		
+
 		private void ReExposeIOBoxes()
 		{
 			foreach (var target in FTargets.ToArray())
@@ -334,7 +329,7 @@ namespace VVVV.Nodes
 					
 					var node = pm.AddNode(int.Parse(patchClass[1]));
 					var pin = node.AddPin("Y Input Value");
-					pin.AddAttribute("values", target.Value);
+					pin.Spread = target.Value;
 				}
 				
 				foreach (var pm in FPatchMessages)
