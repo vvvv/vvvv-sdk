@@ -31,12 +31,6 @@ namespace VVVV.Nodes
 		[Input("Listening UDP Port", IsSingle = true, DefaultValue = 44444)]
 		IDiffSpread<int> FUDPPort;
 		
-		[Input("Target IP", IsSingle=true, DefaultString="127.0.0.1")]
-		IDiffSpread<string> FTargetIP;
-		
-		[Input("Target UDP Port", IsSingle=true, DefaultValue=55555)]
-		IDiffSpread<int> FTargetPort;
-		
 		[Input("Accept", IsSingle = true, DefaultEnumEntry = "OnlyExposed")]
 		IDiffSpread<AcceptMode> FAcceptMode;
 		
@@ -45,6 +39,12 @@ namespace VVVV.Nodes
 		
 		[Input("Feedback Accepted", IsSingle = true, DefaultValue = 0)]
 		ISpread<bool> FFeedback;
+		
+		[Input("Feedback Target IP", IsSingle=true, DefaultString="127.0.0.1")]
+		IDiffSpread<string> FTargetIP;
+		
+		[Input("Feedback Target UDP Port", IsSingle=true, DefaultValue=55555)]
+		IDiffSpread<int> FTargetPort;
 
 		[Output("Exposed Pins")]
 		ISpread<string> FExposedPinsOut;
