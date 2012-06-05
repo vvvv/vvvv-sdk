@@ -622,15 +622,23 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+		
 		int Top
 		{
 			get;
 		}
+		
 		int Width
 		{
 			get;
 		}
+		
 		int Height
+		{
+			get;
+		}
+		
+		IntPtr Handle
 		{
 			get;
 		}
