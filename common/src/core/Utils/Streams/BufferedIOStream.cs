@@ -199,6 +199,7 @@ namespace VVVV.Utils.Streams
         private T[] FBuffer;
         private int FLength;
         private int FCapacity;
+        protected int FChangeCount;
         
         public BufferedIOStream(int initialCapacity = 0)
         {
@@ -214,13 +215,13 @@ namespace VVVV.Utils.Streams
         
         public virtual void Flush()
         {
-            IsChanged = false;
+            FChangeCount = 0;
         }
         
         public bool IsChanged
         {
-            get;
-            protected set;
+            get { return FChangeCount > 0; }
+            set { if (value) FChangeCount++; else FChangeCount = 0; }
         }
         
         public int Length

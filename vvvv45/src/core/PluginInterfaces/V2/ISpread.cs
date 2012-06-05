@@ -457,15 +457,15 @@ namespace VVVV.PluginInterfaces.V2
 		public static void ResizeAndDismiss<T>(this ISpread<T> spread, int sliceCount)
             where T : new()
         {
-            spread.ResizeAndDismiss(sliceCount, (i) => new T());
+            spread.ResizeAndDismiss(sliceCount, () => new T());
         }
         
-        public static void ResizeAndDismiss<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+        public static void ResizeAndDismiss<T>(this ISpread<T> spread, int sliceCount, Func<T> constructor)
         {
             spread.Stream.ResizeAndDismiss(sliceCount, constructor);
         }
         
-        public static void ResizeAndDispose<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+        public static void ResizeAndDispose<T>(this ISpread<T> spread, int sliceCount, Func<T> constructor)
             where T : IDisposable
         {
             spread.Resize(sliceCount, constructor, (t) => t.Dispose());
@@ -474,12 +474,28 @@ namespace VVVV.PluginInterfaces.V2
         public static void ResizeAndDispose<T>(this ISpread<T> spread, int sliceCount)
             where T : IDisposable, new()
         {
-            spread.Resize(sliceCount, (i) => new T(), (t) => t.Dispose());
+            spread.Resize(sliceCount, () => new T(), (t) => t.Dispose());
+        }
+		
+		public static void Resize<T>(this ISpread<T> spread, int sliceCount, Func<T> constructor, Action<T> destructor)
+        {
+		    spread.Stream.Resize(sliceCount, constructor, destructor);
         }
 		
 		public static void Resize<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor, Action<T> destructor)
-        {
+		{
 		    spread.Stream.Resize(sliceCount, constructor, destructor);
+		}
+		
+		public static void ResizeAndDismiss<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+        {
+            spread.Stream.ResizeAndDismiss(sliceCount, constructor);
+        }
+        
+        public static void ResizeAndDispose<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+            where T : IDisposable
+        {
+            spread.Resize(sliceCount, constructor, (t) => t.Dispose());
         }
 		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(

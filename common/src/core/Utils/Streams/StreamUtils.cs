@@ -292,7 +292,36 @@ namespace VVVV.Utils.Streams
         public static void ResizeAndDismiss<T>(this IIOStream<T> stream, int length)
             where T : new()
         {
-            stream.ResizeAndDismiss(length, (i) => new T());
+            stream.ResizeAndDismiss(length, () => new T());
+        }
+        
+        public static void ResizeAndDismiss<T>(this IIOStream<T> stream, int length, Func<T> constructor)
+        {
+            var initialPosition = stream.Length;
+            stream.Length = length;
+            
+            var buffer = MemoryPool<T>.GetArray();
+            try
+            {
+                using (var writer = stream.GetWriter())
+                {
+                    writer.Position = initialPosition;
+                    var numSlicesToWrite = writer.Length - writer.Position;
+                    while (numSlicesToWrite > 0)
+                    {
+                        var blockSize = Math.Min(StreamUtils.BUFFER_SIZE, numSlicesToWrite);
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            buffer[i] = constructor();
+                        }
+                        numSlicesToWrite -= writer.Write(buffer, 0, blockSize);
+                    }
+                }
+            }
+            finally
+            {
+                MemoryPool<T>.PutArray(buffer);
+            }
         }
         
         public static void ResizeAndDismiss<T>(this IIOStream<T> stream, int length, Func<int, T> constructor)
@@ -310,10 +339,10 @@ namespace VVVV.Utils.Streams
                     while (numSlicesToWrite > 0)
                     {
                         var blockSize = Math.Min(StreamUtils.BUFFER_SIZE, numSlicesToWrite);
-                        var position = writer.Position;
+                        initialPosition = writer.Position;
                         for (int i = 0; i < blockSize; i++)
                         {
-                            buffer[i] = constructor(position + i);
+                            buffer[i] = constructor(initialPosition + i);
                         }
                         numSlicesToWrite -= writer.Write(buffer, 0, blockSize);
                     }
@@ -325,7 +354,7 @@ namespace VVVV.Utils.Streams
             }
         }
         
-        public static void ResizeAndDispose<T>(this IIOStream<T> stream, int length, Func<int, T> constructor)
+        public static void ResizeAndDispose<T>(this IIOStream<T> stream, int length, Func<T> constructor)
             where T : IDisposable
         {
             stream.Resize(length, constructor, (t) => t.Dispose());
@@ -334,7 +363,51 @@ namespace VVVV.Utils.Streams
         public static void ResizeAndDispose<T>(this IIOStream<T> stream, int length)
             where T : IDisposable, new()
         {
-        	stream.Resize(length, (i) => new T(), (t) => t.Dispose());
+            stream.Resize(length, () => new T(), (t) => t.Dispose());
+        }
+        
+        public static void Resize<T>(this IIOStream<T> stream, int length, Func<T> constructor, Action<T> destructor)
+        {
+            var buffer = MemoryPool<T>.GetArray();
+            try
+            {
+                using (var reader = stream.GetReader())
+                {
+                    reader.Position = length;
+                    var numSlicesToRead = reader.Length - reader.Position;
+                    while (numSlicesToRead > 0)
+                    {
+                        var blockSize = reader.Read(buffer, 0, StreamUtils.BUFFER_SIZE);
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            destructor(buffer[i]);
+                        }
+                        numSlicesToRead -= blockSize;
+                    }
+                }
+                
+                var initialPosition = stream.Length;
+                stream.Length = length;
+                
+                using (var writer = stream.GetWriter())
+                {
+                    writer.Position = initialPosition;
+                    var numSlicesToWrite = writer.Length - writer.Position;
+                    while (numSlicesToWrite > 0)
+                    {
+                        var blockSize = Math.Min(StreamUtils.BUFFER_SIZE, numSlicesToWrite);
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            buffer[i] = constructor();
+                        }
+                        numSlicesToWrite -= writer.Write(buffer, 0, blockSize);
+                    }
+                }
+            }
+            finally
+            {
+                MemoryPool<T>.PutArray(buffer);
+            }
         }
         
         public static void Resize<T>(this IIOStream<T> stream, int length, Func<int, T> constructor, Action<T> destructor)
@@ -367,10 +440,10 @@ namespace VVVV.Utils.Streams
                     while (numSlicesToWrite > 0)
                     {
                         var blockSize = Math.Min(StreamUtils.BUFFER_SIZE, numSlicesToWrite);
-                        var position = writer.Position;
+                        initialPosition = writer.Position;
                         for (int i = 0; i < blockSize; i++)
                         {
-                            buffer[i] = constructor(position + i);
+                            buffer[i] = constructor(initialPosition + i);
                         }
                         numSlicesToWrite -= writer.Write(buffer, 0, blockSize);
                     }
