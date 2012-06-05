@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\tests\Cons (Value) test.v4p" systemname="Cons (Value))" filename="D:\vvvv_dev\vvvv\public\vvvv45\tests\Cons (Value) test.v4p">
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Cons (Spreads) test.v4p" systemname="Cons (Value))" filename="D:\vvvv_dev\vvvv\public\vvvv45\tests\Cons (Value) test.v4p">
    <BOUNDS type="Window" left="3150" top="5850" width="9525" height="7830">
    </BOUNDS>
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="0">
@@ -112,38 +112,6 @@
    </LINK>
    <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Expected">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="645" top="5310" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="645" top="5310" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="2580" top="5310" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2580" top="5310" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="0" srcpinname="Output Bin Size" dstnodeid="6" dstpinname="Actual">
    </LINK>
    <NODE systemname="NIL (Spreads)" filename="%VVVV%\lib\nodes\modules\Spreads\NIL (Spreads).v4p" nodename="NIL (Spreads)" componentmode="Hidden" id="10">
@@ -173,10 +141,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Expected">
-   </LINK>
-   <LINK srcnodeid="5" srcpinname="Success" dstnodeid="7" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="6" srcpinname="Success" dstnodeid="8" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="6975" top="3780" width="0" height="0">
@@ -259,5 +223,33 @@
    <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Input 3">
    </LINK>
    <LINK srcnodeid="10" srcpinname="Output" dstnodeid="0" dstpinname="Input 4">
+   </LINK>
+   <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="615" top="6180" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" encoded="0">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" encoded="0">
+   </PIN>
+   <BOUNDS type="Box" left="615" top="6180">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="18" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="600" top="6630" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="6630" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Success">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="18" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Success" dstnodeid="19" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Success" dstnodeid="19" dstpinname="Input 2" hiddenwhenlocked="1">
    </LINK>
    </PATCH>
