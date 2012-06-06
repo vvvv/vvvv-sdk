@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\tests\NodeTester.v4p" systemname="NodeTester" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\tests\NodeTester.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\tests\NodeTester.v4p" systemname="NodeTester" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\tests\NodeTester.v4p" bgcolor="15329769">
    <BOUNDS type="Window" left="165" top="150" width="13500" height="9510">
    </BOUNDS>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="10">
@@ -31,7 +31,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1323" top="1125" width="9550" height="20635">
    </BOUNDS>
-   <BOUNDS type="Window" left="13680" top="0" width="10035" height="17580">
+   <BOUNDS type="Window" left="13680" top="150" width="10665" height="17430">
    </BOUNDS>
    <PIN pinname="Y Input Value">
    </PIN>
@@ -101,9 +101,9 @@
    <LINK srcnodeid="138" srcpinname="Y Output Value" dstnodeid="136" dstpinname="Start Tests">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="139" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="6495" top="3615" width="0" height="0">
+   <BOUNDS type="Node" left="6420" top="3615" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="6495" top="3615" width="345" height="315">
+   <BOUNDS type="Box" left="6420" top="3615" width="345" height="315">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -242,6 +242,12 @@
    </LINK>
    <LINK srcnodeid="163" srcpinname="Message" dstnodeid="153" dstpinname="Input String">
    </LINK>
+   <LINK srcnodeid="163" srcpinname="Message" dstnodeid="136" dstpinname="Error Message" linkstyle="Bezier">
+   <LINKPOINT x="11550" y="6555">
+   </LINKPOINT>
+   <LINKPOINT x="9540" y="3525">
+   </LINKPOINT>
+   </LINK>
    <NODE id="2" systemname="Zip (Value) test" filename="%VVVV%\lib\nodes\plugins\Zip (Value) test.v4p" nodename="%VVVV%\lib\nodes\plugins\Zip (Value) test.v4p" componentmode="Hidden" hiddenwhenlocked="0" managers="">
    <PIN pinname="Run" visible="1" pintype="Input">
    </PIN>
@@ -255,7 +261,7 @@
    </PIN>
    <BOUNDS type="Box" left="1800" top="1125" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="14400" top="5910" width="8760" height="7470">
+   <BOUNDS type="Window" left="13965" top="4755" width="9195" height="8625">
    </BOUNDS>
    <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -268,9 +274,9 @@
    <PIN pinname="Window Handle" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="2" srcpinname="Running" dstnodeid="10" dstpinname="Input">
+   <LINK srcnodeid="2" srcpinname="Result" dstnodeid="163" dstpinname="Result">
    </LINK>
-   <LINK srcnodeid="2" srcpinname="ID" dstnodeid="136" dstpinname="Node ID">
+   <LINK srcnodeid="2" srcpinname="Success" dstnodeid="163" dstpinname="Success">
    </LINK>
    <LINK srcnodeid="141" srcpinname="Output 1" dstnodeid="2" dstpinname="Run" linkstyle="Bezier">
    <LINKPOINT x="5610" y="5925">
@@ -278,14 +284,8 @@
    <LINKPOINT x="1125" y="2415">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="2" srcpinname="Success" dstnodeid="163" dstpinname="Success">
+   <LINK srcnodeid="2" srcpinname="ID" dstnodeid="136" dstpinname="Node ID">
    </LINK>
-   <LINK srcnodeid="2" srcpinname="Result" dstnodeid="163" dstpinname="Result">
-   </LINK>
-   <LINK srcnodeid="163" srcpinname="Message" dstnodeid="136" dstpinname="Error Message" linkstyle="Bezier">
-   <LINKPOINT x="11550" y="6555">
-   </LINKPOINT>
-   <LINKPOINT x="9540" y="3525">
-   </LINKPOINT>
+   <LINK srcnodeid="2" srcpinname="Running" dstnodeid="10" dstpinname="Input">
    </LINK>
    </PATCH>
