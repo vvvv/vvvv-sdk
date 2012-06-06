@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Test\Tester (Test).v4p" systemname="Tester (Test)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Test\Tester (Test).v4p">
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="3870" top="7290" width="0" height="0">
@@ -1101,9 +1101,9 @@
    <NODE systemname="Expr (Value)" nodename="Expr (Value)" componentmode="Hidden" id="90">
    <BOUNDS type="Node" left="6840" top="7350" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Variable Names" slicecount="1" values="|a, b|" encoded="0">
+   <PIN pinname="Variable Names" slicecount="1" encoded="0" values="|a, b|">
    </PIN>
-   <PIN pinname="Term" slicecount="1" values="round(a/b*100)" encoded="0">
+   <PIN pinname="Term" slicecount="1" encoded="0" values="round(a/b*100)">
    </PIN>
    <PIN pinname="a" visible="1">
    </PIN>
@@ -1117,5 +1117,21 @@
    <LINK srcnodeid="2" srcpinname="High" dstnodeid="90" dstpinname="b">
    </LINK>
    <LINK srcnodeid="90" srcpinname="Output" dstnodeid="88" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="91" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4575" top="10245" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4575" top="10245" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="text" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Current Test|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="91" dstpinname="Input String">
    </LINK>
    </PATCH>

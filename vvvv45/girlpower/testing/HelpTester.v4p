@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\testing\HelpTester.v4p" systemname="HelpTester" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\tests\HelpTester.v4p">
-   <BOUNDS type="Window" left="165" top="150" width="13500" height="6915">
+   <BOUNDS type="Window" left="15300" top="10665" width="13500" height="6915">
    </BOUNDS>
    <LINK srcnodeid="46" srcpinname="Y Output Value" dstnodeid="44" dstpinname="OnStart">
    </LINK>
@@ -57,7 +57,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6315" top="2280" width="3105" height="285">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" encoded="0" values="..\..\addonpack\lib\nodes\nodelist.xml">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="..\..\lib\nodes\nodelist.xml">
    </PIN>
    <PIN pinname="Default" slicecount="1" encoded="0" values="file.txt">
    </PIN>
@@ -215,7 +215,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7095" top="4140" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="%" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="%">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -224,4 +224,32 @@
    </NODE>
    <LINK srcnodeid="136" srcpinname="Progress" dstnodeid="152" dstpinname="Y Input Value">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="153" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7125" top="5775" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7125" top="5775" width="2985" height="285">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="136" srcpinname="Current Test" dstnodeid="153" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="154" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10290" top="5760" width="1155" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10290" top="5760" width="1155" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; current test|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
