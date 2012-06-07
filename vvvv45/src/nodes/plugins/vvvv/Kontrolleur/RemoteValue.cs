@@ -36,6 +36,7 @@ namespace VVVV.Nodes
 				return FValuePin;
 			}
 		}
+		
 		public string Name
 		{
 			get
@@ -45,12 +46,6 @@ namespace VVVV.Nodes
 			set
 			{
 				FName = value;
-				foreach (string prefix in FPrefixes)
-					if (FName.StartsWith(prefix))
-					{
-						FName = FName.Substring(prefix.Length);
-						break;
-					}
 			}
 		}
 		
@@ -67,6 +62,8 @@ namespace VVVV.Nodes
 			FNamePin = node.LabelPin;
 			FNamePin.Changed += ValueChangedCB;
 			Name = FNamePin[0];
+			if (string.IsNullOrEmpty(Name))
+				Name = RuntimeNodePath;
 			
 			FValuePin = Node.FindPin("Y Input Value");
 			FValuePin.Changed += ValueChangedCB;

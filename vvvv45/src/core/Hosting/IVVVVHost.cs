@@ -159,6 +159,13 @@ namespace VVVV.Hosting
             get;
         }
         
+        /// <summary>
+        /// Gets the ExposedNode service.
+        /// </summary>
+        IInternalExposedNodeService ExposedNodeService
+        {
+        	get;
+        }
         bool IsBoygroupClient 
         {
 			get;
