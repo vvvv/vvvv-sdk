@@ -36,7 +36,6 @@ namespace VVVV.Nodes.ImagePlayer
         public const bool DEFAULT_ALLOCATE_ON_GPU = false; // AMD cards don't play well when texture size not power of two.
         
         private string[] FFiles = new string[0];
-        private int FUnusedFrames;
         
         private readonly int FThreadsIO;
         private readonly int FThreadsTexture;
@@ -50,7 +49,7 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>> FFilePreloader;
         private readonly TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame> FFramePreloader;
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
-        private readonly Spread<Frame> FVisibleFrames = new Spread<Frame>(0);
+        private readonly Dictionary<string, Frame> FPreloadedFrames = new Dictionary<string, Frame>();
         
         public ImagePlayer(
             int threadsIO,
@@ -117,7 +116,7 @@ namespace VVVV.Nodes.ImagePlayer
             }
             
             // Dispose all visible frames
-            foreach (var frame in FVisibleFrames)
+            foreach (var frame in FPreloadedFrames.Values)
             {
                 frame.Dispose();
                 frame.Metadata.Dispose();
@@ -247,9 +246,7 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 if (frameInfo != frameInfoToDequeue)
                 {
-                    frame.Dispose();
-                    frameInfo.Dispose();
-                    FUnusedFrames++;
+                    Dispose(frame);
                 }
             }
             
@@ -261,11 +258,20 @@ namespace VVVV.Nodes.ImagePlayer
             FScheduledFrameInfos.RemoveFirst();
             return FFramePreloader.Receive();
         }
-        
-        private FrameInfo CreateFrameInfo(int frameNr, int bufferSize)
+
+        private void Dispose(Frame frame)
         {
-            frameNr = VMath.Zmod(frameNr, FFiles.Length);
-            return new FrameInfo(frameNr, FFiles[frameNr], bufferSize);
+            var frameInfo = frame.Metadata;
+            var filename = frameInfo.Filename;
+            if (!string.IsNullOrEmpty(filename))
+                FPreloadedFrames.Remove(filename);
+            frameInfo.Dispose();
+            frame.Dispose();
+        }
+        
+        private FrameInfo CreateFrameInfo(string filename, int bufferSize)
+        {
+            return new FrameInfo(filename, bufferSize);
         }
         
         private static Frame GetEmptyFrame()
@@ -275,11 +281,21 @@ namespace VVVV.Nodes.ImagePlayer
         
         private static FrameInfo GetEmptyFrameInfo()
         {
-            return new FrameInfo(-1, string.Empty, DEFAULT_BUFFER_SIZE);
+            return new FrameInfo(string.Empty, DEFAULT_BUFFER_SIZE);
+        }
+
+        private bool IsScheduled(string file)
+        {
+            return FScheduledFrameInfos.Any(frameInfo => frameInfo.Filename == file && !frameInfo.IsCanceled);
+        }
+
+        private bool IsPreloaded(string file)
+        {
+            return FPreloadedFrames.ContainsKey(file);
         }
         
         public ISpread<Frame> Preload(
-            ISpread<int> visibleFrameNrs,
+            ISpread<int> visibleFrameIndices,
             ISpread<int> preloadFrameNrs,
             int bufferSize,
             out int frameCount,
@@ -291,136 +307,91 @@ namespace VVVV.Nodes.ImagePlayer
             frameCount = FFiles.Length;
             durationIO = 0.0;
             durationTexture = 0.0;
-            FUnusedFrames = 0;
+            unusedFrames = 0;
             
             // Nothing to do
             if (FFiles.Length == 0)
             {
-                unusedFrames = FUnusedFrames;
                 loadedFrames.SliceCount = 0;
                 return new Spread<Frame>(0);
             }
-            
-            // Dispose old visible frames
-            FVisibleFrames.Resize(
-                visibleFrameNrs.SliceCount,
-                (i) => null,
-                frame =>
-                {
-                    frame.Dispose();
-                    frame.Metadata.Dispose();
-                }
-               );
-            
-            var visibleFramesEnumerator = FVisibleFrames.GetEnumerator();
-            for (int i = 0; i < visibleFrameNrs.SliceCount; i++)
+
+            // Map frame numbers to file names
+            var preloadFiles = preloadFrameNrs.Select(frameNr => FFiles[VMath.Zmod(frameNr, FFiles.Length)]).ToArray();
+            var visibleFiles = visibleFrameIndices.Select(index => preloadFiles[VMath.Zmod(index, preloadFiles.Length)]);
+
+            // Cancel unused scheduled frames
+            foreach (var frameInfo in FScheduledFrameInfos.Where(fi => !fi.IsCanceled))
             {
-                var newFrameInfo = CreateFrameInfo(visibleFrameNrs[i], bufferSize);
-                
-                while (visibleFramesEnumerator.MoveNext())
+                if (!preloadFiles.Contains(frameInfo.Filename))
                 {
-                    var currentFrame = visibleFramesEnumerator.Current ?? GetEmptyFrame();
-                    var currentFrameInfo = currentFrame.Metadata;
-                    
-                    Debug.Assert(!currentFrameInfo.IsCanceled);
-                    if (currentFrameInfo == newFrameInfo)
+                    frameInfo.Cancel();
+                }
+            }
+
+            // Schedule new frames
+            foreach (var file in preloadFiles)
+            {
+                if (!IsScheduled(file) && !IsPreloaded(file))
+                {
+                    var frameInfo = CreateFrameInfo(file, bufferSize);
+                    Enqueue(frameInfo);
+                }
+            }
+
+            // Write the "is loaded" state
+            loadedFrames.SliceCount = preloadFrameNrs.SliceCount;
+            for (int i = 0; i < loadedFrames.SliceCount; i++)
+            {
+                var file = preloadFiles[i];
+                if (!IsPreloaded(file))
+                {
+                    var frameInfo = FScheduledFrameInfos.First(fi => fi.Filename == file);
+                    loadedFrames[i] = frameInfo.IsLoaded;
+                }
+                else
+                {
+                    loadedFrames[i] = true;
+                }
+            }
+
+            // Wait for the visible frames (and dipose unused ones)
+            var visibleFrames = new Spread<Frame>(0);
+            foreach (var file in visibleFiles)
+            {
+                while (!IsPreloaded(file))
+                {
+                    var frame = Dequeue();
+                    var frameInfo = frame.Metadata;
+                    if (!preloadFiles.Contains(frameInfo.Filename) || frameInfo.IsCanceled)
                     {
-                        FVisibleFrames[i] = currentFrame;
-                        durationIO += currentFrameInfo.DurationIO;
-                        durationTexture += currentFrameInfo.DurationTexture;
-                        newFrameInfo.Dispose();
-                        newFrameInfo = null;
-                        break;
+                        // Not needed anymore
+                        Dispose(frame);
+                        unusedFrames++;
                     }
                     else
                     {
-                        currentFrame.Dispose();
-                        currentFrameInfo.Dispose();
+                        FPreloadedFrames.Add(frameInfo.Filename, frame);
                     }
                 }
-                
-                if (newFrameInfo != null)
-                {
-                    while (FScheduledFrameInfos.Count > 0)
-                    {
-                        var frame = Dequeue();
-                        var frameInfo = frame.Metadata;
-                        
-                        if (frameInfo == newFrameInfo && !frameInfo.IsCanceled)
-                        {
-                            FVisibleFrames[i] = frame;
-                            durationIO += frameInfo.DurationIO;
-                            durationTexture += frameInfo.DurationTexture;
-                            newFrameInfo.Dispose();
-                            newFrameInfo = null;
-                            break;
-                        }
-                        else
-                        {
-                            frame.Dispose();
-                            frameInfo.Dispose();
-                            FUnusedFrames++;
-                        }
-                    }
-                }
-                
-                if (newFrameInfo != null)
-                {
-                    Enqueue(newFrameInfo);
-                    FVisibleFrames[i] = Dequeue(newFrameInfo);
-                    durationIO += newFrameInfo.DurationIO;
-                    durationTexture += newFrameInfo.DurationTexture;
-                    newFrameInfo = null;
-                }
-                
-                if (newFrameInfo != null)
-                {
-                    newFrameInfo.Dispose();
-                }
+                var visibleFrame = FPreloadedFrames[file];
+                var visibleFrameInfo = visibleFrame.Metadata;
+                durationIO += visibleFrameInfo.DurationIO;
+                durationTexture += visibleFrameInfo.DurationTexture;
+                visibleFrames.Add(visibleFrame);
             }
-            visibleFramesEnumerator.Dispose();
-            
-            var canceledFrameInfos = FScheduledFrameInfos.TakeWhile(frameInfo => frameInfo.IsCanceled);
-            foreach (var frameInfo in canceledFrameInfos.ToArray())
+
+            // Dispose previously loaded frames
+            foreach (var file in FPreloadedFrames.Keys.ToArray())
             {
-                var frame = Dequeue();
-                frame.Dispose();
-                frame.Metadata.Dispose();
-                FUnusedFrames++;
-            }
-            
-            loadedFrames.SliceCount = preloadFrameNrs.SliceCount;
-            var scheduledFrameInfosEnumerator = FScheduledFrameInfos.Where(frameInfo => !frameInfo.IsCanceled).GetEnumerator();
-            for (int i = 0; i < preloadFrameNrs.SliceCount; i++)
-            {
-                var newFrameInfo = CreateFrameInfo(preloadFrameNrs[i], bufferSize);
-                loadedFrames[i] = false;
-                
-                while (scheduledFrameInfosEnumerator.MoveNext())
+                if (!preloadFiles.Contains(file))
                 {
-                    var scheduledFrameInfo = scheduledFrameInfosEnumerator.Current;
-                    
-                    if (scheduledFrameInfo == newFrameInfo)
-                    {
-                        newFrameInfo.Dispose();
-                        newFrameInfo = null;
-                        loadedFrames[i] = scheduledFrameInfo.IsLoaded;
-                        break;
-                    }
-                    
-                    scheduledFrameInfo.Cancel();
-                }
-                
-                if (newFrameInfo != null)
-                {
-                    Enqueue(newFrameInfo);
+                    var frame = FPreloadedFrames[file];
+                    Dispose(frame);
                 }
             }
-            scheduledFrameInfosEnumerator.Dispose();
             
-            unusedFrames = FUnusedFrames;
-            
-            return FVisibleFrames;
+            return visibleFrames;
         }
         
         private EX9.Texture CreateTexture(FrameInfo frameInfo, EX9.Device device, FrameDecoder decoder)

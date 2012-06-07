@@ -26,12 +26,12 @@ namespace VVVV.Nodes.ImagePlayer
         
         [Input("Buffer Size IO", DefaultValue = ImagePlayer.DEFAULT_BUFFER_SIZE, Visibility = PinVisibility.Hidden)]
         public ISpread<int> FBufferSizeIn;
-        
-        [Input("Visible Frames")]
-        public ISpread<ISpread<int>> FVisibleFramesIn;
-        
+
         [Input("Preload Frames")]
         public ISpread<ISpread<int>> FPreloadFramesIn;
+
+        [Input("Visible Frame Indices")]
+        public ISpread<ISpread<int>> FVisibleFramesIn;
         
         [Input("Reload", IsBang = true)]
         public ISpread<bool> FReloadIn;
