@@ -5,26 +5,16 @@ namespace VVVV.Nodes.ImagePlayer
 {
     public class FrameInfo : IEquatable<FrameInfo>, IDisposable
     {
-        private readonly int FFrameNr;
         private readonly string FFilename;
         private readonly int FBufferSize;
         private readonly Lazy<CancellationTokenSource> FCancellationTokenSource;
         
-        public FrameInfo(int frameNr, string filename, int bufferSize)
+        public FrameInfo(string filename, int bufferSize)
         {
-            FFrameNr = frameNr;
             FFilename = filename;
             FBufferSize = bufferSize;
             
             FCancellationTokenSource = new Lazy<CancellationTokenSource>(() => new CancellationTokenSource());
-        }
-        
-        public int FrameNr
-        {
-            get
-            {
-                return FFrameNr;
-            }
         }
         
         public string Filename
@@ -39,7 +29,7 @@ namespace VVVV.Nodes.ImagePlayer
         {
             get
             {
-                return DurationTexture > 0;
+                return DurationTexture > 0 && !IsCanceled;
             }
         }
         
@@ -106,14 +96,13 @@ namespace VVVV.Nodes.ImagePlayer
         
         public bool Equals(FrameInfo other)
         {
-            return this.FFrameNr == other.FFrameNr && this.FFilename == other.FFilename;
+            return this.FFilename == other.FFilename;
         }
         
         public override int GetHashCode()
         {
             int hashCode = 0;
             unchecked {
-                hashCode += 1000000007 * FFrameNr.GetHashCode();
                 if (FFilename != null)
                     hashCode += 1000000009 * FFilename.GetHashCode();
             }
@@ -137,7 +126,7 @@ namespace VVVV.Nodes.ImagePlayer
 
         public override string ToString()
         {
-            return string.Format("[FrameInfo FFrameNr={0}, FFilename={1}]", FFrameNr, FFilename);
+            return string.Format("[FFilename={0}]", FFilename);
         }
     }
 }
