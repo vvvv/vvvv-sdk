@@ -15,6 +15,12 @@ namespace VVVV.Core
         [Option("e", "throwexceptions", Required = false, HelpText = "If true, vvvv will stop on exceptions")]
         public bool ThrowExceptions = false;
 
+        [Option("f", "throwfrontendexceptions", Required = false, HelpText = "If true, vvvv will stop on frontend compiler exceptions")]
+        public bool ThrowFrontEndExceptions = false;
+
+        [Option("b", "throwbackendexceptions", Required = false, HelpText = "If true, vvvv will stop on backend compiler exceptions")]
+        public bool ThrowBackEndExceptions = false;
+
         [Option("l", "local", Required = false, HelpText = "If true, vvvv will not try to comunicate with a runtime")]
         public bool Local = false;
 
