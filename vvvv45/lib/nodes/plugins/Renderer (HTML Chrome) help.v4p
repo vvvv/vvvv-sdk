@@ -17,6 +17,8 @@
    </PIN>
    <PIN pinname="Mouse Event" visible="1">
    </PIN>
+   <PIN pinname="Key Event" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="5730" top="555" width="0" height="0">
@@ -174,28 +176,6 @@
    </LINK>
    <LINK srcnodeid="12" srcpinname="Layer" dstnodeid="3" dstpinname="Layers">
    </LINK>
-   <NODE systemname="MouseEvent (HTML Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.HTML.WebRenderer.dll" nodename="MouseEvent (HTML Join)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="1515" top="8715" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   <PIN pinname="Mouse Up" visible="1">
-   </PIN>
-   <PIN pinname="Click Count" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Mouse Wheel Delta" visible="1">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="15" srcpinname="Layer" dstnodeid="12" dstpinname="Layer 3">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
@@ -295,44 +275,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="30" srcpinname="Output" dstnodeid="36" dstpinname="XY">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="0" dstpinname="Mouse Event">
-   <LINKPOINT x="2670" y="9570">
-   </LINKPOINT>
-   <LINKPOINT x="6315" y="9330">
-   </LINKPOINT>
-   <LINKPOINT x="8325" y="7560">
-   </LINKPOINT>
-   <LINKPOINT x="8970" y="3705">
-   </LINKPOINT>
-   <LINKPOINT x="7830" y="2535">
-   </LINKPOINT>
-   <LINKPOINT x="5235" y="2445">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="36" srcpinname="X" dstnodeid="14" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="36" srcpinname="Y" dstnodeid="14" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="3" srcpinname="Left Button" dstnodeid="14" dstpinname="Left Button">
-   </LINK>
-   <LINK srcnodeid="3" srcpinname="Middle Button" dstnodeid="14" dstpinname="Middle Button">
-   </LINK>
-   <LINK srcnodeid="3" srcpinname="Right Button" dstnodeid="14" dstpinname="Right Button">
-   </LINK>
-   <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="37">
-   <BOUNDS type="Node" left="2385" top="8145" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Up Edge" visible="1">
-   </PIN>
-   <PIN pinname="Down Edge" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="3" srcpinname="Left Button" dstnodeid="37" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Down Edge" dstnodeid="14" dstpinname="Mouse Up">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="38" systemname="IOBox (String)">
    <BOUNDS type="Node" left="765" top="6825" width="3180" height="270">
@@ -443,7 +385,7 @@
    <LINK srcnodeid="42" srcpinname="Layer" dstnodeid="12" dstpinname="Layer 2">
    </LINK>
    <NODE systemname="FrameDifference (Animation)" nodename="FrameDifference (Animation)" componentmode="Hidden" id="45">
-   <BOUNDS type="Node" left="5820" top="7560" width="100" height="100">
+   <BOUNDS type="Node" left="3765" top="7380" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -453,7 +395,7 @@
    <LINK srcnodeid="43" srcpinname="Mouse Wheel" dstnodeid="45" dstpinname="Input">
    </LINK>
    <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="46">
-   <BOUNDS type="Node" left="5040" top="8085" width="100" height="100">
+   <BOUNDS type="Node" left="3765" top="7755" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -465,7 +407,7 @@
    <LINK srcnodeid="45" srcpinname="Output" dstnodeid="46" dstpinname="Input 1">
    </LINK>
    <NODE systemname="Damper (Animation)" nodename="Damper (Animation)" componentmode="Hidden" id="47">
-   <BOUNDS type="Node" left="4035" top="8655" width="100" height="100">
+   <BOUNDS type="Node" left="3765" top="8145" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Go To Position" visible="1">
    </PIN>
@@ -476,6 +418,132 @@
    </NODE>
    <LINK srcnodeid="46" srcpinname="Output" dstnodeid="47" dstpinname="Go To Position">
    </LINK>
+   <NODE systemname="MouseState (HTML Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.HTML.WebRenderer.dll" nodename="MouseState (HTML Join)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="1515" top="8715" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Up" visible="1">
+   </PIN>
+   <PIN pinname="Click Count">
+   </PIN>
+   <PIN pinname="Mouse Wheel Delta" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="0" dstpinname="Mouse Event">
+   <LINKPOINT x="2670" y="9570">
+   </LINKPOINT>
+   <LINKPOINT x="6315" y="9330">
+   </LINKPOINT>
+   <LINKPOINT x="8325" y="7560">
+   </LINKPOINT>
+   <LINKPOINT x="8970" y="3705">
+   </LINKPOINT>
+   <LINKPOINT x="7830" y="2535">
+   </LINKPOINT>
+   <LINKPOINT x="5235" y="2445">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="X" dstnodeid="14" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Y" dstnodeid="14" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Left Button" dstnodeid="14" dstpinname="Left Button">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Middle Button" dstnodeid="14" dstpinname="Middle Button">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Right Button" dstnodeid="14" dstpinname="Right Button">
+   </LINK>
    <LINK srcnodeid="47" srcpinname="Position Out" dstnodeid="14" dstpinname="Mouse Wheel Delta">
+   </LINK>
+   <NODE systemname="KeyState (HTML Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.HTML.WebRenderer.dll" nodename="KeyState (HTML Join)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="6870" top="2040" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Key" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Key Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="HitTest (2d Quad)" filename="%VVVV%\addonpack\lib\nodes\plugins\HitTest2dNodes.dll" nodename="HitTest (2d Quad)" componentmode="Hidden" id="51">
+   <BOUNDS type="Node" left="5415" top="8010" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="PointsXY" visible="1">
+   </PIN>
+   <PIN pinname="Object Hit" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Transform Out" dstnodeid="51" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="XY" dstnodeid="51" dstpinname="PointsXY">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="55" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6240" top="585" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6240" top="585" width="345" height="975">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="51" srcpinname="Object Hit" dstnodeid="55" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Keyboard (System Global)" nodename="Keyboard (System Global)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="6870" top="720" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="KeyCode" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="49" srcpinname="KeyCode" dstnodeid="48" dstpinname="Key">
+   </LINK>
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="67">
+   <BOUNDS type="Node" left="7335" top="1635" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="68">
+   <BOUNDS type="Node" left="7605" top="1260" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="49" srcpinname="KeyCode" dstnodeid="68" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="68" srcpinname="Count" dstnodeid="67" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="55" srcpinname="Y Output Value" dstnodeid="67" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="67" srcpinname="Output" dstnodeid="48" dstpinname="Key Bin Size">
+   </LINK>
+   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="0" dstpinname="Key Event">
    </LINK>
    </PATCH>
