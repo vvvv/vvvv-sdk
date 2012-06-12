@@ -1,105 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
-   <PATCH nodename="C:\Users\joreg\Desktop\Random (Value) help.v4p" locked="0">
-   <NODE id="11" nodename="GaussianSpread (Spreads)">
-   <BOUNDS height="0" left="390" top="8940" type="Node" width="0">
-   </BOUNDS>
-   </NODE>
-   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
-   <BOUNDS height="255" left="90" top="8190" type="Node" width="825">
-   </BOUNDS>
-   <BOUNDS height="240" left="90" top="8190" type="Box" width="825">
-   </BOUNDS>
-   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|see also|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="9" nodename="Renderer (GDI)">
-   <BOUNDS height="2385" left="11610" top="7605" type="Box" width="2400">
-   </BOUNDS>
-   <BOUNDS height="4500" left="3001" top="2227" type="Window" width="6000">
-   </BOUNDS>
-   <BOUNDS height="0" left="11610" top="7605" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000" slices="0">
-   </PIN>
-   <PIN pinname="Layers" visible="1">
-   </PIN>
-   </NODE>
-   <BOUNDS height="11145" left="3495" top="1320" type="Window" width="16170">
-   </BOUNDS>
-   <NODE id="7" nodename="Random (Value)">
-   <BOUNDS height="0" left="375" top="2160" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="6" nodename="ROUNDRECT (GDI)">
-   <BOUNDS height="0" left="11610" top="7170" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Width" visible="1">
-   </PIN>
-   <PIN pinname="Height" visible="1">
-   </PIN>
-   <PIN pinname="Brush Style" slicecount="1" values="Solid">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="5" nodename="Random (Value)">
-   <BOUNDS height="0" left="11610" top="5115" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="4" nodename="RandomSpread (Spreads Legacy)">
-   <BOUNDS height="0" left="390" top="8550" type="Node" width="0">
-   </BOUNDS>
-   </NODE>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
-   <BOUNDS height="255" left="165" top="540" type="Node" width="570">
-   </BOUNDS>
-   <BOUNDS height="315" left="165" top="540" type="Box" width="3015">
-   </BOUNDS>
-   <BOUNDS height="160" left="7830" top="33690" type="Window" width="215">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|creates a new random value each frame|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
-   <BOUNDS height="270" left="165" top="165" type="Node" width="915">
-   </BOUNDS>
-   <BOUNDS height="375" left="165" top="165" type="Box" width="3765">
-   </BOUNDS>
-   <BOUNDS height="160" left="7830" top="33690" type="Window" width="215">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Random (Value)|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="12">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="9" dstpinname="Layers" srcnodeid="6" srcpinname="Layer">
-   </LINK>
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Random (Value) help.v4p" locked="0">
    <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="375" top="1455" type="Node" width="0">
    </BOUNDS>
@@ -117,9 +17,9 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="Enabled" srcnodeid="12" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="375" top="2640" type="Node" width="0">
    </BOUNDS>
@@ -129,9 +29,9 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="13" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Output">
-   </LINK>
    <NODE id="16" nodename="Random (Value)" systemname="Random (Value)">
    <BOUNDS height="270" left="6000" top="2190" type="Node" width="1020">
    </BOUNDS>
@@ -330,6 +230,8 @@
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="23" dstpinname="Prevent from doubles" srcnodeid="31" srcpinname="Y Output Value">
@@ -712,8 +614,6 @@
    </NODE>
    <LINK dstnodeid="58" dstpinname="Input" srcnodeid="56" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Enabled" srcnodeid="58" srcpinname="Output">
-   </LINK>
    <NODE componentmode="Hidden" id="59" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
    <BOUNDS height="100" left="11610" top="6480" type="Node" width="100">
    </BOUNDS>
@@ -724,10 +624,6 @@
    <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="X" srcnodeid="59" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="59" srcpinname="Y">
-   </LINK>
    <NODE componentmode="InABox" id="60" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="12405" top="6705" type="Node" width="0">
    </BOUNDS>
@@ -742,10 +638,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="Width" srcnodeid="60" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Height" srcnodeid="60" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="Hidden" id="61" nodename="MapRange (Value)" systemname="MapRange (Value)">
    <BOUNDS height="100" left="11610" top="6000" type="Node" width="100">
    </BOUNDS>
@@ -758,8 +650,6 @@
    <PIN pinname="Destination Width">
    </PIN>
    </NODE>
-   <LINK dstnodeid="61" dstpinname="Input" srcnodeid="5" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="59" dstpinname="XY" srcnodeid="61" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="62" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -789,5 +679,101 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="61" dstpinname="Destination Width" srcnodeid="63" srcpinname="Y Output Value">
+   </LINK>
+   <BOUNDS type="Window" left="1530" top="1245" width="15885" height="10935">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="65" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="120" top="510" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="120" top="510" type="Box" width="3015">
+   </BOUNDS>
+   <BOUNDS height="160" left="1170" top="12300" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|returns a random number (range 0..1)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="64" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="120" top="135" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="120" top="135" type="Box" width="3510">
+   </BOUNDS>
+   <BOUNDS height="160" left="1170" top="12300" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Random (Value)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="66">
+   <BOUNDS type="Node" left="375" top="2160" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="66" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="66" srcpinname="Output" dstnodeid="13" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="67">
+   <BOUNDS type="Node" left="11625" top="5160" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="58" srcpinname="Output" dstnodeid="67" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="67" srcpinname="Output" dstnodeid="61" dstpinname="Input">
+   </LINK>
+   <NODE systemname="RoundRect (GDI)" filename="" nodename="RoundRect (GDI)" componentmode="Hidden" id="68">
+   <BOUNDS type="Node" left="11610" top="7140" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Inner RadiusXY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Pen Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Brush Style" slicecount="1" values="Solid">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="59" srcpinname="X" dstnodeid="68" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="59" srcpinname="Y" dstnodeid="68" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="60" srcpinname="Y Output Value" dstnodeid="68" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="60" srcpinname="Y Output Value" dstnodeid="68" dstpinname="Height">
+   </LINK>
+   <NODE systemname="Renderer (GDI)" nodename="Renderer (GDI)" componentmode="InABox" id="70">
+   <BOUNDS type="Node" left="11610" top="7635" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11610" top="7635" width="2310" height="2235">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14355" top="10080" width="6120" height="4860">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="68" srcpinname="Layer" dstnodeid="70" dstpinname="Layers">
    </LINK>
    </PATCH>
