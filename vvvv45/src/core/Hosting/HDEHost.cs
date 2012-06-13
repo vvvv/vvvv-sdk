@@ -166,6 +166,8 @@ namespace VVVV.Hosting
             DeviceService = new DeviceService(vvvvHost.DeviceService);
             MainLoop = new MainLoop(vvvvHost.MainLoop);
             
+            ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService, NodeInfoFactory);
+            
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
             KommunikatorHost = kommunikatorHost;
@@ -543,6 +545,12 @@ namespace VVVV.Hosting
                 
                 return FActivePatchWindow;
             }
+        }
+        
+        public IExposedNodeService ExposedNodeService
+        {
+        	get;
+        	private set;
         }
         
         [Export(typeof(IDXDeviceService))]
