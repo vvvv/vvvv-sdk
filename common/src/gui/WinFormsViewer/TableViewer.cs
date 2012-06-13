@@ -51,32 +51,38 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
 
         void HandleCellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            var gridViewCell = FDataGridView[e.ColumnIndex, e.RowIndex];
-            var cell = gridViewCell.Tag as ICell;
-            var value = Convert.ChangeType(gridViewCell.FormattedValue, cell.ValueType);
-            
-            if (!cell.ReadOnly)
+            DebugHelpers.CatchAndLog(() =>
             {
-                if (cell.AcceptsValue(value))
+                var gridViewCell = FDataGridView[e.ColumnIndex, e.RowIndex];
+                var cell = gridViewCell.Tag as ICell;
+                var value = Convert.ChangeType(gridViewCell.FormattedValue, cell.ValueType);
+
+                if (!cell.ReadOnly)
                 {
-                    cell.Value = value;
+                    if (cell.AcceptsValue(value))
+                    {
+                        cell.Value = value;
+                    }
                 }
-            }
+            }, "Cell Value Changed");
         }
 
         void HandleCellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            var gridViewCell = FDataGridView[e.ColumnIndex, e.RowIndex];
-            var cell = gridViewCell.Tag as ICell;
-            var value = Convert.ChangeType(gridViewCell.FormattedValue, cell.ValueType);
+            DebugHelpers.CatchAndLog(() =>
+            {            
+                var gridViewCell = FDataGridView[e.ColumnIndex, e.RowIndex];
+                var cell = gridViewCell.Tag as ICell;
+                var value = Convert.ChangeType(gridViewCell.FormattedValue, cell.ValueType);
 
-            if (!cell.ReadOnly)
-            {
-                if (!cell.AcceptsValue(value))
+                if (!cell.ReadOnly)
                 {
-                    FDataGridView.CancelEdit();
+                    if (!cell.AcceptsValue(value))
+                    {
+                        FDataGridView.CancelEdit();
+                    }
                 }
-            }
+            }, "Cell Validating");
         }
 
         public int RowCount
