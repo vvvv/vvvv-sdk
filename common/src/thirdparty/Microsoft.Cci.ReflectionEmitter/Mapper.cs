@@ -26,8 +26,9 @@ namespace Microsoft.Cci.ReflectionEmitter {
         /// An object that provides methods to map CCI metadata references to corresponding System.Type and System.Reflection.* objects.
         /// The object maintains a cache of mappings and should typically be used for doing many mappings.
         /// </summary>
-        public ReflectionMapper() {
+        public ReflectionMapper(IInternFactory internFactory) {
             this.mappingVisitor = new MappingVisitorForTypes(this);
+            this.internFactory = internFactory;
         }
 
         Dictionary<AssemblyIdentity, Assembly> assemblyMap = new Dictionary<AssemblyIdentity, Assembly>(16);
@@ -37,6 +38,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
         DoubleHashtable<MemberInfo[]> membersMap = new DoubleHashtable<MemberInfo[]>(2048*8);
         Hashtable<Type> typeMap = new Hashtable<Type>(2048);
         MappingVisitorForTypes mappingVisitor;
+        IInternFactory internFactory;
+        Dictionary<uint, ITypeReference> reverseTypeMap = new Dictionary<uint, ITypeReference>();
 
         /// <summary>
         /// Returns a "live" System.Reflection.Assembly instance that provides reflective access to the referenced assembly.
@@ -80,10 +83,10 @@ namespace Microsoft.Cci.ReflectionEmitter {
         /// If the module cannot be found or cannot be loaded, the result is null.
         /// </summary>
         public Module/*?*/ GetModule(IModuleReference/*?*/ moduleReference) {
-            if (moduleReference == null) return null;
-            if (moduleReference.ContainingAssembly == null) return null;
+            if (moduleReference == null) throw new ReflectionMapperException();
+            if (moduleReference.ContainingAssembly == null) throw new ReflectionMapperException();
             var assembly = this.GetAssembly(moduleReference.ContainingAssembly);
-            if (assembly == null) return null;
+            if (assembly == null) throw new ReflectionMapperException();
             return assembly.GetModule(moduleReference.Name.Value);
         }
 
@@ -92,40 +95,114 @@ namespace Microsoft.Cci.ReflectionEmitter {
         /// If the field cannot be found or cannot be loaded, the result is null.
         /// </summary>
         public FieldInfo/*?*/ GetField(IFieldReference/*?*/ fieldReference) {
-            if (fieldReference == null) return null;
+            if (fieldReference == null) throw new ReflectionMapperException();
             var result = this.fieldMap.Find(fieldReference.ContainingType.InternedKey, (uint)fieldReference.Name.UniqueKey);
             if (result == null) {
-                // HACK: In case the containing type is generic we won't find a match for private helper fields
-                // See AnonymousDelegateRemover:616
-                var genericContainingType = fieldReference.ContainingType as IGenericTypeInstanceReference;
-                if (genericContainingType != null) {
-                    result = this.fieldMap.Find(genericContainingType.GenericType.InternedKey, (uint)fieldReference.Name.UniqueKey);
-                    if (result != null)
-                    {
-                        this.fieldMap.Add(genericContainingType.GenericType.InternedKey, (uint)fieldReference.Name.UniqueKey, result);
-                        return result;
-                    }
-                }
-                var containingType = this.GetType(fieldReference.ContainingType);
-                if (containingType == null) return null;
-                var fieldType = this.GetType(fieldReference.Type);
-                if (fieldType == null) return null;
-                var bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-                foreach (var member in containingType.GetMember(fieldReference.Name.Value, bindingAttr))
-                {
-                    var field = (FieldInfo)member as FieldInfo;
-                    if (field == null) continue;
-                    if (field.FieldType != fieldType) continue;
-                    if (fieldReference.IsModified) {
-                        if (!this.ModifiersMatch(field.GetOptionalCustomModifiers(), field.GetRequiredCustomModifiers(), fieldReference.CustomModifiers)) continue;
-                    }
-                    result = field;
-                    break;
-                }
-                if (result != null)
-                    this.fieldMap.Add(fieldReference.ContainingType.InternedKey, (uint)fieldReference.Name.UniqueKey, result);
+                var members = this.GetMembers(fieldReference.ContainingType, fieldReference.Name);
+                if (members.Length == 1)
+                    result = (FieldInfo)members[0];
+                else
+                    result = this.GetFieldFrom(fieldReference, members);
+                if (result == null) throw new ReflectionMapperException();
+                this.fieldMap.Add(fieldReference.ContainingType.InternedKey, (uint)fieldReference.Name.UniqueKey, result);
             }
             return result;
+        }
+
+        private FieldInfo GetFieldFrom(IFieldReference fieldReference, MemberInfo[] members)
+        {
+            var fieldType = this.GetType(fieldReference.Type);
+            foreach (var member in members)
+            {
+                var field = (FieldInfo)member as FieldInfo;
+                if (field == null) continue;
+                if (field.FieldType != fieldType) continue;
+                if (fieldReference.IsModified)
+                {
+                    if (!this.ModifiersMatch(field.GetOptionalCustomModifiers(), field.GetRequiredCustomModifiers(), fieldReference.CustomModifiers)) continue;
+                }
+                return field;
+            }
+            return null;
+        }
+
+        private MemberInfo[] GetMembers(ITypeReference typeReference, IName name)
+        {
+            var members = this.membersMap.Find(typeReference.InternedKey, (uint)name.UniqueKey);
+            if (members == null)
+            {
+                // Some references do not have their ResolvedType property set properly.
+                var resolvedType = typeReference.ResolvedType;
+                if (resolvedType == null || resolvedType == Dummy.GenericTypeInstance)
+                {
+                    var genericTypeInstanceReference = typeReference as IGenericTypeInstanceReference;
+                    var genericType = genericTypeInstanceReference.GenericType;
+                    var resolvedGenericType = (INamedTypeDefinition)this.reverseTypeMap[genericType.InternedKey];
+                    typeReference = Microsoft.Cci.Immutable.GenericTypeInstance.GetGenericTypeInstance(resolvedGenericType, genericTypeInstanceReference.GenericArguments, this.internFactory);
+                }
+                var type = this.GetType(typeReference);
+                try
+                {
+                    var bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static;
+                    members = type.GetMember(name.Value, bindingAttr);
+                }
+                catch (NotSupportedException)
+                {
+                    var templateType = this.GetTemplateType(typeReference);
+                    members = GetMembersFromTypeBuilder(type, templateType, name);
+                }
+                this.membersMap.Add(typeReference.InternedKey, (uint)name.UniqueKey, members);
+            }
+            return members;
+        }
+
+        private MemberInfo[] GetMembersFromTypeBuilder(Type containingType, ITypeDefinition templateType, IName memberName)
+        {
+            var members = new List<MemberInfo>();
+            foreach (var templateMember in templateType.Members.Concat(templateType.PrivateHelperMembers))
+            {
+                if (templateMember.Name != memberName) continue;
+                MemberInfo memberInfo = null;
+                var templateMethodReference = templateMember as IMethodReference;
+                if (templateMethodReference != null)
+                {
+                    var templateMethodInfo = this.GetMethod(templateMethodReference);
+                    if (templateMethodInfo.DeclaringType.IsGenericTypeDefinition)
+                    {
+                        if (templateMethodReference.ResolvedMethod.IsConstructor)
+                            memberInfo = TypeBuilder.GetConstructor(containingType, (ConstructorInfo)templateMethodInfo);
+                        else
+                            memberInfo = TypeBuilder.GetMethod(containingType, (MethodInfo)templateMethodInfo);
+                    }
+                    else
+                    {
+                        memberInfo = templateMethodInfo;
+                    }
+                }
+                var templateFieldReference = templateMember as IFieldReference;
+                if (templateFieldReference != null)
+                {
+                    var templateFieldInfo = this.GetField(templateFieldReference);
+                    memberInfo = TypeBuilder.GetField(containingType, templateFieldInfo);
+                }
+                members.Add(memberInfo);
+            }
+            return members.ToArray();
+        }
+
+        private ITypeDefinition GetTemplateType(ITypeReference typeReference)
+        {
+            var genericTypeInstanceReference = typeReference as IGenericTypeInstanceReference;
+            if (genericTypeInstanceReference != null)
+            {
+                return genericTypeInstanceReference.GenericType.ResolvedType;
+            }
+            var specializedNestedTypeReference = typeReference as ISpecializedNestedTypeReference;
+            if (specializedNestedTypeReference != null)
+            {
+                return specializedNestedTypeReference.UnspecializedVersion.ResolvedType;
+            }
+            return typeReference.ResolvedType;
         }
 
         /// <summary>
@@ -137,63 +214,23 @@ namespace Microsoft.Cci.ReflectionEmitter {
             var genericMethodInstanceReference = methodReference as IGenericMethodInstanceReference;
             if (genericMethodInstanceReference != null) return this.GetGenericMethodInstance(genericMethodInstanceReference);
             MethodBase result = this.methodMap.Find(methodReference.InternedKey);
-            if (result != null) return result;
-            MemberInfo[] members = this.membersMap.Find(methodReference.ContainingType.InternedKey, (uint)methodReference.Name.UniqueKey);
-            // HACK: In case the containing type is generic we won't find a match for private helper methods as
-            // the AnonymousDelegateRemover creates a reference to the generic method. We therefor need to find the
-            // private helper in the containing generic type.
-            // See AnonymousDelegateRemover.cs:457
-            if (members == null && methodReference.ResolvedMethod == Dummy.MethodDefinition)
+            if (result == null)
             {
-              var containingGenericTypeInstance = methodReference.ContainingType as IGenericTypeInstanceReference;
-              if (containingGenericTypeInstance != null)
-              {
-                var containingGenericType = containingGenericTypeInstance.GenericType;
-                var methods = containingGenericType.ResolvedType.PrivateHelperMembers.Where(m => m is IMethodReference);
-                var canditateMethod = methods.FirstOrDefault(m => m.Name.UniqueKey == methodReference.Name.UniqueKey) as IMethodReference;
-                if (canditateMethod != null)
-                {
-                    result = this.methodMap.Find(canditateMethod.InternedKey);
-                    this.methodMap.Add(methodReference.InternedKey, result);
-                    return result;
-                }
-              }
+                var members = this.GetMembers(methodReference.ContainingType, methodReference.Name);
+                if (members.Length == 1)
+                    result = (MethodBase)members[0];
+                else
+                    result = this.GetMethodFrom(methodReference, members);
+                if (result == null)throw new ReflectionMapperException();
+                this.methodMap.Add(methodReference.InternedKey, result);
             }
-            if (members == null) {
-                Type containingType = this.GetType(methodReference.ContainingType);
-                if (containingType == null) return null;
-                var bindingFlags = BindingFlags.NonPublic|BindingFlags.DeclaredOnly|BindingFlags.Static|BindingFlags.Public|BindingFlags.Instance;
-                try {
-                    members = containingType.GetMember(methodReference.Name.Value, bindingFlags);
-                    this.membersMap.Add(methodReference.ContainingType.InternedKey, (uint)methodReference.Name.UniqueKey, members);
-                } catch (NotSupportedException) {
-                    var containingGenericTypeInstanceReference = methodReference.ContainingType as IGenericTypeInstanceReference;
-                    var containingGenericTypeDefinition = containingGenericTypeInstanceReference.GenericType.ResolvedType;
-                    var genericMembers = containingGenericTypeDefinition.Members.Where(m => m.Name == methodReference.Name && m is IMethodReference).Select(m => this.GetMethod(m as IMethodReference)).ToArray();
-                    //var genericContainingType = containingType.GetGenericTypeDefinition() as TypeBuilder;
-                    //var genericMembers = genericContainingType.GetMember(methodReference.Name.Value, bindingFlags);
-                    members = new MemberInfo[genericMembers.Length];
-                    for (int i = 0; i < members.Length; i++) {
-                        var method = genericMembers[i] as MethodBase;
-                        if (method.IsConstructor)
-                            members[i] = TypeBuilder.GetConstructor(containingType, (ConstructorInfo) genericMembers[i]);
-                        else
-                            members[i] = TypeBuilder.GetMethod(containingType, (MethodInfo) genericMembers[i]);
-                    }
-                    if (members.Length == 1) 
-                        return (MethodBase) members[0];
-                    // HACK: Returned methods do have wrong generic arguments (the ones from the generic type definition), therefor skip type check for now.
-                    return this.GetMethodFrom(methodReference, members, true);
-                }
-            }
-            return this.GetMethodFrom(methodReference, members);
+            return result;
         }
 
         private MethodBase/*?*/ GetMethodFrom(IMethodReference methodReference, MemberInfo[] members, bool skipTypeCheck = false) {
             //Generic methods need special treatment because their signatures refer to their generic parameters
             //and we can't map those to types unless we can first map the generic method.
             if (methodReference.IsGeneric) return this.GetGenericMethodFrom(methodReference, members);
-            MethodBase result = null;
             var methodReturnType = this.GetType(methodReference.Type);
             if (methodReturnType == null) return null;
             if (methodReference.ReturnValueIsByRef) methodReturnType = methodReturnType.MakeByRefType();
@@ -234,12 +271,9 @@ namespace Microsoft.Cci.ReflectionEmitter {
                     }
                 }
                 if (!matched) continue;
-                result = methodBase;
-                break;
+                return methodBase;
             }
-            if (result != null)
-                this.methodMap.Add(methodReference.InternedKey, result);
-            return result;
+            return null;
         }
 
         private bool CallingConventionsMatch(MethodBase methodBase, IMethodReference methodReference) {
@@ -374,7 +408,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
             if (result == null) {
                 type.DispatchAsReference(this.mappingVisitor);
                 result = this.mappingVisitor.result;
-                this.typeMap.Add(type.InternedKey, result);
+                if (result == null) throw new ReflectionMapperException();
+                this.DefineMapping(type, result);
             }
             return result;
         }
@@ -382,6 +417,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
 
         internal void DefineMapping(ITypeReference typeReference, Type type) {
             this.typeMap.Add(typeReference.InternedKey, type);
+            this.reverseTypeMap[typeReference.InternedKey] = typeReference;
         }
 
         internal void DefineMapping(IFieldDefinition fieldDefinition, FieldInfo fieldBuilder) {
@@ -546,4 +582,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
 
     }
 
+    public class ReflectionMapperException : Exception
+    {
+    }
 }

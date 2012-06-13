@@ -26,7 +26,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
     /// </summary>
     /// <param name="sourceLocationProvider"></param>
     /// <param name="localScopeProvider"></param>
-    public DynamicLoader(ISourceLocationProvider/*?*/ sourceLocationProvider, ILocalScopeProvider/*?*/ localScopeProvider) {
+    public DynamicLoader(ISourceLocationProvider/*?*/ sourceLocationProvider, ILocalScopeProvider/*?*/ localScopeProvider, IInternFactory internFactory) {
       this.sourceLocationProvider = sourceLocationProvider;
       this.localScopeProvider = localScopeProvider;
       this.emitter = new Emitter(this, sourceLocationProvider, localScopeProvider);
@@ -34,8 +34,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
       this.typeBuilderAllocator = new TypeBuilderAllocater(this);
       this.typeCreator = new TypeCreator(this);
       this.memberBuilderAllocator = new MemberBuilderAllocator(this);
-      this.mapper = new ReflectionMapper();
       this.builderMap = new Dictionary<object, object>();
+      this.mapper = new ReflectionMapper(internFactory);
     }
 
     ISourceLocationProvider/*?*/ sourceLocationProvider;
