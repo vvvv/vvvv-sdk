@@ -7,9 +7,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Collections.Generic;
 
-using UMD.HCIL.Piccolo;
-using UMD.HCIL.Piccolo.Util;
-using UMD.HCIL.Piccolo.Nodes;
+using Piccolo.NET;
+using Piccolo.NET.Util;
+using Piccolo.NET.Nodes;
 
 using VVVV.Core.Viewer.GraphicalEditor;
 using VVVV.Core.View.GraphicalEditor;

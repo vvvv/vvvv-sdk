@@ -7,11 +7,11 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Collections;
 
-using UMD.HCIL.Piccolo;
-using UMD.HCIL.Piccolo.Nodes;
-using UMD.HCIL.PiccoloX.Events;
-using UMD.HCIL.Piccolo.Event;
-using UMD.HCIL.Piccolo.Util;
+using Piccolo.NET;
+using Piccolo.NET.Nodes;
+using Piccolo.NET.PiccoloX.Events;
+using Piccolo.NET.Event;
+using Piccolo.NET.Util;
 
 using VVVV.Core.Viewer.GraphicalEditor;
 using VVVV.Core.View.GraphicalEditor;

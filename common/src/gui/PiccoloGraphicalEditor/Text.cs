@@ -7,10 +7,10 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Linq;
 
-using UMD.HCIL.Piccolo;
-using UMD.HCIL.Piccolo.Event;
-using UMD.HCIL.Piccolo.Nodes;
-using UMD.HCIL.Piccolo.Util;
+using Piccolo.NET;
+using Piccolo.NET.Event;
+using Piccolo.NET.Nodes;
+using Piccolo.NET.Util;
 using VVVV.Core.View.GraphicalEditor;
 using VVVV.Core.Viewer.GraphicalEditor;
 

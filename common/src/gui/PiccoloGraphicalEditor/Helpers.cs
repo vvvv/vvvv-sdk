@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.Core.View.GraphicalEditor;
-using UMD.HCIL.Piccolo.Event;
+using Piccolo.NET.Event;
 using System.Windows.Forms;
 
 

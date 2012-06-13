@@ -4,10 +4,10 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-using UMD.HCIL.Piccolo;
-using UMD.HCIL.Piccolo.Util;
-using UMD.HCIL.Piccolo.Nodes;
-using UMD.HCIL.Piccolo.Event;
+using Piccolo.NET;
+using Piccolo.NET.Util;
+using Piccolo.NET.Nodes;
+using Piccolo.NET.Event;
 
 using VVVV.Core.Viewer.GraphicalEditor;
 using VVVV.Core.View.GraphicalEditor;

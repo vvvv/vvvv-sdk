@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-using UMD.HCIL.Piccolo;
-using UMD.HCIL.Piccolo.Nodes;
-using UMD.HCIL.Piccolo.Util;
+using Piccolo.NET;
+using Piccolo.NET.Nodes;
+using Piccolo.NET.Util;
 using VVVV.Core;
 using VVVV.Core.Collections;
 using VVVV.Core.View.GraphicalEditor;
