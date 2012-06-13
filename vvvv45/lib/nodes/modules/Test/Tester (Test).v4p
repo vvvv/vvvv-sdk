@@ -720,8 +720,6 @@
    </LINK>
    <LINK srcnodeid="9" srcpinname="DoNext" dstnodeid="11" dstpinname="Up">
    </LINK>
-   <LINK srcnodeid="2" srcpinname="High" dstnodeid="11" dstpinname="Maximum">
-   </LINK>
    <LINK srcnodeid="9" srcpinname="DoStart" dstnodeid="11" dstpinname="Reset">
    </LINK>
    <LINK srcnodeid="29" srcpinname="Output" dstnodeid="30" dstpinname="Input String">
@@ -734,7 +732,7 @@
    <LINKPOINT x="8335" y="4180">
    </LINKPOINT>
    </LINK>
-   <BOUNDS type="Window" left="13680" top="0" width="9555" height="18180">
+   <BOUNDS type="Window" left="13680" top="150" width="10665" height="17430">
    </BOUNDS>
    <NODE systemname="Change (Animation)" nodename="Change (Animation)" componentmode="Hidden" id="59">
    <BOUNDS type="Node" left="2940" top="2340" width="100" height="100">
@@ -1123,15 +1121,27 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4575" top="10245" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Default" slicecount="1" values="text" encoded="0">
+   <PIN pinname="Default" slicecount="1" encoded="0" values="text">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Current Test|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Current Test|">
    </PIN>
    </NODE>
    <LINK srcnodeid="3" srcpinname="Output" dstnodeid="91" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="Max (Value)" nodename="Max (Value)" componentmode="Hidden" id="92">
+   <BOUNDS type="Node" left="7305" top="5760" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="High" dstnodeid="92" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="92" srcpinname="Output" dstnodeid="11" dstpinname="Maximum">
    </LINK>
    </PATCH>

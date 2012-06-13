@@ -39,9 +39,9 @@
    <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Expected">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="9975" top="3780" width="0" height="0">
+   <BOUNDS type="Node" left="9975" top="2580" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="9975" top="3780" width="480" height="480">
+   <BOUNDS type="Box" left="9975" top="2580" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -58,8 +58,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Run">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enabled" hiddenwhenlocked="1">
-   </LINK>
    <NODE systemname="Cons (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (String)" componentmode="Hidden" id="14">
    <BOUNDS type="Node" left="2565" top="6210" width="100" height="100">
    </BOUNDS>
@@ -89,7 +87,7 @@
    <LINK srcnodeid="14" srcpinname="Output" dstnodeid="15" dstpinname="Input String">
    </LINK>
    <NODE systemname="MonoFlop (Animation)" nodename="MonoFlop (Animation)" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="9975" top="6180" width="100" height="100">
+   <BOUNDS type="Node" left="9975" top="3480" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Set" visible="1">
    </PIN>
@@ -106,9 +104,9 @@
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="16" dstpinname="Y Input Value">
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="16" dstpinname="Y Input Value" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Set" hiddenwhenlocked="1">
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Set" hiddenwhenlocked="0">
    </LINK>
    <NODE systemname="Cons (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (String)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="645" top="2430" width="2010" height="270">
@@ -238,8 +236,6 @@
    <PIN pinname="Message" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Enabled" hiddenwhenlocked="1">
-   </LINK>
    <LINK srcnodeid="5" srcpinname="Message" dstnodeid="14" dstpinname="Input 1" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
@@ -285,13 +281,17 @@
    </BOUNDS>
    <BOUNDS type="Box" left="915" top="6690" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Success" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Success">
    </PIN>
    </NODE>
    <LINK srcnodeid="26" srcpinname="Output" dstnodeid="27" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="6" dstpinname="Enabled" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="5" dstpinname="Enabled" hiddenwhenlocked="1">
    </LINK>
    </PATCH>

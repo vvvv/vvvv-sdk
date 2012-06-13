@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Zip (Value) test.v4p" systemname="Zip (Value))" filename="D:\vvvv_dev\vvvv\public\vvvv45\tests\Zip (Value) test.v4p">
    <BOUNDS type="Window" left="13965" top="4755" width="9195" height="8625">
    </BOUNDS>
@@ -149,9 +149,9 @@
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Expected">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="28" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="7185" top="750" width="0" height="0">
+   <BOUNDS type="Node" left="7185" top="1350" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="7185" top="750" width="480" height="480">
+   <BOUNDS type="Box" left="7185" top="1350" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -168,10 +168,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Run">
    </PIN>
    </NODE>
-   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Enabled" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Enabled" hiddenwhenlocked="1">
-   </LINK>
    <NODE systemname="Cons (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (String)" componentmode="Hidden" id="30">
    <BOUNDS type="Node" left="6030" top="6105" width="100" height="100">
    </BOUNDS>
@@ -203,7 +199,7 @@
    <LINK srcnodeid="23" srcpinname="Message" dstnodeid="30" dstpinname="Input 2" hiddenwhenlocked="1">
    </LINK>
    <NODE systemname="MonoFlop (Animation)" nodename="MonoFlop (Animation)" componentmode="Hidden" id="32">
-   <BOUNDS type="Node" left="7185" top="6105" width="100" height="100">
+   <BOUNDS type="Node" left="7185" top="2055" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Set" visible="1">
    </PIN>
@@ -220,9 +216,9 @@
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="31" dstpinname="Y Input Value">
+   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="31" dstpinname="Y Input Value" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="32" dstpinname="Set" hiddenwhenlocked="1">
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="32" dstpinname="Set" hiddenwhenlocked="0">
    </LINK>
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="33">
    <BOUNDS type="Node" left="3540" top="6105" width="100" height="100">
@@ -251,5 +247,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="33" srcpinname="Output" dstnodeid="34" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="23" dstpinname="Enabled" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="11" dstpinname="Enabled" hiddenwhenlocked="1">
    </LINK>
    </PATCH>
