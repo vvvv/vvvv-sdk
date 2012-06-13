@@ -497,6 +497,20 @@ namespace VVVV.PluginInterfaces.V2
         {
             spread.Resize(sliceCount, constructor, (t) => t.Dispose());
         }
+        
+        public static bool IsAnyEmpty(this ISpread spread, params ISpread[] spreads)
+        {
+        	if (spread.SliceCount == 0) return true;
+        	else
+        	{
+        		for (int i = 0; i < spreads.Length; i++) 
+        		{
+        			if (spreads[i].SliceCount == 0) return true;
+        		}
+        	}
+        	
+        	return false;
+        }
 		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(
 //			this ISpread<TSource> source,
