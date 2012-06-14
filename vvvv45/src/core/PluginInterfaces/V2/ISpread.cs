@@ -482,6 +482,36 @@ namespace VVVV.PluginInterfaces.V2
 		    spread.Stream.Resize(sliceCount, constructor, destructor);
         }
 		
+		public static void Resize<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor, Action<T> destructor)
+		{
+		    spread.Stream.Resize(sliceCount, constructor, destructor);
+		}
+		
+		public static void ResizeAndDismiss<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+        {
+            spread.Stream.ResizeAndDismiss(sliceCount, constructor);
+        }
+        
+        public static void ResizeAndDispose<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+            where T : IDisposable
+        {
+            spread.Resize(sliceCount, constructor, (t) => t.Dispose());
+        }
+        
+        public static bool IsAnyEmpty(this ISpread spread, params ISpread[] spreads)
+        {
+        	if (spread.SliceCount == 0) return true;
+        	else
+        	{
+        		for (int i = 0; i < spreads.Length; i++) 
+        		{
+        			if (spreads[i].SliceCount == 0) return true;
+        		}
+        	}
+        	
+        	return false;
+        }
+		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(
 //			this ISpread<TSource> source,
 //			TAccumulate seed,

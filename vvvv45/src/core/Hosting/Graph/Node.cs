@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Drawing;
-
 using VVVV.Core;
 using VVVV.Core.Collections;
 using VVVV.PluginInterfaces.V2;
@@ -34,18 +34,27 @@ namespace VVVV.Hosting.Graph
             
             public void RemovedCB(INode internalChildNode)
             {
-                var query =
-                    from node in FObservedNode
-                    where node.InternalCOMInterf == internalChildNode
-                    select node;
-                
                 // TODO: Sometimes RemovedCB is called with out an AddedCB before.
-                var childNode = query.FirstOrDefault() as Node;
+                var childNode = internalChildNode.Tag as Node;
                 if (childNode != null)
                 {
                     FObservedNode.Remove(childNode);
                     childNode.Dispose();
                 }
+            }
+            
+            public void PinAddedCB(IPin internalPin)
+            {
+                var pins = FObservedNode.FPins.Value;
+                var pin = Pin.Create(FObservedNode, internalPin, FObservedNode.FNodeInfoFactory);
+                pins.Add(pin);
+            }
+            
+            public void PinRemovedCB(IPin internalPin)
+            {
+                var pins = FObservedNode.FPins.Value;
+                var pin = internalPin.Tag as Pin;
+                pins.Remove(pin);
             }
             
             public void LabelChangedCB()
@@ -77,16 +86,13 @@ namespace VVVV.Hosting.Graph
         #endregion
         
         #region factory methods
-        static private Dictionary<INode, Node> FNodes = new Dictionary<INode, Node>();
         static internal Node Create(INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
         {
-            Node node = null;
-            if (!FNodes.TryGetValue(internalCOMInterf, out node))
+            var node = internalCOMInterf.Tag as Node;
+            if (node == null)
             {
                 node = new Node(internalCOMInterf, nodeInfoFactory);
-                FNodes.Add(internalCOMInterf, node);
             }
-            
             return node;
         }
         #endregion
@@ -123,6 +129,7 @@ namespace VVVV.Hosting.Graph
             }
             
             FInternalNodeListener = new InternalNodeListener(this);
+            FInternalCOMInterf.Tag = this;
         }
         
         public override void Dispose()
@@ -150,8 +157,6 @@ namespace VVVV.Hosting.Graph
             }
             childNodes.Clear();
             
-            FNodes.Remove(FInternalCOMInterf);
-            
             FNodeInfoFactory.NodeInfoUpdated -= HandleNodeInfoUpdated;
             
             base.Dispose();
@@ -161,7 +166,10 @@ namespace VVVV.Hosting.Graph
         {
             var pins = new ViewableCollection<IPin2>();
             foreach (var internalPin in FInternalCOMInterf.GetPins())
-                pins.Add(new Pin(this, internalPin, FNodeInfoFactory));
+            {
+                var pin = Pin.Create(this, internalPin, FNodeInfoFactory);
+                pins.Add(pin);
+            }
             return pins;
         }
         
@@ -250,7 +258,7 @@ namespace VVVV.Hosting.Graph
         
         private string ComputeName()
         {
-        	string label = FLabelPin.Value[0];
+            string label = FLabelPin.Value[0];
             string suffix = string.IsNullOrEmpty(label) ? string.Empty : " -- " + label;
             
             if (string.IsNullOrEmpty(FNodeInfo.Name))
@@ -286,13 +294,13 @@ namespace VVVV.Hosting.Graph
         
         public string GetNodePath(bool UseDescriptiveNames)
         {
-        	return FInternalCOMInterf.GetNodePath(UseDescriptiveNames);
+            return FInternalCOMInterf.GetNodePath(UseDescriptiveNames);
         }
 
-		public Rectangle GetBounds(BoundsType boundsType)
+        public Rectangle GetBounds(BoundsType boundsType)
         {
-        	return FInternalCOMInterf.GetBounds(boundsType);
-        }        
+            return FInternalCOMInterf.GetBounds(boundsType);
+        }
         
         public IViewableCollection<IPin2> Pins
         {
@@ -330,10 +338,10 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
-            	if (FInternalCOMInterf.ParentNode == null)
-            		return null;
-            	else
-            		return Node.Create(FInternalCOMInterf.ParentNode, FNodeInfoFactory);
+                if (FInternalCOMInterf.ParentNode == null)
+                    return null;
+                else
+                    return Node.Create(FInternalCOMInterf.ParentNode, FNodeInfoFactory);
             }
         }
         
@@ -401,8 +409,8 @@ namespace VVVV.Hosting.Graph
         
         protected virtual void OnBoundsChanged(BoundsType boundsType)
         {
-//            if (BoundsChanged != null)
-//            	BoundsChanged(this, boundsType);
+            //            if (BoundsChanged != null)
+            //            	BoundsChanged(this, boundsType);
         }
     }
 }

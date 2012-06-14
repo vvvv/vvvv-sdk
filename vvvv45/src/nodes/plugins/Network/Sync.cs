@@ -143,14 +143,14 @@ namespace VVVV.Nodes
 			if(FIsClient[0] || FHost.IsBoygroupClient)
 			{
 				ReceiveServerAnswer(e.Data);
-			}
+			} 
 			else //server code
 			{
 				lock(FLock)
 				{
 					FServer.Send(Encoding.ASCII.GetBytes(FStreamTime.ToString() + ";" + FTimeStamp.ToString()), e.RemoteSender);
 					
-					FLogger.Log(LogType.Debug, FStreamTime.ToString() + ";" + FHost.RealTime.ToString());
+					//FLogger.Log(LogType.Debug, FStreamTime.ToString() + ";" + FHost.RealTime.ToString());
 				}
 			}
 		}

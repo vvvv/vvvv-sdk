@@ -166,6 +166,8 @@ namespace VVVV.Hosting
             DeviceService = new DeviceService(vvvvHost.DeviceService);
             MainLoop = new MainLoop(vvvvHost.MainLoop);
             
+            ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService, NodeInfoFactory);
+            
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
             KommunikatorHost = kommunikatorHost;
@@ -545,6 +547,12 @@ namespace VVVV.Hosting
             }
         }
         
+        public IExposedNodeService ExposedNodeService
+        {
+        	get;
+        	private set;
+        }
+        
         [Export(typeof(IDXDeviceService))]
         public IDXDeviceService DeviceService
         {
@@ -578,15 +586,6 @@ namespace VVVV.Hosting
                 from node in RootNode.AsDepthFirstEnumerable()
                 where nodeInfo == node.NodeInfo
                 select node;
-        }
-        
-        protected INode2 FindNode(INode internalNode)
-        {
-            var query =
-                from node in RootNode.AsDepthFirstEnumerable()
-                where node.InternalCOMInterf == internalNode
-                select node;
-            return query.First();
         }
         
         public void factory_NodeInfoUpdated(object sender, INodeInfo info)
@@ -627,7 +626,7 @@ namespace VVVV.Hosting
         public void MouseDownCB(INode internalNode, Mouse_Buttons button, Modifier_Keys keys)
         {
             if (internalNode != null)
-                OnMouseDown(new VVVV.PluginInterfaces.V2.MouseEventArgs(FindNode(internalNode), button, keys));
+                OnMouseDown(new VVVV.PluginInterfaces.V2.MouseEventArgs(Node.Create(internalNode, NodeInfoFactory), button, keys));
             else
                 OnMouseDown(new VVVV.PluginInterfaces.V2.MouseEventArgs(null, button, keys));
         }
@@ -635,7 +634,7 @@ namespace VVVV.Hosting
         public void MouseUpCB(INode internalNode, Mouse_Buttons button, Modifier_Keys keys)
         {
             if (internalNode != null)
-                OnMouseUp(new VVVV.PluginInterfaces.V2.MouseEventArgs(FindNode(internalNode), button, keys));
+                OnMouseUp(new VVVV.PluginInterfaces.V2.MouseEventArgs(Node.Create(internalNode, NodeInfoFactory), button, keys));
             else
                 OnMouseUp(new VVVV.PluginInterfaces.V2.MouseEventArgs(null, button, keys));
         }
@@ -646,7 +645,7 @@ namespace VVVV.Hosting
             {
                 FSelectedNodes = new INode2[internalNodes.Length];
                 for (int i = 0; i < FSelectedNodes.Length; i++)
-                    FSelectedNodes[i] = FindNode(internalNodes[i]);
+                    FSelectedNodes[i] = Node.Create(internalNodes[i], NodeInfoFactory);
                 OnNodeSelectionChanged(new NodeSelectionEventArgs(FSelectedNodes));
             }
             else

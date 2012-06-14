@@ -42,7 +42,7 @@ namespace VVVV.Hosting.Factories
 
         void HandleNodeInfoAdded(object sender, INodeInfo nodeInfo)
         {
-            if (nodeInfo.Type == NodeType.Effect)
+            if (nodeInfo.Type == NodeType.Effect && nodeInfo.Factory == this)
             {
                 nodeInfo.UserData = CreateProject(nodeInfo.Filename);
             }

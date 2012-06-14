@@ -1,9 +1,9 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
    <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p" systemname="FileStream (DShow9 Boygroup)" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p">
-   <BOUNDS type="Window" left="6930" top="5460" width="12795" height="8775">
+   <BOUNDS type="Window" left="8205" top="6255" width="13590" height="8775">
    </BOUNDS>
    <NODE systemname="Sync (Network FileStream)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Sync (Network FileStream)" componentmode="Hidden" id="9" managers="">
-   <BOUNDS type="Node" left="3960" top="3750" width="750" height="270">
+   <BOUNDS type="Node" left="3960" top="3750" width="6780" height="270">
    </BOUNDS>
    <PIN pinname="Position" visible="1">
    </PIN>
@@ -18,6 +18,8 @@
    <PIN pinname="Port">
    </PIN>
    <PIN pinname="Fine Offset (ms)">
+   </PIN>
+   <PIN pinname="Is Client" visible="1" pintype="Input">
    </PIN>
    </NODE>
    <NODE systemname="FileStream (DShow9)" nodename="FileStream (DShow9)" componentmode="Hidden" id="8" managers="">
@@ -92,8 +94,6 @@
    </NODE>
    <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Play">
    </LINK>
-   <LINK srcnodeid="8" srcpinname="Position" dstnodeid="9" dstpinname="Position">
-   </LINK>
    <LINK srcnodeid="8" srcpinname="Duration" dstnodeid="9" dstpinname="Duration">
    </LINK>
    <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="5" managers="">
@@ -115,15 +115,13 @@
    <LINK srcnodeid="9" srcpinname="Adjust System Time" dstnodeid="5" dstpinname="Z">
    </LINK>
    <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="4" managers="">
-   <BOUNDS type="Node" left="3960" top="4590" width="100" height="100">
+   <BOUNDS type="Node" left="3960" top="4710" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="XYZ" dstnodeid="4" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="Vector (3d Split)" nodename="Vector (3d Split)" componentmode="Hidden" id="1" managers="">
    <BOUNDS type="Node" left="4710" top="1620" width="690" height="270">
    </BOUNDS>
@@ -159,7 +157,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1530" top="315" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -170,6 +168,8 @@
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Loop">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Loop">
@@ -195,7 +195,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="3315" top="315" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="99999">
    </PIN>
    <PIN pinname="Units" slicecount="1" encoded="0" values="s">
    </PIN>
@@ -241,6 +241,8 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="16">
    <BOUNDS type="Node" left="4755" top="2460" width="100" height="100">
@@ -249,7 +251,7 @@
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -257,10 +259,6 @@
    <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Switch">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Y" dstnodeid="16" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="8" dstpinname="Seek Position">
    </LINK>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="17">
    <BOUNDS type="Node" left="3945" top="2580" width="100" height="100">
@@ -276,16 +274,14 @@
    </LINK>
    <LINK srcnodeid="1" srcpinname="X" dstnodeid="17" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="8" dstpinname="Do Seek">
-   </LINK>
    <LINK srcnodeid="4" srcpinname="Output 1" dstnodeid="1" dstpinname="XYZ">
-   <LINKPOINT x="5445" y="5445">
+   <LINKPOINT x="5445" y="5541">
    </LINKPOINT>
-   <LINKPOINT x="8520" y="4365">
+   <LINKPOINT x="8520" y="4437">
    </LINKPOINT>
-   <LINKPOINT x="8385" y="1575">
+   <LINKPOINT x="8385" y="1623">
    </LINKPOINT>
-   <LINKPOINT x="5370" y="1125">
+   <LINKPOINT x="5370" y="1149">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="18" systemname="IOBox (Node)">
@@ -389,13 +385,13 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="3338">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Port" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Port">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="100000">
    </PIN>
@@ -409,15 +405,47 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Fine Offset (ms)|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Fine Offset (ms)|">
    </PIN>
    </NODE>
    <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Fine Offset (ms)">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="27" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="11985" top="300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11985" top="300" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Is Client|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="27" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Is Client">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="XYZ" dstnodeid="4" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="8" dstpinname="Seek Position">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Position" dstnodeid="9" dstpinname="Position">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="8" dstpinname="Do Seek">
    </LINK>
    </PATCH>

@@ -29,5 +29,44 @@ namespace VVVV.PluginInterfaces.V2
 			}
 			return binSize;
 		}
+
+        public static bool AnyChanged(params IDiffSpread[] spreads)
+        {
+            foreach (IDiffSpread spread in spreads)
+            {
+                if (spread.IsChanged) { return true; }
+            }
+
+            return false;
+        }
+
+        public static bool AllChanged(params IDiffSpread[] spreads)
+        {
+            foreach (IDiffSpread spread in spreads)
+            {
+                if (!spread.IsChanged) { return false; }
+            }
+
+            return true;
+        }
+
+        public static int SpreadMax(params ISpread[] spreads)
+        {
+            int max = -1;
+
+            foreach (IDiffSpread spread in spreads)
+            {
+                if (spread.SliceCount == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    max = spread.SliceCount > max ? spread.SliceCount : max;
+                }
+            }
+
+            return max;
+        }
 	}
 }
