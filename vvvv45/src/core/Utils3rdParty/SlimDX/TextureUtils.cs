@@ -105,18 +105,11 @@ namespace VVVV.Utils.SlimDX
 			}
 			else
 			{
-				var byteCount = data.Stride * data.Height;
-				var fullLines = byteCount / rect.Pitch;
-				var remainder = byteCount % rect.Pitch;
-				
 				//copy full lines
-				for (int i = 0; i < fullLines; i++) 
+				for (int i = 0; i < data.Height; i++) 
 				{
-					CopyMemory(rect.Data.DataPointer.Move(rect.Pitch * i), data.Scan0.Move(rect.Pitch * i), rect.Pitch);
+					CopyMemory(rect.Data.DataPointer.Move(rect.Pitch * i), data.Scan0.Move(data.Stride * i), data.Stride);
 				}
-				
-				//last line
-				CopyMemory(rect.Data.DataPointer.Move(rect.Pitch * fullLines), data.Scan0.Move(rect.Pitch * fullLines), remainder);
 			}
 			
 			texture.UnlockRectangle(0);
