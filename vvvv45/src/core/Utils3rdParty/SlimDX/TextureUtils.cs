@@ -98,8 +98,26 @@ namespace VVVV.Utils.SlimDX
 		{
 			var data = bm.LockBits(new Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadOnly, bm.PixelFormat);
 			var rect = texture.LockRectangle(0, LockFlags.None);
-			
-			CopyMemory(rect.Data.DataPointer, data.Scan0, data.Stride * data.Height);
+				
+			if(rect.Pitch == data.Stride)
+			{
+				CopyMemory(rect.Data.DataPointer, data.Scan0, data.Stride * data.Height);
+			}
+			else
+			{
+				var byteCount = data.Stride * data.Height;
+				var fullLines = byteCount / rect.Pitch;
+				var remainder = byteCount % rect.Pitch;
+				
+				//copy full lines
+				for (int i = 0; i < fullLines; i++) 
+				{
+					CopyMemory(rect.Data.DataPointer.Move(rect.Pitch * i), data.Scan0.Move(rect.Pitch * i), rect.Pitch);
+				}
+				
+				//last line
+				CopyMemory(rect.Data.DataPointer.Move(rect.Pitch * fullLines), data.Scan0.Move(rect.Pitch * fullLines), remainder);
+			}
 			
 			texture.UnlockRectangle(0);
 			bm.UnlockBits(data);
