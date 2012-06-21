@@ -27,6 +27,8 @@
    </PIN>
    <PIN pinname="Actual" visible="1">
    </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="1650" top="675" width="0" height="0">
@@ -35,7 +37,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -53,13 +55,13 @@
    </BOUNDS>
    <BOUNDS type="Box" left="3885" top="5145" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Default" slicecount="1" values="text" encoded="0">
+   <PIN pinname="Default" slicecount="1" encoded="0" values="text">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Message" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Message">
    </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Message" dstnodeid="10" dstpinname="Input String">
@@ -69,7 +71,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="2940" top="5145" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -77,7 +79,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Success" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Success">
    </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Success" dstnodeid="11" dstpinname="Y Input Value">
@@ -100,6 +102,8 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Run">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="MonoFlop (Animation)" nodename="MonoFlop (Animation)" componentmode="Hidden" id="13">
@@ -131,5 +135,7 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="15" srcpinname="Output" dstnodeid="9" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Enabled">
    </LINK>
    </PATCH>
