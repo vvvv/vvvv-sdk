@@ -11,5 +11,16 @@ namespace VVVV.Utils.Collections
         {
             return enumerable.Where(e => e is T).Select(e => e as T);
         }
+
+        //public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        //{
+        //    foreach (var x in enumerable)
+        //        action(x);
+        //}
+
+        public static bool All(this IEnumerable<bool> enumerable)
+        {
+            return enumerable.All(booleanValue => booleanValue);
+        }
     }
 }
