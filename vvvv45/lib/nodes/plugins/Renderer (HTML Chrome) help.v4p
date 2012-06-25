@@ -63,6 +63,8 @@
    </PIN>
    <PIN pinname="Right Button" visible="1">
    </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
    </NODE>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="3450" top="4845" width="100" height="100">
@@ -72,6 +74,8 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="4" dstpinname="Texture">
@@ -359,7 +363,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Mouse (System Window)" nodename="Mouse (System Window)" componentmode="Hidden" id="43">
-   <BOUNDS type="Node" left="5235" top="3885" width="100" height="100">
+   <BOUNDS type="Node" left="5490" top="3960" width="100" height="100">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -565,7 +569,31 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1515" top="2610" width="4125" height="690">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|if provided with a custom html string, the url input acts&cr;&lf;as base url when resolving relative addresses.&cr;&lf;use about:blank if no such url can be given.|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|if provided with a custom html string, the url input acts&cr;&lf;as base url when resolving relative addresses.&cr;&lf;use about:blank if no such url can be given.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Blend (EX9.RenderState Advanced)" nodename="Blend (EX9.RenderState Advanced)" componentmode="Hidden" id="71">
+   <BOUNDS type="Node" left="3450" top="4395" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Source Blend Mode" slicecount="1" values="One">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="71" srcpinname="Render State Out" dstnodeid="4" dstpinname="Render State">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="72" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3075" top="4095" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3075" top="4095" width="2265" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|colors are alpha premultiplied|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
