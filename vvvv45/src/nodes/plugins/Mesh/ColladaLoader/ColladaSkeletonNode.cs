@@ -114,7 +114,8 @@ namespace VVVV.Nodes
                 if (FColladaModelIn.IsChanged || FIndex.IsChanged)
                 {
                     FSkeleton.ClearAll();
-                    CreateSkeleton(ref FSkeleton, FSelectedMesh.SkeletonRootBone);
+                    FSkeleton.InsertJoint(string.Empty, new BoneWrapper(FSelectedMesh.RootBone));
+                    CreateSkeleton(ref FSkeleton, FSelectedMesh.Bones);
                     // Set the IDs
                     int id = 0;
                     foreach (Model.Bone bone in FSelectedMesh.Bones)
@@ -137,18 +138,13 @@ namespace VVVV.Nodes
         #endregion mainloop
         
         #region helper
-        private void CreateSkeleton(ref Skeleton skeleton, Model.Bone bone)
+        private void CreateSkeleton(ref Skeleton skeleton, IEnumerable<Model.Bone> bones)
         {
-            IJoint joint = new BoneWrapper(bone);
-            joint.Id = -1;
-            if (skeleton.Root == null)
-                skeleton.InsertJoint("", joint);
-            else
-                skeleton.InsertJoint(bone.Parent.Name, joint);
-            
-            foreach (Model.Bone child in bone.Children)
+            foreach (var bone in bones)
             {
-                CreateSkeleton(ref skeleton, child);
+                IJoint joint = new BoneWrapper(bone);
+                joint.Id = -1;
+                skeleton.InsertJoint(bone.Parent.Name, joint);
             }
         }
         #endregion
