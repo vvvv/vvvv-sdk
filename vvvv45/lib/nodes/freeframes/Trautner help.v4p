@@ -1,0 +1,175 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33alpha12.1.dtd" >
+   <PATCH nodename="Y:\freeframe\Trautner\Trautner help.v4p">
+   <BOUNDS height="7140" left="525" top="1140" type="Window" width="9555">
+   </BOUNDS>
+   <NODE id="12" nodename="VideoIn (DShow9)">
+   <BOUNDS height="0" left="690" top="1665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Expose Graph to ROT" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="VideoOut (DShow9)">
+   <BOUNDS height="0" left="675" top="3630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="GT (Value)">
+   <BOUNDS height="0" left="3000" top="3135" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Select (Value)">
+   <BOUNDS height="0" left="2460" top="3570" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Select" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE id="8" nodename="Select (Value)">
+   <BOUNDS height="0" left="3435" top="3570" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Select" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="735" left="15" top="390" type="Box" width="4230">
+   </BOUNDS>
+   <BOUNDS height="160" left="10830" top="45990" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Retrieve movement in specified areas out of a videostream.&cr;&lf;Named after Mr. Trautner of http://www.brainsalt.org who still does not want to believe.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10830" top="45990" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Trautner - FreeFrame DShow9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="1740" left="4545" top="1560" type="Node" width="6075">
+   </BOUNDS>
+   <BOUNDS height="3390" left="4545" top="1560" type="Box" width="4380">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Movement is calculated through substraction of 2 images.&cr;&lf;&cr;&lf;If Hold Background = 1 a static image is sampled and &cr;&lf;the current image is always substracted from it. &cr;&lf;Otherwise always 2 consecutive images are substracted.&cr;&lf;&cr;&lf;Using a static backgroundimage allows you to detect even objects that do not move. However bear in mind that a changing light situation will also trigger in that mode.&cr;&lf;&cr;&lf;The Mask Image is supposed to be a 8 bit grayscale bitmap. In the bitmap you define areas of interest via shades of gray. For now you can therefore distinguish between movement in 256 areas. Beware of Antialiasing in your mask image which would cause more &quot;areas&quot; to be detected than expected!&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1455" top="4530" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9315" top="8250" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1500" left="1455" top="4530" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2715" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10335" top="7785" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1500" left="2715" top="4515" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="195" top="6165" type="Node" width="2340">
+   </BOUNDS>
+   <BOUNDS height="270" left="195" top="6165" type="Box" width="2340">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|number of pixels per grayscale|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2745" top="6135" type="Node" width="3405">
+   </BOUNDS>
+   <BOUNDS height="270" left="2745" top="6135" type="Box" width="3405">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|number of changed pixels per (grayscale) area|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Trautner.dll">
+   <BOUNDS height="0" left="690" top="2235" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video Input" visible="1">
+   </PIN>
+   <PIN pinname="Video Output" visible="1">
+   </PIN>
+   <PIN pinname="PixelCount" visible="1">
+   </PIN>
+   <PIN pinname="Changed Pixels" visible="1">
+   </PIN>
+   <PIN pinname="Mask Image" slicecount="1" values="trautnermask.bmp">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Video Input" srcnodeid="12" srcpinname="Video">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Video" srcnodeid="0" srcpinname="Video Output">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="0" srcpinname="PixelCount">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input 1" srcnodeid="0" srcpinname="PixelCount">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="0" srcpinname="Changed Pixels">
+   </LINK>
+   </PATCH>

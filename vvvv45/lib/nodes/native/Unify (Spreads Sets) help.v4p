@@ -1,0 +1,159 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
+   <PATCH nodename="G:\vvvv\help\Unify (Spreads Sets) help.v4p">
+   <BOUNDS height="7860" left="1830" top="1635" type="Window" width="4380">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="2025" left="15" top="390" type="Box" width="4125">
+   </BOUNDS>
+   <BOUNDS height="160" left="6900" top="14520" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Unifies all incoming spreads to one spread.&cr;&lf;&cr;&lf;Note:&cr;&lf;Input spreads are treated as sets which implicates that the order and multiplicity of elements is unimportant.&cr;&lf;&cr;&lf;Elements in output spread are ordered.&cr;&lf;&cr;&lf;Two elements are equal in the given tolerance epsilon.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="6900" top="14520" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Unify (Spreads Sets)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="315" top="2595" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8655" top="4710" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1125" left="315" top="2595" type="Box" width="705">
+   </BOUNDS>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="5" values="4.2,1,3,4.3,4.6">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2115" top="2580" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10215" top="4845" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1125" left="2115" top="2580" type="Box" width="705">
+   </BOUNDS>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="5" values="4.1,1,10,2,2.5">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Unify (Spreads Sets)">
+   <BOUNDS height="0" left="1425" top="4410" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Epsilon" slicecount="1" values="0.2">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1980" top="4410" type="Node" width="1080">
+   </BOUNDS>
+   <BOUNDS height="270" left="1980" top="4410" type="Box" width="1080">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Epsilon = 0.2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input 2" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input 1" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="675" top="4995" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9555" top="7380" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1650" left="675" top="4995" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="480" left="1575" top="4980" type="Node" width="2730">
+   </BOUNDS>
+   <BOUNDS height="930" left="1575" top="4980" type="Box" width="2370">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|notice that the elements 4.1 and 4.3&cr;&lf;are missing because with epsilon = 0.2 they are equal to 4.2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="15" top="7080" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="15" top="7080" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2520" top="1185" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="Subtract (Spreads Sets)" id="9">
+   <BOUNDS type="Node" left="765" top="7095" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="EQ (Spreads Sets)" id="8">
+   <BOUNDS type="Node" left="1290" top="7095" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="Intersect (Spreads Sets)" id="12">
+   <BOUNDS type="Node" left="1815" top="7095" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   </PATCH>

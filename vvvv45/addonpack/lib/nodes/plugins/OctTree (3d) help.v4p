@@ -1,0 +1,411 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.2.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Spreads\NTree\trunk\OctTree (3d) help.v4p">
+   <BOUNDS height="9705" left="1575" top="2940" type="Window" width="12855">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="24" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="2235" top="8730" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6420" left="14550" top="4065" type="Window" width="6585">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2235" top="8730" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="23" nodename="Box (EX9.Geometry)">
+   <BOUNDS height="0" left="1065" top="5925" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0.7">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="0.7">
+   </PIN>
+   <PIN pinname="Depth" slicecount="1" values="0.7">
+   </PIN>
+   </NODE>
+   <NODE id="22" nodename="Translate (Transform Vector)">
+   <BOUNDS height="0" left="1080" top="5250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="21" nodename="Perspective (Transform)">
+   <BOUNDS height="0" left="4635" top="7170" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="100">
+   </PIN>
+   <PIN pinname="FOV" slicecount="1" values="0.25">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="4245" top="7800" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="2.5">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.2">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Transform In" srcnodeid="21" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="24" dstpinname="Projection Transform" srcnodeid="20" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="19" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="2160" top="6045" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Transform In" srcnodeid="22" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2085" top="1785" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6285" top="4635" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2085" top="1785" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="100">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="17" nodename="Group (EX9 Priority)">
+   <BOUNDS height="0" left="1905" top="7740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Layers" srcnodeid="17" srcpinname="Layer">
+   </LINK>
+   <NODE id="16" nodename="Multiply (Value)">
+   <BOUNDS height="0" left="5715" top="3630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="345" top="5925" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Blend">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="HSL (Color Join)">
+   <BOUNDS height="0" left="3585" top="6105" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" visible="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Bounds (Spectral)">
+   <BOUNDS height="0" left="5955" top="4275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" visible="1">
+   </PIN>
+   <PIN pinname="Maximum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE id="12" nodename="Map (Value)">
+   <BOUNDS height="0" left="5700" top="4905" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source Minimum" visible="1">
+   </PIN>
+   <PIN pinname="Source Maximum" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="0.3">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Source Minimum" srcnodeid="13" srcpinname="Minimum">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Source Maximum" srcnodeid="13" srcpinname="Maximum">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE id="11" nodename="Count (Value)">
+   <BOUNDS height="0" left="3885" top="3810" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="3165" top="5085" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="22">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Spread Count" srcnodeid="11" srcpinname="Count">
+   </LINK>
+   <NODE id="9" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="750" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" visible="1" values="789">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="2160" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="22">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="3795" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Random Seed" slicecount="1" values="40">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="1965" top="3045" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="X" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Spread Count" srcnodeid="18" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Spread Count" srcnodeid="18" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Z" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="5" nodename=":EFFECTS:\Constant.fx">
+   <BOUNDS height="0" left="1320" top="6945" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="12000" left="1605" top="5625" type="Window" width="12000">
+   </BOUNDS>
+   <BOUNDS height="6000" left="1320" top="6945" type="Box" width="6000">
+   </BOUNDS>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Color" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Transform" srcnodeid="19" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Mesh" srcnodeid="23" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Layer 1" srcnodeid="5" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Render State" srcnodeid="15" srcpinname="Render State Out">
+   </LINK>
+   <NODE id="4" nodename="LookAt (Transform Vector)">
+   <BOUNDS height="0" left="3360" top="7815" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="View Transform" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="3" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="3585" top="7245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="0.5">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="0.1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Position XYZ" srcnodeid="3" srcpinname="XYZ">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Lightness" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="2" nodename=":MODULES:\vvvv group\Debug\PerfMeter (Debug).v4p" path="C:\vvvv_plugintest\modules\vvvv group\Debug\">
+   <BOUNDS height="0" left="2970" top="6855" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="4680" top="6375" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2970" top="6855" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Layer 2" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Spread Count" srcnodeid="18" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Saturation" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Hue" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="7410" top="1440" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10035" top="6915" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3360" left="7410" top="1440" type="Box" width="5040">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|&cr;&lf;If you experience any problem, or have any question about this plugin:&cr;&lf;&cr;&lf;Email: julien@mrvux.com&cr;&lf;&cr;&lf;or send me an message in vvvv website (username: vux)&cr;&lf;|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\NTrees.dll|VVVV.Nodes.OctTreeNode">
+   <BOUNDS height="0" left="2130" top="3630" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="3675" top="6360" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2130" top="3630" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="InputXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Depth" visible="1">
+   </PIN>
+   <PIN pinname="CentersXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="InputXYZ" srcnodeid="6" srcpinname="XYZ">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input" srcnodeid="0" srcpinname="Depth">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="XYZ" srcnodeid="0" srcpinname="CentersXYZ">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="X" srcnodeid="0" srcpinname="Width">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Y" srcnodeid="0" srcpinname="Height">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Z" srcnodeid="0" srcpinname="Depth">
+   </LINK>
+   <NODE componentmode="InABox" id="33" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates the Octtree from a set of points.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="32" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|OctTree  - 3d |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>

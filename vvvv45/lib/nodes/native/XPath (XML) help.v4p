@@ -1,0 +1,315 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="A:\v\vvvv\public\vvvv45\lib\nodes\native\XPath (XML) help.v4p">
+   <BOUNDS height="9540" left="570" top="1590" type="Window" width="10740">
+   </BOUNDS>
+   <NODE id="18" nodename="PatchAlias (VVVV)" systemname="PatchAlias (VVVV)">
+   <BOUNDS height="0" left="4305" top="165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   <PIN pinname="Parent Level" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="17" nodename="GetPatch (VVVV)" systemname="GetPatch (VVVV)">
+   <BOUNDS height="0" left="4320" top="615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   <PIN pinname="Patch Description" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Patch" srcnodeid="18" srcpinname="Patch">
+   </LINK>
+   <NODE id="13" nodename="AsValue (String)" systemname="AsValue (String)">
+   <BOUNDS height="0" left="5265" top="3690" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="AsValue (String)" systemname="AsValue (String)">
+   <BOUNDS height="0" left="4350" top="3675" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Multiply (Value)" systemname="Multiply (Value)">
+   <BOUNDS height="0" left="5280" top="4215" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input 1" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InAWindow" id="10" nodename="Renderer (GDI)" systemname="Renderer (GDI)">
+   <BOUNDS height="0" left="4830" top="6030" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="11385" top="1590" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="4830" top="6030" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Text (GDI)" systemname="Text (GDI)">
+   <BOUNDS height="0" left="4845" top="5460" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="HorizontalAlign" slicecount="1" values="Left">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   <PIN pinname="VerticalAlign" slicecount="1" values="Center">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="8" managers="" nodename="Map (Value)" systemname="Map (Value)">
+   <PIN pinname="Input" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" pintype="Input" slicecount="1" visible="1" values="0.75">
+   </PIN>
+   <PIN pinname="Destination Maximum" pintype="Input" slicecount="1" visible="1" values="2.8">
+   </PIN>
+   <PIN pinname="Source Maximum" pintype="Input" slicecount="1" visible="1" values="10000">
+   </PIN>
+   <BOUNDS height="0" left="5280" top="4860" type="Node" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Source Minimum" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Mapping" pintype="Input" slicecount="1" visible="1" values="Float">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y" linkstyle="VHV" srcnodeid="8" srcpinname="Output">
+   <LINKPOINT x="5310" y="5295">
+   </LINKPOINT>
+   <LINKPOINT x="5025" y="5295">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="7" managers="" nodename="Map (Value)" systemname="Map (Value)">
+   <PIN pinname="Input" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="4335" top="4845" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Destination Maximum" pintype="Input" slicecount="1" visible="1" values="1.5">
+   </PIN>
+   <PIN pinname="Source Maximum" pintype="Input" slicecount="1" visible="1" values="10000">
+   </PIN>
+   <PIN pinname="Destination Minimum" pintype="Input" slicecount="1" visible="1" values="-0.449999999999999">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Source Minimum" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Mapping" pintype="Input" slicecount="1" visible="1" values="Float">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="X" linkstyle="VHV" srcnodeid="7" srcpinname="Output">
+   <LINKPOINT x="4365" y="5280">
+   </LINKPOINT>
+   <LINKPOINT x="4875" y="5280">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Layers" srcnodeid="9" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="210" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="435" left="210" top="165" type="Box" width="1995">
+   </BOUNDS>
+   <BOUNDS height="160" left="10230" top="40230" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|XPath (XML)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="240" top="615" type="Node" width="6870">
+   </BOUNDS>
+   <BOUNDS height="5655" left="240" top="615" type="Box" width="3405">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Returns a Spread of matches from&cr;&lf;a XPath-Query.&cr;&lf;&cr;&lf;To run this node, you need to have MSXML installed on your System. &cr;&lf;&cr;&lf;XPath is a W3C Recommendation and describes a way how to navigate through XML Documents.&cr;&lf;&cr;&lf;We can use XPath to select values of elements from a XML File. Every XPath Expression must start with &quot;/&quot;. An XPath expression works like navigating a file system; where a forward slash (/) selects subdirectories.&cr;&lf;&cr;&lf;Inside of [ ] Brackets you can specify you your Query. Then you keep on defining the Path with &quot;/&quot;. The &quot;@&quot; means that you select an attribute.&cr;&lf;&cr;&lf;There are a lot of functions and operators you can use. We cant give a complete instruction to XPath. But try the Microsoft Reference Online. (see link below)&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="6540" top="2760" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9615" top="5940" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="255" left="6540" top="2760" type="Box" width="2925">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="/PATCH/NODE/@nodename">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="5805" top="2415" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10140" top="7245" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="5805" top="2415" type="Box" width="3660">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="/PATCH/NODE/BOUNDS[@type=&apos;Node&apos;]/@top">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4890" top="2055" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10440" top="7545" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="4890" top="2055" type="Box" width="4575">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="/PATCH/NODE/BOUNDS[@type=&apos;Node&apos;]/@left">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="1320" left="330" top="6810" type="Node" width="10035">
+   </BOUNDS>
+   <BOUNDS height="1320" left="330" top="6810" type="Box" width="10035">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A good site to learn everything about the X-Stuff is&cr;&lf;www.w3schools.com&cr;&lf;&cr;&lf;A good reference of XPath Syntax and Fuctions is&cr;&lf;http://winfx.msdn.microsoft.com/library/default.asp?url=/library/en-us/WD_XMLStd/html/6d68ea8c-9e38-4800-896d-95e7521dc4fd.asp|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5610" top="180" type="Node" width="3870">
+   </BOUNDS>
+   <BOUNDS height="270" left="5610" top="180" type="Box" width="3870">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Drag the Nodes of this patch and watch the renderer|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="XPath (XML)" systemname="XPath (XML)">
+   <BOUNDS height="0" left="5265" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XPath Query" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS left="5265" top="3225" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="XML Input" hiddenwhenlocked="1" srcnodeid="17" srcpinname="Patch Description">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Input" srcnodeid="20" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="XPath Query" srcnodeid="3" srcpinname="Output String">
+   </LINK>
+   <NODE id="21" nodename="XPath (XML)" systemname="XPath (XML)">
+   <BOUNDS height="0" left="6150" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XPath Query" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS left="6150" top="3225" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="XML Input" hiddenwhenlocked="1" srcnodeid="17" srcpinname="Patch Description">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="XPath Query" srcnodeid="4" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Text" linkstyle="VHV" srcnodeid="21" srcpinname="Output">
+   <LINKPOINT x="6045" y="5280">
+   </LINKPOINT>
+   <LINKPOINT x="5490" y="5280">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="24" nodename="XPath (XML)" systemname="XPath (XML)">
+   <BOUNDS height="0" left="4335" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS left="4335" top="3225" type="Box">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Output Pins" slicecount="1" values="/PATCH/NODE/BOUNDS[@type=&apos;Node&apos;]/@left">
+   </PIN>
+   <PIN pinname="Create Output Pins" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="XML Input" hiddenwhenlocked="1" srcnodeid="17" srcpinname="Patch Description">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="24" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="24" dstpinname="XPath Query" srcnodeid="2" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="360" top="8115" type="Node" width="705">
+   </BOUNDS>
+   <BOUNDS height="270" left="360" top="8115" type="Box" width="705">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|see also|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="26" nodename="XSLT (XML)" systemname="XSLT (XML)">
+   <BOUNDS height="100" left="405" top="8430" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
