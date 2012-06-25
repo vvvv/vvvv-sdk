@@ -22,7 +22,7 @@ namespace VVVV.Core.Logging
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(string.Format("{0} failed with exception: \n{1}", failingContext, e));
+                    Shell.Instance.Logger.Log(e, string.Format("{0} failed", failingContext));
                     if (theCatch != null)
                         theCatch(e);
                 }
