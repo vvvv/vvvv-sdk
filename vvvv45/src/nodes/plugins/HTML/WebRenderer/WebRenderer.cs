@@ -12,6 +12,7 @@ using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.VMath;
 using System.Threading;
+using System.Text;
 
 namespace VVVV.Nodes.HTML
 {
@@ -28,6 +29,7 @@ namespace VVVV.Nodes.HTML
         private int FWidth = DEFAULT_WIDTH;
         private int FHeight = DEFAULT_HEIGHT;
         private string FUrl;
+        private string FHtml = string.Empty;
         private double FZoomLevel;
         private MouseState FMouseState;
         private KeyState FKeyState;
@@ -80,6 +82,7 @@ namespace VVVV.Nodes.HTML
             out string currentUrl,
             out string errorText,
             string url = DEFAULT_URL,
+            string html = "",
             bool reload = false,
             int width = DEFAULT_WIDTH,
             int height = DEFAULT_HEIGHT,
@@ -118,14 +121,23 @@ namespace VVVV.Nodes.HTML
                 FBrowser.SetSize(CefPaintElementType.View, width, height);
             }
 
-            if (FUrl != url)
+            if (FUrl != url || FHtml != html)
             {
                 FUrl = url;
+                FHtml = html;
                 using (var mainFrame = FBrowser.GetMainFrame())
                 {
-                    mainFrame.LoadURL(url);
+                    if (string.IsNullOrEmpty(html))
+                        mainFrame.LoadURL(url);
+                    else
+                    {
+                        byte[] utf8bytes = Encoding.Default.GetBytes(html);
+                        html = Encoding.UTF8.GetString(utf8bytes);
+                        mainFrame.LoadString(html, url);
+                    }
                 }
             }
+
             if (reload) FBrowser.Reload();
             if (FZoomLevel != zoomLevel)
             {

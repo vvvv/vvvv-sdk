@@ -19,6 +19,8 @@
    </PIN>
    <PIN pinname="Key Event" visible="1">
    </PIN>
+   <PIN pinname="HTML" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="5730" top="555" width="0" height="0">
@@ -546,4 +548,30 @@
    </LINK>
    <LINK srcnodeid="48" srcpinname="Output" dstnodeid="0" dstpinname="Key Event">
    </LINK>
+   <NODE systemname="HTTP (Network Get)" nodename="HTTP (Network Get)" componentmode="Hidden" id="69">
+   <BOUNDS type="Node" left="3765" top="2160" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   <PIN pinname="Body" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="69" dstpinname="URL">
+   </LINK>
+   <LINK srcnodeid="69" srcpinname="Body" dstnodeid="0" dstpinname="HTML">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="70" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1515" top="2610" width="4125" height="690">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1515" top="2610" width="4125" height="690">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|if provided with a custom html string, the url input acts&cr;&lf;as base url when resolving relative addresses.&cr;&lf;use about:blank if no such url can be given.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

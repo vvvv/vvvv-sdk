@@ -14,6 +14,8 @@ namespace VVVV.Nodes.HTML
     {
         [Input("Url", DefaultString = WebRenderer.DEFAULT_URL)]
         public ISpread<string> FUrlIn;
+        [Input("HTML", DefaultString = "")]
+        public ISpread<string> FHtmlIn;
         [Input("Reload", IsBang = true)]
         public ISpread<bool> FReloadIn;
         [Input("Width", DefaultValue = WebRenderer.DEFAULT_WIDTH)]
@@ -47,11 +49,13 @@ namespace VVVV.Nodes.HTML
             FOutput.SliceCount = spreadMax;
             FIsLoadingOut.SliceCount = spreadMax;
             FErrorTextOut.SliceCount = spreadMax;
+            FCurrentUrlOut.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
                 var webRenderer = FWebRenderers[i];
                 var url = FUrlIn[i];
+                var html = FHtmlIn[i];
                 var reload = FReloadIn[i];
                 var width = FWidthIn[i];
                 var height = FHeightIn[i];
@@ -61,7 +65,7 @@ namespace VVVV.Nodes.HTML
                 var enabled = FEnabledIn[i];
                 bool isLoading;
                 string currentUrl, errorText;
-                var output = webRenderer.Render(out isLoading, out currentUrl, out errorText, url, reload, width, height, zoomLevel, mouseEvent, keyEvent, enabled);
+                var output = webRenderer.Render(out isLoading, out currentUrl, out errorText, url, html, reload, width, height, zoomLevel, mouseEvent, keyEvent, enabled);
                 FOutput[i] = output;
                 FIsLoadingOut[i] = isLoading;
                 FCurrentUrlOut[i] = currentUrl;
