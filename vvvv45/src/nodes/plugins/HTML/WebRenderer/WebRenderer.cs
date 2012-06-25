@@ -284,6 +284,17 @@ namespace VVVV.Nodes.HTML
             }
         }
 
+        internal void LoadURL(string url)
+        {
+            if (FBrowser != null)
+            {
+                using (var mainFrame = FBrowser.GetMainFrame())
+                {
+                    mainFrame.LoadURL(url);
+                }
+            }
+        }
+
         private void WriteToTexture(Rectangle rect, IntPtr buffer, int stride, Texture texture)
         {
             // TODO: Do not lock entire surface.

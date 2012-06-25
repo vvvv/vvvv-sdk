@@ -62,6 +62,12 @@ namespace VVVV.Nodes.HTML
                 FWebClient = webClient;
                 FRenderer = renderer;
             }
+
+            protected override bool OnBeforePopup(CefBrowser parentBrowser, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, string url, ref CefClient client, CefBrowserSettings settings)
+            {
+                FRenderer.LoadURL(url);
+                return true;
+            }
             
             protected override void OnAfterCreated(CefBrowser browser)
             {
@@ -136,11 +142,20 @@ namespace VVVV.Nodes.HTML
                 return base.OnKeyEvent(browser, type, code, modifiers, isSystemKey, isAfterJavaScript);
             }
         }
+
+        class RequestHandler : CefRequestHandler
+        {
+            protected override bool OnBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, CefHandlerNavType navType, bool isRedirect)
+            {
+                return base.OnBeforeBrowse(browser, frame, request, navType, isRedirect);
+            }
+        }
         
         private readonly CefRenderHandler FRenderHandler;
         private readonly CefLifeSpanHandler FLifeSpanHandler;
         private readonly CefLoadHandler FLoadHandler;
         private readonly CefKeyboardHandler FKeyboardHandler;
+        private readonly CefRequestHandler FRequestHandler;
         
         public WebClient(WebRenderer renderer)
         {
@@ -148,6 +163,7 @@ namespace VVVV.Nodes.HTML
             FLifeSpanHandler = new LifeSpanHandler(this, renderer);
             FLoadHandler = new LoadHandler(renderer);
             FKeyboardHandler = new KeyboardHandler();
+            FRequestHandler = new RequestHandler();
         }
         
         protected override CefDisplayHandler GetDisplayHandler()
@@ -212,7 +228,7 @@ namespace VVVV.Nodes.HTML
         
         protected override CefRequestHandler GetRequestHandler()
         {
-            return base.GetRequestHandler();
+            return FRequestHandler;
         }
     }
 }
