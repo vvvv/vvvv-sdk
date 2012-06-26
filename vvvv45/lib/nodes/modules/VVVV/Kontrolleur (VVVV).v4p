@@ -1,0 +1,103 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\VVVV\Kontrolleur (VVVV).v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\VVVV\Kontrolleur (VVVV).v4p" systemname="Kontrolleur (VVVV)">
+   <BOUNDS height="4125" left="5880" top="2235" type="Window" width="4980">
+   </BOUNDS>
+   <LINK dstnodeid="374" dstpinname="OSC Message" srcnodeid="356" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="382" srcpinname="Output" dstnodeid="374" dstpinname="Prefix">
+   </LINK>
+   <LINK srcnodeid="390" srcpinname="Output" dstnodeid="374" dstpinname="Patch Filter">
+   </LINK>
+   <NODE componentmode="InABox" id="433" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="945" top="1395" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="945" top="1395" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="44444">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Listening UDP Port|">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="999999">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="399" nodename="Kontrolleur (Network)" systemname="Kontrolleur (Network)">
+   <BOUNDS height="100" left="945" top="3180" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="945" top="3180" type="Box">
+   </BOUNDS>
+   <BOUNDS height="9330" left="16710" top="3390" type="Window" width="14220">
+   </BOUNDS>
+   <PIN pinname="Prefix" encoded="0" visible="1">
+   </PIN>
+   <PIN pinname="Patch Filter" visible="1" encoded="0">
+   </PIN>
+   <PIN pinname="Listening UDP Port" visible="1">
+   </PIN>
+   <PIN pinname="Touch ID" visible="1">
+   </PIN>
+   <PIN pinname="TouchXY" visible="1">
+   </PIN>
+   <PIN pinname="AccelerationXYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="433" srcpinname="Y Output Value" dstnodeid="399" dstpinname="Listening UDP Port">
+   </LINK>
+   <NODE systemname="S+H (String)" nodename="S+H (String)" componentmode="Hidden" id="396">
+   <BOUNDS type="Node" left="1785" top="2775" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="396" srcpinname="Output" dstnodeid="399" dstpinname="Patch Filter">
+   </LINK>
+   <NODE systemname="PatchState (VVVV)" filename="" nodename="PatchState (VVVV)" componentmode="Hidden" id="398">
+   <BOUNDS type="Node" left="1785" top="2355" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="Contains Exposed Nodes" visible="1">
+   </PIN>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="398" srcpinname="Path" dstnodeid="396" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="398" srcpinname="Contains Exposed Nodes" dstnodeid="396" dstpinname="Set">
+   </LINK>
+   <NODE systemname="PatchAlias (VVVV ActivePatch)" nodename="PatchAlias (VVVV ActivePatch)" componentmode="Hidden" id="436">
+   <BOUNDS type="Node" left="1785" top="1935" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="436" srcpinname="Patch" dstnodeid="398" dstpinname="Patch">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="438" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2505" top="2805" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2505" top="2805" width="345" height="390">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="398" srcpinname="Contains Exposed Nodes" dstnodeid="438" dstpinname="Y Input Value">
+   </LINK>
+   <INFO author="vvvv group" description="Send/Receive exposed IOBoxes of active patch to the Kontrolleur android app" tags="remote, control">
+   </INFO>
+   </PATCH>
