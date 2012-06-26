@@ -24,10 +24,13 @@ namespace VVVV.Nodes
 		[Input("Input")]
 		ISpread<Vector3D> FInput;
 		
-		[Input("Bang", IsSingle = true)]
+		[Input("Bang")]
 		ISpread<bool> FBang;
 		
-		[Input("Max Lifetime", IsSingle = true)]
+		[Input("Acceleration")]
+		ISpread<double> FAcc;
+		
+		[Input("Max Lifetime")]
 		ISpread<double> FMaxLifeTime;
 
 		[Output("Output")]
@@ -54,17 +57,20 @@ namespace VVVV.Nodes
 		        if (!FParticles[i].Update(FHDEHost.GetCurrentTime()))
 		            FParticles.RemoveAt(i);
 		
-		    //add new particles
-		    if (FBang[0])
-		    {
-		        for (int i = 0; i < 4; i++)
-		        {
-		            var vel = new Vector3D(FRandom.NextDouble() - 0.5, FRandom.NextDouble() + 0.3, 0);
-		            vel.z = 0;
-		            var acc = new Vector3D(0, -0.8, 0);
-		            FParticles.Add(new Particle(FHDEHost.GetCurrentTime(), FMaxLifeTime[0], FInput[0], vel, acc));
-		        }
-		    }
+			for (int i = 0; i < SpreadMax; i++)
+			{
+			    //add new particles
+			    if (FBang[i])
+			    {
+			        for (int j = 0; j < 4; j++)
+			        {
+			            var vel = new Vector3D(FRandom.NextDouble() - 0.5, FRandom.NextDouble() + 0.3, 0);
+			            vel.z = 0;
+			            var acc = new Vector3D(0, FAcc[i], 0);
+			            FParticles.Add(new Particle(FHDEHost.GetCurrentTime(), FMaxLifeTime[i], FInput[i], vel, acc));
+			        }
+			    }
+			}
 		    
 		    //set outputs
 		    FOutput.SliceCount = FParticles.Count;
