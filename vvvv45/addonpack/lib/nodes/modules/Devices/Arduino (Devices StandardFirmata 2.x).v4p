@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="C:\Users\horst\DEV\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.2).v4p" filename="C:\Users\jens\devel\v4plugins\VirmataEncoder\Arduino (Devices StandardFirmata 2.2).v4p" systemname="Arduino (Devices StandardFirmata 2.2)">
-   <BOUNDS height="11910" left="5310" top="120" type="Window" width="8985">
+   <PATCH nodename="C:\Users\horst\DEV\vvvv-plugins\vvvirmata\modules\Arduino (Devices StandardFirmata 2.x).v4p" filename="C:\Users\jens\devel\v4plugins\VirmataEncoder\Arduino (Devices StandardFirmata 2.x).v4p" systemname="Arduino (Devices StandardFirmata 2.x)">
+   <BOUNDS height="11910" left="11160" top="120" type="Window" width="8985">
    </BOUNDS>
    <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="2955" top="2445" type="Node" width="100">
@@ -311,7 +311,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="6870" top="2445" type="Box" width="510">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="40">
+   <PIN pinname="Y Input Value" slicecount="1" values="16">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -357,7 +357,7 @@
    <NODE componentmode="InABox" id="31" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="165" top="1110" type="Node" width="2505">
    </BOUNDS>
-   <BOUNDS height="615" left="165" top="1110" type="Box" width="6510">
+   <BOUNDS height="615" left="165" top="1110" type="Box" width="5625">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Home of the Firmata for Arduino is http://github.com/jens-a-e/VVVVirmata&cr;&lf;If you have any issuesor feature requests, please submit there!|">
    </PIN>
@@ -373,7 +373,7 @@
    </BOUNDS>
    <BOUNDS height="270" left="195" top="825" type="Box" width="6240">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|(copyleft) jens a. ewald, chris engler, muthesius kunsthochschule kiel 2011|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|(copyleft) jens a. ewald, chris engler, muthesius kunsthochschule kiel 2012|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -393,17 +393,15 @@
    </PIN>
    </NODE>
    <NODE systemname="Delay (Animation)" nodename="Delay (Animation)" componentmode="Hidden" id="36">
-   <BOUNDS type="Node" left="6855" top="9165" width="100" height="100">
+   <BOUNDS type="Node" left="6855" top="9105" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Time" slicecount="1" values="0.5">
+   <PIN pinname="Time" slicecount="1" values="2">
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="36" srcpinname="Output" dstnodeid="23" dstpinname="Input 2">
-   </LINK>
    <NODE id="24" componentmode="Hidden" nodename="TogEdge (Animation)" systemname="TogEdge (Animation)">
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -416,7 +414,7 @@
    </LINK>
    <LINK srcnodeid="24" srcpinname="Up Edge" dstnodeid="36" dstpinname="Input">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" hiddenwhenlocked="0" id="0" managers="" nodename="FirmataEncode (Devices)" systemname="FirmataEncode (Devices)">
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" hiddenwhenlocked="0" id="0" managers="" nodename="FirmataEncode (Devices 2.x)" systemname="FirmataEncode (Devices 2.x)">
    <PIN pinname="ReportDigitalPins" pintype="Input" visible="1">
    </PIN>
    <PIN pinname="PinModes" pintype="Input" visible="1">
@@ -502,7 +500,7 @@
    <LINKPOINT x="1710" y="8490">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" hiddenwhenlocked="0" id="1" managers="" nodename="FirmataDecode (Devices)" systemname="FirmataDecode (Devices)">
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" hiddenwhenlocked="0" id="1" managers="" nodename="FirmataDecode (Devices 2.x)" systemname="FirmataDecode (Devices 2.x)">
    <PIN pinname="FirmataMessage" pintype="Input" visible="1">
    </PIN>
    <PIN pinname="I2CData" visible="1">
@@ -547,5 +545,33 @@
    <LINK dstnodeid="21" dstpinname="Input String" srcnodeid="1" srcpinname="Firmware Version">
    </LINK>
    <LINK srcnodeid="1" srcpinname="I2C Data" dstnodeid="35" dstpinname="Input Node">
+   </LINK>
+   <NODE componentmode="InABox" id="37" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6390" top="795" type="Node" width="6375">
+   </BOUNDS>
+   <BOUNDS height="375" left="6390" top="795" type="Box" width="1845">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Version: 1.0|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="38">
+   <BOUNDS type="Node" left="6855" top="9510" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Output" dstnodeid="38" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Output" dstnodeid="23" dstpinname="Input 2">
    </LINK>
    </PATCH>
