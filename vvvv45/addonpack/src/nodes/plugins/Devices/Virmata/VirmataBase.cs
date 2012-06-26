@@ -115,9 +115,7 @@ namespace Firmata
 		/// </summary>
 		public static int GetValueFromBytes(byte MSB, byte LSB)
 		{
-			int tempValue = (MSB & 0x7F) << 7;
-			tempValue = tempValue | (LSB & 0x7F);
-			return tempValue;
+			return ((MSB & 0x7F) << 7) | (LSB & 0x7F);
 		}
 		
 		/// <summary>
