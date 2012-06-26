@@ -150,12 +150,39 @@ namespace VVVV.Nodes.HTML
                 return base.OnBeforeBrowse(browser, frame, request, navType, isRedirect);
             }
         }
+
+        class V8Handler : CefV8Handler
+        {
+            
+        }
+
+        class PrintHandler : CefPrintHandler
+        {
+            
+        }
+
+        class DisplayHandler : CefDisplayHandler
+        {
+            private readonly WebRenderer FRenderer;
+
+            public DisplayHandler(WebRenderer renderer)
+            {
+                FRenderer = renderer;
+            }
+
+            protected override bool OnConsoleMessage(CefBrowser browser, string message, string source, int line)
+            {
+                FRenderer.Logger.Log(LogType.Message, string.Format("{0} ({1}:{2})", message, source, line));
+                return base.OnConsoleMessage(browser, message, source, line);
+            }
+        }
         
         private readonly CefRenderHandler FRenderHandler;
         private readonly CefLifeSpanHandler FLifeSpanHandler;
         private readonly CefLoadHandler FLoadHandler;
         private readonly CefKeyboardHandler FKeyboardHandler;
         private readonly CefRequestHandler FRequestHandler;
+        private readonly CefDisplayHandler FDisplayHandler;
         
         public WebClient(WebRenderer renderer)
         {
@@ -164,11 +191,12 @@ namespace VVVV.Nodes.HTML
             FLoadHandler = new LoadHandler(renderer);
             FKeyboardHandler = new KeyboardHandler();
             FRequestHandler = new RequestHandler();
+            FDisplayHandler = new DisplayHandler(renderer);
         }
         
         protected override CefDisplayHandler GetDisplayHandler()
         {
-            return base.GetDisplayHandler();
+            return FDisplayHandler;
         }
         
         protected override CefDragHandler GetDragHandler()

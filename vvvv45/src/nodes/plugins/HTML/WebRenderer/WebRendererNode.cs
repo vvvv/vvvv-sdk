@@ -6,6 +6,9 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
 using SlimDX.Direct3D9;
 using CefGlue;
+using VVVV.Utils.VMath;
+using VVVV.Core.Logging;
+using System.ComponentModel.Composition;
 
 namespace VVVV.Nodes.HTML
 {
@@ -28,6 +31,12 @@ namespace VVVV.Nodes.HTML
         public ISpread<MouseState> FMouseEventIn;
         [Input("Key Event")]
         public ISpread<KeyState> FKeyEventIn;
+        [Input("Scroll To")]
+        public ISpread<Vector2D> FScrollToIn;
+        [Input("JavaScript")]
+        public ISpread<string> FJavaScriptIn;
+        [Input("Execute", IsBang = true)]
+        public ISpread<bool> FExecuteIn;
         [Input("Enabled", DefaultValue = 1)]
         public ISpread<bool> FEnabledIn;
 
@@ -40,11 +49,14 @@ namespace VVVV.Nodes.HTML
         [Output("Error Text")]
         public ISpread<string> FErrorTextOut;
 
+        [Import]
+        private ILogger FLogger;
+
         private readonly Spread<WebRenderer> FWebRenderers = new Spread<WebRenderer>();
 
         public void Evaluate(int spreadMax)
         {
-            FWebRenderers.ResizeAndDispose(spreadMax, () => new WebRenderer());
+            FWebRenderers.ResizeAndDispose(spreadMax, () => new WebRenderer(FLogger));
 
             FOutput.SliceCount = spreadMax;
             FIsLoadingOut.SliceCount = spreadMax;
@@ -62,10 +74,28 @@ namespace VVVV.Nodes.HTML
                 var zoomLevel = FZoomLevelIn[i];
                 var mouseEvent = FMouseEventIn[i];
                 var keyEvent = FKeyEventIn[i];
+                var scrollTo = FScrollToIn[i];
+                var javaScript = FJavaScriptIn[i];
+                var execute = FExecuteIn[i];
                 var enabled = FEnabledIn[i];
                 bool isLoading;
                 string currentUrl, errorText;
-                var output = webRenderer.Render(out isLoading, out currentUrl, out errorText, url, html, reload, width, height, zoomLevel, mouseEvent, keyEvent, enabled);
+                var output = webRenderer.Render(
+                    out isLoading, 
+                    out currentUrl, 
+                    out errorText, 
+                    url, 
+                    html, 
+                    reload,
+                    width, 
+                    height, 
+                    zoomLevel,
+                    mouseEvent,
+                    keyEvent,
+                    scrollTo,
+                    javaScript,
+                    execute,
+                    enabled);
                 FOutput[i] = output;
                 FIsLoadingOut[i] = isLoading;
                 FCurrentUrlOut[i] = currentUrl;
@@ -75,7 +105,7 @@ namespace VVVV.Nodes.HTML
 
         public void Dispose()
         {
-            FWebRenderers.ResizeAndDispose(0);
+            FWebRenderers.ResizeAndDispose(0, () => new WebRenderer(FLogger));
         }
     }
 }

@@ -13,6 +13,7 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.VMath;
 using System.Threading;
 using System.Text;
+using System.Globalization;
 
 namespace VVVV.Nodes.HTML
 {
@@ -33,12 +34,15 @@ namespace VVVV.Nodes.HTML
         private double FZoomLevel;
         private MouseState FMouseState;
         private KeyState FKeyState;
+        private Vector2D FScrollTo;
         internal int FFrameLoadCount;
         internal string FCurrentUrl;
         internal string FErrorText;
+        internal ILogger Logger;
 
-        public WebRenderer()
+        public WebRenderer(ILogger logger)
         {
+            Logger = logger;
             CefService.AddRef();
 
             var settings = new CefBrowserSettings();
@@ -82,13 +86,16 @@ namespace VVVV.Nodes.HTML
             out string currentUrl,
             out string errorText,
             string url = DEFAULT_URL,
-            string html = "",
+            string html = null,
             bool reload = false,
             int width = DEFAULT_WIDTH,
             int height = DEFAULT_HEIGHT,
             double zoomLevel = 0,
             MouseState mouseState = default(MouseState),
             KeyState keyState = default(KeyState),
+            Vector2D scrollTo = default(Vector2D),
+            string javaScript = null,
+            bool executeJavaScript = false,
             bool enabled = true
            )
         {
@@ -204,6 +211,38 @@ namespace VVVV.Nodes.HTML
                     FBrowser.SendKeyEvent(CefKeyType.Char, key, modifiers, false, false);
                 }
                 FKeyState = keyState;
+            }
+
+            if (FScrollTo != scrollTo)
+            {
+                FScrollTo = scrollTo;
+                using (var mainFrame = FBrowser.GetMainFrame())
+                {
+                    var x = VMath.Map(scrollTo.x, 0, 1, 0, 1, TMapMode.Clamp);
+                    var y = VMath.Map(scrollTo.y, 0, 1, 0, 1, TMapMode.Clamp);
+                    mainFrame.ExecuteJavaScript(
+                        string.Format(CultureInfo.InvariantCulture,
+                            @"
+                            var body = document.body,
+                                html = document.documentElement;
+                            var width = Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
+                            var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+                            window.scrollTo({0} *  width, {1} * height);
+                            ",
+                             x,
+                             y
+                        ), 
+                        string.Empty, 
+                        0);
+                }
+            }
+
+            if (executeJavaScript)
+            {
+                using (var mainFrame = FBrowser.GetMainFrame())
+                {
+                    mainFrame.ExecuteJavaScript(javaScript, string.Empty, 0);
+                }
             }
 
             isLoading = IsLoading;
