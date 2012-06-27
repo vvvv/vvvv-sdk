@@ -112,6 +112,25 @@ namespace Microsoft.Cci.ReflectionEmitter {
       return this.mapper.GetType(namespaceTypeDefinition);
     }
 
+    public IEnumerable<Type> Load(IEnumerable<INamespaceTypeDefinition> namespaceTypeDefinitions)
+    {
+        //first create (but do not initialize) all typeBuilder builders, since they are needed to create member builders.
+        foreach (var namespaceTypeDefinition in namespaceTypeDefinitions)
+            this.typeBuilderAllocator.Traverse(namespaceTypeDefinition);
+        //next create (but do not initialize) builder for all other kinds of typeBuilder members, since there may be forward references during initialization
+        foreach (var namespaceTypeDefinition in namespaceTypeDefinitions)
+            this.memberBuilderAllocator.Traverse(namespaceTypeDefinition);
+        //now initialize all the builders
+        foreach (var namespaceTypeDefinition in namespaceTypeDefinitions)
+            this.initializingTraverser.Traverse(namespaceTypeDefinition);
+        //finally create the type and return it
+        foreach (var namespaceTypeDefinition in namespaceTypeDefinitions)
+        {
+            this.typeCreator.Traverse(namespaceTypeDefinition);
+            yield return this.mapper.GetType(namespaceTypeDefinition);
+        }
+    }
+
     /// <summary>
     /// 
     /// </summary>
