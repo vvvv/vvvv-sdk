@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.IO
 {
     [PluginInfo(Name = "MouseState", Category = "System", Version = "Join")]
-    public class MouseStateJoinNode : IPluginEvaluate
+    public class MouseStateJoinNode: IPluginEvaluate
     {
         [Input("X")]
         public ISpread<double> FXIn;
@@ -29,7 +30,7 @@ namespace VVVV.Nodes.IO
             FOutput.SliceCount = spreadMax;
             for (int i = 0; i < spreadMax; i++)
             {
-                FOutput[i] = MouseState.Join(
+                FOutput[i] = MouseStateNodes.Join(
                     FXIn[i], 
                     FYIn[i], 
                     FLeftButtonIn[i], 

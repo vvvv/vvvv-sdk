@@ -7,10 +7,11 @@ using System.Windows.Forms;
 using VVVV.PluginInterfaces.V2;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.IO
 {
-    public struct KeyState : IEquatable<KeyState>
+    public struct KeyStateNodes
     {
         #region virtual keycode to character translation
 
@@ -52,7 +53,7 @@ namespace VVVV.Nodes.IO
         private readonly char? FKeyChar;
         private readonly int FTime;
 
-        public KeyState(Keys keyCode = 0, int time = 0)
+        public KeyStateNodes(Keys keyCode = 0, int time = 0)
         {
             FKeyCode = keyCode;
             FKeyChar = keyCode > 0 ? FromKeys((Keys)keyCode) : null;
@@ -113,40 +114,5 @@ namespace VVVV.Nodes.IO
             if ((keyCode & ~Keys.Modifiers) != Keys.None) keys.Add((int)(keyCode & ~Keys.Modifiers));
             time = keyState.Time;
         }
-
-        #region Equals and GetHashCode implementation
-        // The code in this region is useful if you want to use this structure in collections.
-        // If you don't need it, you can just remove the region and the ": IEquatable<MouseEvent>" declaration.
-
-        public override bool Equals(object obj)
-        {
-            if (obj is KeyState)
-                return Equals((KeyState)obj); // use Equals method below
-            else
-                return false;
-        }
-
-        public bool Equals(KeyState other)
-        {
-            // add comparisions for all members here
-            return this.FKeyCode == other.FKeyCode && this.FTime == other.FTime;
-        }
-
-        public override int GetHashCode()
-        {
-            // combine the hash codes of all members here (e.g. with XOR operator ^)
-            return FKeyCode.GetHashCode() ^ FTime.GetHashCode();
-        }
-
-        public static bool operator ==(KeyState left, KeyState right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(KeyState left, KeyState right)
-        {
-            return !left.Equals(right);
-        }
-        #endregion
     }
 }
