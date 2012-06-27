@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.IO
 {
-    [PluginInfo(Name = "KeyState", Category = "HTML", Version = "Split")]
+    [PluginInfo(Name = "KeyState", Category = "System", Version = "Split")]
     public class KeyStateSplitNode : IPluginEvaluate
     {
         [Input("Input")]

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.IO
 {
-    [PluginInfo(Name = "KeyState", Category = "HTML", Version = "Join")]
+    [PluginInfo(Name = "KeyState", Category = "System", Version = "Join")]
     public class KeyStateJoinNode : IPluginEvaluate
     {
         [Input("Key")]

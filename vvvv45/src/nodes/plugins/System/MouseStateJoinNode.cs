@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.IO
 {
-    [PluginInfo(Name = "MouseState", Category = "HTML", Version = "Join")]
+    [PluginInfo(Name = "MouseState", Category = "System", Version = "Join")]
     public class MouseStateJoinNode : IPluginEvaluate
     {
         [Input("X")]

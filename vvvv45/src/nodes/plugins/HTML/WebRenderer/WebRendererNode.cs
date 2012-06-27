@@ -8,6 +8,7 @@ using SlimDX.Direct3D9;
 using CefGlue;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
+using VVVV.Nodes.IO;
 using System.ComponentModel.Composition;
 
 namespace VVVV.Nodes.HTML

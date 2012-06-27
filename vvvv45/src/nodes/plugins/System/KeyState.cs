@@ -8,7 +8,7 @@ using VVVV.PluginInterfaces.V2;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.IO
 {
     public struct KeyState : IEquatable<KeyState>
     {

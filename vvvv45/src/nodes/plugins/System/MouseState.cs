@@ -1,7 +1,7 @@
 ﻿using System;
 using VVVV.Core;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.IO
 {
     public enum MouseButton
     {
