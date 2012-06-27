@@ -404,8 +404,8 @@ namespace VVVV.Nodes
 
             FFrameRateOutput[0] = (int)_FrameRate;
 
-            _Texture1 = new Texture(tDevice, _Width, _Height, 1, 0, Format.A8R8G8B8, Pool.Managed);
-            _Texture2 = new Texture(tDevice, _Width, _Height, 1, 0, Format.A8R8G8B8, Pool.Managed);
+            _Texture1 = new Texture(tDevice, 512, 512, 1, Usage.Dynamic, Format.A8R8G8B8, Pool.Default);
+            _Texture2 = new Texture(tDevice, 512, 512, 1, Usage.Dynamic, Format.A8R8G8B8, Pool.Default);
 
             try
             {
