@@ -146,7 +146,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="ForPin">Interface to the pin via which the texture is accessed.</param>
 		/// <param name="OnDevice">The device for which the texture is accessed.</param>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(TextureMarshaler))]
-		void GetTexture(
+		Texture GetTexture(
 		    IDXTextureOut ForPin, 
 		    [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(DeviceMarshaler))] Device OnDevice);
 	}

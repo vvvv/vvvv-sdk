@@ -25,7 +25,8 @@ namespace VVVV.Nodes.Finder
         Dynamic = 0x10000,
         Text = 0x20000,
         Receive = 0x40000,
+        Exposed = 0x80000,
         Addon = Effect | Freeframe | Module | Plugin | VST | Dynamic,
-        AllNodeTypes = Addon | Send | Comment | IONode | Native | Patch | Unknown | Boygrouped | Window | Dynamic | Text | Receive
+        AllNodeTypes = Addon | Send | Comment | IONode | Native | Patch | Unknown | Boygrouped | Window | Dynamic | Text | Receive | Exposed
     }
 }

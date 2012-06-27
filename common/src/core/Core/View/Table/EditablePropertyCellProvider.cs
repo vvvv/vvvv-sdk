@@ -14,7 +14,7 @@ namespace VVVV.Core.View.Table
         
         public EditablePropertyCellProvider(IEditableProperty property)
         {
-            FNameCell = new Cell(property.Name, property.ValueType, false);
+            FNameCell = new Cell(property.Name, typeof(string), false);
             FValueCell = new EditablePropertyCell(property);
         }
 

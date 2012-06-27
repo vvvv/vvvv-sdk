@@ -497,7 +497,7 @@ namespace VVVV.HDE.CodeEditor
             }
         }
         
-        private void FErrorTableViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+        private void FErrorTableViewerDoubleClick(ModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             var fileName = string.Empty;
             var line = 0;

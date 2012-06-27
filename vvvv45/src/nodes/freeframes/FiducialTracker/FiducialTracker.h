@@ -12,7 +12,7 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
 //libFidTrack as provided with the reacTVision source:

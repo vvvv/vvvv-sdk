@@ -53,6 +53,7 @@ namespace VVVV.Nodes
         private IValueIn FPinInInterMode;
         private IValueIn FPinInPlay;
         private IValueIn FPinInRecord;
+        private IValueIn FPinInKeepPosition;
         private IValueIn FPinInSeekPos;
         private IValueIn FPinInDoSeek;
         private IValueIn FPinInReset;
@@ -107,12 +108,15 @@ namespace VVVV.Nodes
    
             this.FHost.CreateValueInput("Play", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInPlay);
             this.FPinInPlay.SetSubType(0, 1, 1, 0, false, true, false);
-      
+
             this.FHost.CreateValueInput("Record", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInRecord);
             this.FPinInRecord.SetSubType(0, 1, 1, 0, false, true, false);
+
+            this.FHost.CreateValueInput("Keep Position", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInKeepPosition);
+            this.FPinInKeepPosition.SetSubType(0, 1, 1, 0, false, true, false);
    
             this.FHost.CreateStringInput("Track Id", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInTrackId);
-            this.FPinInTrackId.SetSubType("track", false);
+            this.FPinInTrackId.SetSubType("track", false);  
                     
             this.FHost.CreateValueInput("Input", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInInput);
             this.FPinInInput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);           
@@ -298,12 +302,13 @@ namespace VVVV.Nodes
                     
 
                     //Update Play/Record/Buffer
-                    double dblplay, dblrecord, dblbuffer,dblclear;
+                    double dblplay, dblrecord, dblbuffer,dblclear,dblkeep;
 
                     this.FPinInPlay.GetValue(i, out dblplay);
                     this.FPinInRecord.GetValue(i, out dblrecord);
                     this.FPinInBufferLength.GetValue(i, out dblbuffer);
                     this.FPinInReset.GetValue(i, out dblclear);
+                    this.FPinInKeepPosition.GetValue(i, out dblkeep);
 
                     dblbuffer = Math.Max(dblbuffer, 0.1);
 
@@ -320,7 +325,7 @@ namespace VVVV.Nodes
                     }
                     else
                     {
-                        resettime = track.StopRecording(currentposition);
+                        resettime = track.StopRecording(currentposition, dblkeep > 0.5);
                     }
 
                     if (dblplay >= 0.5)

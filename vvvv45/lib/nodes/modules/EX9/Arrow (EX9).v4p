@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9\Arrow (EX9).v4p">
-   <BOUNDS height="8145" left="1290" top="1770" type="Window" width="7605">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\EX9\Arrow (EX9).v4p">
+   <BOUNDS height="10095" left="1290" top="1770" type="Window" width="8880">
    </BOUNDS>
    <NODE id="11" nodename="Polar (3d)" systemname="Polar (3d)">
    <BOUNDS height="270" left="2340" top="3090" type="Node" width="630">
@@ -39,7 +39,7 @@
    </PIN>
    <PIN pinname="Render State In" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="||">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
@@ -57,7 +57,7 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="3" values="1,0,0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Direction" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Direction">
    </PIN>
    <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
    </PIN>
@@ -125,15 +125,15 @@
    <LINK dstnodeid="5" dstpinname="Z" srcnodeid="11" srcpinname="Length">
    </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3240" top="5640" type="Node" width="0">
+   <BOUNDS height="0" left="4005" top="5775" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="16995" top="11385" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="3240" top="5640" type="Box" width="795">
+   <BOUNDS height="240" left="4005" top="5775" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Enabled">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -147,7 +147,7 @@
    </BOUNDS>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Render State|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Render State|">
    </PIN>
    </NODE>
    <LINK dstnodeid="9" dstpinname="Render State In" srcnodeid="3" srcpinname="Output Node">
@@ -161,7 +161,7 @@
    </BOUNDS>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Transform" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Transform">
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Transform In" srcnodeid="2" srcpinname="Output Node">
@@ -175,7 +175,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Layer" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Layer">
    </PIN>
    </NODE>
    <NODE id="0" nodename="XFile (EX9.Geometry Load)" systemname="XFile (EX9.Geometry Load)">
@@ -183,14 +183,14 @@
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="..\..\..\assets\geometries\arrowZ.x" encoded="0">
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\..\..\assets\geometries\arrowZ.x">
    </PIN>
    <PIN pinname="Reload" slicecount="1" values="0">
    </PIN>
    </NODE>
    <INFO author="vvvv group" description="draw an arrow in 3d space" tags="helper, space, direction, vector">
    </INFO>
-   <NODE componentmode="Hidden" id="12" nodename="DrawFixed (EX9.Effect)" systemname="DrawFixed (EX9.Effect)">
+   <NODE componentmode="Hidden" id="12" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Constant.fx">
    <BOUNDS height="100" left="2295" top="6600" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="0" left="2295" top="6600" type="Box" width="0">
@@ -207,6 +207,8 @@
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
+   <PIN pinname="Color">
+   </PIN>
    </NODE>
    <LINK dstnodeid="12" dstpinname="Render State" srcnodeid="9" srcpinname="Render State Out">
    </LINK>
@@ -217,5 +219,17 @@
    <LINK dstnodeid="12" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="12" dstpinname="Enabled" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="13" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="4485" top="4260" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4485" top="4260" width="2250" height="480">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Color" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Color Output" dstnodeid="12" dstpinname="Color">
    </LINK>
    </PATCH>

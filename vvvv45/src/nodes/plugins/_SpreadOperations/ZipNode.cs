@@ -1,81 +1,108 @@
-//using System;
-//using System.ComponentModel.Composition;
-//
-//using VVVV.PluginInterfaces.V1;
-//using VVVV.PluginInterfaces.V2;
-//using VVVV.Utils.VColor;
-//using VVVV.Utils.VMath;
-//
-//namespace VVVV.Nodes
-//{
-//	public abstract class ZipNode<T> : IPluginEvaluate
-//	{
-//		[Input("Input 1", BinSize = 1)]
-//		protected ISpread<ISpread<T>> FInputA;
-//		
-//		[Input("Input 2", BinSize = 1)]
-//		protected ISpread<ISpread<T>> FInputB;
-//		
-//		[Output("Output")]
-//		protected ISpread<ISpread<T>> FOutput;
-//		
-//		public void Evaluate(int SpreadMax)
-//		{
-//			FOutput.SliceCount = FInputA.CombineWith(FInputB) * 2;
-//			
-//			for (int i = 0; i < FOutput.SliceCount / 2; i++)
-//			{
-//				FOutput[2 * i] = FInputA[i];
-//				FOutput[2 * i + 1] = FInputB[i];
-//			}
-//		}
-//	}
-//	
-//	[PluginInfo(Name = "Zip", Category = "Spreads", Help = "Zips two spreads together", Tags = "")]
-//	public class SpreadsZipNode : ZipNode<double>
-//	{
-//		
-//	}
-//	
-//	[PluginInfo(Name = "Zip", Category = "2d", Help = "Zips two spreads together", Tags = "")]
-//	public class Vector2DZipNode : ZipNode<Vector2D>
-//	{
-//		
-//	}
-//	
-//	[PluginInfo(Name = "Zip", Category = "3d", Help = "Zips two spreads together", Tags = "")]
-//	public class Vector3DZipNode : ZipNode<Vector3D>
-//	{
-//		
-//	}
-//	
-//	[PluginInfo(Name = "Zip", Category = "4d", Help = "Zips two spreads together", Tags = "")]
-//	public class Vector4DZipNode : ZipNode<Vector4D>
-//	{
-//		
-//	}
-//	
-//	[PluginInfo(Name = "Zip", Category = "Color", Help = "Zips two spreads together", Tags = "")]
-//	public class ColorZipNode : ZipNode<RGBAColor>
-//	{
-//		
-//	}
-//	
-//	[PluginInfo(Name = "Zip", Category = "String", Help = "Zips two spreads together", Tags = "")]
-//	public class StringZipNode : ZipNode<string>
-//	{
-//		
-//	}
-//	
-//	[PluginInfo(Name = "Zip", Category = "Transform", Help = "Zips two spreads together", Tags = "")]
-//	public class TransformZipNode : ZipNode<Matrix4x4>
-//	{
-//		
-//	}
-//	
-//	[PluginInfo(Name = "Zip", Category = "Enumerations", Help = "Zips two spreads together", Tags = "")]
-//	public class EnumZipNode : ZipNode<EnumEntry>
-//	{
-//		
-//	}
-//}
+using System;
+using System.ComponentModel.Composition;
+using SlimDX;
+using VVVV.Hosting.Pins;
+using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Streams;
+using VVVV.Utils.VColor;
+using VVVV.Utils.VMath;
+
+namespace VVVV.Nodes
+{
+	public abstract class ZipNode<T> : IPluginEvaluate
+	{
+		[Input("Input", IsPinGroup = true)]
+		protected IInStream<IInStream<T>> FInputStreams;
+		
+		[Output("Output")]
+		protected IOutStream<T> FOutputStream;
+		
+		public void Evaluate(int SpreadMax)
+		{
+			int inputStreamsLength = FInputStreams.Length;
+			int maxInputStreamLength = FInputStreams.GetMaxLength();
+			FOutputStream.Length = maxInputStreamLength * inputStreamsLength;
+			
+			var buffer = MemoryPool<T>.GetArray();
+			try
+			{
+				using (var writer = FOutputStream.GetWriter())
+				{
+					int numSlicesToRead = Math.Min(maxInputStreamLength, buffer.Length);
+					int i = 0;
+					foreach (var inputStream in FInputStreams)
+					{
+						writer.Position = i++;
+						using (var reader = inputStream.GetCyclicReader())
+						{
+							while (!writer.Eos)
+							{
+								reader.Read(buffer, 0, numSlicesToRead);
+								writer.Write(buffer, 0, numSlicesToRead, inputStreamsLength);
+							}
+						}
+					}
+				}
+			}
+			finally
+			{
+				MemoryPool<T>.PutArray(buffer);
+			}
+		}
+	}
+	
+	[PluginInfo(Name = "Zip", Category = "Value", Help = "Zips spreads together", Tags = "")]
+	public class ValueZipNode : ZipNode<double>
+	{
+
+	}
+	
+	[PluginInfo(Name = "Zip", Category = "Spreads", Help = "Zips spreads together", Tags = "")]
+	public class Value2dZipNode : ZipNode<IInStream<double>>
+	{
+
+	}
+	
+	[PluginInfo(Name = "Zip", Category = "2d", Help = "Zips spreads together", Tags = "")]
+	public class Vector2DZipNode : ZipNode<Vector2D>
+	{
+		
+	}
+	
+	[PluginInfo(Name = "Zip", Category = "3d", Help = "Zips spreads together", Tags = "")]
+	public class Vector3DZipNode : ZipNode<Vector3D>
+	{
+		
+	}
+	
+	[PluginInfo(Name = "Zip", Category = "4d", Help = "Zips spreads together", Tags = "")]
+	public class Vector4DZipNode : ZipNode<Vector4D>
+	{
+		
+	}
+	
+	[PluginInfo(Name = "Zip", Category = "Color", Help = "Zips spreads together", Tags = "")]
+	public class ColorZipNode : ZipNode<RGBAColor>
+	{
+		
+	}
+	
+	[PluginInfo(Name = "Zip", Category = "String", Help = "Zips spreads together", Tags = "")]
+	public class StringZipNode : ZipNode<string>
+	{
+		
+	}
+	
+	[PluginInfo(Name = "Zip", Category = "Transform", Help = "Zips spreads together", Tags = "")]
+	public class TransformZipNode : ZipNode<Matrix>
+	{
+		
+	}
+	
+	[PluginInfo(Name = "Zip", Category = "Enumerations", Help = "Zips spreads together", Tags = "")]
+	public class EnumZipNode : ZipNode<EnumEntry>
+	{
+		
+	}
+}

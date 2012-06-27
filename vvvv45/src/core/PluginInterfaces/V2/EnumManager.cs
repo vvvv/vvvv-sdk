@@ -11,7 +11,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// Represents a Key/Value Pair of an enum.
 	/// </summary>
 	[ComVisible(false)]
-	public class EnumEntry
+	public sealed class EnumEntry
 	{
 		/// <summary>
 		/// The string representation of this entry.

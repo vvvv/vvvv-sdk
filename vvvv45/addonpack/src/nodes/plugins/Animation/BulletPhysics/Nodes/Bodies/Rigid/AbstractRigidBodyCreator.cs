@@ -24,49 +24,49 @@ namespace VVVV.Nodes.Bullet
 		protected Pin<BulletRigidSoftWorld> FWorld;
 
 		[Input("Shapes")]
-		Pin<AbstractRigidShapeDefinition> FShapes;
+        protected Pin<AbstractRigidShapeDefinition> FShapes;
 
 		[Input("Position")]
-		ISpread<Vector3D> FPosition;
+        protected ISpread<Vector3D> FPosition;
 
 		[Input("Rotation")]
-		ISpread<Vector4D> FRotation;
+        protected ISpread<Vector4D> FRotation;
 
 		[Input("Linear Velocity")]
-		ISpread<Vector3D> FLinearVelocity;
+        protected ISpread<Vector3D> FLinearVelocity;
 
 		[Input("Angular Velocity")]
-		ISpread<Vector3D> FAngularVelocity;
+        protected ISpread<Vector3D> FAngularVelocity;
 
 		[Input("Friction")]
-		ISpread<float> FFriction;
+        protected ISpread<float> FFriction;
 
 		[Input("Restitution")]
-		ISpread<float> FRestitution;
+        protected ISpread<float> FRestitution;
 
 		[Input("Is Active",DefaultValue=1)]
-		ISpread<bool> FActive;
+        protected ISpread<bool> FActive;
 
 		[Input("Allow Sleep",DefaultValue=1)]
-		ISpread<bool> FAllowSleep;
+        protected ISpread<bool> FAllowSleep;
 
 		[Input("Has Contact Response", DefaultValue = 1)]
-		ISpread<bool> FContactResponse;
+        protected ISpread<bool> FContactResponse;
 
 		[Input("Is Static", DefaultValue = 0)]
-		ISpread<bool> FStatic;
+        protected ISpread<bool> FStatic;
 
 		[Input("Is Kinematic", DefaultValue = 0)]
-		ISpread<bool> FKinematic;
+        protected ISpread<bool> FKinematic;
 
 		[Input("Custom")]
-		ISpread<string> FCustom;
+        protected ISpread<string> FCustom;
 
 		[Input("Custom Object")]
-		Pin<ICloneable> FCustomObj;
+        protected Pin<ICloneable> FCustomObj;
 
 		[Input("Do Create", IsBang = true)]
-		ISpread<bool> FDoCreate;
+        protected ISpread<bool> FDoCreate;
 
 		protected virtual void OnWorldConnected() { }
 		protected virtual void OnWorldDiconnected() { }
