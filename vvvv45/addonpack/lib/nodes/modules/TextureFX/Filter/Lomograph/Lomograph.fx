@@ -10,7 +10,7 @@ float Level <float uimin=0.0;float uimax=1.0;> =1.0;
 float Effect <float uimin=0.0;float uimax=1.0;> =1.0;
 float Flare <float uimin=0.0;float uimax=1.0;> =1.0;
 int Type <float uimin=0.0;float uimax=7.0;> =0;
-int Iterations <float uimin=1.0;float uimax=10.0;> =4;
+int Iterations <float uimin=1.0;float uimax=20.0;> =4;
 
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;AddressU=CLAMP;AddressV=WRAP;};
@@ -121,6 +121,7 @@ float vstep(float a,float b,float x){
 	x+=smoothstep(.8,1,x)*.2;
 	return x;
 }
+/*
 float3 AddFlare(float2 x){
 	float2 sx=float2(5,.47);
 	float3 v=0;
@@ -133,13 +134,14 @@ float3 AddFlare(float2 x){
 	float4 c3=tex2Dlod(s0,float4(.02,(floor(x.y*sx.y+1)/sx.y),0,4.5));
 	float4 mc=c0;
 	if(length(c2));
-	v+=pow(vstep(0,1,x.x),2+0*tex2D(s0,float2(.7,x.y)))*c0*smoothstep(1,0,frac(x.y*sx.x));
-	v+=pow(vstep(0,1,x.x),2+0*tex2D(s0,float2(.7,x.y)))*c1*smoothstep(0,1,frac(x.y*sx.x));
-	v+=pow(vstep(1,0,x.x),2+0*tex2D(s0,float2(.2,x.y)))*c2*smoothstep(1,0,frac(x.y*sx.y));
-	v+=pow(vstep(1,0,x.x),2+0*tex2D(s0,float2(.2,x.y)))*c3*smoothstep(0,1,frac(x.y*sx.y));
+	v+=pow(vstep(0,1,x.x),2+0*tex2Dlod(s0,float4(.7,x.y,0,1)))*c0*smoothstep(1,0,frac(x.y*sx.x));
+	v+=pow(vstep(0,1,x.x),2+0*tex2Dlod(s0,float4(.7,x.y,0,1)))*c1*smoothstep(0,1,frac(x.y*sx.x));
+	v+=pow(vstep(1,0,x.x),2+0*tex2Dlod(s0,float4(.2,x.y,0,1)))*c2*smoothstep(1,0,frac(x.y*sx.y));
+	v+=pow(vstep(1,0,x.x),2+0*tex2Dlod(s0,float4(.2,x.y,0,1)))*c3*smoothstep(0,1,frac(x.y*sx.y));
 
 	return v;
 }
+//*/
 /*
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float4 c=tex2D(s0,x);
@@ -177,10 +179,10 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     return c;
 }//*/
 float4 prepass(float2 x){
-	float4 c=tex2D(s0,x);
+	float4 c=tex2Dlod(s0,float4(x,0,1));
 	float3 z=c.rgb;
-	float itr=min(Iterations,10);
-	float3 v=AddFlare(x)*Flare/itr;
+	float itr=min(Iterations,20);
+	//float3 v=AddFlare(x)*Flare/itr;
 	for(float i=0;i<itr;i++){
 	z=ColorShape(z,Color);
 	z=Vignette(z,length((x-.5)*R/R.x),Amount,Start,Dodge);	
