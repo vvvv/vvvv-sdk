@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="D:\Program Files\vvvv_45beta26\addonpack\modules\common\TextureFX\Filter\Levels\Levels (EX9.Texture Filter).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Levels\Levels (EX9.Texture Filter).v4p">
    <BOUNDS height="10260" left="11130" top="2955" type="Window" width="10875">
    </BOUNDS>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Filter\Levels\Levels.fx" id="23" nodename="Levels.fx" systemname="Levels (EX9.Effect)">
+   <NODE componentmode="Hidden" filename="Levels.fx" id="23" nodename="Levels.fx" systemname="Levels (EX9.Effect)">
    <BOUNDS height="270" left="2025" top="5790" type="Node" width="5055">
    </BOUNDS>
    <BOUNDS height="5415" left="4740" top="6090" type="Window" width="15300">
@@ -47,6 +47,8 @@
    </PIN>
    <PIN pinname="Gamma ">
    </PIN>
+   <PIN pinname="ClampColor">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="22" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="345" top="1575" type="Node" width="0">
@@ -60,7 +62,7 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="21" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="21" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="2040" top="6705" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="2040" top="6705" type="Box" width="2400">
@@ -80,6 +82,16 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="21" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="23" srcpinname="Layer">
@@ -161,9 +173,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="14" nodename="IOBox (Color)" systemname="IOBox (Color)">
-   <BOUNDS height="0" left="8250" top="2775" type="Node" width="0">
+   <BOUNDS height="0" left="8130" top="2835" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="315" left="8250" top="2775" type="Box" width="2175">
+   <BOUNDS height="315" left="8130" top="2835" type="Box" width="2175">
    </BOUNDS>
    <BOUNDS height="160" left="10980" top="10935" type="Window" width="215">
    </BOUNDS>
@@ -193,9 +205,9 @@
    <LINK dstnodeid="23" dstpinname="fromWhite" srcnodeid="13" srcpinname="Color Output">
    </LINK>
    <NODE componentmode="InABox" id="12" nodename="IOBox (Color)" systemname="IOBox (Color)">
-   <BOUNDS height="0" left="8970" top="3360" type="Node" width="0">
+   <BOUNDS height="0" left="8850" top="3420" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="315" left="8970" top="3360" type="Box" width="2175">
+   <BOUNDS height="315" left="8850" top="3420" type="Box" width="2175">
    </BOUNDS>
    <BOUNDS height="160" left="10980" top="10935" type="Window" width="215">
    </BOUNDS>
@@ -211,9 +223,9 @@
    <INFO author="unc" description="Color levels filter" tags="fx">
    </INFO>
    <NODE componentmode="InABox" id="11" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="11445" top="4755" type="Node" width="0">
+   <BOUNDS height="0" left="12915" top="4755" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="495" left="11445" top="4755" type="Box" width="525">
+   <BOUNDS height="495" left="12915" top="4755" type="Box" width="525">
    </BOUNDS>
    <BOUNDS height="160" left="10350" top="11235" type="Window" width="215">
    </BOUNDS>
@@ -323,7 +335,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="4" values="1,1,1,1">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -331,9 +343,29 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Gamma |" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Gamma |">
    </PIN>
    </NODE>
    <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Gamma ">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="11700" top="4095" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11700" top="4095" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Clamp Color|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="23" dstpinname="ClampColor">
    </LINK>
    </PATCH>
