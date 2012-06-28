@@ -104,8 +104,14 @@ namespace TypeWriter
 		[Input("Initialize", IsSingle = true, IsBang = true)]
 		ISpread<bool> FInitialize;
 		
-		[Input("Set Cursor Position", IsSingle = true, MinValue = 0, MaxValue = int.MaxValue)]
-		IDiffSpread<int> FSetCursorPosition;
+		[Input("Cursor Position", IsSingle = true, MinValue = 0, MaxValue = int.MaxValue, Visibility = PinVisibility.OnlyInspector)]
+		ISpread<int> FNewCursorPosition;
+		
+		[Input("Set Cursor Position", IsSingle = true, IsBang = true, Visibility = PinVisibility.OnlyInspector)]
+		ISpread<bool> FSetCursorPosition;
+		
+		[Input("Ignore Navigation Keys", IsSingle = true, DefaultValue = 1, Visibility = PinVisibility.OnlyInspector)]
+		ISpread<bool> FIgnoreNavigationKeys;
 		
 		//output pin declaration
 		[Output("Output")]
@@ -355,34 +361,42 @@ namespace TypeWriter
 						AddNewChar(" ");
 						return true;
 					case Keys.Left:
-						if (IsKeyPressed(Keys.ControlKey))
-							CursorStepsWordLeft();
-						else
-							CursorStepsLeft();
+						if (!FIgnoreNavigationKeys[0])
+							if (IsKeyPressed(Keys.ControlKey))
+								CursorStepsWordLeft();
+							else
+								CursorStepsLeft();
 						return true;
 					case Keys.Right:
-						if (IsKeyPressed(Keys.ControlKey))
-							CursorStepsWordRight();
-						else
-							CursorStepsRight();
+						if (!FIgnoreNavigationKeys[0])
+							if (IsKeyPressed(Keys.ControlKey))
+								CursorStepsWordRight();
+							else
+								CursorStepsRight();
 						return true;
 					case Keys.Up:
-						CursorOneLineUp();
+						if (!FIgnoreNavigationKeys[0])
+							CursorOneLineUp();
 						return true;
 					case Keys.Down:
-						CursorOneLineDown();
+						if (!FIgnoreNavigationKeys[0])
+							CursorOneLineDown();
 						return true;
 					case Keys.Home:
-						CursorToLineStart();
+						if (!FIgnoreNavigationKeys[0])
+							CursorToLineStart();
 						return true;
 					case Keys.End:
-						CursorToLineEnd();
+						if (!FIgnoreNavigationKeys[0])
+							CursorToLineEnd();
 						return true;
 					case Keys.Prior:
-						CursorToTextStart();
+						if (!FIgnoreNavigationKeys[0])
+							CursorToTextStart();
 						return true;
 					case Keys.Next:
-						CursorToTextEnd();
+						if (!FIgnoreNavigationKeys[0])
+							CursorToTextEnd();
 						return true;
 				}
 			}
@@ -395,8 +409,8 @@ namespace TypeWriter
 		//all data handling should be in here
 		public void Evaluate(int SpreadMax)
 		{
-			if (FSetCursorPosition.IsChanged)
-				FCursorCharPos = Math.Min(FText.Length, Math.Max(0, FSetCursorPosition[0]));
+			if (FSetCursorPosition[0])
+				FCursorCharPos = Math.Min(FText.Length, Math.Max(0, FCursorPosition[0]));
 
 			//initializing with text
 			if (FInitialize[0])
