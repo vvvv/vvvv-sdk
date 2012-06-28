@@ -32,16 +32,6 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="54" nodename="Keyboard (System Global)">
-   <BOUNDS height="0" left="975" top="1785" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Keyboard Input" slicecount="1" visible="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Keyboard Output" visible="1">
-   </PIN>
-   <PIN pinname="KeyCode" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="40" nodename="Transform (Transform 2d)">
    <BOUNDS height="0" left="180" top="3885" type="Node" width="0">
    </BOUNDS>
@@ -185,7 +175,7 @@
    </BOUNDS>
    <PIN pinname="Text" visible="1" slicecount="1" encoded="0" values="@">
    </PIN>
-   <PIN pinname="KeyCode" visible="1">
+   <PIN pinname="KeyCode" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Replace" visible="1">
    </PIN>
@@ -237,10 +227,10 @@
    </PIN>
    <PIN pinname="Insert Text" visible="1">
    </PIN>
+   <PIN pinname="Key State" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="21" dstpinname="Cursor" srcnodeid="61" srcpinname="Output">
-   </LINK>
-   <LINK srcnodeid="54" srcpinname="KeyCode" dstnodeid="21" dstpinname="KeyCode">
    </LINK>
    <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Doubles Speed">
    </LINK>
@@ -255,22 +245,6 @@
    <LINK srcnodeid="21" srcpinname="Output" dstnodeid="73" dstpinname="Input String">
    </LINK>
    <LINK srcnodeid="21" srcpinname="Output with Cursor" dstnodeid="71" dstpinname="Text">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="87" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="810" top="2310" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="810" top="2310" width="780" height="525">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="54" srcpinname="KeyCode" dstnodeid="87" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="97" systemname="IOBox (String)">
    <BOUNDS type="Node" left="5670" top="1710" width="1575" height="270">
@@ -525,7 +499,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="15">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -541,7 +515,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5760" top="3240" width="1665" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; set cursor position|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; set cursor position|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -550,4 +524,12 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Keyboard (System Window State)" filename="%VVVV%\lib\nodes\modules\System\Keyboard (System Window State).v4p" nodename="Keyboard (System Window State)" componentmode="Hidden" id="113">
+   <BOUNDS type="Node" left="390" top="2325" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="State" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="113" srcpinname="State" dstnodeid="21" dstpinname="Key State">
+   </LINK>
    </PATCH>
