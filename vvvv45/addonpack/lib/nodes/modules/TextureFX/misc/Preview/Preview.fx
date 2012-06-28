@@ -6,6 +6,9 @@ sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFil
 texture tex1;
 samplerCUBE sCUBE=sampler_state{Texture=(tex1);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;AddressU=WRAP;AddressV=WRAP;};
 float4x4 tV;
+float4x4 tVI;
+float4x4 tP;
+float4x4 tPI;
 float2 r2d(float2 x,float a){a*=acos(-1)*2;return float2(cos(a)*x.x+sin(a)*x.y,cos(a)*x.y-sin(a)*x.x);}
 float3 r(float3 p,float3 z){z*=acos(-1)*2;float3 x=cos(z),y=sin(z);return mul(p,float3x3(x.y*x.z+y.x*y.y*y.z,-x.x*y.z,y.x*x.y*y.z-y.y*x.z,x.y*y.z-y.x*y.y*x.z,x.x*x.z,-y.y*y.z-y.x*x.y*x.z,x.x*y.y,y.x,x.x*x.y));}
 
@@ -57,12 +60,14 @@ float4 pPANO(float2 x:TEXCOORD0):color{
 float4 pBALL(float2 x:TEXCOORD0):color{
     float4 c=1;
 	float3 p=float3(0,0,1);
+	//x=(x-.5)*mul(float4(1,1,0,0),tPI).y*length(mul(float4(0,0,0,1),tVI).xyz)*1.39+.5+mul(float4(0,0,0,1),tP).xy;
 	p.yz=r2d(p.yz,-(x.y-.5)*.5);
 	p.xz=r2d(p.xz,-x.x);
 	float2 dx=(x-.5)*R/min(R.x,R.y);
 	//p=float3(0,0,1);
 	p.xy=normalize(dx)*sin(length(dx)*acos(-1));
 	p.z=cos(length(dx)*acos(-1));
+	
 	//p.xz=r2d(p.xz,-dx.x);
 	p=reflect(float3(0,0,1),p);
 	p=mul(p.xyz,tV);

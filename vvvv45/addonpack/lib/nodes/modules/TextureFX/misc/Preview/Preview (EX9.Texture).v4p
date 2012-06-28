@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
    <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\misc\Preview\Preview (EX9.Texture).v4p" systemname="Preview (EX9.Texture)" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\misc\Preview\Preview (EX9.Texture).v4p">
-   <BOUNDS height="13065" left="315" top="4815" type="Window" width="21300">
+   <BOUNDS height="13065" left="2205" top="5835" type="Window" width="21300">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="7" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="270" left="2325" top="9360" type="Node" width="6540">
@@ -360,6 +360,12 @@
    <PIN pinname="Transform" visible="1">
    </PIN>
    <PIN pinname="tex1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="tVI" visible="1">
+   </PIN>
+   <PIN pinname="tP" visible="1">
+   </PIN>
+   <PIN pinname="tPI" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="24" srcpinname="Mesh" dstnodeid="26" dstpinname="Mesh">
@@ -765,13 +771,15 @@
    <LINK srcnodeid="62" srcpinname="XYZ" dstnodeid="26" dstpinname="VR XYZ">
    </LINK>
    <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="72">
-   <BOUNDS type="Node" left="7440" top="7215" width="100" height="100">
+   <BOUNDS type="Node" left="6885" top="5700" width="100" height="100">
    </BOUNDS>
    <PIN pinname="View" visible="1">
    </PIN>
    <PIN pinname="Initial Pitch" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Inital Distance" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="72" srcpinname="View" dstnodeid="26" dstpinname="tV">
@@ -1487,7 +1495,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8565" top="5475" width="1665" height="870">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="| Ball|">
+   <PIN pinname="Input Enum" slicecount="1" values="| Cross|">
    </PIN>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
@@ -1637,5 +1645,31 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="164" srcpinname="Output String" dstnodeid="158" dstpinname="Strings">
+   </LINK>
+   <NODE systemname="Inverse (Transform)" nodename="Inverse (Transform)" componentmode="Hidden" id="165">
+   <BOUNDS type="Node" left="7065" top="6150" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="72" srcpinname="View" dstnodeid="165" dstpinname="Source">
+   </LINK>
+   <LINK srcnodeid="165" srcpinname="Transform Out" dstnodeid="26" dstpinname="tVI">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Projection" dstnodeid="26" dstpinname="tP">
+   </LINK>
+   <NODE systemname="Inverse (Transform)" nodename="Inverse (Transform)" componentmode="Hidden" id="166">
+   <BOUNDS type="Node" left="7755" top="6135" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="72" srcpinname="Projection" dstnodeid="166" dstpinname="Source">
+   </LINK>
+   <LINK srcnodeid="166" srcpinname="Transform Out" dstnodeid="26" dstpinname="tPI">
    </LINK>
    </PATCH>
