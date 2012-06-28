@@ -1,0 +1,209 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Newton (Animation) help.v4p">
+   <BOUNDS height="5340" left="405" top="2460" type="Window" width="8445">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="11" managers="" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="4035" top="840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="6750" top="13755" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3705" left="4035" top="840" type="Box" width="3975">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Render Pass" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="630" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8660" top="7356" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="255" left="630" top="1380" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="HLine (GDI)">
+   <BOUNDS height="0" left="1410" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Render Pass" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <NODE id="-2" nodename="Mouse (System Global)">
+   <BOUNDS height="0" left="1095" top="765" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Y Input Value" srcnodeid="-2" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Y" linkstyle="VHV" srcnodeid="-2" srcpinname="Y">
+   <LINKPOINT x="1290" y="1215">
+   </LINKPOINT>
+   <LINKPOINT x="1440" y="1215">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="8" nodename="Newton (Animation)">
+   <BOUNDS height="0" left="1260" top="3405" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Cyclics / second">
+   </PIN>
+   <PIN pinname="FilterTime" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Acceleration" slicecount="10" visible="1" values="9.81000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Go To Position" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="10" srcpinname="Y Output Value">
+   <LINKPOINT x="1290" y="2520">
+   </LINKPOINT>
+   <LINKPOINT x="1290" y="2520">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="7" nodename="Point (GDI)">
+   <BOUNDS height="0" left="1110" top="3885" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Type" slicecount="1" values="Asterisk">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Render Pass" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y" srcnodeid="8" srcpinname="Position Out">
+   </LINK>
+   <NODE id="6" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="1545" top="1980" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="Block">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="X" linkstyle="PolyLine" srcnodeid="6" srcpinname="Output">
+   <LINKPOINT x="1575" y="2295">
+   </LINKPOINT>
+   <LINKPOINT x="1140" y="2295">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="5" nodename="Add (Value)">
+   <BOUNDS height="0" left="1545" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input 1" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE id="4" nodename="Multiply (Value)">
+   <BOUNDS height="0" left="1560" top="2745" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="9.81">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Acceleration" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2850" top="1155" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5040" top="6345" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2310" left="2850" top="1155" type="Box" width="900">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Output">
+   <LINKPOINT x="1590" y="3195">
+   </LINKPOINT>
+   <LINKPOINT x="2700" y="3195">
+   </LINKPOINT>
+   <LINKPOINT x="2700" y="885">
+   </LINKPOINT>
+   <LINKPOINT x="3705" y="885">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2835" top="3510" type="Node" width="1170">
+   </BOUNDS>
+   <BOUNDS height="270" left="2835" top="3510" type="Box" width="1095">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Accelerations">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="255" left="15" top="390" type="Box" width="5715">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="17250" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ramps from one value to another based on a given acceleration (like gravity...)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4440">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="17250" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Newton - Animation|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="11" dstpinname="Layers">
+   <LINKPOINT x="1140" y="4365">
+   </LINKPOINT>
+   <LINKPOINT x="3840" y="4365">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
