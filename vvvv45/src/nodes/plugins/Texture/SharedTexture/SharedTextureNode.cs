@@ -82,7 +82,15 @@ namespace VVVV.Nodes
 		{
 			int p = (int) FHandleIn[slice];
 			IntPtr share = (IntPtr) p;
-			var format = (Format)Enum.Parse(typeof(Format), FFormat[slice], true);
+			Format format;
+			if (FFormat[slice].Name == "INTZ")
+				format = D3DX.MakeFourCC((byte)'I', (byte)'N', (byte)'T', (byte)'Z');
+			else if (FFormat[slice].Name == "RAWZ")
+				format = D3DX.MakeFourCC((byte)'R', (byte)'A', (byte)'W', (byte)'Z');
+			else if (FFormat[slice].Name == "RESZ")
+				format = D3DX.MakeFourCC((byte)'R', (byte)'E', (byte)'S', (byte)'Z');
+			else
+				format = (Format)Enum.Parse(typeof(Format), FFormat[slice], true);
 			
 			Texture texture = null;
 			try
