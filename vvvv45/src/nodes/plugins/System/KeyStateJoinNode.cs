@@ -12,8 +12,13 @@ namespace VVVV.Nodes.IO
     {
         [Input("Key Code")]
         public ISpread<ISpread<int>> FKeyIn;
+        
+        [Input("Caps Lock", IsSingle = true)]
+        public ISpread<bool> FCapsIn;
+        
         [Input("Time")]
         public ISpread<int> FTimeIn;
+        
         [Output("Output")]
         public ISpread<KeyState> FOutput;
 
@@ -22,7 +27,7 @@ namespace VVVV.Nodes.IO
             FOutput.SliceCount = FKeyIn.CombineWith(FTimeIn);
             for (int i = 0; i < FOutput.SliceCount; i++)
             {
-                FOutput[i] = KeyStateNodes.Join(FKeyIn[i], FTimeIn[i]);
+            	FOutput[i] = KeyStateNodes.Join(FKeyIn[i], FCapsIn[0], FTimeIn[i]);
             }
         }
     }

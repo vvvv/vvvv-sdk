@@ -10,7 +10,7 @@ namespace VVVV.Utils.IO
         #region virtual keycode to character translation
 
         // From: http://stackoverflow.com/questions/6214326/translate-keys-to-char
-        private static char? FromKeys(Keys keys, InputLanguage inputLanguage = null, bool firstChance = true)
+        public static char? FromKeys(Keys keys, bool capsLock, InputLanguage inputLanguage = null, bool firstChance = true)
         {
             inputLanguage = inputLanguage ?? InputLanguage.CurrentInputLanguage;
 
@@ -18,6 +18,7 @@ namespace VVVV.Utils.IO
 
             const byte keyPressed = 0x80;
             keyStates[(int)(keys & Keys.KeyCode)] = keyPressed;
+            keyStates[(int)Keys.Capital] = capsLock ? (byte)0x01 : (byte)0;
             keyStates[(int)Keys.ShiftKey] = ((keys & Keys.Shift) == Keys.Shift) ? keyPressed : (byte)0;
             keyStates[(int)Keys.ControlKey] = ((keys & Keys.Control) == Keys.Control) ? keyPressed : (byte)0;
             keyStates[(int)Keys.Menu] = ((keys & Keys.Alt) == Keys.Alt) ? keyPressed : (byte)0;
@@ -31,7 +32,7 @@ namespace VVVV.Utils.IO
                 // dead letter
                 if (firstChance)
                 {
-                    return FromKeys(keys, inputLanguage, false);
+                    return FromKeys(keys, capsLock, inputLanguage, false);
                 }
                 return null;
             }
@@ -44,17 +45,21 @@ namespace VVVV.Utils.IO
         #endregion
 
         private readonly Keys FKeyCode;
+        private readonly bool FCapsLock;
         private readonly char? FKeyChar;
         private readonly int FTime;
 
-        public KeyState(Keys keyCode = 0, int time = 0)
+        public KeyState(Keys keyCode = 0, bool capsLock = false, int time = 0)
         {
-            FKeyCode = keyCode;
-            FKeyChar = keyCode > 0 ? FromKeys((Keys)keyCode) : null;
+        	FKeyCode = keyCode;
+        	FCapsLock = capsLock;
+        		
+            FKeyChar = keyCode > 0 ? FromKeys((Keys)keyCode, capsLock) : null;
             FTime = time;
         }
 
         public Keys KeyCode { get { return FKeyCode; } }
+        public bool CapsLock { get { return FCapsLock; } }
         public char? Key { get { return FKeyChar; } }
         public int Time { get { return FTime; } }
         

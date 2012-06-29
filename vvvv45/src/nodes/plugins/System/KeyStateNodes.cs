@@ -13,66 +13,15 @@ namespace VVVV.Nodes.IO
 {
     public struct KeyStateNodes
     {
-        #region virtual keycode to character translation
-
-        // From: http://stackoverflow.com/questions/6214326/translate-keys-to-char
-        private static char? FromKeys(Keys keys, InputLanguage inputLanguage = null, bool firstChance = true)
-        {
-            inputLanguage = inputLanguage ?? InputLanguage.CurrentInputLanguage;
-
-            byte[] keyStates = new byte[256];
-
-            const byte keyPressed = 0x80;
-            keyStates[(int)(keys & Keys.KeyCode)] = keyPressed;
-            keyStates[(int)Keys.ShiftKey] = ((keys & Keys.Shift) == Keys.Shift) ? keyPressed : (byte)0;
-            keyStates[(int)Keys.ControlKey] = ((keys & Keys.Control) == Keys.Control) ? keyPressed : (byte)0;
-            keyStates[(int)Keys.Menu] = ((keys & Keys.Alt) == Keys.Alt) ? keyPressed : (byte)0;
-
-            StringBuilder sb = new StringBuilder(10);
-            int ret = ToUnicodeEx(keys, 0, keyStates, sb, sb.Capacity, 0, inputLanguage.Handle);
-            if (ret == 1) return sb[0];
-
-            if (ret == -1)
-            {
-                // dead letter
-                if (firstChance)
-                {
-                    return FromKeys(keys, inputLanguage, false);
-                }
-                return null;
-            }
-            return null;
-        }
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        private static extern int ToUnicodeEx(Keys wVirtKey, uint wScanCode, byte[] lpKeyState, StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
-
-        #endregion
-
-        private readonly Keys FKeyCode;
-        private readonly char? FKeyChar;
-        private readonly int FTime;
-
-        public KeyStateNodes(Keys keyCode = 0, int time = 0)
-        {
-            FKeyCode = keyCode;
-            FKeyChar = keyCode > 0 ? FromKeys((Keys)keyCode) : null;
-            FTime = time;
-        }
-
-        public Keys KeyCode { get { return FKeyCode; } }
-        public char? Key { get { return FKeyChar; } }
-        public int Time { get { return FTime; } }
-
         [Node(Name = "KeyState", Category = "Join")]
-        public static KeyState Join(ISpread<int> keys, int time)
+        public static KeyState Join(ISpread<int> keys, bool capsLock, int time)
         {
             switch (keys.SliceCount)
             {
                 case 0:
-                    return new KeyState(Keys.None, time);
+                    return new KeyState(Keys.None, capsLock, time);
                 case 1:
-                    return new KeyState((Keys)keys[0], time);
+                    return new KeyState((Keys)keys[0], capsLock, time);
                 default:
                     Keys keyCode = Keys.None;
                     foreach (Keys key in keys)
@@ -99,20 +48,25 @@ namespace VVVV.Nodes.IO
                                 break;
                         }
                     }
-                    return new KeyState(keyCode, time);
+                    return new KeyState(keyCode, capsLock, time);
             }
         }
 
         [Node(Name = "KeyState", Category = "Split")]
-        public static void Split(KeyState keyState, out ISpread<int> keys, out int time)
+        public static void Split(KeyState keyState, out ISpread<int> keyCodes, out string key, out int time)
         {
-            keys = new Spread<int>();
+            keyCodes = new Spread<int>();
             Keys keyCode = keyState.KeyCode;
-            if ((keyCode & Keys.Shift) > 0) keys.Add((int)Keys.ShiftKey);
-            if ((keyCode & Keys.Control) > 0) keys.Add((int)Keys.ControlKey);
-            if ((keyCode & Keys.Alt) > 0) keys.Add((int)Keys.Menu);
-            if ((keyCode & ~Keys.Modifiers) != Keys.None) keys.Add((int)(keyCode & ~Keys.Modifiers));
+            if ((keyCode & Keys.Shift) > 0) keyCodes.Add((int)Keys.ShiftKey);
+            if ((keyCode & Keys.Control) > 0) keyCodes.Add((int)Keys.ControlKey);
+            if ((keyCode & Keys.Alt) > 0) keyCodes.Add((int)Keys.Menu);
+            if ((keyCode & ~Keys.Modifiers) != Keys.None) keyCodes.Add((int)(keyCode & ~Keys.Modifiers));
             time = keyState.Time;
+            var _key = KeyState.FromKeys((Keys)keyCode, keyState.CapsLock);
+            if (_key == null)
+            	key = "";
+            else
+            	key = _key.ToString();
         }
     }
 }
