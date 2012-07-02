@@ -16,7 +16,7 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		public static readonly double DefaultMinValue = double.MinValue;
 		public static readonly double DefaultMaxValue = double.MaxValue;
-		public static readonly double DefaultStepSize = 1.0;
+		public static readonly double DefaultStepSize = 0.01;
 		
 		public IOAttribute(string name)
 		{
