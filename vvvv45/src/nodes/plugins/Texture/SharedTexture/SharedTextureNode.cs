@@ -24,6 +24,7 @@ namespace VVVV.Nodes
 	{
 		None,
 		RenderTarget,
+		DepthStencil,
 		Dynamic
 	}
 	
@@ -98,6 +99,8 @@ namespace VVVV.Nodes
 				var usage = Usage.Dynamic;
 				if (FUsage[slice].Index == (int)(TextureType.RenderTarget))
 					usage = Usage.RenderTarget;
+				else if (FUsage[slice].Index == (int)(TextureType.DepthStencil))
+					usage = Usage.DepthStencil;
 
 				texture = new Texture(device, Math.Max(FWidthIn[slice], 1), Math.Max(FHeightIn[slice], 1), 1, usage, format, Pool.Default, ref share);
 			}
