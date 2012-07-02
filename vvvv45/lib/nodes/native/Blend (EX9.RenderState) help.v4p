@@ -1,0 +1,325 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Blend (EX9.RenderState) help.v4p">
+   <BOUNDS height="6315" left="4650" top="3375" type="Window" width="9030">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="16" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="5145" top="75" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5820" left="9150" top="2925" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3135" left="5145" top="75" type="Box" width="3480">
+   </BOUNDS>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="4935" top="3495" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
+   <BOUNDS height="0" left="4350" top="3945" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Z" linkstyle="PolyLine" srcnodeid="15" srcpinname="Output">
+   <LINKPOINT x="4965" y="3660">
+   </LINKPOINT>
+   <LINKPOINT x="4965" y="3660">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Y" linkstyle="PolyLine" srcnodeid="15" srcpinname="Output">
+   <LINKPOINT x="4965" y="3855">
+   </LINKPOINT>
+   <LINKPOINT x="4770" y="3855">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="13" nodename="Teapot (EX9.Geometry)" systemname="Teapot (EX9.Geometry)">
+   <BOUNDS height="0" left="3450" top="4275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="12" managers="" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <PIN pinname="Transform In" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" pintype="Input" slicecount="1" visible="1" values="0.53">
+   </PIN>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="4350" top="4290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Transform In" srcnodeid="14" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="11" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
+   <BOUNDS height="0" left="7125" top="3915" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="10" managers="" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <PIN pinname="Transform In" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" pintype="Input" slicecount="1" visible="1" values="0.62">
+   </PIN>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="7125" top="4260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Transform In" srcnodeid="11" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="X" linkstyle="PolyLine" srcnodeid="15" srcpinname="Output">
+   <LINKPOINT x="4965" y="3855">
+   </LINKPOINT>
+   <LINKPOINT x="7350" y="3855">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="9" nodename="GlobalRenderState (EX9)" systemname="GlobalRenderState (EX9)">
+   <BOUNDS height="0" left="450" top="4545" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="8" managers="" nodename="Sphere (EX9.Geometry)" systemname="Sphere (EX9.Geometry)">
+   <BOUNDS height="0" left="6225" top="4140" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Radius " slicecount="1" values="0.77000">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Blend (EX9.RenderState)" systemname="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="465" top="3315" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Alpha Test">
+   </PIN>
+   <PIN pinname="Compare Function">
+   </PIN>
+   <PIN pinname="Alpha Blending">
+   </PIN>
+   <PIN pinname="Source Blend Mode">
+   </PIN>
+   <PIN pinname="Destination Blend Mode">
+   </PIN>
+   <PIN pinname="Draw Mode" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="960" top="1185" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6420" top="5955" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1785" left="960" top="1185" type="Box" width="1785">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="ColorAsAlphaAdd">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Draw Mode" srcnodeid="6" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="525" left="15" top="390" type="Box" width="2895">
+   </BOUNDS>
+   <BOUNDS height="160" left="810" top="5490" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Set the blending mode of the particle by modifying the directx flags directly|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4320">
+   </BOUNDS>
+   <BOUNDS height="160" left="810" top="5490" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Blend - EX9.RenderState|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="DrawFixed (EX9.Effect)" systemname="DrawFixed (EX9.Effect)">
+   <BOUNDS height="0" left="3300" top="5115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color">
+   </PIN>
+   <PIN pinname="Diffuse Color">
+   </PIN>
+   <BOUNDS left="3300" top="5115" type="Box">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Mesh" srcnodeid="13" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Transform" linkstyle="PolyLine" srcnodeid="12" srcpinname="Transform Out">
+   <LINKPOINT x="4380" y="4665">
+   </LINKPOINT>
+   <LINKPOINT x="3645" y="4665">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="2" nodename="DrawFixed (EX9.Effect)" systemname="DrawFixed (EX9.Effect)">
+   <BOUNDS height="0" left="6075" top="5085" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color">
+   </PIN>
+   <PIN pinname="Diffuse Color">
+   </PIN>
+   <BOUNDS left="6075" top="5085" type="Box">
+   </BOUNDS>
+   <PIN pinname="Specular Color">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Sampler State" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Transform" linkstyle="PolyLine" srcnodeid="10" srcpinname="Transform Out">
+   <LINKPOINT x="7155" y="4605">
+   </LINKPOINT>
+   <LINKPOINT x="6420" y="4605">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Mesh" srcnodeid="8" srcpinname="Mesh">
+   </LINK>
+   <NODE id="1" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="5280" top="4605" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" values="..\..\assets\images\earth_512x512.jpg" encoded="0">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Texture" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="1" srcpinname="Texture Out">
+   <LINKPOINT x="5310" y="4995">
+   </LINKPOINT>
+   <LINKPOINT x="3795" y="4785">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Texture" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="1" srcpinname="Texture Out">
+   <LINKPOINT x="5310" y="4980">
+   </LINKPOINT>
+   <LINKPOINT x="6585" y="4845">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="0" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="0" left="4890" top="5595" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Layer 1" srcnodeid="3" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 2" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   <LINKPOINT x="2865" y="5850">
+   </LINKPOINT>
+   <LINKPOINT x="2865" y="3405">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="17" nodename="Cull (EX9.RenderState)" systemname="Cull (EX9.RenderState)">
+   <BOUNDS height="0" left="450" top="4020" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Culling" slicecount="1" values="Counterclockwise">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Render State In" srcnodeid="7" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Render State" srcnodeid="17" srcpinname="Render State Out">
+   </LINK>
+   <NODE id="18" nodename="Address (EX9.SamplerState)" systemname="Address (EX9.SamplerState)">
+   <BOUNDS height="0" left="7365" top="4875" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Sampler State Out" visible="1">
+   </PIN>
+   <PIN pinname="Cycle U" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Sampler State" srcnodeid="18" srcpinname="Sampler State Out">
+   </LINK>
+   </PATCH>

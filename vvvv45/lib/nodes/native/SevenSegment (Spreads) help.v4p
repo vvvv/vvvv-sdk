@@ -1,0 +1,283 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\SevenSegment (Spreads) help.v4p">
+   <BOUNDS height="8610" left="855" top="375" type="Window" width="9810">
+   </BOUNDS>
+   <NODE id="17" nodename="SevenSegment (Spreads)">
+   <BOUNDS height="270" left="1905" top="3045" type="Node" width="1155">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Brightness" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="1380.00000">
+   </PIN>
+   <PIN pinname="Center Y" slicecount="1" values="-0.23">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="0.52">
+   </PIN>
+   <PIN pinname="Center X" slicecount="1" values="0.76">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="Renderer (GDI)">
+   <BOUNDS height="2595" left="1905" top="5580" type="Box" width="2790">
+   </BOUNDS>
+   <BOUNDS height="4500" left="3601" top="2827" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="0" left="1905" top="5580" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="ROUNDRECT (GDI)">
+   <BOUNDS height="270" left="1920" top="5145" type="Node" width="3495">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Pen Width" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Radius" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Brush Color" slicecount="24" visible="1" values="|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Pen Color" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="X" srcnodeid="17" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Y" srcnodeid="17" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Width" srcnodeid="17" srcpinname="Width">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Height" srcnodeid="17" srcpinname="Height">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="285" left="3330" top="2385" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="3168" top="8182" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="0" left="3330" top="2385" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="ESEL">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="3030" top="1170" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="0.2">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="HSL (Color Join)">
+   <BOUNDS height="270" left="3240" top="4650" type="Node" width="600">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Lightness" srcnodeid="11" srcpinname="Position Out">
+   </LINK>
+   <NODE id="11" nodename="Damper (Animation)">
+   <PIN pinname="Cyclic" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="FilterTime" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <BOUNDS height="270" left="3615" top="4185" type="Node" width="705">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Pen Color" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Go To Position" linkstyle="VHV" srcnodeid="17" srcpinname="Brightness">
+   <LINKPOINT x="3030" y="3990">
+   </LINKPOINT>
+   <LINKPOINT x="3645" y="3990">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="13" srcpinname="Cycles">
+   </LINK>
+   <NODE id="10" nodename="FormatValue (String)">
+   <BOUNDS height="0" left="3735" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mode">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="240" left="3015" top="2010" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="3224" top="8276" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="0" left="3015" top="2010" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input String" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|output x, y, width &cr;&lf;and height&cr;&lf;information for all &cr;&lf;LEDs in the display|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="915" left="240" top="3615" type="Box" width="1590">
+   </BOUNDS>
+   <BOUNDS height="420" left="240" top="3615" type="Node" width="2520">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|output the brightness &cr;&lf;for each LED|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="480" left="3090" top="3435" type="Box" width="1695">
+   </BOUNDS>
+   <BOUNDS height="420" left="3090" top="3435" type="Node" width="1635">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|create a string with numbers counting|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="510" left="1515" top="1140" type="Box" width="1485">
+   </BOUNDS>
+   <BOUNDS height="420" left="1515" top="1140" type="Node" width="1680">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|RoundRect to render the data|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="510" left="240" top="5115" type="Box" width="1560">
+   </BOUNDS>
+   <BOUNDS height="255" left="240" top="5115" type="Node" width="1155">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|make the lamps&cr;&lf;fade in and out|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="525" left="4335" top="4110" type="Box" width="1275">
+   </BOUNDS>
+   <BOUNDS height="420" left="4335" top="4110" type="Node" width="1275">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The first four outputs will return the coordinates (x,y, width and height) of the individual LEDs of an seven segment display note that industry standard seven segment displays will consist out of eight segments (with the decimal point) &cr;&lf;&cr;&lf;Therefore the output slice count will be eight times the number of characters at the input, &cr;&lf;&cr;&lf;The fifth output will return the brightness of each individial LED. &cr;&lf;&cr;&lf;Seven segent displays were developed to display numbers, so note that not all chacters are displayable:&cr;&lf;&cr;&lf;all numeric characters&cr;&lf;0123456789 . , - &cr;&lf;&cr;&lf;hexadecimal characters &cr;&lf;ABCDEF and abcdef &cr;&lf;(although they may appear in wrong case) &cr;&lf;&cr;&lf;additional alpha characters&cr;&lf;A C E F I J L O P S U &cr;&lf;b c d  h o t u r&cr;&lf;&cr;&lf;vertical bar and one for vertical lines&cr;&lf;&cr;&lf;circonflex, minus, underscore for horizontal lines|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="6915" left="5970" top="270" type="Box" width="3270">
+   </BOUNDS>
+   <BOUNDS height="3720" left="5970" top="270" type="Node" width="3270">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|inputs will shift coordinates. the origin is always the lower left corner|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="495" left="240" top="2505" type="Box" width="2745">
+   </BOUNDS>
+   <BOUNDS height="585" left="240" top="2505" type="Node" width="2055">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="510" left="15" top="390" type="Box" width="4575">
+   </BOUNDS>
+   <BOUNDS height="160" left="9210" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Creates geometry and brightness information for the segments of a seven-segnent display when displaying a given string|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9210" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SevenSegment - Spreads|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Input" srcnodeid="9" srcpinname="Output String">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Layer" dstnodeid="16" dstpinname="Layers">
+   </LINK>
+   </PATCH>

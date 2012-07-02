@@ -1,0 +1,269 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\User (Kinect OpenNI) help.v4p" filename="C:\Users\joreg\work\tempest\tempest\patches\Users (Kinect OpenNI) help.v4p" systemname="Users (Kinect OpenNI) help">
+   <BOUNDS height="7665" left="7620" top="1305" type="Window" width="11400">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="4410" top="6480" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="4410" top="6480" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="1365" top="1305" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.60884,0.60884,0.60884,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5010" top="3660" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="750" left="5010" top="3660" type="Box" width="480">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Input Value">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="5280" top="930" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="750" left="5280" top="930" type="Box" width="3285">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="0" nodename="Kinect (Devices OpenNI)" systemname="Kinect (Devices OpenNI)">
+   <BOUNDS height="100" left="4740" top="525" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Update">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Mirrored" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Configuration File" slicecount="1" values="OpenNIConfig.xml">
+   </PIN>
+   <PIN pinname="Driver" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="0" srcpinname="Status">
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5655" top="3660" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1380" left="5655" top="3660" type="Box" width="780">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Y Input Value">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="2" nodename="User (Kinect OpenNI)" systemname="User (Kinect OpenNI)">
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Enable" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS height="100" left="4740" top="3000" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Users" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled">
+   </PIN>
+   <PIN pinname="Output Mode">
+   </PIN>
+   <PIN pinname="User ID" visible="1">
+   </PIN>
+   <PIN pinname="Viewable User Color">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="2" srcpinname="User ID">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Context" srcnodeid="0" srcpinname="Context">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Y Input Value" srcnodeid="2" srcpinname="PositionXYZ">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Enabled" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6555" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="6555" top="2565" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Enabled" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="180" top="510" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="180" top="510" type="Box" width="2985">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Returns an ID and center of mass per recognized user and a texture that has its pixels colored in a way to distinguish areas occupied by different users. |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="180" top="150" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="180" top="150" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|User (Kinect OpenNI)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="" id="11" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="100" left="4410" top="6060" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mask" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="20" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
+   <BOUNDS height="100" left="660" top="3915" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1305" top="4395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="255" left="1305" top="4395" type="Box" width="2355">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Input String" srcnodeid="20" srcpinname="Format Description">
+   </LINK>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="7290" top="1890" type="Node" width="4005">
+   </BOUNDS>
+   <BOUNDS height="2430" left="7290" top="1890" type="Box" width="3330">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; Output Mode&cr;&lf;Viewable&cr;&lf;Returns an A8R8G8B8 texture with individual users colored as specified via the &quot;Viewable User Color&quot; input.&cr;&lf;&cr;&lf;Raw&cr;&lf;Returns an L16 non human-viewable texture as provided by OpenNI. In a pixelshader users 1 and 2 can e.g. be disitinguished by checking for color.r == 1/65535 or 2/65535.&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="0" srcpinname="Driver">
+   </LINK>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="4920" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4920" top="1905" type="Box" width="915">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="Viewable">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Output Mode" srcnodeid="26" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Texture" srcnodeid="2" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Texture" srcnodeid="2" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="48" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="5100" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="570" left="5100" top="2250" type="Box" width="1380">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="2" values="|0.00000,0.05627,1.00000,1.00000|,|0.64911,0.99166,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Viewable User Color" srcnodeid="48" srcpinname="Color Output">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Layer" dstnodeid="3" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" id="51">
+   <BOUNDS type="Node" left="4575" top="5610" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="51" srcpinname="Transform Out" dstnodeid="11" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="52" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="5565" top="5205" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5565" top="5205" width="480" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="52" srcpinname="Y Output Value" dstnodeid="51" dstpinname="XYZ">
+   </LINK>
+   </PATCH>
