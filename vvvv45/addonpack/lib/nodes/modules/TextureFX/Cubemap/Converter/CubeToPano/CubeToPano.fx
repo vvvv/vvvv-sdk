@@ -11,9 +11,8 @@ float4 p0(float2 vp:VPOS):color{float2 x=(vp+.5)/R;
 	p.yz=r2d(p.yz,-(x.y-.5)*.5);
 	p.xz=r2d(p.xz,x.x);
 	//c.rgb=sin((c.rgb/4+Parameter)*acos(-1)*2);
-	
-	c.rgb=p;
-	c.rgb=texCUBE(s0,p);
+
+	c=texCUBE(s0,p);
     return c;
 }
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;}

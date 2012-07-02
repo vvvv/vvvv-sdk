@@ -12,10 +12,10 @@ float4 p0(float2 vp:VPOS):color{float2 x=(vp+.5)/R;
 	float2 u=x*float2(4,3)-float2(floor(x.x*4),1);
 	p=side(u);
 	p.xz=r2d(p.xz,floor(x.x*4)/4.);
-	c.rgb=0;
-	c.rgb+=texCUBE(s0,p)*(u.y>0&&u.y<1);
-	c.rgb+=texCUBE(s0,r(side(x*float2(4,3)-float2(floor(x.x*4),0)),float3(-0.25,0.25,0)))*(u.y<=0)*(x.x>=.25&&x.x<=.5);
-	c.rgb+=texCUBE(s0,r(side(x*float2(4,3)-float2(floor(x.x*4),2)),float3(0.25,0.25,0)))*(u.y>=1)*(x.x>=.25&&x.x<=.5);
+	c=0;
+	c+=texCUBE(s0,p)*(u.y>0&&u.y<1);
+	c+=texCUBE(s0,r(side(x*float2(4,3)-float2(floor(x.x*4),0)),float3(-0.25,0.25,0)))*(u.y<=0)*(x.x>=.25&&x.x<=.5);
+	c+=texCUBE(s0,r(side(x*float2(4,3)-float2(floor(x.x*4),2)),float3(0.25,0.25,0)))*(u.y>=1)*(x.x>=.25&&x.x<=.5);
 
     return c;
 }

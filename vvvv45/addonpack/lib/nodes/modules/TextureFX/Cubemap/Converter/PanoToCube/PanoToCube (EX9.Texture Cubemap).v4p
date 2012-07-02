@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
-   <PATCH nodename="D:\Dropbox\CubeFX\modules\Converter\PanoToCube\PanoToCube (EX9.Texture CubeFX).v4p" systemname="PanoToCube (EX9.Texture CubeFX)" filename="D:\Dropbox\CubeFX\modules\Converters\PanoToCube\PanoToCube (EX9.Texture CubeFX).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Cubemap\Converter\PanoToCube\PanoToCube (EX9.Texture Cubemap).v4p" systemname="PanoToCube (EX9.Texture Cubemap)" filename="D:\Dropbox\CubeFX\modules\Converters\PanoToCube\PanoToCube (EX9.Texture Cubemap).v4p">
    <BOUNDS type="Window" left="2880" top="6750" width="9000" height="6000">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="Hidden" id="0">
@@ -63,7 +63,7 @@
    </PIN>
    <PIN pinname="Height" visible="1" pintype="Input">
    </PIN>
-   <PIN pinname="Mip Map Count" visible="1" pintype="Input" slicecount="1" values="All">
+   <PIN pinname="Mip Map Count" visible="1" pintype="Input">
    </PIN>
    <PIN pinname="Type" slicecount="1" values="|Cube Texture|">
    </PIN>
@@ -288,6 +288,20 @@
    </LINK>
    <LINK srcnodeid="20" srcpinname="Output" dstnodeid="22" dstpinname="Input 1">
    </LINK>
-   <INFO author="unc" description="Convert 360x180 panorama to CubeTexture" tags="cubemap">
+   <INFO author="unc" description="Convert 360x180 panorama to CubeTexture" tags="">
    </INFO>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="25" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="9150" top="3075" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9150" top="3075" width="1590" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="All">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Mip Map Count|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Output Enum" dstnodeid="5" dstpinname="Mip Map Count">
+   </LINK>
    </PATCH>
