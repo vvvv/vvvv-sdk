@@ -2,19 +2,21 @@
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Hosting.Pins.Input
 {
     [ComVisible(false)]
-    class InputBinSpread<T> : BinSpread<T>, IDisposable
+    public class InputBinSpread<T> : BinSpread<T>, IDisposable
     {
-        internal class InputBinSpreadStream : BinSpreadStream, IDisposable
+        public class InputBinSpreadStream : BinSpreadStream, IDisposable
         {
             private readonly IIOContainer<IInStream<T>> FDataContainer;
             private readonly IIOContainer<IInStream<int>> FBinSizeContainer;
             private readonly IInStream<T> FDataStream;
             private readonly IInStream<int> FBinSizeStream;
             private readonly BufferedIOStream<int> FNormBinSizeStream;
+            private readonly IPluginIO FDataIO;
             
             public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
             {
@@ -26,6 +28,15 @@ namespace VVVV.Hosting.Pins.Input
                 FDataStream = FDataContainer.IOObject;
                 FBinSizeStream = FBinSizeContainer.IOObject;
                 FNormBinSizeStream = new BufferedIOStream<int>(FBinSizeStream.Length);
+                FDataIO = FDataContainer.GetPluginIO();
+            }
+
+            public bool IsConnected
+            {
+                get
+                {
+                    return this.FDataIO.IsConnected;
+                }
             }
             
             public void Dispose()

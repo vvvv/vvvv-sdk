@@ -245,7 +245,7 @@ namespace VVVV.Nodes
         		double dlong, l, dz, z, r;			//part of the formula
 
         		dlong = Math.PI*(3-Math.Sqrt(5.0)); //part of the formula
-        		l = 0.0;							//part of the formula
+        		
         		
         		FOutput.SliceCount=0;
 
@@ -261,6 +261,7 @@ namespace VVVV.Nodes
         			
         			dz = (currentFactor*2.0)/currentBinSize;	//part of the formula
         			z  = 1.0 - dz/2.0;							//part of the formula
+        			l = 0.0;									//part of the formula
         			
         			//loop for each bin size
         			for (int j=0; j<currentBinSize; j++)
