@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
-   <PATCH nodename="D:\repositories\vvvv\plugins\c#\2d\CVStructuralAnalysis\trunk\FitEllipse (2d OpenCV) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
+   <PATCH nodename="D:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\FitEllipse (2d OpenCV) help.v4p">
    <BOUNDS height="8505" left="7350" top="630" type="Window" width="8760">
    </BOUNDS>
-   <NODE id="23" nodename="Queue (Spreads)">
+   <NODE id="23" nodename="Queue (Spreads Legacy)">
    <BOUNDS height="0" left="435" top="1980" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -14,7 +14,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="22" nodename="Queue (Spreads)">
+   <NODE id="22" nodename="Queue (Spreads Legacy)">
    <BOUNDS height="0" left="1290" top="1980" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -33,7 +33,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|draw into the renderer with the left mousebutton pressed|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|draw into the renderer with the left mousebutton pressed|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -47,7 +47,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="-210" top="12270" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|find the best fitting ellipse for a set of points|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|find the best fitting ellipse for a set of points|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -61,7 +61,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="-210" top="12270" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|FitEllipse- 2d|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|FitEllipse- 2d|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -70,7 +70,7 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="18" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="18" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="1950" top="7350" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="1170" top="615" type="Window" width="6120">
@@ -78,6 +78,16 @@
    <BOUNDS height="1800" left="1950" top="7350" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="17" nodename="Mouse (System Window)">
@@ -174,7 +184,7 @@
    </LINK>
    <LINK dstnodeid="15" dstpinname="Transform" srcnodeid="12" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="11" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="855" top="1485" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="2610" top="7575" type="Window" width="215">
@@ -194,7 +204,7 @@
    </LINK>
    <LINK dstnodeid="23" dstpinname="do Insert" srcnodeid="17" srcpinname="Left Button">
    </LINK>
-   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="10" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3105" top="2040" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5160" top="8235" type="Window" width="215">
@@ -213,7 +223,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|via the BinSize you tell the node how many hulls you would like to extract.&cr;&lf;&cr;&lf;Please note that to process the algorithm a minimum of  6 points is needed&cr;&lf;&cr;&lf;-1: one ellipse from all points&cr;&lf;-2: two ellpises from all points&cr;&lf;...&cr;&lf;&cr;&lf;6: one box for every 2 consecutive points&cr;&lf;7: one box for every 3 consecutive points&cr;&lf;...|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|via the BinSize you tell the node how many hulls you would like to extract.&cr;&lf;&cr;&lf;Please note that to process the algorithm a minimum of  6 points is needed&cr;&lf;&cr;&lf;-1: one ellipse from all points&cr;&lf;-2: two ellpises from all points&cr;&lf;...&cr;&lf;&cr;&lf;6: one box for every 2 consecutive points&cr;&lf;7: one box for every 3 consecutive points&cr;&lf;...|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -318,38 +328,6 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="Spread Count" srcnodeid="2" srcpinname="Count">
    </LINK>
-   <NODE componentmode="Hidden" id="24" nodename=":PLUGINS:\CVStructuralAnalysis.dll|VVVV.Nodes.FitEllipseNode">
-   <BOUNDS height="0" left="495" top="2955" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="7860" top="3900" type="Window" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="495" top="2955" type="Box" width="0">
-   </BOUNDS>
-   <PIN pinname="InputXY" visible="1">
-   </PIN>
-   <PIN pinname="Bin Size" visible="1">
-   </PIN>
-   <PIN pinname="CenterXY" visible="1">
-   </PIN>
-   <PIN pinname="SizeXY" visible="1">
-   </PIN>
-   <PIN pinname="Angle" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="24" dstpinname="Bin Size" srcnodeid="10" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="24" dstpinname="InputXY" srcnodeid="7" srcpinname="XY">
-   </LINK>
-   <LINK dstnodeid="5" dstpinname="XY" srcnodeid="24" srcpinname="CenterXY">
-   </LINK>
-   <LINK dstnodeid="4" dstpinname="XY" srcnodeid="24" srcpinname="SizeXY">
-   </LINK>
-   <LINK dstnodeid="3" dstpinname="Rotate" srcnodeid="24" srcpinname="Angle">
-   <LINKPOINT x="2340" y="3915">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="24" srcpinname="Angle">
-   </LINK>
    <NODE id="25" nodename="Sphere (DX9)">
    <BOUNDS height="0" left="240" top="6105" type="Node" width="0">
    </BOUNDS>
@@ -371,5 +349,45 @@
    <LINK dstnodeid="16" dstpinname="Layer 1" srcnodeid="25" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="25" dstpinname="Color" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="24" nodename="FitEllipse (2d OpenCV)" systemname="FitEllipse (2d OpenCV)" filename="%VVVV%\addonpack\lib\nodes\plugins\vuxbins\VVVV.Nodes.Geometry.CV.dll">
+   <BOUNDS height="0" left="495" top="2955" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7860" top="3900" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="495" top="2955" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Input XY" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size X" visible="1">
+   </PIN>
+   <PIN pinname="Center XY" visible="1">
+   </PIN>
+   <PIN pinname="Size XY" visible="1">
+   </PIN>
+   <PIN pinname="Angle X" visible="1">
+   </PIN>
+   <PIN pinname="InputXY" visible="1">
+   </PIN>
+   <PIN pinname="CenterXY" visible="1">
+   </PIN>
+   <PIN pinname="SizeXY" visible="1">
+   </PIN>
+   <PIN pinname="Angle" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="XY" dstnodeid="24" dstpinname="InputXY">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="CenterXY" dstnodeid="5" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="SizeXY" dstnodeid="4" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Bin Size">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Angle" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Angle" dstnodeid="3" dstpinname="Rotate">
    </LINK>
    </PATCH>
