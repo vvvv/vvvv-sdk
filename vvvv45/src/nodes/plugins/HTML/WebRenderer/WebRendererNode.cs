@@ -32,7 +32,7 @@ namespace VVVV.Nodes.HTML
         [Input("Mouse Event")]
         public ISpread<MouseState> FMouseEventIn;
         [Input("Key Event")]
-        public ISpread<KeyState> FKeyEventIn;
+        public ISpread<KeyboardState> FKeyEventIn;
         [Input("Scroll To")]
         public ISpread<Vector2D> FScrollToIn;
         [Input("JavaScript")]

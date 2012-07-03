@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Linq;
 using CefGlue;
 using CefGlue.WebBrowser;
 using SlimDX.Direct3D9;
@@ -35,7 +36,7 @@ namespace VVVV.Nodes.HTML
         private string FHtml = string.Empty;
         private double FZoomLevel;
         private MouseState FMouseState;
-        private KeyState FKeyState;
+        private KeyboardState FKeyboardState = KeyboardState.Empty;
         private Vector2D FScrollTo;
         internal int FFrameLoadCount;
         internal string FCurrentUrl;
@@ -94,7 +95,7 @@ namespace VVVV.Nodes.HTML
             int height = DEFAULT_HEIGHT,
             double zoomLevel = 0,
             MouseState mouseState = default(MouseState),
-            KeyState keyState = default(KeyState),
+            KeyboardState keyboardState = default(KeyboardState),
             Vector2D scrollTo = default(Vector2D),
             string javaScript = null,
             bool executeJavaScript = false,
@@ -121,6 +122,7 @@ namespace VVVV.Nodes.HTML
             // Normalize inputs
             width = Math.Max(1, width);
             height = Math.Max(1, height);
+            keyboardState = keyboardState ?? KeyboardState.Empty;
 
             if (width != FWidth || height != FHeight)
             {
@@ -189,30 +191,38 @@ namespace VVVV.Nodes.HTML
                 FMouseState = mouseState;
             }
 
-            if (FKeyState != keyState)
+            if (FKeyboardState != keyboardState)
             {
-                var isKeyUp = FKeyState.KeyCode != Keys.None;
+                var isKeyUp = FKeyboardState.KeyCodes.Count > keyboardState.KeyCodes.Count;
                 if (isKeyUp)
                 {
-                    var modifiers = (CefHandlerKeyEventModifiers)((int)(FKeyState.KeyCode & Keys.Modifiers) >> 16);
-                    var key = (int)(FKeyState.KeyCode & ~Keys.Modifiers);
-                    FBrowser.SendKeyEvent(CefKeyType.KeyUp, key, modifiers, false, false);
+                    var releasedKeys = FKeyboardState.KeyCodes.Except(keyboardState.KeyCodes);
+                    var modifiers = (CefHandlerKeyEventModifiers)((int)(FKeyboardState.Modifiers) >> 16);
+                    foreach (var key in releasedKeys)
+                    {
+                        FBrowser.SendKeyEvent(CefKeyType.KeyUp, (int)key, modifiers, false, false);
+                    }
                 }
-                var isKeyDown = keyState.KeyCode != Keys.None;
+                var isKeyDown = keyboardState.KeyCodes.Count > FKeyboardState.KeyCodes.Count;
                 if (isKeyDown)
                 {
-                    var modifiers = (CefHandlerKeyEventModifiers)((int)(keyState.KeyCode & Keys.Modifiers) >> 16);
-                    var key = (int)(keyState.KeyCode & ~Keys.Modifiers);
-                    FBrowser.SendKeyEvent(CefKeyType.KeyDown, key, modifiers, false, false);
+                    var pressedKeys = keyboardState.KeyCodes.Except(FKeyboardState.KeyCodes);
+                    var modifiers = (CefHandlerKeyEventModifiers)((int)(keyboardState.Modifiers) >> 16);
+                    foreach (var key in pressedKeys)
+                    {
+                        FBrowser.SendKeyEvent(CefKeyType.KeyDown, (int)key, modifiers, false, false);
+                    }
                 }
-                var isKeyPress = keyState.Key.HasValue && !(keyState.Key == '\t' || keyState.Key == '\b');
-                if (isKeyPress)
+                if (!isKeyUp)
                 {
-                    var modifiers = (CefHandlerKeyEventModifiers)((int)(keyState.KeyCode & Keys.Modifiers) >> 16);
-                    var key = (int)keyState.Key;
-                    FBrowser.SendKeyEvent(CefKeyType.Char, key, modifiers, false, false);
+                    var keyChar = keyboardState.KeyChars.LastOrDefault();
+                    if (keyChar != 0 && !(keyChar == '\t' || keyChar == '\b'))
+                    {
+                        var modifiers = (CefHandlerKeyEventModifiers)((int)(keyboardState.Modifiers) >> 16);
+                        FBrowser.SendKeyEvent(CefKeyType.Char, (int)keyChar, modifiers, false, false);
+                    }
                 }
-                FKeyState = keyState;
+                FKeyboardState = keyboardState;
             }
 
             if (FScrollTo != scrollTo)
