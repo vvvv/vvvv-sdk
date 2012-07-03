@@ -16,7 +16,19 @@ namespace VVVV.Nodes.IO
         [Node(Name = "KeyboardState", Category = "System", Version = "Join")]
         public static KeyboardState Join(ISpread<int> keys, bool capsLock, int time)
         {
-            return new KeyboardState(keys.Cast<Keys>(), capsLock, time);
+            switch (keys.SliceCount)
+            {
+                case 0:
+                    return KeyboardState.Empty;
+                case 1:
+                    var key = keys[0];
+                    if (key == 0)
+                        return KeyboardState.Empty;
+                    else
+                        return new KeyboardState(keys.Cast<Keys>(), capsLock, time);
+                default:
+                    return new KeyboardState(keys.Cast<Keys>(), capsLock, time);
+            }
         }
 
         [Node(Name = "KeyboardState", Category = "System", Version = "Split")]
