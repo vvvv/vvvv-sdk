@@ -165,14 +165,26 @@ namespace VVVV.Utils.IO
             return FKeys.Aggregate(seed, (accum, keyCode) => accum ^ keyCode.GetHashCode());
         }
 
-        public static bool operator ==(KeyboardState left, KeyboardState right)
+        public static bool operator ==(KeyboardState a, KeyboardState b)
         {
-            return left.Equals(right);
+            // If both are null, or both are same instance, return true.
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            // If one is null, but not both, return false.
+            if (((object)a == null) || ((object)b == null))
+            {
+                return false;
+            }
+
+            return a.Equals(b);
         }
 
-        public static bool operator !=(KeyboardState left, KeyboardState right)
+        public static bool operator !=(KeyboardState a, KeyboardState b)
         {
-            return !left.Equals(right);
+            return !(a == b);
         }
         #endregion
     }
