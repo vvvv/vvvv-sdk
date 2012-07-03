@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils;
 using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO.Streams
@@ -117,7 +118,7 @@ namespace VVVV.Hosting.IO.Streams
             class InnerStreamReader : IStreamReader<T>
             {
                 private readonly InnerStream FStream;
-                private readonly IStreamReader<T> FDataReader;
+                private readonly CyclicStreamReader<T> FDataReader;
                 private readonly int FOffset;
                 
                 public InnerStreamReader(InnerStream stream)
@@ -125,7 +126,7 @@ namespace VVVV.Hosting.IO.Streams
                     FStream = stream;
                     FDataReader = stream.FDataStream.GetCyclicReader();
                     FOffset = stream.FOffset;
-                    Length = FStream.Length;
+                    Length = stream.Length;
                     Reset();
                 }
                 
@@ -175,7 +176,7 @@ namespace VVVV.Hosting.IO.Streams
                 
                 public T Read(int stride = 1)
                 {
-                    var value = FDataReader.Read(stride);
+                    var value = FDataReader.Length > 0 ? FDataReader.Read(stride) : default(T);
                     Position += stride;
                     return value;
                 }
@@ -183,7 +184,12 @@ namespace VVVV.Hosting.IO.Streams
                 public int Read(T[] buffer, int index, int length, int stride)
                 {
                     int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-                    FDataReader.Read(buffer, index, numSlicesToRead, stride);
+                    if (FDataReader.Length > 0)
+                        FDataReader.Read(buffer, index, numSlicesToRead, stride);
+                    else
+                    {
+                        buffer.Fill(index, numSlicesToRead, default(T));
+                    }
                     Position += numSlicesToRead * stride;
                     return numSlicesToRead;
                 }

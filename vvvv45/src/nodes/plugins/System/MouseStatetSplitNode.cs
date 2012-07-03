@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.IO
 {
@@ -39,7 +40,7 @@ namespace VVVV.Nodes.IO
                 double x, y;
                 bool leftButton, middleButton, rightButton;
                 int mouseWheelDelta;
-                MouseState.Split(mouseEvent, out x, out y, out leftButton, out middleButton, out rightButton, out mouseWheelDelta);
+                MouseStateNodes.Split(mouseEvent, out x, out y, out leftButton, out middleButton, out rightButton, out mouseWheelDelta);
                 FXOut[i] = x;
                 FYOut[i] = y;
                 FLeftButtonOut[i] = leftButton;

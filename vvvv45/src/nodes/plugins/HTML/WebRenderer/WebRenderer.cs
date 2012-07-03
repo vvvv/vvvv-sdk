@@ -15,6 +15,7 @@ using VVVV.Nodes.IO;
 using System.Threading;
 using System.Text;
 using System.Globalization;
+using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.HTML
 {

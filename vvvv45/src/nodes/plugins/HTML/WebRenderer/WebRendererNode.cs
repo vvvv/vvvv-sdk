@@ -10,6 +10,7 @@ using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 using VVVV.Nodes.IO;
 using System.ComponentModel.Composition;
+using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.HTML
 {

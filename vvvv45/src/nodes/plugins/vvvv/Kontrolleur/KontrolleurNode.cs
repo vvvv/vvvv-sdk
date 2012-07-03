@@ -19,6 +19,7 @@ using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Utils.OSC;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 using VVVV.Hosting;
 #endregion usings
 

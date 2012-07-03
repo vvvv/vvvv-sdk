@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.IO
 {
@@ -12,8 +13,14 @@ namespace VVVV.Nodes.IO
         [Input("Input")]
         public ISpread<KeyState> FInput;
 
+        [Output("Key Code")]
+        public ISpread<ISpread<int>> FKeyCodeOut;
+        
+        [Output("Caps Lock")]
+        public ISpread<bool> FCapsOut;
+        
         [Output("Key")]
-        public ISpread<ISpread<int>> FKeyOut;
+        public ISpread<string> FKeyOut;
 
         [Output("Time")]
         public ISpread<int> FTimeOut;
@@ -26,9 +33,12 @@ namespace VVVV.Nodes.IO
             for (int i = 0; i < spreadMax; i++)
             {
                 var keyEvent = FInput[i];
-                ISpread<int> key;
+                ISpread<int> keyCode;
+                string key;
                 int time;
-                KeyState.Split(keyEvent, out key, out time);
+                KeyStateNodes.Split(keyEvent, out keyCode, out key, out time);
+                FKeyCodeOut[i] = keyCode;
+                FCapsOut[i] = FInput[i].CapsLock;
                 FKeyOut[i] = key;
                 FTimeOut[i] = time;
             }

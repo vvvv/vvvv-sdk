@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace VVVV.Hosting.Pins.Input
 {
@@ -10,15 +11,9 @@ namespace VVVV.Hosting.Pins.Input
         class DiffInputBinSpreadStream : InputBinSpreadStream
         {
             public DiffInputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
-                : base(ioFactory, attribute)
+                : base(ioFactory, attribute, true)
             {
                 
-            }
-            
-            protected override InputAttribute ManipulateAttribute(InputAttribute attribute)
-            {
-                attribute.CheckIfChanged = true;
-                return attribute;
             }
         }
         
