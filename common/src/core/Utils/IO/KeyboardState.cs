@@ -77,41 +77,59 @@ namespace VVVV.Utils.IO
             {
                 if (FKeyChars == null)
                 {
-                    var realKeys = new List<Keys>();
-                    var modifiers = Keys.None;
-                    foreach (var key in FKeys)
-                    {
-                        switch (key)
-                        {
-                            case Keys.ShiftKey:
-                            case Keys.LShiftKey:
-                            case Keys.RShiftKey:
-                                modifiers |= Keys.Shift;
-                                break;
-                            case Keys.ControlKey:
-                                modifiers |= Keys.Control;
-                                break;
-                            case Keys.Menu:
-                            case Keys.LMenu:
-                            case Keys.RMenu:
-                                modifiers |= Keys.Alt;
-                                break;
-                            default:
-                                // Do not allow more than one "normal" key
-                                realKeys.Add(key);
-                                break;
-                        }
-                    }
-                    FKeyChars = realKeys
-                        .Select(keyCode => FromKeys(keyCode | modifiers, FCapsLock))
-                        .Where(c => c != null)
-                        .Select(c => c.Value)
-                        .ToReadOnlyCollection();
+                    InitKeys();
                 }
                 return FKeyChars;
             } 
         }
         public int Time { get { return FTime; } }
+
+        private Keys? FModifiers;
+        public Keys Modifiers
+        {
+            get
+            {
+                if (!FModifiers.HasValue)
+                {
+                    InitKeys();
+                }
+                return FModifiers.Value;
+            }
+        }
+
+        private void InitKeys()
+        {
+            var realKeys = new List<Keys>();
+            FModifiers = Keys.None;
+            foreach (var key in FKeys)
+            {
+                switch (key)
+                {
+                    case Keys.ShiftKey:
+                    case Keys.LShiftKey:
+                    case Keys.RShiftKey:
+                        FModifiers |= Keys.Shift;
+                        break;
+                    case Keys.ControlKey:
+                        FModifiers |= Keys.Control;
+                        break;
+                    case Keys.Menu:
+                    case Keys.LMenu:
+                    case Keys.RMenu:
+                        FModifiers |= Keys.Alt;
+                        break;
+                    default:
+                        // Do not allow more than one "normal" key
+                        realKeys.Add(key);
+                        break;
+                }
+            }
+            FKeyChars = realKeys
+                .Select(keyCode => FromKeys(keyCode | FModifiers.Value, FCapsLock))
+                .Where(c => c != null)
+                .Select(c => c.Value)
+                .ToReadOnlyCollection();
+        }
         
         #region Equals and GetHashCode implementation
         // The code in this region is useful if you want to use this structure in collections.
