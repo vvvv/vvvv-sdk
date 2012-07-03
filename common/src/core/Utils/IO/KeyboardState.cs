@@ -20,6 +20,8 @@ namespace VVVV.Utils.IO
     /// </summary>
     public class KeyboardState : IEquatable<KeyboardState>
     {
+        public static KeyboardState Empty = new KeyboardState(Enumerable.Empty<Keys>());
+
         #region virtual keycode to character translation
 
         // From: http://stackoverflow.com/questions/6214326/translate-keys-to-char
