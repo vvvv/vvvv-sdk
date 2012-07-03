@@ -1,0 +1,435 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH nodename="X:\vvvv33svn\public\vvvv33\girlpower\coloradd.v4p">
+   <BOUNDS height="7185" left="30" top="30" type="Window" width="11820">
+   </BOUNDS>
+   <NODE id="26" nodename="Add (Color)">
+   <BOUNDS height="0" left="2580" top="3345" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input1" visible="1">
+   </PIN>
+   <PIN pinname="Input2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="1035" top="480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9495" top="6885" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="510" left="1035" top="480" type="Box" width="2280">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|1.00000,0.00400,0.00000,0.93828|">
+   </PIN>
+   <PIN pinname="Chooser Style" slicecount="1" values="HSVAField">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="4095" top="480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9795" top="7185" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="510" left="4095" top="480" type="Box" width="2280">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.04502,1.00000,0.00000,0.50960|">
+   </PIN>
+   <PIN pinname="Chooser Style" slicecount="1" values="HSVAField">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="6990" top="480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10095" top="7485" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="510" left="6990" top="480" type="Box" width="2280">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.00200,0.00000,1.00000,0.32028|">
+   </PIN>
+   <PIN pinname="Chooser Style" slicecount="1" values="HSVAField">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Input1" srcnodeid="25" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="26" dstpinname="Input2" srcnodeid="24" srcpinname="Color Output">
+   </LINK>
+   <NODE id="22" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="5805" top="1980" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="21" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="5955" top="1665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="-0.5">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="0.6666">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Transform" srcnodeid="21" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Color" srcnodeid="25" srcpinname="Color Output">
+   </LINK>
+   <NODE id="20" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="7365" top="1980" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="7515" top="1665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Transform" srcnodeid="19" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Color" srcnodeid="24" srcpinname="Color Output">
+   </LINK>
+   <NODE id="18" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="8895" top="1980" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="17" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="9045" top="1665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="0.6666">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Transform" srcnodeid="17" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Color" srcnodeid="23" srcpinname="Color Output">
+   </LINK>
+   <NODE id="16" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="45" top="4305" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|1.000000,1.000000,1.000000,1.000000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="195" top="3990" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="-0.66666">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-0.5">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="0.3">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Transform" srcnodeid="15" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="14" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="1605" top="4305" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|1.000000,1.000000,1.000000,1.000000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="1755" top="3990" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="-0.33333">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-0.5">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="0.3">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="12" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="3135" top="4305" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|1.000000,1.000000,1.000000,1.000000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="3285" top="3990" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-0.5">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="0.3">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Transform" srcnodeid="11" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="10" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="4530" top="4290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|1.000000,1.000000,1.000000,1.000000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="4680" top="3975" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0.33333">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-0.5">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="0.3">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="8" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="6000" top="4275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="6150" top="3960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0.66667">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-0.5">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="0.3">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="7" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Color" srcnodeid="25" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Color" srcnodeid="24" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Color" srcnodeid="23" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Color" srcnodeid="26" srcpinname="Output">
+   </LINK>
+   <NODE id="6" nodename="Add (Color)">
+   <BOUNDS height="0" left="5490" top="3345" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input1" visible="1">
+   </PIN>
+   <PIN pinname="Input2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input1" srcnodeid="24" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input2" srcnodeid="23" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Color" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="7755" top="2295" type="Node" width="795">
+   </BOUNDS>
+   <BOUNDS height="765" left="7755" top="2295" type="Box" width="3300">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|three rectangles which overlap each other are added by directx (Blendmode = add)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="195" top="4815" type="Node" width="810">
+   </BOUNDS>
+   <BOUNDS height="1500" left="195" top="4815" type="Box" width="3015">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|mixing is simulated by calculating additve color manually&cr;&lf;&cr;&lf;note the + node for doing an additive mixture of colors|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="10905" top="1770" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Add">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Group (EX9)">
+   <BOUNDS height="270" left="4215" top="5805" type="Node" width="2790">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer 4" visible="1">
+   </PIN>
+   <PIN pinname="Layer 5" visible="1">
+   </PIN>
+   <PIN pinname="Layer 6" visible="1">
+   </PIN>
+   <PIN pinname="Layer 7" visible="1">
+   </PIN>
+   <PIN pinname="Layer 8" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Layer 1" srcnodeid="16" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Layer 2" srcnodeid="14" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Layer 3" srcnodeid="12" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Layer 4" srcnodeid="10" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Layer 5" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Layer 6" srcnodeid="22" srcpinname="Layer">
+   <LINKPOINT x="7800" y="4455">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Layer 7" srcnodeid="20" srcpinname="Layer">
+   <LINKPOINT x="8280" y="4470">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Layer 8" srcnodeid="18" srcpinname="Layer">
+   <LINKPOINT x="8640" y="4575">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="1" nodename="Renderer (EX9)" componentmode="InAWindow">
+   <BOUNDS height="0" left="4200" top="6270" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="30" top="7215" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="4200" top="6270" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Render State" srcnodeid="3" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Render State" srcnodeid="3" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="9525" top="600" type="Node" width="1830">
+   </BOUNDS>
+   <BOUNDS height="270" left="9525" top="600" type="Box" width="1830">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;- alpha &lt; 1|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

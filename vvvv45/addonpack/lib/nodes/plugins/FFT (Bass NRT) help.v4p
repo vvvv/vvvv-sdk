@@ -1,0 +1,293 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.dtd" >
+   <PATCH nodename="D:\repositories\vvvv_individual\Bass\help\FFT (Bass NRT) help.v4p">
+   <BOUNDS height="8970" left="2835" top="2130" type="Window" width="11850">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4995" top="555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9480" top="5625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4995" top="555" type="Box" width="2985">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\..\..\..\Music\Prefuse 73\Piano overlord\04 track 04.mp3|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="900" top="3780" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="555" top="5925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="11145" top="9660" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="555" top="5925" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="3300" top="5925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="13905" top="10485" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="3300" top="5925" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2115" top="1800" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12660" top="7500" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2115" top="1800" type="Box" width="945">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|FFT Size|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="256">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="1125" top="5355" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Layers" srcnodeid="10" srcpinname="Layer">
+   </LINK>
+   <NODE id="9" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="3315" top="5400" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Layers" srcnodeid="9" srcpinname="Layer">
+   </LINK>
+   <NODE id="8" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="1635" top="4905" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Divide (Value)">
+   <BOUNDS height="0" left="2865" top="3990" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input 2" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="ScaleX" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Transform" srcnodeid="8" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="TranslateX" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE id="6" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="4290" top="3765" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="3360" top="4830" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="TranslateX" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="ScaleX" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE id="4" nodename="Count (Value)">
+   <BOUNDS height="0" left="1980" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Spread Count" srcnodeid="4" srcpinname="Count">
+   </LINK>
+   <NODE id="3" nodename="Count (Value)">
+   <BOUNDS height="0" left="4185" top="3135" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Spread Count" srcnodeid="3" srcpinname="Count">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="7860" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10785" top="3870" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1515" left="7860" top="2610" type="Box" width="2925">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|Note:&cr;&lf;This doesn&apos;t play the file (keeps the handle internal).&cr;&lf;Only get the FFT data from the position provided|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="390" top="555" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="720" left="390" top="555" type="Box" width="4410">
+   </BOUNDS>
+   <BOUNDS height="160" left="12045" top="16725" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Computes Fast Fourier Transform on a Bass File &cr;&lf;without playing it|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="390" top="180" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="390" top="180" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="12045" top="16725" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|FFT - Bass NRT|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename=":PLUGINS:\BassSound.dll|VVVV.Nodes.FFTDecodingNode" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="3435" top="2415" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3435" top="2415" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9330" top="4155" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="FFT Size" visible="1">
+   </PIN>
+   <PIN pinname="FFT Left" visible="1">
+   </PIN>
+   <PIN pinname="FFT Right" visible="1">
+   </PIN>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output String" dstnodeid="21" dstpinname="Path">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="21" dstpinname="FFT Size">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="FFT Left" dstnodeid="4" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="FFT Right" dstnodeid="3" dstpinname="Input">
+   </LINK>
+   <NODE nodename="Stopwatch (Animation)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="4995" top="2400" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Run" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23">
+   <BOUNDS type="Node" left="4965" top="1155" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4965" top="1155" width="630" height="465">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8445" top="3630" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Run">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="21" dstpinname="Position">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24">
+   <BOUNDS type="Node" left="5520" top="3150" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5520" top="3150" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7755" top="5040" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Position">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="24" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="TogEdge (Animation)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="5895" top="1965" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Up Edge" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Up Edge" dstnodeid="22" dstpinname="Reset">
+   </LINK>
+   </PATCH>

@@ -1,0 +1,125 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH nodename="X:\vvvv33\help\AsVideo (EX9.Texture) help.v4p">
+   <BOUNDS height="5610" left="7125" top="750" type="Window" width="4770">
+   </BOUNDS>
+   <NODE id="8" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="885" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4230" left="1770" top="735" type="Window" width="4500">
+   </BOUNDS>
+   <BOUNDS height="1800" left="885" top="2610" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="Backbuffer Width" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Height" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Presentation Interval" slicecount="1" values="|wait for frame|">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.49658,0.00000,0.00932,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="900" top="2160" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Layers" srcnodeid="7" srcpinname="Layer">
+   </LINK>
+   <NODE id="6" nodename="DX9Texture (EX9.Texture)">
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2190" top="3180" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Source" srcnodeid="8" srcpinname="EX9 Out">
+   </LINK>
+   <NODE id="5" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="1050" top="1695" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Rotate" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-3.46944695195361E-18">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="4" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="1845" top="1245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="4.49">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Rotate" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="AsVideo (EX9.Texture)">
+   <BOUNDS height="0" left="2190" top="3750" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Video Output" visible="1">
+   </PIN>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Texture" srcnodeid="6" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="240" left="15" top="390" type="Box" width="4035">
+   </BOUNDS>
+   <BOUNDS height="160" left="2700" top="42000" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Converts a texture into a DirectShow video stream|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="15" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="2700" top="42000" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|AsVideo - EX9.Texture|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="VideoOut (DShow9)">
+   <BOUNDS height="0" left="2190" top="4290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Video" srcnodeid="3" srcpinname="Video">
+   </LINK>
+   </PATCH>
