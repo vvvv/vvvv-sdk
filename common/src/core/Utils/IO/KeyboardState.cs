@@ -20,7 +20,11 @@ namespace VVVV.Utils.IO
     /// </summary>
     public class KeyboardState : IEquatable<KeyboardState>
     {
-        public static KeyboardState Empty = new KeyboardState(Enumerable.Empty<Keys>());
+        public static KeyboardState Empty { get; private set; }
+        static KeyboardState()
+        {
+            Empty = new KeyboardState(Enumerable.Empty<Keys>());
+        }
 
         #region virtual keycode to character translation
 
