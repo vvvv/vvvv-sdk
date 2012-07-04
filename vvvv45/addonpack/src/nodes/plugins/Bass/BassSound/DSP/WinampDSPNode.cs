@@ -123,27 +123,33 @@ namespace BassSound.DSP
 
                 if (this.FPinInHandle.IsConnected)
                 {
-                    this.FPinInFilename.GetString(0, out this.FFilename);
-
-                    //Just Update the Handle
-                    double dhandle;
-                    this.FPinInHandle.GetValue(0, out dhandle);
-                    int ihandle = Convert.ToInt32(Math.Round(dhandle));
-
-
-                    if (File.Exists(this.FFilename) && this.FManager.Exists(ihandle))
+                    if (this.FPinInFilename.SliceCount > 0)
                     {
-                        this.FChannel = this.FManager.GetChannel(ihandle);
-                        this.FChannel.OnInit += new EventHandler(FChannel_OnInit);
-                        if (this.FChannel.BassHandle.HasValue)
+
+                        this.FPinInFilename.GetString(0, out this.FFilename);
+
+                        this.FFilename = this.FFilename == null ? "" : this.FFilename;
+
+                        //Just Update the Handle
+                        double dhandle;
+                        this.FPinInHandle.GetValue(0, out dhandle);
+                        int ihandle = Convert.ToInt32(Math.Round(dhandle));
+
+
+                        if (File.Exists(this.FFilename) && this.FManager.Exists(ihandle))
                         {
-                            this.AddDSP();
+                            this.FChannel = this.FManager.GetChannel(ihandle);
+                            this.FChannel.OnInit += new EventHandler(FChannel_OnInit);
+                            if (this.FChannel.BassHandle.HasValue)
+                            {
+                                this.AddDSP();
+                            }
                         }
-                    }
-                    else
-                    {
-                        this.FChannel = null;
-                        this.FDSPHandle = 0;
+                        else
+                        {
+                            this.FChannel = null;
+                            this.FDSPHandle = 0;
+                        }
                     }
                 }
             }
