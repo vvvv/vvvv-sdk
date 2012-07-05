@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\SharedTexture (EX9.Texture) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\SharedTexture (EX9.Texture) help.v4p" systemname="SharedTexture (EX9.Texture) help">
    <BOUNDS height="7950" left="1995" top="5835" type="Window" width="11025">
    </BOUNDS>
@@ -217,7 +217,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6555" top="4500" width="3525" height="2385">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; in order to recreate the shared texture you need the following information about it:&cr;&lf;- width&cr;&lf;- height&cr;&lf;- textureformat&cr;&lf;- usage&cr;&lf;- shared handle&cr;&lf;&cr;&lf;using this information you can access the above texture from any other (even non-vvvv) process on the same system.|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; in order to recreate the shared texture you need the following information about it:&cr;&lf;- width&cr;&lf;- height&cr;&lf;- textureformat&cr;&lf;- usage&cr;&lf;- shared handle&cr;&lf;&cr;&lf;using this information you can access the above texture from any other (even non-vvvv) process on the same system.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -228,4 +228,18 @@
    </NODE>
    <LINK srcnodeid="79" srcpinname="Texture Out" dstnodeid="7" dstpinname="Texture">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="91" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="1530" width="6120" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="1530" width="2835" height="1005">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|note:&cr;&lf;only works with windows &gt;= vista and needs vvvv started with commandline: /dx9ex|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
