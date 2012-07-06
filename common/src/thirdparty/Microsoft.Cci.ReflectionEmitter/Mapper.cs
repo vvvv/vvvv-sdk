@@ -693,6 +693,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
         public override void Visit(INestedTypeReference nestedTypeReference) {
             var containingType = this.mapper.GetType(nestedTypeReference.ContainingType);
             var name = nestedTypeReference.Name.Value;
+            // This method fails in case the containingType is generic and represented by a TypeBuilder.
+            // See: https://connect.microsoft.com/VisualStudio/feedback/details/94519/there-should-be-static-typebuilder-getnestedtype-method-similar-to-typebuilder-getmethod-etc#tabs
             this.result = containingType.GetNestedType(name, BindingFlags.NonPublic|BindingFlags.DeclaredOnly);
             if (this.result == null && nestedTypeReference.GenericParameterCount > 0) {
                 name = name + "'" + nestedTypeReference.GenericParameterCount;
