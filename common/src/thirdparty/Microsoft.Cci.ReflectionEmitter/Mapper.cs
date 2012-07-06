@@ -449,6 +449,13 @@ namespace Microsoft.Cci.ReflectionEmitter {
             this.reverseMethodMap[method.InternedKey] = method;
         }
 
+        internal void ClearMemberMappings()
+        {
+            this.fieldMap = new DoubleHashtable<FieldInfo>();
+            this.methodMap.Clear();
+            this.reverseMethodMap.Clear();
+        }
+
         internal MethodInfo GetArrayAddrMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder) {
             var type = this.GetType(arrayTypeReference);
             var parameterTypes = new Type[arrayTypeReference.Rank];

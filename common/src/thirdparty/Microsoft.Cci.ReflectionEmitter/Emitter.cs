@@ -9,6 +9,7 @@
 //
 //-----------------------------------------------------------------------------
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.SymbolStore;
 using System.Reflection;
@@ -129,6 +130,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
             this.typeCreator.Traverse(namespaceTypeDefinition);
             yield return this.mapper.GetType(namespaceTypeDefinition);
         }
+        this.mapper.ClearMemberMappings();
     }
 
     /// <summary>
@@ -1625,6 +1627,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
         object builder;
         if (!this.loader.builderMap.TryGetValue(namespaceTypeDefinition, out builder)) return;
         this.loader.builderMap.Remove(namespaceTypeDefinition);
+        foreach (var member in namespaceTypeDefinition.Members.Concat(namespaceTypeDefinition.PrivateHelperMembers))
+            this.loader.builderMap.Remove(member);
         var typeBuilder = builder as TypeBuilder;
         if (typeBuilder == null) return;
         this.CreateTypesThatNeedToBeLoadedBeforeLoading(namespaceTypeDefinition);
@@ -1652,6 +1656,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
         object builder;
         if (!this.loader.builderMap.TryGetValue(nestedTypeDefinition, out builder)) return;
         this.loader.builderMap.Remove(nestedTypeDefinition);
+        foreach (var member in nestedTypeDefinition.Members.Concat(nestedTypeDefinition.PrivateHelperMembers))
+            this.loader.builderMap.Remove(member);
         var typeBuilder = builder as TypeBuilder;
         if (typeBuilder == null) return;
         this.CreateTypesThatNeedToBeLoadedBeforeLoading(nestedTypeDefinition);
