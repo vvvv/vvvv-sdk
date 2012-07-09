@@ -1,0 +1,267 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Color\Resample (Color).v4p">
+   <BOUNDS height="6000" left="8355" top="5715" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="1050" top="555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9540" top="6345" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="375" left="1050" top="555" type="Box" width="1365">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="spread">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="1" values="|0.23088,0.26000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="RESAMPLE (SPREADS)" systemname="Resample (Spreads)">
+   <BOUNDS height="0" left="1065" top="3180" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Mode" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic Spread" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic Values" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Hermite Tension" visible="1">
+   </PIN>
+   <PIN pinname="Hermite Bias" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="HSL (Color Split)" systemname="HSL (Color Split)">
+   <BOUNDS height="270" left="1050" top="2010" type="Node" width="4080">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="12" srcpinname="Color Output">
+   </LINK>
+   <NODE id="9" nodename="RESAMPLE (SPREADS)" systemname="Resample (Spreads)">
+   <BOUNDS height="0" left="2385" top="3195" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Mode" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic Spread" visible="1">
+   </PIN>
+   <PIN pinname="Hermite Tension" visible="1">
+   </PIN>
+   <PIN pinname="Hermite Bias" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic Values" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="RESAMPLE (SPREADS)" systemname="Resample (Spreads)">
+   <BOUNDS height="0" left="3735" top="3210" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Mode" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic Spread" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic Values" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Hermite Tension" visible="1">
+   </PIN>
+   <PIN pinname="Hermite Bias" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="RESAMPLE (SPREADS)" systemname="Resample (Spreads)">
+   <BOUNDS height="0" left="5085" top="3210" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Mode" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic Spread" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic Values" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Hermite Tension" visible="1">
+   </PIN>
+   <PIN pinname="Hermite Bias" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input" srcnodeid="10" srcpinname="Hue">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="10" srcpinname="Saturation">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="10" srcpinname="Lightness">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="10" srcpinname="Alpha">
+   </LINK>
+   <NODE id="6" nodename="HSL (Color Join)" systemname="HSL (Color Join)">
+   <BOUNDS height="270" left="1065" top="4125" type="Node" width="4065">
+   </BOUNDS>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Hue" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Saturation" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Lightness" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Alpha" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="1080" top="4650" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9840" top="6645" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="1080" top="4650" type="Box" width="1530">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="spread">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Color Input" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7335" top="555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12675" top="6135" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7335" top="555" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="count">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="400">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="2610" top="555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12240" top="6495" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2610" top="555" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="mode">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Spline">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Mode" srcnodeid="3" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Mode" srcnodeid="3" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Mode" srcnodeid="3" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Mode" srcnodeid="3" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3585" top="555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13155" top="8130" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3585" top="555" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|cyclic spread|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4860" top="555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13800" top="8100" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4860" top="555" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|hermite tension|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Hermite Tension" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Hermite Tension" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Hermite Tension" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6150" top="555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13890" top="8160" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6150" top="555" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|hermite bias|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Hermite Bias" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Hermite Bias" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Hermite Bias" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Hermite Tension" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Hermite Bias" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Cyclic Spread" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Cyclic Spread" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Cyclic Spread" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Cyclic Spread" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <INFO author="vvvv group" description="interpolate within a color spread operating in a HSL color room (with cyclic Hue)" tags="hsl, cyclic, interpolate, smooth, transition">
+   </INFO>
+   </PATCH>

@@ -1,0 +1,181 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Cylinder (EX9.Geometry) help.v4p">
+   <BOUNDS height="3915" left="225" top="2985" type="Window" width="6945">
+   </BOUNDS>
+   <NODE id="12" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="315" top="2550" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="330" top="2130" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Blend">
+   </PIN>
+   <PIN pinname="Render State In" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Render State In" srcnodeid="11" srcpinname="Render State Out">
+   </LINK>
+   <NODE id="10" nodename="Cylinder (EX9.Geometry)">
+   <BOUNDS height="0" left="1650" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Width " visible="1">
+   </PIN>
+   <PIN pinname="Heigth " visible="1">
+   </PIN>
+   <PIN pinname="Depth " visible="1">
+   </PIN>
+   <PIN pinname="Radius 2" slicecount="1" visible="1" values="0.17124">
+   </PIN>
+   <PIN pinname="Slices " slicecount="1" visible="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Stacks " slicecount="1" visible="1" values="27.00000">
+   </PIN>
+   <PIN pinname="Radius 1" slicecount="1" visible="1" values="0.76999">
+   </PIN>
+   <PIN pinname="Length " slicecount="1" visible="1" values="1.05859">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="9" managers="" nodename="Rotate (Transform)">
+   <PIN pinname="Y" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2670" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" pintype="Input" slicecount="1" visible="1" values="-0.66">
+   </PIN>
+   <PIN pinname="Z" pintype="Input" slicecount="1" visible="1" values="-0.22">
+   </PIN>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform In" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="8" managers="" nodename="LFO (Animation)">
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="3045" top="2040" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Period" pintype="Input" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pause" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Reverse" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Reset" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Phase" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Cycles" pintype="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="4095" top="180" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5820" left="5865" top="2985" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="2490" left="4095" top="180" type="Box" width="2580">
+   </BOUNDS>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename=":EFFECTS:\FlatDirectional.fx">
+   <BOUNDS height="0" left="1515" top="3150" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.19124,0.22009,0.40176,1.00000|">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|1.00000,0.01763,0.00000,1.00000|">
+   </PIN>
+   <BOUNDS left="1515" top="3150" type="Box">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Render State" linkstyle="VHV" srcnodeid="12" srcpinname="Render State Out">
+   <LINKPOINT x="345" y="2985">
+   </LINKPOINT>
+   <LINKPOINT x="1545" y="2985">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Mesh" srcnodeid="10" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Transform" linkstyle="PolyLine" srcnodeid="9" srcpinname="Transform Out">
+   <LINKPOINT x="2700" y="3060">
+   </LINKPOINT>
+   <LINKPOINT x="2010" y="3060">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="390" type="Box" width="1950">
+   </BOUNDS>
+   <BOUNDS height="160" left="150" top="2310" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|creates a cylinder mesh|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="15" top="15" type="Box" width="3105">
+   </BOUNDS>
+   <BOUNDS height="160" left="750" top="2910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Cylinder - EX9.Geometry|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Layer" dstnodeid="3" dstpinname="Layers">
+   <LINKPOINT x="1530" y="3510">
+   </LINKPOINT>
+   <LINKPOINT x="3840" y="3510">
+   </LINKPOINT>
+   <LINKPOINT x="3855" y="120">
+   </LINKPOINT>
+   <LINKPOINT x="4155" y="120">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

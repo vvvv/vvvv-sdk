@@ -1,0 +1,149 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Quad (DX9) help.v4p">
+   <BOUNDS height="6720" left="12615" top="2010" type="Window" width="9795">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="660" top="2685" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="6840" top="5640" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3240" left="660" top="2685" type="Box" width="3345">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Fill (EX9.RenderState)" systemname="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="660" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="990" top="885" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8460" top="5325" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="615" left="990" top="885" type="Box" width="915">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Fill Mode" linkstyle="PolyLine" srcnodeid="3" srcpinname="Output Enum">
+   </LINK>
+   <NODE id="2" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="660" top="2205" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Resolution X">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Resolution Y">
+   </PIN>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Inner Radius">
+   </PIN>
+   <PIN pinname="Cycles">
+   </PIN>
+   <PIN pinname="Round Edges" visible="1">
+   </PIN>
+   <PIN pinname="Fade Amount" visible="1">
+   </PIN>
+   <PIN pinname="Priority" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Render State" srcnodeid="4" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="2910">
+   </BOUNDS>
+   <BOUNDS height="160" left="2400" top="41700" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Renders a rectangle in the dx window|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="15" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="2400" top="41700" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Quad - DX9|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="13" nodename="Pillow (DX9)" systemname="Pillow (DX9)">
+   <BOUNDS height="100" left="5205" top="1560" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="Rope (DX9)" systemname="Rope (DX9)">
+   <BOUNDS height="100" left="5205" top="2670" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="11" nodename="Sphere (DX9)" systemname="Sphere (DX9)">
+   <BOUNDS height="100" left="5205" top="3600" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="10" nodename="Grid (DX9)" systemname="Grid (DX9)">
+   <BOUNDS height="100" left="7290" top="1560" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="9" nodename="Triangle (DX9 Indexed)" systemname="Triangle (DX9 Indexed)">
+   <BOUNDS height="100" left="5205" top="3135" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="8" nodename="GridSegment (DX9)" systemname="GridSegment (DX9)">
+   <BOUNDS height="100" left="7290" top="2115" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5040" top="1155" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="270" left="5040" top="1155" type="Box" width="2565">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|For mor primitive geometries see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Segment (DX9)" nodename="Segment (DX9)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="5205" top="2115" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>

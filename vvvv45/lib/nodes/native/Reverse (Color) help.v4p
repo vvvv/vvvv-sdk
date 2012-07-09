@@ -1,0 +1,87 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta11.2.dtd" >
+   <PATCH nodename="Q:\meso\vvvv\vvvvdev\help\Reverse (Color) help.v4p">
+   <BOUNDS height="4830" left="3225" top="5595" type="Window" width="3690">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="3420">
+   </BOUNDS>
+   <BOUNDS height="160" left="2970" top="41220" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reverses the order of the slices in the spread|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="2970" top="41220" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reverse - Color|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="Reverse (Color)" id="5">
+   <BOUNDS type="Node" left="315" top="2370" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="330" top="960" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6795" top="7155" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="330" top="960" width="900" height="1230">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1" slicecount="12" values="|0.00000,0.75000,1.00000,1.00000|,|0.00000,0.25000,1.00000,1.00000|,|0.25000,0.00000,1.00000,1.00000|,|0.75000,0.00000,1.00000,1.00000|,|1.00000,0.00000,0.75000,1.00000|,|1.00000,0.00000,0.25000,1.00000|,|1.00000,0.25000,0.00000,1.00000|,|1.00000,0.75000,0.00000,1.00000|,|0.75000,1.00000,0.00000,1.00000|,|0.25000,1.00000,0.00000,1.00000|,|0.00000,1.00000,0.25000,1.00000|,|0.00000,1.00000,0.75000,1.00000|">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="12">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Color Output" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="12">
+   <BOUNDS type="Node" left="330" top="2895" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7095" top="7455" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="330" top="2895" width="930" height="1230">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="12">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="12" dstpinname="Color Input" linkstyle="VHV">
+   <LINKPOINT x="345" y="2760">
+   </LINKPOINT>
+   <LINKPOINT x="1170" y="2760">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
