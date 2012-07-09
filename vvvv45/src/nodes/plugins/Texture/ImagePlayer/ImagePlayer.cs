@@ -220,7 +220,7 @@ namespace VVVV.Nodes.ImagePlayer
         		}
         	}
         }
-        
+
         private void Enqueue(FrameInfo frameInfo)
         {
             if (FFrameInfoBuffer.Post(frameInfo))
@@ -380,6 +380,23 @@ namespace VVVV.Nodes.ImagePlayer
                 durationIO += visibleFrameInfo.DurationIO;
                 durationTexture += visibleFrameInfo.DurationTexture;
                 visibleFrames.Add(visibleFrame);
+            }
+
+            // Ensure that there are as much dequeues as enqueues (or we'll run out of memory)
+            while (FScheduledFrameInfos.Count > preloadFrameNrs.SliceCount)
+            {
+                var frame = Dequeue();
+                var frameInfo = frame.Metadata;
+                if (!preloadFiles.Contains(frameInfo.Filename) || frameInfo.IsCanceled)
+                {
+                    // Not needed anymore
+                    Dispose(frame);
+                    unusedFrames++;
+                }
+                else
+                {
+                    FPreloadedFrames.Add(frameInfo.Filename, frame);
+                }
             }
 
             // Dispose previously loaded frames
