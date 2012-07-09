@@ -205,9 +205,12 @@ namespace VVVV.Nodes
 		
 		public void Dispose()
 		{
-			FServer.MessageReceived -= FServer_MessageReceived;
-			FTimer.Elapsed -= FTimer_Elapsed;
-			FServer.Close();
+            if (FServer != null)
+            {
+                FServer.MessageReceived -= FServer_MessageReceived;
+                FServer.Close();
+            }
+            FTimer.Elapsed -= FTimer_Elapsed;
 		}
 		
 	}
