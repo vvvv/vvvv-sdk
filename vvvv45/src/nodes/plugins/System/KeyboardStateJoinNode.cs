@@ -7,27 +7,28 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.IO
 {
-    [PluginInfo(Name = "KeyState", Category = "System", Version = "Join")]
+    [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Join")]
     public class KeyStateJoinNode : IPluginEvaluate
     {
         [Input("Key Code")]
-        public ISpread<ISpread<int>> FKeyIn;
-        
+        public IDiffSpread<ISpread<int>> FKeyIn;
+
         [Input("Caps Lock", IsSingle = true)]
-        public ISpread<bool> FCapsIn;
-        
+        public IDiffSpread<bool> FCapsIn;
+
         [Input("Time")]
-        public ISpread<int> FTimeIn;
+        public IDiffSpread<int> FTimeIn;
         
         [Output("Output")]
-        public ISpread<KeyState> FOutput;
+        public ISpread<KeyboardState> FOutput;
 
         public void Evaluate(int spreadMax)
         {
+            if (!FKeyIn.IsChanged && !FCapsIn.IsChanged && !FTimeIn.IsChanged) return;
             FOutput.SliceCount = FKeyIn.CombineWith(FTimeIn);
             for (int i = 0; i < FOutput.SliceCount; i++)
             {
-            	FOutput[i] = KeyStateNodes.Join(FKeyIn[i], FCapsIn[0], FTimeIn[i]);
+            	FOutput[i] = KeyboardStateNodes.Join(FKeyIn[i], FCapsIn[0], FTimeIn[i]);
             }
         }
     }
