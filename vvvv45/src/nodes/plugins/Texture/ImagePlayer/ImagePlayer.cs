@@ -318,8 +318,7 @@ namespace VVVV.Nodes.ImagePlayer
 
             // Map frame numbers to file names
             var preloadFiles = preloadFrameNrs.Select(frameNr => FFiles[VMath.Zmod(frameNr, FFiles.Length)]).ToArray();
-            var visibleFiles = visibleFrameIndices.Select(index => preloadFiles[VMath.Zmod(index, preloadFiles.Length)]);
-
+            
             // Cancel unused scheduled frames
             foreach (var frameInfo in FScheduledFrameInfos.Where(fi => !fi.IsCanceled))
             {
@@ -357,6 +356,8 @@ namespace VVVV.Nodes.ImagePlayer
 
             // Wait for the visible frames (and dipose unused ones)
             var visibleFrames = new Spread<Frame>(0);
+            // Map frame numbers to file names
+            var visibleFiles = preloadFiles.Length > 0 ? visibleFrameIndices.Select(i => preloadFiles[VMath.Zmod(i, preloadFiles.Length)]) : Enumerable.Empty<string>();
             foreach (var file in visibleFiles)
             {
                 while (!IsPreloaded(file))
