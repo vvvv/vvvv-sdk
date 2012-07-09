@@ -33,8 +33,8 @@ namespace TypeWriter
 	{
 		#region field declaration
 		//input pin declaration
-		[Input("Key State", IsSingle = true)]
-		ISpread<KeyState> FKeyState;
+		[Input("Keyboard State", IsSingle = true)]
+		IDiffSpread<KeyboardState> FKeyboardState;
 		
 		[Input("Text", DefaultString = "", IsSingle = true)]
 		ISpread<string> FInputText;
@@ -78,6 +78,7 @@ namespace TypeWriter
 		private string FNewlineSymbol = Environment.NewLine;
 		private Dictionary<uint, double> FBufferedCommands = new Dictionary<uint, double>();
 		private Dictionary<string, double> FBufferedKeys = new Dictionary<string, double>();
+		private KeyboardState FLastKeyboardState;
 		
 		// Track whether Dispose has been called.
 		private bool FDisposed = false;
@@ -363,77 +364,38 @@ namespace TypeWriter
 				FText = FInitialText[0];
 				CursorToTextEnd();
 			}
-			
+
 			if (FInsertText[0])
 				AddNewChar(FInputText[0]);
 			
-			if ((FKeyState.SliceCount == 0) || (FKeyState[0].KeyCode == Keys.None) || (FKeyState[0].KeyCode == Keys.ControlKey))
+			if (FKeyboardState.SliceCount > 0)
 			{
-				FBufferedKeys.Clear();
-				FBufferedCommands.Clear();
-			}
-			else
-			{
-				//remove keys from the buffer that are not currently pressed
-				var keysToDelete = new List<string>();
-				var inputKeys = FKeyState.Select(x => x.Key.ToString()).ToList();
-				foreach (var key in FBufferedKeys)
-					if (!inputKeys.Contains(key.Key))
-						keysToDelete.Add(key.Key);
-				
-				foreach (string key in keysToDelete)
-					FBufferedKeys.Remove(key);
-				
-				//first find out if the current keystate is a command
-				//ie. ctrl key, cursorkeys, tab...
-				//for this try to convert the input into a string by
-				//accessing FInputKey[-1] since earlier slices would be ctrl or shift
-				var newChar = FKeyState[0].Key.ToString();
-
-				var lastKeyCode = (uint)FKeyState[0].KeyCode;
-				var now = FHDEHost.GetCurrentTime();
-				var keyDelay = 0.5; //character repeat delay in s
-				
-				var FControlKeyPressed = (FKeyState[0].KeyCode & Keys.Control) == Keys.Control;
-				var altKeyPressed = (FKeyState[0].KeyCode & Keys.Alt) == Keys.Alt;
-				
-				//if this is a command
-				if ((FControlKeyPressed && !altKeyPressed) || lastKeyCode < 48 || string.IsNullOrEmpty(newChar))
+				if (FKeyboardState[0] != FLastKeyboardState)
 				{
-					//add this to buffered commands
-					if (lastKeyCode != (int)Keys.ControlKey)
-						if (!FBufferedCommands.ContainsKey(lastKeyCode))
-							FBufferedCommands.Add(lastKeyCode, now);
-
-					FBufferedKeys.Clear();
-				}
-				else //interpret all slices as strings
-				{
-					foreach(var character in inputKeys)
-						if (!FBufferedKeys.ContainsKey(character))
+					if (FKeyboardState[0].KeyCodes.Count > 0)
 					{
-						if (character.ToUpper() == FLastCapitalKey)
+						FControlKeyPressed = (FKeyboardState[0].Modifiers & Keys.Control) > 0;
+						var altKeyPressed = (FKeyboardState[0].Modifiers & Keys.Alt) > 0;
+						var lastKeyCode = (uint)FKeyboardState[0].KeyCodes.Last();
+						
+						var keyUp = FKeyboardState[0].KeyCodes.Count < FLastKeyboardState.KeyCodes.Count;
+						var keyDown = FKeyboardState[0].KeyCodes.Count > FLastKeyboardState.KeyCodes.Count;
+							
+						if (keyDown || !keyUp)
 						{
-							FBufferedKeys.Add(character, now + keyDelay);
-							FLastCapitalKey = "";
+							if (lastKeyCode < 48)
+							{
+								if (!altKeyPressed)
+									RunCommand(lastKeyCode);
+							}
+							else if (FKeyboardState[0].KeyChars.Count > 0)
+                				AddNewChar(FKeyboardState[0].KeyChars.Last().ToString());
 						}
-						else
-							FBufferedKeys.Add(character, now);
 					}
-					
-					FBufferedCommands.Clear();
+					FLastKeyboardState = FKeyboardState[0];
 				}
-				
-				//check if any of the buffered keys/commands need to execute
-				foreach (var key in FBufferedKeys)
-					if (now == key.Value || now - key.Value > keyDelay)
-						AddNewChar(key.Key);
-				
-				foreach (var key in FBufferedCommands)
-					if (now == key.Value || now - key.Value > keyDelay)
-						RunCommand(key.Key);
 			}
-			
+
 			FOutput[0] = FText;
 			FCursorPosition[0] = FCursorCharPos;
 		}
