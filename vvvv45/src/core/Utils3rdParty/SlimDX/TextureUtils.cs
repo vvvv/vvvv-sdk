@@ -44,7 +44,11 @@ namespace VVVV.Utils.SlimDX
 		/// <returns>The newly created <see cref="Texture">texture</see>.</returns>
 		public static Texture CreateTexture(Device device, int width, int height)
 		{
-			return new Texture(device, width, height, 1, Usage.None, Format.A8R8G8B8, Pool.Managed);
+			var pool = Pool.Managed;
+			if (device is DeviceEx)
+				pool = Pool.Default;
+			
+			return new Texture(device, width, height, 1, Usage.Dynamic, Format.A8R8G8B8, pool);
 		}
 		
 		/// <summary>
@@ -57,7 +61,11 @@ namespace VVVV.Utils.SlimDX
 		/// <returns>The newly created <see cref="Texture">texture</see>.</returns>
 		public static Texture CreateTextureNoAlpha(Device device, int width, int height)
 		{
-			return new Texture(device, width, height, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
+			var pool = Pool.Managed;
+			if (device is DeviceEx)
+				pool = Pool.Default;
+			
+			return new Texture(device, width, height, 1, Usage.Dynamic, Format.X8R8G8B8, pool);
 		}
 		
 		/// <summary>
@@ -72,7 +80,11 @@ namespace VVVV.Utils.SlimDX
 		/// <returns>The newly created <see cref="Texture">texture</see>.</returns>
 		public static Texture CreateColoredTexture(Device device, int width, int height, uint argbColor)
 		{
-			var t = new Texture(device, width, height, 1, Usage.None, Format.A8R8G8B8, Pool.Managed);
+			var pool = Pool.Managed;
+			if (device is DeviceEx)
+				pool = Pool.Default;
+			
+			var t = new Texture(device, width, height, 1, Usage.Dynamic, Format.A8R8G8B8, pool);
 			var rect = t.LockRectangle(0, LockFlags.None).Data;
 			
 			for (int i=0; i<(width*height); i++)
@@ -98,8 +110,19 @@ namespace VVVV.Utils.SlimDX
 		{
 			var data = bm.LockBits(new Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadOnly, bm.PixelFormat);
 			var rect = texture.LockRectangle(0, LockFlags.None);
-			
-			CopyMemory(rect.Data.DataPointer, data.Scan0, data.Stride * data.Height);
+				
+			if(rect.Pitch == data.Stride)
+			{
+				CopyMemory(rect.Data.DataPointer, data.Scan0, data.Stride * data.Height);
+			}
+			else
+			{
+				//copy full lines
+				for (int i = 0; i < data.Height; i++) 
+				{
+					CopyMemory(rect.Data.DataPointer.Move(rect.Pitch * i), data.Scan0.Move(data.Stride * i), data.Stride);
+				}
+			}
 			
 			texture.UnlockRectangle(0);
 			bm.UnlockBits(data);
