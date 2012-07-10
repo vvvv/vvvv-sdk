@@ -84,7 +84,7 @@ namespace VVVV.Nodes
 		
 		private TextureResource<Info> CreateTextureResource(int slice)
 		{
-			var info = new Info() { Slice = slice, Width = FWidthIn[slice], Height = FHeightIn[slice], WaveCount = double.NaN };
+			var info = new Info() { Slice = slice, Width = FWidthIn[slice], Height = FHeightIn[slice] };
 			return TextureResource.Create(info, CreateTexture, UpdateTexture);
 		}
 		
@@ -93,6 +93,8 @@ namespace VVVV.Nodes
 		Texture CreateTexture(Info info, Device device)
 		{
 			FLogger.Log(LogType.Debug, "Creating new texture at slice: " + info.Slice);
+			//ensure subsequent update call will trigger the Fill32BitTexInPlace
+			info.Update = true;
 			return TextureUtils.CreateTexture(device, Math.Max(info.Width, 1), Math.Max(info.Height, 1));
 		}
 		
