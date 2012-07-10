@@ -9,9 +9,9 @@ namespace VVVV.Hosting.Pins
 	/// Base class of 2d spreads.
 	/// </summary>
 	[ComVisible(false)]
-	abstract class BinSpread<T> : Spread<ISpread<T>>
+	public abstract class BinSpread<T> : Spread<ISpread<T>>
 	{
-		internal class BinSpreadStream : BufferedIOStream<ISpread<T>>
+		public class BinSpreadStream : BufferedIOStream<ISpread<T>>
 		{
 			protected override void BufferIncreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)
 			{

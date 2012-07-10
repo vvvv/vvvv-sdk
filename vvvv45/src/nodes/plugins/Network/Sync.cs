@@ -143,14 +143,14 @@ namespace VVVV.Nodes
 			if(FIsClient[0] || FHost.IsBoygroupClient)
 			{
 				ReceiveServerAnswer(e.Data);
-			}
+			} 
 			else //server code
 			{
 				lock(FLock)
 				{
 					FServer.Send(Encoding.ASCII.GetBytes(FStreamTime.ToString() + ";" + FTimeStamp.ToString()), e.RemoteSender);
 					
-					FLogger.Log(LogType.Debug, FStreamTime.ToString() + ";" + FHost.RealTime.ToString());
+					//FLogger.Log(LogType.Debug, FStreamTime.ToString() + ";" + FHost.RealTime.ToString());
 				}
 			}
 		}
@@ -205,9 +205,12 @@ namespace VVVV.Nodes
 		
 		public void Dispose()
 		{
-			FServer.MessageReceived -= FServer_MessageReceived;
-			FTimer.Elapsed -= FTimer_Elapsed;
-			FServer.Close();
+            if (FServer != null)
+            {
+                FServer.MessageReceived -= FServer_MessageReceived;
+                FServer.Close();
+            }
+            FTimer.Elapsed -= FTimer_Elapsed;
 		}
 		
 	}

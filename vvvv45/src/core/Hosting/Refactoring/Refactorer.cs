@@ -66,6 +66,8 @@ namespace VVVV.Hosting
 			
 			//create new nodinfo for subpatch
 			var patchPath = Path.GetDirectoryName(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename);
+			if (!Path.IsPathRooted(patchPath))
+				patchPath = hdeHost.ExePath;
 			var patchName = GetUniquePatchName(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename);
 			
 			patchPath = Path.Combine(patchPath, patchName) + ".v4p";
@@ -87,6 +89,7 @@ namespace VVVV.Hosting
 			FOldID2NewID.Clear();
 			var newNodeID = 0;
 			var origNodes = FDocument.SelectNodes("/PATCH/NODE");
+
 			foreach (XmlNode node in origNodes)
 			{
 				//modify the ID
@@ -123,17 +126,31 @@ namespace VVVV.Hosting
 				point.SetAttribute("y", (py - minY + CBorder).ToString());
 			}
 			
-			var IOpins = new Dictionary<string, int>();
-			var minInputX = 0;
-			var minOutputX = 0;
-			
 			FInputNames.Clear();
 			FOutputNames.Clear();
+			
+			//extract all existing iobox names, as those must not be reused
+			foreach (var node in selectedNodes)
+			{
+				if (node.NodeInfo.Name == "IOBox")
+				{
+					var inputConnected = node.FindPin(GetIOBoxPinName(node.NodeInfo.Category, true)).IsConnected();
+					var outputConnected = node.FindPin(GetIOBoxPinName(node.NodeInfo.Category, false)).IsConnected();
+					if (inputConnected && !outputConnected)
+						FOutputNames.Add(node.FindPin("Descriptive Name").Spread.Trim('|'));
+					else if (!inputConnected && outputConnected)
+						FInputNames.Add(node.FindPin("Descriptive Name").Spread.Trim('|'));
+				}
+			}
 			
 			//now sort the list of nodes in X from left to right
 			//in order to get IOBoxes of leftmost nodes also leftmost
 			var nodes = (from n in selectedNodes orderby n.GetBounds(BoundsType.Node).X select n).ToList();
 			var oldPinToNewPin = new Dictionary<string, string>();
+			
+			var IOpins = new Dictionary<string, int>();
+			var minInputX = 0;
+			var minOutputX = 0;
 			
 			//make connections in the selection
 			//for each selected nodes input pin...
@@ -171,13 +188,19 @@ namespace VVVV.Hosting
 				else
 				{
 					//an IO pin needs to be created
-					//if it doesn't exist yet
-					//(multiple inputs may connect to an upstream pin and an IO pin may alread exist now)
+					//- if it doesn't exist yet (multiple inputs may connect to an upstream pin and an IO pin may alread exist now)
+					//- or the connected pin belongs to a (preexisting) labeled iobox
 					string ident = "";
 					if (pin.Direction == PinDirection.Input)
 						ident = parent.ID.ToString() + cpin.NameByParent(parent);
 					else if (pin.Direction == PinDirection.Output)
 						ident = node.ID.ToString() + pin.NameByParent(node);
+
+					if ((node.NodeInfo.Name == "IOBox") && (!string.IsNullOrEmpty(node.LabelPin[0])))
+					{
+						IOpins.Add(ident, newNodeID);
+						oldPinToNewPin.Add(ident, node.LabelPin[0]);
+					}
 					
 					if (!IOpins.ContainsKey(ident))
 					{
@@ -194,7 +217,7 @@ namespace VVVV.Hosting
 						
 						if (pin.Direction == PinDirection.Input)
 						{
-							boxBounds.Rectangle = new Rectangle(Math.Max(minInputX, bounds.X - minX + CBorder), CPinOffset, 750, 225);
+							boxBounds.Rectangle = new Rectangle(Math.Max(minInputX, bounds.X - minX + CBorder), CPinOffset, 750, 240);
 							
 							//an input-pin may be connected to an output-pin
 							//that in turn is connected to multiple inputs
@@ -206,7 +229,7 @@ namespace VVVV.Hosting
 							labelPin.SetAttribute("values", "|" + pinName + "|");
 							
 							//save it for reference
-							IOpins.Add(parent.ID.ToString() + cpin.NameByParent(parent), newNodeID);
+							IOpins.Add(ident, newNodeID);
 							var ioboxOutput = GetIOBoxPinName(pinType, false);
 							patch.AddLink(newNodeID, ioboxOutput, FOldID2NewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
 							
@@ -214,8 +237,7 @@ namespace VVVV.Hosting
 						}
 						else if (pin.Direction == PinDirection.Output)
 						{
-							
-							boxBounds.Rectangle = new Rectangle(Math.Max(minOutputX, bounds.X - minX + CBorder), (maxY  -minY) + CPinOffset + CBorder, 750, 225);
+							boxBounds.Rectangle = new Rectangle(Math.Max(minOutputX, bounds.X - minX + CBorder), (maxY  -minY) + CPinOffset + CBorder, 750, 240);
 							var origName = pin.NameByParent(node);
 							var pinName = GetUniqueOutputName(origName);
 							oldPinToNewPin.Add(ident, pinName);
@@ -310,11 +332,12 @@ namespace VVVV.Hosting
 			}
 			
 			var nodeMsg = patch.AddNode(subID);
+			nodeMsg.ComponentMode = ComponentMode.Hidden;
 			//enabling this fukcs it up:
-//			var nodeB = nodeMsg.AddBounds(BoundsType.Node);
-//			nodeB.Rectangle = new Rectangle(selectionCenter.X, selectionCenter.Y, 0, 0);
-//			var boxB = nodeMsg.AddBounds(BoundsType.Node);
-//			boxB.Rectangle = new Rectangle(selectionCenter.X - selectionSize.Width / 2, selectionCenter.Y - selectionSize.Height / 2, selectionSize.Width, selectionSize.Height);
+			var nodeB = nodeMsg.AddBounds(BoundsType.Node);
+			nodeB.Rectangle = new Rectangle(selectionCenter.X, selectionCenter.Y, 0, 0);
+			var boxB = nodeMsg.AddBounds(BoundsType.Box);
+			boxB.Rectangle = new Rectangle(selectionCenter.X - selectionSize.Width / 2, selectionCenter.Y - selectionSize.Height / 2, selectionSize.Width, selectionSize.Height);
 			var windowB = nodeMsg.AddBounds(BoundsType.Window);
 			windowB.Rectangle = new Rectangle(300 + selectionCenter.X + hdeHost.ActivePatchWindow.Bounds.X * 15, 300 + selectionCenter.Y + hdeHost.ActivePatchWindow.Bounds.Y * 15, selectionSize.Width, selectionSize.Height);
 			
@@ -339,30 +362,36 @@ namespace VVVV.Hosting
 					return "Color Input";
 				else
 					return "Color Output";}
-			else if (pinType == "Enumeration")
+			else if (pinType == "Enumerations")
 			{	if (input)
 					return "Input Enum";
 				else
 					return "Output Enum";}
 			else //assume node
-			{	if (input)
+			{	
+				if (input)
 					return "Input Node";
 				else
-					return "Output Node";}
+					return "Output Node";
+			}
 		}
 		
 		private NodeMessage CreateIOBox(PatchMessage patch, string pinType)
 		{
+			NodeMessage node;
 			if (pinType == "String")
-				return patch.AddNode("IOBox (String)");
+				node = patch.AddNode("IOBox (String)");
 			else if (pinType == "Value")
-				return patch.AddNode("IOBox (Value Advanced)");
+				node = patch.AddNode("IOBox (Value Advanced)");
 			else if (pinType == "Color")
-				return patch.AddNode("IOBox (Color)");
+				node = patch.AddNode("IOBox (Color)");
 			else if (pinType == "Enumeration")
-				return patch.AddNode("IOBox (Enumerations)");
+				node = patch.AddNode("IOBox (Enumerations)");
 			else //assume node
-				return patch.AddNode("IOBox (Node)");
+				node = patch.AddNode("IOBox (Node)");
+			
+			node.ComponentMode = ComponentMode.InABox;
+			return node;
 		}
 		
 		private string GetUniqueInputName(string pinName)

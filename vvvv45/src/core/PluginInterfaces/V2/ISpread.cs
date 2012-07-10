@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace VVVV.PluginInterfaces.V2
 {
@@ -14,27 +15,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// Common non-generic interface to the underlying input/output/config pins.
 	/// Set/Get, Read/Write methods are only implemented when it makes sense.
 	/// </summary>
-	[ComVisible(false)]
-	public interface ISpread : IEnumerable, ICloneable, ISynchronizable, IFlushable
-	{
-		/// <summary>
-		/// Provides random read/write access to the actual data.
-		/// </summary>
-		object this[int index]
-		{
-			get;
-			set;
-		}
-		
-		/// <summary>
-		/// Get/Set the size of this spread.
-		/// </summary>
-		int SliceCount
-		{
-			get;
-			set;
-		}
-	}
+
 	
 	/// <summary>
 	/// Common interface to the underlying input/output/config pins.
@@ -480,6 +461,36 @@ namespace VVVV.PluginInterfaces.V2
 		public static void Resize<T>(this ISpread<T> spread, int sliceCount, Func<T> constructor, Action<T> destructor)
         {
 		    spread.Stream.Resize(sliceCount, constructor, destructor);
+        }
+		
+		public static void Resize<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor, Action<T> destructor)
+		{
+		    spread.Stream.Resize(sliceCount, constructor, destructor);
+		}
+		
+		public static void ResizeAndDismiss<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+        {
+            spread.Stream.ResizeAndDismiss(sliceCount, constructor);
+        }
+        
+        public static void ResizeAndDispose<T>(this ISpread<T> spread, int sliceCount, Func<int, T> constructor)
+            where T : IDisposable
+        {
+            spread.Resize(sliceCount, constructor, (t) => t.Dispose());
+        }
+        
+        public static bool IsAnyEmpty(this ISpread spread, params ISpread[] spreads)
+        {
+        	if (spread.SliceCount == 0) return true;
+        	else
+        	{
+        		for (int i = 0; i < spreads.Length; i++) 
+        		{
+        			if (spreads[i].SliceCount == 0) return true;
+        		}
+        	}
+        	
+        	return false;
         }
 		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(
