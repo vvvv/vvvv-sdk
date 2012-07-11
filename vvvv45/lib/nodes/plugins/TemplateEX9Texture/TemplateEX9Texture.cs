@@ -37,7 +37,6 @@ namespace VVVV.Nodes
 			public int Width;
 			public int Height;
 			public double WaveCount;
-			public bool Update;
 		}
 		
 		[Input("Wave Count", DefaultValue = 1)]
@@ -74,15 +73,24 @@ namespace VVVV.Nodes
 				if (info.Width != FWidthIn[i] || info.Height != FHeightIn[i])
 				{
 					textureResource.Dispose();
-					FTextureOut[i] = CreateTextureResource(i);
+					textureResource = CreateTextureResource(i);
+					info = textureResource.Metadata;
 				}
 				//update textures if their wave count changed
-				info.Update = info.WaveCount != FWaveCountIn[i];
-				info.WaveCount = FWaveCountIn[i];
+				if (info.WaveCount != FWaveCountIn[i])
+				{
+					info.WaveCount = FWaveCountIn[i];
+					textureResource.NeedsUpdate = true;
+				}
+				else
+				{
+					textureResource.NeedsUpdate = false;
+				}
+				FTextureOut[i] = textureResource;
 			}
 		}
 		
-		private TextureResource<Info> CreateTextureResource(int slice)
+		TextureResource<Info> CreateTextureResource(int slice)
 		{
 			var info = new Info() { Slice = slice, Width = FWidthIn[slice], Height = FHeightIn[slice] };
 			return TextureResource.Create(info, CreateTexture, UpdateTexture);
@@ -93,8 +101,6 @@ namespace VVVV.Nodes
 		Texture CreateTexture(Info info, Device device)
 		{
 			FLogger.Log(LogType.Debug, "Creating new texture at slice: " + info.Slice);
-			//ensure subsequent update call will trigger the Fill32BitTexInPlace
-			info.Update = true;
 			return TextureUtils.CreateTexture(device, Math.Max(info.Width, 1), Math.Max(info.Height, 1));
 		}
 		
@@ -104,14 +110,11 @@ namespace VVVV.Nodes
 		//calculate the pixels in evaluate and just copy the data to the device texture here
 		unsafe void UpdateTexture(Info info, Texture texture)
 		{
-			if (info.Update)
-			{
-				TextureUtils.Fill32BitTexInPlace(texture, info, FillTexure);
-			}
+			TextureUtils.Fill32BitTexInPlace(texture, info, FillTexure);
 		}
 		
 		//this is a pixelshader like method, which we pass to the fill function
-		private unsafe void FillTexure(uint* data, int row, int col, int width, int height, Info info)
+		unsafe void FillTexure(uint* data, int row, int col, int width, int height, Info info)
 		{
 			//crate position in texture in the range [0..1]
 			var x = (double)row / height;

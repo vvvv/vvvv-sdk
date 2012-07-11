@@ -25,9 +25,20 @@ namespace VVVV.PluginInterfaces.V2
             FCreateResourceFunc = createResourceFunc;
             FUpdateResourceFunc = updateResourceFunc ?? UpdateResource;
             FDestroyResourceAction = destroyResourceAction ?? DestroyResource;
+            NeedsUpdate = true;
         }
 
+        /// <summary>
+        /// Some arbitrary data associated with this resource.
+        /// </summary>
         public TMetadata Metadata { get { return FMetadata; } }
+
+        /// <summary>
+        /// Whether or not the Update method has to be called for this resource.
+        /// By default this flag is true.
+        /// Note: The Update method will always get called for new resources.
+        /// </summary>
+        public bool NeedsUpdate { get; set; }
         
         public TResource this[TDevice device]
         {
@@ -37,6 +48,7 @@ namespace VVVV.PluginInterfaces.V2
                 if (!FResources.TryGetValue(device, out result))
                 {
                     result = FCreateResourceFunc(FMetadata, device);
+                    NeedsUpdate = true;
                     FResources[device] = result;
                 }
                 return result;
@@ -48,7 +60,10 @@ namespace VVVV.PluginInterfaces.V2
             TResource resource;
             if (FResources.TryGetValue(device, out resource))
             {
-                FUpdateResourceFunc(FMetadata, resource);
+                if (NeedsUpdate)
+                {
+                    FUpdateResourceFunc(FMetadata, resource);
+                }
             }
             else
             {
