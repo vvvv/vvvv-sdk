@@ -116,13 +116,6 @@ namespace VVVV.Nodes
                     FSkeleton.ClearAll();
                     FSkeleton.InsertJoint(string.Empty, new BoneWrapper(FSelectedMesh.RootBone));
                     CreateSkeleton(ref FSkeleton, FSelectedMesh.Bones);
-                    // Set the IDs
-                    int id = 0;
-                    foreach (Model.Bone bone in FSelectedMesh.Bones)
-                    {
-                        FSkeleton.JointTable[bone.Name].Id = id;
-                        id++;
-                    }
                 }
                 
                 foreach (Model.Bone bone in FSelectedMesh.Bones)
@@ -140,11 +133,21 @@ namespace VVVV.Nodes
         #region helper
         private void CreateSkeleton(ref Skeleton skeleton, IEnumerable<Model.Bone> bones)
         {
+            int id = 0;
             foreach (var bone in bones)
             {
-                IJoint joint = new BoneWrapper(bone);
-                joint.Id = -1;
-                skeleton.InsertJoint(bone.Parent.Name, joint);
+                var joint = new BoneWrapper(bone);
+                joint.Id = id++;
+
+                // Find parent joint (bone can have parent which is not in joint list, so traverse up to root)
+                var parent = bone.Parent;
+                IJoint parentJoint = null;
+                while (parent != null && parentJoint == null)
+                {
+                    skeleton.JointTable.TryGetValue(parent.Name, out parentJoint);
+                    parent = parent.Parent;
+                }
+                skeleton.InsertJoint(parentJoint.Name, joint);
             }
         }
         #endregion
