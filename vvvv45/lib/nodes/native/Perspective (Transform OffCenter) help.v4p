@@ -1,0 +1,237 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH componentmode="InAWindow" nodename="V:\releases\vvvv_33beta9a\help\Perspective (Transform OffCenter) help.v4p">
+   <BOUNDS height="5970" left="60" top="5565" type="Window" width="13665">
+   </BOUNDS>
+   <NODE id="17" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="300" top="2895" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="5220" top="3630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="15" nodename=":MODULES:\TestCamera (VVVV).v4p">
+   <BOUNDS height="0" left="5235" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="7140" top="5115" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="5235" top="4620" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="testcamera" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="othercamera" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Render Pass" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="layer" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="testcamera" srcnodeid="16" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="14" nodename=":MODULES:\Camera (Transform Softimage).v4p">
+   <BOUNDS height="0" left="5790" top="4125" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="7515" top="11925" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="5790" top="4125" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="othercamera" srcnodeid="14" srcpinname="View Projection">
+   </LINK>
+   <NODE id="13" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="480" top="2460" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="525" top="2085" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5310" top="11565" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="525" top="2085" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.125">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Z" srcnodeid="12" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="255" left="7290" top="4125" type="Node" width="4845">
+   </BOUNDS>
+   <BOUNDS height="1080" left="7290" top="4125" type="Box" width="1965">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see the view volume of your camera in the  right window (use softimage controls Z, O etc,)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="255" left="390" top="1590" type="Node" width="2100">
+   </BOUNDS>
+   <BOUNDS height="270" left="390" top="1590" type="Box" width="2325">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|this is the very simple scene...|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3720" top="540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4575" top="9060" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3720" top="540" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="3.1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4665" top="450" type="Node" width="4230">
+   </BOUNDS>
+   <BOUNDS height="720" left="4665" top="450" type="Box" width="5055">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The FOV (Field of view) is the measure of the angle of a lens&apos; view. As you adjust a camera&apos;s focal length, the angle of view narrows and expands, causing objects to get larger or smaller in the renderer|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5100" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7110" top="10695" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5100" top="1605" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="6825" top="1515" type="Node" width="1725">
+   </BOUNDS>
+   <BOUNDS height="1155" left="6825" top="1515" type="Box" width="6495">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Near and far clipping planes are imaginary planes located at two particular distances from the camera along the camera&apos;s sight line. Only objects between a camera&apos;s two clipping planes are rendered in that camera&apos;s view. Any parts of objects in the scene closer to the camera than the near clipping plane, or farther from the camera than the far clipping plane, are not rendered.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5955" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7410" top="10995" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5955" top="1605" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Perspective (Transform OffCenter)">
+   <BOUNDS height="0" left="5205" top="2985" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Relative To Distance" visible="1">
+   </PIN>
+   <PIN pinname="Near Plane" visible="1">
+   </PIN>
+   <PIN pinname="Far Plane" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Bottom" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Right" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Relative To Distance" linkstyle="PolyLine" srcnodeid="9" srcpinname="Y Output Value">
+   <LINKPOINT x="4485" y="2790">
+   </LINKPOINT>
+   <LINKPOINT x="6045" y="2790">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Near Plane" linkstyle="VHV" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Far Plane" linkstyle="VHV" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Transform In" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="15" top="390" type="Box" width="2520">
+   </BOUNDS>
+   <BOUNDS height="160" left="2520" top="36870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Does a perspective projection|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="15" type="Box" width="4290">
+   </BOUNDS>
+   <BOUNDS height="160" left="2520" top="36870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Perspective - Transform OffCenter|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Layer" dstnodeid="15" dstpinname="Layers">
+   </LINK>
+   </PATCH>

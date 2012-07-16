@@ -1,0 +1,189 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Divide (Differential) help.v4p">
+   <BOUNDS height="3690" left="3180" top="2925" type="Window" width="4410">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="885" top="2490" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5445" top="5685" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="885" top="2490" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Position Out|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1845" top="2490" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5745" top="5985" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1845" top="2490" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Velocity Out|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="165" top="915" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6285" top="3795" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="165" top="915" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="5.00000">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Position In1|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1080" top="915" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6585" top="4095" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1080" top="915" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="30.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Velocity In1|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2070" top="930" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6585" top="4095" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2070" top="930" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Position In2|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2970" top="930" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6885" top="4395" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2970" top="930" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Velocity In2|">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="LFO (Differential)">
+   <BOUNDS height="0" left="2805" top="390" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="VelocityBased">
+   </PIN>
+   <PIN pinname="Velocity" slicecount="1" values="0.10000">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Position Out">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="1" srcpinname="Velocity Out">
+   <LINKPOINT x="3120" y="795">
+   </LINKPOINT>
+   <LINKPOINT x="3735" y="795">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="0" nodename="Divide (Differential)">
+   <BOUNDS height="0" left="1635" top="1935" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position In 2" visible="1">
+   </PIN>
+   <PIN pinname="Velocity In 2" visible="1">
+   </PIN>
+   <PIN pinname="Position In 1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity In 1" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Position In 2" linkstyle="PolyLine" srcnodeid="3" srcpinname="Y Output Value">
+   <LINKPOINT x="2835" y="1545">
+   </LINKPOINT>
+   <LINKPOINT x="2025" y="1545">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Velocity In 2" linkstyle="PolyLine" srcnodeid="2" srcpinname="Y Output Value">
+   <LINKPOINT x="3735" y="1755">
+   </LINKPOINT>
+   <LINKPOINT x="2205" y="1755">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Position In 1" linkstyle="PolyLine" srcnodeid="5" srcpinname="Y Output Value">
+   <LINKPOINT x="930" y="1545">
+   </LINKPOINT>
+   <LINKPOINT x="1665" y="1545">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Velocity In 1" linkstyle="VHV" srcnodeid="4" srcpinname="Y Output Value">
+   <LINKPOINT x="1845" y="1545">
+   </LINKPOINT>
+   <LINKPOINT x="1845" y="1545">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Position Out">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y Input Value" linkstyle="PolyLine" srcnodeid="0" srcpinname="Velocity Out">
+   <LINKPOINT x="2205" y="2355">
+   </LINKPOINT>
+   <LINKPOINT x="2610" y="2355">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="2490">
+   </BOUNDS>
+   <BOUNDS height="160" left="4740" top="4560" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|does a differential divide|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="5340" top="5160" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Divide - Differential|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

@@ -1,0 +1,475 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_45beta27\myplugins\lib\nodes\plugins\NearestNeighbour (3d) help.v4p">
+   <BOUNDS height="9750" left="1830" top="855" type="Window" width="10860">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="7" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="2145" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="9" nodename="GetSlice (Spreads)">
+   <BOUNDS height="0" left="4575" top="4740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Index" slicecount="3" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" linkstyle="Bezier" srcnodeid="7" srcpinname="Output">
+   <LINKPOINT x="2435" y="3633">
+   </LINKPOINT>
+   <LINKPOINT x="4330" y="3793">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Index" linkstyle="VHV" srcnodeid="8" srcpinname="Output">
+   <LINKPOINT x="3165" y="2865">
+   </LINKPOINT>
+   <LINKPOINT x="4980" y="2865">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="15" nodename="RandomSpread (Spreads)" systemname="RandomSpread (Spreads)">
+   <BOUNDS height="100" left="6105" top="2355" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Spread Count" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="17" nodename="Newton (Animation)" systemname="Newton (Animation)">
+   <BOUNDS height="100" left="6105" top="3030" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Go To Position" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="18" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="100" left="6150" top="1695" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Period" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Random Seed" srcnodeid="18" srcpinname="Cycles">
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="15" top="390" type="Box" width="3795">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Finds nearest neighbour between set of points|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|NearestNeighbour (3d)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" filename="%VVVV%\myplugins\lib\nodes\plugins\NearestNeighbour.dll" id="8" nodename="NearestNeighbour (3d)" systemname="NearestNeighbour (3d)">
+   <BOUNDS height="100" left="4545" top="3840" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="ReferenceXY" visible="1">
+   </PIN>
+   <PIN pinname="InputXY" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Reference" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Nearest Index" visible="1">
+   </PIN>
+   <PIN pinname="ReferenceXYZ" visible="1">
+   </PIN>
+   <PIN pinname="InputXYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Index" srcnodeid="8" srcpinname="Nearest Index" linkstyle="Bezier">
+   <LINKPOINT x="4605" y="4410">
+   </LINKPOINT>
+   <LINKPOINT x="5235" y="4410">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="8" dstpinname="ReferenceXYZ">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Position Out" dstnodeid="8" dstpinname="InputXYZ" linkstyle="Bezier">
+   <LINKPOINT x="6105" y="3570">
+   </LINKPOINT>
+   <LINKPOINT x="5865" y="3570">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="3975" top="9300" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="22">
+   <BOUNDS type="Node" left="3015" top="10245" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3015" top="10245" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12735" top="885" width="6120" height="4860">
+   </BOUNDS>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="View" dstnodeid="22" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Projection" dstnodeid="22" dstpinname="Projection">
+   </LINK>
+   <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="3000" top="8835" width="1725" height="270">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Layer" dstnodeid="22" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="Sphere (DX9)" nodename="Sphere (DX9)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="1620" top="6405" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Transform (Transform 3d Vector)" nodename="Transform (Transform 3d Vector)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="1785" top="4725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Translate XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="25" dstpinname="Translate XYZ" linkstyle="Bezier">
+   <LINKPOINT x="2160" y="3720">
+   </LINKPOINT>
+   <LINKPOINT x="2010" y="3720">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Transform Out" dstnodeid="24" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="23" dstpinname="Layer 1" linkstyle="VHV">
+   <LINKPOINT x="1650" y="8000">
+   </LINKPOINT>
+   <LINKPOINT x="3030" y="8335">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="27" nodename="Sphere (DX9)" systemname="Sphere (DX9)">
+   <BOUNDS height="100" left="8115" top="6285" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="26" nodename="Transform (Transform 3d Vector)" systemname="Transform (Transform 3d Vector)">
+   <BOUNDS height="100" left="8280" top="5610" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Translate XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="27" dstpinname="Transform" srcnodeid="26" srcpinname="Transform Out">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Position Out" dstnodeid="26" dstpinname="Translate XYZ" linkstyle="Bezier">
+   <LINKPOINT x="6900" y="4543">
+   </LINKPOINT>
+   <LINKPOINT x="7725" y="4368">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Layer" dstnodeid="23" dstpinname="Layer 3" linkstyle="VHV">
+   <LINKPOINT x="8145" y="8595">
+   </LINKPOINT>
+   <LINKPOINT x="4140" y="8595">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="RGB (Color Join)" nodename="RGB (Color Join)" componentmode="Hidden" id="28">
+   <BOUNDS type="Node" left="9045" top="5070" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Blue" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Green" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="27" dstpinname="Color">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="31">
+   <BOUNDS type="Node" left="3285" top="1515" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3285" top="1515" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="3270" top="2010" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="32" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="7" dstpinname="Spread Count">
+   </LINK>
+   <NODE systemname="Select (Color)" nodename="Select (Color)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="3105" top="4215" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="30" dstpinname="Select">
+   </LINK>
+   <NODE systemname="SetSlice (Color)" nodename="SetSlice (Color)" componentmode="Hidden" id="33">
+   <BOUNDS type="Node" left="3105" top="5475" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Spread" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="Output" dstnodeid="33" dstpinname="Spread">
+   </LINK>
+   <NODE componentmode="Hidden" id="34" nodename="RGB (Color Join)" systemname="RGB (Color Join)">
+   <BOUNDS height="100" left="3330" top="4800" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Blue" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Green" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Red" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="34" srcpinname="Output" dstnodeid="33" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Nearest Index" dstnodeid="33" dstpinname="Index" linkstyle="Bezier">
+   <LINKPOINT x="4545" y="4793">
+   </LINKPOINT>
+   <LINKPOINT x="3810" y="4793">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Output" dstnodeid="24" dstpinname="Color" linkstyle="Bezier">
+   <LINKPOINT x="3090" y="6068">
+   </LINKPOINT>
+   <LINKPOINT x="2625" y="6068">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Line (EX9.Geometry)" filename="" nodename="Line (EX9.Geometry)" componentmode="Hidden" id="36">
+   <BOUNDS type="Node" left="3555" top="8100" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="VerticesXYZ" visible="1">
+   </PIN>
+   <PIN pinname="BinSize" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Layer" dstnodeid="23" dstpinname="Layer 2">
+   </LINK>
+   <NODE systemname="Vector (3d Split)" nodename="Vector (3d Split)" componentmode="Hidden" id="37">
+   <BOUNDS type="Node" left="4575" top="5775" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="37" dstpinname="XYZ">
+   </LINK>
+   <NODE componentmode="Hidden" id="38" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
+   <BOUNDS height="100" left="5865" top="5775" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Position Out" dstnodeid="38" dstpinname="XYZ" linkstyle="Bezier">
+   <LINKPOINT x="6120" y="4465">
+   </LINKPOINT>
+   <LINKPOINT x="5895" y="4610">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Vector (2d Join)" nodename="Vector (2d Join)" componentmode="Hidden" id="40">
+   <BOUNDS type="Node" left="4590" top="6465" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="X" dstnodeid="40" dstpinname="X" linkstyle="Bezier">
+   <LINKPOINT x="4605" y="6270">
+   </LINKPOINT>
+   <LINKPOINT x="4605" y="6270">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="X" dstnodeid="40" dstpinname="Y" linkstyle="Bezier">
+   <LINKPOINT x="5865" y="6255">
+   </LINKPOINT>
+   <LINKPOINT x="5220" y="6255">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="41" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
+   <BOUNDS height="100" left="5385" top="6465" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="42" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
+   <BOUNDS height="100" left="6180" top="6465" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="Y" dstnodeid="41" dstpinname="X" linkstyle="Bezier">
+   <LINKPOINT x="4920" y="6233">
+   </LINKPOINT>
+   <LINKPOINT x="5370" y="6233">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Y" dstnodeid="41" dstpinname="Y" linkstyle="Bezier">
+   <LINKPOINT x="6150" y="6248">
+   </LINKPOINT>
+   <LINKPOINT x="5985" y="6248">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Z" dstnodeid="42" dstpinname="X" linkstyle="Bezier">
+   <LINKPOINT x="5205" y="6240">
+   </LINKPOINT>
+   <LINKPOINT x="6180" y="6240">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Z" dstnodeid="42" dstpinname="Y" linkstyle="Bezier">
+   <LINKPOINT x="6495" y="6248">
+   </LINKPOINT>
+   <LINKPOINT x="6750" y="6248">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="43">
+   <BOUNDS type="Node" left="5100" top="7140" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="XY" dstnodeid="43" dstpinname="X" linkstyle="VHV">
+   <LINKPOINT x="4650" y="6938">
+   </LINKPOINT>
+   <LINKPOINT x="5085" y="6938">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="XY" dstnodeid="43" dstpinname="Y" linkstyle="VHV">
+   <LINKPOINT x="5415" y="6930">
+   </LINKPOINT>
+   <LINKPOINT x="5415" y="6930">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="XY" dstnodeid="43" dstpinname="Z" linkstyle="VHV">
+   <LINKPOINT x="6180" y="6923">
+   </LINKPOINT>
+   <LINKPOINT x="5730" y="6923">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="XYZ" dstnodeid="36" dstpinname="VerticesXYZ" linkstyle="VHV">
+   <LINKPOINT x="5100" y="7740">
+   </LINKPOINT>
+   <LINKPOINT x="3780" y="7740">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
