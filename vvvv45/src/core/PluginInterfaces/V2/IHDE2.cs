@@ -274,6 +274,14 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
+		/// Provides access to nodes that have been exposed for being remotely controlled
+		/// </summary>
+		IExposedNodeService ExposedNodeService
+		{
+			get;
+		}
+		
+		/// <summary>
 		/// Indicates whether this IHDEHost is a client in a boygroup.
 		/// </summary>
 		bool IsBoygroupClient
@@ -622,15 +630,23 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+		
 		int Top
 		{
 			get;
 		}
+		
 		int Width
 		{
 			get;
 		}
+		
 		int Height
+		{
+			get;
+		}
+		
+		IntPtr Handle
 		{
 			get;
 		}

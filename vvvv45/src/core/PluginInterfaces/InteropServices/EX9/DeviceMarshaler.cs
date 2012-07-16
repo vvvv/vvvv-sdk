@@ -12,7 +12,8 @@ namespace VVVV.PluginInterfaces.InteropServices.EX9
     internal class DeviceMarshaler : ICustomMarshaler
     {
         private static DeviceMarshaler marshaler = null;
-        public static ICustomMarshaler GetInstance(string cookie)
+        private static Guid FDX9EX = new Guid("{B18B10CE-2649-405a-870F-95F777D4313A}");
+        public static ICustomMarshaler GetInstance(string cookie = "")
         {
             if (marshaler == null)
             {
@@ -26,7 +27,14 @@ namespace VVVV.PluginInterfaces.InteropServices.EX9
             if (pNativeData == IntPtr.Zero)
                 return null;
             else
-                return Device.FromPointer(pNativeData);
+            {
+            	IntPtr pD3ex;
+            	Marshal.QueryInterface(pNativeData, ref FDX9EX, out pD3ex);
+            	if (pD3ex == IntPtr.Zero)
+                	return Device.FromPointer(pNativeData);
+            	else
+            		return DeviceEx.FromPointer(pD3ex);
+            }
         }
         
         public IntPtr MarshalManagedToNative(object ManagedObj)

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace VVVV.PluginInterfaces.V2
 {
