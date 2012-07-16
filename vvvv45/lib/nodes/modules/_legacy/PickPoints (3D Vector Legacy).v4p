@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\PickPoints (3D Vector).v4p" systemname="PickPoints (3D Vector)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\PickPoints (3D Vector).v4p">
-   <BOUNDS height="11220" left="795" top="210" type="Window" width="10035">
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\_legacy\PickPoints (3D Vector Legacy).v4p" systemname="PickPoints (3D Vector Legacy)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\_legacy\PickPoints (3D Vector Legacy).v4p">
+   <BOUNDS height="11415" left="795" top="210" type="Window" width="11115">
    </BOUNDS>
    <NODE componentmode="InABox" id="29" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="330" top="9120" type="Node" width="0">
@@ -118,6 +118,30 @@
    <PIN pinname="Rows" slicecount="1" values="1">
    </PIN>
    </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5880" top="1200" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13905" top="8790" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5880" top="1200" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse XYZ|" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7095" top="1200" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14205" top="9090" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7095" top="1200" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Down|" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
    <NODE id="17" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
    <BOUNDS height="0" left="6195" top="8925" type="Node" width="0">
    </BOUNDS>
@@ -145,11 +169,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3225" top="1230" type="Node" width="0">
+   <BOUNDS height="0" left="4110" top="1200" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7935" top="6960" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="3225" top="1230" type="Box" width="795">
+   <BOUNDS height="240" left="4110" top="1200" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Point Size|" encoded="0">
    </PIN>
@@ -182,6 +206,8 @@
    <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
    </PIN>
    </NODE>
+   <LINK dstnodeid="17" dstpinname="Switch" srcnodeid="18" srcpinname="Y Output Value">
+   </LINK>
    <LINK dstnodeid="20" dstpinname="Y Input Value" srcnodeid="14" srcpinname="Output">
    </LINK>
    <NODE id="12" nodename="NOT (Boolean)" systemname="NOT (Boolean)">
@@ -193,6 +219,8 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="14" dstpinname="Set" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="18" srcpinname="Y Output Value">
    </LINK>
    <NODE id="11" nodename="EQ (Value)" systemname="EQ (Value)">
    <BOUNDS height="0" left="4455" top="3300" type="Node" width="0">
@@ -206,6 +234,8 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
+   <LINK dstnodeid="11" dstpinname="Input 2" srcnodeid="19" srcpinname="Y Output Value">
+   </LINK>
    <NODE id="10" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
    <BOUNDS height="0" left="2025" top="3525" type="Node" width="0">
    </BOUNDS>
@@ -251,6 +281,18 @@
    <LINK dstnodeid="10" dstpinname="XYZ" srcnodeid="22" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="11" dstpinname="Input 1" srcnodeid="22" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="7" nodename="Divide (Value)" systemname="Divide (Value)">
+   <BOUNDS height="0" left="4500" top="2175" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="15" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="11" dstpinname="Epsilon" srcnodeid="15" srcpinname="Y Output Value">
    </LINK>
@@ -342,6 +384,8 @@
    <PIN pinname="Bang On Create" slicecount="1" values="1">
    </PIN>
    </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="18" srcpinname="Y Output Value">
+   </LINK>
    <LINK dstnodeid="13" dstpinname="Set" srcnodeid="1" srcpinname="Up Edge">
    </LINK>
    <LINK dstnodeid="17" dstpinname="Input 2" srcnodeid="13" srcpinname="Output">
@@ -457,49 +501,5 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="17" dstpinname="Input 1" srcnodeid="39" srcpinname="Output">
-   </LINK>
-   <NODE systemname="MouseState (System Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseState (System Split)" componentmode="Hidden" id="40">
-   <BOUNDS type="Node" left="4560" top="1710" width="1395" height="270">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Node)" componentmode="InABox" id="41" systemname="IOBox (Node)">
-   <BOUNDS type="Node" left="4575" top="1185" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="4575" top="1185" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Input Node" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse State|" encoded="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="41" srcpinname="Output Node" dstnodeid="40" dstpinname="Input">
-   </LINK>
-   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="42">
-   <BOUNDS type="Node" left="4560" top="2175" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="40" srcpinname="X" dstnodeid="42" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="40" srcpinname="Y" dstnodeid="42" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="XYZ" dstnodeid="11" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="40" srcpinname="Left Button" dstnodeid="12" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="40" srcpinname="Left Button" dstnodeid="17" dstpinname="Switch">
-   </LINK>
-   <LINK srcnodeid="40" srcpinname="Left Button" dstnodeid="1" dstpinname="Input">
    </LINK>
    </PATCH>
