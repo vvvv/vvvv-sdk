@@ -1,0 +1,157 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\RelativePath (File) help.v4p" filename="C:\GiggelzGoggelz\vvvv_45beta26\help\RelativePath (File) help.v4p" systemname="RelativePath (File) help">
+   <BOUNDS height="6240" left="10260" top="2070" type="Window" width="7530">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="0" nodename="RelativePath (File)" systemname="RelativePath (File)">
+   <BOUNDS height="270" left="375" top="3090" type="Node" width="1125">
+   </BOUNDS>
+   <PIN pinname="Absolute Path" visible="1">
+   </PIN>
+   <PIN pinname="Base Path" visible="1">
+   </PIN>
+   <PIN pinname="Relative Path" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="60" top="405" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="750" left="60" top="405" type="Box" width="2250">
+   </BOUNDS>
+   <BOUNDS height="160" left="9570" top="42330" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|converts a filename to a relative filename|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="60" top="30" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="60" top="30" type="Box" width="2430">
+   </BOUNDS>
+   <BOUNDS height="160" left="9570" top="42330" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|RelativePath (File)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="375" top="4125" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="255" left="375" top="4125" type="Box" width="1395">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input String" linkstyle="PolyLine" srcnodeid="0" srcpinname="Relative Path">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="315" top="5220" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="270" left="315" top="5220" type="Box" width="750">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="8" nodename="AbsolutePath (File)" systemname="AbsolutePath (File)">
+   <BOUNDS height="100" left="1335" top="5220" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="375" top="1860" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="270" left="375" top="1860" type="Box" width="1605">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="1" values="C:\temp\Test.v4p">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Absolute Path" srcnodeid="10" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1440" top="2280" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="270" left="1440" top="2280" type="Box" width="915">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="C:\temp">
+   </PIN>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Directory">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2355" top="2280" type="Node" width="1395">
+   </BOUNDS>
+   <BOUNDS height="270" left="2355" top="2280" type="Box" width="1395">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; given base path|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Base Path" srcnodeid="12" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1980" top="1860" type="Node" width="1680">
+   </BOUNDS>
+   <BOUNDS height="270" left="1980" top="1860" type="Box" width="1680">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; given absolute path|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="4365" top="2085" type="Node" width="9210">
+   </BOUNDS>
+   <BOUNDS height="1245" left="4365" top="2085" type="Box" width="2445">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Given an absolute path this node can return a relative path to a given base path.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="MakePath (String)" filename="%VVVV%\addonpack\lib\nodes\plugins\MakePath.dll" nodename="MakePath (String)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="2610" top="5220" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2610" top="5220">
+   </BOUNDS>
+   </NODE>
+   </PATCH>

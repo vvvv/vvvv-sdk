@@ -1,0 +1,129 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.5.dtd" >
+   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\Ready\Crypto\SHA1 (File) help.v4p">
+   <BOUNDS height="7815" left="2970" top="1665" type="Window" width="7410">
+   </BOUNDS>
+   <NODE id="8" nodename="SystemFolder (File)">
+   <BOUNDS height="0" left="4755" top="1725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Folder" slicecount="1" values="Application">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Do Rescan" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Dir (File)">
+   <BOUNDS height="0" left="4605" top="2325" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Directory" visible="1">
+   </PIN>
+   <PIN pinname="Mask" slicecount="1" values="*.txt">
+   </PIN>
+   <PIN pinname="Filenames" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Directory" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE id="6" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="4590" top="3450" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="540" top="4260" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4965" top="7110" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1365" left="540" top="4260" type="Box" width="4095">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Hashes">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input String" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="4" nodename="Crypto.dll|VVVV.Nodes.Sha1FileNode">
+   <BOUNDS height="0" left="4590" top="2865" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="5100" top="4560" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="4590" top="2865" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="File Names" visible="1">
+   </PIN>
+   <PIN pinname="Hashes" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="345" top="480" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="345" top="480" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="9510" top="14550" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates the SHA-1 hash for a file|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="345" top="120" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="345" top="120" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="9510" top="14550" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SHA1 - File|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4590" top="6315" type="Node" width="615">
+   </BOUNDS>
+   <BOUNDS height="270" left="4590" top="6315" type="Box" width="615">
+   </BOUNDS>
+   <BOUNDS height="160" left="2850" top="1680" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4620" top="6675" type="Node" width="1785">
+   </BOUNDS>
+   <BOUNDS height="270" left="4620" top="6675" type="Box" width="1785">
+   </BOUNDS>
+   <BOUNDS height="160" left="2850" top="1680" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Filenames" dstnodeid="4" dstpinname="Filename">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="6" dstpinname="Input">
+   </LINK>
+   </PATCH>

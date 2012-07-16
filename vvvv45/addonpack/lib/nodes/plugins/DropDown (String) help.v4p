@@ -1,0 +1,91 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
+   <PATCH nodename="D:\develop\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\DropDown (String) help.v4p" componentmode="InAWindow">
+   <BOUNDS height="5865" left="3255" top="930" type="Window" width="4890">
+   </BOUNDS>
+   <NODE id="4" nodename="SpellValue (String)">
+   <BOUNDS height="0" left="300" top="1515" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="I (Spreads)">
+   <BOUNDS height="0" left="300" top="1170" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname=".. To [" slicecount="1" values="36">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="300" top="3345" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5040" top="6510" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1995" left="300" top="3345" type="Box" width="1680">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename=":PLUGINS:\DropDown (String).dll">
+   <BOUNDS height="100" left="300" top="1800" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1335" left="300" top="1800" type="Box" width="2370">
+   </BOUNDS>
+   <PIN pinname="List Item" visible="1">
+   </PIN>
+   <PIN pinname="Width">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="List Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Selected Item" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Do Select" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="List Item" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Input String" srcnodeid="0" srcpinname="Selected Item">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="210" top="210" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="420" left="210" top="210" type="Box" width="3705">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|DropDown (String)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="210" top="720" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="315" left="210" top="720" type="Box" width="3630">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|spreadable dropdown gui for selecting strings|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

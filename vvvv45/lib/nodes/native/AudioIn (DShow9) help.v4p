@@ -1,0 +1,111 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\AudioIn (DShow9) help.v4p">
+   <BOUNDS height="4455" left="3345" top="2595" type="Window" width="4290">
+   </BOUNDS>
+   <NODE id="7" nodename="AudioIn (DShow9)">
+   <BOUNDS height="0" left="1035" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Bit Depth" slicecount="1" values="16Bit">
+   </PIN>
+   <PIN pinname="Buffer Size" slicecount="1" values="2048.00000">
+   </PIN>
+   <PIN pinname="Channel Mode" slicecount="1" values="Monaural">
+   </PIN>
+   <PIN pinname="Buffer Count" slicecount="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Sample Rate" slicecount="1" values="44100.00000">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="FFT (DShow9)">
+   <BOUNDS height="0" left="1035" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="FFT" visible="1">
+   </PIN>
+   <PIN pinname="BuffersPerFrame" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="256.00000">
+   </PIN>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="285" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7920" top="3385" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="285" top="3480" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="AudioMixer (System)">
+   <BOUNDS height="0" left="2295" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Line" slicecount="1" values="|Volume Control|">
+   </PIN>
+   <PIN pinname="Device" slicecount="1" values="(nil)">
+   </PIN>
+   <PIN pinname="Volume" slicecount="1" values="0.80000">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="AudioRecordSelector (System)">
+   <BOUNDS height="0" left="2295" top="3105" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Device" slicecount="1" values="|Wave Out Mix|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Audio" srcnodeid="7" srcpinname="Audio">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="2" managers="" nodename="Add (Value Spectral)">
+   <PIN pinname="Input" pintype="Input" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1020" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Bin Size" pintype="Input" slicecount="1" visible="1" values="-1.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="6" srcpinname="FFT">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="705" left="15" top="390" type="Box" width="3165">
+   </BOUNDS>
+   <BOUNDS height="160" left="-120" top="7650" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Gets an audio signal from the sound card&cr;&lf;This is always the first piece in a live audio manipulation/analysis chain|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="-120" top="7650" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|AudioIn - DShow9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

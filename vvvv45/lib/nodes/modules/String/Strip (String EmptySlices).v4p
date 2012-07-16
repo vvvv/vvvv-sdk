@@ -1,0 +1,61 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\String\Strip (String EmptySlices).v4p">
+   <BOUNDS height="6000" left="-5940" top="13260" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1665" top="930" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="17985" top="13740" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1665" top="930" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="945" top="2805" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="18285" top="14040" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="945" top="2805" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Select (String)" systemname="Select (String)">
+   <BOUNDS height="0" left="1665" top="2085" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="3" srcpinname="Output String">
+   </LINK>
+   <NODE id="0" nodename="EQ (String)" systemname="EQ (String)">
+   <BOUNDS height="0" left="1815" top="1665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input 1" srcnodeid="3" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Select" srcnodeid="0" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input String" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <INFO author="vvvv group" description="Throws away slices containing an empty string. Returns only slices containing non-empty strings." tags="delete, remove, NIL, text">
+   </INFO>
+   </PATCH>
