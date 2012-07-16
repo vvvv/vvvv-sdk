@@ -1,5 +1,5 @@
 float2 R;
-float fuzzyAmount = 0.0;
+float fuzzyAmount <float uimin=0.0;> = 0.1;
 float Fader <float uimin=0.0; float uimax=1.0;> = 0.5;
 
 texture tex0,tex1;

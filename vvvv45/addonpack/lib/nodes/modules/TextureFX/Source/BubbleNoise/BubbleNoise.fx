@@ -1,10 +1,10 @@
 float2 R;
 float time;
-float freq;
+float freq = 3.5;
 float contrast;
-float4 Color:COLOR;
+float4 ColorA:COLOR <String uiname="Background Color";>  = {0, 0, 0, 1};
+float4 ColorB:COLOR<String uiname="Bubble Color";>  = {1, 1, 1, 1};
 
-//
 // GLSL textureless classic 3D noise "cnoise",
 // with an RSL-style periodic variant "pnoise".
 // Author:  Stefan Gustavson (stefan.gustavson@liu.se)
@@ -16,7 +16,6 @@ float4 Color:COLOR;
 // Copyright (c) 2011 Stefan Gustavson. All rights reserved.
 // Distributed under the MIT license. See LICENSE file.
 // https://github.com/ashima/webgl-noise
-//
 
 float3 mod289(float3 x)
 {
@@ -112,32 +111,28 @@ float cnoise(float3 P)
   return 2.2 * n_xyz;
 }
 
-float surface3 ( float3 coord ) {
-	
+float surface3 ( float3 coord ) 
+{
 	float frequency = freq;
-	float n = contrast;	
-		
+	float n = contrast/2;		
 	n += 1.0	* abs( cnoise( coord * frequency ) );
 	n += 0.5	* abs( cnoise( coord * frequency * 2.0 ) );
 	n += 0.25	* abs( cnoise( coord * frequency * 4.0 ) );
-	
 	return n;
 }
 	
-float4 p0(float2 vp:vpos):color {
+float4 p0(float2 vp:vpos): COLOR {
 	
 	float2 position = vp.xy / R.xy;
 	float2 offsetSize = float2(1.0, 1.0) / R.xy;
-	
 	float n = surface3(float3(position.x, position.y, time * 0.1)) * 0.2 +
 	      surface3(float3(position.x - offsetSize.x, position.y, time * 0.1)) * 0.2 +
 	      surface3(float3(position.x + offsetSize.x, position.y, time * 0.1)) * 0.2 +
 	      surface3(float3(position.x, position.y - offsetSize.y, time * 0.1)) * 0.2 +
 	      surface3(float3(position.x, position.y + offsetSize.y, time * 0.1)) * 0.2;
 	
-	return float4(n*Color.r, n*Color.g, n*Color.b, 1.0);
+	return lerp (ColorA, ColorB, n);
 }
-
 
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
 technique BubbleNoise{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}

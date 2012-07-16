@@ -1,9 +1,10 @@
-//Credit : Digital Slaves
+//first version by Digital Slaves
+//adapted as a texture filter by lecloneur
 
 float2 R;
-float width <float uimin=0.0; string uiname="Line Width";> = 2;
-float4 ColorA:COLOR <String uiname="Color";>  = {1, 1, 1, 1};
-float4 ColorB:COLOR <String uiname="Background Color";>  = {0, 0, 0, 1};
+float width <float uimin=0.0; string uiname="Line Width";> = 10.0;
+float4 ColorA:COLOR <String uiname="Background Color";>  = {1, 1, 1, 1};
+float4 ColorB:COLOR <String uiname="Color";>  = {0, 0, 0, 1};
 
 texture Tex <string uiname="Texture";>;
 sampler Samp = sampler_state  {Texture=(Tex);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
@@ -30,4 +31,4 @@ float4 p0(float2 vp : vpos): COLOR
 }
 
 void vs2d( inout float4 vp:POSITION, inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=0.5/R;}
-technique Charcoal{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_3_0 p0();}}
+technique Charcoal{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}

@@ -1,7 +1,6 @@
 float2 R;
-
-float PixelX <string uiname="AmountX";> = 2.0;
-float PixelY <string uiname="AmountY";> = 2.0;
+float PixelX <string uiname="AmountX";> = 5.0;
+float PixelY <string uiname="AmountY";> = 5.0;
 float Freq <float uimin=0.0; float uimax=1.0; string uiname="Frequency";> = 0.115;
 
 texture tex0,tex1;
@@ -103,6 +102,6 @@ float4 p0 (float2 vp:vpos):COLOR {
 }
 
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
-technique Frost{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_3_0 p0();}}
+technique Frost{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}
 
 

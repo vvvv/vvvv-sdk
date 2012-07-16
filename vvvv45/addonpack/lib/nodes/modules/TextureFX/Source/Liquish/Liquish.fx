@@ -1,14 +1,13 @@
 float2 R;
 float time;
+//float4 ColorA:COLOR;
+float4 ColorB:COLOR = {1, 0, 0, 1};
+float4 ColorC:COLOR = {0, 1, 0, 1};
+float4 ColorD:COLOR = {0, 0, 1, 1};
 
 //Ported from GLSL
 // all credit to :
 //http://glsl.heroku.com/e#1252.0    @SyntopiaDK, 2012
-float4 ColorA:COLOR;
-float4 ColorB:COLOR;
-float4 ColorC:COLOR;
-float4 ColorD:COLOR;
-
 
 float rand(float2 co){
 	// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
@@ -60,27 +59,27 @@ float4 p0(float2 vp:vpos):color  {
 	float2 c = 1000.0 * vp.xy / R.xy;
 	float f = pattern(c*0.01,q,r);
 	
-	float3 colors[4];
-	colors[0] = float3 (ColorA.r, ColorA.g, ColorA.b);
-	colors[1] = float3 (ColorB.r, ColorB.g, ColorB.b);
-	colors[2] = float3 (ColorC.r, ColorC.g, ColorC.b);
-	colors[3] = float3 (ColorD.r, ColorD.g, ColorD.b);
+	float3 colors[3];
+	//colors[0] = float3 (ColorA.r, ColorA.g, ColorA.b);
+	colors[0] = float3 (ColorB.r, ColorB.g, ColorB.b);
+	colors[1] = float3 (ColorC.r, ColorC.g, ColorC.b);
+	colors[2] = float3 (ColorD.r, ColorD.g, ColorD.b);
 	
 	float3 col = lerp(colors[0],colors[1],clamp((f*f)*4.0,0.0,1.0));
-	col = colors[1];
-	col = lerp(col,colors[2],clamp(length(q),0.0,1.0));
-	col = lerp(col,colors[3],clamp(length(r.x),0.0,1.0));
+	//col = colors[1];
+	col = lerp(col,colors[1],clamp(length(q),0.0,1.0));
+	col = lerp(col,colors[2],clamp(length(r.x),0.0,1.0));
 	
-	float alphas[4];
-	alphas[0] = float (ColorA.a);
-	alphas[1] = float (ColorB.a);
-	alphas[2] = float (ColorC.a);
-	alphas[3] = float (ColorD.a);
+	float alphas[3];
+	//alphas[0] = float (ColorA.a);
+	alphas[0] = float (ColorB.a);
+	alphas[1] = float (ColorC.a);
+	alphas[2] = float (ColorD.a);
 	
+	//float alph = lerp(alphas[0],alphas[1],clamp((f)*4.0,0.0,1.0));
 	float alph = lerp(alphas[0],alphas[1],clamp((f)*4.0,0.0,1.0));
-	alph = alphas[1];
-	alph = lerp(alph,alphas[2],clamp(length(q),0.0,1.0));
-	alph = lerp(alph,alphas[3],clamp(length(r.x),0.0,1.0));
+	alph = lerp(alph,alphas[1],clamp(length(q),0.0,1.0));
+	alph = lerp(alph,alphas[2],clamp(length(r.x),0.0,1.0));
 	
 	return  float4((0.2*f*f*f+0.6*f*f+0.5*f)*atan(col), alph);
 }

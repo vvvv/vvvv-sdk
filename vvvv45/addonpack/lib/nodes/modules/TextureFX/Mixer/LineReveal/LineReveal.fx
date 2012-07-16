@@ -1,9 +1,8 @@
 float2 R;
-
-float2 lineOrigin;
-float2 lineNormal;
-float2 lineOffset;
-float fuzzyAmount;
+float2 lineOrigin = 1.0;
+float2 lineNormal = 1.0;
+float2 lineOffset = 0.0;
+float fuzzyAmount <float uimin=0.0;> = 0.0;
 
 float Fader <float uimin=0.0; float uimax=1.0;> = 0.5;
 texture tex0,tex1;

@@ -1,6 +1,6 @@
 float2 R;
-float twistAmount;
-int cellcount <int uimin = 1;> = 1;
+float twistAmount = 1.0;
+int cellcount <int uimin = 1;> = 7;
 float Fader <float uimin=0.0; float uimax=1.0;> = 0.5;
 
 texture tex0,tex1;

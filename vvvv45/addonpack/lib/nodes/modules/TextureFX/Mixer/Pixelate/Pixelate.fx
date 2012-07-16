@@ -9,7 +9,6 @@ float4 p0 (float2 x : TEXCOORD0) : COLOR
 {
 	float pixels;
 	float segment_progress;
-	
 	if (Fader < 0.5)
 	{
 		segment_progress = 1 - Fader * 2;

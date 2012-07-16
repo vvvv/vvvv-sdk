@@ -1,13 +1,14 @@
 float2 R;
-float4 Color : COLOR <String uiname="Color"; >  = {1, 1, 1, 1};
-float glowStrength;
-float ambientGlow;
-float ambientGlowHeightScale;
-float height;
-float glowFallOff;
-float speed;
-float vertexNoise;
 float time;
+float4 ColorA : COLOR <String uiname="Electricity Color"; >  = {1, 1, 1, 1};
+float4 ColorB : COLOR <String uiname="Background Color"; >  = {0, 0, 0, 1};
+float glowStrength = 40;
+float ambientGlow = 0.5;
+float ambientGlowHeightScale = 1.0;
+float height = 0.25;
+float glowFallOff = 0.02;
+float speed = 0.15;
+float vertexNoise = 0.5;
 
 texture Noise_Tex;
 sampler Noise = sampler_state{Texture = (Noise_Tex);ADDRESSU = WRAP;ADDRESSV = WRAP;ADDRESSW = WRAP;MAGFILTER = LINEAR;MINFILTER = LINEAR;MIPFILTER = LINEAR;};
@@ -44,7 +45,7 @@ float4 p0(float2 vp: TEXCOORD) : COLOR
 	// Add some ambient glow to get some power in the air feeling
 	float ambGlow = ambientGlow * (1 - xs1 * xs1) * (1 - abs(ambientGlowHeightScale * uv.y));
 
-	return ((glowStrength * glow * glow + ambGlow) * Color);
+	return lerp(ColorB, ColorA, (glowStrength * glow * glow + ambGlow));
 }
 
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}

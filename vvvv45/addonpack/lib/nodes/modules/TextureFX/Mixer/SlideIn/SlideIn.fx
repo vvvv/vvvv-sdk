@@ -1,6 +1,5 @@
 float2 R;
-
-float2 slideAmount <float uimin=-1.0; float uimax=1.0;> = 0;
+float2 slideAmount <float uimin=-1.0; float uimax=1.0;> = 1.0;
 float Fader <float uimin=0.0; float uimax=1.0;> = 0.5;
 
 texture tex0,tex1;

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.1.dtd" >
-   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Filter\Magnify (EX9.Texture Filter)\Magnify (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\Colorize(EX9.Texture Filter).v4p" systemname="Colorize (EX9.Texture Filter)">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
+   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Filter\Magnify\Magnify (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\Colorize(EX9.Texture Filter).v4p" systemname="Colorize (EX9.Texture Filter)">
    <BOUNDS height="6690" left="4425" top="2340" type="Window" width="7725">
    </BOUNDS>
    <NODE componentmode="Hidden" id="7" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
@@ -191,13 +191,15 @@
    </PIN>
    <PIN pinname="ColorC" visible="1">
    </PIN>
-   <PIN pinname="inner radius">
+   <PIN pinname="inner radius" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="magnification">
    </PIN>
-   <PIN pinname="outer radius">
+   <PIN pinname="outer radius" visible="1">
    </PIN>
    <PIN pinname="center XY" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="38" dstpinname="Mesh" srcnodeid="7" srcpinname="Mesh">
@@ -227,7 +229,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="centerXY">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="CenterXY">
    </PIN>
    <PIN pinname="X Input Value" slicecount="2" values="0.5,0.5">
    </PIN>
@@ -239,13 +241,17 @@
    </BOUNDS>
    <BOUNDS height="240" left="3270" top="480" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="-0.05">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.25">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="innerRadius">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="InnerRadius">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="38" dstpinname="inner radius" srcnodeid="43" srcpinname="Y Output Value">
@@ -255,7 +261,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="5370" top="480" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.57">
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -271,17 +277,21 @@
    </BOUNDS>
    <BOUNDS height="240" left="4380" top="480" type="Box" width="735">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.34">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="outerRadius">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="OuterRadius">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="38" dstpinname="outer radius" srcnodeid="45" srcpinname="Y Output Value">
    </LINK>
    <INFO author="lecloneur" description="Magnify effect" tags="fx">
    </INFO>
+   <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Enabled">
+   </LINK>
    </PATCH>

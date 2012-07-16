@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
-   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Source\Liquish (EX9.Texture Source)\Liquish (EX9.Texture Source).v4p" filename="C:\Users\Administrator\Desktop\_Template (EX9.Texture Filter).v4p" systemname="_Template (EX9.Texture Filter)">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
+   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\Effects\vvvv_FX\EX9.Texture Source\Liquish\Liquish (EX9.Texture Source).v4p" filename="C:\Users\Administrator\Desktop\_Template (EX9.Texture Filter).v4p" systemname="_Template (EX9.Texture Filter)">
    <BOUNDS height="6555" left="150" top="255" type="Window" width="13005">
    </BOUNDS>
    <NODE componentmode="Hidden" id="9" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
@@ -175,13 +175,15 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Width">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1024">
+   <PIN pinname="Y Input Value" slicecount="1" values="512">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="8192">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="22" dstpinname="X" srcnodeid="21" srcpinname="Y Output Value">
@@ -197,13 +199,15 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Height">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1024">
+   <PIN pinname="Y Input Value" slicecount="1" values="512">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="8192">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="22" dstpinname="Y" srcnodeid="20" srcpinname="Y Output Value">
@@ -230,20 +234,6 @@
    </LINK>
    <LINK dstnodeid="9" dstpinname="View" srcnodeid="1" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="InABox" id="25" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="9825" top="1980" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="240" left="9825" top="1980" type="Box" width="435">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
    <LINK dstnodeid="18" dstpinname="Source" srcnodeid="9" srcpinname="EX9 Out">
    </LINK>
    <LINK dstnodeid="18" dstpinname="Width" srcnodeid="19" srcpinname="X">
@@ -271,7 +261,7 @@
    </PIN>
    <PIN pinname="mouse XY" slicecount="2" values="0,0">
    </PIN>
-   <PIN pinname="Technique Pass">
+   <PIN pinname="Technique Pass" slicecount="1" values="1">
    </PIN>
    <PIN pinname="rt w">
    </PIN>
@@ -312,8 +302,6 @@
    </LINK>
    <LINK dstnodeid="9" dstpinname="Layers" srcnodeid="11" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="11" dstpinname="Technique Pass" srcnodeid="25" srcpinname="Y Output Value">
-   </LINK>
    <LINK dstnodeid="11" dstpinname="Enabled" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="11" dstpinname="R XY" srcnodeid="22" srcpinname="XY">
@@ -343,7 +331,7 @@
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="A8R8G8B8">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Format" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Format">
    </PIN>
    </NODE>
    <LINK srcnodeid="64" srcpinname="Output Enum" dstnodeid="18" dstpinname="Format">
@@ -357,7 +345,7 @@
    </BOUNDS>
    <PIN pinname="Color Output" visible="1">
    </PIN>
-   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.35820,1.99000,0.35820,1.00000|">
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.00000,0.00000,1.00000,1.00000|">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="ColorD">
    </PIN>
@@ -369,7 +357,7 @@
    </BOUNDS>
    <PIN pinname="Color Output" visible="1">
    </PIN>
-   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.41290,0.04080,1.02000,1.00000|">
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.00000,1.00000,0.00000,1.00000|">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="ColorC">
    </PIN>
@@ -381,21 +369,9 @@
    </BOUNDS>
    <PIN pinname="Color Output" visible="1">
    </PIN>
-   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.90560,0.00000,2.83000,1.00000|">
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|1.00000,0.00000,0.00000,1.00000|">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="ColorB">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="74" nodename="IOBox (Color)" systemname="IOBox (Color)">
-   <BOUNDS height="100" left="2835" top="540" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="465" left="2835" top="540" type="Box" width="1005">
-   </BOUNDS>
-   <PIN pinname="Color Output" visible="1">
-   </PIN>
-   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.00000,0.97591,0.01252,1.00000|">
-   </PIN>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="ColorA">
    </PIN>
    </NODE>
    <LINK srcnodeid="74" srcpinname="Color Output" dstnodeid="11" dstpinname="ColorA">

@@ -57,4 +57,4 @@ float4 p0(float2 vp : vpos): COLOR
 }
 
 void vs2d( inout float4 vp:POSITION, inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=0.5/R;}
-technique HatchFromTexture{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_3_0 p0();}}
+technique HatchFromTexture{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}

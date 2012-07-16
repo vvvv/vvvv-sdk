@@ -1,5 +1,4 @@
 float2 R;
-
 float amount = 0.5;
 float randomSeed;
 float Fader <float uimin=0.0; float uimax=1.0;> = 0.5;

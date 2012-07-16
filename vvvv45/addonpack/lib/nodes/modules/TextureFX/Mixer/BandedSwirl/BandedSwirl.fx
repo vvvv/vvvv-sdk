@@ -1,6 +1,6 @@
 float2 R;
-float twistAmount;
-float frequency;
+float twistAmount = 0.5;
+float frequency = 15.0;
 float Fader <float uimin=0.0; float uimax=1.0;> = 0.5;
 
 texture tex0,tex1;

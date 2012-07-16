@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.1.dtd" >
-   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Mixer\Blinds (EX9.TextureMixer)\Blinds (EX9.Texture Mixer).v4p" filename="C:\Users\clone\Desktop\Pixelate(EX9.TextureMixer)\Pixelate(EX9.Texture Mixer).v4p" systemname="Pixelate (EX9.Texture Mixer)">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
+   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Mixer\Blinds\Blinds (EX9.Texture Mixer).v4p" filename="C:\Users\clone\Desktop\Pixelate(EX9.TextureMixer)\Pixelate(EX9.Texture Mixer).v4p" systemname="Pixelate (EX9.Texture Mixer)">
    <BOUNDS height="7215" left="8970" top="6165" type="Window" width="6570">
    </BOUNDS>
    <NODE componentmode="Hidden" id="6" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
@@ -275,6 +275,8 @@
    </PIN>
    <PIN pinname="LineNumber">
    </PIN>
+   <PIN pinname="LineAmount" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="51" dstpinname="Render State" srcnodeid="9" srcpinname="Render State Out">
    </LINK>
@@ -307,11 +309,15 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="LineNumber">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Line Amount|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="51" dstpinname="LineNumber" srcnodeid="52" srcpinname="Y Output Value">
    </LINK>
    <INFO author="lecloneur" description="" tags="fx">
    </INFO>
+   <LINK srcnodeid="52" srcpinname="Y Output Value" dstnodeid="51" dstpinname="LineAmount">
+   </LINK>
    </PATCH>
