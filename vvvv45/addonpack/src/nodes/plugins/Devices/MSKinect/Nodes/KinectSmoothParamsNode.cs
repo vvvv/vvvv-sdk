@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
 using Microsoft.Kinect;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace MSKinect.Nodes
 {

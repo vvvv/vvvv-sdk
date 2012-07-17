@@ -758,7 +758,7 @@ namespace VVVV.Nodes
 		[Input("Transform")]
 		IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
-		[Input("Input", IsPinGroup=true)]
+		[Input("Layer", IsPinGroup=true)]
 		IDiffSpread<ISpread<SvgElement>> FInput;
 		
 		[Input("Enabled", DefaultValue = 1, Order = 1000000)]

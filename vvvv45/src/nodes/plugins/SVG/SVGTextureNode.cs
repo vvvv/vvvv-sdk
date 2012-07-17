@@ -343,7 +343,7 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		#pragma warning disable 649,169
-		[Input("Layer")]
+		[Input("Layers")]
 		IDiffSpread<SvgElement> FSVGIn;
 		
 		[Input("View Box", IsSingle = true)]

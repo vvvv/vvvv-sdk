@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace VVVV.Hosting.Pins
 {
@@ -51,7 +52,7 @@ namespace VVVV.Hosting.Pins
         {
             for (int i = oldSliceCount; i < newSliceCount; i++)
             {
-                var diffSpread = CreateDiffSpread(i);
+                var diffSpread = CreateDiffSpread(i + 1);
                 diffSpread.Changed += HandleDiffSpreadChanged;
                 this[i] = diffSpread;
             }

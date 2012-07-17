@@ -1,9 +1,9 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
-   <PATCH nodename="D:\vvvv\sourceforge\plugins\wrk\DropDownString\Template (Template GUI) help.v4p" componentmode="InAWindow">
-   <BOUNDS height="5295" left="3255" top="930" type="Window" width="4890">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
+   <PATCH nodename="D:\develop\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\DropDown (String) help.v4p" componentmode="InAWindow">
+   <BOUNDS height="5865" left="3255" top="930" type="Window" width="4890">
    </BOUNDS>
    <NODE id="4" nodename="SpellValue (String)">
-   <BOUNDS height="0" left="300" top="615" type="Node" width="0">
+   <BOUNDS height="0" left="300" top="1515" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -11,7 +11,7 @@
    </PIN>
    </NODE>
    <NODE id="3" nodename="I (Spreads)">
-   <BOUNDS height="0" left="300" top="270" type="Node" width="0">
+   <BOUNDS height="0" left="300" top="1170" type="Node" width="0">
    </BOUNDS>
    <PIN pinname=".. To [" slicecount="1" values="36">
    </PIN>
@@ -20,20 +20,12 @@
    </NODE>
    <LINK dstnodeid="4" dstpinname="Input" srcnodeid="3" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InAWindow" id="2" nodename="Inspektor (VVVV)">
-   <BOUNDS height="0" left="3855" top="180" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="5865" left="8220" top="5115" type="Window" width="5205">
-   </BOUNDS>
-   <BOUNDS height="3200" left="3855" top="180" type="Box" width="2600">
-   </BOUNDS>
-   </NODE>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
-   <BOUNDS height="0" left="300" top="2445" type="Node" width="0">
+   <BOUNDS height="0" left="300" top="3345" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5040" top="6510" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="1995" left="300" top="2445" type="Box" width="1680">
+   <BOUNDS height="1995" left="300" top="3345" type="Box" width="1680">
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="6">
    </PIN>
@@ -42,14 +34,14 @@
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="0" nodename=":PLUGINS:\DropDownString.dll">
-   <BOUNDS height="100" left="315" top="900" type="Node" width="100">
+   <NODE componentmode="InABox" id="0" nodename=":PLUGINS:\DropDown (String).dll">
+   <BOUNDS height="100" left="300" top="1800" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="1335" left="315" top="900" type="Box" width="2370">
+   <BOUNDS height="1335" left="300" top="1800" type="Box" width="2370">
    </BOUNDS>
    <PIN pinname="List Item" visible="1">
    </PIN>
-   <PIN pinname="Width" slicecount="1" values="75">
+   <PIN pinname="Width">
    </PIN>
    <PIN pinname="Columns" slicecount="1" values="2">
    </PIN>
@@ -66,12 +58,34 @@
    </LINK>
    <LINK dstnodeid="1" dstpinname="Input String" srcnodeid="0" srcpinname="Selected Item">
    </LINK>
-   <NODE nodename="Renderer (TTY)" componentmode="InAWindow" id="5">
-   <BOUNDS type="Node" left="2400" top="195" width="0" height="0">
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="210" top="210" type="Node" width="3660">
    </BOUNDS>
-   <BOUNDS type="Window" left="8265" top="450" width="6120" height="4860">
+   <BOUNDS height="420" left="210" top="210" type="Box" width="3705">
    </BOUNDS>
-   <BOUNDS type="Box" left="2400" top="195" width="2400" height="1800">
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|DropDown (String)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="210" top="720" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="315" left="210" top="720" type="Box" width="3630">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|spreadable dropdown gui for selecting strings|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
    </NODE>
    </PATCH>
