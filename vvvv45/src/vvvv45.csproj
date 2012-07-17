@@ -129,7 +129,7 @@
           DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     <Exec Command="attrib +R &quot;$(TempDir)lib\nodes\*.*&quot; /S /D" />
     <Exec Command="attrib +H &quot;$(TempDir)vvvv.exe.config&quot;" />
-    <Exec Command="vvvv.exe /nodelist /logstartup" WorkingDirectory="$(TempDir)" />
+    <Exec Command="vvvv.exe /nodelist /logstartup /dx9ex" WorkingDirectory="$(TempDir)" />
     <!-- Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
     <Exec Command="&quot;$(SevenZip)&quot; a -r &quot;$(ZipFileName)&quot; &quot;$(TempDir)&quot;" />
     <!--
