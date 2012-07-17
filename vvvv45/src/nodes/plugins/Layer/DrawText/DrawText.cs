@@ -222,7 +222,7 @@ namespace VVVV.Nodes
 			{
 				var dh = new DeviceHelpers(
 					new Sprite(OnDevice),
-					new Texture(OnDevice, 1, 1, 1, Usage.None, Format.L8, Pool.Managed)); // Format.A8R8G8B8, Pool.Default)
+					new Texture(OnDevice, 1, 1, 1, Usage.Dynamic, Format.L8, Pool.Default)); // Format.A8R8G8B8, Pool.Default)
 				
 				//need to fill texture white to be able to set color on sprite later
 				DataRectangle tex = dh.Texture.LockRectangle(0, LockFlags.None);

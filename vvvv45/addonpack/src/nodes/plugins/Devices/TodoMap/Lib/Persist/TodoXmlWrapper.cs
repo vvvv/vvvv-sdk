@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VVVV.TodoMap.Lib.Modules.Midi;
 using VVVV.TodoMap.Lib.Modules.Osc;
+using System.Globalization;
 
 namespace VVVV.TodoMap.Lib.Persist
 {
@@ -85,9 +86,9 @@ namespace VVVV.TodoMap.Lib.Persist
             sb.AppendLine("<Category>" + var.Category + "</Category>");
             sb.AppendLine("<AllowFeedBack>" + var.AllowFeedBack.ToStringEnglish() + "</AllowFeedBack>");
             sb.AppendLine("<TakeOverMode>" + var.TakeOverMode.ToString() + "</TakeOverMode>");
-            sb.AppendLine("<Default>" + var.Default + "</Default>");
-            sb.AppendLine("<MinValue>" + var.Mapper.MinValue + "</MinValue>");
-            sb.AppendLine("<MaxValue>" + var.Mapper.MaxValue + "</MaxValue>");
+            sb.AppendLine("<Default>" + var.Default.ToString(CultureInfo.InvariantCulture) + "</Default>");
+            sb.AppendLine("<MinValue>" + var.Mapper.MinValue.ToString(CultureInfo.InvariantCulture) + "</MinValue>");
+            sb.AppendLine("<MaxValue>" + var.Mapper.MaxValue.ToString(CultureInfo.InvariantCulture) + "</MaxValue>");
             sb.AppendLine("<TweenMode>" + var.Mapper.TweenMode + "</TweenMode>");
             sb.AppendLine("<EaseMode>" + var.Mapper.EaseMode + "</EaseMode>");
             sb.AppendLine("<TodoInputs>");
