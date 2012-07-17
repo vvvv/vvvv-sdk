@@ -19,12 +19,22 @@ namespace VVVV.Hosting.Pins.Input
             private readonly IPluginIO FDataIO;
             
             public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
+                : this(ioFactory, attribute, false)
             {
-                attribute = ManipulateAttribute(attribute);
+            }
+
+            public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, bool checkIfChanged)
+                : this(ioFactory, attribute, checkIfChanged, () => ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false))
+            {
+            }
+
+            public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, bool checkIfChanged, Func<IIOContainer<IInStream<int>>> binSizeIOContainerFactory)
+            {
                 // Don't do this, as spread max won't get computed for this pin
-//                attribute.AutoValidate = false;
+                //                attribute.AutoValidate = false;
+                attribute.CheckIfChanged = checkIfChanged;
                 FDataContainer = ioFactory.CreateIOContainer<IInStream<T>>(attribute, false);
-                FBinSizeContainer = ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
+                FBinSizeContainer = binSizeIOContainerFactory();
                 FDataStream = FDataContainer.IOObject;
                 FBinSizeStream = FBinSizeContainer.IOObject;
                 FNormBinSizeStream = new BufferedIOStream<int>(FBinSizeStream.Length);
@@ -43,12 +53,6 @@ namespace VVVV.Hosting.Pins.Input
             {
                 FDataContainer.Dispose();
                 FBinSizeContainer.Dispose();
-            }
-            
-            protected virtual InputAttribute ManipulateAttribute(InputAttribute attribute)
-            {
-                // Do nothing by default
-                return attribute;
             }
             
             public override bool Sync()
@@ -131,6 +135,12 @@ namespace VVVV.Hosting.Pins.Input
             : this(ioFactory, attribute, new InputBinSpreadStream(ioFactory, attribute))
         {
             
+        }
+
+        public InputBinSpread(IIOFactory ioFactory, InputAttribute attribute, IIOContainer<IInStream<int>> binSizeIOContainer)
+            : this(ioFactory, attribute, new InputBinSpreadStream(ioFactory, attribute, false, () => binSizeIOContainer))
+        {
+
         }
         
         public InputBinSpread(IIOFactory ioFactory, InputAttribute attribute, InputBinSpreadStream stream)
