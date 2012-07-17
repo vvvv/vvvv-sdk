@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace VVVV.PluginInterfaces.V2
 {

@@ -81,5 +81,14 @@ namespace VVVV.TodoMap.Lib.Engine.Hde
             }
             this.invalidateprops = false;
         }
+
+        public void Dispose()
+        {
+            this.minpin.Changed -= minpin_Changed;
+            this.maxpin.Changed -= maxpin_Changed;
+
+            var.ValueChanged -= var_ValueChanged;
+            var.VariableUpdated -= var_VariableUpdated;
+        }
     }
 }

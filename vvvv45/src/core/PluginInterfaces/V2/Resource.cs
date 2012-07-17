@@ -12,7 +12,8 @@ namespace VVVV.PluginInterfaces.V2
     }
     
     [ComVisible(false)]
-    public abstract class Resource<TDevice, TResource, TMetadata> : IDisposable where TResource : IDisposable
+    public abstract class Resource<TDevice, TResource, TMetadata> : IDisposable 
+        where TResource : IDisposable
     {
         private readonly Func<TMetadata, TDevice, TResource> FCreateResourceFunc;
         private readonly Action<TMetadata, TResource> FUpdateResourceFunc;
@@ -21,54 +22,53 @@ namespace VVVV.PluginInterfaces.V2
 		private readonly TMetadata FMetadata;
         
         public Resource(
-		    TMetadata metadata, 
-		    Func<TMetadata, TDevice, TResource> createResourceFunc, 
-		    Action<TMetadata, TResource> updateResourceFunc, 
-		    Action<TMetadata, TResource, DestroyReason> destroyResourceAction)
+            TMetadata metadata, 
+            Func<TMetadata, TDevice, TResource> createResourceFunc, 
+            Action<TMetadata, TResource> updateResourceFunc = null, 
+            Action<TMetadata, TResource, DestroyReason> destroyResourceAction = null)
         {
             FMetadata = metadata;
             FCreateResourceFunc = createResourceFunc;
-            FUpdateResourceFunc = updateResourceFunc;
-            FDestroyResourceAction = destroyResourceAction;
+            FUpdateResourceFunc = updateResourceFunc ?? UpdateResource;
+            FDestroyResourceAction = destroyResourceAction ?? DestroyResource;
+            NeedsUpdate = true;
         }
-		
-        public Resource(TMetadata metadata, Func<TMetadata, TDevice, TResource> createResourceFunc, Action<TMetadata, TResource> updateResourceFunc)
-            : this(metadata, createResourceFunc, updateResourceFunc, DestroyResource)
-        {
-        }
-        
-        public Resource(TMetadata metadata, Func<TMetadata, TDevice, TResource> createResourceFunc)
-            : this(metadata, createResourceFunc, UpdateResource)
-        {
-        }
-        
+
+        /// <summary>
+        /// Some arbitrary data associated with this resource.
+        /// </summary>
+        public TMetadata Metadata { get { return FMetadata; } }
+
+        /// <summary>
+        /// Whether or not the Update method has to be called for this resource.
+        /// By default this flag is true.
+        /// Note: The Update method will always get called for new resources.
+        /// </summary>
+        public bool NeedsUpdate { get; set; }
         public TResource this[TDevice device]
         {
             get
             {
-                TResource result = default(TResource);
+                TResource result;
                 if (!FResources.TryGetValue(device, out result))
                 {
                     result = FCreateResourceFunc(FMetadata, device);
+                    NeedsUpdate = true;
                     FResources[device] = result;
                 }
                 return result;
             }
         }
         
-        public TMetadata Metadata
-        {
-            get
-            {
-                return FMetadata;
-            }
-        }
-        
         public void UpdateResource(TDevice device)
         {
-            if (FResources.ContainsKey(device))
+            TResource resource;
+            if (FResources.TryGetValue(device, out resource))
             {
-                FUpdateResourceFunc(FMetadata, FResources[device]);
+                if (NeedsUpdate)
+                {
+                    FUpdateResourceFunc(FMetadata, resource);
+                }
             }
             else
             {
@@ -78,9 +78,10 @@ namespace VVVV.PluginInterfaces.V2
         
         public void DestroyResource(TDevice device, bool onlyUnmanaged)
         {
-            if (FResources.ContainsKey(device))
+            TResource resource;
+            if (FResources.TryGetValue(device, out resource))
             {
-                FDestroyResourceAction(FMetadata, FResources[device], DestroyReason.DeviceLost);
+                FDestroyResourceAction(FMetadata, resource, DestroyReason.DeviceLost);
                 FResources.Remove(device);
             }
         }

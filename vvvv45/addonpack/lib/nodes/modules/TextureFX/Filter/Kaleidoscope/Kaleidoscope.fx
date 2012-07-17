@@ -7,7 +7,7 @@ float Zoom =0;
 float2 Center <float uimin=-1.0; float uimax=1.0;> =0.0;
 float IterationZoom =0;
 
-float2 CellOffset <float uimin=-1.0; float uimax=1.0;> =0;
+float2 CellOffset=0;
 float CellRotate =0;
 float2 CellScale =1;
 

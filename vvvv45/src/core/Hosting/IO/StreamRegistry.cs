@@ -333,6 +333,21 @@ namespace VVVV.Hosting.IO
                                                var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
                                                return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
                                            }
+                                           try
+                                           {
+                                               if (typeof(TextureResource<>).MakeGenericType(genericArguments).IsAssignableFrom(t))
+                                               {
+                                                    var metadataType = genericArguments[0];
+                                                    var textureOutStreamType = typeof(TextureOutStream<,>);
+                                                    textureOutStreamType = textureOutStreamType.MakeGenericType(t, metadataType);
+                                                    var stream = Activator.CreateInstance(textureOutStreamType, host, attribute) as IOutStream;
+                                                    return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                               }
+                                           }
+                                           catch (ArgumentException)
+                                           {
+                                               // Type constraints weren't satisfied.
+                                           }
                                            break;
                                        case 2:
                                            try 
