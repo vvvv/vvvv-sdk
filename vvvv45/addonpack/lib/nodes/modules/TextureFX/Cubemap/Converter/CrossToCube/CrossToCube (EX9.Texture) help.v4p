@@ -1,8 +1,8 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\CubeFX\Converter\CrossToCube\CrossToCube (EX9.Texture Cubemap) help.v4p" systemname="CrossToCube (EX9.Texture Cubemap) help" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\CubeFX\Converter\CrossToCube\CrossToCube (EX9.Texture Cubemap) help.v4p">
-   <BOUNDS type="Window" left="6225" top="6570" width="8400" height="6930">
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Cubemap\Converter\CrossToCube\CrossToCube (EX9.Texture) help.v4p" systemname="CrossToCube (EX9.Texture) help" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\CubeFX\Converter\CrossToCube\CrossToCube (EX9.Texture) help.v4p">
+   <BOUNDS type="Window" left="6225" top="6570" width="8400" height="7080">
    </BOUNDS>
-   <NODE systemname="CrossToCube (EX9.Texture Cubemap)" filename="CrossToCube (EX9.Texture Cubemap).v4p" nodename="CrossToCube (EX9.Texture Cubemap)" componentmode="Hidden" id="0">
+   <NODE systemname="CrossToCube (EX9.Texture)" filename="CrossToCube (EX9.Texture).v4p" nodename="CrossToCube (EX9.Texture)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="3495" top="3000" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="||">
@@ -58,7 +58,7 @@
    </NODE>
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="2" dstpinname="Filename" linkstyle="Bezier">
    </LINK>
-   <NODE systemname="CubeToCross (EX9.Texture Cubemap)" filename="..\CubeToCross\CubeToCross (EX9.Texture Cubemap).v4p" nodename="CubeToCross (EX9.Texture Cubemap)" componentmode="Hidden" id="6">
+   <NODE systemname="CubeToCross (EX9.Texture)" filename="..\CubeToCross\CubeToCross (EX9.Texture).v4p" nodename="CubeToCross (EX9.Texture)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="405" top="1560" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -116,16 +116,6 @@
    <PIN pinname="Mesh" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Background (EX9.Layer)" filename="..\modules\CubeFX\Misc\Background\Background (EX9.Layer).v4p" nodename="Background (EX9.Layer)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="3495" top="3795" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Cubemap" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="3495" top="3795">
-   </BOUNDS>
-   </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="17">
    <BOUNDS type="Node" left="3495" top="4200" width="2760" height="270">
    </BOUNDS>
@@ -136,30 +126,6 @@
    <PIN pinname="Layer 2" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="18" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 1" linkstyle="Bezier">
-   </LINK>
-   <NODE systemname="Glass (EX9.Effect)" filename="..\..\..\..\effects\Glass.fx" nodename="Glass (EX9.Effect)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="4845" top="3795" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Reflect CubeMap" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="19" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 2" linkstyle="Bezier">
-   </LINK>
-   <LINK srcnodeid="11" srcpinname="Mesh" dstnodeid="19" dstpinname="Mesh" linkstyle="Bezier">
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="19" dstpinname="Reflect CubeMap" linkstyle="Bezier">
-   <LINKPOINT x="3550" y="3530">
-   </LINKPOINT>
-   <LINKPOINT x="5465" y="3505">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="18" dstpinname="Cubemap" linkstyle="Bezier">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="23">
    <BOUNDS type="Node" left="3510" top="5550" width="100" height="100">
    </BOUNDS>
@@ -234,12 +200,6 @@
    </LINK>
    <LINK srcnodeid="17" srcpinname="Layer" dstnodeid="23" dstpinname="Layers">
    </LINK>
-   <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="3030" top="1305" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Edge (EX9.Texture Filter)" filename="..\..\..\TextureFX\Filter\Edge\Edge (EX9.Texture Filter).v4p" nodename="Edge (EX9.Texture Filter)" componentmode="Hidden" id="26">
    <BOUNDS type="Node" left="405" top="2070" width="100" height="100">
    </BOUNDS>
@@ -253,9 +213,45 @@
    </PIN>
    <PIN pinname="Phase" visible="1">
    </PIN>
+   <PIN pinname="Brightness" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Radius" slicecount="1" values="0.5">
+   </PIN>
    </NODE>
    <LINK srcnodeid="6" srcpinname="Output" dstnodeid="26" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="26" srcpinname="Output" dstnodeid="10" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="CubeMap (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\CubeMap.fx" nodename="CubeMap (EX9.Effect)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="4845" top="3795" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Reflect CubeMap" visible="1">
+   </PIN>
+   <PIN pinname="Environment CubeMap" visible="1">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" values="| TReflect|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 2" linkstyle="Bezier">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Mesh" dstnodeid="19" dstpinname="Mesh" linkstyle="Bezier">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="19" dstpinname="Environment CubeMap">
+   </LINK>
+   <NODE systemname="Background (EX9.Layer)" filename="..\..\Misc\Background\Background (EX9.Layer).v4p" nodename="Background (EX9.Layer)" componentmode="Hidden" id="28">
+   <BOUNDS type="Node" left="3495" top="3780" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Cubemap" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="28" dstpinname="Cubemap">
    </LINK>
    </PATCH>

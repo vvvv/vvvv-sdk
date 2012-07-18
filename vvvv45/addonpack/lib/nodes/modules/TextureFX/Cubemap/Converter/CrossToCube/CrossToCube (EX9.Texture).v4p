@@ -175,6 +175,8 @@
    </PIN>
    <PIN pinname="XYZ">
    </PIN>
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <LINK srcnodeid="28" srcpinname="Transform Out" dstnodeid="21" dstpinname="Transform In">
    </LINK>
@@ -222,6 +224,8 @@
    <PIN pinname="FixBorder">
    </PIN>
    <PIN pinname="R XY" visible="1">
+   </PIN>
+   <PIN pinname="tPost" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="Render State Out" dstnodeid="18" dstpinname="Render State">
@@ -297,7 +301,7 @@
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0.00499999988824129">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="56" srcpinname="Y Output Value" dstnodeid="18" dstpinname="FixBorder">
@@ -387,11 +391,25 @@
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="All">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mip Map Count|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Mip Map Count|">
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
    </NODE>
    <LINK srcnodeid="66" srcpinname="Output Enum" dstnodeid="5" dstpinname="Mip Map Count">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="67" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="1725" top="1785" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1725" top="1785" width="840" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Transform">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="67" srcpinname="Output Node" dstnodeid="28" dstpinname="Transform In">
    </LINK>
    </PATCH>

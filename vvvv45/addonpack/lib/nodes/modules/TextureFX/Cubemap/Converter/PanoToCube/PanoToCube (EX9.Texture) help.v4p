@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\CubeFX\Converter\PanoToCube\PanoToCube (EX9.Texture) help.v4p" systemname="PanoToCube (EX9.Texture) help" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\CubeFX\Converter\PanoToCube\PanoToCube (EX9.Texture) help.v4p">
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Cubemap\Converter\PanoToCube\PanoToCube (EX9.Texture) help.v4p" systemname="PanoToCube (EX9.Texture) help" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\CubeFX\Converter\PanoToCube\PanoToCube (EX9.Texture) help.v4p">
    <BOUNDS type="Window" left="6210" top="6570" width="8400" height="7065">
    </BOUNDS>
    <NODE systemname="SystemFolder (File)" nodename="SystemFolder (File)" componentmode="Hidden" id="5">
@@ -100,20 +100,6 @@
    <PIN pinname="Layer 2" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Glass (EX9.Effect)" filename="..\..\..\..\effects\Glass.fx" nodename="Glass (EX9.Effect)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="4845" top="3795" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Reflect CubeMap" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="19" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 2" linkstyle="Bezier">
-   </LINK>
-   <LINK srcnodeid="11" srcpinname="Mesh" dstnodeid="19" dstpinname="Mesh" linkstyle="Bezier">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="23">
    <BOUNDS type="Node" left="3510" top="5550" width="100" height="100">
    </BOUNDS>
@@ -134,6 +120,8 @@
    <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
    <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
    </NODE>
    <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="22">
@@ -188,18 +176,6 @@
    </LINK>
    <LINK srcnodeid="17" srcpinname="Layer" dstnodeid="23" dstpinname="Layers">
    </LINK>
-   <NODE systemname="Background (EX9.Layer)" filename="D:\Dropbox\CubeFX\modules\Misc\Background\Background (EX9.Layer).v4p" nodename="Background (EX9.Layer)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="3495" top="3795" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Cubemap" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="3495" top="3795">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="18" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 1" linkstyle="Bezier">
-   </LINK>
    <NODE systemname="CubeToPano (EX9.Texture)" filename="D:\Dropbox\CubeFX\modules\Converter\CubeToPano\CubeToPano (EX9.Texture).v4p" nodename="CubeToPano (EX9.Texture)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="405" top="1560" width="100" height="100">
    </BOUNDS>
@@ -225,14 +201,6 @@
    </LINKPOINT>
    <LINKPOINT x="3490" y="2960">
    </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="19" dstpinname="Reflect CubeMap" linkstyle="Bezier">
-   <LINKPOINT x="3550" y="3530">
-   </LINKPOINT>
-   <LINKPOINT x="5465" y="3505">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="18" dstpinname="Cubemap" linkstyle="Bezier">
    </LINK>
    <NODE systemname="Blur (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Blur\Blur (EX9.Texture Filter).v4p" nodename="Blur (EX9.Texture Filter)" componentmode="Hidden" id="26">
    <BOUNDS type="Node" left="375" top="2280" width="2460" height="270">
@@ -291,5 +259,37 @@
    <LINK srcnodeid="30" srcpinname="Output" dstnodeid="31" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="31" srcpinname="Output" dstnodeid="26" dstpinname="Width">
+   </LINK>
+   <NODE systemname="CubeMap (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\CubeMap.fx" nodename="CubeMap (EX9.Effect)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="4845" top="3795" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Reflect CubeMap" visible="1">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" values="| TReflect|">
+   </PIN>
+   <PIN pinname="Environment CubeMap" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 2" linkstyle="Bezier">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Mesh" dstnodeid="19" dstpinname="Mesh" linkstyle="Bezier">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="19" dstpinname="Environment CubeMap">
+   </LINK>
+   <NODE systemname="Background (EX9.Layer)" filename="..\..\Misc\Background\Background (EX9.Layer).v4p" nodename="Background (EX9.Layer)" componentmode="Hidden" id="33">
+   <BOUNDS type="Node" left="3540" top="3810" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Cubemap" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="33" dstpinname="Cubemap">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 1">
    </LINK>
    </PATCH>

@@ -39,6 +39,8 @@
    </PIN>
    <PIN pinname="Render State" visible="1">
    </PIN>
+   <PIN pinname="tPost" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <LINK srcnodeid="2" srcpinname="Layer" dstnodeid="0" dstpinname="Layers">
    </LINK>
@@ -345,5 +347,17 @@
    <INFO author="unc" description="Convert CubeTexture to 360x180 panorama" tags="cubemap">
    </INFO>
    <LINK srcnodeid="22" srcpinname="Format" dstnodeid="7" dstpinname="Input Enum">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="28" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="2250" top="945" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2250" top="945" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Transform" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Output Node" dstnodeid="2" dstpinname="tPost">
    </LINK>
    </PATCH>
