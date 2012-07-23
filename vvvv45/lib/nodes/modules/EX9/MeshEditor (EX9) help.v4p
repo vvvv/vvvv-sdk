@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9) help.v4p">
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9) help.v4p">
    <BOUNDS height="9435" left="780" top="450" type="Window" width="10770">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="25" nodename="Renderer (EX9)" stayontop="0" systemname="RENDERER (EX9)">
@@ -513,7 +513,9 @@
    </PIN>
    <PIN pinname="Show Points" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Mouse State" visible="1">
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="52" dstpinname="Mesh" srcnodeid="17" srcpinname="Mesh">
@@ -593,6 +595,8 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK dstnodeid="52" dstpinname="Reset" srcnodeid="59" srcpinname="Y Output Value">
    </LINK>
@@ -664,12 +668,14 @@
    <BOUNDS type="Node" left="810" top="8415" width="100" height="100">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Mouse (System Window State)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window State).v4p" nodename="Mouse (System Window State)" componentmode="Hidden" id="69">
+   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="69">
    <BOUNDS type="Node" left="1350" top="3495" width="100" height="100">
    </BOUNDS>
    <PIN pinname="State" visible="1">
    </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="69" srcpinname="State" dstnodeid="52" dstpinname="Mouse State">
+   <LINK srcnodeid="69" srcpinname="Mouse" dstnodeid="52" dstpinname="Mouse">
    </LINK>
    </PATCH>

@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Sandwich) help.v4p">
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Sandwich) help.v4p">
    <BOUNDS height="10035" left="135" top="135" type="Window" width="14325">
    </BOUNDS>
    <NODE componentmode="InABox" id="42" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -783,7 +783,9 @@
    </PIN>
    <PIN pinname="Mouse XYZ" slicecount="3" values="-0.674518201284797,0.948571428571429,0">
    </PIN>
-   <PIN pinname="Mouse State" visible="1">
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="50" dstpinname="Init" linkstyle="Bezier" srcnodeid="40" srcpinname="Y Output Value">
@@ -847,6 +849,8 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="26" srcpinname="X" dstnodeid="52" dstpinname="X">
    </LINK>
@@ -859,5 +863,7 @@
    <LINK srcnodeid="26" srcpinname="Right Button" dstnodeid="52" dstpinname="Right Button">
    </LINK>
    <LINK srcnodeid="52" srcpinname="Output" dstnodeid="50" dstpinname="Mouse State">
+   </LINK>
+   <LINK srcnodeid="52" srcpinname="Mouse" dstnodeid="50" dstpinname="Mouse">
    </LINK>
    </PATCH>

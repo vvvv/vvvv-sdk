@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9\Cursor (DX9) help.v4p" locked="0">
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9\Cursor (DX9) help.v4p" locked="0">
    <BOUNDS height="6045" left="5505" top="735" type="Window" width="6015">
    </BOUNDS>
    <INFO author="vvvv group" description="edit a point cloud via mouse and keyboard within the ex9 renderer." tags="ex9, GUI, edit, modelling, point, cloud, mesh">
@@ -101,6 +101,8 @@
    </PIN>
    <PIN pinname="Mouse State" visible="1">
    </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="10" dstpinname="Mouse XYZ" srcnodeid="4" srcpinname="XYZ">
    </LINK>
@@ -131,14 +133,6 @@
    <LINK dstnodeid="10" dstpinname="View Projection" srcnodeid="11" srcpinname="View Projection">
    <LINKPOINT x="1320" y="1695">
    </LINKPOINT>
-   </LINK>
-   <NODE systemname="Mouse (System Window State)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window State).v4p" nodename="Mouse (System Window State)" componentmode="Hidden" id="12">
-   <BOUNDS type="Node" left="510" top="1455" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="State" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="12" srcpinname="State" dstnodeid="10" dstpinname="MouseState">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="1485" top="1845" width="0" height="0">
@@ -224,6 +218,12 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="State" dstnodeid="10" dstpinname="Mouse State">
+   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="600" top="1395" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Mouse" dstnodeid="10" dstpinname="Mouse">
    </LINK>
    </PATCH>

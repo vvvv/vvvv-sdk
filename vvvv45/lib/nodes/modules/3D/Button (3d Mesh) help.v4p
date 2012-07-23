@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Mesh) help.v4p">
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Mesh) help.v4p">
    <BOUNDS height="9615" left="105" top="75" type="Window" width="6480">
    </BOUNDS>
    <NODE id="22" nodename="Group (EX9)" systemname="Group (EX9)">
@@ -359,7 +359,9 @@
    </PIN>
    <PIN pinname="Transform Mesh">
    </PIN>
-   <PIN pinname="Mouse State" visible="1">
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="19" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="25" srcpinname="Cursor Transform">
@@ -430,16 +432,12 @@
    </LINK>
    <LINK dstnodeid="1" dstpinname="Mesh" srcnodeid="5" srcpinname="Mesh">
    </LINK>
-   <NODE id="21" nodename="Mouse (System Window State)" systemname="Mouse (System Window State)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window State).v4p" componentmode="Hidden">
-   <BOUNDS height="100" left="3180" top="2430" type="Node" width="100">
+   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="3255" top="2520" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="State" visible="1">
+   <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="21" srcpinname="State" dstnodeid="25" dstpinname="Mouse State">
+   <LINK srcnodeid="26" srcpinname="Mouse" dstnodeid="25" dstpinname="Mouse">
    </LINK>
    </PATCH>

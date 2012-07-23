@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\TagPoints (3D Vector).v4p">
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\TagPoints (3D Vector).v4p">
    <BOUNDS height="12120" left="10710" top="2610" type="Window" width="11640">
    </BOUNDS>
    <NODE componentmode="InABox" id="57" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -975,6 +975,8 @@
    </PIN>
    <PIN pinname="Right Button" visible="1">
    </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="90" systemname="IOBox (Node)">
    <BOUNDS type="Node" left="3675" top="120" width="0" height="0">
@@ -983,7 +985,9 @@
    </BOUNDS>
    <PIN pinname="Input Node" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Mouse State|">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mouse">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="90" srcpinname="Output Node" dstnodeid="89" dstpinname="Input">
@@ -1031,5 +1035,7 @@
    <LINK srcnodeid="92" srcpinname="XYZ" dstnodeid="13" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="57" srcpinname="Y Output Value" dstnodeid="49" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="90" srcpinname="Output Node" dstnodeid="89" dstpinname="Mouse">
    </LINK>
    </PATCH>

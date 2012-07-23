@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Quad).v4p" systemname="Button (3d Quad)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Quad).v4p">
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Quad).v4p" systemname="Button (3d Quad)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Quad).v4p">
    <BOUNDS height="9195" left="1845" top="1695" type="Window" width="9000">
    </BOUNDS>
    <NODE id="15" nodename="Translate (Transform)" systemname="Translate (Transform)">
@@ -269,6 +269,8 @@
    </PIN>
    <PIN pinname="Y" visible="1">
    </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="X" dstnodeid="15" dstpinname="X">
    </LINK>
@@ -281,9 +283,13 @@
    </BOUNDS>
    <PIN pinname="Input Node" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse State|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mouse">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="20" srcpinname="Output Node" dstnodeid="19" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Output Node" dstnodeid="19" dstpinname="Mouse">
    </LINK>
    </PATCH>

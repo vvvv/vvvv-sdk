@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Extended) help.v4p">
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Extended) help.v4p">
    <BOUNDS height="9795" left="135" top="135" type="Window" width="13590">
    </BOUNDS>
    <NODE componentmode="InABox" id="32" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -133,11 +133,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="0" left="6510" top="3135" type="Node" width="0">
+   <BOUNDS height="0" left="6825" top="2580" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="13025" top="6553" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="465" left="6510" top="3135" type="Box" width="540">
+   <BOUNDS height="465" left="6825" top="2580" type="Box" width="540">
    </BOUNDS>
    <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
    </PIN>
@@ -161,11 +161,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="0" left="7515" top="3120" type="Node" width="0">
+   <BOUNDS height="0" left="7545" top="2580" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="14660" top="6688" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="465" left="7515" top="3120" type="Box" width="540">
+   <BOUNDS height="465" left="7545" top="2580" type="Box" width="540">
    </BOUNDS>
    <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
    </PIN>
@@ -525,7 +525,9 @@
    </BOUNDS>
    <BOUNDS height="9765" left="6630" top="4980" type="Window" width="21990">
    </BOUNDS>
-   <PIN pinname="Mouse State" visible="1">
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="39" dstpinname="Input" srcnodeid="10" srcpinname="XYZ">
@@ -546,22 +548,12 @@
    </LINK>
    <LINK dstnodeid="39" dstpinname="View Projection" srcnodeid="35" srcpinname="View Projection">
    </LINK>
-   <NODE id="26" nodename="Mouse (System Window State)" systemname="Mouse (System Window State)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window State).v4p" componentmode="Hidden">
-   <BOUNDS height="100" left="5520" top="3570" type="Node" width="100">
+   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="40">
+   <BOUNDS type="Node" left="5625" top="3435" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   <PIN pinname="State" visible="1">
+   <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="26" srcpinname="State" dstnodeid="39" dstpinname="Mouse State">
+   <LINK srcnodeid="40" srcpinname="Mouse" dstnodeid="39" dstpinname="Mouse">
    </LINK>
    </PATCH>
