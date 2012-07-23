@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
-   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Filter\Pinch\Pinch (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\Colorize(EX9.Texture Filter).v4p" systemname="Colorize (EX9.Texture Filter)">
+   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\Effects\vvvv_FX\EX9.Texture Filter\Pinch\Pinch (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\Colorize(EX9.Texture Filter).v4p" systemname="Colorize (EX9.Texture Filter)">
    <BOUNDS height="6690" left="6885" top="4845" type="Window" width="7725">
    </BOUNDS>
    <NODE componentmode="Hidden" id="7" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
@@ -42,6 +42,8 @@
    <PIN pinname="Width" visible="1">
    </PIN>
    <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Format" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="12" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
@@ -136,16 +138,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="30" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
-   <BOUNDS height="100" left="3885" top="4035" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Source" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="29" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="100" left="2850" top="4020" type="Node" width="100">
    </BOUNDS>
@@ -162,11 +154,7 @@
    </LINK>
    <LINK dstnodeid="32" dstpinname="Input Node" srcnodeid="31" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="31" dstpinname="Input 2" srcnodeid="30" srcpinname="Texture Out">
-   </LINK>
    <LINK dstnodeid="31" dstpinname="Switch" srcnodeid="29" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="30" dstpinname="Source" srcnodeid="9" srcpinname="EX9 Out">
    </LINK>
    <LINK dstnodeid="10" dstpinname="Texture" srcnodeid="36" srcpinname="Output Node">
    </LINK>
@@ -268,4 +256,40 @@
    </LINK>
    <INFO author="lecloneur" description="Pinch effect" tags="fx">
    </INFO>
+   <NODE componentmode="Hidden" id="59" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="0" left="4170" top="3645" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="58" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="3870" top="4155" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="58" dstpinname="Width" srcnodeid="59" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="58" dstpinname="Height" srcnodeid="59" srcpinname="Y">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="EX9 Out" dstnodeid="58" dstpinname="Source">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="XY" dstnodeid="59" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Format" dstnodeid="58" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="58" srcpinname="Texture Out" dstnodeid="31" dstpinname="Input 2">
+   </LINK>
    </PATCH>

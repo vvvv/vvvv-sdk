@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
-   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Mixer\BandedSwirl\BandedSwirl (EX9.Texture Mixer).v4p" filename="C:\Users\clone\Desktop\Pixelate(EX9.TextureMixer)\Pixelate(EX9.Texture Mixer).v4p" systemname="Pixelate (EX9.Texture Mixer)">
+   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\Effects\vvvv_FX\EX9.Texture Mixer\BandedSwirl\BandedSwirl (EX9.Texture Mixer).v4p" filename="C:\Users\clone\Desktop\Pixelate(EX9.TextureMixer)\Pixelate(EX9.Texture Mixer).v4p" systemname="Pixelate (EX9.Texture Mixer)">
    <BOUNDS height="7650" left="2370" top="4605" type="Window" width="7545">
    </BOUNDS>
    <NODE componentmode="Hidden" id="6" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
@@ -50,6 +50,8 @@
    <PIN pinname="Width" visible="1">
    </PIN>
    <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Format" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="13" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
@@ -222,20 +224,6 @@
    </LINK>
    <LINK dstnodeid="25" dstpinname="Input 1" srcnodeid="28" srcpinname="Output Node">
    </LINK>
-   <NODE componentmode="Hidden" id="75" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
-   <BOUNDS height="0" left="3240" top="5205" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Source" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="25" dstpinname="Input 2" srcnodeid="75" srcpinname="Texture Out">
-   </LINK>
-   <LINK dstnodeid="75" dstpinname="Source" srcnodeid="6" srcpinname="EX9 Out">
-   </LINK>
    <NODE componentmode="Hidden" filename="BandedSwirl.fx" id="69" nodename="BandedSwirl (EX9.Effect)" systemname="BandedSwirl (EX9.Effect)">
    <BOUNDS height="270" left="1815" top="3675" type="Node" width="1950">
    </BOUNDS>
@@ -337,5 +325,41 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="69" dstpinname="Fader" srcnodeid="78" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="80" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="0" left="3465" top="4635" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="79" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="3270" top="5310" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="79" dstpinname="Width" srcnodeid="80" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="79" dstpinname="Height" srcnodeid="80" srcpinname="Y">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="80" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="79" srcpinname="Texture Out" dstnodeid="25" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="EX9 Out" dstnodeid="79" dstpinname="Source">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Format" dstnodeid="79" dstpinname="Format">
    </LINK>
    </PATCH>

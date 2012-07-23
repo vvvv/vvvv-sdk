@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
-   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Filter\HatchCrossed\HatchCrossed (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\CrossHatching\CrossHatching(EX9.Texture Filter).v4p" systemname="CrossHatching (EX9.Texture Filter)">
+   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\Effects\vvvv_FX\EX9.Texture Filter\HatchCrossed\HatchCrossed (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\CrossHatching\CrossHatching(EX9.Texture Filter).v4p" systemname="CrossHatching (EX9.Texture Filter)">
    <BOUNDS height="6810" left="3210" top="5865" type="Window" width="7395">
    </BOUNDS>
    <NODE componentmode="Hidden" id="5" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
@@ -78,6 +78,8 @@
    <PIN pinname="Height" visible="1">
    </PIN>
    <PIN pinname="Get Original File Infos" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Format" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="49" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
@@ -372,24 +374,46 @@
    </INFO>
    <LINK dstnodeid="72" dstpinname="Enabled" srcnodeid="47" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" id="76" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
-   <BOUNDS height="100" left="3810" top="4155" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Source" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Format" slicecount="1" values="R8G8B8">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="76" dstpinname="Source" srcnodeid="17" srcpinname="EX9 Out">
-   </LINK>
-   <LINK dstnodeid="44" dstpinname="Input 2" srcnodeid="76" srcpinname="Texture Out">
-   </LINK>
    <LINK srcnodeid="74" srcpinname="Color Output" dstnodeid="72" dstpinname="Background Color">
    </LINK>
    <LINK srcnodeid="73" srcpinname="Color Output" dstnodeid="72" dstpinname="Hatch Color">
    </LINK>
    <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="72" dstpinname="Density">
+   </LINK>
+   <NODE componentmode="Hidden" id="78" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="0" left="4140" top="3705" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="77" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="3840" top="4410" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="77" dstpinname="Width" srcnodeid="78" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="77" dstpinname="Height" srcnodeid="78" srcpinname="Y">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="XY" dstnodeid="78" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="77" srcpinname="Texture Out" dstnodeid="44" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="50" srcpinname="Format" dstnodeid="77" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="EX9 Out" dstnodeid="77" dstpinname="Source">
    </LINK>
    </PATCH>

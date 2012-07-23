@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
-   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Filter\Colorize\Colorize (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\Colorize(EX9.Texture Filter).v4p" systemname="Colorize (EX9.Texture Filter)">
+   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\Effects\vvvv_FX\EX9.Texture Filter\Colorize\Colorize (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\Colorize(EX9.Texture Filter).v4p" systemname="Colorize (EX9.Texture Filter)">
    <BOUNDS height="7485" left="9645" top="6090" type="Window" width="6870">
    </BOUNDS>
    <NODE componentmode="Hidden" id="7" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
@@ -42,6 +42,8 @@
    <PIN pinname="Width" visible="1">
    </PIN>
    <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Format" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="12" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
@@ -157,7 +159,7 @@
    </BOUNDS>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Output">
    </PIN>
-   <PIN pinname="Input Node" visible="1">
+   <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="31" nodename="Switch (Node Input)" systemname="Switch (Node Input)">
@@ -255,7 +257,7 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Format" pintype="Input" slicecount="1" visible="1" values="|No Specific|">
+   <PIN pinname="Format" pintype="Input" visible="1">
    </PIN>
    <PIN pinname="Width" pintype="Input" visible="1">
    </PIN>
@@ -271,5 +273,7 @@
    <LINK srcnodeid="38" srcpinname="Texture Out" dstnodeid="31" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="12" srcpinname="XY" dstnodeid="39" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Format" dstnodeid="38" dstpinname="Format">
    </LINK>
    </PATCH>

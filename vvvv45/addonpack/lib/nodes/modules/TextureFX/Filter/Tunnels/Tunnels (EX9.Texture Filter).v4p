@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
-   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Filter\Tunnels\Tunnels (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\Colorize(EX9.Texture Filter).v4p" systemname="Colorize (EX9.Texture Filter)">
+   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\Effects\vvvv_FX\EX9.Texture Filter\Tunnels\Tunnels (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\Colorize(EX9.Texture Filter).v4p" systemname="Colorize (EX9.Texture Filter)">
    <BOUNDS height="5445" left="390" top="1335" type="Window" width="10065">
    </BOUNDS>
    <NODE componentmode="Hidden" id="7" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
@@ -42,6 +42,8 @@
    <PIN pinname="Width" visible="1">
    </PIN>
    <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Format" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="12" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
@@ -129,21 +131,11 @@
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 1" slicecount="1" visible="1" values="||">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="30" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
-   <BOUNDS height="100" left="3510" top="3225" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Source" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="29" nodename="AND (Boolean)" systemname="AND (Boolean)">
@@ -182,16 +174,12 @@
    </LINK>
    <LINK dstnodeid="29" dstpinname="Input 2" srcnodeid="33" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="30" dstpinname="Source" srcnodeid="9" srcpinname="EX9 Out">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Input 2" srcnodeid="30" srcpinname="Texture Out">
-   </LINK>
    <NODE componentmode="InABox" id="61" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="3990" top="285" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="3990" top="285" type="Box" width="660">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   <PIN pinname="Y Input Value" slicecount="1" values="4.11">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -209,7 +197,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="6225" top="285" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -327,7 +315,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7290" top="285" width="1050" height="240">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="| TunnelSquare|">
+   <PIN pinname="Input Enum" slicecount="1" values="| TunnelCylinder|">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mode">
    </PIN>
@@ -351,5 +339,43 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="68" srcpinname="Y Output Value" dstnodeid="52" dstpinname="Offset">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Output Node" dstnodeid="31" dstpinname="Input 1">
+   </LINK>
+   <NODE componentmode="Hidden" id="70" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="0" left="3780" top="2700" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="69" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="3480" top="3210" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="69" dstpinname="Width" srcnodeid="70" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="69" dstpinname="Height" srcnodeid="70" srcpinname="Y">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="EX9 Out" dstnodeid="69" dstpinname="Source">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Format" dstnodeid="69" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="69" srcpinname="Texture Out" dstnodeid="31" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="XY" dstnodeid="70" dstpinname="XY">
    </LINK>
    </PATCH>

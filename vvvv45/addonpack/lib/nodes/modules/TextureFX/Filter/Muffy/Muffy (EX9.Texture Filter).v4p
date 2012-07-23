@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
-   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\effects\vvvv_FX\EX9.Texture Filter\Muffy\Muffy (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\CrossHatching\CrossHatching(EX9.Texture Filter).v4p" systemname="CrossHatching (EX9.Texture Filter)">
-   <BOUNDS height="6015" left="4440" top="4890" type="Window" width="7785">
+   <PATCH nodename="C:\Users\clone\Documents\CLONEPRODUCTION\RESSOURCES\VVVV\Effects\vvvv_FX\EX9.Texture Filter\Muffy\Muffy (EX9.Texture Filter).v4p" filename="C:\Users\clone\Desktop\CrossHatching\CrossHatching(EX9.Texture Filter).v4p" systemname="CrossHatching (EX9.Texture Filter)">
+   <BOUNDS height="6015" left="6540" top="6780" type="Window" width="7785">
    </BOUNDS>
    <NODE componentmode="Hidden" id="5" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
    <BOUNDS height="270" left="1155" top="1650" type="Node" width="465">
@@ -62,6 +62,8 @@
    <PIN pinname="Height" visible="1">
    </PIN>
    <PIN pinname="Get Original File Infos" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Format" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="49" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
@@ -126,16 +128,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="53" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
-   <BOUNDS height="100" left="3495" top="3435" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Source" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="54" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="100" left="2475" top="2790" type="Node" width="100">
    </BOUNDS>
@@ -148,13 +140,9 @@
    </NODE>
    <LINK dstnodeid="54" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="47" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="53" dstpinname="Source" srcnodeid="17" srcpinname="EX9 Out">
-   </LINK>
    <LINK dstnodeid="44" dstpinname="Input 1" srcnodeid="52" srcpinname="Output Node">
    </LINK>
    <LINK dstnodeid="45" dstpinname="Input Node" srcnodeid="44" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="44" dstpinname="Input 2" srcnodeid="53" srcpinname="Texture Out">
    </LINK>
    <LINK dstnodeid="44" dstpinname="Switch" srcnodeid="54" srcpinname="Output">
    </LINK>
@@ -305,5 +293,41 @@
    <LINK dstnodeid="72" dstpinname="RingNum" srcnodeid="75" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="72" dstpinname="RingAmount" srcnodeid="75" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="77" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="0" left="3780" top="2925" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="76" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="3480" top="3435" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="76" dstpinname="Width" srcnodeid="77" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="76" dstpinname="Height" srcnodeid="77" srcpinname="Y">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="EX9 Out" dstnodeid="76" dstpinname="Source">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="XY" dstnodeid="77" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="50" srcpinname="Format" dstnodeid="76" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="76" srcpinname="Texture Out" dstnodeid="44" dstpinname="Input 2">
    </LINK>
    </PATCH>
