@@ -1,0 +1,77 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="A:\v\vvvv\public\vvvv45\lib\nodes\modules\Transform\ProjectionSpace (Transform FromTextureSpace).v4p">
+   <BOUNDS height="6000" left="5400" top="5160" type="Window" width="9000">
+   </BOUNDS>
+   <NODE id="4" nodename="SetMatrix (Transform)" systemname="SetMatrix (Transform)">
+   <BOUNDS height="270" left="4395" top="2865" type="Node" width="810">
+   </BOUNDS>
+   <PIN pinname="Matrix In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="2415" top="975" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7883" top="6468" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1380" left="2415" top="975" type="Box" width="2805">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="16" visible="1" values="2,0,0,0,0,-2,0,0,0,0,1,0,-1,1,0,1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Matrix In" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="840" top="4785" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="16995" top="13605" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="840" top="4785" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform Out|" encoded="0">
+   </PIN>
+   <PIN pinname="Input Node" slicecount="10" visible="1" values=",,,,,,,,,">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="870" top="1530" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="17295" top="13905" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="870" top="1530" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform In|" encoded="0">
+   </PIN>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Multiply (Transform)" systemname="Multiply (Transform)">
+   <BOUNDS height="0" left="855" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In 1" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform In 2" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Transform In 2" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Transform In 1" srcnodeid="1" srcpinname="Output Node">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input Node" srcnodeid="0" srcpinname="Transform Out">
+   </LINK>
+   <INFO author="vvvv group" description="Transforms from Texture Space to Projection Space. " tags="map, texcoords">
+   </INFO>
+   </PATCH>

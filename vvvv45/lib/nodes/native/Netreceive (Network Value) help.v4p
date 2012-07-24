@@ -1,0 +1,123 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta7.4.dtd" >
+   <PATCH nodename="X:\vvvv33\help\Netreceive (Network Value) help.v4p">
+   <BOUNDS height="4515" left="1785" top="1290" type="Window" width="7125">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="345" top="2400" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7791" top="5737" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="345" top="2400" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="0" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="420" left="345" top="345" type="Node" width="1065">
+   </BOUNDS>
+   <BOUNDS height="555" left="345" top="345" type="Box" width="4140">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|NetReceive&cr;&lf;Receives values via UDP or TCP using PD&apos;s FUDI-protocol|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2655" top="3315" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="255" left="2655" top="3315" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="585" left="2655" top="1125" type="Node" width="3600">
+   </BOUNDS>
+   <BOUNDS height="1170" left="2655" top="1125" type="Box" width="4080">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Based on the server socket nodes this module works like [netreceive] known from pd. &cr;&lf;Choose a protocol and port on which the receiver listens. Values concatenated to lists in pd are received as spread.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2655" top="2610" type="Node" width="4440">
+   </BOUNDS>
+   <BOUNDS height="525" left="2655" top="2610" type="Box" width="3360">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Open the help patch for NetSend to see the nodes communicate|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="585" top="1635" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9795" top="11385" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="585" top="1635" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1410" top="1620" type="Node" width="1110">
+   </BOUNDS>
+   <BOUNDS height="255" left="1410" top="1620" type="Box" width="1110">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="connections">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="0" nodename=":MODULES:\Netreceive (Network Value).v4p">
+   <BOUNDS height="100" left="345" top="1140" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="345" top="1140" type="Box">
+   </BOUNDS>
+   <PIN pinname="Connection Count" visible="1">
+   </PIN>
+   <PIN pinname="Values" visible="1">
+   </PIN>
+   <PIN pinname="Port" slicecount="1" values="4447.00000">
+   </PIN>
+   <PIN pinname="Protocol" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Values">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Connection Count">
+   </LINK>
+   <NODE componentmode="Hidden" id="9" nodename=":MODULES:\Netsend (Network Value).v4p">
+   <BOUNDS height="100" left="2655" top="3615" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="2655" top="3615" type="Box">
+   </BOUNDS>
+   <PIN pinname="Host" slicecount="1" values="127.0.0.1">
+   </PIN>
+   <PIN pinname="Port" slicecount="1" values="4446.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
