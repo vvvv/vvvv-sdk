@@ -351,11 +351,11 @@
    <LINK dstnodeid="20" dstpinname="Indices" hiddenwhenlocked="1" srcnodeid="15" srcpinname="Indices">
    </LINK>
    <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="0" left="5055" top="3930" type="Node" width="0">
+   <BOUNDS height="0" left="5070" top="3615" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="13025" top="6553" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="330" left="5055" top="3930" type="Box" width="465">
+   <BOUNDS height="330" left="5070" top="3615" type="Box" width="465">
    </BOUNDS>
    <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
    </PIN>
@@ -379,11 +379,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="0" left="5055" top="4335" type="Node" width="0">
+   <BOUNDS height="0" left="5070" top="4020" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="14660" top="6688" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="330" left="5055" top="4335" type="Box" width="465">
+   <BOUNDS height="330" left="5070" top="4020" type="Box" width="465">
    </BOUNDS>
    <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
    </PIN>
@@ -487,6 +487,8 @@
    </PIN>
    <PIN pinname="Mouse" visible="1">
    </PIN>
+   <PIN pinname="FileName" slicecount="1" encoded="0" values="DistortedTeapot.vpe">
+   </PIN>
    </NODE>
    <LINK dstnodeid="57" dstpinname="Init" linkstyle="Bezier" srcnodeid="28" srcpinname="Y Output Value">
    </LINK>
@@ -558,12 +560,10 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="57" dstpinname="Load">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="63" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5565" top="3975" width="600" height="270">
+   <BOUNDS type="Node" left="5580" top="3660" width="600" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5565" top="3975" width="600" height="270">
+   <BOUNDS type="Box" left="5580" top="3660" width="600" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Save|">
    </PIN>
@@ -575,9 +575,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="64" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5565" top="4350" width="600" height="270">
+   <BOUNDS type="Node" left="5580" top="4035" width="600" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5565" top="4350" width="600" height="270">
+   <BOUNDS type="Box" left="5580" top="4035" width="600" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Load|">
    </PIN>
@@ -963,7 +963,7 @@
    </BOUNDS>
    </NODE>
    <NODE id="14" nodename="Mouse (System Window)" systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" componentmode="Hidden">
-   <BOUNDS height="100" left="3900" top="4350" type="Node" width="100">
+   <BOUNDS height="100" left="3885" top="3840" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -981,5 +981,27 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="14" srcpinname="Mouse" dstnodeid="57" dstpinname="Mouse">
+   </LINK>
+   <NODE id="91" nodename="OR (Boolean)" systemname="OR (Boolean)">
+   <BOUNDS height="0" left="4965" top="4875" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="90" nodename="OnOpen (VVVV)" systemname="OnOpen (VVVV)">
+   <BOUNDS height="0" left="5295" top="4530" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="91" dstpinname="Input 2" srcnodeid="90" srcpinname="Bang">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="91" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="91" srcpinname="Output" dstnodeid="57" dstpinname="Load">
    </LINK>
    </PATCH>
