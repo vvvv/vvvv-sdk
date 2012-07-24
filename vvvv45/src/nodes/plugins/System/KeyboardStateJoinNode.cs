@@ -19,7 +19,7 @@ namespace VVVV.Nodes.IO
         [Input("Time")]
         public IDiffSpread<int> FTimeIn;
         
-        [Output("Output")]
+        [Output("Keyboard")]
         public ISpread<KeyboardState> FOutput;
 
         public void Evaluate(int spreadMax)
