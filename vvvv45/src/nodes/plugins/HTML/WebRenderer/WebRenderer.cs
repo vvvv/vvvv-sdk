@@ -184,9 +184,10 @@ namespace VVVV.Nodes.HTML
                 {
                     FBrowser.SendMouseMoveEvent(x, y, false);
                 }
-                if (mouseState.MouseWheelDelta != 0)
+                var mouseWheelDelta = mouseState.MouseWheel - FMouseState.MouseWheel;
+                if (mouseWheelDelta != 0)
                 {
-                    FBrowser.SendMouseWheelEvent(x, y, mouseState.MouseWheelDelta);
+                    FBrowser.SendMouseWheelEvent(x, y, mouseWheelDelta);
                 }
                 FMouseState = mouseState;
             }
