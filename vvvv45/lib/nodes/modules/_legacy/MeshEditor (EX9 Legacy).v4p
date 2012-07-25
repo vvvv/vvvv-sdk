@@ -1,13 +1,13 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9).v4p" componentmode="InAWindow" systemname="MeshEditor (EX9)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9).v4p">
-   <BOUNDS height="8130" left="2370" top="8730" type="Window" width="11340">
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\_legacy\MeshEditor (EX9 Legacy).v4p" componentmode="InAWindow" systemname="MeshEditor (EX9 Legacy)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\_legacy\MeshEditor (EX9 Legacy).v4p">
+   <BOUNDS height="8130" left="4440" top="4560" type="Window" width="11340">
    </BOUNDS>
    <NODE componentmode="InABox" id="24" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="4080" top="1635" type="Node" width="0">
+   <BOUNDS height="0" left="4080" top="1935" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5465" top="3673" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="405" left="4080" top="1635" type="Box" width="465">
+   <BOUNDS height="405" left="4080" top="1935" type="Box" width="465">
    </BOUNDS>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
@@ -206,10 +206,6 @@
    <PIN pinname="Edit Front Only" visible="1">
    </PIN>
    <PIN pinname="Center XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="26" dstpinname="Init" linkstyle="Bezier" srcnodeid="24" srcpinname="Y Output Value">
@@ -434,10 +430,26 @@
    </LINK>
    <LINK dstnodeid="50" dstpinname="Mesh" srcnodeid="15" srcpinname="Mesh">
    </LINK>
-   <NODE componentmode="InABox" id="54" nodename="IOBox (Node)" systemname="IOBox (Node)">
-   <BOUNDS height="100" left="4680" top="1935" type="Node" width="100">
+   <NODE componentmode="InABox" id="52" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="160" left="5970" top="11295" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="360" left="4680" top="1935" type="Box" width="420">
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Mouse XYZ|">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <BOUNDS height="100" left="4365" top="960" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="630" left="4365" top="960" type="Box" width="825">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Mouse XYZ" srcnodeid="52" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="54" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="100" left="5385" top="1215" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="360" left="5385" top="1215" type="Box" width="420">
    </BOUNDS>
    <BOUNDS height="160" left="6990" top="10515" type="Window" width="215">
    </BOUNDS>
@@ -510,20 +522,30 @@
    </NODE>
    <LINK dstnodeid="26" dstpinname="Center XYZ" srcnodeid="57" srcpinname="Y Output Value">
    </LINK>
-   <NODE nodename="IOBox (Node)" componentmode="InABox" id="62" systemname="IOBox (Node)">
-   <BOUNDS type="Node" left="4380" top="2790" width="0" height="0">
+   <NODE componentmode="InABox" id="58" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="4860" top="2340" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="4380" top="2790" width="795" height="240">
+   <BOUNDS height="480" left="4860" top="2340" type="Box" width="480">
    </BOUNDS>
-   <PIN pinname="Input Node" slicecount="1" values="||">
+   <BOUNDS height="160" left="11805" top="10995" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mouse">
+   <PIN pinname="Show Slider" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Output Node" visible="1">
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Mouse Down|">
+   </PIN>
+   <PIN pinname="BaseSubType" slicecount="1" values="Boolean">
    </PIN>
    </NODE>
-   <LINK srcnodeid="62" srcpinname="Output Node" dstnodeid="26" dstpinname="Mouse State">
-   </LINK>
-   <LINK srcnodeid="62" srcpinname="Output Node" dstnodeid="26" dstpinname="Mouse">
+   <LINK dstnodeid="26" dstpinname="Mouse Down" srcnodeid="58" srcpinname="Y Output Value">
    </LINK>
    </PATCH>

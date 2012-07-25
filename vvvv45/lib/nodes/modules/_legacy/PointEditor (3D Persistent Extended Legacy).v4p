@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Extended).v4p" locked="0" systemname="PointEditor (3D Persistent Extended Legacy)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\_legacy\PointEditor (3D Persistent Extended Legacy).v4p">
-   <BOUNDS height="9765" left="6630" top="4980" type="Window" width="21990">
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\_legacy\PointEditor (3D Persistent Extended Legacy).v4p" locked="0" systemname="PointEditor (3D Persistent Extended Legacy)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\_legacy\PointEditor (3D Persistent Extended Legacy).v4p">
+   <BOUNDS height="12480" left="6450" top="2265" type="Window" width="22170">
    </BOUNDS>
    <NODE hiddenwhenlocked="1" id="121" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
    <BOUNDS height="0" left="270" top="7350" type="Node" width="0">
@@ -70,6 +70,42 @@
    <PIN pinname="Hue" slicecount="1" visible="1" values="-0.3333">
    </PIN>
    <PIN pinname="Input 1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="116" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6495" top="360" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14205" top="9090" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6495" top="360" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Mouse XYZ|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="115" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9600" top="1545" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="15105" top="9990" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="405" left="9600" top="1545" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Mouse Down|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="114" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -397,21 +433,21 @@
    </BOUNDS>
    <PIN pinname="Keyboard Output" visible="1">
    </PIN>
-   <PIN pinname="Key" visible="1">
-   </PIN>
    </NODE>
    <NODE hiddenwhenlocked="1" id="93" nodename="KeyMatch (String)" systemname="KeyMatch (String)">
    <BOUNDS height="0" left="12765" top="1155" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Key Match" slicecount="1" encoded="0" values="|m,t|">
    </PIN>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="M Output" visible="1">
    </PIN>
    <PIN pinname="T Output" visible="1">
    </PIN>
    </NODE>
+   <LINK dstnodeid="93" dstpinname="Input" hiddenwhenlocked="1" srcnodeid="94" srcpinname="Keyboard Output">
+   </LINK>
    <NODE componentmode="InABox" hiddenwhenlocked="1" id="92" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="195" top="8595" type="Node" width="1065">
    </BOUNDS>
@@ -448,6 +484,8 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
+   <LINK dstnodeid="90" dstpinname="Input" srcnodeid="115" srcpinname="Y Output Value">
+   </LINK>
    <NODE hiddenwhenlocked="1" id="89" nodename="ZWriteEnable (EX9.RenderState)" systemname="ZWriteEnable (EX9.RenderState)">
    <BOUNDS height="0" left="14880" top="3720" type="Node" width="0">
    </BOUNDS>
@@ -959,7 +997,7 @@
    </BOUNDS>
    <PIN pinname="Key Match" slicecount="1" encoded="0" values="|t,s,d,x,c,v,y,&lt;F2&gt;,&lt;F8&gt;|">
    </PIN>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="M Output" visible="1">
    </PIN>
@@ -986,6 +1024,8 @@
    <PIN pinname="&lt;F8&gt; Output" visible="1">
    </PIN>
    </NODE>
+   <LINK dstnodeid="65" dstpinname="Input" hiddenwhenlocked="1" srcnodeid="94" srcpinname="Keyboard Output">
+   </LINK>
    <NODE id="64" nodename="ApplyTransform (Transform Vector)" systemname="ApplyTransform (Transform Vector)">
    <BOUNDS height="0" left="9810" top="9525" type="Node" width="0">
    </BOUNDS>
@@ -1013,6 +1053,8 @@
    <LINK dstnodeid="64" dstpinname="Transform" srcnodeid="63" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="63" dstpinname="Center XYZ" srcnodeid="77" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="70" dstpinname="XYZ" hiddenwhenlocked="1" srcnodeid="116" srcpinname="Y Output Value">
    </LINK>
    <NODE id="62" nodename="S+H (Animation)" systemname="S+H (Animation)">
    <BOUNDS height="0" left="11100" top="9150" type="Node" width="0">
@@ -1093,6 +1135,8 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="57" dstpinname="Input" hiddenwhenlocked="0" srcnodeid="90" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="69" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="115" srcpinname="Y Output Value">
    </LINK>
    <NODE id="56" nodename="OR (Boolean)" systemname="OR (Boolean)">
    <BOUNDS height="0" left="11505" top="6810" type="Node" width="0">
@@ -1317,6 +1361,8 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="46" dstpinname="Input 2" srcnodeid="47" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="47" dstpinname="Input" hiddenwhenlocked="0" srcnodeid="116" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="101" dstpinname="XYZ UnTransformed" srcnodeid="46" srcpinname="Output">
    </LINK>
@@ -1911,7 +1957,7 @@
    <NODE id="14" nodename="Split (String)" systemname="Split (String)">
    <BOUNDS height="0" left="19950" top="795" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="text" encoded="0">
+   <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -2099,11 +2145,9 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
    </NODE>
+   <LINK dstnodeid="2" dstpinname="Mouse XYZ" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="116" srcpinname="Y Output Value">
+   </LINK>
    <LINK dstnodeid="2" dstpinname="Mouse Down" hiddenwhenlocked="1" srcnodeid="90" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="2" dstpinname="View Projection" srcnodeid="82" srcpinname="Output Node">
@@ -2151,11 +2195,9 @@
    </PIN>
    <PIN pinname="Point Size" visible="1">
    </PIN>
-   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
    </NODE>
+   <LINK dstnodeid="0" dstpinname="Mouse XYZ" hiddenwhenlocked="1" srcnodeid="116" srcpinname="Y Output Value">
+   </LINK>
    <LINK dstnodeid="0" dstpinname="Points" linkstyle="PolyLine" srcnodeid="103" srcpinname="XYZ Transformed">
    </LINK>
    <LINK dstnodeid="96" dstpinname="Index" hiddenwhenlocked="1" srcnodeid="0" srcpinname="Over">
@@ -2271,12 +2313,12 @@
    </PIN>
    <PIN pinname="Edit Front Only" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
    </NODE>
    <LINK dstnodeid="123" dstpinname="Points" linkstyle="PolyLine" srcnodeid="103" srcpinname="XYZ Transformed">
+   </LINK>
+   <LINK dstnodeid="123" dstpinname="Mouse XYZ" hiddenwhenlocked="1" srcnodeid="116" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="123" dstpinname="Mouse Down" hiddenwhenlocked="1" srcnodeid="115" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="83" dstpinname="Index" hiddenwhenlocked="1" srcnodeid="123" srcpinname="Tagged">
    </LINK>
@@ -2311,93 +2353,5 @@
    <LINK dstnodeid="122" dstpinname="Cluster Indices" srcnodeid="123" srcpinname="Tagged">
    <LINKPOINT x="16800" y="6585">
    </LINKPOINT>
-   </LINK>
-   <NODE systemname="MouseState (System Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseState (System Split)" componentmode="Hidden" id="127">
-   <BOUNDS type="Node" left="7560" top="675" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Node)" componentmode="InABox" id="126" systemname="IOBox (Node)">
-   <BOUNDS type="Node" left="7560" top="75" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7560" top="75" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Input Node" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mouse">
-   </PIN>
-   <PIN pinname="Output Node" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="126" srcpinname="Output Node" dstnodeid="127" dstpinname="Input" hiddenwhenlocked="1">
-   </LINK>
-   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="125">
-   <BOUNDS type="Node" left="7560" top="1155" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="127" srcpinname="X" dstnodeid="125" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="127" srcpinname="Y" dstnodeid="125" dstpinname="Y">
-   </LINK>
-   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="124">
-   <BOUNDS type="Node" left="8265" top="1155" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Z" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="127" srcpinname="Left Button" dstnodeid="124" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="127" srcpinname="Middle Button" dstnodeid="124" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="127" srcpinname="Right Button" dstnodeid="124" dstpinname="Z">
-   </LINK>
-   <LINK srcnodeid="125" srcpinname="XYZ" dstnodeid="47" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="125" srcpinname="XYZ" dstnodeid="70" dstpinname="XYZ">
-   </LINK>
-   <LINK srcnodeid="124" srcpinname="XYZ" dstnodeid="90" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="124" srcpinname="XYZ" dstnodeid="69" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="126" srcpinname="Output Node" dstnodeid="0" dstpinname="Mouse State">
-   </LINK>
-   <LINK srcnodeid="126" srcpinname="Output Node" dstnodeid="2" dstpinname="Mouse State">
-   </LINK>
-   <LINK srcnodeid="126" srcpinname="Output Node" dstnodeid="123" dstpinname="Mouse State">
-   </LINK>
-   <LINK srcnodeid="126" srcpinname="Output Node" dstnodeid="127" dstpinname="Mouse">
-   </LINK>
-   <LINK srcnodeid="126" srcpinname="Output Node" dstnodeid="0" dstpinname="Mouse">
-   </LINK>
-   <LINK srcnodeid="126" srcpinname="Output Node" dstnodeid="123" dstpinname="Mouse">
-   </LINK>
-   <LINK srcnodeid="126" srcpinname="Output Node" dstnodeid="2" dstpinname="Mouse">
-   </LINK>
-   <LINK srcnodeid="94" srcpinname="Key" dstnodeid="93" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="94" srcpinname="Key" dstnodeid="65" dstpinname="Input">
    </LINK>
    </PATCH>
