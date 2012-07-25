@@ -5,11 +5,11 @@
    <NODE systemname="Reader (File)" nodename="Reader (File)" componentmode="Hidden" id="1">
    <BOUNDS type="Node" left="1845" top="225" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Filename" slicecount="1" values="lib\diffff.xml" encoded="0">
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\lib\diffff.xml">
    </PIN>
    <PIN pinname="Content" visible="1">
    </PIN>
-   <PIN pinname="Read" slicecount="1" values="0">
+   <PIN pinname="Read" slicecount="1" visible="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="Element (XML Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Element (XML Split)" componentmode="Hidden" id="2">
@@ -105,7 +105,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4530" top="2265" width="1095" height="300">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="45alpha28" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="45alpha28">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -155,11 +155,11 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4515" top="5250" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="old" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="old">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
@@ -185,9 +185,9 @@
    </BOUNDS>
    <BOUNDS type="Box" left="2475" top="6705" width="6330" height="7125">
    </BOUNDS>
-   <PIN pinname="Default" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
@@ -249,7 +249,7 @@
    </PIN>
    <PIN pinname="Show SliceIndex" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="30" visible="1" values="|Differential (Spreads Advanced Legacy)|,|Integral (Spreads Advanced Legacy)|,|AlphaLevels (EX9.Texture Filter Legacy)|,|Preview (EX9.Texture)|,|TexCoords (EX9.Texture Source)|,|Mouse (System Global Legacy)|,|Mouse (System Window Legacy)|,|Keyboard (System Global Legacy)|,|Keyboard (System Window Legacy)|,|Button (3D Mesh Legacy)|,|Button (3D Mesh Legacy)|,|Button (3D Mesh Legacy)|,|Button (3D Quad Legacy)|,|Button (3D Quad Legacy)|,|PickPoints (3D Vector Legacy)|,|PickPoints (3D Vector Legacy)|,|PointEditor (3D Legacy)|,|PointEditor (3D Legacy)|,|PointEditor (3D Persistent Legacy)|,|PointEditor (3D Persistent Legacy)|,|PointEditor (3D Persistent Extended Legacy)|,|PointEditor (3D Persistent Extended Legacy)|,|PointEditor (3D Persistent Sandwich Legacy)|,|PointEditor (3D Persistent Sandwich Legacy)|,|MeshEditor (EX9 Legacy)|,|MeshEditor (EX9 Legacy)|,|TagPoints (3D Vector Legacy)|,|TagPoints (3D Vector Legacy)|,|Cursor (DX9 Legacy)|,|Cursor (DX9 Legacy)|" encoded="0">
+   <PIN pinname="Input String" slicecount="29" visible="1" encoded="0" values="|Differential (Spreads Advanced Legacy)|,|Integral (Spreads Advanced Legacy)|,|AlphaLevels (EX9.Texture Filter Legacy)|,|Preview (EX9.Texture)|,|TexCoords (EX9.Texture Source)|,|Mouse (System Global Legacy)|,|Mouse (System Window Legacy)|,|Keyboard (System Global Legacy)|,|Keyboard (System Window Legacy)|,|Button (3D Mesh Legacy)|,|Button (3D Mesh Legacy)|,|Button (3D Mesh Legacy)|,|Button (3D Quad Legacy)|,|Button (3D Quad Legacy)|,|PickPoints (3D Vector Legacy)|,|PickPoints (3D Vector Legacy)|,|PointEditor (3D Legacy)|,|PointEditor (3D Legacy)|,|PointEditor (3D Persistent Legacy)|,|PointEditor (3D Persistent Legacy)|,|PointEditor (3D Persistent Extended Legacy)|,|PointEditor (3D Persistent Extended Legacy)|,|PointEditor (3D Persistent Sandwich Legacy)|,|PointEditor (3D Persistent Sandwich Legacy)|,|MeshEditor (EX9 Legacy)|,|MeshEditor (EX9 Legacy)|,|TagPoints (3D Vector Legacy)|,|TagPoints (3D Vector Legacy)|,|Cursor (DX9 Legacy)|,|Cursor (DX9 Legacy)|">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
@@ -290,8 +290,6 @@
    <PIN pinname="Attributes Bin Size" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="23" srcpinname="Output" dstnodeid="25" dstpinname="Element">
-   </LINK>
    <LINK srcnodeid="25" srcpinname="Attributes" dstnodeid="24" dstpinname="Attribute">
    </LINK>
    <LINK srcnodeid="24" srcpinname="Name" dstnodeid="22" dstpinname="Input 1">
@@ -303,13 +301,11 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 2" slicecount="30" visible="1" values="text" encoded="0">
+   <PIN pinname="Input 2" slicecount="30" visible="1" encoded="0" values="text">
    </PIN>
-   <PIN pinname="Input 1" slicecount="1" values="|...............TAKE OLD|" encoded="0">
+   <PIN pinname="Input 1" slicecount="1" encoded="0" values="|...............TAKE OLD|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="26" srcpinname="Output" dstnodeid="19" dstpinname="Input String">
-   </LINK>
    <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="28">
    <BOUNDS type="Node" left="8805" top="4455" width="100" height="100">
    </BOUNDS>
@@ -327,7 +323,7 @@
    <LINK srcnodeid="28" srcpinname="Output" dstnodeid="26" dstpinname="Switch">
    </LINK>
    <NODE systemname="Select (String)" nodename="Select (String)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="9735" top="4980" width="100" height="100">
+   <BOUNDS type="Node" left="9765" top="4455" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -341,7 +337,7 @@
    <LINK srcnodeid="22" srcpinname="Output" dstnodeid="29" dstpinname="Select">
    </LINK>
    <NODE systemname="Integral (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Integral (Spreads)" componentmode="Hidden" id="32">
-   <BOUNDS type="Node" left="10950" top="4845" width="100" height="100">
+   <BOUNDS type="Node" left="10710" top="5025" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -365,7 +361,7 @@
    <LINK srcnodeid="34" srcpinname="Output" dstnodeid="26" dstpinname="Input 2">
    </LINK>
    <NODE systemname="CDR (Spreads)" nodename="CDR (Spreads)" componentmode="Hidden" id="33">
-   <BOUNDS type="Node" left="10950" top="5205" width="100" height="100">
+   <BOUNDS type="Node" left="10710" top="5385" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -375,5 +371,17 @@
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="33" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="33" srcpinname="Remainder" dstnodeid="34" dstpinname="Index">
+   </LINK>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="37">
+   <BOUNDS type="Node" left="3930" top="450" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="Bang" dstnodeid="1" dstpinname="Read">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Output" dstnodeid="25" dstpinname="Element">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Output" dstnodeid="19" dstpinname="Input String">
    </LINK>
    </PATCH>
