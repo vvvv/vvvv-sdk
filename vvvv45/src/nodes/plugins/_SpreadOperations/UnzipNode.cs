@@ -57,7 +57,7 @@ namespace VVVV.Nodes
 		
 	}
 	
-	[PluginInfo(Name = "Unzip", Category = "Value", Version = "Bin Size", Help = "Unzips a spread into multiple spreads", Tags = "")]
+	[PluginInfo(Name = "Unzip", Category = "Value", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
 	public class ValueBinSizeUnzipNode : UnzipNode<IInStream<double>>
 	{
 		
@@ -69,7 +69,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Unzip", Category = "2d", Version = "Bin Size", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    [PluginInfo(Name = "Unzip", Category = "2d", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
     public class Vector2DBinSizeUnzipNode : UnzipNode<IInStream<Vector2D>>
     {
 
@@ -81,7 +81,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Unzip", Category = "3d", Version = "Bin Size", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    [PluginInfo(Name = "Unzip", Category = "3d", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
     public class Vector3DBinSizeUnzipNode : UnzipNode<IInStream<Vector3D>>
     {
 
@@ -93,7 +93,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Unzip", Category = "4d", Version = "Bin Size", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    [PluginInfo(Name = "Unzip", Category = "4d", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
     public class Vector4DBinSizeUnzipNode : UnzipNode<IInStream<Vector4D>>
     {
 
@@ -105,7 +105,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Unzip", Category = "Color", Version = "Bin Size", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    [PluginInfo(Name = "Unzip", Category = "Color", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
     public class ColorBinSizeUnzipNode : UnzipNode<IInStream<RGBAColor>>
     {
 
@@ -117,7 +117,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Unzip", Category = "String", Version = "Bin Size", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    [PluginInfo(Name = "Unzip", Category = "String", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
     public class StringBinSizeUnzipNode : UnzipNode<IInStream<string>>
     {
 
@@ -129,7 +129,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Unzip", Category = "Transform", Version = "Bin Size", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    [PluginInfo(Name = "Unzip", Category = "Transform", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
     public class TransformBinSizeUnzipNode : UnzipNode<IInStream<Matrix4x4>>
     {
 
