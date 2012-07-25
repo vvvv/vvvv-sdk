@@ -2,18 +2,25 @@
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.NonGeneric;
+using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.Pins.Input
 {
     [ComVisible(false)]
-    class DiffInputBinSpread<T> : InputBinSpread<T>, IDiffSpread<ISpread<T>>
+    public class DiffInputBinSpread<T> : InputBinSpread<T>, IDiffSpread<ISpread<T>>
     {
-        class DiffInputBinSpreadStream : InputBinSpreadStream
+        public class DiffInputBinSpreadStream : InputBinSpreadStream
         {
             public DiffInputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
                 : base(ioFactory, attribute, true)
             {
                 
+            }
+            
+            public DiffInputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, Func<IIOContainer<IInStream<int>>> binSizeIOContainerFactory)
+            	: base(ioFactory, attribute, true, binSizeIOContainerFactory)
+            {
+            	
             }
         }
         
@@ -21,6 +28,13 @@ namespace VVVV.Hosting.Pins.Input
             : base(ioFactory, attribute, new DiffInputBinSpreadStream(ioFactory, attribute))
         {
         }
+        
+        public DiffInputBinSpread(IIOFactory ioFactory, InputAttribute attribute, IIOContainer<IInStream<int>> binSizeIOContainer)
+        	: base(ioFactory, attribute, new DiffInputBinSpreadStream(ioFactory, attribute, () => binSizeIOContainer))
+        {
+        	       	
+        } 
+       
         
         public override bool Sync()
         {
