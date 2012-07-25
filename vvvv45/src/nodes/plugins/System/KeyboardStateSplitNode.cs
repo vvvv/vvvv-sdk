@@ -10,7 +10,7 @@ namespace VVVV.Nodes.IO
     [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Split")]
     public class KeyStateSplitNode : IPluginEvaluate
     {
-        [Input("Input")]
+        [Input("Keyboard")]
         public ISpread<KeyboardState> FInput;
 
         [Output("Key Code")]
@@ -36,9 +36,20 @@ namespace VVVV.Nodes.IO
                 ISpread<int> keyCode;
                 string key;
                 int time;
-                KeyboardStateNodes.Split(keyEvent, out keyCode, out key, out time);
+                bool capsLock;
+
+                if (keyEvent != null)
+                    KeyboardStateNodes.Split(keyEvent, out keyCode, out key, out time, out capsLock);
+                else
+                {
+                    keyCode = new Spread<int>();
+                    key = "";
+                    time = 0;
+                    capsLock = false;
+                }        
+
                 FKeyCodeOut[i] = keyCode;
-                FCapsOut[i] = FInput[i].CapsLock;
+                FCapsOut[i] = capsLock;
                 FKeyOut[i] = key;
                 FTimeOut[i] = time;
             }
