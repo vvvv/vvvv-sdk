@@ -52,7 +52,7 @@ namespace VVVV.Hosting.Pins
         {
             for (int i = oldSliceCount; i < newSliceCount; i++)
             {
-                var diffSpread = CreateDiffSpread(i);
+                var diffSpread = CreateDiffSpread(i + 1);
                 diffSpread.Changed += HandleDiffSpreadChanged;
                 this[i] = diffSpread;
             }

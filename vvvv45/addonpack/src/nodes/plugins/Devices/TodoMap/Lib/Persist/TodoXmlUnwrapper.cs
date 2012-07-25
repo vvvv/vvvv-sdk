@@ -4,6 +4,7 @@ using System.Text;
 using VVVV.TodoMap.Lib.Modules.Midi;
 using System.Xml;
 using VVVV.TodoMap.Lib.Modules.Osc;
+using System.Globalization;
 
 namespace VVVV.TodoMap.Lib.Persist
 {
@@ -132,15 +133,15 @@ namespace VVVV.TodoMap.Lib.Persist
                 }
                 if (child.Name == "Default")
                 {
-                    var.Default = Convert.ToDouble(child.InnerText);
+                    var.Default = Convert.ToDouble(child.InnerText,CultureInfo.InvariantCulture);
                 }
                 if (child.Name == "MinValue")
                 {
-                    var.Mapper.MinValue = Convert.ToDouble(child.InnerText);
+                    var.Mapper.MinValue = Convert.ToDouble(child.InnerText, CultureInfo.InvariantCulture);
                 }
                 if (child.Name == "MaxValue")
                 {
-                    var.Mapper.MaxValue = Convert.ToDouble(child.InnerText);
+                    var.Mapper.MaxValue = Convert.ToDouble(child.InnerText, CultureInfo.InvariantCulture);
                 }
                 if (child.Name == "TweenMode")
                 {
