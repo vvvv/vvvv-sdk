@@ -11,9 +11,36 @@ namespace VVVV.Core.Model
 	public class DocumentFactory
 	{
 		protected static Dictionary<string, IDocument> FDocuments = new Dictionary<string, IDocument>();
-		
+
+        protected static Dictionary<string, Type> FLoaders;
+
+        private static void Initialize()
+        {
+            if (FLoaders == null)
+            {
+                FLoaders = new Dictionary<string, Type>();
+
+                FLoaders.Add(".cs", typeof(CSDocument));
+                FLoaders.Add(".fx", typeof(FXDocument));
+                FLoaders.Add(".fxh", typeof(FXDocument));
+                FLoaders.Add(".xx", typeof(FXDocument));
+            }
+        }
+
+        public static void RegisterLoader(string ext, Type t)
+        {
+            Initialize();
+
+            if (!FLoaders.ContainsKey(ext))
+            {
+                FLoaders[ext] = t;
+            }
+        }
+
 		public static IDocument CreateDocumentFromFile(string filename)
 		{
+            Initialize();
+
 			IDocument document;
 			
 			if (!FDocuments.TryGetValue(filename, out document))
@@ -21,21 +48,17 @@ namespace VVVV.Core.Model
 				var location = new Uri(filename);
 				
 				var fileExtension = Path.GetExtension(filename);
-				switch (fileExtension)
-				{
-					case ".cs":
-						document = new CSDocument(filename, location);
-						break;
-					case ".fx":
-					case ".fxh":
-					case ".xx":
-						document = new FXDocument(filename, location);
-						break;
-					default:
-						document = new TextDocument(filename, location);
-						break;
-				}
-				
+
+                if (FLoaders.ContainsKey(fileExtension))
+                {
+                    object o = Activator.CreateInstance(FLoaders[fileExtension], filename, location);
+                    document = o as IDocument;
+                }
+                else
+                {
+                    document = new TextDocument(filename, location);
+                }
+
 				FDocuments[filename] = document;
 				
 				document.Disposed += document_Disposed;
