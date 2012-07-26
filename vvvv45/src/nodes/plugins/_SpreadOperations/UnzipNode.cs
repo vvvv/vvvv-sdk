@@ -140,4 +140,10 @@ namespace VVVV.Nodes
 	{
 		
 	}
+
+    [PluginInfo(Name = "Unzip", Category = "Enumerations", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    public class EnumBinSizeUnzipNode : UnzipNode<IInStream<EnumEntry>>
+    {
+
+    }
 }

@@ -141,4 +141,10 @@ namespace VVVV.Nodes
 	{
 		
 	}
+
+    [PluginInfo(Name = "Zip", Category = "Enumerations", Version = "Bin", Help = "Zips spreads together", Tags = "")]
+    public class EnumBinSizeZipNode : ZipNode<IInStream<EnumEntry>>
+    {
+
+    }
 }
