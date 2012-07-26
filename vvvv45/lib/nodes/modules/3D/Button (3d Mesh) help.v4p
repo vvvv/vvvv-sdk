@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv45\lib\nodes\modules\3D\Button (3d Mesh) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Mesh) help.v4p">
    <BOUNDS height="9615" left="105" top="75" type="Window" width="6480">
    </BOUNDS>
    <NODE id="22" nodename="Group (EX9)" systemname="Group (EX9)">
@@ -22,14 +22,6 @@
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Layer 1" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="21" nodename="Mouse (System Window)" systemname="Mouse (System Window)">
-   <BOUNDS height="270" left="3045" top="2235" type="Node" width="1080">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
    <NODE id="20" nodename="Quad (DX9)" systemname="Quad (DX9)">
@@ -58,7 +50,7 @@
    <LINKPOINT x="3675" y="6210">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InAWindow" id="17" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="17" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="420" top="8565" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6975" left="6600" top="75" type="Window" width="8430">
@@ -73,13 +65,19 @@
    </PIN>
    <PIN pinname="show viewplane">
    </PIN>
-   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
    </PIN>
    <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="17" dstpinname="Layers" linkstyle="Bezier" srcnodeid="22" srcpinname="Layer">
@@ -185,7 +183,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Button (3d Mesh)|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Button (3d Mesh)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -201,7 +199,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Checks if the cursor if over a mesh (in 3d space).|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Checks if the cursor if over a mesh (in 3d space).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -215,7 +213,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Red is the nearest, blue ones are behind, if the cursor is over multiple meshes.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Red is the nearest, blue ones are behind, if the cursor is over multiple meshes.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -324,13 +322,13 @@
    <PIN pinname="Near Plane" slicecount="1" values="0.05">
    </PIN>
    </NODE>
-   <LINK dstnodeid="17" dstpinname="View Transform" linkstyle="Bezier" srcnodeid="24" srcpinname="View">
+   <LINK dstnodeid="17" dstpinname="View" linkstyle="Bezier" srcnodeid="24" srcpinname="View">
    <LINKPOINT x="4560" y="5535">
    </LINKPOINT>
    <LINKPOINT x="2655" y="5145">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="17" dstpinname="Projection Transform" linkstyle="Bezier" srcnodeid="24" srcpinname="Projection">
+   <LINK dstnodeid="17" dstpinname="Projection" linkstyle="Bezier" srcnodeid="24" srcpinname="Projection">
    <LINKPOINT x="4710" y="5535">
    </LINKPOINT>
    <LINKPOINT x="2640" y="5355">
@@ -361,23 +359,15 @@
    </PIN>
    <PIN pinname="Transform Mesh">
    </PIN>
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="19" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="25" srcpinname="Cursor Transform">
    <LINKPOINT x="3585" y="4740">
    </LINKPOINT>
    <LINKPOINT x="3450" y="4740">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="25" dstpinname="Mouse X" linkstyle="Bezier" srcnodeid="21" srcpinname="X">
-   <LINKPOINT x="3075" y="3000">
-   </LINKPOINT>
-   <LINKPOINT x="3075" y="3000">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="25" dstpinname="Mouse Y" linkstyle="Bezier" srcnodeid="21" srcpinname="Y">
-   <LINKPOINT x="3330" y="3000">
-   </LINKPOINT>
-   <LINKPOINT x="3330" y="3000">
    </LINKPOINT>
    </LINK>
    <LINK dstnodeid="16" dstpinname="Index" linkstyle="Bezier" srcnodeid="25" srcpinname="Index of Nearest">
@@ -441,5 +431,13 @@
    <LINK dstnodeid="22" dstpinname="Layer 1" srcnodeid="1" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="1" dstpinname="Mesh" srcnodeid="5" srcpinname="Mesh">
+   </LINK>
+   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="3255" top="2520" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Mouse" dstnodeid="25" dstpinname="Mouse">
    </LINK>
    </PATCH>
