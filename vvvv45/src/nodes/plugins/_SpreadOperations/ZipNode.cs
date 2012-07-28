@@ -58,8 +58,8 @@ namespace VVVV.Nodes
 
 	}
 	
-	[PluginInfo(Name = "Zip", Category = "Spreads", Help = "Zips spreads together", Tags = "")]
-	public class Value2dZipNode : ZipNode<IInStream<double>>
+	[PluginInfo(Name = "Zip", Category = "Value", Version = "Bin", Help = "Zips spreads together", Tags = "")]
+	public class ValueBinSizeZipNode : ZipNode<IInStream<double>>
 	{
 
 	}
@@ -69,36 +69,72 @@ namespace VVVV.Nodes
 	{
 		
 	}
+
+    [PluginInfo(Name = "Zip", Category = "2d", Version = "Bin", Help = "Zips spreads together", Tags = "")]
+    public class Vector2DBinSizeZipNode : ZipNode<IInStream<Vector2D>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Zip", Category = "3d", Help = "Zips spreads together", Tags = "")]
 	public class Vector3DZipNode : ZipNode<Vector3D>
 	{
 		
 	}
+
+    [PluginInfo(Name = "Zip", Category = "3d", Version = "Bin", Help = "Zips spreads together", Tags = "")]
+    public class Vector3DBinSizeZipNode : ZipNode<IInStream<Vector3D>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Zip", Category = "4d", Help = "Zips spreads together", Tags = "")]
 	public class Vector4DZipNode : ZipNode<Vector4D>
 	{
 		
 	}
+
+    [PluginInfo(Name = "Zip", Category = "4d", Version = "Bin", Help = "Zips spreads together", Tags = "")]
+    public class Vector4DBinSizeZipNode : ZipNode<IInStream<Vector4D>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Zip", Category = "Color", Help = "Zips spreads together", Tags = "")]
 	public class ColorZipNode : ZipNode<RGBAColor>
 	{
 		
 	}
+
+    [PluginInfo(Name = "Zip", Category = "Color", Version = "Bin", Help = "Zips spreads together", Tags = "")]
+    public class ColorBinSizeZipNode : ZipNode<IInStream<RGBAColor>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Zip", Category = "String", Help = "Zips spreads together", Tags = "")]
 	public class StringZipNode : ZipNode<string>
 	{
 		
 	}
+
+    [PluginInfo(Name = "Zip", Category = "String", Version = "Bin", Help = "Zips spreads together", Tags = "")]
+    public class StringBinSizeZipNode : ZipNode<IInStream<string>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Zip", Category = "Transform", Help = "Zips spreads together", Tags = "")]
 	public class TransformZipNode : ZipNode<Matrix>
 	{
 		
 	}
+
+    [PluginInfo(Name = "Zip", Category = "Transform", Version = "Bin", Help = "Zips spreads together", Tags = "")]
+    public class TransformBinSizeZipNode : ZipNode<IInStream<Matrix>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Zip", Category = "Enumerations", Help = "Zips spreads together", Tags = "")]
 	public class EnumZipNode : ZipNode<EnumEntry>

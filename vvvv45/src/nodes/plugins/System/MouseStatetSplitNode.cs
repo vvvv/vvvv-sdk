@@ -10,14 +10,14 @@ namespace VVVV.Nodes.IO
     [PluginInfo(Name = "MouseState", Category = "System", Version = "Split")]
     public class MouseStatetSplitNode : IPluginEvaluate
     {
-        [Input("Input")]
+        [Input("Mouse")]
         public ISpread<MouseState> FInput;
         [Output("X")]
         public ISpread<double> FXOut;
         [Output("Y")]
         public ISpread<double> FYOut;
-        [Output("Mouse Wheel Delta")]
-        public ISpread<int> FMouseWheelDeltaOut;
+        [Output("Mouse Wheel")]
+        public ISpread<int> FMouseWheelOut;
         [Output("Left Button")]
         public ISpread<bool> FLeftButtonOut;
         [Output("Middle Button")]
@@ -32,21 +32,33 @@ namespace VVVV.Nodes.IO
             FLeftButtonOut.SliceCount = spreadMax;
             FMiddleButtonOut.SliceCount = spreadMax;
             FRightButtonOut.SliceCount = spreadMax;
-            FMouseWheelDeltaOut.SliceCount = spreadMax;
+            FMouseWheelOut.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
-                var mouseEvent = FInput[i];
+                var mouseState = FInput[i];
                 double x, y;
                 bool leftButton, middleButton, rightButton;
-                int mouseWheelDelta;
-                MouseStateNodes.Split(mouseEvent, out x, out y, out leftButton, out middleButton, out rightButton, out mouseWheelDelta);
+                int mouseWheel;
+
+                if (mouseState != null)
+                    MouseStateNodes.Split(mouseState, out x, out y, out leftButton, out middleButton, out rightButton, out mouseWheel);
+                else
+                {
+                    x = 0;
+                    y = 0;
+                    leftButton = false;
+                    middleButton = false;
+                    rightButton = false;
+                    mouseWheel = 0;
+                }
+
                 FXOut[i] = x;
                 FYOut[i] = y;
                 FLeftButtonOut[i] = leftButton;
                 FMiddleButtonOut[i] = middleButton;
                 FRightButtonOut[i] = rightButton;
-                FMouseWheelDeltaOut[i] = mouseWheelDelta;
+                FMouseWheelOut[i] = mouseWheel;
             }
         }
     }

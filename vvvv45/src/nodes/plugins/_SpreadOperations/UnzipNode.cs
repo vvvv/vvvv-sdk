@@ -57,8 +57,8 @@ namespace VVVV.Nodes
 		
 	}
 	
-	[PluginInfo(Name = "Unzip", Category = "Spreads", Help = "Unzips a spread into multiple spreads", Tags = "")]
-	public class Value2dUnzipNode : UnzipNode<IInStream<double>>
+	[PluginInfo(Name = "Unzip", Category = "Value", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
+	public class ValueBinSizeUnzipNode : UnzipNode<IInStream<double>>
 	{
 		
 	}
@@ -68,36 +68,72 @@ namespace VVVV.Nodes
 	{
 		
 	}
+
+    [PluginInfo(Name = "Unzip", Category = "2d", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    public class Vector2DBinSizeUnzipNode : UnzipNode<IInStream<Vector2D>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Unzip", Category = "3d", Help = "Unzips a spread into multiple spreads", Tags = "")]
 	public class Vector3DUnzipNode : UnzipNode<Vector3D>
 	{
 		
 	}
+
+    [PluginInfo(Name = "Unzip", Category = "3d", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    public class Vector3DBinSizeUnzipNode : UnzipNode<IInStream<Vector3D>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Unzip", Category = "4d", Help = "Unzips a spread into multiple spreads", Tags = "")]
 	public class Vector4DUnzipNode : UnzipNode<Vector4D>
 	{
 		
 	}
+
+    [PluginInfo(Name = "Unzip", Category = "4d", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    public class Vector4DBinSizeUnzipNode : UnzipNode<IInStream<Vector4D>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Unzip", Category = "Color", Help = "Unzips a spread into multiple spreads", Tags = "")]
 	public class ColorUnzipNode : UnzipNode<RGBAColor>
 	{
 		
 	}
+
+    [PluginInfo(Name = "Unzip", Category = "Color", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    public class ColorBinSizeUnzipNode : UnzipNode<IInStream<RGBAColor>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Unzip", Category = "String", Help = "Unzips a spread into multiple spreads", Tags = "")]
 	public class StringUnzipNode : UnzipNode<string>
 	{
 		
 	}
+
+    [PluginInfo(Name = "Unzip", Category = "String", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    public class StringBinSizeUnzipNode : UnzipNode<IInStream<string>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Unzip", Category = "Transform", Help = "Unzips a spread into multiple spreads", Tags = "")]
 	public class TransformUnzipNode : UnzipNode<Matrix4x4>
 	{
 		
 	}
+
+    [PluginInfo(Name = "Unzip", Category = "Transform", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    public class TransformBinSizeUnzipNode : UnzipNode<IInStream<Matrix4x4>>
+    {
+
+    }
 	
 	[PluginInfo(Name = "Unzip", Category = "Enumerations", Help = "Unzips a spread into multiple spreads", Tags = "")]
 	public class EnumUnzipNode : UnzipNode<EnumEntry>
