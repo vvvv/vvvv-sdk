@@ -1,0 +1,359 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\native\RegExpr (String) help.v4p">
+   <BOUNDS height="11010" left="795" top="510" type="Window" width="11145">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)">
+   <BOUNDS height="0" left="90" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5959" top="7898" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="90" top="810" type="Box" width="4785">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|everything you know is &lt;b&gt;wrong&lt;/b&gt; and &lt;i&gt;yoghurt&lt;/i&gt;|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="RegExpr (String)">
+   <BOUNDS height="0" left="495" top="5505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Regular Expression" slicecount="1" values="|&lt;b&gt; (.*?) &lt;/b &gt;|" encoded="0">
+   </PIN>
+   <PIN pinname="Match 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Input" srcnodeid="21" srcpinname="Output String">
+   <LINKPOINT x="120" y="5115">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="0" left="495" top="6315" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2739" top="6468" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="495" top="6315" type="Box" width="1350">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="RegExpr (String)">
+   <BOUNDS height="0" left="495" top="3375" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Regular Expression" slicecount="1" values="|( y . )|" encoded="0">
+   </PIN>
+   <PIN pinname="Match 1" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive Match" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Input" srcnodeid="21" srcpinname="Output String">
+   <LINKPOINT x="120" y="2970">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="17" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="495" top="3780" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Input" srcnodeid="18" srcpinname="Match 1">
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="0" left="495" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2826" top="6514" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="495" top="4170" type="Box" width="1725">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input String" srcnodeid="17" srcpinname="Output">
+   </LINK>
+   <NODE id="15" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="495" top="5910" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Input" srcnodeid="20" srcpinname="Match 1">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Input String" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <NODE id="14" nodename="RegExpr (String)">
+   <BOUNDS height="0" left="495" top="7635" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Regular Expression" slicecount="1" values="|&lt; (.*) &gt; (.*?) &lt;/ \1 &gt;|" encoded="0">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Match 1" visible="1">
+   </PIN>
+   <PIN pinname="Match 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input" srcnodeid="21" srcpinname="Output String">
+   <LINKPOINT x="120" y="7245">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="13" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="495" top="8325" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" visible="1" values="(empty)">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Bin Count" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="0" left="495" top="8655" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3126" top="6814" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="495" top="8655" type="Box" width="1725">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Input String" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE id="11" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="495" top="9300" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="2" visible="1" values="wrong,yoghurt">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="0" left="495" top="9690" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3426" top="7114" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="495" top="9690" type="Box" width="1725">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input String" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Input" srcnodeid="14" srcpinname="Match 1">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2280" top="5460" type="Node" width="585">
+   </BOUNDS>
+   <BOUNDS height="915" left="2280" top="5460" type="Box" width="1905">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;b&gt; ( .*? ) &lt;/b &gt;&cr;&lf;&cr;&lf;returns everything between &lt;b&gt; and &lt;/b&gt;|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|&lt;title&gt; (.*?)  &lt;/title&gt;|" encoded="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2280" top="3390" type="Node" width="555">
+   </BOUNDS>
+   <BOUNDS height="930" left="2280" top="3390" type="Box" width="1995">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|( y . )&cr;&lf;&cr;&lf;return every occurence of&cr;&lf;y followed by any character|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input" srcnodeid="14" srcpinname="Match 2">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2280" top="7605" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1980" left="2280" top="7605" type="Box" width="3240">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="| &lt; ( .* ) &gt; ( .*? ) &lt;/ \1 &gt;&cr;&lf;&cr;&lf;return two items: &cr;&lf;&cr;&lf;first: every string which appears in a &lt;string&gt; .. &lt;/string&gt; pair &cr;&lf;(closing string matches opening string)&cr;&lf;&cr;&lf;second: every string within|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="915" left="6075" top="795" type="Node" width="2280">
+   </BOUNDS>
+   <BOUNDS height="7275" left="6075" top="795" type="Box" width="4725">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|use the inspector to set the regular expression string. use round brackets ( ) in the regular expression to create output pins. &cr;&lf;&cr;&lf;metacharacters&cr;&lf;&cr;&lf;.        any character&cr;&lf;\s      any space (\S any non-space)&cr;&lf;\w     any alphanumeric (\W any non-alphanumeric)&cr;&lf;\d     any numeric (\D any non-numeric)&cr;&lf;\xnn ascii character which hex code nn&cr;&lf;\/ \^ \\ \$ \. \*   characters / ^\ $ . * etc. &cr;&lf;^        start of line&cr;&lf;$        end of line&cr;&lf;/1../9 subexpression backreference&cr;&lf;&cr;&lf;alternatives&cr;&lf;&cr;&lf;[ either || or ]&cr;&lf;&cr;&lf;iterators&cr;&lf;&cr;&lf;*?    zero or more occurrences (as short as possible)&cr;&lf;*     zero or more occurrences (as long as possible)&cr;&lf;+?   one or more occurrences (as short as possible)&cr;&lf;+    one or more occurrences (as long as possible)&cr;&lf;{4}   exactly four occurrences&cr;&lf;{2,4} 2, 3 or 4 occurrences&cr;&lf;&cr;&lf;all spaces in the regexpr are ignored, &cr;&lf;make sure to use \s for all spaces in your match pattern&cr;&lf;&cr;&lf;see the manual for a full description&cr;&lf;&cr;&lf;set case sensitive to 0 to ignore case |" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="RegExpr (String)">
+   <BOUNDS height="0" left="495" top="1500" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Regular Expression" slicecount="1" values="(y)" encoded="0">
+   </PIN>
+   <PIN pinname="Match 1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="495" top="2310" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3039" top="6768" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="495" top="2310" type="Box" width="1350">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="495" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="5" srcpinname="Match 1">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input String" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2280" top="1515" type="Node" width="585">
+   </BOUNDS>
+   <BOUNDS height="915" left="2280" top="1515" type="Box" width="1890">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|( y )&cr;&lf;&cr;&lf;returns all  y in the string|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="21" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="390" type="Box" width="4755">
+   </BOUNDS>
+   <BOUNDS height="160" left="2130" top="35490" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|returns the matches of a certain pattern in the incoming string|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="2130" top="35490" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|RegExpr - String|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="OpenURL (Network)" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" nodename="OpenURL (Network)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="6240" top="9690" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Open">
+   </PIN>
+   <PIN pinname="Url">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7395" top="9240" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7395" top="9240" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Open" encoded="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Open">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6255" top="8880" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6255" top="8880" width="3540" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="http://www.pagecolumn.com/tool/regtest.htm" encoded="0">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Output String" dstnodeid="22" dstpinname="Url">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8070" top="9330" width="2610" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8070" top="9330" width="1605" height="465">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|test your regex pattern interactively|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>

@@ -1,0 +1,403 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Quad) help.v4p">
+   <BOUNDS height="9615" left="105" top="75" type="Window" width="6480">
+   </BOUNDS>
+   <NODE id="18" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="435" top="6615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="17" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="0" left="735" top="7620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer 4" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Layer 5" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Layer 6" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Layer 1" linkstyle="Bezier" srcnodeid="18" srcpinname="Layer">
+   <LINKPOINT x="465" y="7245">
+   </LINKPOINT>
+   <LINKPOINT x="765" y="7245">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="15" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="3105" top="6135" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS height="0" left="3270" top="5670" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="0.02,0.02,0.02">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Transform" linkstyle="Bezier" srcnodeid="14" srcpinname="Transform Out">
+   <LINKPOINT x="3300" y="6030">
+   </LINKPOINT>
+   <LINKPOINT x="3300" y="6030">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InAWindow" id="12" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="420" top="8625" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6975" left="6600" top="75" type="Window" width="8430">
+   </BOUNDS>
+   <BOUNDS height="3600" left="420" top="8625" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="testcamera" visible="1">
+   </PIN>
+   <PIN pinname="othercamera" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="show viewplane">
+   </PIN>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Layers" linkstyle="Bezier" srcnodeid="17" srcpinname="Layer">
+   <LINKPOINT x="765" y="8250">
+   </LINKPOINT>
+   <LINKPOINT x="450" y="8250">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="11" nodename="InputMorph (Color)" systemname="InputMorph (Color)">
+   <BOUNDS height="0" left="1410" top="6015" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="|1.00000,1.00000,1.00000,0.75219|">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="|0.22321,0.00000,1.00000,0.74719|">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="|1.00000,0.00134,0.01164,0.74714|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Layer 2" linkstyle="Bezier" srcnodeid="15" srcpinname="Layer">
+   <LINKPOINT x="3135" y="7005">
+   </LINKPOINT>
+   <LINKPOINT x="1035" y="7005">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Color" linkstyle="Bezier" srcnodeid="11" srcpinname="Output">
+   <LINKPOINT x="1440" y="6450">
+   </LINKPOINT>
+   <LINKPOINT x="1440" y="6450">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="10" nodename="SetSlice (Spreads Legacy)" systemname="SetSlice (Spreads Legacy)">
+   <BOUNDS height="0" left="1845" top="5085" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Spread" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Stallone (Spreads)" systemname="Stallone (Spreads)">
+   <BOUNDS height="0" left="1845" top="4455" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Spread" linkstyle="Bezier" srcnodeid="9" srcpinname="Output 1">
+   <LINKPOINT x="1875" y="4905">
+   </LINKPOINT>
+   <LINKPOINT x="1875" y="4905">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="8" nodename="Add (Value)" systemname="Add (Value)">
+   <BOUNDS height="0" left="1410" top="5535" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input 2" linkstyle="Bezier" srcnodeid="10" srcpinname="Output">
+   <LINKPOINT x="1875" y="5445">
+   </LINKPOINT>
+   <LINKPOINT x="1680" y="5445">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="7" nodename="Transform (Transform 3d Vector)" systemname="Transform (Transform 3d Vector)">
+   <BOUNDS height="0" left="600" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Translate XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Scale XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Rotate XYZ" slicecount="3" visible="1" values="0,0,0">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Center XYZ" slicecount="3" values="6.07153216591882E-017,6.07153216591882E-017,6.07153216591882E-017">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Transform" linkstyle="Bezier" srcnodeid="7" srcpinname="Transform Out">
+   <LINKPOINT x="630" y="4725">
+   </LINKPOINT>
+   <LINKPOINT x="630" y="4725">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="6" nodename="GaussianSpread (Spreads)" systemname="GaussianSpread (Spreads)">
+   <BOUNDS height="0" left="795" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="90">
+   </PIN>
+   <PIN pinname="Standard Deviation" slicecount="1" values="2.84">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" visible="1" values="147">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Translate XYZ" linkstyle="Bezier" srcnodeid="6" srcpinname="Output">
+   <LINKPOINT x="825" y="2280">
+   </LINKPOINT>
+   <LINKPOINT x="825" y="2280">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Switch" linkstyle="Bezier" srcnodeid="8" srcpinname="Output">
+   <LINKPOINT x="1440" y="5910">
+   </LINKPOINT>
+   <LINKPOINT x="1440" y="5910">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="5" nodename="Count (Value)" systemname="Count (Value)">
+   <BOUNDS height="0" left="2505" top="4050" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Spread Count" linkstyle="Bezier" srcnodeid="5" srcpinname="Count">
+   <LINKPOINT x="2535" y="4380">
+   </LINKPOINT>
+   <LINKPOINT x="2535" y="4380">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="4" nodename="GaussianSpread (Spreads)" systemname="GaussianSpread (Spreads)">
+   <BOUNDS height="0" left="1005" top="2145" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="90">
+   </PIN>
+   <PIN pinname="Standard Deviation" slicecount="1" values="2.41">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" visible="1" values="130">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Scale XYZ" linkstyle="Bezier" srcnodeid="4" srcpinname="Output">
+   <LINKPOINT x="1035" y="2490">
+   </LINKPOINT>
+   <LINKPOINT x="1035" y="2490">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="135" top="225" type="Node" width="1335">
+   </BOUNDS>
+   <BOUNDS height="435" left="135" top="225" type="Box" width="2985">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Button (3d Quad)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="150" top="645" type="Node" width="3540">
+   </BOUNDS>
+   <BOUNDS height="285" left="150" top="645" type="Box" width="3645">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Checks if the cursor if over a quad (in 3d space).|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2655" top="7560" type="Node" width="3735">
+   </BOUNDS>
+   <BOUNDS height="600" left="2655" top="7560" type="Box" width="3255">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Red is the nearest, blue ones are behind, if the cursor is over multiple quads.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="20" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p">
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="4365" top="2190" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="4365" top="2190" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="6000" left="5130" top="2940" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Inverse View" visible="1">
+   </PIN>
+   <PIN pinname="Distance" visible="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="0.05">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="View" linkstyle="Bezier" srcnodeid="20" srcpinname="View">
+   <LINKPOINT x="4560" y="5535">
+   </LINKPOINT>
+   <LINKPOINT x="1575" y="5535">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Projection" linkstyle="Bezier" srcnodeid="20" srcpinname="Projection">
+   <LINKPOINT x="4710" y="5535">
+   </LINKPOINT>
+   <LINKPOINT x="1740" y="5535">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="21" nodename="Button (3d Quad).v4p" systemname="Button (3d Quad)" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Quad).v4p">
+   <BOUNDS height="0" left="2640" top="3345" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="9195" left="1140" top="1695" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2640" top="3345" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Transform Quad" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Over" visible="1">
+   </PIN>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Cursor Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mouse X" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Y" visible="1">
+   </PIN>
+   <PIN pinname="Index of Nearest" visible="1">
+   </PIN>
+   <PIN pinname="Mouse State" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="21" srcpinname="Cursor Transform">
+   <LINKPOINT x="3435" y="4635">
+   </LINKPOINT>
+   <LINKPOINT x="3300" y="4635">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Index" linkstyle="Bezier" srcnodeid="21" srcpinname="Index of Nearest">
+   <LINKPOINT x="3045" y="4350">
+   </LINKPOINT>
+   <LINKPOINT x="2535" y="4350">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="21" srcpinname="Mouse Over">
+   <LINKPOINT x="1665" y="3960">
+   </LINKPOINT>
+   <LINKPOINT x="1440" y="4575">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Transform Quad" linkstyle="Bezier" srcnodeid="7" srcpinname="Transform Out">
+   <LINKPOINT x="630" y="3090">
+   </LINKPOINT>
+   <LINKPOINT x="2670" y="3090">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Input" linkstyle="Bezier" srcnodeid="21" srcpinname="Mouse Over">
+   <LINKPOINT x="2670" y="3825">
+   </LINKPOINT>
+   <LINKPOINT x="2535" y="3825">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="View Projection" linkstyle="Bezier" srcnodeid="20" srcpinname="View Projection">
+   <LINKPOINT x="4395" y="2895">
+   </LINKPOINT>
+   <LINKPOINT x="3435" y="2895">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="16" nodename="Mouse (System Window)" systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" componentmode="Hidden">
+   <BOUNDS height="100" left="2895" top="2190" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="State" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Mouse" dstnodeid="21" dstpinname="Mouse">
+   </LINK>
+   </PATCH>

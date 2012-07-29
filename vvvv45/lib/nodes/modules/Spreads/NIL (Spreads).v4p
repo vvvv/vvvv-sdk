@@ -1,0 +1,45 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Spreads\NIL (Spreads).v4p">
+   <BOUNDS height="6000" left="15045" top="8910" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1470" top="735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8850" top="6225" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1470" top="735" type="Box" width="600">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Select (Value)" systemname="Select (Value)">
+   <BOUNDS height="0" left="1470" top="405" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="Former Slice" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1470" top="90" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3795" top="11940" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1470" top="90" type="Box" width="600">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Select" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <INFO author="kalle" description="Outputs an empty value spread." tags="empty, constant">
+   </INFO>
+   </PATCH>

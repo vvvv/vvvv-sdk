@@ -1,0 +1,157 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\RGB (Kinect OpenNI) help.v4p" filename="C:\Users\joreg\work\tempest\tempest\patches\Users (Kinect OpenNI) help.v4p" systemname="Users (Kinect OpenNI) help">
+   <BOUNDS height="6210" left="9285" top="795" type="Window" width="6360">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="1260" top="4860" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1260" top="4860" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="3030" top="780" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.02060,0.36864,0.22990,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="100" left="1425" top="3900" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="0" nodename="Kinect (Devices OpenNI)" systemname="Kinect (Devices OpenNI)">
+   <BOUNDS height="100" left="1590" top="1605" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Update">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Configuration File" slicecount="1" values="OpenNIConfig.xml">
+   </PIN>
+   <PIN pinname="Mirrored" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Driver" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="0" srcpinname="Status">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="2" nodename="RGB (Kinect OpenNI)" systemname="RGB (Kinect OpenNI)">
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Enable">
+   </PIN>
+   <BOUNDS height="100" left="1590" top="3330" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Users" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Context" srcnodeid="0" srcpinname="Context">
+   </LINK>
+   <NODE componentmode="Hidden" filename="" id="11" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="100" left="1260" top="4440" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mask" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="11" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Transform" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Texture" srcnodeid="2" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2400" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="2400" top="2880" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Enabled" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="120" top="465" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="480" left="120" top="465" type="Box" width="3270">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Returns an X8R8G8B8 formatted texture from the kinects RGB camera|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="120" top="105" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="120" top="105" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|RGB (Kinect OpenNI)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="2130" top="2010" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="690" left="2130" top="2010" type="Box" width="3345">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2940" top="2985" type="Node" width="1905">
+   </BOUNDS>
+   <BOUNDS height="270" left="2940" top="2985" type="Box" width="1905">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; enable || disable output|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Input String" srcnodeid="0" srcpinname="Driver">
+   </LINK>
+   </PATCH>
