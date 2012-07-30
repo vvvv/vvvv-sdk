@@ -18,14 +18,13 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "KeyMatch", 
 	            Category = "String",
-	            Version = "State",
 	            Help = "Detects pressed keys when connected with a Keyboard Node. Use the inspector to specify the keys to check.",
 	            AutoEvaluate = true,
 				Tags = "")]
 	#endregion PluginInfo
 	public class KeyMatchNode: IPluginEvaluate
 	{
-		enum KeyMode {Press, Bang, Toggle};
+		enum KeyMode {Press, Toggle, Bang};
 		
 		#region fields & pins
 		[Config("Key Match", IsSingle = true)]
@@ -60,7 +59,7 @@ namespace VVVV.Nodes
 		
 				//add new pins
 				foreach (var key in keys)
-				{;
+				{
 					var lowerKey = key.ToLower();
 					if (!string.IsNullOrWhiteSpace(key) && !FOutputs.ContainsKey(lowerKey))
 					{
@@ -138,7 +137,6 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "RadioKeyMatch", 
 	            Category = "String",
-	            Version = "State",
 	            Help = "Similiar to KeyMatch, but does not create a output pin for each key to check, but returns the index of the pressed key on its output pin.",
 	            AutoEvaluate = true,
 				Tags = "")]
