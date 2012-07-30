@@ -22,21 +22,21 @@ namespace VVVV.Nodes
 	            AutoEvaluate = true,
 				Tags = "")]
 	#endregion PluginInfo
-	public class KeyMatchNode: IPluginEvaluate
+	public class KeyMatchNode: IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
-		enum KeyMode {Press, Toggle, Bang};
+		enum KeyMode {Press, Toggle, UpOnly, DownOnly, DownUp};
 		
 		#region fields & pins
 		[Config("Key Match", IsSingle = true)]
 		IDiffSpread<string> FKeyMatch;
 		
-		[Input("Input")]
+		[Input("Input", IsSingle = true)]
 		IDiffSpread<KeyboardState> FInput;
 		
-		[Input("Reset Toggle", IsBang = true)]
+		[Input("Reset Toggle", IsSingle = true, IsBang = true)]
 		ISpread<bool> FReset;
 		
-		[Input("Key Mode")]
+		[Input("Key Mode", IsSingle = true)]
 		ISpread<KeyMode> FKeyMode;
 
 		[Import()]
@@ -48,47 +48,51 @@ namespace VVVV.Nodes
 		Dictionary<string, ISpread<bool>> FOutputs = new Dictionary<string, ISpread<bool>>();
 		Dictionary<string, bool> FLastFrame = new Dictionary<string, bool>();
 		#endregion fields & pins
+		
+		public void OnImportsSatisfied()
+		{
+			FKeyMatch.Changed += KeyMatchChangedCB;
+		}
+		
+		void KeyMatchChangedCB(IDiffSpread<string> sender)
+		{
+			var keys = FKeyMatch[0].Split(',').ToList().Select(s => s.Trim());
+		
+			//add new pins
+			foreach (var key in keys)
+			{
+				var lowerKey = key.ToLower();
+				if (!string.IsNullOrWhiteSpace(key) && !FOutputs.ContainsKey(lowerKey))
+				{
+					var outAttr = new OutputAttribute(key);
+					outAttr.IsSingle = true;
+					var spread = FIOFactory.CreateSpread<bool>(outAttr, true);
+					FOutputs.Add(lowerKey, spread);
+					FLastFrame.Add(lowerKey, false);
+				}
+			}
+			
+			//remove obsolete pins
+			var toDelete = new List<string>();
+			foreach (var key in FOutputs.Keys)
+			{
+				if (!keys.Contains(key))
+					toDelete.Add(key);	
+			}
+			
+			foreach (var pin in toDelete)
+			{
+				FOutputs.Remove(pin);
+				FLastFrame.Remove(pin);
+				FLogger.Log(LogType.Debug, "removed: " + pin);
+			}
+		}
 
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			//update outputs
-			if (FKeyMatch.IsChanged)
-			{
-				var keys = FKeyMatch[0].Split(',').ToList().Select(s => s.Trim());
-		
-				//add new pins
-				foreach (var key in keys)
-				{
-					var lowerKey = key.ToLower();
-					if (!string.IsNullOrWhiteSpace(key) && !FOutputs.ContainsKey(lowerKey))
-					{
-						var outAttr = new OutputAttribute(key);
-						outAttr.IsSingle = true;
-						var spread = FIOFactory.CreateSpread<bool>(outAttr, true);
-						FOutputs.Add(lowerKey, spread);
-						FLastFrame.Add(lowerKey, false);
-					}
-				}
-				
-				//remove obsolete pins
-				var toDelete = new List<string>();
-				foreach (var key in FOutputs.Keys)
-				{
-					if (!keys.Contains(key))
-						toDelete.Add(key);	
-				}
-				
-				foreach (var pin in toDelete)
-				{
-					FOutputs.Remove(pin);
-					FLastFrame.Remove(pin);
-					FLogger.Log(LogType.Debug, "removed: " + pin);
-				}	
-			}
-			
 			//reset outputs
-			if ((FKeyMode[0] == KeyMode.Press) || (FKeyMode[0] == KeyMode.Bang) || FReset[0])
+			if ((FKeyMode[0] == KeyMode.Press) || (FKeyMode[0] == KeyMode.DownOnly) || (FKeyMode[0] == KeyMode.UpOnly) || (FKeyMode[0] == KeyMode.DownUp) || FReset[0])
 				for (int i = 0; i < FOutputs.Count; i++)
 				{
 					var key = FOutputs.ElementAt(i).Key;
@@ -109,12 +113,24 @@ namespace VVVV.Nodes
 							FOutputs[key][0] = currentKeys.Contains(key);
 							break;
 						}
-						case KeyMode.Bang:
+						case KeyMode.DownOnly:
 						{
 							if (!FLastFrame[key] && currentKeys.Contains(key))
 								FOutputs[key][0] = true;
 							break;
 						}	
+						case KeyMode.UpOnly:
+						{
+							if (FLastFrame[key] && !currentKeys.Contains(key))
+								FOutputs[key][0] = true;
+							break;
+						}	
+						case KeyMode.DownUp:
+						{
+								if ((!FLastFrame[key] && currentKeys.Contains(key)) || (FLastFrame[key] && !currentKeys.Contains(key)))
+								FOutputs[key][0] = true;
+							break;
+						}
 						case KeyMode.Toggle:
 						{
 							if (!FLastFrame[key] && currentKeys.Contains(key))
