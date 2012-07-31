@@ -250,14 +250,24 @@ namespace VVVV.Nodes
 		        			{
 		        				curSpread.Add(spread.GetBinVector(i,k)[j]);
 		        			}
-		        			curSpread.Sort();
-		        			double curMin = curSpread[0];
-		        			min.Add(curMin);
-		        			double curMax = curSpread[curSpread.Count-1];
-		        			max.Add(curMax);
-		        			double curWidth = curMax-curMin;
-		        			width.Add(curWidth);
-		        			center.Add(curMax-(curWidth/2));
+		        			if (curSpread.Count>0)
+		        			{
+			        			curSpread.Sort();
+			        			double curMin = curSpread[0];
+			        			min.Add(curMin);
+			        			double curMax = curSpread[curSpread.Count-1];
+			        			max.Add(curMax);
+			        			double curWidth = curMax-curMin;
+			        			width.Add(curWidth);
+			        			center.Add(curMax-(curWidth/2));
+		        			}
+		        			else
+		        			{
+		        				min.Add(double.MinValue);
+		        				max.Add(double.MaxValue);
+		        				width.Add(double.NaN);
+		        				center.Add(double.NaN);
+		        			}
 		        		}
 		        	}
 	        		
