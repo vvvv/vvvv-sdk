@@ -25,7 +25,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class KeyMatchNode: IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
-		enum KeyMode {Press, Toggle, UpOnly, DownOnly, DownUp};
+		enum KeyMode {Press, Toggle, UpOnly, DownOnly, DownUp, RepeatedEvent};
 		
 		#region fields & pins
 		[Config("Key Match", IsSingle = true)]
@@ -54,6 +54,7 @@ namespace VVVV.Nodes
             public string Key;
             public string KeyToLower;
             public bool PressedLastFrame;
+            public int LastTime;
         }
 
         List<OutputInfo> FOutputInfos = new List<OutputInfo>();
@@ -112,11 +113,13 @@ namespace VVVV.Nodes
 			if (FReset[0])
 				foreach (var outputInfo in FOutputInfos)
 					outputInfo.Output[0] = false;
-			
-			//set active outputs
-			if (FInput[0] != null)
+
+            var keyboardState = FInput[0];
+            
+            //set active outputs
+			if (keyboardState != null)
 			{
-				var currentKeys = FInput[0].KeyCodes.Select(k => k.ToString().ToLower());
+				var currentKeys = keyboardState.KeyCodes.Select(k => k.ToString().ToLower());
                 var keyMode = FKeyMode[0];
 
                 foreach (var outputInfo in FOutputInfos)
@@ -125,7 +128,7 @@ namespace VVVV.Nodes
                     var output = outputInfo.Output;
                     var lastFrame = outputInfo.PressedLastFrame;
                     var thisFrame = currentKeys.Contains(key);
-
+                    
                     switch (keyMode)
 					{
 						case KeyMode.Press:
@@ -154,10 +157,16 @@ namespace VVVV.Nodes
                                 output[0] = !output[0];
 							break;
 						}
+                        case KeyMode.RepeatedEvent:
+                        {
+                            output[0] = thisFrame && (!lastFrame || keyboardState.Time != outputInfo.LastTime);
+                            break;
+                        }
                     }
                     
                     // save pressed key state per output for next frame
-                    outputInfo.PressedLastFrame = thisFrame;                    
+                    outputInfo.PressedLastFrame = thisFrame;
+                    outputInfo.LastTime = keyboardState.Time;
 				}
 			}
 		}
