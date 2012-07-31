@@ -58,7 +58,7 @@ namespace VVVV.Nodes
 
 	}
 	
-	[PluginInfo(Name = "Zip", Category = "Value", Version = "Bin Size", Help = "Zips spreads together", Tags = "")]
+	[PluginInfo(Name = "Zip", Category = "Value", Version = "Bin", Help = "Zips spreads together", Tags = "")]
 	public class ValueBinSizeZipNode : ZipNode<IInStream<double>>
 	{
 
@@ -70,7 +70,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Zip", Category = "2d", Version = "Bin Size", Help = "Zips spreads together", Tags = "")]
+    [PluginInfo(Name = "Zip", Category = "2d", Version = "Bin", Help = "Zips spreads together", Tags = "")]
     public class Vector2DBinSizeZipNode : ZipNode<IInStream<Vector2D>>
     {
 
@@ -82,7 +82,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Zip", Category = "3d", Version = "Bin Size", Help = "Zips spreads together", Tags = "")]
+    [PluginInfo(Name = "Zip", Category = "3d", Version = "Bin", Help = "Zips spreads together", Tags = "")]
     public class Vector3DBinSizeZipNode : ZipNode<IInStream<Vector3D>>
     {
 
@@ -94,7 +94,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Zip", Category = "4d", Version = "Bin Size", Help = "Zips spreads together", Tags = "")]
+    [PluginInfo(Name = "Zip", Category = "4d", Version = "Bin", Help = "Zips spreads together", Tags = "")]
     public class Vector4DBinSizeZipNode : ZipNode<IInStream<Vector4D>>
     {
 
@@ -106,7 +106,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Zip", Category = "Color", Version = "Bin Size", Help = "Zips spreads together", Tags = "")]
+    [PluginInfo(Name = "Zip", Category = "Color", Version = "Bin", Help = "Zips spreads together", Tags = "")]
     public class ColorBinSizeZipNode : ZipNode<IInStream<RGBAColor>>
     {
 
@@ -118,7 +118,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Zip", Category = "String", Version = "Bin Size", Help = "Zips spreads together", Tags = "")]
+    [PluginInfo(Name = "Zip", Category = "String", Version = "Bin", Help = "Zips spreads together", Tags = "")]
     public class StringBinSizeZipNode : ZipNode<IInStream<string>>
     {
 
@@ -130,7 +130,7 @@ namespace VVVV.Nodes
 		
 	}
 
-    [PluginInfo(Name = "Zip", Category = "Transform", Version = "Bin Size", Help = "Zips spreads together", Tags = "")]
+    [PluginInfo(Name = "Zip", Category = "Transform", Version = "Bin", Help = "Zips spreads together", Tags = "")]
     public class TransformBinSizeZipNode : ZipNode<IInStream<Matrix>>
     {
 
@@ -141,4 +141,10 @@ namespace VVVV.Nodes
 	{
 		
 	}
+
+    [PluginInfo(Name = "Zip", Category = "Enumerations", Version = "Bin", Help = "Zips spreads together", Tags = "")]
+    public class EnumBinSizeZipNode : ZipNode<IInStream<EnumEntry>>
+    {
+
+    }
 }
