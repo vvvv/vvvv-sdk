@@ -188,10 +188,18 @@ namespace VVVV.Nodes
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int Slice, SlimDX.Direct3D9.Device device)
 		{
+			var pool = Pool.Managed;
+			var usage = Usage.None;
+			if (device is DeviceEx)
+			{
+				pool = Pool.Default;
+				usage = Usage.Dynamic;
+			}
+			
 			if (FOutputMode[0] == UserTexturetMode.Raw)
-				return new Texture(device, FTexWidth, FTexHeight, 1, Usage.None, Format.L16, Pool.Managed);
+				return new Texture(device, FTexWidth, FTexHeight, 1, usage, Format.L16, pool);
 			else
-				return new Texture(device, FTexWidth, FTexHeight, 1, Usage.None, Format.A8R8G8B8, Pool.Managed);
+				return new Texture(device, FTexWidth, FTexHeight, 1, usage, Format.A8R8G8B8, pool);
 		}
 
 		//this method gets called, when Update() was called in evaluate,
