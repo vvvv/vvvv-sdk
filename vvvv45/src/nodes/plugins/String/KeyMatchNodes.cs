@@ -11,6 +11,7 @@ using VVVV.Utils.VMath;
 using VVVV.Utils.IO;
 
 using VVVV.Core.Logging;
+using System.Diagnostics;
 #endregion usings
 
 namespace VVVV.Nodes
@@ -44,107 +45,119 @@ namespace VVVV.Nodes
 		
 		[Import()]
 		IIOFactory FIOFactory;
- 		
-		Dictionary<string, ISpread<bool>> FOutputs = new Dictionary<string, ISpread<bool>>();
-		Dictionary<string, bool> FLastFrame = new Dictionary<string, bool>();
-		#endregion fields & pins
-		
+
+        #endregion fields & pins
+
+        class OutputInfo
+        {
+            public ISpread<bool> Output;
+            public string Key;
+            public string KeyToLower;
+            public bool PressedLastFrame;
+        }
+
+        List<OutputInfo> FOutputInfos = new List<OutputInfo>();
+
 		public void OnImportsSatisfied()
 		{
 			FKeyMatch.Changed += KeyMatchChangedCB;
 		}
-		
+
+        string FormatNicely(string s)
+        {
+            Debug.Assert(s.Length > 0);
+
+            if (s.Length == 1)
+                return s[0].ToString().ToUpper();
+            else
+                return s[0].ToString().ToUpper() + s.Substring(1);
+        }
+
 		void KeyMatchChangedCB(IDiffSpread<string> sender)
 		{
-			var keys = FKeyMatch[0].Split(',').ToList().Select(s => s.Trim());
+            var keys = FKeyMatch[0].Split(',').ToList().Select(s => s.Trim()).Where(s => s.Length > 0).Select(s => FormatNicely(s)).ToArray();
 		
 			//add new pins
 			foreach (var key in keys)
 			{
 				var lowerKey = key.ToLower();
-				if (!string.IsNullOrWhiteSpace(key) && !FOutputs.ContainsKey(lowerKey))
+                if (!string.IsNullOrWhiteSpace(key) && !FOutputInfos.Any(info => info.Key == key))
 				{
 					var outAttr = new OutputAttribute(key);
 					outAttr.IsSingle = true;
-					var spread = FIOFactory.CreateSpread<bool>(outAttr, true);
-					FOutputs.Add(lowerKey, spread);
-					FLastFrame.Add(lowerKey, false);
+                    var outputInfo = new OutputInfo()
+                    {
+                        Key = key,
+                        KeyToLower = lowerKey,
+                        Output = FIOFactory.CreateSpread<bool>(outAttr, true),
+                    };
+                    FOutputInfos.Add(outputInfo);
 				}
 			}
 			
 			//remove obsolete pins
-			var toDelete = new List<string>();
-			foreach (var key in FOutputs.Keys)
-			{
-				if (!keys.Contains(key))
-					toDelete.Add(key);	
-			}
-			
-			foreach (var pin in toDelete)
-			{
-				FOutputs.Remove(pin);
-				FLastFrame.Remove(pin);
-				FLogger.Log(LogType.Debug, "removed: " + pin);
-			}
+			foreach (var outputInfo in FOutputInfos.ToArray())
+				if (!keys.Contains(outputInfo.Key))
+                {
+                    // remove with factory?
+                    FOutputInfos.Remove(outputInfo);
+                    FLogger.Log(LogType.Debug, "removed: " + outputInfo.Output);
+			    }
 		}
 
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
 			//reset outputs
-			if ((FKeyMode[0] == KeyMode.Press) || (FKeyMode[0] == KeyMode.DownOnly) || (FKeyMode[0] == KeyMode.UpOnly) || (FKeyMode[0] == KeyMode.DownUp) || FReset[0])
-				for (int i = 0; i < FOutputs.Count; i++)
-				{
-					var key = FOutputs.ElementAt(i).Key;
-					FOutputs[key][0] = false;
-				}	
+			if (FReset[0])
+				foreach (var outputInfo in FOutputInfos)
+					outputInfo.Output[0] = false;
 			
 			//set active outputs
-			if (FInput[0] != null && FInput.IsChanged)
+			if (FInput[0] != null)
 			{
 				var currentKeys = FInput[0].KeyCodes.Select(k => k.ToString().ToLower());
-				
-				foreach (var key in FLastFrame.Keys)
+                var keyMode = FKeyMode[0];
+
+                foreach (var outputInfo in FOutputInfos)
 				{
-					switch (FKeyMode[0])
+                    var key = outputInfo.KeyToLower;
+                    var output = outputInfo.Output;
+                    var lastFrame = outputInfo.PressedLastFrame;
+                    var thisFrame = currentKeys.Contains(key);
+
+                    switch (keyMode)
 					{
 						case KeyMode.Press:
 						{
-							FOutputs[key][0] = currentKeys.Contains(key);
+                            output[0] = thisFrame;
 							break;
 						}
 						case KeyMode.DownOnly:
 						{
-							if (!FLastFrame[key] && currentKeys.Contains(key))
-								FOutputs[key][0] = true;
+                            output[0] = !lastFrame && thisFrame;
 							break;
 						}	
 						case KeyMode.UpOnly:
 						{
-							if (FLastFrame[key] && !currentKeys.Contains(key))
-								FOutputs[key][0] = true;
-							break;
+                            output[0] = lastFrame && !thisFrame;
+                            break;
 						}	
 						case KeyMode.DownUp:
 						{
-								if ((!FLastFrame[key] && currentKeys.Contains(key)) || (FLastFrame[key] && !currentKeys.Contains(key)))
-								FOutputs[key][0] = true;
-							break;
+                            output[0] = lastFrame != thisFrame;
+                            break;
 						}
 						case KeyMode.Toggle:
 						{
-							if (!FLastFrame[key] && currentKeys.Contains(key))
-								FOutputs[key][0] = !FOutputs[key][0];
+                            if (!lastFrame && thisFrame)
+                                output[0] = !output[0];
 							break;
 						}
-					}
-				}
-
-				//save last frames state
-				for (int i = 0; i < FLastFrame.Count; i++)
-				{
-					var key = FLastFrame.ElementAt(i).Key;
-					FLastFrame[key] = currentKeys.Contains(key);
+                    }
+                    
+                    // save pressed key state per output for next frame
+                    outputInfo.PressedLastFrame = thisFrame;                    
 				}
 			}
 		}
