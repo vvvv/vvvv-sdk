@@ -21,12 +21,8 @@ namespace VVVV.Nodes.XML
         public ISpread<string> Value;
         [Output("Childs")]
         public ISpread<ISpread<XElement>> Childs;
-        [Output("Child Count")]
-        public ISpread<int> ChildCount;
         [Output("Attributes")]
         public ISpread<ISpread<XAttribute>> Attributes;
-        [Output("Attribute Count")]
-        public ISpread<int> AttributeCount;
         [Output("Document Root")]
         public ISpread<XElement> DocumentRoot;
         [Output("Parent")]
@@ -43,9 +39,7 @@ namespace VVVV.Nodes.XML
             Name.SliceCount = spreadMax;
             Value.SliceCount = spreadMax;
             Childs.SliceCount = spreadMax;
-            ChildCount.SliceCount = spreadMax;
             Attributes.SliceCount = spreadMax;
-            AttributeCount.SliceCount = spreadMax;
             DocumentRoot.SliceCount = spreadMax;
             Parent.SliceCount = spreadMax;
             Next.SliceCount = spreadMax;
@@ -64,15 +58,13 @@ namespace VVVV.Nodes.XML
                 XElement next;
                 XmlNodeType nodeType;
 
-                XMLNodes.Split(Element[i], out name, out value, out childs, out childCount, out attributes, out attributeCount,
+                XMLNodes.Split(Element[i], out name, out value, out childs, out attributes,
                     out documentRoot, out parent, out next, out nodeType);
 
                 Name[i] = name;
                 Value[i] = value;
                 Childs[i] = childs;
-                ChildCount[i] = childCount;
                 Attributes[i] = attributes;
-                AttributeCount[i] = attributeCount;
                 DocumentRoot[i] = documentRoot;
                 Parent[i] = parent;
                 Next[i] = next;

@@ -13,7 +13,7 @@ namespace VVVV.Nodes.XML
     {
         [Node]
         public static void Split(this XElement element, out string name, out string value, out ISpread<XElement> childs,
-            out int childCount, out ISpread<XAttribute> attributes, out int attributeCount, out XElement documentRoot, out XElement parent,
+            out ISpread<XAttribute> attributes, out XElement documentRoot, out XElement parent,
             out XElement next, out XmlNodeType nodeType) //, out bool changed)
         {
             if (element != null)
@@ -21,9 +21,7 @@ namespace VVVV.Nodes.XML
                 name = element.Name.LocalName;
                 value = element.Value;
                 childs = element.Elements().ToSpread();
-                childCount = childs.SliceCount;
                 attributes = element.Attributes().ToSpread();
-                attributeCount = attributes.SliceCount;
                 if (element.Document != null)
                     documentRoot = element.Document.Root;
                 else
@@ -38,9 +36,7 @@ namespace VVVV.Nodes.XML
                 name = "";
                 value = "";
                 childs = new Spread<XElement>(); // should access a static empty spread
-                childCount = 0;
                 attributes = new Spread<XAttribute>();
-                attributeCount = 0;
                 documentRoot = null;
                 parent = null;
                 next = null;
