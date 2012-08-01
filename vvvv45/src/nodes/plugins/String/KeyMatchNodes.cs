@@ -31,7 +31,7 @@ namespace VVVV.Nodes
 		[Config("Key Match", IsSingle = true)]
 		IDiffSpread<string> FKeyMatch;
 		
-		[Input("Input", IsSingle = true)]
+		[Input("Keyboard", IsSingle = true)]
 		IDiffSpread<KeyboardState> FInput;
 		
 		[Input("Reset Toggle", IsSingle = true, IsBang = true)]
@@ -182,7 +182,7 @@ namespace VVVV.Nodes
 	public class RadioKeyMatchNode: IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Input")]
+		[Input("Keyboard")]
 		IDiffSpread<KeyboardState> FInput;
 
 		[Input("Key Match")]
