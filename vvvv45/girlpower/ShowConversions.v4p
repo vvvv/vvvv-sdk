@@ -1,9 +1,9 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
    <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\ShowConversions.v4p" systemname="ShowConversions" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\ShowConversions.v4p">
-   <BOUNDS type="Window" left="4620" top="900" width="16530" height="14760">
+   <BOUNDS type="Window" left="5925" top="900" width="16530" height="14760">
    </BOUNDS>
    <NODE systemname="Reader (File)" nodename="Reader (File)" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="1845" top="225" width="100" height="100">
+   <BOUNDS type="Node" left="2025" top="375" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Filename" slicecount="1" encoded="0" values="..\lib\diffff.xml">
    </PIN>
@@ -323,7 +323,7 @@
    <LINK srcnodeid="22" srcpinname="Output" dstnodeid="29" dstpinname="Select">
    </LINK>
    <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="37">
-   <BOUNDS type="Node" left="3930" top="450" width="100" height="100">
+   <BOUNDS type="Node" left="2880" top="150" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Bang" visible="1">
    </PIN>
@@ -359,5 +359,39 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="41" srcpinname="Output" dstnodeid="42" dstpinname="Input">
+   </LINK>
+   <NODE systemname="GetElements (XML ByXPath)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="GetElements (XML ByXPath)" componentmode="Hidden" id="43">
+   <BOUNDS type="Node" left="7305" top="1095" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Element" visible="1">
+   </PIN>
+   <PIN pinname="XPath" slicecount="1" encoded="0" values="/CONVVVVERTER/PATCH/NODE">
+   </PIN>
+   <PIN pinname="Elements" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Element" dstnodeid="43" dstpinname="Element">
+   </LINK>
+   <NODE systemname="GetAttributes (XML ByName)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="GetAttributes (XML ByName)" componentmode="Hidden" id="44">
+   <BOUNDS type="Node" left="7800" top="1590" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Element" visible="1">
+   </PIN>
+   <PIN pinname="Name" slicecount="1" values="new" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Elements" dstnodeid="44" dstpinname="Element">
+   </LINK>
+   <NODE systemname="GetAttributes (XML ByXPath)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="GetAttributes (XML ByXPath)" componentmode="Hidden" id="45">
+   <BOUNDS type="Node" left="6705" top="1590" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Element" visible="1">
+   </PIN>
+   <PIN pinname="Name" encoded="0">
+   </PIN>
+   <PIN pinname="XPath" slicecount="1" values="/CONVVVVERTER/PATCH/NODE/@new" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Element" dstnodeid="45" dstpinname="Element">
    </LINK>
    </PATCH>

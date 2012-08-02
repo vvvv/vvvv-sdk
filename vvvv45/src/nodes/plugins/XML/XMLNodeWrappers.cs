@@ -11,7 +11,7 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Nodes.XML
 {
     [PluginInfo(Name = "Element", Category = "XML", Version = "Split")]
-    public class XMLElementSplitNode : IPluginEvaluate
+    public class ElementSplitNode : IPluginEvaluate
     {
         [Input("Element")]
         public IDiffSpread<XElement> Element;
@@ -50,9 +50,7 @@ namespace VVVV.Nodes.XML
                 string name;
                 string value;
                 ISpread<XElement> childs;
-                int childCount;
                 ISpread<XAttribute> attributes;
-                int attributeCount;
                 XElement documentRoot;
                 XElement parent;
                 XElement next;
@@ -74,7 +72,7 @@ namespace VVVV.Nodes.XML
     }
 
     [PluginInfo(Name = "Attribute", Category = "XML", Version = "Split")]
-    public class XMLAttributeSplitNode : IPluginEvaluate
+    public class AttributeSplitNode : IPluginEvaluate
     {
         [Input("Attribute")]
         public IDiffSpread<XAttribute> Attribute;
@@ -112,12 +110,125 @@ namespace VVVV.Nodes.XML
             }
         }
     }
-    
+
+    [PluginInfo(Name = "GetElements", Category = "XML", Version = "ByName")]
+    public class GetElementsNode : IPluginEvaluate
+    {
+        [Input("Element")]
+        public IDiffSpread<XElement> Element;
+
+        [Input("Name", DefaultString = "MyTag")]
+        public IDiffSpread<string> Name;
+
+        [Output("Elements")]
+        public ISpread<ISpread<XElement>> Elements;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!Element.IsChanged && !Name.IsChanged) return;
+
+            Elements.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                Elements[i] = Element[i].GetElementsByName(Name[i]);
+            }
+        }
+    }
+
+    [PluginInfo(Name = "GetAttributes", Category = "XML", Version = "ByName")]
+    public class GetAttributesNode : IPluginEvaluate
+    {
+        [Input("Element")]
+        public IDiffSpread<XElement> Element;
+
+        [Input("Name", DefaultString = "MyAttribute")]
+        public IDiffSpread<string> Name;
+
+        [Output("Attributes")]
+        public ISpread<ISpread<XAttribute>> Attributes;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!Element.IsChanged && !Name.IsChanged) return;
+
+            Attributes.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                Attributes[i] = Element[i].GetAttributesByName(Name[i]);
+            }
+        }
+    }
+
+    [PluginInfo(Name = "GetElements", Category = "XML", Version = "ByXPath")]
+    public class GetElementsByXPathNode : IPluginEvaluate
+    {
+        [Input("Element")]
+        public IDiffSpread<XElement> Element;
+
+        [Input("XPath", DefaultString = "/MyTag")]
+        public IDiffSpread<string> XPath;
+
+        [Output("Elements")]
+        public ISpread<ISpread<XElement>> Elements;
+
+        [Output("Error Message")]
+        public ISpread<string> ErrorMessage;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!Element.IsChanged && !XPath.IsChanged) return;
+
+            Elements.SliceCount = spreadMax;
+            ErrorMessage.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                string error; 
+                Elements[i] = Element[i].GetElementsByXPath(XPath[i], out error);
+                ErrorMessage[i] = error;
+            }
+        }
+    }
+
+    [PluginInfo(Name = "GetAttributes", Category = "XML", Version = "ByXPath")]
+    public class GetAttributesByXPathNode : IPluginEvaluate
+    {
+        [Input("Element")]
+        public IDiffSpread<XElement> Element;
+
+        [Input("XPath", DefaultString = "/MyTag/@MyAttribute")]
+        public IDiffSpread<string> XPath;
+
+        [Output("Attributes")]
+        public ISpread<ISpread<XAttribute>> Attributes;
+
+        [Output("Error Message")]
+        public ISpread<string> ErrorMessage;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!Element.IsChanged && !XPath.IsChanged) return;
+
+            Attributes.SliceCount = spreadMax;
+            ErrorMessage.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                string error;
+                Attributes[i] = Element[i].GetAttributesByXPath(XPath[i], out error);
+                ErrorMessage[i] = error;
+            }
+        }
+    }
+
     [PluginInfo(Name = "AsElement", Category = "XML")]
     public class XMLAsXElementNode : IPluginEvaluate
     {
         [Input("XML")]
         public IDiffSpread<string> XML;
+
         [Output("Element")]
         public ISpread<XElement> Element;
 
@@ -126,7 +237,7 @@ namespace VVVV.Nodes.XML
             if (!XML.IsChanged) return;
 
             Element.SliceCount = spreadMax;
-            
+
             for (int i = 0; i < spreadMax; i++)
             {
                 XElement element;

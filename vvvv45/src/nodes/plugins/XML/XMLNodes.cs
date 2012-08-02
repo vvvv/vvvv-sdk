@@ -5,12 +5,18 @@ using System.Text;
 using VVVV.Core;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.XPath;
 using VVVV.PluginInterfaces.V2;
+using System.Diagnostics;
+using System.Collections;
 
 namespace VVVV.Nodes.XML
 {
     public static class XMLNodes
     {
+        static ISpread<XElement> NoElements = new Spread<XElement>();
+        static ISpread<XAttribute> NoAttributes = new Spread<XAttribute>();
+
         [Node]
         public static void Split(this XElement element, out string name, out string value, out ISpread<XElement> childs,
             out ISpread<XAttribute> attributes, out XElement documentRoot, out XElement parent,
@@ -35,14 +41,77 @@ namespace VVVV.Nodes.XML
             {
                 name = "";
                 value = "";
-                childs = new Spread<XElement>(); // should access a static empty spread
-                attributes = new Spread<XAttribute>();
+                childs = NoElements;
+                attributes = NoAttributes;
                 documentRoot = null;
                 parent = null;
                 next = null;
                 nodeType = default(XmlNodeType);
                 //changed = false;
             }
+        }
+
+        [Node]
+        public static ISpread<XElement> GetElementsByName(this XElement element, string name)
+        {
+            if (element != null)
+            {
+                var n = XName.Get(name);
+                return element.Elements(n).ToSpread();
+            }
+            else
+                return NoElements;
+        }
+
+        [Node]
+        public static ISpread<XAttribute> GetAttributesByName(this XElement element, string name)
+        {
+            if (element != null)
+            {
+                var n = XName.Get(name);
+                return element.Attributes(n).ToSpread();
+            }
+            else
+                return NoAttributes;
+        }
+
+        [Node]
+        public static ISpread<T> GetElementsByXPath<T>(this XElement element, string xPath, string nodesName, out string errorMessage) where T : XObject
+        {
+            if (element != null)
+            {
+                try
+                {
+                    var obj = (IEnumerable)element.XPathEvaluate(xPath);
+                    var whatINeed = obj.Cast<T>();
+                    errorMessage = "";
+                    return whatINeed.ToSpread();
+                }
+                catch
+                {
+                    errorMessage = String.Format("couldn't map xpath '{0}' to xml {1}", xPath, nodesName);
+                    return null;
+                }
+            }
+            else
+            {
+                errorMessage = "no element to run xpath on";
+                return null;
+            }
+        }
+
+        [Node]
+        public static ISpread<XElement> GetElementsByXPath(this XElement element, string xPath, out string errorMessage)
+        {
+            var result = element.GetElementsByXPath<XElement>(xPath, "elements", out errorMessage);
+            return result != null ? result : NoElements;
+        }
+
+        [Node]
+        public static ISpread<XAttribute> GetAttributesByXPath(this XElement element, string xPath, out string errorMessage)
+        {
+            var result = element.GetElementsByXPath<XAttribute>(xPath, "attributes", out errorMessage);
+            return result != null ? result : NoAttributes;
         }
 
         [Node]
