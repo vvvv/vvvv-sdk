@@ -954,8 +954,6 @@
   	<NODE old="QueryBatch (SQlite Network)" new="QueryBatch (SQLite Network)"></NODE>
   </PATCH>
 	<PATCH version="45alpha28">
-  	<NODE old="Differential (Spreads Advanced)" new="Differential (Spreads Advanced Legacy)"></NODE>
-  	<NODE old="Integral (Spreads Advanced)" new="Integral (Spreads Advanced Legacy)"></NODE>
   	<NODE old="AlphaLevels (EX9.Texture Filter)" new="AlphaLevels (EX9.Texture Filter Legacy)"> </NODE>
   	<NODE old="PreviewRGBA (EX9.Texture)" new="Preview (EX9.Texture)"> </NODE>
   	<NODE old="DisplacementMap (EX9.Texture Source)" new="TexCoords (EX9.Texture Source)"> </NODE>
@@ -1008,5 +1006,17 @@
   <NODE old="TimerFlop (Animation)">
   	<PIN old="Time" olddefault="0"></PIN>
   </NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.DiffAdvNode" new="Differential (Spreads Vector)"></NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.IntAdvNode" new="Integral (Spreads Vector)">
+    <PIN old="Include 0 Slice" new="Append Offset"/>
+  </NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.AddAdvNode" new=":PLUGINS:\VectorSized.dll|VVVV.Nodes.AddVectorNode"></NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.MultiplyAdvNode" new=":PLUGINS:\VectorSized.dll|VVVV.Nodes.MultiplyVectorNode"></NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.BoundsAdvNode" new="Bounds (Spectral Vector)"></NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.CARAdvNode" new="CAR (Spreads Vector)"></NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.CDRAdvNode" new="CDR (Spreads Vector)"></NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.ReverseAdvNode" new="Reverse (Spreads Vector)"></NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.SelectAdvNode" new="Select (Value Vector)"></NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.ShiftAdvNode" new="Shift (Spreads Vector)"></NODE>
   </PATCH>
 </CONVVVVERTER>
