@@ -307,7 +307,7 @@ namespace VVVV.Nodes.XML
         [Output("Is Valid")]
         public ISpread<bool> Valid;
 
-        [Output("Rng File")]
+        [Output("Message")]
         public ISpread<string> Message;
 
         public void Evaluate(int spreadMax)
