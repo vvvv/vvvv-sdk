@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
    <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\ShowConversions.v4p" systemname="ShowConversions" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\ShowConversions.v4p">
-   <BOUNDS type="Window" left="8400" top="885" width="16530" height="14760">
+   <BOUNDS type="Window" left="0" top="0" width="20265" height="14760">
    </BOUNDS>
    <NODE systemname="Reader (File)" nodename="Reader (File)" componentmode="Hidden" id="1">
    <BOUNDS type="Node" left="2025" top="375" width="100" height="100">
@@ -225,6 +225,8 @@
    </PIN>
    <PIN pinname="Value" visible="1">
    </PIN>
+   <PIN pinname="Parent" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="44" srcpinname="Attributes" dstnodeid="47" dstpinname="Attribute">
    </LINK>
@@ -237,11 +239,11 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4695" top="3825" width="1440" height="255">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="NODE/@old" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="NODE/@old">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="/MyTag/@MyAttribute" encoded="0">
+   <PIN pinname="Default" slicecount="1" encoded="0" values="/MyTag/@MyAttribute">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
@@ -253,15 +255,69 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8370" top="4095" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="new" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="new">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="MyAttribute" encoded="0">
+   <PIN pinname="Default" slicecount="1" encoded="0" values="MyAttribute">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
    </NODE>
    <LINK srcnodeid="49" srcpinname="Output String" dstnodeid="44" dstpinname="Name">
+   </LINK>
+   <NODE systemname="GetElements (XML ByName)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="GetElements (XML ByName)" componentmode="Hidden" id="50">
+   <BOUNDS type="Node" left="13575" top="4545" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Element" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Name" slicecount="1" values="PIN" encoded="0">
+   </PIN>
+   <PIN pinname="Elements" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Parent" dstnodeid="50" dstpinname="Element">
+   </LINK>
+   <NODE systemname="UnSelect (String)" filename="%VVVV%\lib\nodes\modules\String\UnSelect (String).v4p" nodename="%VVVV%\lib\nodes\modules\String\UnSelect (String).v4p" componentmode="Hidden" id="51">
+   <BOUNDS type="Node" left="12236" top="6007" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9869" top="3902" width="4735" height="4210">
+   </BOUNDS>
+   <BOUNDS type="Window" left="18015" top="5715" width="4740" height="4215">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Input - Switch" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="Attribute (XML Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Attribute (XML Split)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="14070" top="5460" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Attribute" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Element (XML Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Element (XML Split)" componentmode="Hidden" id="53">
+   <BOUNDS type="Node" left="13875" top="5025" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Element" visible="1">
+   </PIN>
+   <PIN pinname="Attributes" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="50" srcpinname="Elements" dstnodeid="53" dstpinname="Element">
+   <LINKPOINT x="13860" y="4980">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="53" srcpinname="Attributes" dstnodeid="52" dstpinname="Attribute">
+   </LINK>
+   <NODE systemname="GetAttributes (XML ByName)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="GetAttributes (XML ByName)" componentmode="Hidden" id="54">
+   <BOUNDS type="Node" left="12210" top="5310" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Element" visible="1">
+   </PIN>
+   <PIN pinname="Name" slicecount="1" values="new" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="50" srcpinname="Elements" dstnodeid="54" dstpinname="Element">
    </LINK>
    </PATCH>

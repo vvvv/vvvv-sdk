@@ -9,6 +9,8 @@ using System.Xml.XPath;
 using VVVV.PluginInterfaces.V2;
 using System.Diagnostics;
 using System.Collections;
+using System.IO;
+using Commons.Xml.Relaxng;
 
 namespace VVVV.Nodes.XML
 {
@@ -144,6 +146,67 @@ namespace VVVV.Nodes.XML
             catch
             {
                 element = null;
+            }
+        }
+
+        [Node]
+        public static string AsString(this XElement element)
+        {
+            return element != null ? element.AsString() : "";
+        }
+
+        [Node]
+        public static string RelaxNGValidate(string xmlFile, string rngFile)
+        {
+            string r = "\r\n";
+
+            // Files must exist.
+            if (!File.Exists(xmlFile))
+                return "Source file not found.";
+            if (!File.Exists(rngFile))
+                return "Schema file not found.";
+
+            // Grammar.
+            XmlTextReader xtrRng = new XmlTextReader(rngFile);
+            RelaxngPattern p = null;
+            try
+            {
+                p = RelaxngPattern.Read(xtrRng);
+                p.Compile();
+            }
+            catch (Exception ex1)
+            {
+                return "Schema file has invalid grammar:" + r
+                       + rngFile + r + ex1.Message;
+            }
+            finally
+            {
+                xtrRng.Close();
+            }
+
+            // Validate instance.
+            XmlTextReader xtrXml = new XmlTextReader(xmlFile);
+            RelaxngValidatingReader vr = new RelaxngValidatingReader(xtrXml, p);
+            try
+            {
+                while (!vr.EOF) vr.Read();
+                // XML file is valid.
+                return "";
+            }
+            catch (RelaxngException ex2)
+            {
+                // XML file not valid.
+                return ex2.Message;
+            }
+            catch (Exception ex3)
+            {
+                // XML file not well-formed.
+                return ex3.Message;
+            }
+            finally
+            {
+                vr.Close();
+                xtrXml.Close();
             }
         }
     }

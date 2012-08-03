@@ -117,7 +117,7 @@ namespace VVVV.Nodes.XML
         [Input("Element")]
         public IDiffSpread<XElement> Element;
 
-        [Input("Name", DefaultString = "MyTag")]
+        [Input("Name", DefaultString = "MyChildTag")]
         public IDiffSpread<string> Name;
 
         [Output("Elements")]
@@ -167,7 +167,7 @@ namespace VVVV.Nodes.XML
         [Input("Element")]
         public IDiffSpread<XElement> Element;
 
-        [Input("XPath", DefaultString = "/MyTag")]
+        [Input("XPath", DefaultString = "MyChildTag/MyChildsChildTag")]
         public IDiffSpread<string> XPath;
 
         [Output("Elements")]
@@ -198,7 +198,7 @@ namespace VVVV.Nodes.XML
         [Input("Element")]
         public IDiffSpread<XElement> Element;
 
-        [Input("XPath", DefaultString = "/MyTag/@MyAttribute")]
+        [Input("XPath", DefaultString = "MyChildTag/@OneOfItsAttributes")]
         public IDiffSpread<string> XPath;
 
         [Output("Attributes")]
@@ -224,7 +224,7 @@ namespace VVVV.Nodes.XML
     }
 
     [PluginInfo(Name = "AsElement", Category = "XML")]
-    public class XMLAsXElementNode : IPluginEvaluate
+    public class XMLAsElementNode : IPluginEvaluate
     {
         [Input("XML")]
         public IDiffSpread<string> XML;
@@ -248,4 +248,83 @@ namespace VVVV.Nodes.XML
             }
         }
     }
+
+    //[PluginInfo(Name = "AsString", Category = "XML Element")]
+    //public class ElementAsXMLNode : IPluginEvaluate
+    //{
+    //    [Input("Element")]
+    //    public IDiffSpread<XElement> Element;
+
+    //    [Output("XML")]
+    //    public ISpread<string> XML;
+
+    //    public void Evaluate(int spreadMax)
+    //    {
+    //        if (!Element.IsChanged) return;
+
+    //        XML.SliceCount = spreadMax;
+
+    //        for (int i = 0; i < spreadMax; i++)
+    //        {
+    //            XML[i] = XMLNodes.AsString(Element[i]);
+    //        }
+    //    }
+    //}
+
+    [PluginInfo(Name = "AsString", Category = "Object")]
+    public class AsStringNode : IPluginEvaluate
+    {
+        [Input("Object")]
+        public IDiffSpread<Object> Object;
+
+        [Output("String")]
+        public ISpread<string> _String;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!Object.IsChanged) return;
+
+            _String.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                var o = Object[i];
+                _String[i] = o != null ? o.ToString() : "";
+            }
+        }
+    }
+
+
+    [PluginInfo(Name = "Validate", Category = "XML RelaxNG")]
+    public class RelaxNGValidateNode : IPluginEvaluate
+    {
+        [Input("Xml File", StringType = StringType.Filename, FileMask = "XML (*.xml)|*.xml")]
+        public IDiffSpread<string> XmlFile;
+
+        [Input("Rng File", StringType = StringType.Filename, FileMask = "RNG (*.rng)|*rng")]
+        public IDiffSpread<string> RngFile;
+
+        [Output("Is Valid")]
+        public ISpread<bool> Valid;
+
+        [Output("Rng File")]
+        public ISpread<string> Message;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!XmlFile.IsChanged && !RngFile.IsChanged) return;
+
+            Message.SliceCount = spreadMax;
+            Valid.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                var message = XMLNodes.RelaxNGValidate(XmlFile[i], RngFile[i]);
+                Message[i] = message;
+                Valid[i] = message == "";
+            }
+        }
+    }
+
+
 }
