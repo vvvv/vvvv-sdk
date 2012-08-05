@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.IO;
 using Commons.Xml.Relaxng;
+using Commons.Xml.Relaxng.Rnc;
 
 namespace VVVV.Nodes.XML
 {
@@ -167,22 +168,47 @@ namespace VVVV.Nodes.XML
                 return "Schema file not found.";
 
             // Grammar.
-            XmlTextReader xtrRng = new XmlTextReader(rngFile);
             RelaxngPattern p = null;
-            try
+            
+            if (Path.GetExtension(rngFile).ToUpper() == ".RNG")
             {
-                p = RelaxngPattern.Read(xtrRng);
-                p.Compile();
+                XmlTextReader xtrRng = new XmlTextReader(rngFile);
+                try
+                {
+                    p = RelaxngPattern.Read(xtrRng);
+                    p.Compile();
+                }
+                catch (Exception ex1)
+                {
+                    return "Schema file has invalid grammar:" + r
+                           + rngFile + r + ex1.Message;
+                }
+                finally
+                {
+                    xtrRng.Close();
+                }
             }
-            catch (Exception ex1)
+            else
+            if (Path.GetExtension(rngFile).ToUpper() == ".RNC")
             {
-                return "Schema file has invalid grammar:" + r
-                       + rngFile + r + ex1.Message;
+                var trRnc = new StringReader(rngFile);
+                try
+                {
+                    p = RncParser.ParseRnc(trRnc);
+                    p.Compile();
+                }
+                catch (Exception ex1)
+                {
+                    return "Schema file has invalid grammar:" + r
+                           + rngFile + r + ex1.Message;
+                }
+                finally
+                {
+                    trRnc.Close();
+                }
             }
-            finally
-            {
-                xtrRng.Close();
-            }
+            else
+                return "Unknown schema file extension: " + Path.GetExtension(rngFile);
 
             // Validate instance.
             XmlTextReader xtrXml = new XmlTextReader(xmlFile);
