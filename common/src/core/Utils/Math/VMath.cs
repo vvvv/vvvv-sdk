@@ -10,6 +10,7 @@
  */
  
 using System;
+using System.Diagnostics.Contracts;
 
 /// <summary>
 /// VVVV Math Utilities 
@@ -150,13 +151,12 @@ namespace VVVV.Utils.VMath
         #region numeric functions
 
         /// <summary>
-        /// Factorial function
+        /// Factorial function, DON'T FEED ME WITH LARGE NUMBERS !!! (n>10 can be huge)
         /// </summary>
         /// <param name="n"></param>
         /// <returns>The product n * n-1 * n-2 * n-3 * .. * 3 * 2 * 1</returns>
         public static int Factorial(int n) 
         {
-            /* DON'T FEED ME WITH LARGE NUMBERS !!! (n>10 can be huge) */
             if (n == 0)
             {
                 return 1;
@@ -175,6 +175,79 @@ namespace VVVV.Utils.VMath
         {
             if (n < 0) { n = -n; }
             return Factorial(n) / (Factorial(k) * Factorial(n - k));
+        }
+        
+        /// <summary>
+        /// Raises x to the power of y.
+        /// </summary>
+        /// <param name="x">The base.</param>
+        /// <param name="y">The exponent.</param>
+        /// <returns>Returns x raised to the power of y.</returns>
+        /// <remarks>This method should be considerably faster than Math.Pow for small y.</remarks>
+        public static double Pow(double x, int y)
+        {
+            Contract.Requires(y >= 0);
+            var result = 1.0;
+            for (int i = 0; i < y; i++)
+            {
+                result *= x;
+            }
+            return result;
+        }
+        
+        /// <summary>
+        /// Solves a quadratic equation a*x^2 + b*x + c for x
+        /// </summary>
+        /// <param name="a">Coefficient of x^2</param>
+        /// <param name="b">Coefficient of x</param>
+        /// <param name="c">Constant</param>
+        /// <param name="x1">First solution</param>
+        /// <param name="x2">Second solution</param>
+        /// <returns>Number of solution, 0, 1, 2 or int.MaxValue</returns>
+        public int SolveQuadratic(double a, double b, double c, out double x1, out double x2)
+        {
+        	x1 = 0;
+        	x2 = 0;
+        	
+        	if (a==0)
+        	{
+        		if ((b==0) && (c==0))
+        		{
+        			return int.MaxValue;
+        		}
+        		else
+        		{
+        			x1 = - c / b;
+        			x2 = x1;
+        			return 1;
+        		}
+        	}
+        	else
+        	{
+        		double D = b*b - 4 * a * c;
+
+        		if (D > 0)
+        		{
+        			
+        			D = Math.Sqrt(D);
+        			x1 = (-b + D) / (2*a);
+        			x2 = (-b - D) / (2*a);
+        			return 2;
+        		}
+        		else
+        		{
+        			if (D == 0)
+        			{
+        				x1 = -b / (2*a);
+        				x2 = x1;
+        				return 1;
+        			}
+        			else
+        			{
+        				return 0;
+        			}
+        		}
+        	}
         }
 
         #endregion numeric functions
@@ -213,9 +286,7 @@ namespace VVVV.Utils.VMath
 		/// <returns>Remainder of division z / d.</returns>
 		public static int Zmod(int z, int d)
 		{
-            if (d == 0)
-                return 0;
-			else if (z >= d)
+            if (z >= d)
 				return z % d;
 			else if (z < 0)
 			{
@@ -1148,6 +1219,78 @@ namespace VVVV.Utils.VMath
 
             return ret;
         }
+        
+        /// <summary>
+        /// Intersaction of 3 Spheres
+        /// </summary>
+        /// <param name="P1">Center sphere 1</param>
+        /// <param name="P2">Center sphere 2</param>
+        /// <param name="P3">Center sphere 3</param>
+        /// <param name="r1">Radius sphere 1</param>
+        /// <param name="r2">Radius sphere 2</param>
+        /// <param name="r3">Radius sphere 3</param>
+        /// <param name="S1">Intersection Point 1</param>
+        /// <param name="S2">Intersection Point 2</param>
+        /// <returns>Number of intersections</returns>
+        public static int Trilateration(Vector3D P1, Vector3D P2, Vector3D P3, double r1, double r2, double r3, out Vector3D S1, out Vector3D S2)
+        {
+        
+        	//P1 to P2 vector
+        	var P1toP2 = P2 - P1;
+        	
+        	//distance P1 to P2
+        	var dsqr = P1toP2 | P1toP2; // d^2 needed later
+        	var d = Math.Sqrt(dsqr);
+        	
+        	//assume, that sphere 1 and 2 intersect
+        	if((d - r1 <= r2) && (r2 <= d + r1))
+        	{
+        		
+        		//P1 to P3 vector
+        		var P1toP3 = P3 - P1;
+        		
+        		//normal base x
+        		var ex = P1toP2 / d;
+        		
+        		//distance P1 to P3 in direction to P2
+        		var i = ex | P1toP3;
+        		
+        		//normal base y
+        		var ey = ~(P3 - P1 - i*ex);
+        		
+        		//distance P1P2 orthoganl to P3
+        		var j = ey | P1toP3;
+        		
+        		//normal base z
+        		var ez = ex.CrossRH(ey);
+        		
+        		//calc x
+        		var r1sqr = r1 * r1;
+        		var x = (r1sqr - r2*r2 + dsqr) / (2*d);
+        		
+        		//calc y
+        		var xmini = x - i;
+        		var xsqr = x*x;
+        		var y = (r1sqr - r3*r3 - xsqr + xmini*xmini + j*j) / (2*j);
+        		
+        		//calc z
+        		var z = Math.Sqrt(r1sqr - xsqr - y*y);
+        		
+        		var zez = z*ez;
+        		S1 = P1 + x*ex + y*ey + zez;
+        		S2 = S1 - 2*zez;
+        		
+        		return 2;
+        	}
+        	else
+        	{
+        		S1 = new Vector3D();
+        		S2 = new Vector3D();
+        		return 0;
+        	}
+        	
+        }
+                                     
 		
 		#endregion 3D functions
 		

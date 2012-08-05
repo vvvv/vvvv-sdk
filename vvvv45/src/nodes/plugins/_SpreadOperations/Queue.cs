@@ -35,11 +35,18 @@ namespace VVVV.Nodes
 		
 		public void Evaluate(int SpreadMax)
 		{
+			//return null if one of the control inputs is null
+            if(FDoInsert.IsAnyEmpty(FFrameCount, FReset))
+            {
+            	FOutput.SliceCount = 0;
+            	return;
+            }
+			
             if (FReset[0])
                 FBuffer.Clear();
 
         	if (FDoInsert[0])
-        		FBuffer.Insert(0, FInput.Clone());
+        		FBuffer.Insert(0, FInput.Clone() as ISpread<T>);
 			
         	var frameCount = FFrameCount[0];
         	if (frameCount >= 0 && FBuffer.Count > frameCount)

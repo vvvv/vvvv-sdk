@@ -46,6 +46,14 @@ namespace VVVV.Nodes
 		{
             //create new buffer on startup
             if (FFirstFrame) FOutput[0] = new Spread<T>(1);
+            
+            //return null if one of the control inputs is null
+            if(FIndex.IsAnyEmpty(FDoInsert, FFrameCount, FReset))
+            {
+            	FOutput.SliceCount = 0;
+            	FPhase.SliceCount = 0;
+            	return;
+            }
 
             //get buffer size
             var frameCount = FFrameCount[0];
@@ -54,7 +62,7 @@ namespace VVVV.Nodes
             {
                 FOutput.SliceCount = frameCount;
                 for (int i = 0; i < frameCount; i++)
-                    FOutput[i] = FDefault[i].Clone();
+                    FOutput[i] = FDefault[i].Clone() as ISpread<T>;
             }
       
             //set slice count
@@ -81,7 +89,7 @@ namespace VVVV.Nodes
 
                 if (FDoInsert[i])
                 {
-                    FOutput[bufferCounter] = FInput[i].Clone();
+                    FOutput[bufferCounter] = FInput[i].Clone() as ISpread<T>;
                     FPhase[i] = frameCount > 1 ? bufferCounter / (double)(frameCount - 1) : 0;
                 }  
             }

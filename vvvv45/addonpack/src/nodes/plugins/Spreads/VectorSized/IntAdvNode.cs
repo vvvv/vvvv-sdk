@@ -139,7 +139,7 @@ namespace VVVV.Nodes
 					FPluginInfo.Category = "Spreads";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "Advanced";
+					FPluginInfo.Version = "Advanced Legacy";
 					
 					//the nodes author: your sign
 					FPluginInfo.Author = "woei";

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\EX9\Light (EX9 Point).v4p">
-   <BOUNDS height="6000" left="4830" top="5055" type="Window" width="9000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9\Light (EX9 Point).v4p">
+   <BOUNDS height="7995" left="8190" top="5355" type="Window" width="11025">
    </BOUNDS>
    <NODE id="22" nodename="Sphere (EX9.Geometry)" systemname="Sphere (EX9.Geometry)">
    <BOUNDS height="0" left="1845" top="2700" type="Node" width="0">
@@ -37,7 +37,7 @@
    <LINK dstnodeid="21" dstpinname="Mesh" srcnodeid="22" srcpinname="Mesh">
    </LINK>
    <NODE id="20" nodename="Fill (EX9.RenderState)" systemname="Fill (EX9.RenderState)">
-   <BOUNDS height="0" left="960" top="3045" type="Node" width="0">
+   <BOUNDS height="0" left="1290" top="3690" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Render State Out" visible="1">
    </PIN>
@@ -54,26 +54,6 @@
    <PIN pinname="XYZ" visible="1">
    </PIN>
    <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3030" top="915" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="17805" top="9045" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="690" left="3030" top="915" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Light Position|">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="3" values="0,5,0">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
    </PIN>
    </NODE>
    <NODE id="17" nodename="DrawFixed (EX9.Effect)" systemname="DrawFixed (EX9.Effect)">
@@ -106,40 +86,18 @@
    </LINK>
    <LINK dstnodeid="21" dstpinname="Transform" srcnodeid="16" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="19" dstpinname="XYZ" srcnodeid="18" srcpinname="Y Output Value">
-   </LINK>
-   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4635" top="1230" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5505" top="12165" type="Window" width="215">
    </BOUNDS>
    <BOUNDS height="240" left="4635" top="1230" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Scale">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Scale" encoded="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="195" top="5520" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="18105" top="9345" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="690" left="195" top="5520" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Light Position Out|">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="13" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -151,11 +109,9 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Layer">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Layer" encoded="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="14" dstpinname="Y Input Value" srcnodeid="18" srcpinname="Y Output Value">
-   </LINK>
    <NODE id="12" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="0" left="2385" top="6195" type="Node" width="0">
    </BOUNDS>
@@ -201,11 +157,11 @@
    </BOUNDS>
    <BOUNDS height="240" left="6015" top="285" type="Box" width="1965">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="|Main Light|">
+   <PIN pinname="Input String" slicecount="1" values="|Main Light|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Name">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Name" encoded="0">
    </PIN>
    </NODE>
    <NODE id="8" nodename="Add (String)" systemname="Add (String)">
@@ -236,14 +192,14 @@
    </LINK>
    <LINK dstnodeid="8" dstpinname="Input 2" srcnodeid="7" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8340" top="285" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="21495" top="9660" type="Window" width="215">
    </BOUNDS>
    <BOUNDS height="240" left="8340" top="285" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -281,7 +237,7 @@
    </BOUNDS>
    <BOUNDS height="285" left="7170" top="2340" type="Box" width="1320">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="|Point Light|">
+   <PIN pinname="Input String" slicecount="1" values="|Point Light|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -340,4 +296,46 @@
    </LINK>
    <INFO author="vvvv group" description="Helper to adjust a point light within your 3d scene." tags="helper, shading, 3d">
    </INFO>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="600" top="885" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="885" width="795" height="720">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,5,0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Light Position|" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="19" dstpinname="XYZ">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="600" top="5385" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="5385" width="795" height="720">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Input Value">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Light Position Out|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>

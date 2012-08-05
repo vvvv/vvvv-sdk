@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_project_file>
-	<FileVersion major="1" minor="5" />
+	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="Trautner" />
 		<Option pch_mode="2" />
-		<Option default_target="" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="" />
 		<Build>
 			<Target title="Debug">
-				<Option output="Trautner.dll" prefix_auto="1" extension_auto="1" />
+				<Option output="..\..\..\..\lib\nodes\freeframes\Trautner" prefix_auto="1" extension_auto="1" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -20,7 +18,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="Trautner.dll" prefix_auto="1" extension_auto="1" />
+				<Option output="..\..\..\..\lib\nodes\freeframes\Trautner" prefix_auto="1" extension_auto="1" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -39,42 +37,21 @@
 		</Build>
 		<Compiler>
 			<Add option="-D__GNUWIN32__" />
-			<Add directory="$(OpenCV)\cv\include" />
-			<Add directory="$(OpenCV)\cxcore\include" />
-			<Add directory="$(OpenCV)\otherlibs\highgui" />
+			<Add directory="$(OpenCV)\include" />
 		</Compiler>
 		<Linker>
 			<Add option="--input-def FreeFrame.def" />
-			<Add option="$(OpenCV)\lib\cv.lib" />
-			<Add option="$(OpenCV)\lib\cxcore.lib" />
-			<Add option="$(OpenCV)\lib\highgui.lib" />
+			<Add library="$(OpenCV)\lib\libopencv_core241.dll.a" />
+			<Add library="$(OpenCV)\lib\libopencv_imgproc241.dll.a" />
+			<Add library="$(OpenCV)\lib\libopencv_highgui241.dll.a" />
 		</Linker>
-		<Unit filename="FreeFrame.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="FreeFrame.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="Trautner.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="Trautner.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
+		<Unit filename="FreeFrame.cpp" />
+		<Unit filename="FreeFrame.h" />
+		<Unit filename="Trautner.cpp" />
+		<Unit filename="Trautner.h" />
 		<Extensions>
 			<code_completion />
+			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

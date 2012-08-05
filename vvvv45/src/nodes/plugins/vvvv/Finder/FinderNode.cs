@@ -358,6 +358,7 @@ namespace VVVV.Nodes.Finder
             tip += "v\t VST Plugins\n";
             tip += "a\t all Addons\n";
             tip += "i\t IOBoxes (Pins of Patches/Modules)\n";
+            tip += "e\t exposed IOBoxes\n";
             tip += "s\t Send/Receive Nodes\n";
             tip += "/\t Comments\n";
             tip += "t\t Patches\n";
@@ -373,7 +374,7 @@ namespace VVVV.Nodes.Finder
             FTooltip.Hide(FSearchTextBox);
         }
         
-        void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+        void FHierarchyViewerClick(ModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (sender == null)
             {
@@ -420,7 +421,7 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        void FHierarchyViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+        void FHierarchyViewerDoubleClick(ModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (sender != null)
             {

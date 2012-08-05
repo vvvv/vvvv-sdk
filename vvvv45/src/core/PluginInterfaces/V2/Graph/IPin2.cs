@@ -1,38 +1,44 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using VVVV.Core;
 
 namespace VVVV.PluginInterfaces.V2.Graph
 {
     [ComVisible(false)]
-    public interface IPin2 : INamed
+    public interface IPin2: INamed
     {
         /// <summary>
-        /// Gets a string representation of the specified slice.
+        /// Reference to the internal COM interface. Use with caution.
         /// </summary>
-        /// <param name="sliceIndex">The slice index.</param>
-        /// <returns>A string representation of the specified slice.</returns>
-        string GetSlice(int sliceIndex);
-        /// <summary>
-        /// Sets a specified slice as its string representation. 
-        /// </summary>
-        /// <param name="sliceIndex">The slice index.</param>
-        /// <param name="slice">The slices value in its string representation</param>
-        /// <param name="undoable">If TRUE this operation can be undone by the user in the patch using the UNDO command.</param>
-		void SetSlice(int sliceIndex, string slice, bool undoable);
+        IPin InternalCOMInterf
+        {
+            get;
+        }
 
-		/// <summary>
-		/// Gets the whole spread as a string with commaseparated slices.
+    	/// <summary>
+    	/// Gets/Sets a string representation of the specified slice.
+    	/// </summary>
+    	string this[int sliceIndex]
+    	{
+    		get;
+    		set;
+    	}
+    	
+    	/// <summary>
+		/// Returns the pins name as seen by the given parent node. This makes sense for pins of modules which have two parents: the IOBox and the Module.
 		/// </summary>
-		/// <returns>A commaseparated string with all slices of the spread.</returns>
-        string GetSpread();
-        
-        /// <summary>
-        /// Sets the whole spread as a string with commaseparated slices.
-        /// </summary>
-        /// <param name="spread">The commaseparated string.</param>
-        /// <param name="undoable">If TRUE this operation can be undone by the user in the patch using the UNDO command.</param>
-        void SetSpread(string spread, bool undoable);
+		/// <param name="parentNode">The node for which to ask the pinname from.</param>
+		/// <returns>The pins name.</returns>
+   		string NameByParent(INode2 parentNode);
+
+    	/// <summary>
+    	/// Gets/Sets the whole spread as a string with commaseparated slices.
+    	/// </summary>
+    	string Spread
+    	{
+    		get;
+    		set;
+    	}
         
         /// <summary>
         /// Returns the pins slicecount.
@@ -43,7 +49,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
         }
         
         /// <summary>
-        /// Returns the pins datatype.
+        /// Returns the pins datatype as a string.
         /// </summary>
         string Type
         {
@@ -51,11 +57,39 @@ namespace VVVV.PluginInterfaces.V2.Graph
         }
         
         /// <summary>
+        /// Returns the pins clr type and null in case of native pins.
+        /// </summary>
+        Type CLRType
+        {
+        	get;
+        }
+        
+        /// <summary>
+        /// Returns the pins subtype.
+        	/// values: guitTpe, dimension, default, min, max, stepSize, unitName, precision
+        	/// strings: guiType, default, fileMask, maxChars
+        	/// colors: guiType, default, hasAlpha
+        	/// enums: guiType, default
+        /// </summary>
+        string SubType
+	    {
+	    	get;
+	    }
+        
+        /// <summary>
         /// Returns the pins direction. 
         /// </summary>
         PinDirection Direction
         {
         	get;
+        }
+        
+        /// <summary>
+        /// Returns a list of connected pins. For Inputs this is a maximum of one.
+        /// </summary>
+        IViewableCollection<IPin2> ConnectedPins
+        {
+            get;
         }
 		
 		/// <summary>
@@ -73,11 +107,33 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		{
 			get;
 		}
-        
+		
+		/// <summary>
+		/// Returns the Pins parent node that lies in the give patch. This makes sense for pins of modules which have two parents: the IOBox and the Module.
+		/// </summary>
+		/// <param name="patch">The given patch.</param>
+		/// <returns>The pins parent in the given patch.</returns>
+		INode2 ParentNodeByPatch(INode2 patch);
+		        
         /// <summary>
-        /// The changed event occurs when the pin's data changed.
+        /// The changed event occurs when the pins data changed.
         /// </summary>
         event EventHandler Changed;
+        
+        /// <summary>
+        /// The SubtypeChanged event occurs when the pins subtype changed.
+        /// </summary>
+        event EventHandler SubtypeChanged;
+        
+        /// <summary>
+        /// The connected event occurs when the pin gets connected.
+        /// </summary>
+        event PinConnectionEventHandler Connected;
+        
+        /// <summary>
+        /// The disconnected event occurs when the pin gets disconnected.
+        /// </summary>
+        event PinConnectionEventHandler Disconnected;
     }
 	
     [ComVisible(false)]
