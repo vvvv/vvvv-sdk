@@ -191,7 +191,7 @@ namespace VVVV.Nodes.XML
             else
             if (Path.GetExtension(rngFile).ToUpper() == ".RNC")
             {
-                var trRnc = new StringReader(rngFile);
+                var trRnc = new StreamReader(rngFile);
                 try
                 {
                     p = RncParser.ParseRnc(trRnc);

@@ -301,7 +301,7 @@ namespace VVVV.Nodes.XML
         [Input("Xml File", StringType = StringType.Filename, FileMask = "XML (*.xml)|*.xml")]
         public IDiffSpread<string> XmlFile;
 
-        [Input("Rng File", StringType = StringType.Filename, FileMask = "RNG (*.rng)|*rng")]
+        [Input("Rng File", StringType = StringType.Filename, FileMask = "RNC (*.rnc)|*.rnc|RNG (*.rng)|*rng")]
         public IDiffSpread<string> RngFile;
 
         [Output("Is Valid")]
