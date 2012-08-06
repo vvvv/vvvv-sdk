@@ -1,0 +1,83 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Split (String) help.v4p">
+   <BOUNDS height="3165" left="1575" top="1350" type="Window" width="3870">
+   </BOUNDS>
+   <NODE id="2" nodename="Split (String)">
+   <BOUNDS height="0" left="1905" top="1320" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Count" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="1905" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="540" top="2220" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5318" top="4913" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="360" left="540" top="2220" type="Box" width="1425">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input String" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="3675">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="37530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Splits the string into slices with n characters each|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="37530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Split - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="7">
+   <BOUNDS type="Node" left="1920" top="930" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3225" top="4440" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1920" top="930" width="990" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="(empty)">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Output String" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   </PATCH>

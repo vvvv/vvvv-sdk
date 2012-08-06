@@ -1,0 +1,255 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta11.2.dtd" >
+   <PATCH nodename="Y:\vvvv33\girlpower\GetSpreadsPerformance.v4p">
+   <BOUNDS height="9090" left="1365" top="5520" type="Window" width="11610">
+   </BOUNDS>
+   <NODE id="22" nodename="GetSpread (Spreads)">
+   <BOUNDS height="270" left="2205" top="5355" type="Node" width="1110">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   <PIN pinname="Offset" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="21" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="2220" top="1650" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Input" srcnodeid="21" srcpinname="Output">
+   </LINK>
+   <NODE id="20" nodename="GetSlice (Spreads)">
+   <BOUNDS height="270" left="3540" top="5340" type="Node" width="1020">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Input" srcnodeid="21" srcpinname="Output">
+   </LINK>
+   <NODE id="19" nodename="I (Spreads)">
+   <BOUNDS height="0" left="4755" top="2760" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname=".. To [" visible="1">
+   </PIN>
+   <PIN pinname="[ From .." visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Index" srcnodeid="19" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6135" top="1470" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5820" top="8220" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6135" top="1470" type="Box" width="600">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="9999">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="999999">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Count" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4065" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8460" top="8340" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="435" left="4065" top="1230" type="Box" width="765">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="999,7">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="99999">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Offset" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="12" nodename="GetSpread (Color)">
+   <BOUNDS height="270" left="6705" top="5340" type="Node" width="1125">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   <PIN pinname="Offset" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="5025" top="5985" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11145" top="12900" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2355" left="5025" top="5985" type="Box" width="2025">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="[ From .." srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="10" nodename="Add (Value)">
+   <BOUNDS height="0" left="4965" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input 1" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname=".. To [" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input 2" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Offset" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Count" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="9" nodename="HSV (Color Join)">
+   <BOUNDS height="0" left="6705" top="3690" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Lightness">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Saturation" srcnodeid="21" srcpinname="Output">
+   </LINK>
+   <NODE id="8" nodename="GetSlice (Color)">
+   <BOUNDS height="270" left="9315" top="5355" type="Node" width="1020">
+   </BOUNDS>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Index" srcnodeid="19" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="7530" top="5985" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11445" top="13200" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2355" left="7530" top="5985" type="Box" width="2025">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2610" top="1215" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7110" top="5115" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2610" top="1215" type="Box" width="630">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="100000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="999999">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Spread Count" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="120" top="120" type="Node" width="4410">
+   </BOUNDS>
+   <BOUNDS height="735" left="120" top="120" type="Box" width="3645">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|demonstrating performance gains by using GetSpread rather than GetSlice when operating with large slicecounts.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1845" top="6000" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10215" top="10620" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2355" left="1845" top="6000" type="Box" width="840">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="22" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2775" top="6000" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10515" top="10920" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2355" left="2775" top="6000" type="Box" width="840">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="20" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Color Input" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Color Input" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   </PATCH>
