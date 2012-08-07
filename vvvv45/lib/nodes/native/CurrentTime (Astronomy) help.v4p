@@ -1,0 +1,213 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\CurrentTime (Astronomy) help.v4p">
+   <BOUNDS height="3960" left="2040" top="2445" type="Window" width="8760">
+   </BOUNDS>
+   <NODE id="13" nodename="CurrentTime (Astronomy)">
+   <BOUNDS height="0" left="3090" top="750" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Current Time" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Gregorian (Astronomy)">
+   <BOUNDS height="0" left="4380" top="1275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="Second" visible="1">
+   </PIN>
+   <PIN pinname="Minute" visible="1">
+   </PIN>
+   <PIN pinname="Hour" visible="1">
+   </PIN>
+   <PIN pinname="Day" visible="1">
+   </PIN>
+   <PIN pinname="Month" visible="1">
+   </PIN>
+   <PIN pinname="Year" visible="1">
+   </PIN>
+   <PIN pinname="DayOfWeek" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Time" srcnodeid="13" srcpinname="Current Time">
+   </LINK>
+   <NODE id="11" nodename="TimeToString (String)">
+   <BOUNDS height="0" left="3105" top="1260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Time" srcnodeid="13" srcpinname="Current Time">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="0" left="150" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3180" top="6840" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="375" left="150" top="2190" type="Box" width="3015">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input String" srcnodeid="11" srcpinname="String">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4410" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6990" top="5265" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4410" top="2190" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Second">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3960" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7290" top="5565" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3960" top="2190" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Minute">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3510" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7590" top="5865" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3510" top="2190" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Hour">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7635" top="1680" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7290" top="5565" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7635" top="1680" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7200" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7590" top="5865" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7200" top="2190" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6750" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7890" top="6165" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6750" top="2190" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Day">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Month">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Year">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5250" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7290" top="5565" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5250" top="2190" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="12" srcpinname="DayOfWeek">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3480" top="2505" type="Node" width="3420">
+   </BOUNDS>
+   <BOUNDS height="795" left="3480" top="2505" type="Box" width="1395">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|that&apos;s the current time, based on your system clock|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="6720" top="2505" type="Node" width="3420">
+   </BOUNDS>
+   <BOUNDS height="795" left="6720" top="2505" type="Box" width="1455">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|that&apos;s the current date, based on your system&apos;s date|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="5205" top="2505" type="Node" width="3420">
+   </BOUNDS>
+   <BOUNDS height="1005" left="5205" top="2505" type="Box" width="915">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|current weekday, where sunday = 1|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="255" left="15" top="390" type="Box" width="3480">
+   </BOUNDS>
+   <BOUNDS height="160" left="30" top="1020" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Gets the current time in the current time zone|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="630" top="1620" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CurrentTime - Astronomy|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
