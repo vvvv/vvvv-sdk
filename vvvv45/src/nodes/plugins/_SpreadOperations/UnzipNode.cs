@@ -10,7 +10,7 @@ namespace VVVV.Nodes
 {
 	public abstract class UnzipNode<T> : IPluginEvaluate
 	{
-		[Input("Input", BinSize = 1)]
+		[Input("Input", BinSize = -2)]
 		protected IInStream<T> FInputStream;
 
 		[Output("Output", IsPinGroup = true)]
