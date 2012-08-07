@@ -1,0 +1,191 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_45beta27\myplugins\lib\nodes\plugins\TodoSavePreset (TodoMap) help.v4p" filename="C:\Users\vux\Desktop\plugins\StringTest\UGRParserTest.v4p" systemname="UGRParserTest">
+   <BOUNDS height="8715" left="1575" top="1395" type="Window" width="12090">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="675" left="255" top="525" type="Box" width="3375">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Saves a bulk of variables state in a file|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|TodoSavePreset (TodoMap)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" filename="%VVVV%\myplugins\lib\nodes\plugins\VVVV.Nodes.TodoMap.dll" id="17" nodename="TodoMap (TodoMap)" systemname="TodoMap (TodoMap)">
+   <BOUNDS height="270" left="5775" top="2235" type="Node" width="2220">
+   </BOUNDS>
+   <BOUNDS height="8805" left="6675" top="525" type="Window" width="16935">
+   </BOUNDS>
+   <PIN pinname="Engine" visible="1">
+   </PIN>
+   <PIN pinname="Learn Mode" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="Load" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Save" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="OSC Ignore List" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Clear Mappings" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Clear Variables" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Auto Load" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Save On Exit" slicecount="1" visible="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="6495" top="1605" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="6495" top="1605" type="Box" width="1785">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="TodoMap.xml">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Path">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Path" srcnodeid="20" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="36" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="2445" top="3930" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="585" left="2445" top="3930" type="Box" width="1260">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Input String" slicecount="2" values="alpha,scale">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Name">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE systemname="TodoSavePreset (TodoMap)" filename="%VVVV%\myplugins\lib\nodes\plugins\VVVV.Nodes.TodoMap.dll" nodename="TodoSavePreset (TodoMap)" componentmode="Hidden" id="50">
+   <BOUNDS type="Node" left="3300" top="6015" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Engine" visible="1">
+   </PIN>
+   <PIN pinname="Variable Name" visible="1">
+   </PIN>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="Do Save" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="3300" top="6015">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Engine" dstnodeid="50" dstpinname="Engine" linkstyle="Bezier">
+   <LINKPOINT x="5760" y="4253">
+   </LINKPOINT>
+   <LINKPOINT x="3360" y="4253">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Output String" dstnodeid="50" dstpinname="Variable Name" linkstyle="Bezier">
+   <LINKPOINT x="2505" y="5258">
+   </LINKPOINT>
+   <LINKPOINT x="3705" y="5258">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="51">
+   <BOUNDS type="Node" left="7035" top="2985" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7035" top="2985" width="1635" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="Mypreset.xml" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Path" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="51" srcpinname="Output String" dstnodeid="50" dstpinname="Path" linkstyle="Bezier">
+   <LINKPOINT x="7035" y="4613">
+   </LINKPOINT>
+   <LINKPOINT x="4185" y="4613">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="52">
+   <BOUNDS type="Node" left="4530" top="5070" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4530" top="5070" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Do Save|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="52" srcpinname="Y Output Value" dstnodeid="50" dstpinname="Do Save">
+   </LINK>
+   <NODE systemname="TodoLoadPreset (TodoMap)" filename="%VVVV%\myplugins\lib\nodes\plugins\VVVV.Nodes.TodoMap.dll" nodename="TodoLoadPreset (TodoMap)" componentmode="Hidden" id="53">
+   <BOUNDS type="Node" left="7500" top="6015" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Engine" visible="1">
+   </PIN>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="Do Load" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="7500" top="6015">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Engine" dstnodeid="53" dstpinname="Engine" linkstyle="Bezier">
+   <LINKPOINT x="5810" y="4263">
+   </LINKPOINT>
+   <LINKPOINT x="7525" y="4078">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="51" srcpinname="Output String" dstnodeid="53" dstpinname="Path" linkstyle="Bezier">
+   <LINKPOINT x="7070" y="4630">
+   </LINKPOINT>
+   <LINKPOINT x="8140" y="4445">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="54" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="8715" top="5070" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="8715" top="5070" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Do Load|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="54" srcpinname="Y Output Value" dstnodeid="53" dstpinname="Do Load">
+   </LINK>
+   </PATCH>

@@ -1,0 +1,95 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="A:\v\vvvv\public\vvvv45\lib\nodes\native\Write (TTY) help.v4p" filename="A:\v\vvvv\public\vvvv45\lib\nodes\native\Write (TTY) help.v4p" systemname="Write (TTY) help">
+   <BOUNDS height="4515" left="2475" top="3705" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="2" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
+   <BOUNDS height="100" left="2625" top="3165" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2625" top="3165" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="4695" left="11610" top="3660" type="Window" width="3180">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4515" top="1305" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="4515" top="1305" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="DoWrite">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="120" top="135" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="120" top="135" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="37530" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Write - TTY|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="120" top="540" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="120" top="540" type="Box" width="3990">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="37530" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Write something into the Teletypewriter window.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="3" nodename="Write (TTY)" systemname="Write (TTY)">
+   <BOUNDS height="100" left="2625" top="2505" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="input" visible="1">
+   </PIN>
+   <PIN pinname="DoWrite">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Layers" srcnodeid="3" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="DoWrite" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1650" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="330" left="1650" top="1395" type="Box" width="1605">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="|Hello Frank. |">
+   </PIN>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="input" srcnodeid="9" srcpinname="Output String">
+   </LINK>
+   </PATCH>

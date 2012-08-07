@@ -1,0 +1,111 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH nodename="X:\vvvv33svn\public\vvvv33\help\UpdateWindow (Windows) help.v4p">
+   <BOUNDS height="5220" left="3030" top="4380" type="Window" width="4845">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2490" top="2460" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6405" top="5625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="690" left="2490" top="2460" type="Box" width="705">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3255" top="2850" type="Node" width="1215">
+   </BOUNDS>
+   <BOUNDS height="255" left="3255" top="2850" type="Box" width="1215">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Update">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="UpdateWindow (Windows)">
+   <BOUNDS height="0" left="675" top="4275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Window Title" visible="1">
+   </PIN>
+   <PIN pinname="Update" visible="1">
+   </PIN>
+   <PIN pinname="Handle" visible="1" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Update" linkstyle="PolyLine" srcnodeid="5" srcpinname="Y Output Value">
+   <LINKPOINT x="3165" y="3885">
+   </LINKPOINT>
+   <LINKPOINT x="1770" y="3885">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="390" type="Box" width="3405">
+   </BOUNDS>
+   <BOUNDS height="160" left="10830" top="45030" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Force a window to repaint itself|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10830" top="45030" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|UpdateWindow - Windows|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="HWND (Windows)" id="6">
+   <BOUNDS type="Node" left="675" top="2460" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Title" visible="1">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="675" top="1230" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4740" top="7560" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="675" top="1230" width="2235" height="390">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output String" dstnodeid="6" dstpinname="Title">
+   </LINK>
+   </PATCH>

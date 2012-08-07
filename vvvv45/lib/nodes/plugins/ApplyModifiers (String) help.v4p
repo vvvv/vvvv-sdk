@@ -1,0 +1,91 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\ApplyModifiers (String) help.v4p" systemname="ApplyModifiers (String) help" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\ApplyModifiers (String) help.v4p">
+   <BOUNDS height="4140" left="9105" top="1200" type="Window" width="6990">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="165" top="495" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="450" left="165" top="495" type="Box" width="3750">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="8160" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Returns the actual string representation of a given keyboardstate.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="165" top="150" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="165" top="150" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="8160" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|ApplyModifiers (String)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Keyboard (System Global)" systemname="Keyboard (System Global)" filename="%VVVV%\lib\nodes\modules\System\Keyboard (System Global).v4p" componentmode="Hidden">
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS type="Node" height="100" left="660" top="1530" width="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard Output" visible="1">
+   </PIN>
+   <PIN pinname="KeyCode" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard Input" slicecount="1" encoded="0" values="||" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard Spread" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Repress Delay" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <NODE systemname="ApplyModifiers (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="ApplyModifiers (String)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="660" top="2190" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="660" top="2190">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="660" top="2820" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="660" top="2820" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Output" dstnodeid="30" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1515" top="2820" width="255" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1515" top="2820" width="4920" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; shows the actual string representation of a given keyboardstate.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Keyboard" dstnodeid="29" dstpinname="Input">
+   </LINK>
+   </PATCH>
