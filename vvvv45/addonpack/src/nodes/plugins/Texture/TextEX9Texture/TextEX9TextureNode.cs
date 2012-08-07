@@ -38,7 +38,7 @@ namespace VVVV.Nodes
 			
 			public string Text;
 			public int Encoding;
-			public int Font;
+			public string Font;
 			public bool Italic;
 			public bool Bold;
 			public int Size;
@@ -141,7 +141,7 @@ namespace VVVV.Nodes
 					info = textureResource.Metadata;
 				}
 				
-				if (info.Text != FTextInput[i] || info.Encoding != FCharEncoding[i].Index || info.Font != FFontInput[i].Index ||
+				if (info.Text != FTextInput[i] || info.Encoding != FCharEncoding[i].Index || info.Font != FFontInput[i].Name ||
 				               info.Italic != FItalicInput[i] || info.Bold != FBoldInput[i] || info.Size != FSizeInput[i] ||
 				               info.Color != FColorInput[i] || info.Brush != FBrushColor[i] || info.ShowBrush != FShowBrush[i] ||
 				               info.HAlign != FHorizontalAlignInput[i].Index || info.VAlign != FVerticalAlignInput[i].Index || 
@@ -149,7 +149,7 @@ namespace VVVV.Nodes
 				{
 					info.Text = FTextInput[i];
 					info.Encoding = FCharEncoding[i].Index;
-					info.Font = FFontInput[i].Index;
+					info.Font = FFontInput[i].Name;
 					info.Italic = FItalicInput[i];
 					info.Bold = FBoldInput[i];
 					info.Size = FSizeInput[i];
@@ -162,7 +162,6 @@ namespace VVVV.Nodes
 					info.Normalize = FNormalizeInput[i].Index;
 					
 					textureResource.NeedsUpdate = true;
-					textureResource.Metadata = info;
 				}
 				else
 					textureResource.NeedsUpdate = false;
@@ -197,7 +196,7 @@ namespace VVVV.Nodes
 					style|= FontStyle.Italic;
 				if (info.Bold)
 					style|= FontStyle.Bold;
-				System.Drawing.Font objFont = new System.Drawing.Font(info.Font.Name, 
+				System.Drawing.Font objFont = new System.Drawing.Font(info.Font, 
 																	info.Size, 
 																	style, 
 																	GraphicsUnit.Pixel);		
@@ -263,7 +262,7 @@ namespace VVVV.Nodes
 		            		scy = height/size.Height;
 		            		break;
 		            }
-					FScaleOutput[Slice]=new Vector2D(scx,scy);
+					FScaleOutput[info.Slice]=new Vector2D(scx,scy);
 									
 					g.TranslateTransform(layout.X,layout.Y);
 					g.ScaleTransform(scx,scy);
@@ -275,18 +274,18 @@ namespace VVVV.Nodes
 				
 				}
 				else
-					FScaleOutput[Slice]=new Vector2D(0,0);
+					FScaleOutput[info.Slice]=new Vector2D(0,0);
 				
 				
 				RGBAColor tmpBrush = info.Color;
 				tmpBrush.A=0;
 				Color brush = tmpBrush.Color;			
 				if (info.ShowBrush)
-					brush = info.Brush;
+					brush = info.Brush.Color;
 				g.Clear(brush);
 				g.SmoothingMode = SmoothingMode.AntiAlias;
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-				g.DrawString(text, objFont, new SolidBrush(info.Color),layout,format);
+				g.DrawString(text, objFont, new SolidBrush(info.Color.Color),layout,format);
 				
 				TextureUtils.CopyBitmapToTexture(bit, texture);
 				bit.Dispose();
