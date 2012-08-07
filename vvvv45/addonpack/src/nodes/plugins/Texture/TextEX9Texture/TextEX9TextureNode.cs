@@ -49,8 +49,6 @@ namespace VVVV.Nodes
 			public int VAlign;
 			public int RenderMode;
 			public int Normalize;
-			
-			public bool Update;
 		}
 		#endregion
 		
@@ -162,6 +160,7 @@ namespace VVVV.Nodes
 					info.Normalize = FNormalizeInput[i].Index;
 					
 					textureResource.NeedsUpdate = true;
+					
 				}
 				else
 					textureResource.NeedsUpdate = false;
@@ -184,114 +183,110 @@ namespace VVVV.Nodes
 		
 		unsafe void UpdateTexture(Info info, Texture texture)
 		{
-			if (info.Update)
+		 	var width = Math.Max(info.Width, 1);
+		 	var height = Math.Max(info.Height, 1);
+		 			 		
+			Bitmap bit = new Bitmap(width, height, PixelFormat.Format32bppArgb);			
+			Graphics g = Graphics.FromImage(bit);
+			FontStyle style = FontStyle.Regular;
+			if (info.Italic)
+				style|= FontStyle.Italic;
+			if (info.Bold)
+				style|= FontStyle.Bold;
+			System.Drawing.Font objFont = new System.Drawing.Font(info.Font, 
+																info.Size, 
+																style, 
+																GraphicsUnit.Pixel);		
+			
+			string text = info.Text;
+			
+			int renderingMode = info.RenderMode;
+			RectangleF layout = new RectangleF(0,0,0,0);
+			StringFormat format = new StringFormat();
+			if (!string.IsNullOrEmpty(text))
 			{
-			 	var width = Math.Max(info.Width, 1);
-			 	var height = Math.Max(info.Height, 1);
-			 			 		
-				Bitmap bit = new Bitmap(width, height, PixelFormat.Format32bppArgb);			
-				Graphics g = Graphics.FromImage(bit);
-				FontStyle style = FontStyle.Regular;
-				if (info.Italic)
-					style|= FontStyle.Italic;
-				if (info.Bold)
-					style|= FontStyle.Bold;
-				System.Drawing.Font objFont = new System.Drawing.Font(info.Font, 
-																	info.Size, 
-																	style, 
-																	GraphicsUnit.Pixel);		
+				switch (renderingMode)
+	            {
+	                case 0: text = text.Replace("\n"," ").Replace("\n",string.Empty); break;
+	                case 1: break;
+	                case 2: layout.Size= new SizeF(width,height);break;
+	            }
+				if (info.Encoding == 1)
+	            {
+	                byte[] utf8bytes = Encoding.Default.GetBytes(text);
+	                text = Encoding.UTF8.GetString(utf8bytes);
+	            }			
+						
 				
-				string text = info.Text;
+				format.LineAlignment = StringAlignment.Near;
+	            switch (info.HAlign)
+	            {
+	                case 0: format.Alignment = StringAlignment.Near;break;
+	                case 1: 
+	            		format.Alignment = StringAlignment.Center;
+	            		layout.X = width/2;
+	            		break;
+	                case 2: 
+	            		format.Alignment = StringAlignment.Far;
+	            		layout.X = width;
+	            		break;
+	            }
 				
-				int renderingMode = info.RenderMode;
-				RectangleF layout = new RectangleF(0,0,0,0);
-				StringFormat format = new StringFormat();
-				if (!string.IsNullOrEmpty(text))
-				{
-					switch (renderingMode)
-		            {
-		                case 0: text = text.Replace("\n"," ").Replace("\n",string.Empty); break;
-		                case 1: break;
-		                case 2: layout.Size= new SizeF(width,height);break;
-		            }
-					if (info.Encoding == 1)
-		            {
-		                byte[] utf8bytes = Encoding.Default.GetBytes(text);
-		                text = Encoding.UTF8.GetString(utf8bytes);
-		            }			
-							
-					
-					format.LineAlignment = StringAlignment.Near;
-		            switch (info.HAlign)
-		            {
-		                case 0: format.Alignment = StringAlignment.Near;break;
-		                case 1: 
-		            		format.Alignment = StringAlignment.Center;
-		            		layout.X = width/2;
-		            		break;
-		                case 2: 
-		            		format.Alignment = StringAlignment.Far;
-		            		layout.X = width;
-		            		break;
-		            }
-					
-					switch (info.VAlign)
-		            {
-		                case 0: format.LineAlignment = StringAlignment.Near;break;
-		                case 1: 
-		            		format.LineAlignment = StringAlignment.Center;
-		            		layout.Y = height/2;
-		            		break;
-		                case 2: 
-		            		format.LineAlignment = StringAlignment.Far;
-		            		layout.Y = height;
-		            		break;
-		            }
+				switch (info.VAlign)
+	            {
+	                case 0: format.LineAlignment = StringAlignment.Near;break;
+	                case 1: 
+	            		format.LineAlignment = StringAlignment.Center;
+	            		layout.Y = height/2;
+	            		break;
+	                case 2: 
+	            		format.LineAlignment = StringAlignment.Far;
+	            		layout.Y = height;
+	            		break;
+	            }
+			
+				SizeF size = g.MeasureString(text, objFont, layout.Size, format);
+				FSizeOutput[info.Slice] = new Vector2D(width/size.Width,height/size.Height);
 				
-					SizeF size = g.MeasureString(text, objFont, layout.Size, format);
-					FSizeOutput[info.Slice] = new Vector2D(width/size.Width,height/size.Height);
-					
-					float scx = 1; float scy = 1;
-					switch (info.Normalize)
-		            {
-		                case 0: break;
-		                case 1: scx = width/size.Width;	break;
-		                case 2: scy = height/size.Height; break;
-		            	case 3:
-		            		scx = width/size.Width;	
-		            		scy = height/size.Height;
-		            		break;
-		            }
-					FScaleOutput[info.Slice]=new Vector2D(scx,scy);
-									
-					g.TranslateTransform(layout.X,layout.Y);
-					g.ScaleTransform(scx,scy);
-					g.TranslateTransform(-layout.X,-layout.Y);
-					
-					
-					if (renderingMode ==2)
-						layout.Location = new PointF(0,0);
-				
-				}
-				else
-					FScaleOutput[info.Slice]=new Vector2D(0,0);
+				float scx = 1; float scy = 1;
+				switch (info.Normalize)
+	            {
+	                case 0: break;
+	                case 1: scx = width/size.Width;	break;
+	                case 2: scy = height/size.Height; break;
+	            	case 3:
+	            		scx = width/size.Width;	
+	            		scy = height/size.Height;
+	            		break;
+	            }
+				FScaleOutput[info.Slice]=new Vector2D(scx,scy);
+								
+				g.TranslateTransform(layout.X,layout.Y);
+				g.ScaleTransform(scx,scy);
+				g.TranslateTransform(-layout.X,-layout.Y);
 				
 				
-				RGBAColor tmpBrush = info.Color;
-				tmpBrush.A=0;
-				Color brush = tmpBrush.Color;			
-				if (info.ShowBrush)
-					brush = info.Brush.Color;
-				g.Clear(brush);
-				g.SmoothingMode = SmoothingMode.AntiAlias;
-				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-				g.DrawString(text, objFont, new SolidBrush(info.Color.Color),layout,format);
-				
-				TextureUtils.CopyBitmapToTexture(bit, texture);
-				bit.Dispose();
-				g.Dispose();
+				if (renderingMode ==2)
+					layout.Location = new PointF(0,0);
+			
 			}
+			else
+				FScaleOutput[info.Slice]=new Vector2D(0,0);
+			
+			
+			RGBAColor tmpBrush = info.Color;
+			tmpBrush.A=0;
+			Color brush = tmpBrush.Color;			
+			if (info.ShowBrush)
+				brush = info.Brush.Color;
+			g.Clear(brush);
+			g.SmoothingMode = SmoothingMode.AntiAlias;
+			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+			g.DrawString(text, objFont, new SolidBrush(info.Color.Color),layout,format);
+			
+			TextureUtils.CopyBitmapToTexture(bit, texture);
+			bit.Dispose();
+			g.Dispose();
 		}
-		
 	}
 }
