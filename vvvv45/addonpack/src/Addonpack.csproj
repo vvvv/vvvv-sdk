@@ -1,378 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <Import Project="..\..\src\vvvv45.csproj" />
+
   <PropertyGroup>
     <ProjectGuid>{AA8072CA-3343-4199-AC22-62B9E352BAE9}</ProjectGuid>
     <AddonPluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</AddonPluginsOutputDir>
   </PropertyGroup>
+
   <ItemGroup>
-    <!-- IDE seems to need this line, MSBuild not? -->
-    <ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\2d\Bilerp\Bilerp.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\2d\Gui2d\Gui2d.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\2d\HitTests\HitTest2dNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\2d\Inversion\Inversion.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\2d\MTGui2d\MTGui2d.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\2d\OccupationRate\OccupationRate.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\2d\Undistort\Undistort.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\2d\Voronoi\Voronoi.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\2d\WarpPoints\WarpPoints.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\3d\ConnectAll\ConnectAll.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\3d\ConvexHull3d\ConvexHull3d.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\3d\Cut3Spheres\Cut3Spheres.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\3d\Inversion\Inversion.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\3d\Stereographic\Stereographic.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\3d\Trilerp\Trilerp.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\3d\Wave3d\Wave3d.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\4d\Exp\QuaternionExp.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\4d\QuaternionNodes\QuaternionNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\8d\Octonion\Octonion.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Animation\AnimsAdvanced\VVVV.Nodes.AnimAdvanced.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Animation\BulletPhysics\VVVV.Nodes.Bullet.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Animation\ChaosToys\ChaosToys.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Animation\ParticlesField\ParticlesField.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Animation\SequencerAdvanced\AdvancedSequencer.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Animation\TimerFlop\TimerFlop.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Astronomy\FormattedDate\FormatedDate.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Bass\BassSound\BassSound.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Color\DropDown\DropDownColor.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\ArduinoFirmata\ArduinoFirmata.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\LD2000\LD2000.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\LinBus\LinBus.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\MSKinect\MSKinect.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\NextWindow\NextWindow.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\OpenNI\OpenNIKinect.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\PhidgetRFID\PhidgetRFID.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\PhidgetsIO\PhidgetDevices.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\PhidgetsLegacy\PhidgetInterface.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\RS232\RS232.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\SpaceMouse\SpaceMouse.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\Tablet\Tablet.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\TodoMap\TodoMap.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\uEyeCam\uEyeCam.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Devices\WiiMote\WiiMotePlugin.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\File\Attributes\AttributesFile.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\File\Dialogs\Dialogs.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\File\Directory\Directory.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\File\Dir\Dir.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\File\FileIO\FileIONodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\File\ReaderAdv\ReaderFileAdv.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\File\Shortcut\Shortcut.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\File\SRTReader\SRTReader.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\File\UGRReader\UGRReader.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Generics\GetSpreadAdv\GetSpreadAdv.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Generics\NearestNeighbour\NearestNeighbour.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Generics\Occurrence\Occurrence.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Generics\Select\Select.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Generics\SetSpread\SetSpread.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Generics\Sort\VVVV.Nodes.SortAdvanced.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Generics\StackNodes\VVVV.Nodes.Stacks.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Generics\Store\Store.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Layer\DrawFlash\DrawFlash.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Mesh\2dMeshes\2dMeshNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Mesh\MeshJoinSubsets\MeshJoinSubsets.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Mesh\MetaballsMesh\MetaballsMesh.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Mesh\Penthacoron\Penthacoron.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\Email\EmailNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\EyesWeb\EyesWebAPI.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\Facebook\FaceBookAPI.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\IPv4Join\IPv4Join.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\Ssh\SSHClient.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\TCPClientAdvanced\TCPClientAdvanced.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\TUIODecoder\TUIODecoder.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Skeleton\SkeletonNodes\Skeleton.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Sound\Irrklang\IrrklangClean.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Sound\SpeechSynthesis\SpeechSynthesis.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Sound\Speech\Speech.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\BezierNodes\BezierNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\Disperse\Disperse.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\EisensteinPrimes\EisensteinPrimes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\Fibonacci\Fibonacci.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\Interleave\InterleaveNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\MultiCons\MultiCons.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\NTrees\NTree.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\RSNodes\RSNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\SimplexNoise\SimplexNoise.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\SphericalSpread\SphericalSpread.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\TangentSpreads\TangentSpreads.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Spreads\VectorSized\VectorSized.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\String\Crypto\Crypto.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\String\DropDown\DropDownString.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\String\MakePath\MakePath.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\String\RegExpr\RegExprNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\String\TypeWriter\TypeWriter.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\String\XQuery\XQueryNode.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Texture\TextEX9Texture\TextEX9Texture.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Transform\TransformAdv\TransformsAdvanced.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Value\AdvExpr\AdvExpr.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Value\CaseValue\CaseValue.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Value\Integer\Integer.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Value\LTP\LTPNode.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Value\MapIntervalAdv\MapIntervalAdv.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Value\MathRound\MathRound.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Value\TweenerShaper\TweenerShaper.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Windows\Environment\EnvironmentNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Windows\PowerState\PowerState.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Windows\Remoter\Remoter.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Windows\ScreenInfo\ScreenInfo.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\Databases\BaseDatabaseNodes\BaseDatabaseNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\Databases\OdbcNodes\OdbcNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\Databases\OleDbNodes\OleDbNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\Databases\PostgreSQLNodes\PostgreSQLNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\Databases\SQLLiteNodes\SQLLiteNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Network\Databases\SQLServerNode\SQLServerNodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="E:\develop\vvvv-sdk\vvvv45\addonpack\src\nodes\plugins\Mesh\Assimp\Nodes\VVVV.Assimp.Nodes.csproj">
-      <OutputDir>E:\develop\vvvv-sdk\vvvv45\addonpack\src\..\lib\nodes\plugins\</OutputDir>
+	<!-- IDE seems to need this line, MSBuild not? -->
+	<ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\plugins\*\*\*.csproj;
+                               $(MSBuildThisFileDirectory)nodes\plugins\Network\Databases\*\*.csproj;
+                               $(MSBuildThisFileDirectory)nodes\plugins\Mesh\Assimp\Nodes\*.csproj">
+      <OutputDir>$(AddonPluginsOutputDir)</OutputDir>
     </ProjectReference>
   </ItemGroup>
+  
   <Target Name="Print">
-    <Message Text="@(ProjectReference)" />
+	<Message Text="@(ProjectReference)" />
   </Target>
+  
   <PropertyGroup>
     <BuildDependsOn>
       $(BuildDependsOn);
       AddonpackBuild
     </BuildDependsOn>
   </PropertyGroup>
+
   <Target Name="AddonpackBuild">
     <!-- Delete all files which are already in lib/core -->
     <Delete Files="@(CoreOutputFiles->'$(AddonPluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     <ItemGroup>
       <PluginLicenses Include="$(MSBuildThisFileDirectory)nodes\plugins\**\license*.txt" />
     </ItemGroup>
-    <Copy SourceFiles="@(PluginLicenses)" DestinationFiles="@(PluginLicenses->'$(AddonPluginsOutputDir)..\..\..\licenses\%(Filename)%(Extension)')" SkipUnchangedFiles="true" Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
+    <Copy SourceFiles="@(PluginLicenses)" 
+          DestinationFiles="@(PluginLicenses->'$(AddonPluginsOutputDir)..\..\..\licenses\%(Filename)%(Extension)')" 
+          SkipUnchangedFiles="true"
+          Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
     <!-- Flash plugin is special -->
-    <ItemGroup>
+	  <ItemGroup>
       <_FlashPluginDependencies_ Include="$(MSBuildThisFileDirectory)nodes\plugins\Layer\DrawFlash\Dependencies\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(_FlashPluginDependencies_)" DestinationFolder="$(AddonPluginsOutputDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_FlashPluginDependencies_)"
+        DestinationFolder="$(AddonPluginsOutputDir)" 
+        SkipUnchangedFiles="true" />
   </Target>
+  
   <!-- Freeframe and DirectShow -->
   <ItemGroup>
     <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp">
@@ -382,6 +56,7 @@
       <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\directshowfilter\</OutputDir>
     </DirectShowFilterProjects>
   </ItemGroup>
+  
   <PropertyGroup>
     <ZipSteps>_PreZip_;_Zip_;_PostZip_</ZipSteps>
     <ZipOutputDir>..\..\..\</ZipOutputDir>
@@ -401,7 +76,12 @@
       <TempDir>$(TempBaseDir)addonpack\</TempDir>
       <ZipFileName>$(ZipOutputDir)addons_$(VersionInfo).zip</ZipFileName>
     </PropertyGroup>
-    <CreateItem Include="..\**\*.*" Exclude="..\**\.gitignore;&#xD;&#xA;                         ..\**\*.pdb;&#xD;&#xA;                         ..\src\**\*.*;&#xD;&#xA;                         ..\tests\**\*.*;&#xD;&#xA;                         ..\lib\nodes\plugins\*\bin\**\*.*">
+    <CreateItem Include="..\**\*.*" 
+                Exclude="..\**\.gitignore;
+                         ..\**\*.pdb;
+                         ..\src\**\*.*;
+                         ..\tests\**\*.*;
+                         ..\lib\nodes\plugins\*\bin\**\*.*">
       <Output ItemName="OutputFiles" TaskParameter="Include" />
     </CreateItem>
     <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
