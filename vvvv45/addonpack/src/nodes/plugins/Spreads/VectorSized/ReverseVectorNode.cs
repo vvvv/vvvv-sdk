@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 
+using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
 #endregion usings
 
@@ -112,4 +113,14 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Reverse", Category = "Color", Version = "Bin", Help = "Reverse (Color) with bin size", Author = "woei")]
 	#endregion PluginInfo
 	public class ReverseColorBin : ReverseBinNode<RGBAColor> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Reverse", Category = "Transform", Version = "Bin", Help = "Reverses the order of the slices in the spread, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class ReverseTransformBin : ReverseBinNode<Matrix4x4> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Reverse", Category = "Enumerations", Version = "Bin", Help = "Reverses the order of the slices in the spread, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class ReverseEnumBin : ReverseBinNode<EnumEntry> {}
 }

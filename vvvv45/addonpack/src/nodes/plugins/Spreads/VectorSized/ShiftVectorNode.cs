@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+
 using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
 #endregion usings
@@ -162,4 +163,14 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Shift", Category = "Color", Version = "Bin", Help = "Shift (Color) with bin size", Author = "woei")]
 	#endregion PluginInfo
 	public class ShiftColorBin : ShiftBinNode<RGBAColor> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Shift", Category = "Transform", Version = "Bin", Help = "Shifts the slices in the spread upwards by the given phase, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class ShiftTransformBin : ShiftBinNode<Matrix4x4> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Shift", Category = "Enumerations", Version = "Bin", Help = "Shifts the slices in the spread upwards by the given phase, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class ShiftEnumBin : ShiftBinNode<EnumEntry> {}
 }
