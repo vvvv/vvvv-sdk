@@ -21,7 +21,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
             TMetadata metadata,
             Func<TMetadata, Device, Mesh> createResourceFunc,
             Action<TMetadata, Mesh> updateResourceFunc = null,
-            Action<TMetadata, Mesh> destroyResourceAction = null)
+            Action<TMetadata, Mesh, DestroyReason> destroyResourceAction = null)
         {
             return new MeshResource<TMetadata>(metadata, createResourceFunc, updateResourceFunc, destroyResourceAction);
         }
@@ -37,7 +37,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
             TMetadata metadata, 
             Func<TMetadata, Device, Mesh> createResourceFunc,
             Action<TMetadata, Mesh> updateResourceFunc = null,
-            Action<TMetadata, Mesh> destroyResourceAction = null)
+            Action<TMetadata, Mesh, DestroyReason> destroyResourceAction = null)
             : base(metadata, createResourceFunc, updateResourceFunc, destroyResourceAction)
         {
         }
