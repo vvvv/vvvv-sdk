@@ -21,7 +21,7 @@ namespace VVVV.Nodes
 		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true)]
 		IInStream<int> FVec;
 		
-		[Input("Bin Size", DefaultValue = -1)]
+		[Input("Input Bin Size", DefaultValue = -1)]
 		IInStream<int> FBin;
 		
 		[Input("Offset")]
