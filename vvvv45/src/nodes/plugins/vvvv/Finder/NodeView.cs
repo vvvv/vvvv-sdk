@@ -404,7 +404,7 @@ namespace VVVV.Nodes.Finder
                 // See if our label contains one of the tags
                 if ((FFilter.Flags & FilterFlags.Label) == FilterFlags.Label)
                 {
-                    var label = FNode.LabelPin[0];
+                    var label = FNode.LabelPin.GetSlice(0);
                     if (!string.IsNullOrEmpty(label))
                     {
                         foreach (var tag in FFilter.Tags)
