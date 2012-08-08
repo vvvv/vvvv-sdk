@@ -9,13 +9,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-
 using SlimDX;
 using SlimDX.Direct3D9;
-
 using VVVV.Core.Logging;
-
 using VVVV.Nodes.Vlc.Utils;
+
+using System.Runtime.InteropServices;
 
 
 namespace VVVV.Nodes.Vlc.Player
@@ -85,7 +84,7 @@ namespace VVVV.Nodes.Vlc.Player
 					device2DoubleTexture[d].Dispose();
 				}
 			} catch (Exception e) {
-				Log(LogType.Error, "[Dispose] " + e.Message);
+				Log( LogType.Error, "[Dispose] " + e.Message);
 			}
 
 		}
@@ -99,8 +98,8 @@ namespace VVVV.Nodes.Vlc.Player
 				try {
 					ReportElapsedTime("Entering MUTEX", 15.7);
 					//prevTime = DateTime.Now.Ticks; //for ReportElapsedTime
-					if (textureNeedsResizingOnEvaluate) {
-						Log(LogType.Debug, "Texture needs to be resized to " + doubleBuffer.GetWidth() + "x" + doubleBuffer.GetHeight());
+					if ( textureNeedsResizingOnEvaluate ) {
+						Log( LogType.Debug, "Texture needs to be resized to " + doubleBuffer.GetWidth() + "x" + doubleBuffer.GetHeight());
 						if ( ResizeTextureIfNecessary() ) {
 							//Log( LogType.Debug, "resizing successful..." );
 							textureNeedsResizingOnEvaluate = false;
@@ -111,7 +110,7 @@ namespace VVVV.Nodes.Vlc.Player
 
 					//only if 'front' renderer
 					if ( this == parent.GetMemoryToTextureRendererCurrent(slice) ) {
-						if (deviceDataNeedsUpdatingOnEvaluate) {
+						if ( deviceDataNeedsUpdatingOnEvaluate ) {
 							UpdateDeviceData();
 	
 							deviceDataNeedsUpdatingOnEvaluate = false;
@@ -121,7 +120,7 @@ namespace VVVV.Nodes.Vlc.Player
 					ReportElapsedTime("Updating device data", 15.7);
 				}
 				catch (Exception e) {
-					Log(LogType.Debug, "[Evaluate] Exception" + e.Message + "\n" + e.StackTrace);
+					Log( LogType.Debug, "[Evaluate] Exception" + e.Message + "\n" + e.StackTrace);
 				}
 				finally {
 					memoryToTextureRendererBusyMutex.ReleaseMutex();
@@ -149,7 +148,7 @@ namespace VVVV.Nodes.Vlc.Player
 					try {
 						UpdateTexture(null);
 					} catch (Exception e) {
-						Log(LogType.Error, "[UpdateTexture] Something went terribly wrong: " + e.Message + "\n" + e.StackTrace);
+						Log( LogType.Error, "[UpdateTexture] Something went terribly wrong: " + e.Message + "\n" + e.StackTrace);
 					}
 					//Thread.Sleep(2);
 				} else if (waitHandleIndex == 1) {
@@ -161,7 +160,7 @@ namespace VVVV.Nodes.Vlc.Player
 					break;
 				}
 			}
-			Log(LogType.Debug, "... exiting updateTexture thread for memoryToTextureRenderer " + slice + " ... ");
+			Log( LogType.Debug, "... exiting updateTexture thread for memoryToTextureRenderer " + slice + " ... " );
 		}
 
 		public void UpdateTexture_Threaded()
@@ -193,34 +192,41 @@ namespace VVVV.Nodes.Vlc.Player
 		{
 			bool success = true;
 			//handle resize
-			if (doubleBuffer.LockFrontBufferForReading(500)) {
-				//foreach ( DoubleTexture t2 in device2DoubleTexture.Values ) {
-				foreach (Device device in new List<Device>(device2DoubleTexture.Keys) ) {
-//						DoubleTexture t2;
-//						if (device2DoubleTexture.TryGetValue(device, out t2)) {
-						//Log(LogType.Debug, "SetNewSize on DoubleTexture (device " + t2.GetDevice().ComPointer.ToInt64() + "=" + deviceId + ", " + t2.GetWidth() + "x" + t2.GetHeight() +  ")");
-//							int result = t2.SetNewSize(doubleBuffer.GetWidth(), doubleBuffer.GetHeight());
-//							success = success && (0 == result);
-//							if (result != 0) {
-//								Log(LogType.Error, "SetNewSize on DoubleTexture FAILED. Size = " + t2.GetWidth() + "x" + t2.GetHeight() + " but it should be " + doubleBuffer.GetWidth() + "x" + doubleBuffer.GetHeight() + " return value: " + result);
-//							}
+			if ( doubleBuffer.LockFrontBufferForReading(500) ) {
+				//Device parentDeviceForDx9ExShared = null;
+				foreach ( Device device in new List<Device>(device2DoubleTexture.Keys) ) {
+//					DoubleTexture t2;
+//					if (device2DoubleTexture.TryGetValue(device, out t2)) {
+					//Log( LogType.Debug, "SetNewSize on DoubleTexture (device " + t2.GetDevice().ComPointer.ToInt64() + "=" + deviceId + ", " + t2.GetWidth() + "x" + t2.GetHeight() +  ")" );
+//						int result = t2.SetNewSize(doubleBuffer.GetWidth(), doubleBuffer.GetHeight());
+//						success = success && (0 == result);
+//						if (result != 0) {
+//							Log( LogType.Error, "SetNewSize on DoubleTexture FAILED. Size = " + t2.GetWidth() + "x" + t2.GetHeight() + " but it should be " + doubleBuffer.GetWidth() + "x" + doubleBuffer.GetHeight() + " return value: " + result);
 //						}
+//					}
 					
+//					if ( parentDeviceForDx9ExShared == null ) {
+//						parentDeviceForDx9ExShared = device;
+//					}
+
 					DoubleTexture t2;
-					if 	( 	device2DoubleTexture.TryGetValue(device, out t2) 
-						 && ( t2.GetWidth() != doubleBuffer.GetWidth() || t2.GetHeight() != doubleBuffer.GetHeight() ) 
+					if 	(	//device != parentDeviceForDx9ExShared || 
+							(
+					     		device2DoubleTexture.TryGetValue(device, out t2)
+						 		&& ( t2.GetWidth() != doubleBuffer.GetWidth() || t2.GetHeight() != doubleBuffer.GetHeight() ) 
+							)
 						) {
 						//remove old texture (will be done when a new one is created)
 						//device2DoubleTexture[device].Dispose();
 						//create a new one
-						if ( CreateTexture( device ) == null ) {
+						if ( CreateOrReturnSharedTexture( device ) == null ) {
 							success = false;
 						}
 						else {
-							Log(LogType.Debug, "Setting deviceDataNeedsUpdatingOnEvaluate from " + deviceDataNeedsUpdatingOnEvaluate + " to true!");
+							Log( LogType.Debug, "Setting deviceDataNeedsUpdatingOnEvaluate from " + deviceDataNeedsUpdatingOnEvaluate + " to true!" );
 							deviceDataNeedsUpdatingOnEvaluate = true;
 						}
-					}
+					}					
 				}
 				doubleBuffer.UnlockFrontBuffer();
 			}
@@ -232,20 +238,48 @@ namespace VVVV.Nodes.Vlc.Player
 			FillTextureUsingLockRectangle();
 		}
 
-		public Texture CreateTexture(Device device)
+		
+		/*
+		 * This function should decide whether vvvv has been started with the dx9ex option, 
+		 * and if so only create one (double)texture, with a sharedhandle 
+		 * (instead of a different texture for each device)
+		 * 
+		 */
+		public Texture CreateOrReturnSharedTexture( Device device /*, Device parentDeviceForDx9ExShared*/ )
 		{
 			Texture retVal = null;
-							
-			//return CreateManagedTexture(device, Math.Max( this.doubleBuffer.GetWidth(), 1 ), Math.Max( this.doubleBuffer.GetHeight(), 1 ) );
-			if (memoryToTextureRendererBusyMutex.WaitOne()) {
-				//Log(LogType.Debug, "CreateTexture on device " + device.ComPointer.ToInt64() + " ---------------------------------------------------------------- ");	
-				DoubleTexture t2 = CreateDoubleTexture(device);
+			
+			retVal = CreateTexture( device );
+/*
+			if ( device is DeviceEx ) {
+				Log( LogType.Debug, "[CreateOrReuseSharedTexture] dx9ex => try to use one shared texture for all devices" );
 				
-/*						//Log(LogType.Debug, "CreateTexture on device " + device.ComPointer.ToInt64() + "=" + t2.GetDevice().ComPointer.ToInt64() + " ---------------------------------------------------------------- ");
+				retVal = CreateTexture( device );
+			}
+			else {
+				Log( LogType.Debug, "[CreateOrReuseSharedTexture] NO dx9ex => create separate textures for all devices" );
+				retVal = CreateTexture( device );
+			}
+*/
+			return retVal;
+		}
+
+		private Texture CreateTexture(Device device /*, Device parentDeviceForDx9ExShared */)
+		{
+			Texture retVal = null;
+			DoubleTexture t2 = null;
+			
+			//return CreateManagedTexture(device, Math.Max( this.doubleBuffer.GetWidth(), 1 ), Math.Max( this.doubleBuffer.GetHeight(), 1 ) );
+			if ( memoryToTextureRendererBusyMutex.WaitOne() ) {
+				//Log( LogType.Debug, "CreateTexture on device " + device.ComPointer.ToInt64() + " ---------------------------------------------------------------- " );	
+				t2 = CreateDoubleTexture( device /*, parentDeviceForDx9ExShared */ );
+				
+/*
+					//Log( LogType.Debug, "CreateTexture on device " + device.ComPointer.ToInt64() + "=" + t2.GetDevice().ComPointer.ToInt64() + " ---------------------------------------------------------------- " );
 					foreach (Device d in device2DoubleTexture.Keys) {
 						DoubleTexture t2Temp;
 						if (device2DoubleTexture.TryGetValue(d, out t2Temp)) {
-							Log(LogType.Debug, "\tDoubleTexture (device " + t2.GetDevice().ComPointer.ToInt64() + "=" + device.ComPointer.ToInt64() + ", " + t2Temp.GetWidth() + "x" + t2Temp.GetHeight() + ")");
+							Log( LogType.Debug, "\tDoubleTexture (device " + t2.GetDevice().ComPointer.ToInt64() + "=" + device.ComPointer.ToInt64() + ", " + t2Temp.GetWidth() + "x" + t2Temp.GetHeight() + ")" );
 						}
 					}
 */
@@ -254,55 +288,132 @@ namespace VVVV.Nodes.Vlc.Player
 				retVal = t2 != null ? t2.GetFrontTexture() : null;
 			} 
 			else {
-				Log(LogType.Error, "[CreateTexture ERROR] CreateTexture(device " + device.ComPointer.ToInt64() + ") FAILED because mutex not available !!!");
+				Log( LogType.Error, "[CreateTexture ERROR] CreateTexture(device " + device.ComPointer.ToInt64() + ") FAILED because mutex not available !!!" );
 				//This shouldn't happen
-				int w = Math.Max(this.doubleBuffer.GetWidth(), 1);
-				int h = Math.Max(this.doubleBuffer.GetHeight(), 1);
-				return VlcUtils.CreateManagedTexture(device, w, h);
+				int w = Math.Max( this.doubleBuffer.GetWidth(), 2 );
+				int h = Math.Max( this.doubleBuffer.GetHeight(), 2 );
+				return VlcUtils.CreateManagedTexture( device, w, h );
 			}
 			
-			if (retVal != null) {
-				//Log(LogType.Debug, "[CreateTexture] done, trying to update.");
-				UpdateTexture_Threaded();
-				//Log(LogType.Debug, "[CreateTexture] update should be ok. ");
+			if ( retVal != null ) {
+				//Log( LogType.Debug, "[CreateTexture] done, trying to update." );
+				//if ( ( ! ( device is DeviceEx ) || ( device == t2.GetDevice() /* device == parentDeviceForDx9ExShared */ ) ) ) {
+					UpdateTexture_Threaded();
+				//}
+				//Log( LogType.Debug, "[CreateTexture] update should be ok. " );
 			}
 			else {					
-				Log(LogType.Error, "CreateTexture(" + device.ComPointer.ToInt64() + " FAILED");
+				Log( LogType.Error, "CreateTexture(" + device.ComPointer.ToInt64() + " FAILED" );
 			}
 			
 			return retVal;
 //				return CreateManagedTexture(device, Math.Max(this.doubleBuffer.GetWidth(), 1), Math.Max(this.doubleBuffer.GetHeight(), 1));
 		}
 
-		private DoubleTexture CreateDoubleTexture(Device device)
-		{
-			int w = Math.Max(this.doubleBuffer.GetWidth(), 2);
-			int h = Math.Max(this.doubleBuffer.GetHeight(), 2);
-			Log(LogType.Debug, "CreateDoubleTexture(" + " device " + device.ComPointer.ToInt64() + ", " + w + "x" + h + " ) called ");
+		
+		
+		
 
+		
+		private void doSharedTextureTests( Device device ) {
+			if ( device is DeviceEx ) {
+				byte[] raw = new byte[8];
+				for ( int t = 0; t < 8; t++ ) { raw[t] = 0; }
+				
+				GCHandle h = GCHandle.Alloc( raw, GCHandleType.Pinned );
+				
+				IntPtr newHandle = IntPtr.Zero; //h.AddrOfPinnedObject();
+	
+				try {
+							Texture newTexture0 = new Texture( device, 16, 16, 1, Usage.RenderTarget, Format.A8R8G8B8, Pool.Default, ref newHandle );
+							Log( LogType.Debug, "usage.rendertarget pool.default CREATED" );
+				} catch (Exception e) { Log( LogType.Debug, e.Source + "\n" + e.Message + "\n" + e.GetBaseException().Message + "\n" + e.StackTrace ); }
+				try {
+							Texture newTexture0 = new Texture( device, 16, 16, 1, Usage.None, Format.A8R8G8B8, Pool.Default, ref newHandle );
+							Log( LogType.Debug, "usage.none pool.default CREATED" );
+				} catch (Exception e) { Log( LogType.Debug, e.Source + "\n" + e.Message + "\n" + e.GetBaseException().Message + "\n" + e.StackTrace ); }
+				try {
+							Texture newTexture0 = new Texture( device, 16, 16, 1, Usage.None, Format.A8R8G8B8, Pool.Default, ref newHandle );
+							Log( LogType.Debug, "usage.rendertarget pool.systemmem CREATED" );
+				} catch (Exception e) { Log( LogType.Debug, e.Source + "\n" + e.Message + "\n" + e.GetBaseException().Message + "\n" + e.StackTrace ); }
+							
+	
+				//free pinned memory
+				try { h.Free(); } catch(Exception) {}
+				
+	//							IntPtr newHandle0 = h0.AddrOfPinnedObject();
+	//							IntPtr newHandle1 = h1.AddrOfPinnedObject();
+								unsafe {
+									//newHandle0 = Marshal.AllocHGlobal( 8 );
+									//newHandle1 = Marshal.AllocHGlobal( 8 );
+								}
+								//Texture newTexture0 = VlcUtils.CreateSharedTexture(device, w, h, ref newHandle0);
+								//Texture newTexture1 = VlcUtils.CreateSharedTexture(device, w, h, ref newHandle1);
+	//							Texture newTexture0 = new Texture( device, width, height, 1, Usage.Dynamic, Format.A8R8G8B8, Pool.Default, ref newHandle0 );
+	//							Texture newTexture1 = new Texture( device, width, height, 1, Usage.Dynamic, Format.A8R8G8B8, Pool.Default, ref newHandle1 );
+			}
+		}
+		
+		
+		
+		
+		
+		private DoubleTexture CreateDoubleTexture( Device device /*, Device parentDeviceForDx9ExShared */ )
+		{
+			int w = Math.Max( this.doubleBuffer.GetWidth(), 2 );
+			int h = Math.Max( this.doubleBuffer.GetHeight(), 2 );
+			Log( LogType.Debug, "CreateDoubleTexture(" + " device " + device.ComPointer.ToInt64() + ", " + w + "x" + h + " ) called " );
+
+			
+			
+			//doSharedTextureTests( device );
+			
+			
+			
+			
 			DoubleTexture t2 = null;
 
 			try {
-				t2 = new DoubleTexture(device, w, h);
-				//Log( LogType.Debug , "DoubleTexture created..." );
-				Log(LogType.Debug, 					/*(this == parent.mediaRendererA ? "A " : "B ") + (active ? "(FRONT) " + parent.FFileNameIn[slice] : "(BACK) " + parent.FNextFileNameIn[slice] ) + */" Created new texture (" + t2.GetWidth() + "x" + t2.GetHeight() + ") for device " + device.ComPointer.ToInt64() + ". ");
-				if (t2 != null) {
-					try {
-						DoubleTexture t2Temp;
-						if (device2DoubleTexture.TryGetValue(device, out t2Temp)) {
-							Log(LogType.Debug, "\tTrying to dispose old DoubleTexture (device  " + device.ComPointer.ToInt64() + ", " + t2Temp.GetWidth() + "x" + t2Temp.GetHeight() + ")");
-							t2Temp.Dispose();
+/*
+				if ( device is DeviceEx ) {
+					//try to find an already existing shared texture with the right dimensions
+					foreach ( DoubleTexture t2Temp in device2DoubleTexture.Values ) {
+						if ( t2Temp.GetWidth() == w && t2Temp.GetHeight() == h ) {
+							Log( LogType.Debug, "[CreateDoubleTexture] Found an existing shared DoubleTexture created on another device" );
+							t2 = t2Temp;
+							break;
 						}
-					} catch {
-						Log(LogType.Debug, "\tfailed");
 					}
-
-					device2DoubleTexture[device] = t2;
-					Log(LogType.Debug, "Added new DoubleTexture to device2DoubleTexture...");
+					if ( t2 == null ) {
+						Log( LogType.Debug , "[CreateDoubleTexture] Need to create new DoubleTexture ..." + ( device is DeviceEx ? " (dx9ex shared is ON)" : " (dx9ex shared is OFF)" ) );
+					}
 				}
+*/				
+//				if ( t2 == null ) {
+					//create a new one
+					t2 = new DoubleTexture(device, w, h, device is DeviceEx);
+					Log( LogType.Debug , "[CreateDoubleTexture] Created new DoubleTexture (" + t2.GetWidth() + "x" + t2.GetHeight() + " pitch/4=" + ( t2.GetPitch() / 4 ) + ") for device " + device.ComPointer.ToInt64() + " created..." + ( device is DeviceEx ? " (dx9ex shared is ON)" : " (dx9ex shared is OFF)" ) );
+
+					if (t2 != null) {
+						try {
+							DoubleTexture t2Temp;
+							if ( device2DoubleTexture.TryGetValue(device, out t2Temp) ) {
+								Log( LogType.Debug, "\tTrying to dispose old DoubleTexture (device  " + device.ComPointer.ToInt64() + ", " + t2Temp.GetWidth() + "x" + t2Temp.GetHeight() + ")" );
+								t2Temp.Dispose();
+							}
+						} catch {
+							Log( LogType.Debug, "\tfailed" );
+						}
+	
+						device2DoubleTexture[device] = t2;
+						Log( LogType.Debug, "Added new DoubleTexture to device2DoubleTexture..." );
+					}
+//				}
+
+
 				//Log( LogType.Debug , (this == parent.mediaRendererA ? "A " : "B ") + (active ? "(FRONT) " + parent.FFileNameIn[GetMediaRendererIndex()] : "(BACK) " + parent.FNextFileNameIn[GetMediaRendererIndex()] ) + " Created new texture (" + w + "x" + h + ") for device " + device.ComPointer.ToInt64() + ". " );
 			} catch (Exception e) {
-				Log(LogType.Error, "[CreateDoubleTexture Exception] " + e.Message);
+				Log( LogType.Error, "[CreateDoubleTexture Exception] " + e.Message);
 				//t2 = new DoubleTexture(device, 2, 2);
 			}
 
@@ -317,16 +428,16 @@ namespace VVVV.Nodes.Vlc.Player
 			try {
 				CleanupDevice2DoubleTexture();
 
-				foreach (Device k in parent.GetDeviceData().Keys) {
+				foreach ( Device d in parent.GetDeviceData().Keys ) {
 					//Log( LogType.Debug, "k = " + k );
 					DoubleTexture t2;
 					//Device device = parent.FDeviceData[k].Data[slice].Device;
-					if (device2DoubleTexture.TryGetValue(k, out t2)) {
-						parent.GetDeviceData()[k].Data[slice] = t2.GetFrontTexture();
+					if ( device2DoubleTexture.TryGetValue(d, out t2) ) {
+						parent.GetDeviceData()[d].Data[slice] = t2.GetFrontTexture();
 					}
 				}
 			} catch (Exception e) {
-				Log(LogType.Error, "[UpdateDeviceData Exception] " + e.Message);
+				Log( LogType.Error, "[UpdateDeviceData Exception] " + e.Message);
 			}
 		}
 
@@ -360,13 +471,13 @@ namespace VVVV.Nodes.Vlc.Player
 
 				int x = 1;
 				foreach (Device d in devicesToDelete) {
-					Log(LogType.Debug, "[CleanupDevice2DoubleTexture] trying to remove device " + d + " " + (x++) + "/" + devicesToDelete.Count);
+					Log( LogType.Debug, "[CleanupDevice2DoubleTexture] trying to remove device " + d + " " + (x++) + "/" + devicesToDelete.Count);
 					device2DoubleTexture[d].Dispose();
 					device2DoubleTexture.Remove(d);
-					Log(LogType.Debug, "[CleanupDevice2DoubleTexture] removed device " + d);
+					Log( LogType.Debug, "[CleanupDevice2DoubleTexture] removed device " + d);
 				}
 			} catch (Exception e) {
-				Log(LogType.Error, "[CleanupDevice2DoubleTexture Exception (FDeviceData cleanup)] " + e.Message);
+				Log( LogType.Error, "[CleanupDevice2DoubleTexture Exception (FDeviceData cleanup)] " + e.Message);
 			}
 		}
 
@@ -378,57 +489,88 @@ namespace VVVV.Nodes.Vlc.Player
 
 		private void FillTextureUsingLockRectangle()
 		{
-			if (doubleBuffer.LockFrontBufferForReading(500)) {
+			if ( doubleBuffer.LockFrontBufferForReading( 500 ) ) {
 				try {
-					foreach (DoubleTexture t2 in device2DoubleTexture.Values) {
-						//Log(LogType.Debug, " fill doubletexture " + t2.GetBackTexture().ComPointer.ToInt64() + "\n");
+					//if device already updated, don't do it again, this should only happen in case we're using dx9ex shared textures
+					List<Device> devicesDone = new List<Device>();
+
+					foreach ( Device d in device2DoubleTexture.Keys ) {
+						//Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "TEXTURE on device " + d.ComPointer.ToInt64() + " SHOULD BE updated..." );
+					}
+					
+					foreach ( DoubleTexture t2 in device2DoubleTexture.Values ) {
+						//Log( LogType.Debug, " fill doubletexture " + t2.GetBackTexture().ComPointer.ToInt64() + "\n" );
 						try {
-							if (t2.LockBackTextureForWriting(100)) {
-								if (t2.GetBackTexture() == null) {
-									Log(LogType.Error, "[FillTextureUsingLockRectangle ERROR] " + "TEXTURE == null !!!");
-								} else if (t2.GetBackTexture() != null && t2.GetBackTexture().Disposed) {
-									Log(LogType.Error, "[FillTextureUsingLockRectangle ERROR] " + "TEXTURE disposed !!!");
-								} else if (t2.GetWidth() != doubleBuffer.GetWidth() || t2.GetHeight() != doubleBuffer.GetHeight()) {
+							
+							
+							if ( t2.LockBackTextureForWriting(100) ) {
+								if ( t2.GetBackTexture() == null ) {
+									Log( LogType.Error, "[FillTextureUsingLockRectangle ERROR] " + "TEXTURE == null !!!" );
+								} else if ( t2.GetBackTexture() != null && t2.GetBackTexture().Disposed ) {
+									Log( LogType.Error, "[FillTextureUsingLockRectangle ERROR] " + "TEXTURE disposed !!!" );
+								} else if ( t2.GetWidth() != doubleBuffer.GetWidth() || t2.GetHeight() != doubleBuffer.GetHeight() ) {
 									textureNeedsResizingOnEvaluate = true;
-									//Log(LogType.Debug, "[FillTextureUsingLockRectangle WARNING] " + "TEXTURE size wrong !");
+									//Log( LogType.Debug, "[FillTextureUsingLockRectangle WARNING] " + "TEXTURE size wrong !" );
+								} else if ( devicesDone.Contains( t2.GetDevice() ) ) {
+									Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "TEXTURE on device " + t2.GetDevice().ComPointer.ToInt64() + " already updated, don't do it again..." );
 								} else {
 									//DataRectangle rDst = t2.GetBackTexture().LockRectangle(0, LockFlags.Discard);
 									//rDst.Data.WriteRange( GetReadPixelPlane(), t2.GetPitch() * t2.GetHeight() );
 									//t2.GetBackTexture().UnlockRectangle(0);
 
+									bool err = false;
 									DataRectangle rDst = null;
 									try {
 										rDst = t2.GetBackTexture().LockRectangle(0, LockFlags.Discard);
 									} catch {
-										Log(LogType.Error, "lockrectangle failed");
+										err = true;
+										Log( LogType.Error, "[FillTextureUsingLockRectangle ERROR] lockrectangle failed" );
 									}
 									try {
-										rDst.Data.WriteRange(doubleBuffer.GetFrontBuffer(), t2.GetPitch() * t2.GetHeight());
+										if ( t2.GetPitch() == t2.GetWidth() * 4 ) {
+											rDst.Data.WriteRange( doubleBuffer.GetFrontBuffer(), t2.GetPitch() * t2.GetHeight() );
+										}
+										else {
+											//writing line per line
+											IntPtr fb = doubleBuffer.GetFrontBuffer();
+											int width = doubleBuffer.GetWidth() * 4;
+											int rest = t2.GetPitch() - width;
+											for ( int line = 0; line < t2.GetHeight() ; line++ ) {
+												rDst.Data.WriteRange( IntPtr.Add( fb, line * width ), width );
+												rDst.Data.Position += rest;
+												//rDst.Data.WriteRange( IntPtr.Add( fb, line * width ), rest );
+											}
+										}
 									} catch {
-										Log(LogType.Error, "writerange failed");
+										err = true;
+										Log( LogType.Error, "[FillTextureUsingLockRectangle ERROR] writerange failed" );
 									}
 									try {
 										t2.GetBackTexture().UnlockRectangle(0);
 									} catch {
-										Log(LogType.Error, "UNlockrectangle failed");
+										err = true;
+										Log( LogType.Error, "[FillTextureUsingLockRectangle ERROR] UNlockrectangle failed" );
 									}
 
 									t2.UnlockBackTexture();
 
-									if (t2.ToggleFrontBack()) {
+									if ( t2.ToggleFrontBack() ) {
 										deviceDataNeedsUpdatingOnEvaluate = true;
 									}
-
+									
+									if ( ! err ) {
+										devicesDone.Add( t2.GetDevice() );
+									}
 								}
 								t2.UnlockBackTexture();
 
 							}
 						} catch (Exception e) {
-							Log(LogType.Error, "[FillTextureUsingLockRectangle ERROR] " + e.Message);
+							Log( LogType.Error, "[FillTextureUsingLockRectangle ERROR] " + e.Message);
 						}
 					}
 				} catch (Exception e) {
-					Log(LogType.Error, "[FillTextureUsingLockRectangle ERROR] (source) " + e.Message);
+					Log( LogType.Error, "[FillTextureUsingLockRectangle ERROR] (source) " + e.Message);
 				}
 
 				doubleBuffer.UnlockFrontBuffer();
@@ -442,9 +584,9 @@ namespace VVVV.Nodes.Vlc.Player
 		}
 
 
-		private void Log(LogType logType, string message)
+		private void Log( LogType logType, string message)
 		{
-			parent.Log(logType, "[MemoryToTextureRenderer " + group + slice + ( parent.IsFrontMemoryToTextureRenderer( this ) ? "+" : "-") + "] " + message);
+			parent.Log( logType, "[MemoryToTextureRenderer " + group + slice + ( parent.IsFrontMemoryToTextureRenderer( this ) ? "+" : "-") + "] " + message);
 		}
 
 		private long prevTime = DateTime.Now.Ticks;
@@ -455,7 +597,7 @@ namespace VVVV.Nodes.Vlc.Player
 
 			double ms = (double)(currTime - prevTime) / 10000;
 			if (ms >= reportOnlyIfMoreThanOrEqualToMillis) {
-				Log(LogType.Debug, description + " took " + ms + " milliseconds.");
+				Log( LogType.Debug, description + " took " + ms + " milliseconds." );
 			}
 			prevTime = currTime;
 

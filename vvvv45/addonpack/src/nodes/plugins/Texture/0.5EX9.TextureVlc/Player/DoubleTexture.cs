@@ -7,6 +7,7 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using System.Runtime.InteropServices;
 using SlimDX;
 using SlimDX.Direct3D9;
 using VVVV.PluginInterfaces.V1;
@@ -16,9 +17,7 @@ using VVVV.Core.Logging;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Utils.SlimDX;
-
 using VVVV.Nodes.Vlc.Utils;
-
 using System.Threading;
 
 namespace VVVV.Nodes.Vlc.Player
@@ -30,41 +29,56 @@ namespace VVVV.Nodes.Vlc.Player
 		{
 			private Texture texture0;
 			private Texture texture1;
-			private bool frontBuffer = false;
-			//if false => texture0=front, true => texture1=front
+			//handles and parentDoubleTexture only used when creating shared textures
+			private bool dx9exSharedTexture;
+			private IntPtr texture0SharedHandle = IntPtr.Zero;
+			private IntPtr texture1SharedHandle = IntPtr.Zero;
+			//private DoubleTexture parentDoubleTexture = null;
+			
+			private bool frontBuffer = false; //if false => texture0=front, true => texture1=front
 			private int width, height, pitch;
 			private Device device;
 
 			private ReaderWriterLockSlim frontBufferLock;
 			private ReaderWriterLockSlim backBufferLock;
 
-			private int tryLockTimeout = 500;
-			//millliseconds
+			private int tryLockTimeout = 500; //millliseconds
 			// What the event handler should look like
 			public delegate void ToggleHandler();
 			//event handler delegate: called when ToggleFrontBack sccessfully called
 			// Public event that one can subscribe to
 			public event ToggleHandler Toggle;
 
-			public DoubleTexture(Device d, int w, int h)
+			public DoubleTexture(Device d, int w, int h) : this(d, w, h, false)
 			{
+/*
 				device = d;
 				IntPtr handle = new IntPtr();
 
 				frontBufferLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 				backBufferLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
-					/*, ref handle*/				SetNewSize(w, h)				;
+				SetNewSize(w, h);
+*/
 			}
-			/*			public DoubleTexture(Device d, int w, int h , ref IntPtr handleForSharedTexture ) {
-				device = d;
 
+			/*
+			 * This is a constructor that is based on another texture. This one 
+			 * should be used if we are using dx9ex shared textures, and if this
+			 * texture should basically be the same (directx can share textures between devices now)
+			 *  as the other one.
+			 */
+			public DoubleTexture(Device d, int w, int h, bool dx9exShared /*, DoubleTexture sharedTexture */ ) {
+				device = d;
+				//parentDoubleTexture = sharedTexture;
+				dx9exSharedTexture = dx9exShared;
+				
 				frontBufferLock = new ReaderWriterLockSlim( LockRecursionPolicy.SupportsRecursion );
 				backBufferLock = new ReaderWriterLockSlim( LockRecursionPolicy.SupportsRecursion );
 
-				SetNewSize(w, h); //, ref handleForSharedTexture
+				SetNewSize(w, h);
 			}
-*/
+
 			~DoubleTexture()
 			{
 				Dispose();
@@ -77,6 +91,19 @@ namespace VVVV.Nodes.Vlc.Player
 			{
 				return (frontBuffer ? texture0 : texture1);
 			}
+	
+			public IntPtr FrontTextureHandle
+			{
+				get { return ( frontBuffer ? texture1SharedHandle : texture0SharedHandle ); }
+				//set { seconds = value * 3600; }
+		    }
+
+			public IntPtr BackTextureHandle
+			{
+				get { return ( frontBuffer ? texture0SharedHandle : texture1SharedHandle ); }
+				//set { seconds = value * 3600; }
+		    }
+			
 
 			public bool LockFrontTextureForReading(int millisecondsTimeout)
 			{
@@ -153,52 +180,112 @@ namespace VVVV.Nodes.Vlc.Player
 					Toggle();
 				}
 			}
-			public int SetNewSize(int w, int h)			/*, ref IntPtr handleForSharedTexture*/
+			
+			/*
+			 * Simply creating a new DoubleTexture is probably a lot safer, 
+			 * so maybe this function shouldn't be public...
+			 * (like if the caller still uses references to the old back and front textures)
+			 */
+			public int SetNewSize(int w, int h)
 			{
 				if (texture0 != null && texture1 != null && !texture0.Disposed && !texture1.Disposed && width == w && height == h) {
 					//do nothing
 					return 0;
-				} else {
-					if (texture0 != null)
-						device = texture0.Device;
-
-					if (LockBothTextures(tryLockTimeout)) {
-						try {
-							//new Texture(device, w, h, 1, Usage.None, Format.A8R8G8B8, Pool.Managed);
-							Texture newTexture0 = VlcUtils.CreateManagedTexture(device, w, h);
-							Texture newTexture1 = VlcUtils.CreateManagedTexture(device, w, h);
-
-							Dispose();
-
-							texture0 = newTexture0;
-							texture1 = newTexture1;
-
-							//texture0 = CreateDefaultTexture(device, w, h);
-							//texture1 = CreateDefaultTexture(device, w, h);
-
-							width = w;
-							height = h;
-							try {
-								DataRectangle r = texture0.LockRectangle(0, LockFlags.Discard);
-								if (r != null)
-									pitch = r.Pitch;
-								texture0.UnlockRectangle(0);
-							} catch {
-								pitch = w;
-							}
-
-							//Device seems to become null, don't know why
-							device = texture0.Device;
-						} finally {
-							UnlockBothTextures();
-						}
-					} else {
-						return -3;
-					}
-					return 0;
 				}
+				else if ( dx9exSharedTexture && device is DeviceEx ) {
+					return CreateTexturesIfDeviceSharingOn( w, h );
+				}
+				else {
+					return CreateTexturesIfDeviceSharingOff( w, h );
+				}
+				
 
 			}
+
+
+			private int CreateTexturesIfDeviceSharingOff( int w, int h ) {
+				if ( LockBothTextures(tryLockTimeout) ) {
+					try {
+						//if ( texture0 != null ) { device = texture0.Device; }
+						
+						Texture newTexture0 = VlcUtils.CreateManagedTexture(device, w, h);
+						Texture newTexture1 = VlcUtils.CreateManagedTexture(device, w, h);
+	
+						Dispose();
+	
+						texture0 = newTexture0;
+						texture1 = newTexture1;
+	
+						width = w;
+						height = h;
+						try {
+							DataRectangle r = texture0.LockRectangle( 0, LockFlags.Discard );
+							if ( r != null )
+								pitch = r.Pitch;
+							texture0.UnlockRectangle(0);
+						} catch {
+							pitch = w;
+						}
+	
+						if ( device == null ) {
+							//Device seems to become null (only when calling SetNewSize only instead of from constructor?), 
+							//don't know why. Maybe because we disposed the old textures...
+							device = texture0.Device;
+						}
+					} finally {
+						UnlockBothTextures();
+					}
+				} else {
+					return -3;
+				}
+				return 0;
+			}
+
+			private int CreateTexturesIfDeviceSharingOn( int w, int h ) {
+				if ( LockBothTextures(tryLockTimeout) ) {
+					try {
+						//Texture newTexture0 = TextureUtils.CreateTexture(device, w, h);
+						//Texture newTexture1 = TextureUtils.CreateTexture(device, w, h);						
+
+						IntPtr newHandle0 = IntPtr.Zero;
+						Texture newTexture0 = new Texture( device, w, h, 1, Usage.Dynamic, Format.A8R8G8B8, Pool.Default, ref newHandle0 );
+
+						IntPtr newHandle1 = IntPtr.Zero;
+						Texture newTexture1 = new Texture( device, w, h, 1, Usage.Dynamic, Format.A8R8G8B8, Pool.Default, ref newHandle1 );
+
+						Dispose();
+	
+						texture0 = newTexture0;
+						texture1 = newTexture1;
+						
+						texture0SharedHandle = newHandle0;
+						texture1SharedHandle = newHandle1;
+						
+						width = w;
+						height = h;
+						try {
+							DataRectangle r = texture0.LockRectangle( 0, LockFlags.Discard );
+							if ( r != null )
+								pitch = r.Pitch;
+							texture0.UnlockRectangle(0);
+						} catch {
+							pitch = w;
+						}
+	
+						if ( device == null ) {
+							//Device seems to become null (only when calling SetNewSize only instead of from constructor?), 
+							//don't know why. Maybe because we disposed the old textures...
+							device = texture0.Device;
+						}
+					} finally {
+						UnlockBothTextures();
+					}
+				} else {
+					return -3;
+				}
+				return 0;
+			}
+			
 			public int GetWidth()
 			{
 				return width;
@@ -218,11 +305,15 @@ namespace VVVV.Nodes.Vlc.Player
 			public void Dispose()
 			{
 				if (texture0 != null && !texture0.Disposed) {
-					/*try {*/					texture0.Dispose();
-					/*} catch {}*/				}				
+					try {					
+						texture0.Dispose();
+					} catch {}
+				}
 				if (texture1 != null && !texture1.Disposed) {
-					/*try {*/					texture1.Dispose();
-					/*} catch {}*/				}				
+					try {
+						texture1.Dispose();
+					} catch {}
+				}
 			}
 		}
 }

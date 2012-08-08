@@ -42,9 +42,9 @@ namespace VVVV.Nodes.Vlc.Utils
 				return new Texture(device, width, height, 1, Usage.Dynamic, Format.A8R8G8B8, Pool.Default);
 			}
 	
-			public Texture CreateSharedTexture(Device device, int width, int height, ref IntPtr sharedHandle)
+			public static Texture CreateSharedTexture(Device device, int width, int height, ref IntPtr sharedHandle)
 			{
-				return new Texture(device, width, height, 1, Usage.None, Format.A8R8G8B8, Pool.Default, ref sharedHandle);
+				return new Texture(device, width, height, 1, Usage.Dynamic, Format.A8R8G8B8, Pool.Default, ref sharedHandle);
 			}
 
 		}

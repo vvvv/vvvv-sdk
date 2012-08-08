@@ -66,6 +66,12 @@ namespace VVVV.Nodes.Vlc
 		[Input("Speed", DefaultValue = 1)]
 		IDiffSpread<float> FSpeedIn;
 
+        [Input("Loop Start", DefaultValue = 0)]
+        IDiffSpread<float> FLoopStartIn;
+
+        [Input("Loop End", DefaultValue = 999999)]
+        IDiffSpread<float> FLoopEndIn;
+        
 		[Input("Loop", DefaultValue = 0)]
 		IDiffSpread<bool> FLoopIn;
 
@@ -125,21 +131,28 @@ namespace VVVV.Nodes.Vlc
 			private C0_5EX9_TextureVlcNode parent;
 			private int slice = 0; //slice index
 	
-			string currFileNameIn;
-			string newFileNameIn = "";
+			private string currFileNameIn;
+			private string newFileNameIn = "";
 			//COPY OF CURRFILENAMEIN FOR USING IN THE (THREADED) UpdateMediaPlayerStatus
-			string prevFileNameIn;
-			bool currPlayIn;
-			bool currLoopIn;
-			float currSpeedIn;
-			float currSeekTimeIn;
-			bool currDoSeekIn;
-			int currRotateIn;
-			int currWidthIn;
-			int currHeightIn;
-			float currVolumeIn;
+			private string prevFileNameIn;
+			private bool currPlayIn;
+            private float currLoopStartIn;
+            private float currLoopEndIn;
+            private int currLoopLengthIn; //milliseconds
+			private bool currLoopIn;
+			private float currSpeedIn;
+			private float currSeekTimeIn;
+			private bool currDoSeekIn;
+			private int currRotateIn;
+			private int currWidthIn;
+			private int currHeightIn;
+			private float currVolumeIn;
 	
-			Thread evaluateThread;
+			//private System.Threading.Timer loopTimer;
+			private System.Windows.Forms.Timer loopTimer;
+			//private System.Timers.Timer loopTimer;
+	
+			private Thread evaluateThread;
 			//will work when signalled by evaluateEventWaitHandle
 			private EventWaitHandle evaluateEventWaitHandle;
 			private EventWaitHandle evaluateStopThreadWaitHandle;
@@ -159,7 +172,7 @@ namespace VVVV.Nodes.Vlc
 			private const int STATUS_GETPROPERTIES = -8;
 			private const int STATUS_GETPROPERTIESOK = -7;
 			private const int STATUS_GETFIRSTFRAME = -6;
-			private const int STATUS_WATING = -5;
+			private const int STATUS_WAITING = -5;
 			private const int STATUS_IMAGE = -1;
 			private const int STATUS_READY = 0;
 			private const int STATUS_PLAYING = 1;
@@ -295,11 +308,26 @@ namespace VVVV.Nodes.Vlc
 				evaluateStopThreadWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
 				evaluateThread = new Thread(new ThreadStart(EvaluateThreadProc));
 				evaluateThread.Start();
+
+/*				TIMERS SUCK, THEY ARE ALWAYS TOO LATE !!!
+
+				loopTimer = new System.Timers.Timer( 1000 );		
+				loopTimer.Start();
+				loopTimer.Elapsed += LoopTimerEventHandler3;
+
+
+				loopTimer = new System.Threading.Timer( LoopTimerEventHandler2, null, 1000, 1000 ); //
+*/
+
+				loopTimer = new System.Windows.Forms.Timer();
+				loopTimer.Interval = 1000; //1 second
+				loopTimer.Enabled = true;
+				loopTimer.Tick += new EventHandler( LoopTimerEventHandler );
 			}
 	
 			public void Dispose()
 			{
-				//parent.FLogger.Log(LogType.Debug, "[Dispose] Disposing media renderer " + mediaRendererIndex);
+				//parent.FLogger.Log( LogType.Debug, "[Dispose] Disposing media renderer " + mediaRendererIndex);
 				//evaluateThread.Abort();
 				evaluateStopThreadWaitHandle.Set();
 				evaluateThread.Join();
@@ -326,7 +354,7 @@ namespace VVVV.Nodes.Vlc
 
 			public void Evaluate(bool active)
 			{
-				//Log(LogType.Debug, "[Evaluate Called] for " + (active ? "FRONT " : "BACK ") + "renderer " + mediaRendererIndex);
+				//Log( LogType.Debug, "[Evaluate Called] for " + (active ? "FRONT " : "BACK ") + "renderer " + mediaRendererIndex);
 	
 	//				if (evaluateCalled < 10) {
 	//					evaluateCalled++;
@@ -343,7 +371,7 @@ namespace VVVV.Nodes.Vlc
 						currFileNameIn = GetFileNameIn(active)[slice];
 	
 						if (currFileNameIn == null) {
-							Log(LogType.Debug, (active ? "FileNameIn" : "NextFileNameIn") + "[" + slice + "] IS NULL!");
+							Log( LogType.Debug, (active ? "FileNameIn" : "NextFileNameIn") + "[" + slice + "] IS NULL!" );
 							currFileNameIn = "";
 						}
 	
@@ -360,7 +388,19 @@ namespace VVVV.Nodes.Vlc
 					}
 	
 					currPlayIn = IsPlaying(active);
+					currLoopStartIn = Math.Max( 0, parent.FLoopStartIn[slice] );
+                    currLoopEndIn = Math.Min( parent.FLoopEndIn[slice], videoLength);
 					currLoopIn = parent.FLoopIn[slice];
+                    if ( currLoopStartIn >= currLoopEndIn ) {
+						currLoopIn = false; //disable looping
+                    	currLoopStartIn = 0;
+                    	currLoopEndIn = (float)Math.Min( 0.0001, videoLength );
+                    }
+					currLoopLengthIn = (int)((currLoopEndIn - currLoopStartIn) * 1000);
+					
+					loopTimer.Enabled = currLoopIn;
+
+					
 					currSpeedIn = parent.FSpeedIn[slice];
 					if (parent.FDoSeekIn[slice]) {
 						currSeekTimeIn = parent.FSeekTimeIn[slice];
@@ -373,23 +413,23 @@ namespace VVVV.Nodes.Vlc
 	
 					ReportElapsedTime("Setting current values", 15.7);
 	
-					//Log( LogType.Debug, "Evaluate_Threaded( " + active + " )");
+					//Log( LogType.Debug, "Evaluate_Threaded( " + active + " )" );
 					Evaluate_Threaded(active);
 	
 					ReportElapsedTime("Evaluate_Threaded", 15.7);
 	
-					//Log( LogType.Debug, "UpdateParent( " + active + " )");
+					//Log( LogType.Debug, "UpdateParent( " + active + " )" );
 					UpdateParent(active);
 	
 					ReportElapsedTime("UpdateParent", 15.7);
 	
 				} catch (Exception e) {
-					Log(LogType.Error, "[MediaRenderer Evaluate Exception] " + e.Message + "\n\n" + e.StackTrace);
+					Log( LogType.Error, "[MediaRenderer Evaluate Exception] " + e.Message + "\n\n" + e.StackTrace);
 				}
 	
 			}
 	
-			#region MediaRenderer Vlc Callback functions
+			#region MediaRenderer Vlc Video Callback functions
 	
 			//////////////////////////////////////////////////
 			// Next 3 functions are used for PLAYING the video
@@ -410,18 +450,18 @@ namespace VVVV.Nodes.Vlc
 						case STATUS_GETPROPERTIES:
 						case STATUS_GETPROPERTIESOK:
 						case STATUS_IMAGE:
-							Log(LogType.Debug, "Hmm, status is " + StatusToString(preloadingStatus) + " so we shouldn't be arriving here...");
-							//throw new Exception("Hey hey");
+							Log( LogType.Debug, "Hmm, status is " + StatusToString(preloadingStatus) + " so we shouldn't be arriving here..." );
+							//throw new Exception("Hey hey" );
 							break;
 						case STATUS_NEWFILE:
-							Log(LogType.Debug, "Still playing but waiting for a new file... " + StatusToString(preloadingStatus) + "");
+							Log( LogType.Debug, "Still playing but waiting for a new file... " + StatusToString(preloadingStatus) + "" );
 							break;
 						case STATUS_READY:
-							//Log(LogType.Debug, "Hmm");
+							//Log( LogType.Debug, "Hmm" );
 							break;
 					}
 				}
-				//if (lockCalled != unlockCalled) Log(LogType.Error, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "(lock/unlock=" + lockCalled  + "/" + unlockCalled + ")" );
+				//if (lockCalled != unlockCalled) Log( LogType.Error, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "(lock/unlock=" + lockCalled  + "/" + unlockCalled + ")" );
 	
 				try {
 					currentFrame++;
@@ -438,11 +478,11 @@ namespace VVVV.Nodes.Vlc
 					//}
 	
 				} catch (Exception e) {
-					Log(LogType.Error, "[VlcLockCallback(" + data.ToInt32() + ") Exception] " + e.Message);
+					Log( LogType.Error, "[VlcLockCallback(" + data.ToInt32() + ") Exception] " + e.Message);
 				}
 	
 				if ( ! pixelPlanes.LockBackBufferForWriting(500) ) {
-					Log(LogType.Error, "[VlcLockCallback(" + data.ToInt32() + ") Problem] locking backbuffer failed..." );
+					Log( LogType.Error, "[VlcLockCallback(" + data.ToInt32() + ") Problem] locking backbuffer failed..." );
 				}
 				//decodeLock.WaitOne();
 				return pixelPlane;
@@ -464,7 +504,7 @@ namespace VVVV.Nodes.Vlc
 					//	Log( LogType.Error, ("VlcUnlockCallback(" + data.ToInt32() + ") : Hoe kan data nu < 0 zijn allee? Heeft er iemand in zitten schrijven?") );
 					//}
 				} catch (Exception e) {
-					Log(LogType.Error, ("[VlcUnlockCallback(" + data.ToInt32() + ") Exception] " + e.Message));
+					Log( LogType.Error, ("[VlcUnlockCallback(" + data.ToInt32() + ") Exception] " + e.Message));
 				}
 	
 				pixelPlanes.UnlockBackBuffer();
@@ -486,10 +526,10 @@ namespace VVVV.Nodes.Vlc
 						preloadDisplayCalled++;
 						AllowDisplay(data);
 	
-						//Log(LogType.Debug, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "[VlcDisplayCallBack] Setting STATUS_READY (from VlcDisplayCallback)");
+						//Log( LogType.Debug, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "[VlcDisplayCallBack] Setting STATUS_READY (from VlcDisplayCallback)" );
 						//if ( mediaPlayerBusyMutex.WaitOne() ) {
 						preloadingStatus = STATUS_READY;
-						//Log(LogType.Debug, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "[VlcDisplayCallBack] Setting STATUS_READY (from VlcDisplayCallback) DONE !!!");
+						//Log( LogType.Debug, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "[VlcDisplayCallBack] Setting STATUS_READY (from VlcDisplayCallback) DONE !!!" );
 						//	mediaPlayerBusyMutex.ReleaseMutex();
 						//}
 					} else if (preloadingStatus == STATUS_PLAYING) {
@@ -499,7 +539,7 @@ namespace VVVV.Nodes.Vlc
 						AllowDisplay(data);
 					}
 				} catch (Exception e) {
-					Log(LogType.Error, ("[VlcDisplayCallback(" + data.ToInt32() + ") Exception] " + e.Message));
+					Log( LogType.Error, ("[VlcDisplayCallback(" + data.ToInt32() + ") Exception] " + e.Message));
 				}
 			}
 	
@@ -510,27 +550,32 @@ namespace VVVV.Nodes.Vlc
 				pixelPlanes.ToggleFrontBack();
 				//}
 			}
-	
+
+			#endregion MediaRenderer Vlc Video Callback functions
+			
+			#region MediaRenderer Vlc Audio Callback functions
+
 			public void VlcAudioPlayCallBack(ref IntPtr data, IntPtr samples, UInt32 count, Int64 pts) {
 	//				Bass.BASS_SampleSetData(bassStreamHandle, samples);
 			}
 			
-			#endregion MediaRenderer Vlc Callback functions
+			
+			#endregion MediaRenderer Vlc Audio Callback functions
 	
 			private void EvaluateThreadProc()
 			{
 				while (true) {
-					int waitHandleIndex = WaitHandle.WaitAny(new EventWaitHandle[2] {
+					int waitHandleIndex = WaitHandle.WaitAny( new EventWaitHandle[2] {
 						evaluateEventWaitHandle,
 						evaluateStopThreadWaitHandle
-					});
+					} );
 	
 					if (waitHandleIndex == 0) {
 						try {
 							//Log( (evaluateCurrentActiveParameter ? "[signalled FRONT player] " : "[signalled BACK player] ") );
 							UpdateMediaPlayerStatus_Threaded(null);
 						} catch (Exception e) {
-							Log(LogType.Error, "[EvaluateThreadProc] Something went terribly wrong: " + e.Message + "\n" + e.StackTrace);
+							Log( LogType.Error, "[EvaluateThreadProc] Something went terribly wrong: " + e.Message + "\n" + e.StackTrace);
 						}
 						//Thread.Sleep(2);
 					} else if (waitHandleIndex == 1) {
@@ -547,12 +592,58 @@ namespace VVVV.Nodes.Vlc
 						break;
 					}
 				}
-				Log(LogType.Debug, "... exiting evaluate thread for renderer " + slice + " ... " );				
+				Log( LogType.Debug, "... exiting evaluate thread for renderer " + slice + " ... " );				
 			}
 	
+			
+			private DateTime prevNow = DateTime.Now;
+			private DateTime theoreticalNow = DateTime.Now;
+			private void SeekToLoopStart() {
+				if ( parent.IsFrontMediaRenderer(this) ) {
+					DateTime now = DateTime.Now;
+					theoreticalNow = theoreticalNow.AddMilliseconds( currLoopLengthIn );
+
+					if ( now.Subtract( theoreticalNow ).TotalMilliseconds < 0 ) {
+						Log( LogType.Debug, "theoreticalNow is too far from Now, so set equal... " + now.Subtract( theoreticalNow ).TotalMilliseconds );
+						theoreticalNow = now;
+					}
+					
+					//Log( LogType.Debug, "i WILL seek " + now.Second + "." + now.Millisecond + "(diff=" + ( now.Subtract( prevNow ).TotalMilliseconds ) + " & " + ( now.Subtract( theoreticalNow ).TotalMilliseconds ) + ") in order to implement a decent loop ..." );
+					
+					mediaPlayerBusyMutex.WaitOne();
+					LibVlcMethods.libvlc_media_player_set_time(mediaPlayer, (long)(currLoopStartIn * 1000));					
+					mediaPlayerBusyMutex.ReleaseMutex();
+					
+					prevNow = now;
+				}
+			}
+			
+			private void LoopTimerEventHandler( Object myObject, EventArgs myEventArgs ) {
+				if ( parent.IsFrontMediaRenderer(this) ) {
+					SeekToLoopStart();
+
+					int interval = (int)( currLoopLengthIn + theoreticalNow.Subtract( DateTime.Now ).TotalMilliseconds );
+					
+					loopTimer.Interval = interval > 0 ? interval : (int)currLoopLengthIn;
+					
+					Log( LogType.Debug, "currLoopLengthIn = " + currLoopLengthIn + " and new loopTimer interval = " + 
+						//interval 
+						loopTimer.Interval
+					  );
+				}
+			}
+
+			private void LoopTimerEventHandler2( Object state ) {
+				SeekToLoopStart();
+			}
+
+			private void LoopTimerEventHandler3( Object sender, System.Timers.ElapsedEventArgs e ) {
+				SeekToLoopStart();
+			}
+			
 			private void VlcEventHandler(ref libvlc_event_t libvlc_event, IntPtr userData)
 			{
-				Log(LogType.Debug, "======== VLC SENT A " + libvlc_event.ToString() + " SIGNAL ======");
+				Log( LogType.Debug, "======== VLC SENT A " + libvlc_event.ToString() + " SIGNAL ======" );
 				evaluateEventWaitHandle.Set();
 			}
 	
@@ -573,14 +664,14 @@ namespace VVVV.Nodes.Vlc
 			private void UpdateMediaPlayerStatus_Threaded(object active)
 			{
 				if (mediaPlayerBusyMutex.WaitOne(5000)) {
-					//ReportElapsedTime("locking mediaPlayerBusyMutex");
+					//ReportElapsedTime("locking mediaPlayerBusyMutex" );
 	
 					UpdateMediaPlayerStatus();
 	
 					mediaPlayerBusyMutex.ReleaseMutex();
-					//ReportElapsedTime("releasing mediaPlayerBusyMutex");
+					//ReportElapsedTime("releasing mediaPlayerBusyMutex" );
 				} else {
-					Log(LogType.Debug, "locking MediaPlayerBusyMutex FAILED!!!");
+					Log( LogType.Debug, "locking MediaPlayerBusyMutex FAILED!!!" );
 				}
 			}
 	
@@ -588,7 +679,7 @@ namespace VVVV.Nodes.Vlc
 			private bool isStream;
 			private void UpdateMediaPlayerStatus()
 			{
-				//Log(LogType.Debug, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "[UpdateMediaPlayerStatus BEGIN] "  + StatusToString(preloadingStatus) + " " + currFileNameIn);
+				//Log( LogType.Debug, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "[UpdateMediaPlayerStatus BEGIN] "  + StatusToString(preloadingStatus) + " " + currFileNameIn);
 	
 				libvlc_state_t mpState = LibVlcMethods.libvlc_media_player_get_state(mediaPlayer);
 	
@@ -600,7 +691,7 @@ namespace VVVV.Nodes.Vlc
 				try {
 					//stop player if in error
 					if ( mpState == LibVlcWrapper.libvlc_state_t.libvlc_Error ) {
-						Log(LogType.Debug, "LibVlc STATUS = " + LibVlcMethods.libvlc_media_player_get_state(mediaPlayer) + " Trying to stop mediaPlayer... " + LibVlcMethods.libvlc_errmsg() );
+						Log( LogType.Debug, "LibVlc STATUS = " + LibVlcMethods.libvlc_media_player_get_state(mediaPlayer) + " Trying to stop mediaPlayer... " + LibVlcMethods.libvlc_errmsg() );
 						
 						LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
 	
@@ -624,10 +715,10 @@ namespace VVVV.Nodes.Vlc
 							LibVlcMethods.libvlc_log_iterator_free( libVlcLogIterator );
 							LibVlcMethods.libvlc_log_close( libVlcLog );
 	
-							Log(LogType.Debug, logStr + "\nVlc Log contained " + logCounter + " messages." );
+							Log( LogType.Debug, logStr + "\nVlc Log contained " + logCounter + " messages." );
 						}
 						catch (Exception e) {
-							Log(LogType.Debug, e.Message + "\n" + e.StackTrace );
+							Log( LogType.Debug, e.Message + "\n" + e.StackTrace );
 						}
 	
 					}
@@ -640,7 +731,7 @@ namespace VVVV.Nodes.Vlc
 //							 || LibVlcMethods.libvlc_media_player_get_state(mediaPlayer) == libvlc_state_t.libvlc_Ended 
 //							 || LibVlcMethods.libvlc_media_player_get_state(mediaPlayer) == libvlc_state_t.libvlc_Error) {
 //							
-//							Log( LogType.Debug, "Filename empty, STOP mediaPlayer" + (this == parent.mediaRendererA ? "A " : "B ") + (this == parent.mediaRendererCurrent[mediaRendererIndex] ? "(FRONT) " : "(BACK) " ) + currFileNameIn );
+//							Log( LogType.Debug, "Filename empty, STOP mediaPlayer" + (this == parent.mediaRendererA ? "A " : "B ") + (this == parent.mediaRendererCurrent[slice] ? "(FRONT) " : "(BACK) " ) + currFileNameIn );
 //							LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
 //							Log( LogType.Debug, ( LibVlcMethods.libvlc_media_player_get_state(mediaPlayer) == libvlc_state_t.libvlc_Stopped ? "STOPPED!!!" : "" ) );
 //						}
@@ -652,22 +743,22 @@ namespace VVVV.Nodes.Vlc
 						if ( parent.IsFrontMediaRenderer(this) ) {
 							preloadingStatus = STATUS_NEWFILE;
 						}
-						else if ( preloadingStatus != STATUS_WATING ) {
+						else if ( preloadingStatus != STATUS_WAITING ) {
 							//If not front player, wait a bit to give others the time to load!
 							statusWaitingUntilTicks = DateTime.Now.AddTicks( MillisecondsToTicks( 200 + (50 * slice) ) ).Ticks;
 							
-							preloadingStatus = STATUS_WATING;
+							preloadingStatus = STATUS_WAITING;
 						}
 					} else if (currFileNameIn == null) {
-						Log(LogType.Error, "[UpdateMediaPlayerStatus Exception] currFileNameIn == null");
+						Log( LogType.Error, "[UpdateMediaPlayerStatus Exception] currFileNameIn == null" );
 					}
 	
 					mpState = LibVlcMethods.libvlc_media_player_get_state(mediaPlayer);
 	
 					if (preloadingStatus == STATUS_OPENINGFILE && newFileNameIn.Length > 0) {
-						Log(LogType.Debug, "		(preloadingStatus == STATUS_OPENINGFILE && newFileNameIn.Length > 0)");
+						Log( LogType.Debug, "		(preloadingStatus == STATUS_OPENINGFILE && newFileNameIn.Length > 0)" );
 					}
-					if ( preloadingStatus == STATUS_WATING ) {
+					if ( preloadingStatus == STATUS_WAITING ) {
 						
 						currentFrame = 0;
 						videoLength = 0;
@@ -682,7 +773,7 @@ namespace VVVV.Nodes.Vlc
 						//}
 					}
 					if ( preloadingStatus == STATUS_NEWFILE ) {
-						//Log(LogType.Debug, "Trying to load " + newFileNameIn + "...");
+						//Log( LogType.Debug, "Trying to load " + newFileNameIn + "..." );
 						try {
 	
 							currentFrame = 0;
@@ -691,23 +782,23 @@ namespace VVVV.Nodes.Vlc
 							prevFileNameIn = newFileNameIn;
 	
 							if ( mpState == libvlc_state_t.libvlc_Opening || mpState == libvlc_state_t.libvlc_Playing || mpState == libvlc_state_t.libvlc_Paused || mpState == libvlc_state_t.libvlc_Ended || mpState == libvlc_state_t.libvlc_Error) {
-								//Log( LogType.Debug, "Calling STOP first");
+								//Log( LogType.Debug, "Calling STOP first" );
 								LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
-								//Log( LogType.Debug, "STOPPED...");
+								//Log( LogType.Debug, "STOPPED..." );
 							}
 							if ( mpState == libvlc_state_t.libvlc_NothingSpecial ) {
-								Log( LogType.Debug, "STOP Mediaplayer (Nothing Special)");
+								Log( LogType.Debug, "STOP Mediaplayer (Nothing Special)" );
 								LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
 							}
 							if ( // mpState != libvlc_state_t.libvlc_NothingSpecial && 
 							     mpState != libvlc_state_t.libvlc_Stopped ) {
-								Log( LogType.Debug, "Mediaplayer not stopped yet (" + LibVlcPlayerStatusToString(mpState) + "), so we will wait a little bit before we try to load a new file");
+								Log( LogType.Debug, "Mediaplayer not stopped yet (" + LibVlcPlayerStatusToString(mpState) + "), so we will wait a little bit before we try to load a new file" );
 								//Log( LogType.Debug, "Not calling STOP first (new filename) because state = " + LibVlcPlayerStatusToString(mpState) );
 								return;
 							}
 	
 						} catch (Exception e) {
-							Log(LogType.Error, "[UpdateMediaPlayerStatus PRELOAD Exception 1] " + e.Message);
+							Log( LogType.Error, "[UpdateMediaPlayerStatus PRELOAD Exception 1] " + e.Message);
 						}
 						try {
 							mpState = LibVlcMethods.libvlc_media_player_get_state(mediaPlayer);
@@ -716,48 +807,61 @@ namespace VVVV.Nodes.Vlc
 							     mpState == libvlc_state_t.libvlc_Stopped ) {
 	
 								if ( currFileNameIn.Length == 0 ) {
-									Log(LogType.Debug, "FileName is empty, DEACTIVATING media player.");
+									Log( LogType.Debug, "FileName is empty, DEACTIVATING media player." );
 									preloadingStatus = STATUS_INACTIVE;
 									readyForPlaying = true;
 								}
 								else if ( IsImageFileName(newFileNameIn) ) {
-									Log(LogType.Debug, "Trying to load image '" + newFileNameIn + "'");
+									Log( LogType.Debug, "Trying to load image '" + newFileNameIn + "'" );
 									LoadImage(newFileNameIn);
 									preloadingStatus = STATUS_IMAGE;
 								} 
 								else {
-									Log(LogType.Debug, "Trying to load VIDEO '" + newFileNameIn + "'");
+									Log( LogType.Debug, "Trying to load VIDEO '" + newFileNameIn + "'" );
 	
 									//example: c:\video.avi | video-filter=adjust {           hue=120 ,          gamma=2.} | video-filter=gradient{type=1}
 									//         filename     | option              {optionflagname=optionflagvalue, ...   }
 									preloadMedia = ParseFilename(newFileNameIn);
 	
 									string[] tmp = newFileNameIn.Split("|".ToCharArray());
-									isStream = tmp.Length > 0 && tmp[0].Length > 0 && tmp[0].Contains("://");
+									isStream = tmp.Length > 0 && tmp[0].Length > 0 && tmp[0].Contains("://" );
 									//isStream = false;
 	
 									if ( preloadMedia != IntPtr.Zero ) {
 										//only get the file's description without actually playing it
+										if ( ! isStream ) {
+											LibVlcMethods.libvlc_media_parse( preloadMedia );
+											//file parsed, check if streams found
+											IntPtr trackInfoArray;
+											if ( 0 == LibVlcMethods.libvlc_media_get_tracks_info(preloadMedia, out trackInfoArray) ) {
+												//no streams found, fallback to OLD way of finding trackinfo
+												isStream = true;
+												Log( LogType.Debug, "Detecting tracks (by parsing the file) for file " + newFileNameIn + " failed. Fallback to old detection mechanism." );
+											}
+											else {
+												Marshal.DestroyStructure(trackInfoArray, typeof(LibVlcWrapper.libvlc_media_track_info_t*));
+											}
+
+										}
+															
 										if ( isStream ) {
-											LibVlcMethods.libvlc_media_add_option( preloadMedia, Encoding.UTF8.GetBytes("sout=#dummy") );
+											LibVlcMethods.libvlc_media_add_option( preloadMedia, Encoding.UTF8.GetBytes("sout=#description:dummy") );
 	
 											LibVlcMethods.libvlc_media_player_set_media(mediaPlayer, preloadMedia);
 											LibVlcMethods.libvlc_media_player_play(mediaPlayer);
 										}
-										else {
-											LibVlcMethods.libvlc_media_parse( preloadMedia );
-										}
 										
-										//Log(LogType.Debug, "SETTING STATUS_GETPROPERTIES");
+										//Log( LogType.Debug, "SETTING STATUS_GETPROPERTIES" );
 										preloadingStatus = STATUS_GETPROPERTIES;
 									}
-									//else {
-									//	Log( LogType.Debug, "Error opening file: " + newFileNameIn );
-									//}
+									else {
+										Log( LogType.Debug, "Error opening file: " + newFileNameIn );
+										preloadingStatus = STATUS_INACTIVE;
+									}
 								}
 							} 
 						} catch (Exception e) {
-							Log(LogType.Error, "[UpdateMediaPlayerStatus PRELOAD Exception 2] " + e.Message);
+							Log( LogType.Error, "[UpdateMediaPlayerStatus PRELOAD Exception 2] " + e.Message);
 						}
 					} 
 					
@@ -767,7 +871,7 @@ namespace VVVV.Nodes.Vlc
 	//									|| (isStream && (mpState == libvlc_state_t.libvlc_Playing) ) 
 	//								)
 							) {
-						//Log(LogType.Debug, "STATUS_GETPROPERTIES");
+						//Log( LogType.Debug, "STATUS_GETPROPERTIES" );
 						try {
 							IntPtr trackInfoArray;
 							int nrOfStreams;
@@ -776,15 +880,17 @@ namespace VVVV.Nodes.Vlc
 								if ( nrOfStreams == 0 ) {
 									//preloadingStatus = STATUS_OPENINGFILE;
 									if (LibVlcMethods.libvlc_media_player_get_state(mediaPlayer) == libvlc_state_t.libvlc_Buffering) {
-										Log(LogType.Debug, "=== BUFFERING");
+										Log( LogType.Debug, "=== BUFFERING" );
 									} else if (LibVlcMethods.libvlc_media_player_get_state(mediaPlayer) == libvlc_state_t.libvlc_Opening) {
-										Log(LogType.Debug, "=== OPENING");
+										Log( LogType.Debug, "=== OPENING" );
 									}
 								}
 								if ( nrOfStreams > 0 && isStream ) { //&& newFileNameIn.StartsWith("dvb-")
 									//not all streams end up in the structure at the same time
-									Log(LogType.Debug, "Stream detected: wait some time to see if there are more streams...");
+									if ( nrOfStreams == 1 ) {
+									Log( LogType.Debug, "Stream detected: wait some time to see if there are more streams..." );
 									Thread.Sleep(3000);
+									}
 									//and check again
 									nrOfStreams = LibVlcMethods.libvlc_media_get_tracks_info(preloadMedia, out trackInfoArray);
 								}
@@ -792,7 +898,7 @@ namespace VVVV.Nodes.Vlc
 								bool hasAudio = false;
 								bool hasVideo = false;
 								if ( LibVlcMethods.libvlc_media_is_parsed( preloadMedia ) )
-									Log(LogType.Debug, "streams " + nrOfStreams + " trackInfo size = " + sizeof(LibVlcWrapper.libvlc_media_track_info_t) );
+									Log( LogType.Debug, "streams " + nrOfStreams + " trackInfo size = " + sizeof(LibVlcWrapper.libvlc_media_track_info_t) );
 								
 								string logString = "";
 	
@@ -805,7 +911,7 @@ namespace VVVV.Nodes.Vlc
 										ch = trackInfo.audio.i_channels;
 										hasAudio = true;
 										logString += "AUDIO(" + trackInfo.audio.i_rate + "x" + trackInfo.audio.i_channels + ") ";
-										//Log(LogType.Debug, "Detected AUDIO track with samplerate " + trackInfo.audio.i_rate + " and " + trackInfo.audio.i_channels + " channels");
+										//Log( LogType.Debug, "Detected AUDIO track with samplerate " + trackInfo.audio.i_rate + " and " + trackInfo.audio.i_channels + " channels" );
 									} else if (!hasVideo && trackInfo.i_type == LibVlcWrapper.libvlc_track_type_t.libvlc_track_video) {
 										//setting w+h is important !!!
 										w = trackInfo.video.i_width;
@@ -814,15 +920,15 @@ namespace VVVV.Nodes.Vlc
 	
 										logString += "VIDEO(" + trackInfo.video.i_width + "x" + trackInfo.video.i_height + ") ";
 	
-										//Log(LogType.Debug, "Detected VIDEO track with size " + w + "x" + h);
+										//Log( LogType.Debug, "Detected VIDEO track with size " + w + "x" + h);
 									} else if (trackInfo.i_type == LibVlcWrapper.libvlc_track_type_t.libvlc_track_text) {
 										logString += "TEXT(" + trackInfo.video.i_width + "x" + trackInfo.video.i_height + ") ";
-										//Log(LogType.Debug, "Detected TEXT track with size " + trackInfo.video.i_width + "x" + trackInfo.video.i_height);
+										//Log( LogType.Debug, "Detected TEXT track with size " + trackInfo.video.i_width + "x" + trackInfo.video.i_height);
 									} else if (trackInfo.i_type == LibVlcWrapper.libvlc_track_type_t.libvlc_track_unknown) {
 										logString += "UNKNOWN(" + trackInfo.video.i_width + "x" + trackInfo.video.i_height + ", " + ") ";
-										//Log(LogType.Debug, "Detected UNKNOWN track with size " + trackInfo.video.i_width + "x" + trackInfo.video.i_height);
+										//Log( LogType.Debug, "Detected UNKNOWN track with size " + trackInfo.video.i_width + "x" + trackInfo.video.i_height);
 									} else {
-										Log(LogType.Debug, "Detected UNSUPPORTED track with size " + trackInfo.video.i_width + "x" + trackInfo.video.i_height);
+										Log( LogType.Debug, "Detected UNSUPPORTED track with size " + trackInfo.video.i_width + "x" + trackInfo.video.i_height);
 									}
 								}
 	
@@ -830,7 +936,7 @@ namespace VVVV.Nodes.Vlc
 									Marshal.DestroyStructure(trackInfoArray, typeof(LibVlcWrapper.libvlc_media_track_info_t*));
 	
 									if (logString.Length > 0) {
-										Log(LogType.Debug, "Detected tracks: " + logString + " for file " + newFileNameIn);
+										Log( LogType.Debug, "Detected tracks: " + logString + " for file " + newFileNameIn);
 									}
 								}
 	
@@ -842,7 +948,7 @@ namespace VVVV.Nodes.Vlc
 									media = ParseFilename(newFileNameIn);
 									if (media != IntPtr.Zero) {
 										if (hasAudio && !hasVideo) {
-											//Log(LogType.Debug, "AUDIO only -> start playing");
+											//Log( LogType.Debug, "AUDIO only -> start playing" );
 	
 											currentFrame = 0;
 											videoLength = 0;
@@ -855,12 +961,12 @@ namespace VVVV.Nodes.Vlc
 											try {
 												UpdateAudioFormat( br, ch );
 											} catch (Exception e) {
-												Log(LogType.Error, "[UpdateMediaPlayerStatus UpdateAudioFormat (audio only) Exception] " + e.Message);
+												Log( LogType.Error, "[UpdateMediaPlayerStatus UpdateAudioFormat (audio only) Exception] " + e.Message);
 											}
 											try {
 												UpdateVideoFormat(2, 2);
 											} catch (Exception e) {
-												Log(LogType.Error, "[UpdateMediaPlayerStatus UpdateVideoFormat (audio only) Exception] " + e.Message);
+												Log( LogType.Error, "[UpdateMediaPlayerStatus UpdateVideoFormat (audio only) Exception] " + e.Message);
 											}
 	
 											//parent.currentFillTextureFunction = TransparentFillTexure;
@@ -868,7 +974,7 @@ namespace VVVV.Nodes.Vlc
 											unlockCalled = 0;
 											displayCalled = 0;
 											//reset "frames drawn"
-											//Log(LogType.Debug, "Calling PLAY (after getting properties the right way)");
+											//Log( LogType.Debug, "Calling PLAY (after getting properties the right way)" );
 											UpdateVolume();
 	
 											if (currPlayIn) {
@@ -880,7 +986,7 @@ namespace VVVV.Nodes.Vlc
 												LibVlcMethods.libvlc_media_player_set_media(mediaPlayer, media);
 												LibVlcMethods.libvlc_media_player_set_pause(mediaPlayer, 0);
 												LibVlcMethods.libvlc_media_player_play(mediaPlayer);
-												//Log(LogType.Debug, "SETTING STATUS_PLAYING");
+												//Log( LogType.Debug, "SETTING STATUS_PLAYING" );
 												preloadingStatus = STATUS_PLAYING;
 											} else {
 												LibVlcMethods.libvlc_media_add_option(preloadMedia, Encoding.UTF8.GetBytes("no-audio") );
@@ -889,11 +995,11 @@ namespace VVVV.Nodes.Vlc
 	
 												LibVlcMethods.libvlc_media_player_set_pause(mediaPlayer, 1);
 												LibVlcMethods.libvlc_media_player_play(mediaPlayer);
-												//Log(LogType.Debug, "SETTING STATUS_READY");
+												//Log( LogType.Debug, "SETTING STATUS_READY" );
 												preloadingStatus = STATUS_READY;
 											}
 										} else if (hasVideo) {
-											//Log(LogType.Debug, "VIDEO " + (hasAudio ? "(+ AUDIO)" : "") + "-> start playing! " + LibVlcMethods.libvlc_video_get_aspect_ratio(mediaPlayer));
+											//Log( LogType.Debug, "VIDEO " + (hasAudio ? "(+ AUDIO)" : "") + "-> start playing! " + LibVlcMethods.libvlc_video_get_aspect_ratio(mediaPlayer));
 											//string ar = LibVlcMethods.libvlc_video_get_aspect_ratio( mediaPlayer );
 											//Log( LogType.Debug, "video.width = " + videoWidth + " height = " + videoHeight  + " ar = " + ar + " scale = " + LibVlcMethods.libvlc_video_get_scale( mediaPlayer ) );
 	
@@ -902,7 +1008,7 @@ namespace VVVV.Nodes.Vlc
 											//videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_player_get_length(mediaPlayer) ) / 1000;
 											//videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_get_duration( preloadMedia ) ) / 1000;
 											videoFps = LibVlcMethods.libvlc_media_player_get_fps(mediaPlayer);
-											//Log(LogType.Debug, "video length = " + videoLength + " fps=" + videoFps);
+											//Log( LogType.Debug, "video length = " + videoLength + " fps=" + videoFps);
 	
 											LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
 	
@@ -919,20 +1025,20 @@ namespace VVVV.Nodes.Vlc
 													UpdateAudioFormat( br, ch );
 												}
 											} catch (Exception e) {
-												Log(LogType.Error, "[UpdateMediaPlayerStatus UpdateAudioFormat Exception] " + e.Message);
+												Log( LogType.Error, "[UpdateMediaPlayerStatus UpdateAudioFormat Exception] " + e.Message);
 											}
 	
 											
 											try {
-												//Log(LogType.Debug, "try to update video size...");
+												//Log( LogType.Debug, "try to update video size..." );
 	
 												Size newVideoSize = GetWantedSize(w, h);
-												//Log(LogType.Debug, "try to update video size to " + newVideoSize.Width + "x" + newVideoSize.Height);
+												//Log( LogType.Debug, "try to update video size to " + newVideoSize.Width + "x" + newVideoSize.Height);
 												UpdateVideoFormat(newVideoSize.Width, newVideoSize.Height);
 	
-												//Log(LogType.Debug, "finished update video size...");
+												//Log( LogType.Debug, "finished update video size..." );
 											} catch (Exception e) {
-												Log(LogType.Error, "[UpdateMediaPlayerStatus UpdateVideoFormat Exception] " + e.Message);
+												Log( LogType.Error, "[UpdateMediaPlayerStatus UpdateVideoFormat Exception] " + e.Message);
 											}
 	
 											//UpdateRotation();
@@ -940,7 +1046,7 @@ namespace VVVV.Nodes.Vlc
 											unlockCalled = 0;
 											displayCalled = 0;
 											//reset "frames drawn"
-											//Log(LogType.Debug, "Calling PLAY -> getfirstframe (after getting properties the right way)");
+											//Log( LogType.Debug, "Calling PLAY -> getfirstframe (after getting properties the right way)" );
 											if (currPlayIn) {
 												try {
 													LibVlcMethods.libvlc_media_release(preloadMedia);
@@ -950,17 +1056,17 @@ namespace VVVV.Nodes.Vlc
 												LibVlcMethods.libvlc_media_player_set_media(mediaPlayer, media);
 												LibVlcMethods.libvlc_media_player_set_pause(mediaPlayer, 0);
 												LibVlcMethods.libvlc_media_player_play(mediaPlayer);
-												//Log(LogType.Debug, "SETTING STATUS_PLAYING");
+												//Log( LogType.Debug, "SETTING STATUS_PLAYING" );
 												preloadingStatus = STATUS_PLAYING;
-											} else {
-												LibVlcMethods.libvlc_media_add_option(preloadMedia, Encoding.UTF8.GetBytes("no-audio") );
-												//dshow-adev=none
+											}
+											else {
+												LibVlcMethods.libvlc_media_add_option(preloadMedia, Encoding.UTF8.GetBytes("no-audio") ); //dshow-adev=none
 												LibVlcMethods.libvlc_media_player_set_media(mediaPlayer, preloadMedia);
 	
 												LibVlcMethods.libvlc_media_player_set_pause(mediaPlayer, 1);
 												LibVlcMethods.libvlc_media_player_play(mediaPlayer);
 	
-												//Log(LogType.Debug, "SETTING STATUS_GETFIRSTFRAME");
+												//Log( LogType.Debug, "SETTING STATUS_GETFIRSTFRAME" );
 												preloadingStatus = STATUS_GETFIRSTFRAME;
 											}
 											//LibVlcMethods.libvlc_media_player_next_frame(mediaPlayer);
@@ -969,7 +1075,7 @@ namespace VVVV.Nodes.Vlc
 								}
 							}
 						} catch (Exception e) {
-							Log(LogType.Error, "[UpdateMediaPlayerStatus GetProperties Exception] " + e.Message);
+							Log( LogType.Error, "[UpdateMediaPlayerStatus GetProperties Exception] " + e.Message);
 						}
 					} 
 					// DEBUG
@@ -986,14 +1092,14 @@ namespace VVVV.Nodes.Vlc
 //							case libvlc_state_t.libvlc_Playing: stateDescription = "playing"; break;
 //							case libvlc_state_t.libvlc_Stopped: stateDescription = "stopped"; break;
 //						}
-//						Log(LogType.Debug, "STATUS_GETPROPERTIES but libvlc_media_player_get_state != ended or playing. It's " + stateDescription);
+//						Log( LogType.Debug, "STATUS_GETPROPERTIES but libvlc_media_player_get_state != ended or playing. It's " + stateDescription);
 //					}
 					
 					else if (preloadingStatus == STATUS_GETFIRSTFRAME) {
-						//Log(LogType.Debug, "STATUS_GETFIRSTFRAME: set to ready in VlcCallback functions!!!");
+						//Log( LogType.Debug, "STATUS_GETFIRSTFRAME: set to ready in VlcCallback functions!!!" );
 					} 
 					else if (preloadingStatus == STATUS_READY) {
-						//Log(LogType.Debug, "STATUS_READY");
+						//Log( LogType.Debug, "STATUS_READY" );
 						//at this stage we have been playing preloadMedia with the "noaudio" option, so set the media to media here!!!
 						try {
 							readyForPlaying = true;
@@ -1007,7 +1113,7 @@ namespace VVVV.Nodes.Vlc
 								}
 	
 								if (currPlayIn) {
-									//Log(LogType.Debug, "Still on pause after getting first frame, but now we want to start playing !!!");
+									//Log( LogType.Debug, "Still on pause after getting first frame, but now we want to start playing !!!" );
 									try { LibVlcMethods.libvlc_media_release(preloadMedia); } catch {}
 									// ! clean up
 									LibVlcMethods.libvlc_media_player_set_media(mediaPlayer, media);
@@ -1029,14 +1135,14 @@ namespace VVVV.Nodes.Vlc
 								}
 							}
 						} catch (Exception e) {
-							Log(LogType.Error, "[UpdateMediaPlayerStatus READY FOR PLAYING Exception] " + e.Message);
+							Log( LogType.Error, "[UpdateMediaPlayerStatus READY FOR PLAYING Exception] " + e.Message);
 						}
 					}
 	
 	
 					if (parent.IsFrontMediaRenderer(this) && preloadingStatus == STATUS_PLAYING) {
 	
-						//Log(LogType.Debug, "STATUS_PLAYING");
+						//Log( LogType.Debug, "STATUS_PLAYING" );
 						try {
 							libvlc_state_t mediaPlayerState = LibVlcMethods.libvlc_media_player_get_state(mediaPlayer);
 							if (mediaPlayerState == libvlc_state_t.libvlc_Playing) {
@@ -1082,7 +1188,7 @@ namespace VVVV.Nodes.Vlc
 	
 	
 							// || mediaPlayerState == libvlc_state_t.libvlc_Playing
-							if ((mediaPlayerState == libvlc_state_t.libvlc_Ended) && currLoopIn) {
+							if ( ( mediaPlayerState == libvlc_state_t.libvlc_Ended ) && currLoopIn ) {
 								LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
 								currentFrame = 0;
 								lockCalled = 0;
@@ -1098,15 +1204,15 @@ namespace VVVV.Nodes.Vlc
 							//if ( test++ > 100) { test = 0; }
 							//LibVlcMethods.libvlc_video_set_int(mediaPlayer, "adjust", "hue", test);
 						} catch (Exception e) {
-							Log(LogType.Error, "[UpdateMediaPlayerStatus PLAYING Exception] " + e.Message);
+							Log( LogType.Error, "[UpdateMediaPlayerStatus PLAYING Exception] " + e.Message);
 						}
 					}
 	
 				} catch (Exception e) {
-					Log(LogType.Error, "[UpdateMediaPlayerStatus Exception] " + e.Message);
+					Log( LogType.Error, "[UpdateMediaPlayerStatus Exception] " + e.Message);
 				}
 	
-				//Log(LogType.Debug, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "[UpdateMediaPlayerStatus END] "  + StatusToString(preloadingStatus) + " " + newFileNameIn);
+				//Log( LogType.Debug, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "[UpdateMediaPlayerStatus END] "  + StatusToString(preloadingStatus) + " " + newFileNameIn);
 	
 			}
 	
@@ -1118,38 +1224,40 @@ namespace VVVV.Nodes.Vlc
 							try {
 								libvlc_state_t mediaPlayerState = LibVlcMethods.libvlc_media_player_get_state(mediaPlayer);
 	
-								if (mediaPlayerState == libvlc_state_t.libvlc_Playing || mediaPlayerState == libvlc_state_t.libvlc_Paused || mediaPlayerState == libvlc_state_t.libvlc_Ended) {
+								if ( mediaPlayerState == libvlc_state_t.libvlc_Playing || mediaPlayerState == libvlc_state_t.libvlc_Paused || mediaPlayerState == libvlc_state_t.libvlc_Ended ) {
 	
 									try {
 										if ( videoLength == 0 ) {
-											videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_player_get_length(mediaPlayer) ) / 1000.0f;
-											//videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_get_duration( preloadMedia ) ) / 1000.0f;
+											//videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_player_get_length(mediaPlayer) ) / 1000.0f;
+											videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_get_duration( media ) ) / 1000.0f;
 										}	
-										videoFps = LibVlcMethods.libvlc_media_player_get_fps(mediaPlayer);
+										videoFps = LibVlcMethods.libvlc_media_player_get_fps( mediaPlayer );
+										float absolutePosition;
+										if ( videoFps == 0 ) {
+											videoFps = -1;
 										//float relativePosition = currentFrame / videoFps / ( (float)LibVlcMethods.libvlc_media_player_get_time(mediaPlayer) / 1000 ); //LibVlcMethods.libvlc_media_player_get_position(mediaPlayer);
-										float absolutePosition = currentFrame / videoFps;
-										//(float)LibVlcMethods.libvlc_media_player_get_time(mediaPlayer) / 1000;
+											absolutePosition = Convert.ToSingle( LibVlcMethods.libvlc_media_player_get_time(mediaPlayer) ) / 1000;
+										}
+										else {
+											absolutePosition = currentFrame / videoFps;
+										}
 										parent.FPositionOut[slice] = absolutePosition;
-										//Log(LogType.Debug, "setting FPositionOut " + videoLength + " * " + LibVlcMethods.libvlc_media_player_get_position( mediaPlayer ) + " @" + videoFps + "fps => position = " + absolutePosition);
+										//Log( LogType.Debug, "setting FPositionOut " + videoLength + " * " + LibVlcMethods.libvlc_media_player_get_position( mediaPlayer ) + " @" + videoFps + "fps => position = " + absolutePosition);
 										parent.FDurationOut[slice] = videoLength;
-										parent.FFrameOut[slice] = currentFrame;
-										//Convert.ToInt32(absolutePosition * videoFps);
+										parent.FFrameOut[slice] = currentFrame; //Convert.ToInt32(absolutePosition * videoFps);
 										parent.FFrameCountOut[slice] = Convert.ToInt32(videoLength * videoFps);
-	
-	//										parent.FBassHandleOut[mediaRendererIndex] = bassStreamHandle;
-	
 									} catch (Exception e) {
-										Log(LogType.Error, "[UpdateParent (position) Exception] " + e.Message);
+										Log( LogType.Error, "[UpdateParent (position) Exception] " + e.Message);
 									}
 								}
 								UpdateOutput_TextureInfo();
 	
 							} catch (Exception e) {
-								Log(LogType.Error, "[UpdateParent Exception] " + e.Message);
+								Log( LogType.Error, "[UpdateParent Exception] " + e.Message);
 							}
 							mediaPlayerBusyMutex.ReleaseMutex();
 						} else {
-							//Log(LogType.Warning, "[UpdateParent] Media Player Busy");
+							//Log( LogType.Warning, "[UpdateParent] Media Player Busy" );
 						}
 					} else if (active && preloadingStatus == STATUS_IMAGE) {
 						if (mediaPlayerBusyMutex.WaitOne(0)) {
@@ -1161,11 +1269,11 @@ namespace VVVV.Nodes.Vlc
 	
 								UpdateOutput_TextureInfo();
 							} catch (Exception e) {
-								Log(LogType.Error, "[UpdateParent Exception] " + e.Message);
+								Log( LogType.Error, "[UpdateParent Exception] " + e.Message);
 							}
 							mediaPlayerBusyMutex.ReleaseMutex();
 						} else {
-							//Log(LogType.Warning, "[UpdateParent] Media Player Busy");
+							//Log( LogType.Warning, "[UpdateParent] Media Player Busy" );
 						}
 					} else if (!active) {
 						parent.FNextReadyOut[slice] = readyForPlaying;
@@ -1176,14 +1284,14 @@ namespace VVVV.Nodes.Vlc
 	//								UpdateRotation();
 	//						}
 				} catch (Exception e) {
-					Log(LogType.Error, "[UpdateParent Exception] " + e.Message);
+					Log( LogType.Error, "[UpdateParent Exception] " + e.Message);
 				}
 	
 			}
 	
-			private void Log(LogType logType, string message)
+			private void Log( LogType logType, string message)
 			{
-				parent.Log(logType, "[MediaRenderer " + (this == parent.mediaRendererA[slice] ? "A" : "B") + slice + (parent.IsFrontMediaRenderer(this) ? "+" : "-") + "] " + message);
+				parent.Log( logType, "[MediaRenderer " + (this == parent.mediaRendererA[slice] ? "A" : "B") + slice + (parent.IsFrontMediaRenderer(this) ? "+" : "-") + "] " + message);
 			}
 	
 			private long MillisecondsToTicks(int millis) {
@@ -1265,7 +1373,7 @@ namespace VVVV.Nodes.Vlc
 	
 			private void UpdateVolume()
 			{
-				//Log( LogType.Debug, "Setting Volume to " + Convert.ToInt32( Math.Pow ( Math.Max ( Math.Min( FVolumeIn[mediaRendererIndex], 1), 0 ), Math.E ) * 100 ) );
+				//Log( LogType.Debug, "Setting Volume to " + Convert.ToInt32( Math.Pow ( Math.Max ( Math.Min( FVolumeIn[slice], 1), 0 ), Math.E ) * 100 ) );
 				LibVlcMethods.libvlc_audio_set_volume(mediaPlayer, Convert.ToInt32(currVolumeIn * 100) ); // Convert.ToInt32(Math.Pow(Math.Max(Math.Min(currVolumeIn, 2), 0), Math.E) * 100)
 			}
 	
@@ -1278,7 +1386,7 @@ namespace VVVV.Nodes.Vlc
 			{
 				try {
 					if ( ! pixelPlanes.SetNewSize(newWidth, newHeight) ) {
-						throw new Exception("pixelPlanes.SetNewSize(" + newWidth + "," + newHeight + ") FAILED !");
+						throw new Exception("pixelPlanes.SetNewSize(" + newWidth + "," + newHeight + ") FAILED !" );
 					}
 	
 					videoWidth = newWidth;
@@ -1291,10 +1399,10 @@ namespace VVVV.Nodes.Vlc
 					//depends on pixelformat ( = width * nrOfBytesPerPixel) !!!
 					LibVlcMethods.libvlc_video_set_format(mediaPlayer, Encoding.UTF8.GetBytes("RV32"), videoWidth, videoHeight, pitch);
 				} catch (Exception e) {
-					Log(LogType.Error, "[UpdateVideoFormat Exception] " + e.Message);
+					Log( LogType.Error, "[UpdateVideoFormat Exception] " + e.Message);
 				}
 	
-				//Log(LogType.Debug, "[Update Video Size] " + newWidth + "x" +  newHeight + " done!");				
+				//Log( LogType.Debug, "[Update Video Size] " + newWidth + "x" +  newHeight + " done!" );				
 			}
 	
 			private void UpdateAudioFormat(int newSampleRate, int newNrOfChannels)
@@ -1311,10 +1419,10 @@ namespace VVVV.Nodes.Vlc
 //					
 //					Log( LogType.Debug, "[UpdateAudioFormat] bass handle = " + bassStreamHandle );
 //				} catch (Exception e) {
-//					Log(LogType.Error, "[UpdateAudioFormat Exception] " + e.Message);
+//					Log( LogType.Error, "[UpdateAudioFormat Exception] " + e.Message);
 //				}
 //	
-//				//Log(LogType.Debug, "[UpdateAudioFormat] " + newSampleRate + "x" +  newNrOfChannels + " done!");
+//				//Log( LogType.Debug, "[UpdateAudioFormat] " + newSampleRate + "x" +  newNrOfChannels + " done!" );
 
 			}
 	
@@ -1328,11 +1436,11 @@ namespace VVVV.Nodes.Vlc
 				parent.FPixelAspectRatioOut[GetSlice()] = 1f;
 	//				}
 	//				else if ( parent.currentFillTextureFunction == parent.RotateLeftFillTexure || parent.currentFillTextureFunction == parent.RotateRightFillTexure ) {
-	//					parent.FWidthOut[GetMediaRendererIndex()] = GetVideoHeight();
-	//					parent.FHeightOut[GetMediaRendererIndex()] = GetVideoWidth();
-	//					parent.FTextureAspectRatioOut[GetMediaRendererIndex()] = (float)GetVideoHeight() / (float)GetVideoWidth();
+	//					parent.FWidthOut[GetSlice()] = GetVideoHeight();
+	//					parent.FHeightOut[GetSlice()] = GetVideoWidth();
+	//					parent.FTextureAspectRatioOut[GetSlice()] = (float)GetVideoHeight() / (float)GetVideoWidth();
 	//					//TODO
-	//					parent.FPixelAspectRatioOut[GetMediaRendererIndex()] = 1.0F;
+	//					parent.FPixelAspectRatioOut[GetSlice()] = 1.0F;
 	//				}
 			}
 	
@@ -1343,7 +1451,7 @@ namespace VVVV.Nodes.Vlc
 	
 			private IntPtr ParseFilename(string fileName)
 			{
-				//Log(LogType.Debug, "ParseFilename( " + fileName + " )" );
+				//Log( LogType.Debug, "ParseFilename( " + fileName + " )" );
 				if (fileName.Length == 0) {
 					return IntPtr.Zero;
 				}
@@ -1377,7 +1485,7 @@ namespace VVVV.Nodes.Vlc
 //								LibVlcMethods.libvlc_media_add_option_flag( media, flagParts, LibVlcWrapper.libvlc_video_adjust_option_t .libvlc_media_option_trusted ); //Convert.ToInt32(flagParts[1])
 //							}
 //							else {
-//								Log(LogType.Debug, "Something strange when parsing filename options...");
+//								Log( LogType.Debug, "Something strange when parsing filename options..." );
 //							}
 //						}
 //					}
@@ -1399,11 +1507,11 @@ namespace VVVV.Nodes.Vlc
 					string ext = Path.GetExtension(fileName).ToLower();
 					bool retVal = (!fileName.Contains("|")) && (ext.CompareTo(".png") == 0 || ext.CompareTo(".gif") == 0 || ext.CompareTo(".bmp") == 0 || ext.CompareTo(".tif") == 0 || ext.CompareTo(".tiff") == 0 || ext.CompareTo(".jpg") == 0 || ext.CompareTo(".jpeg") == 0);
 	
-					//Log(LogType.Debug, "[IsImagefileName] Checking if '" + fileName + "' with extension '" + ext + "' is an image... " + (retVal ? "YES" : "NO"));
+					//Log( LogType.Debug, "[IsImagefileName] Checking if '" + fileName + "' with extension '" + ext + "' is an image... " + (retVal ? "YES" : "NO"));
 	
 					return retVal;
 				} catch (Exception e) {
-					Log(LogType.Error, "[IsImageFileName] exception (for " + fileName + "): " + e.Message);
+					Log( LogType.Error, "[IsImageFileName] exception (for " + fileName + "): " + e.Message);
 				}
 				return false;
 			}
@@ -1415,13 +1523,13 @@ namespace VVVV.Nodes.Vlc
 					Size newSize = GetWantedSize(image.Width, image.Height);
 	
 					//lock as short as possible!
-					//Log(LogType.Debug, "[LoadImage] LOCKING before UpdateVideoFormat");
+					//Log( LogType.Debug, "[LoadImage] LOCKING before UpdateVideoFormat" );
 					try {
-						//Log(LogType.Debug, "[LoadImage] start UpdateVideoFormat");
+						//Log( LogType.Debug, "[LoadImage] start UpdateVideoFormat" );
 						UpdateVideoFormat(newSize.Width, newSize.Height);
-						//Log(LogType.Debug, "[LoadImage] stop UpdateVideoFormat");
+						//Log( LogType.Debug, "[LoadImage] stop UpdateVideoFormat" );
 					} catch (Exception e) {
-						Log(LogType.Error, "[LoadImage Exception] " + " UpdateVideoFormat " + e.Message);
+						Log( LogType.Error, "[LoadImage Exception] " + " UpdateVideoFormat " + e.Message);
 					}
 	
 					//Graphics objects can not be created from bitmaps with an Indexed Pixel Format, use RGB instead.
@@ -1438,8 +1546,12 @@ namespace VVVV.Nodes.Vlc
 					//Marshal.CreateWrapperOfType(readPixelPlane, typeof(int[]));
 	//					}
 	
-					if (pixelPlanes.LockBackBufferForWriting(3000)) {
+					bool locked;
+					locked = pixelPlanes.LockBackBufferForWriting( 3000 );
+					
+					if ( locked ) {
 						IntPtr pixelPlane = pixelPlanes.GetBackBuffer();
+						
 						//readPixelPlane
 						//copy to memory buffer (slow)
 						for (int x = 0; x < newSize.Width; x++) {
@@ -1447,6 +1559,7 @@ namespace VVVV.Nodes.Vlc
 								Marshal.WriteInt32(pixelPlane, (y * newSize.Width + x) * 4, newImage.GetPixel(x, y).ToArgb());
 							}
 						}
+						
 						pixelPlanes.UnlockBackBuffer();
 						pixelPlanes.ToggleFrontBack();
 					}
@@ -1458,7 +1571,7 @@ namespace VVVV.Nodes.Vlc
 					image.Dispose();
 	
 				} catch (Exception e) {
-					Log(LogType.Error, "[LoadImage Exception] " + e.Message);
+					Log( LogType.Error, "[LoadImage Exception] " + e.Message);
 				}
 	
 			}
@@ -1469,7 +1582,7 @@ namespace VVVV.Nodes.Vlc
 				Size wantedSize = new Size(sourceWidth, sourceHeight);
 				double sar = 1;
 				if (sourceWidth == 0 && sourceHeight == 0 && currWidthIn == 0 && currHeightIn == 0) {
-					Log(LogType.Debug, "STRANGE wxh = 0x0");
+					Log( LogType.Debug, "STRANGE wxh = 0x0" );
 					wantedSize.Width = 320;
 					wantedSize.Height = 240;
 				} else {
@@ -1531,7 +1644,7 @@ namespace VVVV.Nodes.Vlc
 	
 				double ms = (double)(currTime - prevTime) / 10000;
 				if (ms >= reportOnlyIfMoreThanOrEqualToMillis) {
-					Log(LogType.Debug, description + " took " + ms + " milliseconds.");
+					Log( LogType.Debug, description + " took " + ms + " milliseconds." );
 				}
 				prevTime = currTime;
 	
@@ -1544,11 +1657,6 @@ namespace VVVV.Nodes.Vlc
 		#region fields
 		ISpread<string> prevFileNameIn;
 		ISpread<string> prevNextFileNameIn;
-		//ISpread<int> prevWidthIn;
-		//ISpread<int> prevHeightIn;
-		//ISpread<bool> prevPlay;
-		//ISpread<int> prevRotateIn;
-
 
 		private ISpread<MediaRenderer> mediaRendererA;
 		private ISpread<MediaRenderer> mediaRendererB;
@@ -1633,8 +1741,7 @@ namespace VVVV.Nodes.Vlc
 
 
 			//argc, argv
-			int initialSpreadCount = 0;
-			//0 because we can only initialize on first Evaluate()
+			int initialSpreadCount = 1; //1 because we can only initialize on first Evaluate()
 			mediaRendererA = new Spread<MediaRenderer>(initialSpreadCount);
 			mediaRendererB = new Spread<MediaRenderer>(initialSpreadCount);
 			mediaRendererCurrent = new Spread<MediaRenderer>(initialSpreadCount);
@@ -1671,7 +1778,7 @@ namespace VVVV.Nodes.Vlc
 		public MemoryToTextureRenderer GetMemoryToTextureRendererCurrent(int slice)
 		{
 			if ( memoryToTextureRendererA[slice] == null || memoryToTextureRendererB[slice] == null ) {
-				Log(LogType.Error, "[GetMemoryToTextureRendererCurrent] memoryToTextureRendererA[" + slice + "] IS NULL");
+				Log( LogType.Error, "[GetMemoryToTextureRendererCurrent] memoryToTextureRendererA[" + slice + "] IS NULL" );
 			}
 			return (mediaRendererCurrent[slice] == mediaRendererA[slice] ? memoryToTextureRendererA[slice] : memoryToTextureRendererB[slice]);
 		}
@@ -1679,7 +1786,7 @@ namespace VVVV.Nodes.Vlc
 		public MemoryToTextureRenderer GetMemoryToTextureRendererNext(int slice)
 		{
 			if ( memoryToTextureRendererA[slice] == null || memoryToTextureRendererB[slice] == null ) {
-				Log(LogType.Error, "[GetMemoryToTextureRendererNext] memoryToTextureRendererA[" + slice + "] IS NULL");
+				Log( LogType.Error, "[GetMemoryToTextureRendererNext] memoryToTextureRendererA[" + slice + "] IS NULL" );
 			}
 			return (mediaRendererNext[slice] == mediaRendererA[slice] ? memoryToTextureRendererA[slice] : memoryToTextureRendererB[slice]);
 		}
@@ -1688,12 +1795,12 @@ namespace VVVV.Nodes.Vlc
 		#region helper functions
 		private void UpdateSliceCount(int spreadMax)
 		{
-			//Log(LogType.Debug, "UPDATING SliceCount from " + mediaRendererA.SliceCount + " to " + spreadMax);
+			//Log( LogType.Debug, "UPDATING SliceCount from " + mediaRendererA.SliceCount + " to " + spreadMax);
 
 			//change everything that has an influence if the spreadMax value changes, like the nr of mediaplayers
-			Log(LogType.Debug, "EXISTING MEDIA RENDERERS: --------------------------------");
+			Log( LogType.Debug, "EXISTING MEDIA RENDERERS: --------------------------------" );
 			for (int i = 0; i < mediaRendererA.SliceCount; i++) {
-				Log(LogType.Debug, "    " + "A" + mediaRendererA[i].GetSlice() + " B" + mediaRendererB[i].GetSlice() + " C" + mediaRendererCurrent[i].GetSlice() + " N" + mediaRendererNext[i].GetSlice());
+				Log( LogType.Debug, "    " + "A" + mediaRendererA[i].GetSlice() + " B" + mediaRendererB[i].GetSlice() + " C" + mediaRendererCurrent[i].GetSlice() + " N" + mediaRendererNext[i].GetSlice());
 			}
 			int c = spreadMax;
 			int prevc = Math.Max(0, mediaRendererA.SliceCount);
@@ -1737,16 +1844,16 @@ namespace VVVV.Nodes.Vlc
 				}
 			}
 
-			Log(LogType.Debug, "NEW MEDIA RENDERERS: --------------------------------");
+			Log( LogType.Debug, "NEW MEDIA RENDERERS: --------------------------------" );
 			for (int i = 0; i < mediaRendererA.SliceCount; i++) {
-				Log(LogType.Debug, "    " + "A" + mediaRendererA[i].GetSlice() + " B" + mediaRendererB[i].GetSlice() + " C" + mediaRendererCurrent[i].GetSlice() + " N" + mediaRendererNext[i].GetSlice());
+				Log( LogType.Debug, "    " + "A" + mediaRendererA[i].GetSlice() + " B" + mediaRendererB[i].GetSlice() + " C" + mediaRendererCurrent[i].GetSlice() + " N" + mediaRendererNext[i].GetSlice());
 			}
 
 		}
 
 		private void CreateMediaRenderer(int index)
 		{
-			Log(LogType.Debug, "++++++++ creating renderer pair " + index + " ++++++++");
+			Log( LogType.Debug, "++++++++ creating renderer pair " + index + " ++++++++" );
 			//mediaRendererBackFrontMutex[index] = new Mutex();
 			//mediaRendererBackFrontMutex[index].WaitOne();
 
@@ -1763,7 +1870,7 @@ namespace VVVV.Nodes.Vlc
 
 		private void DisposeMediaRenderer(int index)
 		{
-			Log(LogType.Debug, "++++++++ disposing of renderer pair " + index + " ++++++++");
+			Log( LogType.Debug, "++++++++ disposing of renderer pair " + index + " ++++++++" );
 			//mediaRendererBackFrontMutex[index].WaitOne();
 
 			memoryToTextureRendererA[index].Dispose();
@@ -1806,7 +1913,7 @@ namespace VVVV.Nodes.Vlc
 			//LogNow( LogType.Debug, "[FlipMediaRenderers] LockBackFrontMediaRenderer " + index);
 //			if ( LockBackFrontMediaRenderer(index, 5000) ) {
 
-			//Log(LogType.Debug, "Flipping mediaRenderers");
+			//Log( LogType.Debug, "Flipping mediaRenderers" );
 			if (mediaRendererCurrent[index] == mediaRendererA[index]) {
 				mediaRendererCurrent[index] = mediaRendererB[index];
 				mediaRendererNext[index] = mediaRendererA[index];
@@ -1819,14 +1926,14 @@ namespace VVVV.Nodes.Vlc
 			//LogNow( LogType.Debug, "[FlipMediaRenderers] UNLockBackFrontMediaRenderer " + index);
 //			}
 //			else {
-//				Log(LogType.Error, "[FlipMediaRenderers Warning] seems like BackFrontMediaRenderer was blocking, mediarenderers not flipped !!!");
+//				Log( LogType.Error, "[FlipMediaRenderers Warning] seems like BackFrontMediaRenderer was blocking, mediarenderers not flipped !!!" );
 //			}
 		}
 
 //		private void SetFrontTexture(int deviceDataKey, Texture t, MediaRenderer r) {
 //			//at this time it only flips front and backbuffers, but in future we could blend multiple textures together here, and update the real output texture
 //			if ( IsFrontMediaRenderer(r) ) {
-//				FDeviceData[deviceDataKey].Data[r.GetMediaRendererIndex()] = t;
+//				FDeviceData[deviceDataKey].Data[r.GetSlice()] = t;
 //			}
 //		}
 
@@ -1851,14 +1958,14 @@ namespace VVVV.Nodes.Vlc
 		}
 
 
-		public void Log(LogType logType, string message)
+		public void Log( LogType logType, string message)
 		{
 			logMe += "\n" + (logType == LogType.Error ? "ERR " : (logType == LogType.Warning ? "WARN " : "")) + message;
 		}
 
 		public void LogNow(LogType logType, string message)
 		{
-			FLogger.Log(logType, message);
+			FLogger.Log( logType, message);
 		}
 		
 		public Dictionary<Device, TextureDeviceData> GetDeviceData() {
@@ -1879,7 +1986,7 @@ namespace VVVV.Nodes.Vlc
 				patchPath = Path.GetDirectoryName(patchPath);
 				fullPath = Path.GetFullPath(Path.Combine(patchPath, path));
 			} catch (Exception e) {
-				Log(LogType.Error, e.Message);
+				Log( LogType.Error, e.Message);
 				return path;
 			}
 
@@ -1895,7 +2002,7 @@ namespace VVVV.Nodes.Vlc
 		{
 			try {
 				if (logMe.Length > 0) {
-					FLogger.Log(LogType.Debug, logMe);
+					FLogger.Log( LogType.Debug, logMe);
 					logMe = "";
 				}
 
@@ -1905,11 +2012,11 @@ namespace VVVV.Nodes.Vlc
 				//			}
 
 				if (spreadMax != mediaRendererCurrent.SliceCount) {
-					Log(LogType.Debug, "new spreadMax = " + spreadMax);
+					Log( LogType.Debug, "new spreadMax = " + spreadMax);
 					try {
 						UpdateSliceCount(spreadMax);
 					} catch (Exception e) {
-						Log(LogType.Error, "[Evaluate Exception] (UpdateSliceCount) " + e.Message + "\n\n" + e.StackTrace);
+						Log( LogType.Error, "[Evaluate Exception] (UpdateSliceCount) " + e.Message + "\n\n" + e.StackTrace);
 						throw e;
 					}
 				}
@@ -1919,12 +2026,12 @@ namespace VVVV.Nodes.Vlc
 					try {
 						
 //						if ( FRotateIn.IsChanged ) {
-//							Log(LogType.Debug, "FRotateIn.IsChanged");
+//							Log( LogType.Debug, "FRotateIn.IsChanged" );
 //							if ( prevRotateIn == null ) { CloneSpread( FRotateIn, ref prevRotateIn ); }
 //							for ( int i = 0; i < FFileNameIn.SliceCount; i++ ) {
-//								Log(LogType.Debug, "FRotateIn.IsChanged " + i);
+//								Log( LogType.Debug, "FRotateIn.IsChanged " + i);
 //								if ( FRotateIn[i].CompareTo(prevRotateIn[i]) != 0 ) {
-//									Log(LogType.Debug, "CALLING UpdateRotation");
+//									Log( LogType.Debug, "CALLING UpdateRotation" );
 //									mediaRendererCurrent[index].UpdateRotation( );
 //									mediaRendererNext[index].UpdateRotation( );
 //								}
@@ -1933,55 +2040,55 @@ namespace VVVV.Nodes.Vlc
 //						}
 
 						if (prevFileNameIn == null) {
-							//Log(LogType.Debug, "Trying to clone FFileNameIn spread to prevFileNameIn spread");
+							//Log( LogType.Debug, "Trying to clone FFileNameIn spread to prevFileNameIn spread" );
 							CloneSpread(FFileNameIn, ref prevFileNameIn);
 						}
 						if (prevNextFileNameIn == null) {
-							//Log(LogType.Debug, "Trying to clone FNextFileNameIn spread to prevNextFileNameIn spread");
+							//Log( LogType.Debug, "Trying to clone FNextFileNameIn spread to prevNextFileNameIn spread" );
 							CloneSpread(FNextFileNameIn, ref prevNextFileNameIn);
 						}
 					} catch (Exception e) {
-						Log(LogType.Error, "[Evaluate Exception] (FileName) " + e.Message);
+						Log( LogType.Error, "[Evaluate Exception] (FileName) " + e.Message);
 					}
 
 					try {
 						if (FFileNameIn.IsChanged) {
-							//Log(LogType.Debug, "FileNameIn changed ");
+							//Log( LogType.Debug, "FileNameIn changed " );
 							if ((prevFileNameIn[index] == null || FFileNameIn[index] == null) || prevFileNameIn[index].CompareTo(FFileNameIn[index]) != 0) {
-								//Log(LogType.Debug, "and '" + FFileNameIn[index] + "' (new[" + index + "]) != '" + prevFileNameIn[index] + "' (old) ");
+								//Log( LogType.Debug, "and '" + FFileNameIn[index] + "' (new[" + index + "]) != '" + prevFileNameIn[index] + "' (old) " );
 								if (prevNextFileNameIn[index] != null && FFileNameIn[index] != null && prevNextFileNameIn[index].CompareTo(FFileNameIn[index]) == 0) {
 									FlipMediaRenderers(index);
 								} else {
-									//Log(LogType.Debug, "BUT ALSO different from previous NEXT[" + index + "] " + prevNextFileNameIn[index] + " ");
+									//Log( LogType.Debug, "BUT ALSO different from previous NEXT[" + index + "] " + prevNextFileNameIn[index] + " " );
 								}
 							}
 						}
 					} catch (Exception e) {
-						Log(LogType.Error, "[Evaluate Exception] (FileName & FlipMediaRenderers) " + e.Message);
+						Log( LogType.Error, "[Evaluate Exception] (FileName & FlipMediaRenderers) " + e.Message);
 					}
 
 					try {
-						//Log(LogType.Debug, "                                <<<< Evaluate CURRENT " + index);
+						//Log( LogType.Debug, "                                <<<< Evaluate CURRENT " + index);
 						mediaRendererCurrent[index].Evaluate(true);
-						//Log(LogType.Debug, "                                >>>> Evaluate CURRENT " + index);
-						//Log(LogType.Debug, "                                <<<< Evaluate NEXT " + index);
+						//Log( LogType.Debug, "                                >>>> Evaluate CURRENT " + index);
+						//Log( LogType.Debug, "                                <<<< Evaluate NEXT " + index);
 						mediaRendererNext[index].Evaluate(false);
-						//Log(LogType.Debug, "                                >>>> Evaluate NEXT " + index);
+						//Log( LogType.Debug, "                                >>>> Evaluate NEXT " + index);
 
 					} catch (Exception e) {
-						Log(LogType.Error, "[Evaluate Exception] (MediaRenderer.Evaluate) " + e.Message);
+						Log( LogType.Error, "[Evaluate Exception] (MediaRenderer.Evaluate) " + e.Message);
 					}
 
 					try {
-						//Log(LogType.Debug, "                                <<<< Evaluate CURRENT " + index);
+						//Log( LogType.Debug, "                                <<<< Evaluate CURRENT " + index);
 						GetMemoryToTextureRendererCurrent(index).Evaluate();
-						//Log(LogType.Debug, "                                >>>> Evaluate CURRENT " + index);
-						//Log(LogType.Debug, "                                <<<< Evaluate NEXT " + index);
+						//Log( LogType.Debug, "                                >>>> Evaluate CURRENT " + index);
+						//Log( LogType.Debug, "                                <<<< Evaluate NEXT " + index);
 						GetMemoryToTextureRendererNext(index).Evaluate();
-						//Log(LogType.Debug, "                                >>>> Evaluate NEXT " + index);
+						//Log( LogType.Debug, "                                >>>> Evaluate NEXT " + index);
 
 					} catch (Exception e) {
-						Log(LogType.Error, "[Evaluate Exception] (MemoryToTextureRenderer.Evaluate) " + e.Message);
+						Log( LogType.Error, "[Evaluate Exception] (MemoryToTextureRenderer.Evaluate) " + e.Message);
 					}
 
 				}
@@ -1994,7 +2101,7 @@ namespace VVVV.Nodes.Vlc
 					CloneSpread(FNextFileNameIn, ref prevNextFileNameIn);
 				}
 			} catch (Exception e) {
-				FLogger.Log(LogType.Error, "[MAINLOOP ERROR] Something went terribly wrong: " + e.Message + "\n" + e.StackTrace);
+				FLogger.Log( LogType.Error, "[MAINLOOP ERROR] Something went terribly wrong: " + e.Message + "\n" + e.StackTrace);
 			}
 		}
 
@@ -2010,16 +2117,16 @@ namespace VVVV.Nodes.Vlc
 
 			int index = slice;
 
-			Log(LogType.Debug, "CreateTexture(Slice " + index + (index != mediaRendererCurrent[index].GetSlice() ? " (INDEX PROBLEM: " + mediaRendererCurrent[index].GetSlice() + ") " : "") + ", Device " + device.ComPointer.ToInt64() + ")");
-			//Log(LogType.Debug, "----------------------------------------");
+			Log( LogType.Debug, "CreateTexture(Slice " + index + (index != mediaRendererCurrent[index].GetSlice() ? " (INDEX PROBLEM: " + mediaRendererCurrent[index].GetSlice() + ") " : "") + ", Device " + device.ComPointer.ToInt64() + ")" );
+			//Log( LogType.Debug, "----------------------------------------" );
 
-			//Log(LogType.Debug, "--> CreateTexture(...) CURRENT" );
+			//Log( LogType.Debug, "--> CreateTexture(...) CURRENT" );
 			//refill the new texture (if display change)
-			Texture t = GetMemoryToTextureRendererCurrent(index).CreateTexture(device);
+			Texture t = GetMemoryToTextureRendererCurrent(index).CreateOrReturnSharedTexture(device);
 
-			//Log(LogType.Debug, "--> CreateTexture(...) NEXT" );
+			//Log( LogType.Debug, "--> CreateTexture(...) NEXT" );
 			//refill the new texture (if display change)
-			GetMemoryToTextureRendererNext(index).CreateTexture(device);
+			GetMemoryToTextureRendererNext(index).CreateOrReturnSharedTexture(device);
 
 //			if ( ! device2QuadVertexBuffer.ContainsKey(device.ComPointer.ToInt64()) ) {
 //				device2QuadVertexBuffer[device.ComPointer.ToInt64()] = CreateQuadTexturedVertexBuffer(device);
@@ -2141,14 +2248,14 @@ namespace VVVV.Nodes.Vlc
 							s += " | " + ds.Read<float>();
 					}
 				} catch {}
-				FLogger.Log(LogType.Debug, s);
+				FLogger.Log( LogType.Debug, s);
 				vb.Unlock();
 				*/
-if (d.Capabilities.MaxSimultaneousTextures <= 1) {
-					FLogger.Log(LogType.Debug, "DRAWING will fail");
+				if (d.Capabilities.MaxSimultaneousTextures <= 1) {
+					FLogger.Log( LogType.Debug, "DRAWING will fail" );
 				} else {
 						//+ "\nAddresMode: U" + d.GetSamplerState(0, SamplerState.AddressU) + " V" + d.GetSamplerState(0, SamplerState.AddressV) + " W" + d.GetSamplerState(0, SamplerState.AddressW)
-					FLogger.Log(LogType.Debug, "DRAWING (up to " + d.Capabilities.MaxSimultaneousTextures + " simultaneous textures) " + "4 x vertex size = " + Marshal.SizeOf(typeof(TexturedVertex)) + " format:" + vb.Description.Format.ToString() + " fvf:" + vb.Description.FVF.ToString() + " pool:" + vb.Description.Pool.ToString() + " size:" + vb.Description.SizeInBytes.ToString() + " usage:" + vb.Description.Usage.ToString());
+					FLogger.Log( LogType.Debug, "DRAWING (up to " + d.Capabilities.MaxSimultaneousTextures + " simultaneous textures) " + "4 x vertex size = " + Marshal.SizeOf(typeof(TexturedVertex)) + " format:" + vb.Description.Format.ToString() + " fvf:" + vb.Description.FVF.ToString() + " pool:" + vb.Description.Pool.ToString() + " size:" + vb.Description.SizeInBytes.ToString() + " usage:" + vb.Description.Usage.ToString());
 				}
 
 
@@ -2159,21 +2266,22 @@ if (d.Capabilities.MaxSimultaneousTextures <= 1) {
 				}
 
 			} catch (Exception e) {
-				FLogger.Log(LogType.Error, "TEST PROBLEM: " + e.Message);
+				FLogger.Log( LogType.Error, "TEST PROBLEM: " + e.Message);
 			}
 
 		}
 
 		private VertexBuffer CreateQuadTexturedVertexBuffer(Device device)
 		{
-			/*			float[,] aQuad = { 	{-1.0f,1.0f,10.0f,0.0f,0.0f,0.0f,0.0f},
+/*
+			float[,] aQuad = { 	{-1.0f,1.0f,10.0f,0.0f,0.0f,0.0f,0.0f},
 								{-1.0f,-1.0f,10.0f,0.0f,1.0f,0.0f,1.0f},
 								{1.0f,1.0f,10.0f,1.0f,0.0f,1.0f,0.0f},
 								{1.0f,-1.0f,10.0f,1.0f,1.0f,1.0f,1.0f} };
 */
 
 
-			FLogger.Log(LogType.Debug, "quadsize = " + myQuadSize);
+			FLogger.Log( LogType.Debug, "quadsize = " + myQuadSize);
 			//VertexBuffer vb = new VertexBuffer( typeof(TexturedVertex), 4, d, Usage.WriteOnly | Usage.Dynamic, TexturedVertex.Format, Pool.Default );
 			//public VertexBuffer(Type typeVertexType, int numVerts, Device device, Usage usage, VertexFormats vertexFormat, Pool pool);
 			VertexBuffer vb = new VertexBuffer(device, myQuadSize, Usage.WriteOnly | Usage.Dynamic, TexturedVertex.Format, Pool.Default);
@@ -2208,7 +2316,7 @@ if (d.Capabilities.MaxSimultaneousTextures <= 1) {
 				//a pixel is just a 32-bit unsigned int value
 				UInt32 pixel = 0x226688c;
 				//(((UInt32*)mediaRendererCurrent[0].GetReadPixelPlane().ToPointer())[row * width + col]);
-								/*				UInt32 pixel = 0xffffffc;
+/*				UInt32 pixel = 0xffffffc;
 				UInt32* pixelPointer = &( ( (UInt32*) myReadPixelPlane[0].ToPointer() )[row*width + col]);
 				pixel = pixel.setARGB( ((Byte*)pixelPointer)[3], ((Byte*)pixelPointer)[0], ((Byte*)pixelPointer)[1], ((Byte*)pixelPointer)[2] );
 				// old way (more copying of bytes)
@@ -2218,9 +2326,9 @@ if (d.Capabilities.MaxSimultaneousTextures <= 1) {
 */
 
 				//copy pixel into texture
-TextureUtils.SetPtrVal2D(data, pixel, 				/*pixel.setARGB( ((byte*)&pixel)[3], ((byte*)&pixel)[0], ((byte*)&pixel)[1], ((byte*)&pixel)[2] )*/row, col, width);
+				TextureUtils.SetPtrVal2D(data, pixel, 				/*pixel.setARGB( ((byte*)&pixel)[3], ((byte*)&pixel)[0], ((byte*)&pixel)[1], ((byte*)&pixel)[2] )*/row, col, width);
 			} catch (Exception e) {
-				Log(LogType.Error, "[FillTexture Exception] " + e.Message);
+				Log( LogType.Error, "[FillTexture Exception] " + e.Message);
 			}
 		}
 		#endregion texture functions
