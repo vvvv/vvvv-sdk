@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
    <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9\GridEditor (EX9 Sandwich).v4p" componentmode="InAWindow">
-   <BOUNDS height="9375" left="4170" top="3270" type="Window" width="16155">
+   <BOUNDS height="9375" left="1035" top="3645" type="Window" width="16155">
    </BOUNDS>
    <NODE id="84" nodename="Cross (2d)" systemname="Cross (2d)">
    <BOUNDS height="0" left="3885" top="4365" type="Node" width="0">
@@ -1098,36 +1098,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\B-Spline (3D Surface Normals).v4p" id="4" nodename="B-Spline (3D Surface Normals).v4p" systemname="B-Spline (3d Surface Normals)">
-   <BOUNDS height="0" left="4290" top="7050" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="12540" left="15495" top="2715" type="Window" width="12045">
-   </BOUNDS>
-   <BOUNDS height="3600" left="4290" top="7050" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Control XYZ" slicecount="12" visible="1" values="-0.409093648195267,-0.474133461713791,0,0.435603320598602,-0.344823449850082,0,-0.666666686534882,0.551722407341003,0,0.700754225254059,0.396555185317993,0">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Control Count U" slicecount="1" visible="1" values="2">
-   </PIN>
-   <PIN pinname="Control Count V" slicecount="1" visible="1" values="2">
-   </PIN>
-   <PIN pinname="Resolution U" slicecount="1" visible="1" values="17">
-   </PIN>
-   <PIN pinname="Resolution V" slicecount="1" visible="1" values="17">
-   </PIN>
-   <PIN pinname="Topology U" slicecount="1" visible="1" values="Clamped">
-   </PIN>
-   <PIN pinname="Topology V" slicecount="1" visible="1" values="Clamped">
-   </PIN>
-   <PIN pinname="Degree U" slicecount="1" visible="1" values="3">
-   </PIN>
-   <PIN pinname="Degree V" slicecount="1" visible="1" values="3">
-   </PIN>
-   <PIN pinname="Normal" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2640" top="6180" type="Node" width="0">
    </BOUNDS>
@@ -1239,5 +1209,57 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="85" srcpinname="Mouse" dstnodeid="0" dstpinname="Mouse">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\B-Spline (3D Surface Normals).v4p" id="86" nodename="..\3D\B-Spline (3D Surface Normals).v4p" systemname="B-Spline (3d Surface Normals)">
+   <BOUNDS height="0" left="4770" top="7695" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="12540" left="15495" top="2715" type="Window" width="12045">
+   </BOUNDS>
+   <BOUNDS height="3600" left="4770" top="7695" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Control XYZ" visible="1" slicecount="12" values="-0.409093648195267,-0.474133461713791,0,0.435603320598602,-0.344823449850082,0,-0.666666686534882,0.551722407341003,0,0.700754225254059,0.396555185317993,0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Control Count U" visible="1" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Control Count V" visible="1" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Resolution U" visible="1" slicecount="1" values="17">
+   </PIN>
+   <PIN pinname="Resolution V" visible="1" slicecount="1" values="17">
+   </PIN>
+   <PIN pinname="Topology U" visible="1" slicecount="1" values="Clamped">
+   </PIN>
+   <PIN pinname="Topology V" visible="1" slicecount="1" values="Clamped">
+   </PIN>
+   <PIN pinname="Degree U" visible="1" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Degree V" visible="1" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Normal" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="86" dstpinname="Control XYZ">
+   </LINK>
+   <LINK srcnodeid="83" srcpinname="Y Output Value" dstnodeid="86" dstpinname="Control Count U">
+   </LINK>
+   <LINK srcnodeid="82" srcpinname="Y Output Value" dstnodeid="86" dstpinname="Control Count V">
+   </LINK>
+   <LINK srcnodeid="71" srcpinname="Y Output Value" dstnodeid="86" dstpinname="Resolution U">
+   </LINK>
+   <LINK srcnodeid="70" srcpinname="Y Output Value" dstnodeid="86" dstpinname="Resolution V">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="86" dstpinname="Degree U">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="86" dstpinname="Degree V">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Output Enum" dstnodeid="86" dstpinname="Topology U">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Output Enum" dstnodeid="86" dstpinname="Topology V">
+   </LINK>
+   <LINK srcnodeid="86" srcpinname="Output" dstnodeid="43" dstpinname="Position XYZ">
+   </LINK>
+   <LINK srcnodeid="86" srcpinname="Normal" dstnodeid="43" dstpinname="Normal XYZ">
    </LINK>
    </PATCH>

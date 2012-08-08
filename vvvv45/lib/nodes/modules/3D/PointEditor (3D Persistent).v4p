@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
    <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent).v4p" locked="0">
-   <BOUNDS height="13215" left="825" top="3720" type="Window" width="22260">
+   <BOUNDS height="14025" left="6915" top="720" type="Window" width="21435">
    </BOUNDS>
    <NODE hiddenwhenlocked="1" id="96" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
    <BOUNDS height="0" left="270" top="7350" type="Node" width="0">
@@ -399,17 +399,7 @@
    </PIN>
    <PIN pinname="Key" visible="1">
    </PIN>
-   </NODE>
-   <NODE hiddenwhenlocked="1" id="68" nodename="KeyMatch (String)" systemname="KeyMatch (String)">
-   <BOUNDS height="0" left="12765" top="1155" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Key Match" slicecount="1" encoded="0" values="|m,t|">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="M Output" visible="1">
-   </PIN>
-   <PIN pinname="T Output" visible="1">
+   <PIN pinname="Keyboard" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" hiddenwhenlocked="1" id="67" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -584,8 +574,6 @@
    <LINKPOINT x="4680" y="450">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="56" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="68" srcpinname="M Output">
-   </LINK>
    <NODE componentmode="InABox" hiddenwhenlocked="0" id="55" managers="" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <PIN pinname="Y Input Value" pintype="Input" visible="1">
    </PIN>
@@ -664,8 +652,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="54" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="68" srcpinname="T Output">
-   </LINK>
    <LINK dstnodeid="54" dstpinname="Input 2" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="82" srcpinname="Y Output Value">
    <LINKPOINT x="16335" y="915">
    </LINKPOINT>
@@ -954,38 +940,6 @@
    </LINK>
    <LINK dstnodeid="42" dstpinname="Input" srcnodeid="45" srcpinname="Y">
    </LINK>
-   <NODE hiddenwhenlocked="1" id="40" nodename="KeyMatch (String)" systemname="KeyMatch (String)">
-   <BOUNDS height="0" left="14985" top="4650" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Key Match" slicecount="1" encoded="0" values="|t,s,d,x,c,v,y,&lt;F2&gt;,&lt;F8&gt;|">
-   </PIN>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||" encoded="0">
-   </PIN>
-   <PIN pinname="M Output" visible="1">
-   </PIN>
-   <PIN pinname="T Output" visible="1">
-   </PIN>
-   <PIN pinname="Y Output" visible="1">
-   </PIN>
-   <PIN pinname="X Output" visible="1">
-   </PIN>
-   <PIN pinname="C Output" visible="1">
-   </PIN>
-   <PIN pinname="S Output" visible="1">
-   </PIN>
-   <PIN pinname="D Output" visible="1">
-   </PIN>
-   <PIN pinname="U Output" visible="1">
-   </PIN>
-   <PIN pinname="V Output" visible="1">
-   </PIN>
-   <PIN pinname="A Output" visible="1">
-   </PIN>
-   <PIN pinname="&lt;F2&gt; Output" visible="1">
-   </PIN>
-   <PIN pinname="&lt;F8&gt; Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="39" nodename="ApplyTransform (Transform Vector)" systemname="ApplyTransform (Transform Vector)">
    <BOUNDS height="0" left="9810" top="9525" type="Node" width="0">
    </BOUNDS>
@@ -1246,12 +1200,6 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <LINK dstnodeid="48" dstpinname="Y Input Value" hiddenwhenlocked="1" srcnodeid="40" srcpinname="X Output">
-   </LINK>
-   <LINK dstnodeid="47" dstpinname="Y Input Value" hiddenwhenlocked="1" srcnodeid="40" srcpinname="C Output">
-   </LINK>
-   <LINK dstnodeid="49" dstpinname="Y Input Value" hiddenwhenlocked="1" srcnodeid="40" srcpinname="V Output">
-   </LINK>
    <NODE hiddenwhenlocked="1" id="25" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="0" left="13650" top="4860" type="Node" width="0">
    </BOUNDS>
@@ -1262,8 +1210,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="25" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="40" srcpinname="S Output">
-   </LINK>
    <NODE hiddenwhenlocked="1" id="24" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="0" left="14250" top="4860" type="Node" width="0">
    </BOUNDS>
@@ -1274,14 +1220,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="24" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="40" srcpinname="D Output">
-   </LINK>
-   <LINK dstnodeid="25" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="40" srcpinname="T Output">
-   </LINK>
-   <LINK dstnodeid="24" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="40" srcpinname="T Output">
-   </LINK>
-   <LINK dstnodeid="30" dstpinname="Y Input Value" hiddenwhenlocked="1" srcnodeid="40" srcpinname="Y Output">
-   </LINK>
    <NODE componentmode="InABox" id="23" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="5910" top="4935" type="Node" width="1485">
    </BOUNDS>
@@ -1970,10 +1908,6 @@
    </LINK>
    <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="0" dstpinname="Mouse State">
    </LINK>
-   <LINK srcnodeid="69" srcpinname="Key" dstnodeid="68" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="69" srcpinname="Key" dstnodeid="40" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="100" dstpinname="Mouse">
    </LINK>
    <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="2" dstpinname="Mouse">
@@ -1981,5 +1915,51 @@
    <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="1" dstpinname="Mouse">
    </LINK>
    <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="0" dstpinname="Mouse">
+   </LINK>
+   <NODE systemname="KeyMatch (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (String)" componentmode="Hidden" id="101" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="12795" top="1185" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Key Match" slicecount="1" encoded="0" values="|t,s,d,x,c,v,y, m|">
+   </PIN>
+   <PIN pinname="T" visible="1">
+   </PIN>
+   <PIN pinname="S" visible="1">
+   </PIN>
+   <PIN pinname="D" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="C" visible="1">
+   </PIN>
+   <PIN pinname="V" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="M" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="69" srcpinname="Keyboard" dstnodeid="101" dstpinname="Keyboard" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="T" dstnodeid="25" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="S" dstnodeid="25" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="T" dstnodeid="24" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="D" dstnodeid="24" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="X" dstnodeid="48" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="C" dstnodeid="47" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="V" dstnodeid="49" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="Y" dstnodeid="30" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="T" dstnodeid="54" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="M" dstnodeid="56" dstpinname="Input 2">
    </LINK>
    </PATCH>
