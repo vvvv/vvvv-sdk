@@ -214,7 +214,9 @@ namespace VVVV.Nodes
                 FServer.MessageReceived -= FServer_MessageReceived;
                 FServer.Close();
             }
-            FTimer.Elapsed -= FTimer_Elapsed;
+            
+            if(FTimer != null)
+            	FTimer.Elapsed -= FTimer_Elapsed;
 		}
 		
 	}
