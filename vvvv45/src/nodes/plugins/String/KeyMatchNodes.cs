@@ -50,7 +50,8 @@ namespace VVVV.Nodes
 
         class OutputInfo
         {
-            public ISpread<bool> Output;
+            public IIOContainer<ISpread<bool>> Container;
+            public ISpread<bool> Output { get { return Container.IOObject; } }
             public string Key;
             public string KeyToLower;
             public bool PressedLastFrame;
@@ -90,7 +91,7 @@ namespace VVVV.Nodes
                     {
                         Key = key,
                         KeyToLower = lowerKey,
-                        Output = FIOFactory.CreateSpread<bool>(outAttr, true),
+                        Container = FIOFactory.CreateIOContainer<ISpread<bool>>(outAttr),
                     };
                     FOutputInfos.Add(outputInfo);
 				}
@@ -102,7 +103,7 @@ namespace VVVV.Nodes
                 {
                     // remove with factory?
                     FOutputInfos.Remove(outputInfo);
-                    FLogger.Log(LogType.Debug, "removed: " + outputInfo.Output);
+                    outputInfo.Container.Dispose();
 			    }
 		}
 
