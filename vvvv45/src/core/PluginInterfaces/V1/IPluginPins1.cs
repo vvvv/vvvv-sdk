@@ -691,7 +691,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="default">The String the pin is initialized with and can be reset to at any time.</param>
 		/// <param name="isFilename">Hint to the GUI that this String is a filename</param>
-		void SetSubType(string default1, bool isFilename);
+		void SetSubType(string @default, bool isFilename);
 		/// <summary>
 		/// Alternative version to <see cref="SetSubType(string, bool)">IStringIn.SetSubType()</see> with more options.
 		/// </summary>
@@ -699,7 +699,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="maxCharacters">Constrains the string to a given number of characters</param>
 		/// <param name="fileMask">Filemask in the form of: Audio File (*.wav, *.mp3)|*.wav;*.mp3</param>
 		/// <param name="stringType">Enum specifying the type of string more precisely.</param>
-		void SetSubType2(string default1, int maxCharacters, string fileMask, TStringType stringType);
+		void SetSubType2(string @default, int maxCharacters, string fileMask, TStringType stringType);
 	}
 
 	/// <summary>
@@ -714,7 +714,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="index">The index of the slice to write the String to.</param>
 		/// <param name="value">The String to write.</param>
-		void SetString(int index, string Value);
+		void SetString(int index, string value);
 		/// <summary>
 		/// Used to set the SubType of a String pin, which is a more detailed specification of the String, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" Strings on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
@@ -722,7 +722,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="default">The String the pin is initialized with and can be reset to at any time.</param>
 		/// <param name="isFilename">Hint to the GUI that this String is a filename</param>
-		void SetSubType(string @default, bool IsFilename);
+		void SetSubType(string @default, bool isFilename);
 		/// <summary>
 		/// Alternative version to <see cref="SetSubType(string, bool)">IStringOut.SetSubType()</see> with more options.
 		/// </summary>

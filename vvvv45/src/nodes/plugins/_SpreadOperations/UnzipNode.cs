@@ -10,7 +10,7 @@ namespace VVVV.Nodes
 {
 	public abstract class UnzipNode<T> : IPluginEvaluate
 	{
-		[Input("Input", BinSize = 1)]
+		[Input("Input", BinSize = -2)]
 		protected IInStream<T> FInputStream;
 
 		[Output("Output", IsPinGroup = true)]
@@ -140,4 +140,10 @@ namespace VVVV.Nodes
 	{
 		
 	}
+
+    [PluginInfo(Name = "Unzip", Category = "Enumerations", Version = "Bin", Help = "Unzips a spread into multiple spreads", Tags = "")]
+    public class EnumBinSizeUnzipNode : UnzipNode<IInStream<EnumEntry>>
+    {
+
+    }
 }
