@@ -67,6 +67,8 @@ namespace VVVV.Nodes
 		double FTimeStamp;
 		double FReceivedStreamTime;
 		double FReceivedTimeStamp;
+		double FRequestSentTimeStamp;
+		double FHalfRoundTripDelay;
 		int FFrameCounter;
 		IIRFilter FStreamDiffFilter;
 		UDPServer FServer;
@@ -95,6 +97,7 @@ namespace VVVV.Nodes
 		{
 			//request sync data
 			FServer.Send(Encoding.ASCII.GetBytes("videosync"), FRemoteServer);
+			FRequestSentTimeStamp = FHost.RealTime;
 		}
 			
 		
@@ -157,6 +160,7 @@ namespace VVVV.Nodes
 		
 		void ReceiveServerAnswer(byte[] data)
 		{
+			FHalfRoundTripDelay = (FHost.RealTime - FRequestSentTimeStamp) * 0.5;
 			var s = Encoding.ASCII.GetString(data).Split(';');
 			
 			lock(FLock)
@@ -171,7 +175,7 @@ namespace VVVV.Nodes
 			var fCount = 5;
 			lock(FLock)
 			{
-				var offset = FTimeStamp - FReceivedTimeStamp;
+				var offset = FIsClient[0] ? FHalfRoundTripDelay : FTimeStamp - FReceivedTimeStamp;
 				var streamDiff = FReceivedStreamTime - FStreamTime + offset + FFineOffset[0] * 0.001;
 				streamDiff = Math.Abs(streamDiff) > FLength[0] * 0.5 ? streamDiff - FLength[0] * Math.Sign(streamDiff) : streamDiff;
 				var doSeek = Math.Abs(streamDiff) > 1;
