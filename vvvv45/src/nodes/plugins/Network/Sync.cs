@@ -196,7 +196,7 @@ namespace VVVV.Nodes
 					FAdjustTimeOut[0] = 0;
 				}
 				
-				FStreamOffsetOut[0] = streamDiff;
+				FStreamOffsetOut[0] = FStreamDiffFilter.Value;
 				FOffsetOut[0] = offset;
 				
 				FFrameCounter = (++FFrameCounter) % fCount;
