@@ -27,9 +27,33 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Text", Category = "EX9.Texture", Help = "Renders text on textures", Tags = "", Author = "woei")]
 	#endregion PluginInfo
-	public class TextEX9TextureNode : DXTextureOutPluginBase, IPluginEvaluate
+	public class TextEX9TextureNode : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
+		#region helper class
+		class Info
+		{
+			public int Slice;
+			public int Width;
+			public int Height;
+			
+			public string Text;
+			public int Encoding;
+			public string Font;
+			public bool Italic;
+			public bool Bold;
+			public int Size;
+			public RGBAColor Color;
+			public RGBAColor Brush;
+			public bool ShowBrush;
+			public int HAlign;
+			public int VAlign;
+			public int RenderMode;
+			public int Normalize;
+		}
+		#endregion
+		
 		#region fields & pins
+		#pragma warning disable 649
 		[Input("Width", DefaultValue = 256)]
 		IDiffSpread<int> FWidthIn;
 
@@ -75,102 +99,108 @@ namespace VVVV.Nodes
 		[Input("Normalize", EnumName = "Normalize", DefaultEnumEntry = "Both")]
         IDiffSpread<EnumEntry> FNormalizeInput;
 
+        
+        [Output("Texture Out")]
+		ISpread<TextureResource<Info>> FTextureOut;
 
 		[Output("Text Scale")]
         ISpread<Vector2D> FScaleOutput;
 		
         [Output("Text Size")]
         ISpread<Vector2D> FSizeOutput;
-		
-		private IDXTextureOut FTextureOutput;
 
 
 		[Import()]
 		ILogger FLogger;
-
-		//track the current texture slice
-		int FCurrentSlice;
-
+		#pragma warning restore
 		#endregion fields & pins
 
-		// import host and hand it to base constructor
-		[ImportingConstructor()]
-		public TextEX9TextureNode(IPluginHost host) : base(host)
+		public void OnImportsSatisfied()
 		{
-			host.CreateTextureOutput("Texture Out", TSliceMode.Dynamic, TPinVisibility.True, out FTextureOutput);
-            FTextureOutput.Order = -1;
+			FTextureOut.SliceCount = 0;
 		}
 
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			SetSliceCount(SpreadMax);
+			FTextureOut.ResizeAndDispose(SpreadMax, CreateTextureResource);
 			FScaleOutput.SliceCount=SpreadMax;
 			FSizeOutput.SliceCount=SpreadMax;
 
-			//recreate texture if resolution was changed
-			if (FWidthIn.IsChanged || FHeightIn.IsChanged) {
-				//set new texture size
-				Reinitialize();
+			for (int i=0; i<SpreadMax; i++)
+			{
+				var textureResource = FTextureOut[i];
+				var info = textureResource.Metadata;
+				
+				if (info.Width != FWidthIn[i] || info.Height != FHeightIn[i])
+				{
+					textureResource.Dispose();
+					textureResource = CreateTextureResource(i);
+					info = textureResource.Metadata;
+				}
+				
+				if (info.Text != FTextInput[i] || info.Encoding != FCharEncoding[i].Index || info.Font != FFontInput[i].Name ||
+				               info.Italic != FItalicInput[i] || info.Bold != FBoldInput[i] || info.Size != FSizeInput[i] ||
+				               info.Color != FColorInput[i] || info.Brush != FBrushColor[i] || info.ShowBrush != FShowBrush[i] ||
+				               info.HAlign != FHorizontalAlignInput[i].Index || info.VAlign != FVerticalAlignInput[i].Index || 
+				               info.RenderMode != FTextRenderingModeInput[i].Index || info.Normalize != FNormalizeInput[i].Index)
+				{
+					info.Text = FTextInput[i];
+					info.Encoding = FCharEncoding[i].Index;
+					info.Font = FFontInput[i].Name;
+					info.Italic = FItalicInput[i];
+					info.Bold = FBoldInput[i];
+					info.Size = FSizeInput[i];
+					info.Color = FColorInput[i];
+					info.Brush = FBrushColor[i];
+					info.ShowBrush = FShowBrush[i];
+					info.HAlign = FHorizontalAlignInput[i].Index;
+					info.VAlign = FVerticalAlignInput[i].Index;
+					info.RenderMode = FTextRenderingModeInput[i].Index;
+					info.Normalize = FNormalizeInput[i].Index;
+					
+					textureResource.NeedsUpdate = true;
+					
+				}
+				else
+					textureResource.NeedsUpdate = false;
+				
+				FTextureOut[i] = textureResource;
 			}
-
-			//update texture
-			if (FTextInput.IsChanged ||
-				FCharEncoding.IsChanged ||
-				FFontInput.IsChanged ||
-				FItalicInput.IsChanged ||
-				FBoldInput.IsChanged ||
-				FSizeInput.IsChanged ||
-				FColorInput.IsChanged ||
-				FBrushColor.IsChanged ||
-				FShowBrush.IsChanged ||
-				FHorizontalAlignInput.IsChanged ||
-				FVerticalAlignInput.IsChanged ||
-				FTextRenderingModeInput.IsChanged ||
-				FNormalizeInput.IsChanged) {
-				Update();
-			}
-
 		}
 
-		//this method gets called, when Reinitialize() was called in evaluate,
-		//or a graphics device asks for its data
-		protected override Texture CreateTexture(int Slice, Device device)
+		TextureResource<Info> CreateTextureResource(int slice)
 		{
-			//FLogger.Log(LogType.Debug, "Creating new texture at slice: " + Slice);
-			return TextureUtils.CreateTexture(device, Math.Max(FWidthIn[Slice], 1), Math.Max(FHeightIn[Slice], 1));
+			var info = new Info() { Slice = slice, Width = FWidthIn[slice], Height = FHeightIn[slice] };
+			return TextureResource.Create(info, CreateTexture, UpdateTexture);
 		}
-
-		//this method gets called, when Update() was called in evaluate,
-		//or a graphics device asks for its texture, here you fill the texture with the actual data
-		//this is called for each renderer, careful here with multiscreen setups, in that case
-		//calculate the pixels in evaluate and just copy the data to the device texture here
-		unsafe protected override void UpdateTexture(int Slice, Texture texture)
+		
+		Texture CreateTexture(Info info, Device device)
 		{
-			var rect = texture.LockRectangle(0, LockFlags.None);
- 			//get the pointer to the data
-		 	var data = (byte*)rect.Data.DataPointer.ToPointer();
-			
-		 	//calculate sizes
-		 	var byteLength = (int)rect.Data.Length;
-		 	var width = rect.Pitch/4;
-		 	var height = byteLength/rect.Pitch;		 	
+			FLogger.Log(LogType.Debug, "Creating new texture at slice: " + info.Slice);
+			return TextureUtils.CreateTexture(device, Math.Max(info.Width, 1), Math.Max(info.Height, 1));
+		}
+		
+		unsafe void UpdateTexture(Info info, Texture texture)
+		{
+		 	var width = Math.Max(info.Width, 1);
+		 	var height = Math.Max(info.Height, 1);
 		 			 		
 			Bitmap bit = new Bitmap(width, height, PixelFormat.Format32bppArgb);			
 			Graphics g = Graphics.FromImage(bit);
 			FontStyle style = FontStyle.Regular;
-			if (FItalicInput[Slice])
+			if (info.Italic)
 				style|= FontStyle.Italic;
-			if (FBoldInput[Slice])
+			if (info.Bold)
 				style|= FontStyle.Bold;
-			System.Drawing.Font objFont = new System.Drawing.Font(FFontInput[Slice].Name, 
-																FSizeInput[Slice], 
+			System.Drawing.Font objFont = new System.Drawing.Font(info.Font, 
+																info.Size, 
 																style, 
 																GraphicsUnit.Pixel);		
 			
-			string text = FTextInput[Slice];
+			string text = info.Text;
 			
-			int renderingMode = FTextRenderingModeInput[Slice].Index;
+			int renderingMode = info.RenderMode;
 			RectangleF layout = new RectangleF(0,0,0,0);
 			StringFormat format = new StringFormat();
 			if (!string.IsNullOrEmpty(text))
@@ -181,7 +211,7 @@ namespace VVVV.Nodes
 	                case 1: break;
 	                case 2: layout.Size= new SizeF(width,height);break;
 	            }
-				if (FCharEncoding[Slice] == "UTF8")
+				if (info.Encoding == 1)
 	            {
 	                byte[] utf8bytes = Encoding.Default.GetBytes(text);
 	                text = Encoding.UTF8.GetString(utf8bytes);
@@ -189,7 +219,7 @@ namespace VVVV.Nodes
 						
 				
 				format.LineAlignment = StringAlignment.Near;
-	            switch (FHorizontalAlignInput[Slice].Index)
+	            switch (info.HAlign)
 	            {
 	                case 0: format.Alignment = StringAlignment.Near;break;
 	                case 1: 
@@ -202,7 +232,7 @@ namespace VVVV.Nodes
 	            		break;
 	            }
 				
-				switch (FVerticalAlignInput[Slice].Index)
+				switch (info.VAlign)
 	            {
 	                case 0: format.LineAlignment = StringAlignment.Near;break;
 	                case 1: 
@@ -216,10 +246,10 @@ namespace VVVV.Nodes
 	            }
 			
 				SizeF size = g.MeasureString(text, objFont, layout.Size, format);
-				FSizeOutput[Slice] = new Vector2D(width/size.Width,height/size.Height);
+				FSizeOutput[info.Slice] = new Vector2D(width/size.Width,height/size.Height);
 				
 				float scx = 1; float scy = 1;
-				switch (FNormalizeInput[Slice].Index)
+				switch (info.Normalize)
 	            {
 	                case 0: break;
 	                case 1: scx = width/size.Width;	break;
@@ -229,7 +259,7 @@ namespace VVVV.Nodes
 	            		scy = height/size.Height;
 	            		break;
 	            }
-				FScaleOutput[Slice]=new Vector2D(scx,scy);
+				FScaleOutput[info.Slice]=new Vector2D(scx,scy);
 								
 				g.TranslateTransform(layout.X,layout.Y);
 				g.ScaleTransform(scx,scy);
@@ -241,33 +271,22 @@ namespace VVVV.Nodes
 			
 			}
 			else
-				FScaleOutput[Slice]=new Vector2D(0,0);
+				FScaleOutput[info.Slice]=new Vector2D(0,0);
 			
 			
-			RGBAColor tmpBrush = FColorInput[Slice];
+			RGBAColor tmpBrush = info.Color;
 			tmpBrush.A=0;
 			Color brush = tmpBrush.Color;			
-			if (FShowBrush[Slice])
-				brush = FBrushColor[Slice].Color;
+			if (info.ShowBrush)
+				brush = info.Brush.Color;
 			g.Clear(brush);
 			g.SmoothingMode = SmoothingMode.AntiAlias;
 			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-			g.DrawString(text, objFont, new SolidBrush(FColorInput[Slice].Color),layout,format);
+			g.DrawString(text, objFont, new SolidBrush(info.Color.Color),layout,format);
 			
-			BitmapData bData = bit.LockBits(new Rectangle (new Point(), bit.Size),ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-			int byteCount = bData.Stride * bit.Height; // number of bytes in the bitmap
-			byte[] bitBytes = new byte[byteCount];
-			Marshal.Copy (bData.Scan0, bitBytes, 0, byteCount);	// Copy the locked bytes from memory	
-			bit.UnlockBits (bData); // don't forget to unlock the bitmap!!
-
-			for(int i=0; i<byteLength; i++)
-				data[i]=bitBytes[i]; 			
-		 		
-		 	//unlock texture
-		 	texture.UnlockRectangle(0);
+			TextureUtils.CopyBitmapToTexture(bit, texture);
 			bit.Dispose();
 			g.Dispose();
 		}
-		
 	}
 }

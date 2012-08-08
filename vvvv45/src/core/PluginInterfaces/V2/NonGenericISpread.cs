@@ -41,7 +41,7 @@ namespace VVVV.PluginInterfaces.V2.NonGeneric
     public interface IDiffSpread : ISpread
     {
         /// <summary>
-        /// Subscribe to this event to get noticed when the data changes.
+        /// Subscribe to this event to get notified when the data changes.
         /// </summary>
         /// <remarks>
         /// Only data from this spread is valid in an event handler.
@@ -52,7 +52,7 @@ namespace VVVV.PluginInterfaces.V2.NonGeneric
         /// <summary>
         /// Is true if the spread data has changed in this frame.
         /// </summary>
-        bool IsChanged
+        new bool IsChanged
         {
             get;
         }

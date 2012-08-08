@@ -157,4 +157,54 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
     }
+
+    class MeshOutStream<T, TMetadata> : BufferedIOStream<T>, IDXMeshPin
+        where T : DXResource<Mesh, TMetadata>
+    {
+        private readonly IDXMeshOut FInternalMeshOut;
+
+        public MeshOutStream(IInternalPluginHost host, OutputAttribute attribute)
+        {
+            FInternalMeshOut = host.CreateMeshOutput2(
+                this,
+                attribute.Name,
+                (TSliceMode)attribute.SliceMode,
+                (TPinVisibility)attribute.Visibility
+               );
+        }
+
+        public override void Flush()
+        {
+            if (IsChanged)
+            {
+                FInternalMeshOut.SliceCount = Length;
+                FInternalMeshOut.MarkPinAsChanged();
+            }
+            base.Flush();
+        }
+
+        Mesh IDXMeshPin.this[Device device, int slice]
+        {
+            get
+            {
+                return this[slice][device];
+            }
+        }
+
+        void IDXResourcePin.UpdateResources(Device device)
+        {
+            foreach (var resource in this)
+            {
+                resource.UpdateResource(device);
+            }
+        }
+
+        void IDXResourcePin.DestroyResources(Device device, bool onlyUnmanaged)
+        {
+            foreach (var resource in this)
+            {
+                resource.DestroyResource(device);
+            }
+        }
+    }
 }
