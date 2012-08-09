@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.2.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\CutSpheres (3d Three) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\CutSpheres (3d Three) help.v4p">
    <BOUNDS height="9450" left="585" top="5415" type="Window" width="13860">
    </BOUNDS>
    <NODE componentmode="InABox" id="23" nodename="IOBox (String)">
@@ -255,7 +255,7 @@
    </PIN>
    </NODE>
    <NODE id="6" nodename="Cons (Spreads Legacy)">
-   <BOUNDS height="0" left="7575" top="4680" type="Node" width="0">
+   <BOUNDS height="0" left="8175" top="4710" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -343,7 +343,7 @@
    <LINK dstnodeid="5" dstpinname="XYZ" srcnodeid="0" srcpinname="Output">
    </LINK>
    <NODE componentmode="InAWindow" id="24" nodename=":PLUGINS:\Cut3Spheres.dll|VVVV.Nodes.CutSpheresPlugin">
-   <BOUNDS height="270" left="6255" top="4290" type="Node" width="1680">
+   <BOUNDS height="270" left="6255" top="4290" type="Node" width="2985">
    </BOUNDS>
    <BOUNDS left="6255" top="4290" type="Box">
    </BOUNDS>
@@ -384,66 +384,24 @@
    </LINK>
    <LINK dstnodeid="1" dstpinname=".. To [" srcnodeid="24" srcpinname="Intersections">
    </LINK>
-   <NODE systemname="Intersect (3d ThreeSpheres)" filename="plugins\ThreeSpheres3dIntersect\ThreeSpheres3dIntersect.csproj" nodename="Intersect (3d ThreeSpheres)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="9300" top="4125" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="9300" top="4125">
-   </BOUNDS>
-   <PIN pinname="Radius 1" visible="1">
-   </PIN>
-   <PIN pinname="Radius 2" visible="1">
-   </PIN>
-   <PIN pinname="Radius 3" visible="1">
-   </PIN>
-   <PIN pinname="Center 1XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Center 2XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Center 3XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Radius 1">
-   </LINK>
-   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Radius 2">
-   </LINK>
-   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Radius 3">
-   </LINK>
-   <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Center 1XYZ">
-   </LINK>
-   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Center 2XYZ">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Center 3XYZ">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="27" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="9315" top="5145" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="9315" top="5145" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="26" srcpinname="Intersections" dstnodeid="27" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="28" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="7920" top="5235" width="0" height="0">
+   <BOUNDS type="Node" left="5145" top="4875" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="7920" top="5235" width="795" height="240">
+   <BOUNDS type="Box" left="5145" top="4875" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Intersections" encoded="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="24" srcpinname="Intersections" dstnodeid="28" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="30" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8025" top="5955" width="0" height="0">
+   <BOUNDS type="Node" left="8250" top="5385" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="8025" top="5955" width="795" height="720">
+   <BOUNDS type="Box" left="8250" top="5385" width="795" height="720">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -456,14 +414,16 @@
    <PIN pinname="Vector Size" slicecount="1" values="3">
    </PIN>
    <PIN pinname="Default" slicecount="1" encoded="0" values="|0, 0, 0|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Intersect Point 1XYZ|" encoded="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="24" srcpinname="Intersect Point 1XYZ" dstnodeid="30" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8925" top="5970" width="0" height="0">
+   <BOUNDS type="Node" left="9315" top="5835" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="8925" top="5970" width="795" height="720">
+   <BOUNDS type="Box" left="9315" top="5835" width="795" height="720">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -477,43 +437,9 @@
    </PIN>
    <PIN pinname="Default" slicecount="1" encoded="0" values="|0, 0, 0|">
    </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Intersect Point 2XYZ|" encoded="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="24" srcpinname="Intersect Point 2XYZ" dstnodeid="31" dstpinname="Y Input Value">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="10815" top="5655" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10815" top="5655" width="795" height="720">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Y Input Value">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="26" srcpinname="Intersection Point 1XYZ" dstnodeid="32" dstpinname="Y Input Value">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="33" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="11955" top="5670" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="11955" top="5670" width="795" height="720">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Y Input Value">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="26" srcpinname="Intersection Point 2XYZ" dstnodeid="33" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
