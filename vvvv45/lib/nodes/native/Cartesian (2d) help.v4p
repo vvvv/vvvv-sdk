@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Polar (2d Join) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Cartesian (2d Vector) help.v4p" systemname="Cartesian (2d Vector) help">
-   <BOUNDS height="9585" left="1020" top="1590" type="Window" width="9570">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Cartesian (2d) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Cartesian (2d) help.v4p" systemname="Cartesian (2d) help">
+   <BOUNDS height="9585" left="4140" top="1605" type="Window" width="9585">
    </BOUNDS>
    <NODE componentmode="InABox" hiddenwhenlocked="0" id="10" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="100" left="3540" top="4500" type="Node" width="100">
@@ -29,7 +29,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="2400" top="41700" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Polar (2d Join)|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Cartesian - (2D)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -41,16 +41,20 @@
    <NODE componentmode="InABox" id="28" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="165" top="780" type="Node" width="570">
    </BOUNDS>
-   <BOUNDS height="525" left="165" top="780" type="Box" width="2550">
+   <BOUNDS height="525" left="165" top="780" type="Box" width="2475">
    </BOUNDS>
    <BOUNDS height="160" left="2400" top="41700" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Returns a 2d-vector given polar coordinates (ie. angle, length).|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Returns cartesian coordinates of a point given in polar coordinates&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="34" nodename="Polar (3d)" systemname="Polar (3d)">
+   <BOUNDS height="100" left="555" top="3150" type="Node" width="100">
+   </BOUNDS>
    </NODE>
    <NODE componentmode="InABox" id="35" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="240" top="1935" type="Node" width="750">
@@ -66,16 +70,24 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="36" nodename="Polar (2d Vector)" systemname="Polar (2d Split)">
-   <BOUNDS height="100" left="555" top="2310" type="Node" width="100">
+   <NODE componentmode="Hidden" id="36" nodename="Polar (2d Vector)" systemname="Polar (2d Vector)">
+   <BOUNDS height="100" left="555" top="2730" type="Node" width="100">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="Hidden" id="37" nodename="Polar (3d Vector)" systemname="Polar (3d Split)">
-   <BOUNDS height="100" left="555" top="2775" type="Node" width="100">
+   <NODE componentmode="Hidden" id="37" nodename="Polar (3d Vector)" systemname="Polar (3d Vector)">
+   <BOUNDS height="100" left="555" top="3555" type="Node" width="100">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="Hidden" id="40" nodename="Cartesian (3d Vector)" systemname="Polar (3d Join)">
-   <BOUNDS height="100" left="1245" top="2775" type="Node" width="100">
+   <NODE componentmode="Hidden" id="38" nodename="Cartesian (2d Vector)" systemname="Cartesian (2d Vector)">
+   <BOUNDS height="100" left="1245" top="2730" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="39" nodename="Cartesian (3d)" systemname="Cartesian (3d)">
+   <BOUNDS height="100" left="1245" top="3150" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="40" nodename="Cartesian (3d Vector)" systemname="Cartesian (3d Vector)">
+   <BOUNDS height="100" left="1245" top="3555" type="Node" width="100">
    </BOUNDS>
    </NODE>
    <NODE componentmode="Hidden" hiddenwhenlocked="0" id="45" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
@@ -96,6 +108,18 @@
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" id="3" nodename="Cartesian (2d)" systemname="Cartesian (2d)">
+   <BOUNDS height="100" left="3870" top="2220" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Angle" visible="1">
+   </PIN>
+   <PIN pinname="Length" visible="1">
+   </PIN>
+   </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="48" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="4620" top="1710" width="0" height="0">
    </BOUNDS>
@@ -103,23 +127,31 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0.48">
    </PIN>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
+   <LINK srcnodeid="48" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Length">
+   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="49" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="3870" top="1350" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="3870" top="1350" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.0600000000000001">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.19">
    </PIN>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
+   <LINK srcnodeid="49" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Angle">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="X" dstnodeid="45" dstpinname="TranslateX">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Y" dstnodeid="45" dstpinname="TranslateY">
+   </LINK>
    <NODE componentmode="Hidden" id="44" nodename="Segment (DX9)" systemname="Segment (DX9)" filename="">
    <BOUNDS height="100" left="3540" top="3810" type="Node" width="100">
    </BOUNDS>
@@ -134,12 +166,16 @@
    </LINK>
    <LINK srcnodeid="44" srcpinname="Layer" dstnodeid="10" dstpinname="Layers">
    </LINK>
+   <NODE componentmode="Hidden" id="32" nodename="Polar (2d)" systemname="Polar (2d)">
+   <BOUNDS height="100" left="555" top="2310" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="50" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4785" top="1350" width="1965" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="4785" top="1350" width="3225" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Angle (from center point to desired point)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Angle (from center point to desired point)|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -153,7 +189,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5460" top="1710" width="3885" height="285">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Length (distance between center and desired point)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Length (distance between center and desired point)|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -162,12 +198,24 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Vector (2d Join)" nodename="Vector (2d Join)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="5640" top="3060" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="X" dstnodeid="52" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Y" dstnodeid="52" dstpinname="Y">
+   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="53" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="5640" top="2970" width="0" height="0">
+   <BOUNDS type="Node" left="5640" top="3570" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="5640" top="2970" width="795" height="480">
+   <BOUNDS type="Box" left="5640" top="3570" width="795" height="480">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -175,15 +223,17 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value">
    </PIN>
    </NODE>
+   <LINK srcnodeid="52" srcpinname="XY" dstnodeid="53" dstpinname="Y Input Value">
+   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="54" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6510" top="3090" width="1110" height="270">
+   <BOUNDS type="Node" left="6510" top="3690" width="1110" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6510" top="3090" width="1110" height="270">
+   <BOUNDS type="Box" left="6510" top="3690" width="1110" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; XY position|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; XY position|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -192,40 +242,4 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="3" nodename="Cartesian (2d Vector)" systemname="Polar (2d Join)">
-   <BOUNDS height="100" left="3870" top="2220" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Angle" visible="1">
-   </PIN>
-   <PIN pinname="Length" visible="1">
-   </PIN>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="48" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Length">
-   </LINK>
-   <LINK srcnodeid="49" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Angle">
-   </LINK>
-   <LINK srcnodeid="3" srcpinname="XY" dstnodeid="53" dstpinname="Y Input Value">
-   </LINK>
-   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="56">
-   <BOUNDS type="Node" left="3855" top="2910" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="3" srcpinname="XY" dstnodeid="56" dstpinname="XY">
-   </LINK>
-   <LINK srcnodeid="56" srcpinname="X" dstnodeid="45" dstpinname="TranslateX">
-   </LINK>
-   <LINK srcnodeid="56" srcpinname="Y" dstnodeid="45" dstpinname="TranslateY">
-   </LINK>
    </PATCH>
