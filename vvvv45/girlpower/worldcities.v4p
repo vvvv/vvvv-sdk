@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\worldcities.v4p">
    <BOUNDS height="15495" left="6165" top="465" type="Window" width="9390">
    </BOUNDS>
@@ -23,7 +23,7 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="earth">
+   <PIN pinname="Descriptive Name" slicecount="1" values="earth" encoded="0">
    </PIN>
    </NODE>
    <NODE id="24" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
@@ -31,7 +31,7 @@
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\lib\assets\images\earth_512x512.jpg">
+   <PIN pinname="Filename" slicecount="1" values="..\lib\assets\images\earth_512x512.jpg" encoded="0">
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
@@ -139,7 +139,7 @@
    </PIN>
    <PIN pinname="Draw Slicewise" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="cities">
+   <PIN pinname="Descriptive Name" slicecount="1" values="cities" encoded="0">
    </PIN>
    </NODE>
    <NODE componentmode="InAWindow" id="1" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
@@ -247,7 +247,7 @@
    </PIN>
    <PIN pinname="Intersperse" slicecount="1" values="None">
    </PIN>
-   <PIN pinname="Intersperse String" slicecount="1" encoded="0" values="|&tab;|">
+   <PIN pinname="Intersperse String" slicecount="1" values="|&tab;|" encoded="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="39" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -257,7 +257,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="8955" top="2325" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|source: http://www.infoplease.com/ipa/A0001769.html|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|source: http://www.infoplease.com/ipa/A0001769.html|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -306,6 +306,22 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
+   <NODE id="60" nodename="Cartesian (3d)" systemname="Cartesian (3d)">
+   <BOUNDS height="0" left="2610" top="7230" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Yaw" visible="1">
+   </PIN>
+   <PIN pinname="Length" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
    <NODE id="59" nodename="Sift (String)" systemname="Sift (String)">
    <BOUNDS height="0" left="4305" top="4185" type="Node" width="0">
    </BOUNDS>
@@ -343,7 +359,7 @@
    <NODE id="56" nodename="Expr (Value Legacy)" systemname="Expr (Value Legacy)">
    <BOUNDS height="0" left="2610" top="5385" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Term" slicecount="1" encoded="0" values="(a+b/60)*c">
+   <PIN pinname="Term" slicecount="1" values="(a+b/60)*c" encoded="0">
    </PIN>
    <PIN pinname="A" visible="1">
    </PIN>
@@ -419,7 +435,7 @@
    <NODE id="51" nodename="Expr (Value Legacy)" systemname="Expr (Value Legacy)">
    <BOUNDS height="0" left="5175" top="5385" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Term" slicecount="1" encoded="0" values="(a+b/60)*c">
+   <PIN pinname="Term" slicecount="1" values="(a+b/60)*c" encoded="0">
    </PIN>
    <PIN pinname="A" visible="1">
    </PIN>
@@ -438,6 +454,28 @@
    </LINK>
    <LINK dstnodeid="63" dstpinname="Input" srcnodeid="51" srcpinname="Output">
    </LINK>
+   <LINK dstnodeid="60" dstpinname="Pitch" srcnodeid="55" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="60" dstpinname="Yaw" srcnodeid="63" srcpinname="Output">
+   </LINK>
+   <NODE id="50" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
+   <BOUNDS height="0" left="2610" top="7920" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="50" dstpinname="X" srcnodeid="60" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="50" dstpinname="Y" srcnodeid="60" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="50" dstpinname="Z" srcnodeid="60" srcpinname="Z">
+   </LINK>
    <NODE componentmode="InABox" id="49" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="6615" top="7020" type="Node" width="0">
    </BOUNDS>
@@ -447,11 +485,13 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="||">
+   <PIN pinname="Descriptive Name" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="0.5">
    </PIN>
    </NODE>
+   <LINK dstnodeid="60" dstpinname="Length" srcnodeid="49" srcpinname="Y Output Value">
+   </LINK>
    <LINK dstnodeid="61" dstpinname="Input" srcnodeid="45" srcpinname="Output 2">
    </LINK>
    <LINK dstnodeid="57" dstpinname="Input" srcnodeid="45" srcpinname="Output 3">
@@ -484,6 +524,8 @@
    </LINK>
    <LINK dstnodeid="26" dstpinname="Transform In" srcnodeid="64" srcpinname="Transform Out">
    </LINK>
+   <LINK dstnodeid="64" dstpinname="XYZ" srcnodeid="50" srcpinname="XYZ">
+   </LINK>
    <NODE componentmode="InABox" id="65" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="0" left="4485" top="3465" type="Node" width="0">
    </BOUNDS>
@@ -495,7 +537,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Input String" slicecount="2" encoded="0" values="N,S">
+   <PIN pinname="Input String" slicecount="2" values="N,S" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -511,7 +553,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Input String" slicecount="2" encoded="0" values="W,E">
+   <PIN pinname="Input String" slicecount="2" values="W,E" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -527,7 +569,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="120" visible="1" encoded="0" values="|Aberdeen, Scotland &tab;57 &tab;9 N &tab;2 &tab;9 W &tab;5:00 p.m.|,|Adelaide, Australia &tab;34 &tab;55 S &tab;138 &tab;36 E &tab;2:30 a.m.1|,|Algiers, Algeria&tab;36 &tab;50 N &tab;3 &tab;0 E &tab;6:00 p.m.|,|Amsterdam, Netherlands&tab;52 &tab;22 N &tab;4 &tab;53 E &tab;6:00 p.m.|,|Ankara, Turkey &tab;39 &tab;55 N &tab;32 &tab;55 E &tab;7:00 p.m.|,|Asunción, Paraguay &tab;25 &tab;15 S &tab;57 &tab;40 W &tab;1:00 p.m.|,|Athens, Greece&tab;37 &tab;58 N &tab;23 &tab;43 E &tab;7:00 p.m.|,|Auckland, New Zealand &tab;36 &tab;52 S &tab;174 &tab;45 E &tab;5:00 a.m.1|,|Bangkok, Thailand &tab;13 &tab;45 N &tab;100 &tab;30 E &tab;midnight|,|Barcelona, Spain&tab;41 &tab;23 N &tab;2 &tab;9 E &tab;6:00 p.m.|,|Beijing, China&tab;39 &tab;55 N &tab;116 &tab;25 E &tab;1:00 a.m.1|,|Belém, Brazil &tab;1 &tab;28 S &tab;48 &tab;29 W &tab;2:00 p.m.|,|Belfast, Northern Ireland &tab;54 &tab;37 N &tab;5 &tab;56 W &tab;5:00 p.m.|,|Belgrade, Serbia &tab;44 &tab;52 N &tab;20 &tab;32 E &tab;6:00 p.m.|,|Berlin, Germany&tab;52 &tab;30 N &tab;13 &tab;25 E &tab;6:00 p.m.|,|Birmingham, England &tab;52 &tab;25 N &tab;1 &tab;55 W &tab;5:00 p.m.|,|Bogotá, Colombia &tab;4 &tab;32 N &tab;74 &tab;15 W &tab;12:00 noon|,|Bombay, India&tab;19 &tab;0 N &tab;72 &tab;48 E &tab;10:30 p.m.|,|Bordeaux, France &tab;44 &tab;50 N &tab;0 &tab;31 W &tab;6:00 p.m.|,|Bremen, Germany &tab;53 &tab;5 N &tab;8 &tab;49 E &tab;6:00 p.m.|,|Brisbane, Australia &tab;27 &tab;29 S &tab;153 &tab;8 E &tab;3:00 a.m.1|,|Bristol, England &tab;51 &tab;28 N &tab;2 &tab;35 W &tab;5:00 p.m.|,|Brussels, Belgium&tab;50 &tab;52 N &tab;4 &tab;22 E &tab;6:00 p.m.|,|Bucharest, Romania&tab;44 &tab;25 N &tab;26 &tab;7 E &tab;7:00 p.m.|,|Budapest, Hungary&tab;47 &tab;30 N &tab;19 &tab;5 E &tab;6:00 p.m.|,|Buenos Aires, Argentina&tab;34 &tab;35 S &tab;58 &tab;22 W &tab;2:00 p.m.|,|Cairo, Egypt&tab;30 &tab;2 N &tab;31 &tab;21 E &tab;7:00 p.m.|,|Calcutta, India&tab;22 &tab;34 N &tab;88 &tab;24 E &tab;10:30 p.m.|,|Canton, China &tab;23 &tab;7 N &tab;113 &tab;15 E &tab;1:00 a.m.1|,|Cape Town, South Africa &tab;33 &tab;55 S &tab;18 &tab;22 E &tab;7:00 p.m.|,|Caracas, Venezuela &tab;10 &tab;28 N &tab;67 &tab;2 W &tab;1:00 p.m.|,|Cayenne, French Guiana &tab;4 &tab;49 N &tab;52 &tab;18 W &tab;2:00 p.m.|,|Chihuahua, Mexico &tab;28 &tab;37 N &tab;106 &tab;5 W &tab;10:00 a.m.|,|Chongqing, China &tab;29 &tab;46 N &tab;106 &tab;34 E &tab;1:00 a.m.1|,|Copenhagen, Denmark&tab;55 &tab;40 N &tab;12 &tab;34 E &tab;6:00 p.m.|,|Córdoba, Argentina &tab;31 &tab;28 S &tab;64 &tab;10 W &tab;2:00 p.m.|,|Dakar, Senegal &tab;14 &tab;40 N &tab;17 &tab;28 W &tab;5:00 p.m.|,|Darwin, Australia &tab;12 &tab;28 S &tab;130 &tab;51 E &tab;2:30 a.m.1|,|Djibouti, Djibouti&tab;11 &tab;30 N &tab;43 &tab;3 E &tab;8:00 p.m.|,|Dublin, Ireland&tab;53 &tab;20 N &tab;6 &tab;15 W &tab;5:00 p.m.|,|Durban, South Africa &tab;29 &tab;53 S &tab;30 &tab;53 E &tab;7:00 p.m.|,|Edinburgh, Scotland &tab;55 &tab;55 N &tab;3 &tab;10 W &tab;5:00 p.m.|,|Frankfurt, Germany&tab;50 &tab;7 N &tab;8 &tab;41 E &tab;6:00 p.m.|,|Georgetown, Guyana &tab;6 &tab;45 N &tab;58 &tab;15 W &tab;1:00 p.m.|,|Glasgow, Scotland &tab;55 &tab;50 N &tab;4 &tab;15 W &tab;5:00 p.m.|,|Guatemala City, Guatemala &tab;14 &tab;37 N &tab;90 &tab;31 W &tab;11:00 a.m.|,|Guayaquil, Ecuador &tab;2 &tab;10 S &tab;79 &tab;56 W &tab;12:00 noon|,|Hamburg, Germany&tab;53 &tab;33 N &tab;10 &tab;2 E &tab;6:00 p.m.|,|Hammerfest, Norway &tab;70 &tab;38 N &tab;23 &tab;38 E &tab;6:00 p.m.|,|Havana, Cuba&tab;23 &tab;8 N &tab;82 &tab;23 W &tab;12:00 noon|,|Helsinki, Finland &tab;60 &tab;10 N &tab;25 &tab;0 E &tab;7:00 p.m.|,|Hobart, Tasmania &tab;42 &tab;52 S &tab;147 &tab;19 E &tab;3:00 a.m.1|,|Hong Kong, China&tab;22&tab;20 N&tab;114&tab;11 E&tab;1:00 a.m.1|,|Iquique, Chile &tab;20 &tab;10 S &tab;70 &tab;7 W &tab;1:00 p.m.|,|Irkutsk, Russia &tab;52 &tab;30 N &tab;104 &tab;20 E &tab;1:00 a.m.|,|Jakarta, Indonesia &tab;6 &tab;16 S &tab;106 &tab;48 E &tab;midnight|,|Johannesburg, South Africa &tab;26 &tab;12 S &tab;28 &tab;4 E &tab;7:00 p.m.|,|Kingston, Jamaica &tab;17 &tab;59 N &tab;76 &tab;49 W &tab;12:00 noon|,|Kinshasa, Congo&tab;4 &tab;18 S &tab;15 &tab;17 E &tab;6:00 p.m.|,|Kuala Lumpur, Malaysia&tab;3&tab;8 N&tab;101&tab;42 E&tab;1:00 a.m.1|,|La Paz, Bolivia &tab;16 &tab;27 S &tab;68 &tab;22 W &tab;1:00 p.m.|,|Leeds, England &tab;53 &tab;45 N &tab;1 &tab;30 W &tab;5:00 p.m.|,|Lima, Peru &tab;12 &tab;0 S &tab;77 &tab;2 W &tab;12:00 noon|,|Lisbon, Portugal&tab;38 &tab;44 N &tab;9 &tab;9 W &tab;5:00 p.m.|,|Liverpool, England &tab;53 &tab;25 N &tab;3 &tab;0 W &tab;5:00 p.m.|,|London, England&tab;51 &tab;32 N &tab;0 &tab;5 W &tab;5:00 p.m.|,|Lyons, France &tab;45 &tab;45 N &tab;4 &tab;50 E &tab;6:00 p.m.|,|Madrid, Spain&tab;40 &tab;26 N &tab;3 &tab;42 W &tab;6:00 p.m.|,|Manchester, England &tab;53 &tab;30 N &tab;2 &tab;15 W &tab;5:00 p.m.|,|Manila, Philippines&tab;14 &tab;35 N &tab;120 &tab;57 E &tab;1:00 a.m.1|,|Marseilles, France &tab;43 &tab;20 N &tab;5 &tab;20 E &tab;6:00 p.m.|,|Mazatlán, Mexico &tab;23 &tab;12 N &tab;106 &tab;25 W &tab;10:00 a.m.|,|Mecca, Saudi Arabia &tab;21 &tab;29 N &tab;39 &tab;45 E &tab;8:00 p.m.|,|Melbourne, Australia&tab;37 &tab;47 S &tab;144 &tab;58 E &tab;3:00 a.m.1|,|Mexico City, Mexico&tab;19 &tab;26 N &tab;99 &tab;7 W &tab;11:00 a.m.|,|Milan, Italy &tab;45 &tab;27 N &tab;9 &tab;10 E &tab;6:00 p.m.|,|Montevideo, Uruguay &tab;34 &tab;53 S &tab;56 &tab;10 W &tab;2:00 p.m.|,|Moscow, Russia&tab;55 &tab;45 N &tab;37 &tab;36 E &tab;8:00 p.m.|,|Munich, Germany &tab;48 &tab;8 N &tab;11 &tab;35 E &tab;6:00 p.m.|,|Nagasaki, Japan &tab;32 &tab;48 N &tab;129 &tab;57 E &tab;2:00 a.m.1|,|Nagoya, Japan &tab;35 &tab;7 N &tab;136 &tab;56 E &tab;2:00 a.m.1|,|Nairobi, Kenya &tab;1 &tab;25 S &tab;36 &tab;55 E &tab;8:00 p.m.|,|Nanjing (Nanking), China &tab;32 &tab;3 N &tab;118 &tab;53 E &tab;1:00 a.m.1|,|Naples, Italy &tab;40 &tab;50 N &tab;14 &tab;15 E &tab;6:00 p.m.|,|New Delhi, India&tab;28&tab;35 N&tab;77&tab;12 E&tab;10:30 p.m.|,|Newcastle-on-Tyne, England &tab;54 &tab;58 N &tab;1 &tab;37 W &tab;5:00 p.m.|,|Odessa, Ukraine &tab;46 &tab;27 N &tab;30 &tab;48 E &tab;7:00 p.m.|,|Osaka, Japan &tab;34 &tab;32 N &tab;135 &tab;30 E &tab;2:00 a.m.1|,|Oslo, Norway&tab;59 &tab;57 N &tab;10 &tab;42 E &tab;6:00 p.m.|,|Panama City, Panama &tab;8 &tab;58 N &tab;79 &tab;32 W &tab;12:00 noon|,|Paramaribo, Suriname &tab;5 &tab;45 N &tab;55 &tab;15 W &tab;2:00 p.m.|,|Paris, France&tab;48 &tab;48 N &tab;2 &tab;20 E &tab;6:00 p.m.|,|Perth, Australia &tab;31 &tab;57 S &tab;115 &tab;52 E &tab;1:00 a.m.1|,|Plymouth, England &tab;50 &tab;25 N &tab;4 &tab;5 W &tab;5:00 p.m.|,|Port Moresby, Papua New Guinea &tab;9 &tab;25 S &tab;147 &tab;8 E &tab;3:00 a.m.1|,|Prague, Czech Republic&tab;50 &tab;5 N &tab;14 &tab;26 E &tab;6:00 p.m.|,|Rangoon, Myanmar&tab;16 &tab;50 N &tab;96 &tab;0 E &tab;11:30 p.m.|,|Reykjavík, Iceland &tab;64 &tab;4 N &tab;21 &tab;58 W &tab;5:00 p.m.|,|Rio de Janeiro, Brazil&tab;22 &tab;57 S &tab;43 &tab;12 W &tab;2:00 p.m.|,|Rome, Italy&tab;41 &tab;54 N &tab;12 &tab;27 E &tab;6:00 p.m.|,|Salvador, Brazil &tab;12 &tab;56 S &tab;38 &tab;27 W &tab;2:00 p.m.|,|Santiago, Chile &tab;33 &tab;28 S &tab;70 &tab;45 W &tab;1:00 p.m.|,|St. Petersburg, Russia&tab;59 &tab;56 N &tab;30 &tab;18 E &tab;8:00 p.m.|,|São Paulo, Brazil &tab;23 &tab;31 S &tab;46 &tab;31 W &tab;2:00 p.m.|,|Shanghai, China &tab;31 &tab;10 N &tab;121 &tab;28 E &tab;1:00 a.m.1|,|Singapore, Singapore&tab;1 &tab;14 N &tab;103 &tab;55 E &tab;1:00 a.m.1|,|Sofia, Bulgaria &tab;42 &tab;40 N &tab;23 &tab;20 E &tab;7:00 p.m.|,|Stockholm, Sweden&tab;59 &tab;17 N &tab;18 &tab;3 E &tab;6:00 p.m.|,|Sydney, Australia &tab;34 &tab;0 S &tab;151 &tab;0 E &tab;3:00 a.m.1|,|Tananarive, Madagascar &tab;18 &tab;50 S &tab;47 &tab;33 E &tab;8:00 p.m.|,|Teheran, Iran &tab;35 &tab;45 N &tab;51 &tab;45 E &tab;8:30 p.m.|,|Tokyo, Japan&tab;35 &tab;40 N &tab;139 &tab;45 E &tab;2:00 a.m.1|,|Tripoli, Libya &tab;32 &tab;57 N &tab;13 &tab;12 E &tab;7:00 p.m.|,|Venice, Italy&tab;45 &tab;26 N &tab;12 &tab;20 E &tab;6:00 p.m.|,|Veracruz, Mexico &tab;19 &tab;10 N &tab;96 &tab;10 W &tab;11:00 a.m.|,|Vienna, Austria&tab;48 &tab;14 N &tab;16 &tab;20 E &tab;6:00 p.m.|,|Vladivostok, Russia &tab;43 &tab;10 N &tab;132 &tab;0 E &tab;3:00 a.m.1|,|Warsaw, Poland&tab;52 &tab;14 N &tab;21 &tab;0 E &tab;6:00 p.m.|,|Wellington, New Zealand &tab;41 &tab;17 S &tab;174 &tab;47 E &tab;5:00 a.m.1|,|Zürich, Switzerland&tab;47 &tab;21 N &tab;8 &tab;31 E &tab;6:00 p.m.|">
+   <PIN pinname="Input String" slicecount="120" visible="1" values="|Aberdeen, Scotland &tab;57 &tab;9 N &tab;2 &tab;9 W &tab;5:00 p.m.|,|Adelaide, Australia &tab;34 &tab;55 S &tab;138 &tab;36 E &tab;2:30 a.m.1|,|Algiers, Algeria&tab;36 &tab;50 N &tab;3 &tab;0 E &tab;6:00 p.m.|,|Amsterdam, Netherlands&tab;52 &tab;22 N &tab;4 &tab;53 E &tab;6:00 p.m.|,|Ankara, Turkey &tab;39 &tab;55 N &tab;32 &tab;55 E &tab;7:00 p.m.|,|Asunción, Paraguay &tab;25 &tab;15 S &tab;57 &tab;40 W &tab;1:00 p.m.|,|Athens, Greece&tab;37 &tab;58 N &tab;23 &tab;43 E &tab;7:00 p.m.|,|Auckland, New Zealand &tab;36 &tab;52 S &tab;174 &tab;45 E &tab;5:00 a.m.1|,|Bangkok, Thailand &tab;13 &tab;45 N &tab;100 &tab;30 E &tab;midnight|,|Barcelona, Spain&tab;41 &tab;23 N &tab;2 &tab;9 E &tab;6:00 p.m.|,|Beijing, China&tab;39 &tab;55 N &tab;116 &tab;25 E &tab;1:00 a.m.1|,|Belém, Brazil &tab;1 &tab;28 S &tab;48 &tab;29 W &tab;2:00 p.m.|,|Belfast, Northern Ireland &tab;54 &tab;37 N &tab;5 &tab;56 W &tab;5:00 p.m.|,|Belgrade, Serbia &tab;44 &tab;52 N &tab;20 &tab;32 E &tab;6:00 p.m.|,|Berlin, Germany&tab;52 &tab;30 N &tab;13 &tab;25 E &tab;6:00 p.m.|,|Birmingham, England &tab;52 &tab;25 N &tab;1 &tab;55 W &tab;5:00 p.m.|,|Bogotá, Colombia &tab;4 &tab;32 N &tab;74 &tab;15 W &tab;12:00 noon|,|Bombay, India&tab;19 &tab;0 N &tab;72 &tab;48 E &tab;10:30 p.m.|,|Bordeaux, France &tab;44 &tab;50 N &tab;0 &tab;31 W &tab;6:00 p.m.|,|Bremen, Germany &tab;53 &tab;5 N &tab;8 &tab;49 E &tab;6:00 p.m.|,|Brisbane, Australia &tab;27 &tab;29 S &tab;153 &tab;8 E &tab;3:00 a.m.1|,|Bristol, England &tab;51 &tab;28 N &tab;2 &tab;35 W &tab;5:00 p.m.|,|Brussels, Belgium&tab;50 &tab;52 N &tab;4 &tab;22 E &tab;6:00 p.m.|,|Bucharest, Romania&tab;44 &tab;25 N &tab;26 &tab;7 E &tab;7:00 p.m.|,|Budapest, Hungary&tab;47 &tab;30 N &tab;19 &tab;5 E &tab;6:00 p.m.|,|Buenos Aires, Argentina&tab;34 &tab;35 S &tab;58 &tab;22 W &tab;2:00 p.m.|,|Cairo, Egypt&tab;30 &tab;2 N &tab;31 &tab;21 E &tab;7:00 p.m.|,|Calcutta, India&tab;22 &tab;34 N &tab;88 &tab;24 E &tab;10:30 p.m.|,|Canton, China &tab;23 &tab;7 N &tab;113 &tab;15 E &tab;1:00 a.m.1|,|Cape Town, South Africa &tab;33 &tab;55 S &tab;18 &tab;22 E &tab;7:00 p.m.|,|Caracas, Venezuela &tab;10 &tab;28 N &tab;67 &tab;2 W &tab;1:00 p.m.|,|Cayenne, French Guiana &tab;4 &tab;49 N &tab;52 &tab;18 W &tab;2:00 p.m.|,|Chihuahua, Mexico &tab;28 &tab;37 N &tab;106 &tab;5 W &tab;10:00 a.m.|,|Chongqing, China &tab;29 &tab;46 N &tab;106 &tab;34 E &tab;1:00 a.m.1|,|Copenhagen, Denmark&tab;55 &tab;40 N &tab;12 &tab;34 E &tab;6:00 p.m.|,|Córdoba, Argentina &tab;31 &tab;28 S &tab;64 &tab;10 W &tab;2:00 p.m.|,|Dakar, Senegal &tab;14 &tab;40 N &tab;17 &tab;28 W &tab;5:00 p.m.|,|Darwin, Australia &tab;12 &tab;28 S &tab;130 &tab;51 E &tab;2:30 a.m.1|,|Djibouti, Djibouti&tab;11 &tab;30 N &tab;43 &tab;3 E &tab;8:00 p.m.|,|Dublin, Ireland&tab;53 &tab;20 N &tab;6 &tab;15 W &tab;5:00 p.m.|,|Durban, South Africa &tab;29 &tab;53 S &tab;30 &tab;53 E &tab;7:00 p.m.|,|Edinburgh, Scotland &tab;55 &tab;55 N &tab;3 &tab;10 W &tab;5:00 p.m.|,|Frankfurt, Germany&tab;50 &tab;7 N &tab;8 &tab;41 E &tab;6:00 p.m.|,|Georgetown, Guyana &tab;6 &tab;45 N &tab;58 &tab;15 W &tab;1:00 p.m.|,|Glasgow, Scotland &tab;55 &tab;50 N &tab;4 &tab;15 W &tab;5:00 p.m.|,|Guatemala City, Guatemala &tab;14 &tab;37 N &tab;90 &tab;31 W &tab;11:00 a.m.|,|Guayaquil, Ecuador &tab;2 &tab;10 S &tab;79 &tab;56 W &tab;12:00 noon|,|Hamburg, Germany&tab;53 &tab;33 N &tab;10 &tab;2 E &tab;6:00 p.m.|,|Hammerfest, Norway &tab;70 &tab;38 N &tab;23 &tab;38 E &tab;6:00 p.m.|,|Havana, Cuba&tab;23 &tab;8 N &tab;82 &tab;23 W &tab;12:00 noon|,|Helsinki, Finland &tab;60 &tab;10 N &tab;25 &tab;0 E &tab;7:00 p.m.|,|Hobart, Tasmania &tab;42 &tab;52 S &tab;147 &tab;19 E &tab;3:00 a.m.1|,|Hong Kong, China&tab;22&tab;20 N&tab;114&tab;11 E&tab;1:00 a.m.1|,|Iquique, Chile &tab;20 &tab;10 S &tab;70 &tab;7 W &tab;1:00 p.m.|,|Irkutsk, Russia &tab;52 &tab;30 N &tab;104 &tab;20 E &tab;1:00 a.m.|,|Jakarta, Indonesia &tab;6 &tab;16 S &tab;106 &tab;48 E &tab;midnight|,|Johannesburg, South Africa &tab;26 &tab;12 S &tab;28 &tab;4 E &tab;7:00 p.m.|,|Kingston, Jamaica &tab;17 &tab;59 N &tab;76 &tab;49 W &tab;12:00 noon|,|Kinshasa, Congo&tab;4 &tab;18 S &tab;15 &tab;17 E &tab;6:00 p.m.|,|Kuala Lumpur, Malaysia&tab;3&tab;8 N&tab;101&tab;42 E&tab;1:00 a.m.1|,|La Paz, Bolivia &tab;16 &tab;27 S &tab;68 &tab;22 W &tab;1:00 p.m.|,|Leeds, England &tab;53 &tab;45 N &tab;1 &tab;30 W &tab;5:00 p.m.|,|Lima, Peru &tab;12 &tab;0 S &tab;77 &tab;2 W &tab;12:00 noon|,|Lisbon, Portugal&tab;38 &tab;44 N &tab;9 &tab;9 W &tab;5:00 p.m.|,|Liverpool, England &tab;53 &tab;25 N &tab;3 &tab;0 W &tab;5:00 p.m.|,|London, England&tab;51 &tab;32 N &tab;0 &tab;5 W &tab;5:00 p.m.|,|Lyons, France &tab;45 &tab;45 N &tab;4 &tab;50 E &tab;6:00 p.m.|,|Madrid, Spain&tab;40 &tab;26 N &tab;3 &tab;42 W &tab;6:00 p.m.|,|Manchester, England &tab;53 &tab;30 N &tab;2 &tab;15 W &tab;5:00 p.m.|,|Manila, Philippines&tab;14 &tab;35 N &tab;120 &tab;57 E &tab;1:00 a.m.1|,|Marseilles, France &tab;43 &tab;20 N &tab;5 &tab;20 E &tab;6:00 p.m.|,|Mazatlán, Mexico &tab;23 &tab;12 N &tab;106 &tab;25 W &tab;10:00 a.m.|,|Mecca, Saudi Arabia &tab;21 &tab;29 N &tab;39 &tab;45 E &tab;8:00 p.m.|,|Melbourne, Australia&tab;37 &tab;47 S &tab;144 &tab;58 E &tab;3:00 a.m.1|,|Mexico City, Mexico&tab;19 &tab;26 N &tab;99 &tab;7 W &tab;11:00 a.m.|,|Milan, Italy &tab;45 &tab;27 N &tab;9 &tab;10 E &tab;6:00 p.m.|,|Montevideo, Uruguay &tab;34 &tab;53 S &tab;56 &tab;10 W &tab;2:00 p.m.|,|Moscow, Russia&tab;55 &tab;45 N &tab;37 &tab;36 E &tab;8:00 p.m.|,|Munich, Germany &tab;48 &tab;8 N &tab;11 &tab;35 E &tab;6:00 p.m.|,|Nagasaki, Japan &tab;32 &tab;48 N &tab;129 &tab;57 E &tab;2:00 a.m.1|,|Nagoya, Japan &tab;35 &tab;7 N &tab;136 &tab;56 E &tab;2:00 a.m.1|,|Nairobi, Kenya &tab;1 &tab;25 S &tab;36 &tab;55 E &tab;8:00 p.m.|,|Nanjing (Nanking), China &tab;32 &tab;3 N &tab;118 &tab;53 E &tab;1:00 a.m.1|,|Naples, Italy &tab;40 &tab;50 N &tab;14 &tab;15 E &tab;6:00 p.m.|,|New Delhi, India&tab;28&tab;35 N&tab;77&tab;12 E&tab;10:30 p.m.|,|Newcastle-on-Tyne, England &tab;54 &tab;58 N &tab;1 &tab;37 W &tab;5:00 p.m.|,|Odessa, Ukraine &tab;46 &tab;27 N &tab;30 &tab;48 E &tab;7:00 p.m.|,|Osaka, Japan &tab;34 &tab;32 N &tab;135 &tab;30 E &tab;2:00 a.m.1|,|Oslo, Norway&tab;59 &tab;57 N &tab;10 &tab;42 E &tab;6:00 p.m.|,|Panama City, Panama &tab;8 &tab;58 N &tab;79 &tab;32 W &tab;12:00 noon|,|Paramaribo, Suriname &tab;5 &tab;45 N &tab;55 &tab;15 W &tab;2:00 p.m.|,|Paris, France&tab;48 &tab;48 N &tab;2 &tab;20 E &tab;6:00 p.m.|,|Perth, Australia &tab;31 &tab;57 S &tab;115 &tab;52 E &tab;1:00 a.m.1|,|Plymouth, England &tab;50 &tab;25 N &tab;4 &tab;5 W &tab;5:00 p.m.|,|Port Moresby, Papua New Guinea &tab;9 &tab;25 S &tab;147 &tab;8 E &tab;3:00 a.m.1|,|Prague, Czech Republic&tab;50 &tab;5 N &tab;14 &tab;26 E &tab;6:00 p.m.|,|Rangoon, Myanmar&tab;16 &tab;50 N &tab;96 &tab;0 E &tab;11:30 p.m.|,|Reykjavík, Iceland &tab;64 &tab;4 N &tab;21 &tab;58 W &tab;5:00 p.m.|,|Rio de Janeiro, Brazil&tab;22 &tab;57 S &tab;43 &tab;12 W &tab;2:00 p.m.|,|Rome, Italy&tab;41 &tab;54 N &tab;12 &tab;27 E &tab;6:00 p.m.|,|Salvador, Brazil &tab;12 &tab;56 S &tab;38 &tab;27 W &tab;2:00 p.m.|,|Santiago, Chile &tab;33 &tab;28 S &tab;70 &tab;45 W &tab;1:00 p.m.|,|St. Petersburg, Russia&tab;59 &tab;56 N &tab;30 &tab;18 E &tab;8:00 p.m.|,|São Paulo, Brazil &tab;23 &tab;31 S &tab;46 &tab;31 W &tab;2:00 p.m.|,|Shanghai, China &tab;31 &tab;10 N &tab;121 &tab;28 E &tab;1:00 a.m.1|,|Singapore, Singapore&tab;1 &tab;14 N &tab;103 &tab;55 E &tab;1:00 a.m.1|,|Sofia, Bulgaria &tab;42 &tab;40 N &tab;23 &tab;20 E &tab;7:00 p.m.|,|Stockholm, Sweden&tab;59 &tab;17 N &tab;18 &tab;3 E &tab;6:00 p.m.|,|Sydney, Australia &tab;34 &tab;0 S &tab;151 &tab;0 E &tab;3:00 a.m.1|,|Tananarive, Madagascar &tab;18 &tab;50 S &tab;47 &tab;33 E &tab;8:00 p.m.|,|Teheran, Iran &tab;35 &tab;45 N &tab;51 &tab;45 E &tab;8:30 p.m.|,|Tokyo, Japan&tab;35 &tab;40 N &tab;139 &tab;45 E &tab;2:00 a.m.1|,|Tripoli, Libya &tab;32 &tab;57 N &tab;13 &tab;12 E &tab;7:00 p.m.|,|Venice, Italy&tab;45 &tab;26 N &tab;12 &tab;20 E &tab;6:00 p.m.|,|Veracruz, Mexico &tab;19 &tab;10 N &tab;96 &tab;10 W &tab;11:00 a.m.|,|Vienna, Austria&tab;48 &tab;14 N &tab;16 &tab;20 E &tab;6:00 p.m.|,|Vladivostok, Russia &tab;43 &tab;10 N &tab;132 &tab;0 E &tab;3:00 a.m.1|,|Warsaw, Poland&tab;52 &tab;14 N &tab;21 &tab;0 E &tab;6:00 p.m.|,|Wellington, New Zealand &tab;41 &tab;17 S &tab;174 &tab;47 E &tab;5:00 a.m.1|,|Zürich, Switzerland&tab;47 &tab;21 N &tab;8 &tab;31 E &tab;6:00 p.m.|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -561,7 +603,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|scroll through all data|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|scroll through all data|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -575,7 +617,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="sliceoffset:">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="sliceoffset:" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -611,37 +653,11 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|earth radius|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|earth radius|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="60" nodename="Polar (3d Join)" systemname="Polar (3d Join)">
-   <BOUNDS height="0" left="2610" top="7230" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Pitch" visible="1">
-   </PIN>
-   <PIN pinname="Yaw" visible="1">
-   </PIN>
-   <PIN pinname="Length" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Z" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="60" dstpinname="Pitch" srcnodeid="55" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="60" dstpinname="Yaw" srcnodeid="63" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="60" dstpinname="Length" srcnodeid="49" srcpinname="Y Output Value">
-   </LINK>
-   <LINK srcnodeid="60" srcpinname="XYZ" dstnodeid="64" dstpinname="XYZ">
-   </LINK>
    </PATCH>

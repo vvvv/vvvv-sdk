@@ -1,7 +1,23 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\( vvvv user map )\CoordinateConversion.v4p" bgcolor="15329769" locked="0" systemname="CoordinateConversion">
-   <BOUNDS height="12870" left="4575" top="2460" type="Window" width="13050">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha25.4.dtd" >
+   <PATCH nodename="C:\Users\TF\Downloads\vvvv_45alpha25.4-5277\girlpower\( vvvv user map )\CoordinateConversion.v4p" bgcolor="15329769" locked="0" systemname="CoordinateConversion">
+   <BOUNDS height="12870" left="14235" top="1470" type="Window" width="13050">
    </BOUNDS>
+   <NODE id="42" nodename="Cartesian (3d)" systemname="Cartesian (3d)">
+   <BOUNDS height="270" left="1110" top="3000" type="Node" width="2445">
+   </BOUNDS>
+   <PIN pinname="Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Yaw" visible="1">
+   </PIN>
+   <PIN pinname="Length" slicecount="1" visible="1" values="5.08317458895132">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
    <NODE id="37" nodename="MapRange (Value)" systemname="MapRange (Value)">
    <BOUNDS height="0" left="1110" top="2235" type="Node" width="0">
    </BOUNDS>
@@ -22,6 +38,26 @@
    <PIN pinname="Destination Width" slicecount="1" values="0.5">
    </PIN>
    </NODE>
+   <LINK dstnodeid="42" dstpinname="Pitch" srcnodeid="37" srcpinname="Output">
+   </LINK>
+   <NODE id="32" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
+   <BOUNDS height="270" left="1110" top="3690" type="Node" width="2460">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="32" dstpinname="X" srcnodeid="42" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="32" dstpinname="Y" srcnodeid="42" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="32" dstpinname="Z" srcnodeid="42" srcpinname="Z">
+   </LINK>
    <NODE id="30" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
    <BOUNDS height="270" left="375" top="4410" type="Node" width="795">
    </BOUNDS>
@@ -47,7 +83,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Spheres">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Spheres" encoded="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="57" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -59,7 +95,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Text">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Text" encoded="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="97" nodename="Billboard (Transform)" systemname="Billboard (Transform)">
@@ -117,7 +153,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="||">
+   <PIN pinname="Descriptive Name" slicecount="1" values="||" encoded="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="142" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -125,7 +161,7 @@
    </BOUNDS>
    <BOUNDS height="495" left="30" top="60" type="Box" width="4965">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Coordinate Conversion|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Coordinate Conversion|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -162,6 +198,8 @@
    <PIN pinname="Destination Width" slicecount="1" values="-1">
    </PIN>
    </NODE>
+   <LINK dstnodeid="42" dstpinname="Yaw" srcnodeid="217" srcpinname="Output">
+   </LINK>
    <NODE componentmode="InABox" id="256" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="2685" top="11340" type="Node" width="100">
    </BOUNDS>
@@ -171,9 +209,11 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="SphereCoordinates">
+   <PIN pinname="Descriptive Name" slicecount="1" values="SphereCoordinates" encoded="0">
    </PIN>
    </NODE>
+   <LINK dstnodeid="30" dstpinname="XYZ" srcnodeid="32" srcpinname="XYZ">
+   </LINK>
    <LINK dstnodeid="95" dstpinname="XYZ" srcnodeid="90" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="Hidden" id="302" nodename="Transform (Transform 3d)" systemname="Transform (Transform 3d)">
@@ -206,6 +246,12 @@
    <PIN pinname="Index" visible="1">
    </PIN>
    </NODE>
+   <LINK dstnodeid="321" dstpinname="Input" linkstyle="Bezier" srcnodeid="32" srcpinname="XYZ">
+   <LINKPOINT x="1170" y="4485">
+   </LINKPOINT>
+   <LINKPOINT x="6225" y="4485">
+   </LINKPOINT>
+   </LINK>
    <LINK dstnodeid="93" dstpinname="XYZ" srcnodeid="321" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="322" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
@@ -213,7 +259,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="6180" top="1485" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="ActualSliceIndex">
+   <PIN pinname="Descriptive Name" slicecount="1" values="ActualSliceIndex" encoded="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -257,7 +303,7 @@
    </BOUNDS>
    <BOUNDS height="270" left="6555" top="10095" type="Box" width="735">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="Textsize">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Textsize" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -269,7 +315,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="360" top="1485" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Lat">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Lat" encoded="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -279,7 +325,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="1560" top="1485" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Long">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Long" encoded="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -287,6 +333,12 @@
    <LINK dstnodeid="57" dstpinname="Input Node" srcnodeid="95" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="55" dstpinname="Input Node" srcnodeid="30" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="256" dstpinname="Y Input Value" hiddenwhenlocked="0" linkstyle="Bezier" srcnodeid="32" srcpinname="XYZ">
+   <LINKPOINT x="2505" y="7410">
+   </LINKPOINT>
+   <LINKPOINT x="3390" y="7635">
+   </LINKPOINT>
    </LINK>
    <NODE componentmode="Hidden" id="359" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
    <BOUNDS height="100" left="9285" top="10500" type="Node" width="100">
@@ -313,7 +365,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="||">
+   <PIN pinname="Descriptive Name" slicecount="1" values="||" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="359" dstpinname="XYZ" srcnodeid="356" srcpinname="Y Output Value">
@@ -347,7 +399,7 @@
    </BOUNDS>
    <BOUNDS height="270" left="10365" top="10095" type="Box" width="1200">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="Segmentsize">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Segmentsize" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -361,7 +413,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Segment">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Segment" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="361" dstpinname="Input Node" srcnodeid="359" srcpinname="Transform Out">
@@ -419,7 +471,7 @@
    </BOUNDS>
    <BOUNDS height="495" left="30" top="555" type="Box" width="4965">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Converts the lat and long coordinates of the xml to vector coordinates on the shpere.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Converts the lat and long coordinates of the xml to vector coordinates on the shpere.|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -437,33 +489,5 @@
    <LINK dstnodeid="302" dstpinname="Transform In" srcnodeid="97" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="97" dstpinname="Transform In" srcnodeid="93" srcpinname="Transform Out">
-   </LINK>
-   <NODE id="42" nodename="Polar (3d Join)" systemname="Polar (3d Join)">
-   <BOUNDS height="270" left="1110" top="3000" type="Node" width="2445">
-   </BOUNDS>
-   <PIN pinname="Pitch" visible="1">
-   </PIN>
-   <PIN pinname="Yaw" visible="1">
-   </PIN>
-   <PIN pinname="Length" slicecount="1" visible="1" values="5.08317458895132">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Z" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="42" dstpinname="Pitch" srcnodeid="37" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="42" dstpinname="Yaw" srcnodeid="217" srcpinname="Output">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="XYZ" dstnodeid="30" dstpinname="XYZ">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="XYZ" dstnodeid="321" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="XYZ" dstnodeid="256" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
