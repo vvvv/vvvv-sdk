@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
    <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Source\RenderTarget\RenderTargetFisheye (EX9.Texture Source).v4p" systemname="RenderTargetFisheye" filename="RenderTargetFisheye.v4p">
-   <BOUNDS type="Window" left="8895" top="3600" width="18525" height="10290">
+   <BOUNDS type="Window" left="9660" top="7455" width="18525" height="10290">
    </BOUNDS>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="0">
    <BOUNDS type="Node" left="315" top="660" width="100" height="100">
@@ -30,6 +30,8 @@
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D32F_LOCKABLE">
    </PIN>
    <PIN pinname="Aspect Ratio" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="2" systemname="IOBox (Node)">
@@ -135,11 +137,11 @@
    <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Width">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="3945" top="345" width="0" height="0">
+   <BOUNDS type="Node" left="3615" top="135" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3945" top="345" width="795" height="240">
+   <BOUNDS type="Box" left="3615" top="135" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="512">
    </PIN>
    <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -182,6 +184,8 @@
    <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="view" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="6" srcpinname="Texture Out" dstnodeid="16" dstpinname="tex0">
@@ -295,7 +299,7 @@
    <LINK srcnodeid="28" srcpinname="Output Node" dstnodeid="24" dstpinname="Aspect Ratio">
    </LINK>
    <NODE systemname="ApplyTransform (Transform)" nodename="ApplyTransform (Transform)" componentmode="Hidden" id="43">
-   <BOUNDS type="Node" left="3915" top="3480" width="100" height="100">
+   <BOUNDS type="Node" left="4350" top="3375" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
@@ -471,7 +475,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="10725" top="6780" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="512">
    </PIN>
    <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -489,7 +493,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="11775" top="6780" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="512">
    </PIN>
    <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -552,4 +556,44 @@
    </LINK>
    <INFO author="unc" description="Render with fisheye camera" tags="fx">
    </INFO>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="74" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="3285" top="3765" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3285" top="3765" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="74" srcpinname="Y Output Value" dstnodeid="62" dstpinname="Position Z">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="75" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="21585" top="1935" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="21585" top="1935" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Enabled">
+   </LINK>
    </PATCH>
