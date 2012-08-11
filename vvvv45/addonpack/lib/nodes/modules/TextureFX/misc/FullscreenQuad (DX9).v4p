@@ -427,7 +427,7 @@
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="| Wrap|">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Address Mode|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Texture Address Mode|">
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
@@ -455,7 +455,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="11220" top="615" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -467,7 +467,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Enable Texture Filter|">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
@@ -506,40 +506,44 @@
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="14700" top="5130" width="100" height="100">
+   <NODE systemname="CreateEnum (Enumerations)" nodename="CreateEnum (Enumerations)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="14340" top="4905" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum Name" slicecount="1" encoded="0" values="FullscreenQuadBlendMode">
+   </PIN>
+   <PIN pinname="Strings" visible="1">
+   </PIN>
+   <PIN pinname="Allow Doubles" slicecount="1" values="ChangeExistingObjectIfNIL">
+   </PIN>
+   </NODE>
+   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="14580" top="5655" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Enum" slicecount="1" values="FullscreenQuadBlendMode">
    </PIN>
    </NODE>
-   <NODE systemname="CreateEnum (Enumerations)" nodename="CreateEnum (Enumerations)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="14625" top="4200" width="100" height="100">
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="27" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="14610" top="4410" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Strings" visible="1">
-   </PIN>
-   <PIN pinname="Enum Name" slicecount="1" values="FullscreenQuadBlendMode" encoded="0">
+   <BOUNDS type="Box" left="14610" top="4410" width="1590" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="FullscreenQuadBlendMode">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="26" dstpinname="Strings" linkstyle="VHV">
-   <LINKPOINT x="14670" y="4870">
-   </LINKPOINT>
-   <LINKPOINT x="14640" y="4490">
-   </LINKPOINT>
+   <LINK srcnodeid="27" srcpinname="Output Enum" dstnodeid="26" dstpinname="Enum">
    </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="27" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Node" left="1500" top="615" width="0" height="0">
+   <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="25" dstpinname="Strings">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="28" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="1425" top="720" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1500" top="615" width="765" height="240">
+   <BOUNDS type="Box" left="1425" top="720" width="945" height="240">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="Off">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Blend Mode|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Blend Mode|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="27" srcpinname="Output Enum" dstnodeid="25" dstpinname="Receive" linkstyle="VHV">
-   <LINKPOINT x="1855" y="2985">
-   </LINKPOINT>
-   <LINKPOINT x="14900" y="3075">
-   </LINKPOINT>
+   <LINK srcnodeid="28" srcpinname="Output Enum" dstnodeid="26" dstpinname="Receive">
    </LINK>
    </PATCH>
