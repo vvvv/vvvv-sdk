@@ -38,16 +38,19 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FVec.Length>0)
+			if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0)
 			{
 				int vecSize = Math.Max(1,FVec.GetReader().Read());
 				VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin);
 				
 				FLast.Length = spread.Count * vecSize;
-				if (FLast.Length == spread.ItemCount)
+				if (FLast.Length == spread.ItemCount || spread.ItemCount == 0)
 				{
 					FRemainder.Length = 0;
-					FLast.AssignFrom(FInput);
+					if (spread.ItemCount!=0)
+						FLast.AssignFrom(FInput);
+					else
+						FLast.Length=0;
 				}
 				else
 				{
@@ -94,10 +97,13 @@ namespace VVVV.Nodes
 			VecBinSpread<T> spread = new VecBinSpread<T>(FInput,1,FBin);
 			
 			FLast.Length = spread.Count;
-			if (FLast.Length == spread.ItemCount)
+			if (FLast.Length == spread.ItemCount || spread.ItemCount==0)
 			{
 				FRemainder.Length = 0;
-				FLast.AssignFrom(FInput);
+				if (spread.ItemCount!=0)
+					FLast.AssignFrom(FInput);
+				else
+					FLast.Length=0;
 			}
 			else
 			{

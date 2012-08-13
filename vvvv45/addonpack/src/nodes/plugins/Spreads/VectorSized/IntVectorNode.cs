@@ -41,7 +41,7 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FVec.Length>0)
+			if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0 && FOffset.SliceCount>0 && FInclOffset.SliceCount>0)
 			{						 
 				int vecSize = Math.Max(1,FVec.GetReader().Read());
 				int offsetCount = (int)Math.Ceiling(FOffset.SliceCount/(double)vecSize);
