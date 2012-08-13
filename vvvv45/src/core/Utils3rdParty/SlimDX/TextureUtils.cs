@@ -45,10 +45,14 @@ namespace VVVV.Utils.SlimDX
 		public static Texture CreateTexture(Device device, int width, int height)
 		{
 			var pool = Pool.Managed;
+			var usage = Usage.None;
 			if (device is DeviceEx)
+			{
 				pool = Pool.Default;
+				usage = Usage.Dynamic;
+			}				
 			
-			return new Texture(device, width, height, 1, Usage.Dynamic, Format.A8R8G8B8, pool);
+			return new Texture(device, width, height, 1, usage, Format.A8R8G8B8, pool);
 		}
 		
 		/// <summary>
@@ -62,10 +66,14 @@ namespace VVVV.Utils.SlimDX
 		public static Texture CreateTextureNoAlpha(Device device, int width, int height)
 		{
 			var pool = Pool.Managed;
+			var usage = Usage.None;
 			if (device is DeviceEx)
+			{
 				pool = Pool.Default;
+				usage = Usage.Dynamic;
+			}
 			
-			return new Texture(device, width, height, 1, Usage.Dynamic, Format.X8R8G8B8, pool);
+			return new Texture(device, width, height, 1, usage, Format.X8R8G8B8, pool);
 		}
 		
 		/// <summary>
@@ -81,10 +89,14 @@ namespace VVVV.Utils.SlimDX
 		public static Texture CreateColoredTexture(Device device, int width, int height, uint argbColor)
 		{
 			var pool = Pool.Managed;
+			var usage = Usage.None;
 			if (device is DeviceEx)
+			{
 				pool = Pool.Default;
+				usage = Usage.Dynamic;
+			}
 			
-			var t = new Texture(device, width, height, 1, Usage.Dynamic, Format.A8R8G8B8, pool);
+			var t = new Texture(device, width, height, 1, usage, Format.A8R8G8B8, pool);
 			var rect = t.LockRectangle(0, LockFlags.None).Data;
 			
 			for (int i=0; i<(width*height); i++)

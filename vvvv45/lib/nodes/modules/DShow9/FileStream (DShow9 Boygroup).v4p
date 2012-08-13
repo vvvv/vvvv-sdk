@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
    <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p" systemname="FileStream (DShow9 Boygroup)" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p">
-   <BOUNDS type="Window" left="8205" top="6255" width="13590" height="8775">
+   <BOUNDS type="Window" left="4785" top="5700" width="14685" height="8775">
    </BOUNDS>
    <NODE systemname="Sync (Network FileStream)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Sync (Network FileStream)" componentmode="Hidden" id="9" managers="">
    <BOUNDS type="Node" left="3960" top="3750" width="6780" height="270">
@@ -20,6 +20,8 @@
    <PIN pinname="Fine Offset (ms)">
    </PIN>
    <PIN pinname="Is Client" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Server IP" visible="1" pintype="Input" slicecount="1" values="127.0.0.1" encoded="0">
    </PIN>
    </NODE>
    <NODE systemname="FileStream (DShow9)" nodename="FileStream (DShow9)" componentmode="Hidden" id="8" managers="">
@@ -447,5 +449,27 @@
    <LINK srcnodeid="8" srcpinname="Position" dstnodeid="9" dstpinname="Position">
    </LINK>
    <LINK srcnodeid="17" srcpinname="Output" dstnodeid="8" dstpinname="Do Seek">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="28" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="13215" top="360" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13215" top="360" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="127.0.0.1" encoded="0">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="127.0.0.1" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="IP">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Server IP|" encoded="0">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Output String" dstnodeid="9" dstpinname="Server IP">
    </LINK>
    </PATCH>

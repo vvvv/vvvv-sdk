@@ -56,7 +56,10 @@ namespace VVVV.Hosting.Pins.Output
                         {
                             anyChanged |= spread.IsChanged;
                             if (anyChanged)
+                            {
                                 dataWriter.Write(spread.Stream, buffer);
+                                spread.Flush();
+                            }
                             else
                                 dataWriter.Position += spread.SliceCount;
                         }

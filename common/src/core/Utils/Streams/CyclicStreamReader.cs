@@ -114,15 +114,8 @@ namespace VVVV.Utils.Streams
 						if ((FReader.Position %= readerLength) == 0) break;
 					}
 					
-					if (numSlicesRead == length)
-					{
-					    break;
-					}
-					
-					if (numSlicesRead == length)
-					{
-					    break;
-					}
+                    // Early exit
+					if (numSlicesRead == length) break;
 					
 					// Save end of possible block
 					int endIndex = index + numSlicesRead;

@@ -356,7 +356,7 @@ namespace TypeWriter
 		public void Evaluate(int SpreadMax)
 		{
 			if (FSetCursorPosition[0])
-				FCursorCharPos = Math.Min(FText.Length, Math.Max(0, FCursorPosition[0]));
+				FCursorCharPos = Math.Min(FText.Length, Math.Max(0, FNewCursorPosition[0]));
 
 			//initializing with text
 			if (FInitialize[0])
