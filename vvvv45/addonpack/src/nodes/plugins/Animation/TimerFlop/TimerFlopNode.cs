@@ -48,6 +48,7 @@ namespace VVVV.Nodes
     	
     	//output pin declaration
     	private IValueOut FOutput;
+    	private IValueOut FRunning;
     	private IValueOut FActive;
     	
     	//further fields
@@ -189,7 +190,7 @@ namespace VVVV.Nodes
 	    	FSet.SetSubType(0, 1, 1, 0, false, true, false);
 	    	
 	    	FHost.CreateValueInput("Time", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTime);
-	    	FTime.SetSubType(0, double.MaxValue, 0.01, 0.0, false, false, false);
+	    	FTime.SetSubType(0, double.MaxValue, 0.01, 1.0, false, false, false);
 	    	
 	    	FHost.CreateValueInput("Reset", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FReset);
 	    	FReset.SetSubType(0, 1, 1, 0, true, false, false);
@@ -197,6 +198,9 @@ namespace VVVV.Nodes
 	    	//create outputs	    	
 	    	FHost.CreateValueOutput("Output", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOutput);
 	    	FOutput.SetSubType(0, 1, 1, 0, false, true, false);
+	    	
+	    	FHost.CreateValueOutput("Running", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRunning);
+	    	FRunning.SetSubType(0, 1, 0.01, 0, false, false, false);
 	    	
 	    	FHost.CreateValueOutput("Active", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FActive);
 	    	FActive.SetSubType(0, 1, 1, 0, false, true, false);
@@ -215,15 +219,7 @@ namespace VVVV.Nodes
         //here we go, thats the method called by vvvv each frame
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
-        {   
-        	if (FReset.PinIsChanged)
-        	{
-        		 double refresh;
-        		 FReset.GetValue(0, out refresh);
-        		 if (refresh>0.5)
-        		 	FStart.Clear();
-        	}
-        	
+        {          	
         	int diff=FStart.Count-SpreadMax;
         	if (diff>0)
         		FStart.RemoveRange(SpreadMax, diff);
@@ -233,17 +229,20 @@ namespace VVVV.Nodes
         		FStart.Add(DateTime.Now);
         	}
         	
-        	
         	FOutput.SliceCount = SpreadMax;
+        	FRunning.SliceCount = SpreadMax;
         	FActive.SliceCount = SpreadMax;
         	
-        	double curSet, curTime, curActive, curOut;
+        	double curSet, curReset, curTime, curActive, curRunning, curOut;
         	for (int i=0; i<SpreadMax; i++)
         	{
         		curActive=0;
+        		curRunning=0;
         		curOut = 0;
+
+        		FReset.GetValue(i, out curReset);
         		FSet.GetValue(i, out curSet);
-        		if (curSet<0.5)
+        		if (curSet<0.5 || curReset > 0.5)
         			FStart[i]=DateTime.Now;
         		else
         		{
@@ -251,11 +250,13 @@ namespace VVVV.Nodes
         			FTime.GetValue(i, out curTime);
         			TimeSpan span = DateTime.Now-FStart[i];
         			double elapsed = ((double)span.TotalMilliseconds/1000.0);
+        			curRunning = Math.Min(elapsed/curTime,1.0);
         			if (elapsed>=curTime)
         				curOut=1;
         			
         		}
         		FOutput.SetValue(i, curOut);
+        		FRunning.SetValue(i, curRunning);
         		FActive.SetValue(i, curActive);
         	}
         	
