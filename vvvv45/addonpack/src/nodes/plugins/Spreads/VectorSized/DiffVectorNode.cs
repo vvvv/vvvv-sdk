@@ -38,12 +38,12 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FVec.Length>0)
+			if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0)
 			{
 				int vecSize = Math.Max(1,FVec.GetReader().Read());
 				VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin);
 				
-				FOutput.Length = spread.ItemCount-(spread.Count*vecSize);
+				FOutput.Length = Math.Max(spread.ItemCount-(spread.Count*vecSize),0);
 				FOutBin.Length = spread.Count;
 				FOffset.Length = spread.Count * vecSize;
 				using (var offWriter = FOffset.GetWriter())
@@ -53,6 +53,8 @@ namespace VVVV.Nodes
 					int incr = 0;
 					for (int b = 0; b < spread.Count; b++)
 					{
+						if (spread[b].Length>0)
+						{
 						for (int v = 0; v < vecSize; v++)
 						{
 							dataWriter.Position = incr+v;
@@ -66,6 +68,13 @@ namespace VVVV.Nodes
 						binWriter.Write((spread[b].Length/vecSize)-1,1);
 						
 						offWriter.Write(spread.GetBinRow(b,0).ToArray(),0,vecSize);
+						}
+						else
+						{
+							binWriter.Write(0,1);
+							double[] zero = new double[vecSize];
+							offWriter.Write(zero,0,vecSize);
+						}
 					}
 				}
 			}
