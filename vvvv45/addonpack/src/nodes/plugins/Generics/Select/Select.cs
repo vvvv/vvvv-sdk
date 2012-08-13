@@ -56,7 +56,7 @@ namespace VVVV.Nodes
 	#region String Node
 	[PluginInfo(Name = "Select", 
 				Category = "String",
-				Version = "Advanced",				
+				Version = "Bin",				
 				Help = "select the slices which form the new spread", 
 				Tags = "select, repeat, binsize",
 				Author = "woei")]
@@ -68,7 +68,7 @@ namespace VVVV.Nodes
 	#region Color Node
 	[PluginInfo(Name = "Select", 
 				Category = "Color",
-				Version = "Advanced",				
+				Version = "Bin",				
 				Help = "select the slices which form the new spread", 
 				Tags = "select, repeat, binsize",
 				Author = "woei")]
@@ -79,7 +79,8 @@ namespace VVVV.Nodes
 	
 	#region Transform Node
 	[PluginInfo(Name = "Select", 
-				Category = "Transform", 
+				Category = "Transform",
+				Version = "Bin",				
 				Help = "select the slices which form the new spread", 
 				Tags = "select, repeat",
 				Author = "woei")]
@@ -90,7 +91,8 @@ namespace VVVV.Nodes
 	
 	#region Enumerations Node
 	[PluginInfo(Name = "Select", 
-				Category = "Enumerations", 
+				Category = "Enumerations",
+				Version = "Bin",				
 				Help = "select the slices which form the new spread", 
 				Tags = "select, repeat",
 				Author = "woei")]
