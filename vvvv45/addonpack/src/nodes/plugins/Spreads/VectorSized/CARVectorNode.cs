@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 
+using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
 #endregion usings
 
@@ -121,6 +122,16 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "CAR", Category = "Color", Version = "Bin", Help = "CAR (Color) with bin size", Author = "woei")]
 	#endregion PluginInfo
 	public class CARColorBin : CARBinNode<RGBAColor> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "CAR", Category = "Transform", Version = "Bin", Help = "Splits the spread into the first element and the rest, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class CARTransformBin : CARBinNode<Matrix4x4> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "CAR", Category = "Enumerations", Version = "Bin", Help = "Splits the spread into the first element and the rest, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class CAREnumBin : CARBinNode<EnumEntry> {}
 	
 	
 }
