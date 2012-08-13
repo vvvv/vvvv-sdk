@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 
+using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
 #endregion usings
 
@@ -125,5 +126,15 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "CDR", Category = "Color", Version = "Bin", Help = "CDR (Color) with bin size", Author = "woei")]
 	#endregion PluginInfo
 	public class CDRColorBin : CDRNode<RGBAColor> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "CDR", Category = "Transform", Version = "Bin", Help = "Splits the spread into the last element and the rest, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class CDRTransformBin : CDRNode<Matrix4x4> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "CDR", Category = "Enumerations", Version = "Bin", Help = "Splits the spread into the last element and the rest, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class CDREnumBin : CDRNode<EnumEntry> {}
 	
 }
