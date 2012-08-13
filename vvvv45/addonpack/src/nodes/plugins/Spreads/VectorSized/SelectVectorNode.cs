@@ -40,7 +40,7 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FVec.Length>0)
+			if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0 && FSelect.Length>0)
 			{
 				int vecSize = Math.Max(1,FVec.GetReader().Read());	
 				VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin,FSelect.Length);
@@ -55,7 +55,7 @@ namespace VVVV.Nodes
 						int binSize = spread[b].Length/vecSize;
 						int sel = selReader.Read();
 						
-						if (sel > 0)
+						if (sel > 0 && binSize>0)
 						{
 							int[] ids = new int[binSize];
 							for (int i=0; i<binSize; i++)
@@ -70,9 +70,12 @@ namespace VVVV.Nodes
 					}
 				}
 				FOutput.Length = container.Count;
-				FOutput.GetWriter().Write(container.ToArray(),0,container.Count);
+				if (FOutput.Length>0)
+					FOutput.GetWriter().Write(container.ToArray(),0,container.Count);
+				
 				FFormer.Length = formerId.Count;
-				FFormer.GetWriter().Write(formerId.ToArray(),0,formerId.Count);
+				if (FFormer.Length>0)
+					FFormer.GetWriter().Write(formerId.ToArray(),0,formerId.Count);
 			}
 			else
 				FOutput.Length = FFormer.Length = 0;
