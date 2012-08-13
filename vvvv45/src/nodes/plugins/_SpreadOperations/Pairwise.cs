@@ -50,7 +50,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "Spreads",
-                Help = "",
+                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class ValuePairwise : Pairwise<double>

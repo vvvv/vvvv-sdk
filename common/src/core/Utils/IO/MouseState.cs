@@ -10,12 +10,30 @@ namespace VVVV.Utils.IO
         Right
     }
 
+    /// <summary>
+    /// Encapsulates the state of a mouse.
+    /// </summary>
     public struct MouseState : IEquatable<MouseState>
     {
-        public double X;
-        public double Y;
-        public MouseButton Button;
-        public int MouseWheel;
+        /// <summary>
+        /// The x coordinate of the mouse.
+        /// </summary>
+        public readonly double X;
+
+        /// <summary>
+        /// The y coordinate of the mouse.
+        /// </summary>
+        public readonly double Y;
+
+        /// <summary>
+        /// The pressed mouse button.
+        /// </summary>
+        public readonly MouseButton Button;
+
+        /// <summary>
+        /// The position of the mouse wheel.
+        /// </summary>
+        public readonly int MouseWheel;
         
         public MouseState(double x, double y, MouseButton button, int mouseWheel)
         {
