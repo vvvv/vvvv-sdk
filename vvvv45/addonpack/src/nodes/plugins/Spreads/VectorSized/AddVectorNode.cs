@@ -11,7 +11,7 @@ using System.Linq;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "+", Category = "Value", Version = "Spectral Vector", Help = "+ (Value Spectral) with vector size", Author = "woei")]
+	[PluginInfo(Name = "Add", Category = "Value", Version = "Spectral Vector", Help = "+ (Value Spectral) with vector size", Author = "woei")]
 	#endregion PluginInfo
 	public class AddVectorNode : IPluginEvaluate
 	{
