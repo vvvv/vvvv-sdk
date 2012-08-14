@@ -40,7 +40,8 @@ namespace VVVV.Nodes
 							int curBin = SpreadUtils.NormalizeBinSize(sliceCount, binReader.Read())*vecSize;
 							itemCount += curBin;
 							T[] data = new T[curBin];
-							dataReader.Read(data,0,curBin);
+							if (curBin>0)
+								dataReader.Read(data,0,curBin);
 							buffer.Add(data);
 							
 							spreadMax--;

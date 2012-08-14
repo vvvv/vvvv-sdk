@@ -34,7 +34,7 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FVec.Length>0)
+			if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0)
 			{
 				int vecSize = Math.Max(1,FVec.GetReader().Read());
 				VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin); 
