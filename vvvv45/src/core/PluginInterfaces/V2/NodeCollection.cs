@@ -133,7 +133,7 @@ namespace VVVV.PluginInterfaces.V2
             using (var streamReader = new StreamReader(Nodelist))
             {
                 var settings = new XmlReaderSettings();
-                settings.ProhibitDtd = false;
+                settings.DtdProcessing = DtdProcessing.Ignore;
                 
                 using (var xmlReader = XmlReader.Create(streamReader, settings))
                 {

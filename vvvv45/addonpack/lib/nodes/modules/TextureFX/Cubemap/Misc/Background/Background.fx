@@ -14,7 +14,7 @@ samplerCUBE s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;Ma
 float4 AmbientColor:COLOR <string uiname="Ambient Color";> = 0.0;
 float4 DiffuseColor:COLOR <string uiname="Diffuse Color";> = 1.0;
 //float4 DiffuseGamma:COLOR <string uiname="Diffuse Gamma";> = 0.0;
-float DiffuseGamma=0.5;
+float DiffuseGamma <float uimin=0.0; float uimax=1.0;> =0.5;
 //float4 AmbientGamma:COLOR <string uiname="Ambient Gamma";> = 0.0;
 float3 ColGamma(float3 c,float3 a,float pv=1){
 	//c.rgb=(c.rgb-.4)*(a)+.4;

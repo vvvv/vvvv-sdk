@@ -32,11 +32,10 @@ namespace VVVV.Nodes.IO
         }
 
         [Node(Name = "KeyboardState", Category = "System", Version = "Split")]
-        public static void Split(KeyboardState keyboardState, out ISpread<int> keyCodes, out string key, out int time, out bool capsLock)
+        public static void Split(KeyboardState keyboardState, out ISpread<int> keyCodes, out int time, out bool capsLock)
         {
             keyCodes = new Spread<int>();
             keyCodes.AssignFrom(keyboardState.KeyCodes.Select(k => (int)k));
-            key = string.Join(string.Empty, keyboardState.KeyChars);
             time = keyboardState.Time;
             capsLock = keyboardState.CapsLock;
         }
