@@ -16,7 +16,7 @@ using System.IO;
 namespace VVVV.Nodes.HTML
 {
     [PluginInfo(Name = "Renderer", Category = "HTML", Version = "Chrome", Tags = "browser, web, html, javascript, renderer, chrome, flash, webgl, texture")]
-    public class WebRendererNode : IPluginEvaluate, IDisposable
+    public class WebRendererNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {
         static WebRendererNode()
         {
@@ -65,6 +65,11 @@ namespace VVVV.Nodes.HTML
         private ILogger FLogger;
 
         private readonly Spread<WebRenderer> FWebRenderers = new Spread<WebRenderer>();
+
+        public void OnImportsSatisfied()
+        {
+            FOutput.SliceCount = 0;
+        }
 
         public void Evaluate(int spreadMax)
         {
