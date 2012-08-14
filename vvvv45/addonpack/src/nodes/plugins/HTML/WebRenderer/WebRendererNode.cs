@@ -8,15 +8,25 @@ using SlimDX.Direct3D9;
 using CefGlue;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
-using VVVV.Nodes.IO;
 using System.ComponentModel.Composition;
 using VVVV.Utils.IO;
+using System.Reflection;
+using System.IO;
 
 namespace VVVV.Nodes.HTML
 {
     [PluginInfo(Name = "Renderer", Category = "HTML", Version = "Chrome", Tags = "browser, web, html, javascript, renderer, chrome, flash, webgl, texture")]
     public class WebRendererNode : IPluginEvaluate, IDisposable
     {
+        static WebRendererNode()
+        {
+            var pathToThisAssembly = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var pathToBinFolder = Path.Combine(pathToThisAssembly, "Dependencies", "CefGlue");
+            var envPath = Environment.GetEnvironmentVariable("PATH");
+            envPath = string.Format("{0};{1}", envPath, pathToBinFolder);
+            Environment.SetEnvironmentVariable("PATH", envPath);
+        }
+
         [Input("Url", DefaultString = WebRenderer.DEFAULT_URL)]
         public ISpread<string> FUrlIn;
         [Input("HTML", DefaultString = "")]

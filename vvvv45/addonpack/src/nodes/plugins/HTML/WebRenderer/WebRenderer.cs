@@ -12,7 +12,6 @@ using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.VMath;
-using VVVV.Nodes.IO;
 using System.Threading;
 using System.Text;
 using System.Globalization;
