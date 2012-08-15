@@ -338,7 +338,7 @@ namespace VVVV.Nodes.Vlc
 
 				loopTimer = new System.Windows.Forms.Timer();
 				loopTimer.Interval = 1000; //1 second
-				loopTimer.Enabled = true;
+				loopTimer.Enabled = false;
 				loopTimer.Tick += new EventHandler( LoopTimerEventHandler );
 			}
 	
@@ -406,15 +406,17 @@ namespace VVVV.Nodes.Vlc
 	
 					currPlayIn = IsPlaying(active);
 					currLoopStartIn = Math.Max( 0, parent.FLoopStartIn[slice] );
-                    currLoopEndIn = Math.Min( parent.FLoopEndIn[slice], videoLength);
+					currLoopEndIn = videoLength > 0 
+									? Math.Min( parent.FLoopEndIn[slice], videoLength) 
+									: parent.FLoopEndIn[slice];
 					currLoopIn = parent.FLoopIn[slice];
                     if ( currLoopStartIn >= currLoopEndIn ) {
 						currLoopIn = false; //disable looping
                     	currLoopStartIn = 0;
-                    	currLoopEndIn = (float)Math.Min( 0.0001, videoLength );
+                    	currLoopEndIn = videoLength;
                     }
-					currLoopLengthIn = (int)((currLoopEndIn - currLoopStartIn) * 1000);
 					
+					currLoopLengthIn = Math.Max( (int)( ( currLoopEndIn - currLoopStartIn ) * 1000 ), 1);
 					loopTimer.Enabled = currLoopIn;
 
 					
@@ -641,7 +643,10 @@ namespace VVVV.Nodes.Vlc
 
 					int interval = (int)( currLoopLengthIn + theoreticalNow.Subtract( DateTime.Now ).TotalMilliseconds );
 					
-					loopTimer.Interval = interval > 0 ? interval : (int)currLoopLengthIn;
+					//if ( currLoopIn ) {
+						loopTimer.Interval = interval > 0 ? interval : (int)currLoopLengthIn;
+					//}
+					//loopTimer.Enabled = currLoopIn;
 					
 					Log( LogType.Debug, "currLoopLengthIn = " + currLoopLengthIn + " and new loopTimer interval = " + 
 						//interval 
