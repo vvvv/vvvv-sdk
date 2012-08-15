@@ -127,7 +127,6 @@ namespace VVVV.PluginInterfaces.V2.Graph
 			return (node.InnerStatus & (StatusCode.IsMissing | StatusCode.HasInvalidData | StatusCode.HasRuntimeError)) > 0;
         }
         
-        
         public static bool IsConnected(this INode2 node)
 		{
 			return (node.InnerStatus & StatusCode.IsConnected) == StatusCode.IsConnected;
@@ -143,6 +142,16 @@ namespace VVVV.PluginInterfaces.V2.Graph
 			return (node.Status & StatusCode.IsBoygrouped) == StatusCode.IsBoygrouped;
 		}
         
+        public static bool IsExposed(this INode2 node)
+		{
+			return (node.Status & StatusCode.IsExposed) == StatusCode.IsExposed;
+		}
+        
+        public static bool ContainsExposedNodes(this INode2 node)
+		{
+			return (node.InnerStatus & StatusCode.IsExposed) == StatusCode.IsExposed;
+		}
+        
         public static bool HasProblem(this INode2 node)
         {
             return (node.Status & (StatusCode.IsMissing | StatusCode.HasInvalidData | StatusCode.HasRuntimeError)) > 0;
@@ -152,7 +161,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
         {
             var query =
 				from pin in node.Pins
-				where pin.Name == name
+            	where pin.Name == name || pin.NameByParent(node) == name
 				select pin;
             return query.FirstOrDefault();
         }

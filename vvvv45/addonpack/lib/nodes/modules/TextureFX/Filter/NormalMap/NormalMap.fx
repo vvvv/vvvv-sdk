@@ -6,19 +6,22 @@ texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 q(float2 x,float2 off,float v){return tex2Dlod(s0,float4(x+off/R,0,1+v));}
 float gam(float x,float y){return sign(x)*pow(abs(x),y);}
+float sat(float4 c,float4 d){
+	return (dot(c.rgb,1./3.)-dot(d.rgb,1./3.))/sqrt(dot(c.rgb,1./3.)+dot(d.rgb,1./3.));
+}
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float rad=max(Radius,0);
     float3 e=float3(1,-1,0)*rad;
     float v=log2(rad);
     float4 cx=q(x,e.xy,v)+q(x,e.xz,v)+q(x,e.xx,v)-q(x,e.yy,v)-q(x,e.yz,v)-q(x,e.yx,v);
     float4 cy=q(x,e.yy,v)+q(x,e.zy,v)+q(x,e.xy,v)-q(x,e.yx,v)-q(x,e.zx,v)-q(x,e.xx,v);
-    float4 c=sqrt(cx*cx+cy*cy)*pow(2,rad/max(R.x,R.y))/sqrt(saturate(rad)+.001);
+    float4 c=0;
     float d=pow(2,Depth);
-    float g=.6;
-    c.r=gam(q(x,e.xz,v)-q(x,e.yz,v),g)*d+.5;
-    c.g=gam(q(x,e.zx,v)-q(x,e.zy,v),g)*d+.5;
-    c.b=1-pow(c.b,g)*d/8;
-    //c=c.b;
+	c.r=d*sat(q(x,e.xz,v),q(x,e.yz,v));
+	c.g=d*sat(q(x,e.zx,v),q(x,e.zy,v));
+	c.b=1;
+	c.rgb=normalize(c.rgb);
+	c.rg=.5+c.rg;
     c.a=tex2D(s0,x).a;
     return c;
 }

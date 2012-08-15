@@ -11,7 +11,7 @@ using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Hosting
 {
-	class PatchMessage
+	public class PatchMessage
 	{
 		private XmlDocument FPatch;
 		public XmlElement XML
@@ -65,7 +65,7 @@ namespace VVVV.Hosting
 		}
 	}
 	
-	class NodeMessage: XmlElement
+	public class NodeMessage: XmlElement
 	{
 		public NodeMessage(XmlDocument patch, int id): base(String.Empty, "NODE", String.Empty, patch)
 		{
@@ -121,7 +121,7 @@ namespace VVVV.Hosting
 		}
 	}
 	
-	class PinMessage: XmlElement
+	public class PinMessage: XmlElement
 	{
 		public PinMessage(XmlDocument patch, string pinName): base(String.Empty, "PIN", String.Empty, patch)
 		{
@@ -134,13 +134,19 @@ namespace VVVV.Hosting
 			set {SetAttribute("pinname", value);}
 		}
 		
+		public string Spread	
+		{
+			get {return GetAttribute("values");}
+			set {SetAttribute("values", value);}
+		}
+		
 		override public string ToString()
 		{
 			return OuterXml;
 		}
 	}
 	
-	class BoundsMessage: XmlElement
+	public class BoundsMessage: XmlElement
 	{
 		public BoundsMessage(XmlDocument patch, BoundsType boundsType): base(String.Empty, "BOUNDS", String.Empty, patch)
 		{
@@ -171,7 +177,7 @@ namespace VVVV.Hosting
 		}
 	}
 	
-	class LinkMessage: XmlElement
+	public class LinkMessage: XmlElement
 	{
 		public LinkMessage(XmlDocument patch, int fromID, string fromName, int toID, string toName): base(String.Empty, "LINK", String.Empty, patch)
 		{

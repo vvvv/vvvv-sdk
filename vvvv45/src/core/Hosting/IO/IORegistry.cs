@@ -26,6 +26,8 @@ namespace VVVV.Hosting.IO
     {
         public IORegistry()
         {
+            Register(new PointerRegistry());
+
             Register(new PluginIORegistry());
             // Give enums a chance before using node pin
             Register(new EnumStreamRegistry());
@@ -33,6 +35,7 @@ namespace VVVV.Hosting.IO
             Register(new StreamRegistry());
             Register(new PinRegistry());
             Register(new SpreadRegistry());
+            
         }
     }
 }

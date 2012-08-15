@@ -1,0 +1,235 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\native\Texture (EX9.Texture Split A32B32G32R32F) help.v4p" systemname="Texture (EX9.Texture Split A32B32G32R32F) help" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\native\Texture (EX9.Texture Split A32B32G32R32F) help.v4p">
+   <BOUNDS type="Window" left="3930" top="1140" width="9000" height="9390">
+   </BOUNDS>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="2">
+   <BOUNDS type="Node" left="5655" top="4260" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5655" top="4260" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14010" top="4260" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox" id="4">
+   <BOUNDS type="Node" left="2715" top="2370" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2715" top="2370" width="4845" height="960">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Blend (Color)" nodename="Blend (Color)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="2730" top="1920" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Blend" visible="1">
+   </PIN>
+   <PIN pinname="Input1" slicecount="1" values="|0.01082,0.41095,0.68675,1.00000|">
+   </PIN>
+   <PIN pinname="Input2" slicecount="1" values="|0.99629,0.88026,0.04063,1.00000|">
+   </PIN>
+   <PIN pinname="Mix" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="2715" top="1530" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="Block">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="64">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="5" dstpinname="Blend">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Mix" dstnodeid="4" dstpinname="Color Input">
+   </LINK>
+   <NODE systemname="RGB (Color Join)" nodename="RGB (Color Join)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="2700" top="5880" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Red" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Green" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Blue" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" systemname="DynamicTexture (EX9.Texture Color)" nodename="DynamicTexture (EX9.Texture Color)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Color" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Node" left="2700" top="3615" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Height" slicecount="1" pintype="Input" visible="1" values="4">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" pintype="Input" visible="1" values="16">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Type" pintype="Input" visible="-1" slicecount="1" values="Texture">
+   </PIN>
+   <PIN pinname="Format" pintype="Input" visible="1" slicecount="1" values="A32B32G32R32F">
+   </PIN>
+   <PIN pinname="Mip Map Count" pintype="Input" visible="-1" slicecount="1" values="|1 mm|">
+   </PIN>
+   <PIN pinname="Depth" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Repair" pintype="Input" visible="-1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="InputSliceOffset" pintype="Output">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Color Output" dstnodeid="3" dstpinname="Color">
+   </LINK>
+   <NODE systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="2715" top="6405" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2715" top="6405" width="4845" height="960">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Color Input" visible="1" slicecount="1" values="|0.00000,1.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="10" dstpinname="Color Input">
+   </LINK>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="5655" top="3825" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Texture Out" dstnodeid="11" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Layer" dstnodeid="2" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="12" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="420" top="3375" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="420" top="3375" width="1875" height="285">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="A32B32G32R32F">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Output Enum" dstnodeid="3" dstpinname="Format">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="45" top="420" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="525" left="45" top="420" type="Box" width="3435">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="10440" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Output RGBA values of all texels as spreads.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="45" top="45" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="45" top="45" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="10440" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Texture - EX9.Texture Split|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="165" top="2325" width="2850" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="165" top="2325" width="2190" height="1020">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|ATTENTION: only supported format is:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="13">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="285" top="4095" width="2655" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="285" top="4095" width="2145" height="750">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|if your texture is in another format|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Texture (EX9.Texture Split A32B32G32R32F)" nodename="Texture (EX9.Texture Split A32B32G32R32F)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="2700" top="5415" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="R" visible="1">
+   </PIN>
+   <PIN pinname="G" visible="1">
+   </PIN>
+   <PIN pinname="B" visible="1">
+   </PIN>
+   <PIN pinname="A" visible="1">
+   </PIN>
+   <PIN pinname="Device" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="R" dstnodeid="7" dstpinname="Red">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="G" dstnodeid="7" dstpinname="Green">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="B" dstnodeid="7" dstpinname="Blue">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="A" dstnodeid="7" dstpinname="Alpha">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Texture Out" dstnodeid="1" dstpinname="Texture">
+   </LINK>
+   </PATCH>

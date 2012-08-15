@@ -6,9 +6,9 @@ using VVVV.Utils.Streams;
 namespace VVVV.Hosting.Pins.Output
 {
     [ComVisible(false)]
-    class OutputBinSpread<T> : BinSpread<T>, IDisposable
+    public class OutputBinSpread<T> : BinSpread<T>, IDisposable
     {
-        internal class OutputBinSpreadStream : BinSpreadStream, IDisposable
+        public class OutputBinSpreadStream : BinSpreadStream, IDisposable
         {
             private readonly IIOContainer<IOutStream<T>> FDataContainer;
             private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
@@ -51,10 +51,15 @@ namespace VVVV.Hosting.Pins.Output
                 {
                     using (var dataWriter = FDataStream.GetWriter())
                     {
+                        bool anyChanged = false;
                         foreach (var spread in this)
                         {
-                            if (spread.IsChanged)
+                            anyChanged |= spread.IsChanged;
+                            if (anyChanged)
+                            {
                                 dataWriter.Write(spread.Stream, buffer);
+                                spread.Flush();
+                            }
                             else
                                 dataWriter.Position += spread.SliceCount;
                         }

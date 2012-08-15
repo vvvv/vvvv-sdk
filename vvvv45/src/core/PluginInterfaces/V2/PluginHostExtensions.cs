@@ -31,6 +31,7 @@ namespace VVVV.PluginInterfaces.V2
 			{ typeof(Vector2), Tuple.Create((double) float.MinValue, (double) float.MaxValue, 0.01, false, 2) },
 			{ typeof(Vector3), Tuple.Create((double) float.MinValue, (double) float.MaxValue, 0.01, false, 3) },
 			{ typeof(Vector4), Tuple.Create((double) float.MinValue, (double) float.MaxValue, 0.01, false, 4) },
+            { typeof(Quaternion), Tuple.Create((double) float.MinValue, (double) float.MaxValue, 0.01, false, 4) },
 			{ typeof(Matrix), Tuple.Create((double) float.MinValue, (double) float.MaxValue, 0.01, false, 1) },
 			{ typeof(Vector2D), Tuple.Create(double.MinValue, double.MaxValue, 0.01, false, 2) },
 			{ typeof(Vector3D), Tuple.Create(double.MinValue, double.MaxValue, 0.01, false, 3) },
@@ -63,8 +64,10 @@ namespace VVVV.PluginInterfaces.V2
 			attribute.IsToggle = isBool && !attribute.IsBang;
 			attribute.AsInt = isInteger || attribute.AsInt;
 			
-			attribute.Dimension = FDefaultValues.ContainsKey(type) ? FDefaultValues[type].Item5 : 1;
+			if (attribute.IsToggle && attribute.DefaultBoolean)
+				attribute.DefaultValue = 1.0;
 			
+			attribute.Dimension = FDefaultValues.ContainsKey(type) ? FDefaultValues[type].Item5 : 1;
 			var defaultValues = attribute.DefaultValues;
 			Array.Resize(ref defaultValues, attribute.Dimension);
 			attribute.DefaultValues = defaultValues;

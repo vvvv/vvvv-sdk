@@ -2,42 +2,57 @@
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Hosting.Pins.Input
 {
     [ComVisible(false)]
-    class InputBinSpread<T> : BinSpread<T>, IDisposable
+    public class InputBinSpread<T> : BinSpread<T>, IDisposable
     {
-        internal class InputBinSpreadStream : BinSpreadStream, IDisposable
+        public class InputBinSpreadStream : BinSpreadStream, IDisposable
         {
             private readonly IIOContainer<IInStream<T>> FDataContainer;
             private readonly IIOContainer<IInStream<int>> FBinSizeContainer;
             private readonly IInStream<T> FDataStream;
             private readonly IInStream<int> FBinSizeStream;
             private readonly BufferedIOStream<int> FNormBinSizeStream;
+            private readonly IPluginIO FDataIO;
             
             public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
+                : this(ioFactory, attribute, false)
             {
-                attribute = ManipulateAttribute(attribute);
+            }
+
+            public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, bool checkIfChanged)
+                : this(ioFactory, attribute, checkIfChanged, () => ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false))
+            {
+            }
+
+            public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, bool checkIfChanged, Func<IIOContainer<IInStream<int>>> binSizeIOContainerFactory)
+            {
                 // Don't do this, as spread max won't get computed for this pin
-//                attribute.AutoValidate = false;
+                //                attribute.AutoValidate = false;
+                attribute.CheckIfChanged = checkIfChanged;
                 FDataContainer = ioFactory.CreateIOContainer<IInStream<T>>(attribute, false);
-                FBinSizeContainer = ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
+                FBinSizeContainer = binSizeIOContainerFactory();
                 FDataStream = FDataContainer.IOObject;
                 FBinSizeStream = FBinSizeContainer.IOObject;
                 FNormBinSizeStream = new BufferedIOStream<int>(FBinSizeStream.Length);
+                FDataIO = FDataContainer.GetPluginIO();
+            }
+
+            public bool IsConnected
+            {
+                get
+                {
+                    return this.FDataIO.IsConnected;
+                }
             }
             
             public void Dispose()
             {
                 FDataContainer.Dispose();
                 FBinSizeContainer.Dispose();
-            }
-            
-            protected virtual InputAttribute ManipulateAttribute(InputAttribute attribute)
-            {
-                // Do nothing by default
-                return attribute;
             }
             
             public override bool Sync()
@@ -120,6 +135,12 @@ namespace VVVV.Hosting.Pins.Input
             : this(ioFactory, attribute, new InputBinSpreadStream(ioFactory, attribute))
         {
             
+        }
+
+        public InputBinSpread(IIOFactory ioFactory, InputAttribute attribute, IIOContainer<IInStream<int>> binSizeIOContainer)
+            : this(ioFactory, attribute, new InputBinSpreadStream(ioFactory, attribute, false, () => binSizeIOContainer))
+        {
+
         }
         
         public InputBinSpread(IIOFactory ioFactory, InputAttribute attribute, InputBinSpreadStream stream)

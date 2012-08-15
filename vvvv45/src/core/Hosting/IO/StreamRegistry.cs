@@ -325,12 +325,46 @@ namespace VVVV.Hosting.IO
                                if (t.IsGenericType)
                                {
                                    var genericArguments = t.GetGenericArguments();
+                                   Type streamType = null;
                                    switch (genericArguments.Length) {
                                        case 1:
                                            if (typeof(IInStream<>).MakeGenericType(genericArguments).IsAssignableFrom(t))
                                            {
                                                var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
                                                var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
+                                               return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                           }
+                                           try
+                                           {
+                                               if (typeof(TextureResource<>).MakeGenericType(genericArguments).IsAssignableFrom(t))
+                                               {
+                                                    var metadataType = genericArguments[0];
+                                                    streamType = typeof(TextureOutStream<,>);
+                                                    streamType = streamType.MakeGenericType(t, metadataType);
+                                               }
+                                           }
+                                           catch (ArgumentException)
+                                           {
+                                               // Type constraints weren't satisfied.
+                                               streamType = null;
+                                           }
+                                           try
+                                           {
+                                               if (typeof(MeshResource<>).MakeGenericType(genericArguments).IsAssignableFrom(t))
+                                               {
+                                                   var metadataType = genericArguments[0];
+                                                   streamType = typeof(MeshOutStream<,>);
+                                                   streamType = streamType.MakeGenericType(t, metadataType);
+                                               }
+                                           }
+                                           catch (ArgumentException)
+                                           {
+                                               // Type constraints weren't satisfied.
+                                               streamType = null;
+                                           }
+                                           if (streamType != null)
+                                           {
+                                               var stream = Activator.CreateInstance(streamType, host, attribute) as IOutStream;
                                                return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
                                            }
                                            break;
@@ -343,9 +377,17 @@ namespace VVVV.Hosting.IO
                                                    var metadataType = genericArguments[1];
                                                    if (resourceType == typeof(Texture))
                                                    {
-                                                       var textureOutStreamType = typeof(TextureOutStream<,>);
-                                                       textureOutStreamType = textureOutStreamType.MakeGenericType(t, metadataType);
-                                                       var stream = Activator.CreateInstance(textureOutStreamType, host, attribute) as IOutStream;
+                                                       streamType = typeof(TextureOutStream<,>);
+                                                       streamType = streamType.MakeGenericType(t, metadataType);
+                                                   }
+                                                   else if (resourceType == typeof(Mesh))
+                                                   {
+                                                       streamType = typeof(MeshOutStream<,>);
+                                                       streamType = streamType.MakeGenericType(t, metadataType);
+                                                   }
+                                                   if (streamType != null)
+                                                   {
+                                                       var stream = Activator.CreateInstance(streamType, host, attribute) as IOutStream;
                                                        return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
                                                    }
                                                    else

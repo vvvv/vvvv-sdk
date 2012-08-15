@@ -78,5 +78,12 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class DeleteSliceTransform : DeleteSlice<Matrix4x4> {}
 	
-
+	#region PluginInfo
+	[PluginInfo(Name = "DeleteSlice",
+	            Category = "Enumerations",
+	            Help = "Delete the slice at the given index.",
+	            Tags = "remove, filter",
+	            Author = "woei")]
+	#endregion PluginInfo
+	public class DeleteSliceEnum : DeleteSlice<EnumEntry> {}
 }

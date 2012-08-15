@@ -15,6 +15,7 @@ using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2.EX9;
 
 using OpenNI;
+using SlimDX;
 using SlimDX.Direct3D9;
 #endregion usings
 
@@ -130,7 +131,15 @@ namespace VVVV.Nodes
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int Slice, SlimDX.Direct3D9.Device device)
 		{
-			return new Texture(device, FTexWidth, FTexHeight, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
+			var pool = Pool.Managed;
+			var usage = Usage.None;
+			if (device is DeviceEx)
+			{
+				pool = Pool.Default;
+				usage = Usage.Dynamic;
+			}
+			
+			return new Texture(device, FTexWidth, FTexHeight, 1, usage, Format.X8R8G8B8, pool);
 		}
 
 		//this method gets called, when Update() was called in evaluate,
@@ -143,18 +152,39 @@ namespace VVVV.Nodes
 			byte* src24 = (byte*)FImageGenerator.ImageMapPtr;
 			
 			//lock the vvvv texture
-			byte* dest32 = (byte*)texture.LockRectangle(0, LockFlags.Discard).Data.DataPointer;
-
-			//write the pixels
-			for (int i = 0; i < FTexWidth * FTexHeight; i++, src24 += 3, dest32 += 4)
-			{
-				dest32[0] = src24[2];
-				dest32[1] = src24[1];
-				dest32[2] = src24[0];
-				dest32[3] = 255;
-			}
+			DataRectangle rect;
+			if (texture.Device is DeviceEx)
+				rect = texture.LockRectangle(0, LockFlags.None);
+			else
+				rect = texture.LockRectangle(0, LockFlags.Discard);
 			
-			texture.UnlockRectangle(0);
+			try
+			{
+				byte* dest32 = (byte*)rect.Data.DataPointer;
+	
+				//write the pixels
+				for (int i = 0; i < FTexHeight; i++)
+				{
+					var off = 0;
+					for (int j = 0; j < FTexWidth; j++, src24 += 3, dest32 += 4)
+					{
+						dest32[0] = src24[2];
+						dest32[1] = src24[1];
+						dest32[2] = src24[0];
+						dest32[3] = 255;
+						
+						off += 4;
+					}
+					
+					//advance dest by rest of pitch
+					dest32 += rect.Pitch - off;
+				}
+			}
+			finally
+			{
+				texture.UnlockRectangle(0);
+			}
+				
 		}
 		#endregion IPluginDXResource Members
 		

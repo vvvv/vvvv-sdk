@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Typewriter (String) help.v4p" locked="0">
-   <BOUNDS height="8040" left="8010" top="195" type="Window" width="7800">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Typewriter (String) help.v4p" locked="0">
+   <BOUNDS height="8040" left="8010" top="195" type="Window" width="10275">
    </BOUNDS>
    <NODE componentmode="InABox" id="58" nodename="IOBox (String)">
    <BOUNDS height="255" left="120" top="600" type="Node" width="570">
@@ -30,16 +30,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="12">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="54" nodename="Keyboard (System Global)">
-   <BOUNDS height="0" left="975" top="1785" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Keyboard Input" slicecount="1" visible="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Keyboard Output" visible="1">
-   </PIN>
-   <PIN pinname="KeyCode" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="40" nodename="Transform (Transform 2d)">
@@ -75,8 +65,6 @@
    <LINK dstnodeid="46" dstpinname="Y Input Value" srcnodeid="21" srcpinname="Validated">
    </LINK>
    <LINK dstnodeid="44" dstpinname="Y Input Value" srcnodeid="21" srcpinname="Error">
-   </LINK>
-   <LINK dstnodeid="21" dstpinname="Text" srcnodeid="20" srcpinname="Output String">
    </LINK>
    <LINK dstnodeid="21" dstpinname="CursorPosition" srcnodeid="30" srcpinname="Y Output Value">
    </LINK>
@@ -125,9 +113,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="69" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="5370" top="3165" width="0" height="0">
+   <BOUNDS type="Node" left="5535" top="2850" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="5370" top="3165" width="465" height="240">
+   <BOUNDS type="Box" left="5535" top="2850" width="465" height="240">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="15">
    </PIN>
@@ -141,9 +129,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="72" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="5370" top="4185" width="0" height="0">
+   <BOUNDS type="Node" left="5535" top="4035" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="5370" top="4185" width="465" height="240">
+   <BOUNDS type="Box" left="5535" top="4035" width="465" height="240">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -181,11 +169,11 @@
    <LINK srcnodeid="40" srcpinname="Transform Out" dstnodeid="74" dstpinname="Transform In">
    </LINK>
    <NODE componentmode="InAWindow" id="21" nodename="Typewriter (String)" systemname="Typewriter (String)" filename="%VVVV%\addonpack\lib\nodes\plugins\TypeWriter\TypeWriter.csproj">
-   <BOUNDS height="270" left="1725" top="3660" type="Node" width="3705">
+   <BOUNDS height="270" left="1725" top="3660" type="Node" width="5385">
    </BOUNDS>
    <PIN pinname="Text" visible="1" slicecount="1" encoded="0" values="@">
    </PIN>
-   <PIN pinname="KeyCode" visible="1">
+   <PIN pinname="KeyCode" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Replace" visible="1">
    </PIN>
@@ -237,10 +225,14 @@
    </PIN>
    <PIN pinname="Insert Text" visible="1">
    </PIN>
+   <PIN pinname="Key State" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Ignore Navigation Keys" visible="1" pintype="Input">
+   </PIN>
    </NODE>
    <LINK dstnodeid="21" dstpinname="Cursor" srcnodeid="61" srcpinname="Output">
-   </LINK>
-   <LINK srcnodeid="54" srcpinname="KeyCode" dstnodeid="21" dstpinname="KeyCode">
    </LINK>
    <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Doubles Speed">
    </LINK>
@@ -255,24 +247,6 @@
    <LINK srcnodeid="21" srcpinname="Output" dstnodeid="73" dstpinname="Input String">
    </LINK>
    <LINK srcnodeid="21" srcpinname="Output with Cursor" dstnodeid="71" dstpinname="Text">
-   </LINK>
-   <LINK srcnodeid="69" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Set Cursor Position">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="87" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="810" top="2310" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="810" top="2310" width="780" height="525">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="54" srcpinname="KeyCode" dstnodeid="87" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="97" systemname="IOBox (String)">
    <BOUNDS type="Node" left="5670" top="1710" width="1575" height="270">
@@ -289,11 +263,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="98" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5895" top="3165" width="1665" height="270">
+   <BOUNDS type="Node" left="6060" top="2850" width="1665" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5895" top="3165" width="1740" height="270">
+   <BOUNDS type="Box" left="6060" top="2850" width="1740" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; set cursor position|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; cursor position|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -303,11 +277,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="99" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5940" top="4110" width="1410" height="270">
+   <BOUNDS type="Node" left="6090" top="4035" width="1410" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5940" top="4110" width="1410" height="270">
+   <BOUNDS type="Box" left="6090" top="4035" width="1185" height="480">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; cursor position|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; actual cursor position|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -451,9 +425,9 @@
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="108" srcpinname="Output String" dstnodeid="21" dstpinname="Text">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="109" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="2190" top="2835" width="0" height="0">
    </BOUNDS>
@@ -519,5 +493,83 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="71" srcpinname="Layer" dstnodeid="62" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="111" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="5670" top="3225" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5670" top="3225" width="345" height="345">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="111" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Set Cursor Position">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="112" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6060" top="3240" width="1665" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6060" top="3240" width="1665" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; set cursor position|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="114" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7905" top="3210" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7905" top="3210" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="114" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Ignore Navigation Keys">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="115" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8475" top="3315" width="2550" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8475" top="3315" width="1545" height="480">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Ignore navigation (cursor) keys.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="108" srcpinname="Output String" dstnodeid="21" dstpinname="Text">
+   </LINK>
+   <NODE systemname="Keyboard (System Global)" filename="%VVVV%\lib\nodes\modules\System\Keyboard (System Global).v4p" nodename="Keyboard (System Global)" componentmode="Hidden" id="113">
+   <BOUNDS type="Node" left="390" top="2325" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="State" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="20565" top="825" width="4725" height="5595">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="113" srcpinname="Keyboard" dstnodeid="21" dstpinname="Keyboard State">
    </LINK>
    </PATCH>
