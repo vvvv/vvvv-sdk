@@ -17,8 +17,8 @@ namespace VVVV.Nodes.XML
 {
     public static class XMLNodes
     {
-        static ISpread<XElement> NoElements = new Spread<XElement>();
-        static ISpread<XAttribute> NoAttributes = new Spread<XAttribute>();
+        public static readonly ISpread<XElement> NoElements = new Spread<XElement>();
+        public static readonly ISpread<XAttribute> NoAttributes = new Spread<XAttribute>();
 
         [Node]
         public static void Split(this XElement element, out string name, out string value, out ISpread<XElement> childs,

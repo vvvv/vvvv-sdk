@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.1.dtd" >
    <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\ShowConversions.v4p" systemname="ShowConversions" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\ShowConversions.v4p">
    <BOUNDS type="Window" left="0" top="0" width="20265" height="14760">
    </BOUNDS>
@@ -271,7 +271,7 @@
    </BOUNDS>
    <PIN pinname="Element" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Name" slicecount="1" values="PIN" encoded="0">
+   <PIN pinname="Name" slicecount="1" encoded="0" values="PIN">
    </PIN>
    <PIN pinname="Elements" visible="1">
    </PIN>
@@ -285,7 +285,7 @@
    </BOUNDS>
    <BOUNDS type="Window" left="18015" top="5715" width="4740" height="4215">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Input" visible="1" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Input - Switch" visible="1" slicecount="1" values="0">
    </PIN>
@@ -315,9 +315,49 @@
    </BOUNDS>
    <PIN pinname="Element" visible="1">
    </PIN>
-   <PIN pinname="Name" slicecount="1" values="new" encoded="0">
+   <PIN pinname="Name" slicecount="1" encoded="0" values="new">
    </PIN>
    </NODE>
    <LINK srcnodeid="50" srcpinname="Elements" dstnodeid="54" dstpinname="Element">
+   </LINK>
+   <NODE systemname="Prune (XML)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Prune (XML)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="7605" top="1890" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Element" visible="1">
+   </PIN>
+   <PIN pinname="Element Name" slicecount="1" values="PATCH" encoded="0">
+   </PIN>
+   <PIN pinname="Attribute Names" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Elements" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Element" dstnodeid="55" dstpinname="Element">
+   </LINK>
+   <NODE systemname="Prune (XML)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Prune (XML)" componentmode="Hidden" id="56">
+   <BOUNDS type="Node" left="7785" top="2505" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Element" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Element Name" slicecount="1" encoded="0" values="NODE">
+   </PIN>
+   <PIN pinname="Attribute Names" slicecount="1" encoded="0" values="|old, new|">
+   </PIN>
+   <PIN pinname="Elements" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="55" srcpinname="Elements" dstnodeid="56" dstpinname="Element">
+   </LINK>
+   <NODE systemname="Prune (XML)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Prune (XML)" componentmode="Hidden" id="57">
+   <BOUNDS type="Node" left="7800" top="3015" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Element" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Element Name" slicecount="1" encoded="0" values="PIN">
+   </PIN>
+   <PIN pinname="Attribute Names" slicecount="1" encoded="0" values="|old, new, olddefault|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Elements" dstnodeid="57" dstpinname="Element">
    </LINK>
    </PATCH>
