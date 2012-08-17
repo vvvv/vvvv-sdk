@@ -1,4 +1,4 @@
-﻿#region usings
+#region usings
 
 using System;
 using System.ComponentModel.Composition;

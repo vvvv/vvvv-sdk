@@ -23,14 +23,14 @@ namespace VVVV.Nodes.Finder
             : base(parentNodeView, node, filter, depth)
         {
             FNode.LabelPin.Changed += HandleLabelPinChanged;
-            FLabel = FNode.LabelPin[0];
+            FLabel = FNode.LabelPin.GetSlice(0);
             FComment = string.Empty;
             
             if (FNode.NodeInfo.Category == "String")
             {
                 FCommentPin = FNode.FindPin("Input String");
                 FCommentPin.Changed += HandleCommentPinChanged;
-                FComment = FCommentPin[0] ?? string.Empty;
+                FComment = FCommentPin.GetSlice(0) ?? string.Empty;
             }
         }
         
@@ -67,7 +67,7 @@ namespace VVVV.Nodes.Finder
         
         void HandleLabelPinChanged(object sender, EventArgs e)
         {
-            FLabel = FNode.LabelPin[0];
+            FLabel = FNode.LabelPin.GetSlice(0);
             
             if (IOType == IOTypeCode.IO)
             {
@@ -77,7 +77,7 @@ namespace VVVV.Nodes.Finder
         
         void HandleCommentPinChanged(object sender, EventArgs e)
         {
-            FComment = FCommentPin[0] ?? string.Empty;
+            FComment = FCommentPin.GetSlice(0) ?? string.Empty;
             
             if (IOType == IOTypeCode.Comment)
             {
@@ -128,7 +128,7 @@ namespace VVVV.Nodes.Finder
                 switch (IOType)
                 {
                     case IONodeView.IOTypeCode.Comment:
-                        var cmt = FCommentPin[0];
+                        var cmt = FCommentPin.GetSlice(0);
                         if (!string.IsNullOrEmpty(cmt))
                         {
                             var maxChar = 30;
