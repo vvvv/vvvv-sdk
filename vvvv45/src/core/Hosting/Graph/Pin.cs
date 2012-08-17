@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using VVVV.Core;
 using VVVV.Core.Collections;
