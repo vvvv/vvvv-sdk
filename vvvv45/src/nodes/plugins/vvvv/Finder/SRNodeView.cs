@@ -16,7 +16,7 @@ namespace VVVV.Nodes.Finder
             FChannelPin = FNode.FindPin(ChannelPinName);
             FChannelPin.Changed += HandleChannelPinChanged;
             
-            FSRChannel = FChannelPin[0];
+            FSRChannel = FChannelPin.GetSlice(0);
         }
         
         public override void Dispose()
@@ -33,7 +33,7 @@ namespace VVVV.Nodes.Finder
         
         void HandleChannelPinChanged(object sender, EventArgs e)
         {
-            FSRChannel = FChannelPin[0];
+            FSRChannel = FChannelPin.GetSlice(0);
             OnRenamed(Name);
         }
         
