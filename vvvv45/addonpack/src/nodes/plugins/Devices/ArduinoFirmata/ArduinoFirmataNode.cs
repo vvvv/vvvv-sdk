@@ -147,7 +147,7 @@ namespace VVVV.Nodes
 					FPluginInfo.Category = "Devices";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "";
+					FPluginInfo.Version = "Legacy";
 					
 					//the nodes author: your sign
 					FPluginInfo.Author = "wirmachenbunt";
@@ -159,9 +159,9 @@ namespace VVVV.Nodes
 					//give credits to thirdparty code used
 					FPluginInfo.Credits = "uses Firmata .NET Lib made by Tim Farley";
 					//any known problems?
-					FPluginInfo.Bugs = "Arduino Board";
+					FPluginInfo.Bugs = "The Code itself is not optimized for the evaluation strategy of vvvv";
 					//any known usage of the node that may cause troubles?
-					FPluginInfo.Warnings = "don't use this Plugin :)";
+					FPluginInfo.Warnings = "DO NOT USE THIS PLUGIN :) Use the updated Version (which is a module called Arduino) because it implements the FirmataEncode/-Decode nodes freshly coded just for you Arduino lovers!";
 					
 					//leave below as is
 					System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
