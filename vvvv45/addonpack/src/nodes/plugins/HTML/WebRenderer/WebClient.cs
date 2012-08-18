@@ -4,6 +4,7 @@ using VVVV.Core;
 using VVVV.Core.Logging;
 using System.IO;
 using System.Text;
+using System.Xml.Linq;
 
 namespace VVVV.Nodes.HTML
 {
@@ -97,8 +98,11 @@ namespace VVVV.Nodes.HTML
         {
             protected override void Visit(CefDomDocument document)
             {
-                var rootNode = document.GetDocument();
-                rootNode.AddEventListener("mouseover", new DomEventEventListener(), false);
+                //var rootNode = document.GetDocument();
+                //rootNode.AddEventListener("mouseover", new DomEventEventListener(), false);
+                var xmlReader = new CefXmlReader(document);
+                var xdoc = XDocument.Load(xmlReader);
+                var xml = xdoc.ToString();
             }
         }
         
@@ -130,8 +134,11 @@ namespace VVVV.Nodes.HTML
             {
                 FRenderer.FFrameLoadCount--;
                 FRenderer.FErrorText = string.Empty;
+                if (frame.IsMain)
+                {
+                    frame.VisitDom(new DomVisitor());
+                }
                 base.OnLoadEnd(browser, frame, httpStatusCode);
-//                frame.VisitDom(new DomVisitor());
             }
         }
 
