@@ -58,51 +58,58 @@ namespace VVVV.Nodes
 					sliceCount+=countB[i];
 				FOutput.Length = sliceCount;
 				
-				using (var binReader = FInput.GetCyclicReader())
-				using (var offsetReader = FOffset.GetCyclicReader())
-				using (var sliceWriter = FOutput.GetWriter())
-				using (var binSizeWriter = FOutBinSize.GetWriter())
+				var binB = MemoryPool<IInStream<T>>.GetArray();
+				var offsetB = MemoryPool<int>.GetArray(binB.Length);
+				var sliceB = MemoryPool<T>.GetArray(binB.Length);
+				try
 				{
-					var binB = MemoryPool<IInStream<T>>.GetArray();
-					var offsetB = MemoryPool<int>.GetArray(binB.Length);
-					var sliceB = MemoryPool<T>.GetArray(binB.Length);
-					int binsLeft = spreadMax;
-					int binsToRead = 0;
-					do
+					using (var binReader = FInput.GetCyclicReader())
+					using (var offsetReader = FOffset.GetCyclicReader())
+					using (var sliceWriter = FOutput.GetWriter())
+					using (var binSizeWriter = FOutBinSize.GetWriter())
 					{
-						binsToRead = Math.Min(binsLeft,binB.Length);
-						binReader.Read(binB, 0, binsToRead);
-						offsetReader.Read(offsetB, 0, binsToRead);
-						binsLeft -= binsToRead;
-	
-						for (int i=0; i<binsToRead; i++)
+						int binsLeft = spreadMax;
+						int binsToRead = 0;
+						do
 						{
-							binSizeWriter.Write(countB[i]);
-							if (binB[i].Length==0)
+							binsToRead = Math.Min(binsLeft,binB.Length);
+							binReader.Read(binB, 0, binsToRead);
+							offsetReader.Read(offsetB, 0, binsToRead);
+							binsLeft -= binsToRead;
+							
+							for (int i=0; i<binsToRead; i++)
 							{
-								FOutput.Length-=countB[i];
-							}
-							else if (countB[i] != 0)
-							{
-								using (var sliceReader = binB[i].GetCyclicReader())
+								binSizeWriter.Write(countB[i]);
+								if (binB[i].Length==0)
 								{
-									offsetB[i] = VMath.Zmod(offsetB[i],binB[i].Length);
-									sliceReader.Position = offsetB[i];
-									
-									int slicesLeft = countB[i];
-									int slicesToRead = 0;
-									do
+									FOutput.Length-=countB[i];
+								}
+								else if (countB[i] != 0)
+								{
+									using (var sliceReader = binB[i].GetCyclicReader())
 									{
-										slicesToRead = Math.Min(slicesLeft,sliceB.Length);
-										slicesLeft -= slicesToRead;
-										sliceReader.Read(sliceB,0,slicesToRead);
-										sliceWriter.Write(sliceB,0,slicesToRead);
+										offsetB[i] = VMath.Zmod(offsetB[i],binB[i].Length);
+										sliceReader.Position = offsetB[i];
 										
-									} while (slicesLeft >0);
+										int slicesLeft = countB[i];
+										int slicesToRead = 0;
+										do
+										{
+											slicesToRead = Math.Min(slicesLeft,sliceB.Length);
+											slicesLeft -= slicesToRead;
+											sliceReader.Read(sliceB,0,slicesToRead);
+											sliceWriter.Write(sliceB,0,slicesToRead);
+											
+										} while (slicesLeft >0);
+									}
 								}
 							}
-						}
-					} while (binsLeft>0);
+						} while (binsLeft>0);
+					}
+					
+				}
+				finally
+				{
 					MemoryPool<IInStream<T>>.PutArray(binB);
 					MemoryPool<int>.PutArray(offsetB);
 					MemoryPool<T>.PutArray(sliceB);
