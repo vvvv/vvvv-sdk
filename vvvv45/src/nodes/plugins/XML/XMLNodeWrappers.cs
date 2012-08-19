@@ -71,6 +71,42 @@ namespace VVVV.Nodes.XML
         }
     }
 
+    [PluginInfo(Name = "Element", Category = "XML", Version = "Join")]
+    public class ElementJoinNode : IPluginEvaluate
+    {
+        [Input("Name")]
+        public IDiffSpread<string> Name;
+        [Input("Value")]
+        public IDiffSpread<string> Value;
+        [Input("Childs")]
+        public IDiffSpread<ISpread<XElement>> Childs;
+        [Input("Attributes")]
+        public IDiffSpread<ISpread<XAttribute>> Attributes;
+
+        [Output("Element")]
+        public ISpread<XElement> Element;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!SpreadUtils.AnyChanged(Name, Value, Childs, Attributes)) return;
+
+            spreadMax = Name
+                .CombineWith(Value)
+                .CombineWith(Childs)
+                .CombineWith(Attributes);
+
+            Element.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                var element = new XElement(Name[i], Value[i]);
+                element.Add(Attributes[i].ToArray());
+                element.Add(Childs[i].ToArray());
+                Element[i] = element;
+            }
+        }
+    }
+
     [PluginInfo(Name = "Attribute", Category = "XML", Version = "Split")]
     public class AttributeSplitNode : IPluginEvaluate
     {
@@ -107,6 +143,29 @@ namespace VVVV.Nodes.XML
                 Value[i] = value;
                 Parent[i] = parent;
                 NodeType[i] = nodeType;
+            }
+        }
+    }
+
+    [PluginInfo(Name = "Attribute", Category = "XML", Version = "Join")]
+    public class AttributeJoinNode : IPluginEvaluate
+    {
+        [Input("Name")]
+        public IDiffSpread<string> Name;
+        [Input("Value")]
+        public IDiffSpread<string> Value;
+        [Output("Attribute")]
+        public ISpread<XAttribute> Attribute;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!SpreadUtils.AnyChanged(Name, Value)) return;
+
+            Attribute.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                Attribute[i] = new XAttribute(Name[i], Value[i]);
             }
         }
     }
