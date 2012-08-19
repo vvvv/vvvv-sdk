@@ -96,13 +96,25 @@ namespace VVVV.Nodes.HTML
 
         class DomVisitor : CefDomVisitor
         {
+            private readonly WebRenderer FRenderer;
+
+            public DomVisitor(WebRenderer renderer)
+            {
+                FRenderer = renderer;
+            }
+
             protected override void Visit(CefDomDocument document)
             {
                 //var rootNode = document.GetDocument();
                 //rootNode.AddEventListener("mouseover", new DomEventEventListener(), false);
-                var xmlReader = new CefXmlReader(document);
-                var xdoc = XDocument.Load(xmlReader);
-                var xml = xdoc.ToString();
+                using (var xmlReader = new CefXmlReader(document))
+                {
+                    var dom = XDocument.Load(xmlReader);
+                    lock (FRenderer.FLock)
+                    {
+                        FRenderer.FCurrentDom = dom.Root;
+                    }
+                }
             }
         }
         
@@ -117,26 +129,39 @@ namespace VVVV.Nodes.HTML
             
             protected override void OnLoadStart(CefBrowser browser, CefFrame frame)
             {
-                FRenderer.FFrameLoadCount++;
-                FRenderer.FErrorText = string.Empty;
-                if (frame.IsMain) FRenderer.FCurrentUrl = frame.GetURL();
+                lock (FRenderer.FLock)
+                {
+                    FRenderer.FFrameLoadCount++;
+                    FRenderer.FErrorText = string.Empty;
+                    if (frame.IsMain)
+                    {
+                        FRenderer.FCurrentUrl = frame.GetURL();
+                    }
+                }
                 base.OnLoadStart(browser, frame);
             }
             
             protected override bool OnLoadError(CefBrowser browser, CefFrame frame, CefHandlerErrorCode errorCode, string failedUrl, ref string errorText)
             {
-                FRenderer.FFrameLoadCount = 0;
-                FRenderer.FErrorText = errorText;
+                lock (FRenderer.FLock)
+                {
+                    FRenderer.FCurrentDom = null;
+                    FRenderer.FFrameLoadCount = 0;
+                    FRenderer.FErrorText = errorText;
+                }
                 return base.OnLoadError(browser, frame, errorCode, failedUrl, ref errorText);
             }
             
             protected override void OnLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode)
             {
-                FRenderer.FFrameLoadCount--;
-                FRenderer.FErrorText = string.Empty;
+                lock (FRenderer.FLock)
+                {
+                    FRenderer.FFrameLoadCount--;
+                    FRenderer.FErrorText = string.Empty;
+                }
                 if (frame.IsMain)
                 {
-                    frame.VisitDom(new DomVisitor());
+                    frame.VisitDom(new DomVisitor(FRenderer));
                 }
                 base.OnLoadEnd(browser, frame, httpStatusCode);
             }

@@ -4,14 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using CefGlue;
+using System.IO;
 
 namespace VVVV.Nodes.HTML
 {
     class CefXmlReader : XmlReader
     {
-        private readonly CefDomDocument document;
-        private readonly CefDomNode rootNode;
+        private CefDomDocument document;
+        private CefDomNode rootNode;
         private CefDomNode currentNode;
+        private XmlReader xmlReader; // Used to parse text nodes
+        private TextReader textReader;
 
         public CefXmlReader(CefDomDocument cefDomDocument)
         {
@@ -21,10 +24,27 @@ namespace VVVV.Nodes.HTML
             this.namespaceManager = new XmlNamespaceManager(nameTable);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.rootNode.Dispose();
+                this.rootNode = null;
+                this.document = null;
+                //System.GC.Collect();
+                //System.GC.WaitForPendingFinalizers();
+            }
+            base.Dispose(disposing);
+        }
+
         public override int AttributeCount
         {
             get 
             {
+                if (xmlReader != null)
+                {
+                    return xmlReader.AttributeCount;
+                }
                 if (currentNode.HasElementAttributes())
                 {
                     var attributeMap = currentNode.GetElementAttributes();
@@ -46,7 +66,14 @@ namespace VVVV.Nodes.HTML
 
         public override int Depth
         {
-            get { return nodeStack.Count - 1; }
+            get 
+            {
+                if (xmlReader != null)
+                {
+                    return xmlReader.Depth + nodeStack.Count - 1;
+                }
+                return nodeStack.Count - 1; 
+            }
         }
 
         public override bool EOF
@@ -57,6 +84,10 @@ namespace VVVV.Nodes.HTML
         private const string I_IS_OUT_OF_RANGE = "i is out of range. It must be non-negative and less than the size of the attribute collection.";
         public override string GetAttribute(int i)
         {
+            if (xmlReader != null)
+            {
+                return xmlReader.GetAttribute(i);
+            }
             if (!currentNode.HasElementAttributes())
             {
                 throw new ArgumentOutOfRangeException(I_IS_OUT_OF_RANGE);
@@ -81,6 +112,10 @@ namespace VVVV.Nodes.HTML
 
         public override string GetAttribute(string name)
         {
+            if (xmlReader != null)
+            {
+                return xmlReader.GetAttribute(name);
+            }
             if (name == null)
             {
                 throw new ArgumentNullException("name is a null reference");
@@ -104,13 +139,24 @@ namespace VVVV.Nodes.HTML
 
         public override bool IsEmptyElement
         {
-            get { return !currentNode.HasChildren; }
+            get 
+            {
+                if (xmlReader != null)
+                {
+                    return xmlReader.IsEmptyElement;
+                }
+                return !currentNode.HasChildren; 
+            }
         }
 
         public override string LocalName
         {
             get 
             {
+                if (xmlReader != null)
+                {
+                    return xmlReader.LocalName;
+                }
                 switch (NodeType)
                 {
                     case XmlNodeType.Attribute:
@@ -142,6 +188,10 @@ namespace VVVV.Nodes.HTML
 
         public override bool MoveToElement()
         {
+            if (xmlReader != null)
+            {
+                return xmlReader.MoveToElement();
+            }
             if (currentAttributeIndex >= 0)
             {
                 currentAttributeIndex = -1;
@@ -156,6 +206,10 @@ namespace VVVV.Nodes.HTML
         private int currentAttributeIndex = -1;
         public override bool MoveToFirstAttribute()
         {
+            if (xmlReader != null)
+            {
+                return xmlReader.MoveToFirstAttribute();
+            }
             if (currentNode.HasElementAttributes())
             {
                 currentAttributeIndex = 0;
@@ -170,6 +224,10 @@ namespace VVVV.Nodes.HTML
 
         public override bool MoveToNextAttribute()
         {
+            if (xmlReader != null)
+            {
+                return xmlReader.MoveToNextAttribute();
+            }
             if (!currentNode.HasElementAttributes())
             {
                 return false;
@@ -195,6 +253,10 @@ namespace VVVV.Nodes.HTML
         {
             get 
             {
+                if (xmlReader != null)
+                {
+                    return xmlReader.NodeType;
+                }
                 if (currentNode == null)
                 {
                     return XmlNodeType.None;
@@ -232,12 +294,47 @@ namespace VVVV.Nodes.HTML
                     case CefDomNodeType.ProcessingInstruction:
                         return XmlNodeType.ProcessingInstruction;
                     case CefDomNodeType.Text:
-                        return XmlNodeType.Text;
+                        // Try to parse the text as it is valid xml in some cases (CDATA)
+                        var value = "<span>" + currentNode.GetValue() + "</span>";
+                        if (IsXml(value))
+                        {
+                            textReader = new StringReader(value);
+                            xmlReader = XmlReader.Create(textReader, new XmlReaderSettings() { NameTable = nameTable });
+                            xmlReader.Read(); // span
+                            xmlReader.Read(); // content
+                            return xmlReader.NodeType;
+                        }
+                        else
+                        {
+                            return XmlNodeType.Text;
+                        }
                     case CefDomNodeType.Unsupported:
                     case CefDomNodeType.XPathNamespace:
                     default:
                         throw new NotImplementedException();
                 }
+            }
+        }
+
+        private bool IsXml(string text)
+        {
+            try
+            {
+                using (var textReader = new StringReader(text))
+                {
+                    using (var xmlReader = XmlReader.Create(textReader))
+                    {
+                        while (!xmlReader.EOF)
+                        {
+                            xmlReader.Read();
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (XmlException)
+            {
+                return false;
             }
         }
 
@@ -260,6 +357,22 @@ namespace VVVV.Nodes.HTML
                 return CheckReadStateAndReturn();
             }
 
+            if (xmlReader != null)
+            {
+                var result = xmlReader.Read();
+                if (result && xmlReader.Depth > 0)
+                {
+                    return result;
+                }
+                else
+                {
+                    xmlReader.Close();
+                    textReader.Dispose();
+                    xmlReader = null;
+                    textReader = null;
+                }
+            }
+
             switch (traverseDirection)
             {
                 case TraverseDirection.Down:
@@ -278,6 +391,7 @@ namespace VVVV.Nodes.HTML
                             // Time to move back up
                             nodeStack.Pop();
                             traverseDirection = TraverseDirection.Up;
+                            currentNode.Dispose();
                             currentNode = parent;
                         }
                         else
@@ -285,6 +399,7 @@ namespace VVVV.Nodes.HTML
                             // There're still siblings left to visit
                             currentNode = currentNode.GetNextSibling();
                         }
+                        lastChild.Dispose();
                     }
                     break;
                 case TraverseDirection.Up:
@@ -292,11 +407,13 @@ namespace VVVV.Nodes.HTML
                     if (nodeStack.Count > 1)
                     {
                         var parent = nodeStack.Peek();
+                        //var parent = currentNode.GetParent();
                         var lastChild = parent.GetLastChild();
                         if (currentNode.IsSame(lastChild))
                         {
                             // No sibling left, go further up
                             nodeStack.Pop();
+                            currentNode.Dispose();
                             currentNode = parent;
                         }
                         else
@@ -305,10 +422,12 @@ namespace VVVV.Nodes.HTML
                             traverseDirection = TraverseDirection.Down;
                             currentNode = currentNode.GetNextSibling();
                         }
+                        lastChild.Dispose();
                     }
                     else
                     {
                         // No parent left, we have to be the root -> EOF
+                        currentNode.Dispose();
                         currentNode = null;
                         readState = System.Xml.ReadState.EndOfFile;
                         return false;
@@ -347,6 +466,11 @@ namespace VVVV.Nodes.HTML
         {
             get 
             {
+                if (xmlReader != null)
+                {
+                    return xmlReader.Value;
+                }
+
                 string value;
                 switch (NodeType)
                 {
