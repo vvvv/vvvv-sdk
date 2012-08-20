@@ -42,9 +42,6 @@ namespace VVVV.Nodes.ImagePlayer
         [Config("Threads Texture", DefaultValue = 2.0, MinValue = -1.0)]
         public ISpread<int> FThreadsTextureConfig;
         
-        [Config("Allocate On GPU Only", DefaultValue = 0)]
-        public ISpread<bool> FAllocateOnGpu;
-        
         [Output("Texture")]
         public ISpread<ISpread<Frame>> FTextureOut;
         
@@ -131,7 +128,6 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 imagePlayer.Directories = FDirectoryIn[i];
                 imagePlayer.Filemasks = FFilemaskIn[i];
-                imagePlayer.AllocateOnGPU = FAllocateOnGpu[i];
                 
                 if (reload)
                 {

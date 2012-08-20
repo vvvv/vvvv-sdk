@@ -33,7 +33,6 @@ namespace VVVV.Nodes.ImagePlayer
     {
         public const string DEFAULT_FILEMASK = "*";
         public const int DEFAULT_BUFFER_SIZE = 0x2000;
-        public const bool DEFAULT_ALLOCATE_ON_GPU = false; // AMD cards don't play well when texture size not power of two.
         
         private string[] FFiles = new string[0];
         
@@ -63,7 +62,6 @@ namespace VVVV.Nodes.ImagePlayer
         {
             FThreadsIO = threadsIO;
             FThreadsTexture = threadsTexture;
-            AllocateOnGPU = DEFAULT_ALLOCATE_ON_GPU;
             FLogger = logger;
             FDeviceService = deviceService;
             
@@ -198,27 +196,6 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 return FThreadsTexture;
             }
-        }
-        
-        private bool FAllocateOnGPU;
-        public bool AllocateOnGPU 
-        {
-        	get
-        	{
-        		return FAllocateOnGPU;
-        	}
-        	set
-        	{
-        		if (FAllocateOnGPU != value)
-        		{
-        			Flush();
-        			foreach (var device in FDevices)
-        			{
-        				FTexturePool.Release(device);
-        			}
-        			FAllocateOnGPU = value;
-        		}
-        	}
         }
 
         private void Enqueue(FrameInfo frameInfo)
@@ -459,14 +436,14 @@ namespace VVVV.Nodes.ImagePlayer
         
         private EX9.Texture CreateTextureForDecoder(EX9.Device device, int width, int height, int levels, EX9.Format format)
         {
-        	if (AllocateOnGPU)
-        	{
-        		return FTexturePool.GetTexture(device, width, height, levels, EX9.Usage.Dynamic & ~EX9.Usage.AutoGenerateMipMap, format, EX9.Pool.Default);
-        	}
-        	else
-        	{
-        		return FTexturePool.GetTexture(device, width, height, levels, EX9.Usage.None & ~EX9.Usage.AutoGenerateMipMap, format, EX9.Pool.Managed);
-        	}
+            var pool = EX9.Pool.Managed;
+            var usage = EX9.Usage.None & ~EX9.Usage.AutoGenerateMipMap;
+            if (device is EX9.DeviceEx)
+            {
+                pool = EX9.Pool.Default;
+                usage = EX9.Usage.Dynamic & ~EX9.Usage.AutoGenerateMipMap;
+            }
+            return FTexturePool.GetTexture(device, width, height, levels, usage, format, pool);
         }
         
         private void HandleDeviceDisabled(object sender, DeviceEventArgs e)
