@@ -112,7 +112,7 @@ namespace VVVV.Nodes.HTML
                     var dom = XDocument.Load(xmlReader);
                     lock (FRenderer.FLock)
                     {
-                        FRenderer.FCurrentDom = dom.Root;
+                        FRenderer.FCurrentDom = dom;
                     }
                 }
             }

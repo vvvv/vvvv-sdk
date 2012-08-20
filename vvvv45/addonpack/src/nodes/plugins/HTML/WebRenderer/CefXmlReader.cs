@@ -45,9 +45,8 @@ namespace VVVV.Nodes.HTML
                 {
                     return xmlReader.AttributeCount;
                 }
-                if (currentNode.HasElementAttributes())
+                if (attributeMap != null)
                 {
-                    var attributeMap = currentNode.GetElementAttributes();
                     return attributeMap.Count;
                 }
                 return 0;
@@ -88,11 +87,10 @@ namespace VVVV.Nodes.HTML
             {
                 return xmlReader.GetAttribute(i);
             }
-            if (!currentNode.HasElementAttributes())
+            if (attributeMap == null)
             {
                 throw new ArgumentOutOfRangeException(I_IS_OUT_OF_RANGE);
             }
-            var attributeMap = currentNode.GetElementAttributes();
             if (i < 0 || i >= attributeMap.Count)
             {
                 throw new ArgumentOutOfRangeException(I_IS_OUT_OF_RANGE);
@@ -120,11 +118,10 @@ namespace VVVV.Nodes.HTML
             {
                 throw new ArgumentNullException("name is a null reference");
             }
-            if (!currentNode.HasElementAttributes())
+            if (attributeMap == null)
             {
                 return null;
             }
-            var attributeMap = currentNode.GetElementAttributes();
             string value;
             if (!attributeMap.TryGetValue(name, out value))
             {
@@ -160,13 +157,11 @@ namespace VVVV.Nodes.HTML
                 switch (NodeType)
                 {
                     case XmlNodeType.Attribute:
-                        var attributeMap = currentNode.GetElementAttributes();
                         string key;
                         attributeMap.TryGetKey(currentAttributeIndex, out key);
-                        key = XmlConvert.EncodeLocalName(key);
-                        return key;
+                        return GetLocalName(key);
                     default:
-                        return currentNode.GetName();
+                        return GetLocalName(currentNode.GetName());
                 }
             }
         }
@@ -210,9 +205,9 @@ namespace VVVV.Nodes.HTML
             {
                 return xmlReader.MoveToFirstAttribute();
             }
-            if (currentNode.HasElementAttributes())
+            if (attributeMap != null)
             {
-                currentAttributeIndex = 0;
+                currentAttributeIndex = attributeMap.Count - 1;
                 return true;
             }
             else
@@ -232,9 +227,8 @@ namespace VVVV.Nodes.HTML
             {
                 return false;
             }
-            currentAttributeIndex++;
-            var attributeMap = currentNode.GetElementAttributes();
-            return currentAttributeIndex < attributeMap.Count;
+            currentAttributeIndex--;
+            return currentAttributeIndex >= 0;
         }
 
         private XmlNameTable nameTable;
@@ -246,7 +240,10 @@ namespace VVVV.Nodes.HTML
 
         public override string NamespaceURI
         {
-            get { return namespaceManager.DefaultNamespace; }
+            get 
+            {
+                return namespaceManager.LookupNamespace(Prefix); 
+            }
         }
 
         public override XmlNodeType NodeType
@@ -340,13 +337,47 @@ namespace VVVV.Nodes.HTML
 
         public override string Prefix
         {
-            get { return namespaceManager.LookupPrefix(NamespaceURI); }
+            get 
+            {
+                if (xmlReader != null)
+                {
+                    return xmlReader.Prefix;
+                }
+                if (currentAttributeIndex >= 0)
+                {
+                    string key;
+                    attributeMap.TryGetKey(currentAttributeIndex, out key);
+                    return GetPrefix(key);
+                }
+                return GetPrefix(currentNode.GetName());
+            }
+        }
+
+        private static string GetPrefix(string name)
+        {
+            var n = name.Split(':');
+            if (n.Length > 1)
+            {
+                return n[0];
+            }
+            return string.Empty;
+        }
+
+        private static string GetLocalName(string name)
+        {
+            var n = name.ToLowerInvariant().Split(':');
+            if (n.Length > 1)
+            {
+                return n[1];
+            }
+            return n[0];
         }
 
         enum TraverseDirection { Down, Up }
 
         private Stack<CefDomNode> nodeStack = new Stack<CefDomNode>();
         private TraverseDirection traverseDirection;
+        private CefStringMap attributeMap;
         public override bool Read()
         {
             // First call to Read
@@ -376,7 +407,7 @@ namespace VVVV.Nodes.HTML
             switch (traverseDirection)
             {
                 case TraverseDirection.Down:
-                    // As long as there children go down (depth first)
+                    // As long as there're children go down (depth first)
                     if (currentNode.HasChildren)
                     {
                         nodeStack.Push(currentNode);
@@ -435,6 +466,40 @@ namespace VVVV.Nodes.HTML
                     break;
             }
 
+            if (currentNode != null)
+            {
+                // See if this node defines a new namespace
+                if (currentNode.HasElementAttributes())
+                {
+                    attributeMap = currentNode.GetElementAttributes();
+                    switch (traverseDirection)
+                    {
+                        case TraverseDirection.Down:
+                            for (int i = 0; i < attributeMap.Count; i++)
+                            {
+                                string key, value;
+                                if (attributeMap.TryGetKey(i, out key) && attributeMap.TryGetValue(i, out value))
+                                {
+                                    if (key.StartsWith("xmlns"))
+                                    {
+                                        var prefix = GetPrefix(key);
+                                        namespaceManager.AddNamespace(prefix, value);
+                                    }
+                                }
+                            }
+                            namespaceManager.PushScope();
+                            break;
+                        case TraverseDirection.Up:
+                            namespaceManager.PopScope();
+                            break;
+                    }
+                }
+                else
+                {
+                    attributeMap = null;
+                }
+            }
+
             return CheckReadStateAndReturn();
         }
 
@@ -475,7 +540,6 @@ namespace VVVV.Nodes.HTML
                 switch (NodeType)
                 {
                     case XmlNodeType.Attribute:
-                        var attributeMap = currentNode.GetElementAttributes();
                         attributeMap.TryGetValue(currentAttributeIndex, out value);
                         break;
                     case XmlNodeType.CDATA:

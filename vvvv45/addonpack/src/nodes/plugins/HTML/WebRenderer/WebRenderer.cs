@@ -39,7 +39,7 @@ namespace VVVV.Nodes.HTML
         private KeyboardState FKeyboardState = KeyboardState.Empty;
         private Vector2D FScrollTo;
         internal readonly object FLock = new object();
-        internal XElement FCurrentDom;
+        internal XDocument FCurrentDom;
         internal int FFrameLoadCount;
         internal string FCurrentUrl;
         internal string FErrorText;
@@ -88,7 +88,7 @@ namespace VVVV.Nodes.HTML
 
         [Node(Name = "Renderer")]
         public DXResource<Texture, CefBrowser> Render(
-            out XElement dom,
+            out XDocument dom,
             out bool isLoading,
             out string currentUrl,
             out string errorText,

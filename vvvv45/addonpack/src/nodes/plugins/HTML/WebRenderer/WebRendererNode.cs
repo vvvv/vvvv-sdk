@@ -56,7 +56,7 @@ namespace VVVV.Nodes.HTML
         [Output("Output")]
         public ISpread<DXResource<Texture, CefBrowser>> FOutput;
         [Output("DOM")]
-        public ISpread<XElement> FDomOut;
+        public ISpread<XDocument> FDomOut;
         [Output("Is Loading")]
         public ISpread<bool> FIsLoadingOut;
         [Output("Current Url")]
@@ -99,7 +99,7 @@ namespace VVVV.Nodes.HTML
                 var javaScript = FJavaScriptIn[i];
                 var execute = FExecuteIn[i];
                 var enabled = FEnabledIn[i];
-                XElement dom;
+                XDocument dom;
                 bool isLoading;
                 string currentUrl, errorText;
                 var output = webRenderer.Render(
