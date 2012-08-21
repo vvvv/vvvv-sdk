@@ -18,13 +18,13 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		#pragma warning disable 649
-		[Input("Input")]
+		[Input("Input", CheckIfChanged = true, AutoValidate = false)]
 		IInStream<double> FInput;
 
-		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true)]
+		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true, CheckIfChanged = true, AutoValidate = false)]
 		IInStream<int> FVec;
 		
-		[Input("Bin Size", DefaultValue = -1)]
+		[Input("Bin Size", DefaultValue = -1, CheckIfChanged = true, AutoValidate = false)]
 		IInStream<int> FBin;
 		
 		[Input("Reverse", DefaultBoolean = true)]
@@ -38,32 +38,39 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FVec.Length>0)
+			FInput.Sync(); 
+			FVec.Sync();
+			FBin.Sync();
+			
+			if (FInput.IsChanged || FVec.IsChanged || FBin.IsChanged || FReverse.IsChanged)
 			{
-				int vecSize = Math.Max(1,FVec.GetReader().Read());
-				VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin, FReverse.SliceCount);			
-	    
-				FOutput.Length = spread.ItemCount;
-				using (var dataWriter = FOutput.GetWriter())
+				if (FVec.Length>0)
 				{
-					for (int b = 0; b < spread.Count; b++)
+					int vecSize = Math.Max(1,FVec.GetReader().Read());
+					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin, FReverse.SliceCount);			
+		    
+					FOutput.Length = spread.ItemCount;
+					using (var dataWriter = FOutput.GetWriter())
 					{
-						if (FReverse[b])
+						for (int b = 0; b < spread.Count; b++)
 						{
-							for (int r = (spread[b].Length/vecSize)-1; r>=0; r--)
+							if (FReverse[b])
 							{
-								dataWriter.Write(spread.GetBinRow(b,r).ToArray(), 0, vecSize);
+								for (int r = (spread[b].Length/vecSize)-1; r>=0; r--)
+								{
+									dataWriter.Write(spread.GetBinRow(b,r).ToArray(), 0, vecSize);
+								}
 							}
-						}
-						else
-						{
-							dataWriter.Write(spread[b], 0, spread[b].Length);
+							else
+							{
+								dataWriter.Write(spread[b], 0, spread[b].Length);
+							}
 						}
 					}
 				}
+				else
+					FOutput.Length = 0;
 			}
-			else
-				FOutput.Length = 0;
 		}
 	}
 	
@@ -71,10 +78,10 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		#pragma warning disable 649
-		[Input("Input")]
+		[Input("Input", CheckIfChanged = true, AutoValidate = false)]
 		IInStream<T> FInput;
 		
-		[Input("Bin Size", DefaultValue = -1)]
+		[Input("Bin Size", DefaultValue = -1, CheckIfChanged = true, AutoValidate = false)]
 		IInStream<int> FBin;
 		
 		[Input("Reverse", DefaultBoolean = true)]
@@ -88,17 +95,23 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			VecBinSpread<T> spread = new VecBinSpread<T>(FInput,1,FBin, FReverse.SliceCount);			
-    
-			FOutput.Length = spread.ItemCount;
-			using (var dataWriter = FOutput.GetWriter())
+			FInput.Sync(); 
+			FBin.Sync();
+			
+			if (FInput.IsChanged || FBin.IsChanged)
 			{
-				for (int b = 0; b < spread.Count; b++)
+				VecBinSpread<T> spread = new VecBinSpread<T>(FInput,1,FBin, FReverse.SliceCount);			
+	    
+				FOutput.Length = spread.ItemCount;
+				using (var dataWriter = FOutput.GetWriter())
 				{
-					T[] bin = spread[b];
-					if (FReverse[b])
-						Array.Reverse(bin);
-					dataWriter.Write(bin, 0, bin.Length);
+					for (int b = 0; b < spread.Count; b++)
+					{
+						T[] bin = spread[b];
+						if (FReverse[b])
+							Array.Reverse(bin);
+						dataWriter.Write(bin, 0, bin.Length);
+					}
 				}
 			}
 		}

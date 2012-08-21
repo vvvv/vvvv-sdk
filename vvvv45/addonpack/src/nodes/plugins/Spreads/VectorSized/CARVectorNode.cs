@@ -18,13 +18,13 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		#pragma warning disable 649
-		[Input("Input")]
+		[Input("Input", CheckIfChanged = true, AutoValidate = false)]
 		IInStream<double> FInput;
 
-		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true)]
+		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true, CheckIfChanged = true, AutoValidate = false)]
 		IInStream<int> FVec;
 		
-		[Input("Bin Size", DefaultValue = -1)]
+		[Input("Bin Size", DefaultValue = -1, CheckIfChanged = true, AutoValidate = false)]
 		IInStream<int> FBin;
 		
 		[Output("First Slice")]
@@ -38,36 +38,43 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0)
-			{
-				int vecSize = Math.Max(1,FVec.GetReader().Read());
-				VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin);
+			FInput.Sync(); 
+			FVec.Sync();
+			FBin.Sync();
 			
-				FFirst.Length = spread.Count * vecSize;
-				if (FFirst.Length == spread.ItemCount || spread.ItemCount==0)
+			if (FInput.IsChanged || FVec.IsChanged || FBin.IsChanged)
+			{
+				if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0)
 				{
-					FRemainder.Length=0;
-					if (spread.ItemCount!=0)
-						FFirst.AssignFrom(FInput);
-					else
-						FFirst.Length = 0;
-				}
-				else
-				{
-					FRemainder.Length = spread.ItemCount-FFirst.Length;
-					using (var fWriter = FFirst.GetWriter())
-			        using (var rWriter = FRemainder.GetWriter())
+					int vecSize = Math.Max(1,FVec.GetReader().Read());
+					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin);
+				
+					FFirst.Length = spread.Count * vecSize;
+					if (FFirst.Length == spread.ItemCount || spread.ItemCount==0)
 					{
-						for (int b = 0; b < spread.Count; b++)
+						FRemainder.Length=0;
+						if (spread.ItemCount!=0)
+							FFirst.AssignFrom(FInput);
+						else
+							FFirst.Length = 0;
+					}
+					else
+					{
+						FRemainder.Length = spread.ItemCount-FFirst.Length;
+						using (var fWriter = FFirst.GetWriter())
+				        using (var rWriter = FRemainder.GetWriter())
 						{
-							fWriter.Write(spread.GetBinRow(b,0).ToArray(), 0, vecSize);
-							rWriter.Write(spread[b], vecSize, spread[b].Length-vecSize);
+							for (int b = 0; b < spread.Count; b++)
+							{
+								fWriter.Write(spread.GetBinRow(b,0).ToArray(), 0, vecSize);
+								rWriter.Write(spread[b], vecSize, spread[b].Length-vecSize);
+							}
 						}
 					}
 				}
+				else
+					FFirst.Length = FRemainder.Length = 0;
 			}
-			else
-				FFirst.Length = FRemainder.Length = 0;
 		}
 	}
 	
@@ -75,10 +82,10 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		#pragma warning disable 649
-		[Input("Input")]
+		[Input("Input", CheckIfChanged = true, AutoValidate = false)]
 		IInStream<T> FInput;
 		
-		[Input("Bin Size", DefaultValue = -1)]
+		[Input("Bin Size", DefaultValue = -1, CheckIfChanged = true, AutoValidate = false)]
 		IInStream<int> FBin;
 		
 		[Output("First Slice")]
@@ -92,27 +99,33 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			VecBinSpread<T> spread = new VecBinSpread<T>(FInput,1,FBin);				
+			FInput.Sync(); 
+			FBin.Sync();
 			
-			FFirst.Length = spread.Count;
-			if (FFirst.Length == spread.ItemCount || spread.ItemCount == 0)
+			if (FInput.IsChanged || FBin.IsChanged)
 			{
-				FRemainder.Length=0;
-				if (spread.ItemCount!=0)
-						FFirst.AssignFrom(FInput);
-				else
-					FFirst.Length = 0;;
-			}
-			else
-			{
-				FRemainder.Length = spread.ItemCount-FFirst.Length;
-				using (var fWriter = FFirst.GetWriter())
-		        using (var rWriter = FRemainder.GetWriter())
+				VecBinSpread<T> spread = new VecBinSpread<T>(FInput,1,FBin);				
+				
+				FFirst.Length = spread.Count;
+				if (FFirst.Length == spread.ItemCount || spread.ItemCount == 0)
 				{
-					for (int b = 0; b < spread.Count; b++)
+					FRemainder.Length=0;
+					if (spread.ItemCount!=0)
+							FFirst.AssignFrom(FInput);
+					else
+						FFirst.Length = 0;;
+				}
+				else
+				{
+					FRemainder.Length = spread.ItemCount-FFirst.Length;
+					using (var fWriter = FFirst.GetWriter())
+			        using (var rWriter = FRemainder.GetWriter())
 					{
-						fWriter.Write(spread[b][0]);
-						rWriter.Write(spread[b], 1, spread[b].Length-1);
+						for (int b = 0; b < spread.Count; b++)
+						{
+							fWriter.Write(spread[b][0]);
+							rWriter.Write(spread[b], 1, spread[b].Length-1);
+						}
 					}
 				}
 			}
