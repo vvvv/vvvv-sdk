@@ -385,8 +385,14 @@ namespace VVVV.Hosting.Factories
             //Send event before delete
             if (this.PluginDeleted != null) { this.PluginDeleted(plugin); }
 
+            var pluginContainer = plugin as PluginContainer;
             var disposablePlugin = plugin as IDisposable;
-            if (FPluginContainers.ContainsKey(plugin))
+            if (pluginContainer != null)
+            {
+                FPluginContainers.Remove(pluginContainer.PluginBase);
+                pluginContainer.Dispose();
+            }
+            else if (FPluginContainers.ContainsKey(plugin))
             {
                 FPluginContainers[plugin].Dispose();
                 FPluginContainers.Remove(plugin);
