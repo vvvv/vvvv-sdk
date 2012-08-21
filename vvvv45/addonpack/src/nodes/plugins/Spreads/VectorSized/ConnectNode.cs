@@ -55,22 +55,25 @@ namespace VVVV.Nodes
 					for (int b = 0; b < spread.Count; b++)
 					{
 						int c = FClose[b] ? 0:1;
-						int binSize = (spread[b].Length/vecSize-c)*2;
-						for (int v = 0; v < vecSize; v++)
+						int binSize = Math.Max((spread[b].Length/vecSize-c)*2,0);
+						if (spread[b].Length>0)
 						{
-							dataWriter.Position = incr+v;
-							double[] src = spread.GetBinColumn(b,v).ToArray();
-
-							for (int s=0; s<binSize/2;s++)
+							for (int v = 0; v < vecSize; v++)
 							{
-								dataWriter.Write(src[s],vecSize);
-								if (s+1<binSize/2 || !(FClose[b]))
-									dataWriter.Write(src[s+1],vecSize);
-								else
-									dataWriter.Write(src[0],vecSize);
+								dataWriter.Position = incr+v;
+								double[] src = spread.GetBinColumn(b,v).ToArray();
+	
+								for (int s=0; s<binSize/2;s++)
+								{
+									dataWriter.Write(src[s],vecSize);
+									if (s+1<binSize/2 || !(FClose[b]))
+										dataWriter.Write(src[s+1],vecSize);
+									else
+										dataWriter.Write(src[0],vecSize);
+								}
 							}
+							incr+=binSize*vecSize;
 						}
-						incr+=binSize*vecSize;
 						binWriter.Write(binSize,1);
 					}
 					FOutput.Length = incr;

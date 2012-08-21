@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+
 using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
 #endregion usings
@@ -43,7 +44,7 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FVec.Length>0)
+			if (FInput.Length>0 &&FVec.Length>0 && FBin.Length>0 && FTogPhase.SliceCount>0 && FPhase.SliceCount>0)
 			{
 				int vecSize = Math.Max(1,FVec.GetReader().Read());
 				VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin,FPhase.CombineWith(FTogPhase));				
@@ -61,28 +62,32 @@ namespace VVVV.Nodes
 							phase = (int)FPhase[b];
 						else
 							phase = (int)Math.Round(FPhase[b]*(spread[b].Length/vecSize));
-						for (int v = 0; v < vecSize; v++)
+						
+						if (spread[b].Length>0)
 						{
-							dataWriter.Position = incr+v;
-							double[] src = spread.GetBinColumn(b,v).ToArray();
-							phase = VMath.Zmod(phase, src.Length);
-	
-							if (phase !=0)
+							for (int v = 0; v < vecSize; v++)
 							{
-								double[] dst = new double[src.Length];
-								Array.Copy(src, 0, dst, phase, src.Length-phase);
-								Array.Copy(src, src.Length-phase, dst, 0, phase);
-								for (int s=0; s<dst.Length;s++)
-									dataWriter.Write(dst[s],vecSize);
+								dataWriter.Position = incr+v;
+								double[] src = spread.GetBinColumn(b,v).ToArray();
+								phase = VMath.Zmod(phase, src.Length);
+		
+								if (phase !=0)
+								{
+									double[] dst = new double[src.Length];
+									Array.Copy(src, 0, dst, phase, src.Length-phase);
+									Array.Copy(src, src.Length-phase, dst, 0, phase);
+									for (int s=0; s<dst.Length;s++)
+										dataWriter.Write(dst[s],vecSize);
+								}
+								else
+								{
+									for (int s=0; s<src.Length;s++)
+										dataWriter.Write(src[s],vecSize);
+								}
+								
 							}
-							else
-							{
-								for (int s=0; s<src.Length;s++)
-									dataWriter.Write(src[s],vecSize);
-							}
-							
+							incr+=spread[b].Length;
 						}
-						incr+=spread[b].Length;
 						binWriter.Write((spread[b].Length/vecSize),1);
 					}
 				}
@@ -162,4 +167,14 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Shift", Category = "Color", Version = "Bin", Help = "Shift (Color) with bin size", Author = "woei")]
 	#endregion PluginInfo
 	public class ShiftColorBin : ShiftBinNode<RGBAColor> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Shift", Category = "Transform", Version = "Bin", Help = "Shifts the slices in the spread upwards by the given phase, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class ShiftTransformBin : ShiftBinNode<Matrix4x4> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Shift", Category = "Enumerations", Version = "Bin", Help = "Shifts the slices in the spread upwards by the given phase, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class ShiftEnumBin : ShiftBinNode<EnumEntry> {}
 }

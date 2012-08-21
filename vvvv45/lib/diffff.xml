@@ -1008,18 +1008,40 @@
   <NODE old="TimerFlop (Animation)">
   	<PIN old="Time" olddefault="0"></PIN>
   </NODE>
-  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.DiffAdvNode" new="Differential (Spreads Vector)"></NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.DiffAdvNode" new="Differential (Spreads Vector)">
+    <PIN old="Bin Size" new="Input Bin Size"/>
+  </NODE>
+  <NODE old="Differential (Spreads Advanced)" new="Differential (Spreads Vector)">
+    <PIN old="Bin Size" new="Input Bin Size"/>
+  </NODE>
   <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.IntAdvNode" new="Integral (Spreads Vector)">
+    <PIN old="Bin Size" new="Input Bin Size"/>
     <PIN old="Include 0 Slice" new="Append Offset"/>
   </NODE>
-  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.AddAdvNode" new=":PLUGINS:\VectorSized.dll|VVVV.Nodes.AddVectorNode"></NODE>
-  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.MultiplyAdvNode" new=":PLUGINS:\VectorSized.dll|VVVV.Nodes.MultiplyVectorNode"></NODE>
+  <NODE old="Integral (Spreads Advanced)" new="Integral (Spreads Vector)">
+    <PIN old="Bin Size" new="Input Bin Size"/>
+    <PIN old="Include 0 Slice" new="Append Offset"/>
+  </NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.AddAdvNode" new="Add (Value Spectral Vector)"></NODE>
+  <NODE old="+ (Value Spectral Advanced)" new="Add (Value Spectral Vector)"></NODE>
+  <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.MultiplyAdvNode" new="Multiply (Value Spectral Vector)"></NODE>
+  <NODE old="* (Value Spectral Advanced)" new="Multiply (Value Spectral Vector)"></NODE>
   <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.BoundsAdvNode" new="Bounds (Spectral Vector)"></NODE>
+  <NODE old="Bounds (Spectral Advanced)" new="Bounds (Spectral Vector)"></NODE>
   <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.CARAdvNode" new="CAR (Spreads Vector)"></NODE>
+  <NODE old="CAR (Spreads Advanced)" new="CAR (Spreads Vector)"></NODE>
   <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.CDRAdvNode" new="CDR (Spreads Vector)"></NODE>
+  <NODE old="CDR (Spreads Advanced)" new="CDR (Spreads Vector)"></NODE>
   <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.ReverseAdvNode" new="Reverse (Spreads Vector)"></NODE>
+  <NODE old="Reverse (Spreads Advanced)" new="Reverse (Spreads Vector)"></NODE>
   <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.SelectAdvNode" new="Select (Value Vector)"></NODE>
+  <NODE old="Select (Value Advanced)" new="Select (Value Vector)"></NODE>
   <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.ShiftAdvNode" new="Shift (Spreads Vector)"></NODE>
+  <NODE old="Shift (Spreads Advanced)" new="Shift (Spreads Vector)"></NODE>
+  <NODE old="Select (String Advanced)" new="Select (String Bin)"></NODE>
+  <NODE old="Select (Color Advanced)" new="Select (Color Bin)"></NODE>
+  <NODE old="Select (Transform)" new="Select (Transform Bin)"></NODE>
+  <NODE old="Select (Enumerations)" new="Select (Enumerations Bin)"></NODE>
   <NODE old="DeCons (Spreads)" new="Unzip (Value Bin)">
     <PIN old="Input Bin Size" olddefault="-1"></PIN>
   </NODE>
@@ -1035,5 +1057,8 @@
   <NODE old="DeCons (Enumerations)" new="Unzip (Enumerations Bin)">
     <PIN old="Input Bin Size" olddefault="-1"></PIN>
   </NODE>
+  </PATCH>
+  <PATCH version="45alpha28">
+      <NODE old="ArduinoFirmata (Devices)" new="ArduinoFirmata (Devices Legacy)" />
   </PATCH>
 </CONVVVVERTER>
