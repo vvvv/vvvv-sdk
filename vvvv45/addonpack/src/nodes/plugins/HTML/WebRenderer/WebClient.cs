@@ -109,7 +109,15 @@ namespace VVVV.Nodes.HTML
                 //rootNode.AddEventListener("mouseover", new DomEventEventListener(), false);
                 using (var xmlReader = new CefXmlReader(document))
                 {
-                    var dom = XDocument.Load(xmlReader);
+                    XDocument dom = null;
+                    try
+                    {
+                        var dom = XDocument.Load(xmlReader);
+                    }
+                    catch (Exception)
+                    {
+                        dom = null;
+                    }
                     lock (FRenderer.FLock)
                     {
                         FRenderer.FCurrentDom = dom;
