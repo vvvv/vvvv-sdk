@@ -9,29 +9,32 @@ namespace VVVV.Utils.Streams
     {
         public class RangeStreamReader : IStreamReader<T>
         {
-            private readonly RangeStream<T> rangeStream;
-            private readonly CyclicStreamReader<T> sourceReader;
+            private readonly RangeStream<T> FRangeStream;
+            private readonly IStreamReader<T> FSourceReader;
 
             public RangeStreamReader(RangeStream<T> rangeStream)
             {
-                // TODO: Complete member initialization
-                this.rangeStream = rangeStream;
-                this.sourceReader = rangeStream.source.GetCyclicReader();
-                this.sourceReader.Position = rangeStream.offset;
+                FRangeStream = rangeStream;
+                var sourceStream = rangeStream.FSource;
+                if (rangeStream.FOffset + rangeStream.Length > sourceStream.Length)
+                    FSourceReader = sourceStream.GetCyclicReader();
+                else
+                    FSourceReader = sourceStream.GetReader();
+                FSourceReader.Position = rangeStream.FOffset;
             }
 
             public T Read(int stride = 1)
             {
                 if (Eos) throw new InvalidOperationException();
                 position += stride;
-                return sourceReader.Read(stride);
+                return FSourceReader.Read(stride);
             }
 
             public int Read(T[] buffer, int offset, int length, int stride = 1)
             {
-                length = StreamUtils.GetNumSlicesAhead(this, offset, length, stride);
-                position += length;
-                return sourceReader.Read(buffer, offset, length, stride);
+                int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, offset, length, stride);
+                position += numSlicesToRead * stride;
+                return FSourceReader.Read(buffer, offset, numSlicesToRead, stride);
             }
 
             public bool Eos
@@ -49,23 +52,24 @@ namespace VVVV.Utils.Streams
                 set
                 {
                     position = value;
-                    sourceReader.Position = rangeStream.offset + value;
+                    FSourceReader.Position = FRangeStream.FOffset + value;
                 }
             }
 
             public int Length
             {
-                get { return rangeStream.Length; }
+                get { return FRangeStream.Length; }
             }
 
             public void Dispose()
             {
-                sourceReader.Dispose();
+                FSourceReader.Dispose();
             }
 
             public T Current
             {
-                get { return sourceReader.Current; }
+                get;
+                private set;
             }
 
             object System.Collections.IEnumerator.Current
@@ -75,7 +79,12 @@ namespace VVVV.Utils.Streams
 
             public bool MoveNext()
             {
-                return sourceReader.MoveNext();
+                var result = !Eos;
+                if (result)
+                {
+                    Current = Read();
+                }
+                return result;
             }
 
             public void Reset()
@@ -84,16 +93,15 @@ namespace VVVV.Utils.Streams
             }
         }
 
-        private readonly IInStream<T> source;
-        private readonly int offset;
-        private readonly int count;
+        private readonly IInStream<T> FSource;
+        private readonly int FOffset;
+        private readonly int FCount;
 
         public RangeStream(IInStream<T> source, int offset, int count)
         {
-            // TODO: Complete member initialization
-            this.source = source;
-            this.offset = offset;
-            this.count = source.Length > 0 ? count : 0;
+            FSource = source;
+            FOffset = offset;
+            FCount = source.Length > 0 ? count : 0;
         }
 
         public RangeStreamReader GetReader()
@@ -105,22 +113,22 @@ namespace VVVV.Utils.Streams
 
         public int Length
         {
-            get { return count; }
+            get { return FCount; }
         }
 
         public object Clone()
         {
-            return new RangeStream<T>(source, offset, count);
+            return new RangeStream<T>(FSource, FOffset, FCount);
         }
 
         public bool Sync()
         {
-            return source.Sync();
+            return FSource.Sync();
         }
 
         public bool IsChanged
         {
-            get { return source.IsChanged; }
+            get { return FSource.IsChanged; }
         }
 
         public System.Collections.Generic.IEnumerator<T> GetEnumerator()
