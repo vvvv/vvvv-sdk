@@ -47,13 +47,31 @@ namespace VVVV.Hosting.IO.Streams
                 using (var dataWriter = FDataStream.GetWriter())
                 {
                     bool anyChanged = false;
+                    var numSlicesBuffered = 0;
                     foreach (var outputStream in this)
                     {
                         anyChanged |= outputStream.IsChanged;
                         if (anyChanged)
-                            dataWriter.Write(outputStream, buffer);
+                        {
+                            using (var reader = outputStream.GetReader())
+                            {
+                                while (!reader.Eos)
+                                {
+                                    numSlicesBuffered += reader.Read(buffer, numSlicesBuffered, buffer.Length - numSlicesBuffered);
+                                    if (numSlicesBuffered == buffer.Length)
+                                    {
+                                        dataWriter.Write(buffer, 0, numSlicesBuffered);
+                                        numSlicesBuffered = 0;
+                                    }
+                                }
+                            }
+                        }
                         else
                             dataWriter.Position += outputStream.Length;
+                    }
+                    if (numSlicesBuffered > 0)
+                    {
+                        dataWriter.Write(buffer, 0, numSlicesBuffered);
                     }
                 }
             }
