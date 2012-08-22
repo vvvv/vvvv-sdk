@@ -89,6 +89,7 @@ namespace VVVV.Nodes.HTML
         [Node(Name = "Renderer")]
         public DXResource<Texture, CefBrowser> Render(
             out XDocument dom,
+            out XElement rootElement,
             out bool isLoading,
             out string currentUrl,
             out string errorText,
@@ -108,6 +109,7 @@ namespace VVVV.Nodes.HTML
         {
             if (FBrowser == null)
             {
+                rootElement = null;
                 dom = null;
                 isLoading = IsLoading;
                 currentUrl = string.Empty;
@@ -121,6 +123,7 @@ namespace VVVV.Nodes.HTML
                 lock (FLock)
                 {
                     dom = FCurrentDom;
+                    rootElement = FCurrentDom != null ? FCurrentDom.Root : null;
                     isLoading = false;
                     currentUrl = FCurrentUrl;
                     errorText = "Disabled";
@@ -270,6 +273,7 @@ namespace VVVV.Nodes.HTML
             lock (FLock)
             {
                 dom = FCurrentDom;
+                rootElement = FCurrentDom != null ? FCurrentDom.Root : null;
                 isLoading = IsLoading;
                 currentUrl = FCurrentUrl;
                 errorText = FErrorText;

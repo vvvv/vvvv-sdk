@@ -74,7 +74,7 @@ namespace VVVV.Nodes.XML
     [PluginInfo(Name = "Element", Category = "XML", Version = "Join")]
     public class ElementJoinNode : IPluginEvaluate
     {
-        [Input("Name")]
+        [Input("Name", DefaultString = "MyTag")]
         public IDiffSpread<string> Name;
         [Input("Value")]
         public IDiffSpread<string> Value;
@@ -100,8 +100,9 @@ namespace VVVV.Nodes.XML
             for (int i = 0; i < spreadMax; i++)
             {
                 var element = new XElement(Name[i], Value[i]);
-                element.Add(Attributes[i].ToArray());
-                element.Add(Childs[i].ToArray());
+                var attribs = Attributes[i]/*.Select(a => a.Parent != null ? a.Clone() : a)*/.ToArray();
+                element.Add(attribs);
+                element.Add(Childs[i]/* clone me */.ToArray());
                 Element[i] = element;
             }
         }
@@ -152,7 +153,7 @@ namespace VVVV.Nodes.XML
     {
         [Input("Name")]
         public IDiffSpread<string> Name;
-        [Input("Value")]
+        [Input("Value", DefaultString = "MyAttribute")]
         public IDiffSpread<string> Value;
         [Output("Attribute")]
         public ISpread<XAttribute> Attribute;
@@ -288,22 +289,26 @@ namespace VVVV.Nodes.XML
         [Input("XML")]
         public IDiffSpread<string> XML;
 
-        [Output("Element")]
-        public ISpread<XElement> Element;
+        [Output("Root Element")]
+        public ISpread<XElement> RootElement;
+
+        [Output("DOM")]
+        public ISpread<XDocument> Dom;
 
         public void Evaluate(int spreadMax)
         {
             if (!XML.IsChanged) return;
 
-            Element.SliceCount = spreadMax;
+            RootElement.SliceCount = spreadMax;
+            Dom.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
                 XElement element;
-
-                XMLNodes.AsElement(XML[i], out element);
-
-                Element[i] = element;
+                XDocument dom;
+                XMLNodes.AsElement(XML[i], out dom, out element);
+                Dom[i] = dom;
+                RootElement[i] = element;
             }
         }
     }

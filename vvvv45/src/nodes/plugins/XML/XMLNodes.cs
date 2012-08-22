@@ -137,15 +137,16 @@ namespace VVVV.Nodes.XML
         }
 
         [Node]
-        public static void AsElement(this string xml, out XElement element)
+        public static void AsElement(this string xml, out XDocument doc, out XElement element)
         {
             try
             {
-                XDocument doc = XDocument.Parse(xml);
+                doc = XDocument.Parse(xml);
                 element = doc.Root;
             }
             catch
             {
+                doc = null;
                 element = null;
             }
         }

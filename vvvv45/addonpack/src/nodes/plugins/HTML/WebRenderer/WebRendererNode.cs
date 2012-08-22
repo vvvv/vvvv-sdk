@@ -55,6 +55,8 @@ namespace VVVV.Nodes.HTML
 
         [Output("Output")]
         public ISpread<DXResource<Texture, CefBrowser>> FOutput;
+        [Output("Root Element")]
+        public ISpread<XElement> FRootElementOut;
         [Output("DOM")]
         public ISpread<XDocument> FDomOut;
         [Output("Is Loading")]
@@ -79,6 +81,7 @@ namespace VVVV.Nodes.HTML
             FWebRenderers.ResizeAndDispose(spreadMax, () => new WebRenderer(FLogger));
 
             FOutput.SliceCount = spreadMax;
+            FRootElementOut.SliceCount = spreadMax;
             FDomOut.SliceCount = spreadMax;
             FIsLoadingOut.SliceCount = spreadMax;
             FErrorTextOut.SliceCount = spreadMax;
@@ -99,11 +102,13 @@ namespace VVVV.Nodes.HTML
                 var javaScript = FJavaScriptIn[i];
                 var execute = FExecuteIn[i];
                 var enabled = FEnabledIn[i];
-                XDocument dom;
+                XDocument dom; 
+                XElement rootElement;
                 bool isLoading;
                 string currentUrl, errorText;
                 var output = webRenderer.Render(
                     out dom,
+                    out rootElement,
                     out isLoading, 
                     out currentUrl, 
                     out errorText, 
@@ -121,6 +126,7 @@ namespace VVVV.Nodes.HTML
                     enabled);
                 FOutput[i] = output;
                 FDomOut[i] = dom;
+                FRootElementOut[i] = rootElement;
                 FIsLoadingOut[i] = isLoading;
                 FCurrentUrlOut[i] = currentUrl;
                 FErrorTextOut[i] = errorText;
