@@ -112,7 +112,7 @@ namespace VVVV.Nodes.HTML
                     XDocument dom = null;
                     try
                     {
-                        var dom = XDocument.Load(xmlReader);
+                        dom = XDocument.Load(xmlReader);
                     }
                     catch (Exception)
                     {
