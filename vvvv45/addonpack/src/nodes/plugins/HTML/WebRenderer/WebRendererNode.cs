@@ -12,6 +12,7 @@ using System.ComponentModel.Composition;
 using VVVV.Utils.IO;
 using System.Reflection;
 using System.IO;
+using System.Xml.Linq;
 
 namespace VVVV.Nodes.HTML
 {
@@ -54,6 +55,8 @@ namespace VVVV.Nodes.HTML
 
         [Output("Output")]
         public ISpread<DXResource<Texture, CefBrowser>> FOutput;
+        [Output("DOM")]
+        public ISpread<XDocument> FDomOut;
         [Output("Is Loading")]
         public ISpread<bool> FIsLoadingOut;
         [Output("Current Url")]
@@ -76,6 +79,7 @@ namespace VVVV.Nodes.HTML
             FWebRenderers.ResizeAndDispose(spreadMax, () => new WebRenderer(FLogger));
 
             FOutput.SliceCount = spreadMax;
+            FDomOut.SliceCount = spreadMax;
             FIsLoadingOut.SliceCount = spreadMax;
             FErrorTextOut.SliceCount = spreadMax;
             FCurrentUrlOut.SliceCount = spreadMax;
@@ -95,9 +99,11 @@ namespace VVVV.Nodes.HTML
                 var javaScript = FJavaScriptIn[i];
                 var execute = FExecuteIn[i];
                 var enabled = FEnabledIn[i];
+                XDocument dom;
                 bool isLoading;
                 string currentUrl, errorText;
                 var output = webRenderer.Render(
+                    out dom,
                     out isLoading, 
                     out currentUrl, 
                     out errorText, 
@@ -114,6 +120,7 @@ namespace VVVV.Nodes.HTML
                     execute,
                     enabled);
                 FOutput[i] = output;
+                FDomOut[i] = dom;
                 FIsLoadingOut[i] = isLoading;
                 FCurrentUrlOut[i] = currentUrl;
                 FErrorTextOut[i] = errorText;

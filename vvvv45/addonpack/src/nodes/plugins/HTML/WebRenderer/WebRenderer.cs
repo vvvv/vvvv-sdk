@@ -16,6 +16,7 @@ using System.Threading;
 using System.Text;
 using System.Globalization;
 using VVVV.Utils.IO;
+using System.Xml.Linq;
 
 namespace VVVV.Nodes.HTML
 {
@@ -37,6 +38,8 @@ namespace VVVV.Nodes.HTML
         private MouseState FMouseState;
         private KeyboardState FKeyboardState = KeyboardState.Empty;
         private Vector2D FScrollTo;
+        internal readonly object FLock = new object();
+        internal XDocument FCurrentDom;
         internal int FFrameLoadCount;
         internal string FCurrentUrl;
         internal string FErrorText;
@@ -77,6 +80,7 @@ namespace VVVV.Nodes.HTML
             if (FBrowser != null)
             {
                 FBrowser.Close();
+                FBrowser.Dispose();
             }
             FTextureResource.Dispose();
             CefService.Release();
@@ -84,6 +88,7 @@ namespace VVVV.Nodes.HTML
 
         [Node(Name = "Renderer")]
         public DXResource<Texture, CefBrowser> Render(
+            out XDocument dom,
             out bool isLoading,
             out string currentUrl,
             out string errorText,
@@ -103,6 +108,7 @@ namespace VVVV.Nodes.HTML
         {
             if (FBrowser == null)
             {
+                dom = null;
                 isLoading = IsLoading;
                 currentUrl = string.Empty;
                 errorText = "Initializing ...";
@@ -112,10 +118,14 @@ namespace VVVV.Nodes.HTML
             Enabled = enabled;
             if (!Enabled)
             {
-                isLoading = false;
-                currentUrl = FCurrentUrl;
-                errorText = "Disabled";
-                return FTextureResource;
+                lock (FLock)
+                {
+                    dom = FCurrentDom;
+                    isLoading = false;
+                    currentUrl = FCurrentUrl;
+                    errorText = "Disabled";
+                    return FTextureResource;
+                }
             }
 
             // Normalize inputs
@@ -257,9 +267,13 @@ namespace VVVV.Nodes.HTML
                 }
             }
 
-            isLoading = IsLoading;
-            currentUrl = FCurrentUrl;
-            errorText = FErrorText;
+            lock (FLock)
+            {
+                dom = FCurrentDom;
+                isLoading = IsLoading;
+                currentUrl = FCurrentUrl;
+                errorText = FErrorText;
+            }
 
             return FTextureResource;
         }
@@ -268,7 +282,10 @@ namespace VVVV.Nodes.HTML
         {
             get
             {
-                return FFrameLoadCount > 0;
+                lock (FLock)
+                {
+                    return FFrameLoadCount > 0;
+                }
             }
         }
 
