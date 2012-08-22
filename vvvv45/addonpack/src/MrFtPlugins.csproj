@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="..\..\src\vvvv45.csproj" />
+  <PropertyGroup>
+    <ProjectGuid>{A5D2F08B-4F57-4D72-BA41-13034862C500}</ProjectGuid>
+    <AddonPluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</AddonPluginsOutputDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- IDE seems to need this line, MSBuild not? -->
+    <ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
+    <ProjectReference Include="nodes\plugins\Texture\0.5EX9.TextureVlc\0.5EX9.TextureVlc.csproj">
+      <Project>{07D9A174-A846-4894-9C97-71B12C850617}</Project>
+      <Name>0.5EX9.TextureVlc</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemDefinitionGroup>
+    <ProjectReference>
+      <OutputDir>$(AddonPluginsOutputDir)</OutputDir>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <PropertyGroup>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      AddonpackBuild
+    </BuildDependsOn>
+  </PropertyGroup>
+  <Target Name="AddonpackBuild">
+    <!-- Delete all files which are already in lib/core -->
+    <Delete Files="@(CoreOutputFiles->'$(AddonPluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+</Project>
