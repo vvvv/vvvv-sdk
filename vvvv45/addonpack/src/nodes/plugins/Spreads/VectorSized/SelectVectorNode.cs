@@ -17,16 +17,16 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		#pragma warning disable 649
-		[Input("Input")]
+		[Input("Input", CheckIfChanged = true, AutoValidate = false)]
 		IInStream<double> FInput;
 
-		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true)]
+		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true, CheckIfChanged = true, AutoValidate = false)]
 		IInStream<int> FVec;
 		
-		[Input("Bin Size", DefaultValue = -1)]
+		[Input("Bin Size", DefaultValue = 1, CheckIfChanged = true, AutoValidate = false)]
 		IInStream<int> FBin;
 		
-		[Input("Select", DefaultValue = 1)]
+		[Input("Select", DefaultValue = 1, CheckIfChanged = true, AutoValidate = false)]
 		IInStream<int> FSelect;
 		
 		[Output("Output")]
@@ -40,45 +40,53 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0 && FSelect.Length>0)
+			FInput.Sync(); 
+			FVec.Sync();
+			FBin.Sync();
+			FSelect.Sync();
+			
+			if (FInput.IsChanged || FVec.IsChanged || FBin.IsChanged || FSelect.IsChanged)
 			{
-				int vecSize = Math.Max(1,FVec.GetReader().Read());	
-				VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin,FSelect.Length);
-	
-				List<double> container = new List<double>();
-				List<int> formerId = new List<int>();
-				using (var selReader = FSelect.GetCyclicReader())
+				if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0 && FSelect.Length>0)
 				{
-					int offset=0;
-					for (int b = 0; b < spread.Count; b++)
+					int vecSize = Math.Max(1,FVec.GetReader().Read());	
+					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin,FSelect.Length);
+		
+					List<double> container = new List<double>();
+					List<int> formerId = new List<int>();
+					using (var selReader = FSelect.GetCyclicReader())
 					{
-						int binSize = spread[b].Length/vecSize;
-						int sel = selReader.Read();
-						
-						if (sel > 0 && binSize>0)
+						int offset=0;
+						for (int b = 0; b < spread.Count; b++)
 						{
-							int[] ids = new int[binSize];
-							for (int i=0; i<binSize; i++)
-								ids[i]=offset+i;
-							for (int s=0; s<sel; s++)
+							int binSize = spread[b].Length/vecSize;
+							int sel = selReader.Read();
+							
+							if (sel > 0 && binSize>0)
 							{
-								container.AddRange(spread[b]);
-								formerId.AddRange(ids);
+								int[] ids = new int[binSize];
+								for (int i=0; i<binSize; i++)
+									ids[i]=offset+i;
+								for (int s=0; s<sel; s++)
+								{
+									container.AddRange(spread[b]);
+									formerId.AddRange(ids);
+								}
 							}
+							offset += binSize;
 						}
-						offset += binSize;
 					}
+					FOutput.Length = container.Count;
+					if (FOutput.Length>0)
+						FOutput.GetWriter().Write(container.ToArray(),0,container.Count);
+					
+					FFormer.Length = formerId.Count;
+					if (FFormer.Length>0)
+						FFormer.GetWriter().Write(formerId.ToArray(),0,formerId.Count);
 				}
-				FOutput.Length = container.Count;
-				if (FOutput.Length>0)
-					FOutput.GetWriter().Write(container.ToArray(),0,container.Count);
-				
-				FFormer.Length = formerId.Count;
-				if (FFormer.Length>0)
-					FFormer.GetWriter().Write(formerId.ToArray(),0,formerId.Count);
+				else
+					FOutput.Length = FFormer.Length = 0;
 			}
-			else
-				FOutput.Length = FFormer.Length = 0;
 		}
 	}
 }
