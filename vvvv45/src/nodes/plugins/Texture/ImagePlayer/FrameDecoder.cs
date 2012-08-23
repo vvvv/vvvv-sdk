@@ -39,7 +39,7 @@ namespace VVVV.Nodes.ImagePlayer
             
             public override Texture Decode(Device device)
             {
-				var texture = FTextureFactory(device, FBitmapSource.PixelWidth, FBitmapSource.PixelHeight, 1, Format.A8R8G8B8);
+                var texture = FTextureFactory(device, FBitmapSource.PixelWidth, FBitmapSource.PixelHeight, 1, Format.A8R8G8B8);
                 var dataRectangle = texture.LockRectangle(0, LockFlags.Discard);
 
                 try
@@ -137,6 +137,31 @@ namespace VVVV.Nodes.ImagePlayer
                 }
             }
         }
+
+        class EmptyFrameDecoder : FrameDecoder
+        {
+            public EmptyFrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
+                : base(textureFactory, memoryPool, stream)
+            {
+
+            }
+
+            public override Texture Decode(Device device)
+            {
+                var texture = FTextureFactory(device, 1, 1, 1, Format.A8R8G8B8);
+                var dataRectangle = texture.LockRectangle(0, LockFlags.Discard);
+                try
+                {
+                    var data = dataRectangle.Data;
+                    data.WriteRange(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF });
+                }
+                finally
+                {
+                    texture.UnlockRectangle(0);
+                }
+                return texture;
+            }
+        }
         
         private static Dictionary<string, Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder>> FDecoderFactories = new Dictionary<string, Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder>>();
         
@@ -154,14 +179,21 @@ namespace VVVV.Nodes.ImagePlayer
         
         public static FrameDecoder Create(string filename, Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
         {
-            var extension = Path.GetExtension(filename);
-            
-            Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory = null;
-            if (!FDecoderFactories.TryGetValue(extension, out decoderFactory))
+            try
             {
-                return new BitmapFrameDecoder(textureFactory, memoryPool, stream);
+                var extension = Path.GetExtension(filename);
+
+                Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory = null;
+                if (!FDecoderFactories.TryGetValue(extension, out decoderFactory))
+                {
+                    return new BitmapFrameDecoder(textureFactory, memoryPool, stream);
+                }
+                return decoderFactory(textureFactory, memoryPool, stream);
             }
-            return decoderFactory(textureFactory, memoryPool, stream);
+            catch
+            {
+                return new EmptyFrameDecoder(textureFactory, memoryPool, stream);
+            }
         }
         
         public static void Register(IEnumerable<string> extensions, Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory)
