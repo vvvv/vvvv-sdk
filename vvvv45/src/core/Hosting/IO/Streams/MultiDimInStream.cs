@@ -190,8 +190,7 @@ namespace VVVV.Hosting.IO.Streams
         public override bool Sync()
         {
             // Sync source
-            IsChanged = FDataStream.Sync();
-            IsChanged |= FBinSizeStream.Sync();
+            IsChanged = FDataStream.Sync() | FBinSizeStream.Sync();
             
             if (IsChanged)
             {
@@ -199,7 +198,6 @@ namespace VVVV.Hosting.IO.Streams
                 int binSizeLength = FBinSizeStream.Length;
                 int binSizeSum = 0;
                 
-                // Normalize bin size
                 foreach (var binSize in FBinSizeStream)
                 {
                     binSizeSum += SpreadUtils.NormalizeBinSize(dataLength, binSize);
