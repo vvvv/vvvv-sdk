@@ -2,12 +2,13 @@
 
 namespace VVVV.Utils.IO
 {
+    [Flags]
     public enum MouseButton
     {
-        None,
-        Left,
-        Middle,
-        Right
+        None = 0,
+        Left = 1,
+        Middle = 2,
+        Right = 4
     }
 
     /// <summary>
