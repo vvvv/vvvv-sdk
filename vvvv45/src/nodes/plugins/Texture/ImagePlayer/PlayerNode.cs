@@ -11,7 +11,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
 using EX9 = SlimDX.Direct3D9;
-using Frame = VVVV.PluginInterfaces.V2.EX9.DXResource<SlimDX.Direct3D9.Texture, VVVV.Nodes.ImagePlayer.FrameInfo>;
+using Frame = VVVV.PluginInterfaces.V2.EX9.TextureResource<VVVV.Nodes.ImagePlayer.FrameInfo>;
 
 namespace VVVV.Nodes.ImagePlayer
 {
