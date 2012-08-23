@@ -57,7 +57,7 @@ namespace VVVV.Nodes.HTML
         public ISpread<DXResource<Texture, CefBrowser>> FOutput;
         [Output("Root Element")]
         public ISpread<XElement> FRootElementOut;
-        [Output("DOM")]
+        [Output("Document")]
         public ISpread<XDocument> FDomOut;
         [Output("Is Loading")]
         public ISpread<bool> FIsLoadingOut;

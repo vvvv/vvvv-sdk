@@ -289,25 +289,25 @@ namespace VVVV.Nodes.XML
         [Input("XML")]
         public IDiffSpread<string> XML;
 
-        [Output("Root Element")]
+        [Output("Element")]
         public ISpread<XElement> RootElement;
 
-        [Output("DOM")]
-        public ISpread<XDocument> Dom;
+        [Output("Document")]
+        public ISpread<XDocument> Document;
 
         public void Evaluate(int spreadMax)
         {
             if (!XML.IsChanged) return;
 
             RootElement.SliceCount = spreadMax;
-            Dom.SliceCount = spreadMax;
+            Document.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
                 XElement element;
                 XDocument dom;
                 XMLNodes.AsElement(XML[i], out dom, out element);
-                Dom[i] = dom;
+                Document[i] = dom;
                 RootElement[i] = element;
             }
         }
