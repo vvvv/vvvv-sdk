@@ -100,9 +100,14 @@ namespace VVVV.Nodes.XML
             for (int i = 0; i < spreadMax; i++)
             {
                 var element = new XElement(Name[i], Value[i]);
-                var attribs = Attributes[i]/*.Select(a => a.Parent != null ? a.Clone() : a)*/.ToArray();
+                
+                // clone attributes on the fly if they are already rooted somewhere
+                var attribs = Attributes[i].Select(a => a.Parent != null ? new XAttribute(a) : a).ToArray();
                 element.Add(attribs);
-                element.Add(Childs[i]/* clone me */.ToArray());
+                
+                // clone elements on the fly if they are already rooted somewhere
+                element.Add(Childs[i].Select(e => e.Parent != null ? new XElement(e) : e).ToArray());
+
                 Element[i] = element;
             }
         }
