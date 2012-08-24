@@ -368,9 +368,9 @@ namespace VVVV.Nodes.HTML
             var n = name.ToLowerInvariant().Split(':');
             if (n.Length > 1)
             {
-                return n[1];
+                return XmlConvert.EncodeLocalName(n[1]);
             }
-            return n[0];
+            return XmlConvert.EncodeLocalName(n[0]);
         }
 
         enum TraverseDirection { Down, Up }
