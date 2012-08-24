@@ -507,7 +507,7 @@ namespace VVVV.Nodes.ImagePlayer
                     memoryStream.Position = 0;
                     if (length > memoryStream.Capacity)
                     {
-                        memoryStream.Capacity = (int) length;
+                        memoryStream.Capacity = VVVV.Utils.Streams.StreamUtils.NextHigher((int) length);
                     }
                     if (length != memoryStream.Length)
                     {
