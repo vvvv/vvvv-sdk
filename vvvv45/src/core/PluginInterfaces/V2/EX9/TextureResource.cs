@@ -26,7 +26,10 @@ namespace VVVV.PluginInterfaces.V2.EX9
             Action<TMetadata, Texture> updateResourceFunc = null,
             Action<TMetadata, Texture> destroyResourceAction = null)
         {
-            return new TextureResource<TMetadata>(metadata, createResourceFunc, updateResourceFunc, (m, texture, reason) => destroyResourceAction(m, texture));
+            if (destroyResourceAction != null)
+                return new TextureResource<TMetadata>(metadata, createResourceFunc, updateResourceFunc, (m, texture, reason) => destroyResourceAction(m, texture));
+            else
+                return new TextureResource<TMetadata>(metadata, createResourceFunc, updateResourceFunc);
         }
 
         /// <summary>

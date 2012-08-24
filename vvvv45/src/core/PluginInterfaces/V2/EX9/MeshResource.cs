@@ -23,7 +23,10 @@ namespace VVVV.PluginInterfaces.V2.EX9
             Action<TMetadata, Mesh> updateResourceFunc = null,
             Action<TMetadata, Mesh> destroyResourceAction = null)
         {
-            return new MeshResource<TMetadata>(metadata, createResourceFunc, updateResourceFunc, (m, mesh, reason) => destroyResourceAction(m, mesh));
+            if (destroyResourceAction != null)
+                return new MeshResource<TMetadata>(metadata, createResourceFunc, updateResourceFunc, (m, mesh, reason) => destroyResourceAction(m, mesh));
+            else
+                return new MeshResource<TMetadata>(metadata, createResourceFunc, updateResourceFunc);
         }
 
         /// <summary>
