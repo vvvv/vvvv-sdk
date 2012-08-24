@@ -65,7 +65,6 @@ namespace VVVV.Nodes.ImagePlayer
             FLogger = logger;
             FDeviceService = deviceService;
             
-            FDeviceService.DeviceDisabled += HandleDeviceDisabled;
             FDeviceService.DeviceRemoved += HandleDeviceRemoved;
             
             FStreamPool = streamPool;
@@ -145,7 +144,6 @@ namespace VVVV.Nodes.ImagePlayer
                 FTexturePool.Dispose();
             }
             
-            FDeviceService.DeviceDisabled -= HandleDeviceDisabled;
             FDeviceService.DeviceRemoved -= HandleDeviceRemoved;
         }
         
@@ -417,19 +415,47 @@ namespace VVVV.Nodes.ImagePlayer
         {
             
         }
-        
+
+        private bool FReleasingDevice;
         private void DestroyTexture(FrameInfo frameInfo, EX9.Texture texture, DestroyReason reason)
         {
             switch (reason)
             {
                 case DestroyReason.Dispose:
+                    // Just put it back
                     FTexturePool.PutTexture(texture);
                     break;
                 case DestroyReason.DeviceLost:
-                    Flush();
-                    FDevices.Remove(texture.Device);
-                    FTexturePool.PutTexture(texture);
-                    FTexturePool.Release(texture.Device);
+                    // Do not flush more than once
+                    if (!FReleasingDevice)
+                    {
+                        // Make sure the pipeline is empty
+                        Flush();
+
+                        var device = texture.Device;
+                        FReleasingDevice = true;
+                        try
+                        {
+                            // Tell all preloaded frames to put back their textures for this device (this includes this one)
+                            foreach (var preloadedFrame in FPreloadedFrames.Values)
+                            {
+                                preloadedFrame.DestroyResource(device);
+                            }
+                        }
+                        finally
+                        {
+                            FReleasingDevice = false;
+                        }
+                        // Remove the device from the list of devices we preload for
+                        FDevices.Remove(device);
+                        // Finally dispose the textures
+                        FTexturePool.Release(device);
+                    }
+                    else
+                    {
+                        // Put it back
+                        FTexturePool.PutTexture(texture);
+                    }
                     break;
             }
         }
@@ -444,11 +470,6 @@ namespace VVVV.Nodes.ImagePlayer
                 usage = EX9.Usage.Dynamic & ~EX9.Usage.AutoGenerateMipMap;
             }
             return FTexturePool.GetTexture(device, width, height, levels, usage, format, pool);
-        }
-        
-        private void HandleDeviceDisabled(object sender, DeviceEventArgs e)
-        {
-            ReleaseDevice(e.Device);
         }
         
         private void HandleDeviceRemoved(object sender, DeviceEventArgs e)
@@ -466,6 +487,10 @@ namespace VVVV.Nodes.ImagePlayer
             if (doRelease)
             {
                 Flush();
+                foreach (var preloadedFrame in FPreloadedFrames.Values)
+                {
+                    preloadedFrame.DestroyResource(device);
+                }
                 FDevices.Remove(device);
                 FTexturePool.Release(device);
             }
