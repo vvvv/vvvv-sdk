@@ -124,9 +124,9 @@ namespace VVVV.Nodes.HTML
                     javaScript,
                     execute,
                     enabled);
-                FOutput[i] = output;
-                FDomOut[i] = dom;
-                FRootElementOut[i] = rootElement;
+                if (FOutput[i] != output) FOutput[i] = output;
+                if (FDomOut[i] != dom) FDomOut[i] = dom;
+                if (FRootElementOut[i] != rootElement) FRootElementOut[i] = rootElement;
                 FIsLoadingOut[i] = isLoading;
                 FCurrentUrlOut[i] = currentUrl;
                 FErrorTextOut[i] = errorText;

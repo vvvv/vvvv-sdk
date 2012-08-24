@@ -400,7 +400,14 @@ namespace VVVV.Nodes.HTML
             // TODO: Fix exceptions on start up.
             lock (FTextures)
             {
-                var texture = new Texture(device, FWidth, FHeight, 1, Usage.None & ~Usage.AutoGenerateMipMap, Format.A8R8G8B8, Pool.Managed);
+                var usage = Usage.None & ~Usage.AutoGenerateMipMap;
+                var pool = Pool.Managed;
+                if (device is DeviceEx)
+                {
+                    usage = Usage.Dynamic & ~Usage.AutoGenerateMipMap;
+                    pool = Pool.Default;
+                }
+                var texture = new Texture(device, FWidth, FHeight, 1, usage, Format.A8R8G8B8, pool);
                 var rect = new CefRect(0, 0, FWidth, FHeight);
                 if (FBrowser != null)
                 {
