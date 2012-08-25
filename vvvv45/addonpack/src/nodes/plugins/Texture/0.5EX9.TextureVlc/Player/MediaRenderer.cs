@@ -49,7 +49,7 @@ namespace VVVV.Nodes.Vlc.Player
 	{
 		#region MediaRenderer fields
 		//needed to access pins (at the right slice)
-		private C0_5EX9_TextureVlcNode parent;
+		private FileStreamVlcNode parent;
 		private int mediaRendererIndex = 0;
 		//slice index
 
@@ -133,7 +133,7 @@ namespace VVVV.Nodes.Vlc.Player
 		#endregion MediaRenderer fields
 
 		#region MediaRenderer constructor/destructor
-		public MediaRenderer(C0_5EX9_TextureVlcNode parentObject, int index)
+		public MediaRenderer(FileStreamVlcNode parentObject, int index)
 		{
 			parent = parentObject;
 			mediaRendererIndex = index;

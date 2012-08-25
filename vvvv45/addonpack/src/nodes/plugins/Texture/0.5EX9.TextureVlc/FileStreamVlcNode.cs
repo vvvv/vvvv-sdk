@@ -58,51 +58,52 @@ using VertexType = VVVV.Utils.SlimDX.TexturedVertex;
 namespace VVVV.Nodes.Vlc
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Vlc", Category = "EX9.Texture", Version = "0.5", Author = "ft", Help = "Fully spreadeble video/image to texture player based on LibVlc", Tags = "", Credits = "Frederik Tilkin, the authors of Vlc player, Roman Ginzburg", Bugs = "see http://trac.videolan.org/vlc/ticket/3152 | Don't trust the position and frame pins.", Warnings = "")]
+	[PluginInfo(Name = "FileStream", Category = "VLC", Version = "0.1", Author = "ft", Help = "Fully spreadeble video/image to texture player based on LibVlc", Tags = "video, audio, image, texture", Credits = "Frederik Tilkin, the authors of Vlc player, Roman Ginzburg", Bugs = "see http://trac.videolan.org/vlc/ticket/3152 | Don't trust the position and frame pins.", Warnings = "")]
 	#endregion PluginInfo
-	public class C0_5EX9_TextureVlcNode : DXTextureOutPluginBase, IPluginEvaluate, IDisposable
+	public class FileStreamVlcNode : DXTextureOutPluginBase, IPluginEvaluate, IDisposable
 	{
 		
 		#region pins
 
-		[Input("Filename", DefaultString = "C:\\video.avi | deinterlace=1 | video-filter=gradient{type=1}")]
-		IDiffSpread<string> FFileNameIn;
-
-		[Input("NextFilename", DefaultString = "")]
-		IDiffSpread<string> FNextFileNameIn;
-
-		[Input("Seek Time", DefaultValue = 0)]
-		IDiffSpread<float> FSeekTimeIn;
-
-		[Input("Do Seek", DefaultValue = 0, IsBang = true)]
-		IDiffSpread<bool> FDoSeekIn;
 
 		[Input("Play", DefaultValue = 1)]
 		IDiffSpread<bool> FPlayIn;
 
-		[Input("Speed", DefaultValue = 1)]
-		IDiffSpread<float> FSpeedIn;
+		[Input("Loop", DefaultValue = 0)]
+		IDiffSpread<bool> FLoopIn;
 
         [Input("Loop Start", DefaultValue = 0)]
         IDiffSpread<float> FLoopStartIn;
 
         [Input("Loop End", DefaultValue = 999999)]
         IDiffSpread<float> FLoopEndIn;
-        
-		[Input("Loop", DefaultValue = 0)]
-		IDiffSpread<bool> FLoopIn;
+
+		[Input("Do Seek", DefaultValue = 0, IsBang = true)]
+		IDiffSpread<bool> FDoSeekIn;
+
+		[Input("Seek Time", DefaultValue = 0)]
+		IDiffSpread<float> FSeekTimeIn;
+
+		[Input("Speed", DefaultValue = 1)]
+		IDiffSpread<float> FSpeedIn;        
+
+		[Input("Volume", DefaultValue = 1)]
+		IDiffSpread<float> FVolumeIn;
+
+		[Input("Forced Width", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<int> FWidthIn;
+
+		[Input("Forced Height", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<int> FHeightIn;
 
 		[Input("Rotate", DefaultValue = 0, Visibility = PinVisibility.False)]
 		IDiffSpread<int> FRotateIn;
 
-		[Input("Forced Width", DefaultValue = 0)]
-		IDiffSpread<int> FWidthIn;
+		[Input("Filename", DefaultString = "C:\\video.avi | deinterlace=1 | video-filter=gradient{type=1}")]
+		IDiffSpread<string> FFileNameIn;
 
-		[Input("Forced Height", DefaultValue = 0)]
-		IDiffSpread<int> FHeightIn;
-
-		[Input("Volume", DefaultValue = 1)]
-		IDiffSpread<float> FVolumeIn;
+		[Input("NextFilename", DefaultString = "", Visibility = PinVisibility.Hidden)]
+		IDiffSpread<string> FNextFileNameIn;
 
 
 		[Output("Position")]
@@ -117,16 +118,16 @@ namespace VVVV.Nodes.Vlc
 		[Output("FrameCount")]
 		ISpread<int> FFrameCountOut;
 
-		[Output("Width")]
+		[Output("Width", Visibility = PinVisibility.OnlyInspector)]
 		ISpread<int> FWidthOut;
 
-		[Output("Height")]
+		[Output("Height", Visibility = PinVisibility.OnlyInspector)]
 		ISpread<int> FHeightOut;
 
-		[Output("Texture Aspect Ratio", DefaultValue = 1)]
+		[Output("Texture Aspect Ratio", DefaultValue = 1, Visibility = PinVisibility.OnlyInspector)]
 		ISpread<float> FTextureAspectRatioOut;
 
-		[Output("Pixel Aspect Ratio", DefaultValue = 1)]
+		[Output("Pixel Aspect Ratio", DefaultValue = 1, Visibility = PinVisibility.OnlyInspector)]
 		ISpread<float> FPixelAspectRatioOut;
 
 		[Output("Next Ready")]
@@ -145,7 +146,7 @@ namespace VVVV.Nodes.Vlc
 			private static IntPtr libVLC = IntPtr.Zero;
 			
 			//needed to access pins (at the right slice)
-			private C0_5EX9_TextureVlcNode parent;
+			private FileStreamVlcNode parent;
 			private int slice = 0; //slice index
 	
 			private string currFileNameIn;
@@ -244,7 +245,7 @@ namespace VVVV.Nodes.Vlc
 				libVLC = LibVlcMethods.libvlc_new(argv.GetLength(0), argv);				
 			}
 			
-			public MediaRenderer(C0_5EX9_TextureVlcNode parentObject, int index)
+			public MediaRenderer(FileStreamVlcNode parentObject, int index)
 			{
 				//MessageBox.Show("This is a test.", "MessageBox TEST", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				
@@ -1720,7 +1721,7 @@ namespace VVVV.Nodes.Vlc
 
 		// import host and hand it to base constructor
 		[ImportingConstructor()]
-		public C0_5EX9_TextureVlcNode(IPluginHost host) : base(host)
+		public FileStreamVlcNode(IPluginHost host) : base(host)
 		{
 			//this.host = host;
 
@@ -1778,7 +1779,7 @@ namespace VVVV.Nodes.Vlc
 
 		}
 
-		~C0_5EX9_TextureVlcNode()
+		~FileStreamVlcNode()
 		{
 			Dispose();
 		}

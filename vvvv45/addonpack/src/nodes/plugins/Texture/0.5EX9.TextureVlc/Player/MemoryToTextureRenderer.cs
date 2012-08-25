@@ -45,7 +45,7 @@ namespace VVVV.Nodes.Vlc.Player
 	{
 		private char group;
 		
-		private C0_5EX9_TextureVlcNode parent;
+		private FileStreamVlcNode parent;
 		private DoubleMemoryBuffer doubleBuffer;
 		private Dictionary<Device, DoubleTexture> device2DoubleTexture;
 		private int slice;
@@ -63,7 +63,7 @@ namespace VVVV.Nodes.Vlc.Player
 		private EventWaitHandle updateTextureEventWaitHandle;
 		private EventWaitHandle updateTextureStopThreadWaitHandle;
 
-		public MemoryToTextureRenderer(C0_5EX9_TextureVlcNode vvvvNode, int slice, char group, DoubleMemoryBuffer doubleMemoryBuffer)
+		public MemoryToTextureRenderer(FileStreamVlcNode vvvvNode, int slice, char group, DoubleMemoryBuffer doubleMemoryBuffer)
 		{
 			this.group = group;
 			this.slice = slice;

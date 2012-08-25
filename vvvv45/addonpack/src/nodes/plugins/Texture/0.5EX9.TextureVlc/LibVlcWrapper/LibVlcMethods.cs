@@ -46,7 +46,8 @@ namespace LibVlcWrapper
 				Environment.SetEnvironmentVariable( "PATH", pathEnvVar + ";" + libvlcdllPath );
 			}
 			else {
-				MessageBox.Show( "The libvlc.dll file could not be found in any of the paths specified in libvlc_searchpath.txt, so probably, loading the Vlc plugin will fail.", "Vlc plugin error.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);				
+				throw new Exception( "The libvlc.dll file could not be found in any of the paths specified in libvlc_searchpath.txt, so probably, loading the Vlc plugin will fail." );
+				//MessageBox.Show( "The libvlc.dll file could not be found in any of the paths specified in libvlc_searchpath.txt, so probably, loading the Vlc plugin will fail.", "Vlc plugin error.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);				
 			}
 		}
 
@@ -95,8 +96,8 @@ namespace LibVlcWrapper
 			
 			//const string searchPathFileName = "libvlc_searchpath.txt";
 			string searchPathFilePath = sameDirAsCallingCode + searchPathFileName;
-				
-			string searchpath = searchPathFilePath + "\n";
+			
+			//string searchpath = searchPathFilePath + "\n";
 			try {
 				foreach ( string row in File.ReadAllLines( searchPathFilePath ) ) {
 					//ignore lines starting with # and ignore empty lines
@@ -118,7 +119,8 @@ namespace LibVlcWrapper
 				}
 			}
 			catch (IOException) {
-				MessageBox.Show( "A file named " + searchPathFilePath + " should exist (in the same folder as the Vlc node's dll). This file, which contains paths where the plugin should look for the libvlc.dll (and others) could not be opened, so probably, loading the Vlc plugin will fail.", "Vlc plugin error.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				throw new Exception( "A file named " + searchPathFilePath + " should exist (in the same folder as the Vlc node's dll). This file, which contains paths where the plugin should look for the libvlc.dll (and others) could not be opened, so probably, loading the Vlc plugin will fail." );
+				//MessageBox.Show( "A file named " + searchPathFilePath + " should exist (in the same folder as the Vlc node's dll). This file, which contains paths where the plugin should look for the libvlc.dll (and others) could not be opened, so probably, loading the Vlc plugin will fail.", "Vlc plugin error.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 			return null;
 		}
