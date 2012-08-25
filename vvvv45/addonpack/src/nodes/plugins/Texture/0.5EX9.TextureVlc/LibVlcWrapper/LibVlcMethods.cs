@@ -40,9 +40,9 @@ namespace LibVlcWrapper
 			}
     		*/
     		
-			string libvlcdllPath = FindFilePath("libvlc.dll", "libvlc_searchpath.txt" );
+			string libvlcdllPath = FindFilePath( "libvlc.dll", "libvlc_searchpath.txt" );
 			if ( libvlcdllPath != null ) {
-				string pathEnvVar = Environment.GetEnvironmentVariable("PATH" );
+				string pathEnvVar = Environment.GetEnvironmentVariable( "PATH" );
 				Environment.SetEnvironmentVariable( "PATH", pathEnvVar + ";" + libvlcdllPath );
 			}
 			else {
@@ -54,7 +54,7 @@ namespace LibVlcWrapper
 		static public System.Reflection.Assembly MyAssemblyResolveHandler(object source, ResolveEventArgs e) {
 			//System.Windows.Forms.MessageBox.Show( "LibVlcWrapper.MyAssemblyResolveHandler" + "\n" + e.Name, "MyAssemblyResolveHandler", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Exclamation);
 			if ( e.Name == "libvlc.dll" ) {
-				return Assembly.LoadFrom( FindFilePath("libvlc.dll", "libvlc_searchpath.txt") + "libvlc.dll" );
+				return Assembly.LoadFrom( FindFilePath( "libvlc.dll", "libvlc_searchpath.txt") + "libvlc.dll" );
 			}
 			return null;
     	}
@@ -101,7 +101,7 @@ namespace LibVlcWrapper
 				foreach ( string row in File.ReadAllLines( searchPathFilePath ) ) {
 					//ignore lines starting with # and ignore empty lines
 					if ( ! ( row.Length == 0 || row.StartsWith("#") ) ) {
-						string currentPath = row + (row.EndsWith("\\") ? "" : "\\" );
+						string currentPath = row + ( row.EndsWith( "\\" ) ? "" : "\\" );
 						if ( row.StartsWith(".") ) {
 							//relative path
 							currentPath = AssemblyDirectory + "\\" + currentPath;

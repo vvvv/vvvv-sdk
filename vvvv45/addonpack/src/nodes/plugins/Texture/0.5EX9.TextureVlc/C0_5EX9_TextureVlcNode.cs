@@ -558,7 +558,7 @@ namespace VVVV.Nodes.Vlc
 						AllowDisplay(data);
 					}
 				} catch (Exception e) {
-					Log( LogType.Error, ("[VlcDisplayCallback(" + data.ToInt32() + ") Exception] " + e.Message));
+					Log( LogType.Error, "[VlcDisplayCallback(" + data.ToInt32() + ") Exception] " + e.Message );
 				}
 			}
 	
