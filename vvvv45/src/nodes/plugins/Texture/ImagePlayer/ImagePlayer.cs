@@ -31,8 +31,8 @@ namespace VVVV.Nodes.ImagePlayer
     /// </summary>
     class ImagePlayer : IDisposable
     {
-        public const string DEFAULT_FILEMASK = "*";
-        public const int DEFAULT_BUFFER_SIZE = 0x2000;
+        public const string DEFAULT_FILEMASK = "*.*";
+        public const int DEFAULT_BUFFER_SIZE = 0xFF00;
         
         private string[] FFiles = new string[0];
         
