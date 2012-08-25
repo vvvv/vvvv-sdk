@@ -12,14 +12,14 @@
 //    Author:  Frederik Tilkin
 //
 //    vvvv Vlc plugin is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
+//    it under the terms of the GNU Lesser General Public License as published by
+//    the Free Software Foundation, either version 2.1+ of the License, or
 //    (at your option) any later version.
 //
 //    vvvv Vlc plugin is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-//    GNU General Public License for more details.
+//    GNU Lesser General Public License for more details.
 //     
 // ========================================================================
 
@@ -49,7 +49,7 @@ namespace VVVV.Nodes.Vlc.Player
 	{
 		#region MediaRenderer fields
 		//needed to access pins (at the right slice)
-		private C0_5EX9_TextureVlcNode parent;
+		private FileStreamVlcNode parent;
 		private int mediaRendererIndex = 0;
 		//slice index
 
@@ -133,7 +133,7 @@ namespace VVVV.Nodes.Vlc.Player
 		#endregion MediaRenderer fields
 
 		#region MediaRenderer constructor/destructor
-		public MediaRenderer(C0_5EX9_TextureVlcNode parentObject, int index)
+		public MediaRenderer(FileStreamVlcNode parentObject, int index)
 		{
 			parent = parentObject;
 			mediaRendererIndex = index;

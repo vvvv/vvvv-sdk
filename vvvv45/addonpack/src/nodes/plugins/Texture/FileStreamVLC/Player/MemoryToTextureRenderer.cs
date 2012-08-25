@@ -12,14 +12,14 @@
 //    Author:  Frederik Tilkin
 //
 //    vvvv Vlc plugin is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
+//    it under the terms of the GNU Lesser General Public License as published by
+//    the Free Software Foundation, either version 2.1+ of the License, or
 //    (at your option) any later version.
 //
 //    vvvv Vlc plugin is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-//    GNU General Public License for more details.
+//    GNU Lesser General Public License for more details.
 //     
 // ========================================================================
 
@@ -45,7 +45,7 @@ namespace VVVV.Nodes.Vlc.Player
 	{
 		private char group;
 		
-		private C0_5EX9_TextureVlcNode parent;
+		private FileStreamVlcNode parent;
 		private DoubleMemoryBuffer doubleBuffer;
 		private Dictionary<Device, DoubleTexture> device2DoubleTexture;
 		private int slice;
@@ -63,7 +63,7 @@ namespace VVVV.Nodes.Vlc.Player
 		private EventWaitHandle updateTextureEventWaitHandle;
 		private EventWaitHandle updateTextureStopThreadWaitHandle;
 
-		public MemoryToTextureRenderer(C0_5EX9_TextureVlcNode vvvvNode, int slice, char group, DoubleMemoryBuffer doubleMemoryBuffer)
+		public MemoryToTextureRenderer(FileStreamVlcNode vvvvNode, int slice, char group, DoubleMemoryBuffer doubleMemoryBuffer)
 		{
 			this.group = group;
 			this.slice = slice;
