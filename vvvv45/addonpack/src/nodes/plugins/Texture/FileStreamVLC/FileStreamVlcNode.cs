@@ -58,13 +58,12 @@ using VertexType = VVVV.Utils.SlimDX.TexturedVertex;
 namespace VVVV.Nodes.Vlc
 {
 	#region PluginInfo
-	[PluginInfo(Name = "FileStream", Category = "VLC", Version = "1.0", Author = "ft", Help = "Fully spreadeble video/image to texture player based on LibVlc", Tags = "video, audio, image, texture", Credits = "Frederik Tilkin, the authors of Vlc player, Roman Ginzburg", Bugs = "see http://trac.videolan.org/vlc/ticket/3152 | Don't trust the position and frame pins.", Warnings = "")]
+	[PluginInfo(Name = "FileStream", Category = "VLC", Version = "", Author = "ft", Help = "Fully spreadeble video/image to texture player based on LibVlc", Tags = "video, audio, image, texture", Credits = "Frederik Tilkin, the authors of Vlc player, Roman Ginzburg", Bugs = "see http://trac.videolan.org/vlc/ticket/3152 | Don't trust the position and frame pins.", Warnings = "")]
 	#endregion PluginInfo
 	public class FileStreamVlcNode : DXTextureOutPluginBase, IPluginEvaluate, IDisposable
 	{
 		
 		#region pins
-
 
 		[Input("Play", DefaultValue = 1)]
 		IDiffSpread<bool> FPlayIn;
@@ -72,10 +71,10 @@ namespace VVVV.Nodes.Vlc
 		[Input("Loop", DefaultValue = 0)]
 		IDiffSpread<bool> FLoopIn;
 
-        [Input("Loop Start", DefaultValue = 0)]
+        [Input("Loop Start Time", DefaultValue = 0)]
         IDiffSpread<float> FLoopStartIn;
 
-        [Input("Loop End", DefaultValue = 999999)]
+        [Input("Loop End Time", DefaultValue = 999999)]
         IDiffSpread<float> FLoopEndIn;
 
 		[Input("Do Seek", DefaultValue = 0, IsBang = true)]
@@ -99,18 +98,18 @@ namespace VVVV.Nodes.Vlc
 		[Input("Rotate", DefaultValue = 0, Visibility = PinVisibility.False)]
 		IDiffSpread<int> FRotateIn;
 
-		[Input("Filename", DefaultString = "C:\\video.avi | deinterlace=1 | video-filter=gradient{type=1}")]
-		IDiffSpread<string> FFileNameIn;
-
-		[Input("NextFilename", DefaultString = "", Visibility = PinVisibility.Hidden)]
+		[Input("NextFilename", StringType = StringType.Filename, DefaultString = "", Visibility = PinVisibility.Hidden)]
 		IDiffSpread<string> FNextFileNameIn;
 
+		[Input("Filename", StringType = StringType.Filename, DefaultString = "C:\\video.avi | deinterlace=1 | video-filter=gradient{type=1}")]
+		IDiffSpread<string> FFileNameIn;
 
-		[Output("Position")]
-		ISpread<float> FPositionOut;
 
 		[Output("Duration")]
 		ISpread<float> FDurationOut;
+		
+		[Output("Position")]
+		ISpread<float> FPositionOut;
 
 		[Output("Frame")]
 		ISpread<int> FFrameOut;
@@ -130,7 +129,7 @@ namespace VVVV.Nodes.Vlc
 		[Output("Pixel Aspect Ratio", DefaultValue = 1, Visibility = PinVisibility.OnlyInspector)]
 		ISpread<float> FPixelAspectRatioOut;
 
-		[Output("Next Ready")]
+		[Output("Next Ready", Visibility = PinVisibility.Hidden)]
 		ISpread<bool> FNextReadyOut;
 
 //		[Output("Bass Handle")]
