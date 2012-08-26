@@ -3,8 +3,9 @@ using System.Threading;
 
 namespace VVVV.Nodes.ImagePlayer
 {
-    public class FrameInfo : IEquatable<FrameInfo>, IDisposable
+    class FrameInfo : IEquatable<FrameInfo>, IDisposable
     {
+        static int liveCount;
         private readonly string FFilename;
         private readonly int FBufferSize;
         private readonly Lazy<CancellationTokenSource> FCancellationTokenSource;
@@ -15,6 +16,7 @@ namespace VVVV.Nodes.ImagePlayer
             FBufferSize = bufferSize;
             
             FCancellationTokenSource = new Lazy<CancellationTokenSource>(() => new CancellationTokenSource());
+            System.Threading.Interlocked.Increment(ref liveCount);
         }
         
         public string Filename
@@ -71,6 +73,12 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 FCancellationTokenSource.Value.Dispose();
             }
+            if (Decoder != null)
+            {
+                Decoder.Dispose();
+                Decoder = null;
+            }
+            System.Threading.Interlocked.Decrement(ref liveCount);
         }
         
         public double DurationIO
@@ -80,6 +88,12 @@ namespace VVVV.Nodes.ImagePlayer
         }
         
         public double DurationTexture
+        {
+            get;
+            set;
+        }
+
+        public FrameDecoder Decoder
         {
             get;
             set;

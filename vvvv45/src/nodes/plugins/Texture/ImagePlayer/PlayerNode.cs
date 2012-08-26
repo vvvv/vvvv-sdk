@@ -43,7 +43,7 @@ namespace VVVV.Nodes.ImagePlayer
         public ISpread<int> FThreadsTextureConfig;
         
         [Output("Texture")]
-        public ISpread<ISpread<Frame>> FTextureOut;
+        ISpread<ISpread<Frame>> FTextureOut;
         
         [Output("Frame Count")]
         public ISpread<int> FFrameCountOut;
@@ -62,16 +62,14 @@ namespace VVVV.Nodes.ImagePlayer
         
         private readonly ISpread<ImagePlayer> FImagePlayers = new Spread<ImagePlayer>(0);
         private readonly ILogger FLogger;
-        private readonly IDXDeviceService FDeviceService;
         private readonly IOTaskScheduler FIOTaskScheduler = new IOTaskScheduler();
         private readonly MemoryPool FMemoryPool = new MemoryPool();
         private readonly ObjectPool<MemoryStream> FStreamPool = new ObjectPool<MemoryStream>(() => new MemoryStream());
         
         [ImportingConstructor]
-        public PlayerNode(IPluginHost pluginHost, ILogger logger, IDXDeviceService deviceService)
+        public PlayerNode(IPluginHost pluginHost, ILogger logger)
         {
             FLogger = logger;
-            FDeviceService = deviceService;
         }
         
         private ImagePlayer CreateImagePlayer(int index)
@@ -80,7 +78,6 @@ namespace VVVV.Nodes.ImagePlayer
         		FThreadsIOConfig[index], 
         		FThreadsTextureConfig[index], 
         		FLogger, 
-        		FDeviceService, 
         		FIOTaskScheduler, 
         		FMemoryPool, 
         		FStreamPool
@@ -132,6 +129,8 @@ namespace VVVV.Nodes.ImagePlayer
                 if (reload)
                 {
                     imagePlayer.Reload();
+                    FMemoryPool.Clear();
+                    FStreamPool.ToArrayAndClear();
                 }
                 
                 int frameCount = 0;

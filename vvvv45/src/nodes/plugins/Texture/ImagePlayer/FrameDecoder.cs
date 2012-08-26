@@ -4,12 +4,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using SlimDX;
-using SlimDX.Direct3D9;
 using VVVV.Core.Logging;
+using System.Runtime.InteropServices;
+using SharpDX;
+using SharpDX.Direct3D9;
+using SharpDX.WIC;
 
 namespace VVVV.Nodes.ImagePlayer
 {
@@ -17,36 +16,77 @@ namespace VVVV.Nodes.ImagePlayer
     {
         class BitmapFrameDecoder : FrameDecoder
         {
-            private readonly BitmapSource FBitmapSource;
+            private static ImagingFactory Factory = new ImagingFactory();
+
+            private readonly DataPointer FBuffer;
+            private readonly int FWidth;
+            private readonly int FHeight;
+            private readonly int FStride;
+            private readonly int FLength;
             
             public BitmapFrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
                 : base(textureFactory, memoryPool, stream)
             {
-                var decoder = BitmapDecoder.Create(
-                    FStream,
-                    BitmapCreateOptions.PreservePixelFormat,
-                    BitmapCacheOption.None
-                   );
-                
-                BitmapSource bitmapSource = decoder.Frames[0];
-                if (bitmapSource.Format != PixelFormats.Bgra32)
+                var dataStream = stream as SharpDX.DataStream;
+                using (var wicStream = new WICStream(Factory, new SharpDX.DataPointer(dataStream.DataPointer, (int)dataStream.Length)))
+                using (var decoder = new BitmapDecoder(Factory, wicStream, DecodeOptions.CacheOnLoad))
                 {
-                    bitmapSource = new FormatConvertedBitmap(bitmapSource, PixelFormats.Bgra32, decoder.Palette, 0.0);
+                    using (var frame = decoder.GetFrame(0))
+                    {
+                        var dstPixelFormat = PixelFormat.Format32bppBGRA;
+                            
+                        FWidth = frame.Size.Width;
+                        FHeight = frame.Size.Height;
+                        FStride = PixelFormat.GetStride(dstPixelFormat, FWidth);
+                        FLength = FStride * FHeight;
+
+                        FBuffer = memoryPool.UnmanagedPool.GetMemory(FLength);
+
+                        if (frame.PixelFormat != dstPixelFormat)
+                        {
+                            using (var converter = new FormatConverter(Factory))
+                            {
+                                converter.Initialize(frame, dstPixelFormat);
+                                converter.CopyPixels(FStride, FBuffer);
+                            }
+                        }
+                        else
+                        {
+                            frame.CopyPixels(FStride, FBuffer);
+                        }
+                    }
                 }
-                
-                FBitmapSource = bitmapSource;
+            }
+
+            public override void Dispose()
+            {
+                if (FBuffer != null)
+                {
+                    FMemoryPool.UnmanagedPool.PutMemory(FBuffer);
+                }
+                base.Dispose();
             }
             
             public override Texture Decode(Device device)
             {
-                var texture = FTextureFactory(device, FBitmapSource.PixelWidth, FBitmapSource.PixelHeight, 1, Format.A8R8G8B8);
+                var texture = FTextureFactory(device, FWidth, FHeight, 1, Format.A8R8G8B8);
                 var dataRectangle = texture.LockRectangle(0, LockFlags.Discard);
 
                 try
                 {
-                    var data = dataRectangle.Data;
-                    var buffer = data.DataPointer;
-                    FBitmapSource.CopyPixels(Int32Rect.Empty, buffer, (int) data.Length, dataRectangle.Pitch);
+                    if (dataRectangle.Pitch == FStride)
+                    {
+                        Utilities.CopyMemory(dataRectangle.DataPointer, FBuffer.Pointer, FBuffer.Size);
+                    }
+                    else
+                    {
+                        for (int y = 0; y < FHeight; y++)
+                        {
+                            var src = FBuffer.Pointer +  y * FStride;
+                            var dst = dataRectangle.DataPointer + y * dataRectangle.Pitch;
+                            Utilities.CopyMemory(dst, src, FStride);
+                        }
+                    }
                 }
                 finally
                 {
@@ -77,22 +117,11 @@ namespace VVVV.Nodes.ImagePlayer
         class Direct3D9FrameDecoder : FrameDecoder
         {
             private readonly ImageInformation FImageInformation;
-            private readonly byte[] FBuffer;
             
             public Direct3D9FrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
                 : base(textureFactory, memoryPool, stream)
             {
-                // This is stupid...but FromStream will trigger GC far too often.
-                FBuffer = FMemoryPool.GetMemory((int) stream.Length);
-                stream.Read(FBuffer, 0, FBuffer.Length);
-                stream.Position = 0;
-                FImageInformation = ImageInformation.FromMemory(FBuffer);
-            }
-            
-            public override void Dispose()
-            {
-                FMemoryPool.PutMemory(FBuffer);
-                base.Dispose();
+                FImageInformation = ImageInformation.FromStream(stream);
             }
             
             public override Texture Decode(Device device)
@@ -109,7 +138,7 @@ namespace VVVV.Nodes.ImagePlayer
                         FImageInformation.MipLevels,
                         format);
                 } 
-                catch (SlimDXException) 
+                catch (SharpDXException) 
                 {
                     // Try with different parameters
                     texture = FTextureFactory(
@@ -122,8 +151,8 @@ namespace VVVV.Nodes.ImagePlayer
                 
                 var surface = texture.GetSurfaceLevel(0);
                 
-                Surface.FromFileInMemory(surface, FBuffer, Filter.None, 0);
-                
+                Surface.FromFileInStream(surface, FStream, Filter.None, 0);
+
                 return texture;
             }
             
@@ -152,8 +181,8 @@ namespace VVVV.Nodes.ImagePlayer
                 var dataRectangle = texture.LockRectangle(0, LockFlags.Discard);
                 try
                 {
-                    var data = dataRectangle.Data;
-                    data.WriteRange(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF });
+                    var white = 0xFFFFFFFF;
+                    Utilities.Write(dataRectangle.DataPointer, ref white);
                 }
                 finally
                 {
@@ -204,9 +233,9 @@ namespace VVVV.Nodes.ImagePlayer
             }
         }
         
-        protected readonly Func<Device, int, int, int, Format, Texture> FTextureFactory;
-        protected readonly MemoryPool FMemoryPool;
-        protected readonly Stream FStream;
+        protected Func<Device, int, int, int, Format, Texture> FTextureFactory;
+        protected MemoryPool FMemoryPool;
+        protected Stream FStream;
         
         public FrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
         {
@@ -217,7 +246,10 @@ namespace VVVV.Nodes.ImagePlayer
         
         public virtual void Dispose()
         {
-            
+            FMemoryPool.StreamPool.PutStream(FStream);
+            FTextureFactory = null;
+            FMemoryPool = null;
+            FStream = null;
         }
         
         public abstract Texture Decode(Device device);

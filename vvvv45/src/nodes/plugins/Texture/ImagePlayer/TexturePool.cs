@@ -2,12 +2,15 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using SlimDX.Direct3D9;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Nodes.ImagePlayer
 {
     public class TexturePool : IDisposable
     {
-        private readonly ConcurrentDictionary<int, ObjectPool<Texture>> FTexturePools = new ConcurrentDictionary<int, ObjectPool<Texture>>();
+        private readonly Dictionary<Device, Dictionary<int, ObjectPool<Texture>>> FTexturePools = new Dictionary<Device, Dictionary<int, ObjectPool<Texture>>>();
+        private readonly Dictionary<Device, int> FRefCount = new Dictionary<Device, int>();
         
         public Texture GetTexture(
             Device device,
@@ -18,15 +21,24 @@ namespace VVVV.Nodes.ImagePlayer
             Format format,
             Pool pool)
         {
-            int key = GetKey(device, width, height, levelCount, usage, format, pool);
+            Dictionary<int, ObjectPool<Texture>> devicePool;
+            if (!FTexturePools.TryGetValue(device, out devicePool))
+            {
+                devicePool = new Dictionary<int, ObjectPool<Texture>>();
+                FTexturePools[device] = devicePool;
+                FRefCount[device] = 0;
+            }
+
+            int key = GetKey(width, height, levelCount, usage, format, pool);
             
             ObjectPool<Texture> texturePool = null;
-            if (!FTexturePools.TryGetValue(key, out texturePool))
+            if (!devicePool.TryGetValue(key, out texturePool))
             {
                 texturePool = new ObjectPool<Texture>(() => new Texture(device, width, height, levelCount, usage, format, pool));
-                FTexturePools[key] = texturePool;
+                devicePool[key] = texturePool;
             }
-            
+
+            FRefCount[device]++;
             return texturePool.GetObject();
         }
         
@@ -34,20 +46,20 @@ namespace VVVV.Nodes.ImagePlayer
         {
             var desc = texture.GetLevelDescription(0);
             int key = GetKey(
-                texture.Device,
                 desc.Width,
                 desc.Height,
                 texture.LevelCount,
                 desc.Usage,
                 desc.Format,
                 desc.Pool);
-            
-            var texturePool = FTexturePools[key];
+
+            var devicePool = FTexturePools[texture.Device];
+            var texturePool = devicePool[key];
+            FRefCount[texture.Device]--;
             texturePool.PutObject(texture);
         }
         
         private int GetKey(
-            Device device,
             int width,
             int height,
             int levelCount,
@@ -55,53 +67,54 @@ namespace VVVV.Nodes.ImagePlayer
             Format format,
             Pool pool)
         {
-            return
-                device.GetHashCode() ^
-                width.GetHashCode() ^
-                height.GetHashCode() ^
-                levelCount.GetHashCode() ^
-                usage.GetHashCode() ^
-                format.GetHashCode() ^
-                pool.GetHashCode();
-        }
-        
-        public void Release(Device device)
-        {
-            foreach (var key in FTexturePools.Keys.ToArray())
+            unchecked
             {
-                ObjectPool<Texture> texturePool = null;
-                
-                if (FTexturePools.TryGetValue(key, out texturePool))
-                {
-                    foreach (var texture in texturePool.ToArrayAndClear())
-                    {
-                        if (texture.Device == device)
-                        {
-                            texture.Dispose();
-                        }
-                        else
-                        {
-                            texturePool.PutObject(texture);
-                        }
-                    }
-                }
+                var hash = 17;
+                hash = 23 * hash + width.GetHashCode();
+                hash = 23 * hash + height.GetHashCode();
+                hash = 23 * hash + levelCount.GetHashCode();
+                hash = 23 * hash + usage.GetHashCode();
+                hash = 23 * hash + format.GetHashCode();
+                hash = 23 * hash + pool.GetHashCode();
+                return hash;
             }
         }
         
-        public void Dispose()
+        public int Release(Device device)
         {
-            foreach (var key in FTexturePools.Keys.ToArray())
+            var refCount = FRefCount[device];
+            if (refCount == 0)
             {
-                ObjectPool<Texture> texturePool = null;
-                
-                if (FTexturePools.TryRemove(key, out texturePool))
+                var devicePool = FTexturePools[device];
+                foreach (var texturePool in devicePool.Values)
                 {
                     foreach (var texture in texturePool.ToArrayAndClear())
                     {
                         texture.Dispose();
                     }
                 }
+                FTexturePools.Remove(device);
+                FRefCount.Remove(device);
             }
+            return refCount;
+        }
+
+        public void Clear()
+        {
+            foreach (var device in FTexturePools.Keys.ToArray())
+            {
+                var refCount = Release(device);
+                if (refCount > 0)
+                {
+                    throw new Exception(string.Format("Couldn't clear texture pool. There're still {0} textures in use for device {1}.", refCount, device));
+                }
+            }
+            FTexturePools.Clear();
+        }
+        
+        public void Dispose()
+        {
+            Clear();
         }
     }
 }

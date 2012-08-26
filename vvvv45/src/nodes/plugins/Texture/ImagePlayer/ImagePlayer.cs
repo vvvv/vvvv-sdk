@@ -38,15 +38,13 @@ namespace VVVV.Nodes.ImagePlayer
         
         private readonly int FThreadsIO;
         private readonly int FThreadsTexture;
-        private readonly List<EX9.Device> FDevices = new List<EX9.Device>();
         private readonly ILogger FLogger;
-        private readonly IDXDeviceService FDeviceService;
         private readonly ObjectPool<MemoryStream> FStreamPool;
         private readonly TexturePool FTexturePool;
         private readonly MemoryPool FMemoryPool;
         private readonly BufferBlock<FrameInfo> FFrameInfoBuffer;
-        private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>> FFilePreloader;
-        private readonly TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame> FFramePreloader;
+        private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>> FFilePreloader;
+        private readonly TransformBlock<Tuple<FrameInfo, Stream>, Frame> FFramePreloader;
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
         private readonly Dictionary<string, Frame> FPreloadedFrames = new Dictionary<string, Frame>();
         
@@ -54,7 +52,6 @@ namespace VVVV.Nodes.ImagePlayer
             int threadsIO,
             int threadsTexture,
             ILogger logger,
-            IDXDeviceService deviceService,
             IOTaskScheduler ioTaskScheduler,
             MemoryPool memoryPool,
             ObjectPool<MemoryStream> streamPool
@@ -63,9 +60,6 @@ namespace VVVV.Nodes.ImagePlayer
             FThreadsIO = threadsIO;
             FThreadsTexture = threadsTexture;
             FLogger = logger;
-            FDeviceService = deviceService;
-            
-            FDeviceService.DeviceRemoved += HandleDeviceRemoved;
             
             FStreamPool = streamPool;
             FTexturePool = new TexturePool();
@@ -80,8 +74,8 @@ namespace VVVV.Nodes.ImagePlayer
                 BoundedCapacity = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : 2 * threadsIO
             };
             
-            FFilePreloader = new TransformBlock<FrameInfo, Tuple<FrameInfo, MemoryStream>>(
-                (Func<FrameInfo, Tuple<FrameInfo, MemoryStream>>) PreloadFile,
+            FFilePreloader = new TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>>(
+                (Func<FrameInfo, Tuple<FrameInfo, Stream>>) PreloadFile,
                 filePreloaderOptions
                );
             
@@ -90,8 +84,8 @@ namespace VVVV.Nodes.ImagePlayer
                 MaxDegreeOfParallelism = threadsTexture <= 0 ? DataflowBlockOptions.Unbounded : threadsTexture
             };
             
-            FFramePreloader = new TransformBlock<Tuple<FrameInfo, MemoryStream>, Frame>(
-                (Func<Tuple<FrameInfo, MemoryStream>, Frame>) PreloadFrame,
+            FFramePreloader = new TransformBlock<Tuple<FrameInfo, Stream>, Frame>(
+                (Func<Tuple<FrameInfo, Stream>, Frame>) PreloadFrame,
                 framePreloaderOptions
                );
             
@@ -113,11 +107,7 @@ namespace VVVV.Nodes.ImagePlayer
             }
             
             // Dispose all visible frames
-            foreach (var frame in FPreloadedFrames.Values)
-            {
-                frame.Dispose();
-                frame.Metadata.Dispose();
-            }
+            ClearPreloadedFrames();
             
             // Flush the pipeline
             Flush();
@@ -136,15 +126,8 @@ namespace VVVV.Nodes.ImagePlayer
             }
             finally
             {
-                foreach (var stream in FStreamPool.ToArrayAndClear())
-                {
-                    stream.Dispose();
-                }
-                
                 FTexturePool.Dispose();
             }
-            
-            FDeviceService.DeviceRemoved -= HandleDeviceRemoved;
         }
         
         public ISpread<string> Directories
@@ -161,22 +144,35 @@ namespace VVVV.Nodes.ImagePlayer
         
         public void Reload()
         {
-            var files = new Spread<string>[Directories.SliceCount];
-            int maxCount = 1;
-            for (int i = 0; i < files.Length; i++)
+            try
             {
-                files[i] = System.IO.Directory.GetFiles(Directories[i], Filemasks[i]).OrderBy(f => f).ToSpread();
-                maxCount = maxCount.CombineWith(files[i]);
-            }
-            FFiles = new string[files.Length * maxCount];
-            for (int i = 0; i < files.Length; i++)
-            {
-                int k = i;
-                for (int j = 0; j < maxCount; j++)
+                var files = new Spread<string>[Directories.SliceCount];
+                int maxCount = 1;
+                for (int i = 0; i < files.Length; i++)
                 {
-                    FFiles[k] = files[i][j];
-                    k += files.Length;
+                    files[i] = System.IO.Directory.GetFiles(Directories[i], Filemasks[i]).OrderBy(f => f).ToSpread();
+                    maxCount = maxCount.CombineWith(files[i]);
                 }
+                FFiles = new string[files.Length * maxCount];
+                for (int i = 0; i < files.Length; i++)
+                {
+                    int k = i;
+                    for (int j = 0; j < maxCount; j++)
+                    {
+                        FFiles[k] = files[i][j];
+                        k += files.Length;
+                    }
+                }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                FFiles = new string[0];
+            }
+            finally
+            {
+                Flush();
+                ClearPreloadedFrames();
+                FTexturePool.Clear();
             }
         }
         
@@ -386,114 +382,79 @@ namespace VVVV.Nodes.ImagePlayer
             
             return visibleFrames;
         }
-        
-        private EX9.Texture CreateTexture(FrameInfo frameInfo, EX9.Device device, FrameDecoder decoder)
+
+        private TSharp ToSharpDX<TSharp, TSlim>(TSlim slim)
+            where TSharp : SharpDX.CppObject
+            where TSlim : SlimDX.ComObject
         {
-            lock (FDevices)
+            var sharp = slim.Tag as TSharp;
+            if (sharp == null)
             {
-                if (!FDevices.Contains(device))
-                {
-                    FDevices.Add(device);
-                }
+                sharp = SharpDX.CppObject.FromPointer<TSharp>(slim.ComPointer);
+                slim.Tag = sharp;
             }
-            
-            if (decoder == null)
-            {
-                using (var stream = new FileStream(frameInfo.Filename, FileMode.Open, FileAccess.Read))
-                {
-                    decoder = FrameDecoder.Create(frameInfo.Filename, CreateTextureForDecoder, FMemoryPool, stream);
-                    var texture = decoder.Decode(device);
-                    decoder.Dispose();
-                    return texture;
-                }
-            }
-            
-            return decoder.Decode(device);
+            return sharp;
         }
-        
+
+        private TSlim ToSlimDX<TSharp, TSlim>(TSharp sharp, Func<IntPtr, TSlim> constructor)
+            where TSharp : SharpDX.CppObject
+            where TSlim : SlimDX.ComObject
+        {
+            var slim = constructor(sharp.NativePointer);
+            slim.Tag = sharp;
+            return slim;
+        }
+
+        private EX9.Texture CreateTexture(FrameInfo frameInfo, EX9.Device device)
+        {
+            using (var sharpDxDevice = new SharpDX.Direct3D9.Device(device.ComPointer))
+            {
+                ((SharpDX.IUnknown)sharpDxDevice).AddReference(); // Dispose will call release
+                using (var texture = frameInfo.Decoder.Decode(sharpDxDevice))
+                {
+                    ((SharpDX.IUnknown)texture).AddReference(); // Dispose will call release
+                    return SlimDX.Direct3D9.Texture.FromPointer(texture.NativePointer);
+                }
+            }
+        }
+
         private void UpdateTexture(FrameInfo frameInfo, EX9.Texture texture)
         {
-            
+
         }
 
-        private bool FReleasingDevice;
         private void DestroyTexture(FrameInfo frameInfo, EX9.Texture texture, DestroyReason reason)
         {
-            switch (reason)
+            // Put the texture back in the pool
+            FTexturePool.PutTexture(texture);
+            if (reason == DestroyReason.DeviceLost)
             {
-                case DestroyReason.Dispose:
-                    // Just put it back
-                    FTexturePool.PutTexture(texture);
-                    break;
-                case DestroyReason.DeviceLost:
-                    // Do not flush more than once
-                    if (!FReleasingDevice)
-                    {
-                        // Make sure the pipeline is empty
-                        Flush();
+                // Release this device if it got lost
+                FTexturePool.Release(texture.Device);
+            }
+        }
 
-                        var device = texture.Device;
-                        FReleasingDevice = true;
-                        try
-                        {
-                            // Tell all preloaded frames to put back their textures for this device (this includes this one)
-                            foreach (var preloadedFrame in FPreloadedFrames.Values)
-                            {
-                                preloadedFrame.DestroyResource(device);
-                            }
-                        }
-                        finally
-                        {
-                            FReleasingDevice = false;
-                        }
-                        // Remove the device from the list of devices we preload for
-                        FDevices.Remove(device);
-                        // Finally dispose the textures
-                        FTexturePool.Release(device);
-                    }
-                    else
-                    {
-                        // Put it back
-                        FTexturePool.PutTexture(texture);
-                    }
-                    break;
-            }
-        }
-        
-        private EX9.Texture CreateTextureForDecoder(EX9.Device device, int width, int height, int levels, EX9.Format format)
+        private SharpDX.Direct3D9.Texture CreateTextureForDecoder(SharpDX.Direct3D9.Device device, int width, int height, int levels, SharpDX.Direct3D9.Format format)
         {
-            var pool = EX9.Pool.Managed;
-            var usage = EX9.Usage.None & ~EX9.Usage.AutoGenerateMipMap;
-            if (device is EX9.DeviceEx)
+            var pool = SharpDX.Direct3D9.Pool.Default;
+            var usage = SharpDX.Direct3D9.Usage.Dynamic & ~SharpDX.Direct3D9.Usage.AutoGenerateMipMap;
+            if (device is SharpDX.Direct3D9.DeviceEx)
             {
-                pool = EX9.Pool.Default;
-                usage = EX9.Usage.Dynamic & ~EX9.Usage.AutoGenerateMipMap;
+                pool = SharpDX.Direct3D9.Pool.Default;
+                usage = SharpDX.Direct3D9.Usage.Dynamic & ~SharpDX.Direct3D9.Usage.AutoGenerateMipMap;
             }
-            return FTexturePool.GetTexture(device, width, height, levels, usage, format, pool);
+            var texture = FTexturePool.GetTexture(EX9.Device.FromPointer(device.NativePointer), width, height, levels, (EX9.Usage)usage, (EX9.Format)format, (EX9.Pool)pool);
+            return new SharpDX.Direct3D9.Texture(texture.ComPointer);
         }
-        
-        private void HandleDeviceRemoved(object sender, DeviceEventArgs e)
+
+        private void ClearPreloadedFrames()
         {
-            ReleaseDevice(e.Device);
-        }
-        
-        private void ReleaseDevice(EX9.Device device)
-        {
-            bool doRelease = false;
-            lock (FDevices)
+            foreach (var frame in FPreloadedFrames.Values)
             {
-                doRelease = FDevices.Contains(device);
+                frame.Metadata.Dispose();
+                frame.Dispose();
             }
-            if (doRelease)
-            {
-                Flush();
-                foreach (var preloadedFrame in FPreloadedFrames.Values)
-                {
-                    preloadedFrame.DestroyResource(device);
-                }
-                FDevices.Remove(device);
-                FTexturePool.Release(device);
-            }
+            FPreloadedFrames.Clear();
         }
         
         private void Flush()
@@ -510,7 +471,7 @@ namespace VVVV.Nodes.ImagePlayer
             emptyFrameInfo.Dispose();
         }
         
-        private Tuple<FrameInfo, MemoryStream> PreloadFile(FrameInfo frameInfo)
+        private Tuple<FrameInfo, Stream> PreloadFile(FrameInfo frameInfo)
         {
             // TODO: Consider using CopyStreamToStreamAsync from TPL extensions
             var timer = new HiPerfTimer();
@@ -519,9 +480,10 @@ namespace VVVV.Nodes.ImagePlayer
             var filename = frameInfo.Filename;
             var bufferSize = frameInfo.BufferSize;
             var cancellationToken = frameInfo.Token;
-            var memoryStream = FStreamPool.GetObject();
-            var buffer = FMemoryPool.GetMemory(bufferSize);
-            
+            //var memoryStream = FStreamPool.GetObject();
+            Stream memoryStream = null;
+            var buffer = FMemoryPool.ManagedPool.GetMemory(bufferSize);
+
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -529,15 +491,8 @@ namespace VVVV.Nodes.ImagePlayer
                 using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, FileOptions.SequentialScan))
                 {
                     var length = fileStream.Length;
-                    memoryStream.Position = 0;
-                    if (length > memoryStream.Capacity)
-                    {
-                        memoryStream.Capacity = VVVV.Utils.Streams.StreamUtils.NextHigher((int) length);
-                    }
-                    if (length != memoryStream.Length)
-                    {
-                        memoryStream.SetLength(length);
-                    }
+                    memoryStream = FMemoryPool.StreamPool.GetStream((int)length);
+                    //memoryStream.Position = 0;
                     
                     while (fileStream.Position < length)
                     {
@@ -562,7 +517,7 @@ namespace VVVV.Nodes.ImagePlayer
             finally
             {
                 // Put the buffer back in the pool so other blocks can use it
-                FMemoryPool.PutMemory(buffer);
+                FMemoryPool.ManagedPool.PutMemory(buffer);
             }
             
             timer.Stop();
@@ -571,7 +526,7 @@ namespace VVVV.Nodes.ImagePlayer
             return Tuple.Create(frameInfo, memoryStream);
         }
         
-        private Frame PreloadFrame(Tuple<FrameInfo, MemoryStream> tuple)
+        private Frame PreloadFrame(Tuple<FrameInfo, Stream> tuple)
         {
             var timer = new HiPerfTimer();
             timer.Start();
@@ -579,50 +534,39 @@ namespace VVVV.Nodes.ImagePlayer
             var frameInfo = tuple.Item1;
             var stream = tuple.Item2;
             var cancellationToken = frameInfo.Token;
-            FrameDecoder decoder = null;
-            
+
             var frame = new Frame(
                 frameInfo,
-                (fi, device) =>
-                {
-                    return CreateTexture(fi, device, decoder);
-                },
+                CreateTexture,
                 UpdateTexture,
                 DestroyTexture);
-            
+
+            var cleanupStream = false;
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-
-                decoder = FrameDecoder.Create(frameInfo.Filename, CreateTextureForDecoder, FMemoryPool, stream);
-                
-                lock (FDevices)
-                {
-                    foreach (var device in FDevices)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        frame.UpdateResource(device);
-                    }
-                }
+                frameInfo.Decoder = FrameDecoder.Create(frameInfo.Filename, CreateTextureForDecoder, FMemoryPool, stream);
             }
             catch (OperationCanceledException)
             {
-                // That's fine
+                // That's fine, just make sure to cleanup
+                cleanupStream = true;
             }
             catch (Exception e)
             {
                 // Log the exception
                 FLogger.Log(e);
+                // And don't forget to cleanup
+                cleanupStream = true;
             }
             finally
             {
-                if (decoder != null)
-                {
-                    decoder.Dispose();
-                    decoder = null;
-                }
                 // We're done with this frame, put used memory stream back in the pool
-                FStreamPool.PutObject(stream);
+                //FStreamPool.PutObject(stream);
+                if (stream != null && cleanupStream)
+                {
+                    FMemoryPool.StreamPool.PutStream(stream);
+                }
             }
             
             timer.Stop();
