@@ -86,8 +86,8 @@ namespace VVVV.PluginInterfaces.V2
             TResource resource;
             if (FResources.TryGetValue(device, out resource))
             {
-                FDestroyResourceAction(FMetadata, resource, DestroyReason.DeviceLost);
                 FResources.Remove(device);
+                FDestroyResourceAction(FMetadata, resource, DestroyReason.DeviceLost);
             }
         }
         
