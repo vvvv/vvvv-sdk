@@ -1,35 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.1.dtd" >
    <PATCH nodename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Vlc test\Vlc test 01.v4p" filename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk_opencv\vvvv45\tests\patches\Vlc test\Vlc test 01.v4p" systemname="Vlc test 01">
    <BOUNDS height="8055" left="0" top="0" type="Window" width="13470">
    </BOUNDS>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\0.5EX9.TextureVlc.dll" id="0" nodename="Vlc (EX9.Texture 0.5)" systemname="Vlc (EX9.Texture 0.5)">
-   <BOUNDS height="100" left="390" top="2145" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Filename" visible="1">
-   </PIN>
-   <PIN pinname="Bass Handle" visible="1">
-   </PIN>
-   <PIN pinname="Loop" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Volume" slicecount="1" values="0.5">
-   </PIN>
-   <PIN pinname="Speed" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Seek Time" slicecount="1" values="1.5">
-   </PIN>
-   <PIN pinname="Do Seek" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Loop Start" slicecount="1" values="8.95">
-   </PIN>
-   <PIN pinname="Loop End" slicecount="1" values="12.32">
-   </PIN>
-   <PIN pinname="OpenCV Image" visible="1">
-   </PIN>
-   <PIN pinname="Forced Width" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="1" nodename="FileName (File Split)" systemname="FileName (File Split)">
    <BOUNDS height="100" left="1950" top="960" type="Node" width="100">
    </BOUNDS>
@@ -69,7 +41,7 @@
    <NODE componentmode="Hidden" id="5" nodename="Quad (DX9)" systemname="Quad (DX9)">
    <BOUNDS height="100" left="1800" top="3930" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -114,8 +86,6 @@
    <PIN pinname="Switch">
    </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Filename" srcnodeid="14" srcpinname="Output">
-   </LINK>
    <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="390" top="1170" type="Node" width="0">
    </BOUNDS>
@@ -279,9 +249,9 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="29" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Frame">
-   </LINK>
    <NODE componentmode="InABox" id="30" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1230" top="3495" type="Node" width="0">
    </BOUNDS>
@@ -291,9 +261,9 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="30" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Duration">
-   </LINK>
    <NODE componentmode="InABox" id="31" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="375" top="3480" type="Node" width="0">
    </BOUNDS>
@@ -303,9 +273,9 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="31" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Position">
-   </LINK>
    <NODE componentmode="InABox" id="32" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1800" top="3075" type="Node" width="0">
    </BOUNDS>
@@ -317,9 +287,9 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="32" dstpinname="Y Input Value" srcnodeid="0" srcpinname="FrameCount">
-   </LINK>
    <NODE componentmode="Hidden" id="33" nodename="Timing (Debug)" systemname="Timing (Debug)">
    <BOUNDS height="100" left="6375" top="45" type="Node" width="100">
    </BOUNDS>
@@ -349,9 +319,9 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Width" dstnodeid="35" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="36" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="1680" top="2610" width="0" height="0">
    </BOUNDS>
@@ -363,9 +333,9 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Height" dstnodeid="36" dstpinname="Y Input Value">
-   </LINK>
    <NODE systemname="Info (EX9.Texture)" nodename="Info (EX9.Texture)" componentmode="Hidden" id="37">
    <BOUNDS type="Node" left="4890" top="4080" width="100" height="100">
    </BOUNDS>
@@ -524,8 +494,6 @@
    </NODE>
    <LINK srcnodeid="46" srcpinname="Video" dstnodeid="47" dstpinname="Video">
    </LINK>
-   <LINK srcnodeid="0" srcpinname="Texture Out" dstnodeid="5" dstpinname="Texture">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="48">
    <BOUNDS type="Node" left="7065" top="5640" width="100" height="100">
    </BOUNDS>
@@ -549,5 +517,41 @@
    <LINK srcnodeid="5" srcpinname="Layer" dstnodeid="48" dstpinname="Layers">
    </LINK>
    <LINK srcnodeid="47" srcpinname="Texture Out" dstnodeid="37" dstpinname="Texture">
+   </LINK>
+   <NODE systemname="FileStream (Vlc 1.0)" filename="%VVVV%\addonpack\lib\nodes\plugins\FileStreamVLC.dll" nodename="FileStream (Vlc 1.0)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="375" top="2130" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Height" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="FrameCount" visible="1">
+   </PIN>
+   <PIN pinname="Frame" visible="1">
+   </PIN>
+   <PIN pinname="Duration" visible="1">
+   </PIN>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="49" dstpinname="Filename">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Texture Out" dstnodeid="5" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Height" dstnodeid="36" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Width" dstnodeid="35" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="FrameCount" dstnodeid="32" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Frame" dstnodeid="29" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Duration" dstnodeid="30" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Position" dstnodeid="31" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
