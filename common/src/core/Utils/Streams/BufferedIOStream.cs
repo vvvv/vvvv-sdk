@@ -217,6 +217,8 @@ namespace VVVV.Utils.Streams
         {
             FChangeCount = 0;
         }
+
+        public T[] Buffer { get { return FBuffer; } }
         
         public bool IsChanged
         {
