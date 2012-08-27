@@ -131,7 +131,16 @@ namespace VVVV.MSKinect.Nodes
 
                 if (!this.FDepthTex.ContainsKey(OnDevice))
                 {
-                    Texture t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
+                    Texture t = null;
+                    if (OnDevice is DeviceEx)
+                    {
+                        t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.X8R8G8B8, Pool.Default);
+                    }
+                    else
+                    {
+                        t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
+                    }
+
                     this.FDepthTex.Add(OnDevice, t);
                 }
 
