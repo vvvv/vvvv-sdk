@@ -438,11 +438,6 @@ namespace VVVV.Nodes.ImagePlayer
         {
             var pool = SharpDX.Direct3D9.Pool.Default;
             var usage = SharpDX.Direct3D9.Usage.Dynamic & ~SharpDX.Direct3D9.Usage.AutoGenerateMipMap;
-            if (device is SharpDX.Direct3D9.DeviceEx)
-            {
-                pool = SharpDX.Direct3D9.Pool.Default;
-                usage = SharpDX.Direct3D9.Usage.Dynamic & ~SharpDX.Direct3D9.Usage.AutoGenerateMipMap;
-            }
             var texture = FTexturePool.GetTexture(EX9.Device.FromPointer(device.NativePointer), width, height, levels, (EX9.Usage)usage, (EX9.Format)format, (EX9.Pool)pool);
             return new SharpDX.Direct3D9.Texture(texture.ComPointer);
         }
