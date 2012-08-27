@@ -16,15 +16,15 @@ using Phidgets;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "UnipolarStepper",
+	[PluginInfo(Name = "StepperController",
 	            Category = "Devices",
                 Version = "Phidget",
-                Help = "Wrapper for the Phidget Stepper Unipolar Motors",
+                Help = "Wrapper for the Phidget Stepper Unipolar & Bipolar",
 	            Tags = "Controller, Motor",
-                Author = "Phlegma")]
+                Author = "Phlegma, woei")]
 	#endregion PluginInfo
 
-    public class StepperUnipolar4MotorsNode : IPluginEvaluate
+    public class StepperControllerNode : IPluginEvaluate
 	{
 		#region fields & pins
         [Input("Engaged", DefaultValue = 0)]
@@ -41,6 +41,9 @@ namespace VVVV.Nodes
 
         [Input("Acceleration", DefaultValue = 0.5, MinValue=0, MaxValue=1)]
         IDiffSpread<double> FAcceleration;
+        
+        [Input("Current Limit", DefaultValue = 1.0, MinValue=0, MaxValue=1)]
+        IDiffSpread<double> FCurrent;
 
         [Input("Serial", DefaultValue = 0, IsSingle = true, AsInt = true, MinValue = 0, MaxValue = int.MaxValue)]
         IDiffSpread<int> FSerial;
@@ -57,6 +60,9 @@ namespace VVVV.Nodes
 
         [Output("Velocity", DefaultValue = 0)]
         ISpread<double> FVelocityOut;
+        
+        [Output("Current", DefaultValue = 1)]
+        ISpread<double> FCurrentOut;
 
         [Output("Position", DefaultValue = 0)]
         ISpread<double> FPositionOut;
@@ -72,11 +78,14 @@ namespace VVVV.Nodes
 
         [Output("Position Minimum",Visibility=PinVisibility.OnlyInspector, AsInt=true)]
         ISpread<double> FPositionMin;
+        
+        [Output("Phidget Id", Visibility = PinVisibility.OnlyInspector)]
+        ISpread<string> FId;
 
 		[Import()]
 		ILogger FLogger;
 
-        WrapperStepperUnipolar4Motors FStepper;
+        WrapperStepperController FStepper;
         bool FInit = true;
 		#endregion fields & pins
 
@@ -93,7 +102,7 @@ namespace VVVV.Nodes
                     {
                         FStepper = null;
                     }
-                    FStepper = new WrapperStepperUnipolar4Motors(FSerial[0]);
+                    FStepper = new WrapperStepperController(FSerial[0]);
                     FInit = true;
                 }
 
@@ -106,17 +115,22 @@ namespace VVVV.Nodes
                         FPositionOut.SliceCount = FStepper.Count;
                         FStoppedOut.SliceCount = FStepper.Count;
                         FVelocityOut.SliceCount = FStepper.Count;
+                        FCurrentOut.SliceCount = FStepper.Count;
                         FPositionMin.SliceCount = FStepper.Count;
                         FPositionMax.SliceCount = FStepper.Count;
                         FTargetPosition.SliceCount = FStepper.Count;
                         FCurrentPosition.SliceCount = FStepper.Count;
+                        FCountOut.SliceCount = 1;
                         FCountOut[0] = FStepper.Count;
+                        FId.SliceCount = 1;
+                        FId[0] = FStepper.FInfo.PhidgetId.ToString();
 
                         for (int i = 0; i < FStepper.Count; i++)
                         {
                             FPositionMax[i] = Convert.ToDouble(FStepper.GetMotorPositionMax(i));
                             FPositionMin[i] = Convert.ToDouble(FStepper.GetMotorPositionMin(i));
                         }
+                        
                     }
 
 
@@ -138,13 +152,19 @@ namespace VVVV.Nodes
                                 FStepper.SetTargetMotorposition(i, Convert.ToInt64(Position));
                             }
 
-                            if (FVelocityIn.IsChanged || FAcceleration.IsChanged || FInit || EngagedChanged)
+                            if (FVelocityIn.IsChanged || FAcceleration.IsChanged || FCurrent.IsChanged || FInit || EngagedChanged)
                             {
                                 double Velocity = VMath.Map(FVelocityIn[i], 0, 1, FStepper.GetVelocityMin(i), FStepper.GetVelocityMax(i), TMapMode.Float);
                                 FStepper.SetVelocityLimit(i, Velocity);
 
                                 double Acceleration = VMath.Map(FAcceleration[i], 0, 1, FStepper.GetAccelerationMin(i), FStepper.GetAccelerationMax(i), TMapMode.Float);
                                 FStepper.SetAcceleration(i, Acceleration);
+                                
+                                if (FStepper.FInfo.PhidgetId == Phidget.PhidgetID.BIPOLAR_STEPPER_1MOTOR)
+                                {
+	                                double Current = VMath.Map(FCurrent[i], 0, 1, FStepper.GetCurrentMin(i), FStepper.GetCurrentMax(i), TMapMode.Float);
+	                                FStepper.SetCurrent(i, Current);
+                                }
                             }
 
                             //if (ChangedIndex[i])
@@ -153,6 +173,11 @@ namespace VVVV.Nodes
                                 FVelocityOut[i] = VMath.Map(Convert.ToDouble(FStepper.GetVelocity(i)),FStepper.GetVelocityMin(i),FStepper.GetVelocityMax(i),0,1, TMapMode.Float);
                                 FCurrentPosition[i] = Convert.ToDouble(FStepper.GetCurrentMotorPosition(i));
                                 FTargetPosition[i] = Convert.ToDouble(FStepper.GetTargetMotorsPosition(i));
+                                
+                                if (FStepper.FInfo.PhidgetId == Phidget.PhidgetID.BIPOLAR_STEPPER_1MOTOR)
+                                	FCurrentOut[i] = VMath.Map(Convert.ToDouble(FStepper.GetCurrent(i)),FStepper.GetCurrentMin(i),FStepper.GetCurrentMax(i),0,1, TMapMode.Float);
+                                else
+                                	FCurrentOut[i] = 1;
 
                             //}
                         }
