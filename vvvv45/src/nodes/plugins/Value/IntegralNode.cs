@@ -21,9 +21,10 @@ namespace VVVV.Nodes.Value
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			FOutput.SliceCount = FInput.CombineWith(FOffset);
-			
-			for (int i = 0; i < FInput.SliceCount; i++)
+            SpreadMax = FInput.CombineWith(FOffset);
+            FOutput.SliceCount = SpreadMax;
+
+            for (int i = 0; i < SpreadMax; i++)
 			{
 				var input = FInput[i];
 				var output = FOutput[i];

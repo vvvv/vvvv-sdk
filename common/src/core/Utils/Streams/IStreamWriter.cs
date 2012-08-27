@@ -23,7 +23,7 @@ namespace VVVV.Utils.Streams
 		/// Use the stride parameter to control advancing of the position after one item has been written.
 		/// </summary>
 		/// <param name="buffer">The buffer to copy from.</param>
-		/// <param name="offset">The zero-based offset in buffer at which to begin copying bytes to the current stream.</param>
+		/// <param name="index">The zero-based offset in buffer at which to begin copying bytes to the current stream.</param>
 		/// <param name="length">The number of items to be written to the current stream.</param>
 		/// <param name="stride">The stride by which the position is advanced after writing one item.</param>
 		/// <returns>

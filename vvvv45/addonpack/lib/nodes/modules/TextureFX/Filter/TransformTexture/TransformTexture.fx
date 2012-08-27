@@ -4,14 +4,14 @@ int Iterations <float uimin=1.0;float uimax=30.0;> =8;
 
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
-float4x4 tW;
-float4x4 tWp;
+float4x4 tTex: TEXTUREMATRIX;
+float4x4 tTexP: TEXTUREMATRIX;
 
 float4 BorderCol:COLOR ={0.0,0.0,0.0,1.0};
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float4 c=tex2D(s0,x);
-	float2 x0=mul(float4(x*2-1,0,1),tW)*.5+.5;
-	float2 x1=mul(float4(x*2-1,0,1),tWp)*.5+.5;
+	float2 x0=mul(float4(x.xy,0,1),tTex);
+	float2 x1=mul(float4(x.xy,0,1),tTexP);
 	c=0;
 	float itr=Iterations;
 	itr=min(30,itr);

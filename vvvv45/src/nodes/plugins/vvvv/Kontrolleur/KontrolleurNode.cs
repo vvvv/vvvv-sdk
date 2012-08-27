@@ -232,14 +232,15 @@ namespace VVVV.Nodes
 					OSCPacket packet = FOSCReceiver.Receive();
 					if (packet != null)
 					{ 
-						if (packet.IsBundle())
-						{
-							ArrayList messages = packet.Values;
-							for (int i=0; i<messages.Count; i++)
-								FMessageQueue.Add((OSCMessage)messages[i]);
-						}
-						else
-							FMessageQueue.Add((OSCMessage)packet);
+						lock(FMessageQueue)
+							if (packet.IsBundle())
+							{
+								ArrayList messages = packet.Values;
+								for (int i=0; i<messages.Count; i++)
+									FMessageQueue.Add((OSCMessage)messages[i]);
+							}
+							else
+								FMessageQueue.Add((OSCMessage)packet);
 					}
 				}
 				catch (Exception e)
@@ -425,10 +426,12 @@ namespace VVVV.Nodes
 			//process messagequeue 
 			//in order to handle all messages from main thread
 			//since all COM-access is single threaded
-			foreach (var message in FMessageQueue)
-				ProcessOSCMessage(message);
-			FMessageQueue.Clear();
-						
+			lock(FMessageQueue)
+			{
+				foreach (var message in FMessageQueue)
+					ProcessOSCMessage(message);
+				FMessageQueue.Clear();
+			}
 			//send targets to kontrolleur
 			var bundle = new OSCBundle();
 			foreach (var target in FTargets.Values)

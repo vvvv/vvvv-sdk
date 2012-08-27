@@ -64,8 +64,10 @@ namespace VVVV.PluginInterfaces.V2
 			attribute.IsToggle = isBool && !attribute.IsBang;
 			attribute.AsInt = isInteger || attribute.AsInt;
 			
-			attribute.Dimension = FDefaultValues.ContainsKey(type) ? FDefaultValues[type].Item5 : 1;
+			if (attribute.IsToggle && attribute.DefaultBoolean)
+				attribute.DefaultValue = 1.0;
 			
+			attribute.Dimension = FDefaultValues.ContainsKey(type) ? FDefaultValues[type].Item5 : 1;
 			var defaultValues = attribute.DefaultValues;
 			Array.Resize(ref defaultValues, attribute.Dimension);
 			attribute.DefaultValues = defaultValues;
