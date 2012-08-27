@@ -64,7 +64,7 @@ namespace VVVV.Lib
                 if (this.FMeshes.ContainsKey(OnDevice))
                 {
                     Mesh m = this.FMeshes[OnDevice];
-                    this.FMeshes.Remove(OnDevice);
+                    this.FMeshes.Remove(OnDevice); 
                     m.Dispose();
                 }
             }
