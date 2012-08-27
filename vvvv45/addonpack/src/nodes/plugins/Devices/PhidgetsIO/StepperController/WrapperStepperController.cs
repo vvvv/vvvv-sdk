@@ -7,18 +7,18 @@ using Phidgets.Events;
 
 namespace VVVV.Nodes
 {
-    class WrapperStepperUnipolar4Motors:Phidgets<Stepper>,IPhidgetsWrapper
+    class WrapperStepperController:Phidgets<Stepper>,IPhidgetsWrapper
     {
         bool FChanged = false;
         bool[] FChangedIndex;
 
-        public WrapperStepperUnipolar4Motors(int SerialNumber)
+        public WrapperStepperController(int SerialNumber)
             : base(SerialNumber)
         {
             FChangedIndex  = new bool[FPhidget.steppers.Count];
         }
 
-        public WrapperStepperUnipolar4Motors()
+        public WrapperStepperController()
             : base()
         {
             FChangedIndex = new bool[FPhidget.steppers.Count];
@@ -26,6 +26,11 @@ namespace VVVV.Nodes
 
 
         //Setter
+        public void SetCurrent(int Index, double Value)
+        {
+            FPhidget.steppers[Index].CurrentLimit = Value;
+        }
+        
         public void SetAcceleration(int Index, double Value)
         {
             FPhidget.steppers[Index].Acceleration = Value;
@@ -55,6 +60,21 @@ namespace VVVV.Nodes
 
 
         //getter
+        public double GetCurrent(int Index)
+        {
+            return FPhidget.steppers[Index].CurrentLimit;
+        }
+
+        public double GetCurrentMin(int Index)
+        {
+            return FPhidget.steppers[Index].CurrentMin;
+        }
+
+        public double GetCurrentMax(int Index)
+        {
+            return FPhidget.steppers[Index].CurrentMax;
+        }
+        
         public double GetAcceleration(int Index)
         {
             return FPhidget.steppers[Index].Acceleration;
@@ -167,6 +187,6 @@ namespace VVVV.Nodes
                 return FChangedIndex;
             }
         }
-
+        
     }
 }
