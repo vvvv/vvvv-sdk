@@ -28,37 +28,76 @@ namespace VVVV.Hosting.IO.Streams
         
         public override void Flush()
         {
-            FBinSizeStream.Length = Length;
-            
-            int binSizeSum = 0;
-            using (var binSizeWriter = FBinSizeStream.GetWriter())
-            {
-                foreach (var outputStream in this)
-                {
-                    binSizeWriter.Write(outputStream.Length);
-                    binSizeSum += outputStream.Length;
-                }
-            }
-            
             var buffer = MemoryPool<T>.GetArray();
+            var binSizeBuffer = MemoryPool<int>.GetArray();
             try
             {
-                FDataStream.Length = binSizeSum;
+                FBinSizeStream.Length = Length;
+
+                int dataStreamLength = 0;
+                using (var binSizeWriter = FBinSizeStream.GetWriter())
+                {
+                    var numSlicesBuffered = 0;
+                    for (int i = 0; i < Length; i++)
+                    {
+                        var stream = Buffer[i];
+                        binSizeBuffer[numSlicesBuffered++] = stream.Length;
+                        dataStreamLength += stream.Length;
+                        if (numSlicesBuffered == binSizeBuffer.Length)
+                        {
+                            binSizeWriter.Write(binSizeBuffer, 0, numSlicesBuffered);
+                            numSlicesBuffered = 0;
+                        }
+                    }
+                    if (numSlicesBuffered > 0)
+                    {
+                        binSizeWriter.Write(binSizeBuffer, 0, numSlicesBuffered);
+                    }
+                }
+
+                FDataStream.Length = dataStreamLength;
                 using (var dataWriter = FDataStream.GetWriter())
                 {
                     bool anyChanged = false;
-                    foreach (var outputStream in this)
+                    var numSlicesBuffered = 0;
+                    for (int i = 0; i < Length; i++)
                     {
-                        anyChanged |= outputStream.IsChanged;
+                        var stream = Buffer[i];
+                        anyChanged |= stream.IsChanged;
                         if (anyChanged)
-                            dataWriter.Write(outputStream, buffer);
+                        {
+                            using (var reader = stream.GetReader())
+                            {
+                                switch (reader.Length)
+                                {
+                                    case 0:
+                                        break;
+                                    case 1:
+                                        buffer[numSlicesBuffered++] = reader.Read();
+                                        WriteIfBufferIsFull(dataWriter, buffer, ref numSlicesBuffered);
+                                        break;
+                                    default:
+                                        while (!reader.Eos)
+                                        {
+                                            numSlicesBuffered += reader.Read(buffer, numSlicesBuffered, buffer.Length - numSlicesBuffered);
+                                            WriteIfBufferIsFull(dataWriter, buffer, ref numSlicesBuffered);
+                                        }
+                                        break;
+                                }
+                            }
+                        }
                         else
-                            dataWriter.Position += outputStream.Length;
+                            dataWriter.Position += stream.Length;
+                    }
+                    if (numSlicesBuffered > 0)
+                    {
+                        dataWriter.Write(buffer, 0, numSlicesBuffered);
                     }
                 }
             }
             finally
             {
+                MemoryPool<int>.PutArray(binSizeBuffer);
                 MemoryPool<T>.PutArray(buffer);
             }
 
@@ -66,6 +105,15 @@ namespace VVVV.Hosting.IO.Streams
             FDataStream.Flush();
 
             base.Flush();
+        }
+
+        private static void WriteIfBufferIsFull(IStreamWriter<T> dataWriter, T[] buffer, ref int numSlicesBuffered)
+        {
+            if (numSlicesBuffered == buffer.Length)
+            {
+                dataWriter.Write(buffer, 0, numSlicesBuffered);
+                numSlicesBuffered = 0;
+            }
         }
     }
 }
