@@ -106,7 +106,16 @@ namespace VVVV.MSKinect.Nodes
 
                 if (!this.FColorTex.ContainsKey(OnDevice))
                 {
-                    Texture t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
+                    Texture t = null;
+                    if (OnDevice is DeviceEx)
+                    {
+                        t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.X8R8G8B8, Pool.Default);
+                    }
+                    else
+                    {
+                        t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
+                    }
+                    
                     this.FColorTex.Add(OnDevice, t);
                 }
 
