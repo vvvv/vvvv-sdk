@@ -92,7 +92,17 @@ namespace VVVV.Nodes.Bullet
 					meshes.AddRange(m.Meshes);
 				}
 
-				this.FMeshes.Add(OnDevice,Mesh.Concatenate(OnDevice, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed));
+                Mesh merge = null;
+                if (OnDevice is DeviceEx)
+                {
+                    merge = Mesh.Concatenate(OnDevice, meshes.ToArray(), MeshFlags.Use32Bit);
+                }
+                else
+                {
+                    merge = Mesh.Concatenate(OnDevice, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+                }
+
+				this.FMeshes.Add(OnDevice,merge);
 			}
 
 		}
