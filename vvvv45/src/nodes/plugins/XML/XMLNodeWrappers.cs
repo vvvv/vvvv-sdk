@@ -364,11 +364,11 @@ namespace VVVV.Nodes.XML
     }
 
 
-    [PluginInfo(Name = "Validate", Category = "XML RelaxNG")]
+    [PluginInfo(Name = "IsValid", Category = "XML RelaxNG")]
     public class RelaxNGValidateNode : IPluginEvaluate
     {
-        [Input("Xml File", StringType = StringType.Filename, FileMask = "XML (*.xml)|*.xml")]
-        public IDiffSpread<string> XmlFile;
+        [Input("Xml String")]
+        public IDiffSpread<string> Xml;
 
         [Input("Rng File", StringType = StringType.Filename, FileMask = "RNC (*.rnc)|*.rnc|RNG (*.rng)|*rng")]
         public IDiffSpread<string> RngFile;
@@ -381,14 +381,14 @@ namespace VVVV.Nodes.XML
 
         public void Evaluate(int spreadMax)
         {
-            if (!XmlFile.IsChanged && !RngFile.IsChanged) return;
+            if (!Xml.IsChanged && !RngFile.IsChanged) return;
 
             Message.SliceCount = spreadMax;
             Valid.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
-                var message = XMLNodes.RelaxNGValidate(XmlFile[i], RngFile[i]);
+                var message = XMLNodes.RelaxNGValidate(Xml[i], RngFile[i]);
                 Message[i] = message;
                 Valid[i] = message == "";
             }

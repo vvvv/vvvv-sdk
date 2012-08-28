@@ -158,13 +158,11 @@ namespace VVVV.Nodes.XML
         }
 
         [Node]
-        public static string RelaxNGValidate(string xmlFile, string rngFile)
+        public static string RelaxNGValidate(string xml, string rngFile)
         {
             string r = "\r\n";
 
             // Files must exist.
-            if (!File.Exists(xmlFile))
-                return "Source file not found.";
             if (!File.Exists(rngFile))
                 return "Schema file not found.";
 
@@ -211,8 +209,11 @@ namespace VVVV.Nodes.XML
             else
                 return "Unknown schema file extension: " + Path.GetExtension(rngFile);
 
+            byte[] byteArray = Encoding.ASCII.GetBytes(xml);
+            MemoryStream stream = new MemoryStream(byteArray);
+
             // Validate instance.
-            XmlTextReader xtrXml = new XmlTextReader(xmlFile);
+            XmlTextReader xtrXml = new XmlTextReader(stream);
             RelaxngValidatingReader vr = new RelaxngValidatingReader(xtrXml, p);
             try
             {
