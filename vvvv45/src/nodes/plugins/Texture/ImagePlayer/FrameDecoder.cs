@@ -18,14 +18,14 @@ namespace VVVV.Nodes.ImagePlayer
         {
             private static ImagingFactory Factory = new ImagingFactory();
 
-            private readonly DataPointer FBuffer;
+            private DataPointer FBuffer;
             private readonly int FWidth;
             private readonly int FHeight;
             private readonly int FStride;
             private readonly int FLength;
             
             public BitmapFrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
-                : base(textureFactory, memoryPool, stream)
+                : base(textureFactory, memoryPool)
             {
                 var dataStream = stream as SharpDX.DataStream;
                 using (var wicStream = new WICStream(Factory, new SharpDX.DataPointer(dataStream.DataPointer, (int)dataStream.Length)))
@@ -56,6 +56,7 @@ namespace VVVV.Nodes.ImagePlayer
                         }
                     }
                 }
+                memoryPool.StreamPool.PutStream(stream);
             }
 
             public override void Dispose()
@@ -63,6 +64,7 @@ namespace VVVV.Nodes.ImagePlayer
                 if (FBuffer != null)
                 {
                     FMemoryPool.UnmanagedPool.PutMemory(FBuffer);
+                    FBuffer = DataPointer.Zero;
                 }
                 base.Dispose();
             }
@@ -117,43 +119,55 @@ namespace VVVV.Nodes.ImagePlayer
         class Direct3D9FrameDecoder : FrameDecoder
         {
             private readonly ImageInformation FImageInformation;
+            private Stream FStream;
             
             public Direct3D9FrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
-                : base(textureFactory, memoryPool, stream)
+                : base(textureFactory, memoryPool)
             {
+                FStream = stream;
                 FImageInformation = ImageInformation.FromStream(stream);
             }
             
             public override Texture Decode(Device device)
             {
-                var format = FImageInformation.Format;  
-                Texture texture = null;
-                
-                try 
+                Format format;
+                switch (FImageInformation.Format)
                 {
-                    texture = FTextureFactory(
-                        device,
-                        FImageInformation.Width,
-                        FImageInformation.Height,
-                        FImageInformation.MipLevels,
-                        format);
-                } 
-                catch (SharpDXException) 
-                {
-                    // Try with different parameters
-                    texture = FTextureFactory(
-                        device,
-                        FImageInformation.Width,
-                        FImageInformation.Height,
-                        FImageInformation.MipLevels,
-                        Format.A8R8G8B8);
+                    case Format.Dxt1:
+                    case Format.Dxt2:
+                    case Format.Dxt3:
+                    case Format.Dxt4:
+                    case Format.Dxt5:
+                        format = FImageInformation.Format;
+                        break;
+                    default:
+                        format = Format.A8R8G8B8;
+                        break;
                 }
                 
-                var surface = texture.GetSurfaceLevel(0);
-                
-                Surface.FromFileInStream(surface, FStream, Filter.None, 0);
+                var texture = FTextureFactory(
+                    device,
+                    FImageInformation.Width,
+                    FImageInformation.Height,
+                    FImageInformation.MipLevels,
+                    format);
 
+                using (var surface = texture.GetSurfaceLevel(0))
+                {
+                    FStream.Position = 0;
+                    Surface.FromFileInStream(surface, FStream, Filter.None, 0);
+                }
                 return texture;
+            }
+
+            public override void Dispose()
+            {
+                if (FStream != null)
+                {
+                    FMemoryPool.StreamPool.PutStream(FStream);
+                    FStream = null;
+                }
+                base.Dispose();
             }
             
             public static IEnumerable<string> SupportedFileExtensions
@@ -164,31 +178,6 @@ namespace VVVV.Nodes.ImagePlayer
                         from extension in Enum.GetNames(typeof(ImageFileFormat))
                         select string.Format(".{0}", extension.ToLower());
                 }
-            }
-        }
-
-        class EmptyFrameDecoder : FrameDecoder
-        {
-            public EmptyFrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
-                : base(textureFactory, memoryPool, stream)
-            {
-
-            }
-
-            public override Texture Decode(Device device)
-            {
-                var texture = FTextureFactory(device, 1, 1, 1, Format.A8R8G8B8);
-                var dataRectangle = texture.LockRectangle(0, LockFlags.Discard);
-                try
-                {
-                    var white = 0xFFFFFFFF;
-                    Utilities.Write(dataRectangle.DataPointer, ref white);
-                }
-                finally
-                {
-                    texture.UnlockRectangle(0);
-                }
-                return texture;
             }
         }
         
@@ -208,21 +197,14 @@ namespace VVVV.Nodes.ImagePlayer
         
         public static FrameDecoder Create(string filename, Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
         {
-            try
-            {
-                var extension = Path.GetExtension(filename);
+            var extension = Path.GetExtension(filename);
 
-                Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory = null;
-                if (!FDecoderFactories.TryGetValue(extension, out decoderFactory))
-                {
-                    return new BitmapFrameDecoder(textureFactory, memoryPool, stream);
-                }
-                return decoderFactory(textureFactory, memoryPool, stream);
-            }
-            catch
+            Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory = null;
+            if (!FDecoderFactories.TryGetValue(extension, out decoderFactory))
             {
-                return new EmptyFrameDecoder(textureFactory, memoryPool, stream);
+                return new BitmapFrameDecoder(textureFactory, memoryPool, stream);
             }
+            return decoderFactory(textureFactory, memoryPool, stream);
         }
         
         public static void Register(IEnumerable<string> extensions, Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory)
@@ -235,21 +217,17 @@ namespace VVVV.Nodes.ImagePlayer
         
         protected Func<Device, int, int, int, Format, Texture> FTextureFactory;
         protected MemoryPool FMemoryPool;
-        protected Stream FStream;
         
-        public FrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
+        public FrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool)
         {
             FTextureFactory = textureFactory;
             FMemoryPool = memoryPool;
-            FStream = stream;
         }
         
         public virtual void Dispose()
         {
-            FMemoryPool.StreamPool.PutStream(FStream);
             FTextureFactory = null;
             FMemoryPool = null;
-            FStream = null;
         }
         
         public abstract Texture Decode(Device device);

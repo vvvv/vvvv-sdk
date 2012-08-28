@@ -64,7 +64,6 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly ILogger FLogger;
         private readonly IOTaskScheduler FIOTaskScheduler = new IOTaskScheduler();
         private readonly MemoryPool FMemoryPool = new MemoryPool();
-        private readonly ObjectPool<MemoryStream> FStreamPool = new ObjectPool<MemoryStream>(() => new MemoryStream());
         
         [ImportingConstructor]
         public PlayerNode(IPluginHost pluginHost, ILogger logger)
@@ -79,8 +78,7 @@ namespace VVVV.Nodes.ImagePlayer
         		FThreadsTextureConfig[index], 
         		FLogger, 
         		FIOTaskScheduler, 
-        		FMemoryPool, 
-        		FStreamPool
+        		FMemoryPool
         	);
         }
         
@@ -130,7 +128,6 @@ namespace VVVV.Nodes.ImagePlayer
                 {
                     imagePlayer.Reload();
                     FMemoryPool.Clear();
-                    FStreamPool.ToArrayAndClear();
                 }
                 
                 int frameCount = 0;
@@ -167,7 +164,6 @@ namespace VVVV.Nodes.ImagePlayer
             FImagePlayers.SliceCount = 0;
             FIOTaskScheduler.Dispose();
             FMemoryPool.Dispose();
-            FStreamPool.ToArrayAndClear();
         }
     }
 }

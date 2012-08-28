@@ -39,7 +39,6 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly int FThreadsIO;
         private readonly int FThreadsTexture;
         private readonly ILogger FLogger;
-        private readonly ObjectPool<MemoryStream> FStreamPool;
         private readonly TexturePool FTexturePool;
         private readonly MemoryPool FMemoryPool;
         private readonly BufferBlock<FrameInfo> FFrameInfoBuffer;
@@ -53,15 +52,13 @@ namespace VVVV.Nodes.ImagePlayer
             int threadsTexture,
             ILogger logger,
             IOTaskScheduler ioTaskScheduler,
-            MemoryPool memoryPool,
-            ObjectPool<MemoryStream> streamPool
+            MemoryPool memoryPool
            )
         {
             FThreadsIO = threadsIO;
             FThreadsTexture = threadsTexture;
             FLogger = logger;
             
-            FStreamPool = streamPool;
             FTexturePool = new TexturePool();
             FMemoryPool = memoryPool;
             
@@ -289,6 +286,33 @@ namespace VVVV.Nodes.ImagePlayer
 
             // Map frame numbers to file names
             var preloadFiles = preloadFrameNrs.Select(frameNr => FFiles[VMath.Zmod(frameNr, FFiles.Length)]).ToArray();
+
+            // Dispose previously loaded frames
+            foreach (var file in FPreloadedFrames.Keys.ToArray())
+            {
+                if (!preloadFiles.Contains(file))
+                {
+                    var frame = FPreloadedFrames[file];
+                    Dispose(frame);
+                }
+            }
+
+            // Ensure that there are as much dequeues as enqueues (or we'll run out of memory)
+            while (FScheduledFrameInfos.Count > preloadFrameNrs.SliceCount)
+            {
+                var frame = Dequeue();
+                var frameInfo = frame.Metadata;
+                if (!preloadFiles.Contains(frameInfo.Filename) || frameInfo.IsCanceled)
+                {
+                    // Not needed anymore
+                    Dispose(frame);
+                    unusedFrames++;
+                }
+                else
+                {
+                    FPreloadedFrames.Add(frameInfo.Filename, frame);
+                }
+            }
             
             // Cancel unused scheduled frames
             foreach (var frameInfo in FScheduledFrameInfos.Where(fi => !fi.IsCanceled))
@@ -353,56 +377,13 @@ namespace VVVV.Nodes.ImagePlayer
                 visibleFrames.Add(visibleFrame);
             }
 
-            // Ensure that there are as much dequeues as enqueues (or we'll run out of memory)
-            while (FScheduledFrameInfos.Count > preloadFrameNrs.SliceCount)
+            // Release textures of non visible frames
+            foreach (var frame in FPreloadedFrames.Values.Where(f => !visibleFrames.Contains(f)))
             {
-                var frame = Dequeue();
-                var frameInfo = frame.Metadata;
-                if (!preloadFiles.Contains(frameInfo.Filename) || frameInfo.IsCanceled)
-                {
-                    // Not needed anymore
-                    Dispose(frame);
-                    unusedFrames++;
-                }
-                else
-                {
-                    FPreloadedFrames.Add(frameInfo.Filename, frame);
-                }
-            }
-
-            // Dispose previously loaded frames
-            foreach (var file in FPreloadedFrames.Keys.ToArray())
-            {
-                if (!preloadFiles.Contains(file))
-                {
-                    var frame = FPreloadedFrames[file];
-                    Dispose(frame);
-                }
+                frame.Dispose();
             }
             
             return visibleFrames;
-        }
-
-        private TSharp ToSharpDX<TSharp, TSlim>(TSlim slim)
-            where TSharp : SharpDX.CppObject
-            where TSlim : SlimDX.ComObject
-        {
-            var sharp = slim.Tag as TSharp;
-            if (sharp == null)
-            {
-                sharp = SharpDX.CppObject.FromPointer<TSharp>(slim.ComPointer);
-                slim.Tag = sharp;
-            }
-            return sharp;
-        }
-
-        private TSlim ToSlimDX<TSharp, TSlim>(TSharp sharp, Func<IntPtr, TSlim> constructor)
-            where TSharp : SharpDX.CppObject
-            where TSlim : SlimDX.ComObject
-        {
-            var slim = constructor(sharp.NativePointer);
-            slim.Tag = sharp;
-            return slim;
         }
 
         private EX9.Texture CreateTexture(FrameInfo frameInfo, EX9.Device device)
@@ -410,10 +391,18 @@ namespace VVVV.Nodes.ImagePlayer
             using (var sharpDxDevice = new SharpDX.Direct3D9.Device(device.ComPointer))
             {
                 ((SharpDX.IUnknown)sharpDxDevice).AddReference(); // Dispose will call release
-                using (var texture = frameInfo.Decoder.Decode(sharpDxDevice))
+                var decoder = frameInfo.Decoder;
+                if (decoder != null)
                 {
-                    ((SharpDX.IUnknown)texture).AddReference(); // Dispose will call release
-                    return SlimDX.Direct3D9.Texture.FromPointer(texture.NativePointer);
+                    using (var texture = decoder.Decode(sharpDxDevice))
+                    {
+                        ((SharpDX.IUnknown)texture).AddReference(); // Dispose will call release
+                        return SlimDX.Direct3D9.Texture.FromPointer(texture.NativePointer);
+                    }
+                }
+                else
+                {
+                    return null;
                 }
             }
         }
@@ -425,12 +414,15 @@ namespace VVVV.Nodes.ImagePlayer
 
         private void DestroyTexture(FrameInfo frameInfo, EX9.Texture texture, DestroyReason reason)
         {
-            // Put the texture back in the pool
-            FTexturePool.PutTexture(texture);
-            if (reason == DestroyReason.DeviceLost)
+            if (texture != null)
             {
-                // Release this device if it got lost
-                FTexturePool.Release(texture.Device);
+                // Put the texture back in the pool
+                FTexturePool.PutTexture(texture);
+                if (reason == DestroyReason.DeviceLost)
+                {
+                    // Release this device if it got lost
+                    FTexturePool.Release(texture.Device);
+                }
             }
         }
 
@@ -475,7 +467,6 @@ namespace VVVV.Nodes.ImagePlayer
             var filename = frameInfo.Filename;
             var bufferSize = frameInfo.BufferSize;
             var cancellationToken = frameInfo.Token;
-            //var memoryStream = FStreamPool.GetObject();
             Stream memoryStream = null;
             var buffer = FMemoryPool.ManagedPool.GetMemory(bufferSize);
 
@@ -557,7 +548,6 @@ namespace VVVV.Nodes.ImagePlayer
             finally
             {
                 // We're done with this frame, put used memory stream back in the pool
-                //FStreamPool.PutObject(stream);
                 if (stream != null && cleanupStream)
                 {
                     FMemoryPool.StreamPool.PutStream(stream);

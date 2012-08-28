@@ -29,7 +29,10 @@ namespace VVVV.PluginInterfaces.V2.EX9
         protected override TResource CreateResoure(TMetadata metadata, Device device)
         {
             var resource = base.CreateResoure(metadata, device);
-            IsDefaultPool = resource.IsDefaultPool;
+            if (resource != null)
+            {
+                IsDefaultPool = resource.IsDefaultPool;
+            }
             return resource;
         }
     }
