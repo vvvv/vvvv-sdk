@@ -209,7 +209,7 @@ namespace VVVV.Nodes.XML
             else
                 return "Unknown schema file extension: " + Path.GetExtension(rngFile);
 
-            byte[] byteArray = Encoding.ASCII.GetBytes(xml);
+            byte[] byteArray = Encoding.Default.GetBytes(xml);
             MemoryStream stream = new MemoryStream(byteArray);
 
             // Validate instance.
