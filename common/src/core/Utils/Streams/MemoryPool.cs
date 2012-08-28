@@ -38,7 +38,7 @@ namespace VVVV.Utils.Streams
             {
                 Array.Clear(array, 0, array.Length);
             }
-			lock (FStack)
+            lock (FPool)
 			{
 				Stack<T[]> stack = null;
 				if (!FPool.TryGetValue(array.Length, out stack))
