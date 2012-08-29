@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CefGlue;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.Texture.HTML
 {
     internal sealed class SchemeHandlerFactory : CefSchemeHandlerFactory
     {

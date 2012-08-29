@@ -17,16 +17,17 @@ using System.Text;
 using System.Globalization;
 using VVVV.Utils.IO;
 using System.Xml.Linq;
+using EX9 = SlimDX.Direct3D9;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.Texture.HTML
 {
-    public class WebRenderer : IDisposable
+    public class HTMLTextureRenderer : IDisposable
     {
         public const string DEFAULT_URL = "http://vvvv.org";
         public const int DEFAULT_WIDTH = 640;
         public const int DEFAULT_HEIGHT = 480;
-        private readonly DXResource<Texture, CefBrowser> FTextureResource;
-        private readonly List<Texture> FTextures = new List<Texture>();
+        private readonly DXResource<EX9.Texture, CefBrowser> FTextureResource;
+        private readonly List<EX9.Texture> FTextures = new List<EX9.Texture>();
         private readonly WebClient FWebClient;
         private volatile bool FEnabled;
         private CefBrowser FBrowser;
@@ -45,7 +46,7 @@ namespace VVVV.Nodes.HTML
         internal string FErrorText;
         internal ILogger Logger;
 
-        public WebRenderer(ILogger logger)
+        public HTMLTextureRenderer(ILogger logger)
         {
             Logger = logger;
             CefService.AddRef();
@@ -67,7 +68,7 @@ namespace VVVV.Nodes.HTML
                 CefBrowser.Create(windowInfo, FWebClient, DEFAULT_URL, settings);
             }
 
-            FTextureResource = new DXResource<Texture, CefBrowser>(
+            FTextureResource = new DXResource<EX9.Texture, CefBrowser>(
                 FBrowser,
                 CreateTexture,
                 UpdateTexture,
@@ -86,8 +87,8 @@ namespace VVVV.Nodes.HTML
             CefService.Release();
         }
 
-        [Node(Name = "Renderer")]
-        public DXResource<Texture, CefBrowser> Render(
+        [Node(Name = "HTMLTexture")]
+        public DXResource<EX9.Texture, CefBrowser> Render(
             out XDocument dom,
             out XElement rootElement,
             out bool isLoading,
@@ -367,7 +368,7 @@ namespace VVVV.Nodes.HTML
             }
         }
 
-        private void WriteToTexture(Rectangle rect, IntPtr buffer, int stride, Texture texture)
+        private void WriteToTexture(Rectangle rect, IntPtr buffer, int stride, EX9.Texture texture)
         {
             // TODO: Do not lock entire surface.
             var dataRect = texture.LockRectangle(0, rect, LockFlags.None);
@@ -395,7 +396,7 @@ namespace VVVV.Nodes.HTML
             }
         }
 
-        private Texture CreateTexture(CefBrowser browser, Device device)
+        private EX9.Texture CreateTexture(CefBrowser browser, Device device)
         {
             // TODO: Fix exceptions on start up.
             lock (FTextures)
@@ -407,7 +408,7 @@ namespace VVVV.Nodes.HTML
                     usage = Usage.Dynamic & ~Usage.AutoGenerateMipMap;
                     pool = Pool.Default;
                 }
-                var texture = new Texture(device, FWidth, FHeight, 1, usage, Format.A8R8G8B8, pool);
+                var texture = new EX9.Texture(device, FWidth, FHeight, 1, usage, Format.A8R8G8B8, pool);
                 var rect = new CefRect(0, 0, FWidth, FHeight);
                 if (FBrowser != null)
                 {
@@ -418,7 +419,7 @@ namespace VVVV.Nodes.HTML
             }
         }
 
-        private void UpdateTexture(CefBrowser browser, Texture texture)
+        private void UpdateTexture(CefBrowser browser, EX9.Texture texture)
         {
             //            IntPtr buffer = Marshal.AllocHGlobal(FWidth * FHeight * 4);
             //            FBrowser.GetImage(CefPaintElementType.View, FWidth, FHeight, buffer);
@@ -426,7 +427,7 @@ namespace VVVV.Nodes.HTML
             //            Marshal.FreeHGlobal(buffer);
         }
 
-        private void DestroyTexture(CefBrowser browser, Texture texture)
+        private void DestroyTexture(CefBrowser browser, EX9.Texture texture)
         {
             lock (FTextures)
             {

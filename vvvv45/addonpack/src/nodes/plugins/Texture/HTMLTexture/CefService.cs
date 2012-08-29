@@ -3,7 +3,7 @@ using CefGlue;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.Texture.HTML
 {
     /// <summary>
     /// Starts and stops mainloop of CEF.

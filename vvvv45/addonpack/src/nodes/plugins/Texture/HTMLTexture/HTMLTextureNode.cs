@@ -13,13 +13,14 @@ using VVVV.Utils.IO;
 using System.Reflection;
 using System.IO;
 using System.Xml.Linq;
+using EX9 = SlimDX.Direct3D9;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.Texture.HTML
 {
-    [PluginInfo(Name = "Renderer", Category = "HTML", Version = "Chrome", Tags = "browser, web, html, javascript, renderer, chrome, flash, webgl, texture")]
-    public class WebRendererNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
+    [PluginInfo(Name = "HTMLTexture", Category = "EX9.Texture", Version = "Chromium", Tags = "browser, web, html, javascript, chromium, flash, webgl")]
+    public class HTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {
-        static WebRendererNode()
+        static HTMLTextureNode()
         {
             var pathToThisAssembly = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var pathToBinFolder = Path.Combine(pathToThisAssembly, "Dependencies", "CefGlue");
@@ -28,15 +29,15 @@ namespace VVVV.Nodes.HTML
             Environment.SetEnvironmentVariable("PATH", envPath);
         }
 
-        [Input("Url", DefaultString = WebRenderer.DEFAULT_URL)]
+        [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
         public ISpread<string> FUrlIn;
         [Input("HTML", DefaultString = "")]
         public ISpread<string> FHtmlIn;
         [Input("Reload", IsBang = true)]
         public ISpread<bool> FReloadIn;
-        [Input("Width", DefaultValue = WebRenderer.DEFAULT_WIDTH)]
+        [Input("Width", DefaultValue = HTMLTextureRenderer.DEFAULT_WIDTH)]
         public ISpread<int> FWidthIn;
-        [Input("Height", DefaultValue = WebRenderer.DEFAULT_HEIGHT)]
+        [Input("Height", DefaultValue = HTMLTextureRenderer.DEFAULT_HEIGHT)]
         public ISpread<int> FHeightIn;
         [Input("Zoom Level")]
         public ISpread<double> FZoomLevelIn;
@@ -54,7 +55,7 @@ namespace VVVV.Nodes.HTML
         public ISpread<bool> FEnabledIn;
 
         [Output("Output")]
-        public ISpread<DXResource<Texture, CefBrowser>> FOutput;
+        public ISpread<DXResource<EX9.Texture, CefBrowser>> FOutput;
         [Output("Root Element")]
         public ISpread<XElement> FRootElementOut;
         [Output("Document")]
@@ -69,7 +70,7 @@ namespace VVVV.Nodes.HTML
         [Import]
         private ILogger FLogger;
 
-        private readonly Spread<WebRenderer> FWebRenderers = new Spread<WebRenderer>();
+        private readonly Spread<HTMLTextureRenderer> FWebRenderers = new Spread<HTMLTextureRenderer>();
 
         public void OnImportsSatisfied()
         {
@@ -78,7 +79,7 @@ namespace VVVV.Nodes.HTML
 
         public void Evaluate(int spreadMax)
         {
-            FWebRenderers.ResizeAndDispose(spreadMax, () => new WebRenderer(FLogger));
+            FWebRenderers.ResizeAndDispose(spreadMax, () => new HTMLTextureRenderer(FLogger));
 
             FOutput.SliceCount = spreadMax;
             FRootElementOut.SliceCount = spreadMax;
@@ -135,7 +136,7 @@ namespace VVVV.Nodes.HTML
 
         public void Dispose()
         {
-            FWebRenderers.ResizeAndDispose(0, () => new WebRenderer(FLogger));
+            FWebRenderers.ResizeAndDispose(0, () => new HTMLTextureRenderer(FLogger));
         }
     }
 }

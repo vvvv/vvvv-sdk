@@ -5,7 +5,7 @@ using System.Text;
 using CefGlue;
 using System.IO;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.Texture.HTML
 {
     internal sealed class SchemeHandler : CefSchemeHandler
     {

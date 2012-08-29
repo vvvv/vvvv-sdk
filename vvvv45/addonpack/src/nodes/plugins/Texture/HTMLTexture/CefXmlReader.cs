@@ -6,7 +6,7 @@ using System.Xml;
 using CefGlue;
 using System.IO;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.Texture.HTML
 {
     class CefXmlReader : XmlReader
     {

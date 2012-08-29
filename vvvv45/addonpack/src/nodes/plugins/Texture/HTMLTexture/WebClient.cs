@@ -6,15 +6,15 @@ using System.IO;
 using System.Text;
 using System.Xml.Linq;
 
-namespace VVVV.Nodes.HTML
+namespace VVVV.Nodes.Texture.HTML
 {
     public class WebClient : CefClient
     {
         class RenderHandler : CefRenderHandler
         {
-            private readonly WebRenderer FRenderer;
+            private readonly HTMLTextureRenderer FRenderer;
             
-            public RenderHandler(WebRenderer renderer)
+            public RenderHandler(HTMLTextureRenderer renderer)
             {
                 FRenderer = renderer;
             }
@@ -56,9 +56,9 @@ namespace VVVV.Nodes.HTML
         class LifeSpanHandler : CefLifeSpanHandler
         {
             private readonly WebClient FWebClient;
-            private readonly WebRenderer FRenderer;
+            private readonly HTMLTextureRenderer FRenderer;
             
-            public LifeSpanHandler(WebClient webClient, WebRenderer renderer)
+            public LifeSpanHandler(WebClient webClient, HTMLTextureRenderer renderer)
             {
                 FWebClient = webClient;
                 FRenderer = renderer;
@@ -96,9 +96,9 @@ namespace VVVV.Nodes.HTML
 
         class DomVisitor : CefDomVisitor
         {
-            private readonly WebRenderer FRenderer;
+            private readonly HTMLTextureRenderer FRenderer;
 
-            public DomVisitor(WebRenderer renderer)
+            public DomVisitor(HTMLTextureRenderer renderer)
             {
                 FRenderer = renderer;
             }
@@ -128,9 +128,9 @@ namespace VVVV.Nodes.HTML
         
         class LoadHandler : CefLoadHandler
         {
-            private readonly WebRenderer FRenderer;
+            private readonly HTMLTextureRenderer FRenderer;
             
-            public LoadHandler(WebRenderer renderer)
+            public LoadHandler(HTMLTextureRenderer renderer)
             {
                 FRenderer = renderer;
             }
@@ -203,9 +203,9 @@ namespace VVVV.Nodes.HTML
 
         class DisplayHandler : CefDisplayHandler
         {
-            private readonly WebRenderer FRenderer;
+            private readonly HTMLTextureRenderer FRenderer;
 
-            public DisplayHandler(WebRenderer renderer)
+            public DisplayHandler(HTMLTextureRenderer renderer)
             {
                 FRenderer = renderer;
             }
@@ -224,7 +224,7 @@ namespace VVVV.Nodes.HTML
         private readonly CefRequestHandler FRequestHandler;
         private readonly CefDisplayHandler FDisplayHandler;
         
-        public WebClient(WebRenderer renderer)
+        public WebClient(HTMLTextureRenderer renderer)
         {
             FRenderHandler = new RenderHandler(renderer);
             FLifeSpanHandler = new LifeSpanHandler(this, renderer);
