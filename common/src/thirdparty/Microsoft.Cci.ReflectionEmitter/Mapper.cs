@@ -428,7 +428,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
                 type.DispatchAsReference(this.mappingVisitor);
                 result = this.mappingVisitor.result;
                 if (result == null) throw new ReflectionMapperException();
-                this.DefineMapping(type, result);
+                //this.DefineMapping(type, result);
             }
             return result;
         }
