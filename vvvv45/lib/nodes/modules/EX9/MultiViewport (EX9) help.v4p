@@ -1,31 +1,39 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\EX9\MultiViewport (EX9) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.1.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9\MultiViewport (EX9) help.v4p">
    <BOUNDS height="5025" left="2760" top="5115" type="Window" width="6375">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="26" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="26" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="2580" top="4065" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="4860" left="2940" top="150" type="Window" width="6120">
+   <BOUNDS height="4875" left="2910" top="240" type="Window" width="6120">
    </BOUNDS>
    <BOUNDS height="1800" left="2580" top="4065" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Viewport Transform" pintype="Input" visible="1">
+   <PIN pinname="Viewport" pintype="Input" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
-   <PIN pinname="Aspect Ratio Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Aspect Ratio" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Crop Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   <PIN pinname="Crop" pintype="Input" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Transformations Index" pintype="Input" slicecount="1" visible="1" values="-1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -35,7 +43,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="20070" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Cuts a renderer into a matrix of little screens.&cr;&lf;&cr;&lf;Best when used together with MultiScreen (EX9).|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Cuts a renderer into a matrix of little screens.&cr;&lf;&cr;&lf;Best when used together with MultiScreen (EX9).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -49,7 +57,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="20070" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|MultiViewport - EX9|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|MultiViewport - EX9|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -58,10 +66,10 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3495" top="2160" type="Node" width="0">
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="3495" top="2145" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="3495" top="2160" type="Box" width="795">
+   <BOUNDS height="240" left="3495" top="2145" type="Box" width="795">
    </BOUNDS>
    <BOUNDS height="160" left="7335" top="8670" type="Window" width="215">
    </BOUNDS>
@@ -70,10 +78,10 @@
    <PIN pinname="Y Input Value" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="28" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="4695" top="2160" type="Node" width="0">
+   <NODE componentmode="InABox" id="28" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="4695" top="2145" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="4695" top="2160" type="Box" width="795">
+   <BOUNDS height="240" left="4695" top="2145" type="Box" width="795">
    </BOUNDS>
    <BOUNDS height="160" left="7635" top="8970" type="Window" width="215">
    </BOUNDS>
@@ -176,7 +184,7 @@
    <PIN pinname="Screen Count Y" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="26" dstpinname="Viewport Transform" srcnodeid="35" srcpinname="Viewports">
+   <LINK dstnodeid="26" dstpinname="Viewport" srcnodeid="35" srcpinname="Viewports">
    </LINK>
    <LINK dstnodeid="35" dstpinname="Screen Count X" srcnodeid="7" srcpinname="Y Output Value">
    </LINK>

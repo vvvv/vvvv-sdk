@@ -350,7 +350,12 @@ namespace VVVV.Nodes
 				}
     		}
         	
-			Mesh mesh = Mesh.Concatenate(graphicsDevice, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+			var options = MeshFlags.Use32Bit;
+			if (graphicsDevice is DeviceEx)
+				options |= MeshFlags.Dynamic;
+			else
+				options |= MeshFlags.Managed;
+			Mesh mesh = Mesh.Concatenate(graphicsDevice, meshes.ToArray(), options);
 			
 			foreach (Mesh m in meshes)
 				m.Dispose();

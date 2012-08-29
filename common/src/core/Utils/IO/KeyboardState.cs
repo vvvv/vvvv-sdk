@@ -10,7 +10,7 @@ using VVVV.Utils.Collections;
 namespace VVVV.Utils.IO
 {
     /// <summary>
-    /// Encapsulates the state of a keyboad. GetHashCode and Equals methods are overwritten
+    /// Encapsulates the state of a keyboard. GetHashCode and Equals methods are overwritten
     /// so that two keyboard states can be easily compared.
     /// Use the KeyChars property to retrieve all pressed characters.
     /// 
@@ -29,7 +29,7 @@ namespace VVVV.Utils.IO
         #region virtual keycode to character translation
 
         // From: http://stackoverflow.com/questions/6214326/translate-keys-to-char
-        public static char? FromKeys(Keys keys, bool capsLock, InputLanguage inputLanguage = null, bool firstChance = true)
+        private static char? FromKeys(Keys keys, bool capsLock, InputLanguage inputLanguage = null, bool firstChance = true)
         {
             inputLanguage = inputLanguage ?? InputLanguage.CurrentInputLanguage;
 
@@ -75,8 +75,23 @@ namespace VVVV.Utils.IO
             FTime = time;
         }
 
+        /// <summary>
+        /// Returns all the pressed keys.
+        /// </summary>
         public ReadOnlyCollection<Keys> KeyCodes { get { return FKeys; } }
+
+        /// <summary>
+        /// Gets whether or not the caps lock is enabled.
+        /// </summary>
         public bool CapsLock { get { return FCapsLock; } }
+
+        /// <summary>
+        /// Returns all the pressed characters. 
+        /// 
+        /// For example if the KeyCodes property contains SHIFT and A, this property will return 'A'
+        /// or if the KeyCodes property contains CTRL, ALT and Q, this property will return '@'
+        /// on a german keyboard.
+        /// </summary>
         public ReadOnlyCollection<char> KeyChars
         { 
             get 
@@ -88,9 +103,18 @@ namespace VVVV.Utils.IO
                 return FKeyChars;
             } 
         }
+
+        /// <summary>
+        /// Used to distinguish two keyboard states if they contain the same same key codes.
+        /// Useful if a key is pressed for a long time which should generate repeated key strokes.
+        /// </summary>
         public int Time { get { return FTime; } }
 
         private Keys? FModifiers;
+
+        /// <summary>
+        /// Returns all the pressed modifier keys in one enumeration.
+        /// </summary>
         public Keys Modifiers
         {
             get
@@ -149,6 +173,12 @@ namespace VVVV.Utils.IO
                 return false;
         }
 
+        /// <summary>
+        /// Returns true if the other keyboard state contains the same keys, has the same caps lock state
+        /// and time value.
+        /// </summary>
+        /// <param name="other">The keyboard state to compare with the current keyboard state.</param>
+        /// <returns>True if the specified keyboard state is equal to the current keyboard state.</returns>
         public bool Equals(KeyboardState other)
         {
             // add comparisions for all members here

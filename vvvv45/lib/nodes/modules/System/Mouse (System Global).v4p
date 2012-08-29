@@ -1,0 +1,201 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\System\Mouse (System Global State).v4p" systemname="Mouse (System Global State)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\System\Mouse (System Global State).v4p">
+   <BOUNDS type="Window" left="9900" top="6000" width="9975" height="3630">
+   </BOUNDS>
+   <NODE systemname="MouseState (System Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseState (System Join)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="945" top="1290" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Wheel Delta" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Wheel" visible="1">
+   </PIN>
+   <PIN pinname="Mouse State" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="3" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="945" top="1785" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="945" top="1785" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mouse">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Mouse (System Global Legacy)" nodename="Mouse (System Global Legacy)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="945" top="810" width="990" height="270">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Wheel" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="X" dstnodeid="2" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Y" dstnodeid="2" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Mouse Wheel" dstnodeid="2" dstpinname="Mouse Wheel Delta">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Left Button" dstnodeid="2" dstpinname="Left Button">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Middle Button" dstnodeid="2" dstpinname="Middle Button">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Right Button" dstnodeid="2" dstpinname="Right Button">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Mouse Wheel" dstnodeid="2" dstpinname="Mouse Wheel">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="4" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="2070" top="285" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2070" top="285" width="1230" height="255">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="NoCycle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Cycle Mode|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output Enum" dstnodeid="1" dstpinname="Cycle Mode">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="315" top="75" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="315" top="75" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Enabled">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Mouse" dstnodeid="3" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2400" top="1335" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2400" top="1335" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="X" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="X" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="3645" top="1335" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3645" top="1335" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Y" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y" dstnodeid="8" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6210" top="1335" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6210" top="1335" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Left Button|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Left Button" dstnodeid="9" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7515" top="1335" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7515" top="1335" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Middle Button|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Middle Button" dstnodeid="10" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="8700" top="1335" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8700" top="1335" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Right Button|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Right Button" dstnodeid="12" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4905" top="1335" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4905" top="1335" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Wheel|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Mouse Wheel" dstnodeid="13" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>

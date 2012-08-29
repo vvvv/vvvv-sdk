@@ -1,260 +1,93 @@
-#region licence/info
-
-//////project name
-//Connect (Spreads)
-
-//////description
-//Equivalent of Connect (2D) vectorsized
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop 
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-
-//////initial author
-//woei
-
-#endregion licence/info
-
-//use what you need
+#region usings
 using System;
-using System.Collections.Generic;
-using VVVV.PluginInterfaces.V1;
+using System.ComponentModel.Composition;
 
-//the vvvv node namespace
+using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Streams;
+using VVVV.Utils.VMath;
+
+using System.Collections.Generic;
+#endregion usings
+
 namespace VVVV.Nodes
 {
-	
-	//class definition
-	public class ConnectNode: IPlugin, IDisposable
-    {	          	
-    	#region field declaration
-    	
-    	//the host (mandatory)
-    	private IPluginHost FHost; 
-    	// Track whether Dispose has been called.
-   		private bool FDisposed = false;
+	#region PluginInfo
+	[PluginInfo(Name = "Connect", Category = "Spreads", Help = "Connect n-dimensional with bin and vector siz", Author = "woei")]
+	#endregion PluginInfo
+	public class ConnectNode : IPluginEvaluate
+	{
+		#region fields & pins
+		#pragma warning disable 649
+		[Input("Input", CheckIfChanged = true, AutoValidate = false)]
+		IInStream<double> FInput;
 
-    	//input pin declaration
-    	private IValueIn FInput;
-    	private IValueIn FVecSize;
-    	private IValueIn FBinSize;
-		private IValueIn FClose;
-    	
-    	//output pin declaration
-    	private IValueOut FOutput;
-    	
-    	#endregion field declaration
-       
-    	#region constructor/destructor
-    	
-        public ConnectNode()
-        {
-			//the nodes constructor
-			//nothing to declare for this node
-		}
-        
-        // Implementing IDisposable's Dispose method.
-        // Do not make this method virtual.
-        // A derived class should not be able to override this method.
-        public void Dispose()
-        {
-        	Dispose(true);
-        	// Take yourself off the Finalization queue
-        	// to prevent finalization code for this object
-        	// from executing a second time.
-        	GC.SuppressFinalize(this);
-        }
-        
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        protected virtual void Dispose(bool disposing)
-        {
-        	// Check to see if Dispose has already been called.
-        	if(!FDisposed)
-        	{
-        		if(disposing)
-        		{
-        			// Dispose managed resources.
-        		}
-        		// Release unmanaged resources. If disposing is false,
-        		// only the following code is executed.
-	        	
-        		FHost.Log(TLogType.Debug, "ConnectNode is being deleted");
-        		
-        		// Note that this is not thread safe.
-        		// Another thread could start disposing the object
-        		// after the managed resources are disposed,
-        		// but before the disposed flag is set to true.
-        		// If thread safety is necessary, it must be
-        		// implemented by the client.
-        	}
-        	FDisposed = true;
-        }
-
-        // Use C# destructor syntax for finalization code.
-        // This destructor will run only if the Dispose method
-        // does not get called.
-        // It gives your base class the opportunity to finalize.
-        // Do not provide destructors in types derived from this class.
-        ~ConnectNode()
-        {
-        	// Do not re-create Dispose clean-up code here.
-        	// Calling Dispose(false) is optimal in terms of
-        	// readability and maintainability.
-        	Dispose(false);
-        }
-        #endregion constructor/destructor
-        
-        #region node name and infos
-       
-        //provide node infos 
-         private static IPluginInfo FPluginInfo;
-        public static IPluginInfo PluginInfo
-	    {
-	        get 
-	        {
-	        	if (FPluginInfo == null)
+		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true, CheckIfChanged = true, AutoValidate = false)]
+		IInStream<int> FVec;
+		
+		[Input("Bin Size", DefaultValue = -1, CheckIfChanged = true, AutoValidate = false)]
+		IInStream<int> FBin;
+		
+		[Input("Close")]
+		IDiffSpread<bool> FClose;
+		
+		[Output("Output")]
+		IOutStream<double> FOutput;
+		
+		[Output("Output Bin Size")]
+		IOutStream<int> FOutBin;
+		#pragma warning restore
+		#endregion fields & pins
+		
+		//called when data for any output pin is requested
+		public void Evaluate(int SpreadMax)
+		{
+			FInput.Sync(); 
+			FVec.Sync();
+			FBin.Sync();
+			
+			if (FInput.IsChanged || FVec.IsChanged || FBin.IsChanged || FClose.IsChanged)
+			{
+				if (FVec.Length>0)
 				{
-					//fill out nodes info
-					//see: http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming
-					FPluginInfo = new PluginInfo();
+					int vecSize = Math.Max(1,FVec.GetReader().Read());
+					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin,FClose.SliceCount);				
 					
-					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "Connect";
-					//the nodes category: try to use an existing one
-					FPluginInfo.Category = "Spreads";
-					//the nodes version: optional. leave blank if not
-					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "";
-					
-					//the nodes author: your sign
-					FPluginInfo.Author = "woei";
-					//describe the nodes function
-					FPluginInfo.Help = "Connect n-dimensional with bin and vector size";
-					//specify a comma separated list of tags that describe the node
-					FPluginInfo.Tags = "";
-					
-					//give credits to thirdparty code used
-					FPluginInfo.Credits = "";
-					//any known problems?
-					FPluginInfo.Bugs = "";
-					//any known usage of the node that may cause troubles?
-					FPluginInfo.Warnings = "";
-					
-					//leave below as is
-					System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-					System.Diagnostics.StackFrame sf = st.GetFrame(0);
-					System.Reflection.MethodBase method = sf.GetMethod();
-					FPluginInfo.Namespace = method.DeclaringType.Namespace;
-					FPluginInfo.Class = method.DeclaringType.Name;
-					//leave above as is
+					FOutBin.Length = spread.Count;
+					FOutput.Length = FInput.Length*2;
+					using (var binWriter = FOutBin.GetWriter())
+					using (var dataWriter = FOutput.GetWriter())
+					{
+						int incr = 0;
+						for (int b = 0; b < spread.Count; b++)
+						{
+							int c = FClose[b] ? 0:1;
+							int binSize = Math.Max((spread[b].Length/vecSize-c)*2,0);
+							if (spread[b].Length>0)
+							{
+								for (int v = 0; v < vecSize; v++)
+								{
+									dataWriter.Position = incr+v;
+									double[] src = spread.GetBinColumn(b,v).ToArray();
+		
+									for (int s=0; s<binSize/2;s++)
+									{
+										dataWriter.Write(src[s],vecSize);
+										if (s+1<binSize/2 || !(FClose[b]))
+											dataWriter.Write(src[s+1],vecSize);
+										else
+											dataWriter.Write(src[0],vecSize);
+									}
+								}
+								incr+=binSize*vecSize;
+							}
+							binWriter.Write(binSize,1);
+						}
+						FOutput.Length = incr;
+					}
 				}
-				return FPluginInfo;
-	        }
+				else
+					FOutBin.Length = FOutput.Length = 0;
+			}
 		}
-
-        public bool AutoEvaluate
-        {
-        	//return true if this node needs to calculate every frame even if nobody asks for its output
-        	get {return false;}
-        }
-        
-        #endregion node name and infos
-        
-      	#region pin creation
-        
-        //this method is called by vvvv when the node is created
-        public void SetPluginHost(IPluginHost Host)
-	    {
-        	//assign host
-	    	FHost = Host;
-
-	    	//create inputs
-	    	FHost.CreateValueInput("Input", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FInput);
-	    	FInput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.5, false, false, false);
-	    	
-	    	FHost.CreateValueInput("Vector Size", 1, null, TSliceMode.Single, TPinVisibility.Hidden, out FVecSize);
-	    	FVecSize.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
-	    	
-	    	FHost.CreateValueInput("Bin Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBinSize);
-	    	FBinSize.SetSubType(-1, double.MaxValue, 1, -1, false, false, true);
-	    	
-	    	FHost.CreateValueInput("Close", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FClose);
-	    	FClose.SetSubType(0, 1, 1, 0, false, true, false);
-	    	
-	    	//create outputs	    	
-	    	FHost.CreateValueOutput("Output", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOutput);
-	    	FOutput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
-        }
-
-        #endregion pin creation
-        
-        #region mainloop
-        
-        public void Configurate(IPluginConfig Input)
-        {
-        	//nothing to configure in this plugin
-        	//only used in conjunction with inputs of type cmpdConfigurate
-        }
-        
-        //here we go, thats the method called by vvvv each frame
-        //all data handling should be in here
-        public void Evaluate(int SpreadMax)
-        {     	
-        	//if any of the inputs has changed
-        	//recompute the outputs
-        	if (FInput.PinIsChanged ||
-        	    FVecSize.PinIsChanged ||
-        	    FBinSize.PinIsChanged ||
-        	    FClose.PinIsChanged)
-        	{			        	
-	        	double tmpVec;
-	        	FVecSize.GetValue(0, out tmpVec);
-	        	int vecSize = (int)Math.Round(tmpVec);
-	        	
-	        	VecBin spread = new VecBin(FInput, FBinSize, vecSize);
-	        	List<double> outList = new List<double>();
-	        	
-	        	for (int i=0; i<spread.BinCount; i++)
-	        	{
-	        		
-	        		int curCount = spread.GetBin(i).Count/vecSize;
-	        		for (int j=0; j<curCount; j++)
-	        		{
-	        			outList.AddRange(spread.GetBinVector(i, j));
-	        			if (j>0 && j<curCount-1)
-	        				outList.AddRange(spread.GetBinVector(i, j));
-	        		}
-	        		double doClose;
-	        		FClose.GetValue(i, out doClose);
-	        		if (doClose>0.5)
-	        		{
-	        			outList.AddRange(spread.GetBinVector(i, curCount-1));
-	        			outList.AddRange(spread.GetBinVector(i, 0));
-	        		}
-	        		
-	        	}
-        		
-	        	FOutput.SliceCount=outList.Count;
-	        	for (int i=0; i<outList.Count; i++)
-	        	{
-	        		FOutput.SetValue(i, outList[i]);
-	        	}
-        	}      	
-        }
-             
-        #endregion mainloop  
 	}
 }

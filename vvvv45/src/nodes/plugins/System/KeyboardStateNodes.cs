@@ -23,7 +23,7 @@ namespace VVVV.Nodes.IO
                 case 1:
                     var key = keys[0];
                     if (key == 0)
-                        return KeyboardState.Empty;
+                        return new KeyboardState(Enumerable.Empty<Keys>(), capsLock, time);
                     else
                         return new KeyboardState(keys.Cast<Keys>(), capsLock, time);
                 default:
@@ -32,12 +32,12 @@ namespace VVVV.Nodes.IO
         }
 
         [Node(Name = "KeyboardState", Category = "System", Version = "Split")]
-        public static void Split(KeyboardState keyboardState, out ISpread<int> keyCodes, out string key, out int time)
+        public static void Split(KeyboardState keyboardState, out ISpread<int> keyCodes, out int time, out bool capsLock)
         {
             keyCodes = new Spread<int>();
             keyCodes.AssignFrom(keyboardState.KeyCodes.Select(k => (int)k));
-            key = string.Join(string.Empty, keyboardState.KeyChars);
             time = keyboardState.Time;
+            capsLock = keyboardState.CapsLock;
         }
     }
 }

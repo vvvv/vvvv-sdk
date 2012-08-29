@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>Full</DebugType>
     <Optimize>False</Optimize>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <StartAction>Project</StartAction>
     <OutputPath>bin\Debug\</OutputPath>
@@ -62,6 +62,9 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Commons.Xml.Relaxng">
+      <HintPath>..\..\thirdparty\Commons.Xml.Relaxng.dll</HintPath>
+    </Reference>
     <Reference Include="FSharp.Core">
       <HintPath>..\..\thirdparty\FSharp.Core.dll</HintPath>
       <Private>True</Private>
@@ -104,6 +107,8 @@
     <Compile Include="Network\Sync.cs" />
     <Compile Include="Spreads\Lindenmayer\Lindenmayer.cs" />
     <Compile Include="Spreads\Lindenmayer\LindenmayerNode.cs" />
+    <Compile Include="String\ApplyModifiersNode.cs" />
+    <Compile Include="String\KeyMatchNodes.cs" />
     <Compile Include="String\StringInsertNode.cs" />
     <Compile Include="SVG\SVGGeomNodes.cs" />
     <Compile Include="SVG\SVGTextureNode.cs">
@@ -187,19 +192,20 @@
     <Compile Include="vvvv\WindowSwitcher\WindowSwitcherNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="XML\XMLNodes.cs" />
+    <Compile Include="XML\XMLNodeWrappers.cs" />
+    <Compile Include="XML\XMLPruneNode.cs" />
     <Compile Include="_SpreadOperations\Buffer.cs" />
     <Compile Include="_SpreadOperations\Cons.cs" />
     <Compile Include="_SpreadOperations\Pairwise.cs" />
     <Compile Include="_SpreadOperations\Queue.cs" />
     <Compile Include="_SpreadOperations\DeleteSlice.cs" />
     <Compile Include="_SpreadOperations\RingBuffer.cs" />
+    <Compile Include="_SpreadOperations\SetSlice.cs" />
     <Compile Include="_SpreadOperations\UnzipNode.cs" />
     <Compile Include="_SpreadOperations\ZipNode.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Texture" />
-    <Folder Include="Texture\SharedTexture" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="vvvv\Finder\FinderNode.resx">
       <DependentUpon>FinderNode.cs</DependentUpon>

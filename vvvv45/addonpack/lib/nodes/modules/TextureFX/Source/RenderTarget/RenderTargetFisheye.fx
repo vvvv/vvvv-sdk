@@ -1,5 +1,4 @@
 float2 R;
-float Parameter <float uimin=0.0; float uimax=1.0;> =0;
 float4x4 tWVP: WORLDVIEWPROJECTION;  
 float4x4 tr;
 float4x4 view;

@@ -3,130 +3,27 @@ using System.Diagnostics;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils;
 using VVVV.Utils.Streams;
+using System.Collections.Generic;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    class MultiDimInStream<T> : IInStream<IInStream<T>>, IDisposable
+    class MultiDimInStream<T> : BufferedIOStream<IInStream<T>>, IDisposable
     {
-        class MultiDimReader : IStreamReader<IInStream<T>>
-        {
-            private readonly MultiDimInStream<T> FStream;
-            private readonly IStreamReader<int> FBinSizeReader;
-            private int FPosition;
-            private int FCurrentOffset;
-            
-            public MultiDimReader(MultiDimInStream<T> stream)
-            {
-                FStream = stream;
-                FBinSizeReader = stream.FNormBinSizeStream.GetCyclicReader();
-                Length = stream.Length;
-            }
-            
-            public bool Eos
-            {
-                get
-                {
-                    return FPosition >= Length;
-                }
-            }
-            
-            public int Position
-            {
-                get
-                {
-                    return FPosition;
-                }
-                set
-                {
-                    // Compute offset
-                    // TODO: Find faster solution.
-                    FBinSizeReader.Position = FPosition;
-                    for (int i = FPosition; i < value; i++)
-                    {
-                        FCurrentOffset += FBinSizeReader.Read();
-                    }
-                    for (int i = FPosition; i > value; i--)
-                    {
-                        FCurrentOffset -= FBinSizeReader.Read();
-                    }
-                    FBinSizeReader.Position = value;
-                    
-                    FPosition = value;
-                }
-            }
-            
-            public int Length
-            {
-                get;
-                private set;
-            }
-            
-            public IInStream<T> Current
-            {
-                get;
-                private set;
-            }
-            
-            object System.Collections.IEnumerator.Current
-            {
-                get
-                {
-                    return Current;
-                }
-            }
-            
-            public bool MoveNext()
-            {
-                var result = !Eos;
-                if (result)
-                {
-                    Current = Read();
-                }
-                return result;
-            }
-            
-            public IInStream<T> Read(int stride = 1)
-            {
-                if (Eos) throw new InvalidOperationException("Stream is EOS.");
-                
-                int offset = FCurrentOffset;
-                int length = FBinSizeReader.Read(0);
-                Position += stride;
-                
-                return new InnerStream(FStream.FDataStream, offset, length);
-            }
-            
-            public int Read(IInStream<T>[] buffer, int index, int length, int stride)
-            {
-                // TODO: Is there a faster solution?
-                return StreamUtils.Read(this, buffer, index, length, stride);
-            }
-
-            public void Dispose()
-            {
-                FBinSizeReader.Dispose();
-            }
-            
-            public void Reset()
-            {
-                Position = 0;
-            }
-        }
-        
         class InnerStream : IInStream<T>
         {
             class InnerStreamReader : IStreamReader<T>
             {
                 private readonly InnerStream FStream;
-                private readonly CyclicStreamReader<T> FDataReader;
-                private readonly int FOffset;
+                private readonly IStreamReader<T> FDataReader;
                 
                 public InnerStreamReader(InnerStream stream)
                 {
                     FStream = stream;
-                    FDataReader = stream.FDataStream.GetCyclicReader();
-                    FOffset = stream.FOffset;
-                    Length = stream.Length;
+                    var dataStream = stream.FDataStream;
+                    if (stream.Offset + stream.Length > dataStream.Length)
+                        FDataReader = dataStream.GetCyclicReader();
+                    else
+                        FDataReader = dataStream.GetReader();
                     Reset();
                 }
                 
@@ -137,17 +34,21 @@ namespace VVVV.Hosting.IO.Streams
                         return Position >= Length;
                     }
                 }
-                
+
+                private int FPosition;
                 public int Position
                 {
-                    get;
-                    set;
+                    get { return FPosition; }
+                    set
+                    {
+                        FPosition = value;
+                        FDataReader.Position = FStream.Offset + value;
+                    }
                 }
                 
                 public int Length
                 {
-                    get;
-                    private set;
+                    get { return FStream.Length; }
                 }
                 
                 public T Current
@@ -177,7 +78,7 @@ namespace VVVV.Hosting.IO.Streams
                 public T Read(int stride = 1)
                 {
                     var value = FDataReader.Length > 0 ? FDataReader.Read(stride) : default(T);
-                    Position += stride;
+                    FPosition += stride;
                     return value;
                 }
                 
@@ -190,7 +91,7 @@ namespace VVVV.Hosting.IO.Streams
                     {
                         buffer.Fill(index, numSlicesToRead, default(T));
                     }
-                    Position += numSlicesToRead * stride;
+                    FPosition += numSlicesToRead * stride;
                     return numSlicesToRead;
                 }
                 
@@ -201,25 +102,27 @@ namespace VVVV.Hosting.IO.Streams
                 
                 public void Reset()
                 {
-                    FDataReader.Position = FOffset;
                     Position = 0;
                 }
             }
-            
+
             private readonly IInStream<T> FDataStream;
-            private readonly int FOffset;
-            
-            public InnerStream(IInStream<T> dataStream, int offset, int length)
+
+            public InnerStream(IInStream<T> dataStream)
             {
                 FDataStream = dataStream;
-                FOffset = offset;
-                Length = length;
             }
-            
+
+            public int Offset
+            {
+                get;
+                internal set;
+            }
+
             public int Length
             {
                 get;
-                private set;
+                internal set;
             }
             
             public bool Sync()
@@ -259,18 +162,14 @@ namespace VVVV.Hosting.IO.Streams
         private readonly IIOContainer<IInStream<T>> FDataContainer;
         private readonly IIOContainer<IInStream<int>> FBinSizeContainer;
         private readonly IInStream<T> FDataStream;
-        private readonly IInStream<int> FBinSizeStream;
-        private readonly BufferedIOStream<int> FNormBinSizeStream;
-        private readonly int[] FBinSizeBuffer;
+        private readonly IntInStream FBinSizeStream;
         
         public MultiDimInStream(IIOFactory factory, InputAttribute attribute)
         {
             FDataContainer = factory.CreateIOContainer<IInStream<T>>(attribute, false);
             FBinSizeContainer = factory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
             FDataStream = FDataContainer.IOObject;
-            FBinSizeStream = FBinSizeContainer.IOObject;
-            FNormBinSizeStream = new BufferedIOStream<int>(FBinSizeStream.Length);
-            FBinSizeBuffer = new int[16]; // 64 byte
+            FBinSizeStream = (IntInStream)FBinSizeContainer.IOObject;
         }
         
         public void Dispose()
@@ -278,18 +177,20 @@ namespace VVVV.Hosting.IO.Streams
             FDataContainer.Dispose();
             FBinSizeContainer.Dispose();
         }
-        
-        public int Length
+
+        protected override void BufferIncreased(IInStream<T>[] oldBuffer, IInStream<T>[] newBuffer)
         {
-            get;
-            private set;
+            Array.Copy(oldBuffer, newBuffer, oldBuffer.Length);
+            for (int i = oldBuffer.Length; i < newBuffer.Length; i++)
+            {
+                newBuffer[i] = new InnerStream(FDataStream);
+            }
         }
         
-        public bool Sync()
+        public override bool Sync()
         {
             // Sync source
-            IsChanged = FDataStream.Sync();
-            IsChanged |= FBinSizeStream.Sync();
+            IsChanged = FDataStream.Sync() | FBinSizeStream.Sync();
             
             if (IsChanged)
             {
@@ -297,58 +198,46 @@ namespace VVVV.Hosting.IO.Streams
                 int binSizeLength = FBinSizeStream.Length;
                 int binSizeSum = 0;
                 
-                // Normalize bin size
-                using (var binSizeReader = FBinSizeStream.GetReader())
+                foreach (var binSize in FBinSizeStream)
                 {
-                    FNormBinSizeStream.Length = binSizeLength;
-                    using (var normBinSizeWriter = FNormBinSizeStream.GetWriter())
-                    {
-                        int numSlicesToRead = Math.Min(FBinSizeBuffer.Length, binSizeLength);
-                        while (!binSizeReader.Eos)
-                        {
-                            int numSlicesRead = binSizeReader.Read(FBinSizeBuffer, 0, numSlicesToRead);
-                            for (int i = 0; i < numSlicesRead; i++)
-                            {
-                                FBinSizeBuffer[i] = SpreadUtils.NormalizeBinSize(dataLength, FBinSizeBuffer[i]);
-                                binSizeSum += FBinSizeBuffer[i];
-                            }
-                            normBinSizeWriter.Write(FBinSizeBuffer, 0, numSlicesRead);
-                        }
-                    }
+                    binSizeSum += SpreadUtils.NormalizeBinSize(dataLength, binSize);
                 }
                 
                 int binTimes = SpreadUtils.DivByBinSize(dataLength, binSizeSum);
                 binTimes = binTimes > 0 ? binTimes : 1;
                 Length = binTimes * binSizeLength;
+
+                var binSizeBuffer = MemoryPool<int>.GetArray();
+                try
+                {
+                    using (var binSizeReader = FBinSizeStream.GetCyclicReader())
+                    {
+                        var numSlicesToWrite = Length;
+                        while (numSlicesToWrite > 0)
+                        {
+                            var numSlicesToRead = Math.Min(numSlicesToWrite, binSizeBuffer.Length);
+                            binSizeReader.Read(binSizeBuffer, 0, numSlicesToRead);
+                            var offset = Length - numSlicesToWrite;
+                            var offsetIntoDataStream = 0;
+                            for (int i = offset; i < offset + numSlicesToRead; i++)
+                            {
+                                var binSize = SpreadUtils.NormalizeBinSize(dataLength, binSizeBuffer[i - offset]);
+                                var innerStream = this[i] as InnerStream;
+                                innerStream.Offset = offsetIntoDataStream;
+                                innerStream.Length = binSize;
+                                offsetIntoDataStream += binSize;
+                            }
+                            numSlicesToWrite -= numSlicesToRead;
+                        }
+                    }
+                }
+                finally
+                {
+                    MemoryPool<int>.PutArray(binSizeBuffer);
+                }
             }
-            
-            return IsChanged;
-        }
-        
-        public bool IsChanged
-        {
-            get;
-            private set;
-        }
-        
-        public object Clone()
-        {
-            throw new NotImplementedException();
-        }
-        
-        public IStreamReader<IInStream<T>> GetReader()
-        {
-            return new MultiDimReader(this);
-        }
-        
-        public System.Collections.Generic.IEnumerator<IInStream<T>> GetEnumerator()
-        {
-            return GetReader();
-        }
-        
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+
+            return base.Sync();
         }
     }
 }

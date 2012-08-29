@@ -32,31 +32,56 @@ namespace VVVV.Hosting.Pins.Output
             
             public override void Flush()
             {
-                FBinSizeStream.Length = Length;
-                
-                int dataStreamLength = 0;
-                using (var binSizeWriter = FBinSizeStream.GetWriter())
-                {
-                    foreach (var spread in this)
-                    {
-                        dataStreamLength += spread.SliceCount;
-                        binSizeWriter.Write(spread.SliceCount);
-                    }
-                }
-                
-                FDataStream.Length = dataStreamLength;
-                
                 var buffer = MemoryPool<T>.GetArray();
+                var binSizeBuffer = MemoryPool<int>.GetArray();
                 try
                 {
+                    FBinSizeStream.Length = Length;
+
+                    int dataStreamLength = 0;
+                    using (var binSizeWriter = FBinSizeStream.GetWriter())
+                    {
+                        var numSlicesBuffered = 0;
+                        for (int i = 0; i < Length; i++)
+                        {
+                            var stream = Buffer[i].Stream;
+                            binSizeBuffer[numSlicesBuffered++] = stream.Length;
+                            dataStreamLength += stream.Length;
+                            if (numSlicesBuffered == binSizeBuffer.Length)
+                            {
+                                binSizeWriter.Write(binSizeBuffer, 0, numSlicesBuffered);
+                                numSlicesBuffered = 0;
+                            }
+                        }
+                        if (numSlicesBuffered > 0)
+                        {
+                            binSizeWriter.Write(binSizeBuffer, 0, numSlicesBuffered);
+                        }
+                    }
+
+                    FDataStream.Length = dataStreamLength;
                     using (var dataWriter = FDataStream.GetWriter())
                     {
                         bool anyChanged = false;
-                        foreach (var spread in this)
+                        for (int i = 0; i < Length; i++)
                         {
+                            var spread = Buffer[i];
                             anyChanged |= spread.IsChanged;
                             if (anyChanged)
-                                dataWriter.Write(spread.Stream, buffer);
+                            {
+                                var stream = spread.Stream;
+                                switch (stream.Length)
+                                {
+                                    case 0:
+                                        break;
+                                    case 1:
+                                        dataWriter.Write(stream.Buffer[0]);
+                                        break;
+                                    default:
+                                        dataWriter.Write(stream.Buffer, 0, stream.Length);
+                                        break;
+                                }
+                            }
                             else
                                 dataWriter.Position += spread.SliceCount;
                         }
@@ -64,6 +89,7 @@ namespace VVVV.Hosting.Pins.Output
                 }
                 finally
                 {
+                    MemoryPool<int>.PutArray(binSizeBuffer);
                     MemoryPool<T>.PutArray(buffer);
                 }
                 

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv45\lib\nodes\modules\3D\Button (3d Quad).v4p">
-   <BOUNDS height="9195" left="1140" top="1695" type="Window" width="9000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Quad).v4p" systemname="Button (3d Quad)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Quad).v4p">
+   <BOUNDS height="9195" left="1845" top="1695" type="Window" width="9000">
    </BOUNDS>
    <NODE id="15" nodename="Translate (Transform)" systemname="Translate (Transform)">
    <BOUNDS height="0" left="2910" top="2130" type="Node" width="0">
@@ -39,7 +39,7 @@
    </BOUNDS>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform Quad|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Transform Quad|">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -49,7 +49,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="570" top="5775" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Over|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Mouse Over|">
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -63,49 +63,13 @@
    </BOUNDS>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|View Projection|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|View Projection|">
    </PIN>
    </NODE>
    <LINK dstnodeid="13" dstpinname="Source" linkstyle="Bezier" srcnodeid="10" srcpinname="Output Node">
    <LINKPOINT x="5055" y="1290">
    </LINKPOINT>
    <LINKPOINT x="4290" y="1290">
-   </LINKPOINT>
-   </LINK>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="1095" top="930" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="6150" top="2655" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="240" left="1095" top="930" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse X|" encoded="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="2070" top="915" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="7050" top="2400" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="240" left="2070" top="915" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Y|" encoded="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="15" dstpinname="X" linkstyle="Bezier" srcnodeid="9" srcpinname="Y Output Value">
-   <LINKPOINT x="1860" y="1650">
-   </LINKPOINT>
-   <LINKPOINT x="3180" y="1650">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="15" dstpinname="Y" linkstyle="Bezier" srcnodeid="8" srcpinname="Y Output Value">
-   <LINKPOINT x="2835" y="1635">
-   </LINKPOINT>
-   <LINKPOINT x="3435" y="1635">
    </LINKPOINT>
    </LINK>
    <NODE id="7" nodename="Multiply (3d Vector)" systemname="Multiply (3d Vector)">
@@ -133,7 +97,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Cursor Transform|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Cursor Transform|">
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Input Node" linkstyle="Bezier" srcnodeid="15" srcpinname="Transform Out">
@@ -209,7 +173,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Index of Nearest|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Index of Nearest|">
    </PIN>
    </NODE>
    <LINK dstnodeid="1" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="3" srcpinname="First Slice">
@@ -297,5 +261,35 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="15" srcpinname="Transform Out" dstnodeid="16" dstpinname="Transform Line">
+   </LINK>
+   <NODE systemname="MouseState (System Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseState (System Split)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="2955" top="930" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="X" dstnodeid="15" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Y" dstnodeid="15" dstpinname="Y">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="20" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="2955" top="465" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2955" top="465" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mouse">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Output Node" dstnodeid="19" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Output Node" dstnodeid="19" dstpinname="Mouse">
    </LINK>
    </PATCH>
