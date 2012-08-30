@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Linq;
 using CefGlue;
-using CefGlue.WebBrowser;
 using SlimDX.Direct3D9;
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.VMath;
-using System.Threading;
 using System.Text;
 using System.Globalization;
 using VVVV.Utils.IO;
@@ -49,7 +44,6 @@ namespace VVVV.Nodes.Texture.HTML
         public HTMLTextureRenderer(ILogger logger)
         {
             Logger = logger;
-            CefService.AddRef();
 
             var settings = new CefBrowserSettings();
             settings.DeveloperToolsDisabled = true;
@@ -78,13 +72,15 @@ namespace VVVV.Nodes.Texture.HTML
 
         public void Dispose()
         {
-            if (FBrowser != null)
+            lock (FLock)
             {
-                FBrowser.Close();
-                FBrowser.Dispose();
+                if (FBrowser != null)
+                {
+                    FBrowser.Close();
+                    FBrowser.Dispose();
+                }
+                FTextureResource.Dispose();
             }
-            FTextureResource.Dispose();
-            CefService.Release();
         }
 
         [Node(Name = "HTMLTexture")]
@@ -316,21 +312,27 @@ namespace VVVV.Nodes.Texture.HTML
 
         internal void Attach(CefBrowser browser)
         {
-            if (FBrowser != null)
+            lock (FLock)
             {
-                throw new InvalidOperationException("Browser already attached.");
-            }
+                if (FBrowser != null)
+                {
+                    throw new InvalidOperationException("Browser already attached.");
+                }
 
-            FBrowser = browser;
-            FBrowser.SetSize(CefPaintElementType.View, FWidth, FHeight);
+                FBrowser = browser;
+                FBrowser.SetSize(CefPaintElementType.View, FWidth, FHeight);
+            }
         }
 
         internal void Detach(CefBrowser browser)
         {
-            if (FBrowser != null)
+            lock (FLock)
             {
-                FBrowser.Dispose();
-                FBrowser = null;
+                if (FBrowser != null)
+                {
+                    FBrowser.Dispose();
+                    FBrowser = null;
+                }
             }
         }
 

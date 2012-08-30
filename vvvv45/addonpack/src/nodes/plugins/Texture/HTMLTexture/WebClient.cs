@@ -2,8 +2,6 @@
 using CefGlue;
 using VVVV.Core;
 using VVVV.Core.Logging;
-using System.IO;
-using System.Text;
 using System.Xml.Linq;
 
 namespace VVVV.Nodes.Texture.HTML

@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
-using SlimDX.Direct3D9;
 using CefGlue;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 using System.ComponentModel.Composition;
 using VVVV.Utils.IO;
-using System.Reflection;
-using System.IO;
 using System.Xml.Linq;
 using EX9 = SlimDX.Direct3D9;
 
@@ -20,15 +14,6 @@ namespace VVVV.Nodes.Texture.HTML
     [PluginInfo(Name = "HTMLTexture", Category = "EX9.Texture", Version = "Chromium", Tags = "browser, web, html, javascript, chromium, flash, webgl")]
     public class HTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {
-        static HTMLTextureNode()
-        {
-            var pathToThisAssembly = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var pathToBinFolder = Path.Combine(pathToThisAssembly, "Dependencies", "CefGlue");
-            var envPath = Environment.GetEnvironmentVariable("PATH");
-            envPath = string.Format("{0};{1}", envPath, pathToBinFolder);
-            Environment.SetEnvironmentVariable("PATH", envPath);
-        }
-
         [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
         public ISpread<string> FUrlIn;
         [Input("HTML", DefaultString = "")]
