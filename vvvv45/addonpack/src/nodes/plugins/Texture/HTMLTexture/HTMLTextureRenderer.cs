@@ -83,14 +83,14 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
-        [Node(Name = "HTMLTexture")]
-        public DXResource<EX9.Texture, CefBrowser> Render(
+        [Node(Name = "HTMLTexture", Category = "EX9.Texture", Version = "String")]
+        public DXResource<EX9.Texture, CefBrowser> RenderString(
             out XDocument dom,
             out XElement rootElement,
             out bool isLoading,
             out string currentUrl,
             out string errorText,
-            string url = DEFAULT_URL,
+            string baseUrl = DEFAULT_URL,
             string html = null,
             bool reload = false,
             int width = DEFAULT_WIDTH,
@@ -104,34 +104,123 @@ namespace VVVV.Nodes.Texture.HTML
             bool enabled = true
            )
         {
-            if (FBrowser == null)
+            if (!CheckState(out dom, out rootElement, out isLoading, out currentUrl, out errorText, enabled))
             {
-                rootElement = null;
-                dom = null;
-                isLoading = IsLoading;
-                currentUrl = string.Empty;
-                errorText = "Initializing ...";
                 return FTextureResource;
             }
 
-            Enabled = enabled;
-            if (!Enabled)
+            SetDimensions(width, height);
+
+            if (FUrl != baseUrl || FHtml != html)
             {
-                lock (FLock)
+                FUrl = baseUrl;
+                FHtml = html ?? string.Empty;
+                using (var mainFrame = FBrowser.GetMainFrame())
                 {
-                    dom = FCurrentDom;
-                    rootElement = FCurrentDom != null ? FCurrentDom.Root : null;
-                    isLoading = false;
-                    currentUrl = FCurrentUrl;
-                    errorText = "Disabled";
-                    return FTextureResource;
+                    byte[] utf8bytes = Encoding.Default.GetBytes(html);
+                    html = Encoding.UTF8.GetString(utf8bytes);
+                    mainFrame.LoadString(html, baseUrl);
                 }
             }
 
+            if (reload) FBrowser.Reload();
+
+            SetZoomLevel(zoomLevel);
+            SendEvents(mouseState, keyboardState);
+            SetScroll(scrollTo);
+            DoJavaScript(executeJavaScript, javaScript);
+
+            return FTextureResource;
+        }
+
+        [Node(Name = "HTMLTexture", Category = "EX9.Texture", Version = "URL")]
+        public DXResource<EX9.Texture, CefBrowser> RenderUrl(
+            out XDocument dom,
+            out XElement rootElement,
+            out bool isLoading,
+            out string currentUrl,
+            out string errorText,
+            string url = DEFAULT_URL,
+            bool reload = false,
+            int width = DEFAULT_WIDTH,
+            int height = DEFAULT_HEIGHT,
+            double zoomLevel = 0,
+            MouseState mouseState = default(MouseState),
+            KeyboardState keyboardState = default(KeyboardState),
+            Vector2D scrollTo = default(Vector2D),
+            string javaScript = null,
+            bool executeJavaScript = false,
+            bool enabled = true
+           )
+        {
+            if (!CheckState(out dom, out rootElement, out isLoading, out currentUrl, out errorText, enabled))
+            {
+                return FTextureResource;
+            }
+
+            SetDimensions(width, height);
+
+            if (FUrl != url)
+            {
+                FUrl = string.IsNullOrEmpty(url) ? "about:blank" : url;
+                using (var mainFrame = FBrowser.GetMainFrame())
+                {
+                    mainFrame.LoadURL(url);
+                }
+            }
+
+            if (reload) FBrowser.Reload();
+
+            SetZoomLevel(zoomLevel);
+            SendEvents(mouseState, keyboardState);
+            SetScroll(scrollTo);
+            DoJavaScript(executeJavaScript, javaScript);
+
+            return FTextureResource;
+        }
+
+        private bool CheckState(
+            out XDocument dom,
+            out XElement rootElement,
+            out bool isLoading,
+            out string currentUrl,
+            out string errorText,
+            bool enabled)
+        {
+            lock (FLock)
+            {
+                dom = FCurrentDom;
+                rootElement = FCurrentDom != null ? FCurrentDom.Root : null;
+                isLoading = IsLoading;
+                currentUrl = FCurrentUrl;
+                errorText = FErrorText;
+            }
+
+            Enabled = enabled;
+            if (FBrowser == null || !enabled)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void DoJavaScript(bool executeJavaScript, string javaScript)
+        {
+            if (executeJavaScript)
+            {
+                using (var mainFrame = FBrowser.GetMainFrame())
+                {
+                    mainFrame.ExecuteJavaScript(javaScript, string.Empty, 0);
+                }
+            }
+        }
+
+        private void SetDimensions(int width, int height)
+        {
             // Normalize inputs
             width = Math.Max(1, width);
             height = Math.Max(1, height);
-            keyboardState = keyboardState ?? KeyboardState.Empty;
 
             if (width != FWidth || height != FHeight)
             {
@@ -140,30 +229,46 @@ namespace VVVV.Nodes.Texture.HTML
                 FHeight = height;
                 FBrowser.SetSize(CefPaintElementType.View, width, height);
             }
+        }
 
-            if (FUrl != url || FHtml != html)
-            {
-                FUrl = url;
-                FHtml = html;
-                using (var mainFrame = FBrowser.GetMainFrame())
-                {
-                    if (string.IsNullOrEmpty(html))
-                        mainFrame.LoadURL(url);
-                    else
-                    {
-                        byte[] utf8bytes = Encoding.Default.GetBytes(html);
-                        html = Encoding.UTF8.GetString(utf8bytes);
-                        mainFrame.LoadString(html, url);
-                    }
-                }
-            }
-
-            if (reload) FBrowser.Reload();
+        private void SetZoomLevel(double zoomLevel)
+        {
             if (FZoomLevel != zoomLevel)
             {
                 FZoomLevel = zoomLevel;
                 FBrowser.ZoomLevel = zoomLevel;
             }
+        }
+
+        private void SetScroll(Vector2D scrollTo)
+        {
+            if (FScrollTo != scrollTo)
+            {
+                FScrollTo = scrollTo;
+                using (var mainFrame = FBrowser.GetMainFrame())
+                {
+                    var x = VMath.Map(scrollTo.x, 0, 1, 0, 1, TMapMode.Clamp);
+                    var y = VMath.Map(scrollTo.y, 0, 1, 0, 1, TMapMode.Clamp);
+                    mainFrame.ExecuteJavaScript(
+                        string.Format(CultureInfo.InvariantCulture,
+                            @"
+                            var body = document.body,
+                                html = document.documentElement;
+                            var width = Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
+                            var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+                            window.scrollTo({0} *  width, {1} * height);
+                            ",
+                             x,
+                             y
+                        ),
+                        string.Empty,
+                        0);
+                }
+            }
+        }
+
+        private void SendEvents(MouseState mouseState, KeyboardState keyboardState)
+        {
             if (FMouseState != mouseState)
             {
                 var x = (int)VMath.Map(mouseState.X, -1, 1, 0, FWidth, TMapMode.Clamp);
@@ -201,6 +306,7 @@ namespace VVVV.Nodes.Texture.HTML
                 FMouseState = mouseState;
             }
 
+            keyboardState = keyboardState ?? KeyboardState.Empty;
             if (FKeyboardState != keyboardState)
             {
                 var isKeyUp = FKeyboardState.KeyCodes.Count > keyboardState.KeyCodes.Count;
@@ -234,49 +340,6 @@ namespace VVVV.Nodes.Texture.HTML
                 }
                 FKeyboardState = keyboardState;
             }
-
-            if (FScrollTo != scrollTo)
-            {
-                FScrollTo = scrollTo;
-                using (var mainFrame = FBrowser.GetMainFrame())
-                {
-                    var x = VMath.Map(scrollTo.x, 0, 1, 0, 1, TMapMode.Clamp);
-                    var y = VMath.Map(scrollTo.y, 0, 1, 0, 1, TMapMode.Clamp);
-                    mainFrame.ExecuteJavaScript(
-                        string.Format(CultureInfo.InvariantCulture,
-                            @"
-                            var body = document.body,
-                                html = document.documentElement;
-                            var width = Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
-                            var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-                            window.scrollTo({0} *  width, {1} * height);
-                            ",
-                             x,
-                             y
-                        ), 
-                        string.Empty, 
-                        0);
-                }
-            }
-
-            if (executeJavaScript)
-            {
-                using (var mainFrame = FBrowser.GetMainFrame())
-                {
-                    mainFrame.ExecuteJavaScript(javaScript, string.Empty, 0);
-                }
-            }
-
-            lock (FLock)
-            {
-                dom = FCurrentDom;
-                rootElement = FCurrentDom != null ? FCurrentDom.Root : null;
-                isLoading = IsLoading;
-                currentUrl = FCurrentUrl;
-                errorText = FErrorText;
-            }
-
-            return FTextureResource;
         }
 
         public bool IsLoading

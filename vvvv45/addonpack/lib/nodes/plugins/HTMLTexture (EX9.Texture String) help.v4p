@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.2.dtd" >
-   <PATCH nodename="D:\vvvv_dev\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\HTMLTexture (EX9.Texture Chromium) help.v4p" systemname="Renderer (HTML Chrome) help" filename="D:\vvvv_dev\vvvv\public\vvvv45\lib\nodes\plugins\Renderer (HTML Chrome) help.v4p">
+   <PATCH nodename="D:\vvvv_dev\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\HTMLTexture (EX9.Texture String) help.v4p" systemname="Renderer (HTML String) help" filename="D:\vvvv_dev\vvvv\public\vvvv45\lib\nodes\plugins\Renderer (HTML String) help.v4p">
    <BOUNDS type="Window" left="0" top="0" width="10215" height="8940">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="3">
@@ -145,7 +145,7 @@
    <NODE componentmode="InABox" id="41" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="90" top="450" type="Node" width="570">
    </BOUNDS>
-   <BOUNDS height="1275" left="90" top="450" type="Box" width="3330">
+   <BOUNDS height="585" left="90" top="450" type="Box" width="3315">
    </BOUNDS>
    <BOUNDS height="160" left="60" top="8640" type="Window" width="215">
    </BOUNDS>
@@ -163,7 +163,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="60" top="8640" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Renderer - HTML - Chrome|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|HTMLTexture (EX9.Texture)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -173,7 +173,7 @@
    </PIN>
    </NODE>
    <NODE systemname="HTTP (Network Get)" nodename="HTTP (Network Get)" componentmode="Hidden" id="69">
-   <BOUNDS type="Node" left="3105" top="2700" width="100" height="100">
+   <BOUNDS type="Node" left="2445" top="2715" width="100" height="100">
    </BOUNDS>
    <PIN pinname="URL" visible="1">
    </PIN>
@@ -252,7 +252,7 @@
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <NODE systemname="HTMLTexture (EX9.Texture Chromium) help-1" filename="%VVVV%\lib\nodes\plugins\HTMLTexture (EX9.Texture Chromium) help-1.v4p" nodename="%VVVV%\lib\nodes\plugins\HTMLTexture (EX9.Texture Chromium) help-1.v4p" componentmode="Hidden" id="75">
+   <NODE systemname="HTMLTexture (EX9.Texture String) help-1" filename="%VVVV%\lib\nodes\plugins\HTMLTexture (EX9.Texture String) help-1.v4p" nodename="%VVVV%\lib\nodes\plugins\HTMLTexture (EX9.Texture String) help-1.v4p" componentmode="Hidden" id="75">
    <BOUNDS type="Node" left="4348" top="3271" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="1258" top="0" width="6180" height="7105">
@@ -264,7 +264,7 @@
    </NODE>
    <LINK srcnodeid="75" srcpinname="Mouse" dstnodeid="42" dstpinname="Mouse">
    </LINK>
-   <NODE systemname="HTMLTexture (EX9.Texture Chromium) help-2" filename="%VVVV%\lib\nodes\plugins\HTMLTexture (EX9.Texture Chromium) help-2.v4p" nodename="%VVVV%\lib\nodes\plugins\HTMLTexture (EX9.Texture Chromium) help-2.v4p" componentmode="Hidden" id="76">
+   <NODE systemname="HTMLTexture (EX9.Texture String) help-2" filename="%VVVV%\lib\nodes\plugins\HTMLTexture (EX9.Texture String) help-2.v4p" nodename="%VVVV%\lib\nodes\plugins\HTMLTexture (EX9.Texture String) help-2.v4p" componentmode="Hidden" id="76">
    <BOUNDS type="Node" left="4217" top="3845" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="1460" top="1305" width="5515" height="5080">
@@ -278,7 +278,7 @@
    </LINK>
    <LINK srcnodeid="75" srcpinname="XY" dstnodeid="76" dstpinname="PointsXY">
    </LINK>
-   <NODE systemname="HTMLTexture (EX9.Texture Chromium)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.dll" nodename="HTMLTexture (EX9.Texture Chromium)" componentmode="Hidden" id="0">
+   <NODE systemname="HTMLTexture (EX9.Texture String)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.dll" nodename="HTMLTexture (EX9.Texture String)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="3120" top="4560" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -296,6 +296,8 @@
    <PIN pinname="Key Event" visible="1">
    </PIN>
    <PIN pinname="HTML" visible="1">
+   </PIN>
+   <PIN pinname="Base Url" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="4" dstpinname="Texture">
@@ -325,5 +327,7 @@
    <LINK srcnodeid="75" srcpinname="Mouse 1" dstnodeid="0" dstpinname="Mouse Event">
    </LINK>
    <LINK srcnodeid="76" srcpinname="Keyboard" dstnodeid="0" dstpinname="Key Event">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="0" dstpinname="Base Url" linkstyle="PolyLine">
    </LINK>
    </PATCH>

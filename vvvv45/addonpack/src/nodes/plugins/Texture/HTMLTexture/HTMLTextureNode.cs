@@ -11,13 +11,8 @@ using EX9 = SlimDX.Direct3D9;
 
 namespace VVVV.Nodes.Texture.HTML
 {
-    [PluginInfo(Name = "HTMLTexture", Category = "EX9.Texture", Version = "Chromium", Tags = "browser, web, html, javascript, chromium, flash, webgl")]
-    public class HTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
+    public abstract class HTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {
-        [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
-        public ISpread<string> FUrlIn;
-        [Input("HTML", DefaultString = "")]
-        public ISpread<string> FHtmlIn;
         [Input("Reload", IsBang = true)]
         public ISpread<bool> FReloadIn;
         [Input("Width", DefaultValue = HTMLTextureRenderer.DEFAULT_WIDTH)]
@@ -76,8 +71,6 @@ namespace VVVV.Nodes.Texture.HTML
             for (int i = 0; i < spreadMax; i++)
             {
                 var webRenderer = FWebRenderers[i];
-                var url = FUrlIn[i];
-                var html = FHtmlIn[i];
                 var reload = FReloadIn[i];
                 var width = FWidthIn[i];
                 var height = FHeightIn[i];
@@ -92,14 +85,14 @@ namespace VVVV.Nodes.Texture.HTML
                 XElement rootElement;
                 bool isLoading;
                 string currentUrl, errorText;
-                var output = webRenderer.Render(
+                var output = DoRenderCall(
+                    webRenderer,
+                    i,
                     out dom,
                     out rootElement,
                     out isLoading, 
                     out currentUrl, 
-                    out errorText, 
-                    url, 
-                    html, 
+                    out errorText,
                     reload,
                     width, 
                     height, 
@@ -114,14 +107,92 @@ namespace VVVV.Nodes.Texture.HTML
                 if (FDomOut[i] != dom) FDomOut[i] = dom;
                 if (FRootElementOut[i] != rootElement) FRootElementOut[i] = rootElement;
                 FIsLoadingOut[i] = isLoading;
-                FCurrentUrlOut[i] = currentUrl;
-                FErrorTextOut[i] = errorText;
+                if (FCurrentUrlOut[i] != currentUrl) FCurrentUrlOut[i] = currentUrl;
+                if (FErrorTextOut[i] != errorText) FErrorTextOut[i] = errorText;
             }
         }
+
+        protected abstract DXResource<EX9.Texture, CefBrowser> DoRenderCall(
+            HTMLTextureRenderer webRenderer,
+            int slice,
+            out XDocument dom, 
+            out XElement rootElement, 
+            out bool isLoading, 
+            out string currentUrl, 
+            out string errorText, 
+            bool reload, 
+            int width, 
+            int height, 
+            double zoomLevel, 
+            MouseState mouseEvent, 
+            KeyboardState keyEvent, 
+            Vector2D scrollTo, 
+            string javaScript, 
+            bool execute, 
+            bool enabled);
 
         public void Dispose()
         {
             FWebRenderers.ResizeAndDispose(0, () => new HTMLTextureRenderer(FLogger));
+        }
+    }
+
+    [PluginInfo(Name = "HTMLTexture", Category = "EX9.Texture", Version = "String", Tags = "browser, web, html, javascript, chromium, flash, webgl")]
+    public class HTMLTextureStringNode : HTMLTextureNode
+    {
+        [Input("HTML", DefaultString = @"<html><head></head><body bgcolor=""#ffffff""></body></html>")]
+        public ISpread<string> FHtmlIn;
+        [Input("Base Url", DefaultString = "about:blank")]
+        public ISpread<string> FBaseUrlIn;
+
+        protected override DXResource<EX9.Texture, CefBrowser> DoRenderCall(HTMLTextureRenderer webRenderer, int slice, out XDocument dom, out XElement rootElement, out bool isLoading, out string currentUrl, out string errorText, bool reload, int width, int height, double zoomLevel, MouseState mouseEvent, KeyboardState keyEvent, Vector2D scrollTo, string javaScript, bool execute, bool enabled)
+        {
+            return webRenderer.RenderString(
+                    out dom,
+                    out rootElement,
+                    out isLoading,
+                    out currentUrl,
+                    out errorText,
+                    FBaseUrlIn[slice],
+                    FHtmlIn[slice],
+                    reload,
+                    width,
+                    height,
+                    zoomLevel,
+                    mouseEvent,
+                    keyEvent,
+                    scrollTo,
+                    javaScript,
+                    execute,
+                    enabled);
+        }
+    }
+
+    [PluginInfo(Name = "HTMLTexture", Category = "EX9.Texture", Version = "URL", Tags = "browser, web, html, javascript, chromium, flash, webgl")]
+    public class HTMLTextureUrlNode : HTMLTextureNode
+    {
+        [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
+        public ISpread<string> FUrlIn;
+
+        protected override DXResource<EX9.Texture, CefBrowser> DoRenderCall(HTMLTextureRenderer webRenderer, int slice, out XDocument dom, out XElement rootElement, out bool isLoading, out string currentUrl, out string errorText, bool reload, int width, int height, double zoomLevel, MouseState mouseEvent, KeyboardState keyEvent, Vector2D scrollTo, string javaScript, bool execute, bool enabled)
+        {
+            return webRenderer.RenderUrl(
+                    out dom,
+                    out rootElement,
+                    out isLoading,
+                    out currentUrl,
+                    out errorText,
+                    FUrlIn[slice],
+                    reload,
+                    width,
+                    height,
+                    zoomLevel,
+                    mouseEvent,
+                    keyEvent,
+                    scrollTo,
+                    javaScript,
+                    execute,
+                    enabled);
         }
     }
 }
