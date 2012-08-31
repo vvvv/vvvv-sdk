@@ -22,7 +22,7 @@ namespace VVVV.PluginInterfaces.V2
         public int RefCount {get; private set;}
         public IAddonFactory Factory { get; private set; }
         public bool IsUserDefined { get; private set; }
-        protected ILogger Flogger { get; private set; }
+        protected ILogger FLogger { get; private set; }
 
         protected bool FRecursive;
         public bool Recursive
@@ -51,7 +51,7 @@ namespace VVVV.PluginInterfaces.V2
             Recursive = recursive;
             IsUserDefined = isuserdefined;
 
-            Flogger = logger;
+            FLogger = logger;
             FNodeInfoFactory = nodeInfoFactory;
         }
 
@@ -75,12 +75,12 @@ namespace VVVV.PluginInterfaces.V2
             {
                 if (File.Exists(Nodelist) && Factory.AllowCaching)
                 {
-                    Flogger.Log(LogType.Debug, "adding " + Dir + " to " + Factory.Name + " (cached by " + Nodelist + ")");
+                    FLogger.Log(LogType.Debug, "adding " + Dir + " to " + Factory.Name + " (cached by " + Nodelist + ")");
                     CollectFromNodeList();
                 }
                 else
                 {
-                    Flogger.Log(LogType.Debug, "adding " + Dir + " to " + Factory.Name);
+                    FLogger.Log(LogType.Debug, "adding " + Dir + " to " + Factory.Name);
                     Factory.AddDir(Dir, Recursive);
                 }
                 
@@ -94,7 +94,7 @@ namespace VVVV.PluginInterfaces.V2
         {
             if ((State == SearchPathState.DisablePending) || (IsGarbage))
             {
-                Flogger.Log(LogType.Debug, "removing " + Dir + " from " + Factory.Name);
+                FLogger.Log(LogType.Debug, "removing " + Dir + " from " + Factory.Name);
                 Factory.RemoveDir(Dir);
                 State = SearchPathState.Disabled;
                 return true;
@@ -160,7 +160,14 @@ namespace VVVV.PluginInterfaces.V2
                         nodeInfo.InitialWindowSize = new System.Drawing.Size(int.Parse(iws.Split(',')[0]), int.Parse(iws.Split(',')[1]));
                         nodeInfo.InitialComponentMode = (TComponentMode) NodeType.Parse(typeof(TComponentMode), xmlReader.GetAttribute("icm"));
 
-                        Factory.ParseNodeEntry(xmlReader, nodeInfo);
+                        try
+                        {
+                            Factory.ParseNodeEntry(xmlReader, nodeInfo);
+                        }
+                        catch (Exception e)
+                        {
+                            FLogger.Log(e);
+                        }
                         
                         using (var nodeReader = xmlReader.ReadSubtree())
                         {
