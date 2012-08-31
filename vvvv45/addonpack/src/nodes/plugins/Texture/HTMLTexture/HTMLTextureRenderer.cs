@@ -360,14 +360,17 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 if (FEnabled != value)
                 {
-                    if (FEnabled)
+                    lock (FLock)
                     {
-                        FBrowser.StopLoad();
-                    }
-                    FEnabled = value;
-                    if (FEnabled)
-                    {
-                        FBrowser.Invalidate(new CefRect(0, 0, FWidth, FHeight));
+                        if (FEnabled && FBrowser != null)
+                        {
+                            FBrowser.StopLoad();
+                        }
+                        FEnabled = value;
+                        if (FEnabled && FBrowser != null)
+                        {
+                            FBrowser.Invalidate(new CefRect(0, 0, FWidth, FHeight));
+                        }
                     }
                 }
             }
