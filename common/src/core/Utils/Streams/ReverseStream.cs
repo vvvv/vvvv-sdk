@@ -6,33 +6,46 @@ using System.Diagnostics;
 
 namespace VVVV.Utils.Streams
 {
-    public class RangeStream<T> : IInStream<T>
+    public class ReverseStream<T> : IInStream<T>
     {
-        public class RangeStreamReader : IStreamReader<T>
+        public class ReverseStreamReader : IStreamReader<T>
         {
-            private RangeStream<T> FRangeStream;
+            private ReverseStream<T> FReverseStream;
             private IStreamReader<T> FSourceReader;
 
-            public RangeStreamReader(RangeStream<T> rangeStream)
+            public ReverseStreamReader(ReverseStream<T> reverseStream)
             {
-                FRangeStream = rangeStream;
-                var sourceStream = rangeStream.FSource;
+                FReverseStream = reverseStream;
+                var sourceStream = reverseStream.FSource;
                 FSourceReader = sourceStream.GetReader();
-                FSourceReader.Position = rangeStream.FOffset;
+                Reset();
             }
 
             public T Read(int stride = 1)
             {
                 if (Eos) throw new InvalidOperationException();
-                FPosition += stride;
-                return FSourceReader.Read(stride);
+                Position += stride;
+                var result = FSourceReader.Read(stride);
+                Position += stride;
+                return result;
             }
 
             public int Read(T[] buffer, int offset, int length, int stride = 1)
             {
                 int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, offset, length, stride);
-                FPosition += numSlicesToRead * stride;
-                return FSourceReader.Read(buffer, offset, numSlicesToRead, stride);
+                Position += numSlicesToRead * stride;
+                FSourceReader.Read(buffer, offset, numSlicesToRead, stride);
+                Position += numSlicesToRead * stride;
+                int i = offset, j = offset + numSlicesToRead - 1;
+                while (i < j)
+                {
+                    var t = buffer[i];
+                    buffer[i] = buffer[j];
+                    buffer[j] = t;
+                    i += 1;
+                    j -= 1;
+                }
+                return numSlicesToRead;
             }
 
             public bool Eos
@@ -40,30 +53,28 @@ namespace VVVV.Utils.Streams
                 get { return Position >= Length; }
             }
 
-            private int FPosition;
             public int Position
             {
                 get
                 {
-                    return FPosition;
+                    return FSourceReader.Length - FSourceReader.Position;
                 }
                 set
                 {
-                    FPosition = value;
-                    FSourceReader.Position = FRangeStream.FOffset + value;
+                    FSourceReader.Position = FSourceReader.Length - value;
                 }
             }
 
             public int Length
             {
-                get { return FRangeStream.Length; }
+                get { return FReverseStream.Length; }
             }
 
             public void Dispose()
             {
                 FSourceReader.Dispose();
                 FSourceReader = null;
-                FRangeStream = null;
+                FReverseStream = null;
             }
 
             public T Current
@@ -94,34 +105,27 @@ namespace VVVV.Utils.Streams
         }
 
         private readonly IInStream<T> FSource;
-        private readonly int FOffset;
-        private readonly int FCount;
 
-        public RangeStream(IInStream<T> source, int offset, int count)
+        public ReverseStream(IInStream<T> source)
         {
-            Debug.Assert(offset >= 0);
-            Debug.Assert(count >= 0);
-            Debug.Assert(offset + count <= source.Length || source is CyclicStream<T>);
             FSource = source;
-            FOffset = offset;
-            FCount = count;
         }
 
-        public RangeStreamReader GetReader()
+        public ReverseStreamReader GetReader()
         {
-            return new RangeStreamReader(this);
+            return new ReverseStreamReader(this);
         }
 
         IStreamReader<T> IInStream<T>.GetReader() { return GetReader(); }
 
         public int Length
         {
-            get { return FCount; }
+            get { return FSource.Length; }
         }
 
         public object Clone()
         {
-            return new RangeStream<T>(FSource, FOffset, FCount);
+            return new ReverseStream<T>(FSource);
         }
 
         public bool Sync()

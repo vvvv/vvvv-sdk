@@ -485,5 +485,10 @@ namespace VVVV.Utils.Streams
         {
             return new CyclicStream<T>(source);
         }
+
+        public static ReverseStream<T> Reverse<T>(this IInStream<T> source)
+        {
+            return new ReverseStream<T>(source);
+        }
     }
 }

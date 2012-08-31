@@ -12,7 +12,7 @@ namespace VVVV.Utils.Streams
     [ComVisible(false)]
 	public class CyclicStreamReader<T> : IStreamReader<T>
 	{
-		private readonly IStreamReader<T> FReader;
+		private IStreamReader<T> FReader;
 		
 		internal CyclicStreamReader(IInStream<T> stream)
 		{
@@ -144,12 +144,17 @@ namespace VVVV.Utils.Streams
 		public void Dispose()
 		{
 			FReader.Dispose();
+            FReader = null;
 		}
 		
 		public bool MoveNext()
 		{
-		    Current = Read();
-			return true;
+            if (!Eos)
+            {
+                Current = Read();
+                return true;
+            }
+            return false;
 		}
 		
 		public void Reset()
