@@ -80,9 +80,6 @@ namespace VVVV.Utils.Streams
 		{
 			int readerLength = Length;
 			
-			// Normalize the stride
-			stride %= readerLength;
-			
 			switch (readerLength)
 			{
 				case 1:
