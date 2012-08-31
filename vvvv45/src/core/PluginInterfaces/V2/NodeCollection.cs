@@ -159,6 +159,8 @@ namespace VVVV.PluginInterfaces.V2
                         var iws = xmlReader.GetAttribute("iws");
                         nodeInfo.InitialWindowSize = new System.Drawing.Size(int.Parse(iws.Split(',')[0]), int.Parse(iws.Split(',')[1]));
                         nodeInfo.InitialComponentMode = (TComponentMode) NodeType.Parse(typeof(TComponentMode), xmlReader.GetAttribute("icm"));
+
+                        Factory.ParseNodeEntry(xmlReader, nodeInfo);
                         
                         using (var nodeReader = xmlReader.ReadSubtree())
                         {
