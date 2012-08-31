@@ -12,7 +12,7 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly Dictionary<int, ObjectPool<T>> FMemoryPools = new Dictionary<int, ObjectPool<T>>();
         private readonly Func<int, T> FConstructor;
         private Action<T> FDestructor;
-        private int FHandedOutBytes;
+        private long FHandedOutBytes;
 
         public MemoryPool(Func<int, T> constructor, Action<T> destructor)
         {
@@ -131,7 +131,7 @@ namespace VVVV.Nodes.ImagePlayer
     class UnmanagedMemoryPool : MemoryPool<SharpDX.DataPointer>
     {
         public UnmanagedMemoryPool()
-            : base((length) => new SharpDX.DataPointer(SharpDX.Utilities.AllocateMemory(length), length), (m) => SharpDX.Utilities.FreeMemory(m.Pointer))
+            : base((length) => new SharpDX.DataPointer(Marshal.AllocHGlobal(length), length), (m) => Marshal.FreeHGlobal(m.Pointer))
         {
 
         }
