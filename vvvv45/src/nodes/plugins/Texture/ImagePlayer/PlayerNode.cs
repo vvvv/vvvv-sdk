@@ -64,11 +64,13 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly ILogger FLogger;
         private readonly IOTaskScheduler FIOTaskScheduler = new IOTaskScheduler();
         private readonly MemoryPool FMemoryPool = new MemoryPool();
+        private readonly IDXDeviceService FDeviceService;
         
         [ImportingConstructor]
-        public PlayerNode(IPluginHost pluginHost, ILogger logger)
+        public PlayerNode(IPluginHost pluginHost, ILogger logger, IDXDeviceService deviceService)
         {
             FLogger = logger;
+            FDeviceService = deviceService;
         }
         
         private ImagePlayer CreateImagePlayer(int index)
@@ -78,7 +80,8 @@ namespace VVVV.Nodes.ImagePlayer
         		FThreadsTextureConfig[index], 
         		FLogger, 
         		FIOTaskScheduler, 
-        		FMemoryPool
+        		FMemoryPool,
+                FDeviceService
         	);
         }
         

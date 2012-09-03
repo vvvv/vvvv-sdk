@@ -24,7 +24,7 @@ namespace VVVV.Nodes.ImagePlayer
             private readonly int FStride;
             private readonly int FLength;
             
-            public BitmapFrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
+            public BitmapFrameDecoder(Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
                 : base(textureFactory, memoryPool)
             {
                 var dataStream = stream as SharpDX.DataStream;
@@ -71,7 +71,8 @@ namespace VVVV.Nodes.ImagePlayer
             
             public override Texture Decode(Device device)
             {
-                var texture = FTextureFactory(device, FWidth, FHeight, 1, Format.A8R8G8B8);
+                var usage = Usage.Dynamic & ~Usage.AutoGenerateMipMap;
+                var texture = FTextureFactory(device, FWidth, FHeight, 1, Format.A8R8G8B8, usage);
                 var dataRectangle = texture.LockRectangle(0, LockFlags.Discard);
 
                 try
@@ -121,7 +122,7 @@ namespace VVVV.Nodes.ImagePlayer
             private readonly ImageInformation FImageInformation;
             private Stream FStream;
             
-            public Direct3D9FrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
+            public Direct3D9FrameDecoder(Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
                 : base(textureFactory, memoryPool)
             {
                 FStream = stream;
@@ -144,13 +145,15 @@ namespace VVVV.Nodes.ImagePlayer
                         format = Format.A8R8G8B8;
                         break;
                 }
-                
+
+                var usage = Usage.None & ~Usage.AutoGenerateMipMap;
                 var texture = FTextureFactory(
                     device,
                     FImageInformation.Width,
                     FImageInformation.Height,
                     FImageInformation.MipLevels,
-                    format);
+                    format,
+                    usage);
 
                 using (var surface = texture.GetSurfaceLevel(0))
                 {
@@ -181,7 +184,7 @@ namespace VVVV.Nodes.ImagePlayer
             }
         }
         
-        private static Dictionary<string, Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder>> FDecoderFactories = new Dictionary<string, Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder>>();
+        private static Dictionary<string, Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, FrameDecoder>> FDecoderFactories = new Dictionary<string, Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, FrameDecoder>>();
         
         static FrameDecoder()
         {
@@ -195,11 +198,11 @@ namespace VVVV.Nodes.ImagePlayer
                );
         }
         
-        public static FrameDecoder Create(string filename, Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
+        public static FrameDecoder Create(string filename, Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
         {
             var extension = Path.GetExtension(filename);
 
-            Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory = null;
+            Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory = null;
             if (!FDecoderFactories.TryGetValue(extension, out decoderFactory))
             {
                 return new BitmapFrameDecoder(textureFactory, memoryPool, stream);
@@ -207,7 +210,7 @@ namespace VVVV.Nodes.ImagePlayer
             return decoderFactory(textureFactory, memoryPool, stream);
         }
         
-        public static void Register(IEnumerable<string> extensions, Func<Func<Device, int, int, int, Format, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory)
+        public static void Register(IEnumerable<string> extensions, Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory)
         {
             foreach (var extension in extensions)
             {
@@ -215,10 +218,10 @@ namespace VVVV.Nodes.ImagePlayer
             }
         }
         
-        protected Func<Device, int, int, int, Format, Texture> FTextureFactory;
+        protected Func<Device, int, int, int, Format, Usage, Texture> FTextureFactory;
         protected MemoryPool FMemoryPool;
         
-        public FrameDecoder(Func<Device, int, int, int, Format, Texture> textureFactory, MemoryPool memoryPool)
+        public FrameDecoder(Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool)
         {
             FTextureFactory = textureFactory;
             FMemoryPool = memoryPool;

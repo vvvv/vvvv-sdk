@@ -46,13 +46,15 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly TransformBlock<Tuple<FrameInfo, Stream>, Frame> FFramePreloader;
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
         private readonly Dictionary<string, Frame> FPreloadedFrames = new Dictionary<string, Frame>();
+        private readonly IDXDeviceService FDeviceService;
         
         public ImagePlayer(
             int threadsIO,
             int threadsTexture,
             ILogger logger,
             IOTaskScheduler ioTaskScheduler,
-            MemoryPool memoryPool
+            MemoryPool memoryPool,
+            IDXDeviceService deviceService
            )
         {
             FThreadsIO = threadsIO;
@@ -61,6 +63,7 @@ namespace VVVV.Nodes.ImagePlayer
             
             FTexturePool = new TexturePool();
             FMemoryPool = memoryPool;
+            FDeviceService = deviceService;
             
             FFrameInfoBuffer = new BufferBlock<FrameInfo>();
             
@@ -93,10 +96,25 @@ namespace VVVV.Nodes.ImagePlayer
             
             FFrameInfoBuffer.LinkTo(FFilePreloader, linkOptions);
             FFilePreloader.LinkTo(FFramePreloader, linkOptions);
+
+            FDeviceService.DeviceDisabled += HandleDeviceDisabledOrRemoved;
+            FDeviceService.DeviceRemoved += HandleDeviceDisabledOrRemoved;
+        }
+
+        void HandleDeviceDisabledOrRemoved(object sender, DeviceEventArgs e)
+        {
+            var device = e.Device;
+            if (FTexturePool.HasTextureForDevice(device))
+            {
+                FTexturePool.Release(device);
+            }
         }
 
         public void Dispose()
         {
+            FDeviceService.DeviceDisabled -= HandleDeviceDisabledOrRemoved;
+            FDeviceService.DeviceRemoved -= HandleDeviceDisabledOrRemoved;
+
             // Cancel all scheduled frames
             foreach (var frameInfo in FScheduledFrameInfos)
             {
@@ -426,10 +444,9 @@ namespace VVVV.Nodes.ImagePlayer
             }
         }
 
-        private SharpDX.Direct3D9.Texture CreateTextureForDecoder(SharpDX.Direct3D9.Device device, int width, int height, int levels, SharpDX.Direct3D9.Format format)
+        private SharpDX.Direct3D9.Texture CreateTextureForDecoder(SharpDX.Direct3D9.Device device, int width, int height, int levels, SharpDX.Direct3D9.Format format, SharpDX.Direct3D9.Usage usage)
         {
-            var pool = SharpDX.Direct3D9.Pool.Default;
-            var usage = SharpDX.Direct3D9.Usage.Dynamic & ~SharpDX.Direct3D9.Usage.AutoGenerateMipMap;
+            var pool = SharpDX.Direct3D9.Pool.Default;            
             var texture = FTexturePool.GetTexture(EX9.Device.FromPointer(device.NativePointer), width, height, levels, (EX9.Usage)usage, (EX9.Format)format, (EX9.Pool)pool);
             return new SharpDX.Direct3D9.Texture(texture.ComPointer);
         }

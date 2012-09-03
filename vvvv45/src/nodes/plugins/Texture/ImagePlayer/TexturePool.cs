@@ -116,5 +116,10 @@ namespace VVVV.Nodes.ImagePlayer
         {
             Clear();
         }
+
+        public bool HasTextureForDevice(Device device)
+        {
+            return FRefCount.ContainsKey(device);
+        }
     }
 }
