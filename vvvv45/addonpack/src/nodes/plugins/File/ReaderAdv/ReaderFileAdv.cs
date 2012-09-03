@@ -294,68 +294,30 @@ namespace VVVV.Nodes
                     
                     if (File.Exists(curFilename))
                     {
-                        //your function per slice
                         if (FLineWiseTog == 1)
                         {
                             string[] allLines = File.ReadAllLines(curFilename, enc);
-                            for (int j=0; j<curCount; j++)
+                            int maxlen = Math.Min(allLines.Length,curIndex+curCount);
+                            for (int j=curIndex; j<maxlen; j++)
                             {
-                                int seekLine = curIndex+j;
-                                if (seekLine<allLines.Length)
-                                {
-                                    outString+=allLines[seekLine];
-                                    if (j!=curCount-1)
-                                    {
-                                        outString+=Environment.NewLine;
-                                    }
-                                }
+                                outString+=allLines[j];
+                                if (j != maxlen-1)
+                                    outString+=Environment.NewLine;
                             }
                         }
                         else
                         {
-                            
-                            
                             TextReader curFile = new StreamReader(curFilename, enc);
-                            char[] buffer = new char[curCount];
-                            curFile.ReadBlock(buffer, curIndex, curCount);
-                            foreach (char c in buffer)
+                            for (int j=0; j<curIndex+curCount; j++)
                             {
-                                outString+=c;
+                            	int v = curFile.Read();
+                            	if (v == -1)
+                            		break;
+                            	else if (j>=curIndex)
+                            		outString+=(char)v;
+                            	
                             }
                             curFile.Close();
-                            
-                            //        				FileStream curFile = new FileStream(curFilename, FileMode.Open);
-                            //        				try
-                            //        				{
-                            //        					byte[] buffer = new byte[curCount];
-                            //        					int fileRead=0;
-                            //        					try
-                            //        					{
-                            //        						curFile.Seek(curIndex, SeekOrigin.Begin);
-                            //        						fileRead = curFile.Read(buffer, 0, curCount);
-                            //        						curFile.Close();
-                            //        					}
-                            //        					catch (Exception e)
-                            //        					{
-                            //        						FHost.Log(TLogType.Debug, e.Message);
-                            //        					}
-                            //        					if (curCount>fileRead)
-                            //        					{
-                            //        						FHost.Log(TLogType.Debug, "out of bounds");
-                            //        					}
-                            //        					for (int j=0; j<fileRead; j++)
-                            //        					{
-                            //        						Encoding.GetEncoding(1252).GetString(
-                            //        						outString+=Encoding.GetEncoding(1252).GetString(new byte[1]{buffer[j]});
-                            //        					}
-                            //        					curFile.Close();
-                            //        				}
-//
-                            //        				catch (Exception e)
-                            //        				{
-                            //        					FHost.Log(TLogType.Debug, e.Message);
-                            //        				}
-                            
                         }
                     }
                     

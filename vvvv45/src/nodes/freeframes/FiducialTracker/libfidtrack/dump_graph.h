@@ -1,6 +1,7 @@
 /*
   Fiducial tracking library.
   Copyright (C) 2004 Ross Bencina <rossb@audiomulch.com>
+  Maintainer (C) 2005-2008 Martin Kaltenbrunner <mkalten@iua.upf.edu>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -16,7 +17,6 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
 #ifndef INCLUDED_DUMP_GRAPH_H
 #define INCLUDED_DUMP_GRAPH_H
 

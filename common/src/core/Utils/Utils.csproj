@@ -61,6 +61,26 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <BaseAddress>4194304</BaseAddress>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="System" />
@@ -78,16 +98,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\Treemap.cs" />
+    <Compile Include="Animation\IIRFilter.cs" />
     <Compile Include="Animation\Particle.cs" />
     <Compile Include="Application\AppInfo.cs" />
-    <Compile Include="Array\ArrayExtensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
+    <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Color\RGBAColor.cs" />
     <Compile Include="Color\VColor.cs" />
     <Compile Include="Concurrent\BlockingQueue.cs" />
     <Compile Include="Crypto\StringHasher.cs" />
     <Compile Include="Disposable.cs" />
+    <Compile Include="GACWrap.cs" />
+    <Compile Include="IO\KeyboardState.cs" />
+    <Compile Include="IO\MouseState.cs" />
     <Compile Include="Linq\LinqExtensions.cs" />
     <Compile Include="ManagedVCL\ManagedVCLControl.cs">
       <SubType>UserControl</SubType>
@@ -105,6 +130,8 @@
     <Compile Include="Network\IRemotingManager.cs" />
     <Compile Include="Network\Network.cs" />
     <Compile Include="Network\RemotingManager.cs" />
+    <Compile Include="Network\UDPServer.cs" />
+    <Compile Include="Network\UDPTimeSync.cs" />
     <Compile Include="OSC\OSCBundle.cs" />
     <Compile Include="OSC\OSCMessage.cs" />
     <Compile Include="OSC\OSCPacket.cs" />
@@ -115,6 +142,11 @@
     <Compile Include="SharedMemory\Segment.cs" />
     <Compile Include="SharedMemory\Win32Native.cs" />
     <Compile Include="Skeleton\ISkeleton.cs" />
+    <Compile Include="Streams\ReverseStream.cs" />
+    <Compile Include="Streams\CyclicStream.cs" />
+    <Compile Include="Streams\RangeStream.cs" />
+    <Compile Include="System\ArrayExtensions.cs" />
+    <Compile Include="System\IntPtrExtensions.cs" />
     <Compile Include="Win32\HiPerfTimer.cs" />
     <Compile Include="Streams\CyclicStreamReader.cs" />
     <Compile Include="Streams\IFlushable.cs" />
@@ -133,10 +165,5 @@
       <DependentUpon>ManagedVCLControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Array" />
-    <Folder Include="Streams" />
-    <Folder Include="Skeleton" />
-    <Folder Include="Win32" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

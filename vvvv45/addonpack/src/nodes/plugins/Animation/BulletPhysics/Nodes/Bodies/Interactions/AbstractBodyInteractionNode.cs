@@ -7,7 +7,7 @@ using BulletSharp;
 
 namespace VVVV.Nodes.Bullet
 {
-	public abstract class AbstractBodyInteractionNode<T> : IPluginEvaluate where T : CollisionObject
+	public abstract class AbstractBodyInteractionNode<T> : IPluginEvaluate
 	{
 		[Input("Bodies", Order = 0)]
 		Pin<T> FInput;

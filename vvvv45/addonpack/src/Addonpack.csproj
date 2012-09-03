@@ -87,10 +87,14 @@
     <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     <Exec Command="attrib +R &quot;$(TempDir)lib\nodes\*.*&quot; /S /D" />
     <Exec Command="&quot;$(StartProgram)&quot; /nodelist &quot;$(TempDir)lib\nodes&quot;" />
+    <!-- Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
+    <Exec Command="&quot;$(SevenZip)&quot; a -r &quot;$(ZipFileName)&quot; &quot;$(TempDir)&quot;" />
+    <!--
     <CreateItem Include="$(TempDir)\**\*.*">
       <Output ItemName="ZipFiles" TaskParameter="Include" />
     </CreateItem>
     <Zip Files="@(ZipFiles)" WorkingDirectory="$(TempBaseDir)" ZipFileName="$(ZipFileName)" ZipLevel="9" />
+    -->
   </Target>
   <Target Name="_PostZip_">
     <RemoveDir Directories="$(TempBaseDir)" />

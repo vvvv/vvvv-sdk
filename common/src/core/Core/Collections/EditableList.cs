@@ -11,7 +11,7 @@ namespace VVVV.Core.Collections
         IViewableList, IEditableList
     {
         protected IList<T> FList;
-        
+
         public EditableList(IList<T> list)
             : base(list)
         {
@@ -30,21 +30,21 @@ namespace VVVV.Core.Collections
 
         public void Sort(Comparison<T> comparison)
         {
-	        if (FList is System.Collections.Generic.List<T>)
-	        {
-	        	(FList as System.Collections.Generic.List<T>).Sort(comparison);
-	        	OnOrderChanged();
-        	}
+            if (FList is System.Collections.Generic.List<T>)
+            {
+                (FList as System.Collections.Generic.List<T>).Sort(comparison);
+                OnOrderChanged();
+            }
         }
-        
-		public override void Dispose()
-		{
-			OrderChanged = null;
-			base.Dispose();
-		}
-        
+
+        public override void Dispose()
+        {
+            OrderChanged = null;
+            base.Dispose();
+        }
+
         #region IEditableList<T> Members
-        
+
         public virtual T this[int index]
         {
             get
@@ -55,38 +55,39 @@ namespace VVVV.Core.Collections
             {
                 if (!CanAdd(value))
                     throw new Exception(string.Format("Can't add {0} to list {1}.", value, this));
-                
+
                 var currentItem = FList[index];
                 if (currentItem != null)
                     if (!Remove(currentItem))
                         throw new Exception(string.Format("Can't remove {0} from list {1}.", currentItem, this));
-                
+
+                MarkChanged();
                 FList[index] = value;
             }
         }
-        
+
         #endregion
-        
+
         #region IEditableList Members
-        
+
         object IEditableList.this[int index]
         {
-            get 
+            get
             {
                 return this[index];
             }
             set
             {
-                this[index] = (T) value;
+                this[index] = (T)value;
             }
         }
-        
+
         #endregion
-        
+
         #region IViewableList<T> Members
-        
+
         public event OrderChangedHandler<T> OrderChanged;
-        
+
         protected virtual void OnOrderChanged()
         {
             if (OrderChanged != null)
@@ -94,19 +95,19 @@ namespace VVVV.Core.Collections
             if (FOrderChanged != null)
                 FOrderChanged(this);
         }
-        
+
         #endregion
-        
+
         #region IViewableList Members
-        
+
         object IViewableList.this[int index]
         {
-            get 
+            get
             {
                 return this[index];
             }
         }
-        
+
         protected OrderChangedHandler FOrderChanged;
         event OrderChangedHandler IViewableList.OrderChanged
         {
@@ -119,31 +120,31 @@ namespace VVVV.Core.Collections
                 FOrderChanged -= value;
             }
         }
-        
+
         #endregion
-        
-//        #region IList<T> Members
-//        
-//        public int IndexOf(T item)
-//        {
-//            return FList.IndexOf(item);
-//        }
-//        
-//        public void Insert(int index, T item)
-//        {
-//            var oldItem = this[index];
-//            if (Remove(oldItem))
-//            {
-//                FList.Insert(index, item);
-//                OnAdded(item);
-//            }
-//        }
-//        
-//        public void RemoveAt(int index)
-//        {
-//            Remove(this[index]);
-//        }
-//        
-//        #endregion
+
+        //        #region IList<T> Members
+        //        
+        //        public int IndexOf(T item)
+        //        {
+        //            return FList.IndexOf(item);
+        //        }
+        //        
+        //        public void Insert(int index, T item)
+        //        {
+        //            var oldItem = this[index];
+        //            if (Remove(oldItem))
+        //            {
+        //                FList.Insert(index, item);
+        //                OnAdded(item);
+        //            }
+        //        }
+        //        
+        //        public void RemoveAt(int index)
+        //        {
+        //            Remove(this[index]);
+        //        }
+        //        
+        //        #endregion
     }
 }

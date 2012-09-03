@@ -9,15 +9,15 @@ namespace VVVV.Hosting.Pins
 	/// Base class of 2d spreads.
 	/// </summary>
 	[ComVisible(false)]
-	abstract class BinSpread<T> : Spread<ISpread<T>>
+	public abstract class BinSpread<T> : Spread<ISpread<T>>
 	{
-		internal class BinSpreadStream : BufferedIOStream<ISpread<T>>
+		public class BinSpreadStream : BufferedIOStream<ISpread<T>>
 		{
 			protected override void BufferIncreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)
 			{
-				Array.Copy(oldBuffer, newBuffer, oldBuffer.Length);
-				if (oldBuffer.Length > 0)
-				{
+			    if (oldBuffer != null && oldBuffer.Length > 0)
+			    {
+			        Array.Copy(oldBuffer, newBuffer, oldBuffer.Length);
 					for (int i = oldBuffer.Length; i < newBuffer.Length; i++)
 					{
 						var spread = oldBuffer[i & (oldBuffer.Length - 1)];
@@ -26,10 +26,10 @@ namespace VVVV.Hosting.Pins
 						else
 							newBuffer[i] = new Spread<T>(0);
 					}
-				}
+			    }
 				else
 				{
-					for (int i = oldBuffer.Length; i < newBuffer.Length; i++)
+					for (int i = 0; i < newBuffer.Length; i++)
 					{
 						newBuffer[i] = new Spread<T>(0);
 					}

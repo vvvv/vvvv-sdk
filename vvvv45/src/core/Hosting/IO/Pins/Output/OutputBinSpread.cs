@@ -6,9 +6,9 @@ using VVVV.Utils.Streams;
 namespace VVVV.Hosting.Pins.Output
 {
     [ComVisible(false)]
-    class OutputBinSpread<T> : BinSpread<T>, IDisposable
+    public class OutputBinSpread<T> : BinSpread<T>, IDisposable
     {
-        internal class OutputBinSpreadStream : BinSpreadStream, IDisposable
+        public class OutputBinSpreadStream : BinSpreadStream, IDisposable
         {
             private readonly IIOContainer<IOutStream<T>> FDataContainer;
             private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
@@ -32,29 +32,56 @@ namespace VVVV.Hosting.Pins.Output
             
             public override void Flush()
             {
-                FBinSizeStream.Length = Length;
-                
-                int dataStreamLength = 0;
-                using (var binSizeWriter = FBinSizeStream.GetWriter())
-                {
-                    foreach (var spread in this)
-                    {
-                        dataStreamLength += spread.SliceCount;
-                        binSizeWriter.Write(spread.SliceCount);
-                    }
-                }
-                
-                FDataStream.Length = dataStreamLength;
-                
                 var buffer = MemoryPool<T>.GetArray();
+                var binSizeBuffer = MemoryPool<int>.GetArray();
                 try
                 {
+                    FBinSizeStream.Length = Length;
+
+                    int dataStreamLength = 0;
+                    using (var binSizeWriter = FBinSizeStream.GetWriter())
+                    {
+                        var numSlicesBuffered = 0;
+                        for (int i = 0; i < Length; i++)
+                        {
+                            var stream = Buffer[i].Stream;
+                            binSizeBuffer[numSlicesBuffered++] = stream.Length;
+                            dataStreamLength += stream.Length;
+                            if (numSlicesBuffered == binSizeBuffer.Length)
+                            {
+                                binSizeWriter.Write(binSizeBuffer, 0, numSlicesBuffered);
+                                numSlicesBuffered = 0;
+                            }
+                        }
+                        if (numSlicesBuffered > 0)
+                        {
+                            binSizeWriter.Write(binSizeBuffer, 0, numSlicesBuffered);
+                        }
+                    }
+
+                    FDataStream.Length = dataStreamLength;
                     using (var dataWriter = FDataStream.GetWriter())
                     {
-                        foreach (var spread in this)
+                        bool anyChanged = false;
+                        for (int i = 0; i < Length; i++)
                         {
-                            if (spread.IsChanged)
-                                dataWriter.Write(spread.Stream, buffer);
+                            var spread = Buffer[i];
+                            anyChanged |= spread.IsChanged;
+                            if (anyChanged)
+                            {
+                                var stream = spread.Stream;
+                                switch (stream.Length)
+                                {
+                                    case 0:
+                                        break;
+                                    case 1:
+                                        dataWriter.Write(stream.Buffer[0]);
+                                        break;
+                                    default:
+                                        dataWriter.Write(stream.Buffer, 0, stream.Length);
+                                        break;
+                                }
+                            }
                             else
                                 dataWriter.Position += spread.SliceCount;
                         }
@@ -62,6 +89,7 @@ namespace VVVV.Hosting.Pins.Output
                 }
                 finally
                 {
+                    MemoryPool<int>.PutArray(binSizeBuffer);
                     MemoryPool<T>.PutArray(buffer);
                 }
                 

@@ -23,7 +23,7 @@ namespace VVVV.Core.View
 			get; private set;			
 		}
 
-        public DefaultParentProvider(IModelMapper mapper)
+        public DefaultParentProvider(ModelMapper mapper)
         {
         	if (mapper.CanMap<IEnumerable>())
 				Childs = mapper.Map<IEnumerable>(); 

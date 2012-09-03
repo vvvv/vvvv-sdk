@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
    <PATCH nodename="D:\Program Files\vvvv_45beta27\addonpack\lib\nodes\modules\TextureFX\Filter\EdgeGlow\EdgeGlow (EX9.Texture Filter).v4p">
-   <BOUNDS height="11220" left="9300" top="810" type="Window" width="8820">
+   <BOUNDS height="11220" left="7890" top="1350" type="Window" width="8820">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="EdgeGlow.fx" id="21" nodename="EdgeGlow.fx" systemname="EdgeGlow (EX9.Effect)">
    <BOUNDS height="270" left="1635" top="6165" type="Node" width="5055">
@@ -27,7 +27,7 @@
    </PIN>
    <PIN pinname="Sharp" visible="1">
    </PIN>
-   <PIN pinname="Radius" slicecount="1" visible="1" values="1.42">
+   <PIN pinname="Radius" visible="1">
    </PIN>
    <PIN pinname="Bright" visible="1">
    </PIN>
@@ -38,6 +38,10 @@
    <PIN pinname="Saturation">
    </PIN>
    <PIN pinname="BorderCol">
+   </PIN>
+   <PIN pinname="Shape" visible="1">
+   </PIN>
+   <PIN pinname="GlowShape" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="20" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -211,9 +215,9 @@
    <LINK dstnodeid="21" dstpinname="Mesh" srcnodeid="8" srcpinname="Mesh">
    </LINK>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
-   <BOUNDS height="0" left="7230" top="5235" type="Node" width="0">
+   <BOUNDS height="0" left="8625" top="5235" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="7230" top="5235" type="Box" width="840">
+   <BOUNDS height="240" left="8625" top="5235" type="Box" width="840">
    </BOUNDS>
    <BOUNDS height="160" left="14370" top="8940" type="Window" width="215">
    </BOUNDS>
@@ -231,9 +235,9 @@
    <LINK dstnodeid="21" dstpinname="Bright" srcnodeid="6" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="9510" top="5595" type="Node" width="0">
+   <BOUNDS height="0" left="10905" top="5595" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="9510" top="5595" type="Box" width="480">
+   <BOUNDS height="480" left="10905" top="5595" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="11895" top="10140" type="Window" width="215">
    </BOUNDS>
@@ -343,9 +347,9 @@
    <LINK dstnodeid="15" dstpinname="Width" srcnodeid="13" srcpinname="X">
    </LINK>
    <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="5430" top="4530" type="Node" width="0">
+   <BOUNDS height="0" left="6375" top="4575" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="5430" top="4530" type="Box" width="795">
+   <BOUNDS height="240" left="6375" top="4575" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -360,26 +364,12 @@
    </NODE>
    <LINK dstnodeid="21" dstpinname="Brightness" srcnodeid="22" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="4530" top="4500" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="240" left="4530" top="4500" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Balance">
-   </PIN>
-   </NODE>
    <LINK dstnodeid="21" dstpinname="Balance" srcnodeid="23" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="24" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="6330" top="4545" type="Node" width="0">
+   <BOUNDS height="0" left="7275" top="4590" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="6330" top="4545" type="Box" width="795">
+   <BOUNDS height="240" left="7275" top="4590" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -438,18 +428,56 @@
    </LINK>
    <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="28" srcpinname="Layer">
    </LINK>
-   <NODE nodename="IOBox (Color)" componentmode="InABox" id="29" systemname="IOBox (Color)">
-   <BOUNDS type="Node" left="8430" top="5310" width="0" height="0">
+   <NODE componentmode="InABox" id="29" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="9825" top="5310" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="8430" top="5310" width="735" height="240">
+   <BOUNDS height="240" left="9825" top="5310" type="Box" width="735">
    </BOUNDS>
    <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Border Color|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Border Color|">
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
    </NODE>
-   <LINK srcnodeid="29" srcpinname="Color Output" dstnodeid="21" dstpinname="BorderCol">
+   <LINK dstnodeid="21" dstpinname="BorderCol" srcnodeid="29" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="InABox" id="30" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5445" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5445" top="4575" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.8">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Radius">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Radius" srcnodeid="30" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="31" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4590" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4590" top="4575" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Shape">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.100000001490116">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Shape" srcnodeid="31" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="GlowShape" srcnodeid="31" srcpinname="Y Output Value">
    </LINK>
    </PATCH>

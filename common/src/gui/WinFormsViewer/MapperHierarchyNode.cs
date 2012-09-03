@@ -27,7 +27,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         /// The ModelMapper containing all the necessary mappings for the
         /// stored model element.
         /// </summary>
-        public IModelMapper Mapper {get; private set;}
+        public ModelMapper Mapper {get; private set;}
         
         public event ClickHandler MouseClick;
         protected virtual void OnClick(MouseEventArgs e)
@@ -122,7 +122,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             }
         }
         
-        public MapperHierarchyNode(IModelMapper mapper, ICanvas canvas, IGraphElement parent, HierarchyViewer viewer)
+        public MapperHierarchyNode(ModelMapper mapper, ICanvas canvas, IGraphElement parent, HierarchyViewer viewer)
             :base()
         {
             Mapper = mapper;

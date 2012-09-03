@@ -9,12 +9,14 @@ using System.Runtime.InteropServices;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2.EX9;
 
 using OpenNI;
+using SlimDX;
 using SlimDX.Direct3D9;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -129,15 +131,16 @@ namespace VVVV.Nodes
 				
 				if (FUserGenerator.IsDataNew)
 				{
+					FUserIdOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FPositionOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FTextureOut.SliceCount = 1;
+						
 					if (FUserGenerator.NumberOfUsers > 0)
 					{
 						//copies a list of all users and sort them
 						int[] tUsers = FUserGenerator.GetUsers();
 						int[] Users = (int[])tUsers.Clone();
 						Array.Sort(Users);
-						
-						FUserIdOut.SliceCount = Users.Length;
-						FPositionOut.SliceCount = Users.Length;
 						
 						for (int i = 0; i < Users.Length; i++)
 						{
@@ -166,6 +169,7 @@ namespace VVVV.Nodes
 			{
 				FUserIdOut.SliceCount = 0;
 				FPositionOut.SliceCount = 0;
+				FTextureOut.SliceCount = 0;
 			}
 		}
 		
@@ -186,10 +190,18 @@ namespace VVVV.Nodes
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int Slice, SlimDX.Direct3D9.Device device)
 		{
+			var pool = Pool.Managed;
+			var usage = Usage.None;
+			if (device is DeviceEx)
+			{
+				pool = Pool.Default;
+				usage = Usage.Dynamic;
+			}
+			
 			if (FOutputMode[0] == UserTexturetMode.Raw)
-				return new Texture(device, FTexWidth, FTexHeight, 1, Usage.None, Format.L16, Pool.Managed);
+				return new Texture(device, FTexWidth, FTexHeight, 1, usage, Format.L16, pool);
 			else
-				return new Texture(device, FTexWidth, FTexHeight, 1, Usage.None, Format.A8R8G8B8, Pool.Managed);
+				return new Texture(device, FTexWidth, FTexHeight, 1, usage, Format.A8R8G8B8, pool);
 		}
 
 		//this method gets called, when Update() was called in evaluate,
@@ -198,36 +210,53 @@ namespace VVVV.Nodes
 		//calculate the pixels in evaluate and just copy the data to the device texture here
 		unsafe protected override void UpdateTexture(int Slice, Texture texture)
 		{
-			var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
-			
-			if (FOutputMode[0] == UserTexturetMode.Raw)
-				CopyMemory(rect.DataPointer, FUserGenerator.GetUserPixels(0).LabelMapPtr, FTexHeight * FTexWidth * 2);
+			DataRectangle rect;
+			if (texture.Device is DeviceEx)
+				rect = texture.LockRectangle(0, LockFlags.None);
 			else
+				rect = texture.LockRectangle(0, LockFlags.Discard);
+			
+			try
 			{
-				ushort* pSrc = (ushort*)FUserGenerator.GetUserPixels(0).LabelMapPtr;
-				byte* pDest = (byte*)rect.DataPointer;
-
-				// write the Depth pointer to Destination pointer
-				for (int y = 0; y < FTexHeight; y++)
+				if (FOutputMode[0] == UserTexturetMode.Raw)
+					//copy full lines
+					for (int i = 0; i < FTexHeight; i++) 
+						CopyMemory(rect.Data.DataPointer.Move(rect.Pitch * i), FUserGenerator.GetUserPixels(0).LabelMapPtr.Move(FTexWidth * i * 2), FTexWidth * 2);
+				else
 				{
-					for (int x = 0; x < FTexWidth; x++, pSrc++, pDest+=4)
+					ushort* pSrc = (ushort*)FUserGenerator.GetUserPixels(0).LabelMapPtr;
+					byte* pDest = (byte*)rect.Data.DataPointer;
+	
+					// write the Depth pointer to Destination pointer
+					for (int y = 0; y < FTexHeight; y++)
 					{
-						var color = VColor.Black;
+						var off = 0;
+						for (int x = 0; x < FTexWidth; x++, pSrc++, pDest+=4)
+						{
+							var color = VColor.Black;
+							
+							if (*pSrc == 0)
+								color.A = 0;
+							else
+								color = FUserColor[*pSrc - 1];
+	
+							pDest[0] = (byte) (color.B * 255);
+							pDest[1] = (byte) (color.G * 255);
+							pDest[2] = (byte) (color.R * 255);
+							pDest[3] = (byte) (color.A * 255);
+							
+							off += 4;
+						}
 						
-						if (*pSrc == 0)
-							color.A = 0;
-						else
-							color = FUserColor[*pSrc - 1];
-
-						pDest[0] = (byte) (color.B * 255);
-						pDest[1] = (byte) (color.G * 255);
-						pDest[2] = (byte) (color.R * 255);
-						pDest[3] = (byte) (color.A * 255);
+						//advance dest by rest of pitch
+						pDest += rect.Pitch - off;
 					}
 				}
 			}
-			
-			texture.UnlockRectangle(0);
+			finally
+			{
+				texture.UnlockRectangle(0);
+			}
 		}
 
 		#endregion IPluginDXResource Members

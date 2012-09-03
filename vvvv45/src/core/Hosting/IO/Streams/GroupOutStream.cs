@@ -7,7 +7,7 @@ namespace VVVV.Hosting.IO.Streams
 {
     class GroupOutStream<T> : IInStream<IOutStream<T>>, IFlushable, IDisposable
     {
-        private readonly BufferedIOStream<IOutStream<T>> FStreams = new BufferedIOStream<IOutStream<T>>();
+        private readonly BufferedIOStream<IOutStream<T>> FStreams = new BufferedIOStream<IOutStream<T>>(2);
         private readonly List<IIOContainer> FIOContainers = new List<IIOContainer>();
         private readonly IDiffSpread<int> FCountSpread;
         private readonly IIOFactory FFactory;
@@ -44,7 +44,8 @@ namespace VVVV.Hosting.IO.Streams
                 var attribute = new OutputAttribute(string.Format("{0} {1}", FOutputAttribute.Name, i + 1))
                 {
                     IsPinGroup = false,
-                    Order = FOutputAttribute.Order + FOffsetCounter * 1000 + i
+                    Order = FOutputAttribute.Order + FOffsetCounter * 1000 + i,
+                    BinOrder = FOutputAttribute.Order + FOffsetCounter * 1000 + i
                 };
                 var io = FFactory.CreateIOContainer(typeof(IOutStream<T>), attribute, false);
                 FIOContainers.Add(io);

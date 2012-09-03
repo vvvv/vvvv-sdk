@@ -55,7 +55,14 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		Configuration,
 		Input,
-		Output,
+		Output
+	}
+	
+	public enum BoundsType
+	{
+		Node,
+		Box,
+		Window
 	}
 	
 	/// <summary>
@@ -221,6 +228,7 @@ namespace VVVV.PluginInterfaces.V2
 		IsBoygrouped = 2,
 		IsConnected = 4,
 		HasInvalidData = 8,
-		HasRuntimeError = 16
+		HasRuntimeError = 16,
+		IsExposed = 32
 	}
 }

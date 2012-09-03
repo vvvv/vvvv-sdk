@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace VVVV.Hosting.Pins.Input
 {

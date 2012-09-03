@@ -21,100 +21,38 @@ namespace VVVV.Hosting.IO
             int* pLength;
             double** ppDoubleData;
             float** ppFloatData;
+            Func<bool> validateFunc;
+
+            
             
             RegisterInput(typeof(IInStream<double>), (factory, context) => {
-                              if (context.IOAttribute.CheckIfChanged)
-                              {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueIn)));
-                                  var valueIn = container.RawIOObject as IValueIn;
-                                  valueIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new DoubleInStream(pLength, ppDoubleData, GetValidateFunc(valueIn, context.IOAttribute.AutoValidate));
-                                  return IOContainer.Create(context, stream, container);
-                              }
-                              else
-                              {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                                  var valueFastIn = container.RawIOObject as IValueFastIn;
-                                  valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new DoubleInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
-                                  return IOContainer.Create(context, stream, container);
-                              }
+                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                              var stream = new DoubleInStream(pLength, ppDoubleData, validateFunc);
+                              return IOContainer.Create(context, stream, container);
                           });
             
             RegisterInput(typeof(IInStream<float>), (factory, context) => {
-                              if (context.IOAttribute.CheckIfChanged)
-                              {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueIn)));
-                                  var valueIn = container.RawIOObject as IValueIn;
-                                  valueIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new FloatInStream(pLength, ppDoubleData, GetValidateFunc(valueIn, context.IOAttribute.AutoValidate));
-                                  return IOContainer.Create(context, stream, container);
-                              }
-                              else
-                              {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                                  var valueFastIn = container.RawIOObject as IValueFastIn;
-                                  valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new FloatInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
-                                  return IOContainer.Create(context, stream, container);
-                              }
+                                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                                var stream = new FloatInStream(pLength, ppDoubleData, validateFunc);
+                                return IOContainer.Create(context, stream, container);
                           });
             
             RegisterInput(typeof(IInStream<int>), (factory, context) => {
-                              if (context.IOAttribute.CheckIfChanged)
-                              {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueIn)));
-                                  var valueIn = container.RawIOObject as IValueIn;
-                                  valueIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new IntInStream(pLength, ppDoubleData, GetValidateFunc(valueIn, context.IOAttribute.AutoValidate));
-                                  return IOContainer.Create(context, stream, container);
-                              }
-                              else
-                              {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                                  var valueFastIn = container.RawIOObject as IValueFastIn;
-                                  valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new IntInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
-                                  return IOContainer.Create(context, stream, container);
-                              }
+                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                              var stream = new IntInStream(pLength, ppDoubleData, validateFunc);
+                              return IOContainer.Create(context, stream, container);
                           });
             
             RegisterInput(typeof(IInStream<uint>), (factory, context) => {
-                              if (context.IOAttribute.CheckIfChanged)
-                              {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueIn)));
-                                  var valueIn = container.RawIOObject as IValueIn;
-                                  valueIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new UIntInStream(pLength, ppDoubleData, GetValidateFunc(valueIn, context.IOAttribute.AutoValidate));
-                                  return IOContainer.Create(context, stream, container);
-                              }
-                              else
-                              {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                                  var valueFastIn = container.RawIOObject as IValueFastIn;
-                                  valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new UIntInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
-                                  return IOContainer.Create(context, stream, container);
-                              }
+                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                              var stream = new UIntInStream(pLength, ppDoubleData, validateFunc);
+                              return IOContainer.Create(context, stream, container);
                           });
             
             RegisterInput(typeof(IInStream<bool>), (factory, context) => {
-                              if (context.IOAttribute.CheckIfChanged)
-                              {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueIn)));
-                                  var valueIn = container.RawIOObject as IValueIn;
-                                  valueIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new BoolInStream(pLength, ppDoubleData, GetValidateFunc(valueIn, context.IOAttribute.AutoValidate));
-                                  return IOContainer.Create(context, stream, container);
-                              }
-                              else
-                              {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                                  var valueFastIn = container.RawIOObject as IValueFastIn;
-                                  valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                                  var stream = new BoolInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
-                                  return IOContainer.Create(context, stream, container);
-                              }
+                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                              var stream = new BoolInStream(pLength, ppDoubleData, validateFunc);
+                              return IOContainer.Create(context, stream, container);
                           });
 
             RegisterInput(typeof(IInStream<Matrix4x4>), (factory, context) => {
@@ -134,54 +72,40 @@ namespace VVVV.Hosting.IO
                           });
 
             RegisterInput(typeof(IInStream<Vector2D>), (factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                              var valueFastIn = container.RawIOObject as IValueFastIn;
-                              valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector2DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
-                              return IOContainer.Create(context, stream, container);
+                            var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                            var stream = new Vector2DInStream(pLength, ppDoubleData, validateFunc);
+                            return IOContainer.Create(context, stream, container);
                           });
             RegisterInput(typeof(IInStream<Vector3D>),(factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                              var valueFastIn = container.RawIOObject as IValueFastIn;
-                              valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector3DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
-                              return IOContainer.Create(context, stream, container);
+                            var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                            var stream = new Vector3DInStream(pLength, ppDoubleData, validateFunc);
+                            return IOContainer.Create(context, stream, container);
                           });
             RegisterInput(typeof(IInStream<Vector4D>),(factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                              var valueFastIn = container.RawIOObject as IValueFastIn;
-                              valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector4DInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
+                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                              var stream = new Vector4DInStream(pLength, ppDoubleData, validateFunc);
                               return IOContainer.Create(context, stream, container);
                           });
 
             RegisterInput(typeof(IInStream<Vector2>), (factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                              var valueFastIn = container.RawIOObject as IValueFastIn;
-                              valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector2InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
+                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                              var stream = new Vector2InStream(pLength, ppDoubleData, validateFunc);
                               return IOContainer.Create(context, stream, container);
                           });
             RegisterInput(typeof(IInStream<Vector3>), (factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                              var valueFastIn = container.RawIOObject as IValueFastIn;
-                              valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector3InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
+                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                              var stream = new Vector3InStream(pLength, ppDoubleData, validateFunc);
                               return IOContainer.Create(context, stream, container);
                           });
             RegisterInput(typeof(IInStream<Vector4>), (factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                              var valueFastIn = container.RawIOObject as IValueFastIn;
-                              valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new Vector4InStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
+                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                              var stream = new Vector4InStream(pLength, ppDoubleData, validateFunc);
                               return IOContainer.Create(context, stream, container);
                           });
             
             RegisterInput(typeof(IInStream<Quaternion>), (factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
-                              var valueFastIn = container.RawIOObject as IValueFastIn;
-                              valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
-                              var stream = new QuaternionInStream(pLength, ppDoubleData, GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate));
+                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                              var stream = new QuaternionInStream(pLength, ppDoubleData, validateFunc);
                               return IOContainer.Create(context, stream, container);
                           });
             
@@ -401,12 +325,46 @@ namespace VVVV.Hosting.IO
                                if (t.IsGenericType)
                                {
                                    var genericArguments = t.GetGenericArguments();
+                                   Type streamType = null;
                                    switch (genericArguments.Length) {
                                        case 1:
                                            if (typeof(IInStream<>).MakeGenericType(genericArguments).IsAssignableFrom(t))
                                            {
                                                var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
                                                var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
+                                               return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                           }
+                                           try
+                                           {
+                                               if (typeof(TextureResource<>).MakeGenericType(genericArguments).IsAssignableFrom(t))
+                                               {
+                                                    var metadataType = genericArguments[0];
+                                                    streamType = typeof(TextureOutStream<,>);
+                                                    streamType = streamType.MakeGenericType(t, metadataType);
+                                               }
+                                           }
+                                           catch (ArgumentException)
+                                           {
+                                               // Type constraints weren't satisfied.
+                                               streamType = null;
+                                           }
+                                           try
+                                           {
+                                               if (typeof(MeshResource<>).MakeGenericType(genericArguments).IsAssignableFrom(t))
+                                               {
+                                                   var metadataType = genericArguments[0];
+                                                   streamType = typeof(MeshOutStream<,>);
+                                                   streamType = streamType.MakeGenericType(t, metadataType);
+                                               }
+                                           }
+                                           catch (ArgumentException)
+                                           {
+                                               // Type constraints weren't satisfied.
+                                               streamType = null;
+                                           }
+                                           if (streamType != null)
+                                           {
+                                               var stream = Activator.CreateInstance(streamType, host, attribute) as IOutStream;
                                                return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
                                            }
                                            break;
@@ -419,9 +377,17 @@ namespace VVVV.Hosting.IO
                                                    var metadataType = genericArguments[1];
                                                    if (resourceType == typeof(Texture))
                                                    {
-                                                       var textureOutStreamType = typeof(TextureOutStream<,>);
-                                                       textureOutStreamType = textureOutStreamType.MakeGenericType(t, metadataType);
-                                                       var stream = Activator.CreateInstance(textureOutStreamType, host, attribute) as IOutStream;
+                                                       streamType = typeof(TextureOutStream<,>);
+                                                       streamType = streamType.MakeGenericType(t, metadataType);
+                                                   }
+                                                   else if (resourceType == typeof(Mesh))
+                                                   {
+                                                       streamType = typeof(MeshOutStream<,>);
+                                                       streamType = streamType.MakeGenericType(t, metadataType);
+                                                   }
+                                                   if (streamType != null)
+                                                   {
+                                                       var stream = Activator.CreateInstance(streamType, host, attribute) as IOutStream;
                                                        return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
                                                    }
                                                    else
@@ -475,6 +441,62 @@ namespace VVVV.Hosting.IO
                                return IOContainer.Create(context, ioStream, container, null, s => s.Flush());
                            },
                            false);
+
+            RegisterConfig(typeof(BufferedIOStream<Vector2>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector2ConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+            RegisterConfig(typeof(BufferedIOStream<Vector3>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector3ConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+            RegisterConfig(typeof(BufferedIOStream<Vector4>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector4ConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+
+
+
+            RegisterConfig(typeof(BufferedIOStream<Quaternion>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new QuaternionConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+
+
+
+            RegisterConfig(typeof(BufferedIOStream<Vector2D>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector2DConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+            RegisterConfig(typeof(BufferedIOStream<Vector3D>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector3DConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
+            RegisterConfig(typeof(BufferedIOStream<Vector4D>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
+                var valueConfig = container.RawIOObject as IValueConfig;
+                var stream = new Vector4DConfigStream(valueConfig);
+                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
+            });
             
             RegisterConfig(typeof(BufferedIOStream<string>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringConfig)));
@@ -500,10 +522,9 @@ namespace VVVV.Hosting.IO
             RegisterConfig(typeof(BufferedIOStream<EnumEntry>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumConfig)));
                                var enumConfig = container.RawIOObject as IEnumConfig;
-                               var stream = new DynamicEnumConfigStream(enumConfig);
+                               var stream = new DynamicEnumConfigStream(enumConfig,context.IOAttribute.EnumName);
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
-                           });
-            
+                           });        
             RegisterConfig(typeof(BufferedIOStream<>), (factory, context) => {
                                var t = context.DataType;
                                if (t.IsPrimitive)
@@ -516,6 +537,26 @@ namespace VVVV.Hosting.IO
                                }
                                throw new NotSupportedException(string.Format("Config pin of type '{0}' is not supported.", t));
                            });
+        }
+
+        private IIOContainer GetValueContainer(IIOFactory factory, IOBuildContext<InputAttribute> context, out int* pLength, out double** ppDoubleData, out Func<bool> validateFunc)
+        {
+            IIOContainer container;
+            if (context.IOAttribute.CheckIfChanged)
+            {
+                container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueIn)));
+                var valueIn = container.RawIOObject as IValueIn;
+                valueIn.GetValuePointer(out pLength, out ppDoubleData);
+                validateFunc = GetValidateFunc(valueIn, context.IOAttribute.AutoValidate);
+            }
+            else
+            {
+                container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueFastIn)));
+                var valueFastIn = container.RawIOObject as IValueFastIn;
+                valueFastIn.GetValuePointer(out pLength, out ppDoubleData);
+                validateFunc = GetValidateFunc(valueFastIn, context.IOAttribute.AutoValidate);
+            }
+            return container;
         }
         
         static private Func<bool> GetValidateFunc(IPluginIn pluginIn, bool autoValidate)

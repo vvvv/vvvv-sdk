@@ -31,6 +31,7 @@ namespace VVVV.PluginInterfaces.V2
 			{ typeof(Vector2), Tuple.Create((double) float.MinValue, (double) float.MaxValue, 0.01, false, 2) },
 			{ typeof(Vector3), Tuple.Create((double) float.MinValue, (double) float.MaxValue, 0.01, false, 3) },
 			{ typeof(Vector4), Tuple.Create((double) float.MinValue, (double) float.MaxValue, 0.01, false, 4) },
+            { typeof(Quaternion), Tuple.Create((double) float.MinValue, (double) float.MaxValue, 0.01, false, 4) },
 			{ typeof(Matrix), Tuple.Create((double) float.MinValue, (double) float.MaxValue, 0.01, false, 1) },
 			{ typeof(Vector2D), Tuple.Create(double.MinValue, double.MaxValue, 0.01, false, 2) },
 			{ typeof(Vector3D), Tuple.Create(double.MinValue, double.MaxValue, 0.01, false, 3) },
@@ -41,6 +42,8 @@ namespace VVVV.PluginInterfaces.V2
 		private static T NormalizePinAttribute<T>(T attribute, Type type) where T : IOAttribute
 		{
 			attribute = attribute.Clone() as T;
+
+            if (type == null) { return attribute; }
 			
 			if (attribute.MinValue == IOAttribute.DefaultMinValue && FDefaultValues.ContainsKey(type))
 				attribute.MinValue = FDefaultValues[type].Item1;
@@ -61,8 +64,10 @@ namespace VVVV.PluginInterfaces.V2
 			attribute.IsToggle = isBool && !attribute.IsBang;
 			attribute.AsInt = isInteger || attribute.AsInt;
 			
-			attribute.Dimension = FDefaultValues.ContainsKey(type) ? FDefaultValues[type].Item5 : 1;
+			if (attribute.IsToggle && attribute.DefaultBoolean)
+				attribute.DefaultValue = 1.0;
 			
+			attribute.Dimension = FDefaultValues.ContainsKey(type) ? FDefaultValues[type].Item5 : 1;
 			var defaultValues = attribute.DefaultValues;
 			Array.Resize(ref defaultValues, attribute.Dimension);
 			attribute.DefaultValues = defaultValues;
@@ -328,7 +333,7 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			INodeIn result = null;
 			host.CreateNodeInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
-			result.SetSubType(new Guid[] { type.GUID }, type.GetCSharpName());
+			result.SetSubType2(type, new Guid[] { type.GUID }, type.GetCSharpName());
 			result.Order = attribute.Order;
 			result.AutoValidate = attribute.AutoValidate;
 			return result;
@@ -353,7 +358,7 @@ namespace VVVV.PluginInterfaces.V2
 				typeT = typeT.BaseType;
 			}
 
-			result.SetSubType(guids.ToArray(), type.GetCSharpName());
+			result.SetSubType2(type, guids.ToArray(), type.GetCSharpName());
 			result.Order = attribute.Order;
 			return result;
 		}

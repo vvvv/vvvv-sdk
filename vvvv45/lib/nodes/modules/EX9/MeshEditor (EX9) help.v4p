@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9) help.v4p">
    <BOUNDS height="9435" left="780" top="450" type="Window" width="10770">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="25" nodename="Renderer (EX9)" stayontop="0" systemname="RENDERER (EX9)">
@@ -46,30 +46,6 @@
    <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
    </NODE>
-   <NODE id="23" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="0" left="1200" top="3210" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Z" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE id="18" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="0" left="1545" top="3615" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Z" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="17" nodename="Teapot (EX9.Geometry)" systemname="Teapot (EX9.Geometry)">
    <BOUNDS height="0" left="240" top="3540" type="Node" width="0">
    </BOUNDS>
@@ -90,30 +66,6 @@
    <PIN pinname="Radius 1">
    </PIN>
    </NODE>
-   <NODE id="13" nodename="Mouse (System Window)" systemname="Mouse (System Window)">
-   <BOUNDS height="0" left="1200" top="2655" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="23" dstpinname="X" srcnodeid="13" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="23" dstpinname="Y" srcnodeid="13" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="X" srcnodeid="13" srcpinname="Left Button">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Y" srcnodeid="13" srcpinname="Middle Button">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Z" srcnodeid="13" srcpinname="Right Button">
-   </LINK>
    <NODE id="10" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="270" left="1410" top="6360" type="Node" width="600">
    </BOUNDS>
@@ -535,7 +487,7 @@
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\MeshEditor (EX9).v4p" id="52" nodename="MeshEditor (EX9)" systemname="MeshEditor (EX9)">
    <BOUNDS height="100" left="900" top="4860" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="8130" left="2370" top="8730" type="Window" width="11340">
+   <BOUNDS height="8130" left="2415" top="7800" type="Window" width="11340">
    </BOUNDS>
    <BOUNDS height="3600" left="900" top="4860" type="Box" width="4800">
    </BOUNDS>
@@ -561,12 +513,12 @@
    </PIN>
    <PIN pinname="Show Points" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="52" dstpinname="Mesh" srcnodeid="17" srcpinname="Mesh">
-   </LINK>
-   <LINK dstnodeid="52" dstpinname="Mouse XYZ" srcnodeid="23" srcpinname="XYZ">
-   </LINK>
-   <LINK dstnodeid="52" dstpinname="Mouse Down" srcnodeid="18" srcpinname="XYZ">
    </LINK>
    <LINK dstnodeid="52" dstpinname="View Projection" srcnodeid="51" srcpinname="View Projection">
    </LINK>
@@ -643,6 +595,8 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK dstnodeid="52" dstpinname="Reset" srcnodeid="59" srcpinname="Y Output Value">
    </LINK>
@@ -661,9 +615,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="62" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="2325" top="2295" type="Node" width="0">
+   <BOUNDS height="0" left="2475" top="2580" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="2325" top="2295" type="Box" width="480">
+   <BOUNDS height="480" left="2475" top="2580" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -679,9 +633,9 @@
    <LINK dstnodeid="52" dstpinname="Edit Front Only" srcnodeid="62" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="63" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="2835" top="2415" type="Node" width="2280">
+   <BOUNDS height="270" left="2985" top="2700" type="Node" width="2280">
    </BOUNDS>
-   <BOUNDS height="285" left="2835" top="2415" type="Box" width="2310">
+   <BOUNDS height="285" left="2985" top="2700" type="Box" width="2310">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; Edit front facing points only|">
    </PIN>
@@ -714,4 +668,14 @@
    <BOUNDS type="Node" left="810" top="8415" width="100" height="100">
    </BOUNDS>
    </NODE>
+   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="69">
+   <BOUNDS type="Node" left="1350" top="3495" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="State" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="69" srcpinname="Mouse" dstnodeid="52" dstpinname="Mouse">
+   </LINK>
    </PATCH>

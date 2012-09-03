@@ -12,11 +12,11 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//opencv v2.31
+//http://opencv.willowgarage.com/wiki
 
 //////initial author
 //joreg -> joreg@gmx.at
@@ -92,7 +92,7 @@ DWORD initialise()
 	GParamConstants[3].Type = 0;    //show filtered
 	GParamConstants[4].Type = 10;   //3->4
 	GParamConstants[5].Type = 100;  //4->5
-	GParamConstants[6].Type = 0;    //reload mask
+	GParamConstants[6].Type = 1;    //reload mask
 
 	GParamConstants[0].Default = 0.0f;
 	GParamConstants[1].Default = 0.0f;
@@ -180,7 +180,7 @@ plugClass::plugClass()
     FOutputs[1].SliceCount = 256;
     FOutputs[1].Spread = (float*) calloc(FOutputs[1].SliceCount, sizeof(float));
 
-    newMask = true;
+    FNewMask = true;
 
     InitializeCriticalSection(&CriticalSection);
 }
@@ -235,17 +235,16 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 	    float f = pParam->value;
 	    int* ip = (int*)&f;
 	    char* cp = (char*)*ip;
-        int length = strlen(cp) + 1;
 
-        memcpy(&Filename[0], cp, length);
+        FFilename = cp;
         /*	char buffer[100];
-        sprintf(buffer, "new file: %s", &Filename[0]);
+        sprintf(buffer, "new file: %s", &FFilename[0]);
         OutputDebugString(buffer);*/
 
-        newMask = true;
+        FNewMask = true;
 	}
 	if ((pParam->index == 6) && (pParam->value >= 0.5))
-        newMask = true;
+        FNewMask = true;
 
 	return FF_SUCCESS;
 }
@@ -254,7 +253,7 @@ void plugClass::loadMask()
 {
     IplImage* tmp;
 
-    tmp = cvLoadImage(&Filename[0], 0);
+    tmp = cvLoadImage(&FFilename[0], 0);
 
     if (tmp != 0)
     {
@@ -263,7 +262,7 @@ void plugClass::loadMask()
         cvReleaseImage(&tmp);
     }
 
-    newMask = false;
+    FNewMask = false;
 }
 
 // -> Function is called when spread input values (types 20, 21 or 22) are modified //
@@ -318,7 +317,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
     EnterCriticalSection(&CriticalSection);
 
-    if (newMask)
+    if (FNewMask)
         loadMask();
 
     FCurrentImage->origin = 1;

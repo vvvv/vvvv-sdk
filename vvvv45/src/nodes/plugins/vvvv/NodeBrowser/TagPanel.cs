@@ -165,8 +165,9 @@ namespace VVVV.Nodes.NodeBrowser
         
         public void BeforeHide()
         {
-            this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
+        	//reset text to "" before removing resizeHandler in order to get FVisible lines computed correctly
             FTagsTextBox.Text = "";
+        	this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
             FToolTip.Hide(FRichTextBox);
         }
         
@@ -323,7 +324,10 @@ namespace VVVV.Nodes.NodeBrowser
                     if (e.Button == MouseButtons.Middle)
                         OnShowNodeReference(selNode);
                     else
+                    {
+                    	FTagsTextBox.Text = "";
                         OnShowHelpPatch(selNode);
+                    }
                 }
                 catch //username is a filename..do nothing
                 {}

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.NRefactoryResolver;
 using ICSharpCode.TextEditor;
@@ -95,12 +96,19 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 				
 				var document = editor.TextDocument as CSDocument;
 				var finder = document.ExpressionFinder;
-				var expressionResult = finder.FindExpression(editor.Document.TextContent, editor.ActiveTextAreaControl.Caret.Offset);
 				
-				if (expressionResult.Context != ExpressionContext.IdentifierExpected)
-				{
-					editor.ShowCompletionWindow(FCtrlSpaceCompletionProvider, key);
+				
+				try {
+					var expressionResult = finder.FindExpression(editor.Document.TextContent, editor.ActiveTextAreaControl.Caret.Offset);
+					
+					if (expressionResult.Context != ExpressionContext.IdentifierExpected)
+					{
+						editor.ShowCompletionWindow(FCtrlSpaceCompletionProvider, key);
+					}
+				} catch (Exception e) {
+					Debug.WriteLine(e.Message);
 				}
+				
 			}
 		}
 		

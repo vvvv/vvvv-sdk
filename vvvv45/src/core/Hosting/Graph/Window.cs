@@ -110,6 +110,14 @@ namespace VVVV.Hosting.Graph
             }
         }
         
+        public IntPtr Handle
+        {
+            get
+            {
+                return FNativeWindow.Handle;
+            }
+        }
+        
         public override string ToString()
         {
             return Caption;

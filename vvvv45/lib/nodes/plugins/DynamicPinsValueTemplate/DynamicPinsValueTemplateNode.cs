@@ -45,20 +45,14 @@ namespace VVVV.Nodes
 		
 		private void HandlePinCountChanged<T>(ISpread<int> countSpread, Spread<IIOContainer<T>> pinSpread, Func<int, IOAttribute> ioAttributeFactory) where T : class
 		{
-			// Destroy pins
-			for (int i = countSpread[0]; i < pinSpread.SliceCount; i++)
-			{
-				var ioContainer = pinSpread[i];
-				ioContainer.Dispose();
-				pinSpread.Remove(ioContainer);
-			}
-			// Create pins
-			for (int i = pinSpread.SliceCount; i < countSpread[0]; i++)
-			{
-				var ioAttribute = ioAttributeFactory(i + 1);
-				var ioContainer = FIOFactory.CreateIOContainer<T>(ioAttribute);
-				pinSpread.Add(ioContainer);
-			}
+			pinSpread.ResizeAndDispose(
+				countSpread[0], 
+				(i) => 
+				{
+					var ioAttribute = ioAttributeFactory(i + 1);
+					return FIOFactory.CreateIOContainer<T>(ioAttribute);
+				}
+			);
 		}
 		
 		private void HandleInputCountChanged(IDiffSpread<int> sender)

@@ -34,7 +34,7 @@ namespace VVVV.Nodes.Bullet
 		ISpread<ISpread<CollisionShape>> FShapes;
 
 		[Output("Shapes Transform")]
-		ISpread<Matrix4x4> FShapeTransform;
+		ISpread<ISpread<Matrix4x4>> FShapeTransform;
 
 		[Output("Is Active")]
 		ISpread<bool> FActive;
@@ -90,6 +90,7 @@ namespace VVVV.Nodes.Bullet
 				this.FContactResponse.SliceCount = this.FBodies.SliceCount;
 				this.FStatic.SliceCount = this.FBodies.SliceCount;
 				this.FKinematic.SliceCount = this.FBodies.SliceCount;
+                this.FShapeTransform.SliceCount = this.FBodies.SliceCount;
 
 
 
@@ -116,16 +117,23 @@ namespace VVVV.Nodes.Bullet
 						//CompoundShape sp = new CompoundShape(
 						CompoundShape comp = (CompoundShape)shape;
 						this.FShapes[i].SliceCount = comp.NumChildShapes;
+                        this.FShapeTransform[i].SliceCount = comp.NumChildShapes;
 
 
 						for (int j = 0; j < comp.NumChildShapes; j++)
 						{
-							this.FShapes[i][j] = comp.GetChildShape(j);
+							CollisionShape child = comp.GetChildShape(j);
+
+                            this.FShapes[i][j] = child;
+
 							Matrix m = comp.GetChildTransform(j);
+
 							Matrix4x4 mn = new Matrix4x4(m.M11, m.M12, m.M13, m.M14,
 								m.M21, m.M22, m.M23, m.M24, m.M31, m.M32, m.M33, m.M34,
 								m.M41, m.M42, m.M43, m.M44);
-							transforms.Add(mn);
+
+                            mn *= VMath.Scale(child.LocalScaling.ToVVVVector());
+                            this.FShapeTransform[i][j] = mn;
 							//comp.
 							//comp.GetChildTransform(
 							//this.FShapes[i][j].
@@ -135,8 +143,12 @@ namespace VVVV.Nodes.Bullet
 					{
 						this.FShapes[i].SliceCount = 1;
 						this.FShapes[i][0] = shape;
-						//this.FShapeTransform[i].SliceCount = 1;
-						transforms.Add(VMath.IdentityMatrix);
+						this.FShapeTransform[i].SliceCount = 1;
+
+
+
+                        this.FShapeTransform[i][0] = VMath.Scale(shape.LocalScaling.ToVVVVector());
+						//transforms.Add(VMath.IdentityMatrix);
 					}
 
 
@@ -169,8 +181,8 @@ namespace VVVV.Nodes.Bullet
 
 				}
 
-				this.FShapeTransform.SliceCount = transforms.Count;
-				this.FShapeTransform.AssignFrom(transforms);
+				//this.FShapeTransform.SliceCount = transforms.Count;
+				//this.FShapeTransform.AssignFrom(transforms);
 			}
 			else
 			{
@@ -182,6 +194,7 @@ namespace VVVV.Nodes.Bullet
 				this.FIsNew.SliceCount = 0;
 				this.FLinVel.SliceCount = 0;
 				this.FAngVel.SliceCount = 0;
+                this.FShapeTransform.SliceCount = 0;
 			}
 
 		}

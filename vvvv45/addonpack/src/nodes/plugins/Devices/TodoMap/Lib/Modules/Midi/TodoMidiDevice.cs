@@ -335,8 +335,8 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
                     {
                         this.indevs[idx].ChannelMessageReceived -= dev_ChannelMessageReceived;
                         this.indevs[idx].StopRecording();
-                        this.indevs[idx].Close();
-                        this.indevs[idx].Dispose();
+                        //this.indevs[idx].Close();
+                        //this.indevs[idx].Dispose();
                         this.inputstatus[idx] = eTodoMidiStatus.Connected;
                         this.OnMidiInputStatusChange(idx, eTodoMidiStatus.Connected);
                     }
@@ -406,7 +406,7 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
                 try
                 {
                     dev.StopRecording();
-                    try { dev.Dispose(); } catch {}
+                    //try { dev.Dispose(); } catch {}
                 }
                 catch
                 {

@@ -6,6 +6,7 @@ using VVVV.Hosting.Pins.Output;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace VVVV.Hosting.IO
 {
@@ -30,9 +31,9 @@ namespace VVVV.Hosting.IO
                                       
                                       spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
                                       if (attribute.AutoValidate)
-                                          return new GenericIOContainer<ISpread>(context, factory, spread, s => s.Sync());
+                                          return GenericIOContainer.Create(context, factory, spread, s => s.Sync());
                                       else
-                                          return new GenericIOContainer<ISpread>(context, factory, spread);
+                                          return GenericIOContainer.Create(context, factory, spread);
                                   }
                               }
                               var container = factory.CreateIOContainer(typeof(IInStream<>).MakeGenericType(context.DataType), attribute, false);
@@ -63,9 +64,9 @@ namespace VVVV.Hosting.IO
                                       
                                       spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
                                       if (attribute.AutoValidate)
-                                          return new GenericIOContainer<ISpread>(context, factory, spread, s => s.Sync(), s => s.Flush());
+                                          return GenericIOContainer.Create(context, factory, spread, s => s.Sync(), s => s.Flush());
                                       else
-                                          return new GenericIOContainer<ISpread>(context, factory, spread, null, s => s.Flush());
+                                          return GenericIOContainer.Create(context, factory, spread, null, s => s.Flush());
                                   }
                               }
                               var container = factory.CreateIOContainer(typeof(IInStream<>).MakeGenericType(context.DataType), attribute, false);
@@ -93,7 +94,7 @@ namespace VVVV.Hosting.IO
                                        }
                                        
                                        var spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
-                                       return new GenericIOContainer<ISpread>(context, factory, spread, null, s => s.Flush());
+                                       return GenericIOContainer.Create(context, factory, spread, null, s => s.Flush());
                                    }
                                }
                                var container = factory.CreateIOContainer(typeof(IOutStream<>).MakeGenericType(context.DataType), attribute, false);

@@ -9,38 +9,39 @@ namespace VVVV.Core.Commands
     /// <summary>
     /// A basic implementation of ICommandHistory.
     /// </summary>
-    public class CommandHistory: MarshalByRefObject, ICommandHistory
+    public class CommandHistory : MarshalByRefObject, ICommandHistory
     {
-    	#region Node class
-    	
-    	class Node<T>
-    	{
-    		public T Value { get; set; }
-    		public Node<T> Next { get; set; }
-    		public Node<T> Previous { get; set; }
-    		
-    		public Node()
-    		{
-    		}
-    		
-    		public Node(T value)
-    		{
-    			Value = value;
-    		}
-    	}
-    	
-    	#endregion
-    	
-    	private readonly Node<Command> FFirstNode = new Node<Command>();
+        #region Node class
+
+        class Node<T>
+        {
+            public T Value { get; set; }
+            public Node<T> Next { get; set; }
+            public Node<T> Previous { get; set; }
+
+            public Node()
+            {
+            }
+
+            public Node(T value)
+            {
+                Value = value;
+            }
+        }
+
+        #endregion
+
+        private readonly Node<Command> FFirstNode = new Node<Command>();
         private readonly Serializer FSerializer;
-    	
+
         // Position in command list of last executed command.
         private Node<Command> FCurrentNode;
-        
+
         /// <summary>
         /// The command which will be executed on redo.
         /// </summary>
-        public Command NextCommand {
+        public Command NextCommand
+        {
             get
             {
                 if (FCurrentNode.Next != null)
@@ -48,11 +49,12 @@ namespace VVVV.Core.Commands
                 return null;
             }
         }
-        
+
         /// <summary>
         /// The command which will be undone on undo.
         /// </summary>
-        public Command PreviousCommand {
+        public Command PreviousCommand
+        {
             get
             {
                 return FCurrentNode.Value;
@@ -72,7 +74,7 @@ namespace VVVV.Core.Commands
         /// <param name="command">The command to be executed.</param>
         public virtual void Insert(Command command)
         {
-            DebugHelpers.CatchAndLog(() => 
+            DebugHelpers.CatchAndLog(() =>
             {
                 command.Execute();
 
@@ -85,10 +87,10 @@ namespace VVVV.Core.Commands
                 }
                 else
                 {
-                	FFirstNode.Next = null;
-                	FCurrentNode = FFirstNode;
+                    FFirstNode.Next = null;
+                    FCurrentNode = FFirstNode;
                 }
-                
+
                 Debug.WriteLine(string.Format("Command {0} executed.", command));
             },
             string.Format("Execution of command {0}", command));
@@ -108,12 +110,12 @@ namespace VVVV.Core.Commands
             var command = PreviousCommand;
             if (command != null)
             {
-                DebugHelpers.CatchAndLog(() => 
+                DebugHelpers.CatchAndLog(() =>
                 {
                     command.Undo();
-            		FCurrentNode = FCurrentNode.Previous;
-            		Debug.WriteLine(string.Format("Command {0} undone.", command));
-            	},
+                    FCurrentNode = FCurrentNode.Previous;
+                    Debug.WriteLine(string.Format("Command {0} undone.", command));
+                },
                 string.Format("Undo of command {0}", command));
             }
         }
@@ -126,11 +128,11 @@ namespace VVVV.Core.Commands
             var command = NextCommand;
             if (command != null)
             {
-                DebugHelpers.CatchAndLog(() => 
+                DebugHelpers.CatchAndLog(() =>
                 {
-            		command.Redo();
-            		FCurrentNode = FCurrentNode.Next;
-            		Debug.WriteLine(string.Format("Command {0} redone.", command));
+                    command.Redo();
+                    FCurrentNode = FCurrentNode.Next;
+                    Debug.WriteLine(string.Format("Command {0} redone.", command));
                 },
                 string.Format("Redo of command {0}", command));
             }

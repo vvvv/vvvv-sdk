@@ -10,7 +10,7 @@ namespace VVVV.Core.View
     {
         private readonly IDisposable FSyncer;
         
-        public FilteredParentProvider(IModelMapper mapper)
+        public FilteredParentProvider(ModelMapper mapper)
         {
             var defaultParentProvider = new DefaultParentProvider(mapper);
             var children = defaultParentProvider.Childs;

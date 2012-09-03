@@ -94,6 +94,11 @@ namespace VVVV.Nodes.Finder
                 Flags |= FilterFlags.IONode;
                 Tags.Remove("i");
             }
+            if (Tags.Contains("e"))
+            {
+                Flags |= FilterFlags.Exposed;
+                Tags.Remove("e");
+            }
             if (Tags.Contains("n"))
             {
                 Flags |= FilterFlags.Native;

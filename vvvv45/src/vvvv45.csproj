@@ -129,7 +129,11 @@
           DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     <Exec Command="attrib +R &quot;$(TempDir)lib\nodes\*.*&quot; /S /D" />
     <Exec Command="attrib +H &quot;$(TempDir)vvvv.exe.config&quot;" />
-    <Exec Command="vvvv.exe /nodelist" WorkingDirectory="$(TempDir)" />
+    <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
+    <Exec Command="vvvv.exe /nodelist /dx9ex" WorkingDirectory="$(TempDir)" />
+    <!-- Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
+    <Exec Command="&quot;$(SevenZip)&quot; a -r &quot;$(ZipFileName)&quot; &quot;$(TempDir)&quot;" />
+    <!--
     <CreateItem Include="$(TempDir)\**\*.*">
       <Output ItemName="ZipFiles" TaskParameter="Include" />
     </CreateItem>
@@ -137,6 +141,7 @@
          WorkingDirectory="$(TempBaseDir)" 
          ZipFileName="$(ZipFileName)" 
          ZipLevel="9" />
+    -->
   </Target>
   <Target Name="_PostZip_">
     <RemoveDir Directories="$(TempBaseDir)" />

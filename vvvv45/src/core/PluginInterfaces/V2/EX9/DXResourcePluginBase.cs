@@ -62,7 +62,8 @@ namespace VVVV.PluginInterfaces.V2.EX9
 			else
 			{
 				//recreate data?
-				if (FDeviceData[OnDevice].Reinitialize) CreateResource(ForPin, OnDevice);
+				if (FDeviceData[OnDevice].Reinitialize) 
+					CreateResource(ForPin, OnDevice);
 				
 				//update data?
 				var dd = FDeviceData[OnDevice];
@@ -78,8 +79,14 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		{
 			if (FDeviceData.ContainsKey(OnDevice))
 			{
-				DestroyDeviceData(FDeviceData[OnDevice], OnlyUnManaged);
-				FDeviceData.Remove(OnDevice);
+				try
+				{
+					DestroyDeviceData(FDeviceData[OnDevice], OnlyUnManaged);
+				}
+				finally
+				{
+					FDeviceData.Remove(OnDevice);
+				}
 			}
 		}
 	}

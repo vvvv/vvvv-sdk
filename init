@@ -27,17 +27,19 @@ if [ $(uname -s) == 'MINGW32_NT-5.1' ]; then
   fi
 fi
 
-if [ ! -d "$PROGRAMFILES/MSBuild/MSBuildCommunityTasks" ]; then
-  echo "Installing MSBuild Community Tasks ..."
+# Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip.
+# No need to install MSBuildCommunityTasks for now.
+# if [ ! -d "$PROGRAMFILES/MSBuild/MSBuildCommunityTasks" ]; then
+  # echo "Installing MSBuild Community Tasks ..."
 
-  cd $TMP > /dev/null
+  # cd $TMP > /dev/null
   
-  curl -O "http://msbuildtasks.tigris.org/MSBuild.Community.Tasks.Nightly.msi"
+  # curl -O "http://msbuildtasks.tigris.org/MSBuild.Community.Tasks.Nightly.msi"
   
-  cmd //C "msiexec /qf /i MSBuild.Community.Tasks.Nightly.msi"
+  # cmd //C "msiexec /qf /i MSBuild.Community.Tasks.Nightly.msi"
   
-  cd - > /dev/null
-fi
+  # cd - > /dev/null
+# fi
 
 cp scripts/* .git/hooks
 .git/hooks/post-checkout

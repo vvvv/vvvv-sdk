@@ -5,9 +5,9 @@ namespace VVVV.Core.View
 {
     public class DefaultDecoratableProvider : IDecoratable
     {
-        private readonly IModelMapper FMapper;
+        private readonly ModelMapper FMapper;
         
-        public DefaultDecoratableProvider(IModelMapper mapper)
+        public DefaultDecoratableProvider(ModelMapper mapper)
         {
             FMapper = mapper;
             

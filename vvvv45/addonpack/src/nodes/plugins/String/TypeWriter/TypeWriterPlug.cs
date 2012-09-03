@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Windows.Forms;
 
 using VVVV.Utils;
 using VVVV.Utils.VMath;
@@ -17,6 +18,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Core.Logging;
+using VVVV.Utils.IO;
 #endregion using
 
 namespace TypeWriter
@@ -29,68 +31,10 @@ namespace TypeWriter
 	            Tags = "keyboard")]
 	public class TypeWriterPlugin: IPluginEvaluate
 	{
-		[DllImport("user32.dll")]
-		static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[] lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
-		
-		[DllImport("user32.dll")]
-		static extern bool GetKeyboardState(byte[] lpKeyState);
-
-		[DllImport("user32.dll")]
-		static extern uint MapVirtualKey(uint uCode, uint uMapType);
-
-		[DllImport("user32.dll")]
-		static extern IntPtr GetKeyboardLayout(uint idThread);
-
-		[DllImport("user32.dll")]
-		static extern short GetKeyState(Keys nVirtKey);
-
-		public static bool IsKeyPressed(Keys testKey)
-		{
-			bool keyPressed = false;
-
-			short result = GetKeyState(testKey);
-
-			switch (result)
-			{
-				case 0:
-					// Not pressed and not toggled on.
-					keyPressed = false;
-					break;
-
-				case 1:
-					// Not pressed, but toggled on
-					keyPressed = false;
-					break;
-
-				default:
-					// Pressed (and may be toggled on)
-					keyPressed = true;
-					break;
-			}
-
-			return keyPressed;
-		}
-		public static string VKCodeToUnicode(uint VKCode)
-		{
-			System.Text.StringBuilder sbString = new System.Text.StringBuilder();
-
-			byte[] bKeyState = new byte[255];
-			bool bKeyStateStatus = GetKeyboardState(bKeyState);
-			if (!bKeyStateStatus)
-				return "";
-			uint lScanCode = MapVirtualKey(VKCode, 0);
-			IntPtr HKL = GetKeyboardLayout(0);
-
-			if (VKCode > 47)
-				ToUnicodeEx(VKCode, lScanCode, bKeyState, sbString, (int)5, (uint)0, HKL);
-			
-			return sbString.ToString();
-		}
-
 		#region field declaration
 		//input pin declaration
-		[Input("KeyCode", DefaultValue = 0)]
-		IDiffSpread<uint> FInputKeyCode;
+		[Input("Keyboard State", IsSingle = true)]
+		IDiffSpread<KeyboardState> FKeyboardState;
 		
 		[Input("Text", DefaultString = "", IsSingle = true)]
 		ISpread<string> FInputText;
@@ -104,8 +48,14 @@ namespace TypeWriter
 		[Input("Initialize", IsSingle = true, IsBang = true)]
 		ISpread<bool> FInitialize;
 		
-		[Input("Set Cursor Position", IsSingle = true, MinValue = 0, MaxValue = int.MaxValue)]
-		IDiffSpread<int> FSetCursorPosition;
+		[Input("Cursor Position", IsSingle = true, MinValue = 0, MaxValue = int.MaxValue, Visibility = PinVisibility.OnlyInspector)]
+		ISpread<int> FNewCursorPosition;
+		
+		[Input("Set Cursor Position", IsSingle = true, IsBang = true, Visibility = PinVisibility.OnlyInspector)]
+		ISpread<bool> FSetCursorPosition;
+		
+		[Input("Ignore Navigation Keys", IsSingle = true, DefaultValue = 1, Visibility = PinVisibility.OnlyInspector)]
+		ISpread<bool> FIgnoreNavigationKeys;
 		
 		//output pin declaration
 		[Output("Output")]
@@ -120,6 +70,7 @@ namespace TypeWriter
 		[Import()]
 		IHDEHost FHDEHost;
 		
+		private bool FControlKeyPressed;
 		private string FLastCapitalKey;
 		private string FText = "";
 		private int FCursorCharPos = 0;
@@ -127,6 +78,7 @@ namespace TypeWriter
 		private string FNewlineSymbol = Environment.NewLine;
 		private Dictionary<uint, double> FBufferedCommands = new Dictionary<uint, double>();
 		private Dictionary<string, double> FBufferedKeys = new Dictionary<string, double>();
+		private KeyboardState FLastKeyboardState;
 		
 		// Track whether Dispose has been called.
 		private bool FDisposed = false;
@@ -355,34 +307,42 @@ namespace TypeWriter
 						AddNewChar(" ");
 						return true;
 					case Keys.Left:
-						if (IsKeyPressed(Keys.ControlKey))
-							CursorStepsWordLeft();
-						else
-							CursorStepsLeft();
+						if (!FIgnoreNavigationKeys[0])
+							if (FControlKeyPressed)
+								CursorStepsWordLeft();
+							else
+								CursorStepsLeft();
 						return true;
 					case Keys.Right:
-						if (IsKeyPressed(Keys.ControlKey))
-							CursorStepsWordRight();
-						else
-							CursorStepsRight();
+						if (!FIgnoreNavigationKeys[0])
+							if (FControlKeyPressed)
+								CursorStepsWordRight();
+							else
+								CursorStepsRight();
 						return true;
 					case Keys.Up:
-						CursorOneLineUp();
+						if (!FIgnoreNavigationKeys[0])
+							CursorOneLineUp();
 						return true;
 					case Keys.Down:
-						CursorOneLineDown();
+						if (!FIgnoreNavigationKeys[0])
+							CursorOneLineDown();
 						return true;
 					case Keys.Home:
-						CursorToLineStart();
+						if (!FIgnoreNavigationKeys[0])
+							CursorToLineStart();
 						return true;
 					case Keys.End:
-						CursorToLineEnd();
+						if (!FIgnoreNavigationKeys[0])
+							CursorToLineEnd();
 						return true;
 					case Keys.Prior:
-						CursorToTextStart();
+						if (!FIgnoreNavigationKeys[0])
+							CursorToTextStart();
 						return true;
 					case Keys.Next:
-						CursorToTextEnd();
+						if (!FIgnoreNavigationKeys[0])
+							CursorToTextEnd();
 						return true;
 				}
 			}
@@ -395,8 +355,8 @@ namespace TypeWriter
 		//all data handling should be in here
 		public void Evaluate(int SpreadMax)
 		{
-			if (FSetCursorPosition.IsChanged)
-				FCursorCharPos = Math.Min(FText.Length, Math.Max(0, FSetCursorPosition[0]));
+			if (FSetCursorPosition[0])
+				FCursorCharPos = Math.Min(FText.Length, Math.Max(0, FNewCursorPosition[0]));
 
 			//initializing with text
 			if (FInitialize[0])
@@ -404,77 +364,38 @@ namespace TypeWriter
 				FText = FInitialText[0];
 				CursorToTextEnd();
 			}
-			
+
 			if (FInsertText[0])
 				AddNewChar(FInputText[0]);
-
-//			Flogger.Log(LogType.Debug, "capital");
 			
-			if (FInputKeyCode[0] == 0
-			    || (FInputKeyCode.SliceCount == 1 && FInputKeyCode[0] == (uint)Keys.ControlKey))
+			if (FKeyboardState.SliceCount > 0)
 			{
-				FBufferedKeys.Clear();
-				FBufferedCommands.Clear();
-			}
-			else
-			{
-				//remove keys from the buffer that are not currently pressed
-				var keysToDelete = new List<string>();
-				var inputKeys = FInputKeyCode.Select(x => VKCodeToUnicode(x)).ToList();
-				foreach (var key in FBufferedKeys)
-					if (!inputKeys.Contains(key.Key))
-						keysToDelete.Add(key.Key);
-				
-				foreach (string key in keysToDelete)
-					FBufferedKeys.Remove(key);
-				
-				//first find out if the current keystate is a command
-				//ie. ctrl key, cursorkeys, tab...
-				//for this try to convert the input into a string by
-				//accessing FInputKey[-1] since earlier slices would be ctrl or shift
-				var newChar = VKCodeToUnicode(FInputKeyCode[-1]);
-
-				var lastKeyCode = FInputKeyCode[-1];
-				var now = FHDEHost.GetCurrentTime();
-				var keyDelay = 0.5; //character repeat delay in s
-				
-				//if this is a command
-				if ((IsKeyPressed(Keys.ControlKey) && !IsKeyPressed(Keys.Menu)) || lastKeyCode < 48 || string.IsNullOrEmpty(newChar.Trim()))
+				if (FKeyboardState[0] != FLastKeyboardState)
 				{
-					//add this to buffered commands
-					if (lastKeyCode != (int)Keys.ControlKey)
-						if (!FBufferedCommands.ContainsKey(lastKeyCode))
-							FBufferedCommands.Add(lastKeyCode, now);
-
-					FBufferedKeys.Clear();
-				}
-				else //interpret all slices as strings
-				{
-					foreach(var character in inputKeys)
-						if (!FBufferedKeys.ContainsKey(character))
+					if (FKeyboardState[0].KeyCodes.Count > 0)
 					{
-						if (character.ToUpper() == FLastCapitalKey)
+						FControlKeyPressed = (FKeyboardState[0].Modifiers & Keys.Control) > 0;
+						var altKeyPressed = (FKeyboardState[0].Modifiers & Keys.Alt) > 0;
+						var lastKeyCode = (uint)FKeyboardState[0].KeyCodes.Last();
+						
+						var keyUp = FKeyboardState[0].KeyCodes.Count < FLastKeyboardState.KeyCodes.Count;
+						var keyDown = FKeyboardState[0].KeyCodes.Count > FLastKeyboardState.KeyCodes.Count;
+							
+						if (keyDown || !keyUp)
 						{
-							FBufferedKeys.Add(character, now + keyDelay);
-							FLastCapitalKey = "";
+							if (lastKeyCode < 48)
+							{
+								if (!altKeyPressed)
+									RunCommand(lastKeyCode);
+							}
+							else if (FKeyboardState[0].KeyChars.Count > 0)
+                				AddNewChar(FKeyboardState[0].KeyChars.Last().ToString());
 						}
-						else
-							FBufferedKeys.Add(character, now);
 					}
-					
-					FBufferedCommands.Clear();
+					FLastKeyboardState = FKeyboardState[0];
 				}
-				
-				//check if any of the buffered keys/commands need to execute
-				foreach (var key in FBufferedKeys)
-					if (now == key.Value || now - key.Value > keyDelay)
-						AddNewChar(key.Key);
-				
-				foreach (var key in FBufferedCommands)
-					if (now == key.Value || now - key.Value > keyDelay)
-						RunCommand(key.Key);
 			}
-			
+
 			FOutput[0] = FText;
 			FCursorPosition[0] = FCursorCharPos;
 		}

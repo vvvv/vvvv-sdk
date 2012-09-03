@@ -46,6 +46,14 @@ namespace VVVV.Nodes
 		{
             //create new buffer on startup
             if (FFirstFrame) FOutput[0] = new Spread<T>(1);
+            
+            //return null if one of the control inputs is null
+            if(FIndex.IsAnyEmpty(FDoInsert, FFrameCount, FReset))
+            {
+            	FOutput.SliceCount = 0;
+            	FPhase.SliceCount = 0;
+            	return;
+            }
 
             //get buffer size
             var frameCount = FFrameCount[0];

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using VVVV.Core.Model;
 using VVVV.PluginInterfaces.V1;
+using System.Xml;
 
 namespace VVVV.PluginInterfaces.V2
 {
@@ -24,5 +25,7 @@ namespace VVVV.PluginInterfaces.V2
 	    bool AllowCaching { get; }
 	    void AddDir(string dir, bool recursive);
 	    void RemoveDir(string dir);
+        bool GetNodeListAttribute(INodeInfo nodeInfo, out string name, out string value);
+        void ParseNodeEntry([MarshalAs(UnmanagedType.IUnknown)] XmlReader xmlReader, INodeInfo nodeInfo);
 	}
 }

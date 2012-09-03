@@ -6,55 +6,69 @@ using System.Runtime.InteropServices;
 namespace VVVV.PluginInterfaces.V2
 {
     [ComVisible(false)]
-    public abstract class Resource<TDevice, TDeviceKey, TResource, TMetadata> : IDisposable where TResource : IDisposable
+    public abstract class Resource<TDevice, TResource, TMetadata> : IDisposable 
+        where TResource : IDisposable
     {
         private readonly Func<TMetadata, TDevice, TResource> FCreateResourceFunc;
         private readonly Action<TMetadata, TResource> FUpdateResourceFunc;
         private readonly Action<TMetadata, TResource> FDestroyResourceAction;
-        private readonly Dictionary<TDeviceKey, TResource> FResources = new Dictionary<TDeviceKey, TResource>();
+        private readonly Dictionary<TDevice, TResource> FResources = new Dictionary<TDevice, TResource>();
 		private readonly TMetadata FMetadata;
         
-        public Resource(TMetadata metadata, Func<TMetadata, TDevice, TResource> createResourceFunc, Action<TMetadata, TResource> updateResourceFunc, Action<TMetadata, TResource> destroyResourceAction)
+        public Resource(
+            TMetadata metadata, 
+            Func<TMetadata, TDevice, TResource> createResourceFunc, 
+            Action<TMetadata, TResource> updateResourceFunc = null, 
+            Action<TMetadata, TResource> destroyResourceAction = null)
         {
             FMetadata = metadata;
             FCreateResourceFunc = createResourceFunc;
-            FUpdateResourceFunc = updateResourceFunc;
-            FDestroyResourceAction = destroyResourceAction;
+            FUpdateResourceFunc = updateResourceFunc ?? UpdateResource;
+            FDestroyResourceAction = destroyResourceAction ?? DestroyResource;
+            NeedsUpdate = true;
         }
-        
-        public Resource(TMetadata metadata, Func<TMetadata, TDevice, TResource> createResourceFunc, Action<TMetadata, TResource> updateResourceFunc)
-            : this(metadata, createResourceFunc, updateResourceFunc, DestroyResource)
-        {
-        }
-        
-        public Resource(TMetadata metadata, Func<TMetadata, TDevice, TResource> createResourceFunc)
-            : this(metadata, createResourceFunc, UpdateResource)
-        {
-        }
-        
-        protected abstract TDeviceKey GetDeviceKey(TDevice device);
+
+        /// <summary>
+        /// Some arbitrary data associated with this resource.
+        /// </summary>
+        public TMetadata Metadata { get { return FMetadata; } }
+
+        /// <summary>
+        /// Whether or not the Update method has to be called for this resource.
+        /// By default this flag is true.
+        /// Note: The Update method will always get called for new resources.
+        /// </summary>
+        public bool NeedsUpdate { get; set; }
         
         public TResource this[TDevice device]
         {
             get
             {
-                TResource result = default(TResource);
-                TDeviceKey deviceKey = GetDeviceKey(device);
-                if (!FResources.TryGetValue(deviceKey, out result))
+                TResource result;
+                if (!FResources.TryGetValue(device, out result))
                 {
-                    result = FCreateResourceFunc(FMetadata, device);
-                    FResources[deviceKey] = result;
+                    result = CreateResoure(FMetadata, device);
+                    NeedsUpdate = true;
+                    FResources[device] = result;
                 }
                 return result;
             }
         }
+
+        protected virtual TResource CreateResoure(TMetadata metadata, TDevice device)
+        {
+            return FCreateResourceFunc(metadata, device);
+        }
         
         public void UpdateResource(TDevice device)
         {
-            TDeviceKey deviceKey = GetDeviceKey(device);
-            if (FResources.ContainsKey(deviceKey))
+            TResource resource;
+            if (FResources.TryGetValue(device, out resource))
             {
-                FUpdateResourceFunc(FMetadata, FResources[deviceKey]);
+                if (NeedsUpdate)
+                {
+                    FUpdateResourceFunc(FMetadata, resource);
+                }
             }
             else
             {
@@ -64,11 +78,11 @@ namespace VVVV.PluginInterfaces.V2
         
         public void DestroyResource(TDevice device)
         {
-            TDeviceKey deviceKey = GetDeviceKey(device);
-            if (FResources.ContainsKey(deviceKey))
+            TResource resource;
+            if (FResources.TryGetValue(device, out resource))
             {
-                FDestroyResourceAction(FMetadata, FResources[deviceKey]);
-                FResources.Remove(deviceKey);
+                FDestroyResourceAction(FMetadata, resource);
+                FResources.Remove(device);
             }
         }
         

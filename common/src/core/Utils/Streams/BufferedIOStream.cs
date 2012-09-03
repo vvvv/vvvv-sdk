@@ -199,10 +199,12 @@ namespace VVVV.Utils.Streams
         private T[] FBuffer;
         private int FLength;
         private int FCapacity;
+        protected int FChangeCount;
         
-        public BufferedIOStream()
+        public BufferedIOStream(int initialCapacity = 0)
         {
-            FBuffer = new T[0];
+            FCapacity = initialCapacity;
+            FBuffer = new T[initialCapacity];
             IsChanged = true;
         }
         
@@ -213,13 +215,15 @@ namespace VVVV.Utils.Streams
         
         public virtual void Flush()
         {
-            IsChanged = false;
+            FChangeCount = 0;
         }
+
+        public T[] Buffer { get { return FBuffer; } }
         
         public bool IsChanged
         {
-            get;
-            protected set;
+            get { return FChangeCount > 0; }
+            set { if (value) FChangeCount++; else FChangeCount = 0; }
         }
         
         public int Length
@@ -269,7 +273,7 @@ namespace VVVV.Utils.Streams
         
         public object Clone()
         {
-            var stream = new BufferedIOStream<T>();
+            var stream = new BufferedIOStream<T>(FCapacity);
             stream.Length = Length;
             Array.Copy(FBuffer, stream.FBuffer, stream.FBuffer.Length);
             return stream;
@@ -279,7 +283,7 @@ namespace VVVV.Utils.Streams
         {
             if (FLength > FCapacity)
             {
-                FCapacity = Math.Max(StreamUtils.NextHigher(FLength), 4);
+                FCapacity = StreamUtils.NextHigher(FLength);
 
                 var oldBuffer = FBuffer;
                 FBuffer = new T[FCapacity];
@@ -288,7 +292,7 @@ namespace VVVV.Utils.Streams
             }
             else if (FLength < FCapacity / 2)
             {
-                FCapacity = Math.Max(FCapacity / 2, 4);
+                FCapacity = FCapacity / 2;
 
                 var oldBuffer = FBuffer;
                 FBuffer = new T[FCapacity];

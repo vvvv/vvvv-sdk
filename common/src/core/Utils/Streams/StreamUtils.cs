@@ -221,6 +221,22 @@ namespace VVVV.Utils.Streams
                     }
             }
         }
+
+        public static int GetMaxLength(params IInStream[] streams)
+        {
+            switch (streams.Length)
+            {
+                case 0:
+                    return 0;
+                default:
+                    int maxLength = streams[0].Length;
+                    for (int i = 1; i < streams.Length; i++)
+                    {
+                        maxLength = maxLength.CombineStreams(streams[i].Length);
+                    }
+                    return maxLength;
+            }
+        }
         
         public static int GetLengthSum<T>(this IInStream<IInStream<T>> streams)
         {
@@ -324,6 +340,36 @@ namespace VVVV.Utils.Streams
             }
         }
         
+        public static void ResizeAndDismiss<T>(this IIOStream<T> stream, int length, Func<int, T> constructor)
+        {
+            var initialPosition = stream.Length;
+            stream.Length = length;
+            
+            var buffer = MemoryPool<T>.GetArray();
+            try
+            {
+                using (var writer = stream.GetWriter())
+                {
+                    writer.Position = initialPosition;
+                    var numSlicesToWrite = writer.Length - writer.Position;
+                    while (numSlicesToWrite > 0)
+                    {
+                        var blockSize = Math.Min(StreamUtils.BUFFER_SIZE, numSlicesToWrite);
+                        initialPosition = writer.Position;
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            buffer[i] = constructor(initialPosition + i);
+                        }
+                        numSlicesToWrite -= writer.Write(buffer, 0, blockSize);
+                    }
+                }
+            }
+            finally
+            {
+                MemoryPool<T>.PutArray(buffer);
+            }
+        }
+        
         public static void ResizeAndDispose<T>(this IIOStream<T> stream, int length, Func<T> constructor)
             where T : IDisposable
         {
@@ -378,6 +424,71 @@ namespace VVVV.Utils.Streams
             {
                 MemoryPool<T>.PutArray(buffer);
             }
+        }
+        
+        public static void Resize<T>(this IIOStream<T> stream, int length, Func<int, T> constructor, Action<T> destructor)
+        {
+            var buffer = MemoryPool<T>.GetArray();
+            try
+            {
+                using (var reader = stream.GetReader())
+                {
+                    reader.Position = length;
+                    var numSlicesToRead = reader.Length - reader.Position;
+                    while (numSlicesToRead > 0)
+                    {
+                        var blockSize = reader.Read(buffer, 0, StreamUtils.BUFFER_SIZE);
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            destructor(buffer[i]);
+                        }
+                        numSlicesToRead -= blockSize;
+                    }
+                }
+                
+                var initialPosition = stream.Length;
+                stream.Length = length;
+                
+                using (var writer = stream.GetWriter())
+                {
+                    writer.Position = initialPosition;
+                    var numSlicesToWrite = writer.Length - writer.Position;
+                    while (numSlicesToWrite > 0)
+                    {
+                        var blockSize = Math.Min(StreamUtils.BUFFER_SIZE, numSlicesToWrite);
+                        initialPosition = writer.Position;
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            buffer[i] = constructor(initialPosition + i);
+                        }
+                        numSlicesToWrite -= writer.Write(buffer, 0, blockSize);
+                    }
+                }
+            }
+            finally
+            {
+                MemoryPool<T>.PutArray(buffer);
+            }
+        }
+
+        public static RangeStream<T> GetRange<T>(this IInStream<T> source, int offset, int count)
+        {
+            return new RangeStream<T>(source, offset, count);
+        }
+
+        public static RangeStream<T> Take<T>(this IInStream<T> source, int count)
+        {
+            return new RangeStream<T>(source, 0, count);
+        }
+
+        public static CyclicStream<T> Cyclic<T>(this IInStream<T> source)
+        {
+            return new CyclicStream<T>(source);
+        }
+
+        public static ReverseStream<T> Reverse<T>(this IInStream<T> source)
+        {
+            return new ReverseStream<T>(source);
         }
     }
 }

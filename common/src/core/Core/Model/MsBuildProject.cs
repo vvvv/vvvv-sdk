@@ -7,7 +7,6 @@ using System.Linq;
 
 using VVVV.Core.Logging;
 using VVVV.Core.Runtime;
-using VVVV.Core.Utils;
 using VVVV.Utils;
 using MsBuild = Microsoft.Build.BuildEngine;
 

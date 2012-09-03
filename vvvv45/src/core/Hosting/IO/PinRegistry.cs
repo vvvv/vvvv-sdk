@@ -4,6 +4,7 @@ using VVVV.Hosting.Pins.Input;
 using VVVV.Hosting.Pins.Output;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace VVVV.Hosting.IO
 {

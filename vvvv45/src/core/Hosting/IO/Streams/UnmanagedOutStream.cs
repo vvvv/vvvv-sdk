@@ -82,6 +82,7 @@ namespace VVVV.Hosting.IO.Streams
 		public UnmanagedOutStream(Action<int> setDstLengthAction)
         {
 			FSetDstLengthAction = setDstLengthAction;
+			FSetDstLengthAction(FLength);
         }
         
         public int Length

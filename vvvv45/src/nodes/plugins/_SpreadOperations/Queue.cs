@@ -35,6 +35,13 @@ namespace VVVV.Nodes
 		
 		public void Evaluate(int SpreadMax)
 		{
+			//return null if one of the control inputs is null
+            if(FDoInsert.IsAnyEmpty(FFrameCount, FReset))
+            {
+            	FOutput.SliceCount = 0;
+            	return;
+            }
+			
             if (FReset[0])
                 FBuffer.Clear();
 

@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using SlimDX.Direct3D9;
 using VVVV.Hosting.Interfaces.EX9;
 using VVVV.PluginInterfaces.V2.EX9;
+using VVVV.PluginInterfaces.InteropServices.EX9;
 
 namespace VVVV.Hosting
 {
@@ -21,26 +22,26 @@ namespace VVVV.Hosting
             
             public void DeviceAddedCB(IntPtr devicePtr)
             {
-                var device = Device.FromPointer(devicePtr);
+            	var device = (Device) DeviceMarshaler.GetInstance().MarshalNativeToManaged(devicePtr);
                 FDeviceService.OnDeviceAdded(new DeviceEventArgs(device));
             }
             
             public void DeviceRemovedCB(IntPtr devicePtr)
             {
-                var device = Device.FromPointer(devicePtr);
+                var device = (Device) DeviceMarshaler.GetInstance().MarshalNativeToManaged(devicePtr);
                 FDeviceService.OnDeviceRemoved(new DeviceEventArgs(device));
                 device.Dispose();
             }
             
             public void DeviceEnabledCB(IntPtr devicePtr)
             {
-                var device = Device.FromPointer(devicePtr);
+                var device = (Device) DeviceMarshaler.GetInstance().MarshalNativeToManaged(devicePtr);
                 FDeviceService.OnDeviceEnabled(new DeviceEventArgs(device));
             }
             
             public void DeviceDisabledCB(IntPtr devicePtr)
             {
-                var device = Device.FromPointer(devicePtr);
+                var device = (Device) DeviceMarshaler.GetInstance().MarshalNativeToManaged(devicePtr);
                 FDeviceService.OnDeviceDisabled(new DeviceEventArgs(device));
             }
         }
@@ -106,7 +107,7 @@ namespace VVVV.Hosting
             {
                 foreach (var devicePtr in FDeviceService.Devices)
                 {
-                    yield return Device.FromPointer(devicePtr);
+                	yield return (Device) DeviceMarshaler.GetInstance().MarshalNativeToManaged(devicePtr);
                 }
             }
         }

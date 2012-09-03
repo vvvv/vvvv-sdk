@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Research.Kinect, Version=1.0.0.45, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Kinect, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\Microsoft.Research.Kinect.dll</HintPath>
+      <HintPath>Dependencies\Microsoft.Kinect.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX, Version=4.0.12.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -45,6 +45,7 @@
       <HintPath>..\..\..\..\..\..\lib\core\System.ComponentModel.Composition.Codeplex.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,10 +54,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Lib\KinectRuntime.cs" />
-    <Compile Include="Nodes\KinectColorTextureNode.cs" />
-    <Compile Include="Nodes\KinectDepthTextureNode.cs" />
-    <Compile Include="Nodes\KinectRuntimeNode.cs" />
-    <Compile Include="Nodes\KinectSkeletonNode.cs" />
+    <Compile Include="Nodes\KinectColorTextureNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Nodes\KinectDepthTextureNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Nodes\KinectPlayerTextureNode.cs" />
+    <Compile Include="Nodes\KinectRuntimeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Nodes\KinectSkeletonNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Nodes\KinectSmoothParamsNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -77,7 +88,6 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

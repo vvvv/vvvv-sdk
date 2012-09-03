@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\vuxbins\FitEllipse (2d OpenCV) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.2.dtd" >
+   <PATCH nodename="D:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\vuxbins\FitEllipse (2d OpenCV) help.v4p">
    <BOUNDS height="8505" left="7350" top="630" type="Window" width="8760">
    </BOUNDS>
    <NODE id="23" nodename="Queue (Spreads Legacy)">
@@ -33,7 +33,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|draw into the renderer with the left mousebutton pressed|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|draw into the renderer with the left mousebutton pressed|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -47,7 +47,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="-210" top="12270" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|find the best fitting ellipse for a set of points|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|find the best fitting ellipse for a set of points|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -61,7 +61,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="-210" top="12270" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|FitEllipse- 2d|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|FitEllipse- 2d|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -223,7 +223,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|via the BinSize you tell the node how many hulls you would like to extract.&cr;&lf;&cr;&lf;Please note that to process the algorithm a minimum of  6 points is needed&cr;&lf;&cr;&lf;-1: one ellipse from all points&cr;&lf;-2: two ellpises from all points&cr;&lf;...&cr;&lf;&cr;&lf;6: one box for every 2 consecutive points&cr;&lf;7: one box for every 3 consecutive points&cr;&lf;...|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|via the BinSize you tell the node how many hulls you would like to extract.&cr;&lf;&cr;&lf;Please note that to process the algorithm a minimum of  6 points is needed&cr;&lf;&cr;&lf;-1: one ellipse from all points&cr;&lf;-2: two ellpises from all points&cr;&lf;...&cr;&lf;&cr;&lf;6: one box for every 2 consecutive points&cr;&lf;7: one box for every 3 consecutive points&cr;&lf;...|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -277,7 +277,7 @@
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="Rotate" visible="1" slicecount="1" values="0">
+   <PIN pinname="Rotate" visible="1">
    </PIN>
    <PIN pinname="TranslateX" visible="1">
    </PIN>
@@ -384,8 +384,10 @@
    </LINK>
    <LINK srcnodeid="24" srcpinname="SizeXY" dstnodeid="4" dstpinname="XY">
    </LINK>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Bin Size">
+   </LINK>
    <LINK srcnodeid="24" srcpinname="Angle" dstnodeid="2" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Bin Size">
+   <LINK srcnodeid="24" srcpinname="Angle" dstnodeid="3" dstpinname="Rotate">
    </LINK>
    </PATCH>

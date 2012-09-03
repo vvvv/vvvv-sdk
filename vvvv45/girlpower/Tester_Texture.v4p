@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\Tester_Texture.v4p">
    <BOUNDS height="9135" left="765" top="5355" type="Window" width="15645">
    </BOUNDS>
@@ -71,9 +71,9 @@
    </PIN>
    <PIN pinname="Mip Map Count" slicecount="1" values="All">
    </PIN>
-   <PIN pinname="Repair" slicecount="1" values="0">
+   <PIN pinname="Repair" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Format" slicecount="1" values="R8G8B8">
+   <PIN pinname="Format" slicecount="1" values="|No Specific|">
    </PIN>
    <PIN pinname="Width" pintype="Input" slicecount="1" visible="1" values="1024">
    </PIN>
@@ -261,13 +261,13 @@
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   <PIN pinname="Mip Map Count" slicecount="1" values="|1 mm|">
    </PIN>
    <PIN pinname="Repair" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Width" visible="1">
+   <PIN pinname="Width" visible="1" slicecount="1" values="0.266666666666667">
    </PIN>
-   <PIN pinname="Height" visible="1">
+   <PIN pinname="Height" visible="1" slicecount="1" values="0.426666666666667">
    </PIN>
    <PIN pinname="X" slicecount="1" values="-0.1">
    </PIN>
@@ -412,20 +412,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE id="32" nodename="Expr (Value Legacy)" systemname="Expr (Value Legacy)">
-   <BOUNDS height="0" left="3735" top="2925" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Term" slicecount="1" values="1/a*512" encoded="0">
-   </PIN>
-   <PIN pinname="A" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="32" dstpinname="A" srcnodeid="33" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="43" dstpinname="Width" srcnodeid="32" srcpinname="Output">
-   </LINK>
    <NODE componentmode="InABox" id="31" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4920" top="2595" type="Node" width="0">
    </BOUNDS>
@@ -438,20 +424,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE id="30" nodename="Expr (Value Legacy)" systemname="Expr (Value Legacy)">
-   <BOUNDS height="0" left="4935" top="2910" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Term" slicecount="1" values="1/a*512" encoded="0">
-   </PIN>
-   <PIN pinname="A" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="30" dstpinname="A" srcnodeid="31" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="43" dstpinname="Height" srcnodeid="30" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="44" dstpinname="Texture In 4" srcnodeid="36" srcpinname="Texture Out">
    </LINK>
    <LINK dstnodeid="44" dstpinname="Texture In 5" srcnodeid="35" srcpinname="Texture Out">
@@ -481,7 +453,7 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Spread Count" slicecount="1" values="15">
+   <PIN pinname="Spread Count" slicecount="1" visible="1" values="15">
    </PIN>
    <PIN pinname="Random Seed" visible="1">
    </PIN>
@@ -537,7 +509,7 @@
    </PIN>
    </NODE>
    <NODE id="24" nodename="VideoTexture (EX9.Texture VMR9)" systemname="VIDEOTEXTURE (EX9.TEXTURE VMR9)">
-   <BOUNDS height="0" left="12465" top="3375" type="Node" width="0">
+   <BOUNDS height="0" left="12255" top="3375" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -547,11 +519,13 @@
    </PIN>
    </NODE>
    <NODE id="23" nodename="AsVideo (EX9.Texture)" systemname="AsVideo (EX9.Texture)">
-   <BOUNDS height="0" left="12465" top="2895" type="Node" width="0">
+   <BOUNDS height="0" left="12255" top="2895" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
    </PIN>
    <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="24" dstpinname="Video" srcnodeid="23" srcpinname="Video">
@@ -565,7 +539,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="E:\Triko_DV.avi" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="E:\Triko_DV.avi">
    </PIN>
    </NODE>
    <LINK dstnodeid="25" dstpinname="Filename" srcnodeid="22" srcpinname="Output String">
@@ -621,8 +595,6 @@
    <LINK dstnodeid="56" dstpinname="Source" srcnodeid="57" srcpinname="EX9 Out">
    </LINK>
    <LINK dstnodeid="36" dstpinname="Color" srcnodeid="26" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="23" dstpinname="Texture" srcnodeid="43" srcpinname="Texture Out">
    </LINK>
    <LINK dstnodeid="44" dstpinname="Texture In 8" srcnodeid="24" srcpinname="Texture Out">
    </LINK>
@@ -755,7 +727,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="..\lib\assets\images\earth_512x512.jpg" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="..\lib\assets\images\earth_512x512.jpg">
    </PIN>
    </NODE>
    <LINK dstnodeid="19" dstpinname="Filename" srcnodeid="9" srcpinname="Output String">
@@ -914,4 +886,36 @@
    <BOUNDS height="2370" left="780" top="2835" type="Window" width="11910">
    </BOUNDS>
    </NODE>
+   <LINK srcnodeid="27" srcpinname="Cycles" dstnodeid="28" dstpinname="Spread Count">
+   </LINK>
+   <LINK srcnodeid="56" srcpinname="Texture Out" dstnodeid="23" dstpinname="Texture">
+   </LINK>
+   <NODE id="32" nodename="Expr (Value)" systemname="Expr (Value)">
+   <BOUNDS height="0" left="3735" top="2925" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Term" slicecount="1" encoded="0" values="1/a*512">
+   </PIN>
+   <PIN pinname="A" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="32" dstpinname="A" srcnodeid="33" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="43" dstpinname="Width" srcnodeid="32" srcpinname="Output">
+   </LINK>
+   <NODE id="30" nodename="Expr (Value)" systemname="Expr (Value)">
+   <BOUNDS height="0" left="4935" top="2910" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Term" slicecount="1" encoded="0" values="1/a*512">
+   </PIN>
+   <PIN pinname="A" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="30" dstpinname="A" srcnodeid="31" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="43" dstpinname="Height" srcnodeid="30" srcpinname="Output">
+   </LINK>
    </PATCH>

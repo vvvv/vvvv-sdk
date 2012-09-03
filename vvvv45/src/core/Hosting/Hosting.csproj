@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExposedNodeService.cs" />
     <Compile Include="DeviceService.cs" />
     <Compile Include="ExportProviderUtils.cs" />
     <Compile Include="Factories\AbstractFileFactory.cs" />
@@ -83,6 +84,20 @@
     <Compile Include="Factories\EffectsFactory.cs" />
     <Compile Include="Factories\PatchFactory.cs" />
     <Compile Include="Factories\StartableRegistry.cs" />
+    <Compile Include="Interfaces\EX9\IDXMeshPin.cs" />
+    <Compile Include="Interfaces\IInternalMainLoopEvent.cs" />
+    <Compile Include="Interfaces\IInternalMainLoopEventListener.cs" />
+    <Compile Include="IO\PointerRegistry.cs" />
+    <Compile Include="IO\Pointers\ColorInput.cs" />
+    <Compile Include="IO\Pointers\ColorOutput.cs" />
+    <Compile Include="IO\Pointers\FastValueInput.cs" />
+    <Compile Include="IO\Pointers\TransformInput.cs" />
+    <Compile Include="IO\Pointers\TransformOutput.cs" />
+    <Compile Include="IO\Pointers\ValueInput.cs" />
+    <Compile Include="IO\Pointers\ValueOutput.cs" />
+    <Compile Include="IO\Streams\VectorConfigStreams.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MainLoop.cs" />
     <Compile Include="Graph\Node.cs" />
     <Compile Include="Graph\Pin.cs" />
@@ -95,8 +110,8 @@
     <Compile Include="Interfaces\EX9\IInternalDXDeviceService.cs" />
     <Compile Include="Interfaces\EX9\IDXResourcePin.cs" />
     <Compile Include="Interfaces\EX9\IDXTexturePin.cs" />
-    <Compile Include="Interfaces\IInternalMainLoopEvent.cs" />
-    <Compile Include="Interfaces\IInternalMainLoopEventListener.cs" />
+    <Compile Include="Interfaces\IInternalExposedNodeListener.cs" />
+    <Compile Include="Interfaces\IInternalExposedNodeService.cs" />
     <Compile Include="Interfaces\IInternalMainLoop.cs" />
     <Compile Include="Interfaces\IInternalPluginHost.cs" />
     <Compile Include="Interfaces\IInternalPluginHostListener.cs" />
@@ -133,6 +148,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyNodeBrowserHost.cs" />
     <Compile Include="ProxyNodeInfoFactory.cs" />
+    <Compile Include="Refactoring\Refactorer.cs" />
+    <Compile Include="Refactoring\XMLSnippets.cs" />
     <Compile Include="StreamExportProvider.cs" />
     <Compile Include="IO\Streams\GroupInStream.cs" />
     <Compile Include="IO\Streams\MultiDimInStream.cs" />
@@ -149,13 +166,7 @@
     <Compile Include="Factories\FreeFrameFactory.cs" />
     <Compile Include="Factories\VSTFactory.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="IO" />
-    <Folder Include="IO\Pins" />
-    <Folder Include="IO\Streams" />
-    <Folder Include="Properties" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>

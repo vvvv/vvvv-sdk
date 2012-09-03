@@ -123,11 +123,11 @@ namespace VVVV.Core.Model
             FDocumentConverter = new DocumentConverter(location);
             
             FReferences = new EditableIDList<IReference>("References");
-            FReferences.Mapper.RegisterMapping<IConverter>(FReferenceConverter);
+            FReferences.RootingChanged += FReferences_RootingChanged;
             Add(FReferences);
 
             FDocuments = new EditableIDList<IDocument>("Documents");
-            FDocuments.Mapper.RegisterMapping<IConverter>(FDocumentConverter);
+            FDocuments.RootingChanged += FDocuments_RootingChanged;
             Add(FDocuments);
             
             FReferences.Added += Reference_Added;
@@ -142,6 +142,26 @@ namespace VVVV.Core.Model
             
             FBackgroundWorker.DoWork += DoWorkCB;
             FBackgroundWorker.RunWorkerCompleted += RunWorkerCompletedCB;
+        }
+
+        void FReferences_RootingChanged(object sender, RootingChangedEventArgs args)
+        {
+            switch (args.Rooting) 
+            {
+                case RootingAction.Rooted:
+                    FReferences.Mapper.RegisterMapping<IConverter>(FReferenceConverter);
+                    break;
+            }
+        }
+        
+        void FDocuments_RootingChanged(object sender, RootingChangedEventArgs args)
+        {
+            switch (args.Rooting) 
+            {
+                case RootingAction.Rooted:
+                    FDocuments.Mapper.RegisterMapping<IConverter>(FDocumentConverter);
+                    break;
+            }
         }
         
         void References_Changed(IViewableCollection<IReference> collection, IReference item)

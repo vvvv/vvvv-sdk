@@ -25,26 +25,26 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
     public partial class HierarchyViewer : Viewer, ISelectionProvider, ICamera
     {
         private ICanvas FCanvas;
-        private IModelMapper FRootMapper;
+        private ModelMapper FRootMapper;
         private MapperHierarchyNode FRootNode;
         private int FUpdateLockCount;
         private bool FNeedsUpdate;
         public Dictionary<int, float> DepthOffsets = new Dictionary<int, float>();
         
         public new event ClickHandler MouseClick;
-        protected void OnMouseClick(IModelMapper sender, MouseEventArgs e)
+        protected void OnMouseClick(ModelMapper sender, MouseEventArgs e)
         {
             if (MouseClick != null)
                 MouseClick(sender, e);
         }
         public new event ClickHandler MouseDoubleClick;
-        protected void OnMouseDoubleClick(IModelMapper sender, MouseEventArgs e)
+        protected void OnMouseDoubleClick(ModelMapper sender, MouseEventArgs e)
         {
             if (MouseDoubleClick != null)
                 MouseDoubleClick(sender, e);
         }
         public new event ClickHandler MouseDown;
-        protected virtual void OnMouseDown(IModelMapper sender, MouseEventArgs e)
+        protected virtual void OnMouseDown(ModelMapper sender, MouseEventArgs e)
         {
             if (MouseDown != null) {
                 MouseDown(sender, e);
@@ -184,12 +184,12 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             FToolTip.Hide(this);
         }
 
-        public void MouseClickHandler(IModelMapper sender, MouseEventArgs e)
+        public void MouseClickHandler(ModelMapper sender, MouseEventArgs e)
         {
             OnMouseClick(sender, e);
         }
         
-        public void MouseDoubleClickHandler(IModelMapper sender, MouseEventArgs e)
+        public void MouseDoubleClickHandler(ModelMapper sender, MouseEventArgs e)
         {
             OnMouseDoubleClick(sender, e);
         }

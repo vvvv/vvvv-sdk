@@ -78,6 +78,18 @@ namespace VVVV.Hosting.Factories
             }
         }
 
+        public bool GetNodeListAttribute(INodeInfo nodeInfo, out string name, out string value)
+        {
+            name = string.Empty;
+            value = string.Empty;
+            return false;
+        }
+
+        public void ParseNodeEntry(System.Xml.XmlReader xmlReader, INodeInfo nodeInfo)
+        {
+            
+        }
+
         public INodeInfo[] ExtractNodeInfos(string filename, string arguments)
         {
             var result = new List<INodeInfo>();

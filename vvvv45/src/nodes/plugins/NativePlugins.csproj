@@ -62,6 +62,9 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Commons.Xml.Relaxng">
+      <HintPath>..\..\thirdparty\Commons.Xml.Relaxng.dll</HintPath>
+    </Reference>
     <Reference Include="FSharp.Core">
       <HintPath>..\..\thirdparty\FSharp.Core.dll</HintPath>
       <Private>True</Private>
@@ -93,19 +96,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="2d\TreemapNode.cs" />
     <Compile Include="Animation\ParticlesThreaded\Particle.cs" />
     <Compile Include="Animation\ParticlesThreaded\ParticleSystem.cs" />
     <Compile Include="Animation\ParticlesThreaded\ParticleSystemNode.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Layer\DrawText\DrawText.cs" />
     <Compile Include="Layer\DrawText\DrawTextLegacy.cs" />
+    <Compile Include="Network\Clock.cs" />
+    <Compile Include="Network\Sync.cs" />
     <Compile Include="Spreads\Lindenmayer\Lindenmayer.cs" />
     <Compile Include="Spreads\Lindenmayer\LindenmayerNode.cs" />
+    <Compile Include="String\ApplyModifiersNode.cs" />
+    <Compile Include="String\KeyMatchNodes.cs" />
     <Compile Include="String\StringInsertNode.cs" />
     <Compile Include="SVG\SVGGeomNodes.cs" />
     <Compile Include="SVG\SVGTextureNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="System\KeyboardStateNodes.cs" />
+    <Compile Include="System\KeyboardStateJoinNode.cs" />
+    <Compile Include="Texture\SharedTexture\SharedTextureNode.cs" />
+    <Compile Include="System\KeyboardStateSplitNode.cs" />
+    <Compile Include="System\MouseStateNodes.cs" />
+    <Compile Include="System\MouseStateJoinNode.cs" />
+    <Compile Include="System\MouseStatetSplitNode.cs" />
     <Compile Include="Transform\Decompose\DecomposeNode.cs" />
     <Compile Include="Value\DifferentialNode.cs" />
     <Compile Include="Value\IntegralNode.cs" />
@@ -123,7 +138,6 @@
     </Compile>
     <Compile Include="vvvv\Kommunikator\Uploader.cs" />
     <Compile Include="vvvv\Kontrolleur\KontrolleurNode.cs" />
-    <Compile Include="vvvv\Kontrolleur\PatchMessage.cs" />
     <Compile Include="vvvv\Kontrolleur\RemoteValue.cs" />
     <Compile Include="vvvv\NodeBrowser\CategoryEntry.cs" />
     <Compile Include="vvvv\NodeBrowser\CategoryPanel.cs">
@@ -173,19 +187,25 @@
     <Compile Include="vvvv\ProjectExplorer\ProjectExplorerPlugin.Designer.cs">
       <DependentUpon>ProjectExplorerPlugin.cs</DependentUpon>
     </Compile>
+    <Compile Include="vvvv\Server\VVVVServerNode.cs" />
     <Compile Include="vvvv\StartableInfo\StartableInfoNode.cs" />
     <Compile Include="vvvv\WindowSwitcher\WindowSwitcherNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="XML\XMLNodes.cs" />
+    <Compile Include="XML\XMLNodeWrappers.cs" />
+    <Compile Include="XML\XMLPruneNode.cs" />
     <Compile Include="_SpreadOperations\Buffer.cs" />
     <Compile Include="_SpreadOperations\Cons.cs" />
     <Compile Include="_SpreadOperations\Pairwise.cs" />
     <Compile Include="_SpreadOperations\Queue.cs" />
     <Compile Include="_SpreadOperations\DeleteSlice.cs" />
     <Compile Include="_SpreadOperations\RingBuffer.cs" />
+    <Compile Include="_SpreadOperations\SetSlice.cs" />
     <Compile Include="_SpreadOperations\UnzipNode.cs" />
     <Compile Include="_SpreadOperations\ZipNode.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="vvvv\Finder\FinderNode.resx">
       <DependentUpon>FinderNode.cs</DependentUpon>
@@ -243,9 +263,6 @@
       <Name>WinFormsViewer</Name>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="String" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
