@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
 using System.Diagnostics;
+using System.Threading;
 
 
 using IrrKlang;
@@ -38,7 +39,7 @@ namespace VVVV.Nodes
 {
 
 	#region PluginInfo
-	[PluginInfo(Name = "Irrklang", Category = "Sound", Version = "Bang", Help = "Irrklang Gamesound Engine", Tags = "Irrklang, Sound, 3D", AutoEvaluate = true, Author = "sanch,phlegma")]
+	[PluginInfo(Name = "Irrklang", Category = "Sound", Help = "Irrklang Gamesound Engine", Tags = "Audio, 3D, Sampleplayer ", AutoEvaluate = true, Author = "sanch,phlegma", Bugs = "Does not play samples shorter than 0,17s")]
 	#endregion PluginInfo
 
 
@@ -118,8 +119,6 @@ namespace VVVV.Nodes
 		IDiffSpread<float> FDoplerDistanceFactor;
 
 		//Effects
-		[Input("Enabel Effects")]
-		ISpread<bool> FEnableEffekts;
 
 		//Chorus
 		[Input("Enable Chorus", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
@@ -280,7 +279,7 @@ namespace VVVV.Nodes
 		#region Output Pins
 
 		[Output("Length")]
-		ISpread<ISpread<double>> FLength;
+		ISpread<double> FLength;
 		[Output("Play Position")]
 		ISpread<ISpread<double>> FCurrentPos;
 		[Output("Multithreaded")]
@@ -303,20 +302,12 @@ namespace VVVV.Nodes
 		ISoundDeviceList FDevice = new ISoundDeviceList(SoundDeviceListType.PlaybackDevice);
 
 		Dictionary<string, int> FDeviceSelect = new Dictionary<string, int>();
-		Dictionary<int, ISoundSource> FLoadedSourceFiles = new Dictionary<int, ISoundSource>();
-		List<string> FLoadedFiles = new List<string>();
-		List<ISound> FPlayedSounds = new List<ISound>();
-		List<int> FFinishedSounds = new List<int>();
-		List<string> FilePath = new List<string>();
-		Dictionary<int, ISoundSource> SoundSources = new Dictionary<int, ISoundSource>();
-		List<string> DeleteList = new List<string>();
-
 		int FPreviousSpreadMax = -1;
-		
-		
 		List<ISoundSource> FSoundsources = new List<ISoundSource>();
-		SortedList<int,List<ISound>> FSound = new SortedList<int,List<ISound>>();
-		int FCounter = 0;
+		SortedList<int,List<ISound>> FSounds = new SortedList<int,List<ISound>>();
+		List<ISound> FFinishedSounds = new List<ISound>();
+		
+		Object thisLock = new Object();
 		#endregion fields & pins
 
 
@@ -406,7 +397,7 @@ namespace VVVV.Nodes
 				FEngine.StopAllSounds();
 				FEngine.RemoveAllSoundSources();
 				FSoundsources.Clear();
-				FSound.Clear();
+				FSounds.Clear();
 				
 				for(int i = 0; i < SpreadMax; i++)
 				{
@@ -427,25 +418,50 @@ namespace VVVV.Nodes
 			#endregion File IO
 			
 			
+			#region Finished Sounds
+			
+			Monitor.Enter(thisLock);
+			try
+			{
+				List<ISound> Temp = new List<ISound>(FFinishedSounds);
+				FFinishedSounds.Clear();
+				foreach(ISound Sound in Temp)
+				{
+					foreach(KeyValuePair<int,List<ISound>> Pair in FSounds)
+					{
+						if(Pair.Value.Contains(Sound))
+						{
+							Pair.Value.Remove(Sound);
+						}
+					}
+				}
+			}
+			finally
+			{
+				Monitor.Exit(thisLock);
+			}
+			
+			
+			#endregion Finshed Sounds
+			
 			
 			for(int i = 0; i < SpreadMax; i++)
 			{
 				#region PlayBack
 				
 				List<ISound> SoundsPerSlice;
-				FSound.TryGetValue(i,out SoundsPerSlice);
+				FSounds.TryGetValue(i,out SoundsPerSlice);
 				
 				if(SoundsPerSlice == null)
 				{
 					SoundsPerSlice = new List<ISound>();
-					FSound.Add(i,SoundsPerSlice);
+					FSounds.Add(i,SoundsPerSlice);
 				}
 
 				if(FPlay.IsChanged)
 				{
 					if(FPlay[i] == true)
 					{
-						//TODO:enter 3D Mode
 						if(FPlayMode[i] == "2D")
 						{
 							ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],false,false);
@@ -482,13 +498,11 @@ namespace VVVV.Nodes
 				{
 					if (FLoop[i] == true)
 					{
-						FLogger.Log(LogType.Message,"Enable Loop");
 						foreach(ISound Sound in SoundsPerSlice)
 							Sound.Looped = true;
 					}
 					else
 					{
-						FLogger.Log(LogType.Message,"Disable Loop");
 						foreach(ISound Sound in SoundsPerSlice)
 							Sound.Looped = false;
 					}
@@ -526,7 +540,7 @@ namespace VVVV.Nodes
 					{
 						foreach(ISound Sound in SoundsPerSlice)
 						{
-							Sound.PlayPosition = (uint)(((UInt32)FSeekPos[i]) * 1000.0);
+							Sound.PlayPosition = (uint)(((UInt32)FSeekPos[i]));
 						}
 					}
 				}
@@ -612,13 +626,19 @@ namespace VVVV.Nodes
 				#region Node Output
 
 				//Set the OutputPin values
-				FCurrentPos[i].SliceCount = FLength[i].SliceCount = SoundsPerSlice.Count;
+				FCurrentPos[i].SliceCount  = SoundsPerSlice.Count;
+				FLength[i] = FSoundsources[i].PlayLength;
 				int Counter = 0;
-				//FIXME: Show up wrong length if more than one sound in a slice
 				foreach (ISound Sound in SoundsPerSlice)
 				{
-					FCurrentPos[i][Counter] = (double)(Sound.PlayPosition) / 1000.0;
-					FLength[i][Counter] = (double)(Sound.PlayLength) / 1000.0;
+					if(!Sound.Finished)
+					{
+						FCurrentPos[i][Counter] = (double)(Sound.PlayPosition);
+					}
+					else
+					{
+						FCurrentPos[i][Counter] = 0;
+					}
 					Counter++;
 				}
 				
@@ -832,8 +852,6 @@ namespace VVVV.Nodes
 				
 			}
 			
-			
-			
 			//stops or paused all SoundSource which are playedback with the Irrklangengine
 			#region Stop / Pause All
 
@@ -858,9 +876,6 @@ namespace VVVV.Nodes
 			}
 
 			#endregion Stop / Pause All
-
-			
-
 			
 			//set the Listener Position of the Engine
 			#region View Listener
@@ -897,6 +912,7 @@ namespace VVVV.Nodes
 			FPreviousSpreadMax = SpreadMax;
 		}
 
+		
 		#region ISoundStopEventReceiver Members
 
 		/// <summary>
@@ -907,33 +923,17 @@ namespace VVVV.Nodes
 		/// <param name="userData"></param>
 		public void OnSoundStopped(ISound sound, StopEventCause reason, object userData)
 		{
-			
-			lock
+			Monitor.TryEnter(thisLock);
+			try
 			{
-				
-				for(int Slice = 0; Slice < Count; Slice++)
-				{
-					List<ISound> SliceSounds;
-					FSound.TryGetValue(Slice,out SliceSounds);
-					int SoundIndex = SliceSounds.IndexOf(sound);
-					FLogger.Log(LogType.Message,Slice.ToString() + ":" + SoundIndex.ToString());
-					if(SoundIndex > -1)
-					{
-						FLogger.Log(LogType.Message,"Remove");
-						SliceSounds.RemoveAt(SoundIndex);
-					}else
-					{
-						FCurrentPos[Slice].SliceCount = 1;
-						FCurrentPos[Slice][0] = 0;
-					}
-					
-					FSound.RemoveAt(Slice);
-					FSound.Add(Slice, SliceSounds);
-
-				}
+				FFinishedSounds.Add(sound);
+			}
+			finally
+			{
+				Monitor.Exit(thisLock);
 			}
 		}
-
-		#endregion
 	}
+
+	#endregion
 }
