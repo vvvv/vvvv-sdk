@@ -458,42 +458,36 @@ namespace VVVV.Nodes
 					FSounds.Add(i,SoundsPerSlice);
 				}
 
-				if(FPlay.IsChanged)
-				{
-					if(FPlay[i] == true)
-					{
-						if(FPlayMode[i] == "2D")
-						{
-							ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],false,false);
-							Sound.setSoundStopEventReceiver(this);
-							SoundsPerSlice.Add(Sound);
-						}
-						else
-						{
-							ISound Sound = FEngine.Play3D(FSoundsources[i], (float)FSoundPosition[i].x, (float)FSoundPosition[i].y, (float)FSoundPosition[i].z, FLoop[i], false, true);
-							Sound.setSoundStopEventReceiver(this);
-							SoundsPerSlice.Add(Sound);
-						}
-					}
-				}
 				
-				if(FStop.IsChanged)
+				if(FPlay[i] == true)
 				{
-					if(FStop[i] == true)
+					if(FPlayMode[i] == "2D")
 					{
-						if(SoundsPerSlice.Count > 0)
-						{
-							SoundsPerSlice[SoundsPerSlice.Count -1].Stop();
-							SoundsPerSlice.RemoveAt(SoundsPerSlice.Count - 1);
-						}
-						
+						ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],false,false);
+						Sound.setSoundStopEventReceiver(this);
+						SoundsPerSlice.Add(Sound);
+					}
+					else
+					{
+						ISound Sound = FEngine.Play3D(FSoundsources[i], (float)FSoundPosition[i].x, (float)FSoundPosition[i].y, (float)FSoundPosition[i].z, FLoop[i], false, true);
+						Sound.setSoundStopEventReceiver(this);
+						SoundsPerSlice.Add(Sound);
 					}
 				}
 				
 				
 				
+				if(FStop[i] == true)
+				{
+					if(SoundsPerSlice.Count > 0)
+					{
+						SoundsPerSlice[SoundsPerSlice.Count -1].Stop();
+						SoundsPerSlice.RemoveAt(SoundsPerSlice.Count - 1);
+					}
+					
+				}
 				
-
+				
 				if(FLoop.IsChanged)
 				{
 					if (FLoop[i] == true)
@@ -534,16 +528,15 @@ namespace VVVV.Nodes
 				}
 				
 				
-				if (FSeek.IsChanged)
+				
+				if (FSeek[i] == true)
 				{
-					if (FSeek[i] == true)
+					foreach(ISound Sound in SoundsPerSlice)
 					{
-						foreach(ISound Sound in SoundsPerSlice)
-						{
-							Sound.PlayPosition = (uint)(((UInt32)FSeekPos[i]));
-						}
+						Sound.PlayPosition = (uint)(((UInt32)FSeekPos[i]));
 					}
 				}
+				
 
 
 				if (FVolume.IsChanged)
