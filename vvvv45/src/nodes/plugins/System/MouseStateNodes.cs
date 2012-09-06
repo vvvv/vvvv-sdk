@@ -9,14 +9,14 @@ namespace VVVV.Nodes.IO
         public double X;
         public double Y;
         public MouseButton Button;
-        public int MouseWheelDelta;
+        public int MouseWheel;
         
-        public MouseStateNodes(double x, double y, MouseButton button, int mouseWheelDelta)
+        public MouseStateNodes(double x, double y, MouseButton button, int mouseWheel)
         {
             X = x;
             Y = y;
             Button = button;
-            MouseWheelDelta = mouseWheelDelta;
+            MouseWheel = mouseWheel;
         }
         
         [Node(Name = "MouseState", Category = "Join")]
@@ -26,7 +26,7 @@ namespace VVVV.Nodes.IO
             bool leftButton,
             bool middleButton,
             bool rightButton,
-            int mouseWheelDelta)
+            int mouseWheel)
         {
             var button = MouseButton.None;
             if (leftButton)
@@ -35,26 +35,26 @@ namespace VVVV.Nodes.IO
                 button = MouseButton.Middle;
             else if (rightButton)
                 button = MouseButton.Right;
-            return new MouseState(x, y, button, mouseWheelDelta);
+            return new MouseState(x, y, button, mouseWheel);
         }
 
         [Node(Name = "MouseState", Category = "Split")]
         public static void Split(
-            MouseState mouseEvent,
+            MouseState mouseState,
             out double x,
             out double y,
             out bool leftButton,
             out bool middleButton,
             out bool rightButton,
-            out int mouseWheelDelta
+            out int mouseWheel
            )
         {
-            x = mouseEvent.X;
-            y = mouseEvent.Y;
-            leftButton = mouseEvent.Button == MouseButton.Left;
-            middleButton = mouseEvent.Button == MouseButton.Middle;
-            rightButton = mouseEvent.Button == MouseButton.Right;
-            mouseWheelDelta = mouseEvent.MouseWheelDelta;
+            x = mouseState.X;
+            y = mouseState.Y;
+            leftButton = mouseState.Button == MouseButton.Left;
+            middleButton = mouseState.Button == MouseButton.Middle;
+            rightButton = mouseState.Button == MouseButton.Right;
+            mouseWheel = mouseState.MouseWheel;
         }
     }
 }

@@ -8,12 +8,14 @@ using System.Runtime.InteropServices;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2.EX9;
 
 using OpenNI;
+using SlimDX;
 using SlimDX.Direct3D9;
 using VVVV.Utils.SlimDX;
 using System.Drawing;
@@ -206,7 +208,15 @@ namespace VVVV.Nodes
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int Slice, SlimDX.Direct3D9.Device device)
 		{
-			return new Texture(device, FTexWidth, FTexHeight, 1, Usage.None, Format.L16, Pool.Managed);
+			var pool = Pool.Managed;
+			var usage = Usage.None;
+			if (device is DeviceEx)
+			{
+				pool = Pool.Default;
+				usage = Usage.Dynamic;
+			}
+			
+			return new Texture(device, FTexWidth, FTexHeight, 1, usage, Format.L16, pool);
 		}
 
 		//this method gets called, when Update() was called in evaluate,
@@ -216,28 +226,47 @@ namespace VVVV.Nodes
 		unsafe protected override void UpdateTexture(int Slice, Texture texture)
 		{
 			//lock the vvvv texture
-			var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
-
-			if (FDepthMode[0] == DepthMode.Raw)
-				CopyMemory(rect.DataPointer, FDepthGenerator.DepthMapPtr, FTexHeight * FTexWidth * 2);
+			DataRectangle rect;
+			if (texture.Device is DeviceEx)
+				rect = texture.LockRectangle(0, LockFlags.None);
 			else
+				rect = texture.LockRectangle(0, LockFlags.Discard);
+			
+			try 
 			{
-				DepthMetaData DepthMD = FDepthGenerator.GetMetaData();
-				CalculateHistogram(DepthMD);
-
-				ushort* pSrc = (ushort*)FDepthGenerator.DepthMapPtr;
-				ushort* pDest = (ushort*)rect.DataPointer;
-
-				// write the Depth pointer to Destination pointer
-				for (int y = 0; y < FTexHeight; y++)
+				if (FDepthMode[0] == DepthMode.Raw)
+					//copy full lines
+					for (int i = 0; i < FTexHeight; i++) 
+						CopyMemory(rect.Data.DataPointer.Move(rect.Pitch * i), FDepthGenerator.DepthMapPtr.Move(FTexWidth * i * 2), FTexWidth * 2);
+				else
 				{
-					for (int x = 0; x < FTexWidth; x++, pSrc++, pDest++)
-						pDest[0] = (ushort)FHistogram[*pSrc];
+					DepthMetaData DepthMD = FDepthGenerator.GetMetaData();
+					CalculateHistogram(DepthMD);
+	
+					ushort* pSrc = (ushort*)FDepthGenerator.DepthMapPtr;
+					ushort* pDest = (ushort*)rect.Data.DataPointer;
+	
+					// write the Depth pointer to Destination pointer
+					for (int y = 0; y < FTexHeight; y++)
+					{
+						var off = 0;
+						
+						for (int x = 0; x < FTexWidth; x++, pSrc++, pDest++)
+						{
+							pDest[0] = (ushort)FHistogram[*pSrc];
+							off += 2;
+						}
+						
+						//advance dest by rest of pitch
+						pDest += (rect.Pitch - off) / 2;
+					}
 				}
 			}
-
-			//unlock the vvvv texture
-			texture.UnlockRectangle(0);
+			finally
+			{
+				//unlock the vvvv texture
+				texture.UnlockRectangle(0);
+			}
 		}
 		#endregion IPluginDXResource Members
 		

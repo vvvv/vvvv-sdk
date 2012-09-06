@@ -562,7 +562,7 @@ namespace VVVV.Nodes
 		}
 	}
 	
-	//GETPATH-------------------------------------------------------------------
+	//GETELEMENTS-------------------------------------------------------------------
 	#region PluginInfo
 	[PluginInfo(Name = "GetElements", 
 	            Category = "SVG", 
@@ -578,6 +578,9 @@ namespace VVVV.Nodes
 		[Output("Element")]
 		ISpread<SvgElement> FElementsOut;
 		
+		[Output("Name")]
+		ISpread<string> FElementNameOut;
+		
 		[Output("Type")]
 		ISpread<string> FElementTypeOut;
 		
@@ -592,6 +595,7 @@ namespace VVVV.Nodes
 				FElementsOut.SliceCount = 0;
 				FElementTypeOut.SliceCount = 0;
 				FElementLevelOut.SliceCount = 0;
+				FElementNameOut.SliceCount = 0;
 				
 				for(int i=0; i<SpreadMax; i++)
 				{
@@ -607,6 +611,7 @@ namespace VVVV.Nodes
 			FElementsOut.Add(elem);
 			FElementTypeOut.Add(elem.GetType().Name.Replace("Svg", ""));
 			FElementLevelOut.Add(level);
+			FElementNameOut.Add(elem.ID);
 			
 			foreach(var child in elem.Children)
 			{

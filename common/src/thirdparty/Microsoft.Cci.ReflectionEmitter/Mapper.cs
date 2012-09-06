@@ -428,7 +428,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
                 type.DispatchAsReference(this.mappingVisitor);
                 result = this.mappingVisitor.result;
                 if (result == null) throw new ReflectionMapperException();
-                this.DefineMapping(type, result);
+                //this.DefineMapping(type, result);
             }
             return result;
         }
@@ -447,6 +447,13 @@ namespace Microsoft.Cci.ReflectionEmitter {
         internal void DefineMapping(IMethodDefinition method, MethodBase methodBuilder) {
             this.methodMap.Add(method.InternedKey, methodBuilder);
             this.reverseMethodMap[method.InternedKey] = method;
+        }
+
+        internal void ClearMemberMappings()
+        {
+            this.fieldMap = new DoubleHashtable<FieldInfo>();
+            this.methodMap.Clear();
+            this.reverseMethodMap.Clear();
         }
 
         internal MethodInfo GetArrayAddrMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder) {
@@ -686,6 +693,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
         public override void Visit(INestedTypeReference nestedTypeReference) {
             var containingType = this.mapper.GetType(nestedTypeReference.ContainingType);
             var name = nestedTypeReference.Name.Value;
+            // This method fails in case the containingType is generic and represented by a TypeBuilder.
+            // See: https://connect.microsoft.com/VisualStudio/feedback/details/94519/there-should-be-static-typebuilder-getnestedtype-method-similar-to-typebuilder-getmethod-etc#tabs
             this.result = containingType.GetNestedType(name, BindingFlags.NonPublic|BindingFlags.DeclaredOnly);
             if (this.result == null && nestedTypeReference.GenericParameterCount > 0) {
                 name = name + "'" + nestedTypeReference.GenericParameterCount;

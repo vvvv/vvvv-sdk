@@ -7,41 +7,28 @@ namespace VVVV.Utils.Streams
     [ComVisible(false)]
 	public static class MemoryPool<T>
 	{
-		private static readonly Dictionary<int, Stack<T[]>> FPool = new Dictionary<int, Stack<T[]>>();
+		private static readonly Stack<T[]> FStack = new Stack<T[]>();
 		
-		public static T[] GetArray(int length = StreamUtils.BUFFER_SIZE)
+		public static T[] GetArray()
 		{
-			lock (FPool)
+			lock (FStack)
 			{
-				Stack<T[]> stack = null;
-				if (!FPool.TryGetValue(length, out stack))
+				if (FStack.Count == 0)
 				{
-					stack = new Stack<T[]>();
-					FPool[length] = stack;
-				}
-				
-				if (stack.Count == 0)
-				{
-					return new T[length];
+					return new T[StreamUtils.BUFFER_SIZE];
 				}
 				else
 				{
-					return stack.Pop();
+					return FStack.Pop();
 				}
 			}
 		}
 		
 		public static void PutArray(T[] array)
 		{
-			lock (FPool)
+			lock (FStack)
 			{
-				Stack<T[]> stack = null;
-				if (!FPool.TryGetValue(array.Length, out stack))
-				{
-					stack = new Stack<T[]>();
-					FPool[array.Length] = stack;
-				}
-				stack.Push(array);
+				FStack.Push(array);
 			}
 		}
 	}

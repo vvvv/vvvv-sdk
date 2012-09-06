@@ -9,6 +9,7 @@
 //
 //-----------------------------------------------------------------------------
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.SymbolStore;
 using System.Reflection;
@@ -120,15 +121,21 @@ namespace Microsoft.Cci.ReflectionEmitter {
         //next create (but do not initialize) builder for all other kinds of typeBuilder members, since there may be forward references during initialization
         foreach (var namespaceTypeDefinition in namespaceTypeDefinitions)
             this.memberBuilderAllocator.Traverse(namespaceTypeDefinition);
-        //now initialize all the builders
+        //now initialize and create all the builders
         foreach (var namespaceTypeDefinition in namespaceTypeDefinitions)
+        {
             this.initializingTraverser.Traverse(namespaceTypeDefinition);
+            this.typeCreator.Traverse(namespaceTypeDefinition);
+            yield return this.mapper.GetType(namespaceTypeDefinition);
+        }
+        /*
         //finally create the type and return it
         foreach (var namespaceTypeDefinition in namespaceTypeDefinitions)
         {
             this.typeCreator.Traverse(namespaceTypeDefinition);
             yield return this.mapper.GetType(namespaceTypeDefinition);
-        }
+        }*/
+        this.mapper.ClearMemberMappings();
     }
 
     /// <summary>
@@ -1625,6 +1632,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
         object builder;
         if (!this.loader.builderMap.TryGetValue(namespaceTypeDefinition, out builder)) return;
         this.loader.builderMap.Remove(namespaceTypeDefinition);
+        foreach (var member in namespaceTypeDefinition.Members.Concat(namespaceTypeDefinition.PrivateHelperMembers))
+            this.loader.builderMap.Remove(member);
         var typeBuilder = builder as TypeBuilder;
         if (typeBuilder == null) return;
         this.CreateTypesThatNeedToBeLoadedBeforeLoading(namespaceTypeDefinition);
@@ -1652,6 +1661,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
         object builder;
         if (!this.loader.builderMap.TryGetValue(nestedTypeDefinition, out builder)) return;
         this.loader.builderMap.Remove(nestedTypeDefinition);
+        foreach (var member in nestedTypeDefinition.Members.Concat(nestedTypeDefinition.PrivateHelperMembers))
+            this.loader.builderMap.Remove(member);
         var typeBuilder = builder as TypeBuilder;
         if (typeBuilder == null) return;
         this.CreateTypesThatNeedToBeLoadedBeforeLoading(nestedTypeDefinition);
