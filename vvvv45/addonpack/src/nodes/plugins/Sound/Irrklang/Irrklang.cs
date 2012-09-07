@@ -392,7 +392,7 @@ namespace VVVV.Nodes
 			//and Creating the ISoundSource Onject
 			#region File IO
 			
-			if(ChangedSpreadSize || FFile.IsChanged)
+			if(ChangedSpreadSize || FFile.IsChanged || FDeviceenum.IsChanged || FPlayMode.IsChanged)
 			{
 				FEngine.StopAllSounds();
 				FEngine.RemoveAllSoundSources();
@@ -463,18 +463,25 @@ namespace VVVV.Nodes
 				{
 					if(FPlayMode[i] == "2D")
 					{
-						ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],false,false);
+						ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],FPause[i],false);
 						Sound.setSoundStopEventReceiver(this);
 						SoundsPerSlice.Add(Sound);
 					}
 					else
 					{
-						ISound Sound = FEngine.Play3D(FSoundsources[i], (float)FSoundPosition[i].x, (float)FSoundPosition[i].y, (float)FSoundPosition[i].z, FLoop[i], false, true);
+						ISound Sound = FEngine.Play3D(FSoundsources[i], (float)FSoundPosition[i].x, (float)FSoundPosition[i].y, (float)FSoundPosition[i].z, FLoop[i], FPause[i], true);
 						Sound.setSoundStopEventReceiver(this);
 						SoundsPerSlice.Add(Sound);
 					}
 				}
 				
+				if (FVolume.IsChanged || FPlay.IsChanged)
+				{
+					foreach(ISound Sound in SoundsPerSlice)
+					{
+						Sound.Volume = FVolume[i];
+					}
+				}
 				
 				
 				if(FStop[i] == true)
@@ -521,7 +528,7 @@ namespace VVVV.Nodes
 					}
 				}
 				
-				if (FPlaybackSpeed.IsChanged)
+				if (FPlaybackSpeed.IsChanged || FPlay.IsChanged)
 				{
 					foreach(ISound Sound in SoundsPerSlice)
 						Sound.PlaybackSpeed = FPlaybackSpeed[i];
@@ -539,16 +546,10 @@ namespace VVVV.Nodes
 				
 
 
-				if (FVolume.IsChanged)
-				{
-					foreach(ISound Sound in SoundsPerSlice)
-					{
-						Sound.Volume = FVolume[i];
-					}
-				}
 
 
-				if (FPan.IsChanged)
+
+				if (FPan.IsChanged || FPlay.IsChanged)
 				{
 					if (FPlayMode[i].Name == "2D")
 					{
@@ -575,7 +576,7 @@ namespace VVVV.Nodes
 					
 				}
 				
-				if (FSoundVelocity.IsChanged)
+				if (FSoundVelocity.IsChanged || FPlay.IsChanged)
 				{
 					if (FPlayMode[i].Name == "3D")
 					{
@@ -591,7 +592,7 @@ namespace VVVV.Nodes
 				}
 				
 				
-				if (FMinDist.IsChanged)
+				if (FMinDist.IsChanged || FPlay.IsChanged)
 				{
 					if (FPlayMode[i].Name == "3D")
 					{
@@ -602,7 +603,7 @@ namespace VVVV.Nodes
 					}
 				}
 
-				if (FMaxDist.IsChanged)
+				if (FMaxDist.IsChanged || FPlay.IsChanged)
 				{
 					if (FPlayMode[i].Name == "3D")
 					{
@@ -646,9 +647,8 @@ namespace VVVV.Nodes
 				//Sets the Chorus Effekt of a ISound Object
 				#region Chorus
 
-				if (FEnableChorus.IsChanged || FChorusDelay.IsChanged || FChorusFrequency.IsChanged || FChoruspDepth.IsChanged || FChoruspFeedback.IsChanged || FChorusPhase.IsChanged || FChoruspWetDryMix.IsChanged || FChorusSinusWaveForm.IsChanged)
+				if (FPlay.IsChanged || FEnableChorus.IsChanged || FChorusDelay.IsChanged || FChorusFrequency.IsChanged || FChoruspDepth.IsChanged || FChoruspFeedback.IsChanged || FChorusPhase.IsChanged || FChoruspWetDryMix.IsChanged || FChorusSinusWaveForm.IsChanged)
 				{
-					
 					foreach(ISound Sound in SoundsPerSlice)
 					{
 						ISoundEffectControl Fx = Sound.SoundEffectControl;
@@ -658,7 +658,6 @@ namespace VVVV.Nodes
 						else
 							Fx.DisableChorusSoundEffect();
 					}
-					
 				}
 
 				#endregion Chorus
@@ -666,7 +665,7 @@ namespace VVVV.Nodes
 				//Sets the Compresser Effekt of a ISound Object
 				#region Compressor
 
-				if ( FEnableComp.IsChanged || FCompAttack.IsChanged || FCompGain.IsChanged || FCompPredelay.IsChanged || FCompRatio.IsChanged || FCompRelease.IsChanged || FCompThreshold.IsChanged)
+				if (FPlay.IsChanged || FEnableComp.IsChanged || FCompAttack.IsChanged || FCompGain.IsChanged || FCompPredelay.IsChanged || FCompRatio.IsChanged || FCompRelease.IsChanged || FCompThreshold.IsChanged)
 				{
 					
 					foreach(ISound Sound in SoundsPerSlice)
@@ -686,7 +685,7 @@ namespace VVVV.Nodes
 				//Sets the Distortion Effekt of a ISound Object
 				#region Disortion
 
-				if (FEnableDistortion.IsChanged || FDistortionGain.IsChanged || FDistortionBandwidth.IsChanged || FDistortionEdge.IsChanged || FDistortionEQCenterFrequenz.IsChanged || FDistortionLowpassCutoff.IsChanged)
+				if (FPlay.IsChanged || FEnableDistortion.IsChanged || FDistortionGain.IsChanged || FDistortionBandwidth.IsChanged || FDistortionEdge.IsChanged || FDistortionEQCenterFrequenz.IsChanged || FDistortionLowpassCutoff.IsChanged)
 				{
 					
 					foreach(ISound Sound in SoundsPerSlice)
@@ -706,7 +705,7 @@ namespace VVVV.Nodes
 				//Sets the Echo Effekt of a ISound Object
 				#region Echo
 
-				if (FEnableEcho.IsChanged || FEchoFeedback.IsChanged || FEchoLeftDelay.IsChanged || FEchoPanDelay.IsChanged || FEchoRightDelay.IsChanged || FEchoWetDryMix.IsChanged)
+				if (FPlay.IsChanged || FEnableEcho.IsChanged || FEchoFeedback.IsChanged || FEchoLeftDelay.IsChanged || FEchoPanDelay.IsChanged || FEchoRightDelay.IsChanged || FEchoWetDryMix.IsChanged)
 				{
 					
 					foreach(ISound Sound in SoundsPerSlice)
@@ -726,7 +725,7 @@ namespace VVVV.Nodes
 				//Sets the Flanger Effekt of a ISound Object
 				#region Flanger
 
-				if (FEnableFlanger.IsChanged || FFlangerDelay.IsChanged || FFlangerDepth.IsChanged || FFlangerFeedback.IsChanged || FFlangerFrequency.IsChanged || FFlangerPhase.IsChanged || FFlangerTriangleWaveForm.IsChanged || FFlangerWetDryMix.IsChanged)
+				if (FPlay.IsChanged || FEnableFlanger.IsChanged || FFlangerDelay.IsChanged || FFlangerDepth.IsChanged || FFlangerFeedback.IsChanged || FFlangerFrequency.IsChanged || FFlangerPhase.IsChanged || FFlangerTriangleWaveForm.IsChanged || FFlangerWetDryMix.IsChanged)
 				{
 					
 					foreach(ISound Sound in SoundsPerSlice)
@@ -746,7 +745,7 @@ namespace VVVV.Nodes
 				//Sets the Gargle Effekt of a ISound Object
 				#region Gargle
 
-				if ( FEnableGargle.IsChanged || FGargleRateHz.IsChanged || FGargleSinusWaveForm.IsChanged)
+				if (FPlay.IsChanged || FEnableGargle.IsChanged || FGargleRateHz.IsChanged || FGargleSinusWaveForm.IsChanged)
 				{
 					
 					foreach(ISound Sound in SoundsPerSlice)
@@ -765,7 +764,7 @@ namespace VVVV.Nodes
 				//Sets the I3Dl2 Reverb Effekt of a ISound Object
 				#region I3Dl2 Reverb
 
-				if ( FEnableI3DL2.IsChanged || FI3DL2DecayHFRatio.IsChanged || FI3DL2DecayTime.IsChanged || FI3DL2Density.IsChanged || FI3DL2Diffusion.IsChanged || FI3DL2HfReference.IsChanged || FI3DL2ReflectionDelay.IsChanged || FI3DL2Reflections.IsChanged || FI3DL2Reverb.IsChanged || FI3DL2ReverbDelay.IsChanged || FI3DL2Room.IsChanged || FI3DL2RoomHF.IsChanged || FI3DL2RoomRollOffFactor.IsChanged)
+				if (FPlay.IsChanged || FEnableI3DL2.IsChanged || FI3DL2DecayHFRatio.IsChanged || FI3DL2DecayTime.IsChanged || FI3DL2Density.IsChanged || FI3DL2Diffusion.IsChanged || FI3DL2HfReference.IsChanged || FI3DL2ReflectionDelay.IsChanged || FI3DL2Reflections.IsChanged || FI3DL2Reverb.IsChanged || FI3DL2ReverbDelay.IsChanged || FI3DL2Room.IsChanged || FI3DL2RoomHF.IsChanged || FI3DL2RoomRollOffFactor.IsChanged)
 				{
 					
 					foreach(ISound Sound in SoundsPerSlice)
@@ -785,7 +784,7 @@ namespace VVVV.Nodes
 				//Sets the Param EQ Effekt of a ISound Objec
 				#region Param EQ
 
-				if ( FEnableEq.IsChanged || FEqBandwidth.IsChanged || FEqCenter.IsChanged || FEqGain.IsChanged)
+				if (FPlay.IsChanged || FEnableEq.IsChanged || FEqBandwidth.IsChanged || FEqCenter.IsChanged || FEqGain.IsChanged)
 				{
 					
 					foreach(ISound Sound in SoundsPerSlice)
@@ -805,7 +804,7 @@ namespace VVVV.Nodes
 				//Sets the Wave Effekt of a ISound Object
 				#region Wave Reverb
 
-				if (  FEnableWaveReverb.IsChanged || FWaveReverbFreq.IsChanged || FWaveReverbInGain.IsChanged || FWaveReverbMix.IsChanged || FWaveReverbTime.IsChanged)
+				if (FPlay.IsChanged ||  FEnableWaveReverb.IsChanged || FWaveReverbFreq.IsChanged || FWaveReverbInGain.IsChanged || FWaveReverbMix.IsChanged || FWaveReverbTime.IsChanged)
 				{
 					
 					foreach(ISound Sound in SoundsPerSlice)
