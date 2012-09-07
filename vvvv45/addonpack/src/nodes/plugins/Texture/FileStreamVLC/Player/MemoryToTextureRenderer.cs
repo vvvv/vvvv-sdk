@@ -114,9 +114,9 @@ namespace VVVV.Nodes.Vlc.Player
 			//cleanup all data we created
 			try {
 				//Log( LogType.Debug, "[CleanupDevice2DoubleTexture] current device " + device.ComPointer.ToInt64() );
-//				foreach ( Device d in device2DoubleTexture.Keys ) {
-//					device2DoubleTexture[d].Dispose();
-//				}
+				foreach ( Device d in device2DoubleTexture.Keys ) {
+					device2DoubleTexture[d].Dispose();
+				}
 			} catch ( Exception e ) {
 				Log( LogType.Error, "[Dispose] " + e.Message );
 			}
