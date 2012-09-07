@@ -101,7 +101,6 @@ namespace VVVV.Nodes
 			foreach (var outputInfo in FOutputInfos.ToArray())
 				if (!keys.Contains(outputInfo.Key))
                 {
-                    // remove with factory?
                     FOutputInfos.Remove(outputInfo);
                     outputInfo.Container.Dispose();
 			    }
