@@ -175,11 +175,11 @@ namespace VVVV.Nodes.Vlc
 			private EventWaitHandle evaluateStopThreadWaitHandle;
 			private Mutex mediaPlayerBusyMutex;
 			//used for starting and stopping etc. in separate thread
-			private IntPtr media;
-			private IntPtr preloadMedia;
-			private IntPtr mediaPlayer;
+			private IntPtr media = IntPtr.Zero;
+			private IntPtr preloadMedia = IntPtr.Zero;
+			private IntPtr mediaPlayer = IntPtr.Zero;
 	
-			private IntPtr opaqueForCallbacks;
+			private IntPtr opaqueForCallbacks = IntPtr.Zero;
 			private DoubleMemoryBuffer pixelPlanes;
 	
 			private int preloadingStatus;
@@ -229,6 +229,7 @@ namespace VVVV.Nodes.Vlc
 			private int bassStreamHandle; //the handle of the BASS stream we will push the audio to c
 	
 			private bool disposing = false;
+			private bool initialized = false;
 			
 			#endregion MediaRenderer fields
 	
@@ -264,12 +265,14 @@ namespace VVVV.Nodes.Vlc
 					
 				PrepareMediaPlayer();
 			}
-	
+
+/* this way Dispose might get called twice
 			~MediaRenderer()
 			{
 				Dispose();
 			}
-	
+*/
+
 			private void PrepareMediaPlayer()
 			{
 	
@@ -324,8 +327,12 @@ namespace VVVV.Nodes.Vlc
 				evaluateEventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
 				evaluateStopThreadWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
 				evaluateThread = new Thread(new ThreadStart(EvaluateThreadProc));
+				
+				initialized = true;
+				
 				evaluateThread.Start();
 
+				
 /*				TIMERS SUCK, THEY ARE ALWAYS TOO LATE !!!
 
 				loopTimer = new System.Timers.Timer( 1000 );		
@@ -342,29 +349,39 @@ namespace VVVV.Nodes.Vlc
 				loopTimer.Tick += new EventHandler( LoopTimerEventHandler );
 			}
 	
+			/*
+			 * Makes sure we stop the media-player completely when it's no longer needed, 
+			 * after that the GC can do it's job when it wants to.
+			 */
+			public void PrepareForDisposal() {
+				evaluateStopThreadWaitHandle.Set();				
+			}
+			
+			/*
+			 * Should be callable multiple times without causing exceptions !!!
+			 */  
 			public void Dispose()
 			{
+				disposing = true;
+				
 				//parent.FLogger.Log( LogType.Debug, "[Dispose] Disposing media renderer " + mediaRendererIndex);
 				//evaluateThread.Abort();
 				evaluateStopThreadWaitHandle.Set();
 				evaluateThread.Join();
 				//preloadingStatus = STATUS_INACTIVE;
-	
-				try {
-					LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
-				} catch {
-				}
-				try {
-					LibVlcMethods.libvlc_media_player_release(mediaPlayer);
-				} catch {
-				}
-	
+				
 				//deallocate video memory
 				try {
-					pixelPlanes.Dispose();
+					//pixelPlanes.Dispose();
 					Marshal.FreeHGlobal(opaqueForCallbacks);
 				} catch {
 				}
+
+
+				Log( LogType.Debug, "[Dispose] done...");
+
+				// Use SupressFinalize in case a subclass of this type implements a finalizer.
+				GC.SuppressFinalize( this );
 			}
 			#endregion MediaRenderer constructor/destructor
 	
@@ -455,11 +472,7 @@ namespace VVVV.Nodes.Vlc
 			//////////////////////////////////////////////////
 			public IntPtr VlcVideoLockCallBack(ref IntPtr data, ref IntPtr pixelPlane)
 			{
-				if (disposing) {
-					Log( LogType.Error, ("VlcLockCallback(" + data.ToInt32() + ") : PLAYER HAS BEEN DISPOSED AND STILL PLAYING ???") );
-					return IntPtr.Zero;
-				}
-				else {
+				if ( initialized ) {
 					switch ( preloadingStatus ) {
 						case STATUS_GETFIRSTFRAME:
 						case STATUS_PLAYING:
@@ -479,6 +492,10 @@ namespace VVVV.Nodes.Vlc
 							//Log( LogType.Debug, "Hmm" );
 							break;
 					}
+				}
+				else {
+					Log( LogType.Error, ("VlcLockCallback(" + data.ToInt32() + ") : PLAYER HAS BEEN DISPOSED AND STILL PLAYING ???") );
+					return IntPtr.Zero;
 				}
 				//if (lockCalled != unlockCalled) Log( LogType.Error, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "(lock/unlock=" + lockCalled  + "/" + unlockCalled + ")" );
 	
@@ -510,7 +527,7 @@ namespace VVVV.Nodes.Vlc
 			public void VlcVideoUnlockCallBack(ref IntPtr data, ref IntPtr id, ref IntPtr pixelPlane)
 			{
 				try {
-					if (disposing) {
+					if ( ! initialized ) {
 						Log( LogType.Error, ("VlcUnlockCallback(" + data.ToInt32() + ") : PLAYER HAS BEEN DISPOSED AND STILL PLAYING ???") );
 						return;
 					}
@@ -583,7 +600,7 @@ namespace VVVV.Nodes.Vlc
 	
 			private void EvaluateThreadProc()
 			{
-				while (true) {
+				while ( initialized ) {
 					int waitHandleIndex = WaitHandle.WaitAny( new EventWaitHandle[2] {
 						evaluateEventWaitHandle,
 						evaluateStopThreadWaitHandle
@@ -598,16 +615,26 @@ namespace VVVV.Nodes.Vlc
 						}
 						//Thread.Sleep(2);
 					} else if (waitHandleIndex == 1) {
-						if (mediaPlayerBusyMutex.WaitOne(10000)) {
-							try {
-								LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
-							} catch {
+						if ( mediaPlayerBusyMutex.WaitOne(10000) ) {
+							if ( mediaPlayer != IntPtr.Zero ) {
+								try {
+									LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
+								} 
+								catch { }
+								try {
+									LibVlcMethods.libvlc_media_player_release(mediaPlayer);
+								} 
+								catch { }
 							}
+							mediaPlayer = IntPtr.Zero;
+							
 							mediaPlayerBusyMutex.ReleaseMutex();
 						} else {
 	
 						}
+
 						disposing = true;
+						initialized = false;
 						break;
 					}
 				}
@@ -1313,7 +1340,7 @@ namespace VVVV.Nodes.Vlc
 	
 			private void Log( LogType logType, string message)
 			{
-				parent.Log( logType, "[MediaRenderer " + (this == parent.mediaRendererA[slice] ? "A" : "B") + slice + (parent.IsFrontMediaRenderer(this) ? "+" : "-") + "] " + message);
+				parent.Log( logType, "[MediaRenderer " +  ( initialized ? (this == parent.mediaRendererA[slice] ? "A" : "B")  : "D" ) + slice + ( initialized ? ( parent.IsFrontMediaRenderer(this) ? "+" : "-" ) : "*" ) + "] " + message);
 			}
 	
 			private long MillisecondsToTicks(int millis) {
@@ -1793,6 +1820,9 @@ namespace VVVV.Nodes.Vlc
 			}
 
 			//base.Dispose();
+
+			// Use SupressFinalize in case a subclass of this type implements a finalizer.
+			GC.SuppressFinalize( this );
 		}
 
 
@@ -1895,11 +1925,18 @@ namespace VVVV.Nodes.Vlc
 			Log( LogType.Debug, "++++++++ disposing of renderer pair " + index + " ++++++++" );
 			//mediaRendererBackFrontMutex[index].WaitOne();
 
-			memoryToTextureRendererA[index].Dispose();
-			memoryToTextureRendererB[index].Dispose();
+			//Let TH GC do its job
+			//memoryToTextureRendererA[index].Dispose();
+			//memoryToTextureRendererB[index].Dispose();
 
-			mediaRendererCurrent[index].Dispose();
-			mediaRendererNext[index].Dispose();
+			//mediaRendererCurrent[index].Dispose();
+			//mediaRendererNext[index].Dispose();
+			
+			memoryToTextureRendererA[index].PrepareForDisposal();
+			memoryToTextureRendererB[index].PrepareForDisposal();
+			
+			mediaRendererCurrent[index].PrepareForDisposal();
+			mediaRendererNext[index].PrepareForDisposal();
 
 			//mediaRendererBackFrontMutex[index].ReleaseMutex();
 		}
