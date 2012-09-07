@@ -392,7 +392,7 @@ namespace VVVV.Nodes
 			//and Creating the ISoundSource Onject
 			#region File IO
 			
-			if(ChangedSpreadSize || FFile.IsChanged)
+			if(ChangedSpreadSize || FFile.IsChanged || FDeviceenum.IsChanged || FPlayMode.IsChanged)
 			{
 				FEngine.StopAllSounds();
 				FEngine.RemoveAllSoundSources();
@@ -463,13 +463,13 @@ namespace VVVV.Nodes
 				{
 					if(FPlayMode[i] == "2D")
 					{
-						ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],false,false);
+						ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],FPause[i],false);
 						Sound.setSoundStopEventReceiver(this);
 						SoundsPerSlice.Add(Sound);
 					}
 					else
 					{
-						ISound Sound = FEngine.Play3D(FSoundsources[i], (float)FSoundPosition[i].x, (float)FSoundPosition[i].y, (float)FSoundPosition[i].z, FLoop[i], false, true);
+						ISound Sound = FEngine.Play3D(FSoundsources[i], (float)FSoundPosition[i].x, (float)FSoundPosition[i].y, (float)FSoundPosition[i].z, FLoop[i], FPause[i], true);
 						Sound.setSoundStopEventReceiver(this);
 						SoundsPerSlice.Add(Sound);
 					}
@@ -521,7 +521,7 @@ namespace VVVV.Nodes
 					}
 				}
 				
-				if (FPlaybackSpeed.IsChanged)
+				if (FPlaybackSpeed.IsChanged || FPlay.IsChanged)
 				{
 					foreach(ISound Sound in SoundsPerSlice)
 						Sound.PlaybackSpeed = FPlaybackSpeed[i];
@@ -539,7 +539,7 @@ namespace VVVV.Nodes
 				
 
 
-				if (FVolume.IsChanged)
+				if (FVolume.IsChanged || FPlay.IsChanged)
 				{
 					foreach(ISound Sound in SoundsPerSlice)
 					{
@@ -548,7 +548,7 @@ namespace VVVV.Nodes
 				}
 
 
-				if (FPan.IsChanged)
+				if (FPan.IsChanged || FPlay.IsChanged)
 				{
 					if (FPlayMode[i].Name == "2D")
 					{
@@ -575,7 +575,7 @@ namespace VVVV.Nodes
 					
 				}
 				
-				if (FSoundVelocity.IsChanged)
+				if (FSoundVelocity.IsChanged || FPlay.IsChanged)
 				{
 					if (FPlayMode[i].Name == "3D")
 					{
@@ -591,7 +591,7 @@ namespace VVVV.Nodes
 				}
 				
 				
-				if (FMinDist.IsChanged)
+				if (FMinDist.IsChanged || FPlay.IsChanged)
 				{
 					if (FPlayMode[i].Name == "3D")
 					{
@@ -602,7 +602,7 @@ namespace VVVV.Nodes
 					}
 				}
 
-				if (FMaxDist.IsChanged)
+				if (FMaxDist.IsChanged || FPlay.IsChanged)
 				{
 					if (FPlayMode[i].Name == "3D")
 					{
