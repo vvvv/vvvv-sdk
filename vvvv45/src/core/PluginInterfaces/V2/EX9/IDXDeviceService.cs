@@ -20,6 +20,8 @@ namespace VVVV.PluginInterfaces.V2.EX9
         event EventHandler<DeviceEventArgs> DeviceRemoved;
         event EventHandler<DeviceEventArgs> DeviceEnabled;
         event EventHandler<DeviceEventArgs> DeviceDisabled;
+
+        bool UseDx9Ex { get; }
     }
     
     [ComVisible(false)]
