@@ -445,6 +445,7 @@ namespace VVVV.Nodes.Vlc
 			 * after that the GC can do it's job when it wants to.
 			 */
 			public void PrepareForDisposal() {
+				loopTimer.Stop();
 				evaluateStopThreadWaitHandle.Set();				
 			}
 			
@@ -461,10 +462,23 @@ namespace VVVV.Nodes.Vlc
 				evaluateThread.Join();
 				//preloadingStatus = STATUS_INACTIVE;
 				
-				//deallocate video memory
+				//deallocate video memory etc.
 				try {
-					//pixelPlanes.Dispose();
-					Marshal.FreeHGlobal(opaqueForCallbacks);
+					loopTimer.Stop();
+					loopTimer.Dispose();
+
+					
+					//DONE IN evaluateThread!!! LibVlcMethods.libvlc_media_player_release( mediaPlayer );
+
+					pixelPlanes.Dispose();
+					
+					Marshal.FreeHGlobal( opaqueForCallbacks );
+
+					mediaPlayerBusyMutex.Dispose();		
+		
+					evaluateEventWaitHandle.Dispose();
+					evaluateStopThreadWaitHandle.Dispose();
+				
 				} catch {
 				}
 
@@ -710,11 +724,11 @@ namespace VVVV.Nodes.Vlc
 							if ( mediaPlayer != IntPtr.Zero ) {
 								try {
 									LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
-								} 
+								}
 								catch { }
 								try {
 									LibVlcMethods.libvlc_media_player_release(mediaPlayer);
-								} 
+								}
 								catch { }
 							}
 							mediaPlayer = IntPtr.Zero;
@@ -1028,8 +1042,8 @@ namespace VVVV.Nodes.Vlc
 								if ( nrOfStreams > 0 && isStream ) { //&& newFileNameIn.StartsWith("dvb-")
 									//not all streams end up in the structure at the same time
 									if ( nrOfStreams == 1 ) {
-									Log( LogType.Debug, "Stream detected: wait some time to see if there are more streams..." );
-									Thread.Sleep(3000);
+										Log( LogType.Debug, "Stream detected: wait some time to see if there are more streams..." );
+										Thread.Sleep(3000);
 									}
 									//and check again
 									nrOfStreams = LibVlcMethods.libvlc_media_get_tracks_info(preloadMedia, out trackInfoArray);
@@ -2015,13 +2029,6 @@ namespace VVVV.Nodes.Vlc
 		{
 			Log( LogType.Debug, "++++++++ disposing of renderer pair " + index + " ++++++++" );
 			//mediaRendererBackFrontMutex[index].WaitOne();
-
-			//Let TH GC do its job
-			//memoryToTextureRendererA[index].Dispose();
-			//memoryToTextureRendererB[index].Dispose();
-
-			//mediaRendererCurrent[index].Dispose();
-			//mediaRendererNext[index].Dispose();
 			
 			memoryToTextureRendererA[index].PrepareForDisposal();
 			memoryToTextureRendererB[index].PrepareForDisposal();
@@ -2029,6 +2036,13 @@ namespace VVVV.Nodes.Vlc
 			mediaRendererCurrent[index].PrepareForDisposal();
 			mediaRendererNext[index].PrepareForDisposal();
 
+			//Let TH GC do its job
+			memoryToTextureRendererA[index].Dispose();
+			memoryToTextureRendererB[index].Dispose();
+
+			mediaRendererCurrent[index].Dispose();
+			mediaRendererNext[index].Dispose();
+			
 			//mediaRendererBackFrontMutex[index].ReleaseMutex();
 		}
 

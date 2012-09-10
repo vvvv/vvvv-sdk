@@ -117,6 +117,12 @@ namespace VVVV.Nodes.Vlc.Player
 				foreach ( Device d in device2DoubleTexture.Keys ) {
 					device2DoubleTexture[d].Dispose();
 				}
+					
+				memoryToTextureRendererBusyMutex.Dispose();
+				
+				updateTextureEventWaitHandle.Dispose();
+				updateTextureStopThreadWaitHandle.Dispose();
+				
 			} catch ( Exception e ) {
 				Log( LogType.Error, "[Dispose] " + e.Message );
 			}
