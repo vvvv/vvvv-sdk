@@ -53,6 +53,13 @@ namespace VVVV.Nodes
 		//File
 		[Input("File", DefaultString = "", StringType = StringType.Filename)]
 		IDiffSpread<string> FFile;
+		
+		[Input("StreamMode",DefaultEnumEntry = "NoStreaming", Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<StreamMode> FStreamMode;
+		
+		[InputAttribute("StreamThreashold", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<int> FStreamThreashold;
+
 
 		//Main Volume
 		[Input("MainVolume", DefaultValue = 0.5, IsSingle = true, MinValue = 0.0, MaxValue = 1.0)]
@@ -280,10 +287,16 @@ namespace VVVV.Nodes
 
 		[Output("Length")]
 		ISpread<double> FLength;
+		
 		[Output("Play Position")]
 		ISpread<ISpread<double>> FCurrentPos;
+		
+		[Output("StreamDataLength", Visibility = PinVisibility.OnlyInspector)]
+		ISpread<int> FStreamDataLengthOut; 
+		
 		[Output("Multithreaded")]
 		ISpread<bool> FMultiT;
+		
 		[Output("Driver")]
 		ISpread<string> FDriverUse;
 
@@ -348,6 +361,7 @@ namespace VVVV.Nodes
 		{
 			FCurrentPos.SliceCount = SpreadMax;
 			FLength.SliceCount = SpreadMax;
+			FStreamDataLengthOut.SliceCount = SpreadMax;
 			
 			bool ChangedSpreadSize = FPreviousSpreadMax == SpreadMax ? false : true;
 
@@ -392,7 +406,7 @@ namespace VVVV.Nodes
 			//and Creating the ISoundSource Onject
 			#region File IO
 			
-			if(ChangedSpreadSize || FFile.IsChanged || FDeviceenum.IsChanged || FPlayMode.IsChanged)
+			if(ChangedSpreadSize || FFile.IsChanged || FDeviceenum.IsChanged || FPlayMode.IsChanged || FStreamMode.IsChanged || FStreamThreashold.IsChanged)
 			{
 				FEngine.StopAllSounds();
 				FEngine.RemoveAllSoundSources();
@@ -411,6 +425,25 @@ namespace VVVV.Nodes
 					{
 						Source = FEngine.AddSoundSourceFromFile(FFile[i]);
 					}
+					
+					string EnumState = Enum.GetName(typeof(StreamMode), FStreamMode[i]);
+					switch (EnumState) {
+						case "AutoDetect":
+							Source.StreamMode = StreamMode.AutoDetect;
+							break;
+						case "NoStreaming":
+							Source.StreamMode = StreamMode.NoStreaming;
+							Source.ForcedStreamingThreshold = 0;
+							break;
+						case "Streaming":
+							Source.StreamMode = StreamMode.Streaming;
+							Source.ForcedStreamingThreshold = FStreamThreashold[i];
+							break;
+						default:
+							FLogger.Log(LogType.Message,"No Streammode set");
+							break;
+					}
+					
 					FSoundsources.Add(Source);
 				}
 			}
@@ -461,15 +494,26 @@ namespace VVVV.Nodes
 				
 				if(FPlay[i] == true)
 				{
+					try
+					{
+						FStreamDataLengthOut[i] = FSoundsources[i].SampleData.Length;
+					}catch
+					{
+						FStreamDataLengthOut[i] = -1;
+					}
 					if(FPlayMode[i] == "2D")
 					{
-						ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],FPause[i],false);
+						ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],true,false);
+						Sound.Volume = FVolume[i];
+						Sound.Paused = FPause[i];
 						Sound.setSoundStopEventReceiver(this);
 						SoundsPerSlice.Add(Sound);
 					}
 					else
 					{
-						ISound Sound = FEngine.Play3D(FSoundsources[i], (float)FSoundPosition[i].x, (float)FSoundPosition[i].y, (float)FSoundPosition[i].z, FLoop[i], FPause[i], true);
+						ISound Sound = FEngine.Play3D(FSoundsources[i], (float)FSoundPosition[i].x, (float)FSoundPosition[i].y, (float)FSoundPosition[i].z, FLoop[i], true, true);
+						Sound.Volume = FVolume[i];
+						Sound.Paused = FPause[i];
 						Sound.setSoundStopEventReceiver(this);
 						SoundsPerSlice.Add(Sound);
 					}
