@@ -188,8 +188,8 @@ namespace VVVV.Hosting
 				else
 				{
 					//an IO pin needs to be created
-					//- if it doesn't exist yet (multiple inputs may connect to an upstream pin and an IO pin may alread exist now)
-					//- or the connected pin belongs to a (preexisting) labeled iobox
+					//- if it doesn't exist yet (multiple inputs may connect to an upstream pin and an IO pin may already exist now)
+					//- if the connected pin belongs to a (preexisting) labeled iobox
 					string ident = "";
 					if (pin.Direction == PinDirection.Input)
 						ident = parent.ID.ToString() + cpin.NameByParent(parent);
@@ -198,8 +198,11 @@ namespace VVVV.Hosting
 
 					if ((node.NodeInfo.Name == "IOBox") && (!string.IsNullOrEmpty(node.LabelPin[0])))
 					{
-						IOpins.Add(ident, newNodeID);
-						oldPinToNewPin.Add(ident, node.LabelPin[0]);
+						if (!IOpins.ContainsKey(ident))
+						{
+							IOpins.Add(ident, newNodeID);
+							oldPinToNewPin.Add(ident, node.LabelPin[0]);
+						}
 					}
 					
 					if (!IOpins.ContainsKey(ident))
