@@ -57,7 +57,7 @@ namespace VVVV.Nodes
 		[Input("StreamMode",DefaultEnumEntry = "NoStreaming", Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<StreamMode> FStreamMode;
 		
-		[InputAttribute("StreamThreashold", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
+		[InputAttribute("StreamThreashold", DefaultValue = 1024, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<int> FStreamThreashold;
 
 
@@ -292,7 +292,7 @@ namespace VVVV.Nodes
 		ISpread<ISpread<double>> FCurrentPos;
 		
 		[Output("StreamDataLength", Visibility = PinVisibility.OnlyInspector)]
-		ISpread<int> FStreamDataLengthOut; 
+		ISpread<int> FStreamDataLengthOut;
 		
 		[Output("Multithreaded")]
 		ISpread<bool> FMultiT;
@@ -503,8 +503,10 @@ namespace VVVV.Nodes
 					}
 					if(FPlayMode[i] == "2D")
 					{
-						ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],true,false);
+						ISound Sound = FEngine.Play2D(FSoundsources[i],FLoop[i],true,true);
 						Sound.Volume = FVolume[i];
+						Sound.Pan = FPan[i];
+						Sound.PlaybackSpeed = FPlaybackSpeed[i];
 						Sound.Paused = FPause[i];
 						Sound.setSoundStopEventReceiver(this);
 						SoundsPerSlice.Add(Sound);
@@ -513,6 +515,12 @@ namespace VVVV.Nodes
 					{
 						ISound Sound = FEngine.Play3D(FSoundsources[i], (float)FSoundPosition[i].x, (float)FSoundPosition[i].y, (float)FSoundPosition[i].z, FLoop[i], true, true);
 						Sound.Volume = FVolume[i];
+						Sound.PlaybackSpeed = FPlaybackSpeed[i];
+						Sound.MaxDistance = FMaxDist[i];
+						Sound.MinDistance = FMinDist[i];
+						Vector3D Vector = FSoundVelocity[i];
+						IrrKlang.Vector3D IrrVector = new IrrKlang.Vector3D((float)Vector.x, (float)Vector.y, (float)Vector.z);
+						Sound.Velocity = IrrVector;
 						Sound.Paused = FPause[i];
 						Sound.setSoundStopEventReceiver(this);
 						SoundsPerSlice.Add(Sound);
@@ -699,8 +707,10 @@ namespace VVVV.Nodes
 
 						if (FEnableChorus[i])
 							Fx.EnableChorusSoundEffect(FChoruspWetDryMix[i], FChoruspDepth[i], FChoruspFeedback[i], FChorusFrequency[i], FChorusSinusWaveForm[i], FChorusDelay[i], FChorusPhase[i]);
-						else
+						else if(Fx != null)
+						{
 							Fx.DisableChorusSoundEffect();
+						}
 					}
 				}
 
@@ -718,8 +728,9 @@ namespace VVVV.Nodes
 
 						if (FEnableComp[i])
 							Fx.EnableCompressorSoundEffect(FCompGain[i], FCompAttack[i], FCompRelease[i], FCompThreshold[i], FCompRatio[i], FCompPredelay[i]);
-						else
+						else if(Fx != null)
 							Fx.DisableCompressorSoundEffect();
+
 					}
 					
 				}
@@ -738,7 +749,7 @@ namespace VVVV.Nodes
 
 						if (FEnableDistortion[i])
 							Fx.EnableDistortionSoundEffect(FDistortionGain[i], FDistortionEdge[i], FDistortionEQCenterFrequenz[i], FDistortionBandwidth[i], FDistortionLowpassCutoff[i]);
-						else
+						else if(Fx != null)
 							Fx.DisableDistortionSoundEffect();
 					}
 					
@@ -758,7 +769,7 @@ namespace VVVV.Nodes
 
 						if (FEnableEcho[i])
 							Fx.EnableEchoSoundEffect(FEchoWetDryMix[i], FEchoFeedback[i], FEchoLeftDelay[i], FEchoRightDelay[i], FEchoPanDelay[i]);
-						else
+						else if(Fx != null)
 							Fx.DisableEchoSoundEffect();
 					}
 					
@@ -778,7 +789,7 @@ namespace VVVV.Nodes
 
 						if (FEnableFlanger[i])
 							Fx.EnableFlangerSoundEffect(FFlangerWetDryMix[i], FFlangerDepth[i], FFlangerFeedback[i], FFlangerFrequency[i], FFlangerTriangleWaveForm[i], FFlangerDelay[i], FFlangerPhase[i]);
-						else
+						else if(Fx != null)
 							Fx.DisableFlangerSoundEffect();
 					}
 					
@@ -797,7 +808,7 @@ namespace VVVV.Nodes
 						ISoundEffectControl Fx = Sound.SoundEffectControl;
 						if (FEnableGargle[i])
 							Fx.EnableGargleSoundEffect(FGargleRateHz[i], FGargleSinusWaveForm[i]);
-						else
+						else if(Fx != null)
 							Fx.DisableGargleSoundEffect();
 					}
 					
@@ -817,7 +828,7 @@ namespace VVVV.Nodes
 
 						if (FEnableI3DL2[i])
 							Fx.EnableI3DL2ReverbSoundEffect(FI3DL2Room[i], FI3DL2RoomHF[i], FI3DL2RoomRollOffFactor[i], FI3DL2DecayTime[i], FI3DL2DecayHFRatio[i], FI3DL2Reflections[i], FI3DL2ReflectionDelay[i], FI3DL2Reverb[i], FI3DL2ReverbDelay[i], FI3DL2Diffusion[i], FI3DL2Density[i], FI3DL2HfReference[i]);
-						else
+						else if(Fx != null)
 							Fx.DisableI3DL2ReverbSoundEffect();
 					}
 					
@@ -834,10 +845,9 @@ namespace VVVV.Nodes
 					foreach(ISound Sound in SoundsPerSlice)
 					{
 						ISoundEffectControl Fx = Sound.SoundEffectControl;
-
 						if (FEnableEq[i])
 							Fx.EnableParamEqSoundEffect(FEqCenter[i], FEqBandwidth[i], FEqGain[i]);
-						else
+						else if(Fx != null)
 							Fx.DisableParamEqSoundEffect();
 					}
 					
@@ -859,10 +869,9 @@ namespace VVVV.Nodes
 						{
 							Fx.EnableWavesReverbSoundEffect(FWaveReverbInGain[i], FWaveReverbMix[i], FWaveReverbTime[i], FWaveReverbFreq[i]);
 						}
-						else
-						{
+						else if(Fx != null)
 							Fx.DisableWavesReverbSoundEffect();
-						}
+						
 					}
 					
 				}
