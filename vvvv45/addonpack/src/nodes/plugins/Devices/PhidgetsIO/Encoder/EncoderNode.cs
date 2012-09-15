@@ -79,6 +79,7 @@ namespace VVVV.Nodes
                 {
                     if (FEncoder != null)
                     {
+                    	FEncoder.Close();
                         FEncoder = null;
                     }
 

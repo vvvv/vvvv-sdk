@@ -100,6 +100,7 @@ namespace VVVV.Nodes
                 {
                     if (FStepper != null)
                     {
+                    	FStepper.Close();
                         FStepper = null;
                     }
                     FStepper = new WrapperStepperController(FSerial[0]);

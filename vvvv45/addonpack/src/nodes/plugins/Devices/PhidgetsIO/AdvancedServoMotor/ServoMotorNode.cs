@@ -99,7 +99,6 @@ namespace VVVV.Nodes
 
         //priavte fields
         WrapperServoMotor FServo;
-        private bool disposed;
         private bool FInit = true;
 		#endregion fields & piins
 
@@ -113,6 +112,7 @@ namespace VVVV.Nodes
                 {
                     if (FServo != null)
                     {
+                    	FServo.Close();
                         FServo = null;
                     }
                     FServo = new WrapperServoMotor(FSerial[0]);
