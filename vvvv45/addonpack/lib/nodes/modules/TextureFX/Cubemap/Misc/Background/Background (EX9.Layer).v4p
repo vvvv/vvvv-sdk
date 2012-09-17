@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="D:\Dropbox\CubeFX\modules\Misc\Background\Background (EX9.Layer).v4p" systemname="Background (EX9.Layer)" filename="D:\Dropbox\CubeFX\modules\Misc\Background\Background (EX9.Layer).v4p">
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Cubemap\Misc\Background\Background (EX9.Layer).v4p" systemname="Background (EX9.Layer)" filename="D:\Dropbox\CubeFX\modules\Misc\Background\Background (EX9.Layer).v4p">
    <BOUNDS type="Window" left="16410" top="675" width="9000" height="6000">
    </BOUNDS>
    <NODE systemname="Background (EX9.Effect)" filename="Background.fx" nodename="Background (EX9.Effect)" componentmode="Hidden" id="0">
@@ -19,7 +19,7 @@
    </PIN>
    <PIN pinname="Ambient Color">
    </PIN>
-   <PIN pinname="DiffuseGamma">
+   <PIN pinname="DiffuseGamma" slicecount="1" values="0.5">
    </PIN>
    <PIN pinname="Render State" slicecount="1" values="||">
    </PIN>
@@ -70,6 +70,8 @@
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Distance">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
    </NODE>
    <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Dist">
@@ -122,22 +124,6 @@
    </LINK>
    <INFO author="unc" description="Simple background layer, cubemap on (infinite?) sphere" tags="cubemap">
    </INFO>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="6195" top="1620" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="6195" top="1620" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="DiffuseGamma">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="0" dstpinname="DiffuseGamma">
-   </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="12" systemname="IOBox (Node)">
    <BOUNDS type="Node" left="150" top="240" width="0" height="0">
    </BOUNDS>
@@ -145,7 +131,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Render State|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Render State|">
    </PIN>
    </NODE>
    <LINK srcnodeid="12" srcpinname="Output Node" dstnodeid="0" dstpinname="Render State">
@@ -157,9 +143,25 @@
    </BOUNDS>
    <PIN pinname="Input Node" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Transform" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Transform">
    </PIN>
    </NODE>
    <LINK srcnodeid="13" srcpinname="Output Node" dstnodeid="0" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6270" top="1695" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6270" top="1695" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="DiffuseGamma" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="0" dstpinname="DiffuseGamma">
    </LINK>
    </PATCH>

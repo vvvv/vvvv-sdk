@@ -119,14 +119,11 @@ namespace VVVV.Hosting.IO.Streams
             {
                 private readonly InnerStream FStream;
                 private readonly CyclicStreamReader<T> FDataReader;
-                private readonly int FOffset;
                 
                 public InnerStreamReader(InnerStream stream)
                 {
                     FStream = stream;
                     FDataReader = stream.FDataStream.GetCyclicReader();
-                    FOffset = stream.FOffset;
-                    Length = stream.Length;
                     Reset();
                 }
                 
@@ -137,17 +134,21 @@ namespace VVVV.Hosting.IO.Streams
                         return Position >= Length;
                     }
                 }
-                
+
+                private int FPosition;
                 public int Position
                 {
-                    get;
-                    set;
+                    get { return FPosition; }
+                    set
+                    {
+                        FPosition = value;
+                        FDataReader.Position = FStream.FOffset + value;
+                    }
                 }
                 
                 public int Length
                 {
-                    get;
-                    private set;
+                    get { return FStream.Length; }
                 }
                 
                 public T Current
@@ -177,7 +178,7 @@ namespace VVVV.Hosting.IO.Streams
                 public T Read(int stride = 1)
                 {
                     var value = FDataReader.Length > 0 ? FDataReader.Read(stride) : default(T);
-                    Position += stride;
+                    FPosition += stride;
                     return value;
                 }
                 
@@ -190,7 +191,7 @@ namespace VVVV.Hosting.IO.Streams
                     {
                         buffer.Fill(index, numSlicesToRead, default(T));
                     }
-                    Position += numSlicesToRead * stride;
+                    FPosition += numSlicesToRead * stride;
                     return numSlicesToRead;
                 }
                 
@@ -201,7 +202,6 @@ namespace VVVV.Hosting.IO.Streams
                 
                 public void Reset()
                 {
-                    FDataReader.Position = FOffset;
                     Position = 0;
                 }
             }

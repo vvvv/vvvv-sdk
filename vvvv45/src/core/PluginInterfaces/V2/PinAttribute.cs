@@ -37,6 +37,9 @@ namespace VVVV.PluginInterfaces.V2
 			StepSize = DefaultStepSize;
 			DefaultValues = new double[] { 0.0, 0.0, 0.0, 0.0 };
 			
+			//bool
+			DefaultBoolean = false;
+			
 			//color
 			HasAlpha = true;
 			DefaultColor = new double[] { 0.0, 1.0, 0.0, 1.0 };
@@ -157,6 +160,15 @@ namespace VVVV.PluginInterfaces.V2
 		/// This is used for bool pins.
 		/// </summary>
 		public bool IsToggle
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
+		/// Default value for this toggle pin.
+		/// </summary>
+		public bool DefaultBoolean
 		{
 			get;
 			set;
@@ -286,6 +298,7 @@ namespace VVVV.PluginInterfaces.V2
 			clonedInstance.FileMask = FileMask;
 			clonedInstance.HasAlpha = HasAlpha;
 			clonedInstance.IsBang = IsBang;
+			clonedInstance.DefaultBoolean = DefaultBoolean;
 			clonedInstance.IsPinGroup = IsPinGroup;
 			clonedInstance.IsSingle = IsSingle;
 			clonedInstance.MaxChars = MaxChars;

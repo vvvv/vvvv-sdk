@@ -46,9 +46,11 @@ namespace VVVV.Hosting.IO.Streams
                 FDataStream.Length = binSizeSum;
                 using (var dataWriter = FDataStream.GetWriter())
                 {
+                    bool anyChanged = false;
                     foreach (var outputStream in this)
                     {
-                        if (outputStream.IsChanged)
+                        anyChanged |= outputStream.IsChanged;
+                        if (anyChanged)
                             dataWriter.Write(outputStream, buffer);
                         else
                             dataWriter.Position += outputStream.Length;
@@ -59,7 +61,10 @@ namespace VVVV.Hosting.IO.Streams
             {
                 MemoryPool<T>.PutArray(buffer);
             }
-            
+
+            FBinSizeStream.Flush();
+            FDataStream.Flush();
+
             base.Flush();
         }
     }

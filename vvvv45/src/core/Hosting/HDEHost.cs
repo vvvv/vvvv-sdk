@@ -559,7 +559,8 @@ namespace VVVV.Hosting
             get;
             private set;
         }
-        
+
+        [Export(typeof(IMainLoop))]
         public IMainLoop MainLoop
 		{
 		    get;
