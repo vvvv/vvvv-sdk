@@ -182,6 +182,11 @@ namespace VVVV.Hosting.Factories
             }
         }
 
+        public bool ContainsStartable(Assembly assembly)
+        {
+            return FStartable.ContainsKey(assembly.FullName);
+        }
+
         public void ShutDown()
         {
             foreach (StartableStatus s in this.FStarted)

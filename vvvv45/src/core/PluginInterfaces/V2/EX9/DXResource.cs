@@ -9,7 +9,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 {
     [ComVisible(false)]
     public class DXResource<TResource, TMetadata> : Resource<Device, TResource, TMetadata> 
-        where TResource : IComObject
+        where TResource : ComObject
     {
         public DXResource(
             TMetadata metadata, 
@@ -18,6 +18,19 @@ namespace VVVV.PluginInterfaces.V2.EX9
             Action<TMetadata, TResource> destroyResourceAction = null)
             : base(metadata, createResourceFunc, updateResourceFunc, destroyResourceAction)
         {
+        }
+
+        public bool IsDefaultPool
+        {
+            get;
+            private set;
+        }
+
+        protected override TResource CreateResoure(TMetadata metadata, Device device)
+        {
+            var resource = base.CreateResoure(metadata, device);
+            IsDefaultPool = resource.IsDefaultPool;
+            return resource;
         }
     }
 }

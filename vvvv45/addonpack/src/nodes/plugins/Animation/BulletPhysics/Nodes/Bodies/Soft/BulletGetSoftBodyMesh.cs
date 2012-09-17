@@ -251,7 +251,18 @@ namespace VVVV.Nodes.Bullet
 					}
 				}
 
-				this.FMesh = Mesh.Concatenate(OnDevice, soft.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+                Mesh merge = null;
+                if (OnDevice is DeviceEx)
+                {
+                    merge = Mesh.Concatenate(OnDevice, soft.ToArray(), MeshFlags.Use32Bit);
+                }
+                else
+                {
+                    merge = Mesh.Concatenate(OnDevice, soft.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+                }
+
+
+                this.FMesh = merge;
 
 				foreach (Mesh m in soft)
 				{
