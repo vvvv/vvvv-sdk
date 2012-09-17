@@ -157,6 +157,7 @@ namespace VVVV.Hosting
 			foreach (var node in nodes)
 				foreach (var pin in node.Pins)
 					foreach (var cpin in pin.ConnectedPins)
+						if (!cpin.Name.Contains("ROUTER DON'T USE")) //hack for S/R nodes 
 			{
 				//..if there is a connection to another selected node in the same patch
 				//(pins of IOboxes can also be connected to nodes in parentpatches!)
@@ -286,6 +287,7 @@ namespace VVVV.Hosting
 			foreach (var node in selectedNodes)
 				foreach (var pin in node.Pins)
 					foreach (var cpin in pin.ConnectedPins)
+						if (!cpin.Name.Contains("ROUTER DON'T USE"))  //hack for S/R nodes 
 						//..if there is a connection to a not selected node..
 			{
 				var parent = cpin.ParentNodeByPatch(node.Parent);
@@ -371,7 +373,7 @@ namespace VVVV.Hosting
 				else
 					return "Output Enum";}
 			else //assume node
-			{	
+			{
 				if (input)
 					return "Input Node";
 				else
