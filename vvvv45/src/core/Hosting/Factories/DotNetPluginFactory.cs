@@ -402,6 +402,41 @@ namespace VVVV.Hosting.Factories
                 disposablePlugin.Dispose();
             }
         }
+
+        public override bool GetNodeListAttribute(INodeInfo nodeInfo, out string name, out string value)
+        {
+            string assemblyLocation = string.Empty;
+            var isUpToDate = GetAssemblyLocation(nodeInfo, out assemblyLocation);
+            var assembly = Assembly.ReflectionOnlyLoadFrom(assemblyLocation);
+            if (FStartableRegistry.ContainsStartable(assembly))
+            {
+                name = "startable";
+                value = "true";
+                return true;
+            }
+            return base.GetNodeListAttribute(nodeInfo, out name, out value);
+        }
+
+        public override void ParseNodeEntry(System.Xml.XmlReader xmlReader, INodeInfo nodeInfo)
+        {
+            var startableAttribute = xmlReader.GetAttribute("startable");
+            if (startableAttribute == "true")
+            {
+                var assemblyLocation = string.Empty;
+                GetAssemblyLocation(nodeInfo, out assemblyLocation);
+                var assembly = Assembly.ReflectionOnlyLoadFrom(assemblyLocation);
+                var nonLazyStartable = false;
+                foreach (var type in assembly.GetExportedTypes())
+                {
+                    nonLazyStartable |= FStartableRegistry.ProcessType(type, assembly);
+                }
+                if (nonLazyStartable)
+                {
+                    var assemblyload = Assembly.LoadFrom(assemblyLocation);
+                    FStartableRegistry.ProcessAssembly(assemblyload);
+                }
+            }
+        }
         
         private static void AssignOptionalPluginInterfaces(IInternalPluginHost pluginHost, IPluginBase pluginBase)
         {
