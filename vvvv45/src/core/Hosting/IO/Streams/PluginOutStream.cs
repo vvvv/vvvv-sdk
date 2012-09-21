@@ -8,6 +8,7 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
+using SlimDX;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -107,8 +108,37 @@ namespace VVVV.Hosting.IO.Streams
             base.Flush();
         }
     }
-    
-    class TextureOutStream<T, TMetadata> : BufferedIOStream<T>, IDXTexturePin
+
+    abstract class ResourceOutStream<T, TResource, TMetadata> : BufferedIOStream<T>, IDXResourcePin
+        where T : DXResource<TResource, TMetadata>
+        where TResource : ComObject
+    {
+        void IDXResourcePin.UpdateResources(Device device)
+        {
+            foreach (var resource in this)
+            {
+                resource.UpdateResource(device);
+            }
+        }
+
+        void IDXResourcePin.DestroyResources(Device device, bool onlyUnmanaged)
+        {
+            var isDx9ExDevice = device is DeviceEx;
+            foreach (var resource in this)
+            {
+                // If we should destroy only unmanaged resources (those in the default pool)
+                // do so only if we're on DirectX9 and the resource is in the default pool.
+                // In case of DirectX9Ex where all resources are in the default pool we don't
+                // need to do anything.
+                if (!onlyUnmanaged || (resource.IsDefaultPool && !isDx9ExDevice))
+                {
+                    resource.DestroyResource(device);
+                }
+            }
+        }
+    }
+
+    class TextureOutStream<T, TMetadata> : ResourceOutStream<T, Texture, TMetadata>, IDXTexturePin
         where T : DXResource<Texture, TMetadata>
     {
         private readonly IDXTextureOut FInternalTextureOut;
@@ -140,25 +170,9 @@ namespace VVVV.Hosting.IO.Streams
                 return this[slice][device];
             }
         }
-        
-        void IDXResourcePin.UpdateResources(Device device)
-        {
-            foreach (var resource in this)
-            {
-                resource.UpdateResource(device);
-            }
-        }
-        
-        void IDXResourcePin.DestroyResources(Device device, bool onlyUnmanaged)
-        {
-            foreach (var resource in this)
-            {
-                resource.DestroyResource(device);
-            }
-        }
     }
 
-    class MeshOutStream<T, TMetadata> : BufferedIOStream<T>, IDXMeshPin
+    class MeshOutStream<T, TMetadata> : ResourceOutStream<T, Mesh, TMetadata>, IDXMeshPin
         where T : DXResource<Mesh, TMetadata>
     {
         private readonly IDXMeshOut FInternalMeshOut;
@@ -188,22 +202,6 @@ namespace VVVV.Hosting.IO.Streams
             get
             {
                 return this[slice][device];
-            }
-        }
-
-        void IDXResourcePin.UpdateResources(Device device)
-        {
-            foreach (var resource in this)
-            {
-                resource.UpdateResource(device);
-            }
-        }
-
-        void IDXResourcePin.DestroyResources(Device device, bool onlyUnmanaged)
-        {
-            foreach (var resource in this)
-            {
-                resource.DestroyResource(device);
             }
         }
     }
