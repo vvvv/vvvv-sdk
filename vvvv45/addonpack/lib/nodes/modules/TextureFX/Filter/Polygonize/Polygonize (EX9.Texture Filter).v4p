@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Polygonize\Polygonize (EX9.Texture Filter).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\vvvv_45beta28\addonpack\lib\nodes\modules\TextureFX\Filter\Polygonize\Polygonize (EX9.Texture Filter).v4p">
    <BOUNDS height="9900" left="5610" top="8370" type="Window" width="18120">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="Polygonize.fx" id="24" nodename="Polygonize.fx" systemname="Polygonize (EX9.Effect)">
@@ -107,7 +107,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="12" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
-   <BOUNDS height="0" left="1635" top="9735" type="Node" width="0">
+   <BOUNDS height="0" left="1815" top="9765" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Source" visible="1">
    </PIN>
@@ -299,7 +299,7 @@
    </PIN>
    <PIN pinname="Enable Texture Coordinate 0" slicecount="1" values="|3D TexCoords|">
    </PIN>
-   <PIN pinname="Texture Coordinate 0 XYZ" visible="1">
+   <PIN pinname="Texture Coordinate 0 XYZ" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="Enable Normal" slicecount="1" values="0">
    </PIN>
@@ -343,32 +343,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="75" dstpinname="Index" srcnodeid="81" srcpinname="Indices">
-   </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\VectorSized.dll" id="71" nodename="Bounds (Spectral Advanced)" systemname="Bounds (Spectral Advanced)">
-   <BOUNDS height="100" left="11715" top="8580" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Vector Size" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Bin Size" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Center" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" debug="0" filename="%VVVV%\addonpack\plugins\VectorSized.dll" id="70" nodename="Select (Value Advanced)" systemname="Select (Value Advanced)">
-   <BOUNDS height="100" left="11730" top="8940" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Vector Size" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Select" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="70" dstpinname="Input" srcnodeid="71" srcpinname="Center">
    </LINK>
    <NODE componentmode="Hidden" filename="Polygonize.fx" id="68" nodename="Polygonize (EX9.Effect)" systemname="Polygonize (EX9.Effect)">
    <BOUNDS height="100" left="8145" top="3285" type="Node" width="100">
@@ -1120,10 +1094,6 @@
    </LINK>
    <LINK dstnodeid="75" dstpinname="Input" srcnodeid="114" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="76" dstpinname="Texture Coordinate 0 XYZ" srcnodeid="70" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="71" dstpinname="Input" srcnodeid="130" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="47" dstpinname="XY" srcnodeid="45" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="73" dstpinname="Input" srcnodeid="81" srcpinname="Indices">
@@ -1375,7 +1345,7 @@
    <NODE componentmode="Hidden" id="154" nodename="INFO (EX9.TEXTURE)" systemname="Info (EX9.Texture)">
    <BOUNDS height="270" left="675" top="3000" type="Node" width="2070">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Width" visible="1">
    </PIN>
@@ -1411,7 +1381,7 @@
    </PIN>
    <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1521,5 +1491,37 @@
    <LINK srcnodeid="153" srcpinname="XY" dstnodeid="86" dstpinname="XY">
    </LINK>
    <LINK srcnodeid="153" srcpinname="XY" dstnodeid="158" dstpinname="XY">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" id="71" nodename="Bounds (Spectral Vector)" systemname="Bounds (Spectral Vector)">
+   <BOUNDS height="100" left="11715" top="8580" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Center" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="71" dstpinname="Input" srcnodeid="130" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" debug="0" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" id="70" nodename="Select (Value Vector)" systemname="Select (Value Vector)">
+   <BOUNDS height="100" left="11730" top="8940" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Select" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="76" dstpinname="Texture Coordinate 0 XYZ" srcnodeid="70" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="70" dstpinname="Input" srcnodeid="71" srcpinname="Center">
    </LINK>
    </PATCH>
