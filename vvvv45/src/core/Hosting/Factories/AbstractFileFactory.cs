@@ -163,6 +163,18 @@ namespace VVVV.Hosting.Factories
             filename = null;
             return false;
         }
+
+        public virtual bool GetNodeListAttribute(INodeInfo nodeInfo, out string name, out string value)
+        {
+            name = string.Empty;
+            value = string.Empty;
+            return false;
+        }
+
+        public virtual void ParseNodeEntry(System.Xml.XmlReader xmlReader, INodeInfo nodeInfo)
+        {
+            
+        }
         
         #endregion IAddonFactory
         

@@ -47,12 +47,17 @@ namespace VVVV.PluginInterfaces.V2
                 TResource result;
                 if (!FResources.TryGetValue(device, out result))
                 {
-                    result = FCreateResourceFunc(FMetadata, device);
+                    result = CreateResoure(FMetadata, device);
                     NeedsUpdate = true;
                     FResources[device] = result;
                 }
                 return result;
             }
+        }
+
+        protected virtual TResource CreateResoure(TMetadata metadata, TDevice device)
+        {
+            return FCreateResourceFunc(metadata, device);
         }
         
         public void UpdateResource(TDevice device)

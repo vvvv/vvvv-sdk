@@ -1580,7 +1580,7 @@ begin
   ires := i;
   while ires > 0 do
   begin
-    ires := mmioRead( hmm, PChar(_Mem), i);
+    ires := mmioRead( hmm, PAnsiChar(_Mem), i);
     i := i - ires;
   end;
 

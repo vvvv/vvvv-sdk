@@ -221,6 +221,22 @@ namespace VVVV.Utils.Streams
                     }
             }
         }
+
+        public static int GetMaxLength(params IInStream[] streams)
+        {
+            switch (streams.Length)
+            {
+                case 0:
+                    return 0;
+                default:
+                    int maxLength = streams[0].Length;
+                    for (int i = 1; i < streams.Length; i++)
+                    {
+                        maxLength = maxLength.CombineStreams(streams[i].Length);
+                    }
+                    return maxLength;
+            }
+        }
         
         public static int GetLengthSum<T>(this IInStream<IInStream<T>> streams)
         {
@@ -453,6 +469,26 @@ namespace VVVV.Utils.Streams
             {
                 MemoryPool<T>.PutArray(buffer);
             }
+        }
+
+        public static RangeStream<T> GetRange<T>(this IInStream<T> source, int offset, int count)
+        {
+            return new RangeStream<T>(source, offset, count);
+        }
+
+        public static RangeStream<T> Take<T>(this IInStream<T> source, int count)
+        {
+            return new RangeStream<T>(source, 0, count);
+        }
+
+        public static CyclicStream<T> Cyclic<T>(this IInStream<T> source)
+        {
+            return new CyclicStream<T>(source);
+        }
+
+        public static ReverseStream<T> Reverse<T>(this IInStream<T> source)
+        {
+            return new ReverseStream<T>(source);
         }
     }
 }
