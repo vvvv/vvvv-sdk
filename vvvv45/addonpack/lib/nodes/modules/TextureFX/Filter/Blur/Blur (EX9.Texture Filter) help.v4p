@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.1.dtd" >
-   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Blur\Blur (EX9.Texture Filter) help.v4p" systemname="Blur (EX9.Texture Filter) help" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Blur\Blur (EX9.Texture Filter) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.3.dtd" >
+   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Blur\Blur (EX9.Texture Filter) help.v4p" systemname="Blur (EX9.Texture Filter) help" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Blur\Blur (EX9.Texture Filter) help.v4p">
    <BOUNDS type="Window" left="8715" top="4695" width="13740" height="6690">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="1">
@@ -11,14 +11,6 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
-   </NODE>
-   <NODE systemname="Gradient (EX9.Texture Source)" filename="..\..\Source\Gradient\Gradient (EX9.Texture Source).v4p" nodename="Gradient (EX9.Texture Source)" componentmode="Hidden" id="5">
-   <BOUNDS type="Node" left="6300" top="630" width="1350" height="270">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="6300" top="630">
-   </BOUNDS>
    </NODE>
    <NODE systemname="Cons (EX9.Texture)" nodename="Cons (EX9.Texture)" componentmode="Hidden" id="7">
    <BOUNDS type="Node" left="135" top="4050" width="9120" height="270">
@@ -76,7 +68,7 @@
    <LINKPOINT x="900" y="5033">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="FullscreenQuad (DX9)" filename="..\..\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="14">
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="14">
    <BOUNDS type="Node" left="135" top="5430" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Transform" visible="1" slicecount="1" values="||">
@@ -113,7 +105,7 @@
    <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="24">
    <BOUNDS type="Node" left="105" top="1605" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Filename" visible="1" slicecount="1" encoded="0" values="..\..\..\..\..\..\..\..\..\..\vvvv_45alpha28.1_git\lib\assets\images\lib\assets\images\earth_512x512.jpg">
+   <PIN pinname="Filename" visible="1" slicecount="1" encoded="0" values="%VVVV%\lib\assets\images\lib\assets\images\earth_512x512.jpg">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -276,16 +268,16 @@
    <PIN pinname="Period" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <NODE systemname="RotZoom (EX9.Texture Filter)" filename="..\RotZoom\RotZoom (EX9.Texture Filter).v4p" nodename="RotZoom (EX9.Texture Filter)" componentmode="Hidden" id="38">
+   <NODE systemname="RotZoom (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\RotZoom\RotZoom (EX9.Texture Filter).v4p" nodename="RotZoom (EX9.Texture Filter)" componentmode="Hidden" id="38">
    <BOUNDS type="Node" left="6285" top="1425" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Scale" slicecount="2" values="1.44,1.44">
    </PIN>
    <PIN pinname="X" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="||">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="38" dstpinname="Input" linkstyle="PolyLine">
-   </LINK>
    <LINK srcnodeid="38" srcpinname="Output" dstnodeid="35" dstpinname="Input Node" linkstyle="PolyLine">
    </LINK>
    <LINK srcnodeid="37" srcpinname="Output" dstnodeid="38" dstpinname="Rotate" linkstyle="PolyLine">
@@ -344,16 +336,24 @@
    <BOUNDS height="255" left="12240" top="4500" type="Node" width="825">
    </BOUNDS>
    </NODE>
-   <NODE systemname="BlurDirectional (EX9.Texture Filter)" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\BlurDirectional\BlurDirectional (EX9.Texture Filter).v4p" nodename="BlurDirectional (EX9.Texture Filter)" componentmode="Hidden" id="48">
+   <NODE systemname="BlurDirectional (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\BlurDirectional\BlurDirectional (EX9.Texture Filter).v4p" nodename="BlurDirectional (EX9.Texture Filter)" componentmode="Hidden" id="48">
    <BOUNDS type="Node" left="11895" top="4965" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="11895" top="4965">
    </BOUNDS>
    </NODE>
-   <NODE systemname="BlurRadial (EX9.Texture Filter)" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\BlurRadial\BlurRadial (EX9.Texture Filter).v4p" nodename="BlurRadial (EX9.Texture Filter)" componentmode="Hidden" id="45">
+   <NODE systemname="BlurRadial (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\BlurRadial\BlurRadial (EX9.Texture Filter).v4p" nodename="BlurRadial (EX9.Texture Filter)" componentmode="Hidden" id="45">
    <BOUNDS type="Node" left="11895" top="5280" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="11895" top="5280">
    </BOUNDS>
    </NODE>
+   <NODE systemname="Gradient (EX9.Texture Source)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Source\Gradient\Gradient (EX9.Texture Source).v4p" nodename="Gradient (EX9.Texture Source)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="6345" top="390" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="49" srcpinname="Output" dstnodeid="38" dstpinname="Input">
+   </LINK>
    </PATCH>
