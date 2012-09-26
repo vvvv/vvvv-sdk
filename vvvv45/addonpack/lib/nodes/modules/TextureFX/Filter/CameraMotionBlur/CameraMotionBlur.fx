@@ -53,7 +53,7 @@ float4 PS(float2 uv:TEXCOORD0):color{
 		c+=float4(tex2D(sCOL,dx).xyz,1)*smoothstep(Limit,0,length(p2.xyz-p.xyz)/z);
 	}
 	c.rgb/=c.a;
-	c.a=1;
+	c.a=tex2D(sCOL,uv).a;
     return c;
 }
 

@@ -73,9 +73,9 @@ float4 pMIX(float2 vp:vpos):color{float2 x=(vp+.5)/R;
 	//c=g+pow(s,1+g);
 	//c.rgb=normalize(s.rgb)*pow(length(s.rgb)/sqrt(3),1+g*2)*sqrt(3)+g;
 	//c/=1+3*tex2Dlod(s0,float4(x,0,33));
-	c.a=s.a;
+	//c.a=s.a;
 	
-	c.a=1;
+	c.a=tex2D(s0,x).a;
     return c;
 }
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}

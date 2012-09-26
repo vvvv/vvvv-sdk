@@ -17,7 +17,7 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     dir=float2(tex2Dlod(s1,float4(x-off*float2(1,0)/R,0,lod)).g-tex2Dlod(s1,float4(x+off*float2(1,0)/R,0,lod)).g,tex2Dlod(s1,float4(x-off*float2(0,1)/R,0,lod)).g-tex2Dlod(s1,float4(x+off*float2(0,1)/R,0,lod)).g);
      dir=normalize(r2d(dir,Direction/2+.25))*pow(length(dir.xy),1)*pow(2,MapSmooth*6);
     c=tex2D(s0,x+dir*R.x/R*.1*Width);
-    c.a=1;
+    c.a=tex2D(s0,x).a;
     return c;
 }
 
