@@ -27,7 +27,7 @@ namespace VVVV.Hosting.Factories
         
         [ImportingConstructor]
 		public PatchFactory (INodeInfoFactory nodeInfoFactory)
-		    : base(".v4p;.v4x")
+		    : base(".v4p;.v4x;.xml")
 		{
 			nodeInfoFactory.NodeInfoAdded += HandleNodeInfoFactoryNodeInfoAdded;
 		}
