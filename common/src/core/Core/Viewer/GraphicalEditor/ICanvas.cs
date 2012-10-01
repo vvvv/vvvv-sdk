@@ -115,7 +115,7 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         void HideToolTip();
     }
 
-    public interface ICanvasHost : ISelectionProvider
+    public interface ICanvasHost
     {
         ICanvas Canvas
         {
@@ -135,9 +135,5 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         void FinishPath(ITempPath apath, IConnectable end);
 
         void MoveSelected();
-        void DeleteSelected();
-
-        void Undo();
-        void Redo();
     }
 }

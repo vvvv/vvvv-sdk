@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace VVVV.Core.Menu
 {
@@ -11,12 +12,6 @@ namespace VVVV.Core.Menu
     /// </summary>
     public class MenuSeparator : IMenuEntry
     {
-        private static readonly List<IMenuEntry> FEmptyList = new List<IMenuEntry>();
-        
-        public MenuSeparator()
-        {
-        }
-        
         public string Name
         {
             get 
@@ -29,16 +24,8 @@ namespace VVVV.Core.Menu
         {
             
         }
-        
-        public IEnumerator<IMenuEntry> GetEnumerator()
-        {
-            return FEmptyList.GetEnumerator();
-        }
-        
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return FEmptyList.GetEnumerator();
-        }
+
+        public IEnumerable<IMenuEntry> Entries { get { return Enumerable.Empty<IMenuEntry>(); } }
         
         public Keys ShortcutKeys
         {
@@ -55,5 +42,7 @@ namespace VVVV.Core.Menu
                 return true;
             }
         }
+
+        public bool? Checked { get; set; }
     }
 }
