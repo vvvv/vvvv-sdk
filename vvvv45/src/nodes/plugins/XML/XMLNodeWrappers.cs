@@ -102,11 +102,18 @@ namespace VVVV.Nodes.XML
                 var element = new XElement(Name[i], Value[i]);
                 
                 // clone attributes on the fly if they are already rooted somewhere
-                var attribs = Attributes[i].Select(a => a.Parent != null ? new XAttribute(a) : a).ToArray();
-                element.Add(attribs);
+                var attributes = Attributes[i]
+                    .Where(a => a != null)
+                    .Select(a => a.Parent != null ? new XAttribute(a) : a)
+                    .ToArray();
+                element.Add(attributes);
                 
                 // clone elements on the fly if they are already rooted somewhere
-                element.Add(Childs[i].Select(e => e.Parent != null ? new XElement(e) : e).ToArray());
+                var children = Childs[i]
+                    .Where(c => c != null)
+                    .Select(c => c.Parent != null ? new XElement(c) : c)
+                    .ToArray();
+                element.Add(children);
 
                 Element[i] = element;
             }
@@ -156,9 +163,9 @@ namespace VVVV.Nodes.XML
     [PluginInfo(Name = "Attribute", Category = "XML", Version = "Join")]
     public class AttributeJoinNode : IPluginEvaluate
     {
-        [Input("Name")]
+        [Input("Name", DefaultString = "MyAttribute")]
         public IDiffSpread<string> Name;
-        [Input("Value", DefaultString = "MyAttribute")]
+        [Input("Value")]
         public IDiffSpread<string> Value;
         [Output("Attribute")]
         public ISpread<XAttribute> Attribute;
