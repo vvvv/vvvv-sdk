@@ -3,28 +3,17 @@
   <PropertyGroup>
     <ProjectGuid>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Hosting</RootNamespace>
     <AssemblyName>VVVV.Hosting</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <BaseAddress>4194304</BaseAddress>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <FileAlignment>4096</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <NoStdLib>False</NoStdLib>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartAction>Program</StartAction>
-    <StartProgram>..\..\..\vvvv.exe</StartProgram>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>False</Optimize>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <OutputPath>bin\Debug\</OutputPath>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
@@ -32,21 +21,15 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>bin\Release\</OutputPath>
     <DebugType>None</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <WarningLevel>4</WarningLevel>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
@@ -60,15 +43,13 @@
       <HintPath>..\..\thirdparty\Nito.Async.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX">
-      <HintPath>..\..\thirdparty\SlimDX.dll</HintPath>
+      <HintPath>..\..\thirdparty\$(PlatformTarget)\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition.Codeplex">
       <HintPath>..\..\thirdparty\System.ComponentModel.Composition.Codeplex.dll</HintPath>
     </Reference>
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />

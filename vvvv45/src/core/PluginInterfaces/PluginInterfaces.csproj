@@ -5,60 +5,29 @@
     <RootNamespace>VVVV.PluginInterfaces</RootNamespace>
     <AssemblyName>VVVV.PluginInterfaces</AssemblyName>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{837C740A-485C-424C-8C38-086ED3DC73CB}</ProjectGuid>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <NoStdLib>False</NoStdLib>
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <BaseAddress>4194304</BaseAddress>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <FileAlignment>4096</FileAlignment>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <DelaySign>False</DelaySign>
-    <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\tgallery\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <NoWarn>1591 1587</NoWarn>
-    <TargetFrameworkProfile />
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <DocumentationFile>$(OutputPath)\VVVV.PluginInterfaces.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>Full</DebugType>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>bin\Debug\VVVV.PluginInterfaces.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>True</Optimize>
     <DefineConstants>TRACE</DefineConstants>
     <DebugType>None</DebugType>
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>bin\Release\VVVV.PluginInterfaces.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>Full</DebugType>
-    <Optimize>false</Optimize>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <DebugSymbols>true</DebugSymbols>
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>None</DebugType>
-    <Optimize>true</Optimize>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <DebugSymbols>false</DebugSymbols>
+  <PropertyGroup Condition="'$(Platform)' == 'x64'">
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
@@ -119,15 +88,13 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SlimDX">
-      <HintPath>..\..\thirdparty\SlimDX.dll</HintPath>
+      <HintPath>..\..\thirdparty\$(PlatformTarget)\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition.Codeplex">
       <HintPath>..\..\thirdparty\System.ComponentModel.Composition.Codeplex.dll</HintPath>
     </Reference>
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
