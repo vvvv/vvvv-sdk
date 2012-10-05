@@ -74,6 +74,18 @@ namespace VVVV.Hosting
 				return "freeframes";
 			}
 		}
+
+        public bool GetNodeListAttribute(INodeInfo nodeInfo, out string name, out string value)
+        {
+            name = string.Empty;
+            value = string.Empty;
+            return false;
+        }
+
+        public void ParseNodeEntry(System.Xml.XmlReader xmlReader, INodeInfo nodeInfo)
+        {
+            return;
+        }
 		#endregion
 	}
 }

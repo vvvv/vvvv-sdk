@@ -30,11 +30,11 @@ namespace VVVV.Nodes.IO
         {
             var button = MouseButton.None;
             if (leftButton)
-                button = MouseButton.Left;
-            else if (middleButton)
-                button = MouseButton.Middle;
-            else if (rightButton)
-                button = MouseButton.Right;
+                button |= MouseButton.Left;
+            if (middleButton)
+                button |= MouseButton.Middle;
+            if (rightButton)
+                button |= MouseButton.Right;
             return new MouseState(x, y, button, mouseWheel);
         }
 
@@ -51,9 +51,9 @@ namespace VVVV.Nodes.IO
         {
             x = mouseState.X;
             y = mouseState.Y;
-            leftButton = mouseState.Button == MouseButton.Left;
-            middleButton = mouseState.Button == MouseButton.Middle;
-            rightButton = mouseState.Button == MouseButton.Right;
+            leftButton = (mouseState.Button & MouseButton.Left) > 0;
+            middleButton = (mouseState.Button & MouseButton.Middle) > 0;
+            rightButton = (mouseState.Button & MouseButton.Right) > 0;
             mouseWheel = mouseState.MouseWheel;
         }
     }

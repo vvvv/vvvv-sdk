@@ -17,5 +17,6 @@ namespace VVVV.Hosting.Interfaces.EX9
         
         void Subscribe(IInternalDXDeviceListener listener);
         void Unsubscribe(IInternalDXDeviceListener listener);
+        bool UseDx9Ex { get; }
     }
 }

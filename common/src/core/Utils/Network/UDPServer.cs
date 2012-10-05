@@ -166,7 +166,8 @@ namespace VVVV.Utils.Network
 		/// </summary>
 		public void Close()
 		{
-			FInternalServer.Close();
+			if(FInternalServer != null)
+				FInternalServer.Close();
 		}
 	}
 }

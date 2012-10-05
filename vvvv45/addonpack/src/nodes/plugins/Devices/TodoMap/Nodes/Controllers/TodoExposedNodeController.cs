@@ -31,6 +31,7 @@ namespace VVVV.TodoMap.Nodes.Controllers
         IHDEHost FHDEHost;
 
         private Dictionary<INode, TodoHdeVariable> nodes = new Dictionary<INode, TodoHdeVariable>();
+        //private Dictionary<INode, TodoHdeEnumVariable> enums = new Dictionary<INode, TodoHdeEnumVariable>();
         private List<INode2> exposednodes = new List<INode2>();
 
         private TodoEngine engine;
@@ -150,7 +151,16 @@ namespace VVVV.TodoMap.Nodes.Controllers
 
                 this.exposednodes.Add(node);
                 node.LabelPin.Changed += this.LabelPin_Changed;
+                node.FindPin("Tag").Changed += this.LabelPin_Changed;
             }
+            /*if (node.NodeInfo.Systemname == "IOBox (Enumerations)")
+            {
+                this.ProcessEnumNode(node);
+
+                this.exposednodes.Add(node);
+                node.LabelPin.Changed += this.LabelPin_Changed;
+                node.FindPin("Tag").Changed += this.LabelPin_Changed;
+            }*/
         }
 
         private void ProcessNode(INode2 node)
@@ -162,7 +172,22 @@ namespace VVVV.TodoMap.Nodes.Controllers
             {
                 if (this.engine != null)
                 {
-                    TodoVariable var = this.engine.GetVariableByName(varname);
+                    TodoHdeVariable hdevar = new TodoHdeVariable(node, this.engine,varname);
+                    this.nodes[node.InternalCOMInterf] = hdevar;
+                }
+            }
+        }
+
+        /*private void ProcessEnumNode(INode2 node)
+        {
+            string varname = node.LabelPin.Spread.Replace("|", "");
+
+            //Only register variable if name not blank
+            if (varname != "")
+            {
+                if (this.engine != null)
+                {
+                    /*TodoVariable var = this.engine.GetVariableByName(varname);
                     if (var == null)
                     {
                         var = new TodoVariable(varname);
@@ -170,12 +195,12 @@ namespace VVVV.TodoMap.Nodes.Controllers
                         this.engine.RegisterVariable(var, false);
                     }
 
-                    TodoHdeVariable hdevar = new TodoHdeVariable(node, var);
+                    TodoHdeEnumVariable hdevar = new TodoHdeEnumVariable(node, this.engine,this.FHDEHost);
 
-                    this.nodes[node.InternalCOMInterf] = hdevar;
+                    this.enums[node.InternalCOMInterf] = hdevar;
                 }
             }
-        }
+        }*/
 
         private void NodeRemovedCB(INode2 node)
         {
@@ -186,6 +211,11 @@ namespace VVVV.TodoMap.Nodes.Controllers
 
                 this.nodes.Remove(node.InternalCOMInterf);
             }
+            /*if (this.enums.ContainsKey(node.InternalCOMInterf))
+            {
+                TodoHdeEnumVariable hdevar = this.enums[node.InternalCOMInterf];
+                hdevar.Dispose();
+            }*/
 
             if (this.exposednodes.Contains(node))
             {
