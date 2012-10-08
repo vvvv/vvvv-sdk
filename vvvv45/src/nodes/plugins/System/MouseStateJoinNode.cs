@@ -14,15 +14,15 @@ namespace VVVV.Nodes.IO
         public ISpread<double> FXIn;
         [Input("Y")]
         public ISpread<double> FYIn;
-        [Input("Mouse Wheel Delta")]
-        public ISpread<int> FMouseWheelDeltaIn;
+        [Input("Mouse Wheel")]
+        public ISpread<int> FMouseWheelIn;
         [Input("Left Button")]
         public ISpread<bool> FLeftButtonIn;
         [Input("Middle Button")]
         public ISpread<bool> FMiddleButtonIn;
         [Input("Right Button")]
         public ISpread<bool> FRightButtonIn;
-        [Output("Output")]
+        [Output("Mouse")]
         public ISpread<MouseState> FOutput;
 
         public void Evaluate(int spreadMax)
@@ -36,7 +36,7 @@ namespace VVVV.Nodes.IO
                     FLeftButtonIn[i], 
                     FMiddleButtonIn[i], 
                     FRightButtonIn[i],  
-                    FMouseWheelDeltaIn[i]
+                    FMouseWheelIn[i]
                    );
             }
         }

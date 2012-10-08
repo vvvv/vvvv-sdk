@@ -161,7 +161,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
         {
             var query =
 				from pin in node.Pins
-				where pin.Name == name
+            	where pin.Name == name || pin.NameByParent(node) == name
 				select pin;
             return query.FirstOrDefault();
         }

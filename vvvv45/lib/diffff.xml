@@ -960,33 +960,146 @@
 	<NODE old="MultiScreen (EX9 Spanmode)" new="MultiScreen (EX9 Spanmode Legacy)"> </NODE>
   </PATCH>	
   <PATCH version="45alpha28">
-  	<NODE old="Differential (Spreads Advanced)" new="Differential (Spreads Advanced Legacy)"></NODE>
-  	<NODE old="Integral (Spreads Advanced)" new="Integral (Spreads Advanced Legacy)"></NODE>
   	<NODE old="AlphaLevels (EX9.Texture Filter)" new="AlphaLevels (EX9.Texture Filter Legacy)"> </NODE>
   	<NODE old="PreviewRGBA (EX9.Texture)" new="Preview (EX9.Texture)"> </NODE>
   	<NODE old="DisplacementMap (EX9.Texture Source)" new="TexCoords (EX9.Texture Source)"> </NODE>
   	<NODE old="EdgeGlow (EX9.Texture Filter)"><PIN old="Balance" new="Shape"></PIN></NODE>
-	<NODE old="Renderer (SVG)">
-	  <PIN old="Layer" new="Layers"/>
+  	<NODE old="Renderer (SVG)">
+  	  <PIN old="Layer" new="Layers"/>
+  	</NODE>
+  	<NODE old="Group (SVG)">
+  	  <PIN old="Input Count" new="Layer Count"/>
+  	  <PIN old="Input 1" new="Layer 1"/>
+  	  <PIN old="Input 2" new="Layer 2"/>
+  	  <PIN old="Input 3" new="Layer 3"/>
+  	  <PIN old="Input 4" new="Layer 4"/>
+  	  <PIN old="Input 5" new="Layer 5"/>
+  	  <PIN old="Input 6" new="Layer 6"/>
+  	  <PIN old="Input 7" new="Layer 7"/>
+  	  <PIN old="Input 8" new="Layer 8"/>
+  	  <PIN old="Input 9" new="Layer 9"/>
+  	  <PIN old="Input 10" new="Layer 10"/>
+  	  <PIN old="Input 11" new="Layer 11"/>
+  	  <PIN old="Input 12" new="Layer 12"/>
+  	  <PIN old="Input 13" new="Layer 13"/>
+  	  <PIN old="Input 14" new="Layer 14"/>
+  	  <PIN old="Input 15" new="Layer 15"/>
+  	</NODE>
+  	<NODE old="Mouse (System Global)" new="Mouse (System Global Legacy)"> </NODE>
+  	<NODE old="Mouse (System Window)" new="Mouse (System Window Legacy)"> </NODE>
+  	<NODE old="Keyboard (System Global)" new="Keyboard (System Global Legacy)"> </NODE>
+  	<NODE old="Keyboard (System Window)" new="Keyboard (System Window Legacy)"> </NODE>
+  	<NODE old="Button (3D Mesh)" new="Button (3D Mesh Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\Button (3D Mesh).v4p" new="Button (3D Mesh Legacy)"> </NODE>
+  	<NODE old="Button (3D Quad)" new="Button (3D Quad Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\Button (3D Quad).v4p" new="Button (3D Quad Legacy)"> </NODE>
+  	<NODE old="PickPoints (3D Vector)" new="PickPoints (3D Vector Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\PickPoints (3D Vector).v4p" new="PickPoints (3D Vector Legacy)"> </NODE>
+  	<NODE old="PointEditor (3D)" new="PointEditor (3D Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\PointEditor (3D).v4p" new="PointEditor (3D Legacy)"> </NODE>
+  	<NODE old="PointEditor (3D Persistent)" new="PointEditor (3D Persistent Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\PointEditor (3D Persistent).v4p" new="PointEditor (3D Persistent Legacy)"> </NODE>
+  	<NODE old="PointEditor (3D Persistent Extended)" new="PointEditor (3D Persistent Extended Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\PointEditor (3D Persistent Extended).v4p" new="PointEditor (3D Persistent Extended Legacy)"> </NODE>
+  	<NODE old="PointEditor (3D Persistent Sandwich)" new="PointEditor (3D Persistent Sandwich Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\PointEditor (3D Persistent Sandwich).v4p" new="PointEditor (3D Persistent Sandwich Legacy)"> </NODE>
+  	<NODE old="MeshEditor (EX9)" new="MeshEditor (EX9 Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\EX9\MeshEditor (EX9).v4p" new="MeshEditor (EX9 Legacy)"> </NODE>
+  	<NODE old="TagPoints (3D Vector)" new="TagPoints (3D Vector Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\TagPoints (3D Vector).v4p" new="TagPoints (3D Vector Legacy)"> </NODE>
+  	<NODE old="Cursor (DX9)" new="Cursor (DX9 Legacy)"> </NODE>	
+  	<NODE old=":MODULES:\vvvv group\EX9\Cursor (DX9).v4p" new="Cursor (DX9 Legacy)"> </NODE>
+  	<NODE old="KeyMatch (String)" new="Match (String)"> </NODE>
+  	<NODE old="RadioKeyMatch (String)" new="RadioMatch (String)"> </NODE>
+    <NODE old="TimerFlop (Animation)">
+    	<PIN old="Time" olddefault="0"></PIN>
+    </NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.DiffAdvNode" new="Differential (Spreads Vector)">
+      <PIN old="Bin Size" new="Input Bin Size"/>
+    </NODE>
+    <NODE old="Differential (Spreads Advanced)" new="Differential (Spreads Vector)">
+      <PIN old="Bin Size" new="Input Bin Size"/>
+    </NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.IntAdvNode" new="Integral (Spreads Vector)">
+      <PIN old="Bin Size" new="Input Bin Size"/>
+      <PIN old="Include 0 Slice" new="Append Offset"/>
+    </NODE>
+    <NODE old="Integral (Spreads Advanced)" new="Integral (Spreads Vector)">
+      <PIN old="Bin Size" new="Input Bin Size"/>
+      <PIN old="Include 0 Slice" new="Append Offset"/>
+    </NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.AddAdvNode" new="Add (Value Spectral Vector)"></NODE>
+    <NODE old="+ (Value Spectral Advanced)" new="Add (Value Spectral Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.MultiplyAdvNode" new="Multiply (Value Spectral Vector)"></NODE>
+    <NODE old="* (Value Spectral Advanced)" new="Multiply (Value Spectral Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.BoundsAdvNode" new="Bounds (Spectral Vector)"></NODE>
+    <NODE old="Bounds (Spectral Advanced)" new="Bounds (Spectral Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.CARAdvNode" new="CAR (Spreads Vector)"></NODE>
+    <NODE old="CAR (Spreads Advanced)" new="CAR (Spreads Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.CDRAdvNode" new="CDR (Spreads Vector)"></NODE>
+    <NODE old="CDR (Spreads Advanced)" new="CDR (Spreads Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.ReverseAdvNode" new="Reverse (Spreads Vector)"></NODE>
+    <NODE old="Reverse (Spreads Advanced)" new="Reverse (Spreads Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.SelectAdvNode" new="Select (Value Vector)"></NODE>
+    <NODE old="Select (Value Advanced)" new="Select (Value Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.ShiftAdvNode" new="Shift (Spreads Vector)"></NODE>
+    <NODE old="Shift (Spreads Advanced)" new="Shift (Spreads Vector)"></NODE>
+    <NODE old="Select (String Advanced)" new="Select (String Bin)"></NODE>
+    <NODE old="Select (Color Advanced)" new="Select (Color Bin)"></NODE>
+    <NODE old="Select (Transform)" new="Select (Transform Bin)"></NODE>
+    <NODE old="Select (Enumerations)" new="Select (Enumerations Bin)"></NODE>
+    <NODE old="DeCons (Spreads)" new="Unzip (Value Bin)">
+      <PIN old="Input Bin Size" olddefault="-1"></PIN>
+    </NODE>
+    <NODE old="DeCons (String)" new="Unzip (String Bin)">
+      <PIN old="Input Bin Size" olddefault="-1"></PIN>
+    </NODE>
+    <NODE old="DeCons (Color)" new="Unzip (Color Bin)">
+      <PIN old="Input Bin Size" olddefault="-1"></PIN>
+    </NODE>
+    <NODE old="DeCons (Transform)" new="Unzip (Transform Bin)">
+      <PIN old="Input Bin Size" olddefault="-1"></PIN>
+    </NODE>
+    <NODE old="DeCons (Enumerations)" new="Unzip (Enumerations Bin)">
+      <PIN old="Input Bin Size" olddefault="-1"></PIN>
+    </NODE>
+  </PATCH>
+  <PATCH version="45alpha28.1">
+    <NODE old="ArduinoFirmata (Devices)" new="ArduinoFirmata (Devices Legacy)" />
+  </PATCH>
+  <PATCH version="45alpha28.2">
+    <NODE old="UnipolarStepper (Devices Phidget)" new="StepperController (Devices Phidget)" />
+	<NODE old="Cursor (System)" new="Cursor (System Legacy)" />
+  </PATCH>
+  <PATCH version="45alpha28.3">
+    <NODE old="Sort (Spreads)">
+	  <PIN old="Algorithm" olddefault="QuickSort"> </PIN>
 	</NODE>
-	<NODE old="Group (SVG)">
-	  <PIN old="Input Count" new="Layer Count"/>
-	  <PIN old="Input 1" new="Layer 1"/>
-	  <PIN old="Input 2" new="Layer 2"/>
-	  <PIN old="Input 3" new="Layer 3"/>
-	  <PIN old="Input 4" new="Layer 4"/>
-	  <PIN old="Input 5" new="Layer 5"/>
-	  <PIN old="Input 6" new="Layer 6"/>
-	  <PIN old="Input 7" new="Layer 7"/>
-	  <PIN old="Input 8" new="Layer 8"/>
-	  <PIN old="Input 9" new="Layer 9"/>
-	  <PIN old="Input 10" new="Layer 10"/>
-	  <PIN old="Input 11" new="Layer 11"/>
-	  <PIN old="Input 12" new="Layer 12"/>
-	  <PIN old="Input 13" new="Layer 13"/>
-	  <PIN old="Input 14" new="Layer 14"/>
-	  <PIN old="Input 15" new="Layer 15"/>
+	<NODE old="FileStream (DShow9)">
+	  <PIN old="Start Time" new="Loop Start Time"> </PIN>
+	  <PIN old="End Time" new="Loop End Time"> </PIN>
+	  <PIN old="Seek Position" new="Seek Time"> </PIN>
 	</NODE>
+	<NODE old="FileStream2 (DShow9)">
+	  <PIN old="Start Time" new="Loop Start Time"> </PIN>
+	  <PIN old="End Time" new="Loop End Time"> </PIN>
+	  <PIN old="Seek Position" new="Seek Time"> </PIN>
+	</NODE>	
+	<NODE old="FileStream (DShow9 Boygroup)">
+	  <PIN old="Start Time" new="Loop Start Time"> </PIN>
+	  <PIN old="End Time" new="Loop End Time"> </PIN>
+	  <PIN old="Seek Position" new="Seek Time"> </PIN>
+	</NODE>
+	<NODE old="FileStream2 (DShow9 Boygroup)">
+	  <PIN old="Start Time" new="Loop Start Time"> </PIN>
+	  <PIN old="End Time" new="Loop End Time"> </PIN>
+	  <PIN old="Seek Position" new="Seek Time"> </PIN>
+	</NODE>	
+	<NODE old="FileStream (Bass)">
+	  <PIN old="Start Time" new="Loop Start Time"> </PIN>
+	  <PIN old="End Time" new="Loop End Time"> </PIN>
+	  <PIN old="Seek Position" new="Seek Time"> </PIN>
+	</NODE>	
   </PATCH>
 
 </CONVVVVERTER>

@@ -54,6 +54,7 @@ namespace VVVV.Hosting
             FDeviceService = deviceService;
             FDeviceListener = new DeviceListener(this);
             FDeviceService.Subscribe(FDeviceListener);
+            UseDx9Ex = deviceService.UseDx9Ex;
         }
         
         public void Dispose()
@@ -110,6 +111,12 @@ namespace VVVV.Hosting
                 	yield return (Device) DeviceMarshaler.GetInstance().MarshalNativeToManaged(devicePtr);
                 }
             }
+        }
+
+        public bool UseDx9Ex
+        {
+            get;
+            private set;
         }
     }
 }
