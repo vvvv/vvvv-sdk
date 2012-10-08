@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.3.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\testing\HelpTester.v4p" systemname="HelpTester" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\tests\HelpTester.v4p">
    <BOUNDS type="Window" left="15300" top="10665" width="13500" height="6915">
    </BOUNDS>
@@ -57,7 +57,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6315" top="2280" width="3105" height="285">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" encoded="0" values="..\..\lib\nodes\nodelist.xml">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="..\..\lib\nodes\plugins\nodelist.xml">
    </PIN>
    <PIN pinname="Default" slicecount="1" encoded="0" values="file.txt">
    </PIN>
@@ -258,4 +258,40 @@
    <PIN pinname="Threshold" slicecount="1" values="None">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="155" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7740" top="885" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7740" top="885" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="155" srcpinname="Y Output Value" dstnodeid="136" dstpinname="Next">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="156" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="8400" top="855" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8400" top="855" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="156" srcpinname="Y Output Value" dstnodeid="136" dstpinname="Previous">
+   </LINK>
    </PATCH>
