@@ -1,0 +1,273 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.1.dtd" >
+   <PATCH nodename="C:\_vvvv\public sources\_TRUNK vvvv\help\SetSlice (Spreads) help.v4p">
+   <BOUNDS height="6900" left="2625" top="1845" type="Window" width="5730">
+   </BOUNDS>
+   <NODE id="15" nodename="POINT (GDI)">
+   <BOUNDS height="0" left="2160" top="4305" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1" slicecount="1" valueslost="sadly" values="0">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="0.03">
+   </PIN>
+   <PIN pinname="Type" slicecount="1" values="Asterisk">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="Renderer (GDI)">
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <BOUNDS height="0" left="285" top="4965" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="3901" top="3127" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="1215" left="285" top="4965" type="Box" width="5220">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1" slicecount="1" valueslost="sadly" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="450" left="4455" top="1770" type="Box" width="570">
+   </BOUNDS>
+   <BOUNDS height="160" left="8648" top="4074" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="0" left="4455" top="1770" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0,3">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="LinearSpread (Spreads)">
+   <PIN pinname="Phase" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Height">
+   </PIN>
+   <BOUNDS height="0" left="2145" top="1185" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" visible="1" values="32">
+   </PIN>
+   <PIN pinname="Text">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1.8">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="LFO (Animation)" hiddenwhenlocked="1">
+   <BOUNDS height="0" left="2475" top="2550" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Period" slicecount="1" values="0.1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="GetSlice (Spreads)" hiddenwhenlocked="1">
+   <BOUNDS height="0" left="3330" top="2520" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Index" visible="1" valueslost="sadly">
+   </PIN>
+   <PIN pinname="Input" visible="1" valueslost="sadly">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1" valueslost="sadly">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Index" linkstyle="PolyLine" srcnodeid="13" srcpinname="Y Output Value" createme="pronto" hiddenwhenlocked="1">
+   <LINKPOINT x="4995" y="2370">
+   </LINKPOINT>
+   <LINKPOINT x="4035" y="2370">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input" linkstyle="PolyLine" srcnodeid="12" srcpinname="Output" createme="pronto" hiddenwhenlocked="1">
+   <LINKPOINT x="2175" y="1575">
+   </LINKPOINT>
+   <LINKPOINT x="3360" y="1575">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="9" nodename="MapRange (Value)" hiddenwhenlocked="1">
+   <BOUNDS height="270" left="2475" top="3030" type="Node" width="1485">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" valueslost="sadly">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Center" visible="1" valueslost="sadly">
+   </PIN>
+   <PIN pinname="Destination Width" slicecount="1" values="0.03">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="11" srcpinname="Output" createme="pronto" hiddenwhenlocked="1">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Destination Center" srcnodeid="10" srcpinname="Output" createme="pronto" hiddenwhenlocked="1">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|create a spread with values|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="3180" top="1185" type="Box" width="2295">
+   </BOUNDS>
+   <BOUNDS height="255" left="3180" top="1185" type="Node" width="1950">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|LFO: take the slice values and make them wiggle|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="495" left="285" top="2520" type="Box" width="1830">
+   </BOUNDS>
+   <BOUNDS height="420" left="285" top="2520" type="Node" width="1665">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|replace the selected slice &cr;&lf;with the wiggling value|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="585" left="2940" top="3570" type="Box" width="1875">
+   </BOUNDS>
+   <BOUNDS height="420" left="2940" top="3570" type="Node" width="1875">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|select the &cr;&lf;slice indices|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="3495" top="1755" type="Box" width="930">
+   </BOUNDS>
+   <BOUNDS height="255" left="3495" top="1755" type="Node" width="1245">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="390" type="Box" width="4290">
+   </BOUNDS>
+   <BOUNDS height="160" left="9660" top="41970" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Replace individual slices of the spread with the given input|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9660" top="41970" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SetSlice - Spreads|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="15" srcpinname="Layer" createme="pronto">
+   </LINK>
+   <NODE id="2" nodename="SetSlice (Spreads)">
+   <PIN pinname="Slice Index" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1" slicecount="1" valueslost="sadly" values="0">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="1" valueslost="sadly" values="0">
+   </PIN>
+   <BOUNDS height="0" left="2160" top="3600" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread" visible="1" slicecount="1" valueslost="sadly" values="0">
+   </PIN>
+   <PIN pinname="DoSet">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1" slicecount="1" valueslost="sadly" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="X" srcnodeid="2" srcpinname="Output" createme="pronto">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Spread" srcnodeid="12" srcpinname="Output" createme="pronto">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="9" srcpinname="Output" createme="pronto">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Index" srcnodeid="13" srcpinname="Y Output Value" createme="pronto">
+   <LINKPOINT x="4995" y="3420">
+   </LINKPOINT>
+   <LINKPOINT x="2850" y="3420">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="450" top="1530" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3285" top="3645" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="450" top="1530" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="390" top="945" type="Node" width="1605">
+   </BOUNDS>
+   <BOUNDS height="510" left="390" top="945" type="Box" width="1020">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|select the size of a slice|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Bin Size" srcnodeid="1" srcpinname="Y Output Value" createme="pronto" hiddenwhenlocked="1">
+   <LINKPOINT x="1215" y="2325">
+   </LINKPOINT>
+   <LINKPOINT x="3705" y="2325">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Bin Size" srcnodeid="1" srcpinname="Y Output Value" createme="pronto">
+   <LINKPOINT x="1230" y="3315">
+   </LINKPOINT>
+   <LINKPOINT x="1230" y="3405">
+   </LINKPOINT>
+   <LINKPOINT x="2625" y="3405">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

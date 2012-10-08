@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectGuid>{FA8072CA-3343-4199-AC22-62B9E352BAE8}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(MSBuildThisFileDirectory)..\vvvv.exe</StartProgram>
+    <BuildingInsideVisualStudio Condition=" '$(BuildingInsideVisualStudio)' == '' ">false</BuildingInsideVisualStudio>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
+  
+  <PropertyGroup>
+    <CoreOutputDir>$(MSBuildThisFileDirectory)..\lib\core\</CoreOutputDir>
+    <PluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</PluginsOutputDir>
+    <EditorsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\editors\</EditorsOutputDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="core\**\*.csproj;
+                              gui\**\*.csproj">
+      <OutputDir>$(CoreOutputDir)</OutputDir>
+    </ProjectReference>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\plugins\**\*.csproj">
+      <OutputDir>$(PluginsOutputDir)</OutputDir>
+    </ProjectReference>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\editors\**\*.csproj">
+      <OutputDir>$(EditorsOutputDir)</OutputDir>
+    </ProjectReference>
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <BuildDependsOn>CoreBuild</BuildDependsOn>
+    <RebuildDependsOn>Clean;Build</RebuildDependsOn>
+    <CleanDependsOn>$(CleanDependsOn)</CleanDependsOn>
+  </PropertyGroup>
+  
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
+  <Target Name="CoreBuild">
+    <MSBuild Projects="@(ProjectReference)" 
+             Properties="OutputPath=%(ProjectReference.OutputDir);
+                         BuildingInsideVisualStudio=false"
+             ContinueOnError="$(BuildingInsideVisualStudio)"
+             Condition=" !Exists('%(ProjectReference.RootDir)%(ProjectReference.Directory)ignore') " />
+    <!-- Copy shared dependencies to lib/core -->
+    <CreateItem Include="$(PluginsOutputDir)Sanford*">
+      <Output TaskParameter="Include" ItemName="_SharedDependencies_" />
+    </CreateItem>
+    <Copy SourceFiles="@(_SharedDependencies_)"
+          DestinationFolder="$(CoreOutputDir)" />
+    <!-- Delete all files which are already in lib/core -->
+    <CreateItem Include="$(CoreOutputDir)**\*.*">
+      <Output TaskParameter="Include" ItemName="CoreOutputFiles" />
+    </CreateItem>
+    <Delete Files="@(CoreOutputFiles->'$(PluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Delete Files="@(CoreOutputFiles->'$(EditorsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    
+    <!-- Create lib/*.dtd file -->
+    <GetVersionInfo File="$(MSBuildThisFileDirectory)..\vvvv.exe">
+      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
+    </GetVersionInfo>
+    <ItemGroup>
+	  <DTDFiles Include="$(MSBuildThisFileDirectory)..\lib\*.dtd" />
+    </ItemGroup>
+    <Delete Files="@(DTDFiles)" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" 
+          DestinationFiles="$(MSBuildThisFileDirectory)..\lib\$(VersionInfo).dtd" />
+  </Target>
+  
+  <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
+
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)">
+    <MSBuild Projects="@(ProjectReference)" 
+             Targets="Clean" 
+             Properties="OutputPath=%(ProjectReference.OutputDir)" 
+             Condition=" '$(BuildingInsideVisualStudio)' == '' OR '$(BuildingInsideVisualStudio)' == 'false' "/>
+    <CreateItem Include="%(ProjectReference.OutputDir)*.dll;%(ProjectReference.OutputDir)*.xml;%(ProjectReference.OutputDir)*.pdb">
+      <Output ItemName="GeneratedFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Delete Files="@(GeneratedFiles)" />
+  </Target>
+  
+  <!-- Freeframe and DirectShow -->
+  <ItemGroup>
+    <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp" 
+                       Exclude="$(MSBuildThisFileDirectory)nodes\freeframes\Template*\**\*.cbp">
+      <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\freeframes\</OutputDir>
+    </FreeframeProjects>
+    <DirectShowFilterProjects Include="$(MSBuildThisFileDirectory)nodes\directshowfilter\**\*.dproj">
+      <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\directshowfilter\</OutputDir>
+    </DirectShowFilterProjects>
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <ZipSteps>_PreZip_;_Zip_;_PostZip_</ZipSteps>
+    <ZipOutputDir>..\..\</ZipOutputDir>
+    <TempBaseDir>$(ZipOutputDir)temp\</TempBaseDir>
+  </PropertyGroup>
+  <Target Name="Zip">
+    <CallTarget Targets="$(ZipSteps)" RunEachTargetSeparately="True" />
+  </Target>
+  <Target Name="_PreZip_">
+    <RemoveDir Directories="$(TempBaseDir)" />
+  </Target>
+  <Target Name="_Zip_">
+    <GetVersionInfo File="$(StartProgram)">
+      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
+    </GetVersionInfo>
+    <PropertyGroup>
+      <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)\</TempDir>
+      <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo).zip</ZipFileName>
+    </PropertyGroup>
+    <CreateItem Include="..\**\*.*" 
+                Exclude="..\*.rsm;
+                         ..\**\.gitignore;
+                         ..\**\*.pdb;
+                         ..\src\**\*.*;
+                         ..\tests\**\*.*;
+                         ..\addonpack\**\*.*;
+                         ..\lib\nodes\plugins\*\bin\**\*.*">
+      <Output ItemName="OutputFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Copy SourceFiles="@(OutputFiles)" 
+          DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Exec Command="attrib +R &quot;$(TempDir)lib\nodes\*.*&quot; /S /D" />
+    <Exec Command="attrib +H &quot;$(TempDir)vvvv.exe.config&quot;" />
+    <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
+    <Exec Command="vvvv.exe /nodelist /dx9ex" WorkingDirectory="$(TempDir)" />
+    <!-- Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
+    <Exec Command="&quot;$(SevenZip)&quot; a -r &quot;$(ZipFileName)&quot; &quot;$(TempDir)&quot;" />
+    <!--
+    <CreateItem Include="$(TempDir)\**\*.*">
+      <Output ItemName="ZipFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Zip Files="@(ZipFiles)" 
+         WorkingDirectory="$(TempBaseDir)" 
+         ZipFileName="$(ZipFileName)" 
+         ZipLevel="9" />
+    -->
+  </Target>
+  <Target Name="_PostZip_">
+    <RemoveDir Directories="$(TempBaseDir)" />
+  </Target>
+  
+  <Import Project="vvvv45.targets"/>
+</Project>

@@ -1,0 +1,175 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.5.dtd" >
+   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\Ready\EnvironmentNodes\Info (System Codec) help.v4p">
+   <BOUNDS height="7350" left="5790" top="420" type="Window" width="6255">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="15" top="3105" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1380" left="15" top="3105" type="Box" width="4080">
+   </BOUNDS>
+   <BOUNDS height="160" left="7200" top="5475" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Audio">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="75" top="15" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="420" left="75" top="15" type="Box" width="3705">
+   </BOUNDS>
+   <BOUNDS height="160" left="3165" top="960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Info (System Codec)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="525" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="240" left="15" top="525" type="Box" width="4320">
+   </BOUNDS>
+   <BOUNDS height="160" left="3165" top="960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|retrieves installed audio and video codecs|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="5" nodename="GetSlice (String)">
+   <BOUNDS height="0" left="3345" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="Output Bins" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3630" top="2280" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="3630" top="2280" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="9285" top="2340" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Index" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input String" srcnodeid="5" srcpinname="Output" linkstyle="VHV">
+   <LINKPOINT x="3375" y="2340">
+   </LINKPOINT>
+   <LINKPOINT x="4065" y="2340">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1530" top="5175" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1335" left="1530" top="5175" type="Box" width="3360">
+   </BOUNDS>
+   <BOUNDS height="160" left="7500" top="5775" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Video">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename="GetSlice (String)">
+   <BOUNDS height="0" left="4830" top="4455" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="Output Bins" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5115" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5115" top="4170" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="9585" top="2640" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Index" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input String" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4620" top="6600" type="Node" width="735">
+   </BOUNDS>
+   <BOUNDS height="255" left="4620" top="6600" type="Box" width="885">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="-1245" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|2009, woei|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="SystemNodes.dll|VVVV.Nodes.InfoCodec" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="3345" top="1875" width="1545" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3345" top="1875" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8460" top="2700" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Update" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Audio" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Video" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="2910" top="1215" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2910" top="1215" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8130" top="2130" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Update">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Update">
+   </LINK>
+   </PATCH>

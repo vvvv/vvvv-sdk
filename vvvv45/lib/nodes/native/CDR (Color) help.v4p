@@ -1,0 +1,113 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
+   <PATCH nodename="G:\vvvv\help\CDR (Color) help.v4p">
+   <BOUNDS height="4365" left="4290" top="3135" type="Window" width="4155">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="3780">
+   </BOUNDS>
+   <BOUNDS height="160" left="60" top="13860" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Splits the spread into the last element and the rest|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="2010">
+   </BOUNDS>
+   <BOUNDS height="160" left="60" top="13860" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CDR - Color|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="3705" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="3705" type="Box" width="750">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="870" top="780" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6795" top="4275" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="870" top="780" width="855" height="810">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="4" values="|0.00000,1.00000,0.00000,1.00000|,|0.94452,0.98286,0.00000,1.00000|,|0.00000,0.33181,0.99622,1.00000|,|0.00000,0.24122,0.11051,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="180" top="2565" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6540" top="6045" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="180" top="2565" width="750" height="255">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="1110" top="2550" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7215" top="5985" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1110" top="2550" width="765" height="630">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <NODE nodename="CDR (Color)" id="13">
+   <BOUNDS type="Node" left="855" top="1905" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Last Slice" visible="1">
+   </PIN>
+   <PIN pinname="Remainder" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="CAR (Color)" id="14">
+   <BOUNDS type="Node" left="780" top="3705" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Color Output" dstnodeid="13" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Last Slice" dstnodeid="10" dstpinname="Color Input">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Remainder" dstnodeid="11" dstpinname="Color Input">
+   </LINK>
+   </PATCH>

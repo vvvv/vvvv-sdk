@@ -1,0 +1,113 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="\\meso255\vvvv\releases\vvvv_33beta9a\help\Sqr (Complex) help.v4p">
+   <BOUNDS height="4260" left="150" top="180" type="Window" width="3315">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="480" top="1755" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4545" top="4500" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="480" top="1755" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="300" top="210" type="Node" width="465">
+   </BOUNDS>
+   <BOUNDS height="465" left="300" top="210" type="Box" width="1575">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Sqr">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="17">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1380" top="1755" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5295" top="5625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1380" top="1755" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="480" top="3180" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4200" top="7230" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="480" top="3180" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1380" top="3195" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6750" top="7215" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1380" top="3195" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="315" top="900" type="Node" width="4860">
+   </BOUNDS>
+   <BOUNDS height="360" left="315" top="900" type="Box" width="2340">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Square of a complex number|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="0" managers="" nodename="Sqr (Complex)">
+   <PIN pinname="Input Real 1" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Real 2" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Imaginary 1" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Imaginary 2" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="270" left="1200" top="2505" type="Node" width="975">
+   </BOUNDS>
+   <PIN pinname="Output Imaginary" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Output Real" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input Count" pintype="Configuration">
+   </PIN>
+   <PIN pinname="Input Real" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input Imaginary" pintype="Input">
+   </PIN>
+   <PIN pinname="Input Imagiary" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Output Imaginary">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Output Real">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Input Real" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Input Imagiary" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   </PATCH>
