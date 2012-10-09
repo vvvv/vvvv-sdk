@@ -51,50 +51,45 @@ namespace VVVV.Nodes
 		#region Input Pins
 
 		//File
-		[Input("File", DefaultString = "", StringType = StringType.Filename)]
-		IDiffSpread<string> FFile;
-		
-		[Input("StreamMode",DefaultEnumEntry = "NoStreaming", Visibility = PinVisibility.OnlyInspector)]
-		IDiffSpread<StreamMode> FStreamMode;
-		
-		[InputAttribute("StreamThreashold", DefaultValue = 1024, Visibility = PinVisibility.OnlyInspector)]
-		IDiffSpread<int> FStreamThreashold;
-
-
-		//Main Volume
-		[Input("MainVolume", DefaultValue = 0.5, IsSingle = true, MinValue = 0.0, MaxValue = 1.0)]
-		IDiffSpread<double> FMainVolume;
-
-		// Sound Playback
-		string[] FPlayModeArray = { "3D", "2D" };
-		[Input("PlayMode", EnumName = "PlayMode")]
-		IDiffSpread<EnumEntry> FPlayMode;
 		[Input("Play", IsBang=true)]
 		IDiffSpread<bool> FPlay;
-		[Input("Stop", IsBang=true)]
-		IDiffSpread<bool> FStop;
-		[Input("Pause")]
-		IDiffSpread<bool> FPause;
+		
 		[Input("Loop")]
 		IDiffSpread<bool> FLoop;
-		[Input("Seek Position", DefaultValue = 0.0, MinValue = 0.0)]
-		IDiffSpread<float> FSeekPos;
-		[Input("Seek", IsBang = true)]
+		
+		[Input("Do Seek", IsBang = true)]
 		IDiffSpread<bool> FSeek;
-		[Input("Stop All", IsSingle = true, IsBang = true, Visibility = PinVisibility.OnlyInspector)]
-		IDiffSpread<bool> FStopAll;
-		[Input("Pause All", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
-		IDiffSpread<bool> FPauseAll;
-
-		//Sound Control
-		[Input("Playback Speed", DefaultValue = 1.0)]
+		
+		[Input("Seek Time", DefaultValue = 0.0, MinValue = 0.0)]
+		IDiffSpread<float> FSeekPos;
+		
+		[Input("Speed", DefaultValue = 1.0)]
 		IDiffSpread<float> FPlaybackSpeed;
+		
+		[Input("Stop", IsBang=true)]
+		IDiffSpread<bool> FStop;
+		
+		[Input("Pause")]
+		IDiffSpread<bool> FPause;
+		
+		// Sound Playback
+		string[] FPlayModeArray = { "3D", "2D" };
+		[Input("Play Mode", EnumName = "PlayMode")]
+		IDiffSpread<EnumEntry> FPlayMode;
+		
+		[Input("Stream Mode",DefaultEnumEntry = "NoStreaming", Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<StreamMode> FStreamMode;
+		
+		[Input("Stream Threashold", DefaultValue = 1024, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<int> FStreamThreashold;
+		
+		//Sound Control
 		[Input("Volume", DefaultValue = 1.0, MaxValue = 1.0, MinValue = 0.0)]
 		IDiffSpread<float> FVolume;
+		
 		[Input("Pan", DefaultValue = 0, MaxValue = 1.0, MinValue = -1.0)]
 		IDiffSpread<float> FPan;
-
-
+		
 		// 3D Sound Position
 		[Input("Pos", DefaultValue = 0)]
 		IDiffSpread<Vector3D> FSoundPosition;
@@ -104,6 +99,16 @@ namespace VVVV.Nodes
 		IDiffSpread<float> FMinDist;
 		[Input("Maximal Distance", DefaultValue = 100, MaxValue = float.MaxValue)]
 		IDiffSpread<float> FMaxDist;
+		
+		//Main Volume
+		[Input("Main Volume", DefaultValue = 0.5, IsSingle = true, MinValue = 0.0, MaxValue = 1.0)]
+		IDiffSpread<double> FMainVolume;
+
+		[Input("Stop All", IsSingle = true, IsBang = true, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<bool> FStopAll;
+		
+		[Input("Pause All", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<bool> FPauseAll;
 
 		// 3D Listener Position
 		[Input("View Position", DefaultValue = 0, IsSingle = true)]
@@ -126,7 +131,6 @@ namespace VVVV.Nodes
 		IDiffSpread<float> FDoplerDistanceFactor;
 
 		//Effects
-
 		//Chorus
 		[Input("Enable Chorus", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<bool> FEnableChorus;
@@ -175,7 +179,6 @@ namespace VVVV.Nodes
 		[Input("Dist Pre Lowpass Cutoff", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<float> FDistortionLowpassCutoff;
 
-
 		//Echo
 		[Input("Enable Echo", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<bool> FEnableEcho;
@@ -189,7 +192,6 @@ namespace VVVV.Nodes
 		IDiffSpread<float> FEchoRightDelay;
 		[Input("Echo PanDelay", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<int> FEchoPanDelay;
-
 
 		//Flanger
 		[Input("Enable Flanger", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
@@ -216,7 +218,6 @@ namespace VVVV.Nodes
 		IDiffSpread<int> FGargleRateHz;
 		[Input("Gargle SinusWaveForm", DefaultValue = 0.0,  Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<bool> FGargleSinusWaveForm;
-
 
 		//I3DL2 Reverb
 		[Input("Enable I3DL2 Reverb", DefaultValue = 0,  Visibility = PinVisibility.OnlyInspector)]
@@ -246,7 +247,6 @@ namespace VVVV.Nodes
 		[Input("I3DL2 HfReference", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<float> FI3DL2HfReference;
 
-
 		//Param EQ
 		[Input("Enable EQ", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<bool> FEnableEq;
@@ -256,7 +256,6 @@ namespace VVVV.Nodes
 		IDiffSpread<float> FEqBandwidth;
 		[Input("EQ Gain", DefaultValue = 1.0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<float> FEqGain;
-
 
 		//wave Reverb
 		[Input("Enable Wave Reverb", DefaultValue = 0,  Visibility = PinVisibility.OnlyInspector)]
@@ -269,15 +268,14 @@ namespace VVVV.Nodes
 		IDiffSpread<float> FWaveReverbTime;
 		[Input("Reverb HighFreqRTRatio", DefaultValue = 1.0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<float> FWaveReverbFreq;
-
 		[Input("Disable All Effekts", IsBang = true, DefaultValue = 0.0,  Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<bool> FDisableAllEffekt;
-
 
 		//Device Selection
 		[Input("Device", EnumName = "DeviceName")]
 		IDiffSpread<EnumEntry> FDeviceenum;
-
+		[Input("Filename", DefaultString = "", StringType = StringType.Filename)]
+		IDiffSpread<string> FFile;
 
 
 		#endregion Input Pins
@@ -285,10 +283,10 @@ namespace VVVV.Nodes
 
 		#region Output Pins
 
-		[Output("Length")]
+		[Output("Duration")]
 		ISpread<double> FLength;
 		
-		[Output("Play Position")]
+		[Output("Position")]
 		ISpread<ISpread<double>> FCurrentPos;
 		
 		[Output("StreamDataLength", Visibility = PinVisibility.OnlyInspector)]
