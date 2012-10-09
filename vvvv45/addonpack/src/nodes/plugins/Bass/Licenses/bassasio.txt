@@ -1,0 +1,221 @@
+BASSASIO 1.0
+Copyright (c) 2005-2008 Un4seen Developments Ltd. All rights reserved.
+
+Files that you should have found in the BASSASIO package
+========================================================
+BASSASIO.TXT    This file
+BASSASIO.DLL    The BASSASIO module
+BASSASIO.CHM    BASSASIO documentation
+C\              C/C++ API and examples...
+  BASSASIO.H      BASSASIO C/C++ header file
+  BASSASIO.LIB    BASSASIO import library
+  BASSASIO.DSW    Visual C++ workspace for examples
+  MAKEFILE        Makefile for all examples
+  CONTEST\        ASIO version of the BASS console example
+    CONTEST.C
+    CONTEST.DSP
+    MAKEFILE
+  DSPTEST\        ASIO version of the BASS DSP example
+    DSPTEST.C
+    DSPTEST.RC
+    DSPTEST.DSP
+    MAKEFILE
+  LIST\           Lists ASIO devices
+    LIST.C
+    LIST.DSP
+    MAKEFILE
+  LIVEFX\         ASIO version of the BASS full-duplex example
+    LIVEFX.C
+    LIVEFX.RC
+    LIVEFX.DSP
+    MAKEFILE
+  MULTI\          ASIO version of the BASS multiple device example
+    MULTI.C
+    MULTI.RC
+    MULTI.DSP
+    MAKEFILE
+  SPEAKERS\       ASIO version of the BASS multi-speaker example
+    SPEAKERS.C
+    SPEAKERS.RC
+    SPEAKERS.DSP
+    MAKEFILE
+  SYNTH\          ASIO version of the BASS synth example
+    SYNTH.C
+    SYNTH.DSP
+    MAKEFILE
+  BIN\            Precompiled examples
+    CONTEST.EXE
+    DSPTEST.EXE
+    LIST.EXE
+    LIVEFX.EXE
+    MULTI.EXE
+    SPEAKERS.EXE
+    SYNTH.EXE
+DELPHI\         Delphi API and examples...
+  BASSASIO.PAS    BASSASIO Delphi unit
+  CONTEST\        Console example
+    CONTEST.DPR
+  DSPTEST\        DSP example
+    DSPTEST.DPR
+    MAINFORM.PAS
+    MAINFORM.DFM
+  SPEAKERS\       Multi-speaker example
+    SPEAKERS.DPR
+    UNIT1.PAS
+    UNIT1.DFM
+VB\             Visual Basic API and examples...
+  BASSASIO.BAS    BASSASIO Visual Basic module
+  DSPTEST\        DSP example
+    PRJDSPTEST.VBP
+    FRMDSPTEST.FRM
+    MODDSPTEST.BAS
+  LIST\           List ASIO devices
+    PRJLIST.VBP
+    FRMLIST.FRM
+  LIVEFX\         Full-duplex example
+    PRJLIVEFX.VBP
+    FRMLIVEFX.FRM
+    MODLIVEFX.BAS
+  MULTI\          Multiple device example
+    PRJMULTI.VBP
+    PRJMULTI.FRM
+    PRJDEVICE.FRM
+    MODMULTI.BAS
+
+NOTE: To run the example EXEs, first you will have to copy BASSASIO.DLL into
+      the same directory as them. You will also need BASS.DLL, which can be
+      download from the BASS website.
+
+NOTE: To build the examples, you will need to copy the BASS API into the
+      same directory as the BASSASIO API.
+
+
+What's the point?
+=================
+BASSASIO is basically a wrapper for ASIO drivers, with the addition of channel
+joining, format conversion and resampling.
+
+
+Requirements
+============
+BASSASIO requires a soundcard with ASIO drivers installed. It also makes use
+of SSE and 3DNow optimizations, but is fully functional without them.
+
+The BASS library is not required by BASSASIO, but BASS can of course be used
+for decoding purposes, to apply DSP/FX, etc...
+
+
+Using BASSASIO
+==============
+C/C++, Visual Basic and Delphi APIs are provided, to use BASSASIO with another
+language you'll first have to convert the header file. Or, you could use
+LoadLibrary and GetProcAddress.
+
+There is no guarantee that all future BASSASIO versions will be compatible
+with all previous versions, so your program should use BASS_ASIO_GetVersion
+to check the version that is loaded. This also means that you should
+put BASSASIO.DLL in the same directory as your program (not just somewhere
+in the path), to avoid the possibility of a wrong version being loaded.
+
+If you are updating your software from a previous BASSASIO version, then
+you should check the "History" section (below), to see if any of the
+functions that you are using have been affected by a change.
+
+To use BASSASIO with Borland C++ Builder, you'll first have to create a
+Borland C++ Builder import library for it. This is done by using the
+IMPLIB tool that comes with Borland C++ Builder. Simply execute this:
+
+	IMPLIB BASSASIOBCB.LIB BASSASIO.DLL
+
+... and then use BASSASIOBCB.LIB in your projects to import BASSASIO.
+
+To use BASSASIO with LCC-Win32, you'll first have to create a compatible
+import library for it. This is done by using the PEDUMP and BUILDLIB
+tools that come with LCC-Win32. Run these 2 commands:
+
+	PEDUMP /EXP BASSASIO.LIB > BASSASIOLCC.EXP
+	BUILDLIB BASSASIOLCC.EXP BASSASIOLCC.LIB
+
+... and then use BASSASIOLCC.LIB in your projects to import BASSASIO.
+
+For the BASSASIO functions that return strings (char*), VB users should use
+the VBStrFromAnsiPtr function to convert the returned pointer into a VB
+string.
+
+
+Latest Version
+==============
+The latest versions of BASSASIO can be found at the BASSASIO website:
+
+	www.un4seen.com
+
+
+Licence
+=======
+BASSASIO is free for non-commercial use. If you are a non-commercial entity
+(eg. an individual) and you are not charging for your product, and the
+product has no other commercial purpose, then you can use BASSASIO in it
+for free. If you wish to use BASSASIO in commercial products, then please
+also see the next section.
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, BASSASIO IS PROVIDED
+"AS IS", WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY
+AND/OR FITNESS FOR A PARTICULAR PURPOSE. THE AUTHORS SHALL NOT BE HELD
+LIABLE FOR ANY DAMAGE THAT MAY RESULT FROM THE USE OF BASSASIO. YOU USE
+BASSASIO ENTIRELY AT YOUR OWN RISK.
+
+Usage of BASSASIO indicates that you agree to the above conditions.
+
+ASIO is a trademark of Steinberg Media Technologies GmbH. All other
+trademarks and registered names contained in the BASSASIO package
+are the property of their respective owners.
+
+Commercial licensing
+--------------------
+BASSASIO is available for use in your commercial products. The licence
+types available are as follows:
+
+SHAREWARE: Allows the usage of BASSASIO in an unlimited number of your
+shareware products, which must sell for no more than 40 Euros each.
+If you are an individual (not a corporation) making and selling your
+own software (and its price is within the limit), this is the licence
+for you.
+
+SINGLE COMMERCIAL: Allows the usage of BASSASIO in a single commercial
+product.
+
+UNLIMITED COMMERCIAL: Allows the usage of BASSASIO in an unlimited number
+of your commercial products. This licence is on a per site basis. So
+if your company has two sites that use BASSASIO, then two licences are
+required.
+
+Please note the products must be end-user products, eg. not components
+used by other products. 
+
+These licences only cover your own software, not the publishing of
+other's software. If you publish other's software, its developers (or
+the software itself) will need to be licensed to use BASSASIO.
+
+In all cases there are no royalties to pay, and you can use future BASSASIO
+updates without further cost. One licence covers one person or entity and
+is not transferable.
+
+These licences do not allow reselling/sublicensing of BASSASIO. For example,
+if a product is a development system, the users of said product are not
+licensed to use BASSASIO in their productions; they will need their own
+licences.
+
+If the standard licences do not meet your requirements, or if you have
+any questions, please get in touch (email: bass@un4seen.com).
+
+Visit the BASSASIO website for the latest pricing:
+
+	www.un4seen.com
+
+
+Bug reports, Suggestions, Comments, Enquiries, etc...
+=====================================================
+If you have any of the aforementioned please visit the BASS forum at
+the website.
+

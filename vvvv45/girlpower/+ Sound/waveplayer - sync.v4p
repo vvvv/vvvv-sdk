@@ -1,0 +1,257 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\+ Sound\waveplayer - sync.v4p">
+   <BOUNDS height="9840" left="5490" top="105" type="Window" width="11835">
+   </BOUNDS>
+   <NODE id="11" nodename="WavePlayer (DShow9)" systemname="WavePlayer (DShow9)">
+   <BOUNDS height="0" left="2040" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename">
+   </PIN>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Duration" visible="1">
+   </PIN>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   <PIN pinname="Sync" visible="1">
+   </PIN>
+   <PIN pinname="End Time" visible="1">
+   </PIN>
+   <PIN pinname="Play" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Loop" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Do Seek" visible="1">
+   </PIN>
+   <PIN pinname="Speed" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Volume" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="AudioOut (DShow9)" systemname="AudioOut (DShow9)">
+   <BOUNDS height="0" left="2040" top="3840" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Audio" srcnodeid="11" srcpinname="Audio">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3510" top="4770" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8625" top="8115" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1890" left="3510" top="4770" type="Box" width="465">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="5.4688">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="0,-2610400.49863563">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4920" top="4815" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9570" top="9525" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1890" left="4920" top="4815" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="5.4688">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="3.04818360655738">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2280" top="1440" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11415" top="2190" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="480" left="2280" top="1440" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Do Seek" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="End Time" srcnodeid="8" srcpinname="Y Output Value">
+   <LINKPOINT x="6375" y="6645">
+   </LINKPOINT>
+   <LINKPOINT x="6375" y="150">
+   </LINKPOINT>
+   <LINKPOINT x="2535" y="150">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="510" top="300" type="Node" width="1215">
+   </BOUNDS>
+   <BOUNDS height="465" left="510" top="300" type="Box" width="2925">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sync - Example|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="1740" left="510" top="7155" type="Node" width="10260">
+   </BOUNDS>
+   <BOUNDS height="1740" left="510" top="7155" type="Box" width="10260">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|If sync is on, the audiofile is always played till the end of the loop before the start- and endtime is updated.&cr;&lf;Why use sync? If you loop small parts and you jump from the end to the beginning of the loop a crack might be heard,&cr;&lf;that is why fading is used ( silence to normal volume at the start and normal volume to silence in the end ).&cr;&lf;If you do something similar to the granular-synthesis and you are changing the start and endtime quite frequently,&cr;&lf;you do not want these audible cracks. With sync turned on, the loop is always played to the end ( which is&cr;&lf;silent if the fading-pin = 1) before the start- and endtime is updated.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="1560" type="Node" width="1980">
+   </BOUNDS>
+   <BOUNDS height="270" left="255" top="1560" type="Box" width="1965">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Use DoSeek to set to zero|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="480" left="5535" top="5700" type="Node" width="5970">
+   </BOUNDS>
+   <BOUNDS height="480" left="5535" top="5700" type="Box" width="5970">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Use this slider to adjust a new endtime, you can see that the second voice (sync=1)&cr;&lf;plays till it reaches the old endtime, then the endtime is updated to the new one.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" srcnodeid="11" srcpinname="Position">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2070" top="4755" type="Node" width="1260">
+   </BOUNDS>
+   <BOUNDS height="270" left="2070" top="4755" type="Box" width="1260">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|end of the track|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2040" top="6420" type="Node" width="1350">
+   </BOUNDS>
+   <BOUNDS height="270" left="2040" top="6420" type="Box" width="1350">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|start of the track|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3000" top="1440" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11655" top="1905" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="3000" top="1440" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="0,1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Sync" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4245" top="2115" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4245" top="2115" width="1995" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="..\..\lib\assets\sounds\demo.wav" encoded="0">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="file.wav" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="|Wave File (*.wav)||*.wav|" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Output String" dstnodeid="11" dstpinname="Filename">
+   </LINK>
+   </PATCH>

@@ -1,0 +1,233 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha23.dtd" >
+   <PATCH nodename="E:\vvvvnodes\vvvv_40beta23.3\plugins\SelectJoint (Skeleton GUI) help.v4p">
+   <BOUNDS height="7455" left="450" top="765" type="Window" width="7935">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="150" top="510" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="555" left="150" top="510" type="Box" width="6225">
+   </BOUNDS>
+   <BOUNDS height="160" left="10770" top="44910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|provides a graphical editor to view skeletons and select single joints. It outputs the names of the selected joints, which can be used for other nodes like &gt;&gt; SetJoint|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="270" left="150" top="135" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="150" top="135" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10770" top="44910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SelectJoint - Skeleton|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="0" left="135" top="1215" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1215" left="135" top="1215" type="Box" width="840">
+   </BOUNDS>
+   <BOUNDS height="160" left="7155" top="3195" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Input String" slicecount="6" visible="1" values="joint0,joint1,joint2,joint3,joint4,joint5">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Joint Names|">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2010" top="1200" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1215" left="2010" top="1200" type="Box" width="840">
+   </BOUNDS>
+   <BOUNDS height="160" left="7155" top="3195" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Input String" slicecount="6" visible="1" values=",joint0,joint1,joint2,joint3,joint2">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Parent Joints&apos; names|">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="10" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="6405" top="1980" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" slicecount="1" visible="1" values="6">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0.649999999999999">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="9" nodename="Translate (Transform)">
+   <BOUNDS height="270" left="3930" top="3300" type="Node" width="795">
+   </BOUNDS>
+   <PIN pinname="Y" slicecount="1" visible="1" values="4.58">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="8" nodename="Rotate (Transform)">
+   <BOUNDS height="270" left="3930" top="2850" type="Node" width="975">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|The joints&apos; transformations|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="7" nodename="Damper (Animation)">
+   <BOUNDS height="0" left="6420" top="2430" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="FilterTime" slicecount="1" values="0.34">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Go To Position" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Z" srcnodeid="7" srcpinname="Position Out">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="6" managers="" nodename=":PLUGINS:\SkeletonNodes.dll|VVVV.Nodes.CreateJoint">
+   <BOUNDS height="270" left="120" top="3705" type="Node" width="5745">
+   </BOUNDS>
+   <BOUNDS height="0" left="120" top="3705" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="8505" top="3510" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Base Transformation" visible="1">
+   </PIN>
+   <PIN pinname="Position relative to" slicecount="1" values="parent">
+   </PIN>
+   <PIN pinname="Skeleton" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Parent Name" linkstyle="PolyLine" srcnodeid="11" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Joint Name" srcnodeid="12" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InAWindow" id="5" nodename=":PLUGINS:\SkeletonNodes.dll|VVVV.Nodes.SelectJoint">
+   <BOUNDS height="0" left="120" top="4755" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1500" left="120" top="4755" type="Box" width="3000">
+   </BOUNDS>
+   <BOUNDS height="5505" left="450" top="8400" type="Window" width="5670">
+   </BOUNDS>
+   <PIN pinname="Skeleton" visible="1">
+   </PIN>
+   <PIN pinname="Joint Name" visible="1">
+   </PIN>
+   <PIN pinname="Selection" slicecount="2" values="joint1,joint3">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Skeleton" srcnodeid="6" srcpinname="Skeleton">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1095" top="4755" type="Node" width="4605">
+   </BOUNDS>
+   <BOUNDS height="270" left="1095" top="4755" type="Box" width="4605">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; RIGHT CLICK this, to open/close the editor window below ...|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="0" left="135" top="5475" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="720" left="135" top="5475" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="960" top="6165" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input String" linkstyle="VHV" srcnodeid="5" srcpinname="Joint Name">
+   <LINKPOINT x="180" y="5235">
+   </LINKPOINT>
+   <LINKPOINT x="870" y="5235">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6405" top="1575" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="6405" top="1575" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="7410" top="2460" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="97">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Random Seed" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="1110" left="2700" top="5265" type="Node" width="4200">
+   </BOUNDS>
+   <BOUNDS height="1155" left="2700" top="5265" type="Box" width="4200">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Usage:&cr;&lf;Scroll Wheel             Zoom in/out&cr;&lf;Right Click + Drag   Pan&cr;&lf;Left Click                  Select Joint&cr;&lf;Ctrl + Left Click        Select multiple joints or deselect joint|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="480" left="2685" top="6465" type="Node" width="4800">
+   </BOUNDS>
+   <BOUNDS height="480" left="2685" top="6465" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The numbers next to the selections indicate the order of the joint&cr;&lf;names in the resulting spread|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="6" dstpinname="Base Transformation">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Transform Out" dstnodeid="9" dstpinname="Transform In">
+   </LINK>
+   </PATCH>

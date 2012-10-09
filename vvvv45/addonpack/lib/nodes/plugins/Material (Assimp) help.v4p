@@ -1,0 +1,331 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.1.dtd" >
+   <PATCH nodename="C:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Material (Assimp) help.v4p" filename="C:\Users\vux\Desktop\BoneAngleXZ (3d).v4p" systemname="BoneAngleXZ (3d)">
+   <BOUNDS height="9630" left="2895" top="1305" type="Window" width="9900">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="14" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="100" left="2805" top="8745" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2805" top="8745" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="6240" left="13635" top="1875" type="Window" width="8595">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" id="15" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)">
+   <BOUNDS height="100" left="4320" top="6735" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="5000">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Projection" linkstyle="Bezier" srcnodeid="15" srcpinname="Projection">
+   <LINKPOINT x="4650" y="7875">
+   </LINKPOINT>
+   <LINKPOINT x="4110" y="7875">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\GouraudDirectional.fx" id="16" nodename="GouraudDirectional (EX9.Effect)" systemname="GouraudDirectional (EX9.Effect)">
+   <BOUNDS height="100" left="1200" top="7005" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Light Direction XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color" visible="1">
+   </PIN>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Diffuse Color" visible="1">
+   </PIN>
+   <PIN pinname="Specular Color" visible="1">
+   </PIN>
+   <PIN pinname="Power" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="61" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="1200" top="1335" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="1200" top="1335" type="Box" width="2175">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="..\..\assets\Suzanne_248.blend">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Path">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="69" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="1650" top="5115" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="720" left="1650" top="5115" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="-5.68,1.35,-4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="|0, 0, 0|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Light Direction XYZ" srcnodeid="69" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="70" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
+   <BOUNDS height="100" left="3555" top="7875" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.36">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.02">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="-0.99">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="View" linkstyle="Bezier" srcnodeid="70" srcpinname="Transform Out">
+   <LINKPOINT x="3615" y="8445">
+   </LINKPOINT>
+   <LINKPOINT x="3930" y="8445">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="70" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="15" srcpinname="View">
+   <LINKPOINT x="4485" y="7425">
+   </LINKPOINT>
+   <LINKPOINT x="3615" y="7425">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="74" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS height="100" left="1530" top="5895" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="4.53,4.53,4.53">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="VVVV.Assimp.Nodes.dll" id="92" nodename="Scene (Assimp)" systemname="Scene (Assimp)">
+   <BOUNDS height="270" left="1365" top="2790" type="Node" width="1605">
+   </BOUNDS>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Mesh Index" visible="1">
+   </PIN>
+   <PIN pinname="Material Textures" visible="1">
+   </PIN>
+   <PIN pinname="Material Index" visible="1">
+   </PIN>
+   <PIN pinname="Scene" visible="1">
+   </PIN>
+   <PIN pinname="Reload" visible="1">
+   </PIN>
+   <PIN pinname="Mesh Count" visible="1">
+   </PIN>
+   <PIN pinname="Is Valid" visible="1">
+   </PIN>
+   <PIN pinname="Materials" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="92" dstpinname="Path" linkstyle="VHV" srcnodeid="61" srcpinname="Output String">
+   <LINKPOINT x="1905" y="2313">
+   </LINKPOINT>
+   <LINKPOINT x="705" y="2038">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" filename="VVVV.Assimp.Nodes.dll" id="94" nodename="Mesh (EX9.Geometry Assimp)" systemname="Mesh (EX9.Geometry Assimp)">
+   <BOUNDS height="100" left="1350" top="4500" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Scene" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Material Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="94" dstpinname="Scene" srcnodeid="92" srcpinname="Scene">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Mesh" srcnodeid="94" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="InABox" id="98" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="2895" top="1950" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="2895" top="1950" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Reload">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="92" dstpinname="Reload" srcnodeid="98" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="99" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="1740" top="3495" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="1740" top="3495" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Mesh Count|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="99" dstpinname="Y Input Value" srcnodeid="92" srcpinname="Mesh Count">
+   </LINK>
+   <NODE componentmode="InABox" id="100" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="3255" top="3615" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="3255" top="3615" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Is Valid|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="100" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="92" srcpinname="Is Valid">
+   <LINKPOINT x="2970" y="3338">
+   </LINKPOINT>
+   <LINKPOINT x="3255" y="3338">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="103" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="225" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="855" left="225" top="390" type="Box" width="4590">
+   </BOUNDS>
+   <BOUNDS height="160" left="10740" top="45240" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Gives information about a material in assimp (color/texture)&cr;&lf;For a list of formats supported please visit:&cr;&lf;http://assimp.sourceforge.net/main_features_formats.html|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="102" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="225" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="225" top="15" type="Box" width="5835">
+   </BOUNDS>
+   <BOUNDS height="160" left="10740" top="45240" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Material - Assimp|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="VVVV.Assimp.Nodes.dll" id="105" nodename="Material (Assimp)" systemname="Material (Assimp)">
+   <BOUNDS height="100" left="3285" top="5580" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Material" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color" visible="1">
+   </PIN>
+   <PIN pinname="Diffuse Color" visible="1">
+   </PIN>
+   <PIN pinname="Specular Color" visible="1">
+   </PIN>
+   <PIN pinname="Specular Power" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="106" nodename="GetSlice (Node)" systemname="GetSlice (Node)">
+   <BOUNDS height="100" left="3285" top="5100" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="106" dstpinname="Index" linkstyle="Bezier" srcnodeid="94" srcpinname="Material Index">
+   <LINKPOINT x="1920" y="4920">
+   </LINKPOINT>
+   <LINKPOINT x="3960" y="4920">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="106" dstpinname="Input Node" linkstyle="Bezier" srcnodeid="92" srcpinname="Materials">
+   <LINKPOINT x="2190" y="4080">
+   </LINKPOINT>
+   <LINKPOINT x="3285" y="4080">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="105" dstpinname="Material" srcnodeid="106" srcpinname="Output Node">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Ambient Color" linkstyle="Bezier" srcnodeid="105" srcpinname="Ambient Color">
+   <LINKPOINT x="3285" y="6598">
+   </LINKPOINT>
+   <LINKPOINT x="1875" y="6258">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Diffuse Color" linkstyle="Bezier" srcnodeid="105" srcpinname="Diffuse Color">
+   <LINKPOINT x="3450" y="6598">
+   </LINKPOINT>
+   <LINKPOINT x="2025" y="6258">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Specular Color" linkstyle="Bezier" srcnodeid="105" srcpinname="Specular Color">
+   <LINKPOINT x="3600" y="6598">
+   </LINKPOINT>
+   <LINKPOINT x="2190" y="6258">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Power" linkstyle="Bezier" srcnodeid="105" srcpinname="Specular Power">
+   <LINKPOINT x="3765" y="6598">
+   </LINKPOINT>
+   <LINKPOINT x="2340" y="6258">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Layers" linkstyle="Bezier" srcnodeid="16" srcpinname="Layer">
+   <LINKPOINT x="1260" y="7995">
+   </LINKPOINT>
+   <LINKPOINT x="2790" y="7995">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

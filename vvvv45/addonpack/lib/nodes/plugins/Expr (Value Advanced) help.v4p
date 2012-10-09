@@ -1,0 +1,353 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
+   <PATCH nodename="D:\work\personal\Programming\builds\vvvv\plugins\AdvExpr\1.0\Expr (Value Advanced) help.v4p">
+   <BOUNDS height="8805" left="1500" top="585" type="Window" width="14385">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="22" nodename="Expr (Value)">
+   <BOUNDS height="270" left="2235" top="4935" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Variable Names" slicecount="1" values="A">
+   </PIN>
+   <PIN pinname="A" visible="1">
+   </PIN>
+   <PIN pinname="Term" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="21" nodename="AdvExpr.dll">
+   <BOUNDS height="100" left="540" top="4935" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Term" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="A" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Variables Name" slicecount="1" values="A">
+   </PIN>
+   <PIN pinname="B" slicecount="1" values="5">
+   </PIN>
+   <BOUNDS left="540" top="4935" type="Box">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="20" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="1290" top="2475" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="A" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="20" srcpinname="Output">
+   <LINKPOINT x="1305" y="3840">
+   </LINKPOINT>
+   <LINKPOINT x="570" y="3840">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="19" nodename="Random (Value)">
+   <BOUNDS height="0" left="2040" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Scale" slicecount="1" values="10000">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Random Seed" hiddenwhenlocked="1" srcnodeid="19" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="A" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="20" srcpinname="Output">
+   <LINKPOINT x="1335" y="3840">
+   </LINKPOINT>
+   <LINKPOINT x="2250" y="3840">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4005" top="3360" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="3735" left="4005" top="3360" type="Box" width="2130">
+   </BOUNDS>
+   <BOUNDS height="160" left="9090" top="3015" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|Math Functions:&cr;&lf;-Math.Abs&cr;&lf;-Math.Acos&cr;&lf;-Math.Asin&cr;&lf;-Math.Atan&cr;&lf;-Math.Atan2(x,y)&cr;&lf;-Math.Cos&cr;&lf;-Math.Cosh&cr;&lf;-Math.Exp&cr;&lf;-Math.Log(x,y)&cr;&lf;-Math.Log10&cr;&lf;-Math.Pow(x,y)&cr;&lf;-Math.Sin&cr;&lf;-Math.Sinh&cr;&lf;-Math.Tan&cr;&lf;-Math.Tanh&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="17" nodename="EQ (Value)">
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1320" top="5850" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Epsilon" slicecount="1" values="1E-006">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Y Input Value" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="16" nodename="AND (Boolean Spectral)">
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1320" top="6570" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="15" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="915" top="7410" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="915" top="7410" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="9570" top="7350" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input" hiddenwhenlocked="1" srcnodeid="17" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Input 2" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="22" srcpinname="Output">
+   <LINKPOINT x="2235" y="5513">
+   </LINKPOINT>
+   <LINKPOINT x="1575" y="5513">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Input 1" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="21" srcpinname="Output">
+   <LINKPOINT x="600" y="5513">
+   </LINKPOINT>
+   <LINKPOINT x="1305" y="5528">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3945" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1845" left="3945" top="1395" type="Box" width="3090">
+   </BOUNDS>
+   <BOUNDS height="160" left="10095" top="2400" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|Note: &cr;&lf;-You need to end instructions with ;&cr;&lf;-You need to use return to indicate what value you want to return.|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="0" left="975" top="3690" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="975" top="3690" type="Box" width="2190">
+   </BOUNDS>
+   <BOUNDS height="160" left="3390" top="3720" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|return Math.Sin(A);|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Term">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Term" srcnodeid="13" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3075" top="4125" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="3075" top="4125" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="5325" top="3915" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="sin(A)">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Term" srcnodeid="12" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="8835" top="2775" type="Node" width="1440">
+   </BOUNDS>
+   <BOUNDS height="270" left="8835" top="2775" type="Box" width="1440">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Advanced Example|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="0" left="8970" top="4845" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2235" left="8970" top="4845" type="Box" width="2025">
+   </BOUNDS>
+   <BOUNDS height="160" left="6675" top="7635" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|All c# conditionnal structures are supported:&cr;&lf;if-then-else&cr;&lf;for&cr;&lf;while&cr;&lf;switch|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="9" nodename="AdvExpr.dll">
+   <BOUNDS height="270" left="8445" top="4275" type="Node" width="3705">
+   </BOUNDS>
+   <PIN pinname="Term" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="A" visible="1">
+   </PIN>
+   <PIN pinname="Variables Name" slicecount="1" values="|A,B,C,D|">
+   </PIN>
+   <PIN pinname="B" visible="1">
+   </PIN>
+   <BOUNDS left="8445" top="4275" type="Box">
+   </BOUNDS>
+   <PIN pinname="C" visible="1">
+   </PIN>
+   <PIN pinname="D" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="12090" top="1590" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1950" left="12090" top="1590" type="Box" width="960">
+   </BOUNDS>
+   <BOUNDS height="160" left="12780" top="3540" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|if (A&gt;B)&cr;&lf;{&cr;&lf;  return C;&cr;&lf;}&cr;&lf;else&cr;&lf;{&cr;&lf;  return D;&cr;&lf;}|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Term" srcnodeid="8" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7725" top="4995" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="7725" top="4995" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="10035" top="6975" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7695" top="3315" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="7695" top="3315" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="9525" top="4350" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="A">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="A" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8625" top="3315" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="8625" top="3315" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="9525" top="4350" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="B">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="B" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9540" top="3315" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="9540" top="3315" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="9525" top="4350" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="C">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="C" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="10455" top="3315" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="10455" top="3315" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="9525" top="4350" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="D">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="D" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1680" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="1680" top="1230" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="4005" top="1635" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="500">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Spread Count|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Spread Count" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="225" top="540" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="225" top="540" type="Box" width="4995">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="10290" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Same as Expr but supports some c# functions.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="225" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="225" top="165" type="Box" width="4575">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="10290" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Expr - Value Advanced|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>
