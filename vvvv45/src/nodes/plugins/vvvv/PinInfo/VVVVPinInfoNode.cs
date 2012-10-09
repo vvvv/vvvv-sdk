@@ -31,6 +31,9 @@ namespace VVVV.Nodes
 		[Output("Node Label")]
 		ISpread<string> FLabel;
 		
+		[Output("Node Tag")]
+		ISpread<string> FTag;
+		
 		[Output("Subtype")]
 		ISpread<string> FSubtype;
 
@@ -47,6 +50,7 @@ namespace VVVV.Nodes
 			if (FUpdate.IsChanged)
 			{
 				FLabel.SliceCount = SpreadMax;
+				FTag.SliceCount = SpreadMax;
 				FSubtype.SliceCount = SpreadMax;
 	
 				for (int i = 0; i < SpreadMax; i++)
@@ -58,6 +62,11 @@ namespace VVVV.Nodes
 						if (node != null)
 						{
 							FLabel[i] = node.LabelPin.Spread.Trim('|');
+							var tag = node.FindPin("Tag");
+							if (tag != null)
+								FTag[i] = tag.Spread.Trim('|');
+							else
+								FTag[i] = "";
 							
 							var parts = FInput[i].Split('/');
 							var pin = node.FindPin(parts[parts.Length - 1]);
