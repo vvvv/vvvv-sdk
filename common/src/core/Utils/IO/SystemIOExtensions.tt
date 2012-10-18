@@ -1,0 +1,87 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ Assembly Name="System.Xml.dll" #>
+<#@ Assembly Name="System.Xml.Linq.dll" #>
+<#@ Assembly Name="System.Windows.Forms.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#   
+   var primitiveTypes = new[] { "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64", "Single", "Double" };
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace System.IO
+{
+    public static class SystemIOExtensions
+    {
+        public static byte[] ReadBytes(this BinaryReader reader, int fieldSize, ByteOrder byteOrder)
+        {
+            byte[] bytes = new byte[fieldSize];
+            if (byteOrder == ByteOrder.LittleEndian)
+                return reader.ReadBytes(fieldSize);
+            else
+            {
+                for (int i = fieldSize - 1; i > -1; i--)
+                    bytes[i] = reader.ReadByte();
+                return bytes;
+            }
+        }
+
+        public static void Write(this BinaryWriter writer, byte[] value, ByteOrder byteOrder)
+        {
+            if (byteOrder == ByteOrder.LittleEndian)
+                writer.Write(value);
+            else
+            {
+                for (int i = value.Length - 1; i > -1; i--)
+                    writer.Write(value[i]);
+            }
+        }
+
+<# foreach (var primitiveType in primitiveTypes) { #>
+        public static <#= primitiveType #> Read<#= primitiveType #>(this BinaryReader reader, ByteOrder byteOrder)
+        {
+            if (byteOrder == ByteOrder.LittleEndian)
+                return (<#= primitiveType #>)reader.Read<#= primitiveType #>();
+            else
+                return BitConverter.To<#= primitiveType #>(ReadBytes(reader, sizeof(<#= primitiveType #>), ByteOrder.BigEndian), 0);
+        }
+
+        public static void Write(this BinaryWriter writer, <#= primitiveType #> value, ByteOrder byteOrder)
+        {
+            if (byteOrder == ByteOrder.LittleEndian)
+                writer.Write(value);
+            else
+                writer.Write(BitConverter.GetBytes(value), byteOrder);
+        }
+
+<# } #>
+    }
+}
+ 
+<#+  
+  // Insert any template procedures here
+  void getWeatherDataCodeGen(string Input) {
+	System.Xml.Linq.XDocument XmlDoc = System.Xml.Linq.XDocument.Parse(Input);
+	
+	
+	var Tables = from c in XmlDoc.Descendants("Table") 
+	   			 select new {Name = c.Attribute("name").Value, Table = c};
+
+    foreach (var aTable in Tables) {
+	#>
+	 System.Console.Write(GetDataForTable("<#= aTable.Name #>"));
+	<#+
+	}
+	
+  }
+#>
