@@ -63,6 +63,8 @@ namespace VVVV.Nodes.Vlc.Player
 		private EventWaitHandle updateTextureEventWaitHandle;
 		private EventWaitHandle updateTextureStopThreadWaitHandle;
 
+		private bool initialized = false;
+		
 		public MemoryToTextureRenderer(FileStreamVlcNode vvvvNode, int slice, char group, DoubleMemoryBuffer doubleMemoryBuffer)
 		{
 			this.group = group;
@@ -83,6 +85,10 @@ namespace VVVV.Nodes.Vlc.Player
 			updateTextureEventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
 			updateTextureStopThreadWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
 			updateTextureThread = new Thread(new ThreadStart(UpdateTexture_ThreadProc));
+		
+
+			initialized = true;
+			
 			updateTextureThread.Start();
 		}
 
@@ -91,6 +97,15 @@ namespace VVVV.Nodes.Vlc.Player
 			Dispose();
 		}
 
+
+		/*
+		 * Makes sure we stop the media-player completely when it's no longer needed, 
+		 * after that the GC can do it's job when it wants to.
+		 */
+		public void PrepareForDisposal() {
+			updateTextureStopThreadWaitHandle.Set();
+		}
+			
 		public void Dispose()
 		{
 			updateTextureStopThreadWaitHandle.Set();
@@ -99,18 +114,31 @@ namespace VVVV.Nodes.Vlc.Player
 			//cleanup all data we created
 			try {
 				//Log( LogType.Debug, "[CleanupDevice2DoubleTexture] current device " + device.ComPointer.ToInt64() );
-				foreach (Device d in device2DoubleTexture.Keys) {
+				foreach ( Device d in device2DoubleTexture.Keys ) {
 					device2DoubleTexture[d].Dispose();
 				}
-			} catch (Exception e) {
-				Log( LogType.Error, "[Dispose] " + e.Message);
+					
+				memoryToTextureRendererBusyMutex.Dispose();
+				
+				updateTextureEventWaitHandle.Dispose();
+				updateTextureStopThreadWaitHandle.Dispose();
+				
+			} catch ( Exception e ) {
+				Log( LogType.Error, "[Dispose] " + e.Message );
 			}
 
+			Log( LogType.Debug, "[Dispose] done...");
+
+			// Use SupressFinalize in case a subclass of this type implements a finalizer.
+			GC.SuppressFinalize( this );
 		}
 
 		//Called every vvvv frame, to do stuff that's only safe to do in the mainloop
 		public void Evaluate()
 		{
+			//debug
+			//return;
+			
 			prevTime = DateTime.Now.Ticks;
 			//for ReportElapsedTime
 			if ( memoryToTextureRendererBusyMutex.WaitOne(200) ) {
@@ -157,7 +185,7 @@ namespace VVVV.Nodes.Vlc.Player
 
 		public void UpdateTexture_ThreadProc()
 		{
-			while (true) {
+			while ( initialized ) {
 				int waitHandleIndex = WaitHandle.WaitAny(new EventWaitHandle[2] {
 					updateTextureEventWaitHandle,
 					updateTextureStopThreadWaitHandle
@@ -176,7 +204,9 @@ namespace VVVV.Nodes.Vlc.Player
 					} else {
 
 					}
-					break;
+					
+					initialized = false;
+					//break;
 				}
 			}
 			Log( LogType.Debug, "... exiting updateTexture thread for memoryToTextureRenderer " + slice + " ... " );
@@ -605,7 +635,7 @@ namespace VVVV.Nodes.Vlc.Player
 
 		private void Log( LogType logType, string message)
 		{
-			parent.Log( logType, "[MemoryToTextureRenderer " + group + slice + ( parent.IsFrontMemoryToTextureRenderer( this ) ? "+" : "-") + "] " + message);
+			parent.Log( logType, "[MemoryToTextureRenderer " + group + slice + ( initialized ? ( parent.IsFrontMemoryToTextureRenderer( this ) ? "+" : "-" ) : "*" ) + "] " + message);
 		}
 
 		private long prevTime = DateTime.Now.Ticks;
