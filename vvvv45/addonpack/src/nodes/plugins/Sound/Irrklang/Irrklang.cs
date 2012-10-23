@@ -39,7 +39,7 @@ namespace VVVV.Nodes
 {
 
 	#region PluginInfo
-	[PluginInfo(Name = "Irrklang", Category = "Sound", Help = "Irrklang Gamesound Engine", Tags = "Audio, 3D, Sampleplayer ", AutoEvaluate = true, Author = "sanch,phlegma", Bugs = "Does not play samples shorter than 0,17s")]
+	[PluginInfo(Name = "Filestream", Category = "Irrklang", Help = "Irrklang Gamesound Engine", Tags = "Audio, 3D, Sampleplayer, Sound ", AutoEvaluate = true, Author = "sanch, phlegma", Bugs = "Does not play samples shorter than 0,17s")]
 	#endregion PluginInfo
 
 
@@ -80,7 +80,7 @@ namespace VVVV.Nodes
 		[Input("Stream Mode",DefaultEnumEntry = "NoStreaming", Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<StreamMode> FStreamMode;
 		
-		[Input("Stream Threashold", DefaultValue = 1024, Visibility = PinVisibility.OnlyInspector)]
+		[Input("Stream Threshold", DefaultValue = 1024, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<int> FStreamThreashold;
 		
 		//Sound Control
@@ -91,7 +91,7 @@ namespace VVVV.Nodes
 		IDiffSpread<float> FPan;
 		
 		// 3D Sound Position
-		[Input("Pos", DefaultValue = 0)]
+		[Input("Position", DefaultValue = 0)]
 		IDiffSpread<Vector3D> FSoundPosition;
 		[Input("Velocity", DefaultValue = 0)]
 		IDiffSpread<Vector3D> FSoundVelocity;
@@ -113,7 +113,7 @@ namespace VVVV.Nodes
 		// 3D Listener Position
 		[Input("View Position", DefaultValue = 0, IsSingle = true)]
 		IDiffSpread<Vector3D> FViewPos;
-		[Input("View Diriection", DefaultValue = 0, IsSingle = true)]
+		[Input("View Direction", DefaultValue = 0, IsSingle = true)]
 		IDiffSpread<Vector3D> FViewDir;
 		[Input("View Velocity Per Second", DefaultValue = 0, IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<Vector3D> FViewVelocity;
@@ -268,7 +268,7 @@ namespace VVVV.Nodes
 		IDiffSpread<float> FWaveReverbTime;
 		[Input("Reverb HighFreqRTRatio", DefaultValue = 1.0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<float> FWaveReverbFreq;
-		[Input("Disable All Effekts", IsBang = true, DefaultValue = 0.0,  Visibility = PinVisibility.OnlyInspector)]
+		[Input("Disable all Effekts", IsBang = true, DefaultValue = 0.0,  Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<bool> FDisableAllEffekt;
 
 		//Device Selection
