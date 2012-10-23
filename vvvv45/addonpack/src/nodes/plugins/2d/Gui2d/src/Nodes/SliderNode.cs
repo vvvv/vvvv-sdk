@@ -55,7 +55,7 @@ namespace VVVV.Nodes
 		[Input("Is X Slider")]
 		IDiffSpread<bool> FIsXSliderIn;
 		
-		[Input("Slider Size", DefaultValue = 0.2)]
+		[Input("Slider Size", DefaultValue = 0.1)]
 		IDiffSpread<double> FSizeSliderIn;
 		
 		#region mainloop
