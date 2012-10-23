@@ -36,7 +36,7 @@ namespace VVVV.Nodes
 {
 
     #region PluginInfo
-    [PluginInfo(Name = "Irrklang", Category = "Sound", Version = "", Help = "Irrklang Gamesound Engine", Tags = "Irrklang, Sound, 3D", AutoEvaluate = true, Author = "sanch,phlegma")]
+    [PluginInfo(Name = "Irrklang", Category = "Sound", Version = "Legacy", Help = "Irrklang Gamesound Engine", Tags = "Irrklang, Sound, 3D", AutoEvaluate = true, Author = "sanch,phlegma")]
     #endregion PluginInfo
 
 
