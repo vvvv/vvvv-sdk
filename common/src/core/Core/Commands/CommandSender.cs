@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Xml.Linq;
 using VVVV.Utils.Network;
 using VVVV.Core.Model;
 using System.Runtime.Remoting.Messaging;
@@ -28,13 +29,10 @@ namespace VVVV.Core.Commands
         //async execute
         private delegate void SendAsync(string xml);
 
-        public void SendCommandAsync(Command command)
+        public void SendCommandAsync(XElement xCommand)
         {
-            var xCommand = FSerializer.Serialize(command);
-
             var sender = new SendAsync(SendCommand);
             sender.BeginInvoke(xCommand.ToString(), new AsyncCallback(AfterSend), null);
-
         }
 
         //async undo

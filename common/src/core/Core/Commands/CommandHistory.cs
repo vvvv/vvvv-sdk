@@ -32,7 +32,7 @@ namespace VVVV.Core.Commands
         #endregion
 
         private readonly Node<Command> FFirstNode = new Node<Command>();
-        private readonly Serializer FSerializer;
+        protected readonly Serializer FSerializer;
 
         // Position in command list of last executed command.
         private Node<Command> FCurrentNode;
