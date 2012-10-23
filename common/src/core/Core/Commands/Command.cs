@@ -91,7 +91,29 @@ namespace VVVV.Core.Commands
             }
         }
         #endregion
-        
+
+        #region EmptyCommand
+
+        class EmptyCommand : Command
+        {
+            public override void Execute()
+            {
+                // Do nothing
+            }
+
+            public override void Undo()
+            {
+                // Do nothing
+            }
+
+            public override bool HasUndo
+            {
+                get { return true; }
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Execute this command.
         /// </summary>
@@ -154,5 +176,7 @@ namespace VVVV.Core.Commands
             moveCommand.Append(new AddCommand<TDestination, TItem>(destination, item));
             return moveCommand;
         }
+
+        public static readonly Command Empty = new EmptyCommand();
     }
 }

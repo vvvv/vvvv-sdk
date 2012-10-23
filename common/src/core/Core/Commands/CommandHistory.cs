@@ -74,26 +74,33 @@ namespace VVVV.Core.Commands
         /// <param name="command">The command to be executed.</param>
         public virtual void Insert(Command command)
         {
-            DebugHelpers.CatchAndLog(() =>
+            if (command != Command.Empty)
             {
-                command.Execute();
-
-                if (command.HasUndo)
+                DebugHelpers.CatchAndLog(() =>
                 {
-                    var newNode = new Node<Command>(command);
-                    newNode.Previous = FCurrentNode;
-                    FCurrentNode.Next = newNode;
-                    FCurrentNode = newNode;
-                }
-                else
-                {
-                    FFirstNode.Next = null;
-                    FCurrentNode = FFirstNode;
-                }
+                    command.Execute();
 
-                Debug.WriteLine(string.Format("Command {0} executed.", command));
-            },
-            string.Format("Execution of command {0}", command));
+                    if (command.HasUndo)
+                    {
+                        var newNode = new Node<Command>(command);
+                        newNode.Previous = FCurrentNode;
+                        FCurrentNode.Next = newNode;
+                        FCurrentNode = newNode;
+                    }
+                    else
+                    {
+                        FFirstNode.Next = null;
+                        FCurrentNode = FFirstNode;
+                    }
+
+                    Debug.WriteLine(string.Format("Command {0} executed.", command));
+                },
+                string.Format("Execution of command {0}", command));
+            }
+            else
+            {
+                Debug.WriteLine("Skipped empty command.");
+            }
         }
 
         public virtual void Insert(string xml)

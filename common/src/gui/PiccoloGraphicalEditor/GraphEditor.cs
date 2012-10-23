@@ -95,8 +95,6 @@ namespace VVVV.HDE.GraphicalEditing
             FCanvas.KeyUp += FCanvas_KeyUp;
 
             FCanvas.MinimumSize = new Size(10, 10);
-
-
         }
 
         public void EndSelectionDrag()
@@ -115,22 +113,6 @@ namespace VVVV.HDE.GraphicalEditing
 
         internal void FCanvas_KeyDown(object sender, KeyEventArgs e)
         {
-            if (Host != null)
-            {
-                if (e.KeyData == Keys.Back || e.KeyData == Keys.Delete)
-                {
-                    Host.DeleteSelected();
-                }
-                else if (e.KeyData == (Keys.Control | Keys.Z))
-                {
-                    Host.Undo();
-                }
-                else if (e.KeyData == (Keys.Control | Keys.Shift | Keys.Z))
-                {
-                    Host.Redo();
-                }
-            }
-
             OnKeyDown(e);
         }
 

@@ -179,7 +179,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
                 FRowSynchronizer.Dispose();
             }
             
-            FMapper = new ModelMapper(Input, Registry);
+            FMapper = new ModelMapper(Model, Registry);
             
             if (FMapper.CanMap<IEnumerable<Column>>())
             {

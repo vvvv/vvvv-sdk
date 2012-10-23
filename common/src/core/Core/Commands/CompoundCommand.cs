@@ -54,6 +54,11 @@ namespace VVVV.Core.Commands
         {
             FCommands = new List<Command>(commands);
         }
+
+        public CompoundCommand(params Command[] commands)
+        {
+            FCommands = new List<Command>(commands);
+        }
         
         public void Append(Command command)
         {

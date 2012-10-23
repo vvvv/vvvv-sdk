@@ -39,7 +39,6 @@
             this.Name = "HDEForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "HDEForm";
-            this.Activated += new System.EventHandler(this.HDEForm_Activated);
             this.ResumeLayout(false);
 
         }
