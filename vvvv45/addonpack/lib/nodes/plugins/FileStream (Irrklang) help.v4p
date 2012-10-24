@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.3.dtd" >
-   <PATCH nodename="C:\Users\buhlert\Projekte\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Irrklang (Sound) help.v4p" componentmode="InAWindow" locked="0">
+   <PATCH nodename="C:\Users\buhlert\Projekte\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\FileStream (Irrklang) help.v4p" componentmode="InAWindow" locked="0">
    <BOUNDS height="13320" left="300" top="195" type="Window" width="13695">
    </BOUNDS>
    <NODE componentmode="InABox" id="14" nodename="IOBOX (VALUE ADVANCED)">
@@ -622,7 +622,51 @@
    </NODE>
    <LINK dstnodeid="119" dstpinname="Roll" srcnodeid="120" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="122" nodename="Irrklang (Sound)" filename="%VVVV%\addonpack\lib\nodes\plugins\Irrklang.dll" systemname="Irrklang (Sound)">
+   <NODE componentmode="InABox" id="124" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="252" top="528" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1140" left="252" top="528" type="Box" width="8364">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|//Irrklang Plugin http://www.ambiera.com/irrklang/&cr;&lf;//irrKlang is free for non-commercial use.&cr;&lf;//The commercial version is named &apos;irrKlang pro&apos; and has pricing schemes ideal for independent developers.&cr;&lf;&cr;&lf;//Coded by sanch(http://sanchtv.com) with the help of tonfilm , sebastian gregor , mr vux and joreg&cr;&lf; &cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="123" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="252" top="168" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="252" top="168" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Irrklang - Sound |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="125" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="252" top="1680" width="6939" height="600">
+   </BOUNDS>
+   <BOUNDS type="Box" left="252" top="1680" width="6939" height="600">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|Act like the wave player node , you can send a spread of file , a spread of play , volume...&cr;&lf;When changing file you need to stop the currently playing file and bang the play pin that the engine load it.&cr;&lf;Use the inspector to show the many hiden pin|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="122" nodename="FileStream (Irrklang)" filename="%VVVV%\addonpack\lib\nodes\plugins\Irrklang2.dll" systemname="FileStream (Irrklang)">
    <PIN pinname="Stop All" visible="1">
    </PIN>
    <PIN pinname="View DirXYZ" visible="1">
@@ -645,7 +689,7 @@
    </BOUNDS>
    <BOUNDS height="8265" left="3225" top="6720" type="Window" width="13815">
    </BOUNDS>
-   <PIN pinname="File" slicecount="1" visible="1" encoded="0" values="..\..\assets\Untitled4.wav">
+   <PIN pinname="File" visible="1" encoded="0">
    </PIN>
    <PIN pinname="dummy" visible="1">
    </PIN>
@@ -771,9 +815,9 @@
    </PIN>
    <PIN pinname="View DiriectionXYZ" visible="1">
    </PIN>
-   <PIN pinname="Enabel Effects" slicecount="1" values="0">
+   <PIN pinname="Enabel Effects">
    </PIN>
-   <PIN pinname="Disable All Effekts" slicecount="1" values="0">
+   <PIN pinname="Disable All Effekts">
    </PIN>
    <PIN pinname="Minimal Distance" slicecount="1" values="0">
    </PIN>
@@ -781,73 +825,21 @@
    </PIN>
    <PIN pinname="Volume" slicecount="1" values="0.8">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="..\..\assets\Untitled4.wav" encoded="0">
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\..\assets\Untitled4.wav">
+   </PIN>
+   <PIN pinname="Duration" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="122" dstpinname="Play" srcnodeid="115" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="122" dstpinname="Device" srcnodeid="114" srcpinname="Output Enum">
    </LINK>
-   <LINK dstnodeid="122" dstpinname="Playback Speed" linkstyle="Bezier" srcnodeid="70" srcpinname="Output">
-   <LINKPOINT x="4137" y="6599">
-   </LINKPOINT>
-   <LINKPOINT x="6564" y="7402">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="122" dstpinname="PosXYZ" srcnodeid="102" srcpinname="Y Output Value">
-   </LINK>
    <LINK dstnodeid="122" dstpinname="Stop All" srcnodeid="14" srcpinname="Y Output Value">
    </LINK>
    <LINK srcnodeid="42" srcpinname="Velocity" dstnodeid="122" dstpinname="VelocityXYZ">
    </LINK>
-   <LINK srcnodeid="122" srcpinname="Length" dstnodeid="94" dstpinname="Y Input Value">
-   </LINK>
    <LINK srcnodeid="65" srcpinname="XYZ" dstnodeid="122" dstpinname="View PositionXYZ">
    </LINK>
-   <LINK srcnodeid="66" srcpinname="XYZ" dstnodeid="122" dstpinname="View DiriectionXYZ">
+   <LINK srcnodeid="122" srcpinname="Duration" dstnodeid="94" dstpinname="Y Input Value">
    </LINK>
-   <NODE componentmode="InABox" id="124" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="255" left="252" top="528" type="Node" width="570">
-   </BOUNDS>
-   <BOUNDS height="1140" left="252" top="528" type="Box" width="8364">
-   </BOUNDS>
-   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|//Irrklang Plugin http://www.ambiera.com/irrklang/&cr;&lf;//irrKlang is free for non-commercial use.&cr;&lf;//The commercial version is named &apos;irrKlang pro&apos; and has pricing schemes ideal for independent developers.&cr;&lf;&cr;&lf;//Coded by sanch(http://sanchtv.com) with the help of tonfilm , sebastian gregor , mr vux and joreg&cr;&lf; &cr;&lf;|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="123" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="252" top="168" type="Node" width="915">
-   </BOUNDS>
-   <BOUNDS height="360" left="252" top="168" type="Box" width="4335">
-   </BOUNDS>
-   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Irrklang - Sound |">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="12">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="125" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="252" top="1680" width="6939" height="600">
-   </BOUNDS>
-   <BOUNDS type="Box" left="252" top="1680" width="6939" height="600">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|Act like the wave player node , you can send a spread of file , a spread of play , volume...&cr;&lf;When changing file you need to stop the currently playing file and bang the play pin that the engine load it.&cr;&lf;Use the inspector to show the many hiden pin|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    </PATCH>

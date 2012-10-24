@@ -39,7 +39,7 @@ namespace VVVV.Nodes
 {
 
 	#region PluginInfo
-	[PluginInfo(Name = "Filestream", Category = "Irrklang", Help = "Irrklang Gamesound Engine", Tags = "Audio, 3D, Sampleplayer, Sound ", AutoEvaluate = true, Author = "sanch, phlegma", Bugs = "Does not play samples shorter than 0,17s")]
+	[PluginInfo(Name = "FileStream", Category = "Irrklang", Help = "Irrklang Gamesound Engine", Tags = "Audio, 3D, Sampleplayer, Sound", AutoEvaluate = true, Author = "sanch, phlegma", Bugs = "Does not play samples shorter than 0,17s")]
 	#endregion PluginInfo
 
 
