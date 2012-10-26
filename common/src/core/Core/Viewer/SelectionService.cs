@@ -14,11 +14,10 @@ namespace VVVV.Core.Viewer
         {
         }
         
-        public event SelectionProviderChangedEventHandler SelectionProviderChanged;
+        public event EventHandler<SelectionProviderChangedEventArgs> SelectionProviderChanged;
         
         protected virtual void OnSelectionProviderChanged(SelectionProviderChangedEventArgs args)
         {
-            Debug.WriteLine("OnSelectionProviderChanged");
             if (SelectionProviderChanged != null) 
             {
                 SelectionProviderChanged(this, args);

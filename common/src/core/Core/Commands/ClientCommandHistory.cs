@@ -29,9 +29,10 @@ namespace VVVV.Core.Commands
         /// <param name="command">The command to be executed.</param>
         public override void Insert(Command command)
         {
+            var xCommand = FSerializer.Serialize(command);
             base.Insert(command);
             DebugHelpers.CatchAndLog(
-                () => FCommandSender.SendCommandAsync(command), 
+                () => FCommandSender.SendCommandAsync(xCommand), 
                 string.Format("SendCommandAsync: {0}", command));
             Debug.WriteLine(string.Format("Executed on ClientCommandHistory for {0}", FIdItem.Name));
         }

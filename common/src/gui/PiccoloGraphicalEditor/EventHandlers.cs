@@ -63,7 +63,7 @@ namespace VVVV.HDE.GraphicalEditing
                 //add linkpoint
                 FTempPath.AddPoint(e.Position);
             }
-            else if (target != null)
+            else if (target != null && e.Button == MouseButtons.Left)
             {
                 var t = target.Connectable;
 
@@ -327,25 +327,49 @@ namespace VVVV.HDE.GraphicalEditing
         public override void OnClick(object sender, PInputEventArgs e)
         {
             base.OnClick(sender, e);
-            FGraphEditor.FCanvas_MouseClick(sender, e.SourceEventArgs as MouseEventArgs);
+            FGraphEditor.FCanvas_MouseClick(sender, e.SourceEventArgs as MouseEventArgs, e);
         }
 
         public override void OnDoubleClick(object sender, PInputEventArgs e)
         {
             base.OnDoubleClick(sender, e);
-            FGraphEditor.FCanvas_MouseDoubleClick(sender, e.SourceEventArgs as MouseEventArgs);
+            FGraphEditor.FCanvas_MouseDoubleClick(sender, e.SourceEventArgs as MouseEventArgs, e);
         }
 
         public override void OnMouseDown(object sender, PInputEventArgs e)
         {
             base.OnMouseDown(sender, e);
-            FGraphEditor.FCanvas_MouseDown(sender, e.SourceEventArgs as MouseEventArgs);
+            FGraphEditor.FCanvas_MouseDown(sender, e.SourceEventArgs as MouseEventArgs, e);
         }
 
         public override void OnMouseUp(object sender, PInputEventArgs e)
         {
             base.OnMouseUp(sender, e);
-            FGraphEditor.FCanvas_MouseUp(sender, e.SourceEventArgs as MouseEventArgs);
+            FGraphEditor.FCanvas_MouseUp(sender, e.SourceEventArgs as MouseEventArgs, e);
+        }
+
+        public override void OnMouseEnter(object sender, PInputEventArgs e)
+        {
+            base.OnMouseEnter(sender, e);
+            FGraphEditor.FCanvas_MouseEnter(sender, e.SourceEventArgs as MouseEventArgs, e);
+        }
+
+        public override void OnMouseMove(object sender, PInputEventArgs e)
+        {
+            base.OnMouseMove(sender, e);
+            FGraphEditor.FCanvas_MouseMove(sender, e.SourceEventArgs as MouseEventArgs, e);
+        }
+
+        public override void OnMouseLeave(object sender, PInputEventArgs e)
+        {
+            base.OnMouseLeave(sender, e);
+            FGraphEditor.FCanvas_MouseLeave(sender, e.SourceEventArgs as MouseEventArgs, e);
+        }
+
+        public override void OnMouseDrag(object sender, PInputEventArgs e)
+        {
+            base.OnMouseDrag(sender, e);
+            FGraphEditor.FCanvas_MouseMove(sender, e.SourceEventArgs as MouseEventArgs, e);
         }
         #endregion mouse
     }

@@ -9,7 +9,14 @@ namespace VVVV.Core.Menu
         public RedoMenuEntry(ICommandHistory commandHistory)
             :base(commandHistory, string.Format("Redo {0}", commandHistory.NextCommand), Keys.Control | Keys.Y)
         {
-            Enabled = commandHistory.NextCommand != null;
+        }
+
+        public override bool Enabled
+        {
+            get
+            {
+                return CommandHistory.NextCommand != null;
+            }
         }
         
         public override void Click()

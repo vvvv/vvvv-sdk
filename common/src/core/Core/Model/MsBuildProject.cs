@@ -255,7 +255,7 @@ namespace VVVV.Core.Model
 			propertyGroup.AddNewProperty("Configuration", "Debug");
 			propertyGroup.AddNewProperty("Platform", "x86");
 			propertyGroup.AddNewProperty("OutputType", "Library");
-			propertyGroup.AddNewProperty("RootNamespace", "VVVV.Nodes");
+			propertyGroup.AddNewProperty("RootNamespace", "VVVV.Lib");
 			propertyGroup.AddNewProperty("AssemblyName", AssemblyName);
 			propertyGroup.AddNewProperty("TargetFrameworkVersion", "v4.0");
 			propertyGroup.AddNewProperty("OutputPath", "bin\\Debug\\");

@@ -22,7 +22,7 @@ namespace VVVV.HDE.GraphicalEditing
     ///// <summary>
     ///// a UserControl on which graphical editing takes place
     ///// </summary>
-    public partial class GraphEditor: UserControl, ICanvas
+    public partial class GraphEditor : UserControl, ICanvas
     {
         //fields
         private DragDropEventHandler FDragDropEventHandler;
@@ -36,37 +36,42 @@ namespace VVVV.HDE.GraphicalEditing
         //layers
         public PLayer SolidLayer { get; protected set; }
         public PLayer LinkLayer { get; protected set; }
-        
+
+        public bool IsClickable { get; protected set; }
+        public IClickable Clickable { get; protected set; }
+        public bool IsHoverable { get; protected set; }
+        public IHoverable Hoverable { get; protected set; }
+
         public GraphEditor()
         {
             //
             // The InitializeComponent() call is required for Windows Forms designer support.
             //
             InitializeComponent();
-            
+
             SolidLayer = FCanvas.Layer;
             LinkLayer = new PLayer();
             FCanvas.Root.AddChild(LinkLayer);
-            
+
             //add linklayer below nodelayer
             FCanvas.Camera.AddLayer(LinkLayer);
             FCanvas.Camera.AddLayer(SolidLayer);
-            
+
             //set default roots
             LinkRoot = CreateDot(null);
             Root = CreateDot(null);
-            
+
             //set render quality
             FCanvas.HighRenderQuality +=
                 delegate(Graphics graphics)
-            {
-                //improves text render quality when antialiased and speeds up drawing
-                graphics.CompositingQuality = CompositingQuality.HighSpeed;
-            };
+                {
+                    //improves text render quality when antialiased and speeds up drawing
+                    graphics.CompositingQuality = CompositingQuality.HighSpeed;
+                };
             FCanvas.AnimatingRenderQuality = RenderQuality.HighQuality;
             FCanvas.InteractingRenderQuality = RenderQuality.HighQuality;
             FCanvas.DefaultRenderQuality = RenderQuality.HighQuality;
-            
+
             //remove default zoom and pan event handlers
             FCanvas.RemoveInputEventListener(FCanvas.ZoomEventHandler);
             FCanvas.RemoveInputEventListener(FCanvas.PanEventHandler);
@@ -77,21 +82,21 @@ namespace VVVV.HDE.GraphicalEditing
             FMyZoomEventHandler = new ZoomEventHandler();
             FPathEventHandler = new PathEventHandler(this);
             FEventPassThrougHandler = new EventPassThrougHandler(this);
-            
+
             //add custom event handlers
             FCanvas.AddInputEventListener(FDragDropEventHandler);
             FCanvas.AddInputEventListener(FMyPanEventHandler);
             FCanvas.AddInputEventListener(FMyZoomEventHandler);
             FCanvas.AddInputEventListener(FPathEventHandler);
             FCanvas.AddInputEventListener(FEventPassThrougHandler);
-            
+
             FCanvas.KeyPress += FCanvas_KeyPress;
             FCanvas.KeyDown += FCanvas_KeyDown;
             FCanvas.KeyUp += FCanvas_KeyUp;
 
             FCanvas.MinimumSize = new Size(10, 10);
         }
-        
+
         public void EndSelectionDrag()
         {
             if (Host != null)
@@ -99,31 +104,15 @@ namespace VVVV.HDE.GraphicalEditing
                 Host.MoveSelected();
             }
         }
-        
+
         #region canvas input events
         internal void FCanvas_KeyPress(object sender, KeyPressEventArgs e)
         {
             OnKeyPress(e);
         }
-        
+
         internal void FCanvas_KeyDown(object sender, KeyEventArgs e)
         {
-            if(Host != null)
-            {
-                if (e.KeyData == Keys.Back || e.KeyData == Keys.Delete)
-                {
-                    Host.DeleteSelected();
-                }
-                else if (e.KeyData == (Keys.Control | Keys.Z))
-                {
-                    Host.Undo();
-                }
-                else if (e.KeyData == (Keys.Control | Keys.Shift | Keys.Z))
-                {
-                    Host.Redo();
-                }
-            }
-            
             OnKeyDown(e);
         }
 
@@ -131,28 +120,62 @@ namespace VVVV.HDE.GraphicalEditing
         {
             OnKeyUp(e);
         }
-        
-        internal void FCanvas_MouseClick(object sender, MouseEventArgs e)
+
+        internal void FCanvas_MouseClick(object sender, MouseEventArgs e, PInputEventArgs pe)
         {
             FCanvas.Select();
             OnMouseClick(e);
-        }
-        
-        internal void FCanvas_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            OnMouseDoubleClick(e);
-        }
-        
-        internal void FCanvas_MouseUp(object sender, MouseEventArgs e)
-        {
-            OnMouseUp(e);
+            if (IsClickable)
+                Clickable.Click(pe.Position, Helpers.GetButton(pe));
         }
 
-        internal void FCanvas_MouseDown(object sender, MouseEventArgs e)
+        internal void FCanvas_MouseDoubleClick(object sender, MouseEventArgs e, PInputEventArgs pe)
+        {
+            OnMouseDoubleClick(e);
+            if (IsClickable)
+                Clickable.DoubleClick(pe.Position, Helpers.GetButton(pe));
+        }
+
+        internal void FCanvas_MouseUp(object sender, MouseEventArgs e, PInputEventArgs pe)
+        {
+            OnMouseUp(e);
+            if (IsClickable)
+                Clickable.MouseUp(pe.Position, Helpers.GetButton(pe));
+        }
+
+        internal void FCanvas_MouseDown(object sender, MouseEventArgs e, PInputEventArgs pe)
         {
             OnMouseDown(e);
+            if (IsClickable)
+                Clickable.MouseDown(pe.Position, Helpers.GetButton(pe));
         }
-        
+
+
+        #region hoverable
+        DateTime FMouseEnterTime;
+
+        internal void FCanvas_MouseEnter(object sender, MouseEventArgs mouseEventArgs, PInputEventArgs e)
+        {
+            if (IsHoverable)
+            {
+                FMouseEnterTime = DateTime.Now;
+                Hoverable.MouseEnter(e.Position);
+            }
+        }
+
+        internal void FCanvas_MouseMove(object sender, MouseEventArgs mouseEventArgs, PInputEventArgs e)
+        {
+            if (IsHoverable)
+                Hoverable.MouseHover(e.Position);
+        }
+
+        internal void FCanvas_MouseLeave(object sender, MouseEventArgs mouseEventArgs, PInputEventArgs e)
+        {
+            if (IsHoverable)
+                Hoverable.MouseLeave(e.Position, DateTime.Now - FMouseEnterTime);
+        }
+        #endregion hoverable
+
         #endregion canvas input events
 
         #region link drawing
@@ -163,16 +186,16 @@ namespace VVVV.HDE.GraphicalEditing
 
             foreach (GraphElement e in FConnectables)
                 if (e is Solid &&
-                    ((startingConnectable==null) || e.Connectable.CanConnectTo(startingConnectable)) &&
+                    ((startingConnectable == null) || e.Connectable.CanConnectTo(startingConnectable)) &&
                     e.Connectable.CommitAsConnectionCandidate(position, targetConnectable))
-            {
-                target = e;
-                targetConnectable = target.Connectable;
-            }
+                {
+                    target = e;
+                    targetConnectable = target.Connectable;
+                }
 
             return target as Solid;
         }
-        
+
         internal void ShowAwaitingConnections(IConnectable aConnectable)
         {
             foreach (GraphElement e in FConnectables)
@@ -233,7 +256,7 @@ namespace VVVV.HDE.GraphicalEditing
             OnCreateGraphElement(e);
             return e;
         }
-        
+
         //text
         public IText CreateText(IGraphElementHost host, string caption)
         {
@@ -241,7 +264,7 @@ namespace VVVV.HDE.GraphicalEditing
             OnCreateGraphElement(e);
             return e;
         }
-        
+
         public void RemoveGraphElement(IGraphElement element)
         {
             if (element.IsConnectable)
@@ -281,7 +304,7 @@ namespace VVVV.HDE.GraphicalEditing
             LinkRoot.Add(p);
             return p;
         }
-        
+
         //remove a path
         public void RemovePath(IPath path)
         {
@@ -295,7 +318,7 @@ namespace VVVV.HDE.GraphicalEditing
             {
                 path.End.Connectable.DisconnectFrom(path.Start.Connectable, path.Host);
             }
-            
+
             var disposablePath = path as IDisposable;
             if (disposablePath != null)
             {
@@ -311,19 +334,19 @@ namespace VVVV.HDE.GraphicalEditing
             set
             {
                 FRoot = value;
-                
+
                 //set the layer as parent of the root
                 ((GraphElement)FRoot).FPiccoloParent = SolidLayer;
                 SolidLayer.AddChild(((GraphElement)FRoot).PNode);
-                
+
                 if (FSelectionEventHandler != null)
                     FCanvas.RemoveInputEventListener(FSelectionEventHandler);
-                
+
                 FSelectionEventHandler = new SelectionEventHandler(this, ((GraphElement)FRoot).PNode, ((GraphElement)FRoot).PNode);
                 FCanvas.AddInputEventListener(FSelectionEventHandler);
             }
         }
-        
+
         //link root element, parent of all links
         protected IGraphElement FLinkRoot;
         public IGraphElement LinkRoot
@@ -332,7 +355,7 @@ namespace VVVV.HDE.GraphicalEditing
             set
             {
                 FLinkRoot = value;
-                
+
                 //set the layer as parent of the root
                 ((GraphElement)FLinkRoot).FPiccoloParent = LinkLayer;
                 LinkLayer.AddChild(((GraphElement)FLinkRoot).PNode);
@@ -352,10 +375,14 @@ namespace VVVV.HDE.GraphicalEditing
                 {
                     FHost = value;
                     FDragDropEventHandler.Host = value;
+                    IsClickable = (FHost is IClickable);
+                    Clickable = (FHost as IClickable);
+                    IsHoverable = (FHost is IHoverable);
+                    Hoverable = (FHost as IHoverable);
                 }
             }
         }
-        
+
         public Color Color
         {
             get
@@ -367,7 +394,7 @@ namespace VVVV.HDE.GraphicalEditing
                 FCanvas.BackColor = value;
             }
         }
-        
+
         public PointF ViewCenter
         {
             get
@@ -385,7 +412,7 @@ namespace VVVV.HDE.GraphicalEditing
                 FCanvas.Invalidate();
             }
         }
-        
+
         public SizeF ViewSize
         {
             get
@@ -406,7 +433,7 @@ namespace VVVV.HDE.GraphicalEditing
                 FCanvas.Invalidate();
             }
         }
-        
+
         public RectangleF ContentBounds
         {
             get
@@ -414,7 +441,7 @@ namespace VVVV.HDE.GraphicalEditing
                 return SolidLayer.FullBounds;
             }
         }
-        
+
         public PointF ContentCenter
         {
             get
@@ -422,7 +449,7 @@ namespace VVVV.HDE.GraphicalEditing
                 return SolidLayer.FullBounds.GetCenter();
             }
         }
-        
+
         public SizeF ContentSize
         {
             get
@@ -430,24 +457,24 @@ namespace VVVV.HDE.GraphicalEditing
                 return SolidLayer.FullBounds.Size;
             }
         }
-        
+
         public void Clear()
         {
             Root.Clear();
             LinkRoot.Clear();
         }
-        
+
         void ICanvas.Invalidate()
         {
             FCanvas.Invalidate();
         }
-        
+
         void CanvasToControl(ref Point p)
         {
-            p.X = (int) ((p.X - FCanvas.Camera.ViewBounds.X) * FCanvas.Camera.ViewScale);
-            p.Y = (int) ((p.Y - FCanvas.Camera.ViewBounds.Y) * FCanvas.Camera.ViewScale);
+            p.X = (int)((p.X - FCanvas.Camera.ViewBounds.X) * FCanvas.Camera.ViewScale);
+            p.Y = (int)((p.Y - FCanvas.Camera.ViewBounds.Y) * FCanvas.Camera.ViewScale);
         }
-        
+
         public void ShowToolTip(Point tipPoint, string tip, bool center)
         {
             CanvasToControl(ref tipPoint);
@@ -455,22 +482,25 @@ namespace VVVV.HDE.GraphicalEditing
             {
                 using (var g = CreateGraphics())
                 {
-                    var width = (int) g.MeasureString(tip, FCanvas.Font).Width;
-                    tipPoint.X -= width/2;
+                    var width = (int)g.MeasureString(tip, FCanvas.Font).Width;
+                    tipPoint.X -= width / 2;
                 }
             }
-            
+
             tipPoint.Y += 20;
             FToolTip.Show(tip, this, tipPoint);
         }
-        
+
         public void HideToolTip()
         {
             FToolTip.Hide(this);
         }
 
         #endregion ICanvas Members
+
+
     }
-
-
 }
+
+
+

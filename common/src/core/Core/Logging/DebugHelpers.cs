@@ -8,12 +8,12 @@ namespace VVVV.Core.Logging
 {
     public static class DebugHelpers
     {
-        public static void CatchAndLog(Action a, string FailingContext)
+        static void CatchAndLog(Action a, bool throwAnyway, string failingContext, Action<Exception> theCatch = null)
         {
-            if (Shell.Instance.CommandLineArguments.ThrowExceptions)
+            if (throwAnyway)
 
                 a();
-                
+
             else
 
                 try
@@ -22,20 +22,32 @@ namespace VVVV.Core.Logging
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(string.Format("{0} failed with exception: \n{1}", FailingContext, e));
+                    Shell.Instance.Logger.Log(e, string.Format("{0} failed", failingContext));
+                    if (theCatch != null)
+                        theCatch(e);
                 }
         }
 
-        public static void CatchAndLogNeverStop(Action a, string FailingContext)
+        public static void CatchAndLog(Action a, string failingContext, Action<Exception> theCatch = null)
         {
-            try
-            {
-                a();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(string.Format("{0} failed with exception: \n{1}", FailingContext, e));
-            }
+            CatchAndLog(a, Shell.Instance.CommandLineArguments.ThrowExceptions, failingContext, theCatch);
+        }
+
+        public static void CatchAndLogFrontEnd(Action a, string failingContext, Action<Exception> theCatch = null)
+        {
+            var args = Shell.Instance.CommandLineArguments;
+            CatchAndLog(a, args.ThrowExceptions || args.ThrowFrontEndExceptions, failingContext, theCatch);
+        }
+
+        public static void CatchAndLogBackEnd(Action a, string failingContext, Action<Exception> theCatch = null)
+        {
+            var args = Shell.Instance.CommandLineArguments;
+            CatchAndLog(a, args.ThrowExceptions || args.ThrowBackEndExceptions, failingContext, theCatch);
+        }
+
+        public static void CatchAndLogNeverStop(Action a, string failingContext)
+        {
+            CatchAndLog(a, false, failingContext, (e) => { } );
         }
     }
 }

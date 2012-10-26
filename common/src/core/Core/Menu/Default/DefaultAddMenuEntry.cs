@@ -15,8 +15,12 @@ namespace VVVV.Core.Menu
             :base(model.Mapper.Map<ICommandHistory>())
         {
             if (mapper.CanMap<IAddMenuProvider>())
+            {
                 foreach (var a in mapper.Map<IAddMenuProvider>().GetEnumerator())
-                    Add(a);
+                {
+                    AddEntry(a);
+                }
+            }
             
             FMapper = mapper;
             FModel = model;                       
