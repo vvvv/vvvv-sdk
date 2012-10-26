@@ -53,7 +53,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
             if (!this.assemblyMap.TryGetValue(ident, out result)) {
                 var name = new System.Reflection.AssemblyName();
                 if (!String.IsNullOrEmpty(ident.Location))
-                    name.CodeBase = new Uri(ident.Location).ToString();
+                    name.CodeBase = ident.Location;
                 name.CultureInfo = new System.Globalization.CultureInfo(ident.Culture);
                 name.Name = ident.Name.Value;
                 name.SetPublicKeyToken(new List<byte>(ident.PublicKeyToken).ToArray());
