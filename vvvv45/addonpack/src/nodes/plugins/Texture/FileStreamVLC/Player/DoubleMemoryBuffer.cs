@@ -153,10 +153,10 @@ namespace VVVV.Nodes.Vlc.Player
 
 		public bool SetNewSize(int w, int h)
 		{
-			if (pixelPlane0 != null && pixelPlane1 != null && width == w && height == h) {
+			if ( pixelPlane0 != null && pixelPlane1 != null && width == w && height == h ) {
 				//do nothing
 			} else {
-				if (LockBothBuffers(tryLockTimeout)) {
+				if ( LockBothBuffers(tryLockTimeout) ) {
 					try {
 						//only reallocate if a bigger buffer is requested? ( => possibly some wasted memory )
 						if ( w * h > width * height ) {
@@ -195,11 +195,15 @@ namespace VVVV.Nodes.Vlc.Player
 		public void Dispose()
 		{
 			if (pixelPlane0 != null) {
-				/*try {*/					Marshal.FreeHGlobal(pixelPlane0);
+				/*try {*/					Marshal.FreeHGlobal( pixelPlane0 );
 				/*} catch {}*/				}				
 			if (pixelPlane1 != null) {
-				/*try {*/					Marshal.FreeHGlobal(pixelPlane1);
+				/*try {*/					Marshal.FreeHGlobal( pixelPlane1 );
 				/*} catch {}*/				}				
+
+			// Use SupressFinalize in case a subclass of this type implements a finalizer.
+			GC.SuppressFinalize( this );
+
 		}
 	}
 }
