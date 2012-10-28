@@ -46,7 +46,7 @@ float4 p0(float2 x:TEXCOORD0,float2 vp:VPOS):color{float2 asp=lerp(1,R/R.x,Aspec
 	}
 	//xx=(xx-.5)/asp+.5;
 	xx=r2d(xx-.5,CellRotate-Rotate)/asp+.5;
-	xx+=CellOffset;
+	xx+=CellOffset*2-1;
 	xx=(xx-.5)*CellScale+.5;
 	float4 c=tex2D(s1,xx);
 	if(Filter)c=tex2D(s0,xx);
