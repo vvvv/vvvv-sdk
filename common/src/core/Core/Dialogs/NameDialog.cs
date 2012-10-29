@@ -22,6 +22,7 @@ namespace VVVV.Core.Dialogs
             FInitialText = initText;
             StartPosition = FormStartPosition.CenterParent;
             FIsValidChar = isValidChar ?? DefaultIsValidChar;
+            IsValidName = DefaultIsValidName;
         }
 
         public Point Position
@@ -31,6 +32,13 @@ namespace VVVV.Core.Dialogs
                 StartPosition = FormStartPosition.Manual;
                 Location = Point.Subtract(value, new Size(Width / 2, Height / 2));
             }
+        }
+
+        public Func<string, bool> IsValidName { get; set; }
+
+        private static bool DefaultIsValidName(string name)
+        {
+            return true;
         }
 
         //empty textbox if it contains the initial text
@@ -102,7 +110,7 @@ namespace VVVV.Core.Dialogs
 
             TextBoxName.Text = text;
 
-            if (text != "") ButtonOK.Enabled = true;
+            if (text != "") ButtonOK.Enabled = IsValidName(text);
         }
     }
 }

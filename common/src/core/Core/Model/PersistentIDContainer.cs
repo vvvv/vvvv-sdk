@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using VVVV.Core.Logging;
 
 namespace VVVV.Core.Model
 {
@@ -81,12 +82,22 @@ namespace VVVV.Core.Model
 
         public void Load()
         {
-            DoLoad();
+            DebugHelpers.CatchAndLog(
+                () =>
+                {
+                    DoLoad();
 
-            IsLoaded = true;
-            IsDirty = false;
+                    IsLoaded = true;
+                    IsDirty = false;
 
-            OnLoaded(EventArgs.Empty);
+                    OnLoaded(EventArgs.Empty);
+                },
+                "Loading document",
+                (e) =>
+                {
+                    IsLoaded = false;
+                    IsDirty = true;
+                });
         }
 
         protected abstract void DoLoad();

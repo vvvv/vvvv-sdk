@@ -37,29 +37,30 @@ namespace VVVV.Core.Model
             }
         }
 
-		public static IDocument CreateDocumentFromFile(string filename)
+		public static IDocument CreateDocumentFromFile(string file)
 		{
             Initialize();
 
 			IDocument document;
 			
-			if (!FDocuments.TryGetValue(filename, out document))
+			if (!FDocuments.TryGetValue(file, out document))
 			{
-				var location = new Uri(filename);
+				var location = new Uri(file);
 				
-				var fileExtension = Path.GetExtension(filename);
+				var fileExtension = Path.GetExtension(file);
+                var fileName = Path.GetFileName(file);
 
                 if (FLoaders.ContainsKey(fileExtension))
                 {
-                    object o = Activator.CreateInstance(FLoaders[fileExtension], filename, location);
+                    object o = Activator.CreateInstance(FLoaders[fileExtension], fileName, location);
                     document = o as IDocument;
                 }
                 else
                 {
-                    document = new TextDocument(filename, location);
+                    document = new TextDocument(fileName, location);
                 }
 
-				FDocuments[filename] = document;
+				FDocuments[file] = document;
 				
 				document.Disposed += document_Disposed;
 			}

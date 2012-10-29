@@ -381,7 +381,7 @@ namespace VVVV.Core.View
 		
 		void FProject_Documents_Removed(IViewableCollection<IDocument> collection, IDocument item)
 		{
-			var relativeDir = item.GetRelativeDir();
+			var relativeDir = item.GetRelativeDir(FProject);
 			var folder = GetOrCreateFolder(relativeDir);
 			folder.Documents.Remove(item);
 			TryRemoveFolder(folder);
@@ -536,23 +536,25 @@ namespace VVVV.Core.View
 
 		protected IDocument DocumentCreator()
 		{
-			var dialog = new NameDialog();
+            var dialog = new NameDialog() { IsValidName = IsValidDocumentFilename };
 
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
 				var name = dialog.EnteredText;
 				var projectDir = FProject.Location.GetLocalDir();
 				var documentPath = projectDir.ConcatPath(name);
-				var document = DocumentFactory.CreateDocumentFromFile(documentPath);
-				if (File.Exists(document.Location.LocalPath))
-					document.Load();
-				else
-					document.Save();
-				return document;
+				return DocumentFactory.CreateDocumentFromFile(documentPath);
 			}
 			else
 				return null;
 		}
+
+        private bool IsValidDocumentFilename(string name)
+        {
+            var projectDir = FProject.Location.GetLocalDir();
+            var documentPath = projectDir.ConcatPath(name);
+            return !File.Exists(documentPath);
+        }
 		
 		protected IDocument ExistingDocumentCreator()
 		{
