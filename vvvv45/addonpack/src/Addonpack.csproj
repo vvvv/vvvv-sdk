@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="..\..\src\vvvv45.csproj" />
+
+  <PropertyGroup>
+    <ProjectGuid>{AA8072CA-3343-4199-AC22-62B9E352BAE9}</ProjectGuid>
+    <AddonPluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</AddonPluginsOutputDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<!-- IDE seems to need this line, MSBuild not? -->
+	<ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\plugins\*\*\*.csproj;
+                               $(MSBuildThisFileDirectory)nodes\plugins\Network\Databases\*\*.csproj;
+                               $(MSBuildThisFileDirectory)nodes\plugins\Mesh\Assimp\Nodes\*.csproj">
+      <OutputDir>$(AddonPluginsOutputDir)</OutputDir>
+    </ProjectReference>
+  </ItemGroup>
+  
+  <Target Name="Print">
+	<Message Text="@(ProjectReference)" />
+  </Target>
+  
+  <PropertyGroup>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      AddonpackBuild
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="AddonpackBuild">
+    <!-- Delete all files which are already in lib/core -->
+    <Delete Files="@(CoreOutputFiles->'$(AddonPluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <ItemGroup>
+      <PluginLicenses Include="$(MSBuildThisFileDirectory)nodes\plugins\**\license*.txt" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PluginLicenses)" 
+          DestinationFiles="@(PluginLicenses->'$(AddonPluginsOutputDir)..\..\..\licenses\%(Filename)%(Extension)')" 
+          SkipUnchangedFiles="true"
+          Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
+    <!-- Flash plugin is special -->
+	  <ItemGroup>
+      <_FlashPluginDependencies_ Include="$(MSBuildThisFileDirectory)nodes\plugins\Layer\DrawFlash\Dependencies\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_FlashPluginDependencies_)"
+        DestinationFolder="$(AddonPluginsOutputDir)" 
+        SkipUnchangedFiles="true" />
+  </Target>
+  
+  <!-- Freeframe and DirectShow -->
+  <ItemGroup>
+    <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp">
+      <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\freeframes\</OutputDir>
+    </FreeframeProjects>
+    <DirectShowFilterProjects Include="$(MSBuildThisFileDirectory)nodes\directshowfilter\**\*.dproj">
+      <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\directshowfilter\</OutputDir>
+    </DirectShowFilterProjects>
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <ZipSteps>_PreZip_;_Zip_;_PostZip_</ZipSteps>
+    <ZipOutputDir>..\..\..\</ZipOutputDir>
+    <TempBaseDir>..\..\temp\</TempBaseDir>
+  </PropertyGroup>
+  <Target Name="Zip">
+    <CallTarget Targets="$(ZipSteps)" RunEachTargetSeparately="True" />
+  </Target>
+  <Target Name="_PreZip_">
+    <RemoveDir Directories="$(TempBaseDir)" />
+  </Target>
+  <Target Name="_Zip_">
+    <GetVersionInfo File="$(StartProgram)">
+      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
+    </GetVersionInfo>
+    <PropertyGroup>
+      <TempDir>$(TempBaseDir)addonpack\</TempDir>
+      <ZipFileName>$(ZipOutputDir)addons_$(VersionInfo).zip</ZipFileName>
+    </PropertyGroup>
+    <CreateItem Include="..\**\*.*" 
+                Exclude="..\**\.gitignore;
+                         ..\**\*.pdb;
+                         ..\src\**\*.*;
+                         ..\tests\**\*.*;
+                         ..\lib\nodes\plugins\*\bin\**\*.*">
+      <Output ItemName="OutputFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Exec Command="attrib +R &quot;$(TempDir)lib\nodes\*.*&quot; /S /D" />
+    <Exec Command="&quot;$(StartProgram)&quot; /nodelist &quot;$(TempDir)lib\nodes&quot;" />
+    <!-- Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
+    <Exec Command="&quot;$(SevenZip)&quot; a -r &quot;$(ZipFileName)&quot; &quot;$(TempDir)&quot;" />
+    <!--
+    <CreateItem Include="$(TempDir)\**\*.*">
+      <Output ItemName="ZipFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Zip Files="@(ZipFiles)" WorkingDirectory="$(TempBaseDir)" ZipFileName="$(ZipFileName)" ZipLevel="9" />
+    -->
+  </Target>
+  <Target Name="_PostZip_">
+    <RemoveDir Directories="$(TempBaseDir)" />
+  </Target>
+</Project>

@@ -1,0 +1,285 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha18.1.dtd" >
+   <PATCH nodename="Y:\sourceforge\plugins\Devices\uEyeCam\uEyeCam (Devices) help.v4p">
+   <BOUNDS height="8085" left="2205" top="1845" type="Window" width="8370">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="4260">
+   </BOUNDS>
+   <BOUNDS height="160" left="11100" top="41910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Native interface to uEye cameras by http://ids-imaging.de/|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="11100" top="41910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|uEyeCam - Devices|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename=":PLUGINS:\uEyeCam.dll|VVVV.Nodes.uEyeCamPlugin" componentmode="InAWindow" id="2">
+   <BOUNDS type="Node" left="2040" top="1920" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="11190" top="885" width="6000" height="4515">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2040" top="1920" width="3000" height="1500">
+   </BOUNDS>
+   <PIN pinname="Shared Name" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="4">
+   <BOUNDS type="Node" left="3330" top="1425" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7680" top="5880" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3330" top="1425" width="630" height="255">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="#vvvv">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output String" dstnodeid="2" dstpinname="Shared Name">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="5">
+   <BOUNDS type="Node" left="2025" top="2295" width="5175" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2025" top="2295" width="3030" height="750">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|note: the node does not output the cameras images via a pin but instead writes them to a shared memory location|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="4035" top="1425" width="2475" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4035" top="1425" width="2475" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|name of shared memory location|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="SharedMemory (DShow9)" id="7">
+   <BOUNDS type="Node" left="1155" top="4995" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Shared Memory NamePin" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Bytes per Pixel" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="SharedMemory (EX9.Texture)" id="8">
+   <BOUNDS type="Node" left="5520" top="4995" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Shared Memory NamePin" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Bytes per Pixel" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="VideoOut (DShow9)" id="9">
+   <BOUNDS type="Node" left="1155" top="6480" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Video" dstnodeid="9" dstpinname="Video">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output String" dstnodeid="7" dstpinname="Shared Memory NamePin">
+   <LINKPOINT x="1350" y="1755">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output String" dstnodeid="8" dstpinname="Shared Memory NamePin">
+   <LINKPOINT x="5460" y="1845">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="1290" top="5340" width="3705" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1290" top="5340" width="1950" height="510">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|read the shared memory into a directshow stream|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="1515" top="3735" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4215" top="6630" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1515" top="3735" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="720">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Width">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12">
+   <BOUNDS type="Node" left="1515" top="4080" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5100" top="6630" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1515" top="4080" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="576">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Width" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Height" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13">
+   <BOUNDS type="Node" left="1530" top="4410" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6300" top="6465" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1530" top="4410" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Bytes per Pixel">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Bytes per Pixel" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15">
+   <BOUNDS type="Node" left="5730" top="5355" width="3705" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5730" top="5355" width="1950" height="510">
+   </BOUNDS>
+   <BOUNDS type="Window" left="300" top="300" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|read the shared memory into a direct3d texture|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="2595" top="3735" width="585" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2595" top="3735" width="585" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="width">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="2595" top="4080" width="645" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2595" top="4080" width="645" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="height">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="18">
+   <BOUNDS type="Node" left="2595" top="4410" width="1200" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2595" top="4410" width="1200" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|bytes per pixel|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="19">
+   <BOUNDS type="Node" left="3630" top="4080" width="1545" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3630" top="4080" width="1545" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|of the source image|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="Quad (DX9)" id="20">
+   <BOUNDS type="Node" left="5475" top="6195" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Texture Out" dstnodeid="20" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="Renderer (EX9)" componentmode="InAWindow" id="21">
+   <BOUNDS type="Node" left="5475" top="6675" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="11190" top="5385" width="6120" height="4860">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5475" top="6675" width="2400" height="1800">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Layer" dstnodeid="21" dstpinname="Layers">
+   </LINK>
+   </PATCH>

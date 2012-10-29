@@ -1,0 +1,227 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta11.2.dtd" >
+   <PATCH nodename="X:\VVVV2006\help\ScopeSpread (DShow9) help.v4p">
+   <BOUNDS height="8865" left="75" top="150" type="Window" width="9795">
+   </BOUNDS>
+   <NODE id="19" nodename="SCOPESPREAD (DSHOW9)">
+   <BOUNDS height="270" left="5805" top="1200" type="Node" width="1185">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Output L" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output R" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4860" top="210" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3930" top="3390" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4860" top="210" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="300">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Spread Count" linkstyle="VHV" srcnodeid="15" srcpinname="Y Output Value">
+   <LINKPOINT x="5625" y="825">
+   </LINKPOINT>
+   <LINKPOINT x="6960" y="825">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="14" nodename="AudioIn (DShow9)">
+   <BOUNDS height="0" left="5820" top="615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Filename">
+   </PIN>
+   <PIN pinname="Play">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Channel Mode" slicecount="1" values="Stereophonic">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Audio" srcnodeid="14" srcpinname="Audio">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3780" top="195" type="Node" width="1110">
+   </BOUNDS>
+   <BOUNDS height="240" left="3780" top="195" type="Box" width="1065">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|spread count|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="525" left="15" top="390" type="Box" width="3150">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="37530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|gets a spread with the content of the last block, downsampled to the spread count|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3090">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="37530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ScopeSpread - DShow9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20">
+   <BOUNDS type="Node" left="150" top="2265" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9705" top="6720" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="150" top="2265" width="9030" height="2625">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="300">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21">
+   <BOUNDS type="Node" left="150" top="5340" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10005" top="7020" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="150" top="5340" width="9030" height="2625">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="300">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Output L" dstnodeid="20" dstpinname="Y Input Value" linkstyle="Bezier">
+   <LINKPOINT x="5835" y="1860">
+   </LINKPOINT>
+   <LINKPOINT x="9150" y="1860">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Output R" dstnodeid="21" dstpinname="Y Input Value" linkstyle="Bezier">
+   <LINKPOINT x="6210" y="3405">
+   </LINKPOINT>
+   <LINKPOINT x="9150" y="3405">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="24" nodename="AudioMixer (System)">
+   <BOUNDS height="0" left="7425" top="300" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Line" slicecount="1" values="Aufnahmeregler">
+   </PIN>
+   <PIN pinname="Device" slicecount="1" values="(nil)">
+   </PIN>
+   <PIN pinname="Volume" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <NODE id="23" nodename="AudioRecordSelector (System)">
+   <BOUNDS height="0" left="7425" top="1200" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="7425" top="735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13545" top="4560" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="255" left="7425" top="735" type="Box" width="1080">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Mikrofon">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Device" srcnodeid="22" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (String)">
+   <BOUNDS height="270" left="150" top="1935" type="Node" width="1095">
+   </BOUNDS>
+   <BOUNDS height="255" left="150" top="1935" type="Box" width="1095">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|left channel|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)">
+   <BOUNDS height="270" left="150" top="5040" type="Node" width="1095">
+   </BOUNDS>
+   <BOUNDS height="270" left="150" top="5040" type="Box" width="1110">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|right channel|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="27" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3765" top="5040" type="Node" width="3705">
+   </BOUNDS>
+   <BOUNDS height="285" left="3765" top="5040" type="Box" width="5040">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the right channel is just a copy of the left if the audio source is mono|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

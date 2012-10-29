@@ -1,0 +1,119 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\IP (Network) help.v4p">
+   <BOUNDS height="4590" left="2685" top="765" type="Window" width="8835">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="390" type="Box" width="3315">
+   </BOUNDS>
+   <BOUNDS height="160" left="210" top="9660" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns the IP adress of the current machine|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="210" top="9660" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|IP - Network|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="13" nodename="IP (Network)" systemname="IP (Network)">
+   <BOUNDS height="100" left="300" top="1770" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="IP" visible="1">
+   </PIN>
+   <PIN pinname="Update">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="4590" top="2535" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1260" left="4590" top="2535" type="Box" width="1440">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6375" top="2805" type="Node" width="6690">
+   </BOUNDS>
+   <BOUNDS height="960" left="6375" top="2805" type="Box" width="1995">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; these are the IPs of all the network adapters in your PC|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="300" top="1095" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="300" top="1095" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Update">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="885" top="1200" width="780" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="885" top="1200" width="780" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Update|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="IP" dstnodeid="12" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="300" top="2535" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="300" top="2535" width="4185" height="1260">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Description" dstnodeid="16" dstpinname="Input String">
+   </LINK>
+   </PATCH>
