@@ -92,7 +92,7 @@ namespace VVVV.Nodes
 		
 		//internal fields
 		protected ArrayList FControllerGroups;
-		protected bool FLastMouseLeft = false;
+		protected Spread<bool> FLastMouseLeft;
 		protected bool FFirstframe = true;
 		
 		#endregion field declaration
@@ -100,6 +100,7 @@ namespace VVVV.Nodes
 		public BasicGui2dNode()
 		{
 			FControllerGroups = new ArrayList();
+			FLastMouseLeft = new Spread<bool>(1);
 		}
 			
 		
@@ -128,7 +129,7 @@ namespace VVVV.Nodes
 			    || FOverColorIn.IsChanged
 			    || FActiveColorIn.IsChanged
 			    || FCountIn.IsChanged
-			    || FLastMouseLeft
+			    || FLastMouseLeft.IsChanged
 			    || FSetValueIn.IsChanged;
 		}
 		
@@ -137,14 +138,39 @@ namespace VVVV.Nodes
 		{
 			
 			int max = 0;
-			
 			max = Math.Max(max, FCountIn.SliceCount);
 			max = Math.Max(max, FSizeIn.SliceCount);
 			max = Math.Max(max, FTransformIn.SliceCount);
 			max = Math.Max(max, FColorIn.SliceCount);
 			max = Math.Max(max, FActiveColorIn.SliceCount);
 			return Math.Max(max, FOverColorIn.SliceCount);
-
+		}
+		
+		protected bool UpdateMouse<TGroup, TController>(int inputSpreadCount) where TGroup : BasicGui2dGroup<TController> where TController : BasicGui2dController, new()
+		{
+			bool valueSet = false;
+			if ( AnyMouseUpdatePinChanged() )
+			{
+				var mouseCount = FMouseIn.SliceCount;
+				FLastMouseLeft.SliceCount = mouseCount;
+				for (int mouseSlice = 0; mouseSlice < mouseCount; mouseSlice++)
+				{
+					var mouse = FMouseIn[mouseSlice];
+					
+					bool mousDownEdge = mouse.IsLeft && !FLastMouseLeft[mouseSlice];
+					
+					for (int slice = 0; slice < inputSpreadCount; slice++)
+					{
+						TGroup group = (TGroup) FControllerGroups[slice];
+						group.IsMultiTouch = mouseCount > 1;
+						valueSet |= group.UpdateMouse(mouse.Position, mousDownEdge, mouse.IsLeft);
+					}
+					
+					FLastMouseLeft[mouseSlice] = mouse.IsLeft;
+				}
+			}
+			
+			return valueSet;
 		}
 		
 	}

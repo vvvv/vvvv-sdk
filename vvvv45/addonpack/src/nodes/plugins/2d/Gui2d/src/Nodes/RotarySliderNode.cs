@@ -87,7 +87,6 @@ namespace VVVV.Nodes
 				for (slice = 0; slice < inputSpreadCount; slice++)
 				{
 					RotarySliderGroup group = (RotarySliderGroup) FControllerGroups[slice];
-					
 					group.UpdateTransform(FTransformIn[slice], FCountIn[slice], FSizeIn[slice], FColorIn[slice], FOverColorIn[slice], FActiveColorIn[slice], FSliderColorIn[slice], FSliderSpeedIn[slice]);
 				}
 			}
@@ -106,21 +105,7 @@ namespace VVVV.Nodes
 			}
 			
 			//update mouse and colors
-			bool valueSet = false;
-			if ( AnyMouseUpdatePinChanged() )
-			{
-				
-				var mouse = FMouseIn[0];
-				bool mousDownEdge = mouse.IsLeft && !FLastMouseLeft;
-				
-				for (slice = 0; slice < inputSpreadCount; slice++)
-				{
-					RotarySliderGroup group = (RotarySliderGroup) FControllerGroups[slice];
-					valueSet |= group.UpdateMouse(mouse.Position, mousDownEdge, mouse.IsLeft);
-				}
-				
-				FLastMouseLeft = mouse.IsLeft;
-			}
+			bool valueSet = UpdateMouse<RotarySliderGroup, RotarySlider>(inputSpreadCount);
 			
 			//set value
 			slice = 0;

@@ -61,6 +61,11 @@ namespace VVVV.Nodes
 			FControllers[0] = new T();
 		}
 
+		public bool IsMultiTouch
+		{
+			get;
+			set;
+		}
 		
 		//update transform
 		public virtual void UpdateTransform(Matrix4x4 Transform,
@@ -136,7 +141,7 @@ namespace VVVV.Nodes
 		                        		bool MouseLeftPressed)
 		{
 			
-			if (FStaticMousHit && MouseLeftPressed) return false;
+			if ((FStaticMousHit || IsMultiTouch) && MouseLeftPressed) return false;
 			
 			//update state
 			bool anythingHit = false;
@@ -187,7 +192,7 @@ namespace VVVV.Nodes
 				
 			}
 			
-			//return if something was hit on mous up edge
+			//return if something was hit on mouse up edge
 			FStaticMousHit = FMouseHit;
 			return lastMouseHit && !FMouseHit;
 		}

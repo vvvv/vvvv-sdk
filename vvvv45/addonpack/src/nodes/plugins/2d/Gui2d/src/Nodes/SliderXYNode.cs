@@ -34,7 +34,7 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.Nodes
 {
-	[PluginInfo(Name = "SLiderXY",
+	[PluginInfo(Name = "SliderXY",
 	            Category = "GUI",
 	            Help = "A spread of xy-slider groups",
 	            Tags = "EX9, DX9, transform, interaction, mouse, fader",
@@ -52,7 +52,7 @@ namespace VVVV.Nodes
 		ISpread<Vector2D> FInternalValueConfig;
 
 		//additional slider size pin
-		[Config("Slider Size")]
+		[Input("Slider Size", DefaultValue = 0.1)]
 		ISpread<double> FSizeSliderIn;
 
 		#region mainloop
@@ -109,22 +109,7 @@ namespace VVVV.Nodes
 			}
 			
 			//update mouse and colors
-			bool valueSet = false;
-			if ( AnyMouseUpdatePinChanged() )
-			{
-				
-				var mouse = FMouseIn[0];
-				
-				bool mousDownEdge = mouse.IsLeft && !FLastMouseLeft;
-				
-				for (slice = 0; slice < inputSpreadCount; slice++)
-				{
-					SliderXYGroup group = (SliderXYGroup) FControllerGroups[slice];
-					valueSet |= group.UpdateMouse(mouse.Position, mousDownEdge, mouse.IsLeft);
-				}
-				
-				FLastMouseLeft = mouse.IsLeft;
-			}
+			bool valueSet = UpdateMouse<SliderXYGroup, SliderXY>(inputSpreadCount);
 			
 			//set value
 			slice = 0;

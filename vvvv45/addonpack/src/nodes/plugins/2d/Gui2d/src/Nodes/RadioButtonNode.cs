@@ -91,16 +91,22 @@ namespace VVVV.Nodes
 			bool valueSet = false;
 			if ( AnyMouseUpdatePinChanged() )
 			{
-				var mouse = FMouseIn[0];
-				
-				for (slice = 0; slice < inputSpreadCount; slice++)
+				var mouseCount = FMouseIn.SliceCount;
+				FLastMouseLeft.SliceCount = mouseCount;
+				for (int mouseSlice = 0; mouseSlice < mouseCount; mouseSlice++)
 				{
-					RadioButtonGroup group = (RadioButtonGroup) FControllerGroups[slice];
-					valueSet = group.UpdateMouse(mouse.Position, mouse.IsLeft && !FLastMouseLeft, mouse.IsLeft);
+					var mouse = FMouseIn[0];
+					
+					for (slice = 0; slice < inputSpreadCount; slice++)
+					{
+						RadioButtonGroup group = (RadioButtonGroup) FControllerGroups[slice];
+						group.IsMultiTouch = mouseCount > 1;
+						valueSet = group.UpdateMouse(mouse.Position, mouse.IsLeft && !FLastMouseLeft[mouseSlice], mouse.IsLeft);
+					}
+					
+					valueSet = FLastMouseLeft[mouseSlice] && mouse.IsLeft;
+					FLastMouseLeft[mouseSlice] = mouse.IsLeft;
 				}
-				
-				valueSet = FLastMouseLeft && mouse.IsLeft;
-				FLastMouseLeft = mouse.IsLeft;
 			}
 			
 			if (   FValueIn.IsChanged
