@@ -1,6 +1,7 @@
 #region usings
 using System;
 using System.Net;
+using System.Globalization;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
@@ -329,7 +330,14 @@ namespace VVVV.Nodes
 			{
 				var values = "";
 				foreach(var v in message.Values)
-					values += v.ToString() + ",";
+				{
+					if (v is float)
+						values += ((float)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + ",";
+					else if (v is double)
+						values += ((double)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + ",";
+					else
+						values += v.ToString() + ",";
+				}
 				values = values.TrimEnd(',');
 				
 				pin.Spread = values;
