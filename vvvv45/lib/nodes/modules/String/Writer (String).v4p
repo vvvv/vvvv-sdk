@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.3.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
    <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\String\Writer (String).v4p" systemname="Writer (File String)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\String\Writer (File String).v4p">
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="2" systemname="IOBox (Enumerations)">
    <BOUNDS type="Node" left="2505" top="1170" width="0" height="0">
@@ -29,19 +29,13 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Filename">
    </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
    </NODE>
    <BOUNDS type="Window" left="9525" top="6690" width="5850" height="4260">
    </BOUNDS>
    <INFO author="vvvv group" description="Writes a string to a text file" tags="text">
    </INFO>
-   <NODE systemname="Writer (File)" nodename="Writer (File)" componentmode="Hidden" id="0">
-   <BOUNDS type="Node" left="633" top="2910" width="1665" height="270">
-   </BOUNDS>
-   <PIN pinname="Content" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Write" visible="1" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="4" srcpinname="Output String" dstnodeid="0" dstpinname="Filename">
    </LINK>
    <NODE systemname="AsRaw (String)" nodename="AsRaw (String)" componentmode="Hidden" id="7">
@@ -93,6 +87,8 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Write">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Write">
    </LINK>
@@ -113,7 +109,29 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Append">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Append">
+   </LINK>
+   <NODE systemname="Writer (Raw)" nodename="Writer (Raw)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="630" top="2850" width="3975" height="270">
+   </BOUNDS>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Write" visible="1">
+   </PIN>
+   <PIN pinname="Append" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="11" dstpinname="Content">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output String" dstnodeid="11" dstpinname="Filename">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Write">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Append">
    </LINK>
    </PATCH>

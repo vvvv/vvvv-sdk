@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.3.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
    <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\UDP (Network Server String).v4p" systemname="UDP (Network Server String)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\UDP (Network Server String).v4p">
    <BOUNDS type="Window" left="9900" top="5100" width="7095" height="5880">
    </BOUNDS>
@@ -16,26 +16,14 @@
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="UDP (Network Server)" nodename="UDP (Network Server)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="810" top="2880" width="4350" height="270">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Delimiter" slicecount="1" visible="1" values="||">
-   </PIN>
-   </NODE>
    <NODE systemname="AsString (Raw)" nodename="AsString (Raw)" componentmode="Hidden" id="11">
-   <BOUNDS type="Node" left="810" top="3465" width="100" height="100">
+   <BOUNDS type="Node" left="810" top="3537" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Encoding" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="2" srcpinname="Output" dstnodeid="11" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
    <BOUNDS type="Node" left="810" top="4080" width="0" height="0">
    </BOUNDS>
@@ -73,13 +61,15 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Enable">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="1860" top="1200" width="0" height="0">
+   <BOUNDS type="Node" left="1884" top="1200" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1860" top="1200" width="795" height="240">
+   <BOUNDS type="Box" left="1884" top="1200" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="4444">
    </PIN>
@@ -90,6 +80,8 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Local Port|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Local Port">
@@ -109,6 +101,8 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Buffer Size|">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Buffer Size">
    </LINK>
@@ -120,6 +114,8 @@
    <PIN pinname="Input Enum" slicecount="1" values="Discard">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Queue Mode|">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="17" srcpinname="Output Enum" dstnodeid="2" dstpinname="Queue Mode">
@@ -169,7 +165,39 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Queue Count|">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="2" srcpinname="Queue Count" dstnodeid="20" dstpinname="Y Input Value">
+   <NODE systemname="UDP (Network Server)" nodename="UDP (Network Server)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="810" top="3015" width="4365" height="270">
+   </BOUNDS>
+   <PIN pinname="Enable" visible="1">
+   </PIN>
+   <PIN pinname="Local Port" visible="1">
+   </PIN>
+   <PIN pinname="Queue Mode" visible="1">
+   </PIN>
+   <PIN pinname="Buffer Size" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Delimiter" visible="1">
+   </PIN>
+   <PIN pinname="Queue Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Enable">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Local Port">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Output Enum" dstnodeid="21" dstpinname="Queue Mode">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Buffer Size">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="11" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="21" dstpinname="Delimiter">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Queue Count" dstnodeid="20" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

@@ -1,13 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.3.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\UDP (Network Server String).v4p" systemname="UDP (Network Server String)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\UDP (Network Server String).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\UDP (Network Client String).v4p" systemname="UDP (Network Server String)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\UDP (Network Server String).v4p">
    <BOUNDS type="Window" left="9900" top="5100" width="7530" height="5280">
    </BOUNDS>
-   <NODE systemname="UDP (Network Client)" nodename="UDP (Network Client)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="1335" top="3420" width="4350" height="270">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="5" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="3750" top="1500" width="0" height="0">
    </BOUNDS>
@@ -24,6 +18,8 @@
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Do Send|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Do Send">
@@ -45,6 +41,8 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Remote Host|">
    </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="2" dstpinname="Remote Host">
    </LINK>
@@ -62,6 +60,8 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Remote Port|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Remote Port">
@@ -107,5 +107,25 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="10" srcpinname="Output String" dstnodeid="8" dstpinname="Input">
+   </LINK>
+   <NODE systemname="UDP (Network Client)" nodename="UDP (Network Client)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="1344" top="3330" width="4365" height="270">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   <PIN pinname="Remote Host" visible="1">
+   </PIN>
+   <PIN pinname="Remote Port" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="11" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Do Send">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="11" dstpinname="Remote Host">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Remote Port">
    </LINK>
    </PATCH>
