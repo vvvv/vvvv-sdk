@@ -111,6 +111,12 @@
     <Compile Include="Crypto\StringHasher.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="GACWrap.cs" />
+    <Compile Include="IO\SystemIOExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SystemIOExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IO\ByteOrder.cs" />
     <Compile Include="IO\KeyboardState.cs" />
     <Compile Include="IO\MouseState.cs" />
     <Compile Include="Linq\LinqExtensions.cs" />
@@ -165,5 +171,13 @@
       <DependentUpon>ManagedVCLControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="IO\SystemIOExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SystemIOExtensions.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
 </Project>

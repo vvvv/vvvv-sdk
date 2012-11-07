@@ -9,6 +9,7 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 using SlimDX;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -106,6 +107,123 @@ namespace VVVV.Hosting.IO.Streams
                 FNodeOut.MarkPinAsChanged();
             }
             base.Flush();
+        }
+    }
+
+    class RawOutStream : IOutStream<System.IO.Stream>
+    {
+        private readonly IRawOut FRawOut;
+        private int length;
+        private bool markPinAsChanged;
+
+        public RawOutStream(IRawOut rawOut)
+        {
+            FRawOut = rawOut;
+        }
+
+        public void Flush()
+        {
+            if (markPinAsChanged)
+            {
+                this.FRawOut.MarkPinAsChanged();
+            }
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Length
+        {
+            get { return this.length; }
+            set
+            {
+                if (value != this.length)
+                {
+                    this.FRawOut.SliceCount = value;
+                    this.length = value;
+                }
+            }
+        }
+
+        public IStreamWriter<System.IO.Stream> GetWriter()
+        {
+            markPinAsChanged = true;
+            return new Writer(this);
+        }
+
+        class Writer : IStreamWriter<System.IO.Stream>
+        {
+            private RawOutStream rawOutStream;
+
+            public Writer(RawOutStream rawOutStream)
+            {
+                this.rawOutStream = rawOutStream;
+            }
+
+            public unsafe void Write(System.IO.Stream value, int stride = 1)
+            {
+                var buffer = MemoryPool<byte>.GetArray();
+                try
+                {
+                    byte* pByte;
+                    var itemsToRead = (int)value.Length;
+                    value.Position = 0;
+                    this.rawOutStream.FRawOut.SetDataLength(this.Position, itemsToRead, out pByte);
+                    while (itemsToRead > 0)
+                    {
+                        var destination = new IntPtr(pByte + value.Position);
+                        var itemsRead = value.Read(buffer, 0, buffer.Length);
+                        if (itemsRead > 0)
+                        {
+                            Marshal.Copy(buffer, 0, destination, itemsRead);
+                        }
+                        itemsToRead -= itemsRead;
+                    }
+                }
+                finally
+                {
+                    MemoryPool<byte>.PutArray(buffer);
+                }
+                this.Position += stride;
+            }
+
+            public int Write(System.IO.Stream[] buffer, int index, int length, int stride = 1)
+            {
+                var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+                for (int i = index; i < numSlicesToWrite; i++)
+                {
+                    Write(buffer[i]);
+                }
+                return numSlicesToWrite;
+            }
+
+            public void Reset()
+            {
+                Position = 0;
+            }
+
+            public bool Eos
+            {
+                get { return Position >= Length; }
+            }
+
+            public int Position
+            {
+                get;
+                set;
+            }
+
+            public int Length
+            {
+                get { return this.rawOutStream.Length; }
+            }
+
+            public void Dispose()
+            {
+                
+            }
         }
     }
 
