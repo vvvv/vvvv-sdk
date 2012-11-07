@@ -58,9 +58,6 @@ namespace VVVV.Nodes
 		[Input("Text", DefaultString = "vvvv")]
 		protected ISpread<string> FTextInput;
 
-		[Input("Character Encoding", EnumName = "CharEncoding")]
-		protected ISpread<EnumEntry> FCharEncoding;
-
 		[Input("Font", EnumName = "SystemFonts")]
 		protected IDiffSpread<EnumEntry> FFontInput;
 
@@ -298,12 +295,6 @@ namespace VVVV.Nodes
 
 					if (string.IsNullOrEmpty(text))
 						continue;
-
-					if (FCharEncoding[i] == "UTF8")
-					{
-						byte[] utf8bytes = Encoding.Default.GetBytes(text);
-						text = Encoding.UTF8.GetString(utf8bytes);
-					}
 
 					DrawTextFormat format = DrawTextFormat.NoClip | DrawTextFormat.ExpandTabs;
 
