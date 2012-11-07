@@ -8,7 +8,7 @@ using System.IO;
 
 namespace VVVV.Nodes.Value
 {
-    [PluginInfo(Name = "AsRaw", Category = "Value")]
+    [PluginInfo(Name = "AsRaw", Category = "Value", Help = "Returns a value as a sequence of bytes.")]
     public class AsRawNode : IPluginEvaluate
     {
         [Input("Input")]

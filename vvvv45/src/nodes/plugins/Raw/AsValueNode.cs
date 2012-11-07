@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace VVVV.Nodes.Raw
 {
-    [PluginInfo(Name = "AsValue", Category = "Raw")]
+    [PluginInfo(Name = "AsValue", Category = "Raw", Help = "Interprets a sequence of bytes as a value.")]
     public class AsValueNode : IPluginEvaluate
     {
         [Input("Input")]
