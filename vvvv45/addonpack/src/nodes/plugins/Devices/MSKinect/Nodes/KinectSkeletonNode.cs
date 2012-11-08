@@ -115,7 +115,7 @@ namespace VVVV.MSKinect.Nodes
                         Skeleton sk = skels[i];
                         this.FOutPosition[i] = new Vector3(sk.Position.X, sk.Position.Y, sk.Position.Z);
                         this.FOutUserIndex[i] = sk.TrackingId;
-
+                        
                         SlimDX.Vector4 clip = SlimDX.Vector4.Zero;
                         clip.X = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Left));
                         clip.Y = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Right));

@@ -4,6 +4,7 @@ using System.Text;
 using VVVV.TodoMap.Lib.Modules.Midi;
 using VVVV.TodoMap.Lib.Modules.Osc;
 using System.Linq;
+using VVVV.TodoMap.Modules.OscTree;
 
 namespace VVVV.TodoMap.Lib
 {
@@ -31,6 +32,8 @@ namespace VVVV.TodoMap.Lib
         private TodoMidiDevice mididevice;
         private TodoOscDevice oscdevice;
 
+        private TodoOscTreeController osctree;
+
         public string SavePath { get; set; }
 
         public TodoEngine()
@@ -42,6 +45,7 @@ namespace VVVV.TodoMap.Lib
 
             this.mididevice = new TodoMidiDevice(this);
             this.oscdevice = new TodoOscDevice(this);
+            this.osctree = new TodoOscTreeController(this);
         }
 
         public TodoMidiDevice Midi
