@@ -35,7 +35,7 @@ namespace VVVV.Hosting
     [Export(typeof(IHDEHost))]
     [ComVisible(false)]
     class HDEHost : IInternalHDEHost, IHDEHost,
-    IMouseClickListener, INodeSelectionListener, IWindowListener, IWindowSelectionListener
+    IMouseClickListener, INodeSelectionListener, IWindowListener, IComponentModeListener, IWindowSelectionListener
     {
         public const string ENV_VVVV = "VVVV45";
         
@@ -157,6 +157,7 @@ namespace VVVV.Hosting
             FVVVVHost.AddNodeSelectionListener(this);
             FVVVVHost.AddWindowListener(this);
             FVVVVHost.AddWindowSelectionListener(this);
+            FVVVVHost.AddComponentModeListener(this);
             
             NodeInfoFactory.NodeInfoUpdated += factory_NodeInfoUpdated;
 
@@ -339,11 +340,26 @@ namespace VVVV.Hosting
         }
         
         public event WindowEventHandler WindowSelectionChanged;
-        
         protected virtual void OnWindowSelectionChanged(WindowEventArgs args)
         {
             if (WindowSelectionChanged != null) {
                 WindowSelectionChanged(this, args);
+            }
+        }
+        
+        public event ComponentModeEventHandler BeforeComponentModeChange;
+        protected virtual void OnBeforeComponentModeChange(ComponentModeEventArgs args)
+        {
+            if (BeforeComponentModeChange != null) {
+                BeforeComponentModeChange(this, args);
+            }
+        }
+        
+        public event ComponentModeEventHandler AfterComponentModeChange;
+        protected virtual void OnAfterComponentModeChange(ComponentModeEventArgs args)
+        {
+            if (AfterComponentModeChange != null) {
+                AfterComponentModeChange(this, args);
             }
         }
         
@@ -370,7 +386,6 @@ namespace VVVV.Hosting
         }
         
         public event WindowEventHandler WindowRemoved;
-        
         protected virtual void OnWindowRemoved(WindowEventArgs args)
         {
             if (WindowRemoved != null) {
@@ -670,6 +685,22 @@ namespace VVVV.Hosting
         public void WindowSelectionChangeCB(IWindow internalWindow)
         {
             OnWindowSelectionChanged(new WindowEventArgs(Window.Create(internalWindow)));
+        }
+        
+        public void BeforeComponentModeChangedCB(IWindow internalWindow, ComponentMode componentMode)
+        {
+        	if (internalWindow == null)
+        		OnBeforeComponentModeChange(new ComponentModeEventArgs(null, componentMode));
+        	else
+        		OnBeforeComponentModeChange(new ComponentModeEventArgs(Window.Create(internalWindow), componentMode));
+        }
+        
+        public void AfterComponentModeChangedCB(IWindow internalWindow, ComponentMode componentMode)
+        {
+        	if (internalWindow == null)
+        		OnAfterComponentModeChange(new ComponentModeEventArgs(null, componentMode));
+        	else
+        		OnAfterComponentModeChange(new ComponentModeEventArgs(Window.Create(internalWindow), componentMode));
         }
         
         #endregion

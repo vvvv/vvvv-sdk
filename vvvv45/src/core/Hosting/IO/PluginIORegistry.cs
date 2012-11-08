@@ -31,6 +31,14 @@ namespace VVVV.Hosting.IO
                     var pluginIO = host.CreateTransformInput(context.IOAttribute, context.DataType);
                     return new PluginIOContainer(context, factory, pluginIO);
                 });
+
+            RegisterInput<IRawIn>(
+                (factory, context) =>
+                {
+                    var host = factory.PluginHost;
+                    var pluginIO = host.CreateRawInput(context.IOAttribute);
+                    return new PluginIOContainer(context, factory, pluginIO);
+                });
             
             RegisterInput<IColorIn>(
                 (factory, context) =>
@@ -97,6 +105,14 @@ namespace VVVV.Hosting.IO
                 {
                     var host = factory.PluginHost;
                     var pluginIO = host.CreateTransformOutput(context.IOAttribute, context.DataType);
+                    return new PluginIOContainer(context, factory, pluginIO);
+                });
+
+            RegisterOutput<IRawOut>(
+                (factory, context) =>
+                {
+                    var host = factory.PluginHost;
+                    var pluginIO = host.CreateRawOutput(context.IOAttribute);
                     return new PluginIOContainer(context, factory, pluginIO);
                 });
             

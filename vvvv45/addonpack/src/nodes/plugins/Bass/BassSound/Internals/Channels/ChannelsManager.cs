@@ -46,7 +46,14 @@ namespace BassSound.Internals
         #region Get Channel
         public ChannelInfo GetChannel(int id)
         {
-            return channels[id];
+            if (channels.ContainsKey(id))
+            {
+                return channels[id];
+            }
+            else
+            {
+                return null;
+            }
         }
         #endregion
 

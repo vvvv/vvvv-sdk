@@ -278,40 +278,44 @@ namespace vvvv.Nodes
             this.FPinHandles[index].GetValue(0, out dhandle);
 
             ChannelInfo info = this.manager.GetChannel(Convert.ToInt32(dhandle));
-            int mixerhandle = 0;
 
-            if (info.BassHandle.HasValue)
+            if (info != null)
             {
-                mixerhandle = BassMix.BASS_Mixer_ChannelGetMixer(info.BassHandle.Value);
-            }
+                int mixerhandle = 0;
 
-            if (mixerhandle != 0)
-            {
-                BASS_CHANNELINFO MIXER = Bass.BASS_ChannelGetInfo(mixerhandle);
-                BASS_CHANNELINFO CHANNEL = Bass.BASS_ChannelGetInfo(info.BassHandle.Value);
-                float[,] matrix = new float[MIXER.chans, CHANNEL.chans];
-                BassMix.BASS_Mixer_ChannelGetMatrix(info.BassHandle.Value, matrix);
-                int idx = 0;
-
-
-                
-                for (int i = 0; i < MIXER.chans; i++)
+                if (info.BassHandle.HasValue)
                 {
-                    for (int j = 0; j < CHANNEL.chans; j++)
-                    {
-                        double level;
-                        this.FPinLevels[index].GetValue(idx, out level);
-                        matrix[i, j] = (float)level;
-
-                        idx++;
-                        if (idx == this.FPinLevels[index].SliceCount)
-                        {
-                            idx = 0;
-                        }
-                    }
+                    mixerhandle = BassMix.BASS_Mixer_ChannelGetMixer(info.BassHandle.Value);
                 }
 
-                BassMix.BASS_Mixer_ChannelSetMatrix(info.BassHandle.Value, matrix);
+                if (mixerhandle != 0)
+                {
+                    BASS_CHANNELINFO MIXER = Bass.BASS_ChannelGetInfo(mixerhandle);
+                    BASS_CHANNELINFO CHANNEL = Bass.BASS_ChannelGetInfo(info.BassHandle.Value);
+                    float[,] matrix = new float[MIXER.chans, CHANNEL.chans];
+                    BassMix.BASS_Mixer_ChannelGetMatrix(info.BassHandle.Value, matrix);
+                    int idx = 0;
+
+
+
+                    for (int i = 0; i < MIXER.chans; i++)
+                    {
+                        for (int j = 0; j < CHANNEL.chans; j++)
+                        {
+                            double level;
+                            this.FPinLevels[index].GetValue(idx, out level);
+                            matrix[i, j] = (float)level;
+
+                            idx++;
+                            if (idx == this.FPinLevels[index].SliceCount)
+                            {
+                                idx = 0;
+                            }
+                        }
+                    }
+
+                    BassMix.BASS_Mixer_ChannelSetMatrix(info.BassHandle.Value, matrix);
+                }
             }
         }
         #endregion

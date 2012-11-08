@@ -114,7 +114,7 @@ namespace VVVV.MSKinect.Nodes
                     Texture t;
                     if (OnDevice is DeviceEx)
                     {
-                        t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.G32R32F, Pool.Default);
+                        t = new Texture(OnDevice, 320, 240, 1, Usage.Dynamic, Format.G32R32F, Pool.Default);
                     }
                     else
                     {

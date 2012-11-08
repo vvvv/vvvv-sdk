@@ -62,16 +62,25 @@ namespace vvvv.Nodes
             {
                 if (this.DataType != -1)
                 {
-                    BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(this.FChannel.BassHandle.Value);
-                    double fft;
-                    this.FPinInAttribute.GetValue(0, out fft);
-                    int ifft = Convert.ToInt32(Math.Round(fft));
 
-                    if (!Individual || info.chans == 1)
+                    if (this.FChannel != null)
                     {
-                        ifft = ifft / 2;
+                        BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(this.FChannel.BassHandle.Value);
+                        double fft;
+                        this.FPinInAttribute.GetValue(0, out fft);
+                        int ifft = Convert.ToInt32(Math.Round(fft));
+
+                        if (!Individual || info.chans == 1)
+                        {
+                            ifft = ifft / 2;
+                        }
+                        return ifft;
                     }
-                    return ifft;
+                    else
+                    {
+                        return -1;
+                    }
+                    
                 }
                 else
                 {
