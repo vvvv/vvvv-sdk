@@ -19,13 +19,17 @@ namespace VVVV.TodoMap.Lib
     /// <param name="var">New Variable instance</param>
     public delegate void TodoVariableEventDelegate(TodoVariable var, bool gui);
 
+    public delegate void TodoVariableCategoryChangedDelegate(TodoVariable var, string oldcat);
+
     /// <summary>
     /// Variable class, contains all required data
     /// </summary>
     public class TodoVariable
     {
+        private string category;
+
         public string Name { get; set; }
-        public string Category { get; set; }
+
        
         public double Default { get; set; }
         public bool ShowGui { get; set; } // For later
@@ -40,6 +44,7 @@ namespace VVVV.TodoMap.Lib
 
         public event TodoVariableExtendedChangedDelegate ValueChanged;
         public event TodoVariableEventDelegate VariableUpdated;
+        public event TodoVariableCategoryChangedDelegate VariableCategoryChanged;
 
         public TodoVariable()
         {
@@ -59,6 +64,21 @@ namespace VVVV.TodoMap.Lib
         }
 
         private double val;
+
+        public string Category
+        {
+            get { return this.category; }
+            set
+            {
+                string old = this.category;
+                this.category = value;
+                if (this.VariableCategoryChanged != null)
+                {
+                    this.VariableCategoryChanged(this, old);
+                }
+            }
+        }
+
 
         public void Reset()
         {
