@@ -1,103 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="..\..\..\..\core\Default.Project.settings" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4B4CEE53-D434-4682-B388-996F41228BE9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Voronoi</RootNamespace>
     <AssemblyName>Voronoi</AssemblyName>
-    <TargetFrameworkProfile />
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <NoStdLib>False</NoStdLib>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>Full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'vvvv_debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>bin\Release\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <BaseAddress>4194304</BaseAddress>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comparers\DefaultComparer.cs" />
     <Compile Include="Lib\FortuneVoronoi.cs" />
     <Compile Include="Lib\HashSet.cs" />
     <Compile Include="Lib\ToolBox.cs" />
-    <Compile Include="Lib\VCircleEvent.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\VDataEvent.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\VDataNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\Vector.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\VEdgeNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\VEvent.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\VNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\VoronoiEdge.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\VoronoiGraph.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Lib\VCircleEvent.cs" />
+    <Compile Include="Lib\VDataEvent.cs" />
+    <Compile Include="Lib\VDataNode.cs" />
+    <Compile Include="Lib\Vector.cs" />
+    <Compile Include="Lib\VEdgeNode.cs" />
+    <Compile Include="Lib\VEvent.cs" />
+    <Compile Include="Lib\VNode.cs" />
+    <Compile Include="Lib\VoronoiEdge.cs" />
+    <Compile Include="Lib\VoronoiGraph.cs" />
     <Compile Include="PriorityQueues\DoublePriorityQueue.cs" />
     <Compile Include="PriorityQueues\PriorityObject.cs" />
     <Compile Include="PriorityQueues\SinglePriorityQueue.cs" />
@@ -115,11 +48,4 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
