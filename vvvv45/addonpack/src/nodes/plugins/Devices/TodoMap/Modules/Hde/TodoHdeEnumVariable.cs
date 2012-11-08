@@ -13,21 +13,40 @@ namespace VVVV.TodoMap.Lib.Engine.Hde
 
         private IPin2 valuepin;
 
-        private IHDEHost hde;
 
-        private List<TodoVariable> var = new List<TodoVariable>();
+        private List<TodoVariable> vars = new List<TodoVariable>();
 
         private bool invalidatevalue = true;
+        int varindex = 0;
+        string enumname;
 
-        public TodoHdeEnumVariable(INode2 node,TodoEngine engine, IHDEHost hde)
+        public TodoHdeEnumVariable(INode2 node, TodoEngine engine, string varname)
         {
             this.node = node;
-            this.hde = hde;
             //this.var = var;
 
             this.valuepin = this.node.FindPin("Input Enum");
 
-            string enumname = this.valuepin.SubType.Split("|".ToCharArray())[1];
+            enumname = this.valuepin.SubType.Split(",".ToCharArray())[1].Trim();
+
+            int ecnt = EnumManager.GetEnumEntryCount(enumname);
+
+            for (int i = 0; i < ecnt; i++)
+            {
+                string eval = EnumManager.GetEnumEntryString(enumname, i);
+                string vn = varname + "-" + eval;
+
+                TodoVariable var = engine.GetVariableByName(vn);
+                if (var == null)
+                {
+                    var = new TodoVariable(vn);
+                    var.Category = "Global";
+                    engine.RegisterVariable(var, false);
+                }
+
+                var.ValueChanged += var_ValueChanged;
+                vars.Add(var);
+            }
             //this.valuepin.
             //this.valuepin.Type
 
@@ -44,7 +63,11 @@ namespace VVVV.TodoMap.Lib.Engine.Hde
         {
             if (source != null)
             {
-                this.invalidatevalue = true;
+                if (var.Value > 0.5)
+                {
+                    this.varindex = vars.IndexOf(var);
+                    this.invalidatevalue = true;
+                }
             }
         }
 
@@ -52,13 +75,18 @@ namespace VVVV.TodoMap.Lib.Engine.Hde
         {
             if (this.invalidatevalue)
             {
-                //this.valuepin.Spread = var.Value.ToString();
+                string v = EnumManager.GetEnumEntryString(enumname, varindex);
+                this.valuepin.Spread = v;
             }
             this.invalidatevalue = false;
         }
 
         public void Dispose()
         {
+            foreach (TodoVariable var in this.vars)
+            {
+                var.ValueChanged -= var_ValueChanged;
+            }
             //var.ValueChanged -= var_ValueChanged;
             //var.VariableUpdated -= var_VariableUpdated;
         }
