@@ -14,6 +14,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		public DXTextureOutPluginBase(IPluginHost host)
 		{
 			host.CreateTextureOutput("Texture Out", TSliceMode.Dynamic, TPinVisibility.True, out FTextureOut);
+            FTextureOut.Order = int.MinValue;
 			FOldSliceCount = 1;
 		}
 		
