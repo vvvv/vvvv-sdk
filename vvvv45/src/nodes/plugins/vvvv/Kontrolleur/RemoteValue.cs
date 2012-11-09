@@ -13,7 +13,7 @@ namespace VVVV.Nodes
 	
 	class RemoteValue
 	{
-		private IPin2 FNamePin, FMinimumPin, FMaximumPin, FTypePin, FValuePin;
+		private IPin2 FNamePin, FValuePin;
 		private List<string> FPrefixes = new List<string>();
 		private string FName;
 		

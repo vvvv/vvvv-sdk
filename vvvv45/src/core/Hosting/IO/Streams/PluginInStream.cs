@@ -97,7 +97,6 @@ namespace VVVV.Hosting.IO.Streams
                     for (int i = 0; i < Length; i++)
                     {
                         int ord;
-                        string name;
                         FEnumIn.GetOrd(i, out ord);
                         writer.Write(new EnumEntry(FEnumName, ord));
                     }
