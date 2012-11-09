@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\Default.Project.settings" />
+  <Import Project="..\Default.Core.Project.settings" />
   <PropertyGroup>
     <ProjectGuid>{87863121-C124-4585-B3BB-7706F03ECC64}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -8,13 +8,11 @@
     <AssemblyName>VVVV.Utils3rdParty</AssemblyName>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <DocumentationFile>$(OutputPath)\VVVV.Utils3rdParty.xml</DocumentationFile>
   </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="SlimDX">
-      <HintPath>..\..\thirdparty\$(PlatformTarget)\SlimDX.dll</HintPath>
+      <HintPath>..\..\thirdparty\$(Platform)\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -37,4 +35,5 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

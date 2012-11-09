@@ -21,19 +21,6 @@
     <PluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</PluginsOutputDir>
     <EditorsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\editors\</EditorsOutputDir>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="core\**\*.csproj;
-                              gui\**\*.csproj">
-      <OutputDir>$(CoreOutputDir)</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\plugins\**\*.csproj">
-      <OutputDir>$(PluginsOutputDir)</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\editors\**\*.csproj">
-      <OutputDir>$(EditorsOutputDir)</OutputDir>
-    </ProjectReference>
-  </ItemGroup>
   
   <PropertyGroup>
     <BuildDependsOn>CoreBuild</BuildDependsOn>
@@ -43,11 +30,6 @@
   
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
   <Target Name="CoreBuild">
-    <MSBuild Projects="@(ProjectReference)" 
-             Properties="OutputPath=%(ProjectReference.OutputDir);
-                         BuildingInsideVisualStudio=false"
-             ContinueOnError="$(BuildingInsideVisualStudio)"
-             Condition=" !Exists('%(ProjectReference.RootDir)%(ProjectReference.Directory)ignore') " />
     <!-- Copy shared dependencies to lib/core -->
     <CreateItem Include="$(PluginsOutputDir)Sanford*">
       <Output TaskParameter="Include" ItemName="_SharedDependencies_" />
@@ -75,16 +57,7 @@
   
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
 
-  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)">
-    <MSBuild Projects="@(ProjectReference)" 
-             Targets="Clean" 
-             Properties="OutputPath=%(ProjectReference.OutputDir)" 
-             Condition=" '$(BuildingInsideVisualStudio)' == '' OR '$(BuildingInsideVisualStudio)' == 'false' "/>
-    <CreateItem Include="%(ProjectReference.OutputDir)*.dll;%(ProjectReference.OutputDir)*.xml;%(ProjectReference.OutputDir)*.pdb">
-      <Output ItemName="GeneratedFiles" TaskParameter="Include" />
-    </CreateItem>
-    <Delete Files="@(GeneratedFiles)" />
-  </Target>
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
   
   <!-- Freeframe and DirectShow -->
   <ItemGroup>
