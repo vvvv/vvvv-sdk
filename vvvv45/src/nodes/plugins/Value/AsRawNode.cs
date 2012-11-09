@@ -11,6 +11,7 @@ namespace VVVV.Nodes.Value
     [PluginInfo(Name = "AsRaw", Category = "Value", Help = "Returns a value as a sequence of bytes.")]
     public class AsRawNode : IPluginEvaluate
     {
+#pragma warning disable 0649
         [Input("Input")]
         IInStream<IInStream<double>> FInputStreams;
 
@@ -21,7 +22,8 @@ namespace VVVV.Nodes.Value
         IInStream<ByteOrder> FByteOrder;
 
         [Output("Output")]
-        IOutStream<Stream> FOutputStreams;
+        IOutStream<Stream> FOutputStreams; 
+#pragma warning restore
 
         public unsafe void Evaluate(int spreadMax)
         {
