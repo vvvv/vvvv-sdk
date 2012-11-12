@@ -128,7 +128,8 @@ namespace VVVV.Nodes
         #region Dispose
         public void Dispose()
         {
-            this.FData.RemoveInstance(this.FKey);
+            if (this.FKey != null)
+                this.FData.RemoveInstance(this.FKey);
         }
         #endregion
     }
