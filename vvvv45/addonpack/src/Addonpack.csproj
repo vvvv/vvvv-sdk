@@ -21,11 +21,6 @@
       <PluginLicenses Include="$(MSBuildThisFileDirectory)nodes\plugins\**\license*.txt" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginLicenses)" DestinationFiles="@(PluginLicenses->'$(AddonPluginsOutputDir)..\..\..\licenses\%(Filename)%(Extension)')" SkipUnchangedFiles="true" Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
-    <!-- Flash plugin is special -->
-    <ItemGroup>
-      <_FlashPluginDependencies_ Include="$(MSBuildThisFileDirectory)nodes\plugins\Layer\DrawFlash\Dependencies\*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(_FlashPluginDependencies_)" DestinationFolder="$(AddonPluginsOutputDir)" SkipUnchangedFiles="true" />
     <!-- Copy all files inside of _Binaries folder to output dir -->
     <ItemGroup>
       <_Binaries Include="$(MSBuildThisFileDirectory)nodes\plugins\_Binaries\$(Platform)\vuxbins\*.*" />
@@ -482,12 +477,12 @@
       <TempDir>$(TempBaseDir)addonpack\</TempDir>
       <ZipFileName>$(ZipOutputDir)addons_$(VersionInfo).zip</ZipFileName>
     </PropertyGroup>
-    <CreateItem Include="..\**\*.*" Exclude="..\**\.gitignore;&#xD;&#xA;                         ..\**\*.pdb;&#xD;&#xA;                         ..\src\**\*.*;&#xD;&#xA;                         ..\tests\**\*.*;&#xD;&#xA;                         ..\lib\nodes\plugins\*\bin\**\*.*">
+    <CreateItem Include="..\**\*.*" Exclude="..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*">
       <Output ItemName="OutputFiles" TaskParameter="Include" />
     </CreateItem>
     <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     <Exec Command="attrib +R &quot;$(TempDir)lib\nodes\*.*&quot; /S /D" />
-    <Exec Command="&quot;$(StartProgram)&quot; /nodelist &quot;$(TempDir)lib\nodes&quot;" />
+    <Exec Command="&quot;$(StartProgram)&quot; /dx9ex /nodelist &quot;$(TempDir)lib\nodes&quot;" />
     <!-- Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
     <Exec Command="&quot;$(SevenZip)&quot; a -r &quot;$(ZipFileName)&quot; &quot;$(TempDir)&quot;" />
     <!--
