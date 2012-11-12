@@ -476,8 +476,16 @@
     <PropertyGroup>
       <TempDir>$(TempBaseDir)addonpack\</TempDir>
       <ZipFileName>$(ZipOutputDir)addons_$(VersionInfo).zip</ZipFileName>
+      <ZipExclude>..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*</ZipExclude>
     </PropertyGroup>
-    <CreateItem Include="..\**\*.*" Exclude="..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*">
+    <!-- Files to exclude for platform specific builds -->
+    <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+      <ZipExclude>$(ZipExclude)</ZipExclude>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
+      <ZipExclude>$(ZipExclude);..\lib\nodes\freeframes\*.*</ZipExclude>
+    </PropertyGroup>
+    <CreateItem Include="..\**\*.*" Exclude="$(ZipExclude)">
       <Output ItemName="OutputFiles" TaskParameter="Include" />
     </CreateItem>
     <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />

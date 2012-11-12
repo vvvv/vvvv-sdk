@@ -122,8 +122,16 @@
     <PropertyGroup>
       <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)\</TempDir>
       <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo).zip</ZipFileName>
+      <ZipExclude>..\*.rsm;..\*.drc;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*</ZipExclude>
     </PropertyGroup>
-    <CreateItem Include="..\**\*.*" Exclude="..\*.rsm;&#xD;&#xA;                         ..\*.drc;&#xD;&#xA;                         ..\**\.gitignore;&#xD;&#xA;                         ..\**\*.pdb;&#xD;&#xA;                         ..\src\**\*.*;&#xD;&#xA;                         ..\tests\**\*.*;&#xD;&#xA;                         ..\addonpack\**\*.*;&#xD;&#xA;                         ..\lib\nodes\plugins\*\bin\**\*.*">
+    <!-- Files to exclude for platform specific builds -->
+    <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+      <ZipExclude>$(ZipExclude);..\lib\thirdparty\x64\**\*.*</ZipExclude>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
+      <ZipExclude>$(ZipExclude);..\lib\thirdparty\x86\**\*.*;..\lib\nodes\directshowfilter\*.*;..\lib\nodes\freeframes\*.*</ZipExclude>
+    </PropertyGroup>
+    <CreateItem Include="..\**\*.*" Exclude="$(ZipExclude)">
       <Output ItemName="OutputFiles" TaskParameter="Include" />
     </CreateItem>
     <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
