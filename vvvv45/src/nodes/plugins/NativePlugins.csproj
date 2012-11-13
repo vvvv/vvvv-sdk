@@ -16,6 +16,9 @@
     <Reference Include="FSharp.Core">
       <HintPath>..\..\thirdparty\FSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="LeapCSharp">
+      <HintPath>..\..\thirdparty\$(Platform)\LeapCSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -41,6 +44,7 @@
     <Compile Include="Animation\ParticlesThreaded\ParticleSystem.cs" />
     <Compile Include="Animation\ParticlesThreaded\ParticleSystemNode.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Devices\LeapNode.cs" />
     <Compile Include="Layer\DrawText\DrawText.cs" />
     <Compile Include="Layer\DrawText\DrawTextLegacy.cs" />
     <Compile Include="Network\Clock.cs" />
@@ -200,6 +204,8 @@
       <Name>WinFormsViewer</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Devices" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
