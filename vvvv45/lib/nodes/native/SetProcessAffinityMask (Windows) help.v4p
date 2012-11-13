@@ -1,0 +1,169 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\SetProcessAffinityMask (Windows) help.v4p">
+   <BOUNDS type="Window" left="10560" top="2580" width="13125" height="7110">
+   </BOUNDS>
+   <NODE id="2" nodename="SetProcessAffinityMask (Windows)">
+   <BOUNDS height="0" left="810" top="2655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Process ID" visible="1">
+   </PIN>
+   <PIN pinname="Kill" visible="1">
+   </PIN>
+   <PIN pinname="Affinity Mask" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="270" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="21825" top="13950" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="270" top="2190" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1432">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Process ID" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="2115" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="23820" top="14190" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2115" top="2190" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Affinity Mask">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="15" top="390" type="Box" width="2895">
+   </BOUNDS>
+   <BOUNDS height="160" left="9360" top="15420" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Assigns a process to specifc processors|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="4215">
+   </BOUNDS>
+   <BOUNDS height="160" left="9360" top="15420" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SetProcessAffinityMask - Windows|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="3765" top="390" width="9780" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3765" top="390" width="4500" height="3870">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|A process affinity mask is a bit vector in which each bit represents the processor on which the threads of the process are allowed to run.&cr;&lf;&cr;&lf;examples: &cr;&lf;- 2 processors:&cr;&lf;a process is supposed to run on processor 2:&cr;&lf;AffinityMask = 2&cr;&lf;a process is supposed to run on both processors:&cr;&lf;AffinityMask = 3&cr;&lf;&cr;&lf;- 4 processors:&cr;&lf;a process is supposed to run on processor 3:&cr;&lf;AffinityMask = 4&cr;&lf;&cr;&lf;You can get the ID of a process (PID) via TaskManagers &apos;Processes&apos; tab if you enable viewing of the PID-Column (View-&gt;Select Columns)|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="Renderer (TTY)" componentmode="InABox" id="7">
+   <BOUNDS type="Node" left="240" top="5085" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5865" top="9360" width="6120" height="4860">
+   </BOUNDS>
+   <BOUNDS type="Box" left="240" top="5085" width="8460" height="1395">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="255" top="4665" width="3405" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="255" top="4665" width="3405" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|watch the console for related error messages:|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="9">
+   <BOUNDS type="Node" left="285" top="1860" width="420" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="285" top="1860" width="840" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Process ID|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="6930" top="4695" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6930" top="4695" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|see also:|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="Processes (Windows)" id="11">
+   <BOUNDS type="Node" left="7800" top="4695" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="12">
+   <BOUNDS type="Node" left="1665" top="1860" width="990" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1665" top="1860" width="915" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="AffinityMask" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8775" top="435" width="6825" height="3840">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8775" top="435" width="3900" height="4080">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Affinity Mask value can be computed like this:&cr;&lf;&cr;&lf;bit 1: processor 1&cr;&lf;bit 2: processor 2&cr;&lf;bit 3: processor 3&cr;&lf;bit 4: processor 4&cr;&lf;&cr;&lf;if you want a process to run on processors 3 and 4 you set bits 3 and 4 and get a bitmask like:&cr;&lf;&cr;&lf; 1100 &cr;&lf;&cr;&lf;which can be translated to a binary value of 12.&cr;&lf;&cr;&lf;a value of 3 would mean:&cr;&lf;&cr;&lf; 0011 &cr;&lf;&cr;&lf;and would let the process run on processors 1 and 2.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>

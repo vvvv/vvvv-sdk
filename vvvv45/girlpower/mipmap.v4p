@@ -1,0 +1,193 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\mipmap.v4p">
+   <BOUNDS height="11115" left="105" top="45" type="Window" width="10260">
+   </BOUNDS>
+   <NODE id="11" nodename="QUAD (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="675" top="3165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="3" values="|0.09133,1.00000,0.00800,1.00000|,|0.18000,0.23576,1.00000,1.00000|,|1.00000,0.00000,0.00400,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="1650" top="2235" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="|..\lib\assets\images\flower four.jpg|" encoded="0">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Texture" srcnodeid="10" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="9" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="0" left="840" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="2" values="-0.5,0.5">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="3" values="-0.5,-0.5,0.5">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rotate" slicecount="1" values="-0.25">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="8" nodename="QUAD (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="2925" top="2820" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="3255" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="|No Specific|">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Blend (EX9.RenderState)" systemname="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="660" top="2130" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Blend">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Render State" srcnodeid="6" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Render State" srcnodeid="6" srcpinname="Render State Out">
+   </LINK>
+   <NODE id="5" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="0" left="3105" top="2205" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="TranslateX" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Rotate" slicecount="1" values="-0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="450" top="105" type="Node" width="1125">
+   </BOUNDS>
+   <BOUNDS height="285" left="450" top="105" type="Box" width="1275">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|^----check this|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="3" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="2385" top="4725" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="11115" left="105" top="45" type="Window" width="10260">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2385" top="4725" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Backbuffer Format" slicecount="1" values="A8R8G8B8">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="0" left="2370" top="4095" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Layer 2" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Layer 1" srcnodeid="11" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Source" srcnodeid="3" srcpinname="EX9 Out">
+   <LINKPOINT x="4335" y="4950">
+   </LINKPOINT>
+   <LINKPOINT x="5295" y="615">
+   </LINKPOINT>
+   <LINKPOINT x="3270" y="615">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="1" nodename="Queue (EX9.Texture)" systemname="Queue (EX9.Texture)">
+   <BOUNDS height="0" left="3255" top="1785" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Frame Count" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Insert" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Texture In" srcnodeid="7" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Texture" srcnodeid="1" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="3900" top="1785" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="270" left="3900" top="1785" type="Box" width="915">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="framedelay" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

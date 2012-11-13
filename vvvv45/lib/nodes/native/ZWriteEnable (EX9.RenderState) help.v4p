@@ -1,0 +1,453 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="V:\releases\vvvv_33beta9a\help\ZWriteEnable (EX9.RenderState) help.v4p">
+   <BOUNDS height="8910" left="1620" top="3165" type="Window" width="8250">
+   </BOUNDS>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="11" managers="" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="4440" top="1935" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="3135" left="4440" top="1935" type="Box" width="3480">
+   </BOUNDS>
+   <BOUNDS height="5820" left="9150" top="2925" type="Window" width="6000">
+   </BOUNDS>
+   <PIN pinname="View Transform" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Depth Buffer" pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" pintype="Input" slicecount="1" visible="1" values="|0.99237,0.28464,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Adapter" pintype="Configuration" slicecount="1" values="|Default Adapter|">
+   </PIN>
+   <PIN pinname="Mode" pintype="Configuration" slicecount="1" values="|XGA Default: [1024x768 32bit] if possible|">
+   </PIN>
+   <PIN pinname="Swap" pintype="Configuration" slicecount="1" values="copy">
+   </PIN>
+   <PIN pinname="Sync" pintype="Configuration" slicecount="1" values="default">
+   </PIN>
+   <PIN pinname="Back Buffer Count" pintype="Configuration" slicecount="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Antialiasing" pintype="Configuration" slicecount="1" values="|No Multi Sampling|">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Clear" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Render Pass" pintype="Input" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Autosize Backbuffer" pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Backbuffer Width" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Height" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Global Visual Range" pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Fullscreen On Client" pintype="Input" slicecount="1" visible="0" values="0.00000">
+   </PIN>
+   <PIN pinname="Clear Depth Buffer" pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Projection Transform" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="X" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Y" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="DX9 Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="10" managers="" nodename="Rotate (Transform)">
+   <PIN pinname="Y" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1770" top="3900" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Z" pintype="Input" slicecount="1" visible="1" values="-0.2">
+   </PIN>
+   <PIN pinname="X" pintype="Input" slicecount="1" visible="1" values="-0.13">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="9" managers="" nodename="UniformScale (Transform)">
+   <PIN pinname="Transform In" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1770" top="4320" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" pintype="Input" slicecount="1" visible="1" values="0.6">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="8" managers="" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="870" top="1455" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1860" left="870" top="1455" type="Box" width="1605">
+   </BOUNDS>
+   <PIN pinname="Input Enum" pintype="Input" slicecount="1" visible="1" values="LessEqual">
+   </PIN>
+   <PIN pinname="Output Enum" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="160" left="6420" top="5955" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Style" pintype="Configuration" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="7" managers="" nodename="Teapot (EX9.Geometry)">
+   <BOUNDS height="0" left="1005" top="4305" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="6" managers="" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4410" top="5220" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="720" left="4410" top="5220" type="Box" width="2895">
+   </BOUNDS>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="0" values="|If you want to know more about the Depht- or Z-Buffer, read&cr;&lf;http://en.wikipedia.org/wiki/Z_buffer|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="5" managers="" nodename="ZWriteEnable (EX9.RenderState)">
+   <PIN pinname="Depth Bias" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Compare Function" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="240" top="3780" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ZWrite Enable" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Render State Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" visible="1">
+   </PIN>
+   <PIN pinname="Pixel Fog Mode">
+   </PIN>
+   <PIN pinname="Vertex Fog Mode">
+   </PIN>
+   <PIN pinname="Fog Color">
+   </PIN>
+   <PIN pinname="Range From">
+   </PIN>
+   <PIN pinname="Enable RangeFog (Vertex Fog)">
+   </PIN>
+   <PIN pinname="Enable">
+   </PIN>
+   <PIN pinname="Shading">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Render State In" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="4" managers="" nodename="Blend (EX9.RenderState)">
+   <PIN pinname="Render State In" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="240" top="4305" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Draw Mode" pintype="Input" slicecount="1" visible="1" values="Blend">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Render State In" srcnodeid="5" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Transform In" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Compare Function" srcnodeid="8" srcpinname="Output Enum">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="3" managers="" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="2175" top="3435" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" pintype="Input" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pause" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Reverse" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Reset" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Phase" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Cycles" pintype="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Y" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="960" left="15" top="390" type="Box" width="4365">
+   </BOUNDS>
+   <BOUNDS height="160" left="10890" top="46020" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|default is: render all triangles of the teapot, which lie in front of all previously rendered objects. that is with a z value less or equal to that stored previously in the depthbuffer.&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="15" top="15" type="Box" width="4005">
+   </BOUNDS>
+   <BOUNDS height="160" left="10890" top="46020" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ZWriteEnable - EX9.RenderState|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="0" managers="" nodename=":EFFECTS:\FlatDirectional.fx">
+   <PIN pinname="Transform" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1290" top="4935" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5000" left="1290" top="4935" type="Box" width="4000">
+   </BOUNDS>
+   <PIN pinname="Ambient Color" pintype="Input" slicecount="1" visible="1" values="|0.24024,0.29106,0.13854,1.00000|">
+   </PIN>
+   <PIN pinname="Diffuse Color" pintype="Input" slicecount="1" visible="1" values="|0.93997,0.57798,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="10500" left="0" top="0" type="Window" width="10500">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="0" values="1">
+   </PIN>
+   <PIN pinname="Specular Color" pintype="Input" slicecount="1" visible="1" values="|0.98330,1.00000,0.72800,1.00000|">
+   </PIN>
+   <PIN pinname="Power" pintype="Input" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Ambient Light" pintype="Input" slicecount="1" visible="1" values="|0.264400,0.267600,0.264930,1.000000|">
+   </PIN>
+   <PIN pinname="Diffuse Light" pintype="Input" slicecount="1" visible="1" values="|0.568480,0.569730,0.566270,1.000000|">
+   </PIN>
+   <PIN pinname="Specular Light" pintype="Input" slicecount="1" visible="1" values="|1.000000,1.000000,0.728000,1.000000|">
+   </PIN>
+   <PIN pinname="Light Direction XYZ" pintype="Input" slicecount="3" visible="1" values="0.577,-0.577,0.577">
+   </PIN>
+   <PIN pinname="Technique" pintype="Input" slicecount="1" visible="1" values="| TFlatDirectionalFF|">
+   </PIN>
+   <PIN pinname="Technique Pass" pintype="Input" slicecount="1" visible="1" values="-1">
+   </PIN>
+   <PIN pinname="Render Pass" pintype="Input" slicecount="1" visible="0" values="0.00000">
+   </PIN>
+   <PIN pinname="Priority" pintype="Input" slicecount="1" visible="0" values="0.00000">
+   </PIN>
+   <PIN pinname="Compiled" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Technique Valid" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Description" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Mesh" linkstyle="VHV" srcnodeid="7" srcpinname="Mesh">
+   <LINKPOINT x="1035" y="4755">
+   </LINKPOINT>
+   <LINKPOINT x="1470" y="4755">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Render State" linkstyle="VHV" srcnodeid="4" srcpinname="Render State Out">
+   <LINKPOINT x="270" y="4755">
+   </LINKPOINT>
+   <LINKPOINT x="1320" y="4755">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <NODE nodename="Group (EX9)" id="12">
+   <BOUNDS type="Node" left="3075" top="7005" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Layer" dstnodeid="12" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Layer" dstnodeid="11" dstpinname="Layers">
+   <LINKPOINT x="4290" y="7230">
+   </LINKPOINT>
+   <LINKPOINT x="4290" y="1650">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="Scale (Transform Vector)" id="14">
+   <BOUNDS type="Node" left="780" top="5880" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="1.61,1.61,1.61">
+   </PIN>
+   </NODE>
+   <NODE nodename="Perspective (Transform)" id="16">
+   <BOUNDS type="Node" left="6960" top="1260" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="100">
+   </PIN>
+   <PIN pinname="Near Plane" visible="1">
+   </PIN>
+   <PIN pinname="FOV" slicecount="1" values="0.25">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Transform Out" dstnodeid="11" dstpinname="Projection Transform">
+   </LINK>
+   <NODE nodename="Translate (Transform)" id="17">
+   <BOUNDS type="Node" left="6105" top="1260" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Transform Out" dstnodeid="11" dstpinname="View Transform">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="18">
+   <BOUNDS type="Node" left="4995" top="210" width="5865" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4995" top="210" width="3075" height="705">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|(a very small near plane leads to a low resolution of the depthbuffer in more important distances)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19">
+   <BOUNDS type="Node" left="6825" top="885" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8145" top="4395" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6825" top="885" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.001">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Near Plane">
+   </LINK>
+   <NODE id="15" nodename="Pillow (DX9)" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Transform" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Fade Amount" slicecount="1" pintype="Input" visible="1" values="0.07">
+   </PIN>
+   <BOUNDS type="Node" left="810" top="6390" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" pintype="Input" visible="1" values="|0.47958,0.47958,0.47958,1.00000|">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Draw Slicewise" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Sampler State" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Coord Mapping" pintype="Input" visible="1" slicecount="1" values="OnShape_UV">
+   </PIN>
+   <PIN pinname="Fade Color" pintype="Input" visible="1" slicecount="1" values="|1.00000,1.00000,1.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Round Edges" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" visible="0" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Transform Out" dstnodeid="15" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Layer" dstnodeid="12" dstpinname="Layer 1">
+   </LINK>
+   </PATCH>

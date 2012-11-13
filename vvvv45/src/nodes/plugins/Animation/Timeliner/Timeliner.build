@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="VVVV.Plugin"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
+>
+  <!-- Leave as it is -->
+  <include buildfile="${root.dir}/nant-plugins.xml" />
+  
+  <!-- Set your ddl name here -->
+  <property name="lib.name" value="Timeliner.dll" />
+
+  <assemblyfileset id="project.references">
+    <include name="${lib.dir}/**/*.dll" />
+    <include name="Dependencies/*.dll" />
+  </assemblyfileset>
+  
+  <fileset id="project.sources" failonempty="true">
+    <include name="**/*.cs" />
+  </fileset>
+
+  <target name="post-build">
+    <copy todir="${plugin.path}">
+      <fileset basedir="Dependencies">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
+
+</project>

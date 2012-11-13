@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="..\Default.Core.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{6AD35106-187B-4A3A-A801-E665CD12E020}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.Core</RootNamespace>
+    <AssemblyName>VVVV.Core</AssemblyName>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommandLine">
+      <HintPath>..\..\thirdparty\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>..\..\thirdparty\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpDevelop.Dom">
+      <HintPath>..\..\thirdparty\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\thirdparty\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Engine">
+    </Reference>
+    <Reference Include="Microsoft.Cci.MetadataHelper">
+      <HintPath>..\..\thirdparty\Microsoft.Cci.MetadataHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.MetadataModel">
+      <HintPath>..\..\thirdparty\Microsoft.Cci.MetadataModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.PeReader">
+      <HintPath>..\..\thirdparty\Microsoft.Cci.PeReader.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\..\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\..\thirdparty\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition.Codeplex">
+      <HintPath>..\..\thirdparty\System.ComponentModel.Composition.Codeplex.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\Sync\ImmutableSynchronizers.cs" />
+    <Compile Include="Collections\DotNetCollectionExtensions.cs" />
+    <Compile Include="Collections\EditableIDList.cs" />
+    <Compile Include="Collections\EditableCollection.cs" />
+    <Compile Include="Collections\EditableList.cs" />
+    <Compile Include="Collections\SortedEditableList.cs" />
+    <Compile Include="Collections\SortedViewableList.cs" />
+    <Compile Include="Collections\Sync\Enums.cs" />
+    <Compile Include="Collections\Sync\SourceChangedEventArgs.cs" />
+    <Compile Include="Collections\Sync\Sources.cs" />
+    <Compile Include="Collections\Sync\SyncEventArgs.cs" />
+    <Compile Include="Collections\Sync\Synchronizer.cs" />
+    <Compile Include="Collections\Sync\Targets.cs" />
+    <Compile Include="Collections\ViewableCollection.cs" />
+    <Compile Include="Collections\ViewableIDList.cs" />
+    <Compile Include="Collections\ViewableList.cs" />
+    <Compile Include="Helper\CommandlineArguments.cs" />
+    <Compile Include="Commands\AddCommand.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandHistory.cs" />
+    <Compile Include="Commands\CompoundCommand.cs" />
+    <Compile Include="Commands\ClientCommandHistory.cs" />
+    <Compile Include="Commands\ICommandHistory.cs" />
+    <Compile Include="Commands\CommandSender.cs" />
+    <Compile Include="Commands\RemoveCommand.cs" />
+    <Compile Include="Commands\RenameCommand.cs" />
+    <Compile Include="Commands\SetPropertyCommand.cs" />
+    <Compile Include="Helper\NodeAndPinAttributes.cs" />
+    <Compile Include="View\HDEForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\HDEForm.Designer.cs">
+      <DependentUpon>HDEForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="_Interfaces\IChangedSequence.cs" />
+    <Compile Include="Dialogs\ReferenceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ReferenceDialog.Designer.cs">
+      <DependentUpon>ReferenceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\ExtensionMethods.cs" />
+    <Compile Include="Helper\Traverser.cs" />
+    <Compile Include="Helper\IConverter.cs" />
+    <Compile Include="_Interfaces\IEditableProperty.cs" />
+    <Compile Include="Dialogs\BaseDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\BaseDialog.Designer.cs">
+      <DependentUpon>BaseDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\NameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\NameDialog.Designer.cs">
+      <DependentUpon>NameDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\NamespaceNameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\NamespaceNameDialog.Designer.cs">
+      <DependentUpon>NamespaceNameDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="_Interfaces\IEditableIDList.cs" />
+    <Compile Include="_Interfaces\IEditableCollection.cs" />
+    <Compile Include="_Interfaces\IEditableList.cs" />
+    <Compile Include="_Interfaces\IFocus.cs" />
+    <Compile Include="_Interfaces\INamed.cs" />
+    <Compile Include="_Interfaces\IParent.cs" />
+    <Compile Include="_Interfaces\IViewableIDList.cs" />
+    <Compile Include="_Interfaces\IIDItem.cs" />
+    <Compile Include="_Interfaces\IRenameable.cs" />
+    <Compile Include="_Interfaces\IViewableCollection.cs" />
+    <Compile Include="_Interfaces\IViewableList.cs" />
+    <Compile Include="_Interfaces\IViewableProperty.cs" />
+    <Compile Include="_Interfaces\IVisitor.cs" />
+    <Compile Include="Logging\DebugHelpers.cs" />
+    <Compile Include="Logging\DebugLogger.cs" />
+    <Compile Include="Logging\DefaultLogger.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\LogType.cs" />
+    <Compile Include="Helper\MappingRegistry.cs" />
+    <Compile Include="Menu\AddMenuEntry.cs" />
+    <Compile Include="Menu\Default\AddItemMenuEntry.cs" />
+    <Compile Include="Menu\Default\DefaultAddMenuEntry.cs" />
+    <Compile Include="Menu\IAddMenuProvider.cs" />
+    <Compile Include="Menu\LoadMenuEntry.cs" />
+    <Compile Include="Menu\RedoMenuEntry.cs" />
+    <Compile Include="Menu\SetPropertyMenuEntry.cs" />
+    <Compile Include="Menu\RenameMenuEntry.cs" />
+    <Compile Include="Menu\IMenuEntry.cs" />
+    <Compile Include="Menu\MenuEntry.cs" />
+    <Compile Include="Menu\MenuSeparator.cs" />
+    <Compile Include="Menu\RemoveMenuEntry.cs" />
+    <Compile Include="Menu\UndoMenuEntry.cs" />
+    <Compile Include="Menu\UnloadMenuEntry.cs" />
+    <Compile Include="Helper\ModelMapper.cs" />
+    <Compile Include="Model\AssemblyReference.cs" />
+    <Compile Include="Model\DocumentFactory.cs" />
+    <Compile Include="Model\Enums.cs" />
+    <Compile Include="Model\FX\FXDocument.cs" />
+    <Compile Include="Model\FX\FXProject.cs" />
+    <Compile Include="Model\FX\FXReference.cs" />
+    <Compile Include="Model\PersistentIDContainer.cs" />
+    <Compile Include="Model\ProjectItem.cs" />
+    <Compile Include="Model\Properties.cs" />
+    <Compile Include="Runtime\CS\CSCompiler.cs" />
+    <Compile Include="Model\CS\CSDocument.cs" />
+    <Compile Include="Model\CS\CSProject.cs" />
+    <Compile Include="Runtime\CS\CSParser.cs" />
+    <Compile Include="Runtime\CS\CSParserResults.cs" />
+    <Compile Include="Model\Document.cs" />
+    <Compile Include="Runtime\ICompiler.cs" />
+    <Compile Include="Model\IDContainer.cs" />
+    <Compile Include="Model\IDItem.cs" />
+    <Compile Include="Model\_Interfaces\IDocument.cs" />
+    <Compile Include="Model\_Interfaces\IPatchDocument.cs" />
+    <Compile Include="Model\_Interfaces\IPersistent.cs" />
+    <Compile Include="Model\_Interfaces\IProject.cs" />
+    <Compile Include="Model\_Interfaces\IProjectFactory.cs" />
+    <Compile Include="Model\_Interfaces\IProjectItem.cs" />
+    <Compile Include="Model\_Interfaces\IReference.cs" />
+    <Compile Include="Model\_Interfaces\ISolution.cs" />
+    <Compile Include="Model\_Interfaces\ITextDocument.cs" />
+    <Compile Include="_Interfaces\IIDContainer.cs" />
+    <Compile Include="Model\MsBuildProject.cs" />
+    <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\ProjectReference.cs" />
+    <Compile Include="Model\RemotableObject.cs" />
+    <Compile Include="Model\Solution.cs" />
+    <Compile Include="Model\TextDocument.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\RuntimeError.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="Serialization\Serializer.cs" />
+    <Compile Include="Serialization\XElementExtensions.cs" />
+    <Compile Include="Helper\TypeExtensions.cs" />
+    <Compile Include="Helper\UnityContainerExtensions.cs" />
+    <Compile Include="Helper\Shell.cs" />
+    <Compile Include="Viewer\GraphicalEditor\ICanvas.cs" />
+    <Compile Include="Viewer\GraphicalEditor\ICircle.cs" />
+    <Compile Include="Viewer\GraphicalEditor\IDot.cs" />
+    <Compile Include="Viewer\GraphicalEditor\IGraphElement.cs" />
+    <Compile Include="Viewer\GraphicalEditor\IPath.cs" />
+    <Compile Include="Viewer\GraphicalEditor\IPolygon.cs" />
+    <Compile Include="Viewer\GraphicalEditor\IRectangle.cs" />
+    <Compile Include="Viewer\GraphicalEditor\ISolid.cs" />
+    <Compile Include="Viewer\GraphicalEditor\IText.cs" />
+    <Compile Include="Viewer\ILabelEditor.cs" />
+    <Compile Include="Viewer\ISelection.cs" />
+    <Compile Include="Viewer\ISelectionProvider.cs" />
+    <Compile Include="Viewer\ISelectionService.cs" />
+    <Compile Include="Viewer\Selection.cs" />
+    <Compile Include="Viewer\SelectionService.cs" />
+    <Compile Include="View\DefaultContextMenuProvider.cs" />
+    <Compile Include="View\DefaultDecoratableProvider.cs" />
+    <Compile Include="View\DefaultDragDropProvider.cs" />
+    <Compile Include="View\DefaultNameProvider.cs" />
+    <Compile Include="View\DefaultParentProvider.cs" />
+    <Compile Include="View\FilteredParentProvider.cs" />
+    <Compile Include="View\GraphicalEditor\IConnectable.cs" />
+    <Compile Include="View\GraphicalEditor\IDeletable.cs" />
+    <Compile Include="View\GraphicalEditor\IGraphElementHost.cs" />
+    <Compile Include="View\GraphicalEditor\IMouseEvents.cs" />
+    <Compile Include="View\GraphicalEditor\IMovable.cs" />
+    <Compile Include="View\IDecoratable.cs" />
+    <Compile Include="View\IDescripted.cs" />
+    <Compile Include="View\IDraggable.cs" />
+    <Compile Include="View\IDroppable.cs" />
+    <Compile Include="View\ILinkSink.cs" />
+    <Compile Include="View\ILinkSource.cs" />
+    <Compile Include="View\ISelectable.cs" />
+    <Compile Include="View\ProjectViewProvider.cs" />
+    <Compile Include="View\ReferencesViewProvider.cs" />
+    <Compile Include="View\SolutionViewProvider.cs" />
+    <Compile Include="View\Table\Cell.cs" />
+    <Compile Include="View\Table\Column.cs" />
+    <Compile Include="View\Table\EditablePropertyCell.cs" />
+    <Compile Include="View\Table\EditablePropertyCellProvider.cs" />
+    <Compile Include="View\Table\Enums.cs" />
+    <Compile Include="View\Table\ICell.cs" />
+    <Compile Include="View\Table\IDContainerCellProvider.cs" />
+    <Compile Include="View\Table\DefaultColumnProvider.cs" />
+    <Compile Include="View\ReferenceViewProvider.cs" />
+    <Compile Include="View\Table\ViewablePropertyCell.cs" />
+    <Compile Include="View\Table\ViewablePropertyCellProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dialogs\BaseDialog.resx">
+      <DependentUpon>BaseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\NameDialog.resx">
+      <DependentUpon>NameDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ReferenceDialog.resx">
+      <DependentUpon>ReferenceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\HDEForm.resx">
+      <DependentUpon>HDEForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

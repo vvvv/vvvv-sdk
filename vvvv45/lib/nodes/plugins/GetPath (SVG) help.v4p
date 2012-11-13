@@ -1,0 +1,637 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\GetPath (SVG) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\GetPath (SVG) help.v4p" systemname="GetPath (SVG) help">
+   <BOUNDS height="15690" left="1560" top="1425" type="Window" width="12405">
+   </BOUNDS>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="190" nodename="CircularSpread (Spreads)" systemname="CircularSpread (Spreads)">
+   <BOUNDS height="100" left="4380" top="555" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count">
+   </PIN>
+   <PIN pinname="Input Y" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="3.15">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="3.35">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input X" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="195" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5340" top="1020" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5340" top="1020" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.5">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="207" nodename="Circle (SVG)" systemname="Circle (SVG)">
+   <BOUNDS height="100" left="5490" top="2070" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Fill" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <BOUNDS left="5490" top="2070" type="Box">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="209" nodename="Quad (SVG)" systemname="Quad (SVG)">
+   <BOUNDS height="100" left="4230" top="2070" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Fill" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <BOUNDS left="4230" top="2070" type="Box">
+   </BOUNDS>
+   <PIN pinname="Corner Radius XY" slicecount="2" values="0.49,0.49">
+   </PIN>
+   <PIN pinname="Stroke Width" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="176" nodename="Group (SVG)" systemname="Group (SVG)">
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="270" left="2955" top="2805" type="Node" width="6435">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="228" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="100" left="4230" top="1425" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   <PIN pinname="Rotate" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="228" dstpinname="ScaleX" hiddenwhenlocked="0" srcnodeid="195" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="228" dstpinname="ScaleY" hiddenwhenlocked="0" srcnodeid="195" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="176" dstpinname="Input 2" srcnodeid="207" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="228" dstpinname="TranslateX" hiddenwhenlocked="0" srcnodeid="190" srcpinname="Output X">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="261" nodename="GetPath (SVG)" systemname="GetPath (SVG)">
+   <BOUNDS height="270" left="5115" top="8325" type="Node" width="2715">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Update">
+   </PIN>
+   <PIN pinname="Path Type" visible="1">
+   </PIN>
+   <PIN pinname="Path XY" visible="1">
+   </PIN>
+   <PIN pinname="PathXY" visible="1">
+   </PIN>
+   <PIN pinname="Max Flatten Error">
+   </PIN>
+   <PIN pinname="Flatten">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="276" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8130" top="7935" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="435" left="8130" top="7935" type="Box" width="435">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="261" dstpinname="Update" srcnodeid="276" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="277" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="330" top="645" type="Node" width="900">
+   </BOUNDS>
+   <BOUNDS height="390" left="330" top="645" type="Box" width="2175">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|GetPath (SVG)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="278" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="285" top="1080" type="Node" width="5055">
+   </BOUNDS>
+   <BOUNDS height="315" left="285" top="1080" type="Box" width="2925">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Returns the path data from SVG layers|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="286" nodename="Polyline (SVG)" systemname="Polyline (SVG)">
+   <BOUNDS height="100" left="8040" top="2070" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS left="8040" top="2070" type="Box">
+   </BOUNDS>
+   <PIN pinname="Vertices XY" visible="1">
+   </PIN>
+   <PIN pinname="Fill" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="287" nodename="Text (SVG)" systemname="Text (SVG)">
+   <BOUNDS height="100" left="9345" top="2070" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Text" slicecount="1" values="vvvv">
+   </PIN>
+   <BOUNDS left="9345" top="2070" type="Box">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="Arial">
+   </PIN>
+   <PIN pinname="Stroke Width" slicecount="1" values="0.01">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="176" dstpinname="Input 4" srcnodeid="286" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="176" dstpinname="Input 5" srcnodeid="287" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="228" dstpinname="TranslateY" hiddenwhenlocked="0" srcnodeid="190" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="209" dstpinname="Transform" hiddenwhenlocked="0" srcnodeid="228" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="289" nodename="Translate (Transform)" systemname="Translate (Transform)">
+   <BOUNDS height="100" left="9345" top="1560" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="1.24">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="-1.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="287" dstpinname="Transform" hiddenwhenlocked="0" srcnodeid="289" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="291" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
+   <BOUNDS height="100" left="7140" top="840" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1" slicecount="5" values="1.575,0.486701766140542,-1.27420176614054,-1.27420176614054,0.486701766140543">
+   </PIN>
+   <PIN pinname="Y" visible="1" slicecount="5" values="-4.08,-2.48698033520562,-3.09545970241011,-5.06454029758989,-5.67301966479438">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="285" dstpinname="Vertices XY" srcnodeid="291" srcpinname="XY">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="293" nodename="Add (Value)" systemname="Add (Value)">
+   <BOUNDS height="100" left="8040" top="1575" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="293" dstpinname="Input 1" hiddenwhenlocked="0" srcnodeid="291" srcpinname="XY">
+   </LINK>
+   <LINK dstnodeid="286" dstpinname="Vertices XY" srcnodeid="293" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="294" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
+   <BOUNDS height="100" left="8325" top="1185" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="8.18">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="293" dstpinname="Input 2" hiddenwhenlocked="0" srcnodeid="294" srcpinname="XY">
+   </LINK>
+   <NODE componentmode="InABox" id="299" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="7245" top="1635" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="7245" top="1635" type="Box" width="345">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.83319,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="300" nodename="GetElements (SVG)" systemname="GetElements (SVG)">
+   <BOUNDS height="270" left="5115" top="3525" type="Node" width="2595">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Element" visible="1">
+   </PIN>
+   <PIN pinname="Type" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="300" dstpinname="Layer" srcnodeid="176" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="307" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="6375" top="3930" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="2460" left="6375" top="3930" type="Box" width="1200">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="7">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="307" dstpinname="Input String" srcnodeid="300" srcpinname="Type">
+   </LINK>
+   <NODE componentmode="Hidden" id="306" nodename="GetSlice (Node)" systemname="GetSlice (Node)">
+   <BOUNDS height="100" left="5115" top="6135" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Index">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="306" dstpinname="Input Node" srcnodeid="300" srcpinname="Element">
+   </LINK>
+   <LINK dstnodeid="261" dstpinname="Layer" srcnodeid="306" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="InABox" id="309" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5670" top="1635" type="Node" width="1470">
+   </BOUNDS>
+   <BOUNDS height="270" left="5670" top="1635" type="Box" width="1470">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|svg base geometry|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="310" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5460" top="5730" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5460" top="5730" type="Box" width="405">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="8">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="306" dstpinname="Index" srcnodeid="310" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="311" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5145" top="9615" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5385" left="5145" top="9615" type="Box" width="5910">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="18">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="19">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Slider Constraints" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Alignment" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="311" dstpinname="Y Input Value" srcnodeid="261" srcpinname="Path XY">
+   </LINK>
+   <NODE componentmode="InABox" id="312" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="8835" top="9585" type="Node" width="4755">
+   </BOUNDS>
+   <BOUNDS height="1320" left="8835" top="9585" type="Box" width="1860">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; gets the path data as 2d vector data. this can be a slow process on bigger scenes so use the update pin wisely...|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="285" nodename="Polygon (SVG)" systemname="Polygon (SVG)">
+   <PIN pinname="Fill">
+   </PIN>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="6765" top="2070" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="6765" top="2070" type="Box">
+   </BOUNDS>
+   <PIN pinname="Vertices XY" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="EvenOdd">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="285" dstpinname="Fill" srcnodeid="299" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="176" dstpinname="Input 3" srcnodeid="285" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="285" dstpinname="VerticesXY" hiddenwhenlocked="0" srcnodeid="291" srcpinname="XY">
+   <LINKPOINT x="6345" y="1260">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="318" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5445" top="195" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5445" top="195" type="Box" width="435">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="4">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="190" dstpinname="Spread Count" srcnodeid="318" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="319" nodename="Renderer (SVG)" systemname="Renderer (SVG)">
+   <BOUNDS height="100" left="270" top="5460" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="4215" left="270" top="5460" type="Box" width="4365">
+   </BOUNDS>
+   <BOUNDS height="4500" left="5565" top="8010" type="Window" width="6000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="View Box" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.54379,0.54379,0.54379,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="319" dstpinname="Layer" srcnodeid="176" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="320" nodename="Camera (SVG Join)" systemname="Camera (SVG Join)">
+   <BOUNDS height="100" left="1710" top="5055" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="View Box" visible="1">
+   </PIN>
+   <PIN pinname="SizeXY">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="319" dstpinname="View Box" srcnodeid="320" srcpinname="View Box">
+   </LINK>
+   <NODE componentmode="InABox" id="321" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2355" top="4380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="2355" top="4380" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="12,12">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="320" dstpinname="SizeXY" srcnodeid="321" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="322" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7665" top="3930" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2460" left="7665" top="3930" type="Box" width="345">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="322" dstpinname="Y Input Value" srcnodeid="300" srcpinname="Level">
+   </LINK>
+   <NODE componentmode="InABox" id="324" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="8700" top="8055" type="Node" width="780">
+   </BOUNDS>
+   <BOUNDS height="270" left="8700" top="8055" type="Box" width="780">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; Update|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="325" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="100" left="5130" top="8745" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="325" dstpinname="XY" srcnodeid="261" srcpinname="PathXY">
+   </LINK>
+   <LINK dstnodeid="311" dstpinname="X Input Value" srcnodeid="325" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="311" dstpinname="Y Input Value" srcnodeid="325" srcpinname="Y">
+   </LINK>
+   <NODE componentmode="InABox" id="326" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6015" top="6615" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="6015" top="6615" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Flatten">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="261" dstpinname="Flatten" srcnodeid="326" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="327" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6870" top="7365" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="6870" top="7365" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.21">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Max Flatten Error|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="261" dstpinname="Max Flatten Error" srcnodeid="327" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="328" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="7740" top="7155" type="Node" width="1650">
+   </BOUNDS>
+   <BOUNDS height="675" left="7740" top="7155" type="Box" width="2130">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|maximum approximation error. smaller values give higher resolution|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="329" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6570" top="6585" type="Node" width="4995">
+   </BOUNDS>
+   <BOUNDS height="480" left="6570" top="6585" type="Box" width="2790">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|if enabled, the curves of the path get approximated by line segments|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="292" nodename="RandomSpread (Spreads)" systemname="RandomSpread (Spreads)">
+   <BOUNDS height="100" left="8025" top="270" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input Y">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1.96">
+   </PIN>
+   <PIN pinname="Height">
+   </PIN>
+   <PIN pinname="Phase">
+   </PIN>
+   <PIN pinname="Input X">
+   </PIN>
+   <PIN pinname="Factor">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="3.27">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="292" srcpinname="Output" dstnodeid="286" dstpinname="VerticesXY">
+   </LINK>
+   <LINK srcnodeid="209" srcpinname="Layer" dstnodeid="176" dstpinname="Input 1">
+   </LINK>
+   </PATCH>
