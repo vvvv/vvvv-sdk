@@ -120,8 +120,8 @@
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </GetVersionInfo>
     <PropertyGroup>
-      <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)\</TempDir>
-      <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo).zip</ZipFileName>
+      <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)_$(Platform)\</TempDir>
+      <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo)_$(Platform).zip</ZipFileName>
       <ZipExclude>..\*.rsm;..\*.drc;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*</ZipExclude>
     </PropertyGroup>
     <!-- Files to exclude for platform specific builds -->
