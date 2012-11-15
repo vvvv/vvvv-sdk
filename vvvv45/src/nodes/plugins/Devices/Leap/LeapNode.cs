@@ -87,7 +87,7 @@ namespace VVVV.Nodes.Devices.Leap
 					FFingerPosOut.Add(finger.tip().position.ToVector3D());
 					FFingerDirOut.Add(finger.tip().direction.ToVector3D());
 					FFingerVelOut.Add(finger.velocity().ToVector3D());
-					FHandSliceOut.Add(j);
+					FHandSliceOut.Add(i);
 				}
 			}
 			
