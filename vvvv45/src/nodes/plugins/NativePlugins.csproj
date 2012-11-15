@@ -16,11 +16,20 @@
     <Reference Include="FSharp.Core">
       <HintPath>..\..\thirdparty\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="LeapCSharp">
-      <HintPath>..\..\thirdparty\$(Platform)\LeapCSharp.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="ParallelExtensionsExtras">
+      <HintPath>..\..\thirdparty\ParallelExtensionsExtras.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\thirdparty\SharpDX\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct2D1">
+      <HintPath>..\..\thirdparty\SharpDX\SharpDX.Direct2D1.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9">
+      <HintPath>..\..\thirdparty\SharpDX\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX">
       <HintPath>..\..\thirdparty\$(Platform)\SlimDX.dll</HintPath>
@@ -34,6 +43,9 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Threading.Tasks.Dataflow">
+      <HintPath>..\..\thirdparty\System.Threading.Tasks.Dataflow.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -44,7 +56,6 @@
     <Compile Include="Animation\ParticlesThreaded\ParticleSystem.cs" />
     <Compile Include="Animation\ParticlesThreaded\ParticleSystemNode.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Devices\LeapNode.cs" />
     <Compile Include="Layer\DrawText\DrawText.cs" />
     <Compile Include="Layer\DrawText\DrawTextLegacy.cs" />
     <Compile Include="Network\Clock.cs" />
@@ -59,6 +70,12 @@
     <Compile Include="SVG\SVGTextureNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Texture\ImagePlayer\FrameDecoder.cs" />
+    <Compile Include="Texture\ImagePlayer\FrameInfo.cs" />
+    <Compile Include="Texture\ImagePlayer\ImagePlayer.cs" />
+    <Compile Include="Texture\ImagePlayer\MemoryPool.cs" />
+    <Compile Include="Texture\ImagePlayer\PlayerNode.cs" />
+    <Compile Include="Texture\ImagePlayer\TexturePool.cs" />
     <Compile Include="System\KeyboardStateNodes.cs" />
     <Compile Include="System\KeyboardStateJoinNode.cs" />
     <Compile Include="Texture\SharedTexture\SharedTextureNode.cs" />
@@ -204,8 +221,6 @@
       <Name>WinFormsViewer</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Devices" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
