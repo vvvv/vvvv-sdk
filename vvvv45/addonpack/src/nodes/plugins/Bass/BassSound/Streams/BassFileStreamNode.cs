@@ -25,7 +25,7 @@ namespace BassSound.Streams
                 Info.Credits = "";
                 Info.Warnings = "";
                 Info.Author = "vux";
-                Info.Tags = "Audio,Sound";
+                Info.Tags = "audio, sound";
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
@@ -80,16 +80,16 @@ namespace BassSound.Streams
             this.FHost.CreateValueInput("Loop", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPInInLoop);
             this.FPInInLoop.SetSubType(0, 1, 1, 0, false, true, true);
 
-            this.FHost.CreateValueInput("Start Time", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInStartTime);
+            this.FHost.CreateValueInput("Loop Start Time", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInStartTime);
             this.FPinInStartTime.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
             
-            this.FHost.CreateValueInput("End Time", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInEndTime);
+            this.FHost.CreateValueInput("Loop End Time", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInEndTime);
             this.FPinInEndTime.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
             
             this.FHost.CreateValueInput("Do Seek", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoSeek);
             this.FPinInDoSeek.SetSubType(0, 1, 1, 0, true, false, true);
 
-            this.FHost.CreateValueInput("Seek Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPosition);
+            this.FHost.CreateValueInput("Seek Time", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPosition);
             this.FPinInPosition.SetSubType(0, double.MaxValue, 0, 0.0, false, false, false);
 
             this.FHost.CreateValueInput("Mono", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInMono);

@@ -37,6 +37,7 @@ namespace VVVV.Hosting.Factories
     [ComVisible(false)]
     public class DotNetPluginFactory : AbstractFileFactory<IInternalPluginHost>
     {
+#pragma warning disable 0649
         [Import]
         protected IHDEHost FHost;
 
@@ -44,7 +45,8 @@ namespace VVVV.Hosting.Factories
         private StartableRegistry FStartableRegistry;
 
         [Import]
-        private IORegistry FIORegistry;
+        private IORegistry FIORegistry; 
+#pragma warning restore
         
         private readonly Dictionary<IPluginBase, PluginContainer> FPluginContainers;
         private readonly CompositionContainer FParentContainer;
@@ -400,6 +402,41 @@ namespace VVVV.Hosting.Factories
             else if (disposablePlugin != null)
             {
                 disposablePlugin.Dispose();
+            }
+        }
+
+        public override bool GetNodeListAttribute(INodeInfo nodeInfo, out string name, out string value)
+        {
+            string assemblyLocation = string.Empty;
+            var isUpToDate = GetAssemblyLocation(nodeInfo, out assemblyLocation);
+            var assembly = Assembly.ReflectionOnlyLoadFrom(assemblyLocation);
+            if (FStartableRegistry.ContainsStartable(assembly))
+            {
+                name = "startable";
+                value = "true";
+                return true;
+            }
+            return base.GetNodeListAttribute(nodeInfo, out name, out value);
+        }
+
+        public override void ParseNodeEntry(System.Xml.XmlReader xmlReader, INodeInfo nodeInfo)
+        {
+            var startableAttribute = xmlReader.GetAttribute("startable");
+            if (startableAttribute == "true")
+            {
+                var assemblyLocation = string.Empty;
+                GetAssemblyLocation(nodeInfo, out assemblyLocation);
+                var assembly = Assembly.ReflectionOnlyLoadFrom(assemblyLocation);
+                var nonLazyStartable = false;
+                foreach (var type in assembly.GetExportedTypes())
+                {
+                    nonLazyStartable |= FStartableRegistry.ProcessType(type, assembly);
+                }
+                if (nonLazyStartable)
+                {
+                    var assemblyload = Assembly.LoadFrom(assemblyLocation);
+                    FStartableRegistry.ProcessAssembly(assemblyload);
+                }
             }
         }
         

@@ -74,8 +74,10 @@ namespace VVVV.Hosting.Factories
             get { return FStarted; }
         }
 
-        [Import()]
-        ILogger FLogger;
+#pragma warning disable 0649
+        [Import]
+        ILogger FLogger; 
+#pragma warning restore
 
         [ImportingConstructor]
         public StartableRegistry(CompositionContainer parentContainer)
@@ -180,6 +182,11 @@ namespace VVVV.Hosting.Factories
                     FProcessedAssemblies.Add(assembly.FullName);
                 }
             }
+        }
+
+        public bool ContainsStartable(Assembly assembly)
+        {
+            return FStartable.ContainsKey(assembly.FullName);
         }
 
         public void ShutDown()

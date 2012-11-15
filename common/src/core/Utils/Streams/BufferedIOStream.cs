@@ -207,6 +207,14 @@ namespace VVVV.Utils.Streams
             FBuffer = new T[initialCapacity];
             IsChanged = true;
         }
+
+        public BufferedIOStream(T[] buffer)
+        {
+            FCapacity = buffer.Length;
+            FBuffer = buffer;
+            FLength = buffer.Length;
+            IsChanged = true;
+        }
         
         public virtual bool Sync()
         {
@@ -217,6 +225,8 @@ namespace VVVV.Utils.Streams
         {
             FChangeCount = 0;
         }
+
+        public T[] Buffer { get { return FBuffer; } }
         
         public bool IsChanged
         {

@@ -28,23 +28,22 @@ namespace VVVV.Nodes
 		enum KeyMode {Press, Toggle, UpOnly, DownOnly, DownUp, RepeatedEvent};
 		
 		#region fields & pins
-		[Config("Key Match", IsSingle = true)]
-		IDiffSpread<string> FKeyMatch;
-		
-		[Input("Keyboard", IsSingle = true)]
-		IDiffSpread<KeyboardState> FInput;
-		
-		[Input("Reset Toggle", IsSingle = true, IsBang = true)]
-		ISpread<bool> FReset;
-		
-		[Input("Key Mode", IsSingle = true)]
-		ISpread<KeyMode> FKeyMode;
+#pragma warning disable 0649
+        [Config("Key Match", IsSingle = true)]
+        IDiffSpread<string> FKeyMatch;
 
-		[Import()]
-		ILogger FLogger;
-		
-		[Import()]
-		IIOFactory FIOFactory;
+        [Input("Keyboard", IsSingle = true)]
+        IDiffSpread<KeyboardState> FInput;
+
+        [Input("Reset Toggle", IsSingle = true, IsBang = true)]
+        ISpread<bool> FReset;
+
+        [Input("Key Mode", IsSingle = true)]
+        ISpread<KeyMode> FKeyMode;
+
+        [Import()]
+        IIOFactory FIOFactory; 
+#pragma warning restore
 
         #endregion fields & pins
 
@@ -101,7 +100,6 @@ namespace VVVV.Nodes
 			foreach (var outputInfo in FOutputInfos.ToArray())
 				if (!keys.Contains(outputInfo.Key))
                 {
-                    // remove with factory?
                     FOutputInfos.Remove(outputInfo);
                     outputInfo.Container.Dispose();
 			    }
@@ -183,17 +181,16 @@ namespace VVVV.Nodes
 	public class RadioKeyMatchNode: IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Keyboard")]
-		IDiffSpread<KeyboardState> FInput;
+#pragma warning disable 0649
+        [Input("Keyboard")]
+        IDiffSpread<KeyboardState> FInput;
 
-		[Input("Key Match")]
-		IDiffSpread<string> FKeyMatch;
-		
-		[Output("Output")]
-		ISpread<int> FOutput;
+        [Input("Key Match")]
+        IDiffSpread<string> FKeyMatch;
 
-		[Import()]
-		ILogger FLogger;
+        [Output("Output")]
+        ISpread<int> FOutput;
+#pragma warning restore
 		#endregion fields & pins
 
 		//called when data for any output pin is requested

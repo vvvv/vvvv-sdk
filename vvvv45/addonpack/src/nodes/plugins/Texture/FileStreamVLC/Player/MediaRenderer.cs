@@ -75,11 +75,11 @@ namespace VVVV.Nodes.Vlc.Player
 		private EventWaitHandle evaluateStopThreadWaitHandle;
 		private Mutex mediaPlayerBusyMutex;
 		//used for starting and stopping etc. in separate thread
-		private IntPtr media;
-		private IntPtr preloadMedia;
-		private IntPtr mediaPlayer;
+		private IntPtr media = IntPtr.Zero;
+		private IntPtr preloadMedia = IntPtr.Zero;
+		private IntPtr mediaPlayer = IntPtr.Zero;
 
-		private IntPtr opaqueForCallbacks;
+		private IntPtr opaqueForCallbacks = IntPtr.Zero;
 		private DoubleMemoryBuffer pixelPlanes;
 
 		private int preloadingStatus;
@@ -213,14 +213,18 @@ namespace VVVV.Nodes.Vlc.Player
 			evaluateThread.Join();
 			//preloadingStatus = STATUS_INACTIVE;
 
-			try {
-				LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
-			} catch {
+			if ( mediaPlayer != IntPtr.Zero ) {
+				try {
+					LibVlcMethods.libvlc_media_player_stop( mediaPlayer );
+				} catch {
+				}
+				try {
+					LibVlcMethods.libvlc_media_player_release( mediaPlayer );
+				} catch {
+				}
 			}
-			try {
-				LibVlcMethods.libvlc_media_player_release(mediaPlayer);
-			} catch {
-			}
+			mediaPlayer = IntPtr.Zero;
+
 
 			//deallocate video memory
 			try {
@@ -228,6 +232,9 @@ namespace VVVV.Nodes.Vlc.Player
 				Marshal.FreeHGlobal(opaqueForCallbacks);
 			} catch {
 			}
+
+			// Use SupressFinalize in case a subclass of this type implements a finalizer.
+			GC.SuppressFinalize( this );
 		}
 		#endregion MediaRenderer constructor/destructor
 

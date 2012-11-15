@@ -50,6 +50,19 @@ namespace VVVV.Utils
                 }
             }
         }
+
+        /// <summary>
+        /// Swaps the elements at positions i and j.
+        /// </summary>
+        /// <param name="array">The array to do the swap on.</param>
+        /// <param name="i">The i'th element.</param>
+        /// <param name="j">The j'th element.</param>
+        public static void Swap<T>(this T[] array, int i, int j)
+        {
+            var item = array[i];
+            array[i] = array[j];
+            array[j] = item;
+        }
     }
 
 }

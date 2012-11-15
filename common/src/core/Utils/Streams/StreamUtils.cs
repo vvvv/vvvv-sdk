@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace VVVV.Utils.Streams
 {
@@ -182,7 +183,20 @@ namespace VVVV.Utils.Streams
         {
             return CombineStreams(stream1.Length, stream2.Length);
         }
-        
+
+        public static int GetSpreadMax(params IInStream[] streams)
+        {
+            var result = 0;
+            for (int i = 0; i < streams.Length; i++)
+            {
+                if (streams[i].Length == 0)
+                    return 0;
+                else
+                    result = Math.Max(result, streams[i].Length);
+            }
+            return result;
+        }
+
         public static void SetLengthBy<T>(this IOutStream<T> outStream, IInStream<IInStream<T>> inputStreams)
         {
             outStream.Length = inputStreams.GetMaxLength() * inputStreams.Length;
@@ -219,6 +233,22 @@ namespace VVVV.Utils.Streams
                         }
                         return result;
                     }
+            }
+        }
+
+        public static int GetMaxLength(params IInStream[] streams)
+        {
+            switch (streams.Length)
+            {
+                case 0:
+                    return 0;
+                default:
+                    int maxLength = streams[0].Length;
+                    for (int i = 1; i < streams.Length; i++)
+                    {
+                        maxLength = maxLength.CombineStreams(streams[i].Length);
+                    }
+                    return maxLength;
             }
         }
         
@@ -453,6 +483,31 @@ namespace VVVV.Utils.Streams
             {
                 MemoryPool<T>.PutArray(buffer);
             }
+        }
+
+        public static RangeStream<T> GetRange<T>(this IInStream<T> source, int offset, int count)
+        {
+            return new RangeStream<T>(source, offset, count);
+        }
+
+        public static RangeStream<T> Take<T>(this IInStream<T> source, int count)
+        {
+            return new RangeStream<T>(source, 0, count);
+        }
+
+        public static CyclicStream<T> Cyclic<T>(this IInStream<T> source)
+        {
+            return new CyclicStream<T>(source);
+        }
+
+        public static ReverseStream<T> Reverse<T>(this IInStream<T> source)
+        {
+            return new ReverseStream<T>(source);
+        }
+
+        public static BufferedIOStream<T> ToStream<T>(this IEnumerable<T> source)
+        {
+            return new BufferedIOStream<T>(source.ToArray());
         }
     }
 }
