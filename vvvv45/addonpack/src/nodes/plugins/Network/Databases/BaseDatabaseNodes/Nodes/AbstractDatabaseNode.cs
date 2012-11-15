@@ -114,7 +114,7 @@ namespace VVVV.Nodes
                 if (connect < 0.5 && this.FConnectionObject.Connection.State != ConnectionState.Closed)
                 {
                     this.Reset();
-                    this.FPinOutConnected.SetValue(0, 1);
+                    this.FPinOutConnected.SetValue(0, 0);
                     this.FPinOutStatus.SetString(0, "Closed");
                 }
             }
