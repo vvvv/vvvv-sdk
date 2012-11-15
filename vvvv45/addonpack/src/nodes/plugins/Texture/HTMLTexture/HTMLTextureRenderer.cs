@@ -13,6 +13,7 @@ using System.Globalization;
 using VVVV.Utils.IO;
 using System.Xml.Linq;
 using EX9 = SlimDX.Direct3D9;
+using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -495,7 +496,7 @@ namespace VVVV.Nodes.Texture.HTML
             //            Marshal.FreeHGlobal(buffer);
         }
 
-        private void DestroyTexture(CefBrowser browser, EX9.Texture texture)
+        private void DestroyTexture(CefBrowser browser, EX9.Texture texture, DestroyReason reason)
         {
             lock (FTextures)
             {

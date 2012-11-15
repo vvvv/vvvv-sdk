@@ -13,7 +13,7 @@ using VVVV.Core.Logging;
 
 #endregion usings
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.Devices.Leap
 {
 	#region PluginInfo
 	[PluginInfo(Name = "Leap",
