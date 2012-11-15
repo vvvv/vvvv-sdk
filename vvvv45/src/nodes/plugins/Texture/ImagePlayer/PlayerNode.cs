@@ -23,8 +23,11 @@ namespace VVVV.Nodes.ImagePlayer
         
         [Input("Filemask", DefaultString = ImagePlayer.DEFAULT_FILEMASK)]
         public IDiffSpread<ISpread<string>> FFilemaskIn;
-        
-        [Input("Buffer Size IO", DefaultValue = ImagePlayer.DEFAULT_BUFFER_SIZE, Visibility = PinVisibility.Hidden)]
+
+        [Input("Reload", IsBang = true)]
+        public ISpread<bool> FReloadIn;
+
+        [Input("IO Buffer Size", DefaultValue = ImagePlayer.DEFAULT_BUFFER_SIZE, Visibility = PinVisibility.OnlyInspector)]
         public ISpread<int> FBufferSizeIn;
 
         [Input("Preload Frames")]
@@ -32,9 +35,6 @@ namespace VVVV.Nodes.ImagePlayer
 
         [Input("Visible Frame Indices")]
         public ISpread<ISpread<int>> FVisibleFramesIn;
-        
-        [Input("Reload", IsBang = true)]
-        public ISpread<bool> FReloadIn;
         
         [Config("Threads IO", DefaultValue = 1.0, MinValue = -1.0)]
         public ISpread<int> FThreadsIOConfig;
