@@ -51,7 +51,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
 
         void HandleCellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            DebugHelpers.CatchAndLog(() =>
+            DebugHelpers.CatchAndLogNeverStop(() =>
             {
                 var gridViewCell = FDataGridView[e.ColumnIndex, e.RowIndex];
                 var cell = gridViewCell.Tag as ICell;
@@ -69,7 +69,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
 
         void HandleCellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            DebugHelpers.CatchAndLog(() =>
+            DebugHelpers.CatchAndLogNeverStop(() =>
             {            
                 var gridViewCell = FDataGridView[e.ColumnIndex, e.RowIndex];
                 var cell = gridViewCell.Tag as ICell;
