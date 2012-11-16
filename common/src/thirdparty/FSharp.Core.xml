@@ -1074,6 +1074,87 @@
  <param name="array2">The second input array.</param>
  <returns>The resulting array.</returns>
 </member>
+<member name="M:Microsoft.FSharp.Collections.ArrayModule.Parallel.Partition``1(Microsoft.FSharp.Core.FSharpFunc`2{``0,System.Boolean},``0[])">
+ <summary>Split the collection into two collections, containing the 
+ elements for which the given predicate returns "true" and "false"
+ respectively </summary>
+
+ <remarks>Performs the operation in parallel using System.Threading.Parallel.For.
+ The order in which the given function is applied to indicies is not specified.</remarks>
+ <param name="predicate">The function to test the input elements.</param>
+ <param name="array">The input array.</param>
+ <returns>'T[] * 'T[]</returns>
+</member>
+<member name="M:Microsoft.FSharp.Collections.ArrayModule.Parallel.Initialize``1(System.Int32,Microsoft.FSharp.Core.FSharpFunc`2{System.Int32,``0})">
+ <summary>Create an array given the dimension and a generator function to compute the elements.</summary>
+
+ <remarks>Performs the operation in parallel using System.Threading.Parallel.For.
+ The order in which the given function is applied to indicies is not specified.</remarks>
+ <param name="count"></param>
+ <param name="initializer"></param>
+ <returns>'T[]</returns>
+</member>
+<member name="M:Microsoft.FSharp.Collections.ArrayModule.Parallel.IterateIndexed``1(Microsoft.FSharp.Core.FSharpFunc`2{System.Int32,Microsoft.FSharp.Core.FSharpFunc`2{``0,Microsoft.FSharp.Core.Unit}},``0[])">
+ <summary>Apply the given function to each element of the array. The integer passed to the
+ function indicates the index of element.</summary>
+
+ <remarks>Performs the operation in parallel using System.Threading.Parallel.For.
+ The order in which the given function is applied to elements of the input array is not specified.</remarks>
+ <param name="action"></param>
+ <param name="array">The input array.</param>
+</member>
+<member name="M:Microsoft.FSharp.Collections.ArrayModule.Parallel.Iterate``1(Microsoft.FSharp.Core.FSharpFunc`2{``0,Microsoft.FSharp.Core.Unit},``0[])">
+ <summary>Apply the given function to each element of the array. </summary>
+
+ <remarks>Performs the operation in parallel using System.Threading.Parallel.For.
+ The order in which the given function is applied to elements of the input array is not specified.</remarks>
+ <param name="action"></param>
+ <param name="array">The input array.</param>
+</member>
+<member name="M:Microsoft.FSharp.Collections.ArrayModule.Parallel.MapIndexed``2(Microsoft.FSharp.Core.FSharpFunc`2{System.Int32,Microsoft.FSharp.Core.FSharpFunc`2{``0,``1}},``0[])">
+ <summary>Build a new array whose elements are the results of applying the given function
+ to each of the elements of the array. The integer index passed to the
+ function indicates the index of element being transformed.</summary>
+
+ <remarks>Performs the operation in parallel using System.Threading.Parallel.For.
+ The order in which the given function is applied to elements of the input array is not specified.</remarks>
+ <param name="mapping"></param>
+ <param name="array">The input array.</param>
+ <returns>'U[]</returns>
+</member>
+<member name="M:Microsoft.FSharp.Collections.ArrayModule.Parallel.Map``2(Microsoft.FSharp.Core.FSharpFunc`2{``0,``1},``0[])">
+ <summary>Build a new array whose elements are the results of applying the given function
+ to each of the elements of the array.</summary>
+
+ <remarks>Performs the operation in parallel using System.Threading.Parallel.For.
+ The order in which the given function is applied to elements of the input array is not specified.</remarks>
+ <param name="mapping"></param>
+ <param name="array">The input array.</param>
+ <returns>'U[]</returns>
+</member>
+<member name="M:Microsoft.FSharp.Collections.ArrayModule.Parallel.Collect``2(Microsoft.FSharp.Core.FSharpFunc`2{``0,``1[]},``0[])">
+ <summary>For each element of the array, apply the given function. Concatenate all the results and return the combined array.</summary>
+
+ <remarks>Performs the operation in parallel using System.Threading.Parallel.For.
+ The order in which the given function is applied to elements of the input array is not specified.</remarks>
+ <param name="mapping"></param>
+ <param name="array">The input array.</param>
+ <returns>'U[]</returns>
+</member>
+<member name="M:Microsoft.FSharp.Collections.ArrayModule.Parallel.Choose``2(Microsoft.FSharp.Core.FSharpFunc`2{``0,Microsoft.FSharp.Core.FSharpOption{``1}},``0[])">
+ <summary>Apply the given function to each element of the array. Return
+ the array comprised of the results "x" for each element where
+ the function returns Some(x).</summary>
+
+ <remarks>Performs the operation in parallel using System.Threading.Parallel.For.
+ The order in which the given function is applied to elements of the input array is not specified.</remarks>
+ <param name="chooser">The function to generate options from the elements.</param>
+ <param name="array">The input array.</param>
+ <returns>'U[]</returns>
+</member>
+<member name="T:Microsoft.FSharp.Collections.ArrayModule.Parallel">
+ <summary>Provides parallel operations on arrays </summary>
+</member>
 <member name="T:Microsoft.FSharp.Collections.ArrayModule">
  <summary>Basic operations on arrays.</summary>
 </member>
@@ -2815,6 +2896,11 @@
  <param name="cancellationToken">The <c>CancellationToken</c> to associate with the computation.
  The default is used if this parameter is not provided.</param>
 </member>
+<member name="M:Microsoft.FSharp.Control.FSharpAsync.StartChildAsTask``1(Microsoft.FSharp.Control.FSharpAsync{``0},Microsoft.FSharp.Core.FSharpOption{System.Threading.Tasks.TaskCreationOptions})">
+<summary>
+ Creates an asynchronous computation which starts the given computation as a &lt;c&gt;System.Threading.Tasks.Task&lt;/c&gt;
+</summary>
+</member>
 <member name="M:Microsoft.FSharp.Control.FSharpAsync.StartChild``1(Microsoft.FSharp.Control.FSharpAsync{``0},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
  <summary>Starts a child computation within an asynchronous workflow. 
  This allows multiple asynchronous computations to be executed simultaneously.</summary>
@@ -2837,6 +2923,14 @@
  <param name="millisecondsTimeout">The timeout value in milliseconds.  If one is not provided
  then the default value of -1 corresponding to <c>System.Threading.Timeout.Infinite</c>.</param>
  <returns>A new computation that waits for the input computation to finish.</returns>
+</member>
+<member name="M:Microsoft.FSharp.Control.FSharpAsync.StartAsTask``1(Microsoft.FSharp.Control.FSharpAsync{``0},Microsoft.FSharp.Core.FSharpOption{System.Threading.Tasks.TaskCreationOptions},Microsoft.FSharp.Core.FSharpOption{System.Threading.CancellationToken})">
+<summary>
+ Executes a computation in the thread pool. Returns a &lt;c&gt;System.Threading.Tasks.Task&lt;/c&gt; that will be completed
+ in the corresponding state once the computation terminates (produces the result, throws exception or gets canceled)
+        
+ If no cancellation token is provided then the default cancellation token is used.
+</summary>
 </member>
 <member name="M:Microsoft.FSharp.Control.FSharpAsync.Start(Microsoft.FSharp.Control.FSharpAsync{Microsoft.FSharp.Core.Unit},Microsoft.FSharp.Core.FSharpOption{System.Threading.CancellationToken})">
  <summary>Starts the asynchronous computation in the thread pool. Do not await its result.</summary>
@@ -3024,6 +3118,12 @@
  <param name="millisecondsTimeout">The timeout value in milliseconds.  If one is not provided
  then the default value of -1 corresponding to <c>System.Threading.Timeout.Infinite</c>.</param>
  <returns>An asynchronous computation that waits on the given <c>WaitHandle</c>.</returns>
+</member>
+<member name="M:Microsoft.FSharp.Control.FSharpAsync.AwaitTask``1(System.Threading.Tasks.Task{``0})">
+<summary>
+ Return an asynchronous computation that will wait for the given task to complete and return
+ its result.
+</summary>
 </member>
 <member name="M:Microsoft.FSharp.Control.FSharpAsync.AwaitIAsyncResult(System.IAsyncResult,Microsoft.FSharp.Core.FSharpOption{System.Int32})">
  <summary>Creates an asynchronous computation that will wait on the IAsyncResult.</summary>
@@ -7300,122 +7400,6 @@
   <a href="http://msdn2.microsoft.com/en-us/library/system.string.aspx">System.String</a> 
  and <a href="http://msdn2.microsoft.com/library/system.text.regularexpressions.aspx">System.Text.RegularExpressions</a> types.</summary>
 </member>
-<member name="T:Microsoft.FSharp.Math.BigNat">
-<summary>
- Abstract internal type
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="T:Microsoft.FSharp.Math.BigNatModule">
-
-</member>
 <member name="M:Microsoft.FSharp.NativeInterop.NativePtrModule.StackAllocate``1(System.Int32)">
  <summary>Allocates a region of memory on the stack.</summary>
  <param name="count">The number of objects of type T to allocate.</param>
@@ -8759,461 +8743,6 @@
  If a joint is broken the RHS layout occurs on the next line with optional indentation.
  A layout can be squashed to for given width which forces breaks as required.
 </summary>
-</member>
-<member name="P:System.AggregateException.InnerExceptions">
- <summary>Gets a read-only collection of the <c>Exception</c> instances that caused
- the current exception.</summary>
-</member>
-<member name="T:System.AggregateException">
- <summary>Represents one or more errors that occur during application execution.</summary>
-</member>
-<member name="M:System.IObservable`1.Subscribe(System.IObserver{`0})">
- <summary>Subscribe an observer to the source of results</summary>
- <param name="observer">The observer to be added to those that are notified.</param>
- <returns>An IDisposable to allow for unsubscription.</returns>
-</member>
-<member name="T:System.IObservable`1">
- <summary>A source of observable results</summary>
-</member>
-<member name="M:System.IObserver`1.OnNext(`0)">
- <summary>Notify an observer of a new result</summary>
- <param name="value">The value to notify observers.</param>
-</member>
-<member name="M:System.IObserver`1.OnError(System.Exception)">
- <summary>Notify an observer of an error </summary>
- <param name="error">The exception to notify observers.</param>
-</member>
-<member name="M:System.IObserver`1.OnCompleted">
- <summary>Notify an observer that no more results will be produced</summary>
-</member>
-<member name="T:System.IObserver`1">
- <summary>A client that mat be subscribed to observe the results from an IObservable.</summary>
-</member>
-<member name="P:System.Lazy`1.Value">
- <summary>The value contained in the Lazy.</summary>
-</member>
-<member name="P:System.Lazy`1.IsValueCreated">
- <summary>Is true if the value is ready to be accessed.</summary>
-</member>
-<member name="T:System.Lazy`1">
- <summary>Encapsulates a lazily computed value.</summary>
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="T:System.Tuple`1">
- <summary>Compiled versions of F# tuple types. These are not used directly, though
- these compiled forms are seen by other CLI languages.</summary>
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="M:System.Collections.IStructuralComparable.CompareTo(System.Object,System.Collections.IComparer)">
- <summary>Determines whether the current object precedes, occurs in the same position as,
- or follows another object in the sort order.</summary>
- <param name="obj">The object to compare with the current instance.</param>
- <param name="comparer">An object that performs comparisons.</param>
- <returns>An integer that indicates the relationship of the current object to the target object.</returns>
-</member>
-<member name="">
-
-</member>
-<member name="M:System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer)">
- <summary>Returns a hash code for the current instance.</summary>
- <param name="comparer">An object that computes the hash code of the current object.</param>
- <returns>The hash code for the current instance.</returns>
-</member>
-<member name="M:System.Collections.IStructuralEquatable.Equals(System.Object,System.Collections.IEqualityComparer)">
- <summary>Equality comparison against a target object with a given comparer.</summary>
- <param name="obj">The target for comparison.</param>
- <param name="comparer">Compares the two objects.</param>
- <returns>The result of the comparer.</returns>
-</member>
-<member name="">
-
-</member>
-<member name="M:System.Numerics.BigInteger.op_UnaryPlus(System.Numerics.BigInteger)">
-<summary>
- Return the given big integer
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_UnaryNegation(System.Numerics.BigInteger)">
-<summary>
- Return the negation of a big integer
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_Subtraction(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- Return the difference of two big integers
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_Multiply(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- Return the product of big integers
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_Modulus(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- Return the modulus of big integers
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_LessThanOrEqual(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- This operator is for consistency when this type be used from other CLI languages
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_LessThan(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- This operator is for consistency when this type be used from other CLI languages
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_Inequality(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- This operator is for consistency when this type be used from other CLI languages
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_GreaterThanOrEqual(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- This operator is for consistency when this type be used from other CLI languages
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_GreaterThan(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- This operator is for consistency when this type be used from other CLI languages
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_Explicit(System.Numerics.BigInteger)">
-<summary>
- Convert a big integer to a 32-bit signed integer
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_Explicit(System.Numerics.BigInteger)">
-<summary>
- Convert a big integer to a 64-bit signed integer
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_Explicit(System.Numerics.BigInteger)">
-<summary>
- Convert a big integer to a floating point number
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_Equality(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- This operator is for consistency when this type be used from other CLI languages
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_Division(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- Return the ratio of two big integers
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.op_Addition(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- Return the sum of two big integers
-</summary>
-</member>
-<member name="P:System.Numerics.BigInteger.Zero">
-<summary>
- Get the big integer for zero
-</summary>
-</member>
-<member name="P:System.Numerics.BigInteger.Sign">
-<summary>
- Return the sign of a big integer: 0, +1 or -1
-</summary>
-</member>
-<member name="P:System.Numerics.BigInteger.One">
-<summary>
- Get the big integer for one
-</summary>
-</member>
-<member name="P:System.Numerics.BigInteger.IsZero">
-<summary>
- Return true if a big integer is &apos;zero&apos;
-</summary>
-</member>
-<member name="P:System.Numerics.BigInteger.IsOne">
-<summary>
- Return true if a big integer is &apos;one&apos;
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="M:System.Numerics.BigInteger.Pow(System.Numerics.BigInteger,System.Int32)">
-<summary>
- Return n^m for two big integers
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.Parse(System.String)">
-<summary>
- Parse a big integer from a string format
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.GreatestCommonDivisor(System.Numerics.BigInteger,System.Numerics.BigInteger)">
-<summary>
- Return the greatest common divisor of two big integers
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="M:System.Numerics.BigInteger.DivRem(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Numerics.BigInteger@)">
-<summary>
- Compute the ratio and remainder of two big integers
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.Abs(System.Numerics.BigInteger)">
-<summary>
- Compute the absolute value of a big integer 
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.#ctor(System.Int64)">
-<summary>
- Construct a BigInteger value for the given 64-bit integer
-</summary>
-</member>
-<member name="M:System.Numerics.BigInteger.#ctor(System.Int32)">
-<summary>
- Construct a BigInteger value for the given integer
-</summary>
-</member>
-<member name="T:System.Numerics.BigInteger">
-<summary>
- The type of arbitrary-sized integers
-</summary>
-</member>
-<member name="P:System.Threading.CancellationTokenSource.Token">
- <summary>Fetches the token representing the capability to detect cancellation of an operation.</summary>
-</member>
-<member name="M:System.Threading.CancellationTokenSource.Dispose">
- <summary>Discards resources associated with this capability.</summary>
-</member>
-<member name="M:System.Threading.CancellationTokenSource.CreateLinkedTokenSource(System.Threading.CancellationToken,System.Threading.CancellationToken)">
- <summary>Creates a cancellation capability linking two tokens.</summary>
- <param name="token1">The first input token.</param>
- <param name="token2">The second input token.</param>
- <returns>The created CancellationTokenSource.</returns>
-</member>
-<member name="M:System.Threading.CancellationTokenSource.Cancel">
- <summary>Cancels the operation.</summary>
-</member>
-<member name="M:System.Threading.CancellationTokenSource.#ctor">
- <summary>Creates a new cancellation capability.</summary>
-</member>
-<member name="T:System.Threading.CancellationTokenSource">
- <summary>Signals to a <c>CancellationToken</c> that it should be cancelled.</summary>
-</member>
-<member name="">
-
-</member>
-<member name="M:System.Threading.CancellationToken.op_Inequality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
- <summary>Inequality operator for tokens.</summary>
- <param name="registration1">The first input token.</param>
- <param name="registration2">The second input token.</param>
- <returns>False if the two tokens are equal.</returns>
-</member>
-<member name="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
- <summary>Equality operator for tokens.</summary>
- <param name="registration1">The first input token.</param>
- <param name="registration2">The second input token.</param>
- <returns>True if the two tokens are equal.</returns>
-</member>
-<member name="P:System.Threading.CancellationToken.IsCancellationRequested">
- <summary>Flags whether an operation should be cancelled.</summary>
-</member>
-<member name="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
- <summary>Registers an action to perform with the CancellationToken.</summary>
- <param name="action">The action to associate with the token.</param>
- <param name="state">The state associated with the action.</param>
- <returns>The created registration object.</returns>
-</member>
-<member name="M:System.Threading.CancellationToken.Equals(System.Threading.CancellationToken)">
- <summary>Equality comparison against another token.</summary>
- <param name="token">The target for comparison.</param>
- <returns>True if the two tokens are equal.</returns>
-</member>
-<member name="T:System.Threading.CancellationToken">
- <summary>Represents a capability to detect cancellation of an operation.</summary>
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="M:System.Threading.CancellationTokenRegistration.op_Inequality(System.Threading.CancellationTokenRegistration,System.Threading.CancellationTokenRegistration)">
- <summary>Inequality operator for registrations.</summary>
- <param name="registration1">The first input registration.</param>
- <param name="registration2">The second input registration.</param>
- <returns>False if the two registrations are equal.</returns>
-</member>
-<member name="M:System.Threading.CancellationTokenRegistration.op_Equality(System.Threading.CancellationTokenRegistration,System.Threading.CancellationTokenRegistration)">
- <summary>Equality operator for registrations.</summary>
- <param name="registration1">The first input registration.</param>
- <param name="registration2">The second input registration.</param>
- <returns>True if the two registrations are equal.</returns>
-</member>
-<member name="M:System.Threading.CancellationTokenRegistration.Equals(System.Threading.CancellationTokenRegistration)">
- <summary>Equality comparison against another registration.</summary>
- <param name="registration">The target for comparison.</param>
- <returns>True if the two registrations are equal.</returns>
-</member>
-<member name="M:System.Threading.CancellationTokenRegistration.Dispose">
- <summary>Frees resources associated with the registration.</summary>
-</member>
-<member name="T:System.Threading.CancellationTokenRegistration">
- <summary>Represents a registration to a Cancellation token source.</summary>
 </member>
 </members>
 </doc>

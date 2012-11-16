@@ -13,7 +13,7 @@ using VVVV.Core.Logging;
 
 #endregion usings
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.Devices.Leap
 {
 	#region PluginInfo
 	[PluginInfo(Name = "Leap",
@@ -87,7 +87,7 @@ namespace VVVV.Nodes
 					FFingerPosOut.Add(finger.tip().position.ToVector3D());
 					FFingerDirOut.Add(finger.tip().direction.ToVector3D());
 					FFingerVelOut.Add(finger.velocity().ToVector3D());
-					FHandSliceOut.Add(j);
+					FHandSliceOut.Add(i);
 				}
 			}
 			
