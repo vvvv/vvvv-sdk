@@ -19,6 +19,7 @@ namespace VVVV.TodoMap.Nodes
         private TodoMappingManager ucMappingManager;
         private TodoOscManager ucOscManager;
         private TodoLoggerCtrl ucLogger;
+        //private TodoTreeView ctrlTree;
 
         public TodoMapNode()
         {
@@ -41,6 +42,11 @@ namespace VVVV.TodoMap.Nodes
             this.ucLogger.Dock = DockStyle.Fill;
             this.tabLog.Controls.Add(this.ucLogger);
 
+           /* this.ctrlTree = new TodoTreeView();
+            this.ctrlTree.Dock = DockStyle.Fill;
+            this.grpTree.Controls.Add(ctrlTree);*/
+            //this.tabTreeVar.Controls.Add(ctrlTree);
+
             this.FEngine = new TodoEngine();
             //this.FEngine.Osc.SetEnabled(true);
 
@@ -48,8 +54,29 @@ namespace VVVV.TodoMap.Nodes
             this.ucDeviceManager.Engine = this.FEngine;
             this.ucMappingManager.Engine = this.FEngine;
             this.ucOscManager.Engine = this.FEngine;
+            //this.ctrlTree.Initialize(this.FEngine,this.treelist);
 
+            //this.ctrlTree.OscNodeSelected += new EventHandler(ctrlTree_OscNodeSelected);
+           // this.ctrlTree.MidiNodeSelected += new EventHandler(ctrlTree_MidiNodeSelected);
 
+        }
+
+        void ctrlTree_MidiNodeSelected(object sender, EventArgs e)
+        {
+            if (this.grpProps.Controls.Count > 0)
+            {
+                this.grpProps.Controls.RemoveAt(0);
+            }
+            this.grpProps.Controls.Add(this.ucDeviceManager);
+        }
+
+        void ctrlTree_OscNodeSelected(object sender, EventArgs e)
+        {
+            if (this.grpProps.Controls.Count > 0)
+            {
+                this.grpProps.Controls.RemoveAt(0);
+            }
+            this.grpProps.Controls.Add(this.ucOscManager);
         }
 
 

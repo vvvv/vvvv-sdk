@@ -201,8 +201,19 @@ namespace vvvv.Nodes
 
         public virtual void Dispose()
         {
-            bufferStream.Stop();
-            bufferStream.Dispose();
+
+            if (bufferStream != null)
+            {
+                try
+                {
+                    bufferStream.Stop();
+                    bufferStream.Dispose();
+                }
+                catch
+                {
+
+                }
+            }
             //Bass.BASS_ChannelStop(this.FHandle);
         }
 

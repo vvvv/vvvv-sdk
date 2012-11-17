@@ -1111,6 +1111,25 @@ namespace VVVV.PluginInterfaces.V1
 		void GetMatrixPointer(out float* value);
 		void GetMatrixPointer(out float** ppDst);
 	}
+
+    [Guid("d1db8373-78f0-4e75-af23-d344daa06472"),
+        InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    unsafe public interface IRawIn : IPluginIn
+    {
+        void GetData(int slice, out byte* pData, out int length);
+    }
+
+    [Guid("8943c8e5-4833-4ca2-baea-2e32e627ffcf"),
+        InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    unsafe public interface IRawOut : IPluginOut
+    {
+        void SetDataLength(int slice, int length, out byte* pData);
+        /// <summary>
+        /// Used to mark this pin as being changed compared to the last frame. 
+        /// </summary>
+        void MarkPinAsChanged();
+    }
+
 	#endregion node pins	
 	
 	#region DXPins

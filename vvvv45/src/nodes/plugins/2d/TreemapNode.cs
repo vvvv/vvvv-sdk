@@ -92,8 +92,9 @@ namespace VVVV.Nodes
 			{
 				var n = new Node(0);
 				n.Value = i;
-				n.Size = FInput[i];
-				root.Children.Add(n);
+				n.Size = Math.Abs(FInput[i]);
+				if(n.Size > 0)
+					root.Children.Add(n);
 			}
 			
 			return root;
