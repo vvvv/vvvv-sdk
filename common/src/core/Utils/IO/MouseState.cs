@@ -1,16 +1,8 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace VVVV.Utils.IO
 {
-    [Flags]
-    public enum MouseButton
-    {
-        None = 0,
-        Left = 1,
-        Middle = 2,
-        Right = 4
-    }
-
     /// <summary>
     /// Encapsulates the state of a mouse.
     /// </summary>
@@ -29,14 +21,14 @@ namespace VVVV.Utils.IO
         /// <summary>
         /// The pressed mouse button.
         /// </summary>
-        public readonly MouseButton Button;
+        public readonly MouseButtons Button;
 
         /// <summary>
         /// The position of the mouse wheel.
         /// </summary>
         public readonly int MouseWheel;
         
-        public MouseState(double x, double y, MouseButton button, int mouseWheel)
+        public MouseState(double x, double y, MouseButtons button, int mouseWheel)
         {
             X = x;
             Y = y;
