@@ -138,6 +138,19 @@ namespace VVVV.Hosting.IO
                         return IOContainer.Create(context, stream, container);
                 });
 
+            RegisterInput<BufferedIOStream<System.IO.Stream>>(
+                (factory, context) =>
+                {
+                    var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IRawIn)));
+                    var rawIn = container.RawIOObject as IRawIn;
+                    var stream = new RawInStream(rawIn);
+                    // Using ManagedIOStream -> needs to be synced on managed side.
+                    if (context.IOAttribute.AutoValidate)
+                        return IOContainer.Create(context, stream, container, s => s.Sync());
+                    else
+                        return IOContainer.Create(context, stream, container);
+                });
+
             RegisterInput<BufferedIOStream<EnumEntry>>(
                 (factory, context) =>
                 {
@@ -309,6 +322,14 @@ namespace VVVV.Hosting.IO
                                var enumOut = container.RawIOObject as IEnumOut;
                                return IOContainer.Create(context, new DynamicEnumOutStream(enumOut), container, null, s => s.Flush());
                            });
+
+            RegisterOutput<IOutStream<System.IO.Stream>>(
+                (factory, context) =>
+                {
+                    var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IRawOut)));
+                    var rawOut = container.RawIOObject as IRawOut;
+                    return IOContainer.Create(context, new RawOutStream(rawOut), container, null, s => s.Flush());
+                });
             
             RegisterOutput<BufferedIOStream<string>>(
                 (factory, context) =>

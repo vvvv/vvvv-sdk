@@ -23,6 +23,8 @@ namespace VVVV.Hosting
         void RemoveWindowSelectionListener(IWindowSelectionListener listener);
         void AddWindowListener(IWindowListener listener);
         void RemoveWindowListener(IWindowListener listener);
+        void AddComponentModeListener(IComponentModeListener listener);
+        void RemoveComponentModeListener(IComponentModeListener listener);
 
         /// <summary>
         /// The graphs root node
@@ -209,6 +211,17 @@ namespace VVVV.Hosting
     {
         void WindowAddedCB(IWindow window);
         void WindowRemovedCB(IWindow window);
+    }
+    
+    /// <summary>
+    /// Listener interface to be informed of changed componentmodes of windows.
+    /// </summary>
+    [Guid("F14A619F-9378-42CE-9F18-D96BAE3EEC16"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IComponentModeListener
+    {
+        void BeforeComponentModeChangedCB(IWindow window, ComponentMode componentMode);
+        void AfterComponentModeChangedCB(IWindow window, ComponentMode componentMode);
     }
     
     /// <summary>

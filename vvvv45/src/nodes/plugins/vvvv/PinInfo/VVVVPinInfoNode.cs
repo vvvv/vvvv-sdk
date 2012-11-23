@@ -22,26 +22,25 @@ namespace VVVV.Nodes
 	public class VVVVPinInfoNode : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Input", DefaultString = "")]
-		ISpread<string> FInput;
-		
-		[Input("Update", IsBang = true)]
-		IDiffSpread<bool> FUpdate;
+#pragma warning disable 0649
+        [Input("Input", DefaultString = "")]
+        ISpread<string> FInput;
 
-		[Output("Node Label")]
-		ISpread<string> FLabel;
-		
-		[Output("Node Tag")]
-		ISpread<string> FTag;
-		
-		[Output("Subtype")]
-		ISpread<string> FSubtype;
+        [Input("Update", IsBang = true)]
+        IDiffSpread<bool> FUpdate;
 
-		[Import()]
-		ILogger FLogger;
-		
-		[Import()]
-		IHDEHost FHDEHost;
+        [Output("Node Label")]
+        ISpread<string> FLabel;
+
+        [Output("Node Tag")]
+        ISpread<string> FTag;
+
+        [Output("Subtype")]
+        ISpread<string> FSubtype;
+
+        [Import()]
+        IHDEHost FHDEHost; 
+#pragma warning restore
 		#endregion fields & pins
 
 		//called when data for any output pin is requested

@@ -100,6 +100,7 @@ namespace VVVV.Nodes
 		    FLogger.Log(LogType.Message, "Creating resource...");
 		
 			//create a vertex buffer with desired size
+			//note: when using /dx9ex set Pool from .Managed to .Default
 			var vb = new VertexBuffer(device, FSpreadCount*Marshal.SizeOf(typeof(VertexType)), Usage.WriteOnly, VertexFormat.None, Pool.Managed);
 			
 			//try to load the texture

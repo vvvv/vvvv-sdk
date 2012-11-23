@@ -63,7 +63,7 @@ namespace VVVV.Nodes
             guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
             
             host.CreateNodeOutput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonOutput);
-            FSkeletonOutput.SetSubType(guids, "Skeleton");
+            FSkeletonOutput.SetSubType2(typeof(ISkeleton), guids, "Skeleton");
         }
         #endregion constructor
         

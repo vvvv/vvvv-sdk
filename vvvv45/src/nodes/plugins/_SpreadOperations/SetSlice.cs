@@ -16,17 +16,19 @@ namespace VVVV.Nodes
 	public class SetSlice<T> : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Spread", BinName = "Bin Size", BinSize = 1, BinOrder = 1)]
-		ISpread<ISpread<T>> FSpread;
-		
-		[Input("Input")]
-		ISpread<T> FInput;
-		
-		[Input("Index", Order = 2)]
-		ISpread<int> FIndex;
+#pragma warning disable 0649
+        [Input("Spread", BinName = "Bin Size", BinSize = 1, BinOrder = 1)]
+        ISpread<ISpread<T>> FSpread;
 
-		[Output("Output")]
-		ISpread<ISpread<T>> FOutput;
+        [Input("Input")]
+        ISpread<T> FInput;
+
+        [Input("Index", Order = 2)]
+        ISpread<int> FIndex;
+
+        [Output("Output")]
+        ISpread<ISpread<T>> FOutput; 
+#pragma warning restore
 		#endregion fields & pins
 		
 		//called when data for any output pin is requested

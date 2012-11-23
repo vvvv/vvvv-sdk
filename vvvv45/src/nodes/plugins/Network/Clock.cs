@@ -26,20 +26,19 @@ namespace VVVV.Nodes
 	public class NetworkClockServerNode : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Time", IsSingle = true)]
-		ISpread<double> FTime;
+#pragma warning disable 0649
+        [Input("Time", IsSingle = true)]
+        ISpread<double> FTime;
 
-		[Input("Set", IsBang = true, IsSingle = true)]
-		ISpread<bool> FInput;
-		
-		[Output("Time")]
-		ISpread<double> FOutput;
-		
-		[Import]
-		IHDEHost FHost;
+        [Input("Set", IsBang = true, IsSingle = true)]
+        ISpread<bool> FInput;
 
-		[Import]
-		ILogger FLogger;
+        [Output("Time")]
+        ISpread<double> FOutput;
+
+        [Import]
+        IHDEHost FHost;
+#pragma warning restore
 		#endregion fields & pins
 		
 		//called when data for any output pin is requested

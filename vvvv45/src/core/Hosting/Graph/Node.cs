@@ -405,12 +405,12 @@ namespace VVVV.Hosting.Graph
                 InnerStatusChanged(this, EventArgs.Empty);
         }
         
-        public event EventHandler BoundsChanged;
+        public event EventHandler<BoundsChangedEventArgs> BoundsChanged;
         
         protected virtual void OnBoundsChanged(BoundsType boundsType)
         {
-            //            if (BoundsChanged != null)
-            //            	BoundsChanged(this, boundsType);
+            if (BoundsChanged != null)
+                BoundsChanged(this, new BoundsChangedEventArgs(boundsType));
         }
     }
 }

@@ -1,6 +1,7 @@
 #region usings
 using System;
 using System.Net;
+using System.Globalization;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,34 +29,36 @@ namespace VVVV.Nodes
 	public class VVVVServerNode: IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
-		[Input("Listening UDP Port", IsSingle = true, DefaultValue = 44444)]
-		IDiffSpread<int> FUDPPort;
-		
-		[Input("Accept", IsSingle = true, DefaultEnumEntry = "OnlyExposed")]
-		IDiffSpread<AcceptMode> FAcceptMode;
-		
-		[Input("Clear Cache", IsSingle = true, IsBang = true)]
-		IDiffSpread<bool> FClearCache;
-		
-		[Input("Feedback Accepted", IsSingle = true, DefaultValue = 0)]
-		ISpread<bool> FFeedback;
-		
-		[Input("Feedback Target IP", IsSingle=true, DefaultString="127.0.0.1")]
-		IDiffSpread<string> FTargetIP;
-		
-		[Input("Feedback Target UDP Port", IsSingle=true, DefaultValue=55555)]
-		IDiffSpread<int> FTargetPort;
+#pragma warning disable 0649
+        [Input("Listening UDP Port", IsSingle = true, DefaultValue = 44444)]
+        IDiffSpread<int> FUDPPort;
 
-		[Output("Exposed Pins")]
-		ISpread<string> FExposedPinsOut;
-		
-		[Output("Cached Pins")]
-		ISpread<string> FCachedPinsOut;
+        [Input("Accept", IsSingle = true, DefaultEnumEntry = "OnlyExposed")]
+        IDiffSpread<AcceptMode> FAcceptMode;
 
-		[Import()]
-		ILogger FLogger;
-		
-		[Import()]
+        [Input("Clear Cache", IsSingle = true, IsBang = true)]
+        IDiffSpread<bool> FClearCache;
+
+        [Input("Feedback Accepted", IsSingle = true, DefaultValue = 0)]
+        ISpread<bool> FFeedback;
+
+        [Input("Feedback Target IP", IsSingle = true, DefaultString = "127.0.0.1")]
+        IDiffSpread<string> FTargetIP;
+
+        [Input("Feedback Target UDP Port", IsSingle = true, DefaultValue = 55555)]
+        IDiffSpread<int> FTargetPort;
+
+        [Output("Exposed Pins")]
+        ISpread<string> FExposedPinsOut;
+
+        [Output("Cached Pins")]
+        ISpread<string> FCachedPinsOut;
+
+        [Import()]
+        ILogger FLogger;
+
+        [Import()] 
+#pragma warning restore
 		IHDEHost FHDEHost;
 		
 		private OSCReceiver FOSCReceiver;
@@ -329,7 +332,14 @@ namespace VVVV.Nodes
 			{
 				var values = "";
 				foreach(var v in message.Values)
-					values += v.ToString() + ",";
+				{
+					if (v is float)
+						values += ((float)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + ",";
+					else if (v is double)
+						values += ((double)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + ",";
+					else
+						values += v.ToString() + ",";
+				}
 				values = values.TrimEnd(',');
 				
 				pin.Spread = values;

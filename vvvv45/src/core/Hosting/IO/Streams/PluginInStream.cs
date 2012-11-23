@@ -97,7 +97,6 @@ namespace VVVV.Hosting.IO.Streams
                     for (int i = 0; i < Length; i++)
                     {
                         int ord;
-                        string name;
                         FEnumIn.GetOrd(i, out ord);
                         writer.Write(new EnumEntry(FEnumName, ord));
                     }
@@ -146,6 +145,47 @@ namespace VVVV.Hosting.IO.Streams
                             result = (T) upstreamInterface.GetSlice(usS);
                         }
                         writer.Write(result);
+                    }
+                }
+            }
+            return base.Sync();
+        }
+    }
+
+    class RawInStream : BufferedIOStream<System.IO.Stream>
+    {
+        private readonly IRawIn FRawIn;
+        private readonly bool FAutoValidate;
+        
+        public RawInStream(IRawIn rawIn)
+        {
+            FRawIn = rawIn;
+            FAutoValidate = rawIn.AutoValidate;
+            Length = 0;
+        }
+        
+        public unsafe override bool Sync()
+        {
+            IsChanged = FAutoValidate ? FRawIn.PinIsChanged : FRawIn.Validate();
+            if (IsChanged)
+            {
+                foreach (var memoryStream in this)
+                {
+                    if (memoryStream != null)
+                        memoryStream.Dispose();
+                }
+                Length = FRawIn.SliceCount;
+                using (var writer = GetWriter())
+                {
+                    for (int i = 0; i < Length; i++)
+                    {
+                        byte* pData;
+                        int length;
+                        FRawIn.GetData(i, out pData, out length);
+                        if (pData != null)
+                            writer.Write(new System.IO.UnmanagedMemoryStream(pData, length));
+                        else
+                            writer.Write(new System.IO.MemoryStream());
                     }
                 }
             }
