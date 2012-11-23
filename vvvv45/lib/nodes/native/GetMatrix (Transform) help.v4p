@@ -1,0 +1,1149 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\GetMatrix (Transform) help.v4p">
+   <BOUNDS height="15360" left="2850" top="435" type="Window" width="12360">
+   </BOUNDS>
+   <NODE id="57" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2595" top="2310" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="56" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="120" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11820" top="7590" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="120" top="2790" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="56" dstpinname="Y Input Value" srcnodeid="57" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="55" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="6330" top="1875" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="0.90000">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="1.13000">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" visible="1" values="1.03000">
+   </PIN>
+   </NODE>
+   <NODE id="54" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="2580" top="1875" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="57" dstpinname="Transform" srcnodeid="54" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="53" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="9975" top="1875" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Z" slicecount="1" visible="1" values="0.01000">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="0.07000">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="0.04000">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="52" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1500" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2715" top="3675" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1500" top="1065" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="51" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2340" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3090" top="3630" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2340" top="1065" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="3.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="50" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3180" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4065" top="3480" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3180" top="1065" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="54" dstpinname="X" linkstyle="VHV" srcnodeid="52" srcpinname="Y Output Value">
+   <LINKPOINT x="2265" y="2190">
+   </LINKPOINT>
+   <LINKPOINT x="2850" y="2190">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="54" dstpinname="Y" linkstyle="VHV" srcnodeid="51" srcpinname="Y Output Value">
+   <LINKPOINT x="3105" y="2190">
+   </LINKPOINT>
+   <LINKPOINT x="3105" y="2190">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="54" dstpinname="Z" linkstyle="VHV" srcnodeid="50" srcpinname="Y Output Value">
+   <LINKPOINT x="3945" y="2190">
+   </LINKPOINT>
+   <LINKPOINT x="3345" y="2190">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="49" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="6315" top="2310" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="48" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="3765" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12120" top="7890" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="3765" top="2790" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="48" dstpinname="Y Input Value" srcnodeid="49" srcpinname="Matrix Out">
+   </LINK>
+   <NODE componentmode="InABox" id="47" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5115" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3015" top="3975" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5115" top="1065" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="46" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5955" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3390" top="3930" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5955" top="1065" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="3.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="45" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6795" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4365" top="3780" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6795" top="1065" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <NODE id="44" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="9990" top="2310" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="43" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="7440" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="15840" top="7950" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="7440" top="2790" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="43" dstpinname="Y Input Value" srcnodeid="44" srcpinname="Matrix Out">
+   </LINK>
+   <NODE componentmode="InABox" id="42" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8790" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6735" top="4035" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="8790" top="1065" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.50000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="41" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9630" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7110" top="3990" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="9630" top="1065" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.38000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="40" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="10470" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8085" top="3840" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="10470" top="1065" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-0.05000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Transform" srcnodeid="53" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="49" dstpinname="Transform" srcnodeid="55" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="55" dstpinname="X" linkstyle="VHV" srcnodeid="47" srcpinname="Y Output Value">
+   <LINKPOINT x="5880" y="2190">
+   </LINKPOINT>
+   <LINKPOINT x="6540" y="2190">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="55" dstpinname="Y" linkstyle="VHV" srcnodeid="46" srcpinname="Y Output Value">
+   <LINKPOINT x="6720" y="2190">
+   </LINKPOINT>
+   <LINKPOINT x="6720" y="2190">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="55" dstpinname="Z" linkstyle="VHV" srcnodeid="45" srcpinname="Y Output Value">
+   <LINKPOINT x="7560" y="2190">
+   </LINKPOINT>
+   <LINKPOINT x="6900" y="2190">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="53" dstpinname="X" linkstyle="VHV" srcnodeid="42" srcpinname="Y Output Value">
+   <LINKPOINT x="9555" y="2190">
+   </LINKPOINT>
+   <LINKPOINT x="10200" y="2190">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="53" dstpinname="Y" linkstyle="VHV" srcnodeid="41" srcpinname="Y Output Value">
+   <LINKPOINT x="10395" y="2190">
+   </LINKPOINT>
+   <LINKPOINT x="10395" y="2190">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="53" dstpinname="Z" linkstyle="VHV" srcnodeid="40" srcpinname="Y Output Value">
+   <LINKPOINT x="11235" y="2190">
+   </LINKPOINT>
+   <LINKPOINT x="10590" y="2190">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="39" nodename="IOBox (String)">
+   <BOUNDS height="255" left="120" top="5640" type="Node" width="810">
+   </BOUNDS>
+   <BOUNDS height="1110" left="120" top="5640" type="Box" width="6600">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|This is pretty heavy stuff and not very easy to explain. Scroll down (hold right mouse button and move the mouse) to see examples of most transformation types. Play arround with the input pins to see what happens.&cr;&lf;Browse wikipedia for informations about matrix operations. A good point to start is:&cr;&lf;http://en.wikipedia.org/wiki/Matrix_ (mathematics)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="38" nodename="IOBox (String)">
+   <BOUNDS height="255" left="135" top="6810" type="Node" width="3405">
+   </BOUNDS>
+   <BOUNDS height="330" left="135" top="6810" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|for some vvvvery expirimental apporaches to matrices see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="37" nodename="SetMatrix (Transform)">
+   <BOUNDS height="0" left="4500" top="6825" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="36" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2625" top="8655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="35" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="150" top="9135" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12120" top="7890" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="150" top="9135" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="35" dstpinname="Y Input Value" srcnodeid="36" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="34" nodename="AspectRatio (Transform)">
+   <BOUNDS height="0" left="2610" top="8220" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="FitIn">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="36" dstpinname="Transform" srcnodeid="34" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="33" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="6300" top="8655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="32" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="3825" top="9135" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12420" top="8190" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="3825" top="9135" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="32" dstpinname="Y Input Value" srcnodeid="33" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="31" nodename=":MODULES:\Camera (Transform Softimage).v4p">
+   <BOUNDS height="0" left="6285" top="8220" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1">
+   </PIN>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <BOUNDS left="6285" top="8220" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="33" dstpinname="Transform" srcnodeid="31" srcpinname="View Projection">
+   </LINK>
+   <NODE id="30" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="10005" top="8655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="29" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="7530" top="9135" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12720" top="8490" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="7530" top="9135" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="Y Input Value" srcnodeid="30" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="28" nodename="Inverse (Transform)">
+   <BOUNDS height="0" left="9990" top="8220" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1">
+   </PIN>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <BOUNDS left="9990" top="6690" type="Box">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="30" dstpinname="Transform" srcnodeid="28" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="27" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="10050" top="7860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" visible="1" values="4.00000">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="28" dstpinname="Source" srcnodeid="27" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="26" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2640" top="13200" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="150" top="13680" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12420" top="8190" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="150" top="13680" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Y Input Value" srcnodeid="26" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="24" nodename="LookAt (Transform)">
+   <BOUNDS height="0" left="2625" top="12765" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1">
+   </PIN>
+   <PIN pinname="Position X" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Position Y" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="LookAt X" visible="1">
+   </PIN>
+   <PIN pinname="LookAt Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Transform" srcnodeid="24" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="-3" nodename="Mouse (System Global)">
+   <BOUNDS height="0" left="3255" top="12345" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="LookAt X" srcnodeid="-3" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="24" dstpinname="LookAt Y" srcnodeid="-3" srcpinname="Y">
+   </LINK>
+   <NODE id="23" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="6435" top="13200" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="3825" top="13680" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12720" top="8490" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="3825" top="13680" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Y Input Value" srcnodeid="23" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="21" nodename="MovingTriad (Transform)">
+   <BOUNDS height="0" left="6420" top="12765" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1">
+   </PIN>
+   <PIN pinname="Position X" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Position Y" slicecount="1" values="0.46000">
+   </PIN>
+   <PIN pinname="LookAt X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="LookAt Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Y" slicecount="1" values="0.18000">
+   </PIN>
+   <PIN pinname="Velocity Z" slicecount="1" values="1.19000">
+   </PIN>
+   <PIN pinname="Acceleration X" slicecount="1" values="1.35000">
+   </PIN>
+   <PIN pinname="Velocity X" slicecount="1" values="0.23000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Transform" srcnodeid="21" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="20" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="10050" top="13200" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="7530" top="13680" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13020" top="8790" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="7530" top="13680" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Y Input Value" srcnodeid="20" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="18" nodename="Ortho (Transform)">
+   <BOUNDS height="0" left="10035" top="12765" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1">
+   </PIN>
+   <PIN pinname="Position X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Position Y" slicecount="1">
+   </PIN>
+   <PIN pinname="LookAt X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="LookAt Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Y" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity Z" slicecount="1">
+   </PIN>
+   <PIN pinname="Acceleration X" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity X" slicecount="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="-6.00000">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="341.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Transform" srcnodeid="18" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="17" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2685" top="17115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="150" top="17595" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13320" top="9090" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="150" top="17595" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Y Input Value" srcnodeid="17" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="15" nodename="Ortho (Transform)">
+   <BOUNDS height="0" left="2670" top="16680" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1">
+   </PIN>
+   <PIN pinname="Position X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Position Y" slicecount="1">
+   </PIN>
+   <PIN pinname="LookAt X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="LookAt Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Y" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity Z" slicecount="1">
+   </PIN>
+   <PIN pinname="Acceleration X" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity X" slicecount="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="-6.00000">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="341.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Transform" srcnodeid="15" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="14" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="6435" top="17115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="3825" top="17595" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13620" top="9390" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="3825" top="17595" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Y Input Value" srcnodeid="14" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="12" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="10215" top="17115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="7530" top="17595" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13920" top="9690" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="7530" top="17595" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="10" nodename="ParallelEpiped (Transform)">
+   <BOUNDS height="0" left="5370" top="16680" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1">
+   </PIN>
+   <PIN pinname="Position X" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Position Y" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="LookAt X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="LookAt Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Y" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity Z" slicecount="1">
+   </PIN>
+   <PIN pinname="Acceleration X" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity X" slicecount="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1">
+   </PIN>
+   <PIN pinname="XAxis X" slicecount="1" values="0.82000">
+   </PIN>
+   <PIN pinname="XAxis Z" slicecount="1" values="-0.27000">
+   </PIN>
+   <PIN pinname="YAxis Y" slicecount="1" values="0.73000">
+   </PIN>
+   <PIN pinname="YAxis Z" slicecount="1" values="0.41000">
+   </PIN>
+   <PIN pinname="ZAxis X" slicecount="1" values="0.15000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Transform" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="9" nodename="Perspective (Transform)">
+   <BOUNDS height="0" left="10200" top="16680" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1">
+   </PIN>
+   <PIN pinname="Position X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Position Y" slicecount="1">
+   </PIN>
+   <PIN pinname="LookAt X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="LookAt Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Y" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity Z" slicecount="1">
+   </PIN>
+   <PIN pinname="Acceleration X" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity X" slicecount="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="5.00001">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="396.00000">
+   </PIN>
+   <PIN pinname="FOV" slicecount="1" values="0.95000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="8" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2685" top="21120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="150" top="21600" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13620" top="9390" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="150" top="21600" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="6" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="6435" top="21120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="3825" top="21600" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13920" top="9690" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="3825" top="21600" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="4" nodename="GetMatrix (Transform)">
+   <PIN pinname="Transform" slicecount="1" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="10215" top="21120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="16" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="7530" top="21600" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14220" top="9990" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2595" left="7530" top="21600" type="Box" width="3390">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Matrix Out">
+   </LINK>
+   <NODE id="2" nodename="Shear (Transform)">
+   <BOUNDS height="0" left="2670" top="20685" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1">
+   </PIN>
+   <PIN pinname="Position X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Position Y" slicecount="1">
+   </PIN>
+   <PIN pinname="LookAt X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="LookAt Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Y" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity Z" slicecount="1">
+   </PIN>
+   <PIN pinname="Acceleration X" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity X" slicecount="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1">
+   </PIN>
+   <PIN pinname="Shear X by Y" slicecount="1" values="0.26000">
+   </PIN>
+   <PIN pinname="Shear X by Z" slicecount="1" values="0.22000">
+   </PIN>
+   <PIN pinname="Shear Y by X" slicecount="1" values="0.09000">
+   </PIN>
+   <PIN pinname="Shear Y by Z" slicecount="1" values="0.17000">
+   </PIN>
+   <PIN pinname="Shear Z by X" slicecount="1" values="0.26000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="2" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="1" nodename="Trapeze (Transform)">
+   <BOUNDS height="0" left="6435" top="20685" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="-0.14000">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="-0.28000">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.54000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="1" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="0" nodename="Vertigo (Transform)">
+   <BOUNDS height="0" left="10200" top="20685" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="0" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1">
+   </PIN>
+   <PIN pinname="Uniform Scale" slicecount="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1">
+   </PIN>
+   <PIN pinname="Position X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Position Y" slicecount="1">
+   </PIN>
+   <PIN pinname="LookAt X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="LookAt Y" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Y" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity Z" slicecount="1">
+   </PIN>
+   <PIN pinname="Acceleration X" slicecount="1">
+   </PIN>
+   <PIN pinname="Velocity X" slicecount="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1">
+   </PIN>
+   <PIN pinname="FOV" slicecount="1" values="0.95000">
+   </PIN>
+   <PIN pinname="Dolly &amp; Size" slicecount="1" values="0.93000">
+   </PIN>
+   <PIN pinname="Depth" slicecount="1" values="76.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Transform" srcnodeid="0" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="59" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="15" top="390" type="Box" width="4005">
+   </BOUNDS>
+   <BOUNDS height="160" left="210" top="24540" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|converts a matrix transform into the explicit matrix.&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="58" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="210" top="24540" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|GetMatrix - Transform|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

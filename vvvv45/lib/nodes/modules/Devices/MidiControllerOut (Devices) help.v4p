@@ -1,0 +1,287 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Devices\MidiControllerOut (Devices) help.v4p">
+   <BOUNDS height="6000" left="1275" top="315" type="Window" width="10650">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="675" left="255" top="525" type="Box" width="4140">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sends a value as controller data to a MIDI device.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MidiControllerOut - Devices|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="17" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="3030" top="1500" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="WaveShaper (Value)" systemname="WaveShaper (Value)">
+   <BOUNDS height="0" left="3030" top="1920" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Shape" slicecount="1" values="Triangle">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input" srcnodeid="17" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2310" top="2520" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="20565" top="8955" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2310" top="2520" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="CHANGE (ANIMATION)" systemname="Change (Animation)">
+   <BOUNDS height="0" left="2145" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   <PIN pinname="Bang On Create" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="210" top="3990" type="Node" width="4290">
+   </BOUNDS>
+   <BOUNDS height="1155" left="210" top="3990" type="Box" width="960">
+   </BOUNDS>
+   <BOUNDS height="160" left="870" top="1320" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|note that in this module the channels are counted from 1!!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1980" top="3555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="20730" top="10650" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1980" top="3555" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="4125" top="3555" type="Node" width="2460">
+   </BOUNDS>
+   <BOUNDS height="2070" left="4125" top="3555" type="Box" width="2955">
+   </BOUNDS>
+   <BOUNDS height="160" left="870" top="1320" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|controller #7 is for main volume&cr;&lf;&cr;&lf;see http://www.harmony-central.com/MIDI/Doc/table3.html for other options, but note that typical synthesizers will implement only very few of these|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="3330" top="2520" type="Node" width="705">
+   </BOUNDS>
+   <BOUNDS height="270" left="3330" top="2520" type="Box" width="705">
+   </BOUNDS>
+   <BOUNDS height="160" left="870" top="1320" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="volume">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Y Input Value" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="7" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="8670" top="450" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="0.2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="6" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7725" top="435" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="24510" top="7395" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="855" left="7725" top="435" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="64,67,71">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="5" nodename="CHANGE (ANIMATION)" systemname="Change (Animation)">
+   <BOUNDS height="0" left="8775" top="1020" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bang On Create" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" hiddenwhenlocked="1" srcnodeid="7" srcpinname="Cycles">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="4" nodename="Toggle (Animation)" systemname="Toggle (Animation)">
+   <BOUNDS height="0" left="8760" top="1590" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" hiddenwhenlocked="1" srcnodeid="5" srcpinname="OnChange">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="8025" top="2415" type="Node" width="525">
+   </BOUNDS>
+   <BOUNDS height="1065" left="8025" top="2415" type="Box" width="2055">
+   </BOUNDS>
+   <BOUNDS height="160" left="795" top="-900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|in the meanwhile...&cr;&lf;play a chord&cr;&lf;over and over again|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2835" top="3555" type="Node" width="1350">
+   </BOUNDS>
+   <BOUNDS height="270" left="2835" top="3555" type="Box" width="1350">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="&lt;--------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1695" top="4005" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2700" top="8475" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1695" top="4005" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1185" top="4005" type="Node" width="885">
+   </BOUNDS>
+   <BOUNDS height="240" left="1185" top="4005" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="---&gt;">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="20" nodename=":MODULES:\vvvv group\Devices\MidiControllerOut (Devices).v4p" systemname="MidiControllerOut (Devices)" filename="%VVVV%\lib\nodes\modules\Devices\MidiControllerOut (Devices).v4p">
+   <BOUNDS height="0" left="2145" top="4455" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5115" left="2505" top="6720" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2145" top="4455" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   <PIN pinname="Value" visible="1">
+   </PIN>
+   <PIN pinname="Controller" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Channel" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Do Send" srcnodeid="14" srcpinname="OnChange">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Value" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Controller" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Channel" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="21" nodename=":MODULES:\vvvv group\Devices\MidiNoteOut (Devices).v4p" systemname="MidiNoteOut (Devices)" filename="%VVVV%\lib\nodes\modules\Devices\MidiNoteOut (Devices).v4p">
+   <BOUNDS height="0" left="8055" top="2055" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="10395" top="9705" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="8055" top="2055" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   <PIN pinname="Velocity" visible="1">
+   </PIN>
+   <PIN pinname="Note" visible="1">
+   </PIN>
+   <PIN pinname="Channel" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Do Send" hiddenwhenlocked="1" srcnodeid="5" srcpinname="OnChange">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Velocity" hiddenwhenlocked="1" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Note" hiddenwhenlocked="1" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   </PATCH>

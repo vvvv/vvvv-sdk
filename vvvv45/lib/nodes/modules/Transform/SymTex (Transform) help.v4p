@@ -1,0 +1,309 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Transform\SymTex (Transform) help.v4p">
+   <BOUNDS height="11325" left="1275" top="225" type="Window" width="9315">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="21" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="4620" top="8925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="10605" top="495" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="4620" top="8925" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="1725" top="7245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="2475" top="7260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" values="..\..\..\assets\images\earth_512x512.jpg" encoded="0">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
+   <BOUNDS height="0" left="5505" top="5955" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="17" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="5775" top="5505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Z" srcnodeid="17" srcpinname="Output">
+   </LINK>
+   <NODE id="16" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="6465" top="7365" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="7215" top="7380" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" values="..\..\..\girlpower\images\earth_512x512.jpg" encoded="0">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="0" left="4620" top="8310" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Layers" srcnodeid="14" srcpinname="Layer">
+   </LINK>
+   <NODE id="13" nodename="Translate (Transform)" systemname="Translate (Transform)">
+   <BOUNDS height="0" left="750" top="7395" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="-0.5">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Translate (Transform)" systemname="Translate (Transform)">
+   <BOUNDS height="0" left="5610" top="7650" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\Constant.fx" id="10" nodename=":EFFECTS:\Constant.fx" systemname="Constant (EX9.Effect)">
+   <BOUNDS height="0" left="1845" top="7785" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="12000" left="8250" top="285" type="Window" width="12000">
+   </BOUNDS>
+   <BOUNDS height="6000" left="1845" top="7785" type="Box" width="6000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Mesh" srcnodeid="20" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Texture" srcnodeid="19" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Texture Transform" srcnodeid="18" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Layer 1" srcnodeid="10" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="480" left="540" top="2205" type="Node" width="4020">
+   </BOUNDS>
+   <BOUNDS height="420" left="540" top="2205" type="Box" width="8490">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|float4x4 tTex: TEXTUREMATRIX &lt;string uiname=&quot;Texture Transform&quot;;&gt;;&cr;&lf;|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Courier New|">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1050" top="1755" type="Node" width="1665">
+   </BOUNDS>
+   <BOUNDS height="240" left="1050" top="1755" type="Box" width="1725">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|line 28 in Constant.fx:|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="990" top="2640" type="Node" width="6675">
+   </BOUNDS>
+   <BOUNDS height="870" left="990" top="2640" type="Box" width="4755">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|declares a TEXTUREMATRIX pin, which is interpreted in vvvv in a way that implicitely SymTex is used - this is to get the vvvv style symmetric scaling.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Explicitely does a vvvv style symmetric texture transformation in case you don&apos;t want to change an existing effect that doesn&apos;t use the TEXTUREMATRIX semantics.&cr;&lf;|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SymTex - Transform|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="885" top="3780" type="Node" width="1665">
+   </BOUNDS>
+   <BOUNDS height="270" left="885" top="3780" type="Box" width="2580">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|line 28 in BadTexTransform.fx:|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="825" top="4665" type="Node" width="6675">
+   </BOUNDS>
+   <BOUNDS height="1170" left="825" top="4665" type="Box" width="4755">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|doesn&apos;t use the TEXTUREMATRIX semantics and just declares a matrix pin. vvvv is not able to do the symmetric texture transform pin, since it doesn&apos;t know that it is used on a texture.&cr;&lf;&cr;&lf;in cases like that an explicit SymTex helps.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="480" left="540" top="4230" type="Node" width="4020">
+   </BOUNDS>
+   <BOUNDS height="360" left="540" top="4230" type="Box" width="5850">
+   </BOUNDS>
+   <BOUNDS height="160" left="1260" top="-1215" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|float4x4 tTex &lt;string uiname=&quot;Texture Transform&quot;;&gt;;|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Courier New|">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1620" top="9960" type="Node" width="9780">
+   </BOUNDS>
+   <BOUNDS height="705" left="1620" top="9960" type="Box" width="6465">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|note that for shadow mapping techniques and stuff like that you sometimes might not want to have an implicit symmetric texture transform pin. don&apos;t use the semantics then.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Transform\SymTex (Transform).v4p" id="22" nodename=":MODULES:\vvvv group\Transform\SymTex (Transform).v4p" stayontop="0" systemname="SymTex (Transform)">
+   <BOUNDS height="0" left="7410" top="6615" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="8715" left="9705" top="3900" type="Window" width="10845">
+   </BOUNDS>
+   <BOUNDS height="3600" left="7410" top="6615" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Transform In" srcnodeid="18" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Transform\BadTexTransform.fx" id="11" nodename="BadTexTransform (EX9.Effect)" systemname="BadTexTransform (EX9.Effect)">
+   <BOUNDS height="0" left="6585" top="7905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="12825" left="8940" top="60" type="Window" width="12000">
+   </BOUNDS>
+   <BOUNDS height="6000" left="6585" top="7905" type="Box" width="6000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Mesh" srcnodeid="16" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Texture" srcnodeid="15" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Layer 2" srcnodeid="11" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Transform" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Texture Transform" srcnodeid="22" srcpinname="Transform Out">
+   </LINK>
+   </PATCH>
