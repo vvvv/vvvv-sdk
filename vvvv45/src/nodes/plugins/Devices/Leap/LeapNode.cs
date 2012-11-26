@@ -122,7 +122,7 @@ namespace VVVV.Nodes.Devices.Leap
 				{
 					var finger = FCurrentFingers[j];
 					FFingerPosOut.Add(finger.tip().position.ToVector3DPos());
-					FFingerDirOut.Add(finger.tip().direction.ToVector3DDir());
+					FFingerDirOut.Add(-finger.tip().direction.ToVector3DDir());
 					FFingerVelOut.Add(finger.velocity().ToVector3DPos());
 					FFingerIsToolOut.Add(finger.isTool());
 					FFingerSizeOut.Add(new Vector2D(finger.width() * 0.001, finger.length() * 0.001));
