@@ -30,7 +30,7 @@ namespace System.IO
             {
                 for (int i = 0; i < bytesRead; i += fieldSize)
                     for (int j = 0; j < fieldSize / 2; j++)
-                          buffer.Swap(i + j, i + fieldSize - j);
+                          buffer.Swap(i + j, i + fieldSize - j - 1);
             }
             return bytesRead;
         }
@@ -79,7 +79,7 @@ namespace System.IO
             var byteBuffer = new byte[count * sizeof(Boolean)];
             var itemsRead = reader.ReadValues(byteBuffer, sizeof(Boolean), byteOrder);
             var resultBuffer = new Boolean[itemsRead / sizeof(Boolean)];
-            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, itemsRead);
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(Boolean));
             return resultBuffer;
         }
 
@@ -119,7 +119,7 @@ namespace System.IO
             var byteBuffer = new byte[count * sizeof(Int16)];
             var itemsRead = reader.ReadValues(byteBuffer, sizeof(Int16), byteOrder);
             var resultBuffer = new Int16[itemsRead / sizeof(Int16)];
-            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, itemsRead);
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(Int16));
             return resultBuffer;
         }
 
@@ -159,7 +159,7 @@ namespace System.IO
             var byteBuffer = new byte[count * sizeof(UInt16)];
             var itemsRead = reader.ReadValues(byteBuffer, sizeof(UInt16), byteOrder);
             var resultBuffer = new UInt16[itemsRead / sizeof(UInt16)];
-            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, itemsRead);
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(UInt16));
             return resultBuffer;
         }
 
@@ -199,7 +199,7 @@ namespace System.IO
             var byteBuffer = new byte[count * sizeof(Int32)];
             var itemsRead = reader.ReadValues(byteBuffer, sizeof(Int32), byteOrder);
             var resultBuffer = new Int32[itemsRead / sizeof(Int32)];
-            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, itemsRead);
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(Int32));
             return resultBuffer;
         }
 
@@ -239,7 +239,7 @@ namespace System.IO
             var byteBuffer = new byte[count * sizeof(UInt32)];
             var itemsRead = reader.ReadValues(byteBuffer, sizeof(UInt32), byteOrder);
             var resultBuffer = new UInt32[itemsRead / sizeof(UInt32)];
-            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, itemsRead);
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(UInt32));
             return resultBuffer;
         }
 
@@ -279,7 +279,7 @@ namespace System.IO
             var byteBuffer = new byte[count * sizeof(Int64)];
             var itemsRead = reader.ReadValues(byteBuffer, sizeof(Int64), byteOrder);
             var resultBuffer = new Int64[itemsRead / sizeof(Int64)];
-            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, itemsRead);
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(Int64));
             return resultBuffer;
         }
 
@@ -319,7 +319,7 @@ namespace System.IO
             var byteBuffer = new byte[count * sizeof(UInt64)];
             var itemsRead = reader.ReadValues(byteBuffer, sizeof(UInt64), byteOrder);
             var resultBuffer = new UInt64[itemsRead / sizeof(UInt64)];
-            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, itemsRead);
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(UInt64));
             return resultBuffer;
         }
 
@@ -359,7 +359,7 @@ namespace System.IO
             var byteBuffer = new byte[count * sizeof(Single)];
             var itemsRead = reader.ReadValues(byteBuffer, sizeof(Single), byteOrder);
             var resultBuffer = new Single[itemsRead / sizeof(Single)];
-            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, itemsRead);
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(Single));
             return resultBuffer;
         }
 
@@ -399,7 +399,7 @@ namespace System.IO
             var byteBuffer = new byte[count * sizeof(Double)];
             var itemsRead = reader.ReadValues(byteBuffer, sizeof(Double), byteOrder);
             var resultBuffer = new Double[itemsRead / sizeof(Double)];
-            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, itemsRead);
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(Double));
             return resultBuffer;
         }
 

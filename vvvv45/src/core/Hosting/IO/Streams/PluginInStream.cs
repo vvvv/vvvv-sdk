@@ -189,6 +189,12 @@ namespace VVVV.Hosting.IO.Streams
                     }
                 }
             }
+            else
+            {
+                // Reset the streams
+                foreach (var memoryStream in this)
+                    memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
+            }
             return base.Sync();
         }
     }
