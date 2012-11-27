@@ -56,13 +56,13 @@ namespace VVVV.Nodes
         IDiffSpread<string> FPinInMessage;
 
         [Input("EmailEncoding", EnumName = "EmailEncoding")]
-        IDiffSpread<EnumEntry> FEmailEncoding;
+        IDiffSpread<EnumEntry> FPinInEmailEncoding;
 
         [Input("Accept Html")]
         IDiffSpread<bool> FPinInIsHtml;
 
         [Input("Attachment", StringType = StringType.Filename)]
-        IDiffSpread<string> FPinInAttachment;
+        ISpread<ISpread<string>> FPinInAttachment;
 
         [Output("Success")]
         ISpread<bool> FPinOutSuccess;
@@ -77,18 +77,19 @@ namespace VVVV.Nodes
 
         [ImportingConstructor]
         public SendEmailNode()
-		{ 
-			var s = new string[]{"Ansi","Ascii","UTF8", "UTF32","Unicode"};
-			//Please rename your Enum Type to avoid 
-			//numerous "MyDynamicEnum"s in the system
-		    EnumManager.UpdateEnum("EmailEncoding", "Ansi", s);  
-		}
+        { 
+            var s = new string[]{"Ansi","Ascii","UTF8", "UTF32","Unicode"};
+            //Please rename your Enum Type to avoid 
+            //numerous "MyDynamicEnum"s in the system
+            EnumManager.UpdateEnum("EmailEncoding", "Ansi", s);  
+        }
 
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
             if (FPinInDoSend.IsChanged)
             {
+                SpreadMax = SpreadUtils.SpreadMax(FPinInAttachment, FPinInDoSend, FPinInEmailEncoding, FPinInFrom, FPinInHost, FPinInIsHtml, FPinInMessage, FPinInPassword, FPinInPort, FPinInSSL, FPinInSubject, FPinInTo, FPinInUsername);
                 FPinOutSuccess.SliceCount = SpreadMax;
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -119,7 +120,7 @@ namespace VVVV.Nodes
                             MailMessage mail = new MailMessage(FPinInFrom[i], FPinInTo[i]);
 
                             //Convert the Incomming Message to the corresponding encoding
-                            switch (FEmailEncoding[i].Index)
+                            switch (FPinInEmailEncoding[i].Index)
                             {
                                 case (0):
                                     mail.BodyEncoding = mail.SubjectEncoding = Encoding.Default;
@@ -145,12 +146,15 @@ namespace VVVV.Nodes
                             mail.Body = Message;
                             mail.IsBodyHtml = FPinInIsHtml[i];
 
-                            if (File.Exists(FPinInAttachment[i]))
+                            foreach (var filename in FPinInAttachment[i])
                             {
-                                Attachment Attachment = new Attachment(FPinInAttachment[i]);
-                                ContentDisposition Disposition = Attachment.ContentDisposition;
-                                Disposition.Inline = false;
-                                mail.Attachments.Add(Attachment);
+                                if (File.Exists(filename))
+                                {
+                                    Attachment Attachment = new Attachment(filename);
+                                    ContentDisposition Disposition = Attachment.ContentDisposition;
+                                    Disposition.Inline = false;
+                                    mail.Attachments.Add(Attachment);
+                                }
                             }
 
                             EmailClient.SendAsync(mail, i);
