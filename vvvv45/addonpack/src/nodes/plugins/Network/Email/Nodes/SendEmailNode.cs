@@ -89,6 +89,7 @@ namespace VVVV.Nodes
         {
             if (FPinInDoSend.IsChanged)
             {
+                FPinOutSuccess.SliceCount = SpreadMax;
                 for (int i = 0; i < SpreadMax; i++)
                 {
                     if (FPinInDoSend[i])
@@ -108,18 +109,12 @@ namespace VVVV.Nodes
                             EmailClient.Credentials = SMTPUserInfo;
                         }
 
-                        FPinOutSuccess.SliceCount = SpreadMax;
-
+                        FPinOutSuccess[i] = false;
 
                         try
                         {
                             string Message = FPinInMessage[i];
                             string Subject = FPinInSubject[i];
-
-                            //Get the Deault Encoding Bytes 
-                            byte[] BytesMessage = Encoding.Default.GetBytes(Message);
-                            byte[] BytesSubject = Encoding.Default.GetBytes(Subject);
-
 
                             MailMessage mail = new MailMessage(FPinInFrom[i], FPinInTo[i]);
 
@@ -131,23 +126,15 @@ namespace VVVV.Nodes
                                     break;
                                 case (1):
                                     mail.BodyEncoding = mail.SubjectEncoding = Encoding.ASCII;
-                                    Message = Encoding.ASCII.GetString(BytesMessage);
-                                    Subject = Encoding.ASCII.GetString(BytesSubject);
                                     break;
                                 case (2):
                                     mail.BodyEncoding = mail.SubjectEncoding = Encoding.UTF8;
-                                    Message = Encoding.UTF8.GetString(BytesMessage);
-                                    Subject = Encoding.UTF8.GetString(BytesSubject);
                                     break;
                                 case (3):
                                     mail.BodyEncoding = mail.SubjectEncoding = Encoding.UTF32;
-                                    Message = Encoding.UTF32.GetString(BytesMessage);
-                                    Subject = Encoding.UTF32.GetString(BytesSubject);
                                     break;
                                 case (4):
                                     mail.BodyEncoding = mail.SubjectEncoding = Encoding.Unicode;
-                                    Message = Encoding.Unicode.GetString(BytesMessage);
-                                    Subject = Encoding.Unicode.GetString(BytesSubject);
                                     break;
                                 default:
                                     mail.BodyEncoding = mail.SubjectEncoding = Encoding.Default;
@@ -178,11 +165,6 @@ namespace VVVV.Nodes
                         }
                     }
                 }
-
-            }
-            else
-            {
-                this.FPinOutSuccess.SliceCount = 0;
             }
 
             if (!String.IsNullOrEmpty(FError))
