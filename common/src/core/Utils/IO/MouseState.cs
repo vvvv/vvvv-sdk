@@ -12,6 +12,19 @@ namespace VVVV.Utils.IO
         Right = 4
     }
 
+    public static class MouseButtonExtensions
+    {
+        public static MouseButton ToMouseButton(this System.Windows.Forms.MouseButtons button)
+        {
+            return (MouseButton)(((int)button >> 20) & 7);
+        }
+
+        public static System.Windows.Forms.MouseButtons ToWindowsFormsMouseButtons(this MouseButton button)
+        {
+            return (System.Windows.Forms.MouseButtons)((int)button << 20);
+        }
+    }
+
     /// <summary>
     /// Encapsulates the state of a mouse.
     /// </summary>
