@@ -109,7 +109,7 @@ namespace VVVV.MSKinect.Nodes
                     Texture t = null;
                     if (OnDevice is DeviceEx)
                     {
-                        t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.X8R8G8B8, Pool.Default);
+                        t = new Texture(OnDevice, 640, 480, 1, Usage.Dynamic, Format.X8R8G8B8, Pool.Default);
                     }
                     else
                     {

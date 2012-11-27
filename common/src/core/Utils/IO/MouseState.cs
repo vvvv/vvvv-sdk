@@ -1,8 +1,17 @@
 ﻿using System;
-using System.Windows.Forms;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Utils.IO
 {
+    [Flags]
+    public enum MouseButton
+    {
+        None = 0,
+        Left = 1,
+        Middle = 2,
+        Right = 4
+    }
+
     /// <summary>
     /// Encapsulates the state of a mouse.
     /// </summary>
@@ -21,19 +30,51 @@ namespace VVVV.Utils.IO
         /// <summary>
         /// The pressed mouse button.
         /// </summary>
-        public readonly MouseButtons Button;
+        public readonly MouseButton Button;
 
         /// <summary>
         /// The position of the mouse wheel.
         /// </summary>
         public readonly int MouseWheel;
         
-        public MouseState(double x, double y, MouseButtons button, int mouseWheel)
+        public MouseState(double x, double y, MouseButton button, int mouseWheel)
         {
             X = x;
             Y = y;
             Button = button;
             MouseWheel = mouseWheel;
+        }
+        
+        public Vector2D Position
+        {
+        	get
+        	{
+        		return new Vector2D(X, Y);
+        	}
+        }
+        
+        public bool IsLeft
+        {
+        	get
+        	{
+        		return (Button & MouseButton.Left) > 0;
+        	}
+        }
+        
+        public bool IsMiddle
+        {
+        	get
+        	{
+        		return (Button & MouseButton.Middle) > 0;
+        	}
+        }
+        
+        public bool IsRight
+        {
+        	get
+        	{
+        		return (Button & MouseButton.Right) > 0;
+        	}
         }
         
         #region Equals and GetHashCode implementation

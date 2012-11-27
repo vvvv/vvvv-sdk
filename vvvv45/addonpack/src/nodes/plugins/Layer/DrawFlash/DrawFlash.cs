@@ -39,8 +39,8 @@ namespace VVVV.Nodes
     	//note: the binary version of this plugin shipping with vvvvs addonpack 
     	//is licensed by meso.net
     	//to build your own non-trial version enter your license key here:	
-        const string LICENSENAME = "";
-        const string LICENSENUMBER = "";
+        const string LICENSENAME = FantastiqUILicense.NAME;
+        const string LICENSENUMBER = FantastiqUILicense.NUMBER;
         
         #region pins & fields
         [Input ("Filename", IsSingle = true, StringType = StringType.Filename, FileMask = "Shockwave Flash (*.swf)|*.swf")]

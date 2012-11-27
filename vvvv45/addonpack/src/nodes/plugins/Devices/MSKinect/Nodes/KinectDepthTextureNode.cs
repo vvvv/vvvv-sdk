@@ -14,7 +14,7 @@ using Microsoft.Kinect;
 namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "Depth", Category = "Kinect", Version = "Microsoft", Author = "vux", Tags = "directx,texture")]
-    public class KinectDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
+    public unsafe class KinectDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]
         private Pin<KinectRuntime> FInRuntime;
@@ -31,7 +31,7 @@ namespace VVVV.MSKinect.Nodes
 
         private KinectRuntime runtime;
 
-        private byte[] depthimage;
+        private DepthImagePixel[] depthpixels;
         private short[] rawdepth;
 
         private object m_lock = new object();
@@ -41,7 +41,7 @@ namespace VVVV.MSKinect.Nodes
         [ImportingConstructor()]
         public KinectDepthTextureNode(IPluginHost host)
         {
-            this.depthimage = new byte[320 * 240];
+            this.depthpixels = new DepthImagePixel[320 * 240];
             this.rawdepth = new short[320 * 240];
             host.CreateTextureOutput("Texture Out", TSliceMode.Single, TPinVisibility.True, out this.FOutTexture);
         }
@@ -109,11 +109,11 @@ namespace VVVV.MSKinect.Nodes
                     Texture t = null;
                     if (OnDevice is DeviceEx)
                     {
-                        t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.L8, Pool.Default);
+                        t = new Texture(OnDevice, 320, 240, 1, Usage.Dynamic, Format.L16, Pool.Default);
                     }
                     else
                     {
-                        t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.L8, Pool.Managed);
+                        t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.L16, Pool.Managed);
                     }
                     this.FDepthTex.Add(OnDevice, t);
                 }
@@ -124,10 +124,26 @@ namespace VVVV.MSKinect.Nodes
                     Surface srf = tx.GetSurfaceLevel(0);
                     DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
 
+                    int pos = 0;
                     lock (this.m_lock)
                     {
-                        rect.Data.WriteRange(this.depthimage);
+                        fixed (short* b = &this.rawdepth[0])
+                        {
+                            short* ptr = b;
+                            for (int i = 0; i < 240; i++)
+                            {
+                                rect.Data.WriteRange((IntPtr)ptr, 320);
+
+                                pos += rect.Pitch;
+                                rect.Data.Position = pos;
+                                ptr += 320;
+                            }
+                        }
                     }
+
+
+                    //rect.Data.WriteRange(this.depthimage);
+
                     srf.UnlockRectangle();
 
 
@@ -155,12 +171,11 @@ namespace VVVV.MSKinect.Nodes
                 this.frameindex = frame.FrameNumber;
                 lock (m_lock)
                 {
-                    frame.CopyPixelDataTo(this.rawdepth);
+                    frame.CopyDepthImagePixelDataTo(this.depthpixels);
+
                     for (int i16 = 0; i16 < 320 * 240; i16++)
                     {
-                        int realDepth = rawdepth[i16] >> DepthImageFrame.PlayerIndexBitmaskWidth;
-                        byte intensity = (byte)(~(realDepth >> 4));
-                        this.depthimage[i16] = intensity;
+                        this.rawdepth[i16] = this.depthpixels[i16].Depth;
                     }
                 }
             }  

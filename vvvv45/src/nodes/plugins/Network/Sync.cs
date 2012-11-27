@@ -29,38 +29,43 @@ namespace VVVV.Nodes
 	public class FileStreamNetworkSyncNode : IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
-		[Input("Duration", IsSingle = true)]
-		ISpread<double> FLength;
-		
-		[Input("Position", IsSingle = true)]
-		ISpread<double> FTime;
-		
-		[Input("Fine Offset (ms)", IsSingle = true)]
-		ISpread<int> FFineOffset;
-		
-		[Input("Is Client", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
-		ISpread<bool> FIsClient;
-		
-		[Input("Server IP", DefaultString = "127.0.0.1", IsSingle = true, StringType = StringType.IP, Visibility = PinVisibility.OnlyInspector)]
-		ISpread<string> FServerIP;
+#pragma warning disable 0649
+        [Input("Duration", IsSingle = true)]
+        ISpread<double> FLength;
 
-		[Input("Port", DefaultValue = 3336, IsSingle = true)]
-		IDiffSpread<int> FPort;
-		
-		[Output("Do Seek")]
-		ISpread<bool> FDoSeekOut;
-		
-		[Output("Seek Position")]
-		ISpread<double> FSeekTimeOut;
-		
-		[Output("Adjust System Time")]
-		ISpread<double> FAdjustTimeOut;
-		
-		[Output("Offset")]
-		ISpread<double> FOffsetOut;
-		
-		[Output("Stream Offset")]
-		ISpread<double> FStreamOffsetOut;
+        [Input("Position", IsSingle = true)]
+        ISpread<double> FTime;
+
+        [Input("Fine Offset (ms)", IsSingle = true)]
+        ISpread<int> FFineOffset;
+
+        [Input("Is Client", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
+        ISpread<bool> FIsClient;
+
+        [Input("Server IP", DefaultString = "127.0.0.1", IsSingle = true, StringType = StringType.IP, Visibility = PinVisibility.OnlyInspector)]
+        ISpread<string> FServerIP;
+
+        [Input("Port", DefaultValue = 3336, IsSingle = true)]
+        IDiffSpread<int> FPort;
+
+        [Output("Do Seek")]
+        ISpread<bool> FDoSeekOut;
+
+        [Output("Seek Position")]
+        ISpread<double> FSeekTimeOut;
+
+        [Output("Adjust System Time")]
+        ISpread<double> FAdjustTimeOut;
+
+        [Output("Offset")]
+        ISpread<double> FOffsetOut;
+
+        [Output("Stream Offset")]
+        ISpread<double> FStreamOffsetOut;
+
+        [Import]
+        IHDEHost FHost;
+#pragma warning restore
 		
 		object FLock = new object();
 		double FStreamTime;
@@ -74,12 +79,6 @@ namespace VVVV.Nodes
 		UDPServer FServer;
 		IPEndPoint FRemoteServer;
 		Timer FTimer;
-		
-		[Import]
-		IHDEHost FHost;
-
-		[Import]
-		ILogger FLogger;
 		#endregion fields & pins
 		
 		public FileStreamNetworkSyncNode()

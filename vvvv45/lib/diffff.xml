@@ -506,10 +506,9 @@
 	</NODE>  
   </PATCH>
   <PATCH version="40beta19">
-  	<NODE old=":PLUGINS:\MultipleParticles.dll" new="Particles (Spreads)">
-  	</NODE>
-  	<NODE old=":PLUGINS:\MultipleParticles.dll|VVVV.Nodes.MultipleParticleSystemsNode" new="Particles (Spreads)">
-  	</NODE>
+  	<NODE old=":PLUGINS:\MultipleParticles.dll" new="Particles (Spreads)"></NODE>
+  	<NODE old=":PLUGINS:\MultipleParticles.dll|VVVV.Nodes.MultipleParticleSystemsNode" new="Particles (Spreads)"></NODE>
+	<NODE old=":PLUGINS:\Lindenmayer.dll|VVVV.Nodes.LindenmayerPlugin" new="Lindenmayer (Spreads)"></NODE>
   </PATCH>
   <PATCH version="40beta19.1">
     <NODE old=":MODULES:\B-Spline (3D Surface Normals).v4p" new=":MODULES:\vvvv group\3D\B-Spline (3D Surface Normals).v4p"> </NODE>
@@ -598,12 +597,12 @@
     <NODE old=":MODULES:\legacy\XPath (XML Legacy).v4p" new=":MODULES:\vvvv group\_legacy\XPath (XML Legacy).v4p"> </NODE>
   </PATCH>
   <PATCH version="40beta20.1">
-    	<NODE old="MidiController (Devices)" new=":MODULES:\vvvv group\_legacy\MidiController (Devices Legacy).v4p">
-    	</NODE>
-    	<NODE old="MidiController (Devices Relative)" new=":MODULES:\vvvv group\_legacy\MidiController (Devices Relative Legacy).v4p">
-    	</NODE>
-    	<NODE old="MidiNote (Devices)" new=":MODULES:\vvvv group\_legacy\MidiNote (Devices Legacy).v4p">
-    	</NODE>
+   	<NODE old="MidiController (Devices)" new=":MODULES:\vvvv group\_legacy\MidiController (Devices Legacy).v4p">
+   	</NODE>
+   	<NODE old="MidiController (Devices Relative)" new=":MODULES:\vvvv group\_legacy\MidiController (Devices Relative Legacy).v4p">
+   	</NODE>
+   	<NODE old="MidiNote (Devices)" new=":MODULES:\vvvv group\_legacy\MidiNote (Devices Legacy).v4p">
+   	</NODE>
 	<NODE old="Expr (Value)" new="Expr (Value Legacy)">
 	</NODE>
 	<NODE old=":MODULES:\vvvv group\EX9\Grid (EX9 Test).v4p" new=":MODULES:\vvvv group\EX9\Grid (EX9 Test legacy).v4p">
@@ -1094,5 +1093,36 @@
 	  <PIN old="End Time" new="Loop End Time"> </PIN>
 	  <PIN old="Seek Position" new="Seek Time"> </PIN>
 	</NODE>	
+	<NODE old=":PLUGINS:\Irrklang.dll|VVVV.Nodes.Irrklang" new="Irrklang (Sound Legacy)"/>
+	<NODE old="Irrklang (Sound)" new="Irrklang (Sound Legacy)"/>
+  </PATCH>
+  <PATCH version="45alpha28.4">
+	<NODE old="Reader (File)" new="Reader (String)">
+		<PIN old="Encoding" olddefault="System Default"> </PIN>
+	</NODE>	
+	<NODE old="Writer (File)" new="Writer (String)">
+		<PIN old="Encoding" olddefault="System Default"> </PIN>
+	</NODE>	
+	<NODE old="UDP (Network Client)" new="UDP (Network Client String)"></NODE>	
+	<NODE old="UDP (Network Server)" new="UDP (Network Server String)"></NODE>	
+	<NODE old="TCP (Network Client)" new="TCP (Network Client String)"></NODE>	
+	<NODE old="TCP (Network Server)" new="TCP (Network Server String)"></NODE>	
+	<NODE old="RS232 (Devices)" new="RS232 (Devices String)"></NODE>	
+	<NODE old="RadioButton (GUI)" new="RadioButton (GUI Legacy)"></NODE>
+	<NODE old="ToggleButton (GUI)" new="ToggleButton (GUI Legacy)"></NODE>
+	<NODE old="Slider (GUI)" new="Slider (GUI Legacy)"></NODE>
+	<NODE old="RotarySlider (GUI)" new="RotarySlider (GUI Legacy)"></NODE>
+	<NODE old="SliderXY (GUI)" new="SliderXY (GUI Legacy)"></NODE>
+  </PATCH>
+  <PATCH version="45alpha28.5">
+  <NODE old="PictureStack (EX9.Texture)" new="PictureStack (EX9.Texture Legacy)"></NODE>
+  <NODE old="PictureStack (EX9.Texture Position)" new="PictureStack (EX9.Texture Position Legacy)"></NODE>
+  <NODE old="HTTP (Network Get)" new="HTTP (Network Get String)">
+    <PIN old="Encoding" olddefault="System Default"> </PIN>
+  </NODE>
+  <NODE old="HTTP (Network Post)" new="HTTP (Network Post String)">
+    <PIN old="Encoding" olddefault="System Default"> </PIN>
+  </NODE>
+  <NODE old="DynamicTexture (EX9.Texture String)" new="DynamicTexture (EX9.Texture String Legacy)"></NODE>
   </PATCH>
 </CONVVVVERTER>

@@ -37,6 +37,13 @@ namespace OSC.NET
 	/// </summary>
 	abstract public class OSCPacket
 	{
+        public static readonly Encoding ASCIIEncoding8Bit;
+
+        static OSCPacket()
+        {
+            ASCIIEncoding8Bit = Encoding.GetEncoding(1252);
+        }
+
 		public OSCPacket()
 		{
 			this.values = new ArrayList();
@@ -100,7 +107,7 @@ namespace OSC.NET
 
 		protected static byte[] packString(string value)
 		{
-			return System.Text.Encoding.ASCII.GetBytes(value);
+			return ASCIIEncoding8Bit.GetBytes(value);
 		}
 
 		abstract protected void pack();
@@ -150,7 +157,7 @@ namespace OSC.NET
 		{
 			int count= 0;
 			for(int index = start ; bytes[index] != 0 ; index++, count++) ;
-			string s = Encoding.ASCII.GetString(bytes, start, count);
+			string s = ASCIIEncoding8Bit.GetString(bytes, start, count);
 			start += count+1;
 			start = (start + 3) / 4 * 4;
 			return s;
