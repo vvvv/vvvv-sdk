@@ -1,0 +1,113 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\SwapDim (Spreads) help.v4p">
+   <BOUNDS height="5235" left="1560" top="1860" type="Window" width="4950">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1305" top="2730" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4245" top="3765" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="915" left="1305" top="2730" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="9" visible="1" values="0.00000,2.00000,3.00000,4.00000,0.00000,2.00000,0.00000,2.00000,3.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="SwapDim (Spreads)">
+   <BOUNDS height="0" left="2295" top="2130" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Column Count" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Row Count" slicecount="1" values="3.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1290" top="900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4545" top="4065" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="915" left="1290" top="900" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="9" values="1000.00000,1000.00000,3.00000,-1000.00000,0.00000,-1000.00000,0.00000,1000.00000,-1000.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="15" top="390" type="Box" width="4725">
+   </BOUNDS>
+   <BOUNDS height="160" left="15180" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Help: swaps rows with columns of a 2dimensional matrix of bins. |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="2730">
+   </BOUNDS>
+   <BOUNDS height="160" left="15180" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SwapDim - Spreads|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="15" top="3885" width="3315" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="15" top="3885" width="3570" height="510">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|ordering was    &tab;Bin &tab;Row &tab;Column&cr;&lf;ordering will be    &tab;Bin &tab;Column &tab;Row|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

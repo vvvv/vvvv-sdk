@@ -1,0 +1,115 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha21.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vvvv_trunk\effects\Chess help.v4p">
+   <BOUNDS height="8040" left="2910" top="4770" type="Window" width="7800">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="7" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="2490" top="5625" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2490" top="5625" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="4200" left="2910" top="570" type="Window" width="3960">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="6" nodename="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="1785" top="3630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="5" nodename="UniformScale (Transform)">
+   <BOUNDS height="0" left="2820" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="4" nodename="Chess.fx">
+   <BOUNDS height="270" left="2505" top="4800" type="Node" width="1800">
+   </BOUNDS>
+   <BOUNDS height="6000" left="2505" top="4800" type="Box" width="6000">
+   </BOUNDS>
+   <BOUNDS height="11955" left="15750" top="5775" type="Window" width="12975">
+   </BOUNDS>
+   <PIN pinname="Texture Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Vertical" visible="1">
+   </PIN>
+   <PIN pinname="Horizontal" visible="1">
+   </PIN>
+   <PIN pinname="Black" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Mesh" srcnodeid="6" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Layers" srcnodeid="4" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4050" top="3450" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4050" top="3450" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="11640" top="13995" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="32">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Horizontal" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Vertical" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Creates a Chesspattern.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Chess - EX9.Effect|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="3600" top="2580" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="3600" top="2580" type="Box" width="2250">
+   </BOUNDS>
+   <BOUNDS height="160" left="12045" top="11970" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="1" values="|0.45191,0.47775,0.54465,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Black" srcnodeid="0" srcpinname="Color Output">
+   </LINK>
+   </PATCH>

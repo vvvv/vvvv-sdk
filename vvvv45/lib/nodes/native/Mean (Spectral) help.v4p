@@ -1,0 +1,329 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Mean (Spectral) help.v4p">
+   <BOUNDS height="7380" left="5790" top="3690" type="Window" width="8445">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="330" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9045" top="6525" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="330" top="1335" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="4" values="0.00000,12.00000,0.00000,4.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="330" top="3645" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9345" top="6825" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="330" top="3645" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="Mean (Spectral)">
+   <BOUNDS height="0" left="1350" top="3120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" visible="1" values="2.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Input" srcnodeid="20" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Y Input Value" srcnodeid="18" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1455" top="2415" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5205" top="9915" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1455" top="2415" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-1.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Bin Size" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2190" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9345" top="6825" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="2190" top="1335" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="4" values="10.00000,12.00000,999.00000,4.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2190" top="3645" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9645" top="7125" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="2190" top="3645" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Mean (Spectral)">
+   <BOUNDS height="0" left="3210" top="3120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input" srcnodeid="16" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Y Input Value" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3315" top="2415" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5505" top="10215" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3315" top="2415" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Bin Size" srcnodeid="13" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5910" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13065" top="6825" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="5910" top="1335" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="4" values="0.00000,12.00000,4.00000,4.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5910" top="3645" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13365" top="7125" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="5910" top="3645" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Mean (Spectral)">
+   <BOUNDS height="0" left="6930" top="3120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="12" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7035" top="2415" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9225" top="10215" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7035" top="2415" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Bin Size" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="255" left="315" top="5025" type="Node" width="1155">
+   </BOUNDS>
+   <BOUNDS height="255" left="315" top="5025" type="Box" width="1410">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|0+12+0+4/4 = 4|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="255" left="315" top="6075" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="765" left="315" top="6075" type="Box" width="7635">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|BinSize = -1 means, that all incoming values are added and then divided through their count&cr;&lf;A BinSize of 2 means, that the incoming spread is added pairwise and then divided through the Bin Size&cr;&lf;A Bin Size of 3 would always take 3 Values form the incoming Spread and create a Mean out of this triplette|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="5895" top="5025" type="Node" width="510">
+   </BOUNDS>
+   <BOUNDS height="600" left="5895" top="5025" type="Box" width="1020">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|0+12/2 = 6&cr;&lf;4+4/2 = 4|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2175" top="5025" type="Node" width="510">
+   </BOUNDS>
+   <BOUNDS height="930" left="2175" top="5025" type="Box" width="1035">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|10/1 = 10&cr;&lf;12/1 = 12&cr;&lf;999/1 = 999&cr;&lf;4/1 = 4|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3990" top="1350" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9645" top="7125" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="3990" top="1350" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="6" values="11.00000,12.00000,16.00000,4.00000,11.00000,12.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3990" top="3660" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9945" top="7425" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="3990" top="3660" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Mean (Spectral)">
+   <BOUNDS height="0" left="5010" top="3135" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5115" top="2430" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5805" top="10515" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5115" top="2430" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="3.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Bin Size" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3975" top="5040" type="Node" width="510">
+   </BOUNDS>
+   <BOUNDS height="570" left="3975" top="5040" type="Box" width="1410">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|11+12+16/3 = 13&cr;&lf;4+11+12/3 = 9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="3690">
+   </BOUNDS>
+   <BOUNDS height="160" left="270" top="11730" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Mean returns the average of the incoming spread.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="270" top="11730" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Mean - Spectral|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
