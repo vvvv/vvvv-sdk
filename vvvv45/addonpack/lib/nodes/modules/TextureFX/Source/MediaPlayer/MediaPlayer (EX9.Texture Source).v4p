@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Source\MediaPlayer\MediaPlayer (EX9.Texture Source).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.4.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Source\MediaPlayer\MediaPlayer (EX9.Texture Source).v4p">
    <BOUNDS height="7140" left="10440" top="4575" type="Window" width="10575">
    </BOUNDS>
    <NODE componentmode="InABox" id="14" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
@@ -19,7 +19,7 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Enabled">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -39,7 +39,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6945" top="10350" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Output" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Output">
    </PIN>
    <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
    </PIN>
@@ -84,14 +84,14 @@
    <LINKPOINT x="240" y="5798">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="Hidden" id="10" nodename="FileStream (DShow9)" systemname="FileStream (DShow9)">
+   <NODE componentmode="Hidden" id="10" nodename="FileStream (DShow9)" systemname="FILESTREAM (DSHOW9)">
    <BOUNDS height="0" left="4230" top="2130" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
    <PIN pinname="Duration" visible="1">
    </PIN>
-   <PIN pinname="End Time" visible="1">
+   <PIN pinname="Loop End Time" visible="1">
    </PIN>
    <PIN pinname="Loop" visible="1">
    </PIN>
@@ -112,6 +112,8 @@
    <PIN pinname="Texture Out" visible="1">
    </PIN>
    <PIN pinname="Texture Size Mode" slicecount="1" values="NonPow2">
+   </PIN>
+   <PIN pinname="Wait for every Nth frame" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="9" dstpinname="Video" linkstyle="VHV" srcnodeid="10" srcpinname="Video">
@@ -137,7 +139,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Duration" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Duration">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="7" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
@@ -148,7 +150,7 @@
    <PIN pinname="Output 1" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="End Time" linkstyle="VHV" srcnodeid="7" srcpinname="Output 1">
+   <LINK dstnodeid="10" dstpinname="Loop End Time" linkstyle="VHV" srcnodeid="7" srcpinname="Output 1">
    <LINKPOINT x="5640" y="2250">
    </LINKPOINT>
    <LINKPOINT x="4785" y="2250">
@@ -177,7 +179,7 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Loop" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Loop">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -211,7 +213,7 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Play" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Play">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -241,7 +243,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Reset" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Reset">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
@@ -279,7 +281,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Position" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Position">
    </PIN>
    </NODE>
    <LINK dstnodeid="3" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="10" srcpinname="Position">
@@ -297,7 +299,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Filename" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Filename">
    </PIN>
    </NODE>
    <LINK dstnodeid="10" dstpinname="Filename" linkstyle="VHV" srcnodeid="1" srcpinname="Output String">
