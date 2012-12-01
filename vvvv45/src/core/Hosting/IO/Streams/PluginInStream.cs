@@ -97,7 +97,6 @@ namespace VVVV.Hosting.IO.Streams
                     for (int i = 0; i < Length; i++)
                     {
                         int ord;
-                        string name;
                         FEnumIn.GetOrd(i, out ord);
                         writer.Write(new EnumEntry(FEnumName, ord));
                     }
@@ -189,6 +188,12 @@ namespace VVVV.Hosting.IO.Streams
                             writer.Write(new System.IO.MemoryStream());
                     }
                 }
+            }
+            else
+            {
+                // Reset the streams
+                foreach (var memoryStream in this)
+                    memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
             }
             return base.Sync();
         }

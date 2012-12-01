@@ -25,26 +25,25 @@ namespace VVVV.Nodes
 	public class C2dTreemapNode : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Input")]
-		IDiffSpread<double> FInput;
-		
-		[Input("Sort", IsSingle = true, DefaultValue = 1)]
-		IDiffSpread<bool> FSortIn;
-		
-		[Input("Algorithm", IsSingle = true)]
-		IDiffSpread<TreemapAlgorithm> FAlgorithmIn;
-		
-		[Output("Center")]
-		ISpread<Vector2D> FCenterOut;
-		
-		[Output("Size")]
-		ISpread<Vector2D> FSizeOut;
-		
-		[Output("Former Slice")]
-		ISpread<int> FFormerSliceOut;
-		
-		[Import()]
-		ILogger FLogger;
+#pragma warning disable 0649
+        [Input("Input")]
+        IDiffSpread<double> FInput;
+
+        [Input("Sort", IsSingle = true, DefaultValue = 1)]
+        IDiffSpread<bool> FSortIn;
+
+        [Input("Algorithm", IsSingle = true)]
+        IDiffSpread<TreemapAlgorithm> FAlgorithmIn;
+
+        [Output("Center")]
+        ISpread<Vector2D> FCenterOut;
+
+        [Output("Size")]
+        ISpread<Vector2D> FSizeOut;
+
+        [Output("Former Slice")]
+        ISpread<int> FFormerSliceOut;
+#pragma warning restore
 		
 		Treemap FTreeMap;
 		
