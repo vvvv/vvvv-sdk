@@ -28,5 +28,11 @@ namespace VVVV.Utils.Collections
         {
             return new ReadOnlyCollection<T>(enumerable.ToList());
         }        
+
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> seq, T item)
+        {
+            return seq.Concat(new T[] { item });
+        } 	
+
     }
 }
