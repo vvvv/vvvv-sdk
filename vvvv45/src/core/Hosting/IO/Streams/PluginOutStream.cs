@@ -10,6 +10,7 @@ using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 using SlimDX;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -162,30 +163,9 @@ namespace VVVV.Hosting.IO.Streams
                 this.rawOutStream = rawOutStream;
             }
 
-            public unsafe void Write(System.IO.Stream value, int stride = 1)
+            public void Write(System.IO.Stream value, int stride = 1)
             {
-                var buffer = MemoryPool<byte>.GetArray();
-                try
-                {
-                    byte* pByte;
-                    var itemsToRead = (int)value.Length;
-                    value.Position = 0;
-                    this.rawOutStream.FRawOut.SetDataLength(this.Position, itemsToRead, out pByte);
-                    while (itemsToRead > 0)
-                    {
-                        var destination = new IntPtr(pByte + value.Position);
-                        var itemsRead = value.Read(buffer, 0, buffer.Length);
-                        if (itemsRead > 0)
-                        {
-                            Marshal.Copy(buffer, 0, destination, itemsRead);
-                        }
-                        itemsToRead -= itemsRead;
-                    }
-                }
-                finally
-                {
-                    MemoryPool<byte>.PutArray(buffer);
-                }
+                this.rawOutStream.FRawOut.SetData(this.Position, new ComIStream(value));
                 this.Position += stride;
             }
 
