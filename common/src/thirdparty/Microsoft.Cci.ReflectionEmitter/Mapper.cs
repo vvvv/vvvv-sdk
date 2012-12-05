@@ -14,43 +14,48 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Microsoft.Cci.UtilityDataStructures;
+using System.Diagnostics;
 
 namespace Microsoft.Cci.ReflectionEmitter {
     /// <summary>
     /// An object that provides methods to map CCI metadata references to corresponding System.Type and System.Reflection.* objects.
     /// The object maintains a cache of mappings and should typically be used for doing many mappings.
     /// </summary>
-    public class ReflectionMapper {
+    public class ReflectionMapper
+    {
 
         /// <summary>
         /// An object that provides methods to map CCI metadata references to corresponding System.Type and System.Reflection.* objects.
         /// The object maintains a cache of mappings and should typically be used for doing many mappings.
         /// </summary>
-        public ReflectionMapper(IInternFactory internFactory) {
+        public ReflectionMapper(IInternFactory internFactory)
+        {
             this.mappingVisitor = new MappingVisitorForTypes(this);
             this.internFactory = internFactory;
         }
 
         Dictionary<AssemblyIdentity, Assembly> assemblyMap = new Dictionary<AssemblyIdentity, Assembly>(16);
         Dictionary<IModule, Module> moduleMap = new Dictionary<IModule, Module>(16);
-        DoubleHashtable<FieldInfo> fieldMap = new DoubleHashtable<FieldInfo>(2048*4); //TODO: use a hashtable and the newly defined InternKey
-        Hashtable<MethodBase> methodMap = new Hashtable<MethodBase>(2048*8);
-        DoubleHashtable<MemberInfo[]> membersMap = new DoubleHashtable<MemberInfo[]>(2048*8);
-        Hashtable<Type> typeMap = new Hashtable<Type>(2048);
+        DoubleHashtable<FieldInfo> fieldMap = new DoubleHashtable<FieldInfo>(2048 * 4); //TODO: use a hashtable and the newly defined InternKey
+        Hashtable<MethodBase> methodMap = new Hashtable<MethodBase>(2048 * 8);
+        DoubleHashtable<MemberInfo[]> membersMap = new DoubleHashtable<MemberInfo[]>(2048 * 8);
+        Dictionary<uint, Type> typeMap = new Dictionary<uint, Type>();
         MappingVisitorForTypes mappingVisitor;
         IInternFactory internFactory;
         Dictionary<uint, ITypeReference> reverseTypeMap = new Dictionary<uint, ITypeReference>();
-        Dictionary<uint, IMethodReference> reverseMethodMap = new Dictionary<uint, IMethodReference>();
+        List<ITypeReference> temporaryTypeMappings = new List<ITypeReference>();
 
         /// <summary>
         /// Returns a "live" System.Reflection.Assembly instance that provides reflective access to the referenced assembly.
         /// If the assembly cannot be found or cannot be loaded, the result is null.
         /// </summary>
-        public Assembly/*?*/ GetAssembly(IAssemblyReference/*?*/ assemblyReference) {
+        public Assembly/*?*/ GetAssembly(IAssemblyReference/*?*/ assemblyReference)
+        {
             if (assemblyReference == null) return null;
             var ident = assemblyReference.AssemblyIdentity;
             Assembly result = null;
-            if (!this.assemblyMap.TryGetValue(ident, out result)) {
+            if (!this.assemblyMap.TryGetValue(ident, out result))
+            {
                 var name = new System.Reflection.AssemblyName();
                 if (!String.IsNullOrEmpty(ident.Location))
                     name.CodeBase = ident.Location;
@@ -59,19 +64,31 @@ namespace Microsoft.Cci.ReflectionEmitter {
                 name.SetPublicKeyToken(new List<byte>(ident.PublicKeyToken).ToArray());
                 name.Version = ident.Version;
                 var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-                foreach (var loadedAssem in loadedAssemblies) {
-                    if (System.Reflection.AssemblyName.ReferenceMatchesDefinition(name, loadedAssem.GetName())) {
+                foreach (var loadedAssem in loadedAssemblies)
+                {
+                    if (System.Reflection.AssemblyName.ReferenceMatchesDefinition(name, loadedAssem.GetName()))
+                    {
                         result = loadedAssem;
                         break;
                     }
                 }
-                if (result == null) {
-                    try {
+                if (result == null)
+                {
+                    try
+                    {
                         result = Assembly.Load(name);
-                    } catch (System.UriFormatException) {
-                    } catch (System.IO.FileNotFoundException) {
-                    } catch (System.IO.FileLoadException) {
-                    } catch (System.BadImageFormatException) {
+                    }
+                    catch (System.UriFormatException)
+                    {
+                    }
+                    catch (System.IO.FileNotFoundException)
+                    {
+                    }
+                    catch (System.IO.FileLoadException)
+                    {
+                    }
+                    catch (System.BadImageFormatException)
+                    {
                     }
                     this.assemblyMap.Add(ident, result);
                 }
@@ -83,7 +100,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
         /// Returns a "live" System.Reflection.Module instance that provides reflective access to the referenced module.
         /// If the module cannot be found or cannot be loaded, the result is null.
         /// </summary>
-        public Module/*?*/ GetModule(IModuleReference/*?*/ moduleReference) {
+        public Module/*?*/ GetModule(IModuleReference/*?*/ moduleReference)
+        {
             if (moduleReference == null) throw new ReflectionMapperException();
             if (moduleReference.ContainingAssembly == null) throw new ReflectionMapperException();
             var assembly = this.GetAssembly(moduleReference.ContainingAssembly);
@@ -95,16 +113,22 @@ namespace Microsoft.Cci.ReflectionEmitter {
         /// Returns a "live" System.Reflection.FieldInfo object that provides reflective access to the referenced field.
         /// If the field cannot be found or cannot be loaded, the result is null.
         /// </summary>
-        public FieldInfo/*?*/ GetField(IFieldReference/*?*/ fieldReference) {
+        public FieldInfo/*?*/ GetField(IFieldReference/*?*/ fieldReference)
+        {
             if (fieldReference == null) throw new ReflectionMapperException();
-            var containingType = Repair(fieldReference.ContainingType);
+            var containingType = fieldReference.ContainingType;
             var result = this.fieldMap.Find(containingType.InternedKey, (uint)fieldReference.Name.UniqueKey);
-            if (result == null) {
-                var members = this.GetMembers(containingType, fieldReference.Name);
-                if (members.Length == 1)
-                    result = (FieldInfo)members[0];
-                else
+            if (result == null)
+            {
+                try
+                {
+                    var members = this.GetMembers(containingType, fieldReference.Name);
                     result = this.GetFieldFrom(fieldReference, members);
+                }
+                catch (NotSupportedException)
+                {
+                    result = this.GetFieldFromTypeBuilder(fieldReference);
+                }
                 if (result == null) throw new ReflectionMapperException();
                 this.fieldMap.Add(containingType.InternedKey, (uint)fieldReference.Name.UniqueKey, result);
             }
@@ -133,74 +157,31 @@ namespace Microsoft.Cci.ReflectionEmitter {
             var members = this.membersMap.Find(typeReference.InternedKey, (uint)name.UniqueKey);
             if (members == null)
             {
-                // Some references do not have their ResolvedType property set properly.
-                /*
-                var resolvedType = typeReference.ResolvedType;
-                if (resolvedType == null || resolvedType == Dummy.GenericTypeInstance)
-                {
-                    var genericTypeInstanceReference = typeReference as IGenericTypeInstanceReference;
-                    var genericType = genericTypeInstanceReference.GenericType;
-                    var specializedNestedTypeReference = genericType as ISpecializedNestedTypeReference;
-                    INamedTypeDefinition resolvedGenericType;
-                    if (specializedNestedTypeReference != null)
-                    {
-                        var unspecializedVersion = (INestedTypeReference)this.reverseTypeMap[specializedNestedTypeReference.UnspecializedVersion.InternedKey];
-                        var containgType = this.reverseTypeMap[specializedNestedTypeReference.ContainingType.InternedKey];
-                        specializedNestedTypeReference = new SpecializedNestedTypeReference(unspecializedVersion, containgType, this.internFactory);
-                        resolvedGenericType = specializedNestedTypeReference.ResolvedType;
-                    }
-                    else
-                        resolvedGenericType = (INamedTypeDefinition)this.reverseTypeMap[genericType.InternedKey];
-                    typeReference = Microsoft.Cci.Immutable.GenericTypeInstance.GetGenericTypeInstance(resolvedGenericType, genericTypeInstanceReference.GenericArguments, this.internFactory);
-                }*/
                 var type = this.GetType(typeReference);
-                try
-                {
-                    var bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static;
-                    members = type.GetMember(name.Value, bindingAttr);
-                }
-                catch (NotSupportedException)
-                {
-                    var templateType = this.GetTemplateType(typeReference);
-                    members = GetMembersFromTypeBuilder(type, templateType, name);
-                }
+                var bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static;
+                members = type.GetMember(name.Value, bindingAttr);
                 this.membersMap.Add(typeReference.InternedKey, (uint)name.UniqueKey, members);
             }
             return members;
         }
 
-        private MemberInfo[] GetMembersFromTypeBuilder(Type containingType, ITypeDefinition templateType, IName memberName)
+        private FieldInfo GetFieldFromTypeBuilder(IFieldReference fieldReference)
         {
-            var members = new List<MemberInfo>();
-            foreach (var templateMember in templateType.Members.Concat(templateType.PrivateHelperMembers))
-            {
-                if (templateMember.Name != memberName) continue;
-                MemberInfo memberInfo = null;
-                var templateMethodReference = templateMember as IMethodReference;
-                if (templateMethodReference != null)
-                {
-                    var templateMethodInfo = this.GetMethod(templateMethodReference);
-                    if (templateMethodInfo.DeclaringType.IsGenericTypeDefinition)
-                    {
-                        if (templateMethodReference.ResolvedMethod.IsConstructor)
-                            memberInfo = TypeBuilder.GetConstructor(containingType, (ConstructorInfo)templateMethodInfo);
-                        else
-                            memberInfo = TypeBuilder.GetMethod(containingType, (MethodInfo)templateMethodInfo);
-                    }
-                    else
-                    {
-                        memberInfo = templateMethodInfo;
-                    }
-                }
-                var templateFieldReference = templateMember as IFieldReference;
-                if (templateFieldReference != null)
-                {
-                    var templateFieldInfo = this.GetField(templateFieldReference);
-                    memberInfo = TypeBuilder.GetField(containingType, templateFieldInfo);
-                }
-                members.Add(memberInfo);
-            }
-            return members.ToArray();
+            var containingType = this.GetType(fieldReference.ContainingType);
+            var templateFieldReference = this.GetTemplateField(fieldReference);
+            var templateFieldInfo = this.GetField(templateFieldReference);
+            return TypeBuilder.GetField(containingType, templateFieldInfo);
+        }
+
+        private MethodBase GetMethodFromTypeBuilder(IMethodReference methodReference)
+        {
+            var containingType = this.GetType(methodReference.ContainingType);
+            var templateMethodReference = GetTemplateMethod(methodReference);
+            var templateMethodInfo = this.GetMethod(templateMethodReference);
+            if (templateMethodReference.ResolvedMethod.IsConstructor)
+                return TypeBuilder.GetConstructor(containingType, (ConstructorInfo)templateMethodInfo);
+            else
+                return TypeBuilder.GetMethod(containingType, (MethodInfo)templateMethodInfo);
         }
 
         private ITypeDefinition GetTemplateType(ITypeReference typeReference)
@@ -223,30 +204,70 @@ namespace Microsoft.Cci.ReflectionEmitter {
             return resolvedType;
         }
 
+        private IMethodReference GetTemplateMethod(IMethodReference methodReference)
+        {
+            var specializedMethodReference = methodReference as ISpecializedMethodReference;
+            if (specializedMethodReference != null)
+                return specializedMethodReference.UnspecializedVersion.ResolvedMethod;
+            var specializedMethodDefinition = methodReference.ResolvedMethod as ISpecializedMethodDefinition;
+            if (specializedMethodDefinition != null)
+                return GetTemplateMethod(specializedMethodDefinition);
+            var resolvedMethod = methodReference.ResolvedMethod;
+            if (resolvedMethod is Dummy)
+            {
+                // One case where this happens is if the method is from a private helper type.
+                // Look for it manually.
+                var templateType = GetTemplateType(methodReference.ContainingType);
+                foreach (var member in templateType.Members.Concat(templateType.PrivateHelperMembers))
+                {
+                    if (member.Name != methodReference.Name) continue;
+                    var privateHelperMethod = member as IMethodDefinition;
+                    if (privateHelperMethod != null)
+                        return privateHelperMethod;
+                }
+            }
+            throw new NotImplementedException();
+        }
+
+        private IFieldReference GetTemplateField(IFieldReference fieldReference)
+        {
+            var containingType = this.GetType(fieldReference.ContainingType);
+            var specializedFieldReference = fieldReference as ISpecializedFieldReference;
+            if (specializedFieldReference != null)
+                return specializedFieldReference.UnspecializedVersion;
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Returns a "live" System.Reflection.MethodBase object that provides reflective access to the referenced method.
         /// If the method cannot be found or cannot be loaded, the result is null.
         /// </summary>
-        public MethodBase/*?*/ GetMethod(IMethodReference/*?*/ methodReference) {
+        public MethodBase/*?*/ GetMethod(IMethodReference/*?*/ methodReference)
+        {
             if (methodReference == null) return null;
             var genericMethodInstanceReference = methodReference as IGenericMethodInstanceReference;
             if (genericMethodInstanceReference != null) return this.GetGenericMethodInstance(genericMethodInstanceReference);
             MethodBase result = this.methodMap.Find(methodReference.InternedKey);
             if (result == null)
             {
-                var containingType = Repair(methodReference.ContainingType);
-                var members = this.GetMembers(containingType, methodReference.Name);
-                if (members.Length == 1)
-                    result = (MethodBase)members[0];
-                else
+                var containingType = methodReference.ContainingType;
+                try
+                {
+                    var members = this.GetMembers(containingType, methodReference.Name);
                     result = this.GetMethodFrom(methodReference, members);
-                if (result == null)throw new ReflectionMapperException();
+                }
+                catch (NotSupportedException)
+                {
+                    result = this.GetMethodFromTypeBuilder(methodReference);
+                }
+                if (result == null) throw new ReflectionMapperException();
                 this.methodMap.Add(methodReference.InternedKey, result);
             }
             return result;
         }
 
-        private MethodBase/*?*/ GetMethodFrom(IMethodReference methodReference, MemberInfo[] members, bool skipTypeCheck = false) {
+        private MethodBase/*?*/ GetMethodFrom(IMethodReference methodReference, MemberInfo[] members, bool skipTypeCheck = false)
+        {
             //Generic methods need special treatment because their signatures refer to their generic parameters
             //and we can't map those to types unless we can first map the generic method.
             if (methodReference.IsGeneric) return this.GetGenericMethodFrom(methodReference, members);
@@ -257,35 +278,43 @@ namespace Microsoft.Cci.ReflectionEmitter {
             var parameters = new IParameterTypeInformation[parameterCount];
             var parameterTypes = parameterCount == 0 ? null : new Type[parameterCount];
             int parameterIndex = 0;
-            foreach (var parameter in methodReference.Parameters) {
+            foreach (var parameter in methodReference.Parameters)
+            {
                 parameters[parameterIndex] = parameter;
                 var ptype = this.GetType(parameter.Type);
                 if (ptype == null) return null;
                 if (parameter.IsByReference) ptype = ptype.MakeByRefType();
                 parameterTypes[parameterIndex++] = ptype;
             }
-            foreach (var member in members) {
+            foreach (var member in members)
+            {
                 var methodBase = member as MethodBase;
                 if (methodBase == null || methodBase.IsGenericMethodDefinition) continue;
                 if (!this.CallingConventionsMatch(methodBase, methodReference)) continue;
-                if (methodBase.IsConstructor) {
+                if (methodBase.IsConstructor)
+                {
                     if (methodReference.Type.TypeCode != PrimitiveTypeCode.Void) continue;
-                } else {
+                }
+                else
+                {
                     var method = (MethodInfo)methodBase;
                     if (!skipTypeCheck && (methodReturnType != method.ReturnType)) continue;
-                    if (methodReference.ReturnValueIsModified) {
+                    if (methodReference.ReturnValueIsModified)
+                    {
                         if (!this.ModifiersMatch(method.ReturnParameter.GetOptionalCustomModifiers(), method.ReturnParameter.GetRequiredCustomModifiers(), methodReference.ReturnValueCustomModifiers)) continue;
                     }
                 }
                 var memberParameterInfos = methodBase.GetParameters();
                 if (parameterCount != memberParameterInfos.Length) continue;
                 bool matched = true;
-                for (int i = 0; i < parameterCount; i++) {
+                for (int i = 0; i < parameterCount; i++)
+                {
                     var mparInfo = memberParameterInfos[i];
                     var ipar = parameters[i];
                     var part = parameterTypes[i];
                     if (!skipTypeCheck && (mparInfo.ParameterType != part)) { matched = false; break; }
-                    if (ipar.IsModified) {
+                    if (ipar.IsModified)
+                    {
                         if (!this.ModifiersMatch(mparInfo.GetOptionalCustomModifiers(), mparInfo.GetRequiredCustomModifiers(), ipar.CustomModifiers)) continue;
                     }
                 }
@@ -295,19 +324,21 @@ namespace Microsoft.Cci.ReflectionEmitter {
             return null;
         }
 
-        private bool CallingConventionsMatch(MethodBase methodBase, IMethodReference methodReference) {
+        private bool CallingConventionsMatch(MethodBase methodBase, IMethodReference methodReference)
+        {
             if (methodBase.IsStatic && !methodReference.IsStatic) return false;
-            switch (methodBase.CallingConvention&(CallingConventions)3) {
+            switch (methodBase.CallingConvention & (CallingConventions)3)
+            {
                 case CallingConventions.Any:
-                    if ((methodReference.CallingConvention&(CallingConvention)7) != CallingConvention.Default &&
-                        (methodReference.CallingConvention&(CallingConvention)7) != CallingConvention.ExtraArguments)
+                    if ((methodReference.CallingConvention & (CallingConvention)7) != CallingConvention.Default &&
+                        (methodReference.CallingConvention & (CallingConvention)7) != CallingConvention.ExtraArguments)
                         return false;
                     break;
                 case CallingConventions.Standard:
-                    if ((methodReference.CallingConvention&(CallingConvention)7) != CallingConvention.Default) return false;
+                    if ((methodReference.CallingConvention & (CallingConvention)7) != CallingConvention.Default) return false;
                     break;
                 case CallingConventions.VarArgs:
-                    if ((methodReference.CallingConvention&(CallingConvention)7) != CallingConvention.ExtraArguments) return false;
+                    if ((methodReference.CallingConvention & (CallingConvention)7) != CallingConvention.ExtraArguments) return false;
                     break;
             }
             if ((methodBase.CallingConvention & CallingConventions.HasThis) != 0 &&
@@ -317,13 +348,15 @@ namespace Microsoft.Cci.ReflectionEmitter {
             return true;
         }
 
-        private MethodInfo GetGenericMethodFrom(IMethodReference methodReference, MemberInfo[] members) {
+        private MethodInfo GetGenericMethodFrom(IMethodReference methodReference, MemberInfo[] members)
+        {
             MethodInfo result = null;
             var parameterCount = methodReference.ParameterCount;
             var parameters = new IParameterTypeInformation[parameterCount];
             int i = 0; foreach (var par in methodReference.Parameters) parameters[i++] = par;
             var referencedMethodIsStatic = methodReference.IsStatic;
-            foreach (var member in members) {
+            foreach (var member in members)
+            {
                 var method = member as MethodInfo;
                 if (method == null || !method.IsGenericMethodDefinition) continue;
                 if (methodReference.GenericParameterCount != method.GetGenericArguments().Length) continue;
@@ -331,19 +364,22 @@ namespace Microsoft.Cci.ReflectionEmitter {
                 var mrtype = method.ReturnType;
                 if (methodReference.ReturnValueIsByRef) mrtype = mrtype.GetElementType();
                 if (!this.TypesMatch(methodReference.Type, mrtype, method)) continue;
-                if (methodReference.ReturnValueIsModified) {
+                if (methodReference.ReturnValueIsModified)
+                {
                     if (!this.ModifiersMatch(method.ReturnParameter.GetOptionalCustomModifiers(), method.ReturnParameter.GetRequiredCustomModifiers(), methodReference.ReturnValueCustomModifiers)) continue;
                 }
                 var memberParameterInfos = method.GetParameters();
                 if (parameterCount != memberParameterInfos.Length) continue;
                 bool matched = true;
-                for (i = 0; i < parameterCount; i++) {
+                for (i = 0; i < parameterCount; i++)
+                {
                     var mparInfo = memberParameterInfos[i];
                     var mparType = mparInfo.ParameterType;
                     var ipar = parameters[i];
                     if (ipar.IsByReference) mparType = mparType.GetElementType();
                     if (!this.TypesMatch(ipar.Type, mparType, method)) { matched = false; break; }
-                    if (ipar.IsModified) {
+                    if (ipar.IsModified)
+                    {
                         if (!this.ModifiersMatch(mparInfo.GetOptionalCustomModifiers(), mparInfo.GetRequiredCustomModifiers(), ipar.CustomModifiers)) continue;
                     }
                 }
@@ -356,7 +392,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
             return result;
         }
 
-        private bool TypesMatch(ITypeReference typeReference, Type/*?*/ type, MethodInfo genericMethod) {
+        private bool TypesMatch(ITypeReference typeReference, Type/*?*/ type, MethodInfo genericMethod)
+        {
             if (type == null) return false;
             var arrayType = typeReference as IArrayTypeReference;
             if (arrayType != null) return this.TypesMatch(arrayType.ElementType, type.GetElementType(), genericMethod);
@@ -367,20 +404,23 @@ namespace Microsoft.Cci.ReflectionEmitter {
             var modifiedType = typeReference as IModifiedTypeReference;
             if (modifiedType != null) return this.TypesMatch(modifiedType.UnmodifiedType, type, genericMethod);
             var genericMethodParameterReference = typeReference as IGenericMethodParameterReference;
-            if (genericMethodParameterReference != null) {
+            if (genericMethodParameterReference != null)
+            {
                 var genericMethodParameters = genericMethod.GetGenericArguments();
                 if (genericMethodParameterReference.Index >= genericMethodParameters.Length) return false;
                 var genPar = genericMethodParameters[genericMethodParameterReference.Index];
                 return genPar == type;
             }
             var genericTypeInstance = typeReference as IGenericTypeInstanceReference;
-            if (genericTypeInstance != null) {
+            if (genericTypeInstance != null)
+            {
                 if (!type.IsGenericType) return false;
                 if (!this.TypesMatch(genericTypeInstance.GenericType, type.GetGenericTypeDefinition(), genericMethod)) return false;
                 var genericArguments = type.GetGenericArguments();
                 if (genericArguments == null || genericArguments.Length != genericTypeInstance.GenericType.GenericParameterCount) return false;
                 int i = 0;
-                foreach (var genarg in genericTypeInstance.GenericArguments) {
+                foreach (var genarg in genericTypeInstance.GenericArguments)
+                {
                     if (!this.TypesMatch(genarg, genericArguments[i++], genericMethod)) return false;
                 }
                 return true;
@@ -388,7 +428,8 @@ namespace Microsoft.Cci.ReflectionEmitter {
             return this.GetType(typeReference) == type;
         }
 
-        private MethodBase GetGenericMethodInstance(IGenericMethodInstanceReference genericMethodInstanceReference) {
+        private MethodBase GetGenericMethodInstance(IGenericMethodInstanceReference genericMethodInstanceReference)
+        {
             var genericMethodReference = genericMethodInstanceReference.GenericMethod;
             var genericMethod = (MethodInfo)this.GetMethod(genericMethodReference);
             var typeArguments = new Type[genericMethodReference.GenericParameterCount];
@@ -398,17 +439,22 @@ namespace Microsoft.Cci.ReflectionEmitter {
             return genericMethodInstance;
         }
 
-        private bool ModifiersMatch(Type[] optional, Type[] required, IEnumerable<ICustomModifier> modifiers) {
+        private bool ModifiersMatch(Type[] optional, Type[] required, IEnumerable<ICustomModifier> modifiers)
+        {
             int optionalCount = 0;
             int requiredCount = 0;
             int modifierCount = 0;
-            foreach (var modifier in modifiers) {
+            foreach (var modifier in modifiers)
+            {
                 var modifierType = this.GetType(modifier.Modifier);
                 if (modifierType == null) return false;
-                if (modifier.IsOptional) {
+                if (modifier.IsOptional)
+                {
                     if (optionalCount == optional.Length) return false;
                     if (optional[optionalCount++] != modifierType) return false;
-                } else {
+                }
+                else
+                {
                     if (requiredCount == required.Length) return false;
                     if (required[requiredCount++] != modifierType) return false;
                 }
@@ -421,171 +467,92 @@ namespace Microsoft.Cci.ReflectionEmitter {
         /// Returns a "live" System.Type object that provides reflective access to the referenced typeBuilder.
         /// If the typeBuilder cannot be found or cannot be loaded, the result is null.
         /// </summary>
-        public Type/*?*/ GetType(ITypeReference/*?*/ type) {
+        public Type/*?*/ GetType(ITypeReference/*?*/ type)
+        {
             if (type == null) return null;
-            var result = this.typeMap.Find(type.InternedKey);
-            if (result == null) {
+            Type result = null;
+            if (!this.typeMap.TryGetValue(type.InternedKey, out result))
+            {
                 type.DispatchAsReference(this.mappingVisitor);
                 result = this.mappingVisitor.result;
                 if (result == null) throw new ReflectionMapperException();
-                //this.DefineMapping(type, result);
+                this.DefineMapping(type, result);
+                this.temporaryTypeMappings.Add(type);
             }
             return result;
         }
 
 
-        internal void DefineMapping(ITypeReference typeReference, Type type) {
-            this.typeMap.Add(typeReference.InternedKey, type);
-            // Some references don't have their ResolvedType property set properly -> repair it
-            this.reverseTypeMap[typeReference.InternedKey] = Repair(typeReference);
+        internal void DefineMapping(ITypeReference typeReference, Type type)
+        {
+            this.typeMap[typeReference.InternedKey] = type;
+            this.reverseTypeMap[typeReference.InternedKey] = typeReference;
         }
 
-        internal void DefineMapping(IFieldDefinition fieldDefinition, FieldInfo fieldBuilder) {
+        internal void ClearMapping(ITypeReference typeReference)
+        {
+            this.typeMap.Remove(typeReference.InternedKey);
+            this.reverseTypeMap.Remove(typeReference.InternedKey);
+        }
+
+        internal void DefineMapping(IFieldDefinition fieldDefinition, FieldInfo fieldBuilder)
+        {
             this.fieldMap.Add(fieldDefinition.ContainingType.InternedKey, (uint)fieldDefinition.Name.UniqueKey, fieldBuilder);
         }
 
-        internal void DefineMapping(IMethodDefinition method, MethodBase methodBuilder) {
+        internal void DefineMapping(IMethodDefinition method, MethodBase methodBuilder)
+        {
             this.methodMap.Add(method.InternedKey, methodBuilder);
-            this.reverseMethodMap[method.InternedKey] = method;
         }
 
-        internal void ClearMemberMappings()
+        internal void ClearTemporaryMappings()
         {
             this.fieldMap = new DoubleHashtable<FieldInfo>();
             this.methodMap.Clear();
-            this.reverseMethodMap.Clear();
+            foreach (var t in temporaryTypeMappings)
+                this.typeMap.Remove(t.InternedKey);
+            temporaryTypeMappings.Clear();
         }
 
-        internal MethodInfo GetArrayAddrMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder) {
+        internal MethodInfo GetArrayAddrMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder)
+        {
             var type = this.GetType(arrayTypeReference);
             var parameterTypes = new Type[arrayTypeReference.Rank];
             for (int i = 0; i < arrayTypeReference.Rank; i++) parameterTypes[i] = typeof(int);
             return moduleBuilder.GetArrayMethod(type, "Address", CallingConventions.HasThis, type.GetElementType().MakeByRefType(), parameterTypes);
         }
 
-        internal MethodInfo GetArrayGetMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder) {
+        internal MethodInfo GetArrayGetMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder)
+        {
             var type = this.GetType(arrayTypeReference);
             var parameterTypes = new Type[arrayTypeReference.Rank];
             for (int i = 0; i < arrayTypeReference.Rank; i++) parameterTypes[i] = typeof(int);
             return moduleBuilder.GetArrayMethod(type, "Get", CallingConventions.HasThis, type.GetElementType(), parameterTypes);
         }
 
-        internal MethodInfo GetArraySetMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder) {
+        internal MethodInfo GetArraySetMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder)
+        {
             var type = this.GetType(arrayTypeReference);
-            var parameterTypes = new Type[arrayTypeReference.Rank+1];
+            var parameterTypes = new Type[arrayTypeReference.Rank + 1];
             for (int i = 0; i < arrayTypeReference.Rank; i++) parameterTypes[i] = typeof(int);
             parameterTypes[arrayTypeReference.Rank] = type.GetElementType();
             return moduleBuilder.GetArrayMethod(type, "Set", CallingConventions.HasThis, typeof(void), parameterTypes);
         }
 
-        internal MethodInfo GetArrayCreateMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder) {
+        internal MethodInfo GetArrayCreateMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder)
+        {
             var type = this.GetType(arrayTypeReference);
             var parameterTypes = new Type[arrayTypeReference.Rank];
             for (int i = 0; i < arrayTypeReference.Rank; i++) parameterTypes[i] = typeof(int);
             return moduleBuilder.GetArrayMethod(type, ".ctor", CallingConventions.HasThis, typeof(void), parameterTypes);
         }
 
-        internal MethodInfo GetArrayCreateWithLowerBoundsMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder) {
+        internal MethodInfo GetArrayCreateWithLowerBoundsMethod(IArrayTypeReference arrayTypeReference, ModuleBuilder moduleBuilder)
+        {
             var type = this.GetType(arrayTypeReference);
-            var parameterTypes = new Type[arrayTypeReference.Rank*2];
-            for (int i = 0; i < arrayTypeReference.Rank*2; i++) parameterTypes[i] = typeof(int);
+            var parameterTypes = new Type[arrayTypeReference.Rank * 2];
+            for (int i = 0; i < arrayTypeReference.Rank * 2; i++) parameterTypes[i] = typeof(int);
             return moduleBuilder.GetArrayMethod(type, ".ctor", CallingConventions.HasThis, typeof(void), parameterTypes);
-        }
-
-        private ITypeReference Repair(ITypeReference typeReference)
-        {
-            return typeReference;
-
-            var genericTypeInstanceReference = typeReference as IGenericTypeInstanceReference;
-            if (genericTypeInstanceReference != null && genericTypeInstanceReference.ResolvedType is Dummy)
-            {
-                ITypeReference result;
-                if (!this.reverseTypeMap.TryGetValue(typeReference.InternedKey, out result))
-                {
-                    var genericType = genericTypeInstanceReference.GenericType;
-                    var specializedNestedTypeReference = genericType as ISpecializedNestedTypeReference;
-                    INamedTypeDefinition resolvedGenericType;
-                    if (specializedNestedTypeReference != null)
-                    {
-                        return typeReference;
-                        var unspecializedVersion = (INestedTypeReference)this.reverseTypeMap[specializedNestedTypeReference.UnspecializedVersion.InternedKey];
-                        var containgType = this.reverseTypeMap[specializedNestedTypeReference.ContainingType.InternedKey] as IGenericTypeInstanceReference;
-                        specializedNestedTypeReference = new SpecializedNestedTypeReference(unspecializedVersion, containgType, this.internFactory);
-                        resolvedGenericType = specializedNestedTypeReference.ResolvedType;
-                    }
-                    else
-                        resolvedGenericType = (INamedTypeDefinition)this.reverseTypeMap[genericType.InternedKey];
-                    return Microsoft.Cci.Immutable.GenericTypeInstance.GetGenericTypeInstance(resolvedGenericType, genericTypeInstanceReference.GenericArguments, this.internFactory);
-                }
-                return result;
-            }
-            return typeReference;
-        }
-
-        private IMethodReference Repair(IMethodReference methodReference)
-        {
-            if (methodReference.ResolvedMethod is Dummy)
-            {
-                IMethodReference result;
-                if (!this.reverseMethodMap.TryGetValue(methodReference.InternedKey, out result))
-                {
-                    var containingType = Repair(methodReference.ContainingType);
-                    var genericContainingTypeInstanceReference = containingType as IGenericTypeInstanceReference;
-                    if (genericContainingTypeInstanceReference != null)
-                    {
-                        var genericContainingType = genericContainingTypeInstanceReference.GenericType;
-                        var specializedNestedGenericContainingTypeReference = genericContainingType as ISpecializedNestedTypeReference;
-                        if (specializedNestedGenericContainingTypeReference != null)
-                        {
-                            var specializedNestedGenericContainingType = specializedNestedGenericContainingTypeReference.ResolvedType as ISpecializedNestedTypeDefinition;
-                            var unspecializedNestedGenericContainingType = specializedNestedGenericContainingType.UnspecializedVersion;
-                            var parameterTypes = methodReference.Parameters.Select(p => p.Type);
-                            var genericParameters = genericContainingType.ResolvedType.GenericParameters.ToArray();
-                            var genericArguments = genericContainingTypeInstanceReference.GenericArguments.ToArray();
-                            var methodParameterTypes = new List<ITypeReference>();
-                            foreach (var parameterType in parameterTypes)
-                            {
-                                int index = -1;
-                                for (int i = 0; i < genericArguments.Length; i++)
-                                {
-                                    if (genericArguments[i] == parameterType)
-                                    {
-                                        index = i;
-                                        break;
-                                    }
-                                }
-                                var type = index != -1 ? genericParameters[index] : parameterType;
-                                methodParameterTypes.Add(type);
-                            }
-                            var unspecializedVersion = TypeHelper.GetMethod(unspecializedNestedGenericContainingType, methodReference.Name, methodParameterTypes.ToArray());
-                            if (unspecializedVersion is Dummy)
-                            {
-                                unspecializedVersion = TypeHelper.GetMethod(unspecializedNestedGenericContainingType.PrivateHelperMembers, methodReference.Name, methodParameterTypes.ToArray());
-                            }
-                            //result = new Microsoft.Cci.MutableCodeModel.Me
-                            result = new Microsoft.Cci.Immutable.SpecializedMethodReference(containingType, unspecializedVersion, this.internFactory);
-                        }
-                    }
-                    /*
-                    var genericType = genericTypeInstanceReference.GenericType;
-                    var specializedNestedTypeReference = genericType as ISpecializedNestedTypeReference;
-                    INamedTypeDefinition resolvedGenericType;
-                    if (specializedNestedTypeReference != null)
-                    {
-                        var unspecializedVersion = (INestedTypeReference)this.reverseTypeMap[specializedNestedTypeReference.UnspecializedVersion.InternedKey];
-                        var containgType = this.reverseTypeMap[specializedNestedTypeReference.ContainingType.InternedKey];
-                        specializedNestedTypeReference = new SpecializedNestedTypeReference(unspecializedVersion, containgType, this.internFactory);
-                        resolvedGenericType = specializedNestedTypeReference.ResolvedType;
-                    }
-                    else
-                        resolvedGenericType = (INamedTypeDefinition)this.reverseTypeMap[genericType.InternedKey];
-
-                    return Microsoft.Cci.Immutable.GenericTypeInstance.GetGenericTypeInstance(resolvedGenericType, genericTypeInstanceReference.GenericArguments, this.internFactory);
-                    */
-                }
-                return result;
-            }
-            return methodReference;
         }
     }
 

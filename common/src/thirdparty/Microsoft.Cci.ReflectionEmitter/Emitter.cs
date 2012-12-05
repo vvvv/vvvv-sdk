@@ -121,21 +121,16 @@ namespace Microsoft.Cci.ReflectionEmitter {
         //next create (but do not initialize) builder for all other kinds of typeBuilder members, since there may be forward references during initialization
         foreach (var namespaceTypeDefinition in namespaceTypeDefinitions)
             this.memberBuilderAllocator.Traverse(namespaceTypeDefinition);
-        //now initialize and create all the builders
+        //now initialize all the builders
         foreach (var namespaceTypeDefinition in namespaceTypeDefinitions)
-        {
             this.initializingTraverser.Traverse(namespaceTypeDefinition);
-            this.typeCreator.Traverse(namespaceTypeDefinition);
-            yield return this.mapper.GetType(namespaceTypeDefinition);
-        }
-        /*
         //finally create the type and return it
         foreach (var namespaceTypeDefinition in namespaceTypeDefinitions)
         {
             this.typeCreator.Traverse(namespaceTypeDefinition);
             yield return this.mapper.GetType(namespaceTypeDefinition);
-        }*/
-        this.mapper.ClearMemberMappings();
+        }
+        this.mapper.ClearTemporaryMappings();
     }
 
     /// <summary>
@@ -1618,6 +1613,14 @@ namespace Microsoft.Cci.ReflectionEmitter {
         }
       }
 
+      private void UnmapGenericParametersIfNecessary(ITypeDefinition typeDefinition)
+      {
+          foreach (var genericParameter in typeDefinition.GenericParameters)
+              this.loader.mapper.ClearMapping(genericParameter);
+          foreach (var genericParameter in typeDefinition.Methods.SelectMany(m => m.GenericParameters))
+              this.loader.mapper.ClearMapping(genericParameter);
+      }
+
       public override void TraverseChildren(IMethodBody methodBody)
       {
         foreach (var privateHelperType in methodBody.PrivateHelperTypes)
@@ -1639,6 +1642,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
         this.CreateTypesThatNeedToBeLoadedBeforeLoading(namespaceTypeDefinition);
         var type = typeBuilder.CreateType();
         this.loader.mapper.DefineMapping(namespaceTypeDefinition, type);
+        UnmapGenericParametersIfNecessary(namespaceTypeDefinition);
         this.Traverse(namespaceTypeDefinition.NestedTypes);
         foreach (var privateHelperMember in namespaceTypeDefinition.PrivateHelperMembers)
           this.Traverse(privateHelperMember);
@@ -1668,6 +1672,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
         this.CreateTypesThatNeedToBeLoadedBeforeLoading(nestedTypeDefinition);
         var type = typeBuilder.CreateType();
         this.loader.mapper.DefineMapping(nestedTypeDefinition, type);
+        UnmapGenericParametersIfNecessary(nestedTypeDefinition);
         this.Traverse(nestedTypeDefinition.NestedTypes);
         foreach (var privateHelperMember in nestedTypeDefinition.PrivateHelperMembers)
           this.Traverse(privateHelperMember);
