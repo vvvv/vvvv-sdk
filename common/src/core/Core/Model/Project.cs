@@ -117,8 +117,6 @@ namespace VVVV.Core.Model
         public Project(string name, Uri location)
             : base(name, location)
         {
-            AssemblyLocation = GenerateAssemblyLocation();
-            
             FReferenceConverter = new ReferenceConverter(location);
             FDocumentConverter = new DocumentConverter(location);
             
@@ -202,11 +200,18 @@ namespace VVVV.Core.Model
             get;
             set;
         }
-        
-        public string AssemblyLocation
+
+        private string assemblyLocation;
+        public virtual string AssemblyLocation
         {
-            get;
-            protected set;
+            get
+            {
+                if (assemblyLocation == null)
+                {
+                    assemblyLocation = GenerateAssemblyLocation();
+                }
+                return assemblyLocation;
+            }
         }
 
         public event CompiledEventHandler ProjectCompiledSuccessfully;
@@ -237,7 +242,7 @@ namespace VVVV.Core.Model
                 assemblyName = string.Format("{0}._dynamic_.{1}.dll", name, ++i);
                 assemblyLocation = assemblyBaseDir.ConcatPath(assemblyName);
             }
-            
+            this.assemblyLocation = assemblyLocation;
             return assemblyLocation;
         }
         
@@ -250,7 +255,7 @@ namespace VVVV.Core.Model
             var args = new CompilerEventArgs(CompilerResults);
             if (!CompilerResults.Errors.HasErrors)
             {
-                AssemblyLocation = CompilerResults.PathToAssembly;
+                this.assemblyLocation = CompilerResults.PathToAssembly;
                 OnProjectCompiledSuccessfully(args);
             }
             
@@ -329,7 +334,7 @@ namespace VVVV.Core.Model
             var compilerArgs = new CompilerEventArgs(CompilerResults);
             if (!CompilerResults.Errors.HasErrors)
             {
-                AssemblyLocation = CompilerResults.PathToAssembly;
+                this.assemblyLocation = CompilerResults.PathToAssembly;
                 OnProjectCompiledSuccessfully(compilerArgs);
             }
             

@@ -47,17 +47,6 @@ namespace VVVV.Core.Model
 		public MsBuildProject(string name, Uri location)
 			:base(name, location)
 		{
-			// Try to find an assembly
-			var assemblyBaseDir = Path.GetDirectoryName(AssemblyLocation);
-			if (Directory.Exists(assemblyBaseDir))
-			{
-				foreach (var file in Directory.GetFiles(assemblyBaseDir, "*.dll"))
-				{
-					AssemblyLocation = file;
-					break;
-				}
-			}
-			
 			ProjectCompiledSuccessfully += this_ProjectCompiledSuccessfully;
 		}
 		
@@ -66,6 +55,30 @@ namespace VVVV.Core.Model
 			ProjectCompiledSuccessfully -= this_ProjectCompiledSuccessfully;
 			base.DisposeManaged();
 		}
+
+        private string assemblyLocation;
+        public override string AssemblyLocation
+        {
+            get
+            {
+                if (this.assemblyLocation == null)
+                {
+                    // Try to find an assembly
+                    var assemblyBaseDir = Path.GetDirectoryName(AssemblyLocation);
+                    if (Directory.Exists(assemblyBaseDir))
+                    {
+                        foreach (var file in Directory.GetFiles(assemblyBaseDir, "*.dll"))
+                        {
+                            this.assemblyLocation = file;
+                            break;
+                        }
+                    }
+                    if (this.assemblyLocation == null)
+                        this.assemblyLocation = base.AssemblyLocation;
+                }
+                return this.assemblyLocation;
+            }
+        }
 
 		void this_ProjectCompiledSuccessfully(object sender, CompilerEventArgs args)
 		{
