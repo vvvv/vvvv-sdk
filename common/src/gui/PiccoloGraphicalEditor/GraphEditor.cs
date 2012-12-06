@@ -434,6 +434,8 @@ namespace VVVV.HDE.GraphicalEditing
             }
         }
 
+        public RectangleF ViewBounds { get { return FCanvas.Camera.ViewBounds; } }
+
         public RectangleF ContentBounds
         {
             get
