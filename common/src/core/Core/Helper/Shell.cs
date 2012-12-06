@@ -79,8 +79,8 @@ namespace VVVV.Core
         
         //the solution
         [Export]
-        private ISolution FSolution;
-        public ISolution Solution 
+        private Solution FSolution;
+        public Solution Solution 
         { 
             get
             {

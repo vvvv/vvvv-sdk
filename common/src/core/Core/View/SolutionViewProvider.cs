@@ -22,12 +22,12 @@ namespace VVVV.Core.View
     /// </summary>
     public class SolutionViewProvider : IParent, IAddMenuProvider, IDisposable//, IDroppable
     {
-        protected ISolution FSolution;
+        protected Solution FSolution;
 //        protected IDroppable FDroppable;
 //        private IModelMapper FProjectsMapper;
-        private readonly SortedViewableList<IProject, string> FProjects;
+        private readonly SortedViewableList<Project, string> FProjects;
         
-        public SolutionViewProvider(ISolution solution, ModelMapper mapper)
+        public SolutionViewProvider(Solution solution, ModelMapper mapper)
 //            :base(solution.Projects, project => project.Name)
         {
             FSolution = solution;
@@ -38,7 +38,7 @@ namespace VVVV.Core.View
 //            if (FProjectsMapper.CanMap<IDroppable>())
 //                FDroppable = FProjectsMapper.Map<IDroppable>();
 
-            FProjects = new SortedViewableList<IProject, string>(solution.Projects, project => project.Name);
+            FProjects = new SortedViewableList<Project, string>(solution.Projects, project => project.Name);
         }
         
         public void Dispose()
@@ -69,11 +69,11 @@ namespace VVVV.Core.View
         
         IEnumerable<IMenuEntry> IAddMenuProvider.GetEnumerator()
         {
-            yield return new AddItemMenuEntry<IProject>(FSolution.Projects, "New project",
+            yield return new AddItemMenuEntry<Project>(FSolution.Projects, "New project",
                                                         Keys.Control | Keys.N, ProjectCreator);
         }
 
-        protected IProject ProjectCreator()
+        protected Project ProjectCreator()
         {
             var dialog = new NameDialog();
 

@@ -189,7 +189,7 @@ namespace VVVV.Core.Model
             private set;
         }
         
-        public ISolution Solution
+        public Solution Solution
         {
             get;
             set;

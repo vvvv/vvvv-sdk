@@ -10,7 +10,7 @@ using VVVV.Core.Runtime;
 
 namespace VVVV.Core.Model
 {
-    public class Solution : PersistentIDContainer, ISolution, IIDContainer
+    public class Solution : PersistentIDContainer, IIDContainer
     {
     	private MappingRegistry FRegistry;
     	
@@ -21,7 +21,7 @@ namespace VVVV.Core.Model
             Mapper = new ModelMapper(this, registry);
             
             // Do not allow rename on add. Rename triggers save/delete in case of PersistentIDContainer.
-            Projects = new EditableIDList<IProject>("Projects", false);
+            Projects = new EditableIDList<Project>("Projects", false);
             Add(Projects);
             
             ProjectContentRegistry = new ProjectContentRegistry();
@@ -38,7 +38,7 @@ namespace VVVV.Core.Model
     	
         public event CompiledEventHandler ProjectCompiledSuccessfully;
         
-        public IEditableIDList<IProject> Projects 
+        public IEditableIDList<Project> Projects 
         { 
             get;
             private set;
@@ -50,13 +50,13 @@ namespace VVVV.Core.Model
         	private set;
         }
         
-        void Projects_Added(IViewableCollection<IProject> collection, IProject project)
+        void Projects_Added(IViewableCollection<Project> collection, Project project)
         {
         	project.Solution = this;
             project.ProjectCompiledSuccessfully += Project_Compiled;
         }
 
-        void Projects_Removed(IViewableCollection<IProject> collection, IProject project)
+        void Projects_Removed(IViewableCollection<Project> collection, Project project)
         {
             project.ProjectCompiledSuccessfully -= Project_Compiled;
         }
@@ -98,5 +98,43 @@ namespace VVVV.Core.Model
 		{
 			// TODO: Implement this
 		}
+
+        /// <summary>
+        /// Finds the document with the specified filename. Looks through all documents in all projects
+        /// of this solution.
+        /// </summary>
+        /// <param name="filename">The filename where the document is located on the local filesystem.</param>
+        /// <returns>The document located at filename or null if not found.</returns>
+        public IDocument FindDocument(string filename)
+        {
+            filename = filename.ToLower().Replace('/', '\\');
+
+            foreach (var project in Projects)
+            {
+                var path = filename;
+
+                if (!Path.IsPathRooted(path))
+                    path = project.Location.GetLocalDir().ConcatPath(filename).ToLower();
+
+                foreach (var document in project.Documents)
+                {
+                    if (document.Location.LocalPath.ToLower() == path)
+                        return document;
+                }
+            }
+
+            return null;
+        }
+
+        public IProject FindProject(string filename)
+        {
+            foreach (var project in Projects)
+            {
+                if (project.Location.LocalPath == filename)
+                    return project;
+            }
+
+            return null;
+        }
     }
 }
