@@ -5,7 +5,7 @@
 		/// <summary>
 		/// Designer variable used to keep track of non-visual components.
 		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+		//private System.ComponentModel.IContainer components = null;
 		
 		/// <summary>
 		/// Disposes resources used by the control.

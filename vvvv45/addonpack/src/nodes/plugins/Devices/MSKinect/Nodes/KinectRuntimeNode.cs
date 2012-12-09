@@ -21,8 +21,8 @@ namespace VVVV.MSKinect.Nodes
         [Input("Enable Color", IsSingle = true)]
         IDiffSpread<bool> FInEnableColor;
 
-        [Input("Depth Mode", IsSingle = true)]
-        IDiffSpread<eDepthMode> FInDepthMode;
+        [Input("Enable Depth", IsSingle = true)]
+        IDiffSpread<bool> FInEnableDepth;
 
         [Input("Depth Range", IsSingle = true)]
         IDiffSpread<DepthRange> FInDepthRange;
@@ -82,7 +82,7 @@ namespace VVVV.MSKinect.Nodes
                 {
                     if (this.FInEnabled[0])
                     {
-                        this.runtime.Start(this.FInEnableColor[0], this.FInEnableSkeleton[0], this.FInDepthMode[0]);
+                        this.runtime.Start(this.FInEnableColor[0], this.FInEnableSkeleton[0], this.FInEnableDepth[0]);
                     }
                     else
                     {
@@ -92,9 +92,9 @@ namespace VVVV.MSKinect.Nodes
                     reset = true;
                 }
 
-                if (this.FInDepthMode.IsChanged || reset)
+                if (this.FInEnableDepth.IsChanged || reset)
                 {
-                    this.runtime.SetDepthMode(this.FInDepthMode[0]);
+                    this.runtime.SetDepthMode(this.FInEnableDepth[0]);
                 }
 
                 if (this.FInEnableColor.IsChanged || reset)

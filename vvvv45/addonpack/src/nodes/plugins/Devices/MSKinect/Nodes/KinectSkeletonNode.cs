@@ -23,10 +23,10 @@ namespace VVVV.MSKinect.Nodes
         private ISpread<int> FOutUserIndex;
 
         [Output("Position")]
-        private ISpread<Vector3> FOutPosition;
+        private ISpread<SlimDX.Vector3> FOutPosition;
 
         [Output("Clipping")]
-        private ISpread<Vector4> FOutClipped;
+        private ISpread<SlimDX.Vector4> FOutClipped;
 
         [Output("Joint ID")]
         private ISpread<string> FOutJointID;
@@ -116,7 +116,7 @@ namespace VVVV.MSKinect.Nodes
                         this.FOutPosition[i] = new Vector3(sk.Position.X, sk.Position.Y, sk.Position.Z);
                         this.FOutUserIndex[i] = sk.TrackingId;
                         
-                        Vector4 clip = Vector4.Zero;
+                        SlimDX.Vector4 clip = SlimDX.Vector4.Zero;
                         clip.X = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Left));
                         clip.Y = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Right));
                         clip.Z = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Top));

@@ -37,6 +37,7 @@ namespace VVVV.Hosting.Factories
     [ComVisible(false)]
     public class DotNetPluginFactory : AbstractFileFactory<IInternalPluginHost>
     {
+#pragma warning disable 0649
         [Import]
         protected IHDEHost FHost;
 
@@ -44,7 +45,8 @@ namespace VVVV.Hosting.Factories
         private StartableRegistry FStartableRegistry;
 
         [Import]
-        private IORegistry FIORegistry;
+        private IORegistry FIORegistry; 
+#pragma warning restore
         
         private readonly Dictionary<IPluginBase, PluginContainer> FPluginContainers;
         private readonly CompositionContainer FParentContainer;

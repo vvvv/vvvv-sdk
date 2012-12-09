@@ -1,6 +1,7 @@
 #region usings
 using System;
 using System.Net;
+using System.Globalization;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,34 +29,36 @@ namespace VVVV.Nodes
 	public class VVVVServerNode: IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
-		[Input("Listening UDP Port", IsSingle = true, DefaultValue = 44444)]
-		IDiffSpread<int> FUDPPort;
-		
-		[Input("Accept", IsSingle = true, DefaultEnumEntry = "OnlyExposed")]
-		IDiffSpread<AcceptMode> FAcceptMode;
-		
-		[Input("Clear Cache", IsSingle = true, IsBang = true)]
-		IDiffSpread<bool> FClearCache;
-		
-		[Input("Feedback Accepted", IsSingle = true, DefaultValue = 0)]
-		ISpread<bool> FFeedback;
-		
-		[Input("Feedback Target IP", IsSingle=true, DefaultString="127.0.0.1")]
-		IDiffSpread<string> FTargetIP;
-		
-		[Input("Feedback Target UDP Port", IsSingle=true, DefaultValue=55555)]
-		IDiffSpread<int> FTargetPort;
+#pragma warning disable 0649
+        [Input("Listening UDP Port", IsSingle = true, DefaultValue = 44444)]
+        IDiffSpread<int> FUDPPort;
 
-		[Output("Exposed Pins")]
-		ISpread<string> FExposedPinsOut;
-		
-		[Output("Cached Pins")]
-		ISpread<string> FCachedPinsOut;
+        [Input("Accept", IsSingle = true, DefaultEnumEntry = "OnlyExposed")]
+        IDiffSpread<AcceptMode> FAcceptMode;
 
-		[Import()]
-		ILogger FLogger;
-		
-		[Import()]
+        [Input("Clear Cache", IsSingle = true, IsBang = true)]
+        IDiffSpread<bool> FClearCache;
+
+        [Input("Feedback Accepted", IsSingle = true, DefaultValue = 0)]
+        ISpread<bool> FFeedback;
+
+        [Input("Feedback Target IP", IsSingle = true, DefaultString = "127.0.0.1")]
+        IDiffSpread<string> FTargetIP;
+
+        [Input("Feedback Target UDP Port", IsSingle = true, DefaultValue = 55555)]
+        IDiffSpread<int> FTargetPort;
+
+        [Output("Exposed Pins")]
+        ISpread<string> FExposedPinsOut;
+
+        [Output("Cached Pins")]
+        ISpread<string> FCachedPinsOut;
+
+        [Import()]
+        ILogger FLogger;
+
+        [Import()] 
+#pragma warning restore
 		IHDEHost FHDEHost;
 		
 		private OSCReceiver FOSCReceiver;
@@ -81,9 +84,9 @@ namespace VVVV.Nodes
 			FHDEHost.ExposedNodeService.NodeRemoved += NodeRemovedCB;
 			
 			//get initial list of exposed ioboxes
-			var pinName = "Y Input Value";
 			foreach (var node in FHDEHost.ExposedNodeService.Nodes)
 			{
+				var pinName = PinNameFromNode(node);
 				var pin = node.FindPin(pinName);
 				pin.Changed += PinChanged;
 				FExposedPins.Add(node.GetNodePath(false) + "/" + pinName, pin);
@@ -123,49 +126,44 @@ namespace VVVV.Nodes
 
 		private void NodeAddedCB(INode2 node)
 		{
-			string pinName = "";
-			if (node.Name == "IOBox (Value Advanced)")
-				pinName = "Y Input Value";
-			else if (node.Name == "IOBox (String)")
-				pinName = "Input String";
-			else if (node.Name == "IOBox (Color)")
-				pinName = "Color Input";
-			else if (node.Name == "IOBox (Enumerations)")
-				pinName = "Input Enum";
-			
+			var pinName = PinNameFromNode(node);
 			var pin = node.FindPin(pinName);
 			
+			FExposedPins.Add(node.GetNodePath(false) + "/" + pinName, pin);
 			if (pin != null)
-			{
 				pin.Changed += PinChanged;
-				FExposedPins.Add(node.GetNodePath(false) + "/" + pinName, pin);
-			}
 		}
 		
 		private void NodeRemovedCB(INode2 node)
 		{
-			string pinName = "";
-			if (node.Name == "IOBox (Value Advanced)")
-				pinName = "Y Input Value";
-			else if (node.Name == "IOBox (String)")
-				pinName = "Input String";
-			else if (node.Name == "IOBox (Color)")
-				pinName = "Color Input";
-			else if (node.Name == "IOBox (Enumerations)")
-				pinName = "Input Enum";
-			
+			var pinName = PinNameFromNode(node);
 			var pin = node.FindPin(pinName);
 			
+			FExposedPins.Remove(node.GetNodePath(false) + "/" + pinName);
 			if (pin != null)
-			{
 				pin.Changed -= PinChanged;
-				FExposedPins.Remove(node.GetNodePath(false) + "/" + pinName);
-			}
+		}
+		
+		private string PinNameFromNode(INode2 node)
+		{
+			string pinName = "";
+			if (node.NodeInfo.Systemname == "IOBox (Value Advanced)")
+				pinName = "Y Input Value";
+			else if (node.NodeInfo.Systemname == "IOBox (String)")
+				pinName = "Input String";
+			else if (node.NodeInfo.Systemname == "IOBox (Color)")
+				pinName = "Color Input";
+			else if (node.NodeInfo.Systemname == "IOBox (Enumerations)")
+				pinName = "Input Enum";
+			else if (node.NodeInfo.Systemname == "IOBox (Node)")
+				pinName = "Input Node";
+			
+			return pinName;
 		}
 		
 		private void PinChanged(object sender, EventArgs e)
 		{
-			if (FFeedback[0])
+			if ((FOSCTransmitter != null) && FFeedback[0])
 			{
 				var pin = sender as IPin2;
 				var pinPath = pin.ParentNode.GetNodePath(false) + "/" + pin.Name;
@@ -177,9 +175,8 @@ namespace VVVV.Nodes
 					message.Append(pin[i]);
 				
 				bundle.Append(message);
-				
-				if (FOSCTransmitter != null)
-					try
+
+				try
 				{
 					FOSCTransmitter.Send(bundle);
 				}
@@ -335,7 +332,14 @@ namespace VVVV.Nodes
 			{
 				var values = "";
 				foreach(var v in message.Values)
-					values += v.ToString() + ",";
+				{
+					if (v is float)
+						values += ((float)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + ",";
+					else if (v is double)
+						values += ((double)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + ",";
+					else
+						values += v.ToString() + ",";
+				}
 				values = values.TrimEnd(',');
 				
 				pin.Spread = values;

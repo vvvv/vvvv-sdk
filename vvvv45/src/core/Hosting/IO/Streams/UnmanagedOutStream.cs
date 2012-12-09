@@ -14,7 +14,7 @@ namespace VVVV.Hosting.IO.Streams
     {
         internal abstract class UnmanagedOutWriter : IStreamWriter<T>
         {
-            private readonly UnmanagedOutStream<T> FStream;
+            private UnmanagedOutStream<T> FStream;
             
             public UnmanagedOutWriter(UnmanagedOutStream<T> stream)
             {
@@ -72,17 +72,17 @@ namespace VVVV.Hosting.IO.Streams
             
             public void Dispose()
             {
-                
+                FStream = null;
             }
         }
         
-		private readonly Action<int> FSetDstLengthAction;
+        private readonly Action<int> FSetDstLengthAction;
         protected int FLength;
         
-		public UnmanagedOutStream(Action<int> setDstLengthAction)
+        public UnmanagedOutStream(Action<int> setDstLengthAction)
         {
-			FSetDstLengthAction = setDstLengthAction;
-			FSetDstLengthAction(FLength);
+            FSetDstLengthAction = setDstLengthAction;
+            FSetDstLengthAction(FLength);
         }
         
         public int Length
@@ -95,7 +95,7 @@ namespace VVVV.Hosting.IO.Streams
             {
                 if (value != FLength)
                 {
-					FSetDstLengthAction(value);
+                    FSetDstLengthAction(value);
                     FLength = value;
                 }
             }
@@ -159,8 +159,8 @@ namespace VVVV.Hosting.IO.Streams
         
         private readonly double** FPPDst;
         
-		public DoubleOutStream(double** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+        public DoubleOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(setDstLengthAction)
         {
             FPPDst = ppDst;
         }
@@ -208,8 +208,8 @@ namespace VVVV.Hosting.IO.Streams
         
         private readonly double** FPPDst;
         
-		public FloatOutStream(double** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+        public FloatOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(setDstLengthAction)
         {
             FPPDst = ppDst;
         }
@@ -257,8 +257,8 @@ namespace VVVV.Hosting.IO.Streams
         
         private readonly double** FPPDst;
         
-		public IntOutStream(double** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+        public IntOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(setDstLengthAction)
         {
             FPPDst = ppDst;
         }
@@ -306,8 +306,8 @@ namespace VVVV.Hosting.IO.Streams
         
         private readonly double** FPPDst;
         
-		public UIntOutStream(double** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+        public UIntOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(setDstLengthAction)
         {
             FPPDst = ppDst;
         }
@@ -355,8 +355,8 @@ namespace VVVV.Hosting.IO.Streams
         
         private readonly double** FPPDst;
         
-		public BoolOutStream(double** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+        public BoolOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(setDstLengthAction)
         {
             FPPDst = ppDst;
         }
@@ -404,8 +404,8 @@ namespace VVVV.Hosting.IO.Streams
         
         private readonly RGBAColor** FPPDst;
         
-		public ColorOutStream(RGBAColor** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+        public ColorOutStream(RGBAColor** ppDst, Action<int> setDstLengthAction)
+            : base(setDstLengthAction)
         {
             FPPDst = ppDst;
         }
@@ -510,8 +510,8 @@ namespace VVVV.Hosting.IO.Streams
         
         private readonly Matrix** FPPDst;
         
-		public MatrixOutStream(Matrix** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+        public MatrixOutStream(Matrix** ppDst, Action<int> setDstLengthAction)
+            : base(setDstLengthAction)
         {
             FPPDst = ppDst;
         }
@@ -559,8 +559,8 @@ namespace VVVV.Hosting.IO.Streams
         
         private readonly Matrix** FPPDst;
         
-		public Matrix4x4OutStream(Matrix** ppDst, Action<int> setDstLengthAction)
-			: base(setDstLengthAction)
+        public Matrix4x4OutStream(Matrix** ppDst, Action<int> setDstLengthAction)
+            : base(setDstLengthAction)
         {
             FPPDst = ppDst;
         }

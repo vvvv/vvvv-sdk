@@ -79,8 +79,17 @@ namespace VVVV.Nodes
 			int faceCount = 0;
 			foreach (ISpread<Vector3> s in FInd)
 				faceCount+=s.SliceCount;
-			
-			var mesh = new Mesh(device, faceCount , FPos.SliceCount, MeshFlags.Managed, VertexFormat.PositionNormal | VertexFormat.Texture1);
+
+            Mesh mesh;
+            if (device is DeviceEx)
+            {
+                mesh = new Mesh(device, faceCount, FPos.SliceCount, MeshFlags.Dynamic, VertexFormat.PositionNormal | VertexFormat.Texture1);
+            }
+            else
+            {
+                mesh = new Mesh(device, faceCount , FPos.SliceCount, MeshFlags.Managed, VertexFormat.PositionNormal | VertexFormat.Texture1);
+            }
+
 			
 			var vertices = mesh.LockVertexBuffer(LockFlags.None);
 			for (int v = 0; v < FPos.SliceCount; v++) {

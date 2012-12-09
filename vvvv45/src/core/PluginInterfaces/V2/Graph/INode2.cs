@@ -108,6 +108,19 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		
 		event EventHandler InnerStatusChanged;
     }
+
+    [ComVisible(false)]
+    public class BoundsChangedEventArgs : EventArgs
+    {
+        private BoundsType boundsType;
+
+        public BoundsChangedEventArgs(BoundsType boundsType)
+        {
+            this.boundsType = boundsType;
+        }
+
+        public BoundsType BoundsType { get { return this.boundsType; } }
+    }
 	
     [ComVisible(false)]
 	public static class Node2ExtensionMethods

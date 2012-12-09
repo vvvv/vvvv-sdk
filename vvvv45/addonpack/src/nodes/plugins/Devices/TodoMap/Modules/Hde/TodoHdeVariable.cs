@@ -25,19 +25,7 @@ namespace VVVV.TodoMap.Lib.Engine.Hde
         {
             this.node = node;
 
-            /*TodoVariable var = engine.GetVariableByName(varname);
-            if (var == null)
-            {
-                var = new TodoVariable(varname);
-                var.Category = "Global";
-                engine.RegisterVariable(var, false);
-            }
-
-
-            this.var = var;*/
-
             this.valuepin = this.node.FindPin("Y Input Value");
-
             if (this.valuepin.SliceCount == 1)
             {
                 TodoVariable var = engine.GetVariableByName(varname);
@@ -45,10 +33,11 @@ namespace VVVV.TodoMap.Lib.Engine.Hde
                 {
                     var = new TodoVariable(varname);
                     var.Category = "Global";
-                    var.ValueChanged += var_ValueChanged;
-                    var.VariableUpdated += var_VariableUpdated;
                     engine.RegisterVariable(var, false);
                 }
+
+                var.ValueChanged += var_ValueChanged;
+                var.VariableUpdated += var_VariableUpdated;
 
                 this.vars.Add(var);
             }
@@ -72,8 +61,6 @@ namespace VVVV.TodoMap.Lib.Engine.Hde
                     this.vars.Add(var);
                 }
             }
-            //this.valuepin.s
-
 
             this.minpin = this.node.FindPin("Minimum");
             this.maxpin = this.node.FindPin("Maximum");
@@ -112,10 +99,10 @@ namespace VVVV.TodoMap.Lib.Engine.Hde
 
         private void var_ValueChanged(TodoVariable var, AbstractTodoInput source)
         {
-            if (source != null)
-            {
+            //if (source != null)
+            //{
                 this.invalidatevalue = true;
-            }
+            //}
         }
 
         public void Update()

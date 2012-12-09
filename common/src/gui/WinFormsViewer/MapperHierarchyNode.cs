@@ -327,6 +327,13 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         
         #region ISelectable
         public event SelectionChangedHandler SelectionChanged;
+
+        protected virtual void OnSelectionChanged()
+        {
+            if (SelectionChanged != null)
+                SelectionChanged(this, EventArgs.Empty);
+        }
+
         void selectable_SelectionChanged(ISelectable sender, EventArgs args)
         {
             Selected = FSelectable.Selected;
@@ -341,17 +348,21 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             }
             set
             {
-                FSelected = value;
-                
-                if (FBackground.Pen != null)
-                    FBackground.Pen.Dispose();
-                
-                if (FSelected)
-                    FBackground.Pen = new Pen(Color.Black, 2);
-                else
-                    FBackground.Pen = null;
-                
-                FPoly.Pen = FBackground.Pen;
+                if (value != FSelected)
+                {
+                    FSelected = value;
+
+                    if (FBackground.Pen != null)
+                        FBackground.Pen.Dispose();
+
+                    if (FSelected)
+                        FBackground.Pen = new Pen(Color.Black, 2);
+                    else
+                        FBackground.Pen = null;
+
+                    FPoly.Pen = FBackground.Pen;
+                    OnSelectionChanged();
+                }
             }
         }
         #endregion ISelectable

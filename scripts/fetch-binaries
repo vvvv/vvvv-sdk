@@ -5,6 +5,26 @@
 # Server must have list-binaries.php installed.                    #
 ####################################################################
 
+function usage
+{
+  echo "Usage: fetch-binaries [--platform=x86|x64]"
+}
+
+platform="x86"
+
+while [ -n "$1" ]; do
+    case $1 in
+        -h | --help )           usage
+                                exit
+                                ;;
+		-p | --platform )		shift
+								platform=$1
+								;;
+        * )                     break
+    esac
+    shift
+done
+
 # Fail silently if we're in our private repo.
 gitRootDir=`git rev-parse --show-toplevel`
 if [ -d "$gitRootDir/public" ]; then
@@ -16,6 +36,8 @@ if [ ! -d "vvvv45/src" ]; then
   echo "Must be run within the root directory of vvvv-sdk."
   exit 1
 fi
+
+echo "Using platform ${platform}."
 
 # Check if a value exists in an array
 # @param $1 mixed  Needle  
@@ -53,7 +75,7 @@ git log --format=%H > GIT_LOG
 
 while read commitId
 do
-  archiveMD5File="${binariesArchiveFilename}-${commitId}.tar.bz2.md5"
+  archiveMD5File="${binariesArchiveFilename}-${commitId}-${platform}.tar.bz2.md5"
   
   if in_array "$archiveMD5File" "${archiveMd5Files[@]}"; then
     found=1
@@ -62,7 +84,7 @@ do
     git log -1 $commitId
     echo ""
   
-    archiveFile="${binariesArchiveFilename}-${commitId}.tar.bz2"
+    archiveFile="${binariesArchiveFilename}-${commitId}-${platform}.tar.bz2"
     remoteFile="${url}/${archiveFile}"
     remoteMd5File="${url}/${archiveMD5File}"
     echo "Fetching ${remoteFile}"
