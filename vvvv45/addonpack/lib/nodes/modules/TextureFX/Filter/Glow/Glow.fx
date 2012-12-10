@@ -75,7 +75,7 @@ float4 pMIX(float2 vp:vpos):color{float2 x=(vp+.5)/R;
 	//c/=1+3*tex2Dlod(s0,float4(x,0,33));
 	//c.a=s.a;
 	
-	c.a=tex2D(s0,x).a;
+	c.a=tex2D(s1,x).a;
     return c;
 }
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}

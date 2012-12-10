@@ -1,7 +1,7 @@
 float2 R;
 
 int Divisions <float uimin=1;> =5;
-int Iterations <float uimin=1;float uimax=50;> =2;
+int Iterations <float uimin=1;float uimax=70;> =2;
 float Rotate;
 float Zoom =0;
 float2 Center <float uimin=-1.0; float uimax=1.0;> =0.0;
@@ -48,7 +48,7 @@ float4 p0(float2 x:TEXCOORD0,float2 vp:VPOS):color{float2 asp=lerp(1,R/R.x,Aspec
 	float2 Off=Center;
 	float2 dx=r2d((x-.5+Off)*asp,Rotate)*zz+.5;
 	float2 xx=kal(dx,sz);
-	for(float i=0;i<min(Iterations-1,50);i++){
+	for(float i=0;i<min(Iterations-1,90);i++){
 		xx*=pow(2,IterationZoom*0.1);
     	if(xx.y>1)xx=kal(float2(xx.x,2-xx.y),sz);	
 	}
