@@ -22,7 +22,7 @@ float4 PS(float2 uv:TEXCOORD0): COLOR
     return c;
 }
 
-void VS(inout float4 vp:POSITION0,inout float4 uv:TEXCOORD0){vp.xy*=2;vp=mul(vp,tW);vp.xy+=mul(float4(0,0,0,1),tP);vp.z=Z;uv=mul(uv,tTex);}
+void VS(inout float4 vp:POSITION0,inout float4 uv:TEXCOORD0){vp.xy*=2;vp=mul(vp,tWVP);vp.z=Z;uv=mul(uv,tTex);}
 
 
 technique Off{
