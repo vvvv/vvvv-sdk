@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
-   <PATCH nodename="C:\Program Files (x86)\vvvv_45beta27.2\addonpack\lib\nodes\modules\TextureFX\Filter\HSCB\HSCB (EX9.Texture Filter).v4p">
-   <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.1.dtd" >
+   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\HSCB\HSCB (EX9.Texture Filter).v4p">
+   <BOUNDS height="11235" left="18075" top="0" type="Window" width="10305">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="HSCB.fx" id="17" nodename="HSCB.fx" systemname="HSCB (EX9.Effect)">
    <BOUNDS height="270" left="2025" top="5745" type="Node" width="5055">
@@ -46,6 +46,8 @@
    <PIN pinname="Brightness" visible="1">
    </PIN>
    <PIN pinname="HueCycles" visible="1">
+   </PIN>
+   <PIN pinname="SaturationBalance" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="16" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -239,9 +241,9 @@
    <LINK dstnodeid="17" dstpinname="HueCycles" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="7695" top="5295" type="Node" width="0">
+   <BOUNDS height="0" left="9465" top="5175" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="7695" top="5295" type="Box" width="480">
+   <BOUNDS height="480" left="9465" top="5175" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="11820" top="10170" type="Window" width="215">
    </BOUNDS>
@@ -339,5 +341,25 @@
    <LINK srcnodeid="12" srcpinname="X" dstnodeid="2" dstpinname="Width">
    </LINK>
    <LINK srcnodeid="12" srcpinname="Y" dstnodeid="2" dstpinname="Height">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="18" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="8235" top="4425" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8235" top="4425" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Saturation Balance|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="17" dstpinname="SaturationGamma">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="17" dstpinname="SaturationBalance">
    </LINK>
    </PATCH>
