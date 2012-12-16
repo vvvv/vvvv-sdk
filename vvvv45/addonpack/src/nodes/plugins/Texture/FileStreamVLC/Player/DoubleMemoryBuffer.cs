@@ -46,12 +46,10 @@ namespace VVVV.Nodes.Vlc.Player
 		private ReaderWriterLockSlim backBufferLock;
 		//private Mutex decodeLock; //lock used for decoding => locks the writePixelPlane
 
-		private int tryLockTimeout = 500;
-		//millliseconds
+		private int tryLockTimeout = 500; //millliseconds
 
 		// What the event handler should look like
-		public delegate void ToggleHandler();
-		//event handler delegate: called when ToggleFrontBack sccessfully called
+		public delegate void ToggleHandler();	//event handler delegate: called when ToggleFrontBack sccessfully called
 		// Public event that one can subscribe to
 		public event ToggleHandler Toggle;
 

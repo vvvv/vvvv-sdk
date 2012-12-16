@@ -8,6 +8,10 @@
   <ItemGroup>
     <!-- IDE seems to need this line, MSBuild not? -->
     <ProjectReference Include="@(ProjectReference)" Condition="'$(BuildingInsideVisualStudio)' == 'true'" />
+    <ProjectReference Include="nodes\plugins\Network\WyphonPartner\WyphonPartner.csproj">
+      <Project>{56E6A212-F9F1-419F-A89F-262F8ACCDC61}</Project>
+      <Name>WyphonPartner</Name>
+    </ProjectReference>
     <ProjectReference Include="nodes\plugins\Texture\FileStreamVLC\FileStreamVLC.csproj">
       <Project>{07D9A174-A846-4894-9C97-71B12C850617}</Project>
       <Name>FileStreamVLC</Name>
