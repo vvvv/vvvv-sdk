@@ -156,6 +156,22 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Visibility">The pins initial visibility.</param>
 		/// <param name="Pin">Pointer to the created ITransformOut interface.</param>
 		void CreateTransformOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformOut Pin);
+        /// <summary>
+        /// Creates an InputPin of type Raw.
+        /// </summary>
+        /// <param name="Name">The pins name.</param>
+        /// <param name="SliceMode">The pins SliceMode.</param>
+        /// <param name="Visibility">The pins initial visibility.</param>
+        /// <param name="Pin">Pointer to the created IRawIn interface.</param>
+        void CreateRawInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IRawIn Pin);
+        /// <summary>
+        /// Creates an OutputPin of type Raw.
+        /// </summary>
+        /// <param name="Name">The pins name.</param>
+        /// <param name="SliceMode">The pins SliceMode.</param>
+        /// <param name="Visibility">The pins initial visibility.</param>
+        /// <param name="Pin">Pointer to the created IRawOut interface.</param>
+        void CreateRawOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IRawOut Pin);
 		/// <summary>
 		/// Creates an InputPin of the generic node type.
 		/// </summary>

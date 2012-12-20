@@ -9,6 +9,8 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 using SlimDX;
+using System.Runtime.InteropServices;
+using System.IO;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -106,6 +108,102 @@ namespace VVVV.Hosting.IO.Streams
                 FNodeOut.MarkPinAsChanged();
             }
             base.Flush();
+        }
+    }
+
+    class RawOutStream : IOutStream<System.IO.Stream>
+    {
+        private readonly IRawOut FRawOut;
+        private int length;
+        private bool markPinAsChanged;
+
+        public RawOutStream(IRawOut rawOut)
+        {
+            FRawOut = rawOut;
+        }
+
+        public void Flush()
+        {
+            if (markPinAsChanged)
+            {
+                this.FRawOut.MarkPinAsChanged();
+            }
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Length
+        {
+            get { return this.length; }
+            set
+            {
+                if (value != this.length)
+                {
+                    this.FRawOut.SliceCount = value;
+                    this.length = value;
+                }
+            }
+        }
+
+        public IStreamWriter<System.IO.Stream> GetWriter()
+        {
+            markPinAsChanged = true;
+            return new Writer(this);
+        }
+
+        class Writer : IStreamWriter<System.IO.Stream>
+        {
+            private RawOutStream rawOutStream;
+
+            public Writer(RawOutStream rawOutStream)
+            {
+                this.rawOutStream = rawOutStream;
+            }
+
+            public void Write(System.IO.Stream value, int stride = 1)
+            {
+                this.rawOutStream.FRawOut.SetData(this.Position, new ComIStream(value));
+                this.Position += stride;
+            }
+
+            public int Write(System.IO.Stream[] buffer, int index, int length, int stride = 1)
+            {
+                var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+                for (int i = index; i < numSlicesToWrite; i++)
+                {
+                    Write(buffer[i]);
+                }
+                return numSlicesToWrite;
+            }
+
+            public void Reset()
+            {
+                Position = 0;
+            }
+
+            public bool Eos
+            {
+                get { return Position >= Length; }
+            }
+
+            public int Position
+            {
+                get;
+                set;
+            }
+
+            public int Length
+            {
+                get { return this.rawOutStream.Length; }
+            }
+
+            public void Dispose()
+            {
+                
+            }
         }
     }
 

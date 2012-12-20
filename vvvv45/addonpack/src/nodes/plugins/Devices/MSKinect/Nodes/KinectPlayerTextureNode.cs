@@ -28,6 +28,9 @@ namespace VVVV.MSKinect.Nodes
 
         private IDXTextureOut FOutTexture;
 
+        [Output("Found Id", Order=9)]
+        private ISpread<bool> FOutFoundId;
+
         [Output("Frame Index", IsSingle = true, Order = 10)]
         private ISpread<int> FOutFrameIndex;
 
@@ -44,6 +47,8 @@ namespace VVVV.MSKinect.Nodes
         private object m_lock = new object();
 
         private int[] colors = new int[9];
+
+        private bool[] found = new bool[9];
 
         private Dictionary<Device, Texture> FDepthTex = new Dictionary<Device, Texture>();
 
@@ -96,6 +101,12 @@ namespace VVVV.MSKinect.Nodes
             }
 
             this.FOutFrameIndex[0] = this.frameindex;
+
+            this.FOutFoundId.SliceCount = this.found.Length;
+            for (int i = 0; i < this.found.Length; i++)
+            {
+                this.FOutFoundId[i] = this.found[i];
+            }
         }
 
         public void ConnectPin(IPluginIO pin)
@@ -134,7 +145,7 @@ namespace VVVV.MSKinect.Nodes
                     Texture t = null;
                     if (OnDevice is DeviceEx)
                     {
-                        t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.X8R8G8B8, Pool.Default);
+                        t = new Texture(OnDevice, 320, 240, 1, Usage.Dynamic, Format.X8R8G8B8, Pool.Default);
                     }
                     else
                     {
@@ -179,17 +190,23 @@ namespace VVVV.MSKinect.Nodes
             {
                 this.FInvalidate = true;
                 this.frameindex = frame.FrameNumber;
+
+                bool[] fnd = new bool[9];
+
                 lock (m_lock)
                 {
+
                     frame.CopyPixelDataTo(this.rawdepth);
                     for (int i16 = 0; i16 < 320 * 240; i16++)
                     {
                         int player = rawdepth[i16] & DepthImageFrame.PlayerIndexBitmask;
 
                         this.playerimage[i16] = this.colors[player];
-                        
+                        fnd[player] = true;
                     }
                 }
+
+                this.found = fnd;
             }
         }
     }

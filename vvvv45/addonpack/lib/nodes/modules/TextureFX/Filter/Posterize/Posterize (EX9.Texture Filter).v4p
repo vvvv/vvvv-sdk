@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
-   <PATCH nodename="C:\Program Files (x86)\vvvv_45beta27.2\addonpack\lib\nodes\modules\TextureFX\Filter\Posterize\Posterize (EX9.Texture Filter).v4p">
-   <BOUNDS height="11415" left="8475" top="7770" type="Window" width="16020">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.3.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Posterize\Posterize (EX9.Texture Filter).v4p">
+   <BOUNDS height="8775" left="7470" top="4935" type="Window" width="16020">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="Posterize.fx" id="16" nodename="Posterize.fx" systemname="Posterize (EX9.Effect)">
    <BOUNDS height="270" left="2025" top="3915" type="Node" width="5055">
@@ -41,7 +41,7 @@
    </PIN>
    <PIN pinname="|Dithering|" visible="1">
    </PIN>
-   <PIN pinname="Dither" visible="1">
+   <PIN pinname="Dither" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Alpha" visible="1">
    </PIN>
@@ -51,7 +51,9 @@
    </PIN>
    <PIN pinname="Phase" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Phase ">
+   <PIN pinname="Phase " slicecount="4" visible="1" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="Dithering " visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="15" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -276,36 +278,6 @@
    </LINK>
    <LINK dstnodeid="14" dstpinname="Enabled" srcnodeid="7" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="2" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="6750" top="1845" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="540" left="6750" top="1845" type="Box" width="570">
-   </BOUNDS>
-   <BOUNDS height="160" left="14805" top="11640" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Show Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Show Slider" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Dithering">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="16" dstpinname="Dither" srcnodeid="2" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="1" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="7500" top="1905" type="Node" width="0">
    </BOUNDS>
@@ -377,11 +349,11 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Smooth" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Smooth">
    </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Smooth">
@@ -393,6 +365,28 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="4" values="0,0,0,0">
    </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Phase |">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Phase ">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6390" top="1905" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6390" top="1905" width="795" height="960">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="4" values="0,0,0,0">
+   </PIN>
    <PIN pinname="Units" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
@@ -401,9 +395,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Phase |" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Dithering |" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Phase ">
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Dithering ">
    </LINK>
    </PATCH>

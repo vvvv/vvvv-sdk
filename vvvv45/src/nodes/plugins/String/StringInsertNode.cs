@@ -20,20 +20,19 @@ namespace VVVV.Nodes
 	public class StringInsertNode: IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Input")]
-		ISpread<string> FInput;
+#pragma warning disable 0649
+        [Input("Input")]
+        ISpread<string> FInput;
 
-		[Input("Position", MinValue = 0)]
-		ISpread<int> FPosition;
-		
-		[Input("Text to Insert")]
-		ISpread<string> FInsert;
-		
-		[Output("Output")]
-		ISpread<string> FOutput;
+        [Input("Position", MinValue = 0)]
+        ISpread<int> FPosition;
 
-		[Import()]
-		ILogger FLogger;
+        [Input("Text to Insert")]
+        ISpread<string> FInsert;
+
+        [Output("Output")]
+        ISpread<string> FOutput;
+#pragma warning restore
 		#endregion fields & pins
 
 		//called when data for any output pin is requested

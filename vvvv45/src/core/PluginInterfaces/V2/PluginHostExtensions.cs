@@ -67,7 +67,7 @@ namespace VVVV.PluginInterfaces.V2
 			if (attribute.IsToggle && attribute.DefaultBoolean)
 				attribute.DefaultValue = 1.0;
 			
-			attribute.Dimension = FDefaultValues.ContainsKey(type) ? FDefaultValues[type].Item5 : 1;
+			attribute.Dimension = FDefaultValues.ContainsKey(type) ? FDefaultValues[type].Item5 : attribute.Dimension;
 			var defaultValues = attribute.DefaultValues;
 			Array.Resize(ref defaultValues, attribute.Dimension);
 			attribute.DefaultValues = defaultValues;
@@ -362,6 +362,23 @@ namespace VVVV.PluginInterfaces.V2
 			result.Order = attribute.Order;
 			return result;
 		}
+
+        public static IRawIn CreateRawInput(this IPluginHost host, InputAttribute attribute)
+        {
+            IRawIn result = null;
+            host.CreateRawInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out result);
+            result.Order = attribute.Order;
+            result.AutoValidate = attribute.AutoValidate;
+            return result;
+        }
+
+        public static IRawOut CreateRawOutput(this IPluginHost host, OutputAttribute attribute)
+        {
+            IRawOut result = null;
+            host.CreateRawOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out result);
+            result.Order = attribute.Order;
+            return result;
+        }
 		
 		public static IDXMeshOut CreateMeshOutput(this IPluginHost host, OutputAttribute attribute, Type type)
 		{

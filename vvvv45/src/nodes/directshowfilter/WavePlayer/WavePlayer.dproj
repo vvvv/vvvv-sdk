@@ -1,54 +1,167 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectGuid>{bb561c06-c00f-4a8f-a230-bb32b7e6f99e}</ProjectGuid>
-    <MainSource>WavePlayer.dpr</MainSource>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-    <DCC_DependencyCheckOutputName>..\..\..\..\lib\nodes\directshowfilter\WavePlayer.ax</DCC_DependencyCheckOutputName>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Version>7.0</Version>
-    <DCC_DebugInformation>False</DCC_DebugInformation>
-    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
-    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-    <DCC_Define>RELEASE</DCC_Define>
-    <DCC_UnitSearchPath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9</DCC_UnitSearchPath>
-    <DCC_ResourcePath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9</DCC_ResourcePath>
-    <DCC_ObjPath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9</DCC_ObjPath>
-    <DCC_IncludePath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9</DCC_IncludePath>
-    <DCC_AssertionsAtRuntime>False</DCC_AssertionsAtRuntime>
-    <DCC_IOChecking>False</DCC_IOChecking>
-    <DCC_ExeOutput>..\..\..\..\lib\nodes\directshowfilter</DCC_ExeOutput>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Version>7.0</Version>
-    <DCC_Define>DEBUG</DCC_Define>
-    <DCC_UnitSearchPath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9</DCC_UnitSearchPath>
-    <DCC_ResourcePath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9</DCC_ResourcePath>
-    <DCC_ObjPath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9</DCC_ObjPath>
-    <DCC_IncludePath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9</DCC_IncludePath>
-    <DCC_Optimize>False</DCC_Optimize>
-    <DCC_IntegerOverflowCheck>True</DCC_IntegerOverflowCheck>
-    <DCC_RangeChecking>True</DCC_RangeChecking>
-    <DCC_MapFile>3</DCC_MapFile>
-    <DCC_DebugInfoInExe>True</DCC_DebugInfoInExe>
-    <DCC_DebugVN>True</DCC_DebugVN>
-    <DCC_RemoteDebug>True</DCC_RemoteDebug>
-    <DCC_ExeOutput>..\..\..\..\lib\nodes\directshowfilter</DCC_ExeOutput>
-  </PropertyGroup>
-  <ProjectExtensions>
-    <Borland.Personality>Delphi.Personality</Borland.Personality>
-    <Borland.ProjectType>VCLApplication</Borland.ProjectType>
-    <BorlandProject>
-<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters><Parameters Name="HostApplication">..\..\..\..\..\vvvv45\vvvv.exe</Parameters></Parameters><VersionInfo><VersionInfo Name="IncludeVerInfo">False</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">0</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">0</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">3079</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName"></VersionInfoKeys><VersionInfoKeys Name="FileDescription"></VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys><VersionInfoKeys Name="InternalName"></VersionInfoKeys><VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename"></VersionInfoKeys><VersionInfoKeys Name="ProductName"></VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys><VersionInfoKeys Name="Comments"></VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">WavePlayer.dpr</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
-  </ProjectExtensions>
-  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
-  <ItemGroup>
-    <DelphiCompile Include="WavePlayer.dpr">
-      <MainSource>MainSource</MainSource>
-    </DelphiCompile>
-    <DCCReference Include="Main.pas" />
-  </ItemGroup>
-</Project>
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{bb561c06-c00f-4a8f-a230-bb32b7e6f99e}</ProjectGuid>
+			<MainSource>WavePlayer.dpr</MainSource>
+			<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<DCC_DependencyCheckOutputName>..\..\..\..\lib\nodes\directshowfilter\WavePlayer.ax</DCC_DependencyCheckOutputName>
+			<FrameworkType>None</FrameworkType>
+			<ProjectVersion>13.4</ProjectVersion>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">Release</Config>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>1</TargetedPlatforms>
+			<AppType>Library</AppType>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+			<Cfg_1_Win32>true</Cfg_1_Win32>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<Manifest_File>None</Manifest_File>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
+			<OutputExt>ax</OutputExt>
+			<GenDll>true</GenDll>
+			<VerInfo_Locale>3079</VerInfo_Locale>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Debugger_HostApplication>..\..\..\..\..\vvvv45\vvvv.exe</Debugger_HostApplication>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<Version>7.0</Version>
+			<DCC_DebugInformation>False</DCC_DebugInformation>
+			<DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_UnitSearchPath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_ResourcePath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9;$(DCC_ResourcePath)</DCC_ResourcePath>
+			<DCC_ObjPath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9;$(DCC_ObjPath)</DCC_ObjPath>
+			<DCC_IncludePath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9;$(DCC_IncludePath)</DCC_IncludePath>
+			<DCC_AssertionsAtRuntime>False</DCC_AssertionsAtRuntime>
+			<DCC_IOChecking>False</DCC_IOChecking>
+			<DCC_ExeOutput>..\..\..\..\lib\nodes\directshowfilter</DCC_ExeOutput>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<Version>7.0</Version>
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<DCC_UnitSearchPath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_ResourcePath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9;$(DCC_ResourcePath)</DCC_ResourcePath>
+			<DCC_ObjPath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9;$(DCC_ObjPath)</DCC_ObjPath>
+			<DCC_IncludePath>$(DSPACK)\src\DSPack;$(DSPACK)\src\DirectX9;$(DCC_IncludePath)</DCC_IncludePath>
+			<DCC_Optimize>False</DCC_Optimize>
+			<DCC_IntegerOverflowCheck>True</DCC_IntegerOverflowCheck>
+			<DCC_RangeChecking>True</DCC_RangeChecking>
+			<DCC_MapFile>3</DCC_MapFile>
+			<DCC_DebugInfoInExe>True</DCC_DebugInfoInExe>
+			<DCC_DebugVN>True</DCC_DebugVN>
+			<DCC_RemoteDebug>True</DCC_RemoteDebug>
+			<DCC_ExeOutput>..\..\..\..\lib\nodes\directshowfilter</DCC_ExeOutput>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>VCLApplication</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+						<Parameters Name="HostApplication">..\..\..\..\..\vvvv45\vvvv.exe</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">False</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">3079</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Source>
+						<Source Name="MainSource">WavePlayer.dpr</Source>
+					</Source>
+					<Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclbindcompfmx160.bpl">Embarcadero LiveBindings Components FireMonkey</Excluded_Packages>
+					</Excluded_Packages>
+				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win64">False</Platform>
+					<Platform value="OSX32">False</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="Main.pas"/>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>

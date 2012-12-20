@@ -4,6 +4,7 @@ using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+using System.IO;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -97,7 +98,6 @@ namespace VVVV.Hosting.IO.Streams
                     for (int i = 0; i < Length; i++)
                     {
                         int ord;
-                        string name;
                         FEnumIn.GetOrd(i, out ord);
                         writer.Write(new EnumEntry(FEnumName, ord));
                     }
@@ -148,6 +148,56 @@ namespace VVVV.Hosting.IO.Streams
                         writer.Write(result);
                     }
                 }
+            }
+            return base.Sync();
+        }
+    }
+
+    class RawInStream : BufferedIOStream<System.IO.Stream>
+    {
+        private readonly IRawIn FRawIn;
+        private readonly bool FAutoValidate;
+        
+        public RawInStream(IRawIn rawIn)
+        {
+            FRawIn = rawIn;
+            FAutoValidate = rawIn.AutoValidate;
+            Length = 0;
+        }
+        
+        public unsafe override bool Sync()
+        {
+            IsChanged = FAutoValidate ? FRawIn.PinIsChanged : FRawIn.Validate();
+            if (IsChanged)
+            {
+                foreach (var memoryStream in this)
+                {
+                    if (memoryStream != null)
+                        memoryStream.Dispose();
+                }
+                Length = FRawIn.SliceCount;
+                using (var writer = GetWriter())
+                {
+                    for (int i = 0; i < Length; i++)
+                    {
+                        System.Runtime.InteropServices.ComTypes.IStream stream;
+                        FRawIn.GetData(i, out stream);
+                        if (stream != null)
+                        {
+                            var wrapper = new ComStream(stream);
+                            wrapper.Position = 0;
+                            writer.Write(wrapper);
+                        }
+                        else
+                            writer.Write(new System.IO.MemoryStream());
+                    }
+                }
+            }
+            else
+            {
+                // Reset the streams
+                foreach (var memoryStream in this)
+                    memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
             }
             return base.Sync();
         }

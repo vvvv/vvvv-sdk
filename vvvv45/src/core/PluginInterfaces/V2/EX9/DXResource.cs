@@ -15,7 +15,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
             TMetadata metadata, 
             Func<TMetadata, Device, TResource> createResourceFunc, 
             Action<TMetadata, TResource> updateResourceFunc = null, 
-            Action<TMetadata, TResource> destroyResourceAction = null)
+            Action<TMetadata, TResource, DestroyReason> destroyResourceAction = null)
             : base(metadata, createResourceFunc, updateResourceFunc, destroyResourceAction)
         {
         }
@@ -29,7 +29,10 @@ namespace VVVV.PluginInterfaces.V2.EX9
         protected override TResource CreateResoure(TMetadata metadata, Device device)
         {
             var resource = base.CreateResoure(metadata, device);
-            IsDefaultPool = resource.IsDefaultPool;
+            if (resource != null)
+            {
+                IsDefaultPool = resource.IsDefaultPool;
+            }
             return resource;
         }
     }

@@ -12,6 +12,7 @@ namespace VVVV.Nodes.vvvv.StartableInfo
     [PluginInfo(Name="Info",Category="VVVV",Version="Startables",Author="vux",Help="Returns info about any autostart modules in VVVV")]
     public class StartableInfoNode : IPluginEvaluate
     {
+#pragma warning disable 0649
         [Input("Update", IsSingle = true, IsBang = true)]
         ISpread<bool> FInUpdate;
 
@@ -24,8 +25,9 @@ namespace VVVV.Nodes.vvvv.StartableInfo
         [Output("Message")]
         ISpread<string> FOutMessage;
 
-        [Output("Type Name",Visibility=PinVisibility.Hidden)]
-        ISpread<string> FOutTypeName;
+        [Output("Type Name", Visibility = PinVisibility.Hidden)]
+        ISpread<string> FOutTypeName; 
+#pragma warning restore
 
         IStartableRegistry FStartableRegistry;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace VVVV.Utils.Streams
 {
@@ -182,7 +183,20 @@ namespace VVVV.Utils.Streams
         {
             return CombineStreams(stream1.Length, stream2.Length);
         }
-        
+
+        public static int GetSpreadMax(params IInStream[] streams)
+        {
+            var result = 0;
+            for (int i = 0; i < streams.Length; i++)
+            {
+                if (streams[i].Length == 0)
+                    return 0;
+                else
+                    result = Math.Max(result, streams[i].Length);
+            }
+            return result;
+        }
+
         public static void SetLengthBy<T>(this IOutStream<T> outStream, IInStream<IInStream<T>> inputStreams)
         {
             outStream.Length = inputStreams.GetMaxLength() * inputStreams.Length;
@@ -200,26 +214,17 @@ namespace VVVV.Utils.Streams
                 outputStream.Length = lengthPerStream;
             }
         }
-        
-        public static int GetMaxLength<T>(this IInStream<IInStream<T>> streams)
+
+        public static int GetMaxLength<T>(this IEnumerable<IInStream<T>> streams)
         {
-            switch (streams.Length)
+            var result = 0;
+            foreach (var stream in streams)
             {
-                case 0:
-                    return 0;
-                default:
-                    using (var reader = streams.GetReader())
-                    {
-                        var stream = reader.Read();
-                        int result = stream.Length;
-                        while (!reader.Eos)
-                        {
-                            stream = reader.Read();
-                            result = result.CombineStreams(stream.Length);
-                        }
-                        return result;
-                    }
+                var streamLength = stream.Length;
+                if (streamLength == 0) return 0;
+                result = Math.Max(result, streamLength);
             }
+            return result;
         }
 
         public static int GetMaxLength(params IInStream[] streams)
@@ -489,6 +494,11 @@ namespace VVVV.Utils.Streams
         public static ReverseStream<T> Reverse<T>(this IInStream<T> source)
         {
             return new ReverseStream<T>(source);
+        }
+
+        public static BufferedIOStream<T> ToStream<T>(this IEnumerable<T> source)
+        {
+            return new BufferedIOStream<T>(source.ToArray());
         }
     }
 }

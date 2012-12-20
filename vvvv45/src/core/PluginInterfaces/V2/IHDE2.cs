@@ -42,6 +42,28 @@ namespace VVVV.PluginInterfaces.V2
     }
     
     [ComVisible(false)]
+    public class ComponentModeEventArgs : EventArgs
+    {
+    	public IWindow2 Window
+    	{
+    		get;
+    		private set;
+    	}
+    	
+    	public ComponentMode ComponentMode
+    	{
+    		get;
+    		private set;
+    	}
+    	
+    	public ComponentModeEventArgs(IWindow2 window, ComponentMode componentMode)
+    	{
+    		ComponentMode = componentMode;
+    		Window = window;
+    	}
+    }
+    
+    [ComVisible(false)]
     public class MouseEventArgs : EventArgs
     {
     	public INode2 Node
@@ -78,6 +100,9 @@ namespace VVVV.PluginInterfaces.V2
 	
 	[ComVisible(false)]
 	public delegate void WindowEventHandler(object sender, WindowEventArgs args);
+	
+	[ComVisible(false)]
+	public delegate void ComponentModeEventHandler(object sender, ComponentModeEventArgs args);
     
     /// <summary>
 	/// The interface to be implemented by a program to host IHDEPlugins.
@@ -117,6 +142,8 @@ namespace VVVV.PluginInterfaces.V2
 	    event WindowEventHandler WindowSelectionChanged;
 	    event WindowEventHandler WindowAdded;
 	    event WindowEventHandler WindowRemoved;
+	    event ComponentModeEventHandler BeforeComponentModeChange;
+	    event ComponentModeEventHandler AfterComponentModeChange;
 	    
 	    /// <summary>
 	    /// The currently selected patch window.

@@ -31,7 +31,7 @@ namespace VVVV.Nodes.Network
 	#region PluginInfo
 	[PluginInfo(Name = "WyphonPartner", Category = "Network", Version = "", Author = "ft", Help = "Share DX9ex shared textures", Tags = "Syphon, Wyphon, DX9ex", Credits = "Frederik Tilkin", Bugs = "definitely", Warnings = "")]
 	#endregion PluginInfo
-	public class WyphonPartner : IPluginEvaluate, IDisposable
+	public class WyphonPartnerNode : IPluginEvaluate, IDisposable
 	{
 
 		[Import()]
