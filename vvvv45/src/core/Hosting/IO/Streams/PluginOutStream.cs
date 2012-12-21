@@ -114,8 +114,8 @@ namespace VVVV.Hosting.IO.Streams
     class RawOutStream : IOutStream<System.IO.Stream>
     {
         private readonly IRawOut FRawOut;
-        private int length;
-        private bool markPinAsChanged;
+        private int FLength;
+        private bool FMarkPinAsChanged;
 
         public RawOutStream(IRawOut rawOut)
         {
@@ -124,7 +124,7 @@ namespace VVVV.Hosting.IO.Streams
 
         public void Flush(bool force = false)
         {
-            if (force || markPinAsChanged)
+            if (force || FMarkPinAsChanged)
             {
                 this.FRawOut.MarkPinAsChanged();
             }
@@ -137,35 +137,35 @@ namespace VVVV.Hosting.IO.Streams
 
         public int Length
         {
-            get { return this.length; }
+            get { return this.FLength; }
             set
             {
-                if (value != this.length)
+                if (value != this.FLength)
                 {
                     this.FRawOut.SliceCount = value;
-                    this.length = value;
+                    this.FLength = value;
                 }
             }
         }
 
         public IStreamWriter<System.IO.Stream> GetWriter()
         {
-            markPinAsChanged = true;
+            FMarkPinAsChanged = true;
             return new Writer(this);
         }
 
         class Writer : IStreamWriter<System.IO.Stream>
         {
-            private RawOutStream rawOutStream;
+            private RawOutStream FRawOutStream;
 
             public Writer(RawOutStream rawOutStream)
             {
-                this.rawOutStream = rawOutStream;
+                this.FRawOutStream = rawOutStream;
             }
 
             public void Write(System.IO.Stream value, int stride = 1)
             {
-                this.rawOutStream.FRawOut.SetData(this.Position, new ComIStream(value));
+                this.FRawOutStream.FRawOut.SetData(this.Position, new ComIStream(value));
                 this.Position += stride;
             }
 
@@ -174,7 +174,7 @@ namespace VVVV.Hosting.IO.Streams
                 var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
                 for (int i = index; i < numSlicesToWrite; i++)
                 {
-                    Write(buffer[i]);
+                    Write(buffer[i], stride);
                 }
                 return numSlicesToWrite;
             }
@@ -197,7 +197,7 @@ namespace VVVV.Hosting.IO.Streams
 
             public int Length
             {
-                get { return this.rawOutStream.Length; }
+                get { return this.FRawOutStream.Length; }
             }
 
             public void Dispose()
