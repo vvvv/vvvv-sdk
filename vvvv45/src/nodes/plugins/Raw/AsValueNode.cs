@@ -45,17 +45,19 @@ namespace VVVV.Nodes.Raw
                 {
                     foreach (BufferedIOStream<double> outputStream in FOutputs)
                     {
-                        var inputStream = reader.Read();
-                        var formatStream = formatReader.Read();
-                        var byteOrder = byteOrderReader.Read();
-                        if (formatStream.Length == 1)
+                        using (var inputStream = reader.Read())
                         {
-                            var format = formatStream.Single();
-                            ConvertAllAtOnce(inputStream, outputStream, buffer, format, byteOrder);
-                        }
-                        else
-                        {
-                            ConvertOneByOne(inputStream, outputStream, formatStream, byteOrder);
+                            var formatStream = formatReader.Read();
+                            var byteOrder = byteOrderReader.Read();
+                            if (formatStream.Length == 1)
+                            {
+                                var format = formatStream.Single();
+                                ConvertAllAtOnce(inputStream, outputStream, buffer, format, byteOrder);
+                            }
+                            else
+                            {
+                                ConvertOneByOne(inputStream, outputStream, formatStream, byteOrder);
+                            }
                         }
                     }
                 }

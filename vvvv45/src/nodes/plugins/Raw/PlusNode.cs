@@ -35,6 +35,8 @@ namespace VVVV.Nodes.Raw
                         .Select(r => r.Read());
                     if (intersperseElement.Length > 0)
                         streams = streams.Intersperse(intersperseElement);
+                    else
+                        intersperseElement.Dispose();
                     outputWriter.Write(new AggregatedStream(streams));
                 }
             }
