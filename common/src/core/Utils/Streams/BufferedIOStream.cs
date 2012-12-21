@@ -14,14 +14,10 @@ namespace VVVV.Utils.Streams
         public class StreamReader : IStreamReader<T>
         {
             private readonly BufferedIOStream<T> FStream;
-            private readonly T[] FBuffer;
-            private readonly int FLength;
             
             internal StreamReader(BufferedIOStream<T> stream)
             {
                 FStream = stream;
-                FBuffer = stream.FBuffer;
-                FLength = stream.FLength;
             }
             
             public void Dispose()
@@ -33,7 +29,7 @@ namespace VVVV.Utils.Streams
             {
                 get
                 {
-                    return Position >= FLength;
+                    return Position >= Length;
                 }
             }
             
@@ -47,7 +43,7 @@ namespace VVVV.Utils.Streams
             {
                 get
                 {
-                    return FLength;
+                    return FStream.FLength;
                 }
             }
             
@@ -58,7 +54,7 @@ namespace VVVV.Utils.Streams
             
             public T Read(int stride = 1)
             {
-                var result = FBuffer[Position];
+                var result = FStream.FBuffer[Position];
                 Position += stride;
                 return result;
             }
@@ -71,12 +67,12 @@ namespace VVVV.Utils.Streams
                 {
                     case 0:
                         if (index == 0 && slicesToRead == buffer.Length)
-                            buffer.Init(FBuffer[Position]); // Slightly faster
+                            buffer.Init(FStream.FBuffer[Position]); // Slightly faster
                         else
-                            buffer.Fill(index, slicesToRead, FBuffer[Position]);
+                            buffer.Fill(index, slicesToRead, FStream.FBuffer[Position]);
                         break;
                     case 1:
-                        Array.Copy(FBuffer, Position, buffer, index, slicesToRead);
+                        Array.Copy(FStream.FBuffer, Position, buffer, index, slicesToRead);
                         Position += slicesToRead * stride;
                         break;
                     default:
@@ -119,14 +115,10 @@ namespace VVVV.Utils.Streams
         public class StreamWriter : IStreamWriter<T>
         {
             private readonly BufferedIOStream<T> FStream;
-            private readonly T[] FBuffer;
-            private readonly int FLength;
             
             internal StreamWriter(BufferedIOStream<T> stream)
             {
                 FStream = stream;
-                FBuffer = stream.FBuffer;
-                FLength = stream.FLength;
             }
             
             public void Dispose()
@@ -138,7 +130,7 @@ namespace VVVV.Utils.Streams
             {
                 get
                 {
-                    return Position >= FLength;
+                    return Position >= Length;
                 }
             }
             
@@ -152,7 +144,7 @@ namespace VVVV.Utils.Streams
             {
                 get
                 {
-                    return FLength;
+                    return FStream.FLength;
                 }
             }
             
@@ -163,30 +155,33 @@ namespace VVVV.Utils.Streams
             
             public void Write(T value, int stride = 1)
             {
+                // Allow the stream to expand.
+                if (Eos) 
+                    FStream.Length = Position + 1;
                 FStream.IsChanged = true;
-                FBuffer[Position] = value;
+                FStream.FBuffer[Position] = value;
                 Position += stride;
             }
             
             public int Write(T[] buffer, int index, int length, int stride = 1)
             {
                 FStream.IsChanged = true;
-                
+
                 int slicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
                 
                 switch (stride)
                 {
                     case 0:
-                        FBuffer[Position] = buffer[index + slicesToWrite - 1];
+                        FStream.FBuffer[Position] = buffer[index + slicesToWrite - 1];
                         break;
                     case 1:
-                        Array.Copy(buffer, index, FBuffer, Position, slicesToWrite);
+                        Array.Copy(buffer, index, FStream.FBuffer, Position, slicesToWrite);
                         Position += slicesToWrite;
                         break;
                     default:
                         for (int i = index; i < index + slicesToWrite; i++)
                         {
-                            FBuffer[Position] = buffer[i];
+                            FStream.FBuffer[Position] = buffer[i];
                             Position += stride;
                         }
                         break;
