@@ -180,7 +180,7 @@ namespace VVVV.Hosting.IO.Streams
                 {
                     for (int i = 0; i < Length; i++)
                     {
-                        System.Runtime.InteropServices.ComTypes.IStream stream;
+                        VVVV.Utils.Win32.IStream stream;
                         FRawIn.GetData(i, out stream);
                         if (stream != null)
                         {
