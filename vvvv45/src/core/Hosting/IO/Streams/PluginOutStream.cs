@@ -22,10 +22,10 @@ namespace VVVV.Hosting.IO.Streams
         {
             FStringOut = stringOut;
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FStringOut.SliceCount = Length;
                 for (int i = 0; i < Length; i++)
@@ -33,7 +33,7 @@ namespace VVVV.Hosting.IO.Streams
                     FStringOut.SetString(i, this[i]);
                 }
             }
-            base.Flush();
+            base.Flush(force);
         }
     }
     
@@ -45,10 +45,10 @@ namespace VVVV.Hosting.IO.Streams
         {
             FEnumOut = enumOut;
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FEnumOut.SliceCount = Length;
                 for (int i = 0; i < Length; i++)
@@ -56,7 +56,7 @@ namespace VVVV.Hosting.IO.Streams
                     SetSlice(i, this[i]);
                 }
             }
-            base.Flush();
+            base.Flush(force);
         }
         
         protected virtual void SetSlice(int index, T value)
@@ -99,15 +99,15 @@ namespace VVVV.Hosting.IO.Streams
         {
             return this[VMath.Zmod(index, Length)];
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FNodeOut.SliceCount = Length;
                 FNodeOut.MarkPinAsChanged();
             }
-            base.Flush();
+            base.Flush(force);
         }
     }
 
@@ -122,9 +122,9 @@ namespace VVVV.Hosting.IO.Streams
             FRawOut = rawOut;
         }
 
-        public void Flush()
+        public void Flush(bool force = false)
         {
-            if (markPinAsChanged)
+            if (force || markPinAsChanged)
             {
                 this.FRawOut.MarkPinAsChanged();
             }
@@ -250,15 +250,15 @@ namespace VVVV.Hosting.IO.Streams
                 (TPinVisibility) attribute.Visibility
                );
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FInternalTextureOut.SliceCount = Length;
                 FInternalTextureOut.MarkPinAsChanged();
             }
-            base.Flush();
+            base.Flush(force);
         }
         
         Texture IDXTexturePin.this[Device device, int slice]
@@ -285,14 +285,14 @@ namespace VVVV.Hosting.IO.Streams
                );
         }
 
-        public override void Flush()
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FInternalMeshOut.SliceCount = Length;
                 FInternalMeshOut.MarkPinAsChanged();
             }
-            base.Flush();
+            base.Flush(force);
         }
 
         Mesh IDXMeshPin.this[Device device, int slice]

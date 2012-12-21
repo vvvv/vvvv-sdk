@@ -38,7 +38,7 @@ namespace VVVV.Hosting.IO.Pointers
             return null;
         }
 
-        public void Flush()
+        public void Flush(bool force = false)
         {
 
         }

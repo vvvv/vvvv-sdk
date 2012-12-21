@@ -220,8 +220,8 @@ namespace VVVV.Utils.Streams
         {
             return IsChanged;
         }
-        
-        public virtual void Flush()
+
+        public virtual void Flush(bool force = false)
         {
             FChangeCount = 0;
         }

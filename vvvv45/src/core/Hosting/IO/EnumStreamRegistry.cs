@@ -34,7 +34,10 @@ namespace VVVV.Hosting.IO
             var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumOut)));
             var streamType = typeof(EnumOutStream<>).MakeGenericType(context.DataType);
             var stream = Activator.CreateInstance(streamType, container.RawIOObject) as IOutStream;
-            return IOContainer.Create(context, stream, container, null, s => s.Flush());
+            if (context.IOAttribute.AutoFlush)
+                return IOContainer.Create(context, stream, container, null, s => s.Flush());
+            else
+                return IOContainer.Create(context, stream, container);
         }
         
         private static IIOContainer CreateConfig(IIOFactory factory, IOBuildContext<ConfigAttribute> context)
