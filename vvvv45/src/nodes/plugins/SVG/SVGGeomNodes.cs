@@ -294,7 +294,7 @@ namespace VVVV.Nodes
 		
 		protected override bool PinsChanged()
 		{
-			return base.PinsChanged() || FVerticesIn.IsChanged || FCommandIn.IsChanged;
+			return base.PinsChanged() || FVerticesIn.IsChanged || FCommandIn.IsChanged || FControl1In.IsChanged || FControl2In.IsChanged || FArcRotationIn.IsChanged;
 		}
 		
 		protected override void CalcGeometry(SvgPath elem, Vector2 trans, Vector2 scale, int slice)
@@ -309,13 +309,9 @@ namespace VVVV.Nodes
 			
 			var coords = new List<float>(7);
 			
-			for (int i = 0; i < 7; i++)
-			{
-				coords.Add(0.0f);
-			}
-			
 			for (int i = 0; i < verts.SliceCount; i++)
 			{
+				coords.Clear();
 				
 				var c = comms[i][0];
 				
@@ -335,76 +331,77 @@ namespace VVVV.Nodes
 					case 'm': // relative moveto
 					case 'M': // moveto
 						
-						coords[0] = verts[i].X;
-						coords[1] = verts[i].Y;
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
 						break;
 					case 'a':
 					case 'A':
-						
-						coords[5] = verts[i].X;
-						coords[6] = verts[i].Y;
 
-						coords[0] = cont1[i].X;
-						coords[1] = cont1[i].Y;
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
 						
-						coords[3] = cont2[i].X;
-						coords[4] = cont2[i].Y;
+						coords.Add(arc[i] * 360);
 						
-						coords[2] = arc[i];
+						coords.Add(cont2[i].X);
+						coords.Add(cont2[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						
 						break;
 					case 'l': // relative lineto
 					case 'L': // lineto
 						
-						coords[0] = verts[i].X;
-						coords[1] = verts[i].Y;
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
 						break;
 					case 'H': // horizontal lineto
 					case 'h': // relative horizontal lineto
 						
-						coords[0] = verts[i].X;
+						coords.Add(verts[i].X);
 						break;
 					case 'V': // vertical lineto
 					case 'v': // relative vertical lineto
 						
-						coords[0] = verts[i].Y;
+						coords.Add(verts[i].Y);
 						break;
 					case 'Q': // curveto
 					case 'q': // relative curveto
-						coords[2] = verts[i].X;
-						coords[3] = verts[i].Y;
 						
-						coords[0] = cont1[i].X;
-						coords[1] = cont1[i].Y;
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
 						break;
 					case 'T': // shorthand/smooth curveto
 					case 't': // relative shorthand/smooth curveto
 						
-						coords[0] = verts[i].X;
-						coords[1] = verts[i].Y;
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
 						break;
 					case 'C': // curveto
 					case 'c': // relative curveto
 						
-						coords[4] = verts[i].X;
-						coords[5] = verts[i].Y;
-
-						coords[0] = cont1[i].X;
-						coords[1] = cont1[i].Y;
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
 						
-						coords[2] = cont2[i].X;
-						coords[3] = cont2[i].Y;
+						coords.Add(cont2[i].X);
+						coords.Add(cont2[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
 
 						break;
 					case 'S': // shorthand/smooth curveto
 					case 's': // relative shorthand/smooth curveto
 
-						coords[2] = verts[i].X;
-						coords[3] = verts[i].Y;
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
 						
-						coords[0] = cont1[i].X;
-						coords[1] = cont1[i].Y;
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
 						break;
-
 				}
 				
 				SvgPathBuilder.CreatePathSegment(c, elem.PathData, coords, char.IsLower(c));
