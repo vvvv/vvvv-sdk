@@ -63,7 +63,7 @@ using VertexType = VVVV.Utils.SlimDX.TexturedVertex;
 namespace VVVV.Nodes.Vlc
 {
 	#region PluginInfo
-	[PluginInfo(Name = "FileStream", Category = "VLC", Version = "", Author = "ft", Help = "Fully spreadeble video/image to texture player based on LibVlc", Tags = "video, audio, image, texture", Credits = "Frederik Tilkin, the authors of Vlc player, Roman Ginzburg", Bugs = "see http://trac.videolan.org/vlc/ticket/3152 | Don't trust the position and frame pins.", Warnings = "")]
+    [PluginInfo(Name = "FileStream", Category = "EX9.Texture", Version = "VLC", Author = "ft", Help = "Fully spreadeble video/image to texture player based on LibVlc", Tags = "video, audio, image, texture", Credits = "Frederik Tilkin, the authors of Vlc player, Roman Ginzburg", Bugs = "see http://trac.videolan.org/vlc/ticket/3152 | Don't trust the position and frame pins.", Warnings = "")]
 	#endregion PluginInfo
 	public class FileStreamVlcNode : DXTextureOutPluginBase, IPluginEvaluate, IDisposable
 	{

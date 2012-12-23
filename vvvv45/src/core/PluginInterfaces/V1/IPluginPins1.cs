@@ -1116,14 +1116,14 @@ namespace VVVV.PluginInterfaces.V1
         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     unsafe public interface IRawIn : IPluginIn
     {
-        void GetData(int slice, out byte* pData, out int length);
+        void GetData(int slice, out System.Runtime.InteropServices.ComTypes.IStream stream);
     }
 
     [Guid("8943c8e5-4833-4ca2-baea-2e32e627ffcf"),
         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     unsafe public interface IRawOut : IPluginOut
     {
-        void SetDataLength(int slice, int length, out byte* pData);
+        void SetData(int slice, System.Runtime.InteropServices.ComTypes.IStream stream);
         /// <summary>
         /// Used to mark this pin as being changed compared to the last frame. 
         /// </summary>
