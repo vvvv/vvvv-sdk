@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.6.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p" systemname="_root" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p">
-   <BOUNDS type="Window" left="375" top="7215" width="9720" height="3450">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.1.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p" systemname="_root" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p">
+   <BOUNDS type="Window" left="375" top="7215" width="9990" height="3750">
    </BOUNDS>
    <NODE systemname="R (Node)" nodename="R (Node)" componentmode="Hidden" id="1">
    <BOUNDS type="Node" left="1650" top="4290" width="255" height="270">
@@ -483,7 +483,7 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   <PIN pinname="Descriptive Name" slicecount="1" values="||" encoded="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="47" systemname="IOBox (String)">
@@ -522,16 +522,6 @@
    </NODE>
    <LINK srcnodeid="3" srcpinname="EX9 Out" dstnodeid="7" dstpinname="Source">
    </LINK>
-   <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="53">
-   <BOUNDS type="Node" left="4470" top="6330" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="54">
    <BOUNDS type="Node" left="5205" top="5835" width="100" height="100">
    </BOUNDS>
@@ -546,8 +536,6 @@
    </LINK>
    <LINK srcnodeid="30" srcpinname="Y" dstnodeid="54" dstpinname="X">
    </LINK>
-   <LINK srcnodeid="54" srcpinname="XYZ" dstnodeid="53" dstpinname="Input 2">
-   </LINK>
    <NODE systemname="Rotate (Transform Vector)" nodename="Rotate (Transform Vector)" componentmode="Hidden" id="55">
    <BOUNDS type="Node" left="3705" top="6750" width="100" height="100">
    </BOUNDS>
@@ -556,23 +544,7 @@
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="53" srcpinname="Output" dstnodeid="55" dstpinname="XYZ">
-   </LINK>
    <LINK srcnodeid="55" srcpinname="Transform Out" dstnodeid="9" dstpinname="Transform">
-   </LINK>
-   <NODE systemname="Damper (Animation)" nodename="Damper (Animation)" componentmode="Hidden" id="56">
-   <BOUNDS type="Node" left="4215" top="5850" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Go To Position" visible="1">
-   </PIN>
-   <PIN pinname="Position Out" visible="1">
-   </PIN>
-   <PIN pinname="FilterTime" slicecount="1" values="3">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="6" srcpinname="RotateXYZ" dstnodeid="56" dstpinname="Go To Position">
-   </LINK>
-   <LINK srcnodeid="56" srcpinname="Position Out" dstnodeid="53" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="49" dstpinname="Input Value">
    </LINK>
@@ -591,7 +563,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -599,7 +571,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Open">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Open" encoded="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="58" srcpinname="Y Output Value" dstnodeid="57" dstpinname="Open" hiddenwhenlocked="1">
@@ -609,11 +581,11 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6588" top="1332" width="2040" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="|http://vvvv.org/downloads |">
+   <PIN pinname="Input String" slicecount="1" values="|http://vvvv.org/downloads |" encoded="0">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="text">
+   <PIN pinname="Default" slicecount="1" values="text" encoded="0">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
@@ -633,7 +605,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -641,7 +613,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Open">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Open" encoded="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="61" srcpinname="Y Output Value" dstnodeid="62" dstpinname="Open" hiddenwhenlocked="1">
@@ -651,11 +623,11 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1200" top="1308" width="2040" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="http://node13.vvvv.org">
+   <PIN pinname="Input String" slicecount="1" values="http://node13.vvvv.org" encoded="0">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="text">
+   <PIN pinname="Default" slicecount="1" values="text" encoded="0">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
@@ -667,7 +639,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="270" top="1290" width="855" height="285">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|see you at:|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|see you at:|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -676,4 +648,16 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Newton (Animation)" nodename="Newton (Animation)" componentmode="Hidden" id="68">
+   <BOUNDS type="Node" left="4650" top="6270" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="54" srcpinname="XYZ" dstnodeid="68" dstpinname="Go To Position">
+   </LINK>
+   <LINK srcnodeid="68" srcpinname="Position Out" dstnodeid="55" dstpinname="XYZ">
+   </LINK>
    </PATCH>
