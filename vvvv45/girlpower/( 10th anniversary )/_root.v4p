@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.6.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p" systemname="_root" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p">
-   <BOUNDS type="Window" left="2445" top="7425" width="9555" height="3615">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.1.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p" systemname="_root" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p">
+   <BOUNDS type="Window" left="2445" top="7425" width="11100" height="3585">
    </BOUNDS>
    <NODE systemname="R (Node)" nodename="R (Node)" componentmode="Hidden" id="1">
    <BOUNDS type="Node" left="1650" top="4290" width="255" height="270">
@@ -19,9 +19,9 @@
    </PIN>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="Hidden" id="3">
-   <BOUNDS type="Node" left="1695" top="6135" width="100" height="100">
+   <BOUNDS type="Node" left="1875" top="6120" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1695" top="6135" width="2400" height="1800">
+   <BOUNDS type="Box" left="1875" top="6120" width="2400" height="1800">
    </BOUNDS>
    <BOUNDS type="Window" left="15450" top="975" width="6240" height="5010">
    </BOUNDS>
@@ -51,11 +51,11 @@
    </PIN>
    <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="5">
+   <PIN pinname="Input Count" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Input 3" visible="1">
    </PIN>
-   <PIN pinname="Input 4" visible="1">
+   <PIN pinname="Input 4" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Input 5" visible="1" slicecount="1" values="||">
    </PIN>
@@ -73,7 +73,7 @@
    </PIN>
    <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="5">
+   <PIN pinname="Input Count" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Input 3" visible="1" slicecount="1" values="||">
    </PIN>
@@ -85,11 +85,13 @@
    <LINK srcnodeid="2" srcpinname="Input Value" dstnodeid="5" dstpinname="Input 1">
    </LINK>
    <NODE systemname="Decompose (Transform Vector)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Decompose (Transform Vector)" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="3600" top="5715" width="100" height="100">
+   <BOUNDS type="Node" left="3585" top="5535" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="TranslateXYZ" visible="1">
+   </PIN>
+   <PIN pinname="RotateXYZ" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="DX9Texture (EX9.Texture)" nodename="DX9Texture (EX9.Texture)" componentmode="Hidden" id="7">
@@ -112,14 +114,12 @@
    <PIN pinname="Near Plane" slicecount="1" values="0.03">
    </PIN>
    </NODE>
-   <LINK srcnodeid="3" srcpinname="EX9 Out" dstnodeid="7" dstpinname="Source">
-   </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="8">
-   <BOUNDS type="Node" left="4275" top="6195" width="100" height="100">
+   <BOUNDS type="Node" left="1425" top="6600" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="4275" top="6195" width="795" height="240">
+   <BOUNDS type="Box" left="1425" top="6600" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1024">
+   <PIN pinname="Y Input Value" slicecount="1" values="512">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -189,7 +189,7 @@
    </PIN>
    <PIN pinname="Size" slicecount="1" values="18">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="23">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="4">
    </PIN>
    </NODE>
    <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Switch">
@@ -322,60 +322,14 @@
    </LINK>
    <LINK srcnodeid="20" srcpinname="Input Value" dstnodeid="5" dstpinname="Input 4">
    </LINK>
-   <NODE systemname="Rotate (Transform)" nodename="Rotate (Transform)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="6615" top="6885" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="X" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Y" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Z" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="29" srcpinname="Transform Out" dstnodeid="9" dstpinname="Transform">
-   </LINK>
    <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="30">
-   <BOUNDS type="Node" left="6690" top="6165" width="100" height="100">
+   <BOUNDS type="Node" left="5445" top="5175" width="100" height="100">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
    <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="30" srcpinname="X" dstnodeid="29" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="30" srcpinname="Y" dstnodeid="29" dstpinname="X">
-   </LINK>
-   <NODE systemname="R (Node)" nodename="R (Node)" componentmode="Hidden" id="31">
-   <BOUNDS type="Node" left="2970" top="4290" width="255" height="270">
-   </BOUNDS>
-   <PIN pinname="Receive String" slicecount="1" values="|Layers VLY|">
-   </PIN>
-   <PIN pinname="Input Value" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="R (Node)" nodename="R (Node)" componentmode="Hidden" id="32">
-   <BOUNDS type="Node" left="5250" top="4278" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Receive String" slicecount="1" values="|View VLY|">
-   </PIN>
-   <PIN pinname="Input Value" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="VLY mod" filename="VLY mod.v4p" nodename="VLY mod.v4p" componentmode="Hidden" id="28">
-   <BOUNDS type="Node" left="7080" top="2160" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Window" left="19305" top="1725" width="14085" height="10110">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7080" top="2160">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="32" srcpinname="Input Value" dstnodeid="5" dstpinname="Input 5">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="Input Value" dstnodeid="4" dstpinname="Input 5">
-   </LINK>
    <NODE systemname="- (Value Cyclic)" filename="%VVVV%\lib\nodes\modules\Value\- (Value Cyclic).v4p" nodename="- (Value Cyclic)" componentmode="Hidden" id="33">
    <BOUNDS type="Node" left="6885" top="3570" width="100" height="100">
    </BOUNDS>
@@ -486,16 +440,12 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <LINK srcnodeid="25" srcpinname="Cycles" dstnodeid="14" dstpinname="Y Input Value">
-   <LINKPOINT x="360" y="4245">
-   </LINKPOINT>
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="44" systemname="IOBox (String)">
    <BOUNDS type="Node" left="285" top="723" width="2640" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="285" top="723" width="3795" height="960">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|with beta29 vvvv is happy 10 years in development.&cr;&lf;thanks for patching with us all those years.&cr;&lf;&cr;&lf;see you at http://node13.vvvv.org|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|with beta29 vvvv is happy 10 years in development.&cr;&lf;thanks for patching with us all those years.&cr;&lf;&cr;&lf;see you at http://node13.vvvv.org|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -525,7 +475,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6300" top="723" width="2850" height="735">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|make sure you also downed and installed the addonpack, see: http://vvvv.org/downloads |">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|make sure you also downed and installed the addonpack, see: http://vvvv.org/downloads |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -539,7 +489,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1275" top="2715" width="1635" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; duration per patch|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; duration per patch|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -548,4 +498,82 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Mod (Value)" nodename="Mod (Value)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="375" top="3720" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Cycles" dstnodeid="48" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="S (Value)" nodename="S (Value)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="270" top="4935" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Send String" slicecount="1" encoded="0" values="Level">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="EX9 Out" dstnodeid="7" dstpinname="Source">
+   </LINK>
+   <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="53">
+   <BOUNDS type="Node" left="4470" top="6330" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="54">
+   <BOUNDS type="Node" left="5205" top="5835" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="X" dstnodeid="54" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Y" dstnodeid="54" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="XYZ" dstnodeid="53" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="Rotate (Transform Vector)" nodename="Rotate (Transform Vector)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="3705" top="6750" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="53" srcpinname="Output" dstnodeid="55" dstpinname="XYZ">
+   </LINK>
+   <LINK srcnodeid="55" srcpinname="Transform Out" dstnodeid="9" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="Damper (Animation)" nodename="Damper (Animation)" componentmode="Hidden" id="56">
+   <BOUNDS type="Node" left="4215" top="5850" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="FilterTime" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="RotateXYZ" dstnodeid="56" dstpinname="Go To Position">
+   </LINK>
+   <LINK srcnodeid="56" srcpinname="Position Out" dstnodeid="53" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="49" dstpinname="Input Value">
+   </LINK>
+   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="14" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>

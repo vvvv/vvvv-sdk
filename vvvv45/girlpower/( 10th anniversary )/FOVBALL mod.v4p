@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.1.dtd" >
    <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\( 10th anniversary )\FOVBALL mod.v4p" systemname="FOVBALL mod" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\( fovball )\FOVBALL mod.v4p">
-   <BOUNDS height="11520" left="10095" top="-15" type="Window" width="11010">
+   <BOUNDS height="11520" left="11130" top="0" type="Window" width="11010">
    </BOUNDS>
    <NODE componentmode="Hidden" id="24" nodename="panzer.v4p" systemname="panzer" filename="%VVVV%\girlpower\( fovball )\panzer.v4p">
    <BOUNDS height="100" left="5085" top="6750" type="Node" width="100">
@@ -275,6 +275,8 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
+   <PIN pinname="Evaluate" visible="1" pintype="Input" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="v0" srcnodeid="23" srcpinname="v">
    </LINK>
@@ -445,5 +447,27 @@
    <LINK srcnodeid="26" srcpinname="Output" dstnodeid="27" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="27" srcpinname="Output" dstnodeid="12" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="R (Value)" nodename="R (Value)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="2445" top="7380" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Receive String" slicecount="1" values="Level">
+   </PIN>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="2490" top="7935" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Input Value" dstnodeid="30" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Output" dstnodeid="7" dstpinname="Evaluate">
    </LINK>
    </PATCH>

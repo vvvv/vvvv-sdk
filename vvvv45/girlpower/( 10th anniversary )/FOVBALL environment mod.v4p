@@ -47,9 +47,11 @@
    </PIN>
    <PIN pinname="Color" slicecount="1" values="|0.25931,0.32869,0.30593,0.23400|">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="BASE" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="BASE">
    </PIN>
    <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
    </PIN>
    </NODE>
    <NODE id="27" nodename="Rotate (Transform Vector)" systemname="Rotate (Transform Vector)">
@@ -249,9 +251,11 @@
    </PIN>
    <PIN pinname="Render Pass" slicecount="1" values="0.00000">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|FEEDBACK CLEAR|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|FEEDBACK CLEAR|">
    </PIN>
    <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE id="11" nodename="Blend (EX9.RenderState)" systemname="Blend (EX9.RenderState)">
@@ -293,7 +297,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;-- setting the camera position is the inverse concept to transforming all objects in the scene|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|&lt;-- setting the camera position is the inverse concept to transforming all objects in the scene|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -353,7 +357,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|manual camera|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|manual camera|">
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Switch" srcnodeid="5" srcpinname="Y Output Value">
@@ -369,7 +373,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Layers" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Layers">
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
@@ -417,7 +421,7 @@
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
-   <PIN pinname="Send String" slicecount="1" values="|Layers FOVBALL|" encoded="0">
+   <PIN pinname="Send String" slicecount="1" encoded="0" values="|Layers FOVBALL|">
    </PIN>
    </NODE>
    <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="30" dstpinname="Input Value">
@@ -425,7 +429,7 @@
    <NODE systemname="S (Node)" nodename="S (Node)" componentmode="Hidden" id="31">
    <BOUNDS type="Node" left="5985" top="9075" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Send String" slicecount="1" values="|View FOVBALL|" encoded="0">
+   <PIN pinname="Send String" slicecount="1" encoded="0" values="|View FOVBALL|">
    </PIN>
    <PIN pinname="Input Value" visible="1">
    </PIN>
@@ -433,5 +437,15 @@
    <LINK srcnodeid="6" srcpinname="Output" dstnodeid="31" dstpinname="Input Value">
    </LINK>
    <LINK srcnodeid="23" srcpinname="Transform Out" dstnodeid="24" dstpinname="Source">
+   </LINK>
+   <NODE systemname="ZWriteEnable (EX9.RenderState)" nodename="ZWriteEnable (EX9.RenderState)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="270" top="5040" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="ZWrite Enable" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Render State Out" dstnodeid="28" dstpinname="Render State">
    </LINK>
    </PATCH>

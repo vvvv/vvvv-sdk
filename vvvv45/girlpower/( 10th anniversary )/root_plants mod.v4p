@@ -229,6 +229,8 @@
    </PIN>
    <PIN pinname="Plants Count" visible="1" slicecount="1" values="10">
    </PIN>
+   <PIN pinname="Evaluate" visible="1" pintype="Input" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="25" dstpinname="Alpha" srcnodeid="18" srcpinname="Alpha">
    </LINK>
@@ -503,7 +505,7 @@
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
-   <PIN pinname="Send String" slicecount="1" values="|Layer Plants|" encoded="0">
+   <PIN pinname="Send String" slicecount="1" encoded="0" values="|Layer Plants|">
    </PIN>
    </NODE>
    <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="32" dstpinname="Input Value">
@@ -513,7 +515,7 @@
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
-   <PIN pinname="Send String" slicecount="1" values="|View Plants|" encoded="0">
+   <PIN pinname="Send String" slicecount="1" encoded="0" values="|View Plants|">
    </PIN>
    </NODE>
    <LINK srcnodeid="12" srcpinname="Transform Out" dstnodeid="33" dstpinname="Input Value">
@@ -555,5 +557,25 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="34" srcpinname="Render State Out" dstnodeid="22" dstpinname="Render State">
+   </LINK>
+   <NODE systemname="R (Value)" nodename="R (Value)" componentmode="Hidden" id="35">
+   <BOUNDS type="Node" left="6795" top="4395" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Receive String" slicecount="1" values="Level">
+   </PIN>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="36">
+   <BOUNDS type="Node" left="6255" top="4755" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Input Value" dstnodeid="36" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Output" dstnodeid="18" dstpinname="Evaluate">
    </LINK>
    </PATCH>
