@@ -84,7 +84,7 @@ namespace VVVV.Nodes
 				Info.Category = "2d";						//try to use an existing one
 				Info.Version = "";						//versions are optional. leave blank if not needed
 				Info.Help = "Ken Perlins simplex noise";
-				Info.Tags = "noise, spreads, 4d, random";
+				Info.Tags = "perlin, noise, spreads, 4d, random";
 				Info.Author = "tonfilm";
 				Info.Bugs = "";
 				Info.Credits = "Noise function ported from a java code by Stefan Gustavson, Linköping University, Sweden, http://staffwww.itn.liu.se/~stegu/simplexnoise/simplexnoise.pdf";								
@@ -242,7 +242,7 @@ namespace VVVV.Nodes
 				Info.Category = "3d";						//try to use an existing one
 				Info.Version = "";						//versions are optional. leave blank if not needed
 				Info.Help = "Ken Perlins simplex noise";
-				Info.Tags = "noise, spreads, 4d, random";
+				Info.Tags = "perlin, noise, spreads, 4d, random";
 				Info.Author = "tonfilm";
 				Info.Bugs = "";
 				Info.Credits = "Noise function ported from a java code by Stefan Gustavson, Linköping University, Sweden, http://staffwww.itn.liu.se/~stegu/simplexnoise/simplexnoise.pdf";								
@@ -400,7 +400,7 @@ namespace VVVV.Nodes
 				Info.Category = "4d";						//try to use an existing one
 				Info.Version = "";						//versions are optional. leave blank if not needed
 				Info.Help = "Ken Perlins simplex noise";
-				Info.Tags = "noise, spreads, 4d, random";
+				Info.Tags = "perlin, noise, spreads, 4d, random";
 				Info.Author = "tonfilm";
 				Info.Bugs = "";
 				Info.Credits = "Noise function ported from a java code by Stefan Gustavson, Linköping University, Sweden, http://staffwww.itn.liu.se/~stegu/simplexnoise/simplexnoise.pdf";								
