@@ -4,6 +4,7 @@ using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+using System.IO;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -179,11 +180,14 @@ namespace VVVV.Hosting.IO.Streams
                 {
                     for (int i = 0; i < Length; i++)
                     {
-                        byte* pData;
-                        int length;
-                        FRawIn.GetData(i, out pData, out length);
-                        if (pData != null)
-                            writer.Write(new System.IO.UnmanagedMemoryStream(pData, length));
+                        System.Runtime.InteropServices.ComTypes.IStream stream;
+                        FRawIn.GetData(i, out stream);
+                        if (stream != null)
+                        {
+                            var wrapper = new ComStream(stream);
+                            wrapper.Position = 0;
+                            writer.Write(wrapper);
+                        }
                         else
                             writer.Write(new System.IO.MemoryStream());
                     }
