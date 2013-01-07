@@ -46,17 +46,22 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org/>
-*/
+ */
 #endregion
 
 #region usings
 using System;
 using System.ComponentModel.Composition;
 using System.Collections.Generic;
-using System.Text;
+
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Streams;
+
+using System.IO;
+
 using Firmata;
+
 #endregion usings
 
 namespace VVVV.Nodes
@@ -64,11 +69,11 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "FirmataEncode",
-				Version = "2.x",
-				Category = "Devices",
-				Author = "jens a. ewald",
-				Help = "Encodes pins, values and commands for Firmata protocol version 2.x",
-				Tags = "Arduino")]
+	            Version = "2.x",
+	            Category = "Devices",
+	            Author = "jens a. ewald",
+	            Help = "Encodes pins, values and commands for Firmata protocol version 2.x",
+	            Tags = "Arduino")]
 	#endregion PluginInfo
 
 	public class FirmataEncode : IPluginEvaluate
@@ -112,13 +117,10 @@ namespace VVVV.Nodes
 		/// OUTPUT
 		///
 		[Output("Firmata Message")]
-		ISpread<string> FFirmataOut;
+		IOutStream<Stream> FFirmataOut;
 
 		[Output("On Change")]
 		ISpread<bool> FChangedOut;
-
-		[Output("RAW", Visibility = PinVisibility.Hidden)]
-		ISpread<byte[]> FRawOut;
 
 		/// Use a Queue for a command byte buffer:
 		Queue<byte> CommandBuffer = new Queue<byte>(1024);
@@ -141,8 +143,7 @@ namespace VVVV.Nodes
 			/// Set Pinreporting for analog pins
 			// TODO: It should not be a fixed number of pins, later versions
 			// TODO: if spread has only one value, do all, otherwise do given, there are 16!
-			if (FReportAnalogPins.IsChanged || ShouldReset)
-			SetAnalogPinReportingForRange(FAnalogInputCount[0],FReportAnalogPins[0]);
+			if (FReportAnalogPins.IsChanged || ShouldReset) SetAnalogPinReportingForRange(FAnalogInputCount[0],FReportAnalogPins[0]);
 
 			/// Set Pinreporting for digital pins
 			if (FReportDigitalPins.IsChanged || ShouldReset)
@@ -161,15 +162,29 @@ namespace VVVV.Nodes
 				if (FReportAnalogPins[0]) SetAnalogPinReportingForRange(FAnalogInputCount[0],true);
 			}
 
-			FChangedOut[0] = CommandBuffer.Count>0;
-			FRawOut[0]     = CommandBuffer.ToArray();
-			FFirmataOut[0] = Encoder.GetString(FRawOut[0]);
+			bool HasData = CommandBuffer.Count>0;
+			FChangedOut[0] = HasData;
+			
+			FFirmataOut.Length = 1; //StreamUtils.GetSpreadMax(FFirmataOut);
+			
+			if (!HasData) return;
+			try{
+				Stream outStream = new MemoryStream(CommandBuffer.ToArray());
+//				outStream.Write(CommandBuffer.ToArray(),0,CommandBuffer.Count);
+				using (var outputWriter = FFirmataOut.GetWriter())
+				{
+					while(!outputWriter.Eos)
+						outputWriter.Write(outStream);
+				}
+			} catch(Exception e){
+			}
+			// END Evaluate
 		}
 
 		#region Helper Functions
 
 		/// Use ANSI Encoding for the Encoder
-		static Encoding Encoder = Encoding.GetEncoding(1252);
+		//static Encoding Encoder = Encoding.GetEncoding(1252);
 
 		byte[] OUTPUT_PORT_MASKS  = {}; // empty array
 
@@ -242,7 +257,7 @@ namespace VVVV.Nodes
 						CommandBuffer.Enqueue((byte) src_index);
 						CommandBuffer.Enqueue((byte) mode);
 					}
-					// using both both modes, enables configuring 
+					// using both both modes, enables configuring
 					// of pullup mode (thx! to motzi)
 					output_port |= (byte)(((mode == PinMode.OUTPUT || mode == PinMode.INPUT) ? 1:0)<<bit);
 				}
@@ -283,25 +298,25 @@ namespace VVVV.Nodes
 					case PinMode.ANALOG:
 					case PinMode.PWM:
 					case PinMode.SERVO:
-					byte LSB,MSB;
-					value *= mode==PinMode.SERVO ? 180 : 255; // servo is in degrees
-					FirmataUtils.GetBytesFromValue((int)value,out MSB,out LSB);
-					CommandBuffer.Enqueue((byte)(Command.ANALOGMESSAGE | i));
-					CommandBuffer.Enqueue(LSB);
-					CommandBuffer.Enqueue(MSB);
-					break;
+						byte LSB,MSB;
+						value *= mode==PinMode.SERVO ? 180 : 255; // servo is in degrees
+						FirmataUtils.GetBytesFromValue((int)value,out MSB,out LSB);
+						CommandBuffer.Enqueue((byte)(Command.ANALOGMESSAGE | i));
+						CommandBuffer.Enqueue(LSB);
+						CommandBuffer.Enqueue(MSB);
+						break;
 
 					case PinMode.OUTPUT:
 					case PinMode.INPUT:   // fixes PullUp enabling issue, thx to motzi!
-					int port_index = PortIndexForPin(i);
-					// Break, if we have no ouputports we can get
-					if (port_index >= digital_out.Length) break;
+						int port_index = PortIndexForPin(i);
+						// Break, if we have no ouputports we can get
+						if (port_index >= digital_out.Length) break;
 
-					int shift = i%8;
-					int state = value >= 0.5 ? 0x01 : 0x00;
-					int port_before = digital_out[port_index];
-					digital_out[port_index] =  ((state << shift) | digital_out[port_index])  & OUTPUT_PORT_MASKS[port_index];
-					break;
+						int shift = i%8;
+						int state = value >= 0.5 ? 0x01 : 0x00;
+						int port_before = digital_out[port_index];
+						digital_out[port_index] =  ((state << shift) | digital_out[port_index])  & OUTPUT_PORT_MASKS[port_index];
+						break;
 				}
 			}
 
@@ -348,7 +363,7 @@ namespace VVVV.Nodes
 		void SetAnalogPinReportingForRange(int range, bool state)
 		{
 			for(int i = 0; i<range; i++)
-			GetAnalogPinReportingCommandForState(state,i);
+				GetAnalogPinReportingCommandForState(state,i);
 		}
 
 		void GetDigitalPinReportingCommandForState(bool state,Port port)
