@@ -4,51 +4,30 @@
         <name>Microsoft.Cci.SourceModel</name>
     </assembly>
     <members>
-        <member name="P:Microsoft.Cci.SourceDummy.PrimarySourceLocation">
+        <member name="T:Microsoft.Cci.EditEventArgs">
             <summary>
-            This source location behaves as the notorious FeeFee: a source
-            context which exists in the PDB file, but which debuggers do not
-            stop at. It is needed, e.g., to mark the first IL operation in a
-            method body if it does not have any real source location (such as
-            compiler generated closure initialization code). Without that, the
-            debugger appears to not step into method calls.
+            Supplies information about an edit that has been performed on a source document that forms part of a compilation that is registered with this environment.
+            The information is supplied in the form of a list of namespace or type declaration members that have been modified, added to or deleted from
+            their containing namespace or type declarations.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.ICompilation">
+        <member name="M:Microsoft.Cci.EditEventArgs.#ctor(System.Collections.Generic.IEnumerable{Microsoft.Cci.IEditDescriptor})">
             <summary>
-            The root of an AST that represents the inputs, options and output of a compilation.
+            Allocates an object that supplies information about an edit that has been performed on a source document that forms part of a compilation that is registered with this environment.
+            The information is supplied in the form of a list of namespace or type declaration members that have been modified, added to or deleted from
+            their containing namespace or type declarations.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.ICompilation.Contains(Microsoft.Cci.ISourceDocument)">
+        <member name="P:Microsoft.Cci.EditEventArgs.Edits">
             <summary>
-            Returns true if the given source document forms a part of the compilation.
+            A list of descriptors that collectively describe the edit that has caused this event.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.ICompilation.GetUnitSetFor(Microsoft.Cci.IName)">
+        <member name="T:Microsoft.Cci.IDerivedSourceDocument">
             <summary>
-            Gets a unit set defined by the given name as specified by the compilation options. For example, the name could be an external alias
-            in C# and the compilation options will specify which referenced assemblies correspond to the external alias.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.ICompilation.PlatformType">
-            <summary>
-            A collection of well known types that must be part of every target platform and that are fundamental to modeling compiled code.
-            The types are obtained by querying the unit set of the compilation and thus can include types that are defined by the compilation itself.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.ICompilation.Result">
-            <summary>
-            The root of an AST that represents the output of a compilation. This can serve as an input to another compilation.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.ICompilation.UnitSet">
-            <summary>
-            A set of units comprised by the result of the compilation along with all of the units referenced by this compilation.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.IPrimarySourceDocument">
-            <summary>
-            An object that represents a source document corresponding to a user accessible entity such as file.
+            An object that represents a source document that has been derived from other source documents. 
+            A derived source document does not have to correspond to a user accessible entity, in which case its
+            name and location should not be used in user interaction.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.ISourceDocument">
@@ -104,52 +83,25 @@
             A source location corresponding to the entire document.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.IPrimarySourceDocument.GetPrimarySourceLocation(System.Int32,System.Int32)">
+        <member name="M:Microsoft.Cci.IDerivedSourceDocument.GetDerivedSourceLocation(System.Int32,System.Int32)">
             <summary>
             Obtains a source location instance that corresponds to the substring of the document specified by the given start position and length.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.IPrimarySourceDocument.ToLineColumn(System.Int32,System.Int32@,System.Int32@)">
+        <member name="M:Microsoft.Cci.IDerivedSourceDocument.GetPrimarySourceLocationsFor(Microsoft.Cci.IDerivedSourceLocation)">
             <summary>
-            Maps the given (zero based) source position to a (one based) line and column, by scanning the source character by character, counting
-            new lines until the given source position is reached. The source position and corresponding line+column are remembered and scanning carries
-            on where it left off when this routine is called next. If the given position precedes the last given position, scanning restarts from the start.
-            Optimal use of this method requires the client to sort calls in order of position.
+            Returns zero or more primary source locations that correspond to the given derived location.
+            </summary>
+            <param name="derivedSourceLocation">A source location in this derived document</param>
+        </member>
+        <member name="P:Microsoft.Cci.IDerivedSourceDocument.DerivedSourceLocation">
+            <summary>
+            A location corresponding to the entire document.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.IPrimarySourceDocument.DocumentType">
+        <member name="T:Microsoft.Cci.IDerivedSourceLocation">
             <summary>
-            A Guid that identifies the kind of document to applications such as a debugger. Typically System.Diagnostics.SymbolStore.SymDocumentType.Text.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IPrimarySourceDocument.Language">
-            <summary>
-            A Guid that identifies the programming language used in the source document. Typically used by a debugger to locate language specific logic.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IPrimarySourceDocument.LanguageVendor">
-            <summary>
-            A Guid that identifies the compiler vendor programming language used in the source document. Typically used by a debugger to locate vendor specific logic.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IPrimarySourceDocument.PrimarySourceLocation">
-            <summary>
-            A source location corresponding to the entire document.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.DummyPrimarySourceLocation">
-            <summary>
-            Instances of this class behave as the notorious FeeFee: a source
-            context which exists in the PDB file, but which debuggers do not
-            stop at. It is needed, e.g., to mark the first IL operation in a
-            method body if it does not have any real source location (such as
-            compiler generated closure initialization code). Without that, the
-            debugger appears to not step into method calls.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.IPrimarySourceLocation">
-            <summary>
-            A range of source text that corresponds to an identifiable entity.
+            A range of derived source text that corresponds to an identifiable entity.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.ISourceLocation">
@@ -198,65 +150,112 @@
             The character index of the first character of this location, when treating the source document as a single string.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.IPrimarySourceLocation.EndColumn">
+        <member name="P:Microsoft.Cci.IDerivedSourceLocation.DerivedSourceDocument">
             <summary>
-            The last column in the last line of the range.
+            The document containing the derived source text of which this location is a subrange.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.IPrimarySourceLocation.EndLine">
+        <member name="P:Microsoft.Cci.IDerivedSourceLocation.PrimarySourceLocations">
             <summary>
-            The last line of the range.
+            A non empty collection of locations in primary source documents that together constitute this source location.
+            The text of this location is the concatenation of the texts of each of the primary source locations.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.IPrimarySourceLocation.PrimarySourceDocument">
+        <member name="T:Microsoft.Cci.IEditDescriptor">
             <summary>
-            The document containing the source text of which this location is a subrange.
+            Describes an edit to a compilation as being either the addition, deletion or modification of a definition.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.IPrimarySourceLocation.StartColumn">
+        <member name="P:Microsoft.Cci.IEditDescriptor.AffectedDefinition">
             <summary>
-            The first column in the first line of the range.
+            The definition that has been added, deleted or modified.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.IPrimarySourceLocation.StartLine">
+        <member name="P:Microsoft.Cci.IEditDescriptor.Kind">
             <summary>
-            The first line of the range.
+            The kind of edit that has been performed (addition, deletion or modification).
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.ISourceDocumentEdit">
+        <member name="P:Microsoft.Cci.IEditDescriptor.ModifiedSourceDocument">
             <summary>
-            An object that describes an edit to a source file.
+            The source document that is the result of the edit described by this edit instance.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.ISourceDocumentEdit.SourceLocationBeforeEdit">
+        <member name="P:Microsoft.Cci.IEditDescriptor.ModifiedParent">
             <summary>
-            The location in the source document that is being replaced by this edit.
+            The new version of the parent of the affected definition (see also this.OriginalParent).
+            If the edit is an addition or modification, this.ModifiedParent is the actual parent of this.AffectedDefinition.
+            If this.AffectedDefinition does not have a parent then this.ModifiedParent is the same as this.AffectedDefinition.
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.ISourceDocumentEdit.SourceDocumentAfterEdit">
+        <member name="P:Microsoft.Cci.IEditDescriptor.OriginalSourceDocument">
             <summary>
-            The source document that is the result of applying this edit.
+            The source document that has been edited as described by this edit instance.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.SemanticErrorReporter">
+        <member name="P:Microsoft.Cci.IEditDescriptor.OriginalParent">
             <summary>
-            A trivial class that implements the ISemanticErrorsReporter interface and exposes a singleton instance.
+            The original parent of the affected definition (see also this.ModifiedParent). 
+            If the edit is a deletion, this.OriginalParent is the parent of this.AffectedDefinition.
+            If this.AffectedDefinition does not have a parent then this.OriginalParent is the same as this.AffectedDefinition.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.ISemanticErrorsReporter">
+        <member name="T:Microsoft.Cci.EditEventKind">
             <summary>
-            This interface is implemented by providers of semantic errors. That is, errors discovered by analysis of a constructed object model.
-            Many of these errors will be discovered incrementally and as part of background activities.
+            Describes the kind of edit that has been performed on a unit of metadata (also known as a symbol table).
             </summary>
         </member>
-        <member name="F:Microsoft.Cci.SemanticErrorReporter.Instance">
+        <member name="F:Microsoft.Cci.EditEventKind.Addition">
             <summary>
-            A singleton instance of an object that implements the ISemanticErrorsReporter interface.
+            The affected namespace or type member has been added to its parent namespace or type.
+            Of necessity, the (immutable) affected member is the result of the edit.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.SourceEditHostEnvironment">
+        <member name="F:Microsoft.Cci.EditEventKind.Deletion">
             <summary>
-            Provides an abstraction over the application hosting compilers based on this framework.
+            The affected namespace or type member has been deleted from its parent namespace or type.
+            Of necessity, the (immutable) affected member is from a model that precedes the edit and will be absent
+            from the model that resulted from the edit.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.EditEventKind.Modification">
+            <summary>
+            The edit has resulted in a change to the affected namespace or type member, such as a change its name or visibility.
+            The affeced member of the edit descriptor is the member after the edit has been applied.
+            Note: a namespace or type declaration member is not considered to be modified if the change is confined to a child member. 
+            In that case, the change event will be generated only for the child member.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ICompilation">
+            <summary>
+            The root of an AST that represents the inputs, options and output of a compilation.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ICompilation.Contains(Microsoft.Cci.ISourceDocument)">
+            <summary>
+            Returns true if the given source document forms a part of the compilation.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ICompilation.GetUnitSetFor(Microsoft.Cci.IName)">
+            <summary>
+            Gets a unit set defined by the given name as specified by the compilation options. For example, the name could be an external alias
+            in C# and the compilation options will specify which referenced assemblies correspond to the external alias.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ICompilation.PlatformType">
+            <summary>
+            A collection of well known types that must be part of every target platform and that are fundamental to modeling compiled code.
+            The types are obtained by querying the unit set of the compilation and thus can include types that are defined by the compilation itself.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ICompilation.Result">
+            <summary>
+            The root of an AST that represents the output of a compilation. This can serve as an input to another compilation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ICompilation.UnitSet">
+            <summary>
+            A set of units comprised by the result of the compilation along with all of the units referenced by this compilation.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.ISourceEditHost">
@@ -292,6 +291,532 @@
             When an edit transaction has been completed, new compilations are computed for all affected compilations registered with this environment.
             For each affected compilation the difference between the new compilation and its previous version is reported via this event. 
             Changes that are confined to method bodies (and thus do not affect the symbol table) are not reported via this event.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ISemanticErrorsReporter">
+            <summary>
+            This interface is implemented by providers of semantic errors. That is, errors discovered by analysis of a constructed object model.
+            Many of these errors will be discovered incrementally and as part of background activities.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ISymbolSyntaxErrorsReporter">
+            <summary>
+            Interface implemented by providers of syntax (parse) errors that occur in the symbol table level constructs
+            of a source file. In particular, syntax errors that occur inside method bodies are not reported.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ISyntaxErrorsReporter">
+            <summary>
+            Interface implemented by providers of syntax (parse) errors.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.IIncludedSourceLocation">
+            <summary>
+            A source location that falls inside a region of text that originally came from another source document.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.IPrimarySourceLocation">
+            <summary>
+            A range of source text that corresponds to an identifiable entity.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IPrimarySourceLocation.EndColumn">
+            <summary>
+            The last column in the last line of the range.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IPrimarySourceLocation.EndLine">
+            <summary>
+            The last line of the range.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IPrimarySourceLocation.PrimarySourceDocument">
+            <summary>
+            The document containing the source text of which this location is a subrange.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IPrimarySourceLocation.StartColumn">
+            <summary>
+            The first column in the first line of the range.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IPrimarySourceLocation.StartLine">
+            <summary>
+            The first line of the range.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IIncludedSourceLocation.OriginalEndLine">
+            <summary>
+            The last line of the source location in the original document.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IIncludedSourceLocation.OriginalSourceDocumentName">
+            <summary>
+            The name of the document from which this text in this source location was orignally obtained.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IIncludedSourceLocation.OriginalStartLine">
+            <summary>
+            The first line of the source location in the original document.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.IPrimarySourceDocument">
+            <summary>
+            An object that represents a source document corresponding to a user accessible entity such as file.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.IPrimarySourceDocument.GetPrimarySourceLocation(System.Int32,System.Int32)">
+            <summary>
+            Obtains a source location instance that corresponds to the substring of the document specified by the given start position and length.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.IPrimarySourceDocument.ToLineColumn(System.Int32,System.Int32@,System.Int32@)">
+            <summary>
+            Maps the given (zero based) source position to a (one based) line and column, by scanning the source character by character, counting
+            new lines until the given source position is reached. The source position and corresponding line+column are remembered and scanning carries
+            on where it left off when this routine is called next. If the given position precedes the last given position, scanning restarts from the start.
+            Optimal use of this method requires the client to sort calls in order of position.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IPrimarySourceDocument.DocumentType">
+            <summary>
+            A Guid that identifies the kind of document to applications such as a debugger. Typically System.Diagnostics.SymbolStore.SymDocumentType.Text.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IPrimarySourceDocument.Language">
+            <summary>
+            A Guid that identifies the programming language used in the source document. Typically used by a debugger to locate language specific logic.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IPrimarySourceDocument.LanguageVendor">
+            <summary>
+            A Guid that identifies the compiler vendor programming language used in the source document. Typically used by a debugger to locate vendor specific logic.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IPrimarySourceDocument.PrimarySourceLocation">
+            <summary>
+            A source location corresponding to the entire document.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ISourceDocumentEdit">
+            <summary>
+            An object that describes an edit to a source file.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ISourceDocumentEdit.SourceLocationBeforeEdit">
+            <summary>
+            The location in the source document that is being replaced by this edit.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ISourceDocumentEdit.SourceDocumentAfterEdit">
+            <summary>
+            The source document that is the result of applying this edit.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ISourceErrorMessage">
+            <summary>
+            Error information relating to a portion of a source document.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ISourceErrorMessage.MakeShallowCopy(Microsoft.Cci.ISourceDocument)">
+            <summary>
+            Makes a copy of this error message, changing only Location and SourceLocation to come from the
+            given source document. Returns the same instance if the given source document is the same
+            as this.SourceLocation.SourceDocument.
+            </summary>
+            <param name="targetDocument">The document to which the resulting error message must refer.</param>
+        </member>
+        <member name="P:Microsoft.Cci.ISourceErrorMessage.SourceLocation">
+            <summary>
+            The location of the error in the source document.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ISourceLocationProvider">
+            <summary>
+            An object that can map some kinds of ILocation objects to IPrimarySourceLocation objects. 
+            For example, a PDB reader that maps offsets in an IL stream to source locations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ISourceLocationProvider.GetPrimarySourceLocationsFor(System.Collections.Generic.IEnumerable{Microsoft.Cci.ILocation})">
+            <summary>
+            Return zero or more locations in primary source documents that correspond to one or more of the given derived (non primary) document locations.
+            </summary>
+            <param name="locations">Zero or more locations in documents that have been derived from one or more source documents.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ISourceLocationProvider.GetPrimarySourceLocationsFor(Microsoft.Cci.ILocation)">
+            <summary>
+            Return zero or more locations in primary source documents that correspond to the given derived (non primary) document location.
+            </summary>
+            <param name="location">A location in a document that have been derived from one or more source documents.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ISourceLocationProvider.GetPrimarySourceLocationsForDefinitionOf(Microsoft.Cci.ILocalDefinition)">
+            <summary>
+            Return zero or more locations in primary source documents that correspond to the definition of the given local.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ISourceLocationProvider.GetSourceNameFor(Microsoft.Cci.ILocalDefinition,System.Boolean@)">
+            <summary>
+            Returns the source name of the given local definition, if this is available. 
+            Otherwise returns the value of the Name property and sets isCompilerGenerated to true.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILocalScope">
+            <summary>
+            A range of CLR IL operations that comprise a lexical scope, specified as an IL offset and a length.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ILocalScope.Offset">
+            <summary>
+            The offset of the first operation in the scope.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ILocalScope.Length">
+            <summary>
+            The length of the scope. Offset+Length equals the offset of the first operation outside the scope, or equals the method body length.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ILocalScope.MethodDefinition">
+            <summary>
+            The definition of the method in which this local scope is defined.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILocalScopeProvider">
+            <summary>
+            An object that can provide information about the local scopes of a method.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetIteratorScopes(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns zero or more local (block) scopes, each defining an IL range in which an iterator local is defined.
+            The scopes are returned by the MoveNext method of the object returned by the iterator method.
+            The index of the scope corresponds to the index of the local. Specifically local scope i corresponds
+            to the local stored in field &lt;localName&gt;x_i of the class used to store the local values in between
+            calls to MoveNext.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetLocalScopes(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns zero or more local (block) scopes into which the CLR IL operations in the given method body is organized.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetNamespaceScopes(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns zero or more namespace scopes into which the namespace type containing the given method body has been nested.
+            These scopes determine how simple names are looked up inside the method body. There is a separate scope for each dotted
+            component in the namespace type name. For istance namespace type x.y.z will have two namespace scopes, the first is for the x and the second
+            is for the y.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetConstantsInScope(Microsoft.Cci.ILocalScope)">
+            <summary>
+            Returns zero or more local constant definitions that are local to the given scope.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetVariablesInScope(Microsoft.Cci.ILocalScope)">
+            <summary>
+            Returns zero or more local variable definitions that are local to the given scope.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILocalScopeProvider.IsIterator(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns true if the method body is an iterator.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetSynchronizationInformation(Microsoft.Cci.IMethodBody)">
+            <summary>
+            If the given method body is the "MoveNext" method of the state class of an asynchronous method, the returned
+            object describes where synchronization points occur in the IL operations of the "MoveNext" method. Otherwise
+            the result is null.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ISynchronizationInformation">
+            <summary>
+            An object that describes where synchronization points occur in the IL operations of the "MoveNext" method of the state class of
+            an asynchronous method.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ISynchronizationInformation.AsyncMethod">
+            <summary>
+            The async method for which this object provides information about where its synchronization points are.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ISynchronizationInformation.MoveNextMethod">
+            <summary>
+            The "MoveNext" method of the state class of the asynchronous method for which this object provides information about where its synchronization points are.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ISynchronizationInformation.GeneratedCatchHandlerOffset">
+            <summary>
+            The offset of the first operation of the compiler generated catch all handler of the async method, if that method returns void.
+            Otherwise the value must be uint.MaxValue.
+            </summary>
+            <remarks>Exceptions propagated out of void async methods are rethrown in the caller's thread from deep inside
+            system code. A debugger that wants to stop execution only when an exception goes unhandled, might prefer to stop execution
+            when the exception is captured by the catch all handler, in which case the offending code is still on the stack, rather than when
+            the captured exception is rethrown.</remarks>
+        </member>
+        <member name="P:Microsoft.Cci.ISynchronizationInformation.SynchronizationPoints">
+            <summary>
+            Zero or more objects that describe points where synchronization occurs in an async method. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ISynchronizationPoint">
+            <summary>
+            An object that provides the offset of the first IL operation that initiates a synchronization operation inside an async method, as well as the offset 
+            (and containing method) of the first IL operation that will execute after synchronization has been achieved.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ISynchronizationPoint.SynchronizeOffset">
+            <summary>
+            The offset of the first IL operation of a sequence of instructions that will cause the thread executing the async method to synchronize with
+            the thread executing another async method. (This can cause execution of the async method to be temporarily suspended.) 
+            In C#, this sequence is generated for the await operation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ISynchronizationPoint.ContinuationMethod">
+            <summary>
+            The method in which execution continues after synchronization has been achieved, if this is not the same method as the one
+            containing the operations that achieves synchronization (i.e. the "MoveNext" method of the state class of the async method).
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ISynchronizationPoint.ContinuationOffset">
+            <summary>
+            The offset of the first IL operation that will be executed after synchronization has been achieved. In C# this will be the offset of 
+            the first instruction following an await operation.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.INamespaceScope">
+            <summary>
+            A description of the lexical scope in which a namespace type has been nested. This scope is tied to a particular
+            method body, so that partial types can be accommodated.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.INamespaceScope.UsedNamespaces">
+            <summary>
+            Zero or more used namespaces. These correspond to using clauses in C#.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.IUsedNamespace">
+            <summary>
+            A namespace that is used (imported) inside a namespace scope.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IUsedNamespace.Alias">
+            <summary>
+            An alias for a namespace. For example the "x" of "using x = y.z;" in C#. Empty if no alias is present.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.IUsedNamespace.NamespaceName">
+            <summary>
+            The name of a namepace that has been aliased.  For example the "y.z" of "using x = y.z;" or "using y.z" in C#.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.SourceEditEventArgs">
+            <summary>
+            Supplies information about edits that have been performed on source documents that form part of compilations that are registered with this environment.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEditEventArgs.#ctor(System.Collections.Generic.IEnumerable{Microsoft.Cci.ISourceDocumentEdit})">
+            <summary>
+            Allocates an object that supplies information about edits that have been performed on source documents that form part of compilations that are registered with this environment.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEditEventArgs.Edits">
+            <summary>
+            A list of edits to source documents that have occurred as a single event.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.AggregatingSourceLocationProvider">
+            <summary>
+            A provider that aggregates a set of providers in order to
+            map offsets in an IL stream to source locations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.#ctor(System.Collections.Generic.IDictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ISourceLocationProvider})">
+            <summary>
+            Copies the contents of the table
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.#ctor(System.Collections.Generic.Dictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ISourceLocationProvider})">
+            <summary>
+            Uses the given dictionary to find the appropriate provider for a query.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.GetPrimarySourceLocationsFor(System.Collections.Generic.IEnumerable{Microsoft.Cci.ILocation})">
+            <summary>
+            Return zero or more locations in primary source documents that correspond to one or more of the given derived (non primary) document locations.
+            </summary>
+            <param name="locations">Zero or more locations in documents that have been derived from one or more source documents.</param>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.GetPrimarySourceLocationsFor(Microsoft.Cci.ILocation)">
+            <summary>
+            Return zero or more locations in primary source documents that correspond to the given derived (non primary) document location.
+            </summary>
+            <param name="location">A location in a document that have been derived from one or more source documents.</param>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.GetPrimarySourceLocationsForDefinitionOf(Microsoft.Cci.ILocalDefinition)">
+            <summary>
+            Return zero or more locations in primary source documents that correspond to the definition of the given local.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.GetSourceNameFor(Microsoft.Cci.ILocalDefinition,System.Boolean@)">
+            <summary>
+            Returns the source name of the given local definition, if this is available.
+            Otherwise returns the value of the Name property and sets isCompilerGenerated to true.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.Dispose">
+            <summary>
+            Disposes all aggregated providers.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.Finalize">
+            <summary>
+            Disposes all aggregated providers that implement the IDisposable interface. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.AggregatingLocalScopeProvider">
+            <summary>
+            A provider that aggregates a set of providers in order to
+            map offsets in an IL stream to block scopes.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.#ctor(System.Collections.Generic.IDictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ILocalScopeProvider})">
+            <summary>
+            Copies the contents of the table
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.#ctor(System.Collections.Generic.Dictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ILocalScopeProvider})">
+            <summary>
+            Uses the given dictionary to find the appropriate provider for a query.
+            </summary>
+            <param name="unit2ProviderMap"></param>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetIteratorScopes(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns zero or more local (block) scopes, each defining an IL range in which an iterator local is defined.
+            The scopes are returned by the MoveNext method of the object returned by the iterator method.
+            The index of the scope corresponds to the index of the local. Specifically local scope i corresponds
+            to the local stored in field &lt;localName&gt;x_i of the class used to store the local values in between
+            calls to MoveNext.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetLocalScopes(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns zero or more local (block) scopes into which the CLR IL operations in the given method body is organized.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetNamespaceScopes(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns zero or more namespace scopes into which the namespace type containing the given method body has been nested.
+            These scopes determine how simple names are looked up inside the method body. There is a separate scope for each dotted
+            component in the namespace type name. For istance namespace type x.y.z will have two namespace scopes, the first is for the x and the second
+            is for the y.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetConstantsInScope(Microsoft.Cci.ILocalScope)">
+            <summary>
+            Returns zero or more local constant definitions that are local to the given scope.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetVariablesInScope(Microsoft.Cci.ILocalScope)">
+            <summary>
+            Returns zero or more local variable definitions that are local to the given scope.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.IsIterator(Microsoft.Cci.IMethodBody)">
+            <summary>
+            Returns true if the method body is an iterator.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetSynchronizationInformation(Microsoft.Cci.IMethodBody)">
+            <summary>
+            If the given method body is the "MoveNext" method of the state class of an asynchronous method, the returned
+            object describes where synchronization points occur in the IL operations of the "MoveNext" method. Otherwise
+            the result is null.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.Dispose">
+            <summary>
+            Calls Dispose on all aggregated providers.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.Finalize">
+            <summary>
+            Finalizer for the aggregrating local scope provider. Calls Dispose on
+            all aggregated providers.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.CopiedLocalScopeProvider">
+            <summary>
+            A local scope provider that can be used together with an object model that is a deep copy made by MetadataDeepCopier. It ensures that all
+            metadata definitions obtained from the original ILocalScopeProvider have been mapped to their copies and does the reverse map before
+            passing queries along to the original ILocalScopeProvider.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.CopiedLocalScopeProvider.#ctor(Microsoft.Cci.UtilityDataStructures.Hashtable{System.Object,System.Object},Microsoft.Cci.UtilityDataStructures.Hashtable{System.Object,System.Object},Microsoft.Cci.ILocalScopeProvider)">
+            <summary>
+            A local scope provider that can be used together with an object model that is a deep copy made by MetadataDeepCopier. It ensures that all
+            metadata definitions obtained from the original ILocalScopeProvider have been mapped to their copies and does the reverse map before
+            passing queries along to the original ILocalScopeProvider.
+            </summary>
+            <param name="mapFromCopyToOriginal">A map from copied definition objects to the original definitions from which the copies were constructed.</param>
+            <param name="mapFromOriginalToCopy">A map from original definition objects to the copied definitions.</param>
+            <param name="providerForOriginal">An ILocalScopeProvider associated with the original object model.</param>
+        </member>
+        <member name="F:Microsoft.Cci.CopiedLocalScopeProvider.mapFromCopyToOriginal">
+            <summary>
+            A map from copied definition objects to the original definitions from which the copies were constructed.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.CopiedLocalScopeProvider.mapFromOriginalToCopy">
+            <summary>
+            A map from original definition objects to the copied definitions.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.CopiedLocalScopeProvider.providerForOriginal">
+            <summary>
+            An ILocalScopeProvider associated with the original object model.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.CopiedLocalScope.OriginalScope">
+            <summary>
+            The scope that was copied to make this one.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceDummy.PrimarySourceLocation">
+            <summary>
+            This source location behaves as the notorious FeeFee: a source
+            context which exists in the PDB file, but which debuggers do not
+            stop at. It is needed, e.g., to mark the first IL operation in a
+            method body if it does not have any real source location (such as
+            compiler generated closure initialization code). Without that, the
+            debugger appears to not step into method calls.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.DummyPrimarySourceLocation">
+            <summary>
+            Instances of this class behave as the notorious FeeFee: a source
+            context which exists in the PDB file, but which debuggers do not
+            stop at. It is needed, e.g., to mark the first IL operation in a
+            method body if it does not have any real source location (such as
+            compiler generated closure initialization code). Without that, the
+            debugger appears to not step into method calls.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.SemanticErrorReporter">
+            <summary>
+            A trivial class that implements the ISemanticErrorsReporter interface and exposes a singleton instance.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.SemanticErrorReporter.Instance">
+            <summary>
+            A singleton instance of an object that implements the ISemanticErrorsReporter interface.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.SourceEditHostEnvironment">
+            <summary>
+            Provides an abstraction over the application hosting compilers based on this framework.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.SourceEditHostEnvironment.#ctor(Microsoft.Cci.INameTable,Microsoft.Cci.IInternFactory,System.Byte,System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
@@ -399,24 +924,6 @@
         <member name="T:Microsoft.Cci.ErrorMessage">
             <summary>
             Error information relating to a portion of a source document.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.ISourceErrorMessage">
-            <summary>
-            Error information relating to a portion of a source document.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.ISourceErrorMessage.MakeShallowCopy(Microsoft.Cci.ISourceDocument)">
-            <summary>
-            Makes a copy of this error message, changing only Location and SourceLocation to come from the
-            given source document. Returns the same instance if the given source document is the same
-            as this.SourceLocation.SourceDocument.
-            </summary>
-            <param name="targetDocument">The document to which the resulting error message must refer.</param>
-        </member>
-        <member name="P:Microsoft.Cci.ISourceErrorMessage.SourceLocation">
-            <summary>
-            The location of the error in the source document.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.ErrorMessage.#ctor(Microsoft.Cci.ISourceLocation,System.Int64,System.String,System.String[])">
@@ -588,14 +1095,6 @@
             Returns the source text of the document in string form. Each call may do significant work, so be sure to cache this.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.SourceDocument.ToLineColumn(System.Int32,System.Int32@,System.Int32@)">
-            <summary>
-            Maps the given (zero based) source position to a (one based) line and column, by scanning the source character by character, counting
-            new lines until the given source position is reached. The source position and corresponding line+column are remembered and scanning carries
-            on where it left off when this routine is called next. If the given position precedes the last given position, scanning restarts from the start.
-            Optimal use of this method requires the client to sort calls in order of position.
-            </summary>
-        </member>
         <member name="P:Microsoft.Cci.SourceDocument.Length">
             <summary>
             The length of the source string.
@@ -619,29 +1118,6 @@
         <member name="P:Microsoft.Cci.SourceDocument.SourceLocation">
             <summary>
             A source location corresponding to the entire document.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.IDerivedSourceDocument">
-            <summary>
-            An object that represents a source document that has been derived from other source documents. 
-            A derived source document does not have to correspond to a user accessible entity, in which case its
-            name and location should not be used in user interaction.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.IDerivedSourceDocument.GetDerivedSourceLocation(System.Int32,System.Int32)">
-            <summary>
-            Obtains a source location instance that corresponds to the substring of the document specified by the given start position and length.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.IDerivedSourceDocument.GetPrimarySourceLocationsFor(Microsoft.Cci.IDerivedSourceLocation)">
-            <summary>
-            Returns zero or more primary source locations that correspond to the given derived location.
-            </summary>
-            <param name="derivedSourceLocation">A source location in this derived document</param>
-        </member>
-        <member name="P:Microsoft.Cci.IDerivedSourceDocument.DerivedSourceLocation">
-            <summary>
-            A location corresponding to the entire document.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.CompositeSourceDocument.#ctor(Microsoft.Cci.IName)">
@@ -773,26 +1249,6 @@
         <member name="T:Microsoft.Cci.IncludedSourceLocation">
             <summary>
             A source location that falls inside a region of text that originally came from another source document.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.IIncludedSourceLocation">
-            <summary>
-            A source location that falls inside a region of text that originally came from another source document.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IIncludedSourceLocation.OriginalEndLine">
-            <summary>
-            The last line of the source location in the original document.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IIncludedSourceLocation.OriginalSourceDocumentName">
-            <summary>
-            The name of the document from which this text in this source location was orignally obtained.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IIncludedSourceLocation.OriginalStartLine">
-            <summary>
-            The first line of the source location in the original document.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.IncludedSourceLocation.#ctor(Microsoft.Cci.SourceDocumentWithInclusion,System.Int32,System.Int32)">
@@ -1052,7 +1508,7 @@
         </member>
         <member name="M:Microsoft.Cci.PrimarySourceDocument.FindBestStartPointForLine(System.Int32)">
             <summary>
-            From the set of stored states for position/(line,column) conversion, find the one that is closed to line
+            From the set of stored states for position/(line,column) conversion, find the one that is closest to line.
             </summary>
         </member>
         <member name="F:Microsoft.Cci.PrimarySourceDocument.lineCounters">
@@ -1290,22 +1746,6 @@
             A range of source text that corresponds to an identifiable entity.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.IDerivedSourceLocation">
-            <summary>
-            A range of derived source text that corresponds to an identifiable entity.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IDerivedSourceLocation.DerivedSourceDocument">
-            <summary>
-            The document containing the derived source text of which this location is a subrange.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IDerivedSourceLocation.PrimarySourceLocations">
-            <summary>
-            A non empty collection of locations in primary source documents that together constitute this source location.
-            The text of this location is the concatenation of the texts of each of the primary source locations.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.DerivedSourceLocation.#ctor(Microsoft.Cci.IDerivedSourceDocument,System.Int32,System.Int32)">
             <summary>
             Allocates a range of source text that corresponds to an identifiable entity.
@@ -1426,45 +1866,6 @@
             Describes an edit to a compilation as being either the addition, deletion or modification of a definition.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.IEditDescriptor">
-            <summary>
-            Describes an edit to a compilation as being either the addition, deletion or modification of a definition.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IEditDescriptor.AffectedDefinition">
-            <summary>
-            The definition that has been added, deleted or modified.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IEditDescriptor.Kind">
-            <summary>
-            The kind of edit that has been performed (addition, deletion or modification).
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IEditDescriptor.ModifiedSourceDocument">
-            <summary>
-            The source document that is the result of the edit described by this edit instance.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IEditDescriptor.ModifiedParent">
-            <summary>
-            The new version of the parent of the affected definition (see also this.OriginalParent).
-            If the edit is an addition or modification, this.ModifiedParent is the actual parent of this.AffectedDefinition.
-            If this.AffectedDefinition does not have a parent then this.ModifiedParent is the same as this.AffectedDefinition.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IEditDescriptor.OriginalSourceDocument">
-            <summary>
-            The source document that has been edited as described by this edit instance.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IEditDescriptor.OriginalParent">
-            <summary>
-            The original parent of the affected definition (see also this.ModifiedParent). 
-            If the edit is a deletion, this.OriginalParent is the parent of this.AffectedDefinition.
-            If this.AffectedDefinition does not have a parent then this.OriginalParent is the same as this.AffectedDefinition.
-            </summary>
-        </member>
         <member name="M:Microsoft.Cci.EditDescriptor.#ctor(Microsoft.Cci.EditEventKind,Microsoft.Cci.IDefinition,Microsoft.Cci.IDefinition,Microsoft.Cci.IDefinition,Microsoft.Cci.ISourceDocument,Microsoft.Cci.ISourceDocument)">
             <summary>
             Allocates an object that describes an edit to a compilation as being either the addition, deletion or modification of a definition.
@@ -1551,306 +1952,47 @@
             The document containing the source text of which this location is a subrange.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.EditEventArgs">
+        <member name="T:Microsoft.Cci.SynchronizationPointLocation">
             <summary>
-            Supplies information about an edit that has been performed on a source document that forms part of a compilation that is registered with this environment.
-            The information is supplied in the form of a list of namespace or type declaration members that have been modified, added to or deleted from
-            their containing namespace or type declarations.
+            
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.EditEventArgs.#ctor(System.Collections.Generic.IEnumerable{Microsoft.Cci.IEditDescriptor})">
+        <member name="M:Microsoft.Cci.SynchronizationPointLocation.#ctor(Microsoft.Cci.IDocument,Microsoft.Cci.ISynchronizationPoint)">
             <summary>
-            Allocates an object that supplies information about an edit that has been performed on a source document that forms part of a compilation that is registered with this environment.
-            The information is supplied in the form of a list of namespace or type declaration members that have been modified, added to or deleted from
-            their containing namespace or type declarations.
+            
+            </summary>
+            <param name="document"></param>
+            <param name="synchronizationPoint"></param>
+        </member>
+        <member name="P:Microsoft.Cci.SynchronizationPointLocation.SynchronizationPoint">
+            <summary>
+            
             </summary>
         </member>
-        <member name="P:Microsoft.Cci.EditEventArgs.Edits">
+        <member name="P:Microsoft.Cci.SynchronizationPointLocation.Document">
             <summary>
-            A list of descriptors that collectively describe the edit that has caused this event.
+            The document containing this location.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.EditEventKind">
+        <member name="T:Microsoft.Cci.ContinuationLocation">
             <summary>
-            Describes the kind of edit that has been performed on a unit of metadata (also known as a symbol table).
+            
             </summary>
         </member>
-        <member name="F:Microsoft.Cci.EditEventKind.Addition">
+        <member name="M:Microsoft.Cci.ContinuationLocation.#ctor(Microsoft.Cci.SynchronizationPointLocation)">
             <summary>
-            The affected namespace or type member has been added to its parent namespace or type.
-            Of necessity, the (immutable) affected member is the result of the edit.
+            
+            </summary>
+            <param name="synchronizationPointLocation"></param>
+        </member>
+        <member name="P:Microsoft.Cci.ContinuationLocation.SynchronizationPointLocation">
+            <summary>
+            
             </summary>
         </member>
-        <member name="F:Microsoft.Cci.EditEventKind.Deletion">
+        <member name="P:Microsoft.Cci.ContinuationLocation.Document">
             <summary>
-            The affected namespace or type member has been deleted from its parent namespace or type.
-            Of necessity, the (immutable) affected member is from a model that precedes the edit and will be absent
-            from the model that resulted from the edit.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Cci.EditEventKind.Modification">
-            <summary>
-            The edit has resulted in a change to the affected namespace or type member, such as a change its name or visibility.
-            The affeced member of the edit descriptor is the member after the edit has been applied.
-            Note: a namespace or type declaration member is not considered to be modified if the change is confined to a child member. 
-            In that case, the change event will be generated only for the child member.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.ISymbolSyntaxErrorsReporter">
-            <summary>
-            Interface implemented by providers of syntax (parse) errors that occur in the symbol table level constructs
-            of a source file. In particular, syntax errors that occur inside method bodies are not reported.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.ISyntaxErrorsReporter">
-            <summary>
-            Interface implemented by providers of syntax (parse) errors.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.ISourceLocationProvider">
-            <summary>
-            An object that can map some kinds of ILocation objects to IPrimarySourceLocation objects. 
-            For example, a PDB reader that maps offsets in an IL stream to source locations.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.ISourceLocationProvider.GetPrimarySourceLocationsFor(System.Collections.Generic.IEnumerable{Microsoft.Cci.ILocation})">
-            <summary>
-            Return zero or more locations in primary source documents that correspond to one or more of the given derived (non primary) document locations.
-            </summary>
-            <param name="locations">Zero or more locations in documents that have been derived from one or more source documents.</param>
-        </member>
-        <member name="M:Microsoft.Cci.ISourceLocationProvider.GetPrimarySourceLocationsFor(Microsoft.Cci.ILocation)">
-            <summary>
-            Return zero or more locations in primary source documents that correspond to the given derived (non primary) document location.
-            </summary>
-            <param name="location">A location in a document that have been derived from one or more source documents.</param>
-        </member>
-        <member name="M:Microsoft.Cci.ISourceLocationProvider.GetPrimarySourceLocationsForDefinitionOf(Microsoft.Cci.ILocalDefinition)">
-            <summary>
-            Return zero or more locations in primary source documents that correspond to the definition of the given local.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.ISourceLocationProvider.GetSourceNameFor(Microsoft.Cci.ILocalDefinition,System.Boolean@)">
-            <summary>
-            Returns the source name of the given local definition, if this is available. 
-            Otherwise returns the value of the Name property and sets isCompilerGenerated to true.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.ILocalScope">
-            <summary>
-            A range of CLR IL operations that comprise a lexical scope, specified as an IL offset and a length.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.ILocalScope.Offset">
-            <summary>
-            The offset of the first operation in the scope.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.ILocalScope.Length">
-            <summary>
-            The length of the scope. Offset+Length equals the offset of the first operation outside the scope, or equals the method body length.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.ILocalScope.MethodDefinition">
-            <summary>
-            The definition of the method in which this local scope is defined.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.ILocalScopeProvider">
-            <summary>
-            An object that can provide information about the local scopes of a method.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetIteratorScopes(Microsoft.Cci.IMethodBody)">
-            <summary>
-            Returns zero or more local (block) scopes, each defining an IL range in which an iterator local is defined.
-            The scopes are returned by the MoveNext method of the object returned by the iterator method.
-            The index of the scope corresponds to the index of the local. Specifically local scope i corresponds
-            to the local stored in field &lt;localName&gt;x_i of the class used to store the local values in between
-            calls to MoveNext.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetLocalScopes(Microsoft.Cci.IMethodBody)">
-            <summary>
-            Returns zero or more local (block) scopes into which the CLR IL operations in the given method body is organized.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetNamespaceScopes(Microsoft.Cci.IMethodBody)">
-            <summary>
-            Returns zero or more namespace scopes into which the namespace type containing the given method body has been nested.
-            These scopes determine how simple names are looked up inside the method body. There is a separate scope for each dotted
-            component in the namespace type name. For istance namespace type x.y.z will have two namespace scopes, the first is for the x and the second
-            is for the y.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetConstantsInScope(Microsoft.Cci.ILocalScope)">
-            <summary>
-            Returns zero or more local constant definitions that are local to the given scope.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.ILocalScopeProvider.GetVariablesInScope(Microsoft.Cci.ILocalScope)">
-            <summary>
-            Returns zero or more local variable definitions that are local to the given scope.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.ILocalScopeProvider.IsIterator(Microsoft.Cci.IMethodBody)">
-            <summary>
-            Returns true if the method body is an iterator.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.INamespaceScope">
-            <summary>
-            A description of the lexical scope in which a namespace type has been nested. This scope is tied to a particular
-            method body, so that partial types can be accommodated.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.INamespaceScope.UsedNamespaces">
-            <summary>
-            Zero or more used namespaces. These correspond to using clauses in C#.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.IUsedNamespace">
-            <summary>
-            A namespace that is used (imported) inside a namespace scope.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IUsedNamespace.Alias">
-            <summary>
-            An alias for a namespace. For example the "x" of "using x = y.z;" in C#. Empty if no alias is present.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.IUsedNamespace.NamespaceName">
-            <summary>
-            The name of a namepace that has been aliased.  For example the "y.z" of "using x = y.z;" or "using y.z" in C#.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.SourceEditEventArgs">
-            <summary>
-            Supplies information about edits that have been performed on source documents that form part of compilations that are registered with this environment.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.SourceEditEventArgs.#ctor(System.Collections.Generic.IEnumerable{Microsoft.Cci.ISourceDocumentEdit})">
-            <summary>
-            Allocates an object that supplies information about edits that have been performed on source documents that form part of compilations that are registered with this environment.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Cci.SourceEditEventArgs.Edits">
-            <summary>
-            A list of edits to source documents that have occurred as a single event.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.AggregatingSourceLocationProvider">
-            <summary>
-            A provider that aggregates a set of providers in order to
-            map offsets in an IL stream to source locations.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.#ctor(System.Collections.Generic.IDictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ISourceLocationProvider})">
-            <summary>
-            Copies the contents of the table
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.#ctor(System.Collections.Generic.Dictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ISourceLocationProvider})">
-            <summary>
-            Uses the given dictionary to find the appropriate provider for a query.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.GetPrimarySourceLocationsFor(System.Collections.Generic.IEnumerable{Microsoft.Cci.ILocation})">
-            <summary>
-            Return zero or more locations in primary source documents that correspond to one or more of the given derived (non primary) document locations.
-            </summary>
-            <param name="locations">Zero or more locations in documents that have been derived from one or more source documents.</param>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.GetPrimarySourceLocationsFor(Microsoft.Cci.ILocation)">
-            <summary>
-            Return zero or more locations in primary source documents that correspond to the given derived (non primary) document location.
-            </summary>
-            <param name="location">A location in a document that have been derived from one or more source documents.</param>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.GetPrimarySourceLocationsForDefinitionOf(Microsoft.Cci.ILocalDefinition)">
-            <summary>
-            Return zero or more locations in primary source documents that correspond to the definition of the given local.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.GetSourceNameFor(Microsoft.Cci.ILocalDefinition,System.Boolean@)">
-            <summary>
-            Returns the source name of the given local definition, if this is available.
-            Otherwise returns the value of the Name property and sets isCompilerGenerated to true.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.Dispose">
-            <summary>
-            Disposes all aggregated providers.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingSourceLocationProvider.Finalize">
-            <summary>
-            Disposes all aggregated providers that implement the IDisposable interface. 
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.AggregatingLocalScopeProvider">
-            <summary>
-            A provider that aggregates a set of providers in order to
-            map offsets in an IL stream to block scopes.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.#ctor(System.Collections.Generic.IDictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ILocalScopeProvider})">
-            <summary>
-            Copies the contents of the table
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.#ctor(System.Collections.Generic.Dictionary{Microsoft.Cci.IUnit,Microsoft.Cci.ILocalScopeProvider})">
-            <summary>
-            Uses the given dictionary to find the appropriate provider for a query.
-            </summary>
-            <param name="unit2ProviderMap"></param>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetIteratorScopes(Microsoft.Cci.IMethodBody)">
-            <summary>
-            Returns zero or more local (block) scopes, each defining an IL range in which an iterator local is defined.
-            The scopes are returned by the MoveNext method of the object returned by the iterator method.
-            The index of the scope corresponds to the index of the local. Specifically local scope i corresponds
-            to the local stored in field &lt;localName&gt;x_i of the class used to store the local values in between
-            calls to MoveNext.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetLocalScopes(Microsoft.Cci.IMethodBody)">
-            <summary>
-            Returns zero or more local (block) scopes into which the CLR IL operations in the given method body is organized.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetNamespaceScopes(Microsoft.Cci.IMethodBody)">
-            <summary>
-            Returns zero or more namespace scopes into which the namespace type containing the given method body has been nested.
-            These scopes determine how simple names are looked up inside the method body. There is a separate scope for each dotted
-            component in the namespace type name. For istance namespace type x.y.z will have two namespace scopes, the first is for the x and the second
-            is for the y.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetConstantsInScope(Microsoft.Cci.ILocalScope)">
-            <summary>
-            Returns zero or more local constant definitions that are local to the given scope.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.GetVariablesInScope(Microsoft.Cci.ILocalScope)">
-            <summary>
-            Returns zero or more local variable definitions that are local to the given scope.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.IsIterator(Microsoft.Cci.IMethodBody)">
-            <summary>
-            Returns true if the method body is an iterator.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.Dispose">
-            <summary>
-            Calls Dispose on all aggregated providers.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.AggregatingLocalScopeProvider.Finalize">
-            <summary>
-            Finalizer for the aggregrating local scope provider. Calls Dispose on
-            all aggregated providers.
+            The document containing this location.
             </summary>
         </member>
     </members>
