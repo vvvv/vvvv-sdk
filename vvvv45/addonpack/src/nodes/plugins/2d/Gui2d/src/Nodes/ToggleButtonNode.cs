@@ -37,7 +37,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "ToggleButton",
 	            Category = "GUI",
 	            Help = "A spread of toggle botton groups",
-	            Tags = "EX9, DX9, transform, interaction, mouse, toggle",
+	            Tags = "multitouch, MT, EX9, DX9, transform, interaction, mouse, toggle",
 	            Author = "tonfilm")]
 	public class ToggleButtonNode: BasicGui2dNode
 	{

@@ -37,7 +37,6 @@ namespace VVVV.Nodes
 			public int Height;
 			
 			public string Text;
-			public int Encoding;
 			public string Font;
 			public bool Italic;
 			public bool Bold;
@@ -62,9 +61,6 @@ namespace VVVV.Nodes
 		
  		[Input("Text", DefaultString = "vvvv")]
         IDiffSpread<string> FTextInput;
-
-		[Input("Character Encoding", EnumName = "CharEncoding")]
-        IDiffSpread<EnumEntry> FCharEncoding;
 
         [Input("Font", EnumName = "SystemFonts")]
         IDiffSpread<EnumEntry> FFontInput;
@@ -139,14 +135,13 @@ namespace VVVV.Nodes
 					info = textureResource.Metadata;
 				}
 				
-				if (info.Text != FTextInput[i] || info.Encoding != FCharEncoding[i].Index || info.Font != FFontInput[i].Name ||
+				if (info.Text != FTextInput[i] || info.Font != FFontInput[i].Name ||
 				               info.Italic != FItalicInput[i] || info.Bold != FBoldInput[i] || info.Size != FSizeInput[i] ||
 				               info.Color != FColorInput[i] || info.Brush != FBrushColor[i] || info.ShowBrush != FShowBrush[i] ||
 				               info.HAlign != FHorizontalAlignInput[i].Index || info.VAlign != FVerticalAlignInput[i].Index || 
 				               info.RenderMode != FTextRenderingModeInput[i].Index || info.Normalize != FNormalizeInput[i].Index)
 				{
 					info.Text = FTextInput[i];
-					info.Encoding = FCharEncoding[i].Index;
 					info.Font = FFontInput[i].Name;
 					info.Italic = FItalicInput[i];
 					info.Bold = FBoldInput[i];
@@ -211,12 +206,6 @@ namespace VVVV.Nodes
 	                case 1: break;
 	                case 2: layout.Size= new SizeF(width,height);break;
 	            }
-				if (info.Encoding == 1)
-	            {
-	                byte[] utf8bytes = Encoding.Default.GetBytes(text);
-	                text = Encoding.UTF8.GetString(utf8bytes);
-	            }			
-						
 				
 				format.LineAlignment = StringAlignment.Near;
 	            switch (info.HAlign)
