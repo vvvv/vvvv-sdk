@@ -33,12 +33,18 @@ namespace VVVV.Nodes.Network.Wyphon
 	public class WyphonReceiveTexturesNode : IPluginEvaluate, IDisposable
 	{
 		#region pins
+		[Input("Partner Id")]
+		IDiffSpread<uint> FPartnerIdIn;
+
+		[Input("Do Filter", IsSingle = true)]
+		IDiffSpread<bool> FDoFilterIn;
+		
 		
 		[Output("Description")]
 		ISpread<string> FDescriptionOut;
 
 		[Output("Width")]
-		ISpread<uint> FWidthout;
+		ISpread<uint> FWidthOut;
 
 		[Output("Height")]
 		ISpread<uint> FHeightOut;
@@ -48,6 +54,13 @@ namespace VVVV.Nodes.Network.Wyphon
 
 		[Output("Usage")]
 		ISpread<uint> FUsageOut;
+		
+//		[Input("Format", EnumName = "TextureFormat")]
+//        IDiffSpread<EnumEntry> FFormat;
+//
+//        [Input("Usage", EnumName = "TextureUsage")]
+//        IDiffSpread<EnumEntry> FUsage;
+
 		
 		[Output("Handle")]
 		ISpread<uint> FHandleOut;
@@ -72,34 +85,43 @@ namespace VVVV.Nodes.Network.Wyphon
 		public WyphonReceiveTexturesNode()
 		{
 		}
-				
+		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax) {
 			//ignore spreadmax, use FHandle in as the reference spread !!!
-			if ( previousTexturesVersion != WyphonNode.texturesVersion ) {
+			if (	( previousTexturesVersion != WyphonNode.texturesVersion ) 
+					|| FPartnerIdIn.IsChanged
+					|| FDoFilterIn.IsChanged
+				) {
 				
 				LogNow(LogType.Debug, "Something happened with the textures shared by others, update our output !");
 				
 				lock (WyphonNode.sharedTexturesLock) {
 					
 					FDescriptionOut.SliceCount = 0;
-					FWidthout.SliceCount = 0;
+					FWidthOut.SliceCount = 0;
 					FHeightOut.SliceCount = 0;
 					FFormatOut.SliceCount = 0;
 					FUsageOut.SliceCount = 0;
 					FHandleOut.SliceCount = 0;
 					
 					foreach ( uint partnerId in WyphonNode.SharedTexturesPerPartner.Keys ) {
-						//we could filter out some partners here if we want
-						ISpread<SharedTextureInfo> textureInfoSpread = WyphonNode.SharedTexturesPerPartner[partnerId];
-						
-						foreach ( SharedTextureInfo textureInfo in textureInfoSpread ) {
-							FDescriptionOut.Add(textureInfo.description);
-							FWidthout.Add(textureInfo.width);
-							FHeightOut.Add(textureInfo.height);
-							FFormatOut.Add(textureInfo.format);
-							FUsageOut.Add(textureInfo.usage);
-							FHandleOut.Add(textureInfo.textureHandle);
+						if ( ! (FDoFilterIn.SliceCount > 0 && FDoFilterIn[0]) || FPartnerIdIn.IndexOf(partnerId) >= 0 ) {
+							//filter not enabled OR partnerId found in list => add this partner's textures to ouput
+
+							ISpread<SharedTextureInfo> textureInfoSpread;
+							if ( WyphonNode.SharedTexturesPerPartner.TryGetValue(partnerId, out textureInfoSpread) && textureInfoSpread != null) {
+								
+								foreach ( SharedTextureInfo textureInfo in textureInfoSpread ) {
+									FDescriptionOut.Add(textureInfo.description);
+									FWidthOut.Add(textureInfo.width);
+									FHeightOut.Add(textureInfo.height);
+									FFormatOut.Add(textureInfo.format);
+									FUsageOut.Add(textureInfo.usage);
+									FHandleOut.Add(textureInfo.textureHandle);
+								}
+								
+							}
 						}
 					}
 				}
@@ -114,14 +136,6 @@ namespace VVVV.Nodes.Network.Wyphon
 		}
 		
 		
-		public void LogNow(LogType logType, string message) {
-			FLogger.Log( logType, message);
-		}
- 
-		public void Log( LogType logType, string message)
-		{
-			logMe += "\n" + (logType == LogType.Error ? "ERR " : (logType == LogType.Warning ? "WARN " : "")) + message;
-		}
 
 		public void Dispose() {
 			

@@ -19,6 +19,9 @@ using VVVV.Utils.VMath;
 
 using VVVV.Core.Logging;
 
+using SlimDX.Direct3D9;
+//using VVVV.Utils.SlimDX;
+
 using Wyphon;
 
 #endregion usings
@@ -48,6 +51,13 @@ namespace VVVV.Nodes.Network.Wyphon
 		[Input("Usage")]
 		IDiffSpread<uint> FUsageIn;
 		
+//		[Input("Format", EnumName = "TextureFormat")]
+//		IDiffSpread<EnumEntry> FFormatEnumIn;
+//		
+//		[Input("Usage", EnumName = "TextureUsage")]
+//		IDiffSpread<EnumEntry> FUsageEnumIn;
+
+		
 		[Input("Handle")]
 		IDiffSpread<uint> FHandleIn;
 
@@ -68,6 +78,30 @@ namespace VVVV.Nodes.Network.Wyphon
 		#endregion fields
 
 		#region helper functions
+		
+		private Format enumPin2Format(EnumEntry pinValue) {
+			Format format;
+			if (pinValue.Name == "INTZ")
+				format = D3DX.MakeFourCC((byte)'I', (byte)'N', (byte)'T', (byte)'Z');
+			else if (pinValue.Name == "RAWZ")
+				format = D3DX.MakeFourCC((byte)'R', (byte)'A', (byte)'W', (byte)'Z');
+			else if (pinValue.Name == "RESZ")
+				format = D3DX.MakeFourCC((byte)'R', (byte)'E', (byte)'S', (byte)'Z');
+			else
+				format = (Format)Enum.Parse(typeof(Format), pinValue, true);
+			
+			return format;
+		}
+		
+		private Usage enumPin2Usage(EnumEntry pinValue) {
+			var usage = Usage.Dynamic;
+			if (pinValue.Index == (int)(TextureType.RenderTarget))
+				usage = Usage.RenderTarget;
+			else if (pinValue.Index == (int)(TextureType.DepthStencil))
+				usage = Usage.DepthStencil;
+
+			return usage;
+		}
 		
 		#endregion helper functions
 
@@ -97,7 +131,13 @@ namespace VVVV.Nodes.Network.Wyphon
 						LogNow(LogType.Debug, "Ignore handle = 0, we will not share a texture with handle=0");
 					}
 					else {
+						
+//						Format format = enumPin2Format(FFormatEnumIn[i]);
+//						Usage usage = enumPin2Usage(FUsageEnumIn[i]);
+//						LogNow(LogType.Debug, "TypeCode = " + Format.A16B16G16R16.GetTypeCode() + " Type = " + Format.A16B16G16R16.GetType() );
+
 						LogNow(LogType.Debug, "NO : " + handle + " NOT SHARED YET, we will try to share it now");
+						
 						bool success = wyphon.ShareD3DTexture(handle, FWidthIn[i], FHeightIn[i], FFormatIn[i], FUsageIn[i], FDescriptionIn[i]);
 						if (success) {
 							SharedTextureHandles.Add(handle);
