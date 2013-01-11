@@ -1,0 +1,113 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.dtd" >
+   <PATCH nodename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Wyphon tests\SR Interprocess test 01.v4p" systemname="wyphon test 01" filename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Wyphon tests\wyphon test 01.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="13920" height="8790">
+   </BOUNDS>
+   <NODE systemname="Renderer (TTY)" nodename="Renderer (TTY)" componentmode="InAWindow" id="4">
+   <BOUNDS type="Node" left="150" top="3975" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="150" top="3975" width="15810" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="8835" width="13860" height="3315">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2244" top="810" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2244" top="810" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="vvvv">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="vvvv">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="38" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1593" top="5100" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1593" top="5100" width="11925" height="3060">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="String Output" dstnodeid="38" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="S (Network Interprocess)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="S (Network Interprocess)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="744" top="1785" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="SendString" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="744" top="1785">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="55" dstpinname="SendString">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="56" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="750" top="255" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="750" top="255" width="810" height="735">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="3" values="john,,">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Output String" dstnodeid="55" dstpinname="Input Value">
+   </LINK>
+   <NODE systemname="R (Network Interprocess)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network Interprocess)" componentmode="Hidden" id="57">
+   <BOUNDS type="Node" left="4275" top="1785" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="4275" top="1785">
+   </BOUNDS>
+   <PIN pinname="Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="57" dstpinname="ReceiveString">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="59" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4269" top="2610" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4269" top="2610" width="810" height="735">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="3" visible="1" values="john,,">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="57" srcpinname="Output Value" dstnodeid="59" dstpinname="Input String">
+   </LINK>
+   </PATCH>
