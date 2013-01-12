@@ -1,0 +1,60 @@
+require "albacore"
+
+RELEASE_PROPS = {:configuration => :Release,:platform => "x86"}
+DEBUG_PROPS   = {:configuration => :Debug,:platform => "x86"}
+
+ROOT_DIR = '..\..\..\..\..\..\\'
+
+desc "Build VVVV core"
+msbuild :core do |msb|
+	msb.properties RELEASE_PROPS
+	msb.targets :Build
+	msb.log_level = :verbose
+	msb.solution = "#{ROOT_DIR}src\\vvvv45.sln"
+end
+
+desc "Build VVVV AddOns"
+msbuild :addons do |msb|
+	msb.properties RELEASE_PROPS
+	msb.targets :Build
+	# msb.log_level = :verbose
+	msb.solution = "#{ROOT_DIR}addonpack\\src\\Addonpack.sln"
+end
+
+task :all => [:core,:addons]
+
+PLUGIN_DEBUG   = {:configuration=>:Debug   } 
+PLUGIN_RELEASE = {:configuration=>:Release }
+
+MODULES_DIR = "addonpack\\lib\\nodes\\modules\\"
+HELPFILE = "Devices\\Arduino (Devices StandardFirmata 2.x) help.v4p"
+
+VVVV = 'vvvv.exe'
+
+PLUGIN_SOLUTION = "Virmata.sln"
+
+task :default => [:build,:test]
+
+desc "Build Virmata Addon"
+msbuild :build do |build|
+	build.properties PLUGIN_DEBUG
+	build.targets :Build
+	build.solution = PLUGIN_SOLUTION
+end
+
+desc "Clean Virmata Addon"
+msbuild :clean do |build|
+	build.targets :Clean
+	build.solution = PLUGIN_SOLUTION
+end
+
+desc "Re-Build Virmata"
+task :rebuild => [:clean,:build] {}
+
+desc "Test current build"
+exec :test do |cmd|
+	cmd.working_directory = ROOT_DIR
+	cmd.command = VVVV 
+	cmd.parameters = "/r \"#{MODULES}\\#{HELPFILE}\""
+end
+
