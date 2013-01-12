@@ -26,17 +26,17 @@ using LocalMessageBroadcast;
 namespace InterProcessSendReceiveNodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "S", Category = "Network Interprocess", 
+	[PluginInfo(Name = "S", Category = "Network.Interprocess.String", 
 	            AutoEvaluate = true, 
 	            Author="ft", Help = "S/R nodes that allow to communicate between different vvvv instances", Tags = "")]
 	#endregion PluginInfo
-	public class SNode : IPluginEvaluate, IDisposable
+	public class SStringNode : IPluginEvaluate, IDisposable
 	{
 		#region pins
-		[Input("Input Value")]
+		[Input("Input Value", DefaultString = "")]
 		IDiffSpread<string> FValueIn;
 
-		[Input("SendString", IsSingle = true)]
+		[Input("SendString", IsSingle = true, DefaultString = "vvvv")]
 		IDiffSpread<string> FChannelIn;
 		
 		#endregion pins
@@ -74,30 +74,34 @@ namespace InterProcessSendReceiveNodes
 					localMessageBroadcastPartner.Dispose();
 					localMessageBroadcastPartner = null;
 				}
-				localMessageBroadcastPartner = new LocalMessageBroadcastPartner("vvvv", FChannelIn[0]);
-				LogNow(LogType.Debug, "[S] New LocalMessageBroadcastPartner created with id = " + localMessageBroadcastPartner.PartnerId);
-				localMessageBroadcastPartner.OnPartnerJoined += 
-					delegate(uint partnerId, string partnerName) { 
-						newPartner = true;
-					};
+				localMessageBroadcastPartner = new LocalMessageBroadcastPartner("vvvv", Utils.GetChannelPrefix(FValueIn) + FChannelIn[0]);
+				LogNow(LogType.Debug, "[S.String] New LocalMessageBroadcastPartner created with id = " + localMessageBroadcastPartner.PartnerId);
+				if (localMessageBroadcastPartner != null) {
+					localMessageBroadcastPartner.OnPartnerJoined += 
+						delegate(uint partnerId, string partnerName) { 
+							newPartner = true;
+						};
+				}
+				else {
+					LogNow(LogType.Debug, "[S.Color] Creating new LocalMessageBroadcastPartner FAILED ");
+				}
 			}
 			
 			if ( (FValueIn.IsChanged || newPartner) && localMessageBroadcastPartner != null) {
 				newPartner = false;
 				
 				if (FValueIn.IsChanged) {
+					//never return 0, because 0 means uninitialized
 					if (messageVersion == uint.MaxValue) {
 						messageVersion = 0;
 					}
-					else {
-						messageVersion++;
-					}
+					messageVersion++;
 				}
 				
 				//create a message that holds all slices
 				byte[] msg = Utils.GenerateMessage(FValueIn, messageVersion);
 				
-				LogNow(LogType.Debug, "[S] Trying to send message of size " + msg.Length);
+				//LogNow(LogType.Debug, "[S.String] Trying to send message of size " + msg.Length);
 				localMessageBroadcastPartner.BroadcastMessage(msg);
 			}
 			

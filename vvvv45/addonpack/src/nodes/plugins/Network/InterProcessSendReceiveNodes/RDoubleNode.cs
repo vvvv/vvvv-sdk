@@ -1,8 +1,8 @@
 ﻿/*
  * Created by SharpDevelop.
  * User: frederik
- * Date: 11/01/2013
- * Time: 14:33
+ * Date: 15/01/2013
+ * Time: 8:57
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
@@ -26,21 +26,31 @@ using LocalMessageBroadcast;
 namespace InterProcessSendReceiveNodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "R", Category = "Network Interprocess", 
+	[PluginInfo(Name = "R", Category = "Network.Interprocess.Double", 
 	            AutoEvaluate = false, 
 	            Author="ft", Help = "S/R nodes that allow to communicate between different vvvv instances", Tags = "")]
 	#endregion PluginInfo
-	public class RNode : IPluginEvaluate, IDisposable
+	public class RDoubleNode : IPluginEvaluate, IDisposable
 	{
 		#region pins
-		[Input("ReceiveString", IsSingle = true)]
+		[Input("ReceiveString", IsSingle = true, DefaultString = "vvvv")]
 		IDiffSpread<string> FChannelIn;
 
 //		[Input("Default Value")]
 //		IDiffSpread<string> FDefaultValueIn;
+
+//		I don't think we need filtering on partnedId: 
+//		use good names and you can easily filter for the messages you are interested in
+///////////////////////////////////////////////////////////////////////////////////////
+//		[Input("Partner Id", Visibility = PinVisibility.OnlyInspector)]
+//		IDiffSpread<uint> FPartnerIdIn;
+//
+//		[Input("Do Filter", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
+//		IDiffSpread<bool> FDoFilterIn;
+
 		
 		[Output("Output Value")]
-		ISpread<string> FValueOut;
+		ISpread<double> FValueOut;
 		
 		[Output("Found", IsSingle = true)]
 		ISpread<bool> FFoundOut;
@@ -56,8 +66,9 @@ namespace InterProcessSendReceiveNodes
 		private LocalMessageBroadcastPartner localMessageBroadcastPartner = null;
 		
 		private bool received = false;
-		ISpread<string> receivedSpread = new Spread<string>();
-		private uint lastVersion = 0;
+		ISpread<double> receivedSpread = new Spread<double>();
+		private Dictionary<uint, uint> lastVersionPerPartner = new Dictionary<uint, uint>();
+		
 		#endregion fields
 
 		#region helper functions
@@ -73,32 +84,36 @@ namespace InterProcessSendReceiveNodes
 		#endregion helper functions
 
 		private void OnMessageHandler(uint sendingPartnerId, IntPtr msgData, uint msgLength) {
-//			Log(LogType.Debug, "[R] Received new message from " + sendingPartnerId + " of size " + msgLength);
+//			Log(LogType.Debug, "[R.Double] Received new message from " + sendingPartnerId + " of size " + msgLength);
 			
 			byte[] bytes = new byte[msgLength];
 			System.Runtime.InteropServices.Marshal.Copy( msgData, bytes, 0, (int)msgLength );
 
 			try {
-				//only parse the message if it's a version we have never received before?
-				//but in that case we need to know which partner sent it !!!
-				
-				//SO currently this can only work for 1 S and 1 R node
-//				if ( GetVersion(bytes) != lastVersion || lastVersion == 0 ) {
-					Utils.ProcessMessage( bytes, receivedSpread );
-					received = true;
-//				}
+				//correct type: not really necessary anymore since different nodes will send on different channels
+				if (Utils.GetMessageType(bytes) == MessageTypeEnum.doubleSpread) {
+					//only parse the whole message if it's a version we have never received before from that partner
+					uint currVersion = Utils.GetVersion(bytes);
+					uint lastVersion;
+					
+					if ( ! lastVersionPerPartner.TryGetValue(sendingPartnerId, out lastVersion) || (currVersion != lastVersion) ) {
+						Utils.ProcessMessage( bytes, receivedSpread );
+						received = true;
+						lastVersionPerPartner[sendingPartnerId] = currVersion;
+					}
+				}
 			} catch (Exception e) {
-				Log(LogType.Debug, "[R Exception] while trying to processMessage." );				
+				Log(LogType.Debug, "[R Exception] while trying to processMessage.\n" + e.Message + "\n" + e.StackTrace);
 			}
 
-			Log(LogType.Debug, "[R] New spread has " + receivedSpread.SliceCount + " slices.");
+			//Log(LogType.Debug, "[R.Double] New spread has " + receivedSpread.SliceCount + " slices.");
 
 //			try {
 //				string debug = "";
 //				for ( int i = 0; i < spread.SliceCount; i++ ) {
 //					debug += ( i > 0 ? " | " : "" ) + spread[i];
 //				}
-//				Log(LogType.Debug, "[R] New spread contains: " + debug );
+//				Log(LogType.Debug, "[R.Double] New spread contains: " + debug );
 //			} catch (Exception e) {
 //				Log(LogType.Debug, "[R Exception] while trying to build debug message" );				
 //			}
@@ -112,15 +127,15 @@ namespace InterProcessSendReceiveNodes
 					localMessageBroadcastPartner.Dispose();
 					localMessageBroadcastPartner = null;
 				}
-				localMessageBroadcastPartner = new LocalMessageBroadcastPartner("vvvv", FChannelIn[0]);
-				LogNow(LogType.Debug, "[R] New LocalMessageBroadcastPartner created with id = " + localMessageBroadcastPartner.PartnerId);
+				localMessageBroadcastPartner = new LocalMessageBroadcastPartner("vvvv", Utils.GetChannelPrefix(FValueOut) + FChannelIn[0]);
+				LogNow(LogType.Debug, "[R.Double] New LocalMessageBroadcastPartner created with id = " + localMessageBroadcastPartner.PartnerId);
 				localMessageBroadcastPartner.OnMessage += OnMessageHandler;
 			}
 			
 			if ( received ) {
 				received = false;
 				
-				LogNow(LogType.Debug, "[R] Try to update output" );
+				//LogNow(LogType.Debug, "[R.Double] Try to update output" );
 				
 				FValueOut.SliceCount = receivedSpread.SliceCount;
 				for (int i = 0; i < receivedSpread.SliceCount; i++ ) {

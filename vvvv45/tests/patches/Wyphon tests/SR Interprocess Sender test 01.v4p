@@ -1,0 +1,331 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.dtd" >
+   <PATCH nodename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Wyphon tests\SR Interprocess Sender test 01.v4p" systemname="wyphon test 01" filename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Wyphon tests\wyphon test 01.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="12225" height="8790">
+   </BOUNDS>
+   <NODE systemname="Renderer (TTY)" nodename="Renderer (TTY)" componentmode="InAWindow" id="4">
+   <BOUNDS type="Node" left="150" top="4455" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="150" top="4455" width="15810" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="8835" width="12270" height="3315">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4254" top="720" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4254" top="720" width="810" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="vvvv2">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="vvvv">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="38" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1593" top="5100" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1593" top="5100" width="10260" height="2940">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="String Output" dstnodeid="38" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="S (Network.Interprocess.String)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="S (Network Interprocess)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="744" top="2265" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="SendString" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="744" top="2265">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="55" dstpinname="SendString">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="56" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="750" top="735" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="750" top="735" width="810" height="735">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="3" values="john,bart,">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Output String" dstnodeid="55" dstpinname="Input Value">
+   </LINK>
+   <NODE systemname="R (Network.Interprocess.String)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network Interprocess)" componentmode="Hidden" id="57">
+   <BOUNDS type="Node" left="4275" top="2265" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="4275" top="2265">
+   </BOUNDS>
+   <PIN pinname="Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="57" dstpinname="ReceiveString">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="59" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4269" top="3090" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4269" top="3090" width="810" height="735">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="3" visible="1" values="john,,">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="57" srcpinname="Output Value" dstnodeid="59" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="S (Network.Interprocess.Color)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="S (Network.Interprocess.Color)" componentmode="Hidden" id="60">
+   <BOUNDS type="Node" left="7200" top="2205" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="SendString" visible="1">
+   </PIN>
+   <PIN pinname="Input Value" slicecount="1" visible="1" values="|0.80423,0.80423,0.80423,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="60" dstpinname="SendString">
+   </LINK>
+   <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="61">
+   <BOUNDS type="Node" left="9210" top="720" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="3" values="3,2.99,2.98">
+   </PIN>
+   </NODE>
+   <NODE systemname="HSV (Color Join)" nodename="HSV (Color Join)" componentmode="Hidden" id="62">
+   <BOUNDS type="Node" left="7470" top="1170" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="62" srcpinname="Output" dstnodeid="60" dstpinname="Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="63" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="7473" top="1515" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7473" top="1515" width="2190" height="630">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="62" srcpinname="Output" dstnodeid="63" dstpinname="Color Input">
+   </LINK>
+   <LINK srcnodeid="61" srcpinname="Output" dstnodeid="62" dstpinname="Hue">
+   </LINK>
+   <NODE systemname="R (Network.Interprocess.Color)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network.Interprocess.Color)" componentmode="Hidden" id="64">
+   <BOUNDS type="Node" left="6975" top="3735" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="64" dstpinname="ReceiveString">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="65" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="6960" top="4365" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6960" top="4365" width="315" height="555">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="64" srcpinname="Output Value" dstnodeid="65" dstpinname="Color Input">
+   </LINK>
+   <NODE systemname="S (Network.Interprocess.Double)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="S (Network.Interprocess.Double)" componentmode="Hidden" id="66">
+   <BOUNDS type="Node" left="10740" top="2280" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="SendString" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Output" dstnodeid="66" dstpinname="Input Value">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="66" dstpinname="SendString">
+   </LINK>
+   <NODE systemname="R (Network.Interprocess.Double)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network.Interprocess.Double)" componentmode="Hidden" id="67">
+   <BOUNDS type="Node" left="10851" top="3750" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="67" dstpinname="ReceiveString">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="68" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="10845" top="4095" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10845" top="4095" width="810" height="615">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="67" srcpinname="Output Value" dstnodeid="68" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="69" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="10800" top="1485" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10800" top="1485" width="855" height="690">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Output" dstnodeid="69" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="R (Network.Interprocess.Color)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network.Interprocess.Color)" componentmode="Hidden" id="71">
+   <BOUNDS type="Node" left="7350" top="3732" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1" slicecount="1" values="vvvv">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="70" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="7335" top="4362" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7335" top="4362" width="315" height="555">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="71" srcpinname="Output Value" dstnodeid="70" dstpinname="Color Input">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="71" dstpinname="ReceiveString">
+   </LINK>
+   <NODE systemname="R (Network.Interprocess.Color)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network.Interprocess.Color)" componentmode="Hidden" id="73">
+   <BOUNDS type="Node" left="7689" top="3729" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1" slicecount="1" values="vvvv">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="72" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="7674" top="4359" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7674" top="4359" width="315" height="555">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="73" srcpinname="Output Value" dstnodeid="72" dstpinname="Color Input">
+   </LINK>
+   <NODE systemname="R (Network.Interprocess.Color)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network.Interprocess.Color)" componentmode="Hidden" id="75">
+   <BOUNDS type="Node" left="8034" top="3729" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1" slicecount="1" values="vvvv">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="74" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="8019" top="4359" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8019" top="4359" width="315" height="555">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="75" srcpinname="Output Value" dstnodeid="74" dstpinname="Color Input">
+   </LINK>
+   <NODE systemname="R (Network.Interprocess.Color)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network.Interprocess.Color)" componentmode="Hidden" id="77">
+   <BOUNDS type="Node" left="8406" top="3729" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1" slicecount="1" values="vvvv">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="76" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="8391" top="4359" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8391" top="4359" width="315" height="555">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="77" srcpinname="Output Value" dstnodeid="76" dstpinname="Color Input">
+   </LINK>
+   <NODE systemname="R (Network.Interprocess.Color)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network.Interprocess.Color)" componentmode="Hidden" id="79">
+   <BOUNDS type="Node" left="8769" top="3732" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1" slicecount="1" values="vvvv">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="78" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="8754" top="4362" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8754" top="4362" width="315" height="555">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="79" srcpinname="Output Value" dstnodeid="78" dstpinname="Color Input">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="73" dstpinname="ReceiveString">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="75" dstpinname="ReceiveString">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="77" dstpinname="ReceiveString">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="79" dstpinname="ReceiveString">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="80" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="9204" top="225" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9204" top="225" width="1860" height="270">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="3" values="3,2.95,2.9">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="s">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="80" srcpinname="Y Output Value" dstnodeid="61" dstpinname="Period">
+   </LINK>
+   </PATCH>

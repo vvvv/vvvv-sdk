@@ -3,7 +3,7 @@
    <BOUNDS type="Window" left="14040" top="0" width="3750" height="6960">
    </BOUNDS>
    <NODE systemname="SharedTexture (EX9.Texture)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="SharedTexture (EX9.Texture)" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="537" top="2775" width="100" height="100">
+   <BOUNDS type="Node" left="537" top="3255" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Usage" visible="1">
    </PIN>
@@ -37,9 +37,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="4" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="252" top="1515" width="0" height="0">
+   <BOUNDS type="Node" left="210" top="1440" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="252" top="1515" width="1485" height="240">
+   <BOUNDS type="Box" left="210" top="1440" width="1530" height="765">
    </BOUNDS>
    <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -47,11 +47,15 @@
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="5" srcpinname="Description" dstnodeid="4" dstpinname="Input String">
    </LINK>
    <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="3">
-   <BOUNDS type="Node" left="1038" top="2412" width="100" height="100">
+   <BOUNDS type="Node" left="1038" top="2892" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Ord Value" visible="1">
    </PIN>
@@ -61,7 +65,7 @@
    <LINK srcnodeid="5" srcpinname="Format" dstnodeid="3" dstpinname="Ord Value">
    </LINK>
    <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="1275" top="2055" width="100" height="100">
+   <BOUNDS type="Node" left="1275" top="2535" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Ord Value" visible="1">
    </PIN>
@@ -75,7 +79,7 @@
    <LINK srcnodeid="3" srcpinname="Enum" dstnodeid="6" dstpinname="Format">
    </LINK>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="183" top="3900" width="100" height="100">
+   <BOUNDS type="Node" left="183" top="4140" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
    </PIN>
@@ -87,9 +91,9 @@
    <LINK srcnodeid="6" srcpinname="Texture Out" dstnodeid="1" dstpinname="Texture">
    </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="0">
-   <BOUNDS type="Node" left="180" top="4245" width="100" height="100">
+   <BOUNDS type="Node" left="180" top="4485" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="180" top="4245" width="2400" height="1800">
+   <BOUNDS type="Box" left="180" top="4485" width="2400" height="1800">
    </BOUNDS>
    <BOUNDS type="Window" left="5940" top="7395" width="6240" height="5010">
    </BOUNDS>
@@ -105,7 +109,7 @@
    <LINK srcnodeid="5" srcpinname="Height" dstnodeid="6" dstpinname="Height">
    </LINK>
    <NODE systemname="Cross (2d)" nodename="Cross (2d)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="2535" top="3480" width="100" height="100">
+   <BOUNDS type="Node" left="2535" top="3720" width="100" height="100">
    </BOUNDS>
    <PIN pinname="X In" visible="1">
    </PIN>
@@ -117,7 +121,7 @@
    </PIN>
    </NODE>
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="2535" top="2790" width="100" height="100">
+   <BOUNDS type="Node" left="2535" top="3030" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -125,9 +129,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="2316" top="2340" width="0" height="0">
+   <BOUNDS type="Node" left="2316" top="2580" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="2316" top="2340" width="795" height="240">
+   <BOUNDS type="Box" left="2316" top="2580" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
@@ -143,7 +147,7 @@
    <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Spread Count">
    </LINK>
    <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="11">
-   <BOUNDS type="Node" left="2085" top="2820" width="100" height="100">
+   <BOUNDS type="Node" left="2085" top="3060" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -157,7 +161,7 @@
    <LINK srcnodeid="9" srcpinname="Output" dstnodeid="8" dstpinname="Y In">
    </LINK>
    <NODE systemname="Subtract (Value)" nodename="Subtract (Value)" componentmode="Hidden" id="12">
-   <BOUNDS type="Node" left="2532" top="3165" width="100" height="100">
+   <BOUNDS type="Node" left="2532" top="3405" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -169,7 +173,7 @@
    <LINK srcnodeid="12" srcpinname="Output" dstnodeid="8" dstpinname="X In">
    </LINK>
    <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="13">
-   <BOUNDS type="Node" left="348" top="3582" width="100" height="100">
+   <BOUNDS type="Node" left="348" top="3822" width="100" height="100">
    </BOUNDS>
    <PIN pinname="TranslateXY" visible="1">
    </PIN>
@@ -207,9 +211,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="1920" top="1524" width="0" height="0">
+   <BOUNDS type="Node" left="1845" top="1440" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1920" top="1524" width="1080" height="240">
+   <BOUNDS type="Box" left="1845" top="1440" width="1125" height="750">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -217,11 +221,15 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="5" srcpinname="Handle" dstnodeid="16" dstpinname="Y Input Value">
    </LINK>
    <NODE systemname="Vector (2d Join)" nodename="Vector (2d Join)" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="2535" top="3810" width="100" height="100">
+   <BOUNDS type="Node" left="2535" top="4050" width="100" height="100">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -253,6 +261,8 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Do Filter">
    </LINK>
@@ -261,7 +271,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="210" top="36" width="360" height="855">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="3" values="1,2,3">
+   <PIN pinname="Y Input Value" slicecount="4" values="1,2,3,4">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -270,6 +280,10 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Partner Id">

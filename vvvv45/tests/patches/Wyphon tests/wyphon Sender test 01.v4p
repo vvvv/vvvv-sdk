@@ -39,11 +39,11 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Width" slicecount="1" values="128" visible="1" pintype="Input">
+   <PIN pinname="Width" slicecount="1" visible="1" pintype="Input" values="128">
    </PIN>
-   <PIN pinname="Height" slicecount="1" values="128" visible="1" pintype="Input">
+   <PIN pinname="Height" slicecount="1" visible="1" pintype="Input" values="128">
    </PIN>
-   <PIN pinname="Format" slicecount="1" values="A16B16G16R16F" visible="1" pintype="Input">
+   <PIN pinname="Format" slicecount="1" visible="1" pintype="Input" values="A16B16G16R16F">
    </PIN>
    <PIN pinname="Near Plane" slicecount="1" values="0.05">
    </PIN>
@@ -159,6 +159,8 @@
    </PIN>
    <PIN pinname="Format" visible="1">
    </PIN>
+   <PIN pinname="Description" slicecount="1" values="|vvvv texture|">
+   </PIN>
    </NODE>
    <LINK srcnodeid="10" srcpinname="Shared Handle" dstnodeid="5" dstpinname="Handle">
    </LINK>
@@ -185,7 +187,7 @@
    </PIN>
    <PIN pinname="Go To Position" visible="1">
    </PIN>
-   <PIN pinname="FilterTime" slicecount="1" values="10">
+   <PIN pinname="FilterTime" slicecount="1" values="2">
    </PIN>
    </NODE>
    <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="2">
@@ -196,6 +198,8 @@
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    <PIN pinname="Rotate" visible="1">
+   </PIN>
+   <PIN pinname="ScaleXY" slicecount="2" values="0.5,0.5">
    </PIN>
    </NODE>
    <LINK srcnodeid="3" srcpinname="Position Out" dstnodeid="2" dstpinname="TranslateXY">
@@ -258,6 +262,8 @@
    <PIN pinname="Texture" visible="1">
    </PIN>
    <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="17">
@@ -342,4 +348,50 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="522" top="1815" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="522" top="1815" width="1065" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|vvvv texture|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|vvvv texture|">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="5" dstpinname="Description">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="22" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4950" top="1740" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4950" top="1740" width="795" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="1.39,1.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="s">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Period">
+   </LINK>
+   <NODE systemname="Scale (Transform Vector)" nodename="Scale (Transform Vector)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="612" top="4077" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Transform Out" dstnodeid="16" dstpinname="Transform">
+   </LINK>
    </PATCH>

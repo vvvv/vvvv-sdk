@@ -135,7 +135,15 @@ namespace VVVV.Nodes.Network.Wyphon
 			}			
 		}
 		
-		
+		public void LogNow(LogType logType, string message) {
+			FLogger.Log( logType, message);
+		}
+ 
+		public void Log( LogType logType, string message)
+		{
+			logMe += "\n" + (logType == LogType.Error ? "ERR " : (logType == LogType.Warning ? "WARN " : "")) + message;
+		}
+
 
 		public void Dispose() {
 			

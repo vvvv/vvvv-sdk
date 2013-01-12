@@ -1,0 +1,107 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.dtd" >
+   <PATCH nodename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Wyphon tests\SR Interprocess Receiver test 01.v4p" systemname="SR Interprocess Receiver test 01" filename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Wyphon tests\SR Interprocess Receiver test 01.v4p">
+   <BOUNDS type="Window" left="12240" top="0" width="9000" height="6000">
+   </BOUNDS>
+   <NODE systemname="R (Network.Interprocess.String)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network.Interprocess.String)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="4485" top="2460" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="1" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4455" top="2910" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4455" top="2910" width="510" height="1065">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output Value" dstnodeid="1" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="R (Network.Interprocess.Double)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network.Interprocess.Double)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="2760" top="2760" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2760" top="3255" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2760" top="3255" width="810" height="780">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output Value" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="R (Network.Interprocess.Color)" filename="%VVVV%\addonpack\lib\nodes\plugins\InterProcessSendReceiveNodes.dll" nodename="R (Network.Interprocess.Color)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="75" top="2370" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="5" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="105" top="2820" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="105" top="2820" width="2295" height="1155">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output Value" dstnodeid="5" dstpinname="Color Input">
+   </LINK>
+   <NODE systemname="MainLoop (VVVV)" nodename="MainLoop (VVVV)" componentmode="Hidden" id="-6">
+   <BOUNDS type="Node" left="7410" top="4635" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Maximum forground fps" slicecount="1" values="120">
+   </PIN>
+   <PIN pinname="Maximum background fpsS" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="6" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="390" top="525" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="390" top="525" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="vvvv2">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="vvvv">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="4" dstpinname="ReceiveString">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="2" dstpinname="ReceiveString">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="0" dstpinname="ReceiveString">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7395" top="3690" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7395" top="3690" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="120">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="-6" dstpinname="Maximum forground fps">
+   </LINK>
+   </PATCH>
