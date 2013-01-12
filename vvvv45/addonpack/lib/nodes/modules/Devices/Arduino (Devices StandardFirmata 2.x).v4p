@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.4.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.dtd" >
    <PATCH nodename="C:\Users\horst\DEV\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" filename="C:\Users\jens\devel\v4plugins\VirmataEncoder\Arduino (Devices StandardFirmata 2.x).v4p" systemname="Arduino (Devices StandardFirmata 2.x)">
-   <BOUNDS height="11910" left="11160" top="120" type="Window" width="8985">
+   <BOUNDS height="12900" left="11160" top="120" type="Window" width="8985">
    </BOUNDS>
    <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="2955" top="2445" type="Node" width="100">
@@ -50,30 +50,6 @@
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="ReportDigital">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="" id="10" nodename="RS232 (Devices)" systemname="RS232 (Devices String)">
-   <BOUNDS height="270" left="1275" top="9075" type="Node" width="3420">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="ComPort" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <PIN pinname="Baudrate">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="On Data" visible="1">
-   </PIN>
-   <PIN pinname="Do Send" visible="1">
-   </PIN>
-   <PIN pinname="Baud Rate" slicecount="1" visible="1" values="57600">
-   </PIN>
-   <PIN pinname="IsConnected" visible="1">
-   </PIN>
-   <PIN pinname="Encoding" slicecount="1" values="windows-1250">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="9" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
    <BOUNDS height="100" left="7590" top="2445" type="Node" width="100">
    </BOUNDS>
@@ -86,12 +62,6 @@
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="ComPort">
    </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="ComPort" linkstyle="Bezier" srcnodeid="9" srcpinname="Output Enum">
-   <LINKPOINT x="7590" y="5880">
-   </LINKPOINT>
-   <LINKPOINT x="4665" y="5880">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="5985" top="2445" type="Node" width="100">
    </BOUNDS>
@@ -116,18 +86,12 @@
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enable">
    </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="Enabled" linkstyle="Bezier" srcnodeid="8" srcpinname="Y Output Value">
-   <LINKPOINT x="6000" y="6000">
-   </LINKPOINT>
-   <LINKPOINT x="4290" y="6000">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
    <BOUNDS height="100" left="1425" top="2415" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3495" left="1425" top="2415" type="Box" width="840">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="14" visible="1" values="OUTPUT,OUTPUT,OUTPUT,OUTPUT,OUTPUT,OUTPUT,OUTPUT,OUTPUT,OUTPUT,OUTPUT,OUTPUT,PWM,OUTPUT,OUTPUT">
+   <PIN pinname="Input Enum" slicecount="14" visible="1" values="PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,OUTPUT,OUTPUT">
    </PIN>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
@@ -159,13 +123,11 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="IsConnected">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="10" srcpinname="IsConnected">
-   </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="5130" top="2445" type="Node" width="100">
    </BOUNDS>
@@ -203,7 +165,7 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Analog">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="6" values="0,0,0,0,0,0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -219,13 +181,13 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Digital">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="14" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="5325" top="11940" type="Node" width="0">
+   <BOUNDS height="0" left="5295" top="11595" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="5325" top="11940" type="Box" width="795">
+   <BOUNDS height="240" left="5295" top="11595" type="Box" width="795">
    </BOUNDS>
    <PIN encoded="0" pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -235,7 +197,7 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Firmwareversion">
    </PIN>
-   <PIN pinname="Input String" visible="1">
+   <PIN pinname="Input String" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -253,13 +215,9 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="OnData">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="22" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="10" srcpinname="On Data">
-   <LINKPOINT x="3000" y="10103">
-   </LINKPOINT>
-   <LINKPOINT x="3510" y="10103">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="Hidden" id="23" nodename="OR (Boolean)" systemname="OR (Boolean)">
    <BOUNDS height="100" left="5160" top="7005" type="Node" width="100">
    </BOUNDS>
@@ -273,13 +231,11 @@
    <NODE componentmode="Hidden" id="25" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
    <BOUNDS height="100" left="5190" top="9045" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="25" dstpinname="Input 1" srcnodeid="10" srcpinname="IsConnected">
-   </LINK>
    <LINK dstnodeid="23" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="5" srcpinname="Y Output Value">
    <LINKPOINT x="5160" y="4973">
    </LINKPOINT>
@@ -313,7 +269,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="6870" top="2445" type="Box" width="510">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="16">
+   <PIN pinname="Y Input Value" slicecount="1" values="40">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -389,7 +345,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6315" top="10725" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Input Node" visible="1">
+   <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|I2C Data|">
    </PIN>
@@ -415,6 +371,58 @@
    <LINK srcnodeid="25" srcpinname="Output 1" dstnodeid="24" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="24" srcpinname="Up Edge" dstnodeid="36" dstpinname="Input">
+   </LINK>
+   <NODE componentmode="InABox" id="37" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6390" top="795" type="Node" width="6375">
+   </BOUNDS>
+   <BOUNDS height="375" left="6390" top="795" type="Box" width="1845">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Version: 1.1.0|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="38">
+   <BOUNDS type="Node" left="6855" top="9510" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Output" dstnodeid="38" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Output" dstnodeid="23" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="40" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7035" top="7470" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7035" top="7470" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="s">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Wait for Reset|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="36" dstpinname="Time">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" hiddenwhenlocked="0" id="0" managers="" nodename="FirmataEncode (Devices 2.x)" systemname="FirmataEncode (Devices 2.x)">
    <PIN pinname="ReportDigitalPins" pintype="Input" visible="1">
@@ -474,8 +482,6 @@
    <LINKPOINT x="6165" y="5175">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="0" srcpinname="Firmata Message">
-   </LINK>
    <LINK dstnodeid="0" dstpinname="Input" linkstyle="Bezier" srcnodeid="26" srcpinname="Y Output Value">
    <LINKPOINT x="180" y="5175">
    </LINKPOINT>
@@ -496,13 +502,7 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="Report Digital Pins" srcnodeid="11" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="10" dstpinname="Do Send" linkstyle="Bezier" srcnodeid="0" srcpinname="On Change">
-   <LINKPOINT x="3690" y="8490">
-   </LINKPOINT>
-   <LINKPOINT x="1710" y="8490">
-   </LINKPOINT>
-   </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" hiddenwhenlocked="0" id="1" managers="" nodename="FirmataDecode (Devices 2.x)" systemname="FirmataDecode (Devices 2.x)">
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" hiddenwhenlocked="0" id="1" managers="" nodename="FirmataDecode (Devices 2.x)" systemname="FirmataDecode (Devices 2.x)" debug="0">
    <PIN pinname="FirmataMessage" pintype="Input" visible="1">
    </PIN>
    <PIN pinname="I2CData" visible="1">
@@ -527,7 +527,7 @@
    </PIN>
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
-   <PIN pinname="Firmata Message" visible="1">
+   <PIN pinname="Firmata Message" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Analog In" visible="1">
    </PIN>
@@ -538,8 +538,6 @@
    <PIN pinname="I2C Data" visible="1" pintype="Output">
    </PIN>
    </NODE>
-   <LINK dstnodeid="1" dstpinname="Firmata Message" srcnodeid="10" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="19" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Analog In">
    </LINK>
    <LINK dstnodeid="20" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Digital In">
@@ -548,12 +546,68 @@
    </LINK>
    <LINK srcnodeid="1" srcpinname="I2C Data" dstnodeid="35" dstpinname="Input Node">
    </LINK>
-   <NODE componentmode="InABox" id="37" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6390" top="795" type="Node" width="6375">
+   <NODE componentmode="Hidden" filename="" id="10" nodename="RS232 (Devices)" systemname="RS232 (Devices)">
+   <BOUNDS height="270" left="1275" top="9075" type="Node" width="3420">
    </BOUNDS>
-   <BOUNDS height="375" left="6390" top="795" type="Box" width="1845">
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="ComPort" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Baudrate">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   <PIN pinname="Baud Rate" slicecount="1" visible="1" values="57600">
+   </PIN>
+   <PIN pinname="IsConnected" visible="1">
+   </PIN>
+   <PIN pinname="Encoding">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="ComPort" linkstyle="Bezier" srcnodeid="9" srcpinname="Output Enum">
+   <LINKPOINT x="7590" y="5880">
+   </LINKPOINT>
+   <LINKPOINT x="4665" y="5880">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Enabled" linkstyle="Bezier" srcnodeid="8" srcpinname="Y Output Value">
+   <LINKPOINT x="6000" y="6000">
+   </LINKPOINT>
+   <LINKPOINT x="4290" y="6000">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="10" srcpinname="IsConnected">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="10" srcpinname="On Data">
+   <LINKPOINT x="3000" y="10103">
+   </LINKPOINT>
+   <LINKPOINT x="3510" y="10103">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Input 1" srcnodeid="10" srcpinname="IsConnected">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Do Send" linkstyle="Bezier" srcnodeid="0" srcpinname="On Change">
+   <LINKPOINT x="3690" y="8490">
+   </LINKPOINT>
+   <LINKPOINT x="1710" y="8490">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Firmata Message" dstnodeid="10" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="1" dstpinname="Firmata Message">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6405" top="1170" width="1440" height="270">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Version: 1.0.1|">
+   <BOUNDS type="Box" left="6405" top="1170" width="1440" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|New: RAW support|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -561,43 +615,5 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="12">
-   </PIN>
    </NODE>
-   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="38">
-   <BOUNDS type="Node" left="6855" top="9510" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="36" srcpinname="Output" dstnodeid="38" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="38" srcpinname="Output" dstnodeid="23" dstpinname="Input 2">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="40" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="7035" top="7470" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7035" top="7470" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="8">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="s">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Wait for Reset|">
-   </PIN>
-   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="8">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="36" dstpinname="Time">
-   </LINK>
    </PATCH>
