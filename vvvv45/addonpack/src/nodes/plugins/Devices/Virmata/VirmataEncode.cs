@@ -164,16 +164,15 @@ namespace VVVV.Nodes
 
 			bool HasData = CommandBuffer.Count>0;
 			FChangedOut[0] = HasData;
-			
-			FFirmataOut.Length = 1; //StreamUtils.GetSpreadMax(FFirmataOut);
+
+      //	Spreaded Encoders are not supported at the moment!
+			FFirmataOut.Length = 1;
 			
 			if (!HasData) return;
 			try{
 				Stream outStream = new MemoryStream(CommandBuffer.ToArray());
-//				outStream.Write(CommandBuffer.ToArray(),0,CommandBuffer.Count);
 				using (var outputWriter = FFirmataOut.GetWriter())
 				{
-					while(!outputWriter.Eos)
 						outputWriter.Write(outStream);
 				}
 			} catch(Exception e){

@@ -53,10 +53,11 @@ For more information, please refer to <http://unlicense.org/>
 using System;
 using System.ComponentModel.Composition;
 using System.Text;
-using VVVV.PluginInterfaces.V1;
+
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
+using VVVV.Utils.Streams;
+
+using System.IO;
 
 using Firmata;
 using System.Collections.Generic;
@@ -67,9 +68,9 @@ namespace VVVV.Nodes
 {
 	#region PluginInfo
 	[PluginInfo(Name = "FirmataDecode",
-				Version = "2.x",
+	            Version = "2.x",
 	            Category = "Devices",
-				Author = "jens a. ewald",
+	            Author = "jens a. ewald",
 	            Help = "Decodes the firmata protocol version 2.x",
 	            Tags = "Arduino")]
 	#endregion PluginInfo
@@ -77,7 +78,7 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Firmata Message")]
-		IDiffSpread<String> FAnsiMessage;
+		IInStream<Stream> FirmataIn;
 		
 		[Input("Analog Input Count",DefaultValue = 6, Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
 		ISpread<int> FAnalogInputCount;
@@ -105,7 +106,7 @@ namespace VVVV.Nodes
 		
 		[Output("I2C Data",Visibility = PinVisibility.OnlyInspector)]
 		ISpread<byte> FI2CData;
-		
+	
 		#endregion fields & pins
 		
 		private Queue<byte> Buffer = new Queue<byte>();
@@ -116,12 +117,24 @@ namespace VVVV.Nodes
 			FAnalogIns.SliceCount  = FAnalogInputCount[0];
 			FDigitalIns.SliceCount = FDigitalInputCount[0];
 			
+      if (!FirmataIn.IsChanged) return; // return, if nothing happened
+
 			/// Using a Queue and iterate over it (nice to handle and inexpensive)
-			foreach (byte b in Encoding.GetEncoding(1252).GetBytes(FAnsiMessage[0])) {
-				// we should check for max buffer size and not constantly enque things...
-				Buffer.Enqueue(b);
-			}
+      try {
+        using (IStreamReader<Stream> InputReader = FirmataIn.GetCyclicReader())
+        {
+            while (!InputReader.Eos) {
+              Stream InStream = InputReader.Read();
+              if(InStream != null && InStream.CanRead){
+                Buffer.Enqueue((byte)InStream.ReadByte());
+              }
+            }
+        }
+      } catch (Exception e) {}
 			
+      // return for now
+      // return;
+
 			// A cache for sysex data
 			Queue<byte> cache = new Queue<byte>();
 			// A flag if parsing sysex data
@@ -209,7 +222,7 @@ namespace VVVV.Nodes
 					FI2CData.AssignFrom(data);
 					break;
 					
-				// Todo: Implement Capability reports!
+					// Todo: Implement Capability reports!
 			}
 		}
 		
@@ -220,8 +233,8 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "I2CDecode",
 	            Category = "Devices",
-            	Version  = "2.x",
-				Author = "jens a. ewald",
+	            Version  = "2.x",
+	            Author = "jens a. ewald",
 	            Help = "Decodes I2C data from Firmata messages",
 	            Tags = "Firmata,Arduino")]
 	#endregion PluginInfo
