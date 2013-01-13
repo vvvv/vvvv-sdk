@@ -17,6 +17,9 @@
       <HintPath>..\..\thirdparty\FSharp.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Gma.QrCodeNet.Encoding">
+      <HintPath>..\..\thirdparty\Gma.QrCodeNet.Encoding.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -79,6 +82,7 @@
     <Compile Include="Texture\ImagePlayer\TexturePool.cs" />
     <Compile Include="System\KeyboardStateNodes.cs" />
     <Compile Include="System\KeyboardStateJoinNode.cs" />
+    <Compile Include="Texture\QrCode\QrCodeTextureNode.cs" />
     <Compile Include="Texture\SharedTexture\SharedTextureNode.cs" />
     <Compile Include="System\KeyboardStateSplitNode.cs" />
     <Compile Include="System\MouseStateNodes.cs" />
@@ -222,6 +226,8 @@
       <Name>WinFormsViewer</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Texture\QrCode" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
