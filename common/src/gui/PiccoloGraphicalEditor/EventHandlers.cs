@@ -124,6 +124,12 @@ namespace VVVV.HDE.GraphicalEditing
             base.OnMouseDown(sender, e);
             FMouseDownPoint = e.Position;
         }
+        
+        public override void OnMouseUp(object sender, PInputEventArgs e)
+        {
+            base.OnMouseUp(sender, e);
+            FGraphEditor.FCanvas_MouseUp(sender, e.SourceEventArgs as MouseEventArgs, e);
+        }
 
         // Make the event handler only work with BUTTON1 events, so that it does
         // not conflict with the zoom event handler that is installed by default.
