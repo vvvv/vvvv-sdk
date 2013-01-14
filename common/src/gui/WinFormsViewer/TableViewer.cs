@@ -224,13 +224,27 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             }
         }
 
-        void FDataGridViewCellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        void FDataGridViewCellMouseDoubleClick(object sender, System.Windows.Forms.DataGridViewCellMouseEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.RowIndex < FDataGridView.Rows.Count)
+        	if (e.RowIndex >= 0 && e.RowIndex < FDataGridView.Rows.Count)
             {
                 var mapper = new ModelMapper(FDataGridView.Rows[e.RowIndex].Tag, Registry);
                 OnDoubleClick(mapper, null);
+                if (e.Button == MouseButtons.Left)
+	        	{
+	      			FDataGridView.CurrentCell = FDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+	        		FDataGridView.BeginEdit(true);
+	        	}
             }
+        }
+        
+        void FDataGridViewCellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+        	if (e.Button == MouseButtons.Right)
+        	{
+      			FDataGridView.CurrentCell = FDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+        		FDataGridView.BeginEdit(true);
+        	}
         }
         
         object CreateRow(object entry)
@@ -328,5 +342,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         {
             FDataGridView.BackgroundColor = BackColor;
         }
+        
+        
     }
 }
