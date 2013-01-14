@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
    <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\HWND (Windows) help.v4p" systemname="HWND (Windows) help" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\HWND (Windows) help.v4p">
-   <BOUNDS height="9780" left="2850" top="1905" type="Window" width="9210">
+   <BOUNDS height="9780" left="4215" top="375" type="Window" width="9210">
    </BOUNDS>
    <NODE id="19" nodename="HWND (Windows)" systemname="HWND (Windows)">
    <BOUNDS height="0" left="900" top="2880" type="Node" width="0">
@@ -11,13 +11,15 @@
    </PIN>
    </NODE>
    <NODE id="18" nodename="ScreenShot (EX9.Texture)" systemname="ScreenShot (EX9.Texture)">
-   <BOUNDS height="0" left="4485" top="3885" type="Node" width="0">
+   <BOUNDS height="0" left="4485" top="3741" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Handle" visible="1">
    </PIN>
    <PIN pinname="Mode" slicecount="1" values="ClientAreaOfHandle">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Repair" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE hiddenwhenlocked="0" id="9" nodename="Quad (DX9)" systemname="Quad (DX9)">
@@ -29,7 +31,7 @@
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
-   <PIN pinname="Color" visible="1" slicecount="1" values="|0.90000,1.00000,0.90000,1.00000|">
+   <PIN pinname="Color" visible="1" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    </NODE>
    <LINK dstnodeid="9" dstpinname="Texture" srcnodeid="18" srcpinname="Texture Out">
@@ -101,7 +103,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="900" top="3840" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -115,7 +117,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1860" top="3840" width="2460" height="675">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; returns the handle of the window with the given title/caption|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; returns the handle of the window with the given title/caption|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -137,11 +139,11 @@
    <LINK srcnodeid="32" srcpinname="Transform Out" dstnodeid="9" dstpinname="Transform">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5895" top="3840" width="5640" height="270">
+   <BOUNDS type="Node" left="5895" top="3696" width="5640" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5895" top="3840" width="2310" height="870">
+   <BOUNDS type="Box" left="5895" top="3696" width="2310" height="870">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; the window handle can be used e.g. with the ScreenShot (EX9.Texture) node.|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; the window handle can be used e.g. with the ScreenShot (EX9.Texture) node.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -150,4 +152,14 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="34" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="5970" top="4566" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5970" top="4566" width="2385" height="345">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.69133,0.76885,1.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="34" srcpinname="Color Output" dstnodeid="9" dstpinname="Color">
+   </LINK>
    </PATCH>
