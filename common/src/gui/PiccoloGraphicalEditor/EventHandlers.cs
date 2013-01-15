@@ -37,6 +37,8 @@ namespace VVVV.HDE.GraphicalEditing
         private bool FTempPathStarted = false;
         private TempPath FTempPath;
         private IConnectable FStartingConnectable;
+        private bool FMultiConnect = false;
+        private Solid FMultiTarget;
 
         private void DrawingEnded()
         {
@@ -57,13 +59,16 @@ namespace VVVV.HDE.GraphicalEditing
             {
                 // stop drawing path
                 DrawingEnded();
+                
+                FMultiConnect = false;
+                FMultiTarget = null;
             }
             else if ((target == null) && (FTempPath != null))
             {
                 //add linkpoint
                 FTempPath.AddPoint(e.Position);
             }
-            else if (target != null && e.Button == MouseButtons.Left)
+            else if (target != null && (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right))
             {
                 var t = target.Connectable;
 
@@ -88,6 +93,18 @@ namespace VVVV.HDE.GraphicalEditing
 
                         FGraphEditor.Host.FinishPath(FTempPath, target.Connectable);
                         DrawingEnded();
+                        
+                        if (FMultiConnect)
+		                {
+		                	// start link
+	                        FTempPath = new TempPath(null, FMultiTarget);
+	                        FTempPathStarted = true;
+	                        FStartingConnectable = FMultiTarget.Connectable;
+	                        t.DecorateStartingPath(FTempPath);
+	                        FGraphEditor.ShowAwaitingConnections(FMultiTarget.Connectable);
+	
+	                        FGraphEditor.LinkRoot.Add(FTempPath);
+		                }
                     }
                 }
                 else
@@ -105,6 +122,12 @@ namespace VVVV.HDE.GraphicalEditing
                         FGraphEditor.ShowAwaitingConnections(target.Connectable);
 
                         FGraphEditor.LinkRoot.Add(FTempPath);
+                        
+                        if (e.Button == MouseButtons.Right)
+                        {
+                        	FMultiConnect = true;
+                        	FMultiTarget = target;
+                        }
                     }
                 }
             }
