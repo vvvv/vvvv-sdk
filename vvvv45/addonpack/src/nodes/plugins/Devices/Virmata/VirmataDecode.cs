@@ -77,15 +77,17 @@ namespace VVVV.Nodes
 	public class FirmataDecode : IPluginEvaluate
 	{
 		#region fields & pins
+    /// Inputs
 		[Input("Firmata Message")]
 		IInStream<Stream> FirmataIn;
 		
 		[Input("Analog Input Count",DefaultValue = 6, Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
-		ISpread<int> FAnalogInputCount;
+		IDiffSpread<int> FAnalogInputCount;
 		
 		[Input("Digital Input Count",DefaultValue = 14, Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
-		ISpread<int> FDigitalInputCount;
+		IDiffSpread<int> FDigitalInputCount;
 		
+    /// Outputs
 		[Output("Analog In")]
 		ISpread<int> FAnalogIns;
 		
@@ -114,12 +116,14 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			FAnalogIns.SliceCount  = FAnalogInputCount[0];
-			FDigitalIns.SliceCount = FDigitalInputCount[0];
-			
-      if (!FirmataIn.IsChanged) return; // return, if nothing happened
+      /// Configure the output count
+      if (FAnalogIns.IsChanged) FAnalogIns.SliceCount  = FAnalogInputCount[0];
+			if (FDigitalIns.IsChanged) FDigitalIns.SliceCount = FDigitalInputCount[0];
 
-			/// Using a Queue and iterate over it (nice to handle and inexpensive)
+      /// If there is nothing new to read, there is nothing to parse
+      if (!FirmataIn.IsChanged) return;
+
+			/// Read in the stream
       try {
         using (IStreamReader<Stream> InputReader = FirmataIn.GetCyclicReader())
         {
@@ -130,10 +134,10 @@ namespace VVVV.Nodes
               }
             }
         }
-      } catch (Exception e) {}
-			
-      // return for now
-      // return;
+      } catch (Exception e) {
+        // If we encounter an error there is also nothing to decode
+        return;
+      }
 
 			// A cache for sysex data
 			Queue<byte> cache = new Queue<byte>();

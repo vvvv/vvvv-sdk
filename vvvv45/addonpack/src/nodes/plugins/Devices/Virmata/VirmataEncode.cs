@@ -190,7 +190,6 @@ namespace VVVV.Nodes
 		PinMode DEFAULT_PINMODE = PinMode.OUTPUT;
 
 		double VALUE_THRESHOLD = 0.5;
-
 		int NUM_OUTPUT_PORTS = 0;
 		int NUM_PORTS = 0; // The total number of ports (AVR PORTS) respective to the number of pins
 		int NUM_PINS  = 0; // The total number of pins addressed by this node
