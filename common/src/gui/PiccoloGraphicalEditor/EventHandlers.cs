@@ -48,6 +48,17 @@ namespace VVVV.HDE.GraphicalEditing
             FStartingConnectable = null;
             FGraphEditor.NoAwaitingConnections();
         }
+        
+        private void StartLink(Solid target)
+        {
+            FTempPath = new TempPath(null, target);
+            FTempPathStarted = true;
+            FStartingConnectable = target.Connectable;
+            target.Connectable.DecorateStartingPath(FTempPath);
+            FGraphEditor.ShowAwaitingConnections(target.Connectable);
+
+            FGraphEditor.LinkRoot.Add(FTempPath);
+        }
 
         public override void OnClick(object sender, PInputEventArgs e)
         {
@@ -95,16 +106,7 @@ namespace VVVV.HDE.GraphicalEditing
                         DrawingEnded();
                         
                         if (FMultiConnect)
-		                {
-		                	// start link
-	                        FTempPath = new TempPath(null, FMultiTarget);
-	                        FTempPathStarted = true;
-	                        FStartingConnectable = FMultiTarget.Connectable;
-	                        t.DecorateStartingPath(FTempPath);
-	                        FGraphEditor.ShowAwaitingConnections(FMultiTarget.Connectable);
-	
-	                        FGraphEditor.LinkRoot.Add(FTempPath);
-		                }
+                        	StartLink(FMultiTarget);
                     }
                 }
                 else
@@ -114,14 +116,7 @@ namespace VVVV.HDE.GraphicalEditing
                     var y = Math.Pow(e.Position.Y - FMouseDownPoint.Y, 2);
                     if (Math.Sqrt(x + y) < 5)
                     {
-                        // start link
-                        FTempPath = new TempPath(null, target);
-                        FTempPathStarted = true;
-                        FStartingConnectable = target.Connectable;
-                        t.DecorateStartingPath(FTempPath);
-                        FGraphEditor.ShowAwaitingConnections(target.Connectable);
-
-                        FGraphEditor.LinkRoot.Add(FTempPath);
+                    	StartLink(target);
                         
                         if (e.Button == MouseButtons.Right)
                         {
@@ -309,7 +304,7 @@ namespace VVVV.HDE.GraphicalEditing
             FGraphEditor.EndSelectionDrag();
         }
     }
-
+    
     /// <summary>
     /// handles the zoom of the canvas
     /// </summary>
