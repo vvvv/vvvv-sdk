@@ -66,13 +66,18 @@ namespace VVVV.HDE.GraphicalEditing
 
             Solid target = FGraphEditor.GetConnectionCandidate(e.Position, FStartingConnectable);
 
-            if ((FTempPathStarted) && (e.Button == MouseButtons.Right))
+            if (FTempPathStarted && (e.Button == MouseButtons.Right))
             {
-                // stop drawing path
+                // cancel link
                 DrawingEnded();
                 
                 FMultiConnect = false;
                 FMultiTarget = null;
+            }
+            else if (FTempPathStarted && (e.Button == MouseButtons.Middle))
+            {
+            	FGraphEditor.Host.FinishPathWithConstant(FTempPath);
+            	DrawingEnded();            	
             }
             else if ((target == null) && (FTempPath != null))
             {
