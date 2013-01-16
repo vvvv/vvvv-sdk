@@ -89,7 +89,7 @@ namespace System.IO
                     iop.Marshal.Copy(buffer, 0, pv + totalBytesRead, bytesRead);
                     totalBytesRead += bytesRead;
                 }
-                iop.Marshal.WriteInt64(pcbRead, totalBytesRead);
+                iop.Marshal.WriteInt32(pcbRead, totalBytesRead);
             }
             finally
             {
@@ -128,7 +128,7 @@ namespace System.IO
                     this.source.Write(buffer, 0, bytesToWrite);
                     totalBytesWritten += bytesToWrite;
                 }
-                iop.Marshal.WriteInt64(pcbWritten, totalBytesWritten);
+                iop.Marshal.WriteInt32(pcbWritten, totalBytesWritten);
             }
             finally
             {
