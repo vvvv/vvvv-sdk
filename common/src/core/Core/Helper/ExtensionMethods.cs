@@ -36,6 +36,22 @@ namespace VVVV.Core
         {
         	return new PointF(rect.X + 0.5f*rect.Width, rect.Y + 0.5f*rect.Height);
         }
+
+        /// <summary>
+        /// Translates a given <see cref="PointF">p1</see> by a specified <see cref="PointF">p2</see>.
+        /// </summary>
+        public static PointF Add(this PointF p1, PointF p2)
+        {
+            return new PointF(p1.X + p2.X, p1.Y + p2.Y);
+        }
+
+        /// <summary>
+        /// Translates a given <see cref="PointF">p1</see> by a specified <see cref="PointF">p2</see>.
+        /// </summary>
+        public static PointF Minus(this PointF p1, PointF p2)
+        {
+            return new PointF(p1.X - p2.X, p1.Y - p2.Y);
+        }
         
         /// <summary>
         /// Returns the distance to another point

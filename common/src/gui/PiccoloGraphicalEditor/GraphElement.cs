@@ -249,11 +249,8 @@ namespace VVVV.HDE.GraphicalEditing
             //enable piccolo input events?
             PNode.Pickable = IsSelectable || IsMovable || IsConnectable || IsHoverable || IsClickable;
 
-            //if (IsMovable)
-            //{
-            PNode.TransformChanged += BoundsChanged;
 
-            //}         
+            PNode.TransformChanged += TransformChanged;
 
             if (IsHoverable)
             {
@@ -351,7 +348,7 @@ namespace VVVV.HDE.GraphicalEditing
         protected bool FMoving;
         protected bool FIgnoringMove;
 
-        protected virtual void BoundsChanged(object sender, PPropertyEventArgs e)
+        protected void TransformChanged(object sender, PPropertyEventArgs e)
         {
             if (FMoving)
             {
@@ -361,7 +358,7 @@ namespace VVVV.HDE.GraphicalEditing
             else
                 if (IsMovable)
                 {
-                    Movable.UpdateBounds(((PNode)sender).Bounds);
+                    OnMoved(PNode.Bounds);
                 }
                 else
                     if (!FIgnoringMove)
@@ -378,6 +375,11 @@ namespace VVVV.HDE.GraphicalEditing
                     }
             //if (e.OldValue != null)
             //PNode.Bounds = InitialBounds;
+        }
+
+        protected virtual void OnMoved(RectangleF pNodeBounds)
+        {
+            Movable.UpdateBounds(pNodeBounds);
         }
         #endregion moveable
 

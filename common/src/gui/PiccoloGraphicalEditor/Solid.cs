@@ -23,6 +23,13 @@ namespace VVVV.HDE.GraphicalEditing
             {
                 Pen = null;
             }
+            PNode.BoundsChanged += HandlePNodeBoundsChanged;
+        }
+
+        public override void Dispose()
+        {
+            PNode.BoundsChanged -= HandlePNodeBoundsChanged;
+            base.Dispose();
         }
 
         protected override PNode CreatePNode()
@@ -33,6 +40,22 @@ namespace VVVV.HDE.GraphicalEditing
         public IGraphElementHost Host
         {
             get { return FHost; }
+        }
+
+        protected void HandlePNodeBoundsChanged(object sender, PPropertyEventArgs e)
+        {
+            var bounds = PNode.Bounds;
+            if (PositionMode == PositionMode.TopLeft)
+                Position = Position.Add(bounds.Location);
+            else
+                Position = Position.Add(bounds.GetCenter());
+            Size = bounds.Size;
+        }
+
+        protected override void OnMoved(RectangleF pNodeBounds)
+        {
+            // PNode bounds are different. Send ours (not available in base class GraphElement).
+            Movable.UpdateBounds(new RectangleF(Position, Size));
         }
 
         /// <summary>
@@ -77,16 +100,12 @@ namespace VVVV.HDE.GraphicalEditing
                 FMoving = true;
                 try
                 {
+                    PNode.BoundsChanged -= HandlePNodeBoundsChanged;
                     PNode.Width = value.Width;
                     PNode.Height = value.Height;
-
-                    //move topleft if in center mode
-                    if (FPositionMode == PositionMode.Center)
-                    {
-                        PNode.X = value.Width * -0.5f;
-                        PNode.Y = value.Height * -0.5f;
-                    }
-                    BoundsChanged(PNode, null);
+                    UpdatePNodePosition();
+                    PNode.BoundsChanged += HandlePNodeBoundsChanged;
+                    TransformChanged(PNode, null);
                     //PNode.SignalBoundsChanged();
                 }
                 finally
@@ -118,18 +137,26 @@ namespace VVVV.HDE.GraphicalEditing
                     FPositionMode = value;
 
                     //set new position if mode changed
-                    if (FPositionMode == PositionMode.TopLeft)
-                    {
-                        PNode.X = 0;
-                        PNode.Y = 0;
-                    }
-                    else
-                    {
-                        PNode.X = Size.Width * -0.5f;
-                        PNode.Y = Size.Height * -0.5f;
-                    }
+                    PNode.BoundsChanged -= HandlePNodeBoundsChanged;
+                    UpdatePNodePosition();
+                    PNode.BoundsChanged += HandlePNodeBoundsChanged;
                     //BoundsChanged(PNode, null);
                 }
+            }
+        }
+
+        private void UpdatePNodePosition()
+        {
+            //move topleft if in center mode
+            if (FPositionMode == PositionMode.TopLeft)
+            {
+                PNode.X = 0;
+                PNode.Y = 0;
+            }
+            else
+            {
+                PNode.X = Size.Width * -0.5f;
+                PNode.Y = Size.Height * -0.5f;
             }
         }
     }
