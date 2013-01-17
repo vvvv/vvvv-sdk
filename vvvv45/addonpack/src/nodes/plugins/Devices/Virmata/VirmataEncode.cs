@@ -150,8 +150,11 @@ namespace VVVV.Nodes
 			{
 				// TODO: Check which pin number should be reported and enable only the proper port.
 				// TODO: It could work like: if spread.slicecount==1 do all, else do specific pins
-				GetDigitalPinReportingCommandForState(FReportDigitalPins[0],Port.PORTB);
-				GetDigitalPinReportingCommandForState(FReportDigitalPins[0],Port.PORTD);
+        for(int port=0; port<NUM_PORTS; port++) {
+          GetDigitalPinReportingCommandForState(FReportDigitalPins[0],port);
+        }
+				// GetDigitalPinReportingCommandForState(FReportDigitalPins[0],Port.PORTB);
+				// GetDigitalPinReportingCommandForState(FReportDigitalPins[0],Port.PORTD);
 			}
 
 			if(FSamplerate.IsChanged || ShouldReset)
@@ -364,10 +367,10 @@ namespace VVVV.Nodes
 				GetAnalogPinReportingCommandForState(state,i);
 		}
 
-		void GetDigitalPinReportingCommandForState(bool state,Port port)
+		void GetDigitalPinReportingCommandForState(bool state,int port)
 		{
 			byte val = (byte) (state ? 0x01 : 0x00);
-			CommandBuffer.Enqueue((byte)(Command.TOGGLEDIGITALREPORT|(int)port));
+			CommandBuffer.Enqueue((byte)(Command.TOGGLEDIGITALREPORT|port));
 			CommandBuffer.Enqueue(val);
 		}
 
