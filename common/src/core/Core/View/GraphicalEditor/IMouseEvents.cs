@@ -26,4 +26,11 @@ namespace VVVV.Core.View.GraphicalEditor
     	void MouseDown(PointF mousePos, Mouse_Buttons mouseButton);
     	void MouseUp(PointF mousePos, Mouse_Buttons mouseButton);
     }
+    
+    public interface IScrollable
+    {
+    	void MouseDown(PointF mousePos, Mouse_Buttons mouseButton);
+    	void MouseMove(PointF mousePos, Mouse_Buttons mouseButton);
+    	void MouseUp(PointF mousePos, Mouse_Buttons mouseButton);
+    }
 }

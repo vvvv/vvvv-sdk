@@ -85,6 +85,18 @@ namespace VVVV.HDE.GraphicalEditing
             get;
             private set;
         }
+        
+        public bool IsScrollable
+        {
+            get;
+            private set;
+        }
+
+        public IScrollable Scrollable
+        {
+            get;
+            private set;
+        }
 
         #endregion functional interfaces
 
@@ -239,15 +251,17 @@ namespace VVVV.HDE.GraphicalEditing
             IsConnectable = (host is IConnectable);
             IsHoverable = (host is IHoverable);
             IsClickable = (host is IClickable);
+            IsScrollable = (host is IScrollable);
 
             Selectable = (host as ISelectable);
             Movable = (host as IMovable);
             Connectable = (host as IConnectable);
             Hoverable = (host as IHoverable);
             Clickable = (host as IClickable);
+            Scrollable = (host as IScrollable);
 
             //enable piccolo input events?
-            PNode.Pickable = IsSelectable || IsMovable || IsConnectable || IsHoverable || IsClickable;
+            PNode.Pickable = IsSelectable || IsMovable || IsConnectable || IsHoverable || IsClickable || IsScrollable;
 
 
             PNode.TransformChanged += TransformChanged;
@@ -265,6 +279,13 @@ namespace VVVV.HDE.GraphicalEditing
                 PNode.DoubleClick += PNode_DoubleClick;
                 PNode.MouseDown += PNode_MouseDown;
                 PNode.MouseUp += PNode_MouseUp;
+            }
+            
+            if (IsScrollable)
+            {
+                PNode.MouseDown += PNode_ScrollableMouseDown;
+                PNode.MouseDrag += PNode_ScrollableMouseDrag;
+                PNode.MouseUp += PNode_ScrollableMouseUp;
             }
 
             InitialBounds = PNode.Bounds;
@@ -317,11 +338,8 @@ namespace VVVV.HDE.GraphicalEditing
             if (PreventEvent(e)) return;
             Clickable.MouseUp(e.Position, Helpers.GetButton(e));
         }
-
-
-
         #endregion clickable
-
+        
         #region hoverable
         DateTime FMouseEnterTime;
         void GraphElement_MouseEnter(object sender, PInputEventArgs e)
@@ -343,6 +361,27 @@ namespace VVVV.HDE.GraphicalEditing
             Hoverable.MouseLeave(e.Position, DateTime.Now - FMouseEnterTime);
         }
         #endregion hoverable
+        
+        #region scrollable
+        void PNode_ScrollableMouseDown(object sender, PInputEventArgs e)
+        {
+            FMouseDownPos = Cursor.Position;
+            if (PreventEvent(e)) return;
+            Scrollable.MouseDown(e.Position, Helpers.GetButton(e));
+        }
+
+        void PNode_ScrollableMouseDrag(object sender, PInputEventArgs e)
+        {
+            if (PreventEvent(e)) return;
+            Scrollable.MouseMove(e.Position, Helpers.GetButton(e));
+        }
+        
+        void PNode_ScrollableMouseUp(object sender, PInputEventArgs e)
+        {
+            if (PreventEvent(e)) return;
+            Scrollable.MouseUp(e.Position, Helpers.GetButton(e));
+        }
+        #endregion scrollable
 
         #region moveable
         protected bool FMoving;

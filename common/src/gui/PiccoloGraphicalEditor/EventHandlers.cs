@@ -37,6 +37,8 @@ namespace VVVV.HDE.GraphicalEditing
         private bool FTempPathStarted = false;
         private TempPath FTempPath;
         private IConnectable FStartingConnectable;
+        private bool FMultiConnect = false;
+        private Solid FMultiTarget;
 
         private void DrawingEnded()
         {
@@ -46,6 +48,17 @@ namespace VVVV.HDE.GraphicalEditing
             FStartingConnectable = null;
             FGraphEditor.NoAwaitingConnections();
         }
+        
+        private void StartLink(Solid target)
+        {
+            FTempPath = new TempPath(null, target);
+            FTempPathStarted = true;
+            FStartingConnectable = target.Connectable;
+            target.Connectable.DecorateStartingPath(FTempPath);
+            FGraphEditor.ShowAwaitingConnections(target.Connectable);
+
+            FGraphEditor.LinkRoot.Add(FTempPath);
+        }
 
         public override void OnClick(object sender, PInputEventArgs e)
         {
@@ -53,17 +66,25 @@ namespace VVVV.HDE.GraphicalEditing
 
             Solid target = FGraphEditor.GetConnectionCandidate(e.Position, FStartingConnectable);
 
-            if ((FTempPathStarted) && (e.Button == MouseButtons.Right))
+            if (FTempPathStarted && (e.Button == MouseButtons.Right))
             {
-                // stop drawing path
+                // cancel link
                 DrawingEnded();
+                
+                FMultiConnect = false;
+                FMultiTarget = null;
+            }
+            else if (FTempPathStarted && (e.Button == MouseButtons.Middle))
+            {
+            	FGraphEditor.Host.FinishPathWithConstant(FTempPath);
+            	DrawingEnded();            	
             }
             else if ((target == null) && (FTempPath != null))
             {
                 //add linkpoint
                 FTempPath.AddPoint(e.Position);
             }
-            else if (target != null && e.Button == MouseButtons.Left)
+            else if (target != null && (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right))
             {
                 var t = target.Connectable;
 
@@ -88,6 +109,9 @@ namespace VVVV.HDE.GraphicalEditing
 
                         FGraphEditor.Host.FinishPath(FTempPath, target.Connectable);
                         DrawingEnded();
+                        
+                        if (FMultiConnect)
+                        	StartLink(FMultiTarget);
                     }
                 }
                 else
@@ -97,14 +121,13 @@ namespace VVVV.HDE.GraphicalEditing
                     var y = Math.Pow(e.Position.Y - FMouseDownPoint.Y, 2);
                     if (Math.Sqrt(x + y) < 5)
                     {
-                        // start link
-                        FTempPath = new TempPath(null, target);
-                        FTempPathStarted = true;
-                        FStartingConnectable = target.Connectable;
-                        t.DecorateStartingPath(FTempPath);
-                        FGraphEditor.ShowAwaitingConnections(target.Connectable);
-
-                        FGraphEditor.LinkRoot.Add(FTempPath);
+                    	StartLink(target);
+                        
+                        if (e.Button == MouseButtons.Right)
+                        {
+                        	FMultiConnect = true;
+                        	FMultiTarget = target;
+                        }
                     }
                 }
             }
@@ -123,6 +146,12 @@ namespace VVVV.HDE.GraphicalEditing
         {
             base.OnMouseDown(sender, e);
             FMouseDownPoint = e.Position;
+        }
+        
+        public override void OnMouseUp(object sender, PInputEventArgs e)
+        {
+            base.OnMouseUp(sender, e);
+            FGraphEditor.FCanvas_MouseUp(sender, e.SourceEventArgs as MouseEventArgs, e);
         }
 
         // Make the event handler only work with BUTTON1 events, so that it does
@@ -280,7 +309,7 @@ namespace VVVV.HDE.GraphicalEditing
             FGraphEditor.EndSelectionDrag();
         }
     }
-
+    
     /// <summary>
     /// handles the zoom of the canvas
     /// </summary>

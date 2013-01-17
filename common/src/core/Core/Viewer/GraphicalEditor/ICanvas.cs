@@ -133,6 +133,8 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         /// </summary>
         /// <param name="apath"></param>
         void FinishPath(ITempPath apath, IConnectable end);
+        
+        void FinishPathWithConstant(ITempPath apath);
 
         void MoveSelected();
     }
