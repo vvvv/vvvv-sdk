@@ -78,7 +78,7 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
     /// Inputs
-		[Input("Firmata Message")]
+		[Input("Firmata Message", IsSingle = true)]
 		IInStream<Stream> FirmataIn;
 		
 		[Input("Analog Input Count",DefaultValue = 6, Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
@@ -108,10 +108,8 @@ namespace VVVV.Nodes
 		
 		[Output("I2C Data",Visibility = PinVisibility.OnlyInspector)]
 		ISpread<byte> FI2CData;
-	
+
 		#endregion fields & pins
-		
-		private Queue<byte> Buffer = new Queue<byte>();
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
@@ -125,18 +123,26 @@ namespace VVVV.Nodes
 
 			/// Read in the stream
       try {
-        using (IStreamReader<Stream> InputReader = FirmataIn.GetCyclicReader())
+        using (IStreamReader<Stream> InputReader = FirmataIn.GetReader())
         {
-            while (!InputReader.Eos) {
-              Stream InStream = InputReader.Read();
-              if(InStream != null && InStream.CanRead){
-                Buffer.Enqueue((byte)InStream.ReadByte());
-              }
-            }
+          while (!InputReader.Eos) {
+            HandleStream(InputReader.Read());
+          }
         }
       } catch (Exception e) {
-        // If we encounter an error there is also nothing to decode
         return;
+      }
+    }
+
+		private Queue<byte> Buffer = new Queue<byte>();
+
+    private void HandleStream(Stream InStream) {
+      // Check, if the incoming Stream is usable
+      if(InStream == null || InStream.Length == 0 || !InStream.CanRead) return;
+
+      // Read the incoming bytes to the internal stream buffer
+      while (InStream.Position < InStream.Length) {
+        Buffer.Enqueue((byte)InStream.ReadByte());
       }
 
 			// A cache for sysex data
