@@ -185,9 +185,6 @@ namespace VVVV.Nodes
 
 		#region Helper Functions
 
-		/// Use ANSI Encoding for the Encoder
-		//static Encoding Encoder = Encoding.GetEncoding(1252);
-
 		byte[] OUTPUT_PORT_MASKS  = {}; // empty array
 
 		PinMode DEFAULT_PINMODE = PinMode.OUTPUT;
