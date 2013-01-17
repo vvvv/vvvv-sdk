@@ -153,53 +153,130 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
 
-    class RawInStream : BufferedIOStream<System.IO.Stream>
+    class RawInStream : IInStream<System.IO.Stream>
     {
+        class RawInStreamReader : IStreamReader<System.IO.Stream>
+        {
+            private readonly RawInStream FRawInStream;
+
+            public RawInStreamReader(RawInStream stream)
+            {
+                FRawInStream = stream;
+            }
+
+            public Stream Read(int stride = 1)
+            {
+                VVVV.Utils.Win32.IStream stream;
+                FRawInStream.FRawIn.GetData(Position, out stream);
+                Position += stride;
+                if (stream != null)
+                {
+                    var result = new ComStream(stream);
+                    result.Position = 0;
+                    return result;
+                }
+                else
+                    return new MemoryStream(0);
+            }
+
+            public int Read(Stream[] buffer, int offset, int length, int stride = 1)
+            {
+                var numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, offset, length, stride);
+                for (int i = offset; i < numSlicesToRead; i++)
+                    buffer[i] = Read(stride);
+                return numSlicesToRead;
+            }
+
+            public bool Eos
+            {
+                get { return Position >= Length; }
+            }
+
+            public int Position
+            {
+                get;
+                set;
+            }
+
+            public int Length
+            {
+                get { return FRawInStream.Length; }
+            }
+
+            public void Dispose()
+            {
+                
+            }
+
+            public Stream Current
+            {
+                get;
+                private set;
+            }
+
+            object System.Collections.IEnumerator.Current
+            {
+                get { return Current; }
+            }
+
+            public bool MoveNext()
+            {
+                var result = !Eos;
+                if (result)
+                {
+                    Current = Read();
+                }
+                return result;
+            }
+
+            public void Reset()
+            {
+                Position = 0;
+            }
+        }
+
         private readonly IRawIn FRawIn;
         private readonly bool FAutoValidate;
+        private int FLength;
         
         public RawInStream(IRawIn rawIn)
         {
-            FRawIn = rawIn;
-            FAutoValidate = rawIn.AutoValidate;
-            Length = 0;
+            this.FRawIn = rawIn;
+            this.FAutoValidate = rawIn.AutoValidate;
+            this.Length = rawIn.SliceCount;
         }
+
+        public bool IsChanged { get; private set; }
+        public int Length { get; private set; }
         
-        public unsafe override bool Sync()
+        public bool Sync()
         {
             IsChanged = FAutoValidate ? FRawIn.PinIsChanged : FRawIn.Validate();
             if (IsChanged)
             {
-                foreach (var memoryStream in this)
-                {
-                    if (memoryStream != null)
-                        memoryStream.Dispose();
-                }
                 Length = FRawIn.SliceCount;
-                using (var writer = GetWriter())
-                {
-                    for (int i = 0; i < Length; i++)
-                    {
-                        System.Runtime.InteropServices.ComTypes.IStream stream;
-                        FRawIn.GetData(i, out stream);
-                        if (stream != null)
-                        {
-                            var wrapper = new ComStream(stream);
-                            wrapper.Position = 0;
-                            writer.Write(wrapper);
-                        }
-                        else
-                            writer.Write(new System.IO.MemoryStream());
-                    }
-                }
             }
-            else
-            {
-                // Reset the streams
-                foreach (var memoryStream in this)
-                    memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
-            }
-            return base.Sync();
+            return IsChanged;
+        }
+
+        public IStreamReader<Stream> GetReader()
+        {
+            return new RawInStreamReader(this);
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.Collections.Generic.IEnumerator<Stream> GetEnumerator()
+        {
+            return GetReader();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -6,10 +6,11 @@ using System.IO;
 using VVVV.Utils.Streams;
 using iop = System.Runtime.InteropServices;
 using com = System.Runtime.InteropServices.ComTypes;
+using win32 = VVVV.Utils.Win32;
 
 namespace System.IO
 {
-    class ComIStream : com.IStream
+    class ComIStream : win32.IStream
     {
         private readonly Stream source;
 
@@ -18,7 +19,7 @@ namespace System.IO
             this.source = source;
         }
 
-        public void Clone(out com.IStream ppstm)
+        public void Clone(out win32.IStream ppstm)
         {
             ppstm = new ComIStream(this.source);
         }
@@ -31,33 +32,42 @@ namespace System.IO
                 throw new NotSupportedException();
         }
 
-        public void CopyTo(com.IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten)
+        public void CopyTo(win32.IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten)
         {
             if (!this.source.CanRead) throw new NotSupportedException("Source stream doesn't support reading.");
-            var destination = new ComStream(pstm);
-            if (!destination.CanWrite) throw new NotSupportedException("Destination stream doesn't support writing.");
-            var buffer = new byte[4096];
-            var totalBytesRead = 0L;
-            var totalBytesWritten = 0L;
-            var chunkLength = buffer.Length;
-            if (cb < chunkLength) chunkLength = (int)cb;
-            while (totalBytesWritten < cb)
+            using (var destination = new ComStream(pstm))
             {
-                // Read
-                var bytesRead = this.source.Read(buffer, 0, chunkLength);
-                if (bytesRead == 0) break;
-                totalBytesRead += bytesRead;
-                // Write
-                var previousPosition = destination.Position;
-                destination.Write(buffer, 0, bytesRead);
-                var bytesWritten = destination.Position - previousPosition;
-                if (bytesWritten == 0) break;
-                totalBytesWritten += bytesWritten;
+                if (!destination.CanWrite) throw new NotSupportedException("Destination stream doesn't support writing.");
+                var buffer = MemoryPool<byte>.GetArray();
+                try
+                {
+                    var totalBytesRead = 0L;
+                    var totalBytesWritten = 0L;
+                    var chunkLength = buffer.Length;
+                    if (cb < chunkLength) chunkLength = (int)cb;
+                    while (totalBytesWritten < cb)
+                    {
+                        // Read
+                        var bytesRead = this.source.Read(buffer, 0, chunkLength);
+                        if (bytesRead == 0) break;
+                        totalBytesRead += bytesRead;
+                        // Write
+                        var previousPosition = destination.Position;
+                        destination.Write(buffer, 0, bytesRead);
+                        var bytesWritten = destination.Position - previousPosition;
+                        if (bytesWritten == 0) break;
+                        totalBytesWritten += bytesWritten;
 
-                if (bytesRead != bytesWritten) break;
+                        if (bytesRead != bytesWritten) break;
+                    }
+                    iop.Marshal.WriteInt64(pcbRead, totalBytesRead);
+                    iop.Marshal.WriteInt64(pcbWritten, totalBytesWritten);
+                }
+                finally
+                {
+                    MemoryPool<byte>.PutArray(buffer);
+                }
             }
-            iop.Marshal.WriteInt64(pcbRead, totalBytesRead);
-            iop.Marshal.WriteInt64(pcbWritten, totalBytesWritten);
         }
 
         public void LockRegion(long libOffset, long cb, int dwLockType)
@@ -65,15 +75,31 @@ namespace System.IO
             throw new NotImplementedException();
         }
 
-        public void Read(byte[] pv, int cb, IntPtr pcbRead)
+        public void Read(IntPtr pv, int cb, IntPtr pcbRead)
         {
-            var bytesRead = this.source.Read(pv, 0, cb);
-            iop.Marshal.WriteInt64(pcbRead, bytesRead);
+            var buffer = MemoryPool<byte>.GetArray();
+            try
+            {
+                var totalBytesRead = 0;
+                while (totalBytesRead < cb)
+                {
+                    var bytesToRead = Math.Min(buffer.Length, cb - totalBytesRead);
+                    var bytesRead = this.source.Read(buffer, 0, bytesToRead);
+                    if (bytesRead == 0) break;
+                    iop.Marshal.Copy(buffer, 0, pv + totalBytesRead, bytesRead);
+                    totalBytesRead += bytesRead;
+                }
+                iop.Marshal.WriteInt32(pcbRead, totalBytesRead);
+            }
+            finally
+            {
+                MemoryPool<byte>.PutArray(buffer);
+            }
         }
 
-        public void Seek(long dlibMove, int dwOrigin, IntPtr plibNewPosition)
+        public void Seek(long dlibMove, SeekOrigin dwOrigin, IntPtr plibNewPosition)
         {
-            iop.Marshal.WriteInt64(plibNewPosition, this.source.Seek(dlibMove, (SeekOrigin)dwOrigin));
+            iop.Marshal.WriteInt64(plibNewPosition, this.source.Seek(dlibMove, dwOrigin));
         }
 
         public void Stat(out com.STATSTG pstatstg, int grfStatFlag)
@@ -89,13 +115,26 @@ namespace System.IO
             throw new NotImplementedException();
         }
 
-        public void Write(byte[] pv, int cb, IntPtr pcbWritten)
+        public void Write(IntPtr pv, int cb, IntPtr pcbWritten)
         {
-            var previousPosition = this.source.Position;
-            this.source.Write(pv, 0, cb);
-            iop.Marshal.WriteInt64(pcbWritten, this.source.Position - previousPosition);
+            var buffer = MemoryPool<byte>.GetArray();
+            try
+            {
+                var totalBytesWritten = 0;
+                while (totalBytesWritten < cb)
+                {
+                    var bytesToWrite = Math.Min(buffer.Length, cb - totalBytesWritten);
+                    iop.Marshal.Copy(pv, buffer, 0, bytesToWrite);
+                    this.source.Write(buffer, 0, bytesToWrite);
+                    totalBytesWritten += bytesToWrite;
+                }
+                iop.Marshal.WriteInt32(pcbWritten, totalBytesWritten);
+            }
+            finally
+            {
+                MemoryPool<byte>.PutArray(buffer);
+            }
         }
-
 
         public void Revert()
         {
