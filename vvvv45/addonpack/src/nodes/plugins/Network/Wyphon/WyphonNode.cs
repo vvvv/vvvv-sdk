@@ -147,16 +147,26 @@ namespace VVVV.Nodes.Network.Wyphon
 					int index = PartnerIds.IndexOf(partnerId);
 					
 					if (index > -1) {
+						lock (sharedTexturesLock) {
+							foreach ( ISpread<SharedTextureInfo> spread in SharedTexturesPerPartner.Values ) {
+								spread.SliceCount = 0;
+							}
+							
+							SharedTexturesPerPartner.Clear();
+							
+							updateTexturesVersion();
+						}
+						
 						PartnerIds.RemoveAt(index);
 						PartnerNames.RemoveAt(index);
 					}
 					else {
-						Log(LogType.Debug, "WHAT'S THIS? parter with id " + partnerId + " NOT FOUND IN OUR LIST?");
+						Log(LogType.Error, "WHAT'S THIS? parter with id " + partnerId + " NOT FOUND IN OUR LIST?");
 					}
 					
-					Log(LogType.Debug, "partnersVersion is now " + partnersUpdatedVersion);
+					//Log(LogType.Debug, "partnersVersion is now " + partnersUpdatedVersion);
 					updatePartnersVersion();
-					Log(LogType.Debug, "partnersVersion has been updated to " + partnersUpdatedVersion);
+					//Log(LogType.Debug, "partnersVersion has been updated to " + partnersUpdatedVersion);
 				}
 //			} catch (Exception e) {
 //				//Log(LogType.Error, "[WyphonPartnerLeft Exception] " + e.Message + "\n" + e.StackTrace);				
@@ -173,6 +183,9 @@ namespace VVVV.Nodes.Network.Wyphon
 				lock (sharedTexturesLock) {
 					ISpread<SharedTextureInfo> spread;
 					if ( SharedTexturesPerPartner.TryGetValue(sendingPartnerId, out spread) ) {
+						//remove same handle if already in spread
+						RemoveFromTextureInfoSpread(spread, sharedTextureInfo.textureHandle);
+	
 						Log(LogType.Debug, "HEY I FOUND A shared textures SPREAD for partner " + sendingPartnerId +  " with slicecount " + spread.SliceCount + " !!!");
 						spread.Add( sharedTextureInfo );
 					}
@@ -199,18 +212,9 @@ namespace VVVV.Nodes.Network.Wyphon
 				lock (sharedTexturesLock) {
 					ISpread<SharedTextureInfo> spread;
 					if ( SharedTexturesPerPartner.TryGetValue(sendingPartnerId, out spread) ) {
-						Log(LogType.Debug, "HEY I FOUND A shared textures SPREAD for partner " + sendingPartnerId +  " with slicecount " + spread.SliceCount + " !!!");
-						for ( int i = spread.SliceCount - 1; i >= 0; i--) {
-							if (spread[i].textureHandle == sharedTextureHandle) {
-								Log(LogType.Debug, "HEY I FOUND THE UNSHARED TEXTURE " + sharedTextureHandle +  " IN THE LIST at position " + i + " !!!");
-	
-								//for MainLoop
-								//obsoleteSharedTexturesForMainLoop.Add(spread[i]);
-		
-								//Does this give trouble maybe???
-								spread.RemoveAt(i);
-							}
-						}
+						//Log(LogType.Debug, "HEY I FOUND A shared textures SPREAD for partner " + sendingPartnerId +  " with slicecount " + spread.SliceCount + " !!!");
+						
+						RemoveFromTextureInfoSpread(spread, sharedTextureHandle);
 					}
 					
 					updateTexturesVersion();
@@ -219,6 +223,7 @@ namespace VVVV.Nodes.Network.Wyphon
 				Log(LogType.Error, "[WyphonD3DTextureUNShared Exception] " + e.Message + "\n" + e.StackTrace);				
 			}
 		}
+		
 		#endregion WyphonCallbackDelegates
 
 		#region helper functions
@@ -238,6 +243,28 @@ namespace VVVV.Nodes.Network.Wyphon
 				return 0;
 			}			
 		}
+
+		
+		/// <summary>
+		/// Removes the textureInfo from a spread that is about the given textureHandle
+		/// </summary>
+		/// <param name="spread"></param>
+		/// <param name="sharedTextureHandle"></param>
+		static void RemoveFromTextureInfoSpread(ISpread<SharedTextureInfo> spread, uint sharedTextureHandle)
+		{
+			for ( int i = spread.SliceCount - 1; i >= 0; i--) {
+				if (spread[i].textureHandle == sharedTextureHandle) {
+					//Log(LogType.Debug, "HEY I FOUND THE UNSHARED TEXTURE " + sharedTextureHandle +  " IN THE LIST at position " + i + " !!!");
+
+					//for MainLoop
+					//obsoleteSharedTexturesForMainLoop.Add(spread[i]);
+
+					//Does this give trouble maybe???
+					spread.RemoveAt(i);
+				}
+			}
+		}
+
 		#endregion helper functions
 
 		

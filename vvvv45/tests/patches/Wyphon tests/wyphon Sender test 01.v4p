@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.dtd" >
    <PATCH nodename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Wyphon tests\wyphon Sender test 01.v4p" systemname="wyphon Sender test 01" filename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Wyphon tests\wyphon Sender test 01.v4p">
-   <BOUNDS type="Window" left="16200" top="5145" width="6825" height="7350">
+   <BOUNDS type="Window" left="16200" top="5145" width="3765" height="7350">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="14">
    <BOUNDS type="Node" left="3870" top="4395" width="100" height="100">
@@ -29,7 +29,7 @@
    </PIN>
    <PIN pinname="Presentation Interval" slicecount="1" values="default">
    </PIN>
-   <PIN pinname="Clear" slicecount="1" values="0">
+   <PIN pinname="Clear" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE systemname="DX9Texture (EX9.Texture)" nodename="DX9Texture (EX9.Texture)" componentmode="Hidden" id="13">
@@ -79,7 +79,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Info (EX9.Texture)" nodename="Info (EX9.Texture)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="810" top="870" width="100" height="100">
+   <BOUNDS type="Node" left="1050" top="750" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
    </PIN>
@@ -98,56 +98,32 @@
    </NODE>
    <LINK srcnodeid="11" srcpinname="Output" dstnodeid="12" dstpinname="Hue">
    </LINK>
-   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="1026" top="1293" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="10" srcpinname="Format" dstnodeid="9" dstpinname="Enum">
-   </LINK>
-   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="2895" top="1275" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="10" srcpinname="Usage" dstnodeid="8" dstpinname="Enum">
-   </LINK>
-   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="7">
-   <BOUNDS type="Node" left="1941" top="1293" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="10" srcpinname="Usage" dstnodeid="7" dstpinname="Enum">
-   </LINK>
-   <LINK srcnodeid="13" srcpinname="Texture Out" dstnodeid="10" dstpinname="Texture" linkstyle="Bezier">
-   <LINKPOINT x="1905" y="8655">
+   <LINK srcnodeid="13" srcpinname="Texture Out" dstnodeid="10" dstpinname="Texture" linkstyle="PolyLine">
+   <LINKPOINT x="4500" y="6555">
    </LINKPOINT>
-   <LINKPOINT x="1530" y="15">
+   <LINKPOINT x="3885" y="6570">
+   </LINKPOINT>
+   <LINKPOINT x="3525" y="75">
+   </LINKPOINT>
+   <LINKPOINT x="1455" y="60">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="6" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="645" top="270" width="2070" height="270">
+   <BOUNDS type="Node" left="45" top="150" width="2070" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="645" top="270" width="2070" height="270">
+   <BOUNDS type="Box" left="45" top="150" width="2070" height="540">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The texture I want to share|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Get the info about the texture we want to share|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
+   <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    <NODE systemname="WyphonSendTextures (Network)" filename="%VVVV%\addonpack\lib\nodes\plugins\WyphonNodes.dll" nodename="WyphonShareTexture (Network)" componentmode="Hidden" id="5">
-   <BOUNDS type="Node" left="525" top="2175" width="100" height="100">
+   <BOUNDS type="Node" left="765" top="2535" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Handle" visible="1">
    </PIN>
@@ -157,7 +133,7 @@
    </PIN>
    <PIN pinname="Usage" visible="1">
    </PIN>
-   <PIN pinname="Format" visible="1">
+   <PIN pinname="Format" visible="1" slicecount="1" values="|No Specific|">
    </PIN>
    <PIN pinname="Description" slicecount="1" values="|vvvv texture|">
    </PIN>
@@ -167,10 +143,6 @@
    <LINK srcnodeid="10" srcpinname="Width" dstnodeid="5" dstpinname="Width">
    </LINK>
    <LINK srcnodeid="10" srcpinname="Height" dstnodeid="5" dstpinname="Height">
-   </LINK>
-   <LINK srcnodeid="7" srcpinname="Ord Value" dstnodeid="5" dstpinname="Usage">
-   </LINK>
-   <LINK srcnodeid="9" srcpinname="Ord Value" dstnodeid="5" dstpinname="Format">
    </LINK>
    <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="4230" top="2655" width="100" height="100">
@@ -243,9 +215,9 @@
    <LINK srcnodeid="11" srcpinname="Output" dstnodeid="2" dstpinname="Rotate">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="2250" top="1770" width="0" height="0">
+   <BOUNDS type="Node" left="2346" top="1062" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="2250" top="1770" width="1050" height="240">
+   <BOUNDS type="Box" left="2346" top="1062" width="1050" height="240">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -321,15 +293,15 @@
    <LINK srcnodeid="10" srcpinname="Shared Handle" dstnodeid="18" dstpinname="Handle">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="570" top="3720" width="2295" height="270">
+   <BOUNDS type="Node" left="42" top="3720" width="2295" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="570" top="3720" width="2295" height="270">
+   <BOUNDS type="Box" left="42" top="3720" width="2295" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|See if we can show it ourselves|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
+   <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
@@ -349,9 +321,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="522" top="1815" width="0" height="0">
+   <BOUNDS type="Node" left="762" top="2175" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="522" top="1815" width="1065" height="240">
+   <BOUNDS type="Box" left="762" top="2175" width="1065" height="240">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="|vvvv texture|">
    </PIN>
@@ -394,4 +366,36 @@
    </NODE>
    <LINK srcnodeid="23" srcpinname="Transform Out" dstnodeid="16" dstpinname="Transform">
    </LINK>
+   <LINK srcnodeid="10" srcpinname="Usage" dstnodeid="5" dstpinname="Usage">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Format" dstnodeid="5" dstpinname="Format">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3825" top="495" width="495" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3825" top="495" width="2580" height="585">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|On this side we produce a simple texture that we want to share|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="42" top="1557" width="2070" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="42" top="1557" width="2070" height="540">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Share this texture using Wyphon|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

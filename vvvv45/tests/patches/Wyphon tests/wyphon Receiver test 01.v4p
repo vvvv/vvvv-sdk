@@ -5,7 +5,7 @@
    <NODE systemname="SharedTexture (EX9.Texture)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="SharedTexture (EX9.Texture)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="537" top="3255" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Usage" visible="1">
+   <PIN pinname="Usage" visible="1" slicecount="1" values="None">
    </PIN>
    <PIN pinname="Format" visible="1">
    </PIN>
@@ -54,30 +54,6 @@
    </NODE>
    <LINK srcnodeid="5" srcpinname="Description" dstnodeid="4" dstpinname="Input String">
    </LINK>
-   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="3">
-   <BOUNDS type="Node" left="1038" top="2892" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="5" srcpinname="Format" dstnodeid="3" dstpinname="Ord Value">
-   </LINK>
-   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="1275" top="2535" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="5" srcpinname="Usage" dstnodeid="2" dstpinname="Ord Value">
-   </LINK>
-   <LINK srcnodeid="2" srcpinname="Enum" dstnodeid="6" dstpinname="Usage">
-   </LINK>
-   <LINK srcnodeid="3" srcpinname="Enum" dstnodeid="6" dstpinname="Format">
-   </LINK>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="1">
    <BOUNDS type="Node" left="183" top="4140" width="100" height="100">
    </BOUNDS>
@@ -99,7 +75,7 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Background Color" slicecount="1" values="|0.15573,0.15573,0.15573,1.00000|">
+   <PIN pinname="Background Color" slicecount="1" values="|0.56062,0.34361,0.25381,1.00000|">
    </PIN>
    </NODE>
    <LINK srcnodeid="1" srcpinname="Layer" dstnodeid="0" dstpinname="Layers">
@@ -287,5 +263,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Partner Id">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Format" dstnodeid="6" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Usage" dstnodeid="6" dstpinname="Usage">
    </LINK>
    </PATCH>

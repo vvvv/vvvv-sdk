@@ -16,6 +16,10 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
+using VVVV.Utils.SlimDX;
+using SlimDX;
+using SlimDX.Direct3D9;
+
 
 using VVVV.Core.Logging;
 
@@ -49,17 +53,11 @@ namespace VVVV.Nodes.Network.Wyphon
 		[Output("Height")]
 		ISpread<uint> FHeightOut;
 		
-		[Output("Format")]
-		ISpread<uint> FFormatOut;
+		[Output("Format", EnumName = "TextureFormat")]
+		ISpread<EnumEntry> FFormatEnumOut;
 
-		[Output("Usage")]
-		ISpread<uint> FUsageOut;
-		
-//		[Input("Format", EnumName = "TextureFormat")]
-//        IDiffSpread<EnumEntry> FFormat;
-//
-//        [Input("Usage", EnumName = "TextureUsage")]
-//        IDiffSpread<EnumEntry> FUsage;
+		[Output("Usage", EnumName = "TextureUsage")]
+		ISpread<EnumEntry> FUsageEnumOut;
 
 		
 		[Output("Handle")]
@@ -94,15 +92,17 @@ namespace VVVV.Nodes.Network.Wyphon
 					|| FDoFilterIn.IsChanged
 				) {
 				
-				LogNow(LogType.Debug, "Something happened with the textures shared by others, update our output !");
+				//LogNow(LogType.Debug, "Something happened with the textures shared by others, update our output !");
 				
 				lock (WyphonNode.sharedTexturesLock) {
 					
 					FDescriptionOut.SliceCount = 0;
 					FWidthOut.SliceCount = 0;
 					FHeightOut.SliceCount = 0;
-					FFormatOut.SliceCount = 0;
-					FUsageOut.SliceCount = 0;
+					FFormatEnumOut.SliceCount = 0;
+					FUsageEnumOut.SliceCount = 0;
+//					FFormatUintOut.SliceCount = 0;
+//					FUsageUintOut.SliceCount = 0;
 					FHandleOut.SliceCount = 0;
 					
 					foreach ( uint partnerId in WyphonNode.SharedTexturesPerPartner.Keys ) {
@@ -116,8 +116,25 @@ namespace VVVV.Nodes.Network.Wyphon
 									FDescriptionOut.Add(textureInfo.description);
 									FWidthOut.Add(textureInfo.width);
 									FHeightOut.Add(textureInfo.height);
-									FFormatOut.Add(textureInfo.format);
-									FUsageOut.Add(textureInfo.usage);
+									
+									Format format = (Format) textureInfo.format;
+									EnumEntry formatEnumEntry = EnumManager.GetEnumEntry("TextureFormat", 0);
+									for ( int i = 0; i < EnumManager.GetEnumEntryCount("TextureFormat"); i++ ) {
+										if ( EnumManager.GetEnumEntryString("TextureFormat", i).CompareTo( format.ToString() ) == 0 ) {
+											formatEnumEntry = EnumManager.GetEnumEntry("TextureFormat", i);
+										}
+									}
+									
+									//GetEnumEntryByUint("TextureFormat", textureInfo.format);									
+									EnumEntry usageEnumEntry = EnumManager.GetEnumEntry("TextureUsage", (int) textureInfo.usage);
+									
+									LogNow ( LogType.Debug, "FORMAT Received = " + formatEnumEntry.ToString() + " index=" + formatEnumEntry.Index + " D3D const = " + textureInfo.format);
+									
+									FFormatEnumOut.Add(formatEnumEntry);
+									FUsageEnumOut.Add(usageEnumEntry);
+									
+//									FFormatUintOut.Add(textureInfo.format);
+//									FUsageUintOut.Add(textureInfo.usage);
 									FHandleOut.Add(textureInfo.textureHandle);
 								}
 								
