@@ -16,6 +16,7 @@ using Piccolo.NET.Util;
 using VVVV.Core.Viewer.GraphicalEditor;
 using VVVV.Core.View.GraphicalEditor;
 using VVVV.Core;
+using VVVV.Core
 
 namespace VVVV.HDE.GraphicalEditing
 {
@@ -31,6 +32,7 @@ namespace VVVV.HDE.GraphicalEditing
         private ZoomEventHandler FMyZoomEventHandler;
         private PathEventHandler FPathEventHandler;
         private EventPassThrougHandler FEventPassThrougHandler;
+        private TipEventHandler FTipEventHandler;
         private List<IGraphElement> FConnectables = new List<IGraphElement>();
 
         //layers
@@ -82,6 +84,7 @@ namespace VVVV.HDE.GraphicalEditing
             FMyZoomEventHandler = new ZoomEventHandler();
             FPathEventHandler = new PathEventHandler(this);
             FEventPassThrougHandler = new EventPassThrougHandler(this);
+            FTipEventHandler = new TipEventHandler(this);
 
             //add custom event handlers
             FCanvas.AddInputEventListener(FDragDropEventHandler);
@@ -89,6 +92,7 @@ namespace VVVV.HDE.GraphicalEditing
             FCanvas.AddInputEventListener(FMyZoomEventHandler);
             FCanvas.AddInputEventListener(FPathEventHandler);
             FCanvas.AddInputEventListener(FEventPassThrougHandler);
+            FCanvas.AddInputEventListener(FTipEventHandler);
 
             FCanvas.KeyPress += FCanvas_KeyPress;
             FCanvas.KeyDown += FCanvas_KeyDown;
@@ -103,6 +107,16 @@ namespace VVVV.HDE.GraphicalEditing
             {
                 Host.MoveSelected();
             }
+        }
+        
+        public IGraphElement GetClosestConnectable(PointF position)
+        {
+        	foreach (GraphElement e in FConnectables)
+        	{
+        		if (e.Connectable.CommitAsConnectionCandidate(position, null))
+        			return e;
+        	}
+        	return null;
         }
 
         #region canvas input events
@@ -190,6 +204,9 @@ namespace VVVV.HDE.GraphicalEditing
                     e.Connectable.CommitAsConnectionCandidate(position, targetConnectable))
                 {
                     target = e;
+                    break;
+                    
+                    //why look further when we have one?
                     targetConnectable = target.Connectable;
                 }
 
@@ -499,8 +516,6 @@ namespace VVVV.HDE.GraphicalEditing
         }
 
         #endregion ICanvas Members
-
-
     }
 }
 

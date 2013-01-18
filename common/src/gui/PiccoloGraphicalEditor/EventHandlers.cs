@@ -76,6 +76,7 @@ namespace VVVV.HDE.GraphicalEditing
             }
             else if (FTempPathStarted && (e.Button == MouseButtons.Middle))
             {
+            	//create constant at click
             	FGraphEditor.Host.FinishPathWithConstant(FTempPath);
             	DrawingEnded();            	
             }
@@ -159,6 +160,22 @@ namespace VVVV.HDE.GraphicalEditing
         public override bool DoesAcceptEvent(PInputEventArgs e)
         {
             return (base.DoesAcceptEvent(e) && e.IsMouseEvent);
+        }
+    }
+    
+    internal class TipEventHandler : PBasicInputEventHandler
+    {
+        GraphEditor FGraphEditor;
+
+        public TipEventHandler(GraphEditor graphEditor)
+        {
+            FGraphEditor = graphEditor;
+        }
+
+        public override void OnMouseMove(object sender, PInputEventArgs e)
+        {
+        	var pin = FGraphEditor.GetClosestConnectable(e.Position);
+        	FGraphEditor.Host.HighlightElement(pin);
         }
     }
 

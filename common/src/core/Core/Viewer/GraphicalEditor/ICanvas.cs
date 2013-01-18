@@ -135,6 +135,8 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         void FinishPath(ITempPath apath, IConnectable end);
         
         void FinishPathWithConstant(ITempPath apath);
+        
+        void HighlightElement(IGraphElement element);
 
         void MoveSelected();
     }
