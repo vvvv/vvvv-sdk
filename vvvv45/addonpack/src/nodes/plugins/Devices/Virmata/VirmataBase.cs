@@ -154,7 +154,21 @@ namespace Firmata
 	#endregion
 
 	#region Definitions
+  /// For the Specs see: http://firmata.org/wiki/Protocol
 	
+  /// Some helpful constants for the NameSpace
+  public struct Default {
+    public const int SampleRate     = 20;
+    public const int MaxAnalogPins  = 16;
+    public const int MaxDigitalPins = 128;
+    public const PinMode = PinMode.OUTPUT;
+  }
+
+  public struct Constants {
+		public const int BitsPerPort = 8;
+  }
+
+
 	public struct Command
 	{
 		/// <summary>
@@ -229,7 +243,7 @@ namespace Firmata
 		OUTPUT = 0x01,
 		
 		/// <summary>
-		/// Pinmode ANALOG (This is not implemented in the standard firmata program)
+		/// Pinmode ANALOG 
 		/// </summary>
 		ANALOG = 0x02,
 		
@@ -272,11 +286,6 @@ namespace Firmata
 		/// </summary>
 		PORTC = 0x02,
 	}
-	
-	public static class Constants {
-		public static int BitsPerPort = 8;
-	}
-	
-	#endregion
 
+	#endregion
 }
