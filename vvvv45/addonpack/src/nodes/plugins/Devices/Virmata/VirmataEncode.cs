@@ -66,7 +66,7 @@ using Firmata;
 
 namespace VVVV.Nodes
 {
-	
+
 	#region PluginInfo
 	[PluginInfo(Name = "FirmataEncode",
 	            Version = "2.x",
@@ -180,7 +180,7 @@ namespace VVVV.Nodes
 
             // Spreaded Encoders are not supported at the moment!
 			FFirmataOut.Length = 1;
-			
+
 			try{
   			if (HasData) {
 			    Stream outStream = new MemoryStream(CommandBuffer.ToArray());
@@ -199,14 +199,8 @@ namespace VVVV.Nodes
 
 		byte[] OUTPUT_PORT_MASKS  = {}; // empty array
 
-		PinMode DEFAULT_PINMODE = PinMode.OUTPUT;
-
-		int NUM_OUTPUT_PORTS = 0;
 		int NUM_PORTS = 0; // The total number of ports (AVR PORTS) respective to the number of pins
 		int NUM_PINS  = 0; // The total number of pins addressed by this node
-
-		bool PINS_CONFIGURED = false;
-		bool PIN_CONFIG_CHANGED = false;
 
 		// Make a shortcut for FResetSystem[0]
 		bool ShouldReset {
@@ -222,9 +216,17 @@ namespace VVVV.Nodes
 		void UpdatePinCount()
 		{
 			/// Who wins?
-			NUM_PINS  = FPinModeSetup.SliceCount >= FPinValues.SliceCount ?  FPinModeSetup.SliceCount : FPinValues.SliceCount;
+      NUM_PINS = FPinModeSetup.SliceCount >= FPinValues.SliceCount ?  FPinModeSetup.SliceCount : FPinValues.SliceCount;
+      NUM_PINS = FDigitalInputCount[0] < NUM_PINS ? FDigitalInputCount[0] : NUM_PINS;
+      NUM_PINS = Math.Max(0,NUM_PINS);
+
 			/// calculate the next full divider by 8:
 			NUM_PORTS = NUM_PINS/8 + (NUM_PINS%8==0 ? 0 : 1);
+
+      if(OUTPUT_PORT_MASKS.Length != NUM_PORTS) {
+        // we have to resize the masks
+        Array.Resize(ref OUTPUT_PORT_MASKS, NUM_PORTS);
+      }
 		}
 
 		PinMode PinModeForPin(int pin)
@@ -237,13 +239,9 @@ namespace VVVV.Nodes
 		/// </summary>
 		void UpdatePinConfiguration()
 		{
-			PIN_CONFIG_CHANGED = false;
-
 			UpdatePinCount();
 
-			/// TODO Optimize to use actual needed output ports, instead of all
-			NUM_OUTPUT_PORTS = NUM_PORTS;
-			OUTPUT_PORT_MASKS = new byte[NUM_OUTPUT_PORTS];
+			// OUTPUT_PORT_MASKS = new byte[NUM_PORTS];
 
 			// allocate memory once
 			byte output_port;
@@ -256,7 +254,7 @@ namespace VVVV.Nodes
 				for (int bit=0; bit<8; bit++)
 				{
 					int src_index = i*8+bit;
-					PinMode mode = DEFAULT_PINMODE;
+					PinMode mode = Firmata.Default.PINMODE;
 
 					/// Set the mode and add to the configure command
 					if(src_index<FPinModeSetup.SliceCount)
@@ -272,12 +270,6 @@ namespace VVVV.Nodes
 				}
 				OUTPUT_PORT_MASKS[i] = output_port;
 			}
-
-			// Pin have been configured once:
-			PINS_CONFIGURED = true;
-
-			// Signal change
-			PIN_CONFIG_CHANGED = true;
 		}
 
 		void SetPinModeCommand(PinMode mode, int pin)
@@ -296,7 +288,7 @@ namespace VVVV.Nodes
 		{
 			// get the number of output ports
 			// FIXME: Make MAX_PORTS avaiable through Firmata
-			int[] digital_out = new int[OUTPUT_PORT_MASKS.Length];
+			int[] digital_out = new int[NUM_PORTS];
 
 			for(int i=0; i<values.SliceCount; i++)
 			{

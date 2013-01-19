@@ -162,7 +162,7 @@ namespace Firmata
     public const int SampleRate     = 20;
     public const int MaxAnalogPins  = 16;
     public const int MaxDigitalPins = 128;
-    public const PinMode = PinMode.OUTPUT;
+    public const PinMode PINMODE = PinMode.OUTPUT;
   }
 
   public struct Constants {
@@ -219,11 +219,6 @@ namespace Firmata
 		/// </summary>
 		public const byte I2C_REQUEST = 0x76;
 		public const byte I2C_REPLY  = 0x77;
-		
-		/// <summary>
-		/// Reset System Command
-		/// </summary>
-		public const byte RESET = 0xFF;
 		
 		/// <summary>
 		/// Set Samplingrate Command
