@@ -77,7 +77,8 @@ namespace Firmata
 		}
 		
 		public static byte GetCommandFromByte (byte data) {
-			return (byte)(data & 0xF0); // Mask out the Commandbits
+			// Commands in the 0xF* region do not have channel data
+			return data > 0xF0 ? data :  (byte)(data & 0xF0); // else mask out the Commandbits
 		}
 		
 		public static byte[] PortMessage(int port, int[] values) {
