@@ -136,6 +136,7 @@ namespace VVVV.Nodes
       }
     }
 
+    #region Plugin Functions
 		private Queue<byte> Buffer = new Queue<byte>();
 
     private void HandleStream(Stream InStream) {
@@ -237,7 +238,7 @@ namespace VVVV.Nodes
 					// Todo: Implement Capability reports!
 			}
 		}
-		
+    #endregion Plugin Functions
 	}
 	
 	
@@ -283,5 +284,4 @@ namespace VVVV.Nodes
 			}
 		}
 	}
-
 }
