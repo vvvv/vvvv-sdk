@@ -122,7 +122,7 @@ namespace VVVV.Nodes
 		ISpread<bool> FChangedOut;
 
 		/// Use a Queue for a command byte buffer:
-		Queue<byte> CommandBuffer = new Queue<byte>(1024);
+		Queue<byte> CommandBuffer = new Queue<byte>();
 
 		/// EVALUATE
 		public void Evaluate(int SpreadMax)
@@ -130,54 +130,67 @@ namespace VVVV.Nodes
 			// Clear the buffer before everey run
 			CommandBuffer.Clear();
 
-			if (ShouldReset) GetResetCommand();
+            /// How many pins are there to handle
+            if (ShouldReset || SpreadUtils.AnyChanged(FDigitalInputCount, FAnalogInputCount, FPinValues, FPinModeSetup)) {
+              UpdatePinCount();
+            }
 
-			if (FReportFirmwareVersion.IsChanged) GetFirmwareVersionCommand();
+            /// Shall we reset?
+			if (ShouldReset) {
+              GetResetCommand();
+            }
+
+            /// Firmware Version requested?
+			if ((FReportFirmwareVersion.IsChanged && FReportFirmwareVersion[0]) || ShouldReset) {
+              GetFirmwareVersionCommand();
 
 			// TODO: Find out if we have pull-up configured input pins and if so, update the config too
-			if(FPinModeSetup.IsChanged || ShouldReset || !PINS_CONFIGURED) UpdatePinConfiguration();
+			if(FPinModeSetup.IsChanged || ShouldReset) {
+              UpdatePinConfiguration();
+            }
 
-			if (FPinModeSetup.IsChanged || FPinValues.IsChanged || ShouldReset) SetPinStates(FPinValues);
+            /// Write the values to the pins
+			if (FPinModeSetup.IsChanged || FPinValues.IsChanged || ShouldReset) {
+              SetPinStates(FPinValues);
+            }
 
 			/// Set Pinreporting for analog pins
-			// TODO: It should not be a fixed number of pins, later versions
-			// TODO: if spread has only one value, do all, otherwise do given, there are 16!
 			if (FReportAnalogPins.IsChanged || ShouldReset) SetAnalogPinReportingForRange(FAnalogInputCount[0],FReportAnalogPins[0]);
 
 			/// Set Pinreporting for digital pins
 			if (FReportDigitalPins.IsChanged || ShouldReset)
 			{
-				// TODO: Check which pin number should be reported and enable only the proper port.
-				// TODO: It could work like: if spread.slicecount==1 do all, else do specific pins
-        for(int port=0; port<NUM_PORTS; port++) {
-          GetDigitalPinReportingCommandForState(FReportDigitalPins[0],port);
-        }
-				// GetDigitalPinReportingCommandForState(FReportDigitalPins[0],Port.PORTB);
-				// GetDigitalPinReportingCommandForState(FReportDigitalPins[0],Port.PORTD);
+              for(int port=0; port<NUM_PORTS; port++) {
+                GetDigitalPinReportingCommandForState(FReportDigitalPins[0],port);
+              }
 			}
 
-			if(FSamplerate.IsChanged || ShouldReset)
+			/// Set Pinreporting for analog pins
+			// TODO: It should not be a fixed number of pins, later versions
+			if (FReportAnalogPins.IsChanged || ShouldReset) {
 			{
 				// We must shortly trun of the reporting to get immidiate change of rate
 				if (FReportAnalogPins[0]) SetAnalogPinReportingForRange(FAnalogInputCount[0],false);
-				GetSamplerateCommand(FSamplerate[0]);
+                SetAnalogPinReportingForRange(FAnalogInputCount[0],FReportAnalogPins[0]);
 				if (FReportAnalogPins[0]) SetAnalogPinReportingForRange(FAnalogInputCount[0],true);
-			}
+            }
 
 			bool HasData = CommandBuffer.Count>0;
 			FChangedOut[0] = HasData;
 
-      //	Spreaded Encoders are not supported at the moment!
+            // Spreaded Encoders are not supported at the moment!
 			FFirmataOut.Length = 1;
 			
-			if (!HasData) return;
 			try{
-				Stream outStream = new MemoryStream(CommandBuffer.ToArray());
-				using (var outputWriter = FFirmataOut.GetWriter())
-				{
-						outputWriter.Write(outStream);
-				}
-			} catch(Exception e){
+  			if (HasData) {
+			    Stream outStream = new MemoryStream(CommandBuffer.ToArray());
+			    using (var outputWriter = FFirmataOut.GetWriter())
+			    {
+			    outputWriter.Write(outStream);
+          }
+			  }
+			} catch(Exception e) {
+              // Do nothing on errors. Yes, i am lazy on that one.
 			}
 			// END Evaluate
 		}
