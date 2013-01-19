@@ -81,10 +81,12 @@ namespace VVVV.Nodes
 		[Input("Firmata Message", IsSingle = true)]
 		IInStream<Stream> FirmataIn;
 		
-		[Input("Analog Input Count",DefaultValue = 6, Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
+		[Input("Analog Input Count",  DefaultValue = 6, MaxValue = Default.MaxAnalogPins, MinValue = 0,
+                                  Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
 		IDiffSpread<int> FAnalogInputCount;
 		
-		[Input("Digital Input Count",DefaultValue = 14, Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
+		[Input("Digital Input Count", DefaultValue = 20, MaxValue = Default.MaxDigitalPins, MinValue = 0,
+                                  Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
 		IDiffSpread<int> FDigitalInputCount;
 		
     /// Outputs

@@ -96,22 +96,21 @@ namespace VVVV.Nodes
 		[Input("Reset",IsSingle = true, IsBang=true, DefaultValue = 0)]
 		IDiffSpread<bool> FResetSystem;
 
-		//// Use a default SamplingRate of 16ms
-		[Input("Samplerate", MinValue = 0, DefaultValue = 16,IsSingle = true, Visibility = PinVisibility.Hidden)]
+		[Input("Samplerate", MinValue = 0, DefaultValue = Default.SampleRate,
+                         Visibility = PinVisibility.Hidden, IsSingle = true)]
 		IDiffSpread<int> FSamplerate;
 
-//		Not yet used!
-//		[Input("Send On Create", Visibility = PinVisibility.Hidden, IsSingle = true, DefaultValue = 1)]
-//		IDiffSpread<bool> FSendOnCreate;
-
-		[Input("Report Firmware Version",IsSingle = true, Visibility = PinVisibility.OnlyInspector, IsBang=true)]
+		[Input("Report Firmware Version", IsBang = true,
+                                      Visibility = PinVisibility.OnlyInspector, IsSingle=true)]
 		IDiffSpread<bool> FReportFirmwareVersion;
 
-		[Input("Analog Input Count",DefaultValue = 6, Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
-		ISpread<int> FAnalogInputCount;
+		[Input("Analog Input Count",  DefaultValue = 6, MaxValue = Default.MaxAnalogPins, MinValue = 0,
+                                  Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
+		IDiffSpread<int> FAnalogInputCount;
 
-		[Input("Digital Input Count",DefaultValue = 14, Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
-		ISpread<int> FDigitalInputCount;
+		[Input("Digital Input Count", DefaultValue = 20, MaxValue = Default.MaxDigitalPins, MinValue = 0,
+                                  Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
+		IDiffSpread<int> FDigitalInputCount;
 
 		///
 		/// OUTPUT
