@@ -231,7 +231,7 @@ namespace VVVV.Nodes
 
 		PinMode PinModeForPin(int pin)
 		{
-			return pin<FPinModeSetup.SliceCount ? FPinModeSetup[pin]:DEFAULT_PINMODE;
+			return pin < FPinModeSetup.SliceCount ? FPinModeSetup[pin]:Firmata.Default.PINMODE;
 		}
 
 		/// <summary>
