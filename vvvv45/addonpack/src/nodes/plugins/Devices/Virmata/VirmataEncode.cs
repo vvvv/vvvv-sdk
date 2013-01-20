@@ -215,16 +215,17 @@ namespace VVVV.Nodes
 		/// </summary>
 		void UpdatePinCount()
 		{
-			/// Who wins?
-      NUM_PINS = FPinModeSetup.SliceCount >= FPinValues.SliceCount ?  FPinModeSetup.SliceCount : FPinValues.SliceCount;
-      NUM_PINS = FDigitalInputCount[0] < NUM_PINS ? FDigitalInputCount[0] : NUM_PINS;
+		  /// Find the least count of pins
+      NUM_PINS = Math.Min(FPinModeSetup.SliceCount,FPinValues.SliceCount);
+      // TODO: If we do this, we need to fill the missing:
+      // NUM_PINS = Math.Min(FDigitalInputCount[0],NUM_PINS);
       NUM_PINS = Math.Max(0,NUM_PINS);
 
-			/// calculate the next full divider by 8:
+      /// calculate the next full divider by 8:
 			NUM_PORTS = NUM_PINS/8 + (NUM_PINS%8==0 ? 0 : 1);
 
+      // we have to resize the masks
       if(OUTPUT_PORT_MASKS.Length != NUM_PORTS) {
-        // we have to resize the masks
         Array.Resize(ref OUTPUT_PORT_MASKS, NUM_PORTS);
       }
 		}
