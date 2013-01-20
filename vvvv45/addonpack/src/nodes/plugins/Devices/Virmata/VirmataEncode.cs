@@ -121,6 +121,9 @@ namespace VVVV.Nodes
 		[Output("On Change")]
 		ISpread<bool> FChangedOut;
 
+		[Output("Debug")]
+		ISpread<string> FDebugOut;
+
 		/// Use a Queue for a command byte buffer:
 		Queue<byte> CommandBuffer = new Queue<byte>();
 
@@ -188,6 +191,8 @@ namespace VVVV.Nodes
 			    {
 			    outputWriter.Write(outStream);
           }
+          FDebugOut.SliceCount = 1;
+          FDebugOut[0] = FirmataUtils.CommandBufferToString(CommandBuffer);
 			  }
 			} catch(Exception e) {
               // Do nothing on errors. Yes, i am lazy on that one.

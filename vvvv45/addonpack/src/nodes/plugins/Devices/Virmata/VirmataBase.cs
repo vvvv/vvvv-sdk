@@ -150,6 +150,103 @@ namespace Firmata
 			}
 			return port;
 		}
+
+		public static string CommandBufferToString(Queue<byte> CommandBuffer, string Glue = "\r\n")
+		{
+      string s = string.Empty;
+      while (CommandBuffer.Count > 0) {
+        byte b = CommandBuffer.Dequeue();
+        // The Command Switch:
+        switch(FirmataUtils.GetCommandFromByte(b)) {
+          case Command.SYSEX_START:
+            s+="Sysex (";
+            byte sb = CommandBuffer.Dequeue();
+            while(sb != Command.SYSEX_END) {
+              switch(sb){
+                case Command.SAMPLING_INTERVAL:
+                  s+="SamplingInterval: ";
+                  byte _LSB = CommandBuffer.Dequeue();
+                  byte _MSB = CommandBuffer.Dequeue();
+                  s+=FirmataUtils.GetValueFromBytes(_MSB,_LSB).ToString();
+                  break;
+                case Command.REPORT_FIRMWARE_VERSION:
+                  s+="ReportFirmwareVersion";
+                  s+=Glue;
+                  break;
+                default:
+                  s+= String.Format("{0:X}", sb);
+                break;
+              }
+              sb = CommandBuffer.Dequeue();
+            }
+            s+=")"+Glue;
+            break;
+
+          case Command.RESET:
+            s+="Reset!";
+            s+=Glue;
+            break;
+
+          case Command.SETPINMODE:
+            s+="Set PinMode of pin ";
+            s+=CommandBuffer.Dequeue().ToString();
+            s+=" to ";
+            switch((PinMode)CommandBuffer.Dequeue()) {
+              case PinMode.INPUT:   s+="INPUT"; break;
+              case PinMode.OUTPUT:  s+="OUTPUT"; break;
+              case PinMode.ANALOG:  s+="ANALOG"; break;
+              case PinMode.PWM:     s+="PWM"; break;
+              case PinMode.SERVO:   s+="SERVO"; break;
+              case PinMode.SHIFT:   s+="SHIFT"; break;
+              case PinMode.I2C:     s+="I2C"; break;
+            }
+            s+=Glue;
+            break;
+
+          case Command.TOGGLEDIGITALREPORT:
+            s+="DIGITAL Pin Reporting for port ";
+            s+=(b&0x0f).ToString();
+            s+=" set to: ";
+            s+=CommandBuffer.Dequeue().ToString();
+            s+=Glue;
+            break;
+
+          case Command.TOGGLEANALOGREPORT:
+            s+="ANALOG Pin Reporting for pin ";
+            s+=(b&0x0f).ToString();
+            s+=" set to: ";
+            s+=CommandBuffer.Dequeue().ToString();
+            s+=Glue;
+            break;
+          
+          case Command.DIGITALMESSAGE:
+            s+="Digital Message for port ";
+            s+=(b&0x0f).ToString();
+            s+=": ";
+            s+=Convert.ToString(CommandBuffer.Dequeue(), 2);
+            s+=Glue;
+            break;
+
+          case Command.ANALOGMESSAGE:
+            s+="Analog Message for pin ";
+            s+=(b&0x0f).ToString();
+            s+=": ";
+            byte LSB = CommandBuffer.Dequeue();
+            byte MSB = CommandBuffer.Dequeue();
+            s+=FirmataUtils.GetValueFromBytes(MSB,LSB).ToString();
+            break;
+            s+=Glue;
+            break;
+
+          default:
+            break;
+            
+        }
+      }
+
+      return s;
+    }
+		
 	}
 	
 	#endregion
