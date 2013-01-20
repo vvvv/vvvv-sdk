@@ -67,325 +67,333 @@ using Firmata;
 namespace VVVV.Nodes
 {
 
-	#region PluginInfo
-	[PluginInfo(Name = "FirmataEncode",
-	            Version = "2.x",
-	            Category = "Devices",
-	            Author = "jens a. ewald",
-	            Help = "Encodes pins, values and commands for Firmata protocol version 2.x",
-	            Tags = "Arduino")]
-	#endregion PluginInfo
+  #region PluginInfo
+  [PluginInfo(Name = "FirmataEncode",
+              Version = "2.x",
+              Category = "Devices",
+              Author = "jens a. ewald",
+              Help = "Encodes pins, values and commands for Firmata protocol version 2.x",
+              Tags = "Arduino")]
+  #endregion PluginInfo
 
-	public class FirmataEncode : IPluginEvaluate
-	{
-		///
-		/// INPUT
-		///
-		[Input("Input")]
-		IDiffSpread<double> FPinValues;
+  public class FirmataEncode : IPluginEvaluate
+  {
+    ///
+    /// INPUT
+    ///
+    [Input("Input")]
+    IDiffSpread<double> FPinValues;
 
-		[Input("Pin Modes", DefaultEnumEntry = "INPUT")]
-		IDiffSpread<PinMode> FPinModeSetup;
+    [Input("Pin Modes", DefaultEnumEntry = "INPUT")]
+    IDiffSpread<PinMode> FPinModeSetup;
 
-		[Input("Report Analog Pins",IsSingle = true, DefaultValue = 1)]
-		IDiffSpread<bool> FReportAnalogPins;
+    [Input("Report Analog Pins",IsSingle = true, DefaultValue = 1)]
+    IDiffSpread<bool> FReportAnalogPins;
 
-		[Input("Report Digital Pins",IsSingle = true, DefaultValue = 1)]
-		IDiffSpread<bool> FReportDigitalPins;
+    [Input("Report Digital Pins",IsSingle = true, DefaultValue = 1)]
+    IDiffSpread<bool> FReportDigitalPins;
 
-		[Input("Reset",IsSingle = true, IsBang=true, DefaultValue = 0)]
-		IDiffSpread<bool> FResetSystem;
+    [Input("Reset",IsSingle = true, IsBang=true, DefaultValue = 0)]
+    IDiffSpread<bool> FResetSystem;
 
-		[Input("Samplerate", MinValue = 0, DefaultValue = Default.SampleRate,
+    [Input("Samplerate", MinValue = 0, DefaultValue = Default.SampleRate,
                          Visibility = PinVisibility.Hidden, IsSingle = true)]
-		IDiffSpread<int> FSamplerate;
+    IDiffSpread<int> FSamplerate;
 
-		[Input("Report Firmware Version", IsBang = true,
+    [Input("Report Firmware Version", IsBang = true,
                                       Visibility = PinVisibility.OnlyInspector, IsSingle=true)]
-		IDiffSpread<bool> FReportFirmwareVersion;
+    IDiffSpread<bool> FReportFirmwareVersion;
 
-		[Input("Analog Input Count",  DefaultValue = 6, MaxValue = Default.MaxAnalogPins, MinValue = 0,
+    [Input("Analog Input Count",  DefaultValue = 6, MaxValue = Default.MaxAnalogPins, MinValue = 0,
                                   Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
-		IDiffSpread<int> FAnalogInputCount;
+    IDiffSpread<int> FAnalogInputCount;
 
-		[Input("Digital Input Count", DefaultValue = 20, MaxValue = Default.MaxDigitalPins, MinValue = 0,
+    [Input("Digital Input Count", DefaultValue = 20, MaxValue = Default.MaxDigitalPins, MinValue = 0,
                                   Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
-		IDiffSpread<int> FDigitalInputCount;
+    IDiffSpread<int> FDigitalInputCount;
 
-		///
-		/// OUTPUT
-		///
-		[Output("Firmata Message")]
-		IOutStream<Stream> FFirmataOut;
+    ///
+    /// OUTPUT
+    ///
+    [Output("Firmata Message")]
+    IOutStream<Stream> FFirmataOut;
 
-		[Output("On Change")]
-		ISpread<bool> FChangedOut;
+    [Output("On Change")]
+    ISpread<bool> FChangedOut;
 
-		[Output("Debug")]
-		ISpread<string> FDebugOut;
+    [Output("Debug")]
+    ISpread<string> FDebugOut;
 
-		/// Use a Queue for a command byte buffer:
-		Queue<byte> CommandBuffer = new Queue<byte>();
+    /// Use a Queue for a command byte buffer:
+    Queue<byte> CommandBuffer = new Queue<byte>();
 
-		/// EVALUATE
-		public void Evaluate(int SpreadMax)
-		{
-			// Clear the buffer before everey run
-			CommandBuffer.Clear();
+    /// EVALUATE
+    public void Evaluate(int SpreadMax)
+    {
+      // Clear the buffer before everey run
+      CommandBuffer.Clear();
 
-            /// How many pins are there to handle
-            if (ShouldReset || SpreadUtils.AnyChanged(FDigitalInputCount, FAnalogInputCount, FPinValues, FPinModeSetup)) {
-              UpdatePinCount();
-            }
+      /// How many pins are there to handle
+      if (ShouldReset || SpreadUtils.AnyChanged(FDigitalInputCount, FAnalogInputCount, FPinValues, FPinModeSetup)) {
+        UpdatePinCount();
+      }
 
-            /// Shall we reset?
-			if (ShouldReset) {
-              GetResetCommand();
-            }
+      /// Shall we reset?
+      if (ShouldReset) {
+        GetResetCommand();
+      }
 
-            /// Firmware Version requested?
-			if ((FReportFirmwareVersion.IsChanged && FReportFirmwareVersion[0]) || ShouldReset) {
-              GetFirmwareVersionCommand();
+      /// Firmware Version requested?
+      if ((FReportFirmwareVersion.IsChanged && FReportFirmwareVersion[0]) || ShouldReset)
+      {
+        GetFirmwareVersionCommand();
+      }
 
-			// TODO: Find out if we have pull-up configured input pins and if so, update the config too
-			if(FPinModeSetup.IsChanged || ShouldReset) {
-              UpdatePinConfiguration();
-            }
+      // TODO: Find out if we have pull-up configured input pins and if so, update the config too
+      if(FPinModeSetup.IsChanged || ShouldReset)
+      {
+        UpdatePinConfiguration();
+      }
 
-            /// Write the values to the pins
-			if (FPinModeSetup.IsChanged || FPinValues.IsChanged || ShouldReset) {
-              SetPinStates(FPinValues);
-            }
+      /// Write the values to the pins
+      if (FPinModeSetup.IsChanged || FPinValues.IsChanged || ShouldReset)
+      {
+        SetPinStates(FPinValues);
+      }
 
-			/// Set Pinreporting for analog pins
-			if (FReportAnalogPins.IsChanged || ShouldReset) SetAnalogPinReportingForRange(FAnalogInputCount[0],FReportAnalogPins[0]);
+      /// Set Pinreporting for analog pins
+      if (FReportAnalogPins.IsChanged || ShouldReset)
+      {
+        SetAnalogPinReportingForRange(FAnalogInputCount[0],FReportAnalogPins[0]);
+      }
 
-			/// Set Pinreporting for digital pins
-			if (FReportDigitalPins.IsChanged || ShouldReset)
-			{
-              for(int port=0; port<NUM_PORTS; port++) {
-                GetDigitalPinReportingCommandForState(FReportDigitalPins[0],port);
-              }
-			}
+      /// Set Pinreporting for digital pins
+      if (FReportDigitalPins.IsChanged || ShouldReset)
+      {
+        for(int port=0; port<NUM_PORTS; port++)
+        {
+          GetDigitalPinReportingCommandForState(FReportDigitalPins[0],port);
+        }
+      }
 
-			/// Set Pinreporting for analog pins
-			// TODO: It should not be a fixed number of pins, later versions
-			if (FReportAnalogPins.IsChanged || ShouldReset) {
-			{
-				// We must shortly trun of the reporting to get immidiate change of rate
-				if (FReportAnalogPins[0]) SetAnalogPinReportingForRange(FAnalogInputCount[0],false);
-                SetAnalogPinReportingForRange(FAnalogInputCount[0],FReportAnalogPins[0]);
-				if (FReportAnalogPins[0]) SetAnalogPinReportingForRange(FAnalogInputCount[0],true);
-            }
+      /// Set Pinreporting for analog pins
+      // TODO: It should not be a fixed number of pins, later versions
+      if (FReportAnalogPins.IsChanged || ShouldReset)
+      {
+        // We must shortly trun of the reporting to get immidiate change of rate
+        if (FReportAnalogPins[0]) SetAnalogPinReportingForRange(FAnalogInputCount[0],false);
+        SetAnalogPinReportingForRange(FAnalogInputCount[0],FReportAnalogPins[0]);
+        if (FReportAnalogPins[0]) SetAnalogPinReportingForRange(FAnalogInputCount[0],true);
+      }
 
-			bool HasData = CommandBuffer.Count>0;
-			FChangedOut[0] = HasData;
+      bool HasData = CommandBuffer.Count>0;
+      FChangedOut[0] = HasData;
 
-            // Spreaded Encoders are not supported at the moment!
-			FFirmataOut.Length = 1;
+      // Spreaded Encoders are not supported at the moment!
+      FFirmataOut.Length = 1;
 
-			try{
-  			if (HasData) {
-			    Stream outStream = new MemoryStream(CommandBuffer.ToArray());
-			    using (var outputWriter = FFirmataOut.GetWriter())
-			    {
-			    outputWriter.Write(outStream);
+      try{
+        if (HasData) {
+          Stream outStream = new MemoryStream(CommandBuffer.ToArray());
+          using (var outputWriter = FFirmataOut.GetWriter())
+          {
+          outputWriter.Write(outStream);
           }
           FDebugOut.SliceCount = 1;
           FDebugOut[0] = FirmataUtils.CommandBufferToString(CommandBuffer);
-			  }
-			} catch(Exception e) {
-              // Do nothing on errors. Yes, i am lazy on that one.
-			}
-			// END Evaluate
-		}
+        }
+      } catch(Exception e) {
+        // Do nothing on errors. Yes, i am lazy on that one.
+      }
+      // END Evaluate
+    }
 
-		#region Helper Functions
+    #region Helper Functions
 
-		byte[] OUTPUT_PORT_MASKS  = {}; // empty array
+    byte[] OUTPUT_PORT_MASKS  = {}; // empty array
 
-		int NUM_PORTS = 0; // The total number of ports (AVR PORTS) respective to the number of pins
-		int NUM_PINS  = 0; // The total number of pins addressed by this node
+    int NUM_PORTS = 0; // The total number of ports (AVR PORTS) respective to the number of pins
+    int NUM_PINS  = 0; // The total number of pins addressed by this node
 
-		// Make a shortcut for FResetSystem[0]
-		bool ShouldReset {
-			get {
-				return FResetSystem.IsChanged && FResetSystem[0];
-			}
-			set {}
-		}
+    // Make a shortcut for FResetSystem[0]
+    bool ShouldReset {
+      get {
+        return FResetSystem.IsChanged && FResetSystem[0];
+      }
+      set {}
+    }
 
-		/// <summary>
-		/// Calculate the total number of pins addressed with this node
-		/// </summary>
-		void UpdatePinCount()
-		{
-		  /// Find the least count of pins
+    /// <summary>
+    /// Calculate the total number of pins addressed with this node
+    /// </summary>
+    void UpdatePinCount()
+    {
+      /// Find the least count of pins
       NUM_PINS = Math.Min(FPinModeSetup.SliceCount,FPinValues.SliceCount);
       // TODO: If we do this, we need to fill the missing:
       // NUM_PINS = Math.Min(FDigitalInputCount[0],NUM_PINS);
       NUM_PINS = Math.Max(0,NUM_PINS);
 
       /// calculate the next full divider by 8:
-			NUM_PORTS = NUM_PINS/8 + (NUM_PINS%8==0 ? 0 : 1);
+      NUM_PORTS = NUM_PINS/8 + (NUM_PINS%8==0 ? 0 : 1);
 
       // we have to resize the masks
       if(OUTPUT_PORT_MASKS.Length != NUM_PORTS) {
         Array.Resize(ref OUTPUT_PORT_MASKS, NUM_PORTS);
       }
-		}
+    }
 
-		PinMode PinModeForPin(int pin)
-		{
-			return pin < FPinModeSetup.SliceCount ? FPinModeSetup[pin]:Firmata.Default.PINMODE;
-		}
+    PinMode PinModeForPin(int pin)
+    {
+      return pin < FPinModeSetup.SliceCount ? FPinModeSetup[pin]:Firmata.Default.PINMODE;
+    }
 
-		/// <summary>
-		/// Updates the pin masks, number of pins ,etc
-		/// </summary>
-		void UpdatePinConfiguration()
-		{
-			UpdatePinCount();
+    /// <summary>
+    /// Updates the pin masks, number of pins ,etc
+    /// </summary>
+    void UpdatePinConfiguration()
+    {
+      UpdatePinCount();
 
-			// allocate memory once
-			byte output_port;
-			for(int i = 0; i<NUM_PORTS; i++)
-			{
-				// reset temporary port mask
-				output_port=0x00;
+      // allocate memory once
+      byte output_port;
+      for(int i = 0; i<NUM_PORTS; i++)
+      {
+        // reset temporary port mask
+        output_port=0x00;
 
-				// Build the mask
-				PinMode mode; int pin;
-				for (int bit=0; bit<8; bit++)
-				{
-				  mode = Firmata.Default.PINMODE;
-					pin = i*8+bit;
-					/// Set the mode and add to the configure command
-					if(pin<FPinModeSetup.SliceCount)
-					{
-						mode = FPinModeSetup[pin];
-						SetPinModeCommand(mode,pin);
-					}
-					// using both both modes, enables configuring
-					// of pullup mode (thx! to motzi)
-					output_port |= (byte)(((mode == PinMode.OUTPUT || mode == PinMode.INPUT) ? 1:0)<<bit);
-				}
-				OUTPUT_PORT_MASKS[i] = output_port;
-			}
-		}
+        // Build the mask
+        PinMode mode; int pin;
+        for (int bit=0; bit<8; bit++)
+        {
+          mode = Firmata.Default.PINMODE;
+          pin = i*8+bit;
+          /// Set the mode and add to the configure command
+          if(pin<FPinModeSetup.SliceCount)
+          {
+            mode = FPinModeSetup[pin];
+            SetPinModeCommand(mode,pin);
+          }
+          // using both both modes, enables configuring
+          // of pullup mode (thx! to motzi)
+          output_port |= (byte)(((mode == PinMode.OUTPUT || mode == PinMode.INPUT) ? 1:0)<<bit);
+        }
+        OUTPUT_PORT_MASKS[i] = output_port;
+      }
+    }
 
-		void SetPinModeCommand(PinMode mode, int pin)
-		{
-			CommandBuffer.Enqueue(Command.SETPINMODE);
-			CommandBuffer.Enqueue((byte) pin);
-			CommandBuffer.Enqueue((byte) mode);
-		}
+    void SetPinModeCommand(PinMode mode, int pin)
+    {
+      CommandBuffer.Enqueue(Command.SETPINMODE);
+      CommandBuffer.Enqueue((byte) pin);
+      CommandBuffer.Enqueue((byte) mode);
+    }
 
-		static int PortIndexForPin(int pin)
-		{
-			return pin/8;
-		}
+    static int PortIndexForPin(int pin)
+    {
+      return pin/8;
+    }
 
-		void SetPinStates(ISpread<double> values)
-		{
-			// get the number of output ports
-			// FIXME: Make MAX_PORTS avaiable through Firmata
-			int[] digital_out = new int[NUM_PORTS];
+    void SetPinStates(ISpread<double> values)
+    {
+      // get the number of output ports
+      // FIXME: Get only those ports, whos values have changed
+      int[] digital_out = new int[NUM_PORTS];
       Queue<byte> AnalogCommandBuffer = new Queue<byte>();
 
-			for(int i=0; i<Math.Min(NUM_PINS,values.SliceCount); i++)
-			{
-				double value = values[i];
-				PinMode mode = PinModeForPin(i);
-				switch(mode)
-				{
-					case PinMode.PWM:
-					case PinMode.SERVO:
-						byte LSB,MSB;
-						value *= mode==PinMode.SERVO ? 180 : 255; // servo is in degrees
-						FirmataUtils.GetBytesFromValue((int)value,out MSB,out LSB);
-						AnalogCommandBuffer.Enqueue((byte)(Command.ANALOGMESSAGE | i));
-						AnalogCommandBuffer.Enqueue(LSB);
-						AnalogCommandBuffer.Enqueue(MSB);
-						break;
+      for(int i=0; i<Math.Min(NUM_PINS,values.SliceCount); i++)
+      {
+        double value = values[i];
+        PinMode mode = PinModeForPin(i);
+        switch(mode)
+        {
+          case PinMode.PWM:
+          case PinMode.SERVO:
+            byte LSB,MSB;
+            value *= mode==PinMode.SERVO ? 180 : 255; // servo is in degrees
+            FirmataUtils.GetBytesFromValue((int)value,out MSB,out LSB);
+            AnalogCommandBuffer.Enqueue((byte)(Command.ANALOGMESSAGE | i));
+            AnalogCommandBuffer.Enqueue(LSB);
+            AnalogCommandBuffer.Enqueue(MSB);
+            break;
 
-					case PinMode.OUTPUT:
-					case PinMode.INPUT:   // fixes PullUp enabling issue, thx to motzi!
-						int port = PortIndexForPin(i);
+          case PinMode.OUTPUT:
+          case PinMode.INPUT:   // fixes PullUp enabling issue, thx to motzi!
+            int port = PortIndexForPin(i);
 
-						// Break, if we have no outputports we can get
-						if (port >= NUM_PORTS) break;
+            // Break, if we have no outputports we can get
+            if (port >= NUM_PORTS) break;
 
-						int state = ( value >= 0.5 ? 0x01 : 0x00 ) << i%8;
+            int state = ( value >= 0.5 ? 0x01 : 0x00 ) << i%8;
             state |= digital_out[port];
             state &= OUTPUT_PORT_MASKS[port];
-						digital_out[port] = (byte) state;
-						break;
-				}
-			}
+            digital_out[port] = (byte) state;
+            break;
+        }
+      }
 
-			/// Write all the output ports to the command buffer
-			for(int port=0; port < digital_out.Length; port++)
-			{
-				byte LSB,MSB;
-				FirmataUtils.GetBytesFromValue(digital_out[port],out MSB,out LSB);
-				CommandBuffer.Enqueue((byte)(Command.DIGITALMESSAGE | port));
-				CommandBuffer.Enqueue(LSB);
-				CommandBuffer.Enqueue(MSB);
-			}
+      /// Write all the output ports to the command buffer
+      for(int port=0; port < digital_out.Length; port++)
+      {
+        byte LSB,MSB;
+        FirmataUtils.GetBytesFromValue(digital_out[port],out MSB,out LSB);
+        CommandBuffer.Enqueue((byte)(Command.DIGITALMESSAGE | port));
+        CommandBuffer.Enqueue(LSB);
+        CommandBuffer.Enqueue(MSB);
+      }
 
       /// Append the Commands for the analog messages
       if(AnalogCommandBuffer.Count > 0) {
         foreach (byte b in AnalogCommandBuffer) CommandBuffer.Enqueue(b);
       }
-		}
+    }
 
-		void GetSamplerateCommand(int rate)
-		{
-			byte lsb,msb;
-			FirmataUtils.GetBytesFromValue(rate,out msb,out lsb);
-			CommandBuffer.Enqueue(Command.SYSEX_START);
-			CommandBuffer.Enqueue(Command.SAMPLING_INTERVAL);
-			CommandBuffer.Enqueue(lsb);
-			CommandBuffer.Enqueue(msb);
-			CommandBuffer.Enqueue(Command.SYSEX_END);
-		}
+    void GetSamplerateCommand(int rate)
+    {
+      byte lsb,msb;
+      FirmataUtils.GetBytesFromValue(rate,out msb,out lsb);
+      CommandBuffer.Enqueue(Command.SYSEX_START);
+      CommandBuffer.Enqueue(Command.SAMPLING_INTERVAL);
+      CommandBuffer.Enqueue(lsb);
+      CommandBuffer.Enqueue(msb);
+      CommandBuffer.Enqueue(Command.SYSEX_END);
+    }
 
-		/// Query Firmware Name and Version
-		void GetFirmwareVersionCommand()
-		{
-			CommandBuffer.Enqueue(Command.SYSEX_START);
-			CommandBuffer.Enqueue(Command.REPORT_FIRMWARE_VERSION);
-			CommandBuffer.Enqueue(Command.SYSEX_END);
-		}
+    /// Query Firmware Name and Version
+    void GetFirmwareVersionCommand()
+    {
+      CommandBuffer.Enqueue(Command.SYSEX_START);
+      CommandBuffer.Enqueue(Command.REPORT_FIRMWARE_VERSION);
+      CommandBuffer.Enqueue(Command.SYSEX_END);
+    }
 
-		void GetAnalogPinReportingCommandForState(bool state,int pin)
-		{
-			byte val = (byte) (state ? 0x01 : 0x00);
-			CommandBuffer.Enqueue((byte)(Command.TOGGLEANALOGREPORT|pin));
-			CommandBuffer.Enqueue(val);
-		}
+    void GetAnalogPinReportingCommandForState(bool state,int pin)
+    {
+      byte val = (byte) (state ? 0x01 : 0x00);
+      CommandBuffer.Enqueue((byte)(Command.TOGGLEANALOGREPORT|pin));
+      CommandBuffer.Enqueue(val);
+    }
 
-		void SetAnalogPinReportingForRange(int range, bool state)
-		{
-			for(int i = 0; i<range; i++)
-				GetAnalogPinReportingCommandForState(state,i);
-		}
+    void SetAnalogPinReportingForRange(int range, bool state)
+    {
+      for(int i = 0; i<range; i++)
+        GetAnalogPinReportingCommandForState(state,i);
+    }
 
-		void GetDigitalPinReportingCommandForState(bool state,int port)
-		{
-			byte val = (byte) (state ? 0x01 : 0x00);
-			CommandBuffer.Enqueue((byte)(Command.TOGGLEDIGITALREPORT|port));
-			CommandBuffer.Enqueue(val);
-		}
+    void GetDigitalPinReportingCommandForState(bool state,int port)
+    {
+      byte val = (byte) (state ? 0x01 : 0x00);
+      CommandBuffer.Enqueue((byte)(Command.TOGGLEDIGITALREPORT|port));
+      CommandBuffer.Enqueue(val);
+    }
 
-		void GetResetCommand()
-		{
-			CommandBuffer.Enqueue(Command.RESET);
-		}
+    void GetResetCommand()
+    {
+      CommandBuffer.Enqueue(Command.RESET);
+    }
 
-		#endregion
+    #endregion
 
-	}
+  }
 
 }
