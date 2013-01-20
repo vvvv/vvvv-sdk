@@ -78,6 +78,7 @@ namespace VVVV.Nodes
 
   public class FirmataEncode : IPluginEvaluate
   {
+    #region Pin Definitions
     ///
     /// INPUT
     ///
@@ -123,6 +124,8 @@ namespace VVVV.Nodes
 
     [Output("Debug")]
     ISpread<string> FDebugOut;
+
+    #endregion Pin Definitions
 
     /// Use a Queue for a command byte buffer:
     Queue<byte> CommandBuffer = new Queue<byte>();
