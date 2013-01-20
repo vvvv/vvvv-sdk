@@ -375,13 +375,11 @@ namespace VVVV.Nodes
 
 		void GetResetCommand()
 		{
-			CommandBuffer.Enqueue(Command.SYSEX_START);
 			CommandBuffer.Enqueue(Command.RESET);
-			CommandBuffer.Enqueue(Command.SYSEX_END);
 		}
 
 		#endregion
-		
+
 	}
-	
+
 }
