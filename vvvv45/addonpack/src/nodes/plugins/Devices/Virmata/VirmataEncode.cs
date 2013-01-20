@@ -241,8 +241,6 @@ namespace VVVV.Nodes
 		{
 			UpdatePinCount();
 
-			// OUTPUT_PORT_MASKS = new byte[NUM_PORTS];
-
 			// allocate memory once
 			byte output_port;
 			for(int i = 0; i<NUM_PORTS; i++)
@@ -253,16 +251,14 @@ namespace VVVV.Nodes
 				// Build the mask
 				for (int bit=0; bit<8; bit++)
 				{
-					int src_index = i*8+bit;
+					int pin = i*8+bit;
 					PinMode mode = Firmata.Default.PINMODE;
 
 					/// Set the mode and add to the configure command
-					if(src_index<FPinModeSetup.SliceCount)
+					if(pin<FPinModeSetup.SliceCount)
 					{
-						mode = FPinModeSetup[src_index];
-						CommandBuffer.Enqueue(Command.SETPINMODE);
-						CommandBuffer.Enqueue((byte) src_index);
-						CommandBuffer.Enqueue((byte) mode);
+						mode = FPinModeSetup[pin];
+						SetPinModeCommand(mode,pin);
 					}
 					// using both both modes, enables configuring
 					// of pullup mode (thx! to motzi)
