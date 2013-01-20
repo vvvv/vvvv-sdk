@@ -156,6 +156,7 @@ namespace Firmata
       string s = string.Empty;
       while (CommandBuffer.Count > 0) {
         byte b = CommandBuffer.Dequeue();
+        int currentSize = s.Length;
         // The Command Switch:
         switch(FirmataUtils.GetCommandFromByte(b)) {
           case Command.SYSEX_START:
@@ -179,12 +180,11 @@ namespace Firmata
               }
               sb = CommandBuffer.Dequeue();
             }
-            s+=")"+Glue;
+            s+=")";
             break;
 
           case Command.RESET:
             s+="Reset!";
-            s+=Glue;
             break;
 
           case Command.SETPINMODE:
@@ -192,15 +192,14 @@ namespace Firmata
             s+=CommandBuffer.Dequeue().ToString();
             s+=" to ";
             switch((PinMode)CommandBuffer.Dequeue()) {
-              case PinMode.INPUT:   s+="INPUT"; break;
+              case PinMode.INPUT:   s+="INPUT";  break;
               case PinMode.OUTPUT:  s+="OUTPUT"; break;
               case PinMode.ANALOG:  s+="ANALOG"; break;
-              case PinMode.PWM:     s+="PWM"; break;
-              case PinMode.SERVO:   s+="SERVO"; break;
-              case PinMode.SHIFT:   s+="SHIFT"; break;
-              case PinMode.I2C:     s+="I2C"; break;
+              case PinMode.PWM:     s+="PWM";    break;
+              case PinMode.SERVO:   s+="SERVO";  break;
+              case PinMode.SHIFT:   s+="SHIFT";  break;
+              case PinMode.I2C:     s+="I2C";    break;
             }
-            s+=Glue;
             break;
 
           case Command.TOGGLEDIGITALREPORT:
@@ -208,7 +207,6 @@ namespace Firmata
             s+=(b&0x0f).ToString();
             s+=" set to: ";
             s+=CommandBuffer.Dequeue().ToString();
-            s+=Glue;
             break;
 
           case Command.TOGGLEANALOGREPORT:
@@ -216,39 +214,29 @@ namespace Firmata
             s+=(b&0x0f).ToString();
             s+=" set to: ";
             s+=CommandBuffer.Dequeue().ToString();
-            s+=Glue;
             break;
 
           case Command.DIGITALMESSAGE:
-            s+="Digital Message for port ";
+            s+="Digital message for port ";
             s+=(b&0x0f).ToString();
             s+=": ";
             s+=Convert.ToString(CommandBuffer.Dequeue(), 2);
-            s+=Glue;
             break;
 
           case Command.ANALOGMESSAGE:
-            s+="Analog Message for pin ";
+            s+="Analog message for pin ";
             s+=(b&0x0f).ToString();
             s+=": ";
             byte LSB = CommandBuffer.Dequeue();
             byte MSB = CommandBuffer.Dequeue();
             s+=FirmataUtils.GetValueFromBytes(MSB,LSB).ToString();
             break;
-            s+=Glue;
-            break;
-
-          default:
-            break;
-
         }
+        if (s.Length != currentSize) s+=Glue;
       }
-
       return s;
     }
-
   }
-
   #endregion
 
   #region Definitions
