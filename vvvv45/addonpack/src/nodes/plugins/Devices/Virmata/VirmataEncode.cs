@@ -164,6 +164,12 @@ namespace VVVV.Nodes
         SetPinStates(FPinValues);
       }
 
+      /// Set sample rate
+      if (FSamplerate.IsChanged || ShouldReset)
+      {
+        GetSamplerateCommand(FSamplerate[0]);
+      }
+
       /// Set Pinreporting for analog pins
       if (FReportAnalogPins.IsChanged || ShouldReset)
       {
@@ -177,16 +183,6 @@ namespace VVVV.Nodes
         {
           GetDigitalPinReportingCommandForState(FReportDigitalPins[0],port);
         }
-      }
-
-      /// Set Pinreporting for analog pins
-      // TODO: It should not be a fixed number of pins, later versions
-      if (FReportAnalogPins.IsChanged || ShouldReset)
-      {
-        // We must shortly trun of the reporting to get immidiate change of rate
-        if (FReportAnalogPins[0]) SetAnalogPinReportingForRange(FAnalogInputCount[0],false);
-        SetAnalogPinReportingForRange(FAnalogInputCount[0],FReportAnalogPins[0]);
-        if (FReportAnalogPins[0]) SetAnalogPinReportingForRange(FAnalogInputCount[0],true);
       }
 
       bool HasData = CommandBuffer.Count>0;
@@ -213,18 +209,24 @@ namespace VVVV.Nodes
 
     #region Helper Functions
 
+    // Make a shortcut for FResetSystem[0]
+    bool hasLaunched = false; // always reset on first launch
+    bool ShouldReset {
+      get {
+        if (!hasLaunched) {
+          hasLaunched = true;
+          return true;
+        } else {
+          return FResetSystem.IsChanged && FResetSystem[0];
+        }
+      }
+      set {}
+    }
+
     byte[] OUTPUT_PORT_MASKS  = {}; // empty array
 
     int NUM_PORTS = 0; // The total number of ports (AVR PORTS) respective to the number of pins
     int NUM_PINS  = 0; // The total number of pins addressed by this node
-
-    // Make a shortcut for FResetSystem[0]
-    bool ShouldReset {
-      get {
-        return FResetSystem.IsChanged && FResetSystem[0];
-      }
-      set {}
-    }
 
     /// <summary>
     /// Calculate the total number of pins addressed with this node
