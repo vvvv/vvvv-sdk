@@ -306,21 +306,26 @@ namespace Firmata
     /// </summary>
     public const byte SYSEX_END = 0xF7;
 
-    /// <summary>
-    /// Report the Firmware version
-    /// </summary>
-    public const byte REPORT_FIRMWARE_VERSION = 0x79;
-
-    /// <summary>
-    /// I2C Commands
-    /// </summary>
-    public const byte I2C_REQUEST = 0x76;
-    public const byte I2C_REPLY  = 0x77;
-
-    /// <summary>
-    /// Set Samplingrate Command
-    /// </summary>
-    public const byte SAMPLING_INTERVAL = 0x7A;
+    /// Subcommands
+    public const byte RESERVED_COMMAND        = 0x00; // 2nd SysEx data byte is a chip-specific command (AVR, PIC, TI, etc).
+    public const byte ANALOG_MAPPING_QUERY    = 0x69; // ask for mapping of analog to pin numbers
+    public const byte ANALOG_MAPPING_RESPONSE = 0x6A; // reply with mapping info
+    public const byte CAPABILITY_QUERY        = 0x6B; // ask for supported modes and resolution of all pins
+    public const byte CAPABILITY_RESPONSE     = 0x6C; // reply with supported modes and resolution
+    public const byte PIN_STATE_QUERY         = 0x6D; // ask for a pin's current mode and value
+    public const byte PIN_STATE_RESPONSE      = 0x6E; // reply with a pin's current mode and value
+    public const byte EXTENDED_ANALOG         = 0x6F; // analog write (PWM, Servo, etc) to any pin
+    public const byte SERVO_CONFIG            = 0x70; // set max angle, minPulse, maxPulse, freq
+    public const byte STRING_DATA             = 0x71; // a string message with 14-bits per char
+    public const byte SHIFT_DATA              = 0x75; // shiftOut config/data message (34 bits)
+    public const byte I2C_REQUEST             = 0x76; // I2C request messages from a host to an I/O board
+    public const byte I2C_REPLY               = 0x77; // I2C reply messages from an I/O board to a host
+    public const byte I2C_CONFIG              = 0x78; // Configure special I2C settings such as power pins and delay times
+    public const byte REPORT_FIRMWARE         = 0x79; // report name and version of the firmware
+    public const byte SAMPLING_INTERVAL       = 0x7A; // sampling interval
+    public const byte SYSEX_NON_REALTIME      = 0x7E; // MIDI Reserved for non-realtime messages
+    public const byte SYSEX_REALTIME          = 0x7F; // MIDI Reserved for realtime messages
+    
   }
 
   public enum PinMode

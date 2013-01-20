@@ -368,7 +368,7 @@ namespace VVVV.Nodes
     void GetFirmwareVersionCommand()
     {
       CommandBuffer.Enqueue(Command.SYSEX_START);
-      CommandBuffer.Enqueue(Command.REPORT_FIRMWARE_VERSION);
+      CommandBuffer.Enqueue(Command.REPORT_FIRMWARE);
       CommandBuffer.Enqueue(Command.SYSEX_END);
     }
 
