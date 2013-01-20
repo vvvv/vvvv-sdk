@@ -170,7 +170,15 @@ namespace Firmata
                   byte _MSB = CommandBuffer.Dequeue();
                   s+=FirmataUtils.GetValueFromBytes(_MSB,_LSB).ToString();
                   break;
-                case Command.REPORT_FIRMWARE_VERSION:
+                case Command.EXTENDED_ANALOG:
+                  int pin  = CommandBuffer.Dequeue() & 0x7f;
+                  byte __LSB = CommandBuffer.Dequeue();
+                  byte __MSB = CommandBuffer.Dequeue();
+                  s+="Extended Analog Message for pin ";
+                  s+=pin.ToString() + ": ";
+                  s+=FirmataUtils.GetValueFromBytes(__MSB,__LSB).ToString();
+                  break;
+                case Command.REPORT_FIRMWARE:
                   s+="ReportFirmwareVersion";
                   break;
                 default:

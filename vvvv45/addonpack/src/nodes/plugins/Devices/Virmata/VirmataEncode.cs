@@ -317,9 +317,18 @@ namespace VVVV.Nodes
             byte LSB,MSB;
             value *= mode==PinMode.SERVO ? 180 : 255; // servo is in degrees
             FirmataUtils.GetBytesFromValue((int)value,out MSB,out LSB);
-            AnalogCommandBuffer.Enqueue((byte)(Command.ANALOGMESSAGE | i));
-            AnalogCommandBuffer.Enqueue(LSB);
-            AnalogCommandBuffer.Enqueue(MSB);
+            if (pin <= 0x0F) {
+              AnalogCommandBuffer.Enqueue((byte)(Command.ANALOGMESSAGE | pin ));
+              AnalogCommandBuffer.Enqueue(LSB);
+              AnalogCommandBuffer.Enqueue(MSB);
+            } else {
+              AnalogCommandBuffer.Enqueue(Command.SYSEX_START);
+              AnalogCommandBuffer.Enqueue(Command.EXTENDED_ANALOG);
+              AnalogCommandBuffer.Enqueue((byte)(pin & 0x7F)); // mask 7 Bit
+              AnalogCommandBuffer.Enqueue(LSB);
+              AnalogCommandBuffer.Enqueue(MSB);
+              AnalogCommandBuffer.Enqueue(Command.SYSEX_END);
+            }
             break;
 
           case PinMode.OUTPUT:
