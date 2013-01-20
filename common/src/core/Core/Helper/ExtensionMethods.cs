@@ -38,6 +38,14 @@ namespace VVVV.Core
         }
 
         /// <summary>
+        /// Returns a rectangle for given center position and size.
+        /// </summary>
+        public static RectangleF GetRectangleForCenterAndSize(this PointF centerPosition, SizeF size)
+        {
+            return new RectangleF(centerPosition.X - size.Width * 0.5f, centerPosition.Y - size.Height * 0.5f, size.Width, size.Height);
+        }
+
+        /// <summary>
         /// Translates a given <see cref="PointF">p1</see> by a specified <see cref="PointF">p2</see>.
         /// </summary>
         public static PointF Add(this PointF p1, PointF p2)

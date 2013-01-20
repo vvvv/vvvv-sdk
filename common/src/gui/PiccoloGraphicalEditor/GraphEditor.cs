@@ -16,7 +16,6 @@ using Piccolo.NET.Util;
 using VVVV.Core.Viewer.GraphicalEditor;
 using VVVV.Core.View.GraphicalEditor;
 using VVVV.Core;
-using VVVV.Core
 
 namespace VVVV.HDE.GraphicalEditing
 {
@@ -179,6 +178,7 @@ namespace VVVV.HDE.GraphicalEditing
 
         internal void FCanvas_MouseMove(object sender, MouseEventArgs mouseEventArgs, PInputEventArgs e)
         {
+            OnMouseMove(mouseEventArgs);
             if (IsHoverable)
                 Hoverable.MouseHover(e.Position);
         }
