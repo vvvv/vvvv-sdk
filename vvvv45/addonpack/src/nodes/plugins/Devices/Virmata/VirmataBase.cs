@@ -200,6 +200,19 @@ namespace Firmata
 		public const byte SETPINMODE = 0xF4;
 		
 		/// <summary>
+		/// Report Protocol Version
+		/// </summary>
+		public const byte REPORT_VERSION = 0xF9;
+
+ 		/// <summary>
+		/// Reset System Command
+		/// </summary>
+		public const byte RESET = 0xFF;
+
+
+    /// SYSEX Commands:
+    ///
+		/// <summary>
 		/// Sysex start command
 		/// </summary>
 		public const byte SYSEX_START = 0xF0;
@@ -257,7 +270,7 @@ namespace Firmata
 		/// <summary>
 		/// Pinmode for Shift Registers
 		/// </summary>
-		SHIFTREGISTER = 0x05,
+		SHIFT = 0x05,
 		
 		/// <summary>
 		/// Pinmode I2C
