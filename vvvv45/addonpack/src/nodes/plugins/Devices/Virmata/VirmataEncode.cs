@@ -305,11 +305,12 @@ namespace VVVV.Nodes
       // FIXME: Get only those ports, whos values have changed
       int[] digital_out = new int[NUM_PORTS];
       Queue<byte> AnalogCommandBuffer = new Queue<byte>();
-
-      for(int i=0; i<Math.Min(NUM_PINS,values.SliceCount); i++)
+      int analogOutCount = 0;
+      int pinCount = Math.Min(Default.MaxDigitalPins,Math.Min(NUM_PINS,values.SliceCount));
+      for(int pin=0; pin<pinCount; pin++)
       {
-        double value = values[i];
-        PinMode mode = PinModeForPin(i);
+        double value = values[pin];
+        PinMode mode = PinModeForPin(pin);
         switch(mode)
         {
           case PinMode.PWM:
@@ -333,15 +334,14 @@ namespace VVVV.Nodes
 
           case PinMode.OUTPUT:
           case PinMode.INPUT:   // fixes PullUp enabling issue, thx to motzi!
-            int port = PortIndexForPin(i);
-
+            int port = PortIndexForPin(pin);
             // Break, if we have no outputports we can get
-            if (port >= NUM_PORTS) break;
-
-            int state = ( value >= 0.5 ? 0x01 : 0x00 ) << i%8;
-            state |= digital_out[port];
-            state &= OUTPUT_PORT_MASKS[port];
-            digital_out[port] = (byte) state;
+            if (port < NUM_PORTS) {
+              int state = ( value >= 0.5 ? 0x01 : 0x00 ) << pin%8;
+              state |= digital_out[port];
+              state &= OUTPUT_PORT_MASKS[port];
+              digital_out[port] = (byte) state;
+            }
             break;
         }
       }
