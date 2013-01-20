@@ -172,7 +172,6 @@ namespace Firmata
                   break;
                 case Command.REPORT_FIRMWARE_VERSION:
                   s+="ReportFirmwareVersion";
-                  s+=Glue;
                   break;
                 default:
                   s+= String.Format("{0:X}", sb);
