@@ -71,23 +71,23 @@ namespace Firmata
       }
       return hasCommand;
     }
-    
+
     public static bool VerifiyCommand(byte b, byte cmd) {
       return  GetCommandFromByte(b) == cmd;
     }
-    
+
     public static byte GetCommandFromByte (byte data) {
       // Commands in the 0xF* region do not have channel data
       return data > 0xF0 ? data :  (byte)(data & 0xF0); // else mask out the Commandbits
     }
-    
+
     public static byte[] PortMessage(int port, int[] values) {
       byte LSB,MSB;
       GetBytesFromValue((int)GetPortFromPinValues(values),out MSB, out LSB);
       byte[] command = {(byte)(Command.DIGITALMESSAGE | port),LSB,MSB };
       return command;
     }
-    
+
     public static bool DecodePortMessage(byte[] data, out int port, out int[] values) {
       if (data.Length<3){
         port = 0;
@@ -99,7 +99,7 @@ namespace Firmata
       values    = GetPinValuesFromPortState(state);
       return true;
     }
-    
+
     public static bool DecodeAnalogMessage(byte[] data, out int pin, out int value) {
       if (data.Length<3){
         pin = 0;
@@ -110,7 +110,7 @@ namespace Firmata
       value = GetValueFromBytes(data[2],data[1]);
       return true;
     }
-    
+
     /// <summary>
     /// Get the integer value that was sent using the 7-bit messages of the firmata protocol
     /// </summary>
@@ -118,7 +118,7 @@ namespace Firmata
     {
       return ((MSB & 0x7F) << 7) | (LSB & 0x7F);
     }
-    
+
     /// <summary>
     /// Split an integer value to two 7-bit parts so it can be sent using the firmata protocol
     /// </summary>
@@ -127,7 +127,7 @@ namespace Firmata
       LSB = (byte)( value & 0x7F );
       MSB = (byte)((value >> 7) & 0x7F);
     }
-    
+
     /// <summary>
     /// Send an array of boolean values indicating the state of each individual
     /// pin and get a byte representing a port
@@ -218,7 +218,7 @@ namespace Firmata
             s+=CommandBuffer.Dequeue().ToString();
             s+=Glue;
             break;
-          
+
           case Command.DIGITALMESSAGE:
             s+="Digital Message for port ";
             s+=(b&0x0f).ToString();
@@ -240,20 +240,20 @@ namespace Firmata
 
           default:
             break;
-            
+
         }
       }
 
       return s;
     }
-    
+
   }
-  
+
   #endregion
 
   #region Definitions
   /// For the Specs see: http://firmata.org/wiki/Protocol
-  
+
   /// Some helpful constants for the NameSpace
   public struct Default {
     public const int SampleRate     = 20;
@@ -284,18 +284,18 @@ namespace Firmata
     /// digital state of the specified port
     /// </summary>
     public const byte TOGGLEDIGITALREPORT = 0xD0;
-    
+
     /// <summary>
     /// The distinctive value that states that this message is a digital message.
     /// It comes as a report or as a command
     /// </summary>
     public const byte DIGITALMESSAGE = 0x90;
-    
+
     /// <summary>
     /// A command to change the pin mode for the specified pin
     /// </summary>
     public const byte SETPINMODE = 0xF4;
-    
+
     /// <summary>
     /// Report Protocol Version
     /// </summary>
@@ -313,80 +313,80 @@ namespace Firmata
     /// Sysex start command
     /// </summary>
     public const byte SYSEX_START = 0xF0;
-    
+
     /// <summary>
     /// Sysex end command
     /// </summary>
     public const byte SYSEX_END = 0xF7;
-    
+
     /// <summary>
     /// Report the Firmware version
     /// </summary>
     public const byte REPORT_FIRMWARE_VERSION = 0x79;
-    
+
     /// <summary>
     /// I2C Commands
     /// </summary>
     public const byte I2C_REQUEST = 0x76;
     public const byte I2C_REPLY  = 0x77;
-    
+
     /// <summary>
     /// Set Samplingrate Command
     /// </summary>
     public const byte SAMPLING_INTERVAL = 0x7A;
   }
-  
+
   public enum PinMode
   {
     /// <summary>
     /// Pinmode INPUT
     /// </summary>
     INPUT = 0x00,
-    
+
     /// <summary>
     /// Pinmode OUTPUT
     /// </summary>
     OUTPUT = 0x01,
-    
+
     /// <summary>
-    /// Pinmode ANALOG 
+    /// Pinmode ANALOG
     /// </summary>
     ANALOG = 0x02,
-    
+
     /// <summary>
     /// Pinmode PWM
     /// </summary>
     PWM = 0x03,
-    
+
     /// <summary>
     /// Pinmode SERVO
     /// </summary>
-    
+
     SERVO = 0x04,
-    
+
     /// <summary>
     /// Pinmode for Shift Registers
     /// </summary>
     SHIFT = 0x05,
-    
+
     /// <summary>
     /// Pinmode I2C
     /// </summary>
     I2C = 0x06,
   }
-  
+
   public enum Port
   {
     /// <summary>
     /// This port represents digital pins 0..7. Pins 0 and 1 are reserved for communication
     /// </summary>
     PORTD = 0x00,
-    
+
     /// <summary>
     /// This port represents digital pins 8..13. 14 and 15 are for the crystal
     /// </summary>
     PORTB = 0x01,
-    
+
     /// <summary>
     /// This port represents analog input pins 0..5
     /// </summary>
