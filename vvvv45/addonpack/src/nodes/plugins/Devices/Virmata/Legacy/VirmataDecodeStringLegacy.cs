@@ -182,7 +182,7 @@ namespace VVVV.Nodes
 			
 			switch(data.Dequeue()){
 					/// Handle Firmwareversion replies:
-				case Command.REPORT_FIRMWARE_VERSION:
+				case Command.REPORT_FIRMWARE:
 					if (data.Count < 2) break;
 					int major = data.Dequeue();
 					int minor = data.Dequeue();
