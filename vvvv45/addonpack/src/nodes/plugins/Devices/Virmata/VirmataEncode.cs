@@ -285,50 +285,53 @@ namespace VVVV.Nodes
 			// get the number of output ports
 			// FIXME: Make MAX_PORTS avaiable through Firmata
 			int[] digital_out = new int[NUM_PORTS];
+      Queue<byte> AnalogCommandBuffer = new Queue<byte>();
 
-			for(int i=0; i<values.SliceCount; i++)
+			for(int i=0; i<Math.Min(NUM_PINS,values.SliceCount); i++)
 			{
 				double value = values[i];
 				PinMode mode = PinModeForPin(i);
 				switch(mode)
 				{
-					case PinMode.ANALOG:
 					case PinMode.PWM:
 					case PinMode.SERVO:
 						byte LSB,MSB;
 						value *= mode==PinMode.SERVO ? 180 : 255; // servo is in degrees
 						FirmataUtils.GetBytesFromValue((int)value,out MSB,out LSB);
-						CommandBuffer.Enqueue((byte)(Command.ANALOGMESSAGE | i));
-						CommandBuffer.Enqueue(LSB);
-						CommandBuffer.Enqueue(MSB);
+						AnalogCommandBuffer.Enqueue((byte)(Command.ANALOGMESSAGE | i));
+						AnalogCommandBuffer.Enqueue(LSB);
+						AnalogCommandBuffer.Enqueue(MSB);
 						break;
 
 					case PinMode.OUTPUT:
 					case PinMode.INPUT:   // fixes PullUp enabling issue, thx to motzi!
-						int port_index = PortIndexForPin(i);
-						// Break, if we have no ouputports we can get
-						if (port_index >= digital_out.Length) break;
+						int port = PortIndexForPin(i);
 
-						int shift = i%8;
-						int state = value >= 0.5 ? 0x01 : 0x00;
-						int port_before = digital_out[port_index];
-						digital_out[port_index] =  ((state << shift) | digital_out[port_index])  & OUTPUT_PORT_MASKS[port_index];
+						// Break, if we have no outputports we can get
+						if (port >= NUM_PORTS) break;
+
+						int state = ( value >= 0.5 ? 0x01 : 0x00 ) << i%8;
+            state |= digital_out[port];
+            state &= OUTPUT_PORT_MASKS[port];
+						digital_out[port] = (byte) state;
 						break;
 				}
 			}
 
 			/// Write all the output ports to the command buffer
-			for(int port_index=0; port_index<digital_out.Length; port_index++)
+			for(int port=0; port < digital_out.Length; port++)
 			{
 				byte LSB,MSB;
-				byte atmega_port = (byte) port_index; //Array.GetValues(Port)[port_index];
-				FirmataUtils.GetBytesFromValue(digital_out[port_index],out MSB,out LSB);
-				
-				CommandBuffer.Enqueue((byte)(Command.DIGITALMESSAGE | atmega_port));
+				FirmataUtils.GetBytesFromValue(digital_out[port],out MSB,out LSB);
+				CommandBuffer.Enqueue((byte)(Command.DIGITALMESSAGE | port));
 				CommandBuffer.Enqueue(LSB);
 				CommandBuffer.Enqueue(MSB);
-				
 			}
+
+      /// Append the Commands for the analog messages
+      if(AnalogCommandBuffer.Count > 0) {
+        foreach (byte b in AnalogCommandBuffer) CommandBuffer.Enqueue(b);
+      }
 		}
 
 		void GetSamplerateCommand(int rate)
