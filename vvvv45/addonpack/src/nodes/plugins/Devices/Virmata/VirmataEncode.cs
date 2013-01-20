@@ -250,11 +250,11 @@ namespace VVVV.Nodes
 				output_port=0x00;
 
 				// Build the mask
+				PinMode mode; int pin;
 				for (int bit=0; bit<8; bit++)
 				{
-					int pin = i*8+bit;
-					PinMode mode = Firmata.Default.PINMODE;
-
+				  mode = Firmata.Default.PINMODE;
+					pin = i*8+bit;
 					/// Set the mode and add to the configure command
 					if(pin<FPinModeSetup.SliceCount)
 					{
