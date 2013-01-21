@@ -23,13 +23,23 @@ namespace VVVV.HDE.GraphicalEditing
             {
                 Pen = null;
             }
-            PNode.BoundsChanged += HandlePNodeBoundsChanged;
+            SubscribeToBoundsChanged();
         }
 
         public override void Dispose()
         {
-            PNode.BoundsChanged -= HandlePNodeBoundsChanged;
+            UnsubscribeFromBoundsChanged();
             base.Dispose();
+        }
+
+        protected void SubscribeToBoundsChanged()
+        {
+            PNode.BoundsChanged += HandlePNodeBoundsChanged;
+        }
+
+        protected void UnsubscribeFromBoundsChanged()
+        {
+            PNode.BoundsChanged -= HandlePNodeBoundsChanged;
         }
 
         protected override PNode CreatePNode()
@@ -100,11 +110,11 @@ namespace VVVV.HDE.GraphicalEditing
                 FMoving = true;
                 try
                 {
-                    PNode.BoundsChanged -= HandlePNodeBoundsChanged;
+                    UnsubscribeFromBoundsChanged();
                     PNode.Width = value.Width;
                     PNode.Height = value.Height;
                     UpdatePNodePosition();
-                    PNode.BoundsChanged += HandlePNodeBoundsChanged;
+                    SubscribeToBoundsChanged();
                     TransformChanged(PNode, null);
                     //PNode.SignalBoundsChanged();
                 }
@@ -137,9 +147,9 @@ namespace VVVV.HDE.GraphicalEditing
                     FPositionMode = value;
 
                     //set new position if mode changed
-                    PNode.BoundsChanged -= HandlePNodeBoundsChanged;
+                    UnsubscribeFromBoundsChanged();
                     UpdatePNodePosition();
-                    PNode.BoundsChanged += HandlePNodeBoundsChanged;
+                    SubscribeToBoundsChanged();
                     //BoundsChanged(PNode, null);
                 }
             }

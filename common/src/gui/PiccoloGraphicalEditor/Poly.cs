@@ -60,6 +60,7 @@ namespace VVVV.HDE.GraphicalEditing
 		
 		protected void Rebuild()
 		{
+            UnsubscribeFromBoundsChanged();
 			if(IsClosed) //solid
 			{
 				if (FPoints.Count > 2)
@@ -73,13 +74,13 @@ namespace VVVV.HDE.GraphicalEditing
 				if (FPoints.Count > 1)
 				{
 					PPath.Reset();
-					
 					for(int i=0; i<FPoints.Count-1; i++)
 					{
 						PPath.AddLine(FPoints[i].X, FPoints[i].Y, FPoints[i+1].X, FPoints[i+1].Y);
 					}
 				}	
 			}
+            SubscribeToBoundsChanged();
 		}
 	}
 }
