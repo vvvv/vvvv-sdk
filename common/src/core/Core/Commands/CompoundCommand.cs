@@ -99,6 +99,11 @@ namespace VVVV.Core.Commands
                 }
             }
         }
+
+        public bool IsEmpty
+        {
+            get { return FCommands.Count == 0; }
+        }
         
         public override string ToString()
         {
