@@ -178,15 +178,15 @@ namespace VVVV.HDE.GraphicalEditing
 
             //react to position-changes of the pins node
             //which apparently is Parent.Parent for nodes and the PNode itself for Inlets/Outlets
-            if (StartSolid is Rectangle)
+            //if (StartSolid is Rectangle)
             	StartSolid.PNode.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
-            else
-            	StartSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
+            //else
+                StartSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
             
-            if (EndSolid is Rectangle)
+            //if (EndSolid is Rectangle)
             	EndSolid.PNode.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
-            else
-            	EndSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
+            //else
+                EndSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
         }
 
         public LinkPath(IGraphElementHost host, ISolid start, ISolid end)
@@ -231,19 +231,20 @@ namespace VVVV.HDE.GraphicalEditing
             }
         }
         
-        public void Dispose()
+        public override void Dispose()
         {
             PNode.TransformChanged -= PathChanged;
 
-            if (StartSolid is Rectangle)
+            //if (StartSolid is Rectangle)
             	StartSolid.PNode.TransformChanged -= PinBoundsChanged;
-            else
+            //else
             	StartSolid.PNode.Parent.Parent.TransformChanged -= PinBoundsChanged;
             
-            if (EndSolid is Rectangle)
+            //if (EndSolid is Rectangle)
             	EndSolid.PNode.TransformChanged -= PinBoundsChanged;
-            else
+            //else
             	EndSolid.PNode.Parent.Parent.TransformChanged -= PinBoundsChanged;
+            base.Dispose();
         }
     }
 }
