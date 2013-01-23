@@ -78,7 +78,7 @@ namespace VVVV.HDE.GraphicalEditing
             else if (FTempPathStarted && (e.Button == MouseButtons.Middle))
             {
             	//create constant at click
-            	FGraphEditor.Host.FinishPathWithConstant(FTempPath);
+            	FGraphEditor.Host.FinishPathWithNode(FTempPath);
             	DrawingEnded();            	
             }
             else if ((target == null) && (FTempPath != null))
@@ -325,6 +325,14 @@ namespace VVVV.HDE.GraphicalEditing
             base.EndStandardSelection(e);
 
             FGraphEditor.EndSelectionDrag();
+        }
+        
+        protected override void EndMarqueeSelection(PInputEventArgs e)
+        {
+        	if ((MarqueeBounds.Width > 10) && (MarqueeBounds.Height > 10))
+            	FGraphEditor.Host.MarqueeSelectionEnded(MarqueeBounds);
+            
+        	base.EndMarqueeSelection(e);
         }
     }
     

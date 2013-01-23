@@ -135,9 +135,11 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         /// <param name="apath"></param>
         void FinishPath(ITempPath apath, IConnectable end);
         
-        void FinishPathWithConstant(ITempPath apath);
+        void FinishPathWithNode(ITempPath apath);
         
         void HighlightElement(IGraphElement element);
+        
+        void MarqueeSelectionEnded(RectangleF bounds);
 
         void MoveSelected();
     }
