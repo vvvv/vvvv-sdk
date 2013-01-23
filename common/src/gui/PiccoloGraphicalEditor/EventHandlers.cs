@@ -58,6 +58,7 @@ namespace VVVV.HDE.GraphicalEditing
             FGraphEditor.ShowAwaitingConnections(target.Connectable);
 
             FGraphEditor.LinkRoot.Add(FTempPath);
+            FGraphEditor.Host.StartPath();
         }
 
         public override void OnClick(object sender, PInputEventArgs e)

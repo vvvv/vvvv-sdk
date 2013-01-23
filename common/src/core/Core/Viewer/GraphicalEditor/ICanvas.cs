@@ -128,6 +128,7 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         void CreateSolid(IIDItem item, PointF pos);
         void CreateSolid(string name, PointF pos);
 
+        void StartPath();
         /// <summary>
         /// typically a language would create an IPathHost, and by that call ICanvas.CreatePath to establish the link
         /// </summary>
