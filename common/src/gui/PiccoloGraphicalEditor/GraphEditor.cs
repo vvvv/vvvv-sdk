@@ -67,7 +67,11 @@ namespace VVVV.HDE.GraphicalEditing
                 delegate(Graphics graphics)
                 {
                     //improves text render quality when antialiased and speeds up drawing
-                    graphics.CompositingQuality = CompositingQuality.HighSpeed;
+                    graphics.CompositingQuality = CompositingQuality.Default;
+                    graphics.TextRenderingHint = TextRenderingHint.SystemDefault;
+                    graphics.InterpolationMode = InterpolationMode.Low;
+                    graphics.SmoothingMode = SmoothingMode.None;
+                    graphics.PixelOffsetMode = PixelOffsetMode.None;
                 };
             FCanvas.AnimatingRenderQuality = RenderQuality.HighQuality;
             FCanvas.InteractingRenderQuality = RenderQuality.HighQuality;
