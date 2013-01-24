@@ -121,6 +121,16 @@ namespace VVVV.HDE.GraphicalEditing
         	}
         	return null;
         }
+        
+        public IGraphElement GetGraphElementFromPoint(PointF position)
+        {
+        	foreach (GraphElement e in FRoot)
+        	{
+        		if (e.ContentBounds.Contains(position))
+        			return e;
+        	}
+        	return null;
+        }
 
         #region canvas input events
         internal void FCanvas_KeyPress(object sender, KeyPressEventArgs e)
