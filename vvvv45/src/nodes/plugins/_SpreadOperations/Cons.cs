@@ -19,21 +19,9 @@ namespace VVVV.Nodes
 
         [Output("Output")]
         protected ISpread<ISpread<T>> Output;
-        
-        private readonly ISpread<T>[] FBuffer = new ISpread<T>[16];
 
         public void Evaluate(int SpreadMax)
         {
-//        	var outputStream = Output.GetStream();
-//        	var inputStream = Input.GetStream();
-//        	
-//        	outputStream.Length = inputStream.Length;
-
-//        	while (!outputStream.Eof)
-//        	{
-//        		int numSlicesRead = inputStream.Read(FBuffer, 0, FBuffer.Length);
-//        		outputStream.Write(FBuffer, 0, numSlicesRead);
-//        	}
 			Output.SliceCount = Input.SliceCount;
             for (var i = 0; i < Input.SliceCount; i++)
             	Output[i] = Input[i];
