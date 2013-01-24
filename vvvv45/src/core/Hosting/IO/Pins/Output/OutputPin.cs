@@ -28,16 +28,16 @@ namespace VVVV.Hosting.Pins.Output
 	    {
 	        FOutStream = outStream;
 	    }
-	    
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 // Write the buffered data to the out stream.
                 FOutStream.AssignFrom(this);
-                FOutStream.Flush();
+                FOutStream.Flush(force);
             }
-            base.Flush();
+            base.Flush(force);
         }
 	}
 }

@@ -37,7 +37,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "SliderXY",
 	            Category = "GUI",
 	            Help = "A spread of xy-slider groups",
-	            Tags = "EX9, DX9, transform, interaction, mouse, fader",
+	            Tags = "multitouch, MT, EX9, DX9, transform, interaction, mouse, fader",
 	            Author = "tonfilm")]	
 	public class SliderXYNode: BasicGui2dSliderNode
 	{

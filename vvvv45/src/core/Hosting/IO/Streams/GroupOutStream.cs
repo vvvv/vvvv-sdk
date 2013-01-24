@@ -93,13 +93,13 @@ namespace VVVV.Hosting.IO.Streams
                 return FStreams.IsChanged;
             }
         }
-        
-        public void Flush()
+
+        public void Flush(bool force = false)
         {
-            FStreams.Flush();
+            FStreams.Flush(force);
             foreach (var stream in this)
             {
-                stream.Flush();
+                stream.Flush(force);
             }
         }
         

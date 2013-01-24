@@ -162,8 +162,8 @@ namespace VVVV.Hosting.IO.Streams
                 }
             }
         }
-        
-        public void Flush()
+
+        public void Flush(bool force = false)
         {
             // No need. We write to the unmanaged array directly.
         }

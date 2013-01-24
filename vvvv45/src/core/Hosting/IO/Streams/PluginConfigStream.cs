@@ -42,8 +42,8 @@ namespace VVVV.Hosting.IO.Streams
             }
             return base.Sync();
         }
-        
-        public override sealed void Flush()
+
+        public override sealed void Flush(bool force = false)
         {
             FIsFlushing = true;
             try 
@@ -60,7 +60,7 @@ namespace VVVV.Hosting.IO.Streams
             } 
             finally 
             {
-                base.Flush();
+                base.Flush(force);
                 FIsFlushing = false;
                 FPreviousChangeCount = FChangeCount;
             }

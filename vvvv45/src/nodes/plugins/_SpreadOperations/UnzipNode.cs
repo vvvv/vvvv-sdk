@@ -11,7 +11,7 @@ namespace VVVV.Nodes
     static class UnzipInfo
     {
         public const string HELP = "Unzips a spread into multiple spreads";
-        public const string TAGS = "spread";
+        public const string TAGS = "spread, split";
     }
 
 	public abstract class UnzipNode<T> : IPluginEvaluate
