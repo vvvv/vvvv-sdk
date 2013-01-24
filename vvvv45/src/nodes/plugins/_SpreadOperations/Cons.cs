@@ -83,5 +83,14 @@ namespace VVVV.Nodes
                 )]
     public class EnumCons : Cons<EnumEntry>
     {
-    }        
+    }
+
+    [PluginInfo(Name = "Cons",
+            Category = "Raw",
+            Help = "Concatenates all input spreads to one output spread",
+            Tags = ""
+            )]
+    public class RawCons : Cons<System.IO.Stream>
+    {
+    }
 }
