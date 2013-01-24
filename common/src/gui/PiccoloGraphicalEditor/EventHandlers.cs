@@ -70,6 +70,7 @@ namespace VVVV.HDE.GraphicalEditing
             if (FTempPathStarted && (e.Button == MouseButtons.Right))
             {
                 // cancel link
+                FGraphEditor.Host.FinishPath(FTempPath, null);
                 DrawingEnded();
                 
                 FMultiConnect = false;
