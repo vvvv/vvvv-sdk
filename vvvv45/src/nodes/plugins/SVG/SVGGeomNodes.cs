@@ -245,6 +245,173 @@ namespace VVVV.Nodes
 		}
 	}
 	
+	//PATH------------------------------------------------------------------
+	#region PluginInfo
+	[PluginInfo(Name = "Path", 
+	            Category = "SVG", 
+	            Help = "Renders a path from a list of vertices into a Renderer (SVG)", 
+	            Tags = "primitive, 2d, vector")]
+	#endregion PluginInfo
+	public class SvgPathNode : SVGVisualElementFillNode<SvgPath>
+	{
+	    #pragma warning disable 649
+		[Input("Vertices", Order = -5)]
+		IDiffSpread<ISpread<Vector2>> FVerticesIn;
+		
+		[Input("Control 1", Order = -4)]
+		IDiffSpread<ISpread<Vector2>> FControl1In;
+		
+		[Input("Control 2", Order = -3)]
+		IDiffSpread<ISpread<Vector2>> FControl2In;
+		
+		[Input("Arc Rotation", Order = -2)]
+		IDiffSpread<ISpread<float>> FArcRotationIn;
+		
+		[Input("Command", Order = -1, MaxChars = 1, DefaultString = "L")]
+		IDiffSpread<ISpread<string>> FCommandIn;
+		#pragma warning restore
+		
+		protected override SvgPath CreateElement()
+		{
+			var p = new SvgPath();
+			return p;
+		}
+		
+		protected override int CalcSpreadMax(int max)
+		{
+			max = Math.Max(FTransformIn.SliceCount, FStrokeIn.SliceCount);
+			max = Math.Max(max, FStrokeWidthIn.SliceCount);
+			max = Math.Max(max, FEnabledIn.SliceCount);
+			max = Math.Max(max, FFillIn.SliceCount);
+			max = Math.Max(max, FFillModeIn.SliceCount);
+			max = Math.Max(max, FVerticesIn.SliceCount);
+			max = Math.Max(max, FControl1In.SliceCount);
+			max = Math.Max(max, FControl2In.SliceCount);
+			max = Math.Max(max, FArcRotationIn.SliceCount);
+			max = Math.Max(max, FCommandIn.SliceCount);
+			return max;
+		}
+		
+		protected override bool PinsChanged()
+		{
+			return base.PinsChanged() || FVerticesIn.IsChanged || FCommandIn.IsChanged || FControl1In.IsChanged || FControl2In.IsChanged || FArcRotationIn.IsChanged;
+		}
+		
+		protected override void CalcGeometry(SvgPath elem, Vector2 trans, Vector2 scale, int slice)
+		{
+			elem.PathData.Clear();
+			
+			var verts = FVerticesIn[slice];
+			var cont1 = FControl1In[slice];
+			var cont2 = FControl2In[slice];
+			var comms = FCommandIn[slice];
+			var arc = FArcRotationIn[slice];
+			
+			var coords = new List<float>(7);
+			
+			for (int i = 0; i < verts.SliceCount; i++)
+			{
+				coords.Clear();
+				
+				var c = comms[i][0];
+				
+				//make sure the first and last command fits the specification
+				if(i == 0)
+				{
+					c = 'M';
+				}
+				else if (i == verts.SliceCount - 1)
+				{
+					c = 'Z';
+				}
+				
+				//fill in params
+				switch (c)
+				{
+					case 'm': // relative moveto
+					case 'M': // moveto
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						break;
+					case 'a':
+					case 'A':
+
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
+						
+						coords.Add(arc[i] * 360);
+						
+						coords.Add(cont2[i].X);
+						coords.Add(cont2[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						
+						break;
+					case 'l': // relative lineto
+					case 'L': // lineto
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						break;
+					case 'H': // horizontal lineto
+					case 'h': // relative horizontal lineto
+						
+						coords.Add(verts[i].X);
+						break;
+					case 'V': // vertical lineto
+					case 'v': // relative vertical lineto
+						
+						coords.Add(verts[i].Y);
+						break;
+					case 'Q': // curveto
+					case 'q': // relative curveto
+						
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						break;
+					case 'T': // shorthand/smooth curveto
+					case 't': // relative shorthand/smooth curveto
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						break;
+					case 'C': // curveto
+					case 'c': // relative curveto
+						
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
+						
+						coords.Add(cont2[i].X);
+						coords.Add(cont2[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+
+						break;
+					case 'S': // shorthand/smooth curveto
+					case 's': // relative shorthand/smooth curveto
+
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						break;
+				}
+				
+				SvgPathBuilder.CreatePathSegment(c, elem.PathData, coords, char.IsLower(c));
+			}
+			
+		}
+		
+
+	}
+	
 	//POLYLINE------------------------------------------------------------------
 	#region PluginInfo
 	[PluginInfo(Name = "Polyline", 

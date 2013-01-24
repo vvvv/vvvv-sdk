@@ -6,7 +6,7 @@ float4x4 tP:PROJECTION;
 float4x4 tV:VIEW;
 float3 posCam : CAMERAPOSITION;
 texture tex0;
-sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;AddressU=WRAP;AddressV=WRAP;};
+sampler s0=sampler_state{Texture=(tex0);MipFilter=POINT;MinFilter=POINT;MagFilter=POINT;AddressU=WRAP;AddressV=WRAP;};
 float4 PosV(sampler s,float2 uv){
 	float4 p=float4(-1.0+2.0*uv.x,-1.0+2.0*uv.y,-1.0+2.0*tex2D(s,uv).x,1.0);
 	p.y*=-1.0;

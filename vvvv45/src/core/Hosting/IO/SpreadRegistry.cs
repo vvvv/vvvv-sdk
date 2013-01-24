@@ -94,13 +94,19 @@ namespace VVVV.Hosting.IO
                                        }
                                        
                                        var spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
-                                       return GenericIOContainer.Create(context, factory, spread, null, s => s.Flush());
+                                       if (context.IOAttribute.AutoFlush)
+                                           return GenericIOContainer.Create(context, factory, spread, null, s => s.Flush());
+                                       else
+                                           return GenericIOContainer.Create(context, factory, spread);
                                    }
                                }
                                var container = factory.CreateIOContainer(typeof(IOutStream<>).MakeGenericType(context.DataType), attribute, false);
                                var pinType = typeof(OutputPin<>).MakeGenericType(context.DataType);
                                var pin = Activator.CreateInstance(pinType, factory, container.GetPluginIO(), container.RawIOObject) as ISpread;
-                               return IOContainer.Create(context, pin, container, null, p => p.Flush());
+                               if (context.IOAttribute.AutoFlush)
+                                   return IOContainer.Create(context, pin, container, null, p => p.Flush());
+                               else
+                                   return IOContainer.Create(context, pin, container);
                            });
             
             RegisterConfig(typeof(IDiffSpread<>),

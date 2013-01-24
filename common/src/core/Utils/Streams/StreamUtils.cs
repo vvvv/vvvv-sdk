@@ -94,7 +94,7 @@ namespace VVVV.Utils.Streams
             
             public bool IsChanged { get { return false; } }
             
-            public void Flush()
+            public void Flush(bool force = false)
             {
                 
             }

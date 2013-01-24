@@ -1,0 +1,171 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.1.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\NormalMap\NormalMap (EX9.Texture Filter) help.v4p" systemname="NormalMap (EX9.Texture Filter) help" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\NormalMap\NormalMap (EX9.Texture Filter) help.v4p">
+   <BOUNDS type="Window" left="5730" top="6840" width="4740" height="5565">
+   </BOUNDS>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="1">
+   <BOUNDS type="Node" left="135" top="4470" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="135" top="4470" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5730" top="1830" width="4740" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="SystemFolder (File)" nodename="SystemFolder (File)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="135" top="915" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1275" top="915" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1275" top="915" width="2880" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="lib\assets\images\earth_512x512.jpg">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="135" top="1605" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1" encoded="0">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="135" top="1260" width="3555" height="270">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="31" dstpinname="Input 1" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="24" dstpinname="Filename" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output String" dstnodeid="31" dstpinname="Input 2" linkstyle="PolyLine">
+   </LINK>
+   <NODE componentmode="InABox" id="34" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="30" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="345" left="30" top="390" type="Box" width="4170">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|normals from height map|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="33" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4680">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|NormalMap - EX9.Texture Filter|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="57" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="135" top="3060" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="135" top="3060" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Texture Out" dstnodeid="57" dstpinname="Input Node">
+   </LINK>
+   <NODE id="42" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|see also|">
+   </PIN>
+   <BOUNDS type="Window" height="160" left="0" top="0" width="215">
+   </BOUNDS>
+   <BOUNDS type="Box" height="240" left="3270" top="4140" width="825">
+   </BOUNDS>
+   <BOUNDS type="Node" height="255" left="3270" top="4140" width="825">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="NormalMap (EX9.Texture Filter)" filename="NormalMap (EX9.Texture Filter).v4p" nodename="NormalMap (EX9.Texture Filter)" componentmode="Hidden" id="61">
+   <BOUNDS type="Node" left="135" top="3480" width="2985" height="270">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="135" top="3480">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="57" srcpinname="Output Node" dstnodeid="61" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="62" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1110" top="2655" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1110" top="2655" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Depth" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="62" srcpinname="Y Output Value" dstnodeid="61" dstpinname="Depth">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="63" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2145" top="2580" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2145" top="2580" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Radius" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="63" srcpinname="Y Output Value" dstnodeid="61" dstpinname="Radius">
+   </LINK>
+   <NODE systemname="FullscreenQuad (DX9)" filename="..\..\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="64">
+   <BOUNDS type="Node" left="135" top="4080" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="135" top="4080">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Output" dstnodeid="64" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="64" srcpinname="Layer" dstnodeid="1" dstpinname="Layers">
+   </LINK>
+   <NODE id="54" systemname="NormalGlow (EX9.Texture Filter)" filename="..\NormalGlow\NormalGlow (EX9.Texture Filter).v4p" nodename="NormalGlow (EX9.Texture Filter)" componentmode="Hidden">
+   <BOUNDS type="Node" left="3165" top="4620" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
