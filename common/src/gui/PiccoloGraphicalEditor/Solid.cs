@@ -32,14 +32,19 @@ namespace VVVV.HDE.GraphicalEditing
             base.Dispose();
         }
 
+        private int FSubscriptionCount;
         protected void SubscribeToBoundsChanged()
         {
-            PNode.BoundsChanged += HandlePNodeBoundsChanged;
+            if (FSubscriptionCount == 0)
+                PNode.BoundsChanged += HandlePNodeBoundsChanged;
+            FSubscriptionCount++;
         }
 
         protected void UnsubscribeFromBoundsChanged()
         {
-            PNode.BoundsChanged -= HandlePNodeBoundsChanged;
+            FSubscriptionCount--;
+            if (FSubscriptionCount == 0)
+                PNode.BoundsChanged -= HandlePNodeBoundsChanged;
         }
 
         protected override PNode CreatePNode()

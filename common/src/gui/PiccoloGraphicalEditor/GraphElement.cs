@@ -197,7 +197,7 @@ namespace VVVV.HDE.GraphicalEditing
         }
 
         //set the actual visibility
-        protected void SetVisibility()
+        protected virtual void SetVisibility()
         {
             if (FIsVisible)
             {

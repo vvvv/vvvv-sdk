@@ -97,5 +97,12 @@ namespace VVVV.HDE.GraphicalEditing
 			}
             SubscribeToBoundsChanged();
 		}
+
+        protected override void SetVisibility()
+        {
+            UnsubscribeFromBoundsChanged();
+            base.SetVisibility();
+            SubscribeToBoundsChanged();
+        }
 	}
 }
