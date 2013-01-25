@@ -71,6 +71,7 @@ namespace VVVV.HDE.GraphicalEditing
             if (FTempPathStarted && (e.Button == MouseButtons.Right))
             {
                 // cancel link
+                FGraphEditor.Host.FinishPath(FTempPath, null);
                 DrawingEnded();
                 
                 FMultiConnect = false;
@@ -176,8 +177,12 @@ namespace VVVV.HDE.GraphicalEditing
 
         public override void OnMouseMove(object sender, PInputEventArgs e)
         {
-        	var pin = FGraphEditor.GetClosestConnectable(e.Position);
-        	FGraphEditor.Host.HighlightElement(pin);
+        	IGraphElement element;
+        	element = FGraphEditor.GetClosestConnectable(e.Position);
+        	if (element == null)
+        		element = FGraphEditor.GetGraphElementFromPoint(e.Position);
+        	
+        	FGraphEditor.Host.HighlightElement(element);
         }
     }
 
