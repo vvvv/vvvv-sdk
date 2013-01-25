@@ -230,6 +230,12 @@ namespace VVVV.HDE.GraphicalEditing
             foreach (var item in this)
                 item.BringToFront();
         }
+
+        public object Tag
+        {
+            get;
+            set;
+        }
         #endregion graphical parameters
 
         /// <summary>
