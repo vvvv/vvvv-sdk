@@ -31,8 +31,21 @@ namespace VVVV.Utils.Collections
 
         public static IEnumerable<T> Append<T>(this IEnumerable<T> seq, T item)
         {
-            return seq.Concat(new T[] { item });
-        } 	
+            foreach (var i in seq)
+            {
+                yield return i;
+            } 
+            yield return item;
+        }
 
+        public static IEnumerable<T> SaveAppend<T>(this IEnumerable<T> seq, T item)
+        {
+            if (seq != null)
+                foreach (var i in seq)
+                {
+                    yield return i;
+                }
+            yield return item;
+        }
     }
 }
