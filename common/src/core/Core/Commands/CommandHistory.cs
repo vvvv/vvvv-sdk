@@ -96,6 +96,8 @@ namespace VVVV.Core.Commands
                     Debug.WriteLine(string.Format("Command {0} executed.", command));
                 },
                 string.Format("Execution of command {0}", command));
+            	
+            	OnChange();
             }
             else
             {
@@ -124,6 +126,8 @@ namespace VVVV.Core.Commands
                     Debug.WriteLine(string.Format("Command {0} undone.", command));
                 },
                 string.Format("Undo of command {0}", command));
+            	
+            	OnChange();
             }
         }
 
@@ -142,8 +146,12 @@ namespace VVVV.Core.Commands
                     Debug.WriteLine(string.Format("Command {0} redone.", command));
                 },
                 string.Format("Redo of command {0}", command));
+            	
+            	OnChange();
             }
         }
+        
+        public Action OnChange {get;set;}
 
         //IIDItem Interface
         public IIDContainer Parent { get; set; }

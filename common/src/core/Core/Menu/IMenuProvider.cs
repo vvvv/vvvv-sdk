@@ -11,5 +11,7 @@ namespace VVVV.Core.Menu
         /// Returns all the menu entries this menu is composed of.
         /// </summary>
         IEnumerable<IMenuEntry> MenuEntries { get; }
+        
+        Action OnUpdate {get; set;}
     }
 }

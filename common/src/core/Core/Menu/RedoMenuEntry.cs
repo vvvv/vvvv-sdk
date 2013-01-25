@@ -7,7 +7,7 @@ namespace VVVV.Core.Menu
     public class RedoMenuEntry : MenuEntry
     {
         public RedoMenuEntry(ICommandHistory commandHistory)
-            :base(commandHistory, string.Format("Redo {0}", commandHistory.NextCommand), Keys.Control | Keys.Y)
+            :base(commandHistory, string.Format("Redo {0}", commandHistory.NextCommand), Keys.Control | Keys.Shift | Keys.Z)
         {
         }
 
