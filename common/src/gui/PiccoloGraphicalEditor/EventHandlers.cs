@@ -324,19 +324,19 @@ namespace VVVV.HDE.GraphicalEditing
         protected override void StartStandardSelection(PInputEventArgs e)
         {
             base.StartStandardSelection(e);
-            FGraphEditor.StartSelectionDrag(SelectionReference.Cast<PNode>());
+            FGraphEditor.StartSelectionDrag(SelectionReference.Cast<PNode>(), e.Position);
         }
 
         protected override void DragStandardSelection(PInputEventArgs e)
         {
             base.DragStandardSelection(e);
-            FGraphEditor.DragSelection(SelectionReference.Cast<PNode>());
+            FGraphEditor.DragSelection(SelectionReference.Cast<PNode>(), e.Position);
         }
 
         protected override void EndStandardSelection(PInputEventArgs e)
         {
             base.EndStandardSelection(e);
-            FGraphEditor.EndSelectionDrag(SelectionReference.Cast<PNode>());
+            FGraphEditor.EndSelectionDrag(SelectionReference.Cast<PNode>(), e.Position);
         }
         
         protected override void EndMarqueeSelection(PInputEventArgs e)

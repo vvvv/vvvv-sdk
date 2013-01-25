@@ -105,27 +105,27 @@ namespace VVVV.HDE.GraphicalEditing
             FCanvas.MinimumSize = new Size(10, 10);
         }
 
-        public void StartSelectionDrag(IEnumerable<PNode> selection)
+        public void StartSelectionDrag(IEnumerable<PNode> selection, PointF position)
         {
             if (Host != null)
             {
-                Host.StartMoveSelected(selection.Select(n => n.Tag as GraphElement));
+                Host.StartMoveSelected(selection.Select(n => n.Tag as GraphElement), position);
             }
         }
 
-        public void DragSelection(IEnumerable<PNode> selection)
+        public void DragSelection(IEnumerable<PNode> selection, PointF position)
         {
             if (Host != null)
             {
-                Host.MoveSelected(selection.Select(n => n.Tag as GraphElement));
+                Host.MoveSelected(selection.Select(n => n.Tag as GraphElement), position);
             }
         }
 
-        public void EndSelectionDrag(IEnumerable<PNode> selection)
+        public void EndSelectionDrag(IEnumerable<PNode> selection, PointF position)
         {
             if (Host != null)
             {
-                Host.EndMoveSelected(selection.Select(n => n.Tag as GraphElement));
+                Host.EndMoveSelected(selection.Select(n => n.Tag as GraphElement), position);
             }
         }
         
