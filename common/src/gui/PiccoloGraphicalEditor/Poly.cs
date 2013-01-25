@@ -23,10 +23,25 @@ namespace VVVV.HDE.GraphicalEditing
 		{
 			Position = new PointF(0, 0);
 			FPoints = new EditableList<PointF>();
-			FPoints.Added += new CollectionDelegate<PointF>(PointsChanged);
-			FPoints.Removed += new CollectionDelegate<PointF>(PointsChanged);
+            FPoints.Added += PointsChanged;
+            FPoints.Removed += PointsChanged;
+            FPoints.UpdateBegun += FPoints_UpdateBegun;
+            FPoints.Updated += FPoints_Updated;
 			IsClosed = false;
 		}
+
+        void FPoints_UpdateBegun(IViewableCollection collection)
+        {
+            FPoints.Added -= PointsChanged;
+            FPoints.Removed -= PointsChanged;
+        }
+
+        void FPoints_Updated(IViewableCollection collection)
+        {
+            Rebuild();
+            FPoints.Added += PointsChanged;
+            FPoints.Removed += PointsChanged;
+        }
 
 		protected void PointsChanged(IViewableCollection<PointF> collection, PointF item)
 		{
@@ -82,5 +97,12 @@ namespace VVVV.HDE.GraphicalEditing
 			}
             SubscribeToBoundsChanged();
 		}
+
+        protected override void SetVisibility()
+        {
+            UnsubscribeFromBoundsChanged();
+            base.SetVisibility();
+            SubscribeToBoundsChanged();
+        }
 	}
 }

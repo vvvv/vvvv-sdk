@@ -6,6 +6,7 @@ using System.Drawing.Text;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Collections;
+using System.Linq;
 
 using Piccolo.NET;
 using Piccolo.NET.Nodes;
@@ -104,11 +105,27 @@ namespace VVVV.HDE.GraphicalEditing
             FCanvas.MinimumSize = new Size(10, 10);
         }
 
-        public void EndSelectionDrag()
+        public void StartSelectionDrag(IEnumerable<PNode> selection, PointF position)
         {
             if (Host != null)
             {
-                Host.MoveSelected();
+                Host.StartMoveSelected(selection.Select(n => n.Tag as GraphElement), position);
+            }
+        }
+
+        public void DragSelection(IEnumerable<PNode> selection, PointF position)
+        {
+            if (Host != null)
+            {
+                Host.MoveSelected(selection.Select(n => n.Tag as GraphElement), position);
+            }
+        }
+
+        public void EndSelectionDrag(IEnumerable<PNode> selection, PointF position)
+        {
+            if (Host != null)
+            {
+                Host.EndMoveSelected(selection.Select(n => n.Tag as GraphElement), position);
             }
         }
         

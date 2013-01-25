@@ -172,8 +172,11 @@ namespace VVVV.HDE.GraphicalEditing
             }
             set
             {
-                FBrush = value;
-                SetVisibility();
+                if (FBrush != value)
+                {
+                    FBrush = value;
+                    SetVisibility();
+                }
             }
         }
 
@@ -185,13 +188,16 @@ namespace VVVV.HDE.GraphicalEditing
             }
             set
             {
-                FPen = value;
-                SetVisibility();
+                if (FPen != value)
+                {
+                    FPen = value;
+                    SetVisibility();
+                }
             }
         }
 
         //set the actual visibility
-        protected void SetVisibility()
+        protected virtual void SetVisibility()
         {
             if (FIsVisible)
             {
@@ -205,10 +211,6 @@ namespace VVVV.HDE.GraphicalEditing
                 if (PPath != null) PPath.Pen = null;
                 if (PNode is CombinedText) (PNode as CombinedText).Pen = null;
             }
-
-            //force redraw
-            PNode.Visible = false;
-            PNode.Visible = true;
         }
 
         public bool Visible
@@ -219,8 +221,11 @@ namespace VVVV.HDE.GraphicalEditing
             }
             set
             {
-                FIsVisible = value;
-                SetVisibility();
+                if (FIsVisible != value)
+                {
+                    FIsVisible = value;
+                    SetVisibility();
+                }
             }
         }
 
@@ -229,6 +234,12 @@ namespace VVVV.HDE.GraphicalEditing
             PNode.MoveToFront();
             foreach (var item in this)
                 item.BringToFront();
+        }
+
+        public object Tag
+        {
+            get;
+            set;
         }
         #endregion graphical parameters
 

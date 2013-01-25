@@ -141,6 +141,8 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         
         void MarqueeSelectionEnded(RectangleF bounds);
 
-        void MoveSelected();
+        void StartMoveSelected(IEnumerable<IGraphElement> selection, PointF position);
+        void MoveSelected(IEnumerable<IGraphElement> selection, PointF position);
+        void EndMoveSelected(IEnumerable<IGraphElement> selection, PointF position);
     }
 }

@@ -38,5 +38,10 @@ namespace VVVV.Core.Commands
 		{
 		    get;
 		}
+		
+		Action OnChange 
+		{
+			get;set;
+		}
 	}
 }

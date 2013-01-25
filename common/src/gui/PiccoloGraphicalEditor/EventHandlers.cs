@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections;
+using System.Linq;
 using Piccolo.NET;
 using Piccolo.NET.Nodes;
 using Piccolo.NET.PiccoloX.Events;
@@ -70,6 +71,7 @@ namespace VVVV.HDE.GraphicalEditing
             if (FTempPathStarted && (e.Button == MouseButtons.Right))
             {
                 // cancel link
+                FGraphEditor.Host.FinishPath(FTempPath, null);
                 DrawingEnded();
                 
                 FMultiConnect = false;
@@ -324,11 +326,22 @@ namespace VVVV.HDE.GraphicalEditing
             else return false;
         }
 
+        protected override void StartStandardSelection(PInputEventArgs e)
+        {
+            base.StartStandardSelection(e);
+            FGraphEditor.StartSelectionDrag(SelectionReference.Cast<PNode>(), e.Position);
+        }
+
+        protected override void DragStandardSelection(PInputEventArgs e)
+        {
+            base.DragStandardSelection(e);
+            FGraphEditor.DragSelection(SelectionReference.Cast<PNode>(), e.Position);
+        }
+
         protected override void EndStandardSelection(PInputEventArgs e)
         {
             base.EndStandardSelection(e);
-
-            FGraphEditor.EndSelectionDrag();
+            FGraphEditor.EndSelectionDrag(SelectionReference.Cast<PNode>(), e.Position);
         }
         
         protected override void EndMarqueeSelection(PInputEventArgs e)
