@@ -114,7 +114,7 @@ namespace VVVV.Core.Collections
             item.Renamed += item_Renamed;
         }
 
-        private string GetNewQualifyingName(string name)
+        public string GetNewQualifyingName(string name)
         {
             var x = 2;
 
