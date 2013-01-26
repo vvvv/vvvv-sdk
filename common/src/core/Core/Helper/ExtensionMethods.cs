@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Xml.Linq;
 using System.Collections;
 using VVVV.Core.Serialization;
+using VVVV.Core.Logging;
 
 namespace VVVV.Core
 {
@@ -114,7 +115,12 @@ namespace VVVV.Core
             if(x != null)
                 foreach (var item in x.Elements())
                 {
-                    list.Add(serializer.Deserialize<T>(item));
+                    DebugHelpers.CatchAndLog(() =>
+                        {
+                            list.Add(serializer.Deserialize<T>(item));
+                        }, "deserializing an XElement", (e) =>
+                            {
+                            });
                 }
         }
 
