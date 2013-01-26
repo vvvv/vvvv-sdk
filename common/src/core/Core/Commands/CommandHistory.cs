@@ -96,8 +96,9 @@ namespace VVVV.Core.Commands
                     Debug.WriteLine(string.Format("Command {0} executed.", command));
                 },
                 string.Format("Execution of command {0}", command));
-            	
-            	OnChange();
+
+                if (OnChange != null)
+                    OnChange();
             }
             else
             {
@@ -126,8 +127,9 @@ namespace VVVV.Core.Commands
                     Debug.WriteLine(string.Format("Command {0} undone.", command));
                 },
                 string.Format("Undo of command {0}", command));
-            	
-            	OnChange();
+
+                if (OnChange != null)
+                    OnChange();
             }
         }
 
@@ -147,7 +149,8 @@ namespace VVVV.Core.Commands
                 },
                 string.Format("Redo of command {0}", command));
             	
-            	OnChange();
+            	if (OnChange != null) 
+                    OnChange();
             }
         }
         
