@@ -81,9 +81,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="105" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="100" left="4050" top="9210" type="Node" width="100">
+   <BOUNDS height="100" left="4026" top="8970" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="300" left="4050" top="9210" type="Box" width="615">
+   <BOUNDS height="240" left="4026" top="8970" type="Box" width="2595">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" visible="1" slicecount="1" values="||">
    </PIN>
@@ -216,18 +216,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="117" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
-   <BOUNDS height="0" left="1110" top="3090" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="3015" left="1110" top="3090" type="Box" width="900">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="14" values="PWM,PWM,INPUT,PWM,PWM,PWM,PWM,PWM,OUTPUT,SERVO,OUTPUT,PWM,OUTPUT,OUTPUT">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="14">
-   </PIN>
-   <PIN pinname="Output Enum" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="118" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1890" top="7170" type="Node" width="0">
    </BOUNDS>
@@ -284,6 +272,8 @@
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="121" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -375,7 +365,7 @@
    </BOUNDS>
    <BOUNDS height="540" left="2295" top="3090" type="Box" width="2775">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; Set the PinMode of each pin (Shiftregister is not implemented yet)|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; Set the PinMode of each pin (SHIFTREGISTER is not implemented yet)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -389,7 +379,7 @@
    </BOUNDS>
    <BOUNDS height="375" left="9210" top="75" type="Box" width="1845">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Version: 1.0.1|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Version: 1.1|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -473,9 +463,9 @@
    <NODE componentmode="InABox" id="134" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="6075" top="2130" type="Node" width="795">
    </BOUNDS>
-   <BOUNDS height="4800" left="6075" top="2130" type="Box" width="5205">
+   <BOUNDS height="3555" left="6075" top="2130" type="Box" width="4830">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Features:&cr;&lf;&cr;&lf;- Analog I/O&cr;&lf;- Digital I/O&cr;&lf;- PWM (set pinmode and send a values from 0 to 1)&cr;&lf;- Servo  (set pinmode and send a values from 0 to 1)&cr;&lf;- Set an individual sample rate for the ananlog pins (see Inspektor)&cr;&lf;- (experimental) support for I2C data decoding&cr;&lf;&cr;&lf;&cr;&lf;**NEW in version 1.0.1**&cr;&lf;&cr;&lf;This is  a maintainance release.&cr;&lf;&cr;&lf;Quickfix support for new Raw data type and therefor&cr;&lf;no problems with unicorn!&cr;&lf;&cr;&lf;Supports to set a variable Wait For Reset time via Inspector (useful&cr;&lf;if you have a slow board, e.g. the Boarduino)|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Features:&cr;&lf;&cr;&lf;- Analog I/O&cr;&lf;- Digital I/O&cr;&lf;- PWM (set pinmode and send a values from 0 to 1)&cr;&lf;- Servo  (set pinmode and send a values from 0 to 1)&cr;&lf;- Set an individual sample rate for the analog pins (see Inspektor)&cr;&lf;- (experimental) support for I2C data decoding&cr;&lf;&cr;&lf;&cr;&lf;**NEW in version 1.1**&cr;&lf;&cr;&lf;* Native RAW Support is build in, String got Legacy - stop using it!|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -513,7 +503,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" id="136" nodename="I2CDecode (Devices 2.x)" systemname="I2CDecode (Devices 2.x)">
-   <BOUNDS height="100" left="4980" top="10500" type="Node" width="100">
+   <BOUNDS height="100" left="4956" top="10500" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="I2CData" visible="1" slicecount="1" values="||">
    </PIN>
@@ -523,13 +513,13 @@
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
-   <PIN pinname="PinModes">
+   <PIN pinname="PinModes" visible="1">
    </PIN>
    <PIN pinname="ReportAnalog">
    </PIN>
    <PIN pinname="ReportDigital">
    </PIN>
-   <PIN pinname="Reset">
+   <PIN pinname="Reset" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Enable">
    </PIN>
@@ -553,16 +543,14 @@
    </PIN>
    <PIN pinname="SampleRate" slicecount="1" values="40">
    </PIN>
+   <PIN pinname="IsConnected" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="116" dstpinname="Input" srcnodeid="61" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="116" dstpinname="PinModes" srcnodeid="117" srcpinname="Output Enum">
    </LINK>
    <LINK dstnodeid="116" dstpinname="ReportAnalog" srcnodeid="118" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="116" dstpinname="ReportDigital" srcnodeid="119" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="116" dstpinname="Reset" srcnodeid="120" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="116" dstpinname="Enable" srcnodeid="121" srcpinname="Y Output Value">
    </LINK>
@@ -575,5 +563,63 @@
    <LINK dstnodeid="105" dstpinname="Input String" srcnodeid="116" srcpinname="Firmwareversion">
    </LINK>
    <LINK srcnodeid="116" srcpinname="I2C Data" dstnodeid="136" dstpinname="I2CData">
+   </LINK>
+   <NODE componentmode="InABox" id="138" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="100" left="1113" top="3090" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3030" left="1113" top="3090" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="14" visible="1" values="OUTPUT,OUTPUT,INPUT,PWM,OUTPUT,PWM,PWM,OUTPUT,OUTPUT,PWM,PWM,PWM,OUTPUT,OUTPUT">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="14">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="PullDown">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="138" srcpinname="Output Enum" dstnodeid="116" dstpinname="PinModes">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="140" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="3120" top="8970" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3120" top="8970" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="116" srcpinname="IsConnected" dstnodeid="140" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="141" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2175" top="8970" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2175" top="8970" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="116" srcpinname="OnData" dstnodeid="141" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Y Output Value" dstnodeid="116" dstpinname="Reset">
    </LINK>
    </PATCH>
