@@ -144,5 +144,7 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         void StartMoveSelected(IEnumerable<IGraphElement> selection, PointF position);
         void MoveSelected(IEnumerable<IGraphElement> selection, PointF position);
         void EndMoveSelected(IEnumerable<IGraphElement> selection, PointF position);
+
+        bool IsSelectable(IGraphElement graphElement);
     }
 }
