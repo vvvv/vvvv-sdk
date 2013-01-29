@@ -128,6 +128,16 @@ namespace VVVV.HDE.GraphicalEditing
                 Host.EndMoveSelected(selection.Select(n => n.Tag as GraphElement), position);
             }
         }
+
+        public bool IsSelectable(PNode node)
+        {
+            var graphElement = node.Tag as GraphElement;
+            if (Host != null && graphElement != null)
+            {
+                return graphElement.IsSelectable && Host.IsSelectable(graphElement);
+            }
+            return false;
+        }
         
         public IGraphElement GetClosestConnectable(PointF position)
         {

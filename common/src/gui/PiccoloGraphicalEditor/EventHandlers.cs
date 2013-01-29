@@ -321,9 +321,7 @@ namespace VVVV.HDE.GraphicalEditing
         //node is selectable if its tag is an ISelectable
         protected override bool IsSelectable(PNode node)
         {
-            var host = node.Tag as GraphElement;
-            if (host != null) return host.IsSelectable;
-            else return false;
+            return FGraphEditor.IsSelectable(node);
         }
 
         protected override void StartStandardSelection(PInputEventArgs e)
