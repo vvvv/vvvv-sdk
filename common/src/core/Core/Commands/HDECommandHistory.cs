@@ -8,23 +8,23 @@ using VVVV.Core.Serialization;
 namespace VVVV.Core.Commands
 {
 	/// <summary>
-	/// The client implementation of ICommandHistory.
+	/// The HDE implementation of ICommandHistory. Sends the comands to the runtime
 	/// </summary>
-    public class ClientCommandHistory : CommandHistory
+    public class HDECommandHistory : CommandHistory
 	{
         private CommandSender FCommandSender;
         private IIDItem FIdItem;
 
-        public ClientCommandHistory(IIDItem idItem)
-            : base(idItem.Mapper.Map<Serializer>())
+        public HDECommandHistory(IIDItem idItem)
+            : base(idItem.Mapper.Map<Serializer>(), null)
         {
-            FCommandSender = new CommandSender("localhost", idItem);
+            FCommandSender = new CommandSender(Shell.Instance.CommandLineArguments.RemoteIPs, idItem);
             FIdItem = idItem;
         }
 
         /// <summary>
         /// Executes a command and adds it to the command history if the command
-        /// is undoable and sends the command to the remote server.
+        /// is undoable and sends the command to the remote vvvv.
         /// </summary>
         /// <param name="command">The command to be executed.</param>
         public override void Insert(Command command)

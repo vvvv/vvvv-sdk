@@ -24,6 +24,9 @@ namespace VVVV.Core
         [Option("l", "local", Required = false, HelpText = "If true, vvvv will not try to comunicate with a runtime")]
         public bool Local = false;
 
+        [OptionArray("r", "remote", Required = false, HelpText = "Space separated list of remote IP's of the runtimes to connect to")]
+        public string[] RemoteIPs;
+
         //help string
         [HelpOption(HelpText = "Dispaly this help screen")]
         public string GetUsage()

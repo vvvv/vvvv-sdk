@@ -180,5 +180,7 @@ namespace VVVV.Core
             FRemoter.PublishObject(obj, objectName);
             Console.WriteLine("Published object: " + objectName);
         }
+
+        public bool IsRuntime { get; set; }
     }
 }

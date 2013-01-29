@@ -13,15 +13,15 @@ namespace VVVV.Core.Commands
     {
         //port and remoting manager
         private int FPort = 3344;
-        private string FHost;
+        private string[] FHosts;
         private IIDItem FIDItem;
         private RemotingManagerTCP FRemoter;
         private readonly Serializer FSerializer;
 
-        public CommandSender(string host, IIDItem idItem)
+        public CommandSender(string[] hosts, IIDItem idItem)
         {
             FRemoter = new RemotingManagerTCP();
-            FHost = host;
+            FHosts = hosts == null ? new string[]{"localhost"} : hosts;
             FIDItem = idItem;
             FSerializer = idItem.Mapper.Map<Serializer>();
         }
@@ -60,10 +60,10 @@ namespace VVVV.Core.Commands
         }
 
         //get remote history
-        private CommandHistory GetHistory()
+        private ICommandHistory GetHistory()
         {
-            var remoteShell = FRemoter.GetRemoteObject<Shell>("Shell", FHost, FPort);
-            return remoteShell.GetAtID<CommandHistory>(FIDItem.GetID());
+            var remoteShell = FRemoter.GetRemoteObject<Shell>("Shell", FHosts[0], FPort);
+            return remoteShell.GetAtID<ICommandHistory>(FIDItem.GetID());
         }
 
         //try to send a command
@@ -72,12 +72,14 @@ namespace VVVV.Core.Commands
       
             try
             {
-                var h = GetHistory();
+                //h is a proxy objec of the remote history
+                //the xml string gets sent as value and is executed on the remote host
+                var h = GetHistory() as CommandHistory;
                 h.Insert(xml);
             }
             catch (Exception e)
             {
-                Console.WriteLine("Command could not be executed on remote server: " + e.Message);
+                Console.WriteLine("Command could not be executed on remote history: " + e.Message);
                 //Console.WriteLine("Command could not be executed on remote server");
                 //throw e;
             }

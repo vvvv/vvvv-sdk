@@ -3,6 +3,7 @@ using System.Diagnostics;
 using VVVV.Core.Logging;
 using System.Xml.Linq;
 using VVVV.Core.Serialization;
+using System.Threading;
 
 namespace VVVV.Core.Commands
 {
@@ -36,6 +37,7 @@ namespace VVVV.Core.Commands
 
         // Position in command list of last executed command.
         private Node<Command> FCurrentNode;
+        private SynchronizationContext FMainThread;
 
         /// <summary>
         /// The command which will be executed on redo.
@@ -61,10 +63,11 @@ namespace VVVV.Core.Commands
             }
         }
 
-        public CommandHistory(Serializer serializer)
+        public CommandHistory(Serializer serializer, SynchronizationContext syncContext)
         {
             FCurrentNode = FFirstNode;
             FSerializer = serializer;
+            FMainThread = syncContext;
         }
 
         /// <summary>
@@ -109,7 +112,10 @@ namespace VVVV.Core.Commands
         public virtual void Insert(string xml)
         {
             var x = XElement.Parse(xml);
-            Insert(FSerializer.Deserialize<Command>(x));
+            if (FMainThread != null)
+                FMainThread.Post((state) => Insert(FSerializer.Deserialize<Command>(x)), null);
+            else
+                Insert(FSerializer.Deserialize<Command>(x));
         }
 
         /// <summary>
