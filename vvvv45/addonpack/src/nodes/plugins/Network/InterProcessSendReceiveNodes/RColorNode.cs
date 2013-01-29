@@ -60,8 +60,8 @@ namespace InterProcessSendReceiveNodes
 		[Output("Output Value")]
 		ISpread<RGBAColor> FValueOut;
 		
-		[Output("Found", IsSingle = true)]
-		ISpread<bool> FFoundOut;
+//		[Output("Found", IsSingle = true)]
+//		ISpread<bool> FFoundOut;
 		
 		#endregion pins
 

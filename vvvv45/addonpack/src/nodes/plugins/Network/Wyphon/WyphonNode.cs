@@ -123,7 +123,7 @@ namespace VVVV.Nodes.Network.Wyphon
 		#region WyphonCallbackDelegates
 		
 		private static void WyphonPartnerJoined(uint partnerId, string partnerName) {
-//			try {
+			try {
 				Log(LogType.Debug, "WyphonPartner joined with id=" + partnerId + " and name=" + partnerName);
 				
 				lock (partnersLock) {
@@ -134,43 +134,46 @@ namespace VVVV.Nodes.Network.Wyphon
 					updatePartnersVersion();
 					Log(LogType.Debug, "partnersVersion has been updated to " + partnersUpdatedVersion);
 				}
-//			} catch (Exception e) {
-//				Log(LogType.Error, "[WyphonPartnerJoined Exception] " + e.Message + "\n" + e.StackTrace);				
-//			}
+			} catch (Exception e) {
+				Log(LogType.Error, "[WyphonPartnerJoined Exception] " + e.Message + "\n" + e.StackTrace);				
+			}
 		}
 
 		private static void WyphonPartnerLeft(uint partnerId) {
-//			try {
+			try {
 				Log(LogType.Debug, "WyphonPartner LEFT with id=" + partnerId);
 	
 				lock (partnersLock) {
 					int index = PartnerIds.IndexOf(partnerId);
+					if (index < 0) {
+						Log(LogType.Error, "WHAT'S THIS? parter with id " + partnerId + " NOT FOUND IN OUR LIST?");
+					}
 					
-					if (index > -1) {
+					//should there be multiple instances (errors in the list), clean up all occurrences
+					while (index > -1) {
 						lock (sharedTexturesLock) {
-							foreach ( ISpread<SharedTextureInfo> spread in SharedTexturesPerPartner.Values ) {
-								spread.SliceCount = 0;
+							ISpread<SharedTextureInfo> spread;
+							if ( SharedTexturesPerPartner.TryGetValue(sendingPartnerId, out spread) ) {
+								SharedTexturesPerPartner[partnerId].SliceCount = 0;
+								SharedTexturesPerPartner.Remove(partnerId);
+
+								updateTexturesVersion();
 							}
-							
-							SharedTexturesPerPartner.Clear();
-							
-							updateTexturesVersion();
 						}
 						
 						PartnerIds.RemoveAt(index);
 						PartnerNames.RemoveAt(index);
-					}
-					else {
-						Log(LogType.Error, "WHAT'S THIS? parter with id " + partnerId + " NOT FOUND IN OUR LIST?");
+						
+						index = PartnerIds.IndexOf(partnerId);
 					}
 					
 					//Log(LogType.Debug, "partnersVersion is now " + partnersUpdatedVersion);
 					updatePartnersVersion();
 					//Log(LogType.Debug, "partnersVersion has been updated to " + partnersUpdatedVersion);
 				}
-//			} catch (Exception e) {
-//				//Log(LogType.Error, "[WyphonPartnerLeft Exception] " + e.Message + "\n" + e.StackTrace);				
-//			}
+			} catch (Exception e) {
+				Log(LogType.Error, "[WyphonPartnerLeft Exception] " + e.Message + "\n" + e.StackTrace);				
+			}
 
 		}
 		
@@ -272,9 +275,24 @@ namespace VVVV.Nodes.Network.Wyphon
 		public void Evaluate(int SpreadMax) {
 
 			try {
-	            if (FNameIn.IsChanged && SpreadMax > 0) {
+	            if (FNameIn.IsChanged && FNameIn.SliceCount > 0) {
 					LogNow(LogType.Debug, "[Evaluate] FNameIn.IsChanged: creating a new WyphonPartner...");
 					wyphonPartnerName = FNameIn[0];
+					
+					//Clean up old 'status' data
+					FPartnerIdOut.SliceCount = 0;
+					FPartnerNameOut.SliceCount = 0;
+					lock (sharedTexturesLock) {
+						SharedTexturesPerPartner.Clear();
+						updateTexturesVersion();
+					}
+					lock(partnersLock) {
+						PartnerIds.SliceCount = 0;
+						PartnerNames.SliceCount = 0;
+						updatePartnersVersion();
+					}
+					//Cleanup done...
+					
 					
 					LogNow(LogType.Debug, "[Evaluate] WyphonPartner name set to " + FNameIn[0] + " !!!");
 					FIdOut.SliceCount = 1;
@@ -287,10 +305,7 @@ namespace VVVV.Nodes.Network.Wyphon
 						LogNow(LogType.Debug, "[Evaluate] FIdOut[0] set to " + FIdOut[0]);
 						
 						FStatusOut[0] = "ok id=" + wyphonPartner.PartnerId.ToString();
-						//LogNow(LogType.Debug, "NEW WyphonPartner !!!");
-						
-						FPartnerIdOut.SliceCount = 0;
-						FPartnerNameOut.SliceCount = 0;
+						//LogNow(LogType.Debug, "NEW WyphonPartner !!!");						
 					}
 					else {
 						LogNow(LogType.Error, "[Evaluate] NO WyphonPartner created: PROBLEM !!!");

@@ -111,6 +111,20 @@ namespace VVVV.Nodes.Network.Wyphon
 			    && WyphonNode.wyphonPartner != null ) {
 				
 				wyphon = WyphonNode.wyphonPartner;
+
+				//Unshare textures that have disappeared from the spread
+				foreach (uint handle in SharedTextureHandles) {
+//					LogNow(LogType.Debug, "Should the texture with handle " + handle + " still be shared?");
+					if ( FHandleIn.IndexOf(handle) == -1) {
+//						LogNow(LogType.Debug, "NO : stop sharing " + handle + "");
+						wyphon.UnshareD3DTexture(handle);
+						SharedTextureHandles.Remove(handle);
+					}
+					else {
+//						LogNow(LogType.Debug, "YES : keep sharing " + handle + "");
+					}
+				}
+
 				
 				//Share textures we didn't share before yet
 				for (int i = 0; i < FHandleIn.SliceCount; i++) {
@@ -151,18 +165,6 @@ namespace VVVV.Nodes.Network.Wyphon
 					}
 				}
 				
-				//Unshare textures that have disappeared from the spread
-				foreach (uint handle in SharedTextureHandles) {
-//					LogNow(LogType.Debug, "Should the texture with handle " + handle + " still be shared?");
-					if ( FHandleIn.IndexOf(handle) == -1) {
-//						LogNow(LogType.Debug, "NO : stop sharing " + handle + "");
-						wyphon.UnshareD3DTexture(handle);
-						SharedTextureHandles.Remove(handle);
-					}
-					else {
-//						LogNow(LogType.Debug, "YES : keep sharing " + handle + "");
-					}
-				}
 				
 				previousSpreadMax = SpreadMax;						
 			}

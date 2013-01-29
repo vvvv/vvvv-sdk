@@ -52,8 +52,12 @@ namespace InterProcessSendReceiveNodes
 		[Output("Output Value")]
 		ISpread<double> FValueOut;
 		
-		[Output("Found", IsSingle = true)]
-		ISpread<bool> FFoundOut;
+//		[Output("Found", IsSingle = true)]
+//		ISpread<bool> FFoundOut;
+
+
+//		[Output("Test")]
+//		ISpread<double> FTestOut;
 		
 		#endregion pins
 
@@ -69,6 +73,10 @@ namespace InterProcessSendReceiveNodes
 		ISpread<double> receivedSpread = new Spread<double>();
 		private Dictionary<uint, uint> lastVersionPerPartner = new Dictionary<uint, uint>();
 		
+//		ISpread<double> receivedSpreadA = new Spread<double>();
+//		ISpread<double> receivedSpreadB = new Spread<double>();
+//		private bool selectSpread = false;
+		
 		#endregion fields
 
 		#region helper functions
@@ -83,6 +91,13 @@ namespace InterProcessSendReceiveNodes
 
 		#endregion helper functions
 
+//		public RDoubleNode() {
+//			receivedSpreadA.SliceCount = 1;
+//			receivedSpreadA[0] = 0;
+//			receivedSpreadB.SliceCount = 1;
+//			receivedSpreadB[0] = 1;
+//		}
+		
 		private void OnMessageHandler(uint sendingPartnerId, IntPtr msgData, uint msgLength) {
 //			Log(LogType.Debug, "[R.Double] Received new message from " + sendingPartnerId + " of size " + msgLength);
 			
@@ -122,6 +137,12 @@ namespace InterProcessSendReceiveNodes
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax) {
+//			FTestOut = selectSpread ? receivedSpreadB : receivedSpreadA;
+//			selectSpread = ! selectSpread;
+//			LogNow(LogType.Debug, "Test spread = " + (FTestOut == receivedSpreadB ? "SPREAD 1" : "Spread 0" ) + " slice 0 = " + FTestOut[0] + (FTestOut.IsChanged ? "CHANGED" : "not changed" ) );
+//			FTestOut[0] = FTestOut[0];
+//			LogNow(LogType.Debug, (FTestOut.IsChanged ? "CHANGED" : "not changed" ) );
+//			
 			if (FChannelIn.IsChanged) {
 				if ( localMessageBroadcastPartner != null ) {
 					localMessageBroadcastPartner.Dispose();
