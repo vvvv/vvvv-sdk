@@ -263,50 +263,103 @@ namespace VVVV.Core.Model
 			var testPath = TryAddReferencePath("", refName);
 			return testPath != "";
 		}
+
+        static MsBuild.Construction.ProjectPropertyElement CreateProperty(MsBuild.Construction.ProjectRootElement project, string name, string value, string condition = null)
+        {
+            var propertyElement = project.CreatePropertyElement(name);
+            propertyElement.Value = value;
+            propertyElement.Condition = condition;
+            return propertyElement;
+        }
 		
 		public override void SaveTo(Uri location)
-		{
-			var projectPath = location.LocalPath;
-			var projectDir = Path.GetDirectoryName(projectPath);
+        {
+            var projectPath = location.LocalPath;
+            var projectDir = Path.GetDirectoryName(projectPath);
 
             var msBuildProject = MsBuild.Construction.ProjectRootElement.Create();
             msBuildProject.ToolsVersion = "4.0";
             msBuildProject.DefaultTargets = "Build";
 
-            var propertyGroup = msBuildProject.AddPropertyGroup();
-            propertyGroup.AddProperty("ProjectGuid", ProjectGuid.ToString("B").ToUpper());
-            propertyGroup.AddProperty("Configuration", "Debug");
-            propertyGroup.AddProperty("Platform", "x86");
-            propertyGroup.AddProperty("OutputType", "Library");
-            propertyGroup.AddProperty("RootNamespace", "VVVV.Nodes");
-            propertyGroup.AddProperty("AssemblyName", AssemblyName);
-            propertyGroup.AddProperty("TargetFrameworkVersion", "v4.0");
-            propertyGroup.AddProperty("OutputPath", "bin\\Debug\\");
-            propertyGroup.AddProperty("DebugSymbols", "True");
-            propertyGroup.AddProperty("DebugType", "Full");
-            propertyGroup.AddProperty("Optimize", "False");
-            propertyGroup.AddProperty("CheckForOverflowUnderflow", "True");
-            propertyGroup.AddProperty("DefineConstants", "DEBUG;TRACE");
-            propertyGroup.AddProperty("AllowUnsafeBlocks", "True");
+            {
+                try
+                {
+                    var propertyGroup = msBuildProject.AddPropertyGroup();
+                    propertyGroup.AddProperty("ProjectGuid", ProjectGuid.ToString("B").ToUpper());
+                    propertyGroup.AppendChild(CreateProperty(msBuildProject, "Configuration", "Debug", " '$(Configuration)' == '' "));
+                    propertyGroup.AppendChild(CreateProperty(msBuildProject, "Platform", "x86", " '$(Platform)' == '' "));
+                    propertyGroup.AddProperty("OutputType", "Library");
+                    propertyGroup.AddProperty("RootNamespace", "VVVV.Nodes");
+                    propertyGroup.AddProperty("AssemblyName", AssemblyName);
+                    propertyGroup.AddProperty("TargetFrameworkVersion", "v4.0");
+                    propertyGroup.AddProperty("OutputPath", @"bin\$(Platform)\$(Configuration)\");
+                    propertyGroup.AddProperty("AllowUnsafeBlocks", "True");
 
-            //add loaded reference paths
-            var referencePaths = ReferencePaths.Select(refPath =>
-                Path.IsPathRooted(refPath)
-                    ? PathUtils.MakeRelativePath(projectDir + @"\", refPath + @"\")
-                    : refPath);
-            var referencePathValue = string.Join(";", referencePaths);
-            if (!string.IsNullOrEmpty(referencePathValue))
-                propertyGroup.AddProperty("ReferencePath", referencePathValue);
+                    //add loaded reference paths
+                    var referencePaths = ReferencePaths.Select(refPath =>
+                        Path.IsPathRooted(refPath)
+                            ? PathUtils.MakeRelativePath(projectDir + @"\", refPath + @"\")
+                            : refPath);
+                    var referencePathValue = string.Join(";", referencePaths);
+                    if (!string.IsNullOrEmpty(referencePathValue))
+                        propertyGroup.AddProperty("ReferencePath", referencePathValue);
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
 
-            msBuildProject.AddImport("$(MSBuildBinPath)\\Microsoft.CSharp.Targets");
+            // From src/Default.Project.settings
+            {
+                var propertyGroup = msBuildProject.AddPropertyGroup();
+                propertyGroup.Condition = " '$(Configuration)' == 'Debug' ";
+                propertyGroup.AddProperty("DefineConstants", "DEBUG;TRACE");
+                propertyGroup.AddProperty("Optimize", "False");
+                propertyGroup.AddProperty("CheckForOverflowUnderflow", "True");
+                propertyGroup.AddProperty("DebugType", "Full");
+                propertyGroup.AddProperty("DebugSymbols", "True");
+            }
 
-            //add reference items
+            {
+                var propertyGroup = msBuildProject.AddPropertyGroup();
+                propertyGroup.Condition = " '$(Configuration)' == 'Release' ";
+                propertyGroup.AddProperty("DefineConstants", "TRACE");
+                propertyGroup.AddProperty("Optimize", "True");
+                propertyGroup.AddProperty("CheckForOverflowUnderflow", "False");
+                propertyGroup.AddProperty("DebugType", "None");
+                propertyGroup.AddProperty("DebugSymbols", "False");
+            }
+
+            {
+                var propertyGroup = msBuildProject.AddPropertyGroup();
+                propertyGroup.Condition = " '$(Platform)' == 'AnyCPU' ";
+                propertyGroup.AddProperty("PlatformTarget", "AnyCPU");
+            }
+
+            {
+                var propertyGroup = msBuildProject.AddPropertyGroup();
+                propertyGroup.Condition = " '$(Platform)' == 'x86' ";
+                propertyGroup.AddProperty("PlatformTarget", "x86");
+            }
+
+            {
+                var propertyGroup = msBuildProject.AddPropertyGroup();
+                propertyGroup.Condition = " '$(Platform)' == 'x64' ";
+                propertyGroup.AddProperty("PlatformTarget", "x64");
+            }
+
+            //add referenced items
             foreach (var reference in References)
             {
                 var item = msBuildProject.AddItem("Reference", reference.Name);
                 if (!reference.IsGlobal && !InReferencePaths(reference.Name))
                 {
                     var hintPath = reference.GetRelativePath();
+                    var dsc = Path.DirectorySeparatorChar;
+                    hintPath = hintPath.Replace(dsc + "x86" + dsc, dsc + "$(Platform)");
+                    hintPath = hintPath.Replace(dsc + "x64" + dsc, dsc + "$(Platform)");
                     item.AddMetadata("HintPath", hintPath);
                 }
             }
@@ -314,13 +367,15 @@ namespace VVVV.Core.Model
             foreach (var document in Documents)
                 msBuildProject.AddItem(document.CanBeCompiled ? "Compile" : "None", document.GetRelativePath());
 
+            msBuildProject.AddImport("$(MSBuildBinPath)\\Microsoft.CSharp.Targets");
+
             // Create the project directory if it doesn't exist yet.
             if (!Directory.Exists(projectDir))
                 Directory.CreateDirectory(projectDir);
 
             msBuildProject.Save(projectPath);
-			
-			base.SaveTo(location);
-		}
+
+            base.SaveTo(location);
+        }
 	}
 }
