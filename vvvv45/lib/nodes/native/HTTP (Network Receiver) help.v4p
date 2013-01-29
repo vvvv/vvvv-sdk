@@ -1,0 +1,217 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\HTTP (Network Receiver) help.v4p">
+   <BOUNDS height="9720" left="5370" top="3435" type="Window" width="10155">
+   </BOUNDS>
+   <NODE id="10" nodename="HTTP (Network Server)">
+   <BOUNDS height="0" left="1860" top="1995" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="HTTP (Network Receiver)">
+   <BOUNDS height="0" left="780" top="1995" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Name" visible="1">
+   </PIN>
+   <PIN pinname="Value" visible="1">
+   </PIN>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   <PIN pinname="ValueType" visible="1">
+   </PIN>
+   <PIN pinname="ReceiveURL" visible="1">
+   </PIN>
+   <PIN pinname="Method" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1695" top="3015" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6300" top="7215" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2775" left="1695" top="3015" type="Box" width="1890">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="210" top="3030" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6600" top="7515" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2775" left="210" top="3030" type="Box" width="1455">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="780" top="1215" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7560" top="5670" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="780" top="1215" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="vvvv">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="ReceiveURL" linkstyle="Bezier" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="315" top="675" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="390" left="315" top="675" type="Box" width="2805">
+   </BOUNDS>
+   <BOUNDS height="160" left="9630" top="37230" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Receives HTTP Requests|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="315" top="315" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="315" top="315" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9630" top="37230" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|HTTP (Network Receiver)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="135" top="6540" type="Node" width="3480">
+   </BOUNDS>
+   <BOUNDS height="840" left="135" top="6540" type="Box" width="5010">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Open your WebBrowser and request http://localhost/vvvv. &cr;&lf;Enter some stuff, submit and come back here.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="480" left="120" top="7320" type="Node" width="2025">
+   </BOUNDS>
+   <BOUNDS height="2085" left="120" top="7320" type="Box" width="9420">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The Receiver &quot;listens&quot; to HTTP requests on every IP address of the current machine on Port 80. The ReceiveUrl Pin specifies the Urls that will be observed, if none is entered the Node processes all requests that arrive at the server. Use the Method Pin to define which HTTP Method (GET, POST or both) the Node should listen to. &cr;&lf;The Receiver spits out the HTTP headers and parametes submitted in a request as name- value pairs.&cr;&lf;The ValueType Pin determines if the values derive from HTTP headers (0), Get Requests (1) or Post Requests (2). If more than one request arrive during a frame, the AncestorPin tells from which request the values originate.&cr;&lf;&cr;&lf;Note! If another software that uses port 80 is currently running on your computer (e.g. Apache-HTTP-Server) it will come into conflict with the vvvv server. To avoid those conflicts change the IP-Port of the Receiver/ Server using the inspektor.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5025" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11610" top="5760" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="4500" left="5025" top="1230" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot;?&gt;&cr;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;&cr;&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;de&quot;&gt;&cr;&cr;&lt;head&gt;&cr;&cr;&lt;meta name=&quot;title&quot; content=&quot; &quot; /&gt;&cr;&lt;meta name=&quot;DC.Title&quot; content=&quot; &quot; /&gt;&cr;&lt;meta http-equiv=&quot;content-language&quot; content=&quot;de&quot; /&gt;&cr;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=iso-8859-1&quot; /&gt;&cr;&lt;meta name=&quot;author&quot; content=&quot;Bj&amp;ouml;rn Schwarzer&quot; /&gt;&cr;&lt;meta name=&quot;DC.Creator&quot; content=&quot;Bj&amp;ouml;rn Schwarzer&quot; /&gt;&cr;&lt;meta name=&quot;publisher&quot; content=&quot;meso&quot; /&gt;&cr;&lt;meta name=&quot;DC.Publisher&quot; content=&quot;meso&quot; /&gt;&cr;&lt;meta name=&quot;copyright&quot; content=&quot;meso&quot; /&gt;&cr;&lt;meta name=&quot;DC.Rights&quot; content=&quot;meso&quot; /&gt;&cr;&lt;meta name=&quot;audience&quot; content=&quot;All&quot; /&gt;&cr;&lt;meta name=&quot;robots&quot; content=&quot;INDEX,FOLLOW&quot; /&gt;&cr;&lt;meta name=&quot;Description&quot; content=&quot;Just a Dummy&quot; /&gt;&cr;&lt;meta name=&quot;abstract&quot; content=&quot; &quot; /&gt;&cr;&lt;meta name=&quot;Keywords&quot; content=&quot; &quot; /&gt;&cr;&lt;meta name=&quot;date&quot; content=&quot;11-11-2005 &quot; /&gt;&cr;&lt;meta name=&quot;Expires&quot; content=&quot;0&quot; /&gt;&cr;&cr;&lt;title&gt;vvvv&lt;/title&gt;&cr;&cr;&lt;style type=&quot;text/css&quot;&gt;&cr;body {&cr;&tab;margin: 0;&cr;&tab;padding: 0;&cr;&tab;font-family: monospace;&cr;&tab;font-size: 10px;&cr;}&cr;&cr;br {&cr;&tab;clear: both;&cr;}&cr;&cr;#container {&cr;&tab;margin: 50px 0 0 50px;&cr;&tab;overflow: hidden;&cr;}&cr;&cr;&cr;fieldset {&cr;&tab;border: 0px;&cr;&tab;margin: 0 0 25px 0;&cr;}&cr;&cr;form {&cr;&tab;font-size: 10px;&cr;}&cr;&cr;h1 {&cr;&tab;font-size: 14px;&cr;&tab;margin: 0 0 20px 0;&cr;}&cr;&cr;input {&cr;&tab;font-family: monospace;&cr;&tab;font-size: 10px;&cr;&tab;margin: 0 15px 5px 0 ;&cr;}&cr;&cr;label {&cr;&tab;float: left;&cr;&tab;display: block;&cr;&tab;width: 50px;&cr;&tab;margin: 3px 15px 0 0;&cr;}&cr;&cr;legend {&cr;&tab;font-size: 12px;&cr;&tab;padding: 0 0 10px 0;&cr;}&cr;&lt;/style&gt;&cr;&cr;&lt;script type=&quot;text/javascript&quot;&gt;&cr;function chkValues (a) {&cr;  var chkZ = 1;&cr;  for (i = 0; i &lt; document.getElementById(a).value.length; ++i)&cr;    if (document.getElementById(a).value.charAt(i) != &quot;.&quot; &amp;&amp;&cr;&tab;&tab;document.getElementById(a).value.charAt(i) &lt; &quot;0&quot; ||||&cr;        document.getElementById(a).value.charAt(i) &gt; &quot;9&quot;)&cr;      chkZ = -1;&cr;  if (chkZ == -1) {&cr;    document.getElementById(a).focus();&cr;&tab;&cr;    return false;&cr;  }&cr;}&cr;&lt;/script&gt;&cr;&cr;&lt;/head&gt;&cr;&cr;&lt;body&gt;&cr;&lt;div id=&quot;container&quot;&gt;&cr;&cr;&tab;&lt;h1&gt;I am from vvvv&lt;/h1&gt;&cr;&tab; &tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;!-- use enctype=&quot;multipart/form-data&quot; if you want to submit files  --&gt;&cr;&tab;&lt;form name=&quot;TestForm&quot;  action=&quot;vvvv&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot; &gt;&cr;&tab;&tab;&lt;fieldset&gt;&cr;&tab;&tab;&tab;&lt;legend&gt;Enter some Text&lt;/legend&gt;&cr;&tab;&tab;&tab;&lt;label for=&quot;text&quot;&gt;Text: &lt;/label&gt;&lt;input alt=&quot;enter a String Value&quot; id=&quot;text&quot; name=&quot;text&quot;  type=&quot;text&quot; value=&quot;Hello World&quot; maxlength=&quot;12&quot; /&gt;&lt;br /&gt;&cr;&tab;&tab;&lt;/fieldset&gt;&cr;&tab;&tab;&lt;fieldset&gt;&cr;&tab;&tab;&tab;&lt;legend&gt;Enter Positions&lt;/legend&gt;&cr;&tab;&tab;&tab;&lt;label for=&quot;PositionX&quot;&gt;PositionX: &lt;/label&gt;&lt;input alt=&quot;enter a numerical Value&quot; id=&quot;PositionX&quot; name=&quot;positionX&quot;  onblur=&quot;return chkValues(this.id)&quot; type=&quot;text&quot; value=&quot;1&quot; maxlength=&quot;3&quot; /&gt;&lt;br /&gt;&cr;&tab;&tab;&tab;&lt;label for=&quot;PositionY&quot;&gt;PositionY: &lt;/label&gt;&lt;input alt=&quot;enter a numerical Value&quot; id=&quot;PositionY&quot; name=&quot;positionY&quot;  onblur=&quot;return chkValues(this.id)&quot; type=&quot;text&quot; value=&quot;1&quot; maxlength=&quot;3&quot; /&gt;&lt;br /&gt;&cr;&tab;&tab;&lt;/fieldset&gt;&cr;&tab;&tab;&lt;fieldset&gt;&cr;&tab;&tab;&tab;&lt;legend&gt;Select an Image&lt;/legend&gt;&cr;&tab;&tab;&tab;&lt;label for=&quot;texture&quot;&gt;Texture: &lt;/label&gt;&lt;input alt=&quot;select an Image&quot; type=&quot;file&quot; id=&quot;texture&quot; name=&quot;texture&quot; &gt;&cr;&tab;&tab;&lt;/fieldset&gt;&cr;&tab;&tab;&lt;input type=&quot;reset&quot; value=&quot;Reset&quot; /&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;br /&gt;&cr;&tab;&lt;/form&gt;&cr;&lt;/div&gt;&cr;&lt;/body&gt;&cr;&lt;/html&gt;&cr;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="3615" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8700" top="8055" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2790" left="3615" top="3000" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="URL" linkstyle="VHV" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Content" srcnodeid="1" srcpinname="Output String">
+   <LINKPOINT x="5025" y="6150">
+   </LINKPOINT>
+   <LINKPOINT x="4710" y="6150">
+   </LINKPOINT>
+   <LINKPOINT x="4710" y="1725">
+   </LINKPOINT>
+   <LINKPOINT x="2160" y="1725">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="9" srcpinname="ValueType">
+   <LINKPOINT x="1320" y="2520">
+   </LINKPOINT>
+   <LINKPOINT x="4365" y="2520">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input String" linkstyle="VHV" srcnodeid="9" srcpinname="Value">
+   <LINKPOINT x="1140" y="2730">
+   </LINKPOINT>
+   <LINKPOINT x="3555" y="2730">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input String" linkstyle="VHV" srcnodeid="9" srcpinname="Name">
+   <LINKPOINT x="975" y="2835">
+   </LINKPOINT>
+   <LINKPOINT x="1635" y="2835">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1680" top="1200" width="510" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1680" top="1200" width="510" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; url|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5880" top="5775" width="1125" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5880" top="5775" width="1125" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ a html form|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>

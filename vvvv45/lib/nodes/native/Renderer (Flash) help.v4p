@@ -1,0 +1,381 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="A:\v\vvvv\public\vvvv45\lib\nodes\native\Renderer (Flash) help.v4p">
+   <BOUNDS height="9105" left="1500" top="1380" type="Window" width="7620">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1830" top="4245" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8580" top="6930" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="1830" top="4245" type="Box" width="2580">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="|..\..\assets\flash\Renderer (Flash) help.swf|">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4710" top="4245" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12105" top="7650" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4710" top="4245" type="Box" width="765">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="SliceOffset" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="3135" top="5310" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7110" top="7785" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3135" top="5310" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="FormatValue (String)" systemname="FormatValue (String)">
+   <BOUNDS height="0" left="5430" top="3795" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Characters before Comma" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Input String" srcnodeid="19" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN encoded="0" pinname="Input String" slicecount="4" values="length_1,length_2,length_3,alpha">
+   </PIN>
+   <BOUNDS height="0" left="2640" top="2730" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="930" left="2640" top="2730" type="Box" width="1695">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="6555" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceOffset" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="17" nodename="Renderer (Flash)" systemname="Renderer (Flash)">
+   <BOUNDS height="0" left="2220" top="4830" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6180" left="9180" top="8010" type="Window" width="7740">
+   </BOUNDS>
+   <BOUNDS height="2805" left="2220" top="4830" type="Box" width="3930">
+   </BOUNDS>
+   <PIN pinname="Set Variable to which value?" visible="1">
+   </PIN>
+   <PIN pinname="Set Which Variable?" visible="1">
+   </PIN>
+   <PIN pinname="Filename">
+   </PIN>
+   <PIN encoded="0" pinname="Get Which Variable?" slicecount="1" values="current_frame">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" visible="1" values="|0.41000,0.41000,0.41000,1.00000|">
+   </PIN>
+   <PIN pinname="Backbuffer Width" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Height" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Flash Out" visible="1">
+   </PIN>
+   <PIN pinname="Stop frame" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Loop" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Play" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Start frame" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="GDI Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Filename" linkstyle="VHV" srcnodeid="22" srcpinname="Output String">
+   <LINKPOINT x="1860" y="4590">
+   </LINKPOINT>
+   <LINKPOINT x="3180" y="4590">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Input String" srcnodeid="17" srcpinname="Return Value">
+   </LINK>
+   <NODE id="16" nodename="Multiply (Value)" systemname="Multiply (Value)">
+   <BOUNDS height="0" left="5115" top="915" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="400">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Set Which Variable?" linkstyle="PolyLine" srcnodeid="18" srcpinname="Output String">
+   <LINKPOINT x="2670" y="3825">
+   </LINKPOINT>
+   <LINKPOINT x="4575" y="3825">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="15" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4410" top="2730" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8400" top="6450" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="945" left="4410" top="2730" type="Box" width="1080">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Input" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Set Variable to which value?" linkstyle="VHV" srcnodeid="21" srcpinname="Output String">
+   <LINKPOINT x="4740" y="4650">
+   </LINKPOINT>
+   <LINKPOINT x="4740" y="4650">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="14" nodename="AudioIn (DShow9)" systemname="AudioIn (DShow9)">
+   <BOUNDS height="0" left="5115" top="165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Buffer Size" slicecount="1" values="1024">
+   </PIN>
+   <PIN pinname="Buffer Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Channel Mode" slicecount="1" values="Monaural">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="FFT (DSHOW9)" systemname="FFT (DShow9)">
+   <BOUNDS height="0" left="5115" top="540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="FFT L" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Audio" srcnodeid="14" srcpinname="Audio">
+   </LINK>
+   <NODE id="12" nodename="Mean (Spectral)" systemname="Mean (Spectral)">
+   <BOUNDS height="0" left="5115" top="1440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="86">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="1215" type="Node" width="810">
+   </BOUNDS>
+   <BOUNDS height="735" left="15" top="1215" type="Box" width="4620">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is a modified version of a patch made by users bo_dez and groundcontrol.&cr;&lf;An example fla file can be found in the help\resources folder!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Mean (Spectral)" systemname="Mean (Spectral)">
+   <BOUNDS height="0" left="6060" top="1440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Cons (Spreads Legacy)" systemname="Cons (Spreads Legacy)">
+   <BOUNDS height="270" left="5115" top="1815" type="Node" width="690">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input 1" srcnodeid="13" srcpinname="FFT L">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input 1" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input 2" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE id="8" nodename="Decay (Animation)" systemname="Decay (Animation)">
+   <BOUNDS height="0" left="5115" top="2220" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Attack" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Decay" slicecount="1" values="0.005">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input" linkstyle="VHV" srcnodeid="16" srcpinname="Output">
+   <LINKPOINT x="5245" y="1305">
+   </LINKPOINT>
+   <LINKPOINT x="5990" y="1305">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="7" nodename="GDITexture (EX9.Texture)" systemname="GDITexture (EX9.Texture)">
+   <BOUNDS height="0" left="4710" top="5325" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\native\Renderer (Flash) help _ more.v4p" id="6" nodename="Renderer (Flash) help _ more.v4p" systemname="Renderer (Flash) help _ more">
+   <BOUNDS height="100" left="4725" top="5910" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="4725" top="5910" type="Box">
+   </BOUNDS>
+   <PIN pinname="Texture In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="6000" left="9180" top="1965" type="Window" width="9000">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Texture In" srcnodeid="7" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="2340" top="5910" type="Node" width="3840">
+   </BOUNDS>
+   <BOUNDS height="555" left="2340" top="5910" type="Box" width="2325">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|right klick for infos about flash textures on direct x objects|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="5745" top="900" type="Node" width="1320">
+   </BOUNDS>
+   <BOUNDS height="285" left="5745" top="900" type="Box" width="1335">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|adjust scaling|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="5925" top="540" type="Node" width="1515">
+   </BOUNDS>
+   <BOUNDS height="255" left="5925" top="540" type="Box" width="1515">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|play some music|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="1875">
+   </BOUNDS>
+   <BOUNDS height="160" left="2490" top="33990" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Flash Renderer Window|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="2490" top="33990" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Renderer - Flash|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Source" srcnodeid="17" srcpinname="GDI Out">
+   </LINK>
+   <NODE id="0" nodename="AudioRecordSelector (System)" systemname="AudioRecordSelector (System)">
+   <BOUNDS height="0" left="5655" top="4770" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Device" slicecount="1" values="Waveausg.-Mix">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="1110" left="750" top="6975" type="Node" width="7185">
+   </BOUNDS>
+   <BOUNDS height="1350" left="750" top="6975" type="Box" width="5355">
+   </BOUNDS>
+   <BOUNDS height="160" left="1170" top="840" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|if it doesn&apos;t seem to work make sure you have the latest flash activex control installed. note that you only get the activex control when updating flash via internet explorer, not via firefox.&cr;&lf;&cr;&lf;get it from: &cr;&lf;http://get.adobe.com/flashplayer|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

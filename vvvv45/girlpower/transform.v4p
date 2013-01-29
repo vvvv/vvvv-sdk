@@ -1,0 +1,663 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.0.dtd" >
+   <PATCH nodename="X:\vvvv33\girlpower\transform.v4p" locked="0">
+   <BOUNDS height="11250" left="165" top="150" type="Window" width="11895">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="44" nodename="Renderer (EX9)" hiddenwhenlocked="1">
+   <BOUNDS height="0" left="4575" top="11745" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4950" left="12060" top="150" type="Window" width="5175">
+   </BOUNDS>
+   <BOUNDS height="1800" left="4575" top="11745" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="43" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="9705" top="9630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="42" nodename="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="10020" top="10125" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="43" dstpinname="Texture" srcnodeid="42" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="41" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="10335" top="8685" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.7">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="1.53">
+   </PIN>
+   </NODE>
+   <NODE id="40" nodename="Multiply (Transform)">
+   <BOUNDS height="0" left="9870" top="9150" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In 2" visible="1">
+   </PIN>
+   <PIN pinname="Transform In 1" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="39" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="9360" top="8385" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0.09">
+   </PIN>
+   </NODE>
+   <NODE id="38" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="9360" top="7665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="39" dstpinname="Transform In" srcnodeid="38" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="40" dstpinname="Transform In 2" srcnodeid="39" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="40" dstpinname="Transform In 1" srcnodeid="41" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="43" dstpinname="Transform" srcnodeid="40" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="43" dstpinname="Texture Transform" srcnodeid="41" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="37" nodename="IOBox (String)">
+   <BOUNDS height="255" left="8430" top="210" type="Node" width="5250">
+   </BOUNDS>
+   <BOUNDS height="3915" left="8430" top="210" type="Box" width="1785">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|multiply transform works from left to right&cr;&lf;&cr;&lf;like&cr;&lf;&cr;&lf;transform node hierarchies work from lower nodes to upper nodes.&cr;&lf;&cr;&lf;first adjust size and rotation of a leave then put it on its twig, then define position and rotation (..) relative to its branch ... main branch ... root.&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="36" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2325" top="240" type="Node" width="5250">
+   </BOUNDS>
+   <BOUNDS height="4230" left="2325" top="240" type="Box" width="3210">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|transform hierarchies (old school)&cr;&lf;&cr;&lf;with directly connecting transform nodes (like shown to the left) you can easily build transform hierarchies (skeleton, solar system..). &cr;&lf;&cr;&lf;this old school style works with implicit matrix multiplications. &cr;&lf;&cr;&lf;however not every transformation problem can be broken down to a hierarchy. &cr;&lf;to do explicit matrix multiplications use &quot;Multiply (Transform)&quot; (like shown to the right). &cr;&lf;&cr;&lf;the ouput of the multiplication nodes to the right should equal the outputs of the scale nodes to the left.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="35" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="405" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.7">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="1.53">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="34" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="390" top="960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0.09">
+   </PIN>
+   </NODE>
+   <NODE id="33" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="390" top="240" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="34" dstpinname="Transform In" srcnodeid="33" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="35" dstpinname="Transform In" srcnodeid="34" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="32" nodename="IOBox (String)">
+   <BOUNDS height="255" left="705" top="2010" type="Node" width="555">
+   </BOUNDS>
+   <BOUNDS height="255" left="705" top="2010" type="Box" width="555">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="leaf">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="31" nodename="IOBox (String)">
+   <BOUNDS height="255" left="720" top="1290" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="255" left="720" top="1290" type="Box" width="750">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="branches">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="30" nodename="IOBox (String)">
+   <BOUNDS height="255" left="765" top="540" type="Node" width="600">
+   </BOUNDS>
+   <BOUNDS height="255" left="765" top="540" type="Box" width="600">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="root">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="29" nodename="IOBox (String)">
+   <BOUNDS height="255" left="105" top="2355" type="Node" width="4740">
+   </BOUNDS>
+   <BOUNDS height="1995" left="105" top="2355" type="Box" width="2085">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the leaves (scale) also contain the transform information of its branches:&cr;&lf;if you connect the scale to a quad it will not only be scaled but also rotated and translated.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="28" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="5595" top="1560" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.7">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="1.53">
+   </PIN>
+   </NODE>
+   <NODE id="27" nodename="Multiply (Transform)">
+   <BOUNDS height="0" left="6405" top="1980" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In 2" visible="1">
+   </PIN>
+   <PIN pinname="Transform In 1" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Transform In 3" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="26" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="6000" top="900" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0.09">
+   </PIN>
+   </NODE>
+   <NODE id="25" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="7095" top="300" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="27" dstpinname="Transform In 2" srcnodeid="26" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="27" dstpinname="Transform In 1" srcnodeid="28" srcpinname="Transform Out">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="24" managers="" nodename="Scale (Transform Vector)">
+   <PIN pinname="Transform In" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1245" top="960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="X" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Y" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Z" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Transform In" hiddenwhenlocked="1" srcnodeid="33" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1875" top="960" type="Node" width="390">
+   </BOUNDS>
+   <BOUNDS height="255" left="1875" top="960" type="Box" width="345">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="..">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="27" dstpinname="Transform In 3" srcnodeid="25" srcpinname="Transform Out">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="22" managers="" nodename="Scale (Transform Vector)">
+   <PIN pinname="Transform In" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="0" left="7230" top="1140" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="X" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Y" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Z" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="21" nodename="Multiply (Transform)">
+   <BOUNDS height="0" left="8055" top="1515" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In 1" visible="1">
+   </PIN>
+   <PIN pinname="Transform In 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Transform In 1" hiddenwhenlocked="1" srcnodeid="22" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Transform In 2" hiddenwhenlocked="1" srcnodeid="25" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <BOUNDS height="255" left="195" top="4455" type="Node" width="13170">
+   </BOUNDS>
+   <BOUNDS height="2880" left="195" top="4455" type="Box" width="10725">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|when comparing transform node hierarchies with the explicit approach we notice that transform hierarchies need fewer space and are easier to use. on the other hand the explicit multiplication reflects better whats happening inside / on the mathematical side. &cr;&lf;the point is:&cr;&lf;you can always turn a transform hierarchy into an explicit construction but not the other way round.&cr;&lf;&cr;&lf;for example:&cr;&lf;http://vvvv.meso.net/board/index.php?showtopic=1068&cr;&lf;1.)  think of a textured quad which should behave the way that the texture isn&apos;t resized when the quad is resized. the texture should be clamped or repeated depending on how big the quad is. &cr;&lf;2.) however if you change the position or orientation of the texture should stay on the quad..&cr;&lf;the first point can magically be done by just connecting scale at both &quot;Transform&quot; and &quot;Texture Tranform&quot; Pins of the quad.&cr;&lf;but the second point is difficult. if you want to add the possibility of rotating and translating the quad you can&apos;t just add this feature to the transformation of the quad without influencing the texture transformation.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="930" top="9630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="1245" top="10125" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Texture" srcnodeid="18" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="17" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="1095" top="9045" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.7">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="1.53">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="1095" top="8370" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0.09">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="1095" top="7650" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Transform In" srcnodeid="15" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Texture Transform" srcnodeid="17" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Transform" srcnodeid="17" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="360" top="8730" type="Node" width="1020">
+   </BOUNDS>
+   <BOUNDS height="240" left="360" top="8730" type="Box" width="1020">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|connect ??|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3105" top="7560" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="2910" left="3105" top="7560" type="Box" width="1575">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|one solution would be to double the scale node and share the parameters between them.&cr;&lf;&cr;&lf;(ugly style)&cr;&lf;--&gt;&cr;&lf;&cr;&lf;and we had luck that only one node had to be duplicated.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="4755" top="9645" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="5070" top="10140" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Texture" srcnodeid="11" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="10" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="4920" top="9060" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="4920" top="8385" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0.09">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="4920" top="7665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Transform In" srcnodeid="8" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Transform" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5445" top="8055" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8115" top="9900" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="5445" top="8055" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.53">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6075" top="8055" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8415" top="10200" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="6075" top="8055" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.7">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="5625" top="9060" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Texture Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y" hiddenwhenlocked="1" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Y" hiddenwhenlocked="1" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="X" hiddenwhenlocked="1" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="X" hiddenwhenlocked="1" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Transform In" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="585" left="7275" top="7560" type="Node" width="7455">
+   </BOUNDS>
+   <BOUNDS height="2940" left="7275" top="7560" type="Box" width="1860">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|- we have scale * rotate * translate for the quad&cr;&lf;&cr;&lf;- and just scale for the texture.&cr;&lf;&cr;&lf;it&apos;s impossible to turn that back into a hierarchy like the scale once is a leave and then is the root (for the texture transform).|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1980" top="8985" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5216" top="3342" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="450" left="1980" top="8985" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Enabled" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6480" top="8985" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5516" top="3642" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="450" left="6480" top="8985" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="10980" top="8985" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10016" top="3642" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="450" left="10980" top="8985" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Enabled" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="43" dstpinname="Enabled" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1230" top="10470" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6705" top="12330" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="1230" top="10470" type="Box" width="3360">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="images\earth_512x512.jpg">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Filename" hiddenwhenlocked="1" srcnodeid="0" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Filename" hiddenwhenlocked="1" srcnodeid="0" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="42" dstpinname="Filename" hiddenwhenlocked="1" srcnodeid="0" srcpinname="Output String">
+   </LINK>
+   <NODE nodename="Group (EX9)" id="45" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="4575" top="11370" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Layer" dstnodeid="45" dstpinname="Layer 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Layer" dstnodeid="45" dstpinname="Layer 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Layer" dstnodeid="45" dstpinname="Layer 3" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Layer" dstnodeid="44" dstpinname="Layers" hiddenwhenlocked="1">
+   </LINK>
+   </PATCH>
