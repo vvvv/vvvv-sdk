@@ -44,6 +44,10 @@ namespace VVVV.Core.Commands
         #endregion
         
         private readonly IList<Command> FCommands;
+        public IList<Command> Commands
+        {
+            get { return FCommands; }
+        }
         
         public CompoundCommand()
             :this(new List<Command>())

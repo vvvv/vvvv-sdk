@@ -24,6 +24,11 @@ namespace VVVV.Core.Commands
             FHosts = hosts == null ? new string[]{"localhost"} : hosts;
             FIDItem = idItem;
             FSerializer = idItem.Mapper.Map<Serializer>();
+
+            foreach (var item in FHosts)
+            {
+                Console.WriteLine("Remote: {0}", item);
+            }
         }
 
         //async execute
@@ -67,15 +72,50 @@ namespace VVVV.Core.Commands
         }
 
         //try to send a command
-        private void SendCommand(string xml)
+        public void SendCommand(string xml)
         {
-      
             try
             {
                 //h is a proxy objec of the remote history
                 //the xml string gets sent as value and is executed on the remote host
                 var h = GetHistory() as CommandHistory;
                 h.Insert(xml);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Command could not be executed on remote history: " + e.Message);
+                //Console.WriteLine("Command could not be executed on remote server");
+                //throw e;
+            }
+        }
+
+        //try to excecute a command
+        public void OnlyExecuteCommand(string xml)
+        {
+            try
+            {
+                //h is a proxy objec of the remote history
+                //the xml string gets sent as value and is executed on the remote host
+                var h = GetHistory() as CommandHistory;
+                h.Insert(xml, true, false);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Command could not be executed on remote history: " + e.Message);
+                //Console.WriteLine("Command could not be executed on remote server");
+                //throw e;
+            }
+        }
+
+        //try to insert a command
+        public void OnlyInsertCommand(string xml)
+        {
+            try
+            {
+                //h is a proxy objec of the remote history
+                //the xml string gets sent as value and is executed on the remote host
+                var h = GetHistory() as CommandHistory;
+                h.Insert(xml, false, true);
             }
             catch (Exception e)
             {

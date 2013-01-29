@@ -70,37 +70,42 @@ namespace VVVV.Core.Commands
             FMainThread = syncContext;
         }
 
+        public virtual void Insert(Command command)
+        {
+            Insert(command, true, true);
+        }
+
         /// <summary>
         /// Executes a command and adds it to the command history if the command
         /// is undoable.
         /// </summary>
         /// <param name="command">The command to be executed.</param>
-        public virtual void Insert(Command command)
+        public virtual void Insert(Command command, bool execute = true, bool insert = true)
         {
             if (command != Command.Empty)
             {
                 DebugHelpers.CatchAndLog(() =>
                 {
-                    command.Execute();
+                    if (execute) command.Execute();
 
-                    if (command.HasUndo)
+                    if (command.HasUndo && insert)
                     {
                         var newNode = new Node<Command>(command);
                         newNode.Previous = FCurrentNode;
                         FCurrentNode.Next = newNode;
                         FCurrentNode = newNode;
                     }
-                    else
-                    {
-                        FFirstNode.Next = null;
-                        FCurrentNode = FFirstNode;
-                    }
+                    //else
+                    //{
+                    //    FFirstNode.Next = null;
+                    //    FCurrentNode = FFirstNode;
+                    //}
 
-                    Debug.WriteLine(string.Format("Command {0} executed.", command));
+                    if (execute) Debug.WriteLine(string.Format("Command {0} executed.", command));
                 },
                 string.Format("Execution of command {0}", command));
 
-                if (OnChange != null)
+                if (OnChange != null && execute)
                     OnChange();
             }
             else
@@ -109,11 +114,11 @@ namespace VVVV.Core.Commands
             }
         }
 
-        public virtual void Insert(string xml)
+        public virtual void Insert(string xml, bool execute = true, bool insert = true)
         {
             var x = XElement.Parse(xml);
             if (FMainThread != null)
-                FMainThread.Post((state) => Insert(FSerializer.Deserialize<Command>(x)), null);
+                FMainThread.Post((state) => Insert(FSerializer.Deserialize<Command>(x), execute, insert), null);
             else
                 Insert(FSerializer.Deserialize<Command>(x));
         }
