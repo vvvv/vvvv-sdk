@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Serialization;
+using System.Xml.Linq;
 
 namespace VVVV.Core.Commands
 {
@@ -23,43 +24,50 @@ namespace VVVV.Core.Commands
         }
 
         /// <summary>
-        /// Executes a command and adds it to the command history if the command
-        /// is undoable and sends the command to the remote vvvv.
+        /// Serializes a command and executes it on the remote vvvv and returns it.
         /// </summary>
         /// <param name="command">The command to be executed.</param>
-        public override void Insert(Command command)
+        public override void ExecuteAndInsert(Command command)
         {
-            //HACK: compound command should handled better
-            if (command is CompoundCommand)
-            {
-                //execute and send all sub commands
-                var compound = command as CompoundCommand;
-                foreach (var subCom in compound.Commands)
-                {
-                    var xCommand = FSerializer.Serialize(subCom);
-                    base.Insert(subCom);
-                    DebugHelpers.CatchAndLog(
-                        () => FCommandSender.SendCommandAsync(xCommand),
-                        string.Format("ExecutedCommandAsync: {0}", subCom));  
-                }
+            var xCommand = FSerializer.Serialize(command);
+            base.ExecuteAndInsert(command);
+            DebugHelpers.CatchAndLog(
+                () => FCommandSender.ExecuteAndInsertAsync(xCommand),
+                string.Format("ExecuteAndInsertCommandAsync: {0}", command));
 
-                ////insert compound command into history
-                //base.Insert(command, false, true);
-                //var xCompCommand = FSerializer.Serialize(command);
-                //DebugHelpers.CatchAndLog(
-                //        () => FCommandSender.OnlyInsertCommand(xCompCommand.ToString()),
-                //        string.Format("InsertedCommandAsync: {0}", xCompCommand));
+            Debug.WriteLine(string.Format("Executed and Inserted command {0} on HDECommandHistory for {1}", command, FIdItem.Name));
+        }
 
-            }
-            else
-            {
-                var xCommand = FSerializer.Serialize(command);
-                base.Insert(command);
-                DebugHelpers.CatchAndLog(
-                    () => FCommandSender.SendCommandAsync(xCommand),
-                    string.Format("SendCommandAsync: {0}", command));
-            }
-            Debug.WriteLine(string.Format("Executed on ClientCommandHistory for {0}", FIdItem.Name));
+        /// <summary>
+        /// Serializes a command and executes it on the remote vvvv and returns it.
+        /// </summary>
+        /// <param name="command">The command to be executed.</param>
+        public override XElement OnlyExecute(Command command)
+        {
+            var xCommand = FSerializer.Serialize(command);
+            base.OnlyExecute(command);
+            DebugHelpers.CatchAndLog(
+                () => FCommandSender.OnlyExecute(xCommand.ToString()),
+                string.Format("ExecuteCommandAsync: {0}", command));
+            
+            Debug.WriteLine(string.Format("Executed command {0} on HDECommandHistory for {1}", command, FIdItem.Name));
+
+            return xCommand;
+        }
+
+        /// <summary>
+        /// Serializes a command and inserts it on the remote vvvv.
+        /// </summary>
+        /// <param name="command">The command to be inserted.</param>
+        public override void OnlyInsert(Command command)
+        {
+            var xCommand = FSerializer.Serialize(command);
+            base.OnlyInsert(command);
+            DebugHelpers.CatchAndLog(
+                () => FCommandSender.OnlyInsert(xCommand.ToString()),
+                string.Format("InsertCommandAsync: {0}", command));
+
+            Debug.WriteLine(string.Format("Inserted command {0} on HDECommandHistory for {1}", command, FIdItem.Name));
         }
 
         public override void Undo()

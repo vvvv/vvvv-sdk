@@ -58,5 +58,7 @@ namespace VVVV.Core.Viewer.GraphicalEditor
             get;
             set;
         }
+
+        void Redraw();
     }        
 }

@@ -34,9 +34,21 @@ namespace VVVV.Core.Commands
         //async execute
         private delegate void SendAsync(string xml);
 
-        public void SendCommandAsync(XElement xCommand)
+        public void ExecuteAndInsertAsync(XElement xCommand)
         {
-            var sender = new SendAsync(SendCommand);
+            var sender = new SendAsync(ExecuteAndInsert);
+            sender.BeginInvoke(xCommand.ToString(), new AsyncCallback(AfterSend), null);
+        }
+
+        public void OnlyExecuteAsync(XElement xCommand)
+        {
+            var sender = new SendAsync(OnlyExecute);
+            sender.BeginInvoke(xCommand.ToString(), new AsyncCallback(AfterSend), null);
+        }
+
+        public void OnlyInsertAsync(XElement xCommand)
+        {
+            var sender = new SendAsync(OnlyInsert);
             sender.BeginInvoke(xCommand.ToString(), new AsyncCallback(AfterSend), null);
         }
 
@@ -71,15 +83,30 @@ namespace VVVV.Core.Commands
             return remoteShell.GetAtID<ICommandHistory>(FIDItem.GetID());
         }
 
+        public void ExecuteAndInsert(string xml)
+        {
+            try
+            {
+                //h is a proxy objec of the remote history
+                //the xml string gets sent as value and is executed on the remote host
+                var h = GetHistory() as CommandHistory;
+                h.ExecuteAndInsert(xml);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Command could not be inserted and executed on remote history: " + e.Message);
+            }
+        }
+
         //try to send a command
-        public void SendCommand(string xml)
+        public void OnlyExecute(string xml)
         {
             try
             {
                 //h is a proxy objec of the remote history
                 //the xml string gets sent as value and is executed on the remote host
                 var h = GetHistory() as CommandHistory;
-                h.Insert(xml);
+                h.OnlyExecute(xml);
             }
             catch (Exception e)
             {
@@ -89,37 +116,19 @@ namespace VVVV.Core.Commands
             }
         }
 
-        //try to excecute a command
-        public void OnlyExecuteCommand(string xml)
+        //try to send a command
+        public void OnlyInsert(string xml)
         {
             try
             {
                 //h is a proxy objec of the remote history
                 //the xml string gets sent as value and is executed on the remote host
                 var h = GetHistory() as CommandHistory;
-                h.Insert(xml, true, false);
+                h.OnlyInsert(xml);
             }
             catch (Exception e)
             {
-                Console.WriteLine("Command could not be executed on remote history: " + e.Message);
-                //Console.WriteLine("Command could not be executed on remote server");
-                //throw e;
-            }
-        }
-
-        //try to insert a command
-        public void OnlyInsertCommand(string xml)
-        {
-            try
-            {
-                //h is a proxy objec of the remote history
-                //the xml string gets sent as value and is executed on the remote host
-                var h = GetHistory() as CommandHistory;
-                h.Insert(xml, false, true);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Command could not be executed on remote history: " + e.Message);
+                Console.WriteLine("Command could not be inserted on remote history: " + e.Message);
                 //Console.WriteLine("Command could not be executed on remote server");
                 //throw e;
             }
