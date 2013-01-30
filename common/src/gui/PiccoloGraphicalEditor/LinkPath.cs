@@ -178,15 +178,17 @@ namespace VVVV.HDE.GraphicalEditing
 
             //react to position-changes of the pins node
             //which apparently is Parent.Parent for nodes and the PNode itself for Inlets/Outlets
+
+            //added IGraphElement.Redraw() -> much simpler
             //if (StartSolid is Rectangle)
-            	StartSolid.PNode.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
+                //StartSolid.PNode.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
             //else
-                StartSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
+                //StartSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
             
             //if (EndSolid is Rectangle)
-            	EndSolid.PNode.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
+                //EndSolid.PNode.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
             //else
-                EndSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
+                //EndSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
         }
 
         public LinkPath(IGraphElementHost host, ISolid start, ISolid end)
@@ -230,20 +232,26 @@ namespace VVVV.HDE.GraphicalEditing
                 FReactingOnTransform = false;
             }
         }
+
+        public override void Redraw()
+        {
+            BuildLine();
+            base.Redraw();
+        }
         
         public override void Dispose()
         {
             PNode.TransformChanged -= PathChanged;
 
             //if (StartSolid is Rectangle)
-            	StartSolid.PNode.TransformChanged -= PinBoundsChanged;
+                //StartSolid.PNode.TransformChanged -= PinBoundsChanged;
             //else
-            	StartSolid.PNode.Parent.Parent.TransformChanged -= PinBoundsChanged;
+                //StartSolid.PNode.Parent.Parent.TransformChanged -= PinBoundsChanged;
             
             //if (EndSolid is Rectangle)
-            	EndSolid.PNode.TransformChanged -= PinBoundsChanged;
+                //EndSolid.PNode.TransformChanged -= PinBoundsChanged;
             //else
-            	EndSolid.PNode.Parent.Parent.TransformChanged -= PinBoundsChanged;
+                //EndSolid.PNode.Parent.Parent.TransformChanged -= PinBoundsChanged;
             base.Dispose();
         }
     }

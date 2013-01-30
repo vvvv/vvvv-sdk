@@ -241,6 +241,10 @@ namespace VVVV.HDE.GraphicalEditing
             get;
             set;
         }
+
+        public virtual void Redraw()
+        {
+        }
         #endregion graphical parameters
 
         /// <summary>
