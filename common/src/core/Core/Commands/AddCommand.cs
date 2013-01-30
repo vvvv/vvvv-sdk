@@ -47,6 +47,7 @@ namespace VVVV.Core.Commands
         
         protected TOwner FOwner;
         protected TItem FItem;
+        protected string FOldName;
         
         public AddCommand(TOwner owner, TItem item)
         {
@@ -64,12 +65,18 @@ namespace VVVV.Core.Commands
 
         public override void Execute()
         {
+            var renamableItem = FItem as IRenameable;
+            if (renamableItem != null)
+                FOldName = FItem.Name;
             FOwner.Add(FItem);
         }
 
         public override void Undo()
         {
             FOwner.Remove(FItem);
+            var renamableItem = FItem as IRenameable;
+            if (renamableItem != null)
+                renamableItem.Name = FOldName;
         }
         
         public override string ToString()
