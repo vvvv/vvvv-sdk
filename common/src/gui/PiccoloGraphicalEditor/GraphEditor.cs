@@ -149,11 +149,11 @@ namespace VVVV.HDE.GraphicalEditing
         	return null;
         }
         
-        public IGraphElement GetGraphElementFromPoint(PointF position)
+        public IGraphElement GetHoverableFromPoint(PointF position)
         {
         	foreach (GraphElement e in FRoot)
         	{
-        		if (e.ContentBounds.Contains(position))
+        		if (e.ContentBounds.Contains(position) && e.IsHoverable)
         			return e;
         	}
         	return null;
