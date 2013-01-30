@@ -180,7 +180,7 @@ namespace VVVV.HDE.GraphicalEditing
         	IGraphElement element;
         	element = FGraphEditor.GetClosestConnectable(e.Position);
         	if (element == null)
-        		element = FGraphEditor.GetGraphElementFromPoint(e.Position);
+        		element = FGraphEditor.GetHoverableFromPoint(e.Position);
         	
         	FGraphEditor.Host.HighlightElement(element);
         }
