@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Drawing;
 using System;
+using Microsoft.FSharp.Collections;
 
 namespace VVVV.Utils.Algorithm
 {
@@ -54,6 +55,28 @@ namespace VVVV.Utils.Algorithm
                 result.Push(source[i]);
             }
             return result.ToList();
+        }
+
+        public static bool IsPointInConvexHull(PointF p, IEnumerable<PointF> hull)
+        {
+            //if (hull.Count() > 0)
+            var myP = new VMath.Vector2D(p.X, p.Y);
+            var myHull = hull.Select(q => new VMath.Vector2D(q.X, q.Y));
+            var lines = Microsoft.FSharp.Collections.SeqModule.Pairwise(myHull.Concat(new VMath.Vector2D[]{myHull.First()}));
+
+            foreach (var l in lines)
+            {
+                var AB = l.Item2 - l.Item1;
+                var lineNorm = new VMath.Vector2D(-AB.y, AB.x);
+                var AP = myP - l.Item1;
+
+                var scalarProduct = lineNorm | AP;
+
+                if (scalarProduct < 0)
+                    return false;
+
+            }
+            return true;
         }
 
         class PolarAngleComparer : IComparer<PointF>
