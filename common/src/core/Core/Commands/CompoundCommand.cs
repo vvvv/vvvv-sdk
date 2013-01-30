@@ -85,30 +85,22 @@ namespace VVVV.Core.Commands
             }
         }
 
-        protected virtual void PreExecute() { }
-
         public override sealed void Execute()
         {
-            PreExecute();
             foreach (var cmd in FCommands) 
             {
                 cmd.Execute();
             }
-            PostExecute();
         }
-
-        protected virtual void PostExecute() { }
 
         public override sealed void Undo()
         {
             if (HasUndo)
             {
-                PreExecute();
                 foreach (var cmd in FCommands.Reverse())
                 {
                     cmd.Undo();
                 }
-                PostExecute();
             }
         }
 
