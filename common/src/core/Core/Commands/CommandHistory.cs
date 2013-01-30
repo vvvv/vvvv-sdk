@@ -72,55 +72,124 @@ namespace VVVV.Core.Commands
 
         public virtual void Insert(Command command)
         {
-            Insert(command, true, true);
+            if (command is CompoundCommand)
+            {
+                (command as CompoundCommand).Execute(this);
+                OnlyInsert(command);
+            }
+            else
+            {
+                ExecuteAndInsert(command);
+            }
+
         }
 
-        /// <summary>
-        /// Executes a command and adds it to the command history if the command
-        /// is undoable.
-        /// </summary>
-        /// <param name="command">The command to be executed.</param>
-        public virtual void Insert(Command command, bool execute = true, bool insert = true)
+        public virtual void ExecuteAndInsert(Command command)
         {
+            //insert command
             if (command != Command.Empty)
             {
                 DebugHelpers.CatchAndLog(() =>
                 {
-                    if (execute) command.Execute();
+                    command.Execute();
 
-                    if (command.HasUndo && insert)
+                    if (command.HasUndo)
                     {
                         var newNode = new Node<Command>(command);
                         newNode.Previous = FCurrentNode;
                         FCurrentNode.Next = newNode;
                         FCurrentNode = newNode;
                     }
-                    //else
-                    //{
-                    //    FFirstNode.Next = null;
-                    //    FCurrentNode = FFirstNode;
-                    //}
+                    else
+                    {
+                        FFirstNode.Next = null;
+                        FCurrentNode = FFirstNode;
+                    }
 
-                    if (execute) Debug.WriteLine(string.Format("Command {0} executed.", command));
+                    Debug.WriteLine(string.Format("Command {0} executed and inserted.", command));
+                },
+                string.Format("Innsertion and execution of command {0}", command));
+
+                if (OnChange != null)
+                    OnChange();
+            }
+            
+        }
+
+        public virtual XElement OnlyExecute(Command command)
+        {
+            //execute command
+            if (command != Command.Empty)
+            {
+                DebugHelpers.CatchAndLog(() =>
+                {
+                    command.Execute();
+
+                    Debug.WriteLine(string.Format("Command {0} executed.", command));
                 },
                 string.Format("Execution of command {0}", command));
 
-                if (OnChange != null && execute)
+                if (OnChange != null)
                     OnChange();
             }
-            else
+
+            return null;
+        }
+
+        public virtual void OnlyInsert(Command command)
+        {
+            //insert command
+            if (command != Command.Empty)
             {
-                Debug.WriteLine("Skipped empty command.");
+                DebugHelpers.CatchAndLog(() =>
+                {
+                    if (command.HasUndo)
+                    {
+                        var newNode = new Node<Command>(command);
+                        newNode.Previous = FCurrentNode;
+                        FCurrentNode.Next = newNode;
+                        FCurrentNode = newNode;
+                    }
+                    else
+                    {
+                        FFirstNode.Next = null;
+                        FCurrentNode = FFirstNode;
+                    }
+
+                    Debug.WriteLine(string.Format("Command {0} inserted.", command));
+                },
+                string.Format("Innsertion of command {0}", command));
             }
         }
 
-        public virtual void Insert(string xml, bool execute = true, bool insert = true)
+        public virtual void ExecuteAndInsert(string xml)
         {
             var x = XElement.Parse(xml);
+
             if (FMainThread != null)
-                FMainThread.Post((state) => Insert(FSerializer.Deserialize<Command>(x), execute, insert), null);
+                FMainThread.Post((state) => ExecuteAndInsert(FSerializer.Deserialize<Command>(x)), null);
             else
-                Insert(FSerializer.Deserialize<Command>(x));
+                ExecuteAndInsert(FSerializer.Deserialize<Command>(x));
+        }
+
+        public virtual void OnlyExecute(string xml)
+        {
+            var x = XElement.Parse(xml);
+
+            if (FMainThread != null)
+                FMainThread.Post((state) => OnlyExecute(FSerializer.Deserialize<Command>(x)), null);
+            else
+                OnlyExecute(FSerializer.Deserialize<Command>(x));
+        }
+
+        public virtual void OnlyInsert(string xml)
+        {
+            var x = XElement.Parse(xml);
+
+            if (FMainThread != null)
+                FMainThread.Post((state) => OnlyInsert(FSerializer.Deserialize<Command>(x)), null);
+            else
+                OnlyInsert(FSerializer.Deserialize<Command>(x));
         }
 
         /// <summary>

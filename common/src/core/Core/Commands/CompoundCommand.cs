@@ -23,7 +23,14 @@ namespace VVVV.Core.Commands
                 
                 foreach (var subCmd in command.FCommands)
                 {
-                    xElement.Add(serializer.Serialize(subCmd));
+                    if (command.FSerializedCommands.ContainsKey(subCmd))
+                    {
+                        xElement.Add(command.FSerializedCommands[subCmd]);
+                    }
+                    else
+                    {
+                        xElement.Add(serializer.Serialize(subCmd));
+                    }
                 }
                 
                 return xElement;
@@ -44,6 +51,8 @@ namespace VVVV.Core.Commands
         #endregion
         
         private readonly IList<Command> FCommands;
+        private readonly IDictionary<Command, XElement> FSerializedCommands;
+
         public IList<Command> Commands
         {
             get { return FCommands; }
@@ -57,11 +66,13 @@ namespace VVVV.Core.Commands
         public CompoundCommand(IEnumerable<Command> commands)
         {
             FCommands = new List<Command>(commands);
+            FSerializedCommands = new Dictionary<Command, XElement>();
         }
 
         public CompoundCommand(params Command[] commands)
         {
             FCommands = new List<Command>(commands);
+            FSerializedCommands = new Dictionary<Command, XElement>();
         }
         
         public void Append(Command command)
@@ -85,11 +96,48 @@ namespace VVVV.Core.Commands
             }
         }
 
-        public override sealed void Execute()
+        public sealed override void Execute()
         {
-            foreach (var cmd in FCommands) 
+            throw new NotImplementedException("Should not call execute on compound command, use Execute(ICommandHistory history)");
+        }
+
+        //execute each single command
+        public void Execute(ICommandHistory history)
+        {
+            var h = history as CommandHistory;
+
+            foreach (var cmd in FCommands)
             {
-                cmd.Execute();
+                if (cmd is CompoundCommand)
+                {
+                    (cmd as CompoundCommand).Execute(history);
+                }
+                else
+                {
+                    var serialized = h.OnlyExecute(cmd);
+                    if(serialized != null)
+                    {
+                        FSerializedCommands[cmd] = serialized;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Does only execute each command, no history or remoting magic
+        /// </summary>
+        public void OnlyExecuteLocal()
+        {
+            foreach (var cmd in FCommands)
+            {
+                if (cmd is CompoundCommand)
+                {
+                    (cmd as CompoundCommand).OnlyExecuteLocal();
+                }
+                else
+                {
+                    cmd.Execute();
+                }
             }
         }
 
