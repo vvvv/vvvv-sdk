@@ -46,12 +46,6 @@ namespace VVVV.Core.Commands
             sender.BeginInvoke(xCommand.ToString(), new AsyncCallback(AfterSend), null);
         }
 
-        public void OnlyInsertAsync(XElement xCommand)
-        {
-            var sender = new SendAsync(OnlyInsert);
-            sender.BeginInvoke(xCommand.ToString(), new AsyncCallback(AfterSend), null);
-        }
-
         //async undo
         private delegate void CallAsync();
 
@@ -77,10 +71,16 @@ namespace VVVV.Core.Commands
         }
 
         //get remote history
+        ICommandHistory FHistoryProxy;
         private ICommandHistory GetHistory()
         {
-            var remoteShell = FRemoter.GetRemoteObject<Shell>("Shell", FHosts[0], FPort);
-            return remoteShell.GetAtID<ICommandHistory>(FIDItem.GetID());
+            if (FHistoryProxy == null)
+            {
+                var remoteShell = FRemoter.GetRemoteObject<Shell>("Shell", FHosts[0], FPort);
+                FHistoryProxy = remoteShell.GetAtID<ICommandHistory>(FIDItem.GetID());
+            }
+
+            return FHistoryProxy;
         }
 
         public void ExecuteAndInsert(string xml)
@@ -116,26 +116,8 @@ namespace VVVV.Core.Commands
             }
         }
 
-        //try to send a command
-        public void OnlyInsert(string xml)
-        {
-            try
-            {
-                //h is a proxy objec of the remote history
-                //the xml string gets sent as value and is executed on the remote host
-                var h = GetHistory() as CommandHistory;
-                h.OnlyInsert(xml);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Command could not be inserted on remote history: " + e.Message);
-                //Console.WriteLine("Command could not be executed on remote server");
-                //throw e;
-            }
-        }
-
         //try to call undo on remote history
-        private void RemoteUndo()
+        public void RemoteUndo()
         {
             try
             {
@@ -150,7 +132,7 @@ namespace VVVV.Core.Commands
         }
 
         //try to call redo on remote history
-        private void RemoteRedo()
+        public void RemoteRedo()
         {
             try
             {
@@ -161,6 +143,34 @@ namespace VVVV.Core.Commands
             {
                 //Console.WriteLine("Redo could not be executed on remote server: " + e.Message);
                 Console.WriteLine("Redo could not be executed on remote server");
+            }
+        }
+
+        public void StartCompound()
+        {
+            try
+            {
+                var h = GetHistory() as CommandHistory;
+                h.StartCompound();
+            }
+            catch (Exception)
+            {
+                //Console.WriteLine("Redo could not be executed on remote server: " + e.Message);
+                Console.WriteLine("StartCompound could not be executed on remote server");
+            }
+        }
+
+        public void StopCompound()
+        {
+            try
+            {
+                var h = GetHistory() as CommandHistory;
+                h.StopCompound();
+            }
+            catch (Exception)
+            {
+                //Console.WriteLine("Redo could not be executed on remote server: " + e.Message);
+                Console.WriteLine("StopCompound could not be executed on remote server");
             }
         }
     }
