@@ -19,7 +19,7 @@ namespace VVVV.Core.Model
     	    : base(Path.GetFileName(location.LocalPath), location, true)
         {
             FServiceProvider = new ServiceProvider(serviceProvider);
-            if (Shell.Instance.CommandLineArguments.Local)
+            if (Shell.Instance.IsRuntime)
                 FServiceProvider.RegisterService<ICommandHistory>(new CommandHistory(FServiceProvider));
             else
                 FServiceProvider.RegisterService<ICommandHistory>(new HDECommandHistory(this));
