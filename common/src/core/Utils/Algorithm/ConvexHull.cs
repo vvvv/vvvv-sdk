@@ -27,6 +27,20 @@ namespace VVVV.Utils.Algorithm
             return lowestPoints.First(p => p.X == maxX);
         }
 
+
+        class PointFEqualityComparer : IEqualityComparer<PointF>
+        {
+            public bool Equals(PointF x, PointF y)
+            {
+                return ((x.X - x.Y) < 0.1) && ((y.X - y.Y) < 0.1);
+            }
+
+            public int GetHashCode(PointF obj)
+            {
+                return obj.GetHashCode();
+            }
+        }
+
         /// <summary>
         /// Generates list of convex hull points from the given list of points using Graham's scan
         /// </summary>
@@ -34,6 +48,8 @@ namespace VVVV.Utils.Algorithm
         /// <returns></returns>
         public static List<PointF> CreateConvexHull(List<PointF> source)
         {
+            source = source.Distinct(new PointFEqualityComparer()).ToList();
+
             var N = source.Count;
             Stack<PointF> result = new Stack<PointF>();
             // Select the rightmost lowest point p0
