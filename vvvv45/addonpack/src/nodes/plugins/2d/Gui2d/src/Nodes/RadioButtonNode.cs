@@ -35,7 +35,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "RadioButton",
 	            Category = "GUI",
 	            Help = "A spread of radio buttons",
-	            Tags = "EX9, DX9, transform, interaction, mouse, bang",
+	            Tags = "multitouch, MT, EX9, DX9, transform, interaction, mouse, bang",
 	            Author = "tonfilm")]
 	public class RadioButtonNode : BasicGui2dNode
 	{

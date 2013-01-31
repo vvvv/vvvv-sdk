@@ -37,7 +37,7 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
 	c+=lerp(ColA*pow(2,Brightness.x),0,r2d(dir,Angle.x).x+.5);
 	c+=lerp(ColB*pow(2,Brightness.y),0,r2d(dir,Angle.y+.25).x+.5)*(1-abs(r2d(dir,Angle.x).x));
 
-	c.a=1;
+	c.a=tex2D(s0,x).a;
     return c;
 }
 

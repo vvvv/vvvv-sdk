@@ -37,7 +37,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "RotarySlider",
 	            Category = "GUI",
 	            Help = "A spread of rotary knob groups",
-	            Tags = "EX9, DX9, transform, interaction, mouse, fader",
+	            Tags = "multitouch, MT, EX9, DX9, transform, interaction, mouse, fader",
 	            Author = "tonfilm")]
 	public class RotarySliderNode: BasicGui2dSliderNode
 	{

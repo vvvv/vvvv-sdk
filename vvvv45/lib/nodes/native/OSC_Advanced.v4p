@@ -1,39 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40debug23.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vvvv40\help\OSC_Advanced.v4p">
-   <BOUNDS height="10665" left="5925" top="2730" type="Window" width="7935">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\OSC_Advanced.v4p">
+   <BOUNDS height="10875" left="16215" top="1875" type="Window" width="9000">
    </BOUNDS>
-   <NODE id="26" nodename="OSCEncoder (Network)">
-   <BOUNDS height="0" left="1110" top="2775" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="OSCMessage" visible="1">
-   </PIN>
-   <PIN pinname="Address" visible="1">
-   </PIN>
-   <PIN pinname="Type Tags" visible="1">
-   </PIN>
-   <PIN pinname="Arguments" visible="1">
-   </PIN>
-   <PIN pinname="Spread as Bundle" visible="1">
-   </PIN>
-   <PIN pinname="Status" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="25" nodename="OSCDecoder (Network)">
-   <BOUNDS height="0" left="1125" top="6165" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Address" visible="1">
-   </PIN>
-   <PIN pinname="Arguments" visible="1">
-   </PIN>
-   <PIN pinname="BinSizes" visible="1">
-   </PIN>
-   <PIN pinname="Match Rule" slicecount="1" values="All">
-   </PIN>
-   <PIN pinname="Bin Sizes" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="24" nodename="IOBox (String)">
    <BOUNDS height="270" left="405" top="975" type="Node" width="660">
    </BOUNDS>
@@ -52,8 +20,6 @@
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
    </NODE>
-   <LINK dstnodeid="26" dstpinname="Address" srcnodeid="24" srcpinname="Output String">
-   </LINK>
    <NODE componentmode="InABox" id="23" nodename="IOBox (String)">
    <BOUNDS height="0" left="1080" top="975" type="Node" width="0">
    </BOUNDS>
@@ -72,9 +38,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="26" dstpinname="Type Tags" srcnodeid="23" srcpinname="Output String">
-   </LINK>
-   <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="22" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4875" top="1035" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7170" top="5430" type="Window" width="215">
@@ -100,8 +64,6 @@
    </NODE>
    <LINK dstnodeid="21" dstpinname="Input" srcnodeid="22" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="26" dstpinname="Arguments" srcnodeid="21" srcpinname="Output">
-   </LINK>
    <NODE id="20" nodename="AsValue (String)">
    <BOUNDS height="0" left="1125" top="6645" type="Node" width="0">
    </BOUNDS>
@@ -110,9 +72,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="20" dstpinname="Input" srcnodeid="25" srcpinname="Arguments">
-   </LINK>
-   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="19" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1125" top="8880" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="4710" top="9105" type="Window" width="215">
@@ -140,9 +100,7 @@
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
    </NODE>
-   <LINK dstnodeid="25" dstpinname="Address" srcnodeid="18" srcpinname="Output String">
-   </LINK>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="17" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1605" top="2085" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="3645" top="8280" type="Window" width="215">
@@ -166,8 +124,6 @@
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="26" dstpinname="Spread as Bundle" srcnodeid="17" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
    <BOUNDS height="270" left="360" top="420" type="Node" width="3810">
    </BOUNDS>
@@ -247,13 +203,11 @@
    </BOUNDS>
    <BOUNDS height="555" left="1455" top="3255" type="Box" width="3390">
    </BOUNDS>
-   <PIN pinname="Input String" visible="1">
+   <PIN pinname="Input String" visible="1" slicecount="2" values="OK,OK">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <LINK dstnodeid="11" dstpinname="Input String" srcnodeid="26" srcpinname="Status">
-   </LINK>
    <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
    <BOUNDS height="270" left="1455" top="3840" type="Node" width="3405">
    </BOUNDS>
@@ -268,12 +222,10 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="25" dstpinname="Input" srcnodeid="26" srcpinname="OSCMessage">
-   </LINK>
    <NODE id="9" nodename="GetSlice (Spreads)">
    <BOUNDS height="0" left="1125" top="8460" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Bin Size" visible="1">
+   <PIN pinname="Bin Size" visible="1" slicecount="2" values="2,4">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -286,7 +238,7 @@
    </LINK>
    <LINK dstnodeid="9" dstpinname="Input" srcnodeid="20" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2505" top="8895" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5010" top="9405" type="Window" width="215">
@@ -301,7 +253,7 @@
    <NODE id="7" nodename="GetSlice (Spreads)">
    <BOUNDS height="0" left="2505" top="8475" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Bin Size" visible="1">
+   <PIN pinname="Bin Size" visible="1" slicecount="2" values="2,4">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -312,7 +264,7 @@
    </NODE>
    <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2880" top="7590" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6525" top="8040" type="Window" width="215">
@@ -326,7 +278,7 @@
    </NODE>
    <LINK dstnodeid="9" dstpinname="Index" srcnodeid="6" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2910" top="8040" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6810" top="8295" type="Window" width="215">
@@ -370,14 +322,14 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2760" top="6570" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="11925" top="12735" type="Window" width="215">
    </BOUNDS>
    <BOUNDS height="465" left="2760" top="6570" type="Box" width="705">
    </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="2" values="0,0">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
@@ -412,10 +364,58 @@
    </NODE>
    <LINK srcnodeid="20" srcpinname="Output" dstnodeid="7" dstpinname="Input">
    </LINK>
+   <NODE id="26" nodename="OSCEncoder (Network)" systemname="OSCEncoder (Network)">
+   <BOUNDS height="0" left="1110" top="2775" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="OSCMessage" visible="1">
+   </PIN>
+   <PIN pinname="Address" visible="1">
+   </PIN>
+   <PIN pinname="Type Tags" visible="1">
+   </PIN>
+   <PIN pinname="Arguments" visible="1">
+   </PIN>
+   <PIN pinname="Spread as Bundle" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Address" srcnodeid="24" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="26" dstpinname="Type Tags" srcnodeid="23" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="26" dstpinname="Arguments" srcnodeid="21" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="26" dstpinname="Spread as Bundle" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input String" srcnodeid="26" srcpinname="Status">
+   </LINK>
+   <NODE id="25" nodename="OSCDecoder (Network)" systemname="OSCDecoder (Network)">
+   <BOUNDS height="0" left="1125" top="6165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="2" values=",">
+   </PIN>
+   <PIN pinname="Address" visible="1">
+   </PIN>
+   <PIN pinname="Arguments" visible="1">
+   </PIN>
+   <PIN pinname="BinSizes" visible="1">
+   </PIN>
+   <PIN pinname="Match Rule" slicecount="1" values="All">
+   </PIN>
+   <PIN pinname="Bin Sizes" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Input" srcnodeid="25" srcpinname="Arguments">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Address" srcnodeid="18" srcpinname="Output String">
+   </LINK>
    <LINK srcnodeid="25" srcpinname="Bin Sizes" dstnodeid="2" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="25" srcpinname="Bin Sizes" dstnodeid="9" dstpinname="Bin Size">
    </LINK>
    <LINK srcnodeid="25" srcpinname="Bin Sizes" dstnodeid="7" dstpinname="Bin Size">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="OSCMessage" dstnodeid="25" dstpinname="Input">
    </LINK>
    </PATCH>
