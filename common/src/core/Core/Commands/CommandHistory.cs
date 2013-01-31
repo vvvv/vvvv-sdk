@@ -148,12 +148,12 @@ namespace VVVV.Core.Commands
                     OnChange();
             }
 
-            Debug.WriteLine("StackSize: " + FCompoundStack.Count);
+            //Debug.WriteLine("StackSize: " + FCompoundStack.Count);
 
             if (FCompoundStack.Count > 0)
             {
                 FCompoundStack.Peek().Append(command);
-                Debug.WriteLine("Append");
+                //Debug.WriteLine("Append");
             }
         }
 
@@ -188,13 +188,13 @@ namespace VVVV.Core.Commands
 
         public virtual void StartCompound()
         {
-            Debug.WriteLine("StartCompound: " + FCompoundStack.Count);
+            //Debug.WriteLine("StartCompound: " + FCompoundStack.Count);
             FCompoundStack.Push(new CompoundCommand());
         }
 
         public virtual void StopCompound()
         {
-            Debug.WriteLine("StopCompound " + FCompoundStack.Count);
+            //Debug.WriteLine("StopCompound " + FCompoundStack.Count);
             var comp = FCompoundStack.Pop();
 
             if (FCompoundStack.Count == 0)
