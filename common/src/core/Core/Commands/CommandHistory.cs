@@ -4,6 +4,7 @@ using VVVV.Core.Logging;
 using System.Xml.Linq;
 using VVVV.Core.Serialization;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace VVVV.Core.Commands
 {
@@ -74,14 +75,28 @@ namespace VVVV.Core.Commands
         {
             if (command is CompoundCommand)
             {
-                (command as CompoundCommand).Execute(this);
-                OnlyInsert(command);
+                HandleCompoundCommand(command as CompoundCommand);
             }
             else
             {
                 ExecuteAndInsert(command);
             }
 
+        }
+
+        private void HandleCompoundCommand(CompoundCommand command)
+        {
+            StartCompound();
+            foreach (var subCom in command.Commands)
+            {
+                if (subCom is CompoundCommand)
+                {
+                    HandleCompoundCommand(subCom as CompoundCommand);
+                }
+                else
+                    OnlyExecute(subCom);
+            }
+            StopCompound();
         }
 
         public virtual void ExecuteAndInsert(Command command)
@@ -116,7 +131,7 @@ namespace VVVV.Core.Commands
             
         }
 
-        public virtual XElement OnlyExecute(Command command)
+        public virtual void OnlyExecute(Command command)
         {
             //execute command
             if (command != Command.Empty)
@@ -133,7 +148,13 @@ namespace VVVV.Core.Commands
                     OnChange();
             }
 
-            return null;
+            //Debug.WriteLine("StackSize: " + FCompoundStack.Count);
+
+            if (FCompoundStack.Count > 0)
+            {
+                FCompoundStack.Peek().Append(command);
+                //Debug.WriteLine("Append");
+            }
         }
 
         public virtual void OnlyInsert(Command command)
@@ -158,16 +179,39 @@ namespace VVVV.Core.Commands
 
                     Debug.WriteLine(string.Format("Command {0} inserted.", command));
                 },
-                string.Format("Innsertion of command {0}", command));
+                string.Format("Insertion of command {0}", command));
             }
         }
 
+
+        private Stack<CompoundCommand> FCompoundStack = new Stack<CompoundCommand>();
+
+        public virtual void StartCompound()
+        {
+            //Debug.WriteLine("StartCompound: " + FCompoundStack.Count);
+            FCompoundStack.Push(new CompoundCommand());
+        }
+
+        public virtual void StopCompound()
+        {
+            //Debug.WriteLine("StopCompound " + FCompoundStack.Count);
+            var comp = FCompoundStack.Pop();
+
+            if (FCompoundStack.Count == 0)
+                OnlyInsert(comp);
+            else
+                FCompoundStack.Peek().Append(comp);
+
+        }
+
+
+        //xml from HDE
         public virtual void ExecuteAndInsert(string xml)
         {
             var x = XElement.Parse(xml);
 
             if (FMainThread != null)
-                FMainThread.Post((state) => ExecuteAndInsert(FSerializer.Deserialize<Command>(x)), null);
+                FMainThread.Send((state) => ExecuteAndInsert(FSerializer.Deserialize<Command>(x)), null);
             else
                 ExecuteAndInsert(FSerializer.Deserialize<Command>(x));
         }
@@ -177,19 +221,9 @@ namespace VVVV.Core.Commands
             var x = XElement.Parse(xml);
 
             if (FMainThread != null)
-                FMainThread.Post((state) => OnlyExecute(FSerializer.Deserialize<Command>(x)), null);
+                FMainThread.Send((state) => OnlyExecute(FSerializer.Deserialize<Command>(x)), null);
             else
                 OnlyExecute(FSerializer.Deserialize<Command>(x));
-        }
-
-        public virtual void OnlyInsert(string xml)
-        {
-            var x = XElement.Parse(xml);
-
-            if (FMainThread != null)
-                FMainThread.Post((state) => OnlyInsert(FSerializer.Deserialize<Command>(x)), null);
-            else
-                OnlyInsert(FSerializer.Deserialize<Command>(x));
         }
 
         /// <summary>
@@ -223,7 +257,14 @@ namespace VVVV.Core.Commands
             {
                 DebugHelpers.CatchAndLog(() =>
                 {
-                    command.Redo();
+                    if (command is CompoundCommand)
+                    {
+                        RedoCompoundCommand(command as CompoundCommand);
+                    }
+                    else
+                    {
+                        command.Redo();
+                    }
                     FCurrentNode = FCurrentNode.Next;
                     Debug.WriteLine(string.Format("Command {0} redone.", command));
                 },
@@ -231,6 +272,20 @@ namespace VVVV.Core.Commands
             	
             	if (OnChange != null) 
                     OnChange();
+            }
+        }
+
+        //redo copund does not build new commands
+        private void RedoCompoundCommand(CompoundCommand command)
+        {
+            foreach (var subCom in command.Commands)
+            {
+                if (subCom is CompoundCommand)
+                {
+                    RedoCompoundCommand(subCom as CompoundCommand);
+                }
+                else
+                    OnlyExecute(subCom);
             }
         }
         
