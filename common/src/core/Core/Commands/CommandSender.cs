@@ -25,6 +25,8 @@ namespace VVVV.Core.Commands
             FIDItem = idItem;
             FSerializer = idItem.GetSerializer();
 
+            GetHistory();
+
             foreach (var item in FHosts)
             {
                 Console.WriteLine("Remote: {0}", item);

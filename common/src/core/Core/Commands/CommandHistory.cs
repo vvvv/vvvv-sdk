@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using VVVV.Core.Serialization;
 using System.Threading;
 using System.Collections.Generic;
+using System.Security;
 
 namespace VVVV.Core.Commands
 {
@@ -227,9 +228,32 @@ namespace VVVV.Core.Commands
         }
 
         /// <summary>
+        /// Redo last command.
+        /// </summary>
+        public virtual void Redo()
+        {
+
+            if (FMainThread != null)
+                FMainThread.Send((state) => PrivateRedo(), null);
+            else
+                PrivateRedo();
+
+
+        }
+
+        /// <summary>
         /// Undo last command.
         /// </summary>
         public virtual void Undo()
+        {
+
+            if (FMainThread != null)
+                FMainThread.Send((state) => PrivateUndo(), null);
+            else
+                PrivateUndo();
+        }
+
+        private void PrivateUndo()
         {
             var command = PreviousCommand;
             if (command != null)
@@ -247,10 +271,7 @@ namespace VVVV.Core.Commands
             }
         }
 
-        /// <summary>
-        /// Redo last command.
-        /// </summary>
-        public virtual void Redo()
+        private void PrivateRedo()
         {
             var command = NextCommand;
             if (command != null)
@@ -259,7 +280,7 @@ namespace VVVV.Core.Commands
                 {
                     if (command is CompoundCommand)
                     {
-                        RedoCompoundCommand(command as CompoundCommand);
+                        (command as CompoundCommand).OnlyExecuteLocal();
                     }
                     else
                     {
@@ -269,23 +290,9 @@ namespace VVVV.Core.Commands
                     Debug.WriteLine(string.Format("Command {0} redone.", command));
                 },
                 string.Format("Redo of command {0}", command));
-            	
-            	if (OnChange != null) 
-                    OnChange();
-            }
-        }
 
-        //redo copund does not build new commands
-        private void RedoCompoundCommand(CompoundCommand command)
-        {
-            foreach (var subCom in command.Commands)
-            {
-                if (subCom is CompoundCommand)
-                {
-                    RedoCompoundCommand(subCom as CompoundCommand);
-                }
-                else
-                    OnlyExecute(subCom);
+                if (OnChange != null)
+                    OnChange();
             }
         }
         
