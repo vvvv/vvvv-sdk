@@ -7,18 +7,22 @@ using ICSharpCode.SharpDevelop.Dom;
 using VVVV.Core;
 using VVVV.Core.Collections;
 using VVVV.Core.Runtime;
+using VVVV.Core.Commands;
 
 namespace VVVV.Core.Model
 {
     public class Solution : PersistentIDContainer, IIDContainer
     {
-    	private MappingRegistry FRegistry;
+        private readonly ServiceProvider FServiceProvider;
     	
-    	public Solution(Uri location, MappingRegistry registry)
+    	public Solution(Uri location, IServiceProvider serviceProvider)
     	    : base(Path.GetFileName(location.LocalPath), location, true)
         {
-    		FRegistry = registry;
-            Mapper = new ModelMapper(this, registry);
+            FServiceProvider = new ServiceProvider(serviceProvider);
+            if (Shell.Instance.CommandLineArguments.Local)
+                FServiceProvider.RegisterService<ICommandHistory>(new CommandHistory(FServiceProvider));
+            else
+                FServiceProvider.RegisterService<ICommandHistory>(new HDECommandHistory(this));
             
             // Do not allow rename on add. Rename triggers save/delete in case of PersistentIDContainer.
             Projects = new EditableIDList<Project>("Projects", false);
@@ -34,6 +38,14 @@ namespace VVVV.Core.Model
             Projects.Removed += Projects_Removed;
             
             OnRootingChanged(RootingAction.Rooted);
+        }
+
+        public override IServiceProvider ServiceProvider
+        {
+            get
+            {
+                return FServiceProvider;
+            }
         }
     	
         public event CompiledEventHandler ProjectCompiledSuccessfully;

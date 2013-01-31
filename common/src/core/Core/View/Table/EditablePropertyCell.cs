@@ -23,7 +23,7 @@ namespace VVVV.Core.View.Table
             set
             {
                 var command = Command.Set(FProperty, value);
-                FProperty.Mapper.Map<ICommandHistory>().Insert(command);
+                FProperty.GetCommandHistory().Insert(command);
             }
         }
         

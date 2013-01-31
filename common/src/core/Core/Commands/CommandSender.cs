@@ -23,7 +23,7 @@ namespace VVVV.Core.Commands
             FRemoter = new RemotingManagerTCP();
             FHosts = hosts == null ? new string[]{"localhost"} : hosts;
             FIDItem = idItem;
-            FSerializer = idItem.Mapper.Map<Serializer>();
+            FSerializer = idItem.GetSerializer();
 
             foreach (var item in FHosts)
             {

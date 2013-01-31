@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.Utils;
+using VVVV.Core.Commands;
 
 namespace VVVV.Core.Model
 {
@@ -33,12 +34,13 @@ namespace VVVV.Core.Model
         {
             Changed = false;
         }
-        
-        public ModelMapper Mapper
+
+        public virtual IServiceProvider ServiceProvider
         {
-            get;
-            protected set;
+            get { return Owner != null ? Owner.ServiceProvider : null; }
         }
+
+        public ICommandHistory CommandHistory { get { return ServiceProvider.GetService<ICommandHistory>(); } }
 
         private IIDContainer FOwner;
         public virtual IIDContainer Owner
@@ -113,22 +115,13 @@ namespace VVVV.Core.Model
         private void OnRootingChanged(RootingChangedEventArgs args)
         {
             if (args.Rooting == RootingAction.Rooted)
-            {
-                Mapper = FOwner.Mapper.CreateChildMapper(this);
                 OnRootingChanged(RootingAction.Rooted);
-            }
             
             if (RootingChanged != null)
-            {
                 RootingChanged(this, args);
-            }
             
             if (args.Rooting == RootingAction.ToBeUnrooted)
-            {
                 OnRootingChanged(RootingAction.ToBeUnrooted);
-                Mapper.Dispose();
-                Mapper = null;
-            }
         }
         
         protected virtual void OnRootingChanged(RootingAction rooting)
@@ -225,9 +218,6 @@ namespace VVVV.Core.Model
         
         protected virtual void DisposeManaged()
         {
-            if (Mapper != null)
-                Mapper.Dispose();
-
             if (FOwner != null)
             {
                 FOwner.RootingChanged -= FOwner_RootingChanged;

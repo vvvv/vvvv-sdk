@@ -63,11 +63,11 @@ namespace VVVV.Core.Commands
             }
         }
 
-        public CommandHistory(Serializer serializer, SynchronizationContext syncContext)
+        public CommandHistory(IServiceProvider serviceProvider)
         {
             FCurrentNode = FFirstNode;
-            FSerializer = serializer;
-            FMainThread = syncContext;
+            FSerializer = serviceProvider.GetService<Serializer>();
+            FMainThread = serviceProvider.GetService<SynchronizationContext>();
         }
 
         public virtual void Insert(Command command)

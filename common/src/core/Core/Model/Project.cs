@@ -147,7 +147,9 @@ namespace VVVV.Core.Model
             switch (args.Rooting) 
             {
                 case RootingAction.Rooted:
-                    FReferences.Mapper.RegisterMapping<IConverter>(FReferenceConverter);
+                    var serviceProvider = new ServiceProvider(FReferences.ServiceProvider);
+                    serviceProvider.RegisterService<IConverter>(FReferenceConverter);
+                    FReferences.ServiceProvider = serviceProvider;
                     break;
             }
         }
@@ -157,7 +159,9 @@ namespace VVVV.Core.Model
             switch (args.Rooting) 
             {
                 case RootingAction.Rooted:
-                    FDocuments.Mapper.RegisterMapping<IConverter>(FDocumentConverter);
+                    var serviceProvider = new ServiceProvider(FDocuments.ServiceProvider);
+                    serviceProvider.RegisterService<IConverter>(FDocumentConverter);
+                    FDocuments.ServiceProvider = serviceProvider;
                     break;
             }
         }

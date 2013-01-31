@@ -17,7 +17,7 @@ namespace VVVV.Core.Commands
         private IIDItem FIdItem;
 
         public HDECommandHistory(IIDItem idItem)
-            : base(idItem.Mapper.Map<Serializer>(), null)
+            : base(idItem.ServiceProvider)
         {
             FCommandSender = new CommandSender(Shell.Instance.CommandLineArguments.RemoteIPs, idItem);
             FIdItem = idItem;

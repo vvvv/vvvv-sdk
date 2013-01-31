@@ -13,7 +13,7 @@ namespace VVVV.Core.Menu
         protected Func<T> FValueFactory;
 
         public AddItemMenuEntry(IEditableIDList<T> ownerlist, string newModelTypeName, Keys shortcutKeys, Func<T> valueFactory)
-            : base(ownerlist.Mapper.Map<ICommandHistory>(), newModelTypeName, shortcutKeys)
+            : base(ownerlist.GetCommandHistory(), newModelTypeName, shortcutKeys)
         {
             OwnerList = ownerlist;
             FValueFactory = valueFactory;

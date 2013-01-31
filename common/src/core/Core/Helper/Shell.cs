@@ -163,7 +163,7 @@ namespace VVVV.Core
         public T GetAtID<T>(string id)
         {
             var item = GetIDItem(id);
-            return item.Mapper.Map<T>();
+            return (T)item.ServiceProvider.GetService(typeof(T));
         }
 
         //publish an object

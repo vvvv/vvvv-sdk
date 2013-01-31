@@ -60,7 +60,7 @@ namespace VVVV.Core.View
                 if (idItem == null)
                     yield break;
 
-                var commandHistory = idItem.Mapper.Map<ICommandHistory>();
+                var commandHistory = idItem.GetCommandHistory();
 
                 // IPersistent objects must be loaded before they can be edited.
                 var persistent = idItem as IPersistent;
@@ -104,7 +104,7 @@ namespace VVVV.Core.View
                 if (idItem.Owner is IEditableIDList)
                 {
                     var owner = idItem.Owner as IEditableIDList;
-                    commandHistory = idItem.Owner.Mapper.Map<ICommandHistory>();
+                    commandHistory = idItem.Owner.GetCommandHistory();
 
                     if (owner.CanRemove(idItem))
                         yield return new RemoveMenuEntry<IEditableIDList, IIDItem>(commandHistory, owner, idItem);
