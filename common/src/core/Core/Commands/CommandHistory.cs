@@ -280,7 +280,7 @@ namespace VVVV.Core.Commands
                 {
                     if (command is CompoundCommand)
                     {
-                        RedoCompoundCommand(command as CompoundCommand);
+                        (command as CompoundCommand).OnlyExecuteLocal();
                     }
                     else
                     {
@@ -293,20 +293,6 @@ namespace VVVV.Core.Commands
 
                 if (OnChange != null)
                     OnChange();
-            }
-        }
-
-        //redo copund does not build new commands
-        private void RedoCompoundCommand(CompoundCommand command)
-        {
-            foreach (var subCom in command.Commands)
-            {
-                if (subCom is CompoundCommand)
-                {
-                    RedoCompoundCommand(subCom as CompoundCommand);
-                }
-                else
-                    OnlyExecute(subCom);
             }
         }
         
