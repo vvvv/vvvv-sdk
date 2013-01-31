@@ -62,7 +62,18 @@ namespace VVVV.HDE.GraphicalEditing
             }
             set
             {
-                PPath.Pen = value;
+                if (value != PPath.Pen)
+                {
+                    if (value != null)
+                    {
+                        if (value.Width != PPath.Pen.Width || value.Color != PPath.Pen.Color)
+                        {
+                            PPath.Pen = value;
+                        }
+                    }
+                    else
+                        PPath.Pen = null;
+                }
             }
         }
 
