@@ -122,8 +122,14 @@ namespace Microsoft.Cci.ReflectionEmitter {
             {
                 try
                 {
-                    var members = this.GetMembers(containingType, fieldReference.Name);
-                    result = this.GetFieldFrom(fieldReference, members);
+                    var reflectionType = this.GetType(containingType);
+                    if (reflectionType.GetType().Name.Contains("TypeBuilder"))
+                        result = this.GetFieldFromTypeBuilder(fieldReference);
+                    else
+                    {
+                        var members = this.GetMembers(containingType, fieldReference.Name);
+                        result = this.GetFieldFrom(fieldReference, members);
+                    }
                 }
                 catch (NotSupportedException)
                 {
@@ -253,8 +259,14 @@ namespace Microsoft.Cci.ReflectionEmitter {
                 var containingType = methodReference.ContainingType;
                 try
                 {
-                    var members = this.GetMembers(containingType, methodReference.Name);
-                    result = this.GetMethodFrom(methodReference, members);
+                    var reflectionType = this.GetType(containingType);
+                    if (reflectionType.GetType().Name.Contains("TypeBuilder"))
+                        result = this.GetMethodFromTypeBuilder(methodReference);
+                    else
+                    {
+                        var members = this.GetMembers(containingType, methodReference.Name);
+                        result = this.GetMethodFrom(methodReference, members);
+                    }
                 }
                 catch (NotSupportedException)
                 {

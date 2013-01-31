@@ -23,14 +23,9 @@ namespace VVVV.Core.Commands
                 
                 foreach (var subCmd in command.FCommands)
                 {
-                    if (command.FSerializedCommands.ContainsKey(subCmd))
-                    {
-                        xElement.Add(command.FSerializedCommands[subCmd]);
-                    }
-                    else
-                    {
-                        xElement.Add(serializer.Serialize(subCmd));
-                    }
+
+                    xElement.Add(serializer.Serialize(subCmd));
+                    
                 }
                 
                 return xElement;
@@ -51,7 +46,6 @@ namespace VVVV.Core.Commands
         #endregion
         
         private readonly IList<Command> FCommands;
-        private readonly IDictionary<Command, XElement> FSerializedCommands;
 
         public IList<Command> Commands
         {
@@ -66,13 +60,11 @@ namespace VVVV.Core.Commands
         public CompoundCommand(IEnumerable<Command> commands)
         {
             FCommands = new List<Command>(commands);
-            FSerializedCommands = new Dictionary<Command, XElement>();
         }
 
         public CompoundCommand(params Command[] commands)
         {
             FCommands = new List<Command>(commands);
-            FSerializedCommands = new Dictionary<Command, XElement>();
         }
         
         public void Append(Command command)
@@ -98,29 +90,7 @@ namespace VVVV.Core.Commands
 
         public sealed override void Execute()
         {
-            throw new NotImplementedException("Should not call execute on compound command, use Execute(ICommandHistory history)");
-        }
-
-        //execute each single command
-        public void Execute(ICommandHistory history)
-        {
-            var h = history as CommandHistory;
-
-            foreach (var cmd in FCommands)
-            {
-                if (cmd is CompoundCommand)
-                {
-                    (cmd as CompoundCommand).Execute(history);
-                }
-                else
-                {
-                    var serialized = h.OnlyExecute(cmd);
-                    if(serialized != null)
-                    {
-                        FSerializedCommands[cmd] = serialized;
-                    }
-                }
-            }
+           throw new NotImplementedException("Should not call execute on compound command, only insert it into a ICommandHistory)");
         }
 
         /// <summary>
@@ -159,7 +129,15 @@ namespace VVVV.Core.Commands
         
         public override string ToString()
         {
-            return string.Join(", ", (from cmd in FCommands select cmd.ToString()).ToArray());
+            var result = "Compound Command:";
+
+            for (int i = 0; i < FCommands.Count; i++)
+            {
+                result += " " + i + " ";
+                result += FCommands[i].ToString();
+            }
+
+            return result; // "Compound: " + string.Join(", ", (from cmd in FCommands select cmd.ToString()).ToArray());
         }
 
     }
