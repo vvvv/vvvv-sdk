@@ -178,11 +178,15 @@ namespace VVVV.HDE.GraphicalEditing
         public override void OnMouseMove(object sender, PInputEventArgs e)
         {
         	IGraphElement element;
-        	element = FGraphEditor.GetClosestConnectable(e.Position);
-        	if (element == null)
-        		element = FGraphEditor.GetHoverableFromPoint(e.Position);
-        	
-        	FGraphEditor.Host.HighlightElement(element);
+            //element = FGraphEditor.GetClosestConnectable(e.Position);
+            //if (element == null)
+            //    element = FGraphEditor.GetHoverableFromPoint(e.Position);
+            if (e.PickedNode != null)
+                element = e.PickedNode.Tag as GraphElement;
+            else
+                element = FGraphEditor.GetHoverableFromPoint(e.Position);
+
+            FGraphEditor.Host.HighlightElement(element);
         }
     }
 
