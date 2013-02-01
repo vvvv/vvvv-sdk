@@ -83,8 +83,8 @@ namespace VVVV.Nodes
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int slice, Device device)
 		{
-			int p = (int) FHandleIn[slice];
-			IntPtr share = (IntPtr) p;
+			int p = unchecked((int) FHandleIn[slice]);
+			IntPtr share = new IntPtr(p);
 			Format format;
 			if (FFormat[slice].Name == "INTZ")
 				format = D3DX.MakeFourCC((byte)'I', (byte)'N', (byte)'T', (byte)'Z');

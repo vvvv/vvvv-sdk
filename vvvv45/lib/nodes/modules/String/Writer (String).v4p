@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\String\Writer (String).v4p" systemname="Writer (File String)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\String\Writer (File String).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\String\Writer (String).v4p" systemname="Writer (File String)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\String\Writer (File String).v4p">
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="2" systemname="IOBox (Enumerations)">
    <BOUNDS type="Node" left="2505" top="1170" width="0" height="0">
    </BOUNDS>
@@ -32,7 +32,7 @@
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <BOUNDS type="Window" left="9525" top="6690" width="5850" height="4260">
+   <BOUNDS type="Window" left="6450" top="9045" width="7260" height="4260">
    </BOUNDS>
    <INFO author="vvvv group" description="Writes a string to a text file" tags="text, file">
    </INFO>
@@ -125,6 +125,8 @@
    </PIN>
    <PIN pinname="Append" visible="1">
    </PIN>
+   <PIN pinname="Create Directory" visible="1" pintype="Input" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Output" dstnodeid="11" dstpinname="Content">
    </LINK>
@@ -133,5 +135,27 @@
    <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Write">
    </LINK>
    <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Append">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6000" top="1215" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6000" top="1215" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Create Directory|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Create Directory">
    </LINK>
    </PATCH>
