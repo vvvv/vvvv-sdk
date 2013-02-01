@@ -70,6 +70,8 @@ namespace VVVV.Nodes.Network.Wyphon
 
 		private static uint texturesUpdatedVersion = 0; //whenever this goes up, something changed
 
+		private bool disposed = false;
+		
 		#endregion fields
 
 		#region properties
@@ -118,6 +120,11 @@ namespace VVVV.Nodes.Network.Wyphon
 		public static uint texturesVersion {
 			get { return texturesUpdatedVersion; }
 		}
+		
+		public bool Disposed {
+			get { return disposed; }
+		}
+
 		#endregion properties
 		
 		#region WyphonCallbackDelegates
@@ -153,7 +160,7 @@ namespace VVVV.Nodes.Network.Wyphon
 					while (index > -1) {
 						lock (sharedTexturesLock) {
 							ISpread<SharedTextureInfo> spread;
-							if ( SharedTexturesPerPartner.TryGetValue(sendingPartnerId, out spread) ) {
+							if ( SharedTexturesPerPartner.TryGetValue(partnerId, out spread) ) {
 								SharedTexturesPerPartner[partnerId].SliceCount = 0;
 								SharedTexturesPerPartner.Remove(partnerId);
 
@@ -386,12 +393,18 @@ namespace VVVV.Nodes.Network.Wyphon
 		}
 
 		public void Dispose() {
-			wyphonPartnerName = null;
-			
-			// Take yourself off the Finalization queue
-			// to prevent finalization code for this object
-			// from executing a second time.
-			GC.SuppressFinalize(this);
+			if ( ! disposed ) {
+				try {
+					wyphonPartnerName = null;
+				} catch {}
+					
+				// Take yourself off the Finalization queue
+				// to prevent finalization code for this object
+				// from executing a second time.
+				GC.SuppressFinalize(this);
+				
+				disposed = true;
+			}
 		}
 
 	}

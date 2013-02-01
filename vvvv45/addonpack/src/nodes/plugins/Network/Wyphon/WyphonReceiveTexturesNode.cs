@@ -72,10 +72,22 @@ namespace VVVV.Nodes.Network.Wyphon
 		private uint previousTexturesVersion = 0;
 						
 		private string logMe = "";
+		
+		private bool disposed = false;
+		
+		public bool Disposed {
+			get { return disposed; }
+		}
+		
 		#endregion fields
 
 		#region helper functions
 		
+		//only keep the 4 flags that vvvv can handle, and filter out others like Usage.SoftwareProcessing etc.
+		private uint usage2enumUsage(uint usage) {
+			return usage & ((uint)Usage.None | (uint)Usage.RenderTarget | (uint)Usage.Dynamic | (uint)Usage.DepthStencil );
+		}
+
 		#endregion helper functions
 
 		
@@ -87,9 +99,13 @@ namespace VVVV.Nodes.Network.Wyphon
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax) {
 			//ignore spreadmax, use FHandle in as the reference spread !!!
-			if (	( previousTexturesVersion != WyphonNode.texturesVersion ) 
-					|| FPartnerIdIn.IsChanged
-					|| FDoFilterIn.IsChanged
+			
+			if (	WyphonNode.wyphonPartner != null 
+			    	&& (
+				    	( previousTexturesVersion != WyphonNode.texturesVersion )
+						|| FPartnerIdIn.IsChanged
+						|| FDoFilterIn.IsChanged
+					)
 				) {
 				
 				//LogNow(LogType.Debug, "Something happened with the textures shared by others, update our output !");
@@ -125,8 +141,8 @@ namespace VVVV.Nodes.Network.Wyphon
 										}
 									}
 									
-									//GetEnumEntryByUint("TextureFormat", textureInfo.format);									
-									EnumEntry usageEnumEntry = EnumManager.GetEnumEntry("TextureUsage", (int) textureInfo.usage);
+									//GetEnumEntryByUint("TextureFormat", textureInfo.format);
+									EnumEntry usageEnumEntry = EnumManager.GetEnumEntry("TextureUsage", (int) usage2enumUsage(textureInfo.usage) );
 									
 									LogNow ( LogType.Debug, "FORMAT Received = " + formatEnumEntry.ToString() + " index=" + formatEnumEntry.Index + " D3D const = " + textureInfo.format);
 									
@@ -163,11 +179,14 @@ namespace VVVV.Nodes.Network.Wyphon
 
 
 		public void Dispose() {
-			
-			// Take yourself off the Finalization queue
-			// to prevent finalization code for this object
-			// from executing a second time.
-			GC.SuppressFinalize(this);
+			if ( ! disposed ) {
+				disposed = true;
+				
+				// Take yourself off the Finalization queue
+				// to prevent finalization code for this object
+				// from executing a second time.
+				GC.SuppressFinalize(this);
+			}
 		}
 	}
 
