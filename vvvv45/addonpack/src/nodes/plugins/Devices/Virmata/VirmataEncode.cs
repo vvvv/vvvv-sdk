@@ -122,8 +122,8 @@ namespace VVVV.Nodes
     [Output("On Change")]
     ISpread<bool> FChangedOut;
 
-    [Output("Debug")]
-    ISpread<string> FDebugOut;
+    //[Output("Debug")]
+    //ISpread<string> FDebugOut;
 
     #endregion Pin Definitions
 
@@ -147,40 +147,33 @@ namespace VVVV.Nodes
       }
 
       /// Firmware Version requested?
-      if ((FReportFirmwareVersion.IsChanged && FReportFirmwareVersion[0]) || ShouldReset)
-      {
+      if ((FReportFirmwareVersion.IsChanged && FReportFirmwareVersion[0]) || ShouldReset) {
         GetFirmwareVersionCommand();
       }
 
       // TODO: Find out if we have pull-up configured input pins and if so, update the config too
-      if(FPinModeSetup.IsChanged || ShouldReset)
-      {
+      if(FPinModeSetup.IsChanged || ShouldReset) {
         UpdatePinConfiguration();
       }
 
       /// Write the values to the pins
-      if (FPinModeSetup.IsChanged || FPinValues.IsChanged || ShouldReset)
-      {
+      if (FPinModeSetup.IsChanged || FPinValues.IsChanged || ShouldReset) {
         SetPinStates(FPinValues);
       }
 
       /// Set sample rate
-      if (FSamplerate.IsChanged || ShouldReset)
-      {
+      if (FSamplerate.IsChanged || ShouldReset) {
         GetSamplerateCommand(FSamplerate[0]);
       }
 
       /// Set Pinreporting for analog pins
-      if (FReportAnalogPins.IsChanged || ShouldReset)
-      {
+      if (FPinModeSetup.IsChanged || FReportAnalogPins.IsChanged || ShouldReset) {
         SetAnalogPinReportingForRange(FAnalogInputCount[0],FReportAnalogPins[0]);
       }
 
       /// Set Pinreporting for digital pins
-      if (FReportDigitalPins.IsChanged || ShouldReset)
-      {
-        for(int port=0; port<NUM_PORTS; port++)
-        {
+      if (FReportDigitalPins.IsChanged || ShouldReset) {
+        for(int port=0; port<NUM_PORTS; port++) {
           GetDigitalPinReportingCommandForState(FReportDigitalPins[0],port);
         }
       }
@@ -194,12 +187,9 @@ namespace VVVV.Nodes
       try{
         if (HasData) {
           Stream outStream = new MemoryStream(CommandBuffer.ToArray());
-          using (var outputWriter = FFirmataOut.GetWriter())
-          {
-          outputWriter.Write(outStream);
+          using (var outputWriter = FFirmataOut.GetWriter()) {
+            outputWriter.Write(outStream);
           }
-          FDebugOut.SliceCount = 1;
-          FDebugOut[0] = FirmataUtils.CommandBufferToString(CommandBuffer);
         }
       } catch(Exception e) {
         // Do nothing on errors. Yes, i am lazy on that one.
