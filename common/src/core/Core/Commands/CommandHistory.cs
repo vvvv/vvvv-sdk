@@ -122,7 +122,7 @@ namespace VVVV.Core.Commands
                         FCurrentNode = FFirstNode;
                     }
 
-                    Debug.WriteLine(string.Format("Command {0} executed and inserted.", command));
+                    //Debug.WriteLine(string.Format("Command {0} executed and inserted.", command));
                 },
                 string.Format("Innsertion and execution of command {0}", command));
 
@@ -141,7 +141,7 @@ namespace VVVV.Core.Commands
                 {
                     command.Execute();
 
-                    Debug.WriteLine(string.Format("Command {0} executed.", command));
+                    //Debug.WriteLine(string.Format("Command {0} executed.", command));
                 },
                 string.Format("Execution of command {0}", command));
 
@@ -178,7 +178,7 @@ namespace VVVV.Core.Commands
                         FCurrentNode = FFirstNode;
                     }
 
-                    Debug.WriteLine(string.Format("Command {0} inserted.", command));
+                    //Debug.WriteLine(string.Format("Command {0} inserted.", command));
                 },
                 string.Format("Insertion of command {0}", command));
             }
@@ -189,11 +189,27 @@ namespace VVVV.Core.Commands
 
         public virtual void StartCompound()
         {
+            if (FMainThread != null)
+                FMainThread.Send((state) => PrivateStartCompound(), null);
+            else
+                PrivateStartCompound();
+        }
+
+        private void PrivateStartCompound()
+        {
             //Debug.WriteLine("StartCompound: " + FCompoundStack.Count);
             FCompoundStack.Push(new CompoundCommand());
         }
 
         public virtual void StopCompound()
+        {
+            if (FMainThread != null)
+                FMainThread.Send((state) => PrivateStopCompound(), null);
+            else
+                PrivateStopCompound();
+        }
+
+        private void PrivateStopCompound()
         {
             //Debug.WriteLine("StopCompound " + FCompoundStack.Count);
             var comp = FCompoundStack.Pop();
@@ -237,8 +253,6 @@ namespace VVVV.Core.Commands
                 FMainThread.Send((state) => PrivateRedo(), null);
             else
                 PrivateRedo();
-
-
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Http;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Remoting.Channels.Tcp;
+using System.Runtime.Remoting.Lifetime;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
 
@@ -51,6 +52,7 @@ namespace VVVV.Utils.Network
             channelSettings["secure"] = enableSecurity;
 
             IChannel channel = new TcpChannel(channelSettings, sinkProviderClt, sinkProviderSrv);
+            LifetimeServices.LeaseTime = TimeSpan.FromDays(365000);
             ChannelServices.RegisterChannel(channel, enableSecurity);
 
         }
@@ -70,6 +72,7 @@ namespace VVVV.Utils.Network
             channelSettings["secure"] = enableSecurity;
 
             TcpServerChannel channel = new TcpServerChannel(channelSettings, sinkProvider);
+            LifetimeServices.LeaseTime = TimeSpan.FromDays(365000);
             ChannelServices.RegisterChannel(channel, enableSecurity);
 
         }
@@ -86,6 +89,7 @@ namespace VVVV.Utils.Network
             var sinkProvider = new BinaryClientFormatterSinkProvider();
 
             IChannel channel = new TcpClientChannel(channelSettings, sinkProvider);
+            LifetimeServices.LeaseTime = TimeSpan.FromDays(365000);
             ChannelServices.RegisterChannel(channel, enableSecurity);
         }
 
