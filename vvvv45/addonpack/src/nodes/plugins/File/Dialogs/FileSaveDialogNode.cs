@@ -13,16 +13,16 @@ namespace VVVV.Nodes
 {  
 	[PluginInfo(Name = "Dialog",
 	            Category = "File",
-	            Version = "Open",
-	            Help = "Opens a file dialog (without blocking vvvv)",
+	            Version = "Save",
+	            Help = "Opens a dialog (without blocking vvvv) for chosing a file to save.",
 	            Tags = "",
 	            Author = "vux, vvvv group")]
-    public class FileOpenDialogNode : IPluginEvaluate, IDisposable
+    public class FileSaveDialogNode : IPluginEvaluate, IDisposable
     {
         #region fields & pins
         private IPluginHost FHost;
 
-        [Input ("Title", IsSingle = true, DefaultString = "Open...")]
+        [Input ("Title", IsSingle = true, DefaultString = "Save...")]
         ISpread<string> FPinInTitle;
         
         [Input ("Default Directory", IsSingle = true, StringType = StringType.Directory)]
@@ -31,28 +31,25 @@ namespace VVVV.Nodes
         [Input ("Filter", IsSingle = true, DefaultString = "All Files (*.*)|*.*")]
         ISpread<string> FPinInFilter;
         
-        [Input ("Multi Select", IsSingle = true)]
-        ISpread<bool> FPinInAllowMultiple;
-        
         [Input ("Check Path Exists", IsSingle = true)]
         ISpread<bool> FCheckPathExists;
         
-        [Input ("Open", IsSingle = true, IsBang = true)]
+        [Input ("Save", IsSingle = true, IsBang = true)]
         ISpread<bool> FPinInOpen;
         
         [Output ("Path", StringType = StringType.Filename)]
         ISpread<string> FPinOutPath;
         
-        [Output ("Openend", IsSingle = true)]
+        [Output ("Saved", IsSingle = true)]
         ISpread<bool> FBangOut;
         
         private Thread FThread;
 
-        private OpenFileDialog FDialog = new OpenFileDialog();
+        private SaveFileDialog FDialog = new SaveFileDialog();
 
         private event EventHandler OnSelect;
 
-        private bool FOpened = false;
+        private bool FSaved = false;
         private bool FInvalidate = false;
         #endregion
 
@@ -61,10 +58,9 @@ namespace VVVV.Nodes
         {
         	FBangOut[0] = false;
         	
-            if (FPinInOpen[0] && !FOpened)
+            if (FPinInOpen[0] && !FSaved)
             {
             	FDialog.Title = FPinInTitle[0];
-                FDialog.Multiselect = FPinInAllowMultiple[0];
                 FDialog.InitialDirectory = FPinInDefaultDir[0];
                 FDialog.Filter = FPinInFilter[0];
                 FDialog.CheckPathExists = FCheckPathExists[0];
@@ -72,8 +68,8 @@ namespace VVVV.Nodes
                 
                 OnSelect -= new EventHandler(FileDialogNode_OnSelect);
                 OnSelect += new EventHandler(FileDialogNode_OnSelect);
-                FOpened = true;
-                FThread = new Thread(new ThreadStart(DoOpen));
+                FSaved = true;
+                FThread = new Thread(new ThreadStart(DoSave));
                 FThread.SetApartmentState(ApartmentState.STA);
                 FThread.Start();
             }
@@ -97,7 +93,7 @@ namespace VVVV.Nodes
         #region Dispose
         public void Dispose()
         {
-            if (FOpened)
+            if (FSaved)
             {
                 try
                 {
@@ -112,7 +108,7 @@ namespace VVVV.Nodes
         #endregion
 
         #region Do Open
-        private void DoOpen()
+        private void DoSave()
         {
             if (FDialog.ShowDialog() == DialogResult.OK)
             {
@@ -121,7 +117,7 @@ namespace VVVV.Nodes
                     OnSelect(this, new EventArgs());
                 }
             }
-            FOpened = false;
+            FSaved = false;
         }
         #endregion
     }
