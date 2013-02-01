@@ -24,14 +24,14 @@ namespace VVVV.Hosting.Pins
                 }
                 return base.Sync();
             }
-            
-            public override void Flush()
+
+            public override void Flush(bool force = false)
             {
                 foreach (var spread in this)
                 {
-                    spread.Flush();
+                    spread.Flush(force);
                 }
-                base.Flush();
+                base.Flush(force);
             }
 	    }
 	    

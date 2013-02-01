@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta11.2.dtd" >
-   <PATCH nodename="Y:\vvvv33_trunk\help\QRCodeTexture (EX9.Texture) help.v4p">
-   <BOUNDS height="8745" left="13440" top="2295" type="Window" width="13215">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\QRCode (EX9.Texture) help.v4p">
+   <BOUNDS height="8745" left="5715" top="1530" type="Window" width="13215">
    </BOUNDS>
    <NODE id="17" nodename="LFO (Animation)">
    <BOUNDS height="270" left="5850" top="2625" type="Node" width="855">
@@ -34,7 +34,7 @@
    <PIN pinname="Sampler State" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="14" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="14" nodename="RENDERER (EX9)">
    <BOUNDS height="270" left="8190" top="240" type="Node" width="3660">
    </BOUNDS>
    <BOUNDS height="6360" left="23010" top="15240" type="Window" width="6120">
@@ -43,21 +43,19 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Device" slicecount="1" values="-1">
    </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="7155" top="6990" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="19125" top="11745" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="240" left="7155" top="6990" type="Box" width="1020">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|used version|">
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
@@ -119,11 +117,11 @@
    <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
    <BOUNDS height="270" left="165" top="540" type="Node" width="8220">
    </BOUNDS>
-   <BOUNDS height="780" left="165" top="540" type="Box" width="4710">
+   <BOUNDS height="555" left="165" top="540" type="Box" width="4200">
    </BOUNDS>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|QR-Code is a 2D-Barcode that can be decoded by cellular phones equipped with decoder software. Especially in Japan a huge number of phones is already shipped with a java decoder.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|QR-Code is a 2D-Barcode that can be decoded by cellular phones equipped with decoder software. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -137,7 +135,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="7950" top="5220" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|QRCodeTexture - EX9.Texture|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|QRCode (EX9.Texture)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -169,30 +167,30 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
-   <BOUNDS height="270" left="8280" top="6015" type="Node" width="3930">
+   <BOUNDS height="270" left="7770" top="6105" type="Node" width="3930">
    </BOUNDS>
-   <BOUNDS height="1395" left="8280" top="6015" type="Box" width="4350">
+   <BOUNDS height="330" left="7770" top="6105" type="Box" width="4740">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|See the following link if you want to know about QR-Code details such as &apos;version&apos;&cr;&lf;http://www.denso-wave.com/qrcode/qrgene2-e.html&cr;&lf;&cr;&lf;Versions above 10 are not guaranteed to be decoded by cellular phone software.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|See the following link if you want to know about QR-Code details:&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="4" nodename="QRCodeTexture (EX9.Texture)">
-   <BOUNDS height="0" left="3240" top="6780" type="Node" width="0">
+   <NODE id="4" nodename="QRCode (EX9.Texture)">
+   <BOUNDS height="0" left="3255" top="6495" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Text" visible="1">
    </PIN>
-   <PIN pinname="DataDirectory" visible="1">
+   <PIN pinname="Data Directory" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="15" dstpinname="Texture" srcnodeid="4" srcpinname="Texture Out">
-   </LINK>
-   <LINK dstnodeid="13" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Version">
    </LINK>
    <NODE id="3" nodename="Switch (String Input)">
    <BOUNDS height="0" left="3240" top="4050" type="Node" width="0">
@@ -226,7 +224,7 @@
    </LINK>
    <LINK dstnodeid="4" dstpinname="Text" srcnodeid="3" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2205" top="3855" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="15225" top="6315" type="Window" width="215">
@@ -240,32 +238,144 @@
    </NODE>
    <LINK dstnodeid="3" dstpinname="Switch" srcnodeid="2" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
-   <BOUNDS height="0" left="4410" top="6090" type="Node" width="0">
+   <NODE systemname="OpenURL (Network)" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" nodename="OpenURL (Network)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="7800" top="6990" width="100" height="100">
    </BOUNDS>
-   <BOUNDS height="160" left="19815" top="8250" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="285" left="4410" top="6090" type="Box" width="1590">
-   </BOUNDS>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   <PIN pinname="Input String" slicecount="1" values="..\bin\qrcode_data">
+   <PIN pinname="Url" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="DataDirectory" srcnodeid="1" srcpinname="Output String">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="8835" top="6780" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8835" top="6780" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Open">
    </LINK>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
-   <BOUNDS height="270" left="3585" top="4920" type="Node" width="6285">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7800" top="6405" width="3120" height="270">
    </BOUNDS>
-   <BOUNDS height="1125" left="3585" top="4920" type="Box" width="3855">
+   <BOUNDS type="Box" left="7800" top="6405" width="3120" height="270">
    </BOUNDS>
-   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="http://www.qrcode.com/en/qrgene2.html">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Output String" dstnodeid="18" dstpinname="Url">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9345" top="6855" width="2415" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|some binary data necessary for this node to work is available as a separate download from vvvv.org: &cr;&lf;http://vvvv.org/tiki-download_file.php?fileId=1407&cr;&lf;unpack the data to disk and choose the directory here:|">
+   <BOUNDS type="Box" left="9345" top="6855" width="2415" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; bang to open url in a browser|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="22" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="3675" top="5265" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3675" top="5265" width="1515" height="375">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Color Output" dstnodeid="4" dstpinname="Back Color">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="23" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="3885" top="5790" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3885" top="5790" width="1305" height="435">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.07918,1.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Color Output" dstnodeid="4" dstpinname="Fore Color">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2130" top="5835" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2130" top="5835" width="465" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Pixel Size">
+   </LINK>
+   <NODE systemname="Info (EX9.Texture)" nodename="Info (EX9.Texture)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="4380" top="6930" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Texture Out" dstnodeid="25" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="26" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4380" top="7395" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4380" top="7395" width="450" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Width" dstnodeid="26" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="27" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4905" top="7395" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4905" top="7395" width="450" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Height" dstnodeid="27" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="28" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="645" top="5610" width="2475" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="5610" width="1425" height="480">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Pixel Size changes Texture Size &gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    </PATCH>

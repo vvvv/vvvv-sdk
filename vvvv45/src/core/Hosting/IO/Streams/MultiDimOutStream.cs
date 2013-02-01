@@ -25,8 +25,8 @@ namespace VVVV.Hosting.IO.Streams
             FDataContainer.Dispose();
             FBinSizeContainer.Dispose();
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
             var buffer = MemoryPool<T>.GetArray();
             var binSizeBuffer = MemoryPool<int>.GetArray();
@@ -58,7 +58,7 @@ namespace VVVV.Hosting.IO.Streams
                 FDataStream.Length = dataStreamLength;
                 using (var dataWriter = FDataStream.GetWriter())
                 {
-                    bool anyChanged = false;
+                    bool anyChanged = force;
                     var numSlicesBuffered = 0;
                     for (int i = 0; i < Length; i++)
                     {
@@ -101,10 +101,10 @@ namespace VVVV.Hosting.IO.Streams
                 MemoryPool<T>.PutArray(buffer);
             }
 
-            FBinSizeStream.Flush();
-            FDataStream.Flush();
+            FBinSizeStream.Flush(force);
+            FDataStream.Flush(force);
 
-            base.Flush();
+            base.Flush(force);
         }
 
         private static void WriteIfBufferIsFull(IStreamWriter<T> dataWriter, T[] buffer, ref int numSlicesBuffered)

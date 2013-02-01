@@ -102,10 +102,10 @@ namespace VVVV.Hosting.Pins.Input
                 FCurrentInStream = FIOStream;
             }
         }
-        
-        public void Flush()
+
+        public void Flush(bool force = false)
         {
-            FIOStream.Flush();
+            FIOStream.Flush(force);
         }
         
         public IStreamReader<T> GetReader()

@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using iop = System.Runtime.InteropServices;
 using com = System.Runtime.InteropServices.ComTypes;
+using win32 = VVVV.Utils.Win32;
 
 namespace System.IO
 {
     class ComStream : System.IO.Stream
     {
-        private readonly com.IStream source;
-        private IntPtr mInt64; 
+        private readonly win32.IStream source;
+        private IntPtr mInt64;
 
-        public ComStream(com.IStream source)
+        public ComStream(win32.IStream source)
         {
             this.source = source;
             this.mInt64 = iop.Marshal.AllocCoTaskMem(8);
@@ -56,25 +57,27 @@ namespace System.IO
         {
             get 
             {
-                source.Seek(0, (int)SeekOrigin.Current, this.mInt64);
+                source.Seek(0, SeekOrigin.Current, this.mInt64);
                 return iop.Marshal.ReadInt64(this.mInt64);
             }
             set
             {
-                source.Seek(value, (int)SeekOrigin.Begin, this.mInt64);
+                source.Seek(value, SeekOrigin.Begin, this.mInt64);
             }
         }
 
-        public override int Read(byte[] buffer, int offset, int count)
+        public override unsafe int Read(byte[] buffer, int offset, int count)
         {
-            if (offset != 0) throw new NotImplementedException();
-            this.source.Read(buffer, count, this.mInt64);
+            fixed (byte* pBuffer = &buffer[offset])
+            {
+                this.source.Read(new IntPtr(pBuffer), count, this.mInt64);
+            }
             return iop.Marshal.ReadInt32(this.mInt64);
         }
 
         public override long Seek(long offset, System.IO.SeekOrigin origin)
         {
-            this.source.Seek(offset, (int)origin, this.mInt64);
+            this.source.Seek(offset, origin, this.mInt64);
             return iop.Marshal.ReadInt64(this.mInt64);
         }
 
@@ -83,10 +86,12 @@ namespace System.IO
             this.source.SetSize(value);
         }
 
-        public override void Write(byte[] buffer, int offset, int count)
+        public override unsafe void Write(byte[] buffer, int offset, int count)
         {
-            if (offset != 0) throw new NotImplementedException();
-            this.source.Write(buffer, count, IntPtr.Zero);
+            fixed (byte* pBuffer = &buffer[offset])
+            {
+                this.source.Write(new IntPtr(pBuffer), count, IntPtr.Zero);
+            }
         }
     }
 }
