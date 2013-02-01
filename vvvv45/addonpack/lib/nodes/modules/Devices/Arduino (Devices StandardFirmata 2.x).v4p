@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.1.dtd" >
-   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" filename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" systemname="Arduino (Devices StandardFirmata 2.x)">
+   <PATCH nodename="C:\Users\horst\DEV\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" filename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" systemname="Arduino (Devices StandardFirmata 2.x)">
    <BOUNDS height="12900" left="11160" top="120" type="Window" width="8985">
    </BOUNDS>
    <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -21,9 +21,11 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="ReportAnalog">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -45,9 +47,11 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="ReportDigital">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="9" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
@@ -85,19 +89,21 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enable">
    </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
    <BOUNDS height="100" left="1425" top="2415" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="3495" left="1425" top="2415" type="Box" width="840">
+   <BOUNDS height="4305" left="1425" top="2415" type="Box" width="975">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="14" visible="1" values="PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,OUTPUT,OUTPUT">
+   <PIN pinname="Input Enum" slicecount="20" visible="1" values="PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,PWM,OUTPUT,OUTPUT,ANALOG,ANALOG,ANALOG,ANALOG,ANALOG,ANALOG">
    </PIN>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
-   <PIN pinname="Rows" slicecount="1" values="14">
+   <PIN pinname="Rows" slicecount="1" values="20">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
@@ -127,6 +133,8 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="IsConnected">
    </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="5130" top="2445" type="Node" width="100">
@@ -150,6 +158,10 @@
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Reset">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -281,6 +293,8 @@
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="28" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="165" top="75" type="Node" width="6375">
@@ -341,9 +355,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="35">
-   <BOUNDS type="Node" left="6315" top="10725" width="100" height="100">
+   <BOUNDS type="Node" left="6330" top="10530" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="6315" top="10725" width="795" height="240">
+   <BOUNDS type="Box" left="6330" top="10530" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
    </PIN>
@@ -473,6 +487,8 @@
    </PIN>
    <PIN pinname="On Change" visible="1">
    </PIN>
+   <PIN pinname="Digital Input Count" slicecount="1" values="20">
+   </PIN>
    </NODE>
    <LINK dstnodeid="0" dstpinname="Reset" srcnodeid="23" srcpinname="Output">
    </LINK>
@@ -536,6 +552,8 @@
    <PIN pinname="Firmware Version" visible="1">
    </PIN>
    <PIN pinname="I2C Data" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Digital Input Count" slicecount="1" values="20">
    </PIN>
    </NODE>
    <LINK dstnodeid="19" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Analog In">
