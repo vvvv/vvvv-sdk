@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using VVVV.Core.Serialization;
 using System.Threading;
 using System.Collections.Generic;
+using System.Security;
 
 namespace VVVV.Core.Commands
 {
@@ -121,7 +122,7 @@ namespace VVVV.Core.Commands
                         FCurrentNode = FFirstNode;
                     }
 
-                    Debug.WriteLine(string.Format("Command {0} executed and inserted.", command));
+                    //Debug.WriteLine(string.Format("Command {0} executed and inserted.", command));
                 },
                 string.Format("Innsertion and execution of command {0}", command));
 
@@ -140,7 +141,7 @@ namespace VVVV.Core.Commands
                 {
                     command.Execute();
 
-                    Debug.WriteLine(string.Format("Command {0} executed.", command));
+                    //Debug.WriteLine(string.Format("Command {0} executed.", command));
                 },
                 string.Format("Execution of command {0}", command));
 
@@ -177,7 +178,7 @@ namespace VVVV.Core.Commands
                         FCurrentNode = FFirstNode;
                     }
 
-                    Debug.WriteLine(string.Format("Command {0} inserted.", command));
+                    //Debug.WriteLine(string.Format("Command {0} inserted.", command));
                 },
                 string.Format("Insertion of command {0}", command));
             }
@@ -188,11 +189,27 @@ namespace VVVV.Core.Commands
 
         public virtual void StartCompound()
         {
+            if (FMainThread != null)
+                FMainThread.Send((state) => PrivateStartCompound(), null);
+            else
+                PrivateStartCompound();
+        }
+
+        private void PrivateStartCompound()
+        {
             //Debug.WriteLine("StartCompound: " + FCompoundStack.Count);
             FCompoundStack.Push(new CompoundCommand());
         }
 
         public virtual void StopCompound()
+        {
+            if (FMainThread != null)
+                FMainThread.Send((state) => PrivateStopCompound(), null);
+            else
+                PrivateStopCompound();
+        }
+
+        private void PrivateStopCompound()
         {
             //Debug.WriteLine("StopCompound " + FCompoundStack.Count);
             var comp = FCompoundStack.Pop();
@@ -227,9 +244,30 @@ namespace VVVV.Core.Commands
         }
 
         /// <summary>
+        /// Redo last command.
+        /// </summary>
+        public virtual void Redo()
+        {
+
+            if (FMainThread != null)
+                FMainThread.Send((state) => PrivateRedo(), null);
+            else
+                PrivateRedo();
+        }
+
+        /// <summary>
         /// Undo last command.
         /// </summary>
         public virtual void Undo()
+        {
+
+            if (FMainThread != null)
+                FMainThread.Send((state) => PrivateUndo(), null);
+            else
+                PrivateUndo();
+        }
+
+        private void PrivateUndo()
         {
             var command = PreviousCommand;
             if (command != null)
@@ -247,10 +285,7 @@ namespace VVVV.Core.Commands
             }
         }
 
-        /// <summary>
-        /// Redo last command.
-        /// </summary>
-        public virtual void Redo()
+        private void PrivateRedo()
         {
             var command = NextCommand;
             if (command != null)
@@ -259,7 +294,7 @@ namespace VVVV.Core.Commands
                 {
                     if (command is CompoundCommand)
                     {
-                        RedoCompoundCommand(command as CompoundCommand);
+                        (command as CompoundCommand).OnlyExecuteLocal();
                     }
                     else
                     {
@@ -269,23 +304,9 @@ namespace VVVV.Core.Commands
                     Debug.WriteLine(string.Format("Command {0} redone.", command));
                 },
                 string.Format("Redo of command {0}", command));
-            	
-            	if (OnChange != null) 
-                    OnChange();
-            }
-        }
 
-        //redo copund does not build new commands
-        private void RedoCompoundCommand(CompoundCommand command)
-        {
-            foreach (var subCom in command.Commands)
-            {
-                if (subCom is CompoundCommand)
-                {
-                    RedoCompoundCommand(subCom as CompoundCommand);
-                }
-                else
-                    OnlyExecute(subCom);
+                if (OnChange != null)
+                    OnChange();
             }
         }
         

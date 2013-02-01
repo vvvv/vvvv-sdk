@@ -345,11 +345,17 @@ namespace VVVV.HDE.GraphicalEditing
             base.EndStandardSelection(e);
             FGraphEditor.EndSelectionDrag(SelectionReference.Cast<PNode>(), e.Position);
         }
+
+        protected override void StartMarqueeSelection(PInputEventArgs e)
+        {
+            base.StartMarqueeSelection(e);
+            FGraphEditor.Host.StartMarqueeSelection(e.Position);
+        }
         
         protected override void EndMarqueeSelection(PInputEventArgs e)
         {
         	if ((MarqueeBounds.Width > 10) && (MarqueeBounds.Height > 10))
-            	FGraphEditor.Host.MarqueeSelectionEnded(MarqueeBounds);
+            	FGraphEditor.Host.EndMarqueeSelection(MarqueeBounds);
             
         	base.EndMarqueeSelection(e);
         }
