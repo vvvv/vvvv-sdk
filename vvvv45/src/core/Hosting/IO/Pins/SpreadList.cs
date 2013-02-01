@@ -24,14 +24,14 @@ namespace VVVV.Hosting.Pins
                 }
                 return base.Sync();
             }
-            
-            public override void Flush()
+
+            public override void Flush(bool force = false)
             {
                 foreach (var spread in this)
                 {
-                    spread.Flush();
+                    spread.Flush(force);
                 }
-                base.Flush();
+                base.Flush(force);
             }
 	    }
 	    
@@ -41,6 +41,7 @@ namespace VVVV.Hosting.Pins
 		protected IDiffSpread<int> FCountSpread;
 		protected int FOffsetCounter;
 		protected static int FInstanceCounter = 1;
+        private bool FForceOnNextFlush;
 		
 		public SpreadList(IIOFactory factory, IOAttribute attribute)
 		    : base(new SpreadListStream())
@@ -103,8 +104,17 @@ namespace VVVV.Hosting.Pins
 				{
 					writer.Write(io.RawIOObject as TSpread);
 				}
-			}
+            }
+
+            FForceOnNextFlush = true;
 		}
+
+        public override void Flush(bool force = false)
+        {
+            force |= FForceOnNextFlush;
+            FForceOnNextFlush = false;
+            base.Flush(force);
+        }
 		
 		protected abstract IOAttribute CreateAttribute(int position);
 	}

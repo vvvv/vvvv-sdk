@@ -138,8 +138,12 @@ namespace VVVV.HDE.ProjectExplorer
 			foreach (var project in projects)
 			{
 				project.BuildConfiguration = spread[0];
-				if (IsProjectInUse(project))
-					project.CompileAsync();
+                if (IsProjectInUse(project))
+                {
+                    if (!project.IsLoaded)
+                        project.Load();
+                    project.CompileAsync();
+                }
 			}
 		}
 

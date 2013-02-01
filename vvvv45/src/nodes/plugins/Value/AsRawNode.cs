@@ -5,11 +5,12 @@ using System.Text;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 using System.IO;
+using System.ComponentModel.Composition;
 
 namespace VVVV.Nodes.Value
 {
     [PluginInfo(Name = "AsRaw", Category = "Value", Help = "Returns a value as a sequence of bytes.")]
-    public class AsRawNode : IPluginEvaluate
+    public class AsRawNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
 #pragma warning disable 0649
         [Input("Input")]
@@ -21,38 +22,41 @@ namespace VVVV.Nodes.Value
         [Input("Byte Order", Visibility = PinVisibility.OnlyInspector)]
         IInStream<ByteOrder> FByteOrder;
 
-        [Output("Output")]
-        IOutStream<Stream> FOutputStreams; 
+        [Output("Output", AutoFlush = false)]
+        IIOStream<Stream> FOutputStreams; 
 #pragma warning restore
+
+        public void OnImportsSatisfied()
+        {
+            FOutputStreams.Length = 0;
+        }
 
         public unsafe void Evaluate(int spreadMax)
         {
-            FOutputStreams.Length = StreamUtils.GetSpreadMax(FInputStreams, FFormats, FByteOrder);
-
+            spreadMax = StreamUtils.GetSpreadMax(FInputStreams, FFormats, FByteOrder);
+            FOutputStreams.ResizeAndDispose(spreadMax, () => new MemoryStream());
             var inputBuffer = MemoryPool<double>.GetArray();
             try
             {
                 using (var inputReader = FInputStreams.GetCyclicReader())
                 using (var formatReader = FFormats.GetCyclicReader())
                 using (var byteOrderReader = FByteOrder.GetCyclicReader())
-                using (var outputWriter = FOutputStreams.GetWriter())
                 {
-                    while (!outputWriter.Eos)
+                    foreach (MemoryStream outputStream in FOutputStreams)
                     {
                         var inputStream = inputReader.Read();
                         var formatStream = formatReader.Read();
                         var byteOrder = byteOrderReader.Read();
-                        Stream outputStream = null;
                         if (formatStream.Length == 1)
                         {
                             var format = formatStream.Single();
-                            outputStream = ConvertAllAtOnce(inputStream, inputBuffer, format, byteOrder);
+                            ConvertAllAtOnce(inputStream, outputStream, inputBuffer, format, byteOrder);
                         }
                         else
-                            outputStream = ConvertOneByOne(inputStream, formatStream, byteOrder);
-                        outputWriter.Write(outputStream);
+                            ConvertOneByOne(inputStream, outputStream, formatStream, byteOrder);
                     }
                 }
+                FOutputStreams.Flush(true);
             }
             finally
             {
@@ -60,10 +64,11 @@ namespace VVVV.Nodes.Value
             }
         }
 
-        static Stream ConvertAllAtOnce(IInStream<double> srcStream, double[] buffer, ValueTypeFormat format, ByteOrder byteOrder)
+        static void ConvertAllAtOnce(IInStream<double> srcStream, MemoryStream dstStream, double[] buffer, ValueTypeFormat format, ByteOrder byteOrder)
         {
             var sizeOfFormat = ValueTypeFormatUtils.SizeOf(format);
-            var dstStream = new MemoryStream(srcStream.Length * sizeOfFormat);
+            dstStream.SetLength(srcStream.Length * sizeOfFormat);
+            dstStream.Position = 0;
             var binaryWriter = new BinaryWriter(dstStream);
             using (var reader = srcStream.GetReader())
             {
@@ -145,12 +150,12 @@ namespace VVVV.Nodes.Value
                     itemsToRead -= itemsRead;
                 }
             }
-            return dstStream;
         }
 
-        static Stream ConvertOneByOne(IInStream<double> srcStream, IInStream<ValueTypeFormat> formatStream, ByteOrder byteOrder)
+        static void ConvertOneByOne(IInStream<double> srcStream, MemoryStream dstStream, IInStream<ValueTypeFormat> formatStream, ByteOrder byteOrder)
         {
-            var dstStream = new MemoryStream(srcStream.Length);
+            dstStream.SetLength(srcStream.Length);
+            dstStream.Position = 0;
             var binaryWriter = new BinaryWriter(dstStream);
             using (var formatStreamReader = formatStream.GetCyclicReader())
             {
@@ -197,7 +202,6 @@ namespace VVVV.Nodes.Value
                     }
                 }
             }
-            return dstStream;
         }
     }
 }
