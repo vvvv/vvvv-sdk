@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.1.dtd" >
-   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x) help.v4p" bgcolor="15329769" filename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x) help.v4p" systemname="Arduino (Devices StandardFirmata 2.x)">
+   <PATCH nodename="C:\Users\horst\DEV\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x) help.v4p" bgcolor="15329769" filename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x) help.v4p" systemname="Arduino (Devices StandardFirmata 2.x)">
    <BOUNDS height="12630" left="0" top="0" type="Window" width="11175">
    </BOUNDS>
    <NODE componentmode="InABox" id="101" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -299,7 +299,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="4950" top="7275" type="Box" width="1590">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="COM3">
+   <PIN pinname="Input Enum" slicecount="1" values="COM8">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="126" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -493,7 +493,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6195" top="10515" width="4065" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt;&lt; experimental support for I2C - not granted to work|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt;&lt; I2C Reponses arrive here|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -502,10 +502,16 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" id="136" nodename="I2CDecode (Devices 2.x)" systemname="I2CDecode (Devices 2.x)">
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Virmata.dll" id="136" nodename="I2CDecode (Devices 2.x)" systemname="I2CDecode (Devices 2.x)" debug="0">
    <BOUNDS height="100" left="4956" top="10500" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="I2CData" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Address" slicecount="1" values="30">
+   </PIN>
+   <PIN pinname="Data" visible="1">
+   </PIN>
+   <PIN pinname="Register" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" id="116" nodename="Arduino (Devices StandardFirmata 2.x)" systemname="Arduino (Devices StandardFirmata 2.x)" debug="0">
@@ -562,8 +568,6 @@
    </LINK>
    <LINK dstnodeid="105" dstpinname="Input String" srcnodeid="116" srcpinname="Firmwareversion">
    </LINK>
-   <LINK srcnodeid="116" srcpinname="I2C Data" dstnodeid="136" dstpinname="I2CData">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="140" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="3120" top="8970" width="0" height="0">
    </BOUNDS>
@@ -611,5 +615,51 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="142" srcpinname="Output Enum" dstnodeid="116" dstpinname="PinModes">
+   </LINK>
+   <NODE id="145" systemname="AsValue (String)" nodename="AsValue (String)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Input" visible="1" pintype="Input">
+   </PIN>
+   <BOUNDS type="Node" left="5385" top="11415" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Default" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="144" systemname="AsString (Raw)" nodename="AsString (Raw)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Input" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Output" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Node" left="5370" top="11070" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Encoding" pintype="Input" visible="1" slicecount="1" values="|System Default|">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="144" srcpinname="Output" dstnodeid="145" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="136" srcpinname="Data" dstnodeid="144" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="146" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="5385" top="11850" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5385" top="11850" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="145" srcpinname="Output" dstnodeid="146" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="116" srcpinname="I2C Data" dstnodeid="136" dstpinname="I2CData">
    </LINK>
    </PATCH>

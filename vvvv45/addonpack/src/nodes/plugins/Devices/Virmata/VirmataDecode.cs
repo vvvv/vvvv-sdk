@@ -107,7 +107,11 @@ namespace VVVV.Nodes
 		ISpread<string> FFirmwareVersion;
 		
 		[Output("I2C Data",Visibility = PinVisibility.OnlyInspector)]
-		ISpread<byte> FI2CData;
+		IOutStream<Stream> FI2CData;
+
+		[Output("Debug", Visibility = PinVisibility.OnlyInspector)]
+		ISpread<string> FDebug;
+
 
 		#endregion fields & pins
 		
@@ -229,9 +233,25 @@ namespace VVVV.Nodes
 					
 					/// Handle I2C replies
 				case Command.I2C_REPLY:
-					FI2CData.AssignFrom(data);
-					break;
-					
+          FDebug.SliceCount = 1;
+          FDebug[0] = data.Count.ToString();
+          try {
+
+            MemoryStream i2cStream = new MemoryStream(data.ToArray());
+
+            FI2CData.Length = 1;
+            using (var i2cWriter = FI2CData.GetWriter()) {
+              i2cWriter.Write(i2cStream);
+            }
+
+          } catch (Exception e) {
+            FI2CData.Length = 0;
+            FDebug.SliceCount = 1;
+            FDebug[0] = "Error: " + e.ToString();
+          }
+          data.Clear();
+
+          break;
 					// Todo: Implement Capability reports!
 			}
 		}
@@ -250,36 +270,82 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class I2CDecode : IPluginEvaluate
 	{
+    ///
+    /// Input
+    ///
 		[Input("I2CData")]
-		IDiffSpread<byte> Data;
+		IDiffSpread<Stream> Data;
 
-		[Input("Address")]
+		[Input("Address", IsSingle=true, DefaultValue=0, MinValue = 0, MaxValue = 127)]
 		IDiffSpread<int> Address;
 		
-		[Output("Register",DefaultValue = 0)]
+    ///
+    /// Output
+    ///
+		[Output("Register", DefaultValue=0)]
 		ISpread<int> ParsedRegister;
 
-		[Output("Data",DefaultValue = 0)]
-		ISpread<int> ParsedData;
-		
-		public void Evaluate(int maxSpread){
-			if (Data.IsChanged)
-			{
-				if(Data.SliceCount<2) return;
-				
-				int _address = FirmataUtils.GetValueFromBytes(Data[1],Data[0]);
-				if(_address!=Address[0] && Data.SliceCount<4) return;
-				
-				int[] empty = {};
-				ParsedRegister.AssignFrom(empty);
-				ParsedData.AssignFrom(empty);
-				
-				for(int i=2; i<Data.SliceCount-4; i+=4){
-					ParsedRegister.Add(FirmataUtils.GetValueFromBytes(Data[i+1],Data[i]));
-					ParsedData.Add(FirmataUtils.GetValueFromBytes(Data[i+3],Data[i+2]));
-				}
-			}
-		}
-	}
+		[Output("Data", DefaultValue=0)]
+		ISpread<Stream> ParsedData;
 
+    [Output("Debug", Visibility = PinVisibility.Hidden)]
+		ISpread<string> FDebug;
+
+    void clearOutputs(){
+      ParsedRegister.SliceCount = 0;
+      ParsedData.SliceCount = 0;
+    }
+
+    ///
+    /// TODO: Make it spreadable with Address spread as size
+    ///
+    public void Evaluate(int maxSpread){
+      if (Data.IsChanged)
+      {
+        FDebug.SliceCount = 0;
+
+        if(Data.SliceCount <= 0 || Address.SliceCount < 1) {
+          clearOutputs();
+          return;
+        }
+
+        int NumBytes = (int) Data[0].Length-4; // substract Address & Register
+        if(NumBytes <= 0) {
+          FDebug.Add(NumBytes > 0 ? "No data bytes to process" : "Not enough bytes at all");
+          clearOutputs();
+          return;
+        }
+
+        byte LSB = (byte) Data[0].ReadByte();
+        byte MSB = (byte) Data[0].ReadByte();
+        int _Address = FirmataUtils.GetValueFromBytes(MSB,LSB);
+
+        if(_Address!=Address[0]) {
+          clearOutputs();
+          FDebug.Add("Address does not match");
+          return;
+        }
+
+        LSB = (byte) Data[0].ReadByte();
+        MSB = (byte) Data[0].ReadByte();
+        ParsedRegister.SliceCount = 1;
+        int register = FirmataUtils.GetValueFromBytes(MSB,LSB);
+        ParsedRegister[0] = register == 255 ? -1 : register; // Handle REGISTER_NOT_SPECIFIED
+
+        try {
+          ParsedData.SliceCount = 1;
+          Stream data = new MemoryStream(NumBytes/2); // we deal with 7-bit encoding!
+          for (int i=0; i<NumBytes; i+=2) {
+            LSB = (byte) Data[0].ReadByte();
+            MSB = (byte) Data[0].ReadByte();
+            data.WriteByte((byte)FirmataUtils.GetValueFromBytes(MSB,LSB));
+          }
+          ParsedData[0] = data;
+        }
+        catch (Exception e) {
+          FDebug.Add("Could not read data: "+e.ToString());
+        }
+      }
+    }
+  }
 }
