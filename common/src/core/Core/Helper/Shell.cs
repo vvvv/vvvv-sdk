@@ -16,6 +16,7 @@ using VVVV.Core.Model;
 using VVVV.Core.Logging;
 using VVVV.Utils.Network;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace VVVV.Core
 {
@@ -182,5 +183,7 @@ namespace VVVV.Core
         }
 
         public bool IsRuntime { get; set; }
+
+        public SynchronizationContext MainThread { get; set; }
     }
 }
