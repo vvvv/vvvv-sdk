@@ -605,8 +605,10 @@ namespace VVVV.Nodes.Vlc
 				//if (lockCalled != unlockCalled) Log( LogType.Error, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "(lock/unlock=" + lockCalled  + "/" + unlockCalled + ")" );
 	
 				try {
-					currentFrame++;
-					
+                    if ( currPlayIn && (preloadingStatus == STATUS_PLAYING || preloadingStatus == STATUS_NEWFILE) ) {
+                        currentFrame++;
+                    }
+
 					lockCalled++;
 					pixelPlane = pixelPlanes.GetBackBuffer();
 					//writePixelPlane;
@@ -1294,7 +1296,7 @@ namespace VVVV.Nodes.Vlc
 					}
 	
 	
-					if (parent.IsFrontMediaRenderer(this) && preloadingStatus == STATUS_PLAYING) {
+					if (parent.IsFrontMediaRenderer(this) && ( preloadingStatus == STATUS_PLAYING ) ) {
 	
 						//Log( LogType.Debug, "STATUS_PLAYING" );
 						try {
@@ -1373,7 +1375,9 @@ namespace VVVV.Nodes.Vlc
 			private void UpdateParent(bool active)
 			{
 				try {
-					if (active && preloadingStatus == STATUS_PLAYING) {
+					//if (active) Log( LogType.Debug, "current status = " + StatusToString(preloadingStatus) );
+					
+					if (active && ( preloadingStatus == STATUS_PLAYING || preloadingStatus == STATUS_READY) ) {
 						if (mediaPlayerBusyMutex.WaitOne(0)) {
 							try {
 								libvlc_state_t mediaPlayerState = LibVlcMethods.libvlc_media_player_get_state(mediaPlayer);
@@ -1381,15 +1385,18 @@ namespace VVVV.Nodes.Vlc
 								if ( mediaPlayerState == libvlc_state_t.libvlc_Playing || mediaPlayerState == libvlc_state_t.libvlc_Paused || mediaPlayerState == libvlc_state_t.libvlc_Ended ) {
 	
 									try {
-										if ( videoLength == 0 ) {
-											//videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_player_get_length(mediaPlayer) ) / 1000.0f;
-											videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_get_duration( media ) ) / 1000.0f;
-										}	
+										if ( videoLength <= 0 ) {
+                                            long duration = LibVlcMethods.libvlc_media_get_duration(media);
+                                            if (duration >= 0) {
+                                                //videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_player_get_length(mediaPlayer) ) / 1000.0f;
+                                                videoLength = Convert.ToSingle(duration) / 1000.0f;
+                                            }
+										}
 										videoFps = LibVlcMethods.libvlc_media_player_get_fps( mediaPlayer );
 										float absolutePosition;
 										if ( videoFps == 0 ) {
 											videoFps = -1;
-										//float relativePosition = currentFrame / videoFps / ( (float)LibVlcMethods.libvlc_media_player_get_time(mediaPlayer) / 1000 ); //LibVlcMethods.libvlc_media_player_get_position(mediaPlayer);
+											//float relativePosition = currentFrame / videoFps / ( (float)LibVlcMethods.libvlc_media_player_get_time(mediaPlayer) / 1000 ); //LibVlcMethods.libvlc_media_player_get_position(mediaPlayer);
 											absolutePosition = Convert.ToSingle( LibVlcMethods.libvlc_media_player_get_time(mediaPlayer) ) / 1000;
 										}
 										else {
