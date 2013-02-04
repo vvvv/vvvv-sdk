@@ -157,7 +157,19 @@ namespace VVVV.HDE.GraphicalEditing
 	    		AddChild(t);
     		}
 
-            Bounds = UnionOfChildrenBounds;
+            this.Width = this.UnionOfChildrenBounds.Width;
+            this.Height = this.UnionOfChildrenBounds.Height;
+
+            //position may have changed when in center mode
+            foreach (var item in this.AllNodes)
+            {
+                if (item is PText)
+                {
+                    (item as PText).X = this.X;
+                    (item as PText).Y = this.Y;
+                }
+            }
+
     	}
     	
     	protected Font FFont;
