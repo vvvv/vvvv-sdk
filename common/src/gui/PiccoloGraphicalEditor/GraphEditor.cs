@@ -38,7 +38,7 @@ namespace VVVV.HDE.GraphicalEditing
         //layers
         public PLayer SolidLayer { get; protected set; }
         public PLayer LinkLayer { get; protected set; }
-
+        
         public bool IsClickable { get; protected set; }
         public IClickable Clickable { get; protected set; }
         public bool IsHoverable { get; protected set; }
@@ -157,6 +157,11 @@ namespace VVVV.HDE.GraphicalEditing
         			return e;
         	}
         	return null;
+        }
+        
+        public PointF PointToCanvas(PointF point)
+        {
+        	return FCanvas.Camera.LocalToView(point);
         }
 
         #region canvas input events
