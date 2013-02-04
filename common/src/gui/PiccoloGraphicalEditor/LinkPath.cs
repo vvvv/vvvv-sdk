@@ -13,12 +13,47 @@ using VVVV.Core.View.GraphicalEditor;
 
 namespace VVVV.HDE.GraphicalEditing
 {
+    //TODO: finish this, or better solve in piccolo
+    public class PBiggerSelectionPath : PPath
+    {
+        public PBiggerSelectionPath()
+        {
+            //AddBiggerPath();    
+            this.PathChanged += new PPropertyEventHandler(PBiggerSelectionPath_PathChanged);
+        }
+
+        void PBiggerSelectionPath_PathChanged(object sender, PPropertyEventArgs e)
+        {
+            AddBiggerPath();
+        }
+
+        private void AddBiggerPath()
+        {
+            this.RemoveAllChildren();
+
+            var bigger = new PPath();
+            if(this.PathData.Points.Length > 1)
+                bigger.AddLine(this.PathData.Points[0].X, this.PathData.Points[0].Y, this.PathData.Points[1].X, this.PathData.Points[1].Y);
+            bigger.Pickable = true;
+            bigger.Click += new PInputEventHandler(bigger_Click);
+            var pen = this.Pen.Clone() as Pen;
+            pen.Width = pen.Width + 2;
+            
+            //this.AddChild(bigger);
+            //this.Pickable = true;
+        }
+
+        void bigger_Click(object sender, PInputEventArgs e)
+        {
+            OnClick(e);
+        }
+    }
 	
     public class TempPath : GraphElement, ITempPath
     {
         protected override PNode CreatePNode()
         {
-            return new PPath();
+            return new PPath(); // new PBiggerSelectionPath();
         }
 
         #region ITempPath Members     
