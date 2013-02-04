@@ -1,6 +1,6 @@
 #region Copyright notice
 /*
-A Firmata Plugin for VVVV - v 1.0
+A Firmata Plugin for VVVV - v 1.1
 ----------------------------------
 Encoding control and configuration messages for Firmata enabled MCUs. This
 Plugin encodes to a ANSI string and a byte array, so you can send via any
@@ -10,7 +10,7 @@ For more information on Firmata see: http://firmata.org
 Get the source from: https://github.com/jens-a-e/VVVVirmata
 Any issues & feature requests should be posted to: https://github.com/jens-a-e/VVVVirmata/issues
 
-Copyleft 2011
+Copyleft 2011-2013
 Jens Alexander Ewald, http://ififelse.net
 Chris Engler, http://wirmachenbunt.de
 Both: http://www.muthesius-kunsthochschule.de
