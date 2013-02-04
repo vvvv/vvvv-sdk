@@ -409,6 +409,8 @@ namespace VVVV.HDE.CodeEditor
                 
                 if (FAttachedProject != null)
                 {
+                    if (!FAttachedProject.IsLoaded)
+                        FAttachedProject.Load();
                     FAttachedProject.CompileCompleted += Project_CompileCompleted;
                     // Fake a compilation in order to show error messages on startup.
                     Project_CompileCompleted(FAttachedProject, new CompilerEventArgs(FAttachedProject.CompilerResults));
