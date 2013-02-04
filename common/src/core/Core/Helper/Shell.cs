@@ -108,8 +108,8 @@ namespace VVVV.Core
         }
 
         //port and remoting manager
-        private int FPort = 3344;
-        private RemotingManagerTCP FRemoter;
+        private static int FPort = 3344;
+        private static RemotingManagerTCP FRemoter = new RemotingManagerTCP();
 
         private Shell()
         {
@@ -118,8 +118,7 @@ namespace VVVV.Core
         	
             CommandLineArguments = new CommandLineArguments();
             Logger = new DefaultLogger();
-            FRemoter = new RemotingManagerTCP();
-
+            
             Compose();
 
             CommandLineArguments.Parse();
@@ -168,7 +167,7 @@ namespace VVVV.Core
         }
 
         //publish an object
-        public void PublishObject(string objectName, MarshalByRefObject obj)
+        public static void PublishObject(string objectName, MarshalByRefObject obj)
         {
             var channelName = "ShellChannel";
 
