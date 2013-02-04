@@ -52,9 +52,7 @@ For more information, please refer to <http://unlicense.org/>
 #region usings
 
 using System;
-using System.ComponentModel.Composition;
 using System.Collections.Generic;
-using System.Text;
 
 #endregion usings
 

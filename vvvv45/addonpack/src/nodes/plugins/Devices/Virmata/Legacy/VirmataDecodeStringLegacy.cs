@@ -52,14 +52,12 @@ For more information, please refer to <http://unlicense.org/>
 #region usings
 using System;
 using System.ComponentModel.Composition;
+using System.Collections.Generic;
 using System.Text;
-using VVVV.PluginInterfaces.V1;
+
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
 
 using Firmata;
-using System.Collections.Generic;
 
 #endregion usings
 

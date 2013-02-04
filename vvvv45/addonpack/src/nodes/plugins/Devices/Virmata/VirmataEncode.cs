@@ -53,12 +53,10 @@ For more information, please refer to <http://unlicense.org/>
 using System;
 using System.ComponentModel.Composition;
 using System.Collections.Generic;
+using System.IO;
 
-using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
-
-using System.IO;
 
 using Firmata;
 
