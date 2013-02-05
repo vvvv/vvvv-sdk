@@ -164,7 +164,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
             if (members == null)
             {
                 var type = this.GetType(typeReference);
-                var bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static;
+                var bindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
                 members = type.GetMember(name.Value, bindingAttr);
                 this.membersMap.Add(typeReference.InternedKey, (uint)name.UniqueKey, members);
             }
