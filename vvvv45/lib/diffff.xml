@@ -1134,12 +1134,6 @@
 	  <NODE old="TopLeftPix (Transform)" new="TopLeftPix (Transform Legacy)"></NODE>
   </PATCH>   
   <PATCH version="45alpha29.1">
-	  <!-- Deprecated Virmata Plugins with String encoding -->
-	  <NODE old="Arduino (Devices StandardFirmata 2.x)" new="Arduino (Devices StandardFirmata 2.x String Legacy)"></NODE>
-	  <NODE old="FirmataEncode (Devices 2.x)" new="FirmataEncode (Devices 2.x String Legacy)"></NODE>
-	  <NODE old="FirmataDecode (Devices 2.x)" new="FirmataDecode (Devices 2.x String Legacy)"></NODE>
-	  <NODE old="I2CDecode (Devices 2.x)" new="I2CDecode (Devices 2.x String Legacy)"></NODE>
-
 	  <NODE old="QRCodeTexture (EX9.Texture)" new="QRCode (EX9.Texture)"></NODE>
 	  <NODE old="OpenFileDialog (File)" new="Dialog (File Open)">
 		<PIN old="Do Open" new="Open"> </PIN>	
@@ -1155,5 +1149,20 @@
 		<PIN old="Ansi/UTF8" new="Encoding"></PIN>
 		<PIN old="Update" new="Read"></PIN>
 	  </NODE>
-  </PATCH> 
+    <NODE old="FirmataEncode (Devices 2.x)" new="FirmataEncode (Devices 2.x String Legacy)"></NODE>
+    <NODE old="FirmataDecode (Devices 2.x)" new="FirmataDecode (Devices 2.x String Legacy)"></NODE>
+    <NODE old="I2CDecode (Devices 2.x)" new="I2CDecode (Devices 2.x String Legacy)">
+      <PIN old="I2CData" new="I2C Data"></PIN>
+    </NODE>
+    <NODE old="Arduino (Devices StandardFirmata 2.x)">
+      <PIN old="SampleRate" new="Samplerate"></PIN>
+      <PIN old="PinModes" new="Pin Modes"></PIN>
+      <PIN old="ReportAnalog" new="Report Analog Pins"></PIN>
+      <PIN old="ReportDigital" new="Report Digital Pins"></PIN>
+      <PIN old="Analog" new="Analog In"></PIN>
+      <PIN old="Digital" new="Digital In"></PIN>
+      <PIN old="OnData" new="On Data"></PIN>
+      <PIN old="Firmwareversion" new="Firmware Version"></PIN>
+    </NODE>
+  </PATCH>
 </CONVVVVERTER>
