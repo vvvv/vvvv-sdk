@@ -13,6 +13,14 @@ msbuild :core do |msb|
 	msb.solution = "#{ROOT_DIR}src\\vvvv45.sln"
 end
 
+desc "Clean VVVV core"
+msbuild :cleancore do |msb|
+	msb.properties RELEASE_PROPS
+	msb.targets :Clean
+	msb.log_level = :verbose
+	msb.solution = "#{ROOT_DIR}src\\vvvv45.sln"
+end
+
 desc "Build VVVV AddOns"
 msbuild :addons do |msb|
 	msb.properties RELEASE_PROPS
@@ -21,7 +29,17 @@ msbuild :addons do |msb|
 	msb.solution = "#{ROOT_DIR}addonpack\\src\\Addonpack.sln"
 end
 
+desc "Clean VVVV AddOns"
+msbuild :cleanaddons do |msb|
+	msb.properties RELEASE_PROPS
+	msb.targets :Clean
+	# msb.log_level = :verbose
+	msb.solution = "#{ROOT_DIR}addonpack\\src\\Addonpack.sln"
+end
+
 task :all => [:core,:addons]
+task :cleanall => [:cleancore,:cleanaddons,:clean]
+
 
 PLUGIN_DEBUG   = {:configuration=>:Debug   } 
 PLUGIN_RELEASE = {:configuration=>:Release }
@@ -34,6 +52,7 @@ VVVV = 'vvvv.exe'
 PLUGIN_SOLUTION = "Virmata.sln"
 
 task :default => [:build,:test]
+task :rebuild => [:cleanall,:all,:build]
 
 desc "Build Virmata Addon"
 msbuild :build do |build|
