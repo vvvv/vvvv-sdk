@@ -31,8 +31,8 @@ namespace VVVV.Nodes
 		[Input("Count", MinValue = 0, DefaultValue = 1)]
 		IDiffSpread<int> FCount;
 		
-		[Input("Reload", IsBang = true)]
-		ISpread<bool> FReload;
+		[Input("Read", IsBang = true)]
+		ISpread<bool> FRead;
 		
 		[Output("Content")]
 		ISpread<string> FContent;
@@ -71,7 +71,7 @@ namespace VVVV.Nodes
 				//initialize stream reader
 				bool update = false;
 				bool isValid = true;
-				if (path[i] != FInput[i] || encodingChanged || FReload[i])
+				if (path[i] != FInput[i] || encodingChanged || FRead[i])
 				{
 					try
 					{
