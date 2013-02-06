@@ -276,7 +276,7 @@ namespace VVVV.Nodes
     ///
     /// Input
     ///
-    [Input("I2CData")]
+    [Input("I2C Data")]
     IDiffSpread<Stream> Data;
 
     [Input("Address", IsSingle=true, DefaultValue=0, MinValue = 0, MaxValue = 127)]

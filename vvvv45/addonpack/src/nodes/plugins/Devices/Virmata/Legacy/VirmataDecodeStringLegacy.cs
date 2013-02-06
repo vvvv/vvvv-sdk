@@ -217,7 +217,7 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "I2CDecode",
-	            Category = "Devices ",
+	            Category = "Devices",
             	Version  = "2.x String Legacy",
 				Author = "jens a. ewald",
 	            Help = "Decodes I2C data from Firmata messages",
@@ -225,7 +225,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class I2CDecodeString : IPluginEvaluate
 	{
-		[Input("I2CData")]
+		[Input("I2C Data")]
 		IDiffSpread<byte> Data;
 
 		[Input("Address")]
