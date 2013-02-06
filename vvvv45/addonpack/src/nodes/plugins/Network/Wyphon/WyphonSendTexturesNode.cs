@@ -181,8 +181,10 @@ namespace VVVV.Nodes.Network.Wyphon
 		}
 
 		public void Dispose() {
-			foreach (uint handle in SharedTextureHandles) {
-				wyphon.UnshareD3DTexture(handle);
+            LogNow(LogType.Debug, "[SendTexturesNode.Dispose()] ");
+            foreach (uint handle in SharedTextureHandles) {
+                LogNow(LogType.Debug, "Trying to unshare texture with handle " + handle + "");
+                wyphon.UnshareD3DTexture(handle);
 			}
 			SharedTextureHandles.SliceCount = 0;
 			
