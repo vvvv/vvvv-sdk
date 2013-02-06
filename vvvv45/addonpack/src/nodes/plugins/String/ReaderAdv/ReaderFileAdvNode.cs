@@ -15,6 +15,7 @@ namespace VVVV.Nodes
 	public class ReaderFileAdvancedNode : IPluginEvaluate
 	{
 		#region fields & pins
+		#pragma warning disable 649, 169
 		[Input("Filename", StringType = StringType.Filename)]
 		ISpread<string> FInput;
 		
@@ -42,6 +43,7 @@ namespace VVVV.Nodes
 		Spread<string> path = new Spread<string>(0);
 		Spread<bool> lineWise = new Spread<bool>(0);
 		Spread<StreamReader> streamReader = new Spread<StreamReader>(0);
+		#pragma warning restore 649, 169
 		#endregion fields & pins
 
 		//called when data for any output pin is requested
