@@ -542,6 +542,9 @@ namespace VVVV.HDE.GraphicalEditing
 
         public void ShowToolTip(Point tipPoint, string tip, bool center)
         {
+        	if (!Visible)
+        		return;
+        	
             CanvasToControl(ref tipPoint);
             if (center)
             {
