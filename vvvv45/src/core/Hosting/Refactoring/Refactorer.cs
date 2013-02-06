@@ -21,8 +21,6 @@ namespace VVVV.Hosting
 	public class PatchRefactorer
 	{
 		#region fields
-		ILogger FLogger;
-		
 		INodeInfoFactory FNodeInfoFactory;
 		private XmlDocument FDocument;
 		

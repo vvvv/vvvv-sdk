@@ -15,7 +15,7 @@ namespace VVVV.Nodes.Texture.HTML
         public void Start()
         {
             var pathToThisAssembly = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var pathToBinFolder = Path.Combine(pathToThisAssembly, "Dependencies", "CefGlue");
+            var pathToBinFolder = Path.Combine(pathToThisAssembly, "Dependencies", "x86", "CefGlue");
             var envPath = Environment.GetEnvironmentVariable("PATH");
             envPath = string.Format("{0};{1}", envPath, pathToBinFolder);
             Environment.SetEnvironmentVariable("PATH", envPath);

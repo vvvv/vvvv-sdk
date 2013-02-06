@@ -74,8 +74,10 @@ namespace VVVV.Hosting.Factories
             get { return FStarted; }
         }
 
-        [Import()]
-        ILogger FLogger;
+#pragma warning disable 0649
+        [Import]
+        ILogger FLogger; 
+#pragma warning restore
 
         [ImportingConstructor]
         public StartableRegistry(CompositionContainer parentContainer)

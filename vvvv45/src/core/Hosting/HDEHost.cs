@@ -72,25 +72,27 @@ namespace VVVV.Hosting
         
         [Export(typeof(INodeInfoFactory))]
         public ProxyNodeInfoFactory NodeInfoFactory { get; set; }
-        
+
+#pragma warning disable 0649
         [ImportMany]
         public List<IAddonFactory> AddonFactories
         {
             get;
             private set;
         }
-        
+
         [Import]
         private DotNetPluginFactory PluginFactory { get; set; }
-        
+
         [Import]
         private EditorFactory EditorFactory { get; set; }
 
         [Import]
-        public NodeCollection NodeCollection {get; protected set;}
+        public NodeCollection NodeCollection { get; protected set; }
 
         [Import]
-        private IStartableRegistry FStartableRegistry;
+        private IStartableRegistry FStartableRegistry; 
+#pragma warning restore
         
         public HDEHost()
         {

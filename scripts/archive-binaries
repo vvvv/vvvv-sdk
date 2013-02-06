@@ -5,20 +5,27 @@ binariesArchiveFilename="binaries"
 
 function usage
 {
-  echo "Usage: archive-binaries FILES ..."
+  echo "Usage: archive-binaries [--platform=x86|x64] FILES ..."
 }
+
+platform="x86"
 
 while [ -n "$1" ]; do
     case $1 in
         -h | --help )           usage
                                 exit
                                 ;;
+		-p | --platform )		shift
+								platform=$1
+								;;
         * )                     break
     esac
     shift
 done
 
 binaries=$*
+
+echo "Using platform ${platform}."
 
 if [ ! -n "$binaries" ]; then
   echo "No binaries given to archive."
@@ -33,8 +40,8 @@ if [ ! -n "$commitId" ]; then
   exit
 fi
 
-binariesArchiveFile="${binariesArchiveFilename}-${commitId}.tar.bz2"
-binariesMD5File="${binariesArchiveFilename}-${commitId}.tar.bz2.md5"
+binariesArchiveFile="${binariesArchiveFilename}-${commitId}-${platform}.tar.bz2"
+binariesMD5File="${binariesArchiveFilename}-${commitId}-${platform}.tar.bz2.md5"
 
 echo "Creating archive $binariesArchiveFile ..."
 tar -jcvf "$binariesArchiveFile" $binaries

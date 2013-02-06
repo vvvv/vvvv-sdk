@@ -25,11 +25,13 @@ namespace VVVV.Nodes
 	public class ApplyModifiersNode: IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Input")]
-		IDiffSpread<KeyboardState> FInput;
+#pragma warning disable 0649
+        [Input("Input")]
+        IDiffSpread<KeyboardState> FInput;
 
-		[Output("Output")]
-		ISpread<string> FOutput;
+        [Output("Output")]
+        ISpread<string> FOutput; 
+#pragma warning restore
 		#endregion fields & pins
 
 		//called when data for any output pin is requested

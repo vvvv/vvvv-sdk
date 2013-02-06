@@ -866,7 +866,11 @@ namespace VVVV.HDE.CodeEditor
 			
 			// Setup code highlighting
 			var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(fileName);
-			SetHighlighting(highlighter.Name);
+
+            if (Path.GetExtension(fileName) == ".tfx" || Path.GetExtension(fileName) == ".gsfx")
+                this.SetHighlighting("HLSL");
+            else
+			    SetHighlighting(highlighter.Name);
 			
 			Document.TextContent = doc.TextContent;
 			doc.ContentChanged += TextDocumentContentChangedCB;

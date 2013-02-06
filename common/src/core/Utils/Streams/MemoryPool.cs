@@ -33,7 +33,12 @@ namespace VVVV.Utils.Streams
 		
 		public static void PutArray(T[] array)
 		{
-			lock (FPool)
+            // Clear the array before putting it back (break references)
+            if (!typeof(T).IsPrimitive)
+            {
+                Array.Clear(array, 0, array.Length);
+            }
+            lock (FPool)
 			{
 				Stack<T[]> stack = null;
 				if (!FPool.TryGetValue(array.Length, out stack))

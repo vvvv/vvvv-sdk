@@ -5,13 +5,19 @@ using System.Runtime.InteropServices;
 
 namespace VVVV.PluginInterfaces.V2
 {
+    public enum DestroyReason
+    {
+        DeviceLost,
+        Dispose
+    }
+    
     [ComVisible(false)]
     public abstract class Resource<TDevice, TResource, TMetadata> : IDisposable 
         where TResource : IDisposable
     {
         private readonly Func<TMetadata, TDevice, TResource> FCreateResourceFunc;
         private readonly Action<TMetadata, TResource> FUpdateResourceFunc;
-        private readonly Action<TMetadata, TResource> FDestroyResourceAction;
+        private readonly Action<TMetadata, TResource, DestroyReason> FDestroyResourceAction;
         private readonly Dictionary<TDevice, TResource> FResources = new Dictionary<TDevice, TResource>();
 		private readonly TMetadata FMetadata;
         
@@ -19,7 +25,7 @@ namespace VVVV.PluginInterfaces.V2
             TMetadata metadata, 
             Func<TMetadata, TDevice, TResource> createResourceFunc, 
             Action<TMetadata, TResource> updateResourceFunc = null, 
-            Action<TMetadata, TResource> destroyResourceAction = null)
+            Action<TMetadata, TResource, DestroyReason> destroyResourceAction = null)
         {
             FMetadata = metadata;
             FCreateResourceFunc = createResourceFunc;
@@ -39,7 +45,6 @@ namespace VVVV.PluginInterfaces.V2
         /// Note: The Update method will always get called for new resources.
         /// </summary>
         public bool NeedsUpdate { get; set; }
-        
         public TResource this[TDevice device]
         {
             get
@@ -81,8 +86,8 @@ namespace VVVV.PluginInterfaces.V2
             TResource resource;
             if (FResources.TryGetValue(device, out resource))
             {
-                FDestroyResourceAction(FMetadata, resource);
                 FResources.Remove(device);
+                FDestroyResourceAction(FMetadata, resource, DestroyReason.DeviceLost);
             }
         }
         
@@ -90,7 +95,7 @@ namespace VVVV.PluginInterfaces.V2
         {
             foreach (var resource in FResources.Values)
             {
-                FDestroyResourceAction(FMetadata, resource);
+                FDestroyResourceAction(FMetadata, resource, DestroyReason.Dispose);
             }
             
             FResources.Clear();
@@ -101,9 +106,12 @@ namespace VVVV.PluginInterfaces.V2
             // Do nothing
         }
         
-        private static void DestroyResource(TMetadata metadata, TResource resource)
+        private static void DestroyResource(TMetadata metadata, TResource resource, DestroyReason reason)
         {
-            resource.Dispose();
+            if (resource != null)
+            {
+                resource.Dispose();
+            }
         }
     }
 }

@@ -426,9 +426,12 @@ namespace VVVV.Nodes.Texture.HTML
                         else
                         {
                             // There're still siblings left to visit
-                            currentNode = currentNode.GetNextSibling();
+                            var nextSibling = currentNode.GetNextSibling();
+                            currentNode.Dispose();
+                            currentNode = nextSibling;
                         }
-                        lastChild.Dispose();
+                        // Avoid double disposal
+                        GC.SuppressFinalize(lastChild);
                     }
                     break;
                 case TraverseDirection.Up:
@@ -436,7 +439,6 @@ namespace VVVV.Nodes.Texture.HTML
                     if (nodeStack.Count > 1)
                     {
                         var parent = nodeStack.Peek();
-                        //var parent = currentNode.GetParent();
                         var lastChild = parent.GetLastChild();
                         if (currentNode.IsSame(lastChild))
                         {
@@ -449,9 +451,12 @@ namespace VVVV.Nodes.Texture.HTML
                         {
                             // There's a sibling, try to traverse down again (depth first)
                             traverseDirection = TraverseDirection.Down;
-                            currentNode = currentNode.GetNextSibling();
+                            var nextSibling = currentNode.GetNextSibling();
+                            currentNode.Dispose();
+                            currentNode = nextSibling;
                         }
-                        lastChild.Dispose();
+                        // Avoid double disposal
+                        GC.SuppressFinalize(lastChild);
                     }
                     else
                     {

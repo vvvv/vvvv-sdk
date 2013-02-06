@@ -13,6 +13,7 @@ using System.Globalization;
 using VVVV.Utils.IO;
 using System.Xml.Linq;
 using EX9 = SlimDX.Direct3D9;
+using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -301,7 +302,7 @@ namespace VVVV.Nodes.Texture.HTML
                 var mouseWheelDelta = mouseState.MouseWheel - FMouseState.MouseWheel;
                 if (mouseWheelDelta != 0)
                 {
-                    FBrowser.SendMouseWheelEvent(x, y, mouseWheelDelta);
+                    FBrowser.SendMouseWheelEvent(x, y, mouseWheelDelta, 0);
                 }
                 FMouseState = mouseState;
             }
@@ -316,7 +317,8 @@ namespace VVVV.Nodes.Texture.HTML
                     var modifiers = (CefHandlerKeyEventModifiers)((int)(FKeyboardState.Modifiers) >> 16);
                     foreach (var key in releasedKeys)
                     {
-                        FBrowser.SendKeyEvent(CefKeyType.KeyUp, (int)key, modifiers, false, false);
+                        var cefKey = new CefKeyInfo((int)key, false, false);
+                        FBrowser.SendKeyEvent(CefKeyType.KeyUp, cefKey, modifiers);
                     }
                 }
                 var isKeyDown = keyboardState.KeyCodes.Count > FKeyboardState.KeyCodes.Count;
@@ -326,7 +328,8 @@ namespace VVVV.Nodes.Texture.HTML
                     var modifiers = (CefHandlerKeyEventModifiers)((int)(keyboardState.Modifiers) >> 16);
                     foreach (var key in pressedKeys)
                     {
-                        FBrowser.SendKeyEvent(CefKeyType.KeyDown, (int)key, modifiers, false, false);
+                        var cefKey = new CefKeyInfo((int)key, false, false);
+                        FBrowser.SendKeyEvent(CefKeyType.KeyDown, cefKey, modifiers);
                     }
                 }
                 if (!isKeyUp)
@@ -334,8 +337,9 @@ namespace VVVV.Nodes.Texture.HTML
                     var keyChar = keyboardState.KeyChars.LastOrDefault();
                     if (keyChar != 0 && !(keyChar == '\t' || keyChar == '\b'))
                     {
+                        var cefKey = new CefKeyInfo((int)keyChar, false, false);
                         var modifiers = (CefHandlerKeyEventModifiers)((int)(keyboardState.Modifiers) >> 16);
-                        FBrowser.SendKeyEvent(CefKeyType.Char, (int)keyChar, modifiers, false, false);
+                        FBrowser.SendKeyEvent(CefKeyType.Char, cefKey, modifiers);
                     }
                 }
                 FKeyboardState = keyboardState;
@@ -495,7 +499,7 @@ namespace VVVV.Nodes.Texture.HTML
             //            Marshal.FreeHGlobal(buffer);
         }
 
-        private void DestroyTexture(CefBrowser browser, EX9.Texture texture)
+        private void DestroyTexture(CefBrowser browser, EX9.Texture texture, DestroyReason reason)
         {
             lock (FTextures)
             {

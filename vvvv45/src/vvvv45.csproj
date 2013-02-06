@@ -3,99 +3,107 @@
   <PropertyGroup>
     <ProjectGuid>{FA8072CA-3343-4199-AC22-62B9E352BAE8}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <StartAction>Program</StartAction>
     <StartProgram>$(MSBuildThisFileDirectory)..\vvvv.exe</StartProgram>
     <BuildingInsideVisualStudio Condition=" '$(BuildingInsideVisualStudio)' == '' ">false</BuildingInsideVisualStudio>
   </PropertyGroup>
-  
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
   <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
-  
+  <PropertyGroup Condition=" '$(Platform)' == 'x64' " />
   <PropertyGroup>
     <CoreOutputDir>$(MSBuildThisFileDirectory)..\lib\core\</CoreOutputDir>
     <PluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</PluginsOutputDir>
     <EditorsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\editors\</EditorsOutputDir>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="core\**\*.csproj;
-                              gui\**\*.csproj">
-      <OutputDir>$(CoreOutputDir)</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\plugins\**\*.csproj">
-      <OutputDir>$(PluginsOutputDir)</OutputDir>
-    </ProjectReference>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)nodes\editors\**\*.csproj">
-      <OutputDir>$(EditorsOutputDir)</OutputDir>
-    </ProjectReference>
-  </ItemGroup>
-  
   <PropertyGroup>
     <BuildDependsOn>CoreBuild</BuildDependsOn>
     <RebuildDependsOn>Clean;Build</RebuildDependsOn>
     <CleanDependsOn>$(CleanDependsOn)</CleanDependsOn>
   </PropertyGroup>
-  
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
   <Target Name="CoreBuild">
-    <MSBuild Projects="@(ProjectReference)" 
-             Properties="OutputPath=%(ProjectReference.OutputDir);
-                         BuildingInsideVisualStudio=false"
-             ContinueOnError="$(BuildingInsideVisualStudio)"
-             Condition=" !Exists('%(ProjectReference.RootDir)%(ProjectReference.Directory)ignore') " />
     <!-- Copy shared dependencies to lib/core -->
     <CreateItem Include="$(PluginsOutputDir)Sanford*">
       <Output TaskParameter="Include" ItemName="_SharedDependencies_" />
     </CreateItem>
-    <Copy SourceFiles="@(_SharedDependencies_)"
-          DestinationFolder="$(CoreOutputDir)" />
+    <Copy SourceFiles="@(_SharedDependencies_)" DestinationFolder="$(CoreOutputDir)" />
     <!-- Delete all files which are already in lib/core -->
     <CreateItem Include="$(CoreOutputDir)**\*.*">
       <Output TaskParameter="Include" ItemName="CoreOutputFiles" />
     </CreateItem>
     <Delete Files="@(CoreOutputFiles->'$(PluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     <Delete Files="@(CoreOutputFiles->'$(EditorsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
-    
     <!-- Create lib/*.dtd file -->
     <GetVersionInfo File="$(MSBuildThisFileDirectory)..\vvvv.exe">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </GetVersionInfo>
     <ItemGroup>
-	  <DTDFiles Include="$(MSBuildThisFileDirectory)..\lib\*.dtd" />
+      <DTDFiles Include="$(MSBuildThisFileDirectory)..\lib\*.dtd" />
     </ItemGroup>
     <Delete Files="@(DTDFiles)" />
-    <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" 
-          DestinationFiles="$(MSBuildThisFileDirectory)..\lib\$(VersionInfo).dtd" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" DestinationFiles="$(MSBuildThisFileDirectory)..\lib\$(VersionInfo).dtd" />
   </Target>
-  
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
-
-  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)">
-    <MSBuild Projects="@(ProjectReference)" 
-             Targets="Clean" 
-             Properties="OutputPath=%(ProjectReference.OutputDir)" 
-             Condition=" '$(BuildingInsideVisualStudio)' == '' OR '$(BuildingInsideVisualStudio)' == 'false' "/>
-    <CreateItem Include="%(ProjectReference.OutputDir)*.dll;%(ProjectReference.OutputDir)*.xml;%(ProjectReference.OutputDir)*.pdb">
-      <Output ItemName="GeneratedFiles" TaskParameter="Include" />
-    </CreateItem>
-    <Delete Files="@(GeneratedFiles)" />
-  </Target>
-  
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
   <!-- Freeframe and DirectShow -->
   <ItemGroup>
-    <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp" 
-                       Exclude="$(MSBuildThisFileDirectory)nodes\freeframes\Template*\**\*.cbp">
+    <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp" Exclude="$(MSBuildThisFileDirectory)nodes\freeframes\Template*\**\*.cbp">
       <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\freeframes\</OutputDir>
     </FreeframeProjects>
     <DirectShowFilterProjects Include="$(MSBuildThisFileDirectory)nodes\directshowfilter\**\*.dproj">
       <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\directshowfilter\</OutputDir>
     </DirectShowFilterProjects>
   </ItemGroup>
-  
+  <ItemGroup>
+    <ProjectReference Include="core\Core\Core.csproj">
+      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
+      <Name>Core %28core\Core%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="core\Hosting\Hosting.csproj">
+      <Project>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</Project>
+      <Name>Hosting</Name>
+    </ProjectReference>
+    <ProjectReference Include="core\PluginInterfaces\PluginInterfaces.csproj">
+      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
+      <Name>PluginInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="core\Utils3rdParty\Utils3rdParty.csproj">
+      <Project>{87863121-C124-4585-B3BB-7706F03ECC64}</Project>
+      <Name>Utils3rdParty</Name>
+    </ProjectReference>
+    <ProjectReference Include="core\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="gui\PiccoloGraphicalEditor\PiccoloGraphicalEditor.csproj">
+      <Project>{304E1C6A-585F-4748-8E3B-33558E35B0D4}</Project>
+      <Name>PiccoloGraphicalEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="gui\WinFormsViewer\WinFormsViewer.csproj">
+      <Project>{98936436-EA28-437E-A2A4-CC7CAA532658}</Project>
+      <Name>WinFormsViewer</Name>
+    </ProjectReference>
+    <ProjectReference Include="nodes\editors\CodeEditor\CodeEditor.csproj">
+      <Project>{A63D2EA4-D87C-459B-B57F-19A76A7ADAF0}</Project>
+      <Name>CodeEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="nodes\plugins\Animation\Timeliner\Timeliner.csproj">
+      <Project>{639A1C44-DA07-4F08-8A90-8B8845515BF4}</Project>
+      <Name>Timeliner</Name>
+    </ProjectReference>
+    <ProjectReference Include="nodes\plugins\Mesh\ColladaLoader\PluginColladaLoader.csproj">
+      <Project>{8B9D2C28-4394-4C86-A14C-B0021EC29089}</Project>
+      <Name>PluginColladaLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="nodes\plugins\NativePlugins.csproj">
+      <Project>{716F4773-5590-4DD6-A9BC-3FE905D22DA5}</Project>
+      <Name>NativePlugins</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <ZipSteps>_PreZip_;_Zip_;_PostZip_</ZipSteps>
     <ZipOutputDir>..\..\</ZipOutputDir>
@@ -112,21 +120,21 @@
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </GetVersionInfo>
     <PropertyGroup>
-      <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)\</TempDir>
-      <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo).zip</ZipFileName>
+      <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)_$(Platform)\</TempDir>
+      <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo)_$(Platform).zip</ZipFileName>
+      <ZipExclude>..\*.rsm;..\*.drc;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*</ZipExclude>
     </PropertyGroup>
-    <CreateItem Include="..\**\*.*" 
-                Exclude="..\*.rsm;
-                         ..\**\.gitignore;
-                         ..\**\*.pdb;
-                         ..\src\**\*.*;
-                         ..\tests\**\*.*;
-                         ..\addonpack\**\*.*;
-                         ..\lib\nodes\plugins\*\bin\**\*.*">
+    <!-- Files to exclude for platform specific builds -->
+    <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+      <ZipExclude>$(ZipExclude);..\lib\thirdparty\x64\**\*.*</ZipExclude>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
+      <ZipExclude>$(ZipExclude);..\lib\thirdparty\x86\**\*.*;..\lib\nodes\directshowfilter\*.*;..\lib\nodes\freeframes\*.*</ZipExclude>
+    </PropertyGroup>
+    <CreateItem Include="..\**\*.*" Exclude="$(ZipExclude)">
       <Output ItemName="OutputFiles" TaskParameter="Include" />
     </CreateItem>
-    <Copy SourceFiles="@(OutputFiles)" 
-          DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     <Exec Command="attrib +R &quot;$(TempDir)lib\nodes\*.*&quot; /S /D" />
     <Exec Command="attrib +H &quot;$(TempDir)vvvv.exe.config&quot;" />
     <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
@@ -146,6 +154,5 @@
   <Target Name="_PostZip_">
     <RemoveDir Directories="$(TempBaseDir)" />
   </Target>
-  
-  <Import Project="vvvv45.targets"/>
+  <Import Project="vvvv45.targets" />
 </Project>

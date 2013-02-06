@@ -94,7 +94,7 @@ namespace VVVV.Utils.Streams
             
             public bool IsChanged { get { return false; } }
             
-            public void Flush()
+            public void Flush(bool force = false)
             {
                 
             }
@@ -214,26 +214,17 @@ namespace VVVV.Utils.Streams
                 outputStream.Length = lengthPerStream;
             }
         }
-        
-        public static int GetMaxLength<T>(this IInStream<IInStream<T>> streams)
+
+        public static int GetMaxLength<T>(this IEnumerable<IInStream<T>> streams)
         {
-            switch (streams.Length)
+            var result = 0;
+            foreach (var stream in streams)
             {
-                case 0:
-                    return 0;
-                default:
-                    using (var reader = streams.GetReader())
-                    {
-                        var stream = reader.Read();
-                        int result = stream.Length;
-                        while (!reader.Eos)
-                        {
-                            stream = reader.Read();
-                            result = result.CombineStreams(stream.Length);
-                        }
-                        return result;
-                    }
+                var streamLength = stream.Length;
+                if (streamLength == 0) return 0;
+                result = Math.Max(result, streamLength);
             }
+            return result;
         }
 
         public static int GetMaxLength(params IInStream[] streams)

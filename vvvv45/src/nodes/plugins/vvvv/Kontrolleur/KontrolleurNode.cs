@@ -34,29 +34,37 @@ namespace VVVV.Nodes
 	public class KontrolleurNode: IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
 	{
 		#region fields & pins
-		[Input("Listening UDP Port", IsSingle = true, DefaultValue = 44444)]
-		IDiffSpread<int> FUDPPort;
-		
-		[Input("Patch Filter", IsSingle=true)]
-		IDiffSpread<string> FPatchFilter;
-		
-		[Output("Touch ID")]
-		ISpread<int> FTouchID;
-		
-		[Output("Touch")]
-		ISpread<Vector2D> FTouchXY;
-		
-		[Output("Touch Pressure")]
-		ISpread<double> FTouchPressure;
-		
-		[Output("Acceleration")]
-		ISpread<Vector3D> FAcceleration;
-		
-		[Output("Orientation")]
-		ISpread<Vector3D> FOrientation;
-		
-		[Output("Magnetism")]
-		ISpread<Vector3D> FMagnetism;
+#pragma warning disable 0649
+        [Input("Listening UDP Port", IsSingle = true, DefaultValue = 44444)]
+        IDiffSpread<int> FUDPPort;
+
+        [Input("Patch Filter", IsSingle = true)]
+        IDiffSpread<string> FPatchFilter;
+
+        [Output("Touch ID")]
+        ISpread<int> FTouchID;
+
+        [Output("Touch")]
+        ISpread<Vector2D> FTouchXY;
+
+        [Output("Touch Pressure")]
+        ISpread<double> FTouchPressure;
+
+        [Output("Acceleration")]
+        ISpread<Vector3D> FAcceleration;
+
+        [Output("Orientation")]
+        ISpread<Vector3D> FOrientation;
+
+        [Output("Magnetism")]
+        ISpread<Vector3D> FMagnetism;
+
+        [Import]
+        ILogger FLogger;
+
+        [Import]
+        IHDEHost FHDEHost; 
+#pragma warning restore
 		
 		private Vector2D FResolution;
 		private INode2 FRoot;
@@ -69,18 +77,9 @@ namespace VVVV.Nodes
 		private int FTargetPort;
 		private IPAddress FAutoIP;
 		private int FAutoPort;
-		private IPAddress FManualIP;
-		private int FManualPort;
-		private bool FFirstFrame = true;
 		private List<string> FPrefixes = new List<string>();
 		// Track whether Dispose has been called.
 		private bool FDisposed = false;
-		
-		[Import]
-		ILogger FLogger;
-		
-		[Import]
-		IHDEHost FHDEHost;
 		
 		private System.Timers.Timer FTimer = new System.Timers.Timer(2000);
 		private bool FAllowUpdates = true;

@@ -15,6 +15,7 @@ namespace VVVV.PluginInterfaces.V2
             BinName = DefaultBinName;
             BinVisibility = PinVisibility.True;
             BinOrder = 0;
+            AutoFlush = true;
         }
         
         /// <summary>
@@ -39,6 +40,15 @@ namespace VVVV.PluginInterfaces.V2
         /// The position of the bin size used in ISpread&lt;ISpread&lt;T&gt;&gt; implementations.
         /// </summary>
         public int BinOrder
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether the pin is flushed after Evaluate or not.
+        /// </summary>
+        public bool AutoFlush
         {
             get;
             set;

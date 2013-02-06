@@ -32,5 +32,23 @@ namespace VVVV.Utils.Linq
 				}
 			}
 		}
+
+        public static IEnumerable<T> Intersperse<T>(this IEnumerable<T> source, T element)
+        {
+            var first = true;
+            foreach (var item in source)
+            {
+                if (first)
+                {
+                    first = false;
+                    yield return item;
+                }
+                else
+                {
+                    yield return element;
+                    yield return item;
+                }
+            }
+        }
 	}
 }

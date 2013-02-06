@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\HTTP (Network Receiver) help.v4p">
-   <BOUNDS height="9720" left="5370" top="3435" type="Window" width="10155">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
+   <PATCH nodename="D:\vvvv_dev\vvvv\public\vvvv45\lib\nodes\native\HTTP (Network Receiver) help.v4p">
+   <BOUNDS height="10980" left="5370" top="3435" type="Window" width="10155">
    </BOUNDS>
    <NODE id="10" nodename="HTTP (Network Server)">
    <BOUNDS height="0" left="1860" top="1995" type="Node" width="0">
@@ -8,6 +8,8 @@
    <PIN pinname="Content" visible="1">
    </PIN>
    <PIN pinname="URL" visible="1">
+   </PIN>
+   <PIN pinname="Port" slicecount="1" values="80">
    </PIN>
    </NODE>
    <NODE id="9" nodename="HTTP (Network Receiver)">
@@ -24,6 +26,8 @@
    <PIN pinname="ReceiveURL" visible="1">
    </PIN>
    <PIN pinname="Method" slicecount="1" values="All">
+   </PIN>
+   <PIN pinname="Port" slicecount="1" values="80">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
@@ -101,9 +105,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
-   <BOUNDS height="270" left="135" top="6540" type="Node" width="3480">
+   <BOUNDS height="270" left="120" top="6540" type="Node" width="3480">
    </BOUNDS>
-   <BOUNDS height="840" left="135" top="6540" type="Box" width="5010">
+   <BOUNDS height="510" left="120" top="6540" type="Box" width="5025">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -115,9 +119,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
-   <BOUNDS height="480" left="120" top="7320" type="Node" width="2025">
+   <BOUNDS height="480" left="120" top="8460" type="Node" width="2025">
    </BOUNDS>
-   <BOUNDS height="2085" left="120" top="7320" type="Box" width="9420">
+   <BOUNDS height="2085" left="120" top="8460" type="Box" width="9420">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -135,7 +139,7 @@
    </BOUNDS>
    <BOUNDS height="4500" left="5025" top="1230" type="Box" width="4800">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot;?&gt;&cr;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;&cr;&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;de&quot;&gt;&cr;&cr;&lt;head&gt;&cr;&cr;&lt;meta name=&quot;title&quot; content=&quot; &quot; /&gt;&cr;&lt;meta name=&quot;DC.Title&quot; content=&quot; &quot; /&gt;&cr;&lt;meta http-equiv=&quot;content-language&quot; content=&quot;de&quot; /&gt;&cr;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=iso-8859-1&quot; /&gt;&cr;&lt;meta name=&quot;author&quot; content=&quot;Bj&amp;ouml;rn Schwarzer&quot; /&gt;&cr;&lt;meta name=&quot;DC.Creator&quot; content=&quot;Bj&amp;ouml;rn Schwarzer&quot; /&gt;&cr;&lt;meta name=&quot;publisher&quot; content=&quot;meso&quot; /&gt;&cr;&lt;meta name=&quot;DC.Publisher&quot; content=&quot;meso&quot; /&gt;&cr;&lt;meta name=&quot;copyright&quot; content=&quot;meso&quot; /&gt;&cr;&lt;meta name=&quot;DC.Rights&quot; content=&quot;meso&quot; /&gt;&cr;&lt;meta name=&quot;audience&quot; content=&quot;All&quot; /&gt;&cr;&lt;meta name=&quot;robots&quot; content=&quot;INDEX,FOLLOW&quot; /&gt;&cr;&lt;meta name=&quot;Description&quot; content=&quot;Just a Dummy&quot; /&gt;&cr;&lt;meta name=&quot;abstract&quot; content=&quot; &quot; /&gt;&cr;&lt;meta name=&quot;Keywords&quot; content=&quot; &quot; /&gt;&cr;&lt;meta name=&quot;date&quot; content=&quot;11-11-2005 &quot; /&gt;&cr;&lt;meta name=&quot;Expires&quot; content=&quot;0&quot; /&gt;&cr;&cr;&lt;title&gt;vvvv&lt;/title&gt;&cr;&cr;&lt;style type=&quot;text/css&quot;&gt;&cr;body {&cr;&tab;margin: 0;&cr;&tab;padding: 0;&cr;&tab;font-family: monospace;&cr;&tab;font-size: 10px;&cr;}&cr;&cr;br {&cr;&tab;clear: both;&cr;}&cr;&cr;#container {&cr;&tab;margin: 50px 0 0 50px;&cr;&tab;overflow: hidden;&cr;}&cr;&cr;&cr;fieldset {&cr;&tab;border: 0px;&cr;&tab;margin: 0 0 25px 0;&cr;}&cr;&cr;form {&cr;&tab;font-size: 10px;&cr;}&cr;&cr;h1 {&cr;&tab;font-size: 14px;&cr;&tab;margin: 0 0 20px 0;&cr;}&cr;&cr;input {&cr;&tab;font-family: monospace;&cr;&tab;font-size: 10px;&cr;&tab;margin: 0 15px 5px 0 ;&cr;}&cr;&cr;label {&cr;&tab;float: left;&cr;&tab;display: block;&cr;&tab;width: 50px;&cr;&tab;margin: 3px 15px 0 0;&cr;}&cr;&cr;legend {&cr;&tab;font-size: 12px;&cr;&tab;padding: 0 0 10px 0;&cr;}&cr;&lt;/style&gt;&cr;&cr;&lt;script type=&quot;text/javascript&quot;&gt;&cr;function chkValues (a) {&cr;  var chkZ = 1;&cr;  for (i = 0; i &lt; document.getElementById(a).value.length; ++i)&cr;    if (document.getElementById(a).value.charAt(i) != &quot;.&quot; &amp;&amp;&cr;&tab;&tab;document.getElementById(a).value.charAt(i) &lt; &quot;0&quot; ||||&cr;        document.getElementById(a).value.charAt(i) &gt; &quot;9&quot;)&cr;      chkZ = -1;&cr;  if (chkZ == -1) {&cr;    document.getElementById(a).focus();&cr;&tab;&cr;    return false;&cr;  }&cr;}&cr;&lt;/script&gt;&cr;&cr;&lt;/head&gt;&cr;&cr;&lt;body&gt;&cr;&lt;div id=&quot;container&quot;&gt;&cr;&cr;&tab;&lt;h1&gt;I am from vvvv&lt;/h1&gt;&cr;&tab; &tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;!-- use enctype=&quot;multipart/form-data&quot; if you want to submit files  --&gt;&cr;&tab;&lt;form name=&quot;TestForm&quot;  action=&quot;vvvv&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot; &gt;&cr;&tab;&tab;&lt;fieldset&gt;&cr;&tab;&tab;&tab;&lt;legend&gt;Enter some Text&lt;/legend&gt;&cr;&tab;&tab;&tab;&lt;label for=&quot;text&quot;&gt;Text: &lt;/label&gt;&lt;input alt=&quot;enter a String Value&quot; id=&quot;text&quot; name=&quot;text&quot;  type=&quot;text&quot; value=&quot;Hello World&quot; maxlength=&quot;12&quot; /&gt;&lt;br /&gt;&cr;&tab;&tab;&lt;/fieldset&gt;&cr;&tab;&tab;&lt;fieldset&gt;&cr;&tab;&tab;&tab;&lt;legend&gt;Enter Positions&lt;/legend&gt;&cr;&tab;&tab;&tab;&lt;label for=&quot;PositionX&quot;&gt;PositionX: &lt;/label&gt;&lt;input alt=&quot;enter a numerical Value&quot; id=&quot;PositionX&quot; name=&quot;positionX&quot;  onblur=&quot;return chkValues(this.id)&quot; type=&quot;text&quot; value=&quot;1&quot; maxlength=&quot;3&quot; /&gt;&lt;br /&gt;&cr;&tab;&tab;&tab;&lt;label for=&quot;PositionY&quot;&gt;PositionY: &lt;/label&gt;&lt;input alt=&quot;enter a numerical Value&quot; id=&quot;PositionY&quot; name=&quot;positionY&quot;  onblur=&quot;return chkValues(this.id)&quot; type=&quot;text&quot; value=&quot;1&quot; maxlength=&quot;3&quot; /&gt;&lt;br /&gt;&cr;&tab;&tab;&lt;/fieldset&gt;&cr;&tab;&tab;&lt;fieldset&gt;&cr;&tab;&tab;&tab;&lt;legend&gt;Select an Image&lt;/legend&gt;&cr;&tab;&tab;&tab;&lt;label for=&quot;texture&quot;&gt;Texture: &lt;/label&gt;&lt;input alt=&quot;select an Image&quot; type=&quot;file&quot; id=&quot;texture&quot; name=&quot;texture&quot; &gt;&cr;&tab;&tab;&lt;/fieldset&gt;&cr;&tab;&tab;&lt;input type=&quot;reset&quot; value=&quot;Reset&quot; /&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;br /&gt;&cr;&tab;&lt;/form&gt;&cr;&lt;/div&gt;&cr;&lt;/body&gt;&cr;&lt;/html&gt;&cr;|">
+   <PIN pinname="Input String" slicecount="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot;?&gt;&cr;&lf;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;&cr;&lf;&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;de&quot;&gt;&cr;&lf;&cr;&lf;&lt;head&gt;&cr;&lf;&cr;&lf;&lt;meta name=&quot;title&quot; content=&quot; &quot; /&gt;&cr;&lf;&lt;meta name=&quot;DC.Title&quot; content=&quot; &quot; /&gt;&cr;&lf;&lt;meta http-equiv=&quot;content-language&quot; content=&quot;de&quot; /&gt;&cr;&lf;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=iso-8859-1&quot; /&gt;&cr;&lf;&lt;meta name=&quot;author&quot; content=&quot;Bj&amp;ouml;rn Schwarzer&quot; /&gt;&cr;&lf;&lt;meta name=&quot;DC.Creator&quot; content=&quot;Bj&amp;ouml;rn Schwarzer&quot; /&gt;&cr;&lf;&lt;meta name=&quot;publisher&quot; content=&quot;meso&quot; /&gt;&cr;&lf;&lt;meta name=&quot;DC.Publisher&quot; content=&quot;meso&quot; /&gt;&cr;&lf;&lt;meta name=&quot;copyright&quot; content=&quot;meso&quot; /&gt;&cr;&lf;&lt;meta name=&quot;DC.Rights&quot; content=&quot;meso&quot; /&gt;&cr;&lf;&lt;meta name=&quot;audience&quot; content=&quot;All&quot; /&gt;&cr;&lf;&lt;meta name=&quot;robots&quot; content=&quot;INDEX,FOLLOW&quot; /&gt;&cr;&lf;&lt;meta name=&quot;Description&quot; content=&quot;Just a Dummy&quot; /&gt;&cr;&lf;&lt;meta name=&quot;abstract&quot; content=&quot; &quot; /&gt;&cr;&lf;&lt;meta name=&quot;Keywords&quot; content=&quot; &quot; /&gt;&cr;&lf;&lt;meta name=&quot;date&quot; content=&quot;11-11-2005 &quot; /&gt;&cr;&lf;&lt;meta name=&quot;Expires&quot; content=&quot;0&quot; /&gt;&cr;&lf;&cr;&lf;&lt;title&gt;vvvv&lt;/title&gt;&cr;&lf;&cr;&lf;&lt;style type=&quot;text/css&quot;&gt;&cr;&lf;body {&cr;&lf;&tab;margin: 0;&cr;&lf;&tab;padding: 0;&cr;&lf;&tab;font-family: monospace;&cr;&lf;&tab;font-size: 10px;&cr;&lf;}&cr;&lf;&cr;&lf;br {&cr;&lf;&tab;clear: both;&cr;&lf;}&cr;&lf;&cr;&lf;#container {&cr;&lf;&tab;margin: 50px 0 0 50px;&cr;&lf;&tab;overflow: hidden;&cr;&lf;}&cr;&lf;&cr;&lf;&cr;&lf;fieldset {&cr;&lf;&tab;border: 0px;&cr;&lf;&tab;margin: 0 0 25px 0;&cr;&lf;}&cr;&lf;&cr;&lf;form {&cr;&lf;&tab;font-size: 10px;&cr;&lf;}&cr;&lf;&cr;&lf;h1 {&cr;&lf;&tab;font-size: 14px;&cr;&lf;&tab;margin: 0 0 20px 0;&cr;&lf;}&cr;&lf;&cr;&lf;input {&cr;&lf;&tab;font-family: monospace;&cr;&lf;&tab;font-size: 10px;&cr;&lf;&tab;margin: 0 15px 5px 0 ;&cr;&lf;}&cr;&lf;&cr;&lf;label {&cr;&lf;&tab;float: left;&cr;&lf;&tab;display: block;&cr;&lf;&tab;width: 50px;&cr;&lf;&tab;margin: 3px 15px 0 0;&cr;&lf;}&cr;&lf;&cr;&lf;legend {&cr;&lf;&tab;font-size: 12px;&cr;&lf;&tab;padding: 0 0 10px 0;&cr;&lf;}&cr;&lf;&lt;/style&gt;&cr;&lf;&cr;&lf;&lt;script type=&quot;text/javascript&quot;&gt;&cr;&lf;function chkValues (a) {&cr;&lf;  var chkZ = 1;&cr;&lf;  for (i = 0; i &lt; document.getElementById(a).value.length; ++i)&cr;&lf;    if (document.getElementById(a).value.charAt(i) != &quot;.&quot; &amp;&amp;&cr;&lf;&tab;&tab;document.getElementById(a).value.charAt(i) &lt; &quot;0&quot; ||||&cr;&lf;        document.getElementById(a).value.charAt(i) &gt; &quot;9&quot;)&cr;&lf;      chkZ = -1;&cr;&lf;  if (chkZ == -1) {&cr;&lf;    document.getElementById(a).focus();&cr;&lf;&tab;&cr;&lf;    return false;&cr;&lf;  }&cr;&lf;}&cr;&lf;&lt;/script&gt;&cr;&lf;&cr;&lf;&lt;/head&gt;&cr;&lf;&cr;&lf;&lt;body&gt;&cr;&lf;&lt;div id=&quot;container&quot;&gt;&cr;&lf;&cr;&lf;&tab;&lt;h1&gt;I am from vvvv&lt;/h1&gt;&cr;&lf;&tab; &tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;!-- use enctype=&quot;multipart/form-data&quot; if you want to submit files  --&gt;&cr;&lf;&tab;&lt;form name=&quot;TestForm&quot;  action=&quot;vvvv&quot; method=&quot;post&quot; &gt;&cr;&lf;&tab;&tab;&lt;fieldset&gt;&cr;&lf;&tab;&tab;&tab;&lt;legend&gt;Enter some Text&lt;/legend&gt;&cr;&lf;&tab;&tab;&tab;&lt;label for=&quot;text&quot;&gt;Text: &lt;/label&gt;&lt;input alt=&quot;enter a String Value&quot; id=&quot;text&quot; name=&quot;text&quot;  type=&quot;text&quot; value=&quot;Hello World&quot; maxlength=&quot;12&quot; /&gt;&lt;br /&gt;&cr;&lf;&tab;&tab;&lt;/fieldset&gt;&cr;&lf;&tab;&tab;&lt;fieldset&gt;&cr;&lf;&tab;&tab;&tab;&lt;legend&gt;Enter Positions&lt;/legend&gt;&cr;&lf;&tab;&tab;&tab;&lt;label for=&quot;PositionX&quot;&gt;PositionX: &lt;/label&gt;&lt;input alt=&quot;enter a numerical Value&quot; id=&quot;PositionX&quot; name=&quot;positionX&quot;  onblur=&quot;return chkValues(this.id)&quot; type=&quot;text&quot; value=&quot;1&quot; maxlength=&quot;3&quot; /&gt;&lt;br /&gt;&cr;&lf;&tab;&tab;&tab;&lt;label for=&quot;PositionY&quot;&gt;PositionY: &lt;/label&gt;&lt;input alt=&quot;enter a numerical Value&quot; id=&quot;PositionY&quot; name=&quot;positionY&quot;  onblur=&quot;return chkValues(this.id)&quot; type=&quot;text&quot; value=&quot;1&quot; maxlength=&quot;3&quot; /&gt;&lt;br /&gt;&cr;&lf;&tab;&tab;&lt;/fieldset&gt;&cr;&lf;&tab;&tab;&lt;fieldset&gt;&cr;&lf;&tab;&tab;&tab;&lt;legend&gt;Select an Image (&lt;a href=&quot;http://vvvv.org/forum-alpha/http-%28network-receiver%29&quot;&gt;not supported&lt;/a&gt;)&lt;/legend&gt;&cr;&lf;&tab;&tab;&tab;&lt;label for=&quot;texture&quot;&gt;Texture: &lt;/label&gt;&lt;input alt=&quot;select an Image&quot; type=&quot;file&quot; id=&quot;texture&quot; name=&quot;texture&quot;  disabled&gt;&cr;&lf;&tab;&tab;&lt;/fieldset&gt;&cr;&lf;&tab;&tab;&lt;input type=&quot;reset&quot; value=&quot;Reset&quot; /&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;br /&gt;&cr;&lf;&tab;&lt;/form&gt;&cr;&lf;&lt;/div&gt;&cr;&lf;&lt;/body&gt;&cr;&lf;&lt;/html&gt;|">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -212,6 +216,36 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="465" top="7620" type="Node" width="3480">
+   </BOUNDS>
+   <BOUNDS height="510" left="465" top="7620" type="Box" width="7395">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Setting the enctype attribute of the form tag to &quot;multipart/form-data&quot; is not supported right now. See http://vvvv.org/forum-alpha/http-%28network-receiver%29 for a discussion why.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="120" top="7275" width="525" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="120" top="7275" width="690" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="NOTE">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
    </PATCH>

@@ -26,6 +26,27 @@ namespace VVVV.PluginInterfaces.V2.EX9
             Action<TMetadata, Texture> updateResourceFunc = null,
             Action<TMetadata, Texture> destroyResourceAction = null)
         {
+            if (destroyResourceAction != null)
+                return new TextureResource<TMetadata>(metadata, createResourceFunc, updateResourceFunc, (m, texture, reason) => destroyResourceAction(m, texture));
+            else
+                return new TextureResource<TMetadata>(metadata, createResourceFunc, updateResourceFunc);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TextureResource{TMetadata}">texture resource</see>.
+        /// </summary>
+        /// <typeparam name="TMetadata">The type of the metadata.</typeparam>
+        /// <param name="metadata">The metadata associated with the texture resource.</param>
+        /// <param name="createResourceFunc">A function which creates the texture.</param>
+        /// <param name="updateResourceFunc">A function which updates the texture.</param>
+        /// <param name="destroyResourceAction">A function which destroys the texture.</param>
+        /// <returns>The newly created <see cref="TextureResource{TMetadata}">texture resource</see>.</returns>
+        public static TextureResource<TMetadata> Create<TMetadata>(
+            TMetadata metadata,
+            Func<TMetadata, Device, Texture> createResourceFunc,
+            Action<TMetadata, Texture> updateResourceFunc,
+            Action<TMetadata, Texture, DestroyReason> destroyResourceAction)
+        {
             return new TextureResource<TMetadata>(metadata, createResourceFunc, updateResourceFunc, destroyResourceAction);
         }
     }
@@ -40,7 +61,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
             TMetadata metadata, 
             Func<TMetadata, Device, Texture> createResourceFunc,
             Action<TMetadata, Texture> updateResourceFunc = null,
-            Action<TMetadata, Texture> destroyResourceAction = null)
+            Action<TMetadata, Texture, DestroyReason> destroyResourceAction = null)
             : base(metadata, createResourceFunc, updateResourceFunc, destroyResourceAction)
         {
         }
