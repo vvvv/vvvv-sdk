@@ -156,6 +156,7 @@ namespace VVVV.Core.Model
             {
                 if (value != FName) //(CanRenameTo(value) && (value != FName))
                 {
+                    MarkChanged();
                     OnRenamed(value);
                     FName = value;
                 }
