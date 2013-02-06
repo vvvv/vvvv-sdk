@@ -160,6 +160,7 @@ namespace VVVV.Nodes.NodeBrowser
         	// 
         	// flowLayoutPanel1
         	// 
+        	this.flowLayoutPanel1.AutoScroll = true;
         	this.flowLayoutPanel1.Controls.Add(this.label5);
         	this.flowLayoutPanel1.Controls.Add(this.label1);
         	this.flowLayoutPanel1.Controls.Add(this.tableLayoutPanel1);
