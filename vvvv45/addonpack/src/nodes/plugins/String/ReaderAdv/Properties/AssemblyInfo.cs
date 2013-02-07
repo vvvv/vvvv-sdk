@@ -9,12 +9,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Virmata")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("ReaderFileAdvanced")]
+[assembly: AssemblyDescription("Reader (String) with advanced features")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Muthesius Kunsthochschule")]
-[assembly: AssemblyProduct("Virmata")]
-[assembly: AssemblyCopyright("Jens A. Ewald, Chris Engler, Copyright 2011-2013")]
+[assembly: AssemblyCompany("woei")]
+[assembly: AssemblyProduct("ReaderFileAdvancedNode")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -28,4 +28,4 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
-[assembly: AssemblyVersion("1.1.*")]
+[assembly: AssemblyVersion("2.0.*")]
