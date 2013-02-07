@@ -67,7 +67,7 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "FirmataEncode",
-				Version = "2.x String Legacy",
+				Version = "2.x Legacy",
 				Category = "Devices",
 				Author = "jens a. ewald",
 				Help = "Encodes pins, values and commands for Firmata protocol version 2.x",

@@ -7,7 +7,7 @@
    </BOUNDS>
    <BOUNDS height="4080" left="1260" top="9675" type="Box" width="1155">
    </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1" slicecount="14" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+   <PIN pinname="Y Input Value" visible="1" slicecount="20" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -481,6 +481,8 @@
    </PIN>
    <PIN pinname="Register" visible="1">
    </PIN>
+   <PIN pinname="I2C Data" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" id="116" nodename="Arduino (Devices StandardFirmata 2.x)" systemname="Arduino (Devices StandardFirmata 2.x)" debug="0">
    <BOUNDS height="270" left="330" top="8550" type="Node" width="4680">
@@ -519,6 +521,18 @@
    </PIN>
    <PIN pinname="IsConnected" visible="1">
    </PIN>
+   <PIN pinname="Report Analog Pins" visible="1">
+   </PIN>
+   <PIN pinname="Report Digital Pins" visible="1">
+   </PIN>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   <PIN pinname="Firmware Version" visible="1">
+   </PIN>
+   <PIN pinname="Digital In" visible="1">
+   </PIN>
+   <PIN pinname="Analog In" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="116" dstpinname="Input" srcnodeid="61" srcpinname="Output">
    </LINK>
@@ -529,12 +543,6 @@
    <LINK dstnodeid="116" dstpinname="Enable" srcnodeid="121" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="116" dstpinname="ComPort" srcnodeid="122" srcpinname="Output Enum">
-   </LINK>
-   <LINK dstnodeid="104" dstpinname="Y Input Value" srcnodeid="116" srcpinname="Analog">
-   </LINK>
-   <LINK dstnodeid="101" dstpinname="Y Input Value" srcnodeid="116" srcpinname="Digital">
-   </LINK>
-   <LINK dstnodeid="105" dstpinname="Input String" srcnodeid="116" srcpinname="Firmwareversion">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="140" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="3120" top="8970" width="0" height="0">
@@ -565,9 +573,9 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="116" srcpinname="OnData" dstnodeid="141" dstpinname="Y Input Value">
-   </LINK>
    <LINK srcnodeid="120" srcpinname="Y Output Value" dstnodeid="116" dstpinname="Reset">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="142" systemname="IOBox (Enumerations)">
@@ -580,6 +588,8 @@
    <PIN pinname="Rows" slicecount="1" values="20">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="142" srcpinname="Output Enum" dstnodeid="116" dstpinname="PinModes">
@@ -629,5 +639,21 @@
    <LINK srcnodeid="145" srcpinname="Output" dstnodeid="146" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="116" srcpinname="I2C Data" dstnodeid="136" dstpinname="I2CData">
+   </LINK>
+   <LINK srcnodeid="142" srcpinname="Output Enum" dstnodeid="116" dstpinname="Pin Modes">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Y Output Value" dstnodeid="116" dstpinname="Report Analog Pins">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Y Output Value" dstnodeid="116" dstpinname="Report Digital Pins">
+   </LINK>
+   <LINK srcnodeid="116" srcpinname="On Data" dstnodeid="141" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="116" srcpinname="Firmware Version" dstnodeid="105" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="116" srcpinname="I2C Data" dstnodeid="136" dstpinname="I2C Data">
+   </LINK>
+   <LINK srcnodeid="116" srcpinname="Digital In" dstnodeid="101" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="116" srcpinname="Analog In" dstnodeid="104" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

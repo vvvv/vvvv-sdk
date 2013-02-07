@@ -65,7 +65,7 @@ namespace VVVV.Nodes
 {
 	#region PluginInfo
 	[PluginInfo(Name = "FirmataDecode",
-				Version = "2.x String Legacy",
+				Version = "2.x Legacy",
 	            Category = "Devices",
 				Author = "jens a. ewald",
 	            Help = "Decodes the firmata protocol version 2.x",
@@ -217,8 +217,8 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "I2CDecode",
-	            Category = "Devices ",
-            	Version  = "2.x String Legacy",
+	            Category = "Devices",
+            	Version  = "2.x Legacy",
 				Author = "jens a. ewald",
 	            Help = "Decodes I2C data from Firmata messages",
 	            Tags = "Firmata,Arduino")]
