@@ -9,6 +9,7 @@ using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Lifetime;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
+using System.Collections.Generic;
 
 namespace VVVV.Utils.Network
 {
@@ -28,6 +29,75 @@ namespace VVVV.Utils.Network
         {
             return  ChannelServices.GetChannel(name) != null;
         }
+    }
+
+    public abstract class RemotingProxyManagerTCP<TProxy> : RemotingProxyManager<RemotingManagerTCP, TProxy>
+        where TProxy : MarshalByRefObject
+    {
+        public RemotingProxyManagerTCP(string[] hosts, int port) : base(hosts, port) { }
+    }
+
+    public abstract class RemotingProxyManagerHTTP<TProxy> : RemotingProxyManager<RemotingManagerHTTP, TProxy>
+        where TProxy : MarshalByRefObject
+    {
+        public RemotingProxyManagerHTTP(string[] hosts, int port) : base(hosts, port) { }
+    }
+
+    //handles remote servers
+    public abstract class RemotingProxyManager<TRemoter, TProxy> where TRemoter : IRemotingManager, new() where TProxy : MarshalByRefObject
+    {
+        protected int FPort;
+        protected string[] FHosts;
+        protected IRemotingManager FRemoter;
+        protected List<TProxy> FProxyList = new List<TProxy>();
+
+        public RemotingProxyManager(string[] hosts, int port)
+        {
+            FPort = port;
+            FHosts = hosts == null ? new []{"localhost"} : hosts;
+            
+            FRemoter = new TRemoter();
+        }
+
+        //get or set the remote client IPs
+        public string[] HostIPs
+        {
+            get { return FHosts; }
+            set
+            {
+                FHosts = value;
+                FProxyList.Clear();
+            }
+        }
+
+        //get or set the port
+        public int Port
+        {
+            get { return FPort; }
+            set
+            {
+                FPort = value;
+                FProxyList.Clear();
+            }
+        }
+
+        //get remote proxy
+        protected TProxy GetProxy(int index)
+        {
+
+            if (FProxyList.Count == 0)
+            {
+                for (int i = 0; i < FHosts.Length; i++)
+                {
+                    FProxyList.Add(GetProxyElement(FHosts[i], FPort));
+                }
+            }
+
+            return FProxyList[index];
+        }
+
+        //create the proxy object in subclass
+        protected abstract TProxy GetProxyElement(string host, int port);
     }
 
     #endregion RemotingUtils

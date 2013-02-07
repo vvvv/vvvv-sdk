@@ -27,6 +27,9 @@ namespace VVVV.Core
         [OptionArray("r", "remote", Required = false, HelpText = "Space separated list of remote IP's of the runtimes to connect to")]
         public string[] RemoteIPs;
 
+        [Option("p", "port", Required = false, HelpText = "Sets the port in which the HDE communicates with the clients, default is 3344")]
+        public int Port = 3344;
+
         [Option("s", "startruntime", Required = false, HelpText = "If set, the Runtime.exe at the given path will be started")]
         public string RuntimePath;
 

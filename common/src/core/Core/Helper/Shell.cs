@@ -108,7 +108,6 @@ namespace VVVV.Core
         }
 
         //port and remoting manager
-        private static int FPort = 3344;
         private static RemotingManagerTCP FRemoter = new RemotingManagerTCP();
 
         private Shell()
@@ -173,7 +172,7 @@ namespace VVVV.Core
 
             if (!RemotingUtils.ChannelExists(channelName))
             {
-                FRemoter.InitializeServerChannel(channelName, FPort, false);
+                FRemoter.InitializeServerChannel(channelName, Instance.CommandLineArguments.Port, false);
                 Console.WriteLine("Channel crated: " + channelName);
             }
 
