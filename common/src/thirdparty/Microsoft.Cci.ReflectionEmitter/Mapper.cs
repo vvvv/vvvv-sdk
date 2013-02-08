@@ -214,7 +214,7 @@ namespace Microsoft.Cci.ReflectionEmitter {
         {
             var specializedMethodReference = methodReference as ISpecializedMethodReference;
             if (specializedMethodReference != null)
-                return specializedMethodReference.UnspecializedVersion.ResolvedMethod;
+                return specializedMethodReference.UnspecializedVersion;
             var specializedMethodDefinition = methodReference.ResolvedMethod as ISpecializedMethodDefinition;
             if (specializedMethodDefinition != null)
                 return GetTemplateMethod(specializedMethodDefinition);
