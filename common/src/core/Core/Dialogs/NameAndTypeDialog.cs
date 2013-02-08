@@ -57,6 +57,15 @@ namespace VVVV.Core.Dialogs
             }
         }
 
+        //return the text
+        public string Type
+        {
+            get
+            {
+                return TypeTextBox.Text;
+            }
+        }
+
         //check if input is valid
         private void TextBoxFunctionName_KeyPress(object sender, KeyPressEventArgs e)
         {
