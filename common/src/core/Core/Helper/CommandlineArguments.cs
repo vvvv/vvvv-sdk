@@ -24,8 +24,8 @@ namespace VVVV.Core
         [Option("l", "local", Required = false, HelpText = "If true, vvvv will not try to communicate with a runtime")]
         public bool Local = false;
 
-        [OptionArray("r", "remote", Required = false, HelpText = "Space separated list of remote IP's of the runtimes to connect to")]
-        public string[] RemoteIPs;
+        [OptionArray("c", "client", Required = false, HelpText = "Space separated list of the IP's of the clients to connect to")]
+        public string[] ClientIPs;
 
         [Option("p", "port", Required = false, HelpText = "Sets the port in which the HDE communicates with the clients, default is 3344")]
         public int Port = 3344;

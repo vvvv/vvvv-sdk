@@ -19,7 +19,7 @@ namespace VVVV.Core.Commands
         public HDECommandHistory(IIDItem idItem)
             : base(idItem.ServiceProvider)
         {
-            FCommandSender = new CommandSender(Shell.Instance.CommandLineArguments.RemoteIPs, Shell.Instance.CommandLineArguments.Port, idItem);
+            FCommandSender = new CommandSender(Shell.Instance.CommandLineArguments.ClientIPs, Shell.Instance.CommandLineArguments.Port, idItem);
             FIdItem = idItem;
         }
 
