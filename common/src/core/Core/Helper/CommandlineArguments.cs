@@ -31,7 +31,7 @@ namespace VVVV.Core
         public int Port = 3344;
 
         [Option("s", "startruntime", Required = false, HelpText = "If set, the Runtime.exe at the given path will be started")]
-        public string RuntimePath = @"..\..\..\Runtime\bin\Debug\Runtime.exe";
+        public string RuntimePath = @"..\..\..\Runtime\bin\Debug\VClient.exe";
 
         //help string
         [HelpOption(HelpText = "Dispaly this help screen")]
