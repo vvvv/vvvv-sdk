@@ -30,18 +30,18 @@ namespace VVVV.Core.Logging
 
         public static void CatchAndLog(Action a, string failingContext, Action<Exception> theCatch = null)
         {
-            CatchAndLog(a, Shell.Instance.CommandLineArguments.ThrowExceptions, failingContext, theCatch);
+            CatchAndLog(a, Shell.CommandLineArguments.ThrowExceptions, failingContext, theCatch);
         }
 
         public static void CatchAndLogFrontEnd(Action a, string failingContext, Action<Exception> theCatch = null)
         {
-            var args = Shell.Instance.CommandLineArguments;
+            var args = Shell.CommandLineArguments;
             CatchAndLog(a, args.ThrowExceptions || args.ThrowFrontEndExceptions, failingContext, theCatch);
         }
 
         public static void CatchAndLogBackEnd(Action a, string failingContext, Action<Exception> theCatch = null)
         {
-            var args = Shell.Instance.CommandLineArguments;
+            var args = Shell.CommandLineArguments;
             CatchAndLog(a, args.ThrowExceptions || args.ThrowBackEndExceptions, failingContext, theCatch);
         }
 

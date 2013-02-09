@@ -73,7 +73,7 @@ namespace VVVV.Core
 
         public CompositionContainer Container { get; private set; }
         
-        public CommandLineArguments CommandLineArguments { get; private set; }
+        public static CommandLineArguments CommandLineArguments { get; private set; }
         
         [Export(typeof(ILogger))]
         public DefaultLogger Logger { get; private set; }
@@ -110,17 +110,20 @@ namespace VVVV.Core
         //port and remoting manager
         private static RemotingManagerTCP FRemoter = new RemotingManagerTCP();
 
+        static Shell()
+        {
+            CommandLineArguments = new CommandLineArguments();
+            CommandLineArguments.Parse();
+        }
+
         private Shell()
         {
         	if (!Directory.Exists(FTempPath))
         		Directory.CreateDirectory(TempPath);
         	
-            CommandLineArguments = new CommandLineArguments();
-            Logger = new DefaultLogger();
             
-            Compose();
-
-            CommandLineArguments.Parse();
+            Logger = new DefaultLogger();
+            Compose();  
         }
         
         public static Shell Initialize()
@@ -172,7 +175,7 @@ namespace VVVV.Core
 
             if (!RemotingUtils.ChannelExists(channelName))
             {
-                FRemoter.InitializeServerChannel(channelName, Instance.CommandLineArguments.Port, false);
+                FRemoter.InitializeServerChannel(channelName, Shell.CommandLineArguments.Port, false);
                 Console.WriteLine("Channel crated: " + channelName);
             }
 
