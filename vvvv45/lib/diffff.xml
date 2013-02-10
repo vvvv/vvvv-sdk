@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	How to edit this file as an internal developer:
-  * increase the vvvversion (like 40beta21.1 -> 40beta21.2) within delphi 
+  Short Description
+ 
+  This file controls the conversion process when opening patches
+  A patch comes with a version info that states with which vvvv version it was saved.
+  Comparing that with the currently running version enables vvvv to convert the patches.
   
-  * add a patch tag with this new version
-      <PATCH version="40beta21.2">
+  For each version one       
+	  <PATCH version=...>
       </PATCH>
-      
-  * add a node tag within the patch tag for the node you want to change
+	tag is added (if renamings have taken place in the nodelibrary that comes with vvvv)
+	
+  However it now also can be used to temporarily do a conversion task for you.
+  You can rename your nodes (plugins, modules) and then use this file to do conversion even if the patches 
+  already are stored with current version.
+   
+  ========================================================================================================
+	  
+  How to edit this file 
+  * if you are not an internal developer you can contribute to this via the SDK and by making pull request
+  
+  * HOWEVER you are also invited to use this tool to convert temporarily   
+   
+  * since you can't increase the vvvversion by yourself just use "current" like that:
+	  <PATCH version="current">
+      </PATCH>  
+  
+  * note that you can also replace standard modules (...) with your own.
+  
+  * add a node tag within the patch tag for the node you want to be converted
       <NODE old="I (Spread)">
       </NODE>   
       
@@ -26,28 +47,9 @@
 
   comments:
   + for all file based nodes (modules, effects ...) a special syntax is used:
-    :MODULES:\vvvv group\EX9\Sprite (DX9).v4p
+    :MODULES:\vvvv group\EX9\Sprite (DX9).v4p  
+  
 
-
-	How to edit this file as an external module/plugin (...) developer:
-
-  * since you can't increase the vvvversion by yourself just enter the current
-  
-  * give us the xml snippet so that we can include it in the official release
-  
-  * in that way you can rename pins, nodes, modules, effects etc.
-  
-  
-  FOR ALL
-  * note that you can also replace standard modules (...) with your own.
-    however you should do that when a new relase comes out.  that makes sure that all your current 
-    patches were saved with an old vvvversion and as a result will be converted.
-  
-  example:
-  <PATCH version="current">
-    <NODE old=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" new=":MODULES:\yournamehere\Transform\Camera (Transform Softimage).v4p">
-    </NODE>
-  
 -->
 <CONVVVVERTER>
   <PATCH version="33beta5">
@@ -958,25 +960,25 @@
   	<NODE old="DisplacementMap (EX9.Texture Source)" new="TexCoords (EX9.Texture Source)"> </NODE>
   	<NODE old="EdgeGlow (EX9.Texture Filter)"><PIN old="Balance" new="Shape"></PIN></NODE>
   	<NODE old="Renderer (SVG)">
-  	  <PIN old="Layer" new="Layers"/>
+  	  <PIN old="Layer" new="Layers"></PIN>
   	</NODE>
   	<NODE old="Group (SVG)">
-  	  <PIN old="Input Count" new="Layer Count"/>
-  	  <PIN old="Input 1" new="Layer 1"/>
-  	  <PIN old="Input 2" new="Layer 2"/>
-  	  <PIN old="Input 3" new="Layer 3"/>
-  	  <PIN old="Input 4" new="Layer 4"/>
-  	  <PIN old="Input 5" new="Layer 5"/>
-  	  <PIN old="Input 6" new="Layer 6"/>
-  	  <PIN old="Input 7" new="Layer 7"/>
-  	  <PIN old="Input 8" new="Layer 8"/>
-  	  <PIN old="Input 9" new="Layer 9"/>
-  	  <PIN old="Input 10" new="Layer 10"/>
-  	  <PIN old="Input 11" new="Layer 11"/>
-  	  <PIN old="Input 12" new="Layer 12"/>
-  	  <PIN old="Input 13" new="Layer 13"/>
-  	  <PIN old="Input 14" new="Layer 14"/>
-  	  <PIN old="Input 15" new="Layer 15"/>
+  	  <PIN old="Input Count" new="Layer Count"></PIN>
+  	  <PIN old="Input 1" new="Layer 1"></PIN>
+  	  <PIN old="Input 2" new="Layer 2"></PIN>
+  	  <PIN old="Input 3" new="Layer 3"></PIN>
+  	  <PIN old="Input 4" new="Layer 4"></PIN>
+  	  <PIN old="Input 5" new="Layer 5"></PIN>
+  	  <PIN old="Input 6" new="Layer 6"></PIN>
+  	  <PIN old="Input 7" new="Layer 7"></PIN>
+  	  <PIN old="Input 8" new="Layer 8"></PIN>
+  	  <PIN old="Input 9" new="Layer 9"></PIN>
+  	  <PIN old="Input 10" new="Layer 10"></PIN>
+  	  <PIN old="Input 11" new="Layer 11"></PIN>
+  	  <PIN old="Input 12" new="Layer 12"></PIN>
+  	  <PIN old="Input 13" new="Layer 13"></PIN>
+  	  <PIN old="Input 14" new="Layer 14"></PIN>
+  	  <PIN old="Input 15" new="Layer 15"></PIN>
   	</NODE>
   	<NODE old="Mouse (System Global)" new="Mouse (System Global Legacy)"> </NODE>
   	<NODE old="Mouse (System Window)" new="Mouse (System Window Legacy)"> </NODE>
@@ -1008,18 +1010,18 @@
     	<PIN old="Time" olddefault="0"></PIN>
     </NODE>
     <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.DiffAdvNode" new="Differential (Spreads Vector)">
-      <PIN old="Bin Size" new="Input Bin Size"/>
+      <PIN old="Bin Size" new="Input Bin Size"></PIN>
     </NODE>
     <NODE old="Differential (Spreads Advanced)" new="Differential (Spreads Vector)">
-      <PIN old="Bin Size" new="Input Bin Size"/>
+      <PIN old="Bin Size" new="Input Bin Size"></PIN>
     </NODE>
     <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.IntAdvNode" new="Integral (Spreads Vector)">
-      <PIN old="Bin Size" new="Input Bin Size"/>
-      <PIN old="Include 0 Slice" new="Append Offset"/>
+      <PIN old="Bin Size" new="Input Bin Size"></PIN>
+      <PIN old="Include 0 Slice" new="Append Offset"></PIN>
     </NODE>
     <NODE old="Integral (Spreads Advanced)" new="Integral (Spreads Vector)">
-      <PIN old="Bin Size" new="Input Bin Size"/>
-      <PIN old="Include 0 Slice" new="Append Offset"/>
+      <PIN old="Bin Size" new="Input Bin Size"></PIN>
+      <PIN old="Include 0 Slice" new="Append Offset"></PIN>
     </NODE>
     <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.AddAdvNode" new="Add (Value Spectral Vector)"></NODE>
     <NODE old="+ (Value Spectral Advanced)" new="Add (Value Spectral Vector)"></NODE>
@@ -1058,11 +1060,11 @@
     </NODE>
   </PATCH>
   <PATCH version="45alpha28.1">
-    <NODE old="ArduinoFirmata (Devices)" new="ArduinoFirmata (Devices Legacy)" />
+    <NODE old="ArduinoFirmata (Devices)" new="ArduinoFirmata (Devices Legacy)"></NODE>
   </PATCH>
   <PATCH version="45alpha28.2">
-    <NODE old="UnipolarStepper (Devices Phidget)" new="StepperController (Devices Phidget)" />
-	<NODE old="Cursor (System)" new="Cursor (System Legacy)" />
+    <NODE old="UnipolarStepper (Devices Phidget)" new="StepperController (Devices Phidget)"></NODE>
+	<NODE old="Cursor (System)" new="Cursor (System Legacy)"></NODE>
   </PATCH>
   <PATCH version="45alpha28.3">
     <NODE old="Sort (Spreads)">
@@ -1093,8 +1095,8 @@
 	  <PIN old="End Time" new="Loop End Time"> </PIN>
 	  <PIN old="Seek Position" new="Seek Time"> </PIN>
 	</NODE>	
-	<NODE old=":PLUGINS:\Irrklang.dll|VVVV.Nodes.Irrklang" new="Irrklang (Sound Legacy)"/>
-	<NODE old="Irrklang (Sound)" new="Irrklang (Sound Legacy)"/>
+	<NODE old=":PLUGINS:\Irrklang.dll|VVVV.Nodes.Irrklang" new="Irrklang (Sound Legacy)"></NODE>
+	<NODE old="Irrklang (Sound)" new="Irrklang (Sound Legacy)"></NODE>
   </PATCH>
   <PATCH version="45alpha28.4">
 	<NODE old="Reader (File)" new="Reader (String)">
