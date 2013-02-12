@@ -1,21 +1,13 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.3.dtd" >
    <PATCH nodename="C:\Users\zeos\GitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\HitTest (2d Superformula) help.v4p">
-   <BOUNDS height="11805" left="1050" top="0" type="Window" width="12420">
+   <BOUNDS height="11805" left="4485" top="705" type="Window" width="12420">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="19" nodename="Mouse (System Window Legacy)">
-   <BOUNDS height="0" left="5220" top="2850" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="18" nodename="CircularSpread (Spreads)">
    <BOUNDS height="0" left="6405" top="3600" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input X" visible="1">
+   <PIN pinname="Input X" visible="1" slicecount="1" values="0.649186256781193">
    </PIN>
-   <PIN pinname="Input Y" visible="1">
+   <PIN pinname="Input Y" visible="1" slicecount="1" values="-0.945454545454545">
    </PIN>
    <PIN pinname="Spread Count" slicecount="1" values="5">
    </PIN>
@@ -28,10 +20,6 @@
    <PIN pinname="Output Y" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="18" dstpinname="Input X" srcnodeid="19" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Input Y" srcnodeid="19" srcpinname="Y">
-   </LINK>
    <NODE componentmode="Hidden" id="17" nodename="Vector (2d Join)">
    <BOUNDS height="0" left="4290" top="4950" type="Node" width="0">
    </BOUNDS>
@@ -404,4 +392,16 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" id="19" nodename="Mouse (System Window)" systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p">
+   <BOUNDS height="100" left="6225" top="2580" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Input X" srcnodeid="19" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input Y" srcnodeid="19" srcpinname="Y">
+   </LINK>
    </PATCH>
