@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
-   <PATCH nodename="D:\vvvv\sourceforge\plugins\wrk\ReaderFileAdv\Reader (File Advanced) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Reader (String Advanced) help.v4p">
    <BOUNDS height="5535" left="1125" top="1125" type="Window" width="5565">
    </BOUNDS>
    <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reader (File Advanced)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reader (String Advanced)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -73,7 +73,7 @@
    </PIN>
    </NODE>
    <NODE nodename="Self (VVVV)" id="6">
-   <BOUNDS type="Node" left="3465" top="1260" width="0" height="0">
+   <BOUNDS type="Node" left="375" top="1140" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Filename" visible="1">
    </PIN>
@@ -100,7 +100,7 @@
    </LINK>
    <LINK srcnodeid="5" srcpinname="Content" dstnodeid="3" dstpinname="Input String">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="7">
    <BOUNDS type="Node" left="705" top="2340" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Window" left="2550" top="4140" width="215" height="160">
@@ -112,7 +112,7 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="8">
    <BOUNDS type="Node" left="2220" top="2310" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Window" left="3960" top="3720" width="215" height="160">
@@ -126,12 +126,28 @@
    <PIN pinname="Y Input Value" slicecount="1" values="9">
    </PIN>
    </NODE>
-   <NODE nodename="Reader (File)" id="9">
+   <NODE nodename="Reader (String)" id="9">
    <BOUNDS type="Node" left="4425" top="4575" width="0" height="0">
    </BOUNDS>
+   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
+   </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Startindex" linkstyle="Bezier">
    </LINK>
    <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Count" linkstyle="Bezier">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="10" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4245" top="4200" width="705" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4245" top="4200" width="705" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|see also|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
