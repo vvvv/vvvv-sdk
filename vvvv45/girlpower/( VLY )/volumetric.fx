@@ -22,7 +22,7 @@ float4x4 tTex1 <string uiname="Color Texture Transform";>;                  //Te
 
  float Contrast<string uiname="Noise Contrast";> ;
 
- float4 colorout : color <string uiname="Color";>;
+ float4 colorout : COLOR <string uiname="Color";>;
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 // VERTEXSHADERS

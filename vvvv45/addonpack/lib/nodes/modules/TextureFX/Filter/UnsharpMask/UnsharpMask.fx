@@ -1,7 +1,7 @@
 float2 R;
 float Sharp <float uimin=0.0;>;
-float MinRadius <float uimin=0.0; float uimax=1.0;> = 0.1;
-float Radius <float uimin=0.0; float uimax=1.0;> = 0.6;
+float MinRadius <float uimin=0.0; float uimax=1.0;> = 00;
+float Radius <float uimin=0.0; float uimax=1.0;> = 0.9;
 float Saturation <float uimin=0.0; float uimax=1.0;> = 0.2;
 float Gamma <float uimin=-1.0; float uimax=1.0;> = 0.2;
 float Balance;
@@ -23,7 +23,7 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     sh.rgb=sign(sh.rgb)*pow(abs(sh.rgb)*5,pow(2,Gamma*2))/5;
     sh/=1+c;
     //c.rgb*=pow(2,sh);
-    c.rgb+=sh.rgb;
+    c.rgb+=sh.rgb*pow(pow(2,3*min(Balance,0)),2);
     return c;
 }
 

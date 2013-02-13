@@ -43,6 +43,15 @@ namespace VVVV.Nodes
 		
 		public void Evaluate(int SpreadMax)
 		{
+			//return null if one of the control inputs is null
+            if(FDoSet.IsAnyEmpty(FFrameCount, FReset))
+            {
+            	FOutput.SliceCount = 0;
+            	FPhase.SliceCount = 0;
+            	FCurrentFrame.SliceCount = 0;
+            	return;
+            }
+			
             if ((FFirstFrame) || (FReset[0]))
             {
                 FOutput.SliceCount = 0;
@@ -53,6 +62,8 @@ namespace VVVV.Nodes
             var oldframecount = FOutput.SliceCount;
 
             FOutput.SliceCount = frameCount;
+            FPhase.SliceCount = 1;
+            FCurrentFrame.SliceCount = 1;
 
             if (oldframecount < frameCount)
                 for (int i = oldframecount; i < frameCount; i++)
@@ -63,7 +74,7 @@ namespace VVVV.Nodes
                 FCurrentPos++;
                 if (FCurrentPos > frameCount - 1)
                     FCurrentPos = 0;
-                FOutput[FCurrentPos] = FInput.Clone();
+                FOutput[FCurrentPos] = FInput.Clone() as ISpread<T>;
             }
 
             FCurrentFrame[0] = Math.Min(Math.Max(FCurrentPos, 0), frameCount - 1);

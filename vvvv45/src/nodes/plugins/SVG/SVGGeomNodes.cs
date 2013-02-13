@@ -23,6 +23,7 @@ namespace VVVV.Nodes
 	public abstract class SVGVisualElementNode<T> : IPluginEvaluate where T : SvgVisualElement
 	{
 		#region fields & pins
+		#pragma warning disable 649
 		[Input("Transform", Order = 0)]
 		protected IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
@@ -37,6 +38,7 @@ namespace VVVV.Nodes
 		
 		[Output("Layer")]
 		ISpread<T> FOutput;
+		#pragma warning restore
 		
 		bool FFirstFrame = true;
 		
@@ -193,8 +195,10 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgRectNode : SVGVisualElementFillNode<SvgRectangle>
 	{
+	    #pragma warning disable 649
 		[Input("Corner Radius ", Order = 23, MinValue = 0, MaxValue = 1)]
 		IDiffSpread<Vector2> FCornerRadiusIn;
+		#pragma warning restore
 		
 		protected override SvgRectangle CreateElement()
 		{
@@ -241,6 +245,173 @@ namespace VVVV.Nodes
 		}
 	}
 	
+	//PATH------------------------------------------------------------------
+	#region PluginInfo
+	[PluginInfo(Name = "Path", 
+	            Category = "SVG", 
+	            Help = "Renders a path from a list of vertices into a Renderer (SVG)", 
+	            Tags = "primitive, 2d, vector")]
+	#endregion PluginInfo
+	public class SvgPathNode : SVGVisualElementFillNode<SvgPath>
+	{
+	    #pragma warning disable 649
+		[Input("Vertices", Order = -5)]
+		IDiffSpread<ISpread<Vector2>> FVerticesIn;
+		
+		[Input("Control 1", Order = -4)]
+		IDiffSpread<ISpread<Vector2>> FControl1In;
+		
+		[Input("Control 2", Order = -3)]
+		IDiffSpread<ISpread<Vector2>> FControl2In;
+		
+		[Input("Arc Rotation", Order = -2)]
+		IDiffSpread<ISpread<float>> FArcRotationIn;
+		
+		[Input("Command", Order = -1, MaxChars = 1, DefaultString = "L")]
+		IDiffSpread<ISpread<string>> FCommandIn;
+		#pragma warning restore
+		
+		protected override SvgPath CreateElement()
+		{
+			var p = new SvgPath();
+			return p;
+		}
+		
+		protected override int CalcSpreadMax(int max)
+		{
+			max = Math.Max(FTransformIn.SliceCount, FStrokeIn.SliceCount);
+			max = Math.Max(max, FStrokeWidthIn.SliceCount);
+			max = Math.Max(max, FEnabledIn.SliceCount);
+			max = Math.Max(max, FFillIn.SliceCount);
+			max = Math.Max(max, FFillModeIn.SliceCount);
+			max = Math.Max(max, FVerticesIn.SliceCount);
+			max = Math.Max(max, FControl1In.SliceCount);
+			max = Math.Max(max, FControl2In.SliceCount);
+			max = Math.Max(max, FArcRotationIn.SliceCount);
+			max = Math.Max(max, FCommandIn.SliceCount);
+			return max;
+		}
+		
+		protected override bool PinsChanged()
+		{
+			return base.PinsChanged() || FVerticesIn.IsChanged || FCommandIn.IsChanged || FControl1In.IsChanged || FControl2In.IsChanged || FArcRotationIn.IsChanged;
+		}
+		
+		protected override void CalcGeometry(SvgPath elem, Vector2 trans, Vector2 scale, int slice)
+		{
+			elem.PathData.Clear();
+			
+			var verts = FVerticesIn[slice];
+			var cont1 = FControl1In[slice];
+			var cont2 = FControl2In[slice];
+			var comms = FCommandIn[slice];
+			var arc = FArcRotationIn[slice];
+			
+			var coords = new List<float>(7);
+			
+			for (int i = 0; i < verts.SliceCount; i++)
+			{
+				coords.Clear();
+				
+				var c = comms[i][0];
+				
+				//make sure the first and last command fits the specification
+				if(i == 0)
+				{
+					c = 'M';
+				}
+				else if (i == verts.SliceCount - 1)
+				{
+					c = 'Z';
+				}
+				
+				//fill in params
+				switch (c)
+				{
+					case 'm': // relative moveto
+					case 'M': // moveto
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						break;
+					case 'a':
+					case 'A':
+
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
+						
+						coords.Add(arc[i] * 360);
+						
+						coords.Add(cont2[i].X);
+						coords.Add(cont2[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						
+						break;
+					case 'l': // relative lineto
+					case 'L': // lineto
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						break;
+					case 'H': // horizontal lineto
+					case 'h': // relative horizontal lineto
+						
+						coords.Add(verts[i].X);
+						break;
+					case 'V': // vertical lineto
+					case 'v': // relative vertical lineto
+						
+						coords.Add(verts[i].Y);
+						break;
+					case 'Q': // curveto
+					case 'q': // relative curveto
+						
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						break;
+					case 'T': // shorthand/smooth curveto
+					case 't': // relative shorthand/smooth curveto
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						break;
+					case 'C': // curveto
+					case 'c': // relative curveto
+						
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
+						
+						coords.Add(cont2[i].X);
+						coords.Add(cont2[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+
+						break;
+					case 'S': // shorthand/smooth curveto
+					case 's': // relative shorthand/smooth curveto
+
+						coords.Add(cont1[i].X);
+						coords.Add(cont1[i].Y);
+						
+						coords.Add(verts[i].X);
+						coords.Add(verts[i].Y);
+						break;
+				}
+				
+				SvgPathBuilder.CreatePathSegment(c, elem.PathData, coords, char.IsLower(c));
+			}
+			
+		}
+		
+
+	}
+	
 	//POLYLINE------------------------------------------------------------------
 	#region PluginInfo
 	[PluginInfo(Name = "Polyline", 
@@ -250,8 +421,10 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgPolylineNode : SVGVisualElementFillNode<SvgPolyline>
 	{
+	    #pragma warning disable 649
 		[Input("Vertices", Order = -1)]
 		IDiffSpread<ISpread<Vector2>> FVerticesIn;
+		#pragma warning restore
 		
 		protected override SvgPolyline CreateElement()
 		{
@@ -297,8 +470,10 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgPolygonNode : SVGVisualElementFillNode<SvgPolygon>
 	{
+	    #pragma warning disable 649
 		[Input("Vertices", Order = -1)]
 		IDiffSpread<ISpread<Vector2>> FVerticesIn;
+		#pragma warning restore
 		
 		protected override SvgPolygon CreateElement()
 		{
@@ -344,6 +519,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgTextNode : SVGVisualElementFillNode<SvgText>
 	{
+	    #pragma warning disable 649
 		[Input("Text", Order = 1, DefaultString = "vvvv")]
 		IDiffSpread<string> FTextIn;
 		
@@ -355,6 +531,7 @@ namespace VVVV.Nodes
 		
 		[Input("Anchor", Order = 4)]
 		IDiffSpread<SvgTextAnchor> FTextAnchorIn;
+		#pragma warning restore
 		
 		protected override SvgText CreateElement()
 		{
@@ -376,7 +553,7 @@ namespace VVVV.Nodes
 				elem.FontFamily = (new Font(FFontIn[slice].Name, 1)).FontFamily.Name;
 				
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				elem.FontFamily = (new Font("Arial", 1)).FontFamily.Name;
 			}
@@ -396,6 +573,7 @@ namespace VVVV.Nodes
 	public class SVGCameraNode : IPluginEvaluate
 	{
 		#region fields & pins
+		#pragma warning disable 649, 169
 		[Input("Center")]
 		IDiffSpread<Vector2> FViewCenterIn;
 		
@@ -407,6 +585,7 @@ namespace VVVV.Nodes
 
 		[Import()]
 		ILogger FLogger;
+		#pragma warning restore
 		
 		#endregion fields & pins
 
@@ -439,6 +618,7 @@ namespace VVVV.Nodes
 	public class SVGCameraSplitNode : IPluginEvaluate
 	{
 		#region fields & pins
+		#pragma warning disable 649, 169
 		[Input("View Box")]
 		IDiffSpread<SvgViewBox> FInput;
 		
@@ -450,6 +630,7 @@ namespace VVVV.Nodes
 
 		[Import()]
 		ILogger FLogger;
+		#pragma warning restore
 		
 		#endregion fields & pins
 
@@ -483,6 +664,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SVGGetPathNode : IPluginEvaluate
 	{
+	    #pragma warning disable 649
 		[Input("Layer")]
 		ISpread<SvgElement> FInput;
 		
@@ -500,6 +682,7 @@ namespace VVVV.Nodes
 		
 		[Output("Path Type")]
 		ISpread<ISpread<int>> FPathTypeOutput;
+		#pragma warning restore
 		
 		public void Evaluate(int SpreadMax)
 		{
@@ -546,7 +729,7 @@ namespace VVVV.Nodes
 		}
 	}
 	
-	//GETPATH-------------------------------------------------------------------
+	//GETELEMENTS-------------------------------------------------------------------
 	#region PluginInfo
 	[PluginInfo(Name = "GetElements", 
 	            Category = "SVG", 
@@ -555,17 +738,22 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SVGGetElementsNode : IPluginEvaluate
 	{
+	    #pragma warning disable 649
 		[Input("Layer")]
 		IDiffSpread<SvgElement> FInput;
 		
 		[Output("Element")]
 		ISpread<SvgElement> FElementsOut;
 		
+		[Output("Name")]
+		ISpread<string> FElementNameOut;
+		
 		[Output("Type")]
 		ISpread<string> FElementTypeOut;
 		
 		[Output("Level")]
 		ISpread<int> FElementLevelOut;
+		#pragma warning restore
 		
 		public void Evaluate(int SpreadMax)
 		{
@@ -574,6 +762,7 @@ namespace VVVV.Nodes
 				FElementsOut.SliceCount = 0;
 				FElementTypeOut.SliceCount = 0;
 				FElementLevelOut.SliceCount = 0;
+				FElementNameOut.SliceCount = 0;
 				
 				for(int i=0; i<SpreadMax; i++)
 				{
@@ -589,6 +778,7 @@ namespace VVVV.Nodes
 			FElementsOut.Add(elem);
 			FElementTypeOut.Add(elem.GetType().Name.Replace("Svg", ""));
 			FElementLevelOut.Add(level);
+			FElementNameOut.Add(elem.ID);
 			
 			foreach(var child in elem.Children)
 			{
@@ -617,6 +807,7 @@ namespace VVVV.Nodes
 	public class SVGNormalizeNode : IPluginEvaluate
 	{
 		#region fields & pins
+		#pragma warning disable 649,169
 		[Input("Transform")]
 		IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
@@ -631,6 +822,7 @@ namespace VVVV.Nodes
 
 		[Import()]
 		ILogger FLogger;
+		#pragma warning restore
 		
 		List<SvgGroup> FGroups = new List<SvgGroup>();
 		#endregion fields & pins
@@ -734,10 +926,11 @@ namespace VVVV.Nodes
 	public class SVGGroupNode : IPluginEvaluate
 	{
 		#region fields & pins
+		#pragma warning disable 649,169
 		[Input("Transform")]
 		IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
-		[Input("Input", IsPinGroup=true)]
+		[Input("Layer", IsPinGroup=true)]
 		IDiffSpread<ISpread<SvgElement>> FInput;
 		
 		[Input("Enabled", DefaultValue = 1, Order = 1000000)]
@@ -748,6 +941,7 @@ namespace VVVV.Nodes
 
 		[Import()]
 		ILogger FLogger;
+		#pragma warning restore
 		
 		List<SvgElement> FGroups = new List<SvgElement>();
 		#endregion fields & pins

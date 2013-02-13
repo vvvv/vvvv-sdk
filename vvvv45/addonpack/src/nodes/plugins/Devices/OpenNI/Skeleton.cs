@@ -36,6 +36,9 @@ namespace VVVV.Nodes
 		[Input("Smoothing", DefaultValue = 0.5, MinValue = 0, MaxValue = 1, IsSingle = true)]
 		IDiffSpread<float> FSmoothingIn;
 		
+		[Input("Confidence CutOff", DefaultValue = 0.5, MinValue = 0, MaxValue = 1)]
+		ISpread<float> FConfidenceIn;
+		
 		[Input("Joint", DefaultEnumEntry = "Head")]
 		ISpread<ISpread<SkeletonJoint>> FJointIn;
 		
@@ -129,19 +132,19 @@ namespace VVVV.Nodes
 					if (FSmoothingIn.IsChanged)
 						FSkeletonCapability.SetSmoothing(FSmoothingIn[0]);
 					
-					if (FUserGenerator.IsDataNew)
+					FUserIdOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FStatusOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FJointPositionOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FJointOrientationXOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FJointOrientationYOut.SliceCount = FUserGenerator.NumberOfUsers;
+					FJointOrientationZOut.SliceCount = FUserGenerator.NumberOfUsers;
+					
+					if (FUserGenerator.NumberOfUsers > 0)
 					{
 						//get all Users and sort them
 						int[] users = FUserGenerator.GetUsers();
 						Array.Sort(users);
 
-						FUserIdOut.SliceCount = users.Length;
-						FStatusOut.SliceCount = users.Length;
-						FJointPositionOut.SliceCount = users.Length;
-						FJointOrientationXOut.SliceCount = users.Length;
-						FJointOrientationYOut.SliceCount = users.Length;
-						FJointOrientationZOut.SliceCount = users.Length;
-						
 						int slice = 0;
 						foreach (int user in users)
 						{
@@ -157,13 +160,18 @@ namespace VVVV.Nodes
 								for (int i = 0; i < binSize; i++)
 								{
 									var j = GetJoint(user, FJointIn[u][i]);
+									
 									var p = j.Position.Position;
-									FJointPositionOut[u][i] = new Vector3D(p.X, p.Y, p.Z) / 1000;
+									if (j.Position.Confidence > 0.5)
+										FJointPositionOut[u][i] = new Vector3D(p.X, p.Y, p.Z) / 1000;
 									
 									var o = j.Orientation;
-									FJointOrientationXOut[u][i] = new Vector3D(o.X1, o.Y1, o.Z1);
-									FJointOrientationYOut[u][i] = new Vector3D(o.X2, o.Y2, o.Z2);
-									FJointOrientationZOut[u][i] = new Vector3D(o.X3, o.Y3, o.Z3);
+									if (o.Confidence > FConfidenceIn[slice])
+									{
+										FJointOrientationXOut[u][i] = new Vector3D(o.X1, o.Y1, o.Z1);
+										FJointOrientationYOut[u][i] = new Vector3D(o.X2, o.Y2, o.Z2);
+										FJointOrientationZOut[u][i] = new Vector3D(o.X3, o.Y3, o.Z3);
+									}
 								}
 							}
 							else if (FSkeletonCapability.IsCalibrating(user))

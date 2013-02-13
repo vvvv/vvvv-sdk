@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
-using Microsoft.Research.Kinect.Nui;
 using SlimDX;
 using VVVV.MSKinect.Lib;
 using VVVV.PluginInterfaces.V1;
+using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Nodes
 {
@@ -23,10 +23,10 @@ namespace VVVV.MSKinect.Nodes
         private ISpread<int> FOutUserIndex;
 
         [Output("Position")]
-        private ISpread<Vector3> FOutPosition;
+        private ISpread<SlimDX.Vector3> FOutPosition;
 
         [Output("Clipping")]
-        private ISpread<Vector4> FOutClipped;
+        private ISpread<SlimDX.Vector4> FOutClipped;
 
         [Output("Joint ID")]
         private ISpread<string> FOutJointID;
@@ -45,8 +45,11 @@ namespace VVVV.MSKinect.Nodes
 
         private KinectRuntime runtime;
 
-        private SkeletonFrame lastframe = null;
         private bool FInvalidate = true;
+
+        private Skeleton[] lastframe = null;
+        private object m_lock = new object();
+        private int frameid = -1;
 
        
 
@@ -56,14 +59,19 @@ namespace VVVV.MSKinect.Nodes
             {
                 if (runtime != null)
                 {
-                    this.runtime.SkeletonFrameReady -= KinectSkeletonNode_SkeletonFrameReady;
+                    this.runtime.SkeletonFrameReady -= SkeletonReady;
                 }
 
                 if (this.FInRuntime.PluginIO.IsConnected)
                 {
                     //Cache runtime node
                     this.runtime = this.FInRuntime[0];
-                    this.FInRuntime[0].SkeletonFrameReady += KinectSkeletonNode_SkeletonFrameReady;
+
+                    if (runtime != null)
+                    {
+                        this.FInRuntime[0].SkeletonFrameReady += SkeletonReady;
+                    }
+                    
                 }
 
                 this.FInvalidateConnect = false;
@@ -73,12 +81,19 @@ namespace VVVV.MSKinect.Nodes
             {
                 if (this.lastframe != null)
                 {
-                    List<SkeletonData> skels = new List<SkeletonData>();
-                    foreach (SkeletonData sk in this.lastframe.Skeletons)
+                    List<Skeleton> skels = new List<Skeleton>();
+                    float z = float.MaxValue;
+                    int id = -1;
+
+                    lock (m_lock)
                     {
-                        if (sk.TrackingState != SkeletonTrackingState.NotTracked)
+
+                        foreach (Skeleton sk in this.lastframe)
                         {
-                            skels.Add(sk);
+                            if (sk.TrackingState == SkeletonTrackingState.Tracked)
+                            {
+                                skels.Add(sk);
+                            }
                         }
                     }
 
@@ -88,30 +103,30 @@ namespace VVVV.MSKinect.Nodes
                     this.FOutPosition.SliceCount = cnt;
                     this.FOutUserIndex.SliceCount = cnt;
                     this.FOutClipped.SliceCount = cnt;
-                    this.FOutJointPosition.SliceCount = cnt * (int)JointID.Count;
-                    this.FOutJointState.SliceCount = cnt * (int)JointID.Count;
-                    this.FOutJointID.SliceCount = cnt * (int)JointID.Count;
-                    this.FOutFrameNumber[0] = this.lastframe.FrameNumber;
+                    this.FOutJointPosition.SliceCount = cnt * 20;
+                    this.FOutJointState.SliceCount = cnt * 20;
+                    this.FOutJointID.SliceCount = cnt * 20;
+                    this.FOutFrameNumber[0] = this.frameid;
 
 
                     int jc = 0;
                     for (int i = 0; i < cnt; i++)
                     {
-                        SkeletonData sk = skels[i];
+                        Skeleton sk = skels[i];
                         this.FOutPosition[i] = new Vector3(sk.Position.X, sk.Position.Y, sk.Position.Z);
-                        this.FOutUserIndex[i] = sk.UserIndex;
-
-                        Vector4 clip = Vector4.Zero;
-                        clip.X = Convert.ToSingle(sk.Quality.HasFlag(SkeletonQuality.ClippedLeft));
-                        clip.Y = Convert.ToSingle(sk.Quality.HasFlag(SkeletonQuality.ClippedRight));
-                        clip.Z = Convert.ToSingle(sk.Quality.HasFlag(SkeletonQuality.ClippedTop));
-                        clip.W = Convert.ToSingle(sk.Quality.HasFlag(SkeletonQuality.ClippedBottom));
+                        this.FOutUserIndex[i] = sk.TrackingId;
+                        
+                        SlimDX.Vector4 clip = SlimDX.Vector4.Zero;
+                        clip.X = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Left));
+                        clip.Y = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Right));
+                        clip.Z = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Top));
+                        clip.W = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Bottom));
 
                         this.FOutClipped[i] = clip;
 
                         foreach (Joint joint in sk.Joints)
                         {
-                            this.FOutJointID[jc] = joint.ID.ToString();
+                            this.FOutJointID[jc] = joint.JointType.ToString();
                             this.FOutJointPosition[jc] = new Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z);
                             this.FOutJointState[jc] = joint.TrackingState.ToString();
 
@@ -133,9 +148,21 @@ namespace VVVV.MSKinect.Nodes
             }
         }
 
-        void KinectSkeletonNode_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
+        private void SkeletonReady(object sender, SkeletonFrameReadyEventArgs e)
         {
-            this.lastframe = e.SkeletonFrame;
+
+            using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
+            {
+                if (skeletonFrame != null)
+                {
+                    this.lastframe = new Skeleton[skeletonFrame.SkeletonArrayLength];
+                    lock (m_lock)
+                    {
+                        skeletonFrame.CopySkeletonDataTo(this.lastframe);
+                    }
+                    this.frameid = skeletonFrame.FrameNumber;
+                }
+            }
             this.FInvalidate = true;
         }
 

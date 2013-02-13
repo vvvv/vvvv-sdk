@@ -316,15 +316,17 @@ namespace VVVV.Nodes
 		{
 			//Called by the PluginHost whenever a resource for a specific pin needs to be destroyed on a specific device. 
 			//This is also called when the plugin is destroyed, so don't dispose dxresources in the plugins destructor/Dispose()
-			
-			Mesh m = FDeviceMeshes[OnDevice];
-			if (m != null)
-			{
-				FLogger.Log(LogType.Debug, "Destroying Resource...");
-				FDeviceMeshes.Remove(OnDevice);
-				//dispose mesh
-				m.Dispose();
-			}
+			Mesh m;
+            if (FDeviceMeshes.TryGetValue(OnDevice, out m))
+            {
+                if (m != null)
+                {
+                    FLogger.Log(LogType.Debug, "Destroying Resource...");
+                    FDeviceMeshes.Remove(OnDevice);
+                    //dispose mesh
+                    m.Dispose();
+                }
+            }
 		}
 		
 		public Mesh GetMesh(IDXMeshOut ForPin, Device OnDevice)
@@ -350,7 +352,12 @@ namespace VVVV.Nodes
 				}
     		}
         	
-			Mesh mesh = Mesh.Concatenate(graphicsDevice, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+			var options = MeshFlags.Use32Bit;
+			if (graphicsDevice is DeviceEx)
+				options |= MeshFlags.Dynamic;
+			else
+				options |= MeshFlags.Managed;
+			Mesh mesh = Mesh.Concatenate(graphicsDevice, meshes.ToArray(), options);
 			
 			foreach (Mesh m in meshes)
 				m.Dispose();

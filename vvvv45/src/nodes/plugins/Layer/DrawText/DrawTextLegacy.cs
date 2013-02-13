@@ -165,7 +165,7 @@ namespace VVVV.Nodes
 				df.Font = new SlimDX.Direct3D9.Font(OnDevice, FSizeInput[0], 0, weight, 0, FItalicInput[0], CharacterSet.Default, Precision.Default, FontQuality.Default, PitchAndFamily.Default, FFontInput[0].Name);
 				df.Sprite = new Sprite(OnDevice);
 				
-				df.Texture = new Texture(OnDevice, 1, 1, 1, Usage.None, Format.L8, Pool.Managed);// Format.A8R8G8B8, Pool.Default);
+				df.Texture = new Texture(OnDevice, 1, 1, 1, Usage.Dynamic, Format.L8, Pool.Default);// Format.A8R8G8B8, Pool.Default);
 				//need to fill texture white to be able to set color on sprite later
 				DataRectangle tex = df.Texture.LockRectangle(0, LockFlags.None);
 				tex.Data.WriteByte(255);

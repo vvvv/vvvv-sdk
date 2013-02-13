@@ -48,7 +48,7 @@ namespace VVVV.Hosting.Factories
 
         void HandleNodeInfoAdded(object sender, INodeInfo nodeInfo)
         {
-            if (nodeInfo.Type == NodeType.Dynamic)
+            if (nodeInfo.Type == NodeType.Dynamic && nodeInfo.Factory == this)
             {
                 nodeInfo.UserData = CreateProject(nodeInfo.Filename);
             }

@@ -89,14 +89,19 @@ namespace VVVV.Nodes.Finder
         {
             get
             {
+            	var flags = base.Flags;
+            	if (Node.IsExposed())
+            		flags |= FilterFlags.Exposed;
+            	
                 switch (IOType)
                 {
                     case IONodeView.IOTypeCode.Comment:
-                        return base.Flags | FilterFlags.Comment;
+                        return flags | FilterFlags.Comment;
                     case IONodeView.IOTypeCode.IO:
-                        return base.Flags | FilterFlags.IONode;
+                        return flags | FilterFlags.IONode;
                 }
-                return base.Flags;
+                	
+                return flags;
             }
         }
         

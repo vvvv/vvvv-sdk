@@ -11,6 +11,7 @@ namespace VVVV.Nodes
     {
         protected IPluginHost FHost;
         protected AbstractDbConnection<D> FConnectionObject;
+        private bool cnxvalid;
 
         #region Pins
         private IStringIn FPinInConnectionString;
@@ -72,9 +73,18 @@ namespace VVVV.Nodes
                 string cnx;
                 this.FPinInConnectionString.GetString(0, out cnx);
 
-                this.FConnectionObject.Connection.ConnectionString = cnx;
-                connectionreset = true;
-                this.FConnectionObject.HasChanged = true;
+                try
+                {
+                    this.FConnectionObject.Connection.ConnectionString = cnx;
+
+                    connectionreset = true;
+                    this.FConnectionObject.HasChanged = true;
+                    this.cnxvalid = true;
+                }
+                catch
+                {
+                    this.cnxvalid = false; //Some db engine throw exceptions
+                }
             }
 
             if (this.FPinInConnect.PinIsChanged || connectionreset)
@@ -83,25 +93,28 @@ namespace VVVV.Nodes
                 this.FPinInConnect.GetValue(0, out connect);
                 if (connect >= 0.5 && this.FConnectionObject.Connection.State == ConnectionState.Closed)
                 {
-                    try
+                    if (this.cnxvalid)
                     {
-                        this.FConnectionObject.Connection.Open();
-                        this.FPinOutConnected.SetValue(0, 1);
-                        this.FPinOutStatus.SetString(0, "Connected");
-                        this.FConnectionObject.HasChanged = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        this.FPinOutConnected.SetValue(0, 0);
-                        this.FPinOutStatus.SetString(0, ex.Message);
-                        this.FConnectionObject.HasChanged = true;
+                        try
+                        {
+                            this.FConnectionObject.Connection.Open();
+                            this.FPinOutConnected.SetValue(0, 1);
+                            this.FPinOutStatus.SetString(0, "Connected");
+                            this.FConnectionObject.HasChanged = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            this.FPinOutConnected.SetValue(0, 0);
+                            this.FPinOutStatus.SetString(0, ex.Message);
+                            this.FConnectionObject.HasChanged = true;
+                        }
                     }
                 }
 
                 if (connect < 0.5 && this.FConnectionObject.Connection.State != ConnectionState.Closed)
                 {
                     this.Reset();
-                    this.FPinOutConnected.SetValue(0, 1);
+                    this.FPinOutConnected.SetValue(0, 0);
                     this.FPinOutStatus.SetString(0, "Closed");
                 }
             }

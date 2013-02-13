@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
+using VVVV.Hosting.Interfaces;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
@@ -75,6 +76,18 @@ namespace VVVV.Hosting.Factories
             {
                 return false;
             }
+        }
+
+        public bool GetNodeListAttribute(INodeInfo nodeInfo, out string name, out string value)
+        {
+            name = string.Empty;
+            value = string.Empty;
+            return false;
+        }
+
+        public void ParseNodeEntry(System.Xml.XmlReader xmlReader, INodeInfo nodeInfo)
+        {
+            
         }
 
         public INodeInfo[] ExtractNodeInfos(string filename, string arguments)
@@ -189,7 +202,7 @@ namespace VVVV.Hosting.Factories
                 }
                 
                 // We didn't find a suitable editor, create a new one.
-                FHostExportProvider.PluginHost = host as IPluginHost2;
+                FHostExportProvider.PluginHost = host as IInternalPluginHost;
                 
                 var nodeInfoExport = FNodeInfos[nodeInfo];
                 var exportLifetimeContext = nodeInfoExport.CreateExport();
@@ -197,6 +210,7 @@ namespace VVVV.Hosting.Factories
                 
                 var editor = exportLifetimeContext.Value;
                 editorHost.Plugin = editor;
+                editorHost.Win32Window = editor as System.Windows.Forms.IWin32Window;
                 editor.Open(nodeInfo.Filename);
                 
                 if (FNodeToAttach != null)

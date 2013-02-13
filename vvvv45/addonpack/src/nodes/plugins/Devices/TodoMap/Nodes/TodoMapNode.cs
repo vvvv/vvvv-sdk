@@ -13,14 +13,11 @@ namespace VVVV.TodoMap.Nodes
     [PluginInfo(Name="TodoMap",Category="TodoMap",Author="vux",InitialComponentMode=TComponentMode.InAWindow,InitialWindowWidth=700,InitialWindowHeight=500,AutoEvaluate=true)]
     public partial class TodoMapNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {
-        [Input("Variable Category",DefaultString="Global")]
-        ISpread<string> FInVariableCategory;
+        [Input("Selected Variable", IsSingle=true)]
+        ISpread<string> FInSelVar;
 
-        [Input("Variable Name")]
-        ISpread<string> FInVariableName;
-
-        [Input("Register Variable", IsBang = true)]
-        ISpread<bool> FInRegisterVariable;
+        [Input("Select Variable", IsSingle = true,IsBang=true)]
+        ISpread<bool> FInSelect;
 
         [Input("Learn Mode",IsSingle=true)]
         IDiffSpread<bool> FInLearnMode;
@@ -92,23 +89,15 @@ namespace VVVV.TodoMap.Nodes
                 this.FEngine.Osc.IgnoreList = new List<string>(this.FInIgnoreListOsc);
             }
 
-            int maxreg = Math.Max(this.FInVariableName.SliceCount, this.FInRegisterVariable.SliceCount);
-            maxreg = Math.Max(maxreg,this.FInVariableCategory.SliceCount);
-            for (int i = 0; i < maxreg; i++)
-            {
-                if (this.FInRegisterVariable[i])
-                {
-                    TodoVariable var = new TodoVariable(this.FInVariableName[i]);
-                    var.Category = this.FInVariableCategory[i];
-                    this.FEngine.RegisterVariable(var,false);                   
-                }
-            }
-
             if (this.FInLearnMode.IsChanged)
             {
                 this.FEngine.LearnMode = this.FInLearnMode[0];
-                //Also update gui in that case
-                //this.learnModeToolStripMenuItem.Checked = this.FEngine.LearnMode;
+                this.ucMappingManager.LearnModeUpdated();
+            }
+
+            if (this.FInSelect[0])
+            {
+                this.FEngine.SelectVariable(this.FInSelVar[0]);
             }
 
             if (this.FInSave[0] || this.FSaveNextFrame)

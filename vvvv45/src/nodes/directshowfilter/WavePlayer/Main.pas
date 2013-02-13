@@ -1521,9 +1521,8 @@ begin
    OutputDebugString('waveplayer error 5');
    MMIOClose(hmm, 0);
    Exit;
-  end;
-
-  if mmiSub.cksize = sizeof(PCMWAVEFORMAT) then
+  end
+  else if mmiSub.cksize = sizeof(PCMWAVEFORMAT) then
   begin
    mmioRead(hmm, @FFWaveFormat, sizeof(PCMWAVEFORMAT));
 
@@ -1533,20 +1532,20 @@ begin
      MMIOClose(hmm, 0);
      Exit;
    end;
-  end;
-
-  if mmiSub.cksize > sizeof(PCMWAVEFORMAT) then
+  end
+  else
   begin
-
    mmioRead(hmm, @FFWaveFormat, sizeof(WAVEFORMATEXTENSIBLE));
 
-   if FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_EXTENSIBLE then
+   //seems even if cksize > sizeof(PCMWAVEFORMAT)
+   //wFormatTag may still be WAVE_FORMAT_PCM for some files
+   if (FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_EXTENSIBLE)
+   and (FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_PCM) then
    begin
      OutputDebugString('WavePlayer: unknown format');
      MMIOClose(hmm, 0);
      Exit;
    end;
-   
   end;
 
   mmres := mmioAscend(hmm, @mmiSub, 0);
@@ -1581,7 +1580,7 @@ begin
   ires := i;
   while ires > 0 do
   begin
-    ires := mmioRead( hmm, PChar(_Mem), i);
+    ires := mmioRead( hmm, PAnsiChar(_Mem), i);
     i := i - ires;
   end;
 

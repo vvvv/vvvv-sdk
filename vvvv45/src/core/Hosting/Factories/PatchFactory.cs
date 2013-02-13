@@ -27,7 +27,7 @@ namespace VVVV.Hosting.Factories
         
         [ImportingConstructor]
 		public PatchFactory (INodeInfoFactory nodeInfoFactory)
-		    : base(".v4p;.v4x")
+		    : base(".v4p;.v4x;.xml")
 		{
 			nodeInfoFactory.NodeInfoAdded += HandleNodeInfoFactoryNodeInfoAdded;
 		}
@@ -151,13 +151,17 @@ namespace VVVV.Hosting.Factories
         
         protected override void DoAddFile(string filename)
         {
-            if (!filename.Contains("~temp"))
+        	//xml is part of the factories extensions 
+        	//so it is allowd to open backups but we don't want to see them in the NodeBrowser
+            if (!filename.Contains("~temp") && !filename.Contains(".xml"))
                 base.DoAddFile(filename);
         }
         
         protected override void DoRemoveFile(string filename)
         {
-            if (!filename.Contains("~temp"))
+        	//xml is part of the factories extensions 
+        	//so it is allowd to open backups but we don't want to see them in the NodeBrowser
+            if (!filename.Contains("~temp") && !filename.Contains(".xml"))
                 base.DoRemoveFile(filename);
         }
     }

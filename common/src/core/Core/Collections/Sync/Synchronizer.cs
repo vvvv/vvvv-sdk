@@ -25,7 +25,7 @@ namespace VVVV.Core.Collections.Sync
         
         private bool FUpdating;
         
-        internal Synchronizer(Target<Ta> target, Source<Tb> source, Func<Tb, Ta> createTargetItem, Action<Ta> destroyTargetItem, Predicate<Tb> filterPredicate)
+        internal Synchronizer(Target<Ta> target, Source<Tb> source, Func<Tb, Ta> createTargetItem, Action<Ta> destroyTargetItem, Predicate<Tb> filterPredicate, SyncEventHandler<Ta, Tb> syncEventHandler = null)
         {
             FTarget = target;
             FSource = source;
@@ -34,6 +34,8 @@ namespace VVVV.Core.Collections.Sync
             FFilterPredicate = filterPredicate;
             FBToAMap = new Dictionary<Tb, List<Ta>>();
             FStashedActions = new List<Action>();
+            if (syncEventHandler != null)
+                Synced += syncEventHandler;
             
             Reload();
             
@@ -342,87 +344,50 @@ namespace VVVV.Core.Collections.Sync
 
         // Add overloads as needed.
         // Generic sources
-        public static Synchronizer<Ta, Tb> SyncWith<Ta, Tb>(this IEditableCollection<Ta> collectionA, IEnumerable<Tb> collectionB, Func<Tb, Ta> createA, Action<Ta> destroyA, Predicate<Tb> filterPredicate)
+        public static Synchronizer<Ta, Tb> SyncWith<Ta, Tb>(this IEditableCollection<Ta> collectionA, IEnumerable<Tb> collectionB, Func<Tb, Ta> createA, Action<Ta> destroyA = null, Predicate<Tb> filterPredicate = null, SyncEventHandler<Ta, Tb> syncEventHandler = null)
         {
             var target = new EditableCollectionTarget<Ta>(collectionA);
             var source = CreateGenericSource(collectionB);
-            return new Synchronizer<Ta, Tb>(target, source, createA, destroyA, filterPredicate);
+            destroyA = destroyA ?? RemoveAndDispose;
+            filterPredicate = filterPredicate ?? DefaultFilterPredicate;
+            return new Synchronizer<Ta, Tb>(target, source, createA, destroyA, filterPredicate, syncEventHandler);
         }
         
-        public static Synchronizer<Ta, Tb> SyncWith<Ta, Tb>(this IEditableCollection<Ta> collectionA, IEnumerable<Tb> collectionB, Func<Tb, Ta> createA, Action<Ta> destroyA)
+        public static Synchronizer<Ta, Tb> SyncWith<Ta, Tb>(this ViewableCollection<Ta> collectionA, IEnumerable<Tb> collectionB, Func<Tb, Ta> createA, Action<Ta> destroyA = null, Predicate<Tb> filterPredicate = null, SyncEventHandler<Ta, Tb> syncEventHandler = null)
         {
-            return collectionA.SyncWith(collectionB, createA, destroyA, DefaultFilterPredicate);
+            var target = new ViewableCollectionTarget<Ta>(collectionA);
+            var source = CreateGenericSource(collectionB);
+            destroyA = destroyA ?? RemoveAndDispose;
+            filterPredicate = filterPredicate ?? DefaultFilterPredicate;
+            return new Synchronizer<Ta, Tb>(target, source, createA, destroyA, filterPredicate, syncEventHandler);
         }
-        
-        public static Synchronizer<Ta, Tb> SyncWith<Ta, Tb>(this IEditableCollection<Ta> collectionA, IEnumerable<Tb> collectionB, Func<Tb, Ta> createA)
-        {
-            return collectionA.SyncWith(collectionB, createA, RemoveAndDispose);
-        }
-        
-        //        public static Synchronizer<Ta, Tb> SyncWith<Ta, Tb>(this ICollection<Ta> collectionA, IEnumerable<Tb> collectionB, Func<Tb, Ta> createA, Action<Ta> destroyA, Predicate<Tb> filterPredicate)
-        //        {
-        //            var target = new GenericCollectionTarget<Ta>(collectionA);
-        //            var source = CreateGenericSource(collectionB);
-        //            return new Synchronizer<Ta, Tb>(target, source, createA, destroyA, filterPredicate);
-        //        }
-        
-        public static Synchronizer<object, Tb> SyncWith<Tb>(this IList listA, IEnumerable<Tb> collectionB, Func<Tb, object> createA, Action<object> destroyA, Predicate<Tb> filterPredicate)
+
+        public static Synchronizer<object, Tb> SyncWith<Tb>(this IList listA, IEnumerable<Tb> collectionB, Func<Tb, object> createA, Action<object> destroyA = null, Predicate<Tb> filterPredicate = null, SyncEventHandler<object, Tb> syncEventHandler = null)
         {
             var target = new NonGenericListTarget(listA);
             var source = CreateGenericSource(collectionB);
-            return new Synchronizer<object, Tb>(target, source, createA, destroyA, filterPredicate);
+            destroyA = destroyA ?? RemoveAndDispose;
+            filterPredicate = filterPredicate ?? DefaultFilterPredicate;
+            return new Synchronizer<object, Tb>(target, source, createA, destroyA, filterPredicate, syncEventHandler);
         }
         
         // Non generic sources
-        public static Synchronizer<Ta, object> SyncWith<Ta>(this IEditableCollection<Ta> collectionA, IEnumerable collectionB, Func<object, Ta> createA, Action<Ta> destroyA, Predicate<object> filterPredicate)
+        public static Synchronizer<Ta, object> SyncWith<Ta>(this IEditableCollection<Ta> collectionA, IEnumerable collectionB, Func<object, Ta> createA, Action<Ta> destroyA = null, Predicate<object> filterPredicate = null, SyncEventHandler<Ta, object> syncEventHandler = null)
         {
             var target = new EditableCollectionTarget<Ta>(collectionA);
             var source = CreateNonGenericSource(collectionB);
-            return new Synchronizer<Ta, object>(target, source, createA, destroyA, filterPredicate);
+            destroyA = destroyA ?? RemoveAndDispose;
+            filterPredicate = filterPredicate ?? DefaultFilterPredicate;
+            return new Synchronizer<Ta, object>(target, source, createA, destroyA, filterPredicate, syncEventHandler);
         }
         
-        public static Synchronizer<Ta, object> SyncWith<Ta>(this IEditableCollection<Ta> collectionA, IEnumerable collectionB, Func<object, Ta> createA, Action<Ta> destroyA)
-        {
-            return collectionA.SyncWith(collectionB, createA, destroyA, DefaultFilterPredicate);
-        }
-        
-        public static Synchronizer<Ta, object> SyncWith<Ta>(this IEditableCollection<Ta> collectionA, IEnumerable collectionB, Func<object, Ta> createA)
-        {
-            return collectionA.SyncWith(collectionB, createA, RemoveAndDispose);
-        }
-        
-        //        public static Synchronizer<Ta, object> SyncWith<Ta>(this ICollection<Ta> collectionA, IEnumerable collectionB, Func<object, Ta> createA, Action<Ta> destroyA, Predicate<object> filterPredicate)
-        //        {
-        //            var target = new GenericCollectionTarget<Ta>(collectionA);
-        //            var source = CreateNonGenericSource(collectionB);
-        //            return new Synchronizer<Ta, object>(target, source, createA, destroyA, filterPredicate);
-        //        }
-//
-        //        public static Synchronizer<Ta, object> SyncWith<Ta>(this ICollection<Ta> collectionA, IEnumerable collectionB, Func<object, Ta> createA, Action<Ta> destroyA)
-        //        {
-        //            return collectionA.SyncWith(collectionB, createA, destroyA, DefaultFilterPredicate);
-        //        }
-//
-        //        public static Synchronizer<Ta, object> SyncWith<Ta>(this ICollection<Ta> collectionA, IEnumerable collectionB, Func<object, Ta> createA)
-        //        {
-        //            return collectionA.SyncWith(collectionB, createA, RemoveAndDispose);
-        //        }
-        
-        public static Synchronizer<object, object> SyncWith(this IList listA, IEnumerable collectionB, Func<object, object> createA, Action<object> destroyA, Predicate<object> filterPredicate)
+        public static Synchronizer<object, object> SyncWith(this IList listA, IEnumerable collectionB, Func<object, object> createA, Action<object> destroyA = null, Predicate<object> filterPredicate = null, SyncEventHandler<object, object> syncEventHandler = null)
         {
             var target = new NonGenericListTarget(listA);
             var source = CreateNonGenericSource(collectionB);
-            return new Synchronizer<object, object>(target, source, createA, destroyA, filterPredicate);
-        }
-        
-        public static Synchronizer<object, object> SyncWith(this IList listA, IEnumerable collectionB, Func<object, object> createA, Action<object> destroyA)
-        {
-            return listA.SyncWith(collectionB, createA, destroyA, DefaultFilterPredicate);
-        }
-        
-        public static Synchronizer<object, object> SyncWith(this IList listA, IEnumerable collectionB, Func<object, object> createA)
-        {
-            return listA.SyncWith(collectionB, createA, RemoveAndDispose);
+            destroyA = destroyA ?? RemoveAndDispose;
+            filterPredicate = filterPredicate ?? DefaultFilterPredicate;
+            return new Synchronizer<object, object>(target, source, createA, destroyA, filterPredicate, syncEventHandler);
         }
     }
 }

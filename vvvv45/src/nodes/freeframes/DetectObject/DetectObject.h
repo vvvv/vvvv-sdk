@@ -12,11 +12,11 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//opencv v2.31
+//http://opencv.willowgarage.com/wiki
 
 //////initiative stressing to do it + editing
 //benedikt -> benedikt@looksgood.de
@@ -30,8 +30,9 @@
 #include <vector>
 
 //opencv includes
-#include <cv.h>
-#include <highgui.h>
+#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
+
 #include <string.h>
 #include <string>
 using namespace std;
@@ -133,8 +134,8 @@ private:
 
     CRITICAL_SECTION CriticalSection;
     CvSize FImageSize;
-    string Filename;
-    bool newCascade;
+    string FFilename;
+    bool FNewCascade;
 
     Obj* FFaces_new;
     Obj* FFaces_old;

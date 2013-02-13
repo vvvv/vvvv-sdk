@@ -12,7 +12,7 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
 //libFidTrack as provided with the reacTVision source:
@@ -290,7 +290,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     }
 
     //segmentation
-    step_segmenter(&FSegmenter, FThreshedImage, FWidth, FHeight);
+    step_segmenter(&FSegmenter, FThreshedImage);//, FWidth, FHeight);
 
     //fiducial recognition
     FFiducialCount = find_fiducialsX(FFiducials, MAX_FIDUCIAL_COUNT, &FFidtrackerx, &FSegmenter, FWidth, FHeight);

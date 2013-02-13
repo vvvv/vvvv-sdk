@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
-   <PATCH nodename="D:\Program Files\vvvv_45beta27\addonpack\lib\nodes\modules\TextureFX\misc\ChangeFormat (EX9.Texture).v4p">
-   <BOUNDS height="11415" left="4800" top="2355" type="Window" width="16020">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.5.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\misc\ChangeFormat (EX9.Texture).v4p">
+   <BOUNDS height="11415" left="4785" top="2760" type="Window" width="16020">
    </BOUNDS>
    <NODE componentmode="InABox" id="19" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="345" top="75" type="Node" width="0">
@@ -126,7 +126,7 @@
    </NODE>
    <LINK dstnodeid="13" dstpinname="Input 2" linkstyle="PolyLine" srcnodeid="12" srcpinname="Y Output Value">
    </LINK>
-   <INFO author="unc" description="Texture resizing / format change" tags="fx">
+   <INFO author="unc" description="Re-render texture with given format" tags="fx">
    </INFO>
    <NODE componentmode="Hidden" id="11" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
    <BOUNDS height="0" left="1365" top="6285" type="Node" width="0">
@@ -191,7 +191,9 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Mip Map Count|">
    </PIN>
-   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   <PIN pinname="Pin Visibility" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="All">
    </PIN>
    </NODE>
    <LINK dstnodeid="11" dstpinname="Mip Map Count" linkstyle="PolyLine" srcnodeid="5" srcpinname="Output Enum">
@@ -207,7 +209,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="3225" top="315" type="Box" width="1140">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|No Specific|">
+   <PIN pinname="Input Enum" slicecount="1" values="A8R8G8B8">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Format">
    </PIN>
@@ -225,7 +227,7 @@
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\Constant.fx" id="25" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
    <BOUNDS height="100" left="2025" top="4095" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -234,6 +236,16 @@
    <PIN pinname="Transform" visible="1">
    </PIN>
    <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" values="| TConstant|">
+   </PIN>
+   <PIN pinname="Technique Pass" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="24" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
@@ -259,5 +271,7 @@
    <LINK srcnodeid="19" srcpinname="Output Node" dstnodeid="25" dstpinname="Texture">
    </LINK>
    <LINK srcnodeid="25" srcpinname="Layer" dstnodeid="18" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Enabled">
    </LINK>
    </PATCH>

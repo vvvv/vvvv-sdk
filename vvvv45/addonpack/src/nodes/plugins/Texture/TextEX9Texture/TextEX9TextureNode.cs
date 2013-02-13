@@ -19,17 +19,63 @@ using VVVV.Utils.SlimDX;
 
 #endregion usings
 
-//here you can change the vertex type
-using VertexType = VVVV.Utils.SlimDX.TexturedVertex;
-
 namespace VVVV.Nodes
 {
 	#region PluginInfo
 	[PluginInfo(Name = "Text", Category = "EX9.Texture", Help = "Renders text on textures", Tags = "", Author = "woei")]
 	#endregion PluginInfo
-	public class TextEX9TextureNode : DXTextureOutPluginBase, IPluginEvaluate
+	public class TextEX9TextureNode : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
+		#region helper class
+		private class Info
+		{
+			public int Slice;
+			public int Width;
+			public int Height;
+			
+			private string _text;
+			public string Text { get { return _text; } set { if(_text != value) { PropertiesChanged = true; } _text = value; } }
+			
+			private string _font;
+			public string Font { get { return _font; } set { if(_font != value) { PropertiesChanged = true; } _font = value; } }
+			
+			private bool _italic;
+			public bool Italic { get { return _italic; } set { if(_italic != value) { PropertiesChanged = true; } _italic = value; } }
+			
+			private bool _bold;
+			public bool Bold { get { return _bold; } set { if(_bold != value) { PropertiesChanged = true; } _bold = value; } }
+
+			private int _size;			
+			public int Size { get { return _size; } set { if(_size != value) { PropertiesChanged = true; } _size = value; } }
+			
+			private RGBAColor _color;
+			public RGBAColor Color { get { return _color; } set { if(_color != value) { PropertiesChanged = true; } _color = value; } }
+			
+			private RGBAColor _brush;
+			public RGBAColor Brush { get { return _brush; } set { if(_brush != value) { PropertiesChanged = true; } _brush = value; } }
+			
+			private bool _showBrush;
+			public bool ShowBrush { get { return _showBrush; } set { if(_showBrush != value) { PropertiesChanged = true; } _showBrush = value; } }
+			
+			private int _hAlign;
+			public int HAlign { get { return _hAlign; } set { if(_hAlign != value) { PropertiesChanged = true; } _hAlign = value; } }
+			
+			private int _vAlign;
+			public int VAlign { get { return _vAlign; } set { if(_vAlign != value) { PropertiesChanged = true; } _vAlign = value; } }
+			
+			private int _renderMode;
+			public int RenderMode { get { return _renderMode; } set { if(_renderMode != value) { PropertiesChanged = true; } _renderMode = value; } }
+			
+			private int _normalize;
+			public int Normalize { get { return _normalize; } set { if(_normalize != value) { PropertiesChanged = true; } _normalize = value; } }
+			
+			private bool _propertiesChanged;
+			public bool PropertiesChanged { get { return _propertiesChanged; } set { _propertiesChanged = value; } }
+		}
+		#endregion
+		
 		#region fields & pins
+		#pragma warning disable 649
 		[Input("Width", DefaultValue = 256)]
 		IDiffSpread<int> FWidthIn;
 
@@ -38,9 +84,6 @@ namespace VVVV.Nodes
 		
  		[Input("Text", DefaultString = "vvvv")]
         IDiffSpread<string> FTextInput;
-
-		[Input("Character Encoding", EnumName = "CharEncoding")]
-        IDiffSpread<EnumEntry> FCharEncoding;
 
         [Input("Font", EnumName = "SystemFonts")]
         IDiffSpread<EnumEntry> FFontInput;
@@ -75,199 +118,180 @@ namespace VVVV.Nodes
 		[Input("Normalize", EnumName = "Normalize", DefaultEnumEntry = "Both")]
         IDiffSpread<EnumEntry> FNormalizeInput;
 
+        
+        [Output("Texture Out")]
+		ISpread<TextureResource<Info>> FTextureOut;
 
 		[Output("Text Scale")]
         ISpread<Vector2D> FScaleOutput;
 		
         [Output("Text Size")]
         ISpread<Vector2D> FSizeOutput;
-		
-		private IDXTextureOut FTextureOutput;
 
 
 		[Import()]
 		ILogger FLogger;
-
-		//track the current texture slice
-		int FCurrentSlice;
-
+		
+		Spread<Bitmap> FBmpBuffer = new Spread<Bitmap>(0);
+		#pragma warning restore
 		#endregion fields & pins
 
-		// import host and hand it to base constructor
-		[ImportingConstructor()]
-		public TextEX9TextureNode(IPluginHost host) : base(host)
+		public void OnImportsSatisfied()
 		{
-			host.CreateTextureOutput("Texture Out", TSliceMode.Dynamic, TPinVisibility.True, out FTextureOutput);
-            FTextureOutput.Order = -1;
+			FTextureOut.SliceCount = 0;
 		}
 
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			SetSliceCount(SpreadMax);
+			FTextureOut.ResizeAndDispose(SpreadMax, CreateTextureResource);
+			FBmpBuffer.ResizeAndDispose(SpreadMax, (t) => new Bitmap(FTextureOut[t].Metadata.Width, FTextureOut[t].Metadata.Height, PixelFormat.Format32bppArgb));
 			FScaleOutput.SliceCount=SpreadMax;
 			FSizeOutput.SliceCount=SpreadMax;
 
-			//recreate texture if resolution was changed
-			if (FWidthIn.IsChanged || FHeightIn.IsChanged) {
-				//set new texture size
-				Reinitialize();
-			}
-
-			//update texture
-			if (FTextInput.IsChanged ||
-				FCharEncoding.IsChanged ||
-				FFontInput.IsChanged ||
-				FItalicInput.IsChanged ||
-				FBoldInput.IsChanged ||
-				FSizeInput.IsChanged ||
-				FColorInput.IsChanged ||
-				FBrushColor.IsChanged ||
-				FShowBrush.IsChanged ||
-				FHorizontalAlignInput.IsChanged ||
-				FVerticalAlignInput.IsChanged ||
-				FTextRenderingModeInput.IsChanged ||
-				FNormalizeInput.IsChanged) {
-				Update();
-			}
-
-		}
-
-		//this method gets called, when Reinitialize() was called in evaluate,
-		//or a graphics device asks for its data
-		protected override Texture CreateTexture(int Slice, Device device)
-		{
-			//FLogger.Log(LogType.Debug, "Creating new texture at slice: " + Slice);
-			return TextureUtils.CreateTexture(device, Math.Max(FWidthIn[Slice], 1), Math.Max(FHeightIn[Slice], 1));
-		}
-
-		//this method gets called, when Update() was called in evaluate,
-		//or a graphics device asks for its texture, here you fill the texture with the actual data
-		//this is called for each renderer, careful here with multiscreen setups, in that case
-		//calculate the pixels in evaluate and just copy the data to the device texture here
-		unsafe protected override void UpdateTexture(int Slice, Texture texture)
-		{
-			var rect = texture.LockRectangle(0, LockFlags.None);
- 			//get the pointer to the data
-		 	var data = (byte*)rect.Data.DataPointer.ToPointer();
-			
-		 	//calculate sizes
-		 	var byteLength = (int)rect.Data.Length;
-		 	var width = rect.Pitch/4;
-		 	var height = byteLength/rect.Pitch;		 	
-		 			 		
-			Bitmap bit = new Bitmap(width, height, PixelFormat.Format32bppArgb);			
-			Graphics g = Graphics.FromImage(bit);
-			FontStyle style = FontStyle.Regular;
-			if (FItalicInput[Slice])
-				style|= FontStyle.Italic;
-			if (FBoldInput[Slice])
-				style|= FontStyle.Bold;
-			System.Drawing.Font objFont = new System.Drawing.Font(FFontInput[Slice].Name, 
-																FSizeInput[Slice], 
-																style, 
-																GraphicsUnit.Pixel);		
-			
-			string text = FTextInput[Slice];
-			
-			int renderingMode = FTextRenderingModeInput[Slice].Index;
-			RectangleF layout = new RectangleF(0,0,0,0);
-			StringFormat format = new StringFormat();
-			if (!string.IsNullOrEmpty(text))
+			for (int i=0; i<SpreadMax; i++)
 			{
-				switch (renderingMode)
-	            {
-	                case 0: text = text.Replace("\n"," ").Replace("\n",string.Empty); break;
-	                case 1: break;
-	                case 2: layout.Size= new SizeF(width,height);break;
-	            }
-				if (FCharEncoding[Slice] == "UTF8")
-	            {
-	                byte[] utf8bytes = Encoding.Default.GetBytes(text);
-	                text = Encoding.UTF8.GetString(utf8bytes);
-	            }			
+				var textureResource = FTextureOut[i];
+				
+				textureResource.NeedsUpdate = false;
+				
+				var info = textureResource.Metadata;
+				if (info.Width != FWidthIn[i] || info.Height != FHeightIn[i])
+				{
+					textureResource.Dispose();
+					textureResource = CreateTextureResource(i);
+					textureResource.NeedsUpdate = true;
+					
+					info = textureResource.Metadata;
+					FBmpBuffer[i].Dispose();
+					FBmpBuffer[i] = new Bitmap(info.Width, info.Height, PixelFormat.Format32bppArgb);
+					info.PropertiesChanged = true;
+				}
+				
+				info.Text = FTextInput[i];
+				info.Font = FFontInput[i].Name;
+				info.Italic = FItalicInput[i];
+				info.Bold = FBoldInput[i];
+				info.Size = FSizeInput[i];
+				info.Color = FColorInput[i];
+				info.Brush = FBrushColor[i];
+				info.ShowBrush = FShowBrush[i];
+				info.HAlign = FHorizontalAlignInput[i].Index;
+				info.VAlign = FVerticalAlignInput[i].Index;
+				info.RenderMode = FTextRenderingModeInput[i].Index;
+				info.Normalize = FNormalizeInput[i].Index;
+				
+				if (info.PropertiesChanged)
+				{
+					info.PropertiesChanged = false;
+					textureResource.NeedsUpdate = true;
+					
+					Graphics g = Graphics.FromImage(FBmpBuffer[i]);
+					FontStyle style = FontStyle.Regular;
+					if (info.Italic)
+						style|= FontStyle.Italic;
+					if (info.Bold)
+						style|= FontStyle.Bold;
+					System.Drawing.Font objFont = new System.Drawing.Font(info.Font, info.Size, style, GraphicsUnit.Pixel);		
+					
+					string text = info.Text;
+					
+					int renderingMode = info.RenderMode;
+					RectangleF layout = new RectangleF(0,0,0,0);
+					StringFormat format = new StringFormat();
+					if (!string.IsNullOrEmpty(text))
+					{
+						switch (renderingMode)
+			            {
+			                case 0: text = text.Replace("\n"," ").Replace("\n",string.Empty); break;
+			                case 1: break;
+			                case 2: layout.Size= new SizeF(info.Width,info.Height);break;
+			            }
 						
-				
-				format.LineAlignment = StringAlignment.Near;
-	            switch (FHorizontalAlignInput[Slice].Index)
-	            {
-	                case 0: format.Alignment = StringAlignment.Near;break;
-	                case 1: 
-	            		format.Alignment = StringAlignment.Center;
-	            		layout.X = width/2;
-	            		break;
-	                case 2: 
-	            		format.Alignment = StringAlignment.Far;
-	            		layout.X = width;
-	            		break;
-	            }
-				
-				switch (FVerticalAlignInput[Slice].Index)
-	            {
-	                case 0: format.LineAlignment = StringAlignment.Near;break;
-	                case 1: 
-	            		format.LineAlignment = StringAlignment.Center;
-	            		layout.Y = height/2;
-	            		break;
-	                case 2: 
-	            		format.LineAlignment = StringAlignment.Far;
-	            		layout.Y = height;
-	            		break;
-	            }
-			
-				SizeF size = g.MeasureString(text, objFont, layout.Size, format);
-				FSizeOutput[Slice] = new Vector2D(width/size.Width,height/size.Height);
-				
-				float scx = 1; float scy = 1;
-				switch (FNormalizeInput[Slice].Index)
-	            {
-	                case 0: break;
-	                case 1: scx = width/size.Width;	break;
-	                case 2: scy = height/size.Height; break;
-	            	case 3:
-	            		scx = width/size.Width;	
-	            		scy = height/size.Height;
-	            		break;
-	            }
-				FScaleOutput[Slice]=new Vector2D(scx,scy);
-								
-				g.TranslateTransform(layout.X,layout.Y);
-				g.ScaleTransform(scx,scy);
-				g.TranslateTransform(-layout.X,-layout.Y);
-				
-				
-				if (renderingMode ==2)
-					layout.Location = new PointF(0,0);
-			
+						format.LineAlignment = StringAlignment.Near;
+			            switch (info.HAlign)
+			            {
+			                case 0: format.Alignment = StringAlignment.Near;break;
+			                case 1: 
+			            		format.Alignment = StringAlignment.Center;
+			            		layout.X = info.Width/2;
+			            		break;
+			                case 2: 
+			            		format.Alignment = StringAlignment.Far;
+			            		layout.X = info.Width;
+			            		break;
+			            }
+						
+						switch (info.VAlign)
+			            {
+			                case 0: format.LineAlignment = StringAlignment.Near;break;
+			                case 1: 
+			            		format.LineAlignment = StringAlignment.Center;
+			            		layout.Y = info.Height/2;
+			            		break;
+			                case 2: 
+			            		format.LineAlignment = StringAlignment.Far;
+			            		layout.Y = info.Height;
+			            		break;
+			            }
+					
+						SizeF size = g.MeasureString(text, objFont, layout.Size, format);
+						FSizeOutput[i] = new Vector2D(info.Width/size.Width,info.Height/size.Height);
+						
+						float scx = 1; float scy = 1;
+						switch (info.Normalize)
+			            {
+			                case 0: break;
+			                case 1: scx = info.Width/size.Width; break;
+			                case 2: scy = info.Height/size.Height; break;
+			            	case 3:
+			            		scx = info.Width/size.Width;	
+			            		scy = info.Height/size.Height;
+			            		break;
+			            }
+						FScaleOutput[i]=new Vector2D(scx,scy);
+										
+						g.TranslateTransform(layout.X,layout.Y);
+						g.ScaleTransform(scx,scy);
+						g.TranslateTransform(-layout.X,-layout.Y);
+						
+						if (renderingMode ==2)
+							layout.Location = new PointF(0,0);
+					}
+					else
+						FScaleOutput[i]=new Vector2D(0,0);
+					
+					
+					RGBAColor tmpBrush = info.Color;
+					tmpBrush.A=0;
+					Color brush = tmpBrush.Color;			
+					if (info.ShowBrush)
+						brush = info.Brush.Color;
+					g.Clear(brush);
+					g.SmoothingMode = SmoothingMode.AntiAlias;
+					g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+					g.DrawString(text, objFont, new SolidBrush(info.Color.Color),layout,format);
+					g.Dispose();
+				}
+				FTextureOut[i] = textureResource;
 			}
-			else
-				FScaleOutput[Slice]=new Vector2D(0,0);
-			
-			
-			RGBAColor tmpBrush = FColorInput[Slice];
-			tmpBrush.A=0;
-			Color brush = tmpBrush.Color;			
-			if (FShowBrush[Slice])
-				brush = FBrushColor[Slice].Color;
-			g.Clear(brush);
-			g.SmoothingMode = SmoothingMode.AntiAlias;
-			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-			g.DrawString(text, objFont, new SolidBrush(FColorInput[Slice].Color),layout,format);
-			
-			BitmapData bData = bit.LockBits(new Rectangle (new Point(), bit.Size),ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-			int byteCount = bData.Stride * bit.Height; // number of bytes in the bitmap
-			byte[] bitBytes = new byte[byteCount];
-			Marshal.Copy (bData.Scan0, bitBytes, 0, byteCount);	// Copy the locked bytes from memory	
-			bit.UnlockBits (bData); // don't forget to unlock the bitmap!!
+		}
 
-			for(int i=0; i<byteLength; i++)
-				data[i]=bitBytes[i]; 			
-		 		
-		 	//unlock texture
-		 	texture.UnlockRectangle(0);
-			bit.Dispose();
-			g.Dispose();
+		TextureResource<Info> CreateTextureResource(int slice)
+		{
+			var info = new Info() { Slice = slice, Width = Math.Max(FWidthIn[slice],1), Height = Math.Max(FHeightIn[slice],1) };
+			return TextureResource.Create(info, CreateTexture, UpdateTexture);
 		}
 		
+		Texture CreateTexture(Info info, Device device)
+		{
+			FLogger.Log(LogType.Debug, "Creating new texture at slice: " + info.Slice);
+			return TextureUtils.CreateTexture(device, info.Width, info.Height);
+		}
+		
+		unsafe void UpdateTexture(Info info, Texture texture)
+		{
+			TextureUtils.CopyBitmapToTexture(FBmpBuffer[info.Slice], texture);
+		}
 	}
 }

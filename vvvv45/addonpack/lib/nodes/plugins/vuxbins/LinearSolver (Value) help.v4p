@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.4.dtd" >
-   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\ToComplete\GeometryNodes\LinearSolver (Value) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.2.dtd" >
+   <PATCH nodename="D:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\vuxbins\LinearSolver (Value) help.v4p">
    <BOUNDS height="7800" left="420" top="855" type="Window" width="9645">
    </BOUNDS>
    <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Solves a linear system.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Solves a linear system.|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|LinearSolver - Value|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|LinearSolver - Value|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -39,7 +39,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -53,30 +53,14 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE nodename="GeometryNodes.dll|VVVV.Nodes.BandedLinearSolverNode" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="3270" top="4110" width="3315" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3270" top="4110" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Window" left="2805" top="4455" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Coefficients" visible="1">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Size" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="5">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="5">
    <BOUNDS type="Node" left="1380" top="2745" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="1380" top="2745" width="1950" height="1020">
@@ -97,10 +81,10 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="4" values="1.5,2,2,1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Coefficients">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Coefficients" encoded="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4185" top="2730" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1035" left="4185" top="2730" type="Box" width="780">
@@ -121,14 +105,10 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="2" values="3,2">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input" encoded="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Coefficients">
-   </LINK>
-   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Input">
-   </LINK>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2565" top="4710" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1035" left="2565" top="4710" type="Box" width="780">
@@ -150,8 +130,6 @@
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="8" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="10">
    <BOUNDS type="Node" left="2310" top="1695" width="720" height="270">
    </BOUNDS>
@@ -159,7 +137,7 @@
    </BOUNDS>
    <BOUNDS type="Window" left="0" top="0" width="215" height="160">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|x + y = 3|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|x + y = 3|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -173,7 +151,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="510" top="705" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|2x + y = 2|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|2x + y = 2|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -187,7 +165,7 @@
    </BOUNDS>
    <BOUNDS type="Window" left="0" top="0" width="215" height="160">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="x">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="x" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -201,14 +179,14 @@
    </BOUNDS>
    <BOUNDS type="Window" left="0" top="0" width="215" height="160">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="y">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="y" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="15">
    <BOUNDS type="Node" left="5790" top="3240" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="5790" top="3240" width="795" height="240">
@@ -219,9 +197,31 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Size">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Size" encoded="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Size">
+   <NODE nodename="LinearSolver (Value)" componentmode="Hidden" id="16" systemname="LinearSolver (Value)" filename="%VVVV%\addonpack\lib\nodes\plugins\vuxbins\VVVV.Nodes.Geometry.dll">
+   <BOUNDS type="Node" left="3270" top="4110" width="3315" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3270" top="4110" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2805" top="4455" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Coefficients" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Size" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Coefficients">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="8" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Size">
    </LINK>
    </PATCH>

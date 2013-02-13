@@ -166,7 +166,7 @@ namespace VVVV.Lib
             }
         }
 
-        public bool StopRecording(double time)
+        public bool StopRecording(double time, bool keepposition)
         {
             if (this.record)
             {
@@ -181,6 +181,7 @@ namespace VVVV.Lib
                         realbufferlength += bufferlength;// 2.0;
                     }
                 }
+                if (keepposition) { this.positioninbuffer = this.lastrecordtime; }
                 return true;
             }
             else

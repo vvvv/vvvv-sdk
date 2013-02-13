@@ -134,12 +134,12 @@ namespace VVVV.Nodes.NodeBrowser
         [ImportingConstructor]
         public NodeBrowserPluginNode(IHDEHost host, INodeInfoFactory nodeInfoFactory, NodeCollection nodeCollection)
         {
-            DefaultConstructor();
-
             HDEHost = host;            
             NodeInfoFactory = nodeInfoFactory;
             FNodeCollection = nodeCollection;
             IsStandalone = true;
+            
+            DefaultConstructor();
         }
 
         private void DefaultConstructor()
@@ -359,7 +359,7 @@ namespace VVVV.Nodes.NodeBrowser
         public void Initialize(string text)
         {
             IsStandalone = false;
-            
+            FTagPanel.NodeBrowser = this;
             FInitialText = text;
             FTagPanel.Initialize(FInitialText);
             HandleOnPanelChange(NodeBrowserPage.ByTags, null);

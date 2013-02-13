@@ -47,7 +47,8 @@ float4 pGLOW(float2 vp:vpos):color{float2 x=(vp+.5)/R;
 	g.rgb*=GlowAmount;
 	float4 c=0;
 	c.rgb=g;
-	c.a=pow(length(g.rgb+normalize(s.rgb)*sqrt(2)*pow(length(s.rgb)/sqrt(2),PreGamma)),PW);
+	//s.rgb=normalize(s.rgb)*sqrt(2)*pow(length(s.rgb)/sqrt(2),PreGamma);
+	c.a=pow(length(g.rgb+s.rgb),PW);
     return c;
 }
 float4 pMIX(float2 vp:vpos):color{float2 x=(vp+.5)/R;
@@ -61,10 +62,10 @@ float4 pMIX(float2 vp:vpos):color{float2 x=(vp+.5)/R;
 	g/=6;
 	float4 c=s;
 	float av=pow(tex2Dlod(s0,float4(x,0,33)).a,1./PW);
-	//s=pow(s,PreGamma);
-	s.rgb=normalize(s.rgb)*sqrt(2)*pow(length(s.rgb)/sqrt(2),PreGamma);
-	//float mc=min(c.r,min(c.g,c.b));
-	//c.rgb=(c.rgb-mc)*pow(GlowSaturation,.3)+lerp(mc,dot(c.rgb,1./3),saturate(1-pow(GlowSaturation,.3)));
+	////s=pow(s,PreGamma);
+	//s.rgb=normalize(s.rgb)*sqrt(2)*pow(length(s.rgb)/sqrt(2),PreGamma);
+	////float mc=min(c.r,min(c.g,c.b));
+	////c.rgb=(c.rgb-mc)*pow(GlowSaturation,.3)+lerp(mc,dot(c.rgb,1./3),saturate(1-pow(GlowSaturation,.3)));
 	c=pow(s,1+g*2)+g;
 	c*=PostBrightness/lerp(1,av+.1,ToneMapPower);
 	//c=s+g*Brightness*318;
@@ -72,9 +73,9 @@ float4 pMIX(float2 vp:vpos):color{float2 x=(vp+.5)/R;
 	//c=g+pow(s,1+g);
 	//c.rgb=normalize(s.rgb)*pow(length(s.rgb)/sqrt(3),1+g*2)*sqrt(3)+g;
 	//c/=1+3*tex2Dlod(s0,float4(x,0,33));
-	c.a=s.a;
+	//c.a=s.a;
 	
-	c.a=1;
+	c.a=tex2D(s1,x).a;
     return c;
 }
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}

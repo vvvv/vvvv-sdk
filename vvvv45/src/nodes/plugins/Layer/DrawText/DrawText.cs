@@ -58,9 +58,6 @@ namespace VVVV.Nodes
 		[Input("Text", DefaultString = "vvvv")]
 		protected ISpread<string> FTextInput;
 
-		[Input("Character Encoding", EnumName = "CharEncoding")]
-		protected ISpread<EnumEntry> FCharEncoding;
-
 		[Input("Font", EnumName = "SystemFonts")]
 		protected IDiffSpread<EnumEntry> FFontInput;
 
@@ -222,7 +219,7 @@ namespace VVVV.Nodes
 			{
 				var dh = new DeviceHelpers(
 					new Sprite(OnDevice),
-					new Texture(OnDevice, 1, 1, 1, Usage.None, Format.L8, Pool.Managed)); // Format.A8R8G8B8, Pool.Default)
+					new Texture(OnDevice, 1, 1, 1, Usage.Dynamic, Format.L8, Pool.Default)); // Format.A8R8G8B8, Pool.Default)
 				
 				//need to fill texture white to be able to set color on sprite later
 				DataRectangle tex = dh.Texture.LockRectangle(0, LockFlags.None);
@@ -298,12 +295,6 @@ namespace VVVV.Nodes
 
 					if (string.IsNullOrEmpty(text))
 						continue;
-
-					if (FCharEncoding[i] == "UTF8")
-					{
-						byte[] utf8bytes = Encoding.Default.GetBytes(text);
-						text = Encoding.UTF8.GetString(utf8bytes);
-					}
 
 					DrawTextFormat format = DrawTextFormat.NoClip | DrawTextFormat.ExpandTabs;
 

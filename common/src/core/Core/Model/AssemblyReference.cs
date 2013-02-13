@@ -4,19 +4,19 @@ using VVVV.Utils;
 
 namespace VVVV.Core.Model
 {
-	/// <summary>
-	/// Reference to an assembly.
-	/// </summary>
-	public class AssemblyReference : ProjectItem, IReference
-	{
+    /// <summary>
+    /// Reference to an assembly.
+    /// </summary>
+    public class AssemblyReference : ProjectItem, IReference
+    {
         protected bool FIsGlobal;
 
-		public AssemblyReference(string assemblyLocation, bool isGlobal)
-			: base(Path.GetFileNameWithoutExtension(assemblyLocation))
-		{
-			AssemblyLocation = assemblyLocation;
+        public AssemblyReference(string assemblyLocation, bool isGlobal)
+            : base(Path.GetFileNameWithoutExtension(assemblyLocation))
+        {
+            AssemblyLocation = assemblyLocation;
             FIsGlobal = isGlobal;
-		}
+        }
 
         /// <summary>
         /// Sets the IsGlobal property to false
@@ -26,19 +26,24 @@ namespace VVVV.Core.Model
             : this(assemblyLocation, false)
         {
         }
-		
-		public string AssemblyLocation
-		{
-			get;
-			private set;
-		}
-		
-		public bool IsGlobal 
-		{
-			get 
-			{
+
+        public string AssemblyLocation
+        {
+            get;
+            private set;
+        }
+
+        public bool IsGlobal
+        {
+            get
+            {
                 return FIsGlobal;
-			}
-		}
-	}
+            }
+        }
+
+        public override void Dispatch(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+    }
 }

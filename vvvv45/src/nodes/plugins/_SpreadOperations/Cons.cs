@@ -22,8 +22,7 @@ namespace VVVV.Nodes
 
         public void Evaluate(int SpreadMax)
         {
-            Output.SliceCount = Input.SliceCount;
-
+			Output.SliceCount = Input.SliceCount;
             for (var i = 0; i < Input.SliceCount; i++)
             	Output[i] = Input[i];
         }
@@ -72,5 +71,14 @@ namespace VVVV.Nodes
                 )]
     public class EnumCons : Cons<EnumEntry>
     {
-    }        
+    }
+
+    [PluginInfo(Name = "Cons",
+            Category = "Raw",
+            Help = "Concatenates all input spreads to one output spread",
+            Tags = ""
+            )]
+    public class RawCons : Cons<System.IO.Stream>
+    {
+    }
 }

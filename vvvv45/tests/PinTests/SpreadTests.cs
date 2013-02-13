@@ -65,7 +65,7 @@ namespace PinTests
         [Test]
         public void TestRemoveAt()
         {
-            var spread = new Spread<int>(0);
+            var spread = new Spread<int>(1);
             Assert.DoesNotThrow(() => spread.RemoveAt(19));
             Assert.AreEqual(0, spread.SliceCount);
             

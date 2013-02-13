@@ -1,89 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="..\Default.Core.Project.settings" />
   <PropertyGroup>
     <ProjectGuid>{C3773330-81FA-4253-823E-1BDE1529AA99}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Utils</RootNamespace>
     <AssemblyName>VVVV.Utils</AssemblyName>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <NoStdLib>False</NoStdLib>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\joreg\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <DocumentationFile>bin\Debug\VVVV.Utils.xml</DocumentationFile>
+    <DocumentationFile>$(OutputPath)\VVVV.Utils.xml</DocumentationFile>
     <NoWarn>1591 1587</NoWarn>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>Full</DebugType>
-    <Optimize>False</Optimize>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <OutputPath>bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>None</DebugType>
-    <Optimize>True</Optimize>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <DefineConstants>TRACE</DefineConstants>
-    <OutputPath>bin\Release\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <BaseAddress>4194304</BaseAddress>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <FileAlignment>4096</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <WarningLevel>4</WarningLevel>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\Treemap.cs" />
+    <Compile Include="Animation\IIRFilter.cs" />
     <Compile Include="Animation\Particle.cs" />
     <Compile Include="Application\AppInfo.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
+    <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Color\RGBAColor.cs" />
     <Compile Include="Color\VColor.cs" />
     <Compile Include="Concurrent\BlockingQueue.cs" />
     <Compile Include="Crypto\StringHasher.cs" />
     <Compile Include="Disposable.cs" />
+    <Compile Include="GACWrap.cs" />
+    <Compile Include="IO\AggregatedStream.cs" />
+    <Compile Include="IO\SystemIOExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SystemIOExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IO\ByteOrder.cs" />
+    <Compile Include="IO\KeyboardState.cs" />
+    <Compile Include="IO\MouseState.cs" />
     <Compile Include="Linq\LinqExtensions.cs" />
     <Compile Include="ManagedVCL\ManagedVCLControl.cs">
       <SubType>UserControl</SubType>
@@ -101,6 +61,8 @@
     <Compile Include="Network\IRemotingManager.cs" />
     <Compile Include="Network\Network.cs" />
     <Compile Include="Network\RemotingManager.cs" />
+    <Compile Include="Network\UDPServer.cs" />
+    <Compile Include="Network\UDPTimeSync.cs" />
     <Compile Include="OSC\OSCBundle.cs" />
     <Compile Include="OSC\OSCMessage.cs" />
     <Compile Include="OSC\OSCPacket.cs" />
@@ -111,13 +73,38 @@
     <Compile Include="SharedMemory\Segment.cs" />
     <Compile Include="SharedMemory\Win32Native.cs" />
     <Compile Include="Skeleton\ISkeleton.cs" />
+    <Compile Include="Streams\ReverseStream.cs" />
+    <Compile Include="Streams\CyclicStream.cs" />
+    <Compile Include="Streams\RangeStream.cs" />
+    <Compile Include="System\ArrayExtensions.cs" />
+    <Compile Include="System\IntPtrExtensions.cs" />
     <Compile Include="Win32\HiPerfTimer.cs" />
+    <Compile Include="Streams\CyclicStreamReader.cs" />
+    <Compile Include="Streams\IFlushable.cs" />
+    <Compile Include="Streams\IInStream.cs" />
+    <Compile Include="Streams\IIOStream.cs" />
+    <Compile Include="Streams\IOutStream.cs" />
+    <Compile Include="Streams\IStream.cs" />
+    <Compile Include="Streams\IStreamer.cs" />
+    <Compile Include="Streams\IStreamReader.cs" />
+    <Compile Include="Streams\IStreamWriter.cs" />
+    <Compile Include="Streams\ISynchronizable.cs" />
+    <Compile Include="Streams\BufferedIOStream.cs" />
+    <Compile Include="Streams\MemoryPool.cs" />
+    <Compile Include="Streams\StreamUtils.cs" />
+    <Compile Include="Win32\IStream.cs" />
     <EmbeddedResource Include="ManagedVCL\ManagedVCLControl.resx">
       <DependentUpon>ManagedVCLControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Skeleton" />
-    <Folder Include="Win32" />
+    <None Include="IO\SystemIOExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SystemIOExtensions.cs</LastGenOutput>
+    </None>
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

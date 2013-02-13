@@ -5,11 +5,11 @@ using System.Text;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V1;
 using System.Runtime.InteropServices;
-using Microsoft.Research.Kinect.Nui;
 using VVVV.MSKinect.Lib;
 using System.ComponentModel.Composition;
 using SlimDX.Direct3D9;
 using SlimDX;
+using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Nodes
 {
@@ -31,7 +31,7 @@ namespace VVVV.MSKinect.Nodes
 
         private KinectRuntime runtime;
 
-        private IntPtr colorimage;
+        private byte[] colorimage;
         private object m_colorlock = new object();
 
 
@@ -42,7 +42,7 @@ namespace VVVV.MSKinect.Nodes
         [ImportingConstructor()]
         public KinectColorTextureNode(IPluginHost host)
         {
-            this.colorimage = Marshal.AllocCoTaskMem(640 * 480 * 4);
+            this.colorimage = new byte[640 * 480 * 4];
             host.CreateTextureOutput("Texture Out", TSliceMode.Single, TPinVisibility.True, out this.FOutTexture);
         }
 
@@ -59,7 +59,12 @@ namespace VVVV.MSKinect.Nodes
                 {
                     //Cache runtime node
                     this.runtime = this.FInRuntime[0];
-                    this.FInRuntime[0].ColorFrameReady += ColorFrameReady;
+
+                    if (runtime != null)
+                    {
+                        this.FInRuntime[0].ColorFrameReady += ColorFrameReady;
+                    }
+                    
                 }
 
                 this.FInvalidateConnect = false;
@@ -96,26 +101,39 @@ namespace VVVV.MSKinect.Nodes
 
         public void UpdateResource(IPluginOut ForPin, Device OnDevice)
         {
-            if (!this.FColorTex.ContainsKey(OnDevice))
+            if (this.runtime != null)
             {
-                Texture t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
-                this.FColorTex.Add(OnDevice, t);
-            }
 
-            if (this.FInvalidate)
-            {
-                Texture tx = this.FColorTex[OnDevice];
-                Surface srf = tx.GetSurfaceLevel(0);
-                DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
-
-                lock (this.m_colorlock)
+                if (!this.FColorTex.ContainsKey(OnDevice))
                 {
-                    rect.Data.WriteRange(this.colorimage, 640 * 480 * 4);
+                    Texture t = null;
+                    if (OnDevice is DeviceEx)
+                    {
+                        t = new Texture(OnDevice, 640, 480, 1, Usage.Dynamic, Format.X8R8G8B8, Pool.Default);
+                    }
+                    else
+                    {
+                        t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
+                    }
+                    
+                    this.FColorTex.Add(OnDevice, t);
                 }
-                srf.UnlockRectangle();
+
+                if (this.FInvalidate)
+                {
+                    Texture tx = this.FColorTex[OnDevice];
+                    Surface srf = tx.GetSurfaceLevel(0);
+                    DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
+
+                    lock (this.m_colorlock)
+                    {
+                        rect.Data.Write(this.colorimage, 0, 640 * 480 * 4);
+                    }
+                    srf.UnlockRectangle();
 
 
-                this.FInvalidate = false;
+                    this.FInvalidate = false;
+                }
             }
         }
 
@@ -128,14 +146,23 @@ namespace VVVV.MSKinect.Nodes
             }
         }
 
-        private void ColorFrameReady(object sender, ImageFrameReadyEventArgs e)
+        private void ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
-            lock (m_colorlock)
+            ColorImageFrame frame = e.OpenColorImageFrame();
+
+            if (frame != null)
             {
-                Marshal.Copy(e.ImageFrame.Image.Bits, 0, this.colorimage, 640 * 480 * 4);
-            }
-            this.FInvalidate = true;
-            this.frameindex = e.ImageFrame.FrameNumber;
+                this.FInvalidate = true;
+                //this.frameindex = frame.FrameNumber;
+
+                lock (m_colorlock)
+                {
+                    frame.CopyPixelDataTo(this.colorimage);
+                    //Marshal.Copy(frame..Image.Bits, 0, this.colorimage, 640 * 480 * 4);
+                }
+                this.FInvalidate = true;
+                this.frameindex = frame.FrameNumber;
+            }  
         }
     }
 }

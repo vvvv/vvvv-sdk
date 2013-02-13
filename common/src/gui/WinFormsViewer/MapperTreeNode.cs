@@ -29,7 +29,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         public event CollectionUpdateDelegate UpdateBegun;
         public event CollectionUpdateDelegate Updated;
         
-        public MapperTreeNode(IModelMapper mapper)
+        public MapperTreeNode(ModelMapper mapper)
             :base()
         {
             Mapper = mapper;
@@ -62,7 +62,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         /// The ModelMapper containing all the necessary mappings for the
         /// stored model element.
         /// </summary>
-        public IModelMapper Mapper
+        public ModelMapper Mapper
         {
             get;
             private set;

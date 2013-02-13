@@ -37,7 +37,7 @@ using SD = ICSharpCode.TextEditor.Document;
 
 namespace VVVV.HDE.CodeEditor
 {
-    [EditorInfo(".cs", ".fx", ".fxh", ".txt")]
+    [EditorInfo(".cs", ".fx", ".fxh", ".txt",".tfx",".gsfx")]
     public class CodeEditorPlugin : TopControl, IEditor, IDisposable, IQueryDelete, IPluginEvaluate
     {
         private Form FCodeEditorForm;
@@ -409,6 +409,8 @@ namespace VVVV.HDE.CodeEditor
                 
                 if (FAttachedProject != null)
                 {
+                    if (!FAttachedProject.IsLoaded)
+                        FAttachedProject.Load();
                     FAttachedProject.CompileCompleted += Project_CompileCompleted;
                     // Fake a compilation in order to show error messages on startup.
                     Project_CompileCompleted(FAttachedProject, new CompilerEventArgs(FAttachedProject.CompilerResults));
@@ -497,7 +499,7 @@ namespace VVVV.HDE.CodeEditor
             }
         }
         
-        private void FErrorTableViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+        private void FErrorTableViewerDoubleClick(ModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             var fileName = string.Empty;
             var line = 0;

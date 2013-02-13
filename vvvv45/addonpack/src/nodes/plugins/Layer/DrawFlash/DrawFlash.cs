@@ -39,8 +39,8 @@ namespace VVVV.Nodes
     	//note: the binary version of this plugin shipping with vvvvs addonpack 
     	//is licensed by meso.net
     	//to build your own non-trial version enter your license key here:	
-        const string LICENSENAME = "";
-        const string LICENSENUMBER = "";
+        const string LICENSENAME = FantastiqUILicense.NAME;
+        const string LICENSENUMBER = FantastiqUILicense.NUMBER;
         
         #region pins & fields
         [Input ("Filename", IsSingle = true, StringType = StringType.Filename, FileMask = "Shockwave Flash (*.swf)|*.swf")]
@@ -118,10 +118,6 @@ namespace VVVV.Nodes
             FTransformIn.Order = -1;
             host.CreateLayerOutput("Layer", TPinVisibility.True, out FLayerOutput);
             FLayerOutput.Order = -1;
-            
-            PresentParameters tPresentParas = new PresentParameters();
-            tPresentParas.SwapEffect = SwapEffect.Discard;
-            tPresentParas.Windowed = true;
 
             FLastKeyState = new List<int>();
             
@@ -403,9 +399,17 @@ namespace VVVV.Nodes
             //FHost.Log(TLogType.Debug, "swf Frames: " + _Frames);
 
             FFrameRateOutput[0] = (int)_FrameRate;
+            
+            var pool = Pool.Managed;
+            var usage = Usage.None;
+			if (tDevice is DeviceEx)
+			{
+				pool = Pool.Default;
+				usage = Usage.Dynamic;
+			}
 
-            _Texture1 = new Texture(tDevice, _Width, _Height, 1, 0, Format.A8R8G8B8, Pool.Managed);
-            _Texture2 = new Texture(tDevice, _Width, _Height, 1, 0, Format.A8R8G8B8, Pool.Managed);
+            _Texture1 = new Texture(tDevice, _Width, _Height, 1, usage, Format.A8R8G8B8, pool);
+            _Texture2 = new Texture(tDevice, _Width, _Height, 1, usage, Format.A8R8G8B8, pool);
 
             try
             {

@@ -1,85 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="..\Default.Core.Project.settings" />
   <PropertyGroup>
     <ProjectGuid>{6AD35106-187B-4A3A-A801-E665CD12E020}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Core</RootNamespace>
     <AssemblyName>VVVV.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\tgallery\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <SignAssembly>False</SignAssembly>
-    <DelaySign>False</DelaySign>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <NoStdLib>False</NoStdLib>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <RunCodeAnalysis>False</RunCodeAnalysis>
-    <RunSourceAnalysis>False</RunSourceAnalysis>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>Full</DebugType>
-    <Optimize>False</Optimize>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <StartAction>Project</StartAction>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <DebugSymbols>False</DebugSymbols>
-    <DebugType>None</DebugType>
-    <Optimize>True</Optimize>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>Full</DebugType>
-    <WarningLevel>4</WarningLevel>
-    <Optimize>false</Optimize>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <BaseAddress>4194304</BaseAddress>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <FileAlignment>4096</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommandLine">
@@ -94,7 +21,15 @@
     <Reference Include="log4net">
       <HintPath>..\..\thirdparty\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Build.Engine">
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Cci.MetadataHelper">
+      <HintPath>..\..\thirdparty\Microsoft.Cci.MetadataHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.MetadataModel">
+      <HintPath>..\..\thirdparty\Microsoft.Cci.MetadataModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.PeReader">
+      <HintPath>..\..\thirdparty\Microsoft.Cci.PeReader.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
@@ -106,17 +41,15 @@
     <Reference Include="System.ComponentModel.Composition.Codeplex">
       <HintPath>..\..\thirdparty\System.ComponentModel.Composition.Codeplex.dll</HintPath>
     </Reference>
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-    </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\Sync\ImmutableSynchronizers.cs" />
     <Compile Include="Collections\DotNetCollectionExtensions.cs" />
     <Compile Include="Collections\EditableIDList.cs" />
     <Compile Include="Collections\EditableCollection.cs" />
@@ -132,7 +65,7 @@
     <Compile Include="Collections\ViewableCollection.cs" />
     <Compile Include="Collections\ViewableIDList.cs" />
     <Compile Include="Collections\ViewableList.cs" />
-    <Compile Include="CommandlineArguments.cs" />
+    <Compile Include="Helper\CommandlineArguments.cs" />
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandHistory.cs" />
@@ -143,15 +76,24 @@
     <Compile Include="Commands\RemoveCommand.cs" />
     <Compile Include="Commands\RenameCommand.cs" />
     <Compile Include="Commands\SetPropertyCommand.cs" />
+    <Compile Include="Helper\NodeAndPinAttributes.cs" />
+    <Compile Include="View\HDEForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\HDEForm.Designer.cs">
+      <DependentUpon>HDEForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="_Interfaces\IChangedSequence.cs" />
     <Compile Include="Dialogs\ReferenceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\ReferenceDialog.Designer.cs">
       <DependentUpon>ReferenceDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="IConverter.cs" />
-    <Compile Include="IEditableProperty.cs" />
+    <Compile Include="Helper\ExtensionMethods.cs" />
+    <Compile Include="Helper\Traverser.cs" />
+    <Compile Include="Helper\IConverter.cs" />
+    <Compile Include="_Interfaces\IEditableProperty.cs" />
     <Compile Include="Dialogs\BaseDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,26 +112,25 @@
     <Compile Include="Dialogs\NamespaceNameDialog.Designer.cs">
       <DependentUpon>NamespaceNameDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="IEditableIDList.cs" />
-    <Compile Include="IEditableCollection.cs" />
-    <Compile Include="IEditableList.cs" />
-    <Compile Include="IFocus.cs" />
-    <Compile Include="IModelMapper.cs" />
-    <Compile Include="INamed.cs" />
-    <Compile Include="IParent.cs" />
-    <Compile Include="IViewableIDList.cs" />
-    <Compile Include="IIDItem.cs" />
-    <Compile Include="IRenameable.cs" />
-    <Compile Include="IViewableCollection.cs" />
-    <Compile Include="IViewableList.cs" />
-    <Compile Include="IViewableProperty.cs" />
-    <Compile Include="LazyModelMapper.cs" />
+    <Compile Include="_Interfaces\IEditableIDList.cs" />
+    <Compile Include="_Interfaces\IEditableCollection.cs" />
+    <Compile Include="_Interfaces\IEditableList.cs" />
+    <Compile Include="_Interfaces\IFocus.cs" />
+    <Compile Include="_Interfaces\INamed.cs" />
+    <Compile Include="_Interfaces\IParent.cs" />
+    <Compile Include="_Interfaces\IViewableIDList.cs" />
+    <Compile Include="_Interfaces\IIDItem.cs" />
+    <Compile Include="_Interfaces\IRenameable.cs" />
+    <Compile Include="_Interfaces\IViewableCollection.cs" />
+    <Compile Include="_Interfaces\IViewableList.cs" />
+    <Compile Include="_Interfaces\IViewableProperty.cs" />
+    <Compile Include="_Interfaces\IVisitor.cs" />
     <Compile Include="Logging\DebugHelpers.cs" />
     <Compile Include="Logging\DebugLogger.cs" />
     <Compile Include="Logging\DefaultLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\LogType.cs" />
-    <Compile Include="MappingRegistry.cs" />
+    <Compile Include="Helper\MappingRegistry.cs" />
     <Compile Include="Menu\AddMenuEntry.cs" />
     <Compile Include="Menu\Default\AddItemMenuEntry.cs" />
     <Compile Include="Menu\Default\DefaultAddMenuEntry.cs" />
@@ -204,8 +145,7 @@
     <Compile Include="Menu\RemoveMenuEntry.cs" />
     <Compile Include="Menu\UndoMenuEntry.cs" />
     <Compile Include="Menu\UnloadMenuEntry.cs" />
-    <Compile Include="ModelMap.cs" />
-    <Compile Include="ModelMapper.cs" />
+    <Compile Include="Helper\ModelMapper.cs" />
     <Compile Include="Model\AssemblyReference.cs" />
     <Compile Include="Model\DocumentFactory.cs" />
     <Compile Include="Model\Enums.cs" />
@@ -224,16 +164,16 @@
     <Compile Include="Runtime\ICompiler.cs" />
     <Compile Include="Model\IDContainer.cs" />
     <Compile Include="Model\IDItem.cs" />
-    <Compile Include="Model\IDocument.cs" />
-    <Compile Include="Model\IPatchDocument.cs" />
-    <Compile Include="Model\IPersistent.cs" />
-    <Compile Include="Model\IProject.cs" />
-    <Compile Include="Model\IProjectFactory.cs" />
-    <Compile Include="Model\IProjectItem.cs" />
-    <Compile Include="Model\IReference.cs" />
-    <Compile Include="Model\ISolution.cs" />
-    <Compile Include="Model\ITextDocument.cs" />
-    <Compile Include="IIDContainer.cs" />
+    <Compile Include="Model\_Interfaces\IDocument.cs" />
+    <Compile Include="Model\_Interfaces\IPatchDocument.cs" />
+    <Compile Include="Model\_Interfaces\IPersistent.cs" />
+    <Compile Include="Model\_Interfaces\IProject.cs" />
+    <Compile Include="Model\_Interfaces\IProjectFactory.cs" />
+    <Compile Include="Model\_Interfaces\IProjectItem.cs" />
+    <Compile Include="Model\_Interfaces\IReference.cs" />
+    <Compile Include="Model\_Interfaces\ISolution.cs" />
+    <Compile Include="Model\_Interfaces\ITextDocument.cs" />
+    <Compile Include="_Interfaces\IIDContainer.cs" />
     <Compile Include="Model\MsBuildProject.cs" />
     <Compile Include="Model\Project.cs" />
     <Compile Include="Model\ProjectReference.cs" />
@@ -245,10 +185,9 @@
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Serialization\Serializer.cs" />
     <Compile Include="Serialization\XElementExtensions.cs" />
-    <Compile Include="Service\TypeExtensions.cs" />
-    <Compile Include="Service\UnityContainerExtensions.cs" />
-    <Compile Include="Shell.cs" />
-    <Compile Include="Utils\GACWrap.cs" />
+    <Compile Include="Helper\TypeExtensions.cs" />
+    <Compile Include="Helper\UnityContainerExtensions.cs" />
+    <Compile Include="Helper\Shell.cs" />
     <Compile Include="Viewer\GraphicalEditor\ICanvas.cs" />
     <Compile Include="Viewer\GraphicalEditor\ICircle.cs" />
     <Compile Include="Viewer\GraphicalEditor\IDot.cs" />
@@ -306,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ReferenceDialog.resx">
       <DependentUpon>ReferenceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\HDEForm.resx">
+      <DependentUpon>HDEForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

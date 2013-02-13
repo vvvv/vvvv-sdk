@@ -39,6 +39,8 @@ namespace VVVV.Nodes.NodeBrowser
         private List<string> FRTFSelectionList = new List<string>();
         private readonly Regex FVVVVGroupRegex = new Regex(@"vvvv\s+group", RegexOptions.IgnoreCase | RegexOptions.Multiline);
         
+        private List<string> FCategoryPriorities = new List<string>(new string[] { "DSHOW9", "OCTONION", "QUATERNION", "FLASH", "GDI", "TTY", "SVG", "TRANSFORM", "COLOR", "DX9", "EX9.GEOMETRY", "EX9.TEXTURE", "EX9", "DX11.LAYER", "DX11.GEOMETRY", "EX9.TEXTUREFX", "EX9.TEXTURE", "DX11", "RAW", "STRING", "FILE", "ANIMATION", "SPREADS", "4D", "3D", "2D", "VALUE" });
+        
         private NodeBrowserPluginNode FNodeBrowser;
         public NodeBrowserPluginNode NodeBrowser
         {
@@ -48,6 +50,11 @@ namespace VVVV.Nodes.NodeBrowser
             }
             set
             {
+                if (FNodeBrowser != null)
+                {
+                    this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
+                }
+                
                 FNodeBrowser = value;
                 
                 if (FNodeBrowser != null && FNodeBrowser.IsStandalone)
@@ -160,8 +167,9 @@ namespace VVVV.Nodes.NodeBrowser
         
         public void BeforeHide()
         {
-            this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
+        	//reset text to "" before removing resizeHandler in order to get FVisible lines computed correctly
             FTagsTextBox.Text = "";
+        	this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
             FToolTip.Hide(FRichTextBox);
         }
         
@@ -318,7 +326,10 @@ namespace VVVV.Nodes.NodeBrowser
                     if (e.Button == MouseButtons.Middle)
                         OnShowNodeReference(selNode);
                     else
+                    {
+                    	FTagsTextBox.Text = "";
                         OnShowHelpPatch(selNode);
+                    }
                 }
                 catch //username is a filename..do nothing
                 {}
@@ -556,87 +567,8 @@ namespace VVVV.Nodes.NodeBrowser
                 int v1, v2;
                 
                 //special sorting for categories
-                if (cat1.Contains("Value"))
-                    v1 = 99;
-                else if (cat1.ToUpper().Contains("2D"))
-                    v1 = 98;
-                else if (cat1.ToUpper().Contains("3D"))
-                    v1 = 97;
-                else if (cat1.ToUpper().Contains("4D"))
-                    v1 = 96;
-                else if (cat1.Contains("Spreads"))
-                    v1 = 95;
-                else if (cat1.Contains("Animation"))
-                    v1 = 94;
-                else if (cat1.Contains("EX9"))
-                    v1 = 93;
-                else if (cat1.Contains("DX9"))
-                    v1 = 92;
-                else if (cat1.Contains("File"))
-                    v1 = 91;
-                else if (cat1.Contains("SVG"))
-                    v1 = 90;
-                else if (cat1.Contains("TTY"))
-                    v1 = 89;
-                else if (cat1.Contains("GDI"))
-                    v1 = 88;
-                else if (cat1.Contains("Flash"))
-                    v1 = 87;
-                else if (cat1.Contains("Transform"))
-                    v1 = 86;
-                else if (cat1.Contains("Quaternion"))
-                    v1 = 85;
-                else if (cat1.Contains("Octonion"))
-                    v1 = 84;
-                else if (cat1.Contains("String"))
-                    v1 = 83;
-                else if (cat1.Contains("Color"))
-                    v1 = 82;
-                else if (cat1.Contains("DShow9"))
-                    v1 = 81;
-                else
-                    v1 = 0;
-                
-                if (cat2.Contains("Value"))
-                    v2 = 99;
-                else if (cat2.ToUpper().Contains("2D"))
-                    v2 = 98;
-                else if (cat2.ToUpper().Contains("3D"))
-                    v2 = 97;
-                else if (cat2.ToUpper().Contains("4D"))
-                    v2 = 96;
-                else if (cat2.Contains("Spreads"))
-                    v2 = 95;
-                else if (cat2.Contains("Animation"))
-                    v2 = 94;
-                else if (cat2.Contains("EX9"))
-                    v2 = 93;
-                else if (cat2.Contains("DX9"))
-                    v2 = 92;
-                else if (cat2.Contains("File"))
-                    v2 = 91;
-                else if (cat2.Contains("SVG"))
-                    v2 = 90;
-                else if (cat2.Contains("TTY"))
-                    v2 = 89;
-                else if (cat2.Contains("GDI"))
-                    v2 = 88;
-                else if (cat2.Contains("Flash"))
-                    v2 = 87;
-                else if (cat2.Contains("Transform"))
-                    v2 = 86;
-                else if (cat2.Contains("Quaternion"))
-                    v2 = 85;
-                else if (cat2.Contains("Octonion"))
-                    v2 = 84;
-                else if (cat2.Contains("String"))
-                    v2 = 83;
-                else if (cat2.Contains("Color"))
-                    v2 = 82;
-                else if (cat2.Contains("DShow9"))
-                    v2 = 81;
-                else
-                    v2 = 0;
+                v1 = FCategoryPriorities.IndexOf(cat1.Split(' ')[0].ToUpper());
+                v2 = FCategoryPriorities.IndexOf(cat2.Split(' ')[0].ToUpper());
                 
                 if (v1 > v2)
                     return -1;

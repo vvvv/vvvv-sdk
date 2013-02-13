@@ -5,16 +5,16 @@ using System.Text;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V1;
 using System.Runtime.InteropServices;
-using Microsoft.Research.Kinect.Nui;
 using VVVV.MSKinect.Lib;
 using System.ComponentModel.Composition;
 using SlimDX.Direct3D9;
 using SlimDX;
+using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "Depth", Category = "Kinect", Version = "Microsoft", Author = "vux", Tags = "directx,texture")]
-    public class KinectDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
+    public unsafe class KinectDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]
         private Pin<KinectRuntime> FInRuntime;
@@ -31,7 +31,9 @@ namespace VVVV.MSKinect.Nodes
 
         private KinectRuntime runtime;
 
-        private byte[] depthimage;
+        private DepthImagePixel[] depthpixels;
+        private short[] rawdepth;
+
         private object m_lock = new object();
 
         private Dictionary<Device, Texture> FDepthTex = new Dictionary<Device, Texture>();
@@ -39,8 +41,8 @@ namespace VVVV.MSKinect.Nodes
         [ImportingConstructor()]
         public KinectDepthTextureNode(IPluginHost host)
         {
-            //this.depthimage = Marshal.AllocCoTaskMem(320 * 240);
-            this.depthimage = new byte[320 * 240];
+            this.depthpixels = new DepthImagePixel[320 * 240];
+            this.rawdepth = new short[320 * 240];
             host.CreateTextureOutput("Texture Out", TSliceMode.Single, TPinVisibility.True, out this.FOutTexture);
         }
 
@@ -57,7 +59,12 @@ namespace VVVV.MSKinect.Nodes
                 {
                     //Cache runtime node
                     this.runtime = this.FInRuntime[0];
-                    this.FInRuntime[0].DepthFrameReady += DepthFrameReady;
+
+                    if (runtime != null)
+                    {
+                        this.FInRuntime[0].DepthFrameReady += DepthFrameReady;
+                    }
+                    
                 }
 
                 this.FInvalidateConnect = false;
@@ -94,27 +101,54 @@ namespace VVVV.MSKinect.Nodes
 
         public void UpdateResource(IPluginOut ForPin, Device OnDevice)
         {
-            if (!this.FDepthTex.ContainsKey(OnDevice))
+            if (this.runtime != null)
             {
-                Texture t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.L8, Pool.Managed);
-                this.FDepthTex.Add(OnDevice, t);
-            }
 
-            if (this.FInvalidate)
-            {
-                Texture tx = this.FDepthTex[OnDevice];
-                Surface srf = tx.GetSurfaceLevel(0);
-                DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
-
-                lock (this.m_lock)
+                if (!this.FDepthTex.ContainsKey(OnDevice))
                 {
-                    //rect.Data.WriteRange(this.depthimage, 320 * 240);
-                    rect.Data.WriteRange(this.depthimage);
+                    Texture t = null;
+                    if (OnDevice is DeviceEx)
+                    {
+                        t = new Texture(OnDevice, 320, 240, 1, Usage.Dynamic, Format.L16, Pool.Default);
+                    }
+                    else
+                    {
+                        t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.L16, Pool.Managed);
+                    }
+                    this.FDepthTex.Add(OnDevice, t);
                 }
-                srf.UnlockRectangle();
+
+                if (this.FInvalidate)
+                {
+                    Texture tx = this.FDepthTex[OnDevice];
+                    Surface srf = tx.GetSurfaceLevel(0);
+                    DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
+
+                    int pos = 0;
+                    lock (this.m_lock)
+                    {
+                        fixed (short* b = &this.rawdepth[0])
+                        {
+                            short* ptr = b;
+                            for (int i = 0; i < 240; i++)
+                            {
+                                rect.Data.WriteRange((IntPtr)ptr, 320);
+
+                                pos += rect.Pitch;
+                                rect.Data.Position = pos;
+                                ptr += 320;
+                            }
+                        }
+                    }
 
 
-                this.FInvalidate = false;
+                    //rect.Data.WriteRange(this.depthimage);
+
+                    srf.UnlockRectangle();
+
+
+                    this.FInvalidate = false;
+                }
             }
         }
 
@@ -127,47 +161,24 @@ namespace VVVV.MSKinect.Nodes
             }
         }
 
-        private void DepthFrameReady(object sender, ImageFrameReadyEventArgs e)
+        private void DepthFrameReady(object sender, DepthImageFrameReadyEventArgs e)
         {
-            bool hasplayer = e.ImageFrame.Type == ImageType.DepthAndPlayerIndex;
-            
-            byte[] d16 = e.ImageFrame.Image.Bits;
-            lock (m_lock)
-            {
-                if (hasplayer)
-                {
-                    for (int i = 0, i16 = 0; i < 320 * 240; i++, i16 += 2)
-                    {
-                        int realDepth = (d16[i16 + 1] << 5) | (d16[i16] >> 3);
-                        byte intensity = (byte)(255 - (255 * realDepth / 0x0fff));
-                        this.depthimage[i] = intensity;
-                    }
-                }
-                else
-                {
-                    /*int i16 = 0;
-                    for (int i = 0; i < 240; i++)
-                    {
-                        for (int j = 0; j < 320; j++)
-                        {
-                            int realDepth = (d16[i16 + 1] << 8) | (d16[i16]);
-                            byte intensity = (byte)(255 - (255 * realDepth / 0x0fff));
-                            this.depthimage[(319-j)+  i * 240] = intensity;
-                            i16 += 2;
-                        }
-                    }*/
-                    for (int i = 0, i16 = 0; i < 320 * 240; i++, i16 += 2)
-                    {
-                        int realDepth = (d16[i16 + 1] << 8) | (d16[i16]);
-                        byte intensity = (byte)(255 - (255 * realDepth / 0x0fff));
-                        this.depthimage[i] = intensity;
-                    }
-                }
+            DepthImageFrame frame = e.OpenDepthImageFrame();
 
-                //Marshal.Copy(e.ImageFrame.Image.Bits, 0, this.depthimage, 640 * 480);
-            }
-            this.FInvalidate = true;
-            this.frameindex = e.ImageFrame.FrameNumber;
+            if (frame != null)
+            {
+                this.FInvalidate = true;
+                this.frameindex = frame.FrameNumber;
+                lock (m_lock)
+                {
+                    frame.CopyDepthImagePixelDataTo(this.depthpixels);
+
+                    for (int i16 = 0; i16 < 320 * 240; i16++)
+                    {
+                        this.rawdepth[i16] = this.depthpixels[i16].Depth;
+                    }
+                }
+            }  
         }
     }
 }

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.4.dtd" >
-   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\ToComplete\GeometryNodes\MinimumCircle (2d) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha27.2.dtd" >
+   <PATCH nodename="D:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\vuxbins\MinimumCircle (2d) help.v4p">
    <BOUNDS height="8730" left="420" top="855" type="Window" width="9645">
    </BOUNDS>
    <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates the minimum enclosing circle of a set of&cr;&lf;2d points|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates the minimum enclosing circle of a set of&cr;&lf;2d points|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|MinimumCircle - 2d|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MinimumCircle - 2d|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -39,7 +39,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -53,14 +53,14 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="24" nodename="Queue (Spreads)">
+   <NODE id="24" nodename="Queue (Spreads Legacy)">
    <BOUNDS height="0" left="915" top="2970" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -72,7 +72,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="23" nodename="Queue (Spreads)">
+   <NODE id="23" nodename="Queue (Spreads Legacy)">
    <BOUNDS height="0" left="1770" top="2970" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -91,14 +91,14 @@
    </BOUNDS>
    <BOUNDS height="160" left="630" top="2505" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|draw into the renderer with the left mousebutton pressed|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|draw into the renderer with the left mousebutton pressed|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="20" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="20" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="2040" top="7755" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="8265" top="1395" type="Window" width="6120">
@@ -106,6 +106,16 @@
    <BOUNDS height="1800" left="2040" top="7755" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="16" nodename="Mouse (System Window)">
@@ -202,7 +212,7 @@
    </LINK>
    <LINK dstnodeid="14" dstpinname="Transform" srcnodeid="11" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1335" top="2475" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="3240" top="10080" type="Window" width="215">
@@ -222,7 +232,7 @@
    </LINK>
    <LINK dstnodeid="24" dstpinname="do Insert" srcnodeid="16" srcpinname="Left Button">
    </LINK>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3585" top="3030" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5790" top="10740" type="Window" width="215">
@@ -234,38 +244,6 @@
    <PIN pinname="Y Input Value" slicecount="1" values="-1">
    </PIN>
    </NODE>
-   <NODE id="25" nodename="GeometryNodes.dll|VVVV.Nodes.MinEnclosingCirleNode" componentmode="Hidden">
-   <BOUNDS height="0" left="900" top="3765" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X In" visible="1">
-   </PIN>
-   <PIN pinname="Y In" visible="1">
-   </PIN>
-   <PIN pinname="X1 Out" visible="1">
-   </PIN>
-   <PIN pinname="Y1 Out" visible="1">
-   </PIN>
-   <PIN pinname="X2 Out" visible="1">
-   </PIN>
-   <PIN pinname="Y2 Out" visible="1">
-   </PIN>
-   <PIN pinname="Bin Size" visible="1">
-   </PIN>
-   <PIN pinname="Bin Sizes" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="900" top="3765" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Window" left="1350" top="3495" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="InputXY" visible="1">
-   </PIN>
-   <PIN pinname="CenterXY" visible="1">
-   </PIN>
-   <PIN pinname="Radius" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="25" dstpinname="Bin Size" srcnodeid="6" srcpinname="Y Output Value">
-   </LINK>
    <NODE nodename="Vector (2d Join)" componentmode="Hidden" id="27">
    <BOUNDS type="Node" left="435" top="3390" width="0" height="0">
    </BOUNDS>
@@ -279,8 +257,6 @@
    <LINK srcnodeid="24" srcpinname="Output" dstnodeid="27" dstpinname="X">
    </LINK>
    <LINK srcnodeid="23" srcpinname="Output" dstnodeid="27" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="27" srcpinname="XY" dstnodeid="25" dstpinname="InputXY">
    </LINK>
    <NODE nodename="Segment (DX9)" componentmode="Hidden" id="28">
    <BOUNDS type="Node" left="585" top="6150" width="0" height="0">
@@ -320,8 +296,6 @@
    <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="25" srcpinname="CenterXY" dstnodeid="33" dstpinname="XY">
-   </LINK>
    <LINK srcnodeid="33" srcpinname="X" dstnodeid="29" dstpinname="TranslateX">
    </LINK>
    <LINK srcnodeid="33" srcpinname="Y" dstnodeid="29" dstpinname="TranslateY">
@@ -336,10 +310,46 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="25" srcpinname="Radius" dstnodeid="34" dstpinname="Input 1">
-   </LINK>
    <LINK srcnodeid="34" srcpinname="Output" dstnodeid="29" dstpinname="ScaleX">
    </LINK>
    <LINK srcnodeid="34" srcpinname="Output" dstnodeid="29" dstpinname="ScaleY">
+   </LINK>
+   <NODE id="35" nodename="MinimumCircle (2d)" componentmode="Hidden" systemname="MinimumCircle (2d)" filename="%VVVV%\addonpack\lib\nodes\plugins\vuxbins\VVVV.Nodes.Geometry.dll">
+   <BOUNDS height="0" left="900" top="3765" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   <PIN pinname="X1 Out" visible="1">
+   </PIN>
+   <PIN pinname="Y1 Out" visible="1">
+   </PIN>
+   <PIN pinname="X2 Out" visible="1">
+   </PIN>
+   <PIN pinname="Y2 Out" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Bin Sizes" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="900" top="3765" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="1350" top="3495" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="InputXY" visible="1">
+   </PIN>
+   <PIN pinname="CenterXY" visible="1">
+   </PIN>
+   <PIN pinname="Radius" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="27" srcpinname="XY" dstnodeid="35" dstpinname="InputXY">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="CenterXY" dstnodeid="33" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="35" dstpinname="Bin Size">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Radius" dstnodeid="34" dstpinname="Input 1">
    </LINK>
    </PATCH>

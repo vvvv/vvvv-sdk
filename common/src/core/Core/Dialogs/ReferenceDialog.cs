@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
-using VVVV.Core.Model;
-using VVVV.Core.Utils;
 using System.Threading;
+using System.Windows.Forms;
+
+using VVVV.Core.Model;
+using VVVV.Utils;
 
 namespace VVVV.Core.Dialogs
 {

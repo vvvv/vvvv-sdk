@@ -1,12 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-	How to edit this file as an internal developer:
-  * increase the vvvversion (like 40beta21.1 -> 40beta21.2) within delphi 
+  Short Description
+ 
+  This file controls the conversion process when opening patches
+  A patch comes with a version info that states with which vvvv version it was saved.
+  Comparing that with the currently running version enables vvvv to convert the patches.
   
-  * add a patch tag with this new version
-      <PATCH version="40beta21.2">
+  For each version one       
+	  <PATCH version=...>
       </PATCH>
-      
-  * add a node tag within the patch tag for the node you want to change
+	tag is added (if renamings have taken place in the nodelibrary that comes with vvvv)
+	
+  However it now also can be used to temporarily do a conversion task for you.
+  You can rename your nodes (plugins, modules) and then use this file to do conversion even if the patches 
+  already are stored with current version.
+   
+  ========================================================================================================
+	  
+  How to edit this file 
+  * if you are not an internal developer you can contribute to this via the SDK and by making pull request
+  
+  * HOWEVER you are also invited to use this tool to convert temporarily   
+   
+  * since you can't increase the vvvversion by yourself just use "current" like that:
+	  <PATCH version="current">
+      </PATCH>  
+  
+  * note that you can also replace standard modules (...) with your own.
+  
+  * add a node tag within the patch tag for the node you want to be converted
       <NODE old="I (Spread)">
       </NODE>   
       
@@ -25,31 +47,10 @@
 
   comments:
   + for all file based nodes (modules, effects ...) a special syntax is used:
-    :MODULES:\vvvv group\EX9\Sprite (DX9).v4p
+    :MODULES:\vvvv group\EX9\Sprite (DX9).v4p  
+  
 
-
-	How to edit this file as an external module/plugin (...) developer:
-
-  * since you can't increase the vvvversion by yourself just enter the upcoming release
-  
-  * give us the xml snippet so that we can include it in the official release
-  
-  * in that way you can rename pins, nodes, modules, effects etc.
-  
-  
-  FOR ALL
-  * note that you can also replace standard modules (...) with your own.
-    however you should do that when a new relase comes out.  that makes sure that all your current 
-    patches were saved with an old vvvversion and as a result will be converted.
-  
-  example:
-  <PATCH version="40beta22">
-    <NODE old=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" new=":MODULES:\yournamehere\Transform\Camera (Transform Softimage).v4p">
-    </NODE>
-  
 -->
-
-
 <CONVVVVERTER>
   <PATCH version="33beta5">
     <NODE old="AudioIn (DShow8)" new="AudioIn (DShow9)">
@@ -507,10 +508,9 @@
 	</NODE>  
   </PATCH>
   <PATCH version="40beta19">
-  	<NODE old=":PLUGINS:\MultipleParticles.dll" new="Particles (Spreads)">
-  	</NODE>
-  	<NODE old=":PLUGINS:\MultipleParticles.dll|VVVV.Nodes.MultipleParticleSystemsNode" new="Particles (Spreads)">
-  	</NODE>
+  	<NODE old=":PLUGINS:\MultipleParticles.dll" new="Particles (Spreads)"></NODE>
+  	<NODE old=":PLUGINS:\MultipleParticles.dll|VVVV.Nodes.MultipleParticleSystemsNode" new="Particles (Spreads)"></NODE>
+	<NODE old=":PLUGINS:\Lindenmayer.dll|VVVV.Nodes.LindenmayerPlugin" new="Lindenmayer (Spreads)"></NODE>
   </PATCH>
   <PATCH version="40beta19.1">
     <NODE old=":MODULES:\B-Spline (3D Surface Normals).v4p" new=":MODULES:\vvvv group\3D\B-Spline (3D Surface Normals).v4p"> </NODE>
@@ -599,12 +599,12 @@
     <NODE old=":MODULES:\legacy\XPath (XML Legacy).v4p" new=":MODULES:\vvvv group\_legacy\XPath (XML Legacy).v4p"> </NODE>
   </PATCH>
   <PATCH version="40beta20.1">
-    	<NODE old="MidiController (Devices)" new=":MODULES:\vvvv group\_legacy\MidiController (Devices Legacy).v4p">
-    	</NODE>
-    	<NODE old="MidiController (Devices Relative)" new=":MODULES:\vvvv group\_legacy\MidiController (Devices Relative Legacy).v4p">
-    	</NODE>
-    	<NODE old="MidiNote (Devices)" new=":MODULES:\vvvv group\_legacy\MidiNote (Devices Legacy).v4p">
-    	</NODE>
+   	<NODE old="MidiController (Devices)" new=":MODULES:\vvvv group\_legacy\MidiController (Devices Legacy).v4p">
+   	</NODE>
+   	<NODE old="MidiController (Devices Relative)" new=":MODULES:\vvvv group\_legacy\MidiController (Devices Relative Legacy).v4p">
+   	</NODE>
+   	<NODE old="MidiNote (Devices)" new=":MODULES:\vvvv group\_legacy\MidiNote (Devices Legacy).v4p">
+   	</NODE>
 	<NODE old="Expr (Value)" new="Expr (Value Legacy)">
 	</NODE>
 	<NODE old=":MODULES:\vvvv group\EX9\Grid (EX9 Test).v4p" new=":MODULES:\vvvv group\EX9\Grid (EX9 Test legacy).v4p">
@@ -684,277 +684,485 @@
     </NODE>
   </PATCH>                    
   <PATCH version="40beta22.3">
-	<NODE old="RandomSpread (Spreads)" new="RandomSpread (Spreads Legacy)">	</NODE>
+    <NODE old="RandomSpread (Spreads)" new="RandomSpread (Spreads Legacy)">	</NODE>
   </PATCH>
   <PATCH version="40beta23">
     <!-- plugins are intentionally specified multiple times here only with different old names -->
-	<NODE old="2dMeshNodes.dll|VVVV.Nodes.SuperFormula2dMeshNode" new=":PLUGINS:\2dMeshNodes.dll|VVVV.Nodes.SuperFormula2dMeshNode">
-		<PIN old="NXYZ" new="N 123"> </PIN>
+  	<NODE old="2dMeshNodes.dll|VVVV.Nodes.SuperFormula2dMeshNode" new=":PLUGINS:\2dMeshNodes.dll|VVVV.Nodes.SuperFormula2dMeshNode">
+  		<PIN old="NXYZ" new="N 123"> </PIN>
   	</NODE>
-	<NODE old=":PLUGINS:\2dMeshNodes.dll|VVVV.Nodes.SuperFormula2dMeshNode" new=":PLUGINS:\2dMeshNodes.dll|VVVV.Nodes.SuperFormula2dMeshNode">
-		<PIN old="NXYZ" new="N 123"> </PIN>
-  	</NODE>
+	  <NODE old=":PLUGINS:\2dMeshNodes.dll|VVVV.Nodes.SuperFormula2dMeshNode" new=":PLUGINS:\2dMeshNodes.dll|VVVV.Nodes.SuperFormula2dMeshNode">
+      <PIN old="NXYZ" new="N 123"> </PIN>
+   	</NODE>
 	<!-- wiimote plugin needs to be specified twice here with two different old names -->
-	<NODE old=":PLUGINS:\WiiMotePlugin.dll|VVVV.Nodes.PluginWiiMote" new=":PLUGINS:\WiiMotePlugin.dll|VVVV.Nodes.PluginWiiMote">
-		<PIN old="LEDXYZW" new="LED 0123"> </PIN>
-		<PIN old="CursorXYZW" new="Cursor UpDownLeftRight"> </PIN>
-		<PIN old="ButtonsXYZW" new="Buttons AB12"> </PIN>
-		<PIN old="SystemXYZ" new="System PlusMinusHome"> </PIN>
-		<PIN old="AngleXYZ" new="Angle PitchRollYaw"> </PIN>
-		<PIN old="InfraredXYZW" new="Infrared IDXYSize"> </PIN>
-		<PIN old="NunchukButtonzXY" new="Nunchuk Buttons CZ"> </PIN>
-		<PIN old="NunchukAccellerationXYZ" new="Nunchuk AccellerationXYZ"> </PIN>
-		<PIN old="NunchukTiltXYZ" new="Nunchuk Tilt PitchRollYaw"> </PIN>
-		<PIN old="NunchukJoystickXY" new="Nunchuk JoystickXY"> </PIN>
-		<PIN old="ClassicCursorXYZW" new="Classic Cursor UpDownLeftRight"> </PIN>
-		<PIN old="ClassicButtonsXYZW" new="Classic Buttons ABXY"> </PIN>
-		<PIN old="ClassicSystemXYZ" new="Classic System PlusMinusHome"> </PIN>
-		<PIN old="ClassicJoystickLeftXY" new="Classic Joystick LeftXY"> </PIN>
-		<PIN old="ClassicJoystickRightXY" new="Classic Joystick RightXY"> </PIN>
-		<PIN old="ClassicBackControlXYZW" new="Classic Back Control LeftRightLeftRight"> </PIN>
-		<PIN old="BalanceBoardWeight" new="Balance Board Weight (kg)"> </PIN>
-		<PIN old="BalanceBoard_CornersXYZW" new="Balance Board Corners TLTRBLBR"> </PIN>
-		<PIN old="BalanceBoardCenterOfGravityXY" new="Balance Board Center Of GravityXY"> </PIN>
-		<PIN old="GuitarButtonsXYZW" new="Guitar Buttons PlusMinusStrumUpStrumDown"> </PIN>
-		<PIN old="GuitarBars" new="Guitar Color Bar"> </PIN>
-		<PIN old="GuitarWhammybar" new="Guitar Whammy Bar"> </PIN>
-		<PIN old="GuitarJoystickXY" new="Guitar JoystickXY"> </PIN>
+  	<NODE old=":PLUGINS:\WiiMotePlugin.dll|VVVV.Nodes.PluginWiiMote" new=":PLUGINS:\WiiMotePlugin.dll|VVVV.Nodes.PluginWiiMote">
+  		<PIN old="LEDXYZW" new="LED 0123"> </PIN>
+  		<PIN old="CursorXYZW" new="Cursor UpDownLeftRight"> </PIN>
+  		<PIN old="ButtonsXYZW" new="Buttons AB12"> </PIN>
+  		<PIN old="SystemXYZ" new="System PlusMinusHome"> </PIN>
+  		<PIN old="AngleXYZ" new="Angle PitchRollYaw"> </PIN>
+  		<PIN old="InfraredXYZW" new="Infrared IDXYSize"> </PIN>
+  		<PIN old="NunchukButtonzXY" new="Nunchuk Buttons CZ"> </PIN>
+  		<PIN old="NunchukAccellerationXYZ" new="Nunchuk AccellerationXYZ"> </PIN>
+  		<PIN old="NunchukTiltXYZ" new="Nunchuk Tilt PitchRollYaw"> </PIN>
+  		<PIN old="NunchukJoystickXY" new="Nunchuk JoystickXY"> </PIN>
+  		<PIN old="ClassicCursorXYZW" new="Classic Cursor UpDownLeftRight"> </PIN>
+  		<PIN old="ClassicButtonsXYZW" new="Classic Buttons ABXY"> </PIN>
+  		<PIN old="ClassicSystemXYZ" new="Classic System PlusMinusHome"> </PIN>
+  		<PIN old="ClassicJoystickLeftXY" new="Classic Joystick LeftXY"> </PIN>
+  		<PIN old="ClassicJoystickRightXY" new="Classic Joystick RightXY"> </PIN>
+  		<PIN old="ClassicBackControlXYZW" new="Classic Back Control LeftRightLeftRight"> </PIN>
+  		<PIN old="BalanceBoardWeight" new="Balance Board Weight (kg)"> </PIN>
+  		<PIN old="BalanceBoard_CornersXYZW" new="Balance Board Corners TLTRBLBR"> </PIN>
+  		<PIN old="BalanceBoardCenterOfGravityXY" new="Balance Board Center Of GravityXY"> </PIN>
+  		<PIN old="GuitarButtonsXYZW" new="Guitar Buttons PlusMinusStrumUpStrumDown"> </PIN>
+  		<PIN old="GuitarBars" new="Guitar Color Bar"> </PIN>
+  		<PIN old="GuitarWhammybar" new="Guitar Whammy Bar"> </PIN>
+  		<PIN old="GuitarJoystickXY" new="Guitar JoystickXY"> </PIN>
+    	</NODE>
+  	<NODE old=":PLUGINS:\WiiMotePlugin.dll" new=":PLUGINS:\WiiMotePlugin.dll|VVVV.Nodes.PluginWiiMote">
+  		<PIN old="LEDXYZW" new="LED 0123"> </PIN>
+  		<PIN old="CursorXYZW" new="Cursor UpDownLeftRight"> </PIN>
+  		<PIN old="ButtonsXYZW" new="Buttons AB12"> </PIN>
+  		<PIN old="SystemXYZ" new="System PlusMinusHome"> </PIN>
+  		<PIN old="AngleXYZ" new="Angle PitchRollYaw"> </PIN>
+  		<PIN old="InfraredXYZW" new="Infrared IDXYSize"> </PIN>
+  		<PIN old="NunchukButtonzXY" new="Nunchuk Buttons CZ"> </PIN>
+  		<PIN old="NunchukAccellerationXYZ" new="Nunchuk AccellerationXYZ"> </PIN>
+  		<PIN old="NunchukTiltXYZ" new="Nunchuk Tilt PitchRollYaw"> </PIN>
+  		<PIN old="NunchukJoystickXY" new="Nunchuk JoystickXY"> </PIN>
+  		<PIN old="ClassicCursorXYZW" new="Classic Cursor UpDownLeftRight"> </PIN>
+  		<PIN old="ClassicButtonsXYZW" new="Classic Buttons ABXY"> </PIN>
+  		<PIN old="ClassicSystemXYZ" new="Classic System PlusMinusHome"> </PIN>
+  		<PIN old="ClassicJoystickLeftXY" new="Classic Joystick LeftXY"> </PIN>
+  		<PIN old="ClassicJoystickRightXY" new="Classic Joystick RightXY"> </PIN>
+  		<PIN old="ClassicBackControlXYZW" new="Classic Back Control LeftRightLeftRight"> </PIN>
+  		<PIN old="BalanceBoardWeight" new="Balance Board Weight (kg)"> </PIN>
+  		<PIN old="BalanceBoard_CornersXYZW" new="Balance Board Corners TLTRBLBR"> </PIN>
+  		<PIN old="BalanceBoardCenterOfGravityXY" new="Balance Board Center Of GravityXY"> </PIN>
+  		<PIN old="GuitarButtonsXYZW" new="Guitar Buttons PlusMinusStrumUpStrumDown"> </PIN>
+  		<PIN old="GuitarBars" new="Guitar Color Bar"> </PIN>
+  		<PIN old="GuitarWhammybar" new="Guitar Whammy Bar"> </PIN>
+  		<PIN old="GuitarJoystickXY" new="Guitar JoystickXY"> </PIN>
+    	</NODE>
+  	<NODE old=":PLUGINS:\CVStructuralAnalysis.dll|VVVV.Nodes.FitEllipseNode" new=":PLUGINS:\CVStructuralAnalysis.dll|VVVV.Nodes.FitEllipseNode">
+  		<PIN old="InputXY" new="Input XY"> </PIN>
+  		<PIN old="Bin Size" new="Bin Size X"> </PIN>
+  		<PIN old="CenterXY" new="Center XY"> </PIN>
+  		<PIN old="SizeXY" new="Size XY"> </PIN>
+  		<PIN old="Angle" new="Angle X"> </PIN>
   	</NODE>
-	<NODE old=":PLUGINS:\WiiMotePlugin.dll" new=":PLUGINS:\WiiMotePlugin.dll|VVVV.Nodes.PluginWiiMote">
-		<PIN old="LEDXYZW" new="LED 0123"> </PIN>
-		<PIN old="CursorXYZW" new="Cursor UpDownLeftRight"> </PIN>
-		<PIN old="ButtonsXYZW" new="Buttons AB12"> </PIN>
-		<PIN old="SystemXYZ" new="System PlusMinusHome"> </PIN>
-		<PIN old="AngleXYZ" new="Angle PitchRollYaw"> </PIN>
-		<PIN old="InfraredXYZW" new="Infrared IDXYSize"> </PIN>
-		<PIN old="NunchukButtonzXY" new="Nunchuk Buttons CZ"> </PIN>
-		<PIN old="NunchukAccellerationXYZ" new="Nunchuk AccellerationXYZ"> </PIN>
-		<PIN old="NunchukTiltXYZ" new="Nunchuk Tilt PitchRollYaw"> </PIN>
-		<PIN old="NunchukJoystickXY" new="Nunchuk JoystickXY"> </PIN>
-		<PIN old="ClassicCursorXYZW" new="Classic Cursor UpDownLeftRight"> </PIN>
-		<PIN old="ClassicButtonsXYZW" new="Classic Buttons ABXY"> </PIN>
-		<PIN old="ClassicSystemXYZ" new="Classic System PlusMinusHome"> </PIN>
-		<PIN old="ClassicJoystickLeftXY" new="Classic Joystick LeftXY"> </PIN>
-		<PIN old="ClassicJoystickRightXY" new="Classic Joystick RightXY"> </PIN>
-		<PIN old="ClassicBackControlXYZW" new="Classic Back Control LeftRightLeftRight"> </PIN>
-		<PIN old="BalanceBoardWeight" new="Balance Board Weight (kg)"> </PIN>
-		<PIN old="BalanceBoard_CornersXYZW" new="Balance Board Corners TLTRBLBR"> </PIN>
-		<PIN old="BalanceBoardCenterOfGravityXY" new="Balance Board Center Of GravityXY"> </PIN>
-		<PIN old="GuitarButtonsXYZW" new="Guitar Buttons PlusMinusStrumUpStrumDown"> </PIN>
-		<PIN old="GuitarBars" new="Guitar Color Bar"> </PIN>
-		<PIN old="GuitarWhammybar" new="Guitar Whammy Bar"> </PIN>
-		<PIN old="GuitarJoystickXY" new="Guitar JoystickXY"> </PIN>
+  	<NODE old=":PLUGINS:\CVStructuralAnalysis.dll|VVVV.Nodes.MinimumAreaRectNode" new=":PLUGINS:\CVStructuralAnalysis.dll|VVVV.Nodes.MinimumAreaRectNode">
+  		<PIN old="InputXY" new="Input XY"> </PIN>
+  		<PIN old="Bin Size" new="Bin Size X"> </PIN>
+  		<PIN old="CenterXY" new="Center XY"> </PIN>
+  		<PIN old="SizeXY" new="Size XY"> </PIN>
+  		<PIN old="Angle" new="Angle X"> </PIN>
   	</NODE>
-	<NODE old=":PLUGINS:\CVStructuralAnalysis.dll|VVVV.Nodes.FitEllipseNode" new=":PLUGINS:\CVStructuralAnalysis.dll|VVVV.Nodes.FitEllipseNode">
-		<PIN old="InputXY" new="Input XY"> </PIN>
-		<PIN old="Bin Size" new="Bin Size X"> </PIN>
-		<PIN old="CenterXY" new="Center XY"> </PIN>
-		<PIN old="SizeXY" new="Size XY"> </PIN>
-		<PIN old="Angle" new="Angle X"> </PIN>
-	</NODE>
-	<NODE old=":PLUGINS:\CVStructuralAnalysis.dll|VVVV.Nodes.MinimumAreaRectNode" new=":PLUGINS:\CVStructuralAnalysis.dll|VVVV.Nodes.MinimumAreaRectNode">
-		<PIN old="InputXY" new="Input XY"> </PIN>
-		<PIN old="Bin Size" new="Bin Size X"> </PIN>
-		<PIN old="CenterXY" new="Center XY"> </PIN>
-		<PIN old="SizeXY" new="Size XY"> </PIN>
-		<PIN old="Angle" new="Angle X"> </PIN>
-	</NODE>
   </PATCH>
   <PATCH version="40beta23.1">
-	<NODE old="Change (Animation)">
-	  <PIN old="Bang On Create" olddefault="1"> </PIN>
-	</NODE>
-	<NODE old="Change (String)">
-	  <PIN old="Bang On Create" olddefault="1"> </PIN>
-	</NODE>
-	<NODE old="TogEdge (Animation)">
-	  <PIN old="Bang On Create" olddefault="1"> </PIN>
-	</NODE>
-	<NODE old="Queue (Spreads)" new="Queue (Spreads Legacy)"></NODE>
-	<NODE old="Queue (String)" new="Queue (String Legacy)"></NODE>
-	<NODE old="Cons (Spreads)" new="Cons (Spreads Legacy)"></NODE>
-	<NODE old="Cons (Color)" new="Cons (Color Legacy)"></NODE>
-	<NODE old="Cons (String)" new="Cons (String Legacy)"></NODE>
-	<NODE old="RadioButton (2d GUI)" new="RadioButton (2d GUI)"></NODE>
-	<NODE old="ToggleButton (2d GUI)" new="ToggleButton (2d GUI)"></NODE>
-	<NODE old="Slider (2d GUI)" new="Slider (2d GUI)"></NODE>
-	<NODE old="SliderXY (2d GUI)" new="SliderXY (2d GUI)"></NODE>
-	<NODE old="RotarySlider (2d GUI)" new="RotarySlider (2d GUI)"></NODE>
-	<NODE old="MTToggleButton (2d GUI)" new="ToggleButton (GUI Multitouch)"></NODE>
-	<NODE old="MTSlider (2d GUI)" new="Slider (GUI Multitouch)"></NODE>
-	<NODE old="MTSliderXY (2d GUI)" new="SliderXY (GUI Multitouch)"></NODE>
-	<NODE old="MTRotarySlider (2d GUI)" new="RotarySlider (GUI Multitouch)"></NODE>
+  	<NODE old="Change (Animation)">
+  	  <PIN old="Bang On Create" olddefault="1"> </PIN>
+  	</NODE>
+  	<NODE old="Change (String)">
+  	  <PIN old="Bang On Create" olddefault="1"> </PIN>
+  	</NODE>
+  	<NODE old="TogEdge (Animation)">
+  	  <PIN old="Bang On Create" olddefault="1"> </PIN>
+  	</NODE>
+  	<NODE old="Queue (Spreads)" new="Queue (Spreads Legacy)"></NODE>
+  	<NODE old="Queue (String)" new="Queue (String Legacy)"></NODE>
+  	<NODE old="Cons (Spreads)" new="Cons (Spreads Legacy)"></NODE>
+  	<NODE old="Cons (Color)" new="Cons (Color Legacy)"></NODE>
+  	<NODE old="Cons (String)" new="Cons (String Legacy)"></NODE>
+  	<NODE old="RadioButton (2d GUI)" new="RadioButton (2d GUI)"></NODE>
+  	<NODE old="ToggleButton (2d GUI)" new="ToggleButton (2d GUI)"></NODE>
+  	<NODE old="Slider (2d GUI)" new="Slider (2d GUI)"></NODE>
+  	<NODE old="SliderXY (2d GUI)" new="SliderXY (2d GUI)"></NODE>
+  	<NODE old="RotarySlider (2d GUI)" new="RotarySlider (2d GUI)"></NODE>
+  	<NODE old="MTToggleButton (2d GUI)" new="ToggleButton (GUI Multitouch)"></NODE>
+  	<NODE old="MTSlider (2d GUI)" new="Slider (GUI Multitouch)"></NODE>
+  	<NODE old="MTSliderXY (2d GUI)" new="SliderXY (GUI Multitouch)"></NODE>
+  	<NODE old="MTRotarySlider (2d GUI)" new="RotarySlider (GUI Multitouch)"></NODE>
     <NODE old=":MODULES:\vvvv group\Debug\PerfMeter (Debug).v4p" new=":MODULES:\catweasel\Debug\PerfMeter (Debug).v4p"> </NODE>
   </PATCH>
   <PATCH version="45beta25.1">
     <NODE old="S (Value)">
-      <PIN old="SendString" new="Send String" />
+      <PIN old="SendString" new="Send String"></PIN>
     </NODE>   
     <NODE old="S (String)">
-      <PIN old="SendString" new="Send String" />
+      <PIN old="SendString" new="Send String"></PIN>
     </NODE>
     <NODE old="S (Color)">
-      <PIN old="SendString" new="Send String" />
+      <PIN old="SendString" new="Send String"></PIN>
     </NODE>
     <NODE old="S (Node)">
-      <PIN old="SendString" new="Send String" />
+      <PIN old="SendString" new="Send String"></PIN>
     </NODE>
     <NODE old="R (Value)">
-      <PIN old="ReceiveString" new="Receive String" />
+      <PIN old="ReceiveString" new="Receive String"></PIN>
     </NODE>
     <NODE old="R (String)">
-      <PIN old="ReceiveString" new="Receive String" />
+      <PIN old="ReceiveString" new="Receive String"></PIN>
     </NODE>
     <NODE old="R (Color)">
-      <PIN old="ReceiveString" new="Receive String" />
-	</NODE>
-	<NODE old="R (Node)">
-	  <PIN old="ReceiveString" new="Receive String" />
-	</NODE>
+      <PIN old="ReceiveString" new="Receive String"></PIN>
+  	</NODE>
+  	<NODE old="R (Node)">
+  	  <PIN old="ReceiveString" new="Receive String"></PIN>
+  	</NODE>
   </PATCH>
   <PATCH version="45alpha25.2">
-	<NODE old="String2Enum (Enumerations)">
-	  <PIN old="String Value" olddefault=""> </PIN>
-	</NODE>
-	<NODE old="Info (EX9.Texture)">
-	  <PIN old="Format" new="Format Description"> </PIN>
-	</NODE>
-	<NODE old="Interleave (Spreads)" new="Vector (Spreads Join)"></NODE>
-	<NODE old="Decompose (Transform Vector)" new="Decompose (Transform Vector Legacy)"></NODE>
+  	<NODE old="String2Enum (Enumerations)">
+  	  <PIN old="String Value" olddefault=""> </PIN>
+  	</NODE>
+  	<NODE old="Info (EX9.Texture)">
+  	  <PIN old="Format" new="Format Description"> </PIN>
+  	</NODE>
+  	<NODE old="Interleave (Spreads)" new="Vector (Spreads Join)"></NODE>
+  	<NODE old="Decompose (Transform Vector)" new="Decompose (Transform Vector Legacy)"></NODE>
     <NODE old="Combine (File Path)" new="MakePath (String)"></NODE>
     <NODE old="Pipet (EX9.Texture)" new="Pipet (EX9.Texture Legacy)"></NODE>
     <NODE old="Intersect (3d Mesh Ray)" new="Intersect (3d Mesh Ray Legacy)"></NODE>
-	<NODE old="Intersect (3d Mesh Subset Ray)" new="Intersect (3d Mesh Subset Ray Legacy)"></NODE>
-	<NODE old="Intersect (3d Quad Line)" new="Intersect (3d Quad Line Legacy)"></NODE>
-  <NODE old="Text (EX9)" new="Text (EX9 Legacy)"/>
-  <NODE old=":PLUGINS:\DrawText.dll|VVVV.Nodes.DrawText" new="Text (EX9 Legacy)"/>
+  	<NODE old="Intersect (3d Mesh Subset Ray)" new="Intersect (3d Mesh Subset Ray Legacy)"></NODE>
+  	<NODE old="Intersect (3d Quad Line)" new="Intersect (3d Quad Line Legacy)"></NODE>
+    <NODE old="Text (EX9)" new="Text (EX9 Legacy)"></NODE>
+    <NODE old=":PLUGINS:\DrawText.dll|VVVV.Nodes.DrawText" new="Text (EX9 Legacy)"></NODE>
   </PATCH>
   <PATCH version="45alpha25.3">
-	<NODE old="Renderer (EX9)">
-	  <PIN old="View Transform" new="View" />
-	  <PIN old="Projection Transform" new="Projection" />
-	  <PIN old="Aspect Ratio Transform" new="Aspect Ratio" />
-	  <PIN old="Crop Transform" new="Crop" />
-	  <PIN old="Viewport Transform" new="Viewport" />
-	</NODE>
-	<NODE old="VideoTexture (EX9.Texture VMR9)">
-	  <PIN old="Texture Size Mode" olddefault="Pow2Stretched" />
-	</NODE>
-	<NODE old="VideoTexture (EX9.Texture VMR9 YUVMixingMode)">
-	  <PIN old="Texture Size Mode" olddefault="Pow2Stretched" />
-	</NODE>
-	<NODE old="Integer (Value)" new="Integer (Value Legacy)" />
+  	<NODE old="Renderer (EX9)">
+  	  <PIN old="View Transform" new="View"></PIN>
+  	  <PIN old="Projection Transform" new="Projection"></PIN>
+  	  <PIN old="Aspect Ratio Transform" new="Aspect Ratio"></PIN>
+  	  <PIN old="Crop Transform" new="Crop"></PIN>
+  	  <PIN old="Viewport Transform" new="Viewport"></PIN>
+  	</NODE>
+  	<NODE old="VideoTexture (EX9.Texture VMR9)">
+  	  <PIN old="Texture Size Mode" olddefault="Pow2Stretched"></PIN>
+  	</NODE>
+  	<NODE old="VideoTexture (EX9.Texture VMR9 YUVMixingMode)">
+  	  <PIN old="Texture Size Mode" olddefault="Pow2Stretched"></PIN>
+  	</NODE>
+  	<NODE old="Integer (Value)" new="Integer (Value Legacy)"></NODE>
   </PATCH>
   <PATCH version="45alpha25.4">
     <NODE old="IOBox (Value Advanced)">
-	  <PIN old="Digits" new="Precision" />
+	        <PIN old="Digits" new="Precision"></PIN>
     </NODE>
-	<NODE old="RingBuffer (Spreads)" new="RingBuffer (Spreads Legacy)"></NODE>
-	<NODE old="RingBuffer (String)" new="RingBuffer (String Legacy)"></NODE>
-	<NODE old="Queue (Spreads)">
-	  <PIN old="do Insert" new="Insert" />
-    </NODE>
-	<NODE old="Queue (String)">
-	  <PIN old="do Insert" new="Insert" />
-    </NODE>
-	<NODE old="Queue (Color)">
-	  <PIN old="do Insert" new="Insert" />
-    </NODE>
-	<NODE old="Queue (Transform)">
-	  <PIN old="do Insert" new="Insert" />
-    </NODE>
-	<NODE old="Queue (Enumerations)">
-	  <PIN old="do Insert" new="Insert" />
-    </NODE>
-	<NODE old="Buffer (EX9.Texture)">
-	  <PIN old="Insert" new="Set" />
-    </NODE>
-	<NODE old=":EFFECTS:\Constant_2.0.fx" new="ConstantWrapped (EX9.Effect)" />
-	<NODE old="Constant_2.0 (EX9.Effect)" new="ConstantWrapped (EX9.Effect)" />
-    <NODE old="MP3Parser (File)">
-	  <PIN old="doRead" new="Read" />
-    </NODE>
-	<NODE old="Dir (File Advanced)">
-	  <PIN old="Files" new="Filenames"/>
-	</NODE>
-	<NODE old="SequentialReader (File)">
-	  <PIN old="Path" new="Filename"/>
-	</NODE>
-	<NODE old="HitTest (2d Circle)">
-	  <PIN old="Point ID" new="Point Id"/>
-	  <PIN old="Object ID" new="Object Id"/>
-	</NODE>
-	<NODE old="HitTest (2d Polygon)">
-	  <PIN old="Point ID" new="Point Id"/>
-	  <PIN old="Object ID" new="Object Id"/>
-	</NODE>
-	<NODE old="HitTest (2d Quad)">
-	  <PIN old="Point ID" new="Point Id"/>
-	  <PIN old="Object ID" new="Object Id"/>
-	</NODE>
-	<NODE old="HitTest (2d Superformula)">
-	  <PIN old="Point ID" new="Point Id"/>
-	  <PIN old="Object ID" new="Object Id"/>
-	</NODE>
-  <NODE old="Integral (Spreads)" new="Integral (Spreads Legacy)"/>
-  <NODE old="Differential (Spreads)" new="Differential (Spreads Legacy)"/>
+  	<NODE old="RingBuffer (Spreads)" new="RingBuffer (Spreads Legacy)"></NODE>
+  	<NODE old="RingBuffer (String)" new="RingBuffer (String Legacy)"></NODE>
+  	<NODE old="Queue (Spreads)">
+  	  <PIN old="do Insert" new="Insert"></PIN>
+      </NODE>
+  	<NODE old="Queue (String)">
+  	  <PIN old="do Insert" new="Insert"></PIN>
+      </NODE>
+  	<NODE old="Queue (Color)">
+  	  <PIN old="do Insert" new="Insert"></PIN>
+      </NODE>
+  	<NODE old="Queue (Transform)">
+  	  <PIN old="do Insert" new="Insert"></PIN>
+      </NODE>
+  	<NODE old="Queue (Enumerations)">
+  	  <PIN old="do Insert" new="Insert"></PIN>
+      </NODE>
+  	<NODE old="Buffer (EX9.Texture)">
+  	  <PIN old="Insert" new="Set"></PIN>
+      </NODE>
+  	<NODE old=":EFFECTS:\Constant_2.0.fx" new="ConstantWrapped (EX9.Effect)"></NODE>
+  	<NODE old="Constant_2.0 (EX9.Effect)" new="ConstantWrapped (EX9.Effect)"></NODE>
+      <NODE old="MP3Parser (File)">
+  	  <PIN old="doRead" new="Read"></PIN>
+      </NODE>
+  	<NODE old="Dir (File Advanced)">
+  	  <PIN old="Files" new="Filenames"></PIN>
+  	</NODE>
+  	<NODE old="SequentialReader (File)">
+  	  <PIN old="Path" new="Filename"></PIN>
+  	</NODE>
+  	<NODE old="HitTest (2d Circle)">
+  	  <PIN old="Point ID" new="Point Id"></PIN>
+  	  <PIN old="Object ID" new="Object Id"></PIN>
+  	</NODE>
+  	<NODE old="HitTest (2d Polygon)">
+  	  <PIN old="Point ID" new="Point Id"></PIN>
+  	  <PIN old="Object ID" new="Object Id"></PIN>
+  	</NODE>
+  	<NODE old="HitTest (2d Quad)">
+  	  <PIN old="Point ID" new="Point Id"></PIN>
+  	  <PIN old="Object ID" new="Object Id"></PIN>
+  	</NODE>
+  	<NODE old="HitTest (2d Superformula)">
+  	  <PIN old="Point ID" new="Point Id"></PIN>
+  	  <PIN old="Object ID" new="Object Id"></PIN>
+  	</NODE>
+    <NODE old="Integral (Spreads)" new="Integral (Spreads Legacy)"></NODE>
+    <NODE old="Differential (Spreads)" new="Differential (Spreads Legacy)"></NODE>
   </PATCH>   
   <PATCH version="45alpha26.1">
-	<NODE old="Renderer (EX9)">
-	  <PIN old="Fullscreen Depthbuffer Format" olddefault="NONE" />
-	  <PIN old="Fullscreen Dimensions" olddefault="1024 x 768" />
-	  <PIN old="Fullscreen Antialiasing Quality Level" olddefault="NONE" />
-	  <PIN old="Windowed Depthbuffer Format" olddefault="NONE" />
-	  <PIN old="Windowed Antialiasing Quality Level" olddefault="NONE" />
-	</NODE>
-	<NODE old=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.Phidget_Accelerometer" new="IO (Devices Phidget Accelerometer Legacy)"/>
-	<NODE old=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.PhidgetCircularTouch" new="IO (Devices Phidget CircularTouch Legacy)"/>
-	<NODE old=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.PhidgetEncoder" new="IO (Devices Phidget Encoder HighSpeed Legacy)"/>
-	<NODE old=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.PhidgetInterface" new="IO (Devices Phidget Manager Legacy)"/>
-	<NODE old=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.PhidgetManager" new="IO (Devices Phidget Manager Legacy)"/>
+  	<NODE old="Renderer (EX9)">
+  	  <PIN old="Fullscreen Depthbuffer Format" olddefault="NONE"></PIN>
+  	  <PIN old="Fullscreen Dimensions" olddefault="1024 x 768"></PIN>
+  	  <PIN old="Fullscreen Antialiasing Quality Level" olddefault="NONE"></PIN>
+  	  <PIN old="Windowed Depthbuffer Format" olddefault="NONE"></PIN>
+  	  <PIN old="Windowed Antialiasing Quality Level" olddefault="NONE"></PIN>
+  	</NODE>
+  	<NODE old=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.Phidget_Accelerometer" new="IO (Devices Phidget Accelerometer Legacy)"></NODE>
+  	<NODE old=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.PhidgetCircularTouch" new="IO (Devices Phidget CircularTouch Legacy)"></NODE>
+  	<NODE old=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.PhidgetEncoder" new="IO (Devices Phidget Encoder HighSpeed Legacy)"></NODE>
+  	<NODE old=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.PhidgetInterface" new="IO (Devices Phidget Manager Legacy)"></NODE>
+  	<NODE old=":PLUGINS:\PhidgetInterface.dll|VVVV.Nodes.PhidgetManager" new="IO (Devices Phidget Manager Legacy)"></NODE>
   </PATCH>
-    <PATCH version="45alpha27.1">
-	<NODE old="Info (System ComPorts)">
-	  <PIN old="Refresh" new="Update" />
+  <PATCH version="45alpha27.1">
+  	<NODE old="Info (System ComPorts)">
+  	  <PIN old="Refresh" new="Update"></PIN>
+  	</NODE>
+  	<NODE old="RadioButton (GUI)">
+  	  <PIN old="Tarnsform In" new="Transform In"></PIN>
+  	</NODE>
+  	<NODE old=":PLUGINS:\Gui2d.dll|VVVV.Nodes.RadioButtonNode">
+  		<PIN old="Tarnsform In" new="Transform In"></PIN>
+  	</NODE>
+  	<NODE old="RotarySlider (GUI)">
+  	  <PIN old="Tarnsform In" new="Transform In"></PIN>
+  	</NODE>
+  	<NODE old=":PLUGINS:\Gui2d.dll|VVVV.Nodes.RotarySliderNode">
+  		<PIN old="Tarnsform In" new="Transform In"></PIN>
+  	</NODE>
+  	<NODE old="Slider (GUI)">
+  	  <PIN old="Tarnsform In" new="Transform In"></PIN>
+  	</NODE>
+  	<NODE old=":PLUGINS:\Gui2d.dll|VVVV.Nodes.SliderNode">
+  		<PIN old="Tarnsform In" new="Transform In"></PIN>
+  	</NODE>
+  	<NODE old="SliderXY (GUI)">
+  	  <PIN old="Tarnsform In" new="Transform In"></PIN>
+  	</NODE>
+  	<NODE old=":PLUGINS:\Gui2d.dll|VVVV.Nodes.SliderXYNode">
+  		<PIN old="Tarnsform In" new="Transform In"></PIN>
+  	</NODE>
+  	<NODE old="ToggleButton (GUI)">
+  	  <PIN old="Tarnsform In" new="Transform In"></PIN>
+  	</NODE>
+  	<NODE old=":PLUGINS:\Gui2d.dll|VVVV.Nodes.ToggleButtonNode">
+  		<PIN old="Tarnsform In" new="Transform In"></PIN>
+  	</NODE>
+  	<NODE old="MTRotarySlider (GUI Multitouch)" new="Slider (GUI Multitouch)"></NODE>
+  	<NODE old="MTRotarySlider (GUI Multitouch)" new="SliderXY (GUI Multitouch)"></NODE>
+  	<NODE old="MTRotarySlider (GUI Multitouch)" new="RotarySlider (GUI Multitouch)"></NODE>
+  	<NODE old="MTRotarySlider (GUI Multitouch)" new="ToggleButton (GUI Multitouch)"></NODE>
+  	<NODE old="Delete (SQlite Network)" new="Delete (SQLite Network)"></NODE>
+  	<NODE old="QueryBatch (SQlite Network)" new="QueryBatch (SQLite Network)"></NODE>
+  </PATCH>
+	<PATCH version="45alpha28">
+  	<NODE old="AlphaLevels (EX9.Texture Filter)" new="AlphaLevels (EX9.Texture Filter Legacy)"> </NODE>
+  	<NODE old="PreviewRGBA (EX9.Texture)" new="Preview (EX9.Texture)"> </NODE>
+  	<NODE old="DisplacementMap (EX9.Texture Source)" new="TexCoords (EX9.Texture Source)"> </NODE>
+  	<NODE old="EdgeGlow (EX9.Texture Filter)"><PIN old="Balance" new="Shape"></PIN></NODE>
+  	<NODE old="Renderer (SVG)">
+  	  <PIN old="Layer" new="Layers"></PIN>
+  	</NODE>
+  	<NODE old="Group (SVG)">
+  	  <PIN old="Input Count" new="Layer Count"></PIN>
+  	  <PIN old="Input 1" new="Layer 1"></PIN>
+  	  <PIN old="Input 2" new="Layer 2"></PIN>
+  	  <PIN old="Input 3" new="Layer 3"></PIN>
+  	  <PIN old="Input 4" new="Layer 4"></PIN>
+  	  <PIN old="Input 5" new="Layer 5"></PIN>
+  	  <PIN old="Input 6" new="Layer 6"></PIN>
+  	  <PIN old="Input 7" new="Layer 7"></PIN>
+  	  <PIN old="Input 8" new="Layer 8"></PIN>
+  	  <PIN old="Input 9" new="Layer 9"></PIN>
+  	  <PIN old="Input 10" new="Layer 10"></PIN>
+  	  <PIN old="Input 11" new="Layer 11"></PIN>
+  	  <PIN old="Input 12" new="Layer 12"></PIN>
+  	  <PIN old="Input 13" new="Layer 13"></PIN>
+  	  <PIN old="Input 14" new="Layer 14"></PIN>
+  	  <PIN old="Input 15" new="Layer 15"></PIN>
+  	</NODE>
+  	<NODE old="Mouse (System Global)" new="Mouse (System Global Legacy)"> </NODE>
+  	<NODE old="Mouse (System Window)" new="Mouse (System Window Legacy)"> </NODE>
+  	<NODE old="Keyboard (System Global)" new="Keyboard (System Global Legacy)"> </NODE>
+  	<NODE old="Keyboard (System Window)" new="Keyboard (System Window Legacy)"> </NODE>
+  	<NODE old="Button (3D Mesh)" new="Button (3D Mesh Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\Button (3D Mesh).v4p" new="Button (3D Mesh Legacy)"> </NODE>
+  	<NODE old="Button (3D Quad)" new="Button (3D Quad Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\Button (3D Quad).v4p" new="Button (3D Quad Legacy)"> </NODE>
+  	<NODE old="PickPoints (3D Vector)" new="PickPoints (3D Vector Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\PickPoints (3D Vector).v4p" new="PickPoints (3D Vector Legacy)"> </NODE>
+  	<NODE old="PointEditor (3D)" new="PointEditor (3D Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\PointEditor (3D).v4p" new="PointEditor (3D Legacy)"> </NODE>
+  	<NODE old="PointEditor (3D Persistent)" new="PointEditor (3D Persistent Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\PointEditor (3D Persistent).v4p" new="PointEditor (3D Persistent Legacy)"> </NODE>
+  	<NODE old="PointEditor (3D Persistent Extended)" new="PointEditor (3D Persistent Extended Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\PointEditor (3D Persistent Extended).v4p" new="PointEditor (3D Persistent Extended Legacy)"> </NODE>
+  	<NODE old="PointEditor (3D Persistent Sandwich)" new="PointEditor (3D Persistent Sandwich Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\PointEditor (3D Persistent Sandwich).v4p" new="PointEditor (3D Persistent Sandwich Legacy)"> </NODE>
+  	<NODE old="MeshEditor (EX9)" new="MeshEditor (EX9 Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\EX9\MeshEditor (EX9).v4p" new="MeshEditor (EX9 Legacy)"> </NODE>
+  	<NODE old="TagPoints (3D Vector)" new="TagPoints (3D Vector Legacy)"> </NODE>
+  	<NODE old=":MODULES:\vvvv group\3D\TagPoints (3D Vector).v4p" new="TagPoints (3D Vector Legacy)"> </NODE>
+  	<NODE old="Cursor (DX9)" new="Cursor (DX9 Legacy)"> </NODE>	
+  	<NODE old=":MODULES:\vvvv group\EX9\Cursor (DX9).v4p" new="Cursor (DX9 Legacy)"> </NODE>
+  	<NODE old="KeyMatch (String)" new="Match (String)"> </NODE>
+  	<NODE old="RadioKeyMatch (String)" new="RadioMatch (String)"> </NODE>
+    <NODE old="TimerFlop (Animation)">
+    	<PIN old="Time" olddefault="0"></PIN>
+    </NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.DiffAdvNode" new="Differential (Spreads Vector)">
+      <PIN old="Bin Size" new="Input Bin Size"></PIN>
+    </NODE>
+    <NODE old="Differential (Spreads Advanced)" new="Differential (Spreads Vector)">
+      <PIN old="Bin Size" new="Input Bin Size"></PIN>
+    </NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.IntAdvNode" new="Integral (Spreads Vector)">
+      <PIN old="Bin Size" new="Input Bin Size"></PIN>
+      <PIN old="Include 0 Slice" new="Append Offset"></PIN>
+    </NODE>
+    <NODE old="Integral (Spreads Advanced)" new="Integral (Spreads Vector)">
+      <PIN old="Bin Size" new="Input Bin Size"></PIN>
+      <PIN old="Include 0 Slice" new="Append Offset"></PIN>
+    </NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.AddAdvNode" new="Add (Value Spectral Vector)"></NODE>
+    <NODE old="+ (Value Spectral Advanced)" new="Add (Value Spectral Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.MultiplyAdvNode" new="Multiply (Value Spectral Vector)"></NODE>
+    <NODE old="* (Value Spectral Advanced)" new="Multiply (Value Spectral Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.BoundsAdvNode" new="Bounds (Spectral Vector)"></NODE>
+    <NODE old="Bounds (Spectral Advanced)" new="Bounds (Spectral Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.CARAdvNode" new="CAR (Spreads Vector)"></NODE>
+    <NODE old="CAR (Spreads Advanced)" new="CAR (Spreads Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.CDRAdvNode" new="CDR (Spreads Vector)"></NODE>
+    <NODE old="CDR (Spreads Advanced)" new="CDR (Spreads Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.ReverseAdvNode" new="Reverse (Spreads Vector)"></NODE>
+    <NODE old="Reverse (Spreads Advanced)" new="Reverse (Spreads Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.SelectAdvNode" new="Select (Value Vector)"></NODE>
+    <NODE old="Select (Value Advanced)" new="Select (Value Vector)"></NODE>
+    <NODE old=":PLUGINS:\VectorSized.dll|VVVV.Nodes.ShiftAdvNode" new="Shift (Spreads Vector)"></NODE>
+    <NODE old="Shift (Spreads Advanced)" new="Shift (Spreads Vector)"></NODE>
+    <NODE old="Select (String Advanced)" new="Select (String Bin)"></NODE>
+    <NODE old="Select (Color Advanced)" new="Select (Color Bin)"></NODE>
+    <NODE old="Select (Transform)" new="Select (Transform Bin)"></NODE>
+    <NODE old="Select (Enumerations)" new="Select (Enumerations Bin)"></NODE>
+    <NODE old="DeCons (Spreads)" new="Unzip (Value Bin)">
+      <PIN old="Input Bin Size" olddefault="-1"></PIN>
+    </NODE>
+    <NODE old="DeCons (String)" new="Unzip (String Bin)">
+      <PIN old="Input Bin Size" olddefault="-1"></PIN>
+    </NODE>
+    <NODE old="DeCons (Color)" new="Unzip (Color Bin)">
+      <PIN old="Input Bin Size" olddefault="-1"></PIN>
+    </NODE>
+    <NODE old="DeCons (Transform)" new="Unzip (Transform Bin)">
+      <PIN old="Input Bin Size" olddefault="-1"></PIN>
+    </NODE>
+    <NODE old="DeCons (Enumerations)" new="Unzip (Enumerations Bin)">
+      <PIN old="Input Bin Size" olddefault="-1"></PIN>
+    </NODE>
+  </PATCH>
+  <PATCH version="45alpha28.1">
+    <NODE old="ArduinoFirmata (Devices)" new="ArduinoFirmata (Devices Legacy)"></NODE>
+  </PATCH>
+  <PATCH version="45alpha28.2">
+    <NODE old="UnipolarStepper (Devices Phidget)" new="StepperController (Devices Phidget)"></NODE>
+	<NODE old="Cursor (System)" new="Cursor (System Legacy)"></NODE>
+  </PATCH>
+  <PATCH version="45alpha28.3">
+    <NODE old="Sort (Spreads)">
+	  <PIN old="Algorithm" olddefault="QuickSort"> </PIN>
 	</NODE>
-	<NODE old="RadioButton (GUI)">
-	  <PIN old="Tarnsform In" new="Transform In" />
+	<NODE old="FileStream (DShow9)">
+	  <PIN old="Start Time" new="Loop Start Time"> </PIN>
+	  <PIN old="End Time" new="Loop End Time"> </PIN>
+	  <PIN old="Seek Position" new="Seek Time"> </PIN>
 	</NODE>
-	<NODE old=":PLUGINS:\Gui2d.dll|VVVV.Nodes.RadioButtonNode">
-		<PIN old="Tarnsform In" new="Transform In" />
+	<NODE old="FileStream2 (DShow9)">
+	  <PIN old="Start Time" new="Loop Start Time"> </PIN>
+	  <PIN old="End Time" new="Loop End Time"> </PIN>
+	  <PIN old="Seek Position" new="Seek Time"> </PIN>
+	</NODE>	
+	<NODE old="FileStream (DShow9 Boygroup)">
+	  <PIN old="Start Time" new="Loop Start Time"> </PIN>
+	  <PIN old="End Time" new="Loop End Time"> </PIN>
+	  <PIN old="Seek Position" new="Seek Time"> </PIN>
 	</NODE>
-	<NODE old="RotarySlider (GUI)">
-	  <PIN old="Tarnsform In" new="Transform In" />
-	</NODE>
-	<NODE old=":PLUGINS:\Gui2d.dll|VVVV.Nodes.RotarySliderNode">
-		<PIN old="Tarnsform In" new="Transform In" />
-	</NODE>
-	<NODE old="Slider (GUI)">
-	  <PIN old="Tarnsform In" new="Transform In" />
-	</NODE>
-	<NODE old=":PLUGINS:\Gui2d.dll|VVVV.Nodes.SliderNode">
-		<PIN old="Tarnsform In" new="Transform In" />
-	</NODE>
-	<NODE old="SliderXY (GUI)">
-	  <PIN old="Tarnsform In" new="Transform In" />
-	</NODE>
-	<NODE old=":PLUGINS:\Gui2d.dll|VVVV.Nodes.SliderXYNode">
-		<PIN old="Tarnsform In" new="Transform In" />
-	</NODE>
-	<NODE old="ToggleButton (GUI)">
-	  <PIN old="Tarnsform In" new="Transform In" />
-	</NODE>
-	<NODE old=":PLUGINS:\Gui2d.dll|VVVV.Nodes.ToggleButtonNode">
-		<PIN old="Tarnsform In" new="Transform In" />
-	</NODE>
-	<NODE old="MTRotarySlider (GUI Multitouch)" new="Slider (GUI Multitouch)" />
-	<NODE old="MTRotarySlider (GUI Multitouch)" new="SliderXY (GUI Multitouch)" />
-	<NODE old="MTRotarySlider (GUI Multitouch)" new="RotarySlider (GUI Multitouch)" />
-	<NODE old="MTRotarySlider (GUI Multitouch)" new="ToggleButton (GUI Multitouch)" />
-	
-	<NODE old="Delete (SQlite Network)" new="Delete (SQLite Network)" />
-	<NODE old="QueryBatch (SQlite Network)" new="QueryBatch (SQLite Network)" />
-
-	
+	<NODE old="FileStream2 (DShow9 Boygroup)">
+	  <PIN old="Start Time" new="Loop Start Time"> </PIN>
+	  <PIN old="End Time" new="Loop End Time"> </PIN>
+	  <PIN old="Seek Position" new="Seek Time"> </PIN>
+	</NODE>	
+	<NODE old="FileStream (Bass)">
+	  <PIN old="Start Time" new="Loop Start Time"> </PIN>
+	  <PIN old="End Time" new="Loop End Time"> </PIN>
+	  <PIN old="Seek Position" new="Seek Time"> </PIN>
+	</NODE>	
+	<NODE old=":PLUGINS:\Irrklang.dll|VVVV.Nodes.Irrklang" new="Irrklang (Sound Legacy)"></NODE>
+	<NODE old="Irrklang (Sound)" new="Irrklang (Sound Legacy)"></NODE>
+  </PATCH>
+  <PATCH version="45alpha28.4">
+	<NODE old="Reader (File)" new="Reader (String)">
+		<PIN old="Encoding" olddefault="System Default"> </PIN>
+	</NODE>	
+	<NODE old="Writer (File)" new="Writer (String)">
+		<PIN old="Encoding" olddefault="System Default"> </PIN>
+	</NODE>	
+	<NODE old="UDP (Network Client)" new="UDP (Network Client String)"></NODE>	
+	<NODE old="UDP (Network Server)" new="UDP (Network Server String)"></NODE>	
+	<NODE old="TCP (Network Client)" new="TCP (Network Client String)"></NODE>	
+	<NODE old="TCP (Network Server)" new="TCP (Network Server String)"></NODE>	
+	<NODE old="RS232 (Devices)" new="RS232 (Devices String)"></NODE>	
+	<NODE old="RadioButton (GUI)" new="RadioButton (GUI Legacy)"></NODE>
+	<NODE old="ToggleButton (GUI)" new="ToggleButton (GUI Legacy)"></NODE>
+	<NODE old="Slider (GUI)" new="Slider (GUI Legacy)"></NODE>
+	<NODE old="RotarySlider (GUI)" new="RotarySlider (GUI Legacy)"></NODE>
+	<NODE old="SliderXY (GUI)" new="SliderXY (GUI Legacy)"></NODE>
+  </PATCH>
+  <PATCH version="45alpha28.5">
+	  <NODE old="PictureStack (EX9.Texture)" new="PictureStack (EX9.Texture Legacy)"></NODE>
+	  <NODE old="PictureStack (EX9.Texture Position)" new="PictureStack (EX9.Texture Position Legacy)"></NODE>
+	  <NODE old="HTTP (Network Get)" new="HTTP (Network Get String)">
+		<PIN old="Encoding" olddefault="System Default"> </PIN>
+	  </NODE>
+	  <NODE old="HTTP (Network Post)" new="HTTP (Network Post String)">
+		<PIN old="Encoding" olddefault="System Default"> </PIN>
+	  </NODE>
+	  <NODE old="DynamicTexture (EX9.Texture String)" new="DynamicTexture (EX9.Texture String Legacy)"></NODE>
+	  <NODE old="OSCEncoder (Network)" new="OSCEncoder (Network String Legacy)"></NODE>
+	  <NODE old="OSCDecoder (Network)" new="OSCDecoder (Network String Legacy)"></NODE>
+  </PATCH>
+  <PATCH version="45alpha28.6">
+	  <NODE old="Vector (Spreads Join)" new="Zip (Value)"></NODE>
+	  <NODE old="Vector (Spreads Split)" new="Unzip (Value)"></NODE>
+	  <NODE old="FileStream (VLC)" new="FileStream (EX9.Texture VLC)"></NODE>  
+	  <NODE old="TopLeftPix (Transform)" new="TopLeftPix (Transform Legacy)"></NODE>
+  </PATCH>   
+  <PATCH version="45alpha29.1">
+	  <NODE old="QRCodeTexture (EX9.Texture)" new="QRCode (EX9.Texture)"></NODE>
+	  <NODE old="OpenFileDialog (File)" new="Dialog (File Open)">
+		<PIN old="Do Open" new="Open"> </PIN>	
+	  </NODE>
+	  <NODE old="MultiScreen (EX9 Spanmode)" new="MultiScreen (EX9 Spanmode Legacy)"></NODE>
+	  <NODE old="MidiCtlOut (Devices)" new="MidiControllerOut (Devices)"></NODE>
+	  <NODE old="MidiPgmOut (Devices)" new="MidiProgramOut (Devices)"></NODE>
+	  <NODE old="Select (Node)">
+		<PIN old="Input Node" new="Input"> </PIN>
+		<PIN old="Output Node" new="Output"> </PIN>
+	  </NODE>
+	  <NODE old="Reader (File Advanced)" new="Reader (String Advanced)">
+		<PIN old="Ansi/UTF8" new="Encoding"></PIN>
+		<PIN old="Update" new="Read"></PIN>
+	  </NODE>
+    <NODE old="FirmataEncode (Devices 2.x)" new="FirmataEncode (Devices 2.x Legacy)"></NODE>
+    <NODE old="FirmataDecode (Devices 2.x)" new="FirmataDecode (Devices 2.x Legacy)"></NODE>
+    <NODE old="I2CDecode (Devices 2.x)" new="I2CDecode (Devices 2.x Legacy)"></NODE>
+    <NODE old="Arduino (Devices StandardFirmata 2.x)">
+      <PIN old="SampleRate" new="Samplerate"></PIN>
+      <PIN old="PinModes" new="Pin Modes"></PIN>
+      <PIN old="ReportAnalog" new="Report Analog Pins"></PIN>
+      <PIN old="ReportDigital" new="Report Digital Pins"></PIN>
+      <PIN old="Analog" new="Analog In"></PIN>
+      <PIN old="Digital" new="Digital In"></PIN>
+      <PIN old="OnData" new="On Data"></PIN>
+      <PIN old="Firmwareversion" new="Firmware Version"></PIN>
+    </NODE>
   </PATCH>
 </CONVVVVERTER>

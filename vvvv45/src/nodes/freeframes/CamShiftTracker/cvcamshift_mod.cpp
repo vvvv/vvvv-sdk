@@ -38,8 +38,7 @@
 // the use of this software, even if advised of the possibility of such damage.
 //
 //M*/
-#include "cv.h"
-
+#include <opencv/cv.h>
 
 /*F///////////////////////////////////////////////////////////////////////////////////////
 //    Name:    cvMeanShift
@@ -97,7 +96,7 @@ cvMeanShift_mod( const void* imgProb, CvRect windowIn,
         int dx, dy, nx, ny;
         double inv_m00;
 
-        CV_CALL( cvGetSubRect( mat, &cur_win, cur_rect )); 
+        CV_CALL( cvGetSubRect( mat, &cur_win, cur_rect ));
         CV_CALL( cvMoments( &cur_win, &moments ));
 
         /* Calculating center of mass */
@@ -169,8 +168,8 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
                 int iwidth,
                 int iheight,
                 int * first_round,
-                float* angledamp, 
-                float* lastangle, 
+                float* angledamp,
+                float* lastangle,
                 float* angleoffset,
                 float* area,
                 float is_scaled )
@@ -186,12 +185,12 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
     int itersUsed = 0;
     CvConnectedComp comp;
     CvMat  cur_win, stub, *mat = (CvMat*)imgProb;
-    
+
     /* <- MOD */
     double inratio = (float) iheight / (float) iwidth;
     double theta_mod = 0;
     /* MOD -> */
-    
+
     CV_FUNCNAME( "cvCamShift" );
 
     comp.rect = windowIn;
@@ -223,7 +222,7 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
 
     /* Calculating moments in new center mass */
     cvMoments( &cur_win, &moments );
-    
+
     m00 = moments.m00;
     m10 = moments.m10;
     m01 = moments.m01;
@@ -246,12 +245,12 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
 
     /* Calculating orientation */
     theta = atan2( 2 * b, a - c + square );
-    
+
     /* <- MOD */
     if (is_scaled) theta_mod = atan2( (2 * b)/ inratio, a - c + square );
     else theta_mod=theta;
     /* MOD -> */
-    
+
     /* Calculating width & length of figure */
     cs = cos( theta );
     sn = sin( theta );
@@ -265,7 +264,7 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
     if( length < width )
     {
         double t;
-        
+
         CV_SWAP( length, width, t );
         CV_SWAP( cs, sn, t );
         /* <- MOD */
@@ -277,7 +276,7 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
     if( _comp || box )
     {
         int t0, t1;
-        int _xc = cvRound( xc ); 
+        int _xc = cvRound( xc );
         int _yc = cvRound( yc );
 
         t0 = cvRound( fabs( length * cs ));
@@ -304,49 +303,49 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
 
     if( _comp )
         *_comp = comp;
-    
+
     if( box )
     {
         /* <- MOD */
-        
+
         // -> scaling of object proportions with image proportions //
-        box->size.width   = (width/(float)iwidth)/inratio ;  
+        box->size.width   = (width/(float)iwidth)/inratio ;
         box->size.height  = (length/(float)iheight);
-        
+
         // -> if scaled option is set, compensation of factor Ratio(image)/Ratio(vvvv) //
         if (is_scaled)
            {
-            box->size.width  += box->size.width*(inratio-1.0)*fabs(sin(theta_mod));//*sin(theta_mod);  
-            box->size.height += box->size.height*(inratio-1.0)*fabs(cos(theta_mod));//*cos(theta_mod); 
+            box->size.width  += box->size.width*(inratio-1.0)*fabs(sin(theta_mod));//*sin(theta_mod);
+            box->size.height += box->size.height*(inratio-1.0)*fabs(cos(theta_mod));//*cos(theta_mod);
             box->center = cvPoint2D32f( ((comp.rect.x +  (comp.rect.width - iwidth)*0.5f) / iwidth) ,
-                                            (comp.rect.y + (comp.rect.height- iheight)*0.5f) / iheight  );        
+                                            (comp.rect.y + (comp.rect.height- iheight)*0.5f) / iheight  );
            }
-         
+
         else
            {
             box->center = cvPoint2D32f( ((comp.rect.x +  (comp.rect.width - iwidth)*0.5f) / iwidth)/inratio ,
-                                         (comp.rect.y + (comp.rect.height- iheight)*0.5f) / iheight  );    
-           }                         
+                                         (comp.rect.y + (comp.rect.height- iheight)*0.5f) / iheight  );
+           }
         box->angle = (float) theta_mod;
-        
+
         // -> Second part of mapping the rotation angle //
-        // -> + damping  // 
-        
-        box->angle /= 2*CV_PI;   
-        if (*first_round) 
-           {       
+        // -> + damping  //
+
+        box->angle /= 2*CV_PI;
+        if (*first_round)
+           {
             *angleoffset = 0;
             *lastangle = box->angle;
             *first_round=0;
            }
         else
            {
-            if (box->angle-*lastangle < -0.4 ) *angleoffset+= 0.5; 
-            else { if (box->angle-*lastangle > 0.4) *angleoffset-= 0.5; } 
+            if (box->angle-*lastangle < -0.4 ) *angleoffset+= 0.5;
+            else { if (box->angle-*lastangle > 0.4) *angleoffset-= 0.5; }
            }
         *angledamp = box->angle + *angleoffset;
-        *lastangle = box->angle; // Update History           
-        *area = m00/ ( (float)iwidth*(float)iheight );                            
+        *lastangle = box->angle; // Update History
+        *area = m00/ ( (float)iwidth*(float)iheight );
         /* MOD ->*/
     }
 

@@ -1220,8 +1220,8 @@ namespace VVVV.Nodes
 		
 		private void TransformationChangedCB(double Translation, double Scaling)
 		{
-			FTranslateInput.SetValue(0, Translation);
-			FScaleInput.SetValue(0, Scaling);
+			FTranslateInput.SetValue(0, Math.Round(Translation, 4));
+			FScaleInput.SetValue(0, Math.Round(Scaling, 4));
 		}
 
 		void StopButtonClick(object sender, EventArgs e)

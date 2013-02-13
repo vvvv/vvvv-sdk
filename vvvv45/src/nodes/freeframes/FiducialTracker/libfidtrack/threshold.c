@@ -1,6 +1,7 @@
 /*
   Fiducial tracking library.
   Copyright (C) 2004 Ross Bencina <rossb@audiomulch.com>
+  Maintainer (C) 2005-2008 Martin Kaltenbrunner <mkalten@iua.upf.edu>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -106,7 +107,7 @@ void simple_adaptive_threshold( const unsigned char *source, int source_stride,
     }
 }
 
-
+#if 1
 void overlapped_adaptive_threshold( const unsigned char *source, int source_stride,
         unsigned char *dest,
         int width, int height,
@@ -163,9 +164,9 @@ void overlapped_adaptive_threshold( const unsigned char *source, int source_stri
             fsd = (double)sd / (double)count;
             //fsd = sqrt( fsd );
 
-            if( fsd < 10 * 10 )
+            if( fsd < 100 )
                 //mean = 128;
-                mean -= 20;
+                mean -= 10;
 
 
             
@@ -197,7 +198,7 @@ void overlapped_adaptive_threshold( const unsigned char *source, int source_stri
         }
     }
 }
-
+#endif
 
 #if 0
 void overlapped_adaptive_threshold( const unsigned char *source, int source_stride,

@@ -15,12 +15,14 @@ using System.ComponentModel.Composition.Hosting;
 
 namespace VVVV.Hosting.Factories
 {
+    [ComVisible(false)]
     public class StartableInfo
     {
         public Type Type { get; set; }
         public string Name { get; set; }
     }
 
+    [ComVisible(false)]
     public class StartableStatus : IStartableStatus
     {
         public IStartable Startable { get; set; }
@@ -72,8 +74,10 @@ namespace VVVV.Hosting.Factories
             get { return FStarted; }
         }
 
-        [Import()]
-        ILogger FLogger;
+#pragma warning disable 0649
+        [Import]
+        ILogger FLogger; 
+#pragma warning restore
 
         [ImportingConstructor]
         public StartableRegistry(CompositionContainer parentContainer)
@@ -178,6 +182,11 @@ namespace VVVV.Hosting.Factories
                     FProcessedAssemblies.Add(assembly.FullName);
                 }
             }
+        }
+
+        public bool ContainsStartable(Assembly assembly)
+        {
+            return FStartable.ContainsKey(assembly.FullName);
         }
 
         public void ShutDown()

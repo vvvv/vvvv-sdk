@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace VVVV.Nodes
@@ -8,11 +8,6 @@ namespace VVVV.Nodes
 	/// </summary>
 	public class MapInterval
 	{
-		public enum TMapType
-		{
-			Float, Wrap, Mirror, Clamp
-		};
-		
 		private List<double> inPts;
 		private List<double> inDiff;
 		
@@ -28,29 +23,29 @@ namespace VVVV.Nodes
 			outDiff = new List<double>(GetDiff(OutBpts));
 		}
 		
-		public double DoMap(double Input, TMapType EnumIn)
+		public double DoMap(double Input, int EnumIn)
 		{
 			int incr=0;
 			double factor=0;
 			switch (EnumIn)
 			{
-				case TMapType.Clamp:
+				case 3:
 					Input=Math.Max(Input, inPts[0]);
 					Input=Math.Min(Input, inPts[inPts.Count-1]);
 					break;
-				case TMapType.Wrap:
-					double wFactor = inPts[inPts.Count-1]-inPts[0];
-					Input = (Input-inPts[0])/wFactor;
-					Input = Input%1;
-					Input = inPts[0]+(Input*wFactor);
-					break;
-				case TMapType.Mirror:
+				case 2:
 					double mFactor = inPts[inPts.Count-1]-inPts[0];
 					Input = (Input-inPts[0])/mFactor;
 					Input = Input%2;
 					if (Input>1.0)
 						Input=2.0-Input;
 					Input = inPts[0]+(Input*mFactor);
+					break;
+				case 1:
+					double wFactor = inPts[inPts.Count-1]-inPts[0];
+					Input = (Input-inPts[0])/wFactor;
+					Input = Input%1;
+					Input = inPts[0]+(Input*wFactor);
 					break;
 				default:
 					break;

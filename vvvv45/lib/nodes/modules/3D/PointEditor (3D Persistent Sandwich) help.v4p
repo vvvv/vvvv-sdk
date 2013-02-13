@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
-   <PATCH nodename="A:\vvvv\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Sandwich) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Sandwich) help.v4p">
    <BOUNDS height="10035" left="135" top="135" type="Window" width="14325">
    </BOUNDS>
    <NODE componentmode="InABox" id="42" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Edit a point cloud persitently via mouse and keyboard within the ex9 renderer. Trigger Load / Save to do the disk operation. The Sandwich technique allows you edit points on a client of a Boygroup or to modify the points additionally.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Edit a point cloud persitently via mouse and keyboard within the ex9 renderer. Trigger Load / Save to do the disk operation. The Sandwich technique allows you edit points on a client of a Boygroup or to modify the points additionally.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|PointEditor - 3d Persistent Sandwich|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|PointEditor - 3d Persistent Sandwich|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -32,7 +32,7 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="40" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="40" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6195" top="1080" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="12425" top="5953" type="Window" width="215">
@@ -49,7 +49,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Reset" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Reset">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -60,16 +60,16 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="38" managers="" nodename="Renderer (EX9)" stayontop="0" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="38" managers="" nodename="Renderer (EX9)" stayontop="0" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="8595" top="8475" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="5625" left="14445" top="135" type="Window" width="7140">
+   <BOUNDS height="5625" left="14445" top="0" type="Window" width="7140">
    </BOUNDS>
    <BOUNDS height="1800" left="8595" top="8475" type="Box" width="2400">
    </BOUNDS>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Depth Buffer">
    </PIN>
@@ -87,6 +87,16 @@
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
    </NODE>
    <NODE id="37" nodename="AspectRatio (Transform)" systemname="AspectRatio (Transform)">
    <BOUNDS height="0" left="9855" top="960" type="Node" width="0">
@@ -96,18 +106,6 @@
    <PIN pinname="Aspect Height" slicecount="1" values="3">
    </PIN>
    <PIN pinname="Aspect Width" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <NODE id="36" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="0" left="11070" top="1275" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Z" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="35" managers="boygroup" nodename="VertexBuffer (EX9.Geometry Split)" systemname="VertexBuffer (EX9.Geometry Split)">
@@ -190,18 +188,6 @@
    <PIN pinname="Apply" visible="1">
    </PIN>
    </NODE>
-   <NODE id="31" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="0" left="11835" top="1275" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Z" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="30" managers="boygroup" nodename="Teapot (EX9.Geometry)" systemname="Teapot (EX9.Geometry)">
    <BOUNDS height="0" left="5865" top="2160" type="Node" width="0">
    </BOUNDS>
@@ -232,7 +218,7 @@
    <PIN pinname="XYZ Transformed" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="28" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="28" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8100" top="1185" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="12810" top="5310" type="Window" width="215">
@@ -243,7 +229,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|point size|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|point size|">
    </PIN>
    </NODE>
    <LINK dstnodeid="29" dstpinname="XYZ UnTransformed" srcnodeid="28" srcpinname="Y Output Value">
@@ -263,7 +249,7 @@
    <LINK dstnodeid="35" dstpinname="Vertex Buffer" srcnodeid="27" srcpinname="Vertex Buffer">
    </LINK>
    <NODE id="26" nodename="Mouse (System Window)" systemname="Mouse (System Window)">
-   <BOUNDS height="0" left="11385" top="810" type="Node" width="0">
+   <BOUNDS height="0" left="7500" top="3585" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -276,16 +262,6 @@
    <PIN pinname="Right Button" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="36" dstpinname="X" srcnodeid="26" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="36" dstpinname="Y" srcnodeid="26" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="X" srcnodeid="26" srcpinname="Left Button">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Y" srcnodeid="26" srcpinname="Middle Button">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Z" srcnodeid="26" srcpinname="Right Button">
-   </LINK>
    <NODE id="25" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
    <BOUNDS height="0" left="9240" top="1380" type="Node" width="0">
    </BOUNDS>
@@ -304,7 +280,7 @@
    </LINK>
    <LINK dstnodeid="32" dstpinname="Vertex Buffer" srcnodeid="33" srcpinname="Vertex Buffer">
    </LINK>
-   <NODE componentmode="InABox" id="24" managers="boygroup" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="24" managers="boygroup" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8235" top="5790" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="12725" top="6253" type="Window" width="215">
@@ -323,7 +299,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Apply" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Apply">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -395,7 +371,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|This demo shows how to edit vertices of a mesh with the PointEditor in a boygroup|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|This demo shows how to edit vertices of a mesh with the PointEditor in a boygroup|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -413,7 +389,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|also check out the other versions of PointEditor...|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|also check out the other versions of PointEditor...|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -437,27 +413,37 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Think of that you have a Boygroup and want to edit some geometry on a client.&cr;&lf;You might want to that because you try to match real and virtual architecture.&cr;&lf;&cr;&lf;For that you want to be able to edit the mesh at the same time both on the server and on the client. &cr;&lf;For instance control points projected somewhere in the room might not be visible and you therefore you need to be able to look on your control monitor and do the modification there...&cr;&lf;&cr;&lf;The Sandwich technique allows to control the data on the server and send it each frame to the client via standard boygroup techniques - each connection from a grey node to a blue node is transitted each frame when changed.&cr;&lf;&cr;&lf;That way point data stays in sync.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;However there might be other uses of feeding point data back into the PointEditor node?!|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Think of that you have a Boygroup and want to edit some geometry on a client.&cr;&lf;You might want to that because you try to match real and virtual architecture.&cr;&lf;&cr;&lf;For that you want to be able to edit the mesh at the same time both on the server and on the client. &cr;&lf;For instance control points projected somewhere in the room might not be visible and you therefore you need to be able to look on your control monitor and do the modification there...&cr;&lf;&cr;&lf;The Sandwich technique allows to control the data on the server and send it each frame to the client via standard boygroup techniques - each connection from a grey node to a blue node is transitted each frame when changed.&cr;&lf;&cr;&lf;That way point data stays in sync.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;However there might be other uses of feeding point data back into the PointEditor node?!|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="15" managers="boygroup" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="15" managers="boygroup" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="10695" top="8505" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="4860" left="14490" top="7455" type="Window" width="6120">
+   <BOUNDS height="4860" left="14460" top="5640" type="Window" width="6120">
    </BOUNDS>
    <BOUNDS height="1800" left="10695" top="8505" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Video Out|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Video Out|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="13" managers="boygroup" nodename="Group (EX9)" systemname="Group (EX9)">
@@ -513,14 +499,14 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|feed server point data back to client|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|feed server point data back to client|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8025" top="2685" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="13325" top="6853" type="Window" width="215">
@@ -541,7 +527,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Edit in Video Out|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Edit in Video Out|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -603,14 +589,14 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|that&apos;s how it is supposed to work. please report back if its working...|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|that&apos;s how it is supposed to work. please report back if its working...|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="3" managers="boygroup" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="3" managers="boygroup" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <BOUNDS height="0" left="9990" top="3930" type="Node" width="0">
@@ -633,14 +619,14 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Save" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Save">
    </PIN>
    <PIN pinname="Aspect Ratio">
    </PIN>
    </NODE>
    <LINK dstnodeid="1" dstpinname="Input 1" srcnodeid="2" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="2" managers="boygroup" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" managers="boygroup" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <BOUNDS height="0" left="10590" top="3930" type="Node" width="0">
@@ -659,7 +645,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Load" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Load">
    </PIN>
    <PIN pinname="Aspect Ratio">
    </PIN>
@@ -730,9 +716,9 @@
    <PIN pinname="Initial Pitch" slicecount="1" values="1.00613961606655E-016">
    </PIN>
    </NODE>
-   <LINK dstnodeid="38" dstpinname="View Transform" srcnodeid="46" srcpinname="View">
+   <LINK dstnodeid="38" dstpinname="View" srcnodeid="46" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="38" dstpinname="Projection Transform" srcnodeid="46" srcpinname="Projection">
+   <LINK dstnodeid="38" dstpinname="Projection" srcnodeid="46" srcpinname="Projection">
    </LINK>
    <LINK dstnodeid="46" dstpinname="Distortion" srcnodeid="25" srcpinname="Transform Out">
    </LINK>
@@ -778,9 +764,9 @@
    </LINK>
    <LINK dstnodeid="49" dstpinname="Transform" hiddenwhenlocked="0" srcnodeid="11" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="View Transform" hiddenwhenlocked="0" srcnodeid="49" srcpinname="View">
+   <LINK dstnodeid="15" dstpinname="View" hiddenwhenlocked="0" srcnodeid="49" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="Projection Transform" hiddenwhenlocked="0" srcnodeid="49" srcpinname="Projection">
+   <LINK dstnodeid="15" dstpinname="Projection" hiddenwhenlocked="0" srcnodeid="49" srcpinname="Projection">
    </LINK>
    <LINK dstnodeid="8" dstpinname="Transform In 1" srcnodeid="49" srcpinname="View">
    </LINK>
@@ -791,15 +777,17 @@
    </BOUNDS>
    <BOUNDS height="3600" left="7695" top="4890" type="Box" width="4800">
    </BOUNDS>
-   <BOUNDS height="8565" left="10155" top="5865" type="Window" width="18645">
+   <BOUNDS height="13425" left="10155" top="1005" type="Window" width="18645">
    </BOUNDS>
+   <PIN pinname="Mouse Down" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Mouse XYZ" slicecount="3" values="-0.674518201284797,0.948571428571429,0">
+   </PIN>
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="50" dstpinname="Mouse Down" hiddenwhenlocked="1" srcnodeid="31" srcpinname="XYZ">
-   </LINK>
-   <LINK dstnodeid="50" dstpinname="Mouse XYZ" hiddenwhenlocked="1" srcnodeid="36" srcpinname="XYZ">
-   <LINKPOINT x="11115" y="2145">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="50" dstpinname="Init" linkstyle="Bezier" srcnodeid="40" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="50" dstpinname="Point Size" srcnodeid="29" srcpinname="XYZ Transformed">
@@ -845,5 +833,37 @@
    <LINK dstnodeid="50" dstpinname="Save" hiddenwhenlocked="1" srcnodeid="3" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="50" dstpinname="Load" hiddenwhenlocked="1" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE systemname="MouseState (System Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseState (System Join)" componentmode="Hidden" id="52" managers="boygroup">
+   <BOUNDS type="Node" left="7500" top="4080" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="X" dstnodeid="52" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Y" dstnodeid="52" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Left Button" dstnodeid="52" dstpinname="Left Button">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Middle Button" dstnodeid="52" dstpinname="Middle Button">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Right Button" dstnodeid="52" dstpinname="Right Button">
+   </LINK>
+   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="50" dstpinname="Mouse State">
+   </LINK>
+   <LINK srcnodeid="52" srcpinname="Mouse" dstnodeid="50" dstpinname="Mouse">
    </LINK>
    </PATCH>

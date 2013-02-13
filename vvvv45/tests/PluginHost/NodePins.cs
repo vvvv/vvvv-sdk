@@ -68,5 +68,10 @@ namespace Hoster
 		{
 			FTheInterface = TheInterface;
 		}
+	    
+        public void SetConnectionHandler(IConnectionHandler handler, object source)
+        {
+            throw new NotImplementedException();
+        }
 	}	
 }

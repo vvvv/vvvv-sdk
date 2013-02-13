@@ -1,6 +1,7 @@
 /*
   Fiducial tracking library.
   Copyright (C) 2004 Ross Bencina <rossb@audiomulch.com>
+  Maintainer (C) 2005-2008 Martin Kaltenbrunner <mkalten@iua.upf.edu>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -65,7 +66,7 @@ static void init_min_max( unsigned char *min_max_dest, int count )
 {
     int i;
 
-    for( i = 0; i < count; ++i ){
+    for( i = count; i > 0; --i ){
         min_max_dest[0] = 255;
         min_max_dest[1] = 0;
         min_max_dest += 2;
@@ -80,7 +81,14 @@ static void compute_span_min_max( unsigned char *min_max_dest,
     unsigned char min = min_max_dest[0];
     unsigned char max = min_max_dest[1];
 
-    for( i=0; i < count; ++i ){
+
+    for( i=count; i > 0; --i ){
+		if( *source < min ) min = *source;
+		else if( *source > max ) max = *source;
+        source += source_stride;
+    }
+/*
+    for( i=count; i > 0; --i ){
         unsigned char x = *source;
         source += source_stride;
 
@@ -89,7 +97,7 @@ static void compute_span_min_max( unsigned char *min_max_dest,
         else if( x > max )
             max = x;
     }
-
+*/
     min_max_dest[0] = min;
     min_max_dest[1] = max;
 }
@@ -100,11 +108,11 @@ static void compute_multiple_spans_min_max( unsigned char *min_max_dest,
         int vector_size, int span_count )
 {
     int i;
-
-    for( i=0; i < span_count; ++i ){
+	int increment = vector_size * source_stride;
+    for( i=span_count; i > 0 ; --i ){
         compute_span_min_max( min_max_dest, source, source_stride, vector_size );
         min_max_dest += 2;
-        source += vector_size * source_stride;
+        source += increment;
     }
 }
 
@@ -137,30 +145,31 @@ static void compute_frame_min_max_tiles( unsigned char *min_max_dest,
     int full_block_count = (height - first_block_height) / tile_size;
     int last_block_height = height - first_block_height - (full_block_count * tile_size );
     int i, j;
-
+	int increment = source_stride * width;
+	
     init_min_max( min_max_dest, full_span_count + 2 );
-    for( i=0; i < first_block_height; ++i ){
+    for( i= first_block_height; i > 0; --i ){
         compute_line_min_max_spans( min_max_dest, source, source_stride,
                 first_vector_size, full_span_count, last_vector_size, tile_size );
-        source += source_stride * width;
+        source += increment;
     }
     min_max_dest += 2 * (full_span_count + 2);
 
-    for( i=0; i < full_block_count; ++i ){
+    for( i=full_block_count; i > 0 ; --i ){
         init_min_max( min_max_dest, full_span_count + 2 );
-        for( j=0; j < tile_size; ++j ){
+        for( j= tile_size; j > 0; --j ){
             compute_line_min_max_spans( min_max_dest, source, source_stride,
                     first_vector_size, full_span_count, last_vector_size, tile_size );
-            source += source_stride * width;
+            source += increment;
         }
         min_max_dest += 2 * (full_span_count + 2);
     }
 
     init_min_max( min_max_dest, full_span_count + 2 );
-    for( i=0; i < last_block_height; ++i ){
+    for( i=last_block_height; i > 0 ; --i ){
         compute_line_min_max_spans( min_max_dest, source, source_stride,
                 first_vector_size, full_span_count, last_vector_size, tile_size );
-        source += source_stride * width;
+        source += increment;
     }
 }
 
@@ -173,7 +182,7 @@ static void compute_row_thresholds( unsigned char *thresholds_dest,
     unsigned char min_a, max_a, min_b, max_b;
 	unsigned char test_threshold;
 
-    for( i = 0; i < count; ++i ){
+    for( i = count; i > 0 ; --i ){
         min_a = min_max_a[0];
         max_a = min_max_a[1];
         if( min_max_a[2] < min_a )
@@ -204,7 +213,7 @@ static void compute_row_thresholds( unsigned char *thresholds_dest,
 		}
 
         /*if( max_a - min_a < contrast_threshold ) {
-			*thresholds_dest++ = WHITE;
+			*thresholds_dest++ = BLACK;
         } else {
             *thresholds_dest++ = (unsigned char)((min_a + max_a) / 2);
 		}*/
@@ -223,7 +232,7 @@ static void compute_frame_threshold_tiles( unsigned char *thresholds_dest,
     int threshold_height = (height/tile_size) + 1;
     int i;
 
-    for( i = 0; i < threshold_height; ++i ){
+    for( i = threshold_height; i > 0 ; --i ){
         compute_row_thresholds( thresholds_dest, min_max, min_max + min_max_width * 2,
                 threshold_width, contrast_threshold );
         thresholds_dest += threshold_width;
@@ -249,7 +258,7 @@ static void apply_frame_thresholds( unsigned char *dest,
             for( m=0; m < width; m += tile_size ){
                 unsigned char tt = *t++;
                 tile_width = (m + tile_size > width) ? width - m : tile_size;
-                for( n=0; n < tile_width; ++n ){
+                for( n=tile_width; n >0; --n ){
                     *dest++ = (*source > tt) ? WHITE : BLACK;
                     source += source_stride;
                 }

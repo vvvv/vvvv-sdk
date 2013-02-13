@@ -29,5 +29,7 @@ namespace VVVV.Hosting
 		void AddSearchPath(string path);
 		
 		void Shutdown();
+		
+		void RunRefactor();
 	}
 }

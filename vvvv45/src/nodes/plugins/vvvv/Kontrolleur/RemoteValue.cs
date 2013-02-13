@@ -13,12 +13,13 @@ namespace VVVV.Nodes
 	
 	class RemoteValue
 	{
-		private IPin2 FNamePin, FMinimumPin, FMaximumPin, FTypePin, FValuePin;
+		private IPin2 FNamePin, FValuePin;
 		private List<string> FPrefixes = new List<string>();
 		private string FName;
 		
 		public INode2 Node;
-		public string Address;
+		public string SourceNodePath;
+		public string RuntimeNodePath;
 		public string Type;
 		public float Default;
 		public float Minimum;
@@ -26,6 +27,15 @@ namespace VVVV.Nodes
 		public float Stepsize;
 		public float Value;
 		public RemoteValueState State;
+		public static System.Globalization.NumberFormatInfo FNumberFormat = new System.Globalization.NumberFormatInfo();
+		
+		public IPin2 Pin
+		{
+			get
+			{
+				return FValuePin;
+			}
+		}
 		
 		public string Name
 		{
@@ -36,48 +46,49 @@ namespace VVVV.Nodes
 			set
 			{
 				FName = value;
-				foreach (string prefix in FPrefixes)
-					if (FName.StartsWith(prefix))
-					{
-						FName = FName.Substring(prefix.Length);
-						break;
-					}
 			}
 		}
 		
 		public RemoteValue(INode2 node, List<string> prefixes)
 		{
+			FNumberFormat.NumberDecimalSeparator = ".";
 			Node = node;
 			FPrefixes = prefixes;
-			Address = "/" + Node.Parent.NodeInfo.Filename + "/" + Node.ID;
+			
+			//note: this will break if patches are renamed!
+			RuntimeNodePath = Node.GetNodePath(false); 
+			SourceNodePath = Node.Parent.NodeInfo.Filename + "/" + node.ID;
 			
 			FNamePin = node.LabelPin;
 			FNamePin.Changed += ValueChangedCB;
 			Name = FNamePin[0];
-			
-			FMinimumPin = Node.FindPin("Minimum");
-			FMinimumPin.Changed += ValueChangedCB;
-			Minimum = float.Parse(FMinimumPin[0]);
-			
-			FMaximumPin = Node.FindPin("Maximum");
-			FMaximumPin.Changed += ValueChangedCB;
-			Maximum = float.Parse(FMaximumPin[0]);
-			
-			FTypePin = Node.FindPin("Slider Behavior");
-			FTypePin.Changed += ValueChangedCB;
-			Type = FTypePin[0];
+			if (string.IsNullOrEmpty(Name))
+				Name = RuntimeNodePath;
 			
 			FValuePin = Node.FindPin("Y Input Value");
 			FValuePin.Changed += ValueChangedCB;
-			Value = float.Parse(FValuePin[0].Replace('.', ','));
+			FValuePin.SubtypeChanged += SubtypeChangedCB;
 			
-			Default = 0;
+			Value = float.Parse(FValuePin[0], FNumberFormat);
+
+			var subtype = FValuePin.SubType.Split(',');
+			Type = subtype[0];
+			Default = float.Parse(subtype[2], FNumberFormat);
+			Minimum = float.Parse(subtype[3], FNumberFormat);
+			Maximum = float.Parse(subtype[4], FNumberFormat);
+			
 			if (Type == "Slider")
 				Stepsize = 1;
 			else
 				Stepsize = 0.01f;
 			
 			State = RemoteValueState.Add;
+		}
+		
+		public void Kill()
+		{
+			FValuePin.Changed -= ValueChangedCB;
+			FValuePin.SubtypeChanged -= SubtypeChangedCB;
 		}
 		
 		private void ValueChangedCB(object sender, EventArgs e)
@@ -87,15 +98,23 @@ namespace VVVV.Nodes
 			
 			var pin = sender as IPin2;
 			if (pin == FValuePin)
-				Value = float.Parse(FValuePin[0].Replace('.', ','));
+				Value = float.Parse(FValuePin[0], FNumberFormat);
 			else if (pin == FNamePin)
 				Name = FNamePin[0];
-			else if (pin == FMinimumPin)
-				Minimum = float.Parse(FMinimumPin[0]);
-			else if (pin == FMaximumPin)
-				Maximum = float.Parse(FMaximumPin[0]);
-			else if (pin == FTypePin)
-				Type = FTypePin[0];
+			
+			State = RemoteValueState.Update;
+		}
+		
+		private void SubtypeChangedCB(object sender, EventArgs e)
+		{
+			if (State == RemoteValueState.Remove)
+				return;
+			
+			var subtype = FValuePin.SubType.Split(',');
+			Type = subtype[0];
+			Default = float.Parse(subtype[2], FNumberFormat);
+			Minimum = float.Parse(subtype[3], FNumberFormat);
+			Maximum = float.Parse(subtype[4], FNumberFormat);
 			
 			State = RemoteValueState.Update;
 		}

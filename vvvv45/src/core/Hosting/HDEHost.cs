@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
-
 using VVVV.Core;
 using VVVV.Core.Commands;
 using VVVV.Core.Logging;
@@ -19,13 +18,16 @@ using VVVV.Core.Model;
 using VVVV.Hosting;
 using VVVV.Hosting.Factories;
 using VVVV.Hosting.Graph;
+using VVVV.Hosting.IO;
 using VVVV.Hosting.Interfaces.EX9;
 using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.InteropServices.EX9;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
+using VVVV.Utils.Network;
 
 namespace VVVV.Hosting
 {
@@ -33,7 +35,7 @@ namespace VVVV.Hosting
     [Export(typeof(IHDEHost))]
     [ComVisible(false)]
     class HDEHost : IInternalHDEHost, IHDEHost,
-    IMouseClickListener, INodeSelectionListener, IWindowListener, IWindowSelectionListener
+    IMouseClickListener, INodeSelectionListener, IWindowListener, IComponentModeListener, IWindowSelectionListener
     {
         public const string ENV_VVVV = "VVVV45";
         
@@ -42,15 +44,19 @@ namespace VVVV.Hosting
         const string NODE_BROWSER = "NodeBrowser (VVVV)";
         
         private IVVVVHost FVVVVHost;
-        private INodeBrowser FNodeBrowser;
-        private IPluginBase FWindowSwitcher, FKommunikator;
+        private IPluginBase FWindowSwitcher, FKommunikator, FNodeBrowser;
         private readonly List<Window> FWindows = new List<Window>();
+        private INetworkTimeSync FNetTimeSync;
+        private INode2[] FSelectedNodes;
         
         [Export]
         public CompositionContainer Container { get; protected set; }
         
         [Export(typeof(ILogger))]
         public DefaultLogger Logger { get; private set; }
+
+        [Export(typeof(IORegistry))]
+        public IORegistry IORegistry { get; private set; }
         
         [Export]
         public INodeBrowserHost NodeBrowserHost { get; protected set; }
@@ -66,29 +72,31 @@ namespace VVVV.Hosting
         
         [Export(typeof(INodeInfoFactory))]
         public ProxyNodeInfoFactory NodeInfoFactory { get; set; }
-        
+
+#pragma warning disable 0649
         [ImportMany]
         public List<IAddonFactory> AddonFactories
         {
             get;
             private set;
         }
-        
+
         [Import]
         private DotNetPluginFactory PluginFactory { get; set; }
-        
+
         [Import]
         private EditorFactory EditorFactory { get; set; }
 
         [Import]
-        public NodeCollection NodeCollection {get; protected set;}
+        public NodeCollection NodeCollection { get; protected set; }
 
         [Import]
-        private IStartableRegistry FStartableRegistry;
+        private IStartableRegistry FStartableRegistry; 
+#pragma warning restore
         
         public HDEHost()
         {
-            //            AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
+            //AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
             
             //set vvvv.exe path
             ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
@@ -118,6 +126,8 @@ namespace VVVV.Hosting
             EnumManager.SetHDEHost(this);
             
             Logger = new DefaultLogger();
+
+            IORegistry = new IORegistry();
         }
 
         private HashSet<ProxyNodeInfo> LoadNodeInfos(string filename, string arguments)
@@ -149,13 +159,17 @@ namespace VVVV.Hosting
             FVVVVHost.AddNodeSelectionListener(this);
             FVVVVHost.AddWindowListener(this);
             FVVVVHost.AddWindowSelectionListener(this);
+            FVVVVHost.AddComponentModeListener(this);
             
             NodeInfoFactory.NodeInfoUpdated += factory_NodeInfoUpdated;
 
             // Route log messages to vvvv
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
             
-            DeviceMarshaler.Initialize(vvvvHost.DeviceService);
+            DeviceService = new DeviceService(vvvvHost.DeviceService);
+            MainLoop = new MainLoop(vvvvHost.MainLoop);
+            
+            ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService, NodeInfoFactory);
             
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
@@ -191,9 +205,19 @@ namespace VVVV.Hosting
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             FWindowSwitcher = PluginFactory.CreatePlugin(windowSwitcherNodeInfo, null);
             FKommunikator = PluginFactory.CreatePlugin(kommunikatorNodeInfo, null);
-            FNodeBrowser = (INodeBrowser) PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
-            FNodeBrowser.IsStandalone = false;
-            FNodeBrowser.DragDrop(false);
+            FNodeBrowser = PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
+            
+            this.IsBoygroupClient = FVVVVHost.IsBoygroupClient;
+            if(IsBoygroupClient)
+            {
+            	this.BoygroupServerIP = FVVVVHost.BoygroupServerIP;
+            }
+           
+            
+            //start time server of client
+            FNetTimeSync = IsBoygroupClient ? new UDPTimeClient(BoygroupServerIP, 3334) : new UDPTimeServer(3334);
+            FNetTimeSync.Start();
+            
         }
         
         private INodeInfo GetNodeInfo(string systemName)
@@ -203,9 +227,12 @@ namespace VVVV.Hosting
 
         public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
         {
-            nodeBrowser = FNodeBrowser;
-            windowSwitcher = FWindowSwitcher;
-            kommunikator = FKommunikator;
+        	// HACK hack hack :/
+        	nodeBrowser = ((PluginContainer) FNodeBrowser).PluginBase;
+        	((INodeBrowser) nodeBrowser).IsStandalone = false;
+            ((INodeBrowser) nodeBrowser).DragDrop(false);
+            windowSwitcher = ((PluginContainer) FWindowSwitcher).PluginBase;
+            kommunikator = ((PluginContainer) FKommunikator).PluginBase;
         }
         
         public void ExtractNodeInfos(string filename, string arguments, out INodeInfo[] result)
@@ -276,6 +303,12 @@ namespace VVVV.Hosting
         {
             FStartableRegistry.ShutDown();
         }
+        
+        public void RunRefactor()
+        {
+        	//run Refactorer
+        	var refactorer = new PatchRefactorer(this, FSelectedNodes, NodeBrowserHost, NodeInfoFactory);
+        }
 
         #endregion IInternalHDEHost
         
@@ -309,11 +342,26 @@ namespace VVVV.Hosting
         }
         
         public event WindowEventHandler WindowSelectionChanged;
-        
         protected virtual void OnWindowSelectionChanged(WindowEventArgs args)
         {
             if (WindowSelectionChanged != null) {
                 WindowSelectionChanged(this, args);
+            }
+        }
+        
+        public event ComponentModeEventHandler BeforeComponentModeChange;
+        protected virtual void OnBeforeComponentModeChange(ComponentModeEventArgs args)
+        {
+            if (BeforeComponentModeChange != null) {
+                BeforeComponentModeChange(this, args);
+            }
+        }
+        
+        public event ComponentModeEventHandler AfterComponentModeChange;
+        protected virtual void OnAfterComponentModeChange(ComponentModeEventArgs args)
+        {
+            if (AfterComponentModeChange != null) {
+                AfterComponentModeChange(this, args);
             }
         }
         
@@ -340,7 +388,6 @@ namespace VVVV.Hosting
         }
         
         public event WindowEventHandler WindowRemoved;
-        
         protected virtual void OnWindowRemoved(WindowEventArgs args)
         {
             if (WindowRemoved != null) {
@@ -365,6 +412,28 @@ namespace VVVV.Hosting
                     FRootNode = Node.Create(FVVVVHost.Root, NodeInfoFactory);
                 return FRootNode;
             }
+        }
+        
+        public INode2 GetNodeFromPath(string nodePath)
+        {
+        	var ids = nodePath.Split('/');
+        	
+        	var result = RootNode[0];
+        	for (int i = 1; i < ids.Length; i++)
+        	{
+        		try
+        		{
+        			var id = int.Parse(ids[i]);
+        			result = (from node in result where node.ID == id select node).First();
+        		}
+        		catch
+        		{
+        			result = null;
+        			break;
+        		}       			
+        	}
+
+            return result;
         }
         
         public void UpdateEnum(string EnumName, string Default, string[] EnumEntries)
@@ -392,6 +461,29 @@ namespace VVVV.Hosting
             FVVVVHost.GetCurrentTime(out currentTime);
             return currentTime;
         }
+        
+        public double FrameTime
+        {
+        	get
+        	{
+        		double currentTime;
+        		FVVVVHost.GetCurrentTime(out currentTime);
+        		return currentTime;
+        	}
+        }
+        
+        public double RealTime
+        {
+        	get
+        	{
+        		return FNetTimeSync.ElapsedSeconds;
+        	}
+        }
+        
+        public void SetRealTime(double time = 0)
+		{
+        	FNetTimeSync.SetTime(time);
+		}
         
         public void Open(string file, bool inActivePatch, IWindow window)
         {
@@ -441,6 +533,16 @@ namespace VVVV.Hosting
             FVVVVHost.SetComponentMode(node.InternalCOMInterf, componentMode);
         }
         
+        public string GetXMLSnippetFromSelection()
+        {
+        	return FVVVVHost.GetXMLSnippetFromSelection();
+        }
+        
+        public void SendXMLSnippet(string fileName, string message, bool undoable)
+        {
+            FVVVVHost.SendXMLSnippet(fileName, message, undoable);
+        }
+        
         public string ExePath
         {
             get;
@@ -462,7 +564,39 @@ namespace VVVV.Hosting
             }
         }
         
-        #endregion
+        public IExposedNodeService ExposedNodeService
+        {
+        	get;
+        	private set;
+        }
+        
+        [Export(typeof(IDXDeviceService))]
+        public IDXDeviceService DeviceService
+        {
+            get;
+            private set;
+        }
+
+        [Export(typeof(IMainLoop))]
+        public IMainLoop MainLoop
+		{
+		    get;
+		    private set;
+		}
+        
+		public bool IsBoygroupClient 
+		{
+			get; 
+			private set;
+		}
+    	
+		public string BoygroupServerIP 
+		{
+			get;
+			private set;
+		}
+        
+        #endregion 
         
         protected IEnumerable<INode2> GetAffectedNodes(INodeInfo nodeInfo)
         {
@@ -470,15 +604,6 @@ namespace VVVV.Hosting
                 from node in RootNode.AsDepthFirstEnumerable()
                 where nodeInfo == node.NodeInfo
                 select node;
-        }
-        
-        protected INode2 FindNode(INode internalNode)
-        {
-            var query =
-                from node in RootNode.AsDepthFirstEnumerable()
-                where node.InternalCOMInterf == internalNode
-                select node;
-            return query.First();
         }
         
         public void factory_NodeInfoUpdated(object sender, INodeInfo info)
@@ -519,7 +644,7 @@ namespace VVVV.Hosting
         public void MouseDownCB(INode internalNode, Mouse_Buttons button, Modifier_Keys keys)
         {
             if (internalNode != null)
-                OnMouseDown(new VVVV.PluginInterfaces.V2.MouseEventArgs(FindNode(internalNode), button, keys));
+                OnMouseDown(new VVVV.PluginInterfaces.V2.MouseEventArgs(Node.Create(internalNode, NodeInfoFactory), button, keys));
             else
                 OnMouseDown(new VVVV.PluginInterfaces.V2.MouseEventArgs(null, button, keys));
         }
@@ -527,7 +652,7 @@ namespace VVVV.Hosting
         public void MouseUpCB(INode internalNode, Mouse_Buttons button, Modifier_Keys keys)
         {
             if (internalNode != null)
-                OnMouseUp(new VVVV.PluginInterfaces.V2.MouseEventArgs(FindNode(internalNode), button, keys));
+                OnMouseUp(new VVVV.PluginInterfaces.V2.MouseEventArgs(Node.Create(internalNode, NodeInfoFactory), button, keys));
             else
                 OnMouseUp(new VVVV.PluginInterfaces.V2.MouseEventArgs(null, button, keys));
         }
@@ -536,10 +661,10 @@ namespace VVVV.Hosting
         {
             if (internalNodes != null)
             {
-                INode2[] nodes = new INode2[internalNodes.Length];
-                for (int i = 0; i < nodes.Length; i++)
-                    nodes[i] = FindNode(internalNodes[i]);
-                OnNodeSelectionChanged(new NodeSelectionEventArgs(nodes));
+                FSelectedNodes = new INode2[internalNodes.Length];
+                for (int i = 0; i < FSelectedNodes.Length; i++)
+                    FSelectedNodes[i] = Node.Create(internalNodes[i], NodeInfoFactory);
+                OnNodeSelectionChanged(new NodeSelectionEventArgs(FSelectedNodes));
             }
             else
                 OnNodeSelectionChanged(new NodeSelectionEventArgs(new INode2[0]));
@@ -564,6 +689,23 @@ namespace VVVV.Hosting
             OnWindowSelectionChanged(new WindowEventArgs(Window.Create(internalWindow)));
         }
         
+        public void BeforeComponentModeChangedCB(IWindow internalWindow, ComponentMode componentMode)
+        {
+        	if (internalWindow == null)
+        		OnBeforeComponentModeChange(new ComponentModeEventArgs(null, componentMode));
+        	else
+        		OnBeforeComponentModeChange(new ComponentModeEventArgs(Window.Create(internalWindow), componentMode));
+        }
+        
+        public void AfterComponentModeChangedCB(IWindow internalWindow, ComponentMode componentMode)
+        {
+        	if (internalWindow == null)
+        		OnAfterComponentModeChange(new ComponentModeEventArgs(null, componentMode));
+        	else
+        		OnAfterComponentModeChange(new ComponentModeEventArgs(Window.Create(internalWindow), componentMode));
+        }
+        
         #endregion
+   
     }
 }

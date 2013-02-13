@@ -14,7 +14,7 @@ namespace Hoster
 		private RGBAColor FDefault;
 		
 		public TColorPin(IPluginHost Parent, string PinName, TPinDirection PinDirection, TOnConfigurate Callback, TSliceMode SliceMode, TPinVisibility Visibility)
-		: base(Parent, PinName, 1, PinDirection, Callback, SliceMode, Visibility)
+			: base(Parent, PinName, 1, PinDirection, Callback, SliceMode, Visibility)
 		{
 			base.Initialize();
 		}
@@ -31,7 +31,7 @@ namespace Hoster
 			{
 				FValues[VMath.Zmod(Index, FSliceCount)] = Value;
 				FPinIsChanged = true;
-			}		
+			}
 			
 			if ((FPinIsChanged) && (FOnConfigurate != null))
 				FOnConfigurate(this);
@@ -65,7 +65,7 @@ namespace Hoster
 		
 		public void SetSubType(RGBAColor Default, bool HasAlpha)
 		{
-			FDefault = Default;		
+			FDefault = Default;
 
 			for (int i=0; i<SliceCount; i++)
 				SetColor(i, Default);
@@ -126,7 +126,7 @@ namespace Hoster
 		{
 			g.DrawRectangle(p, r);
 			g.DrawString(Name, f, b, r.X+2, 2);
-				
+			
 			Brush col;
 			r.Height = FSliceHeight;
 			for (int i=0; i<SliceCount; i++)
@@ -141,19 +141,44 @@ namespace Hoster
 		
 		unsafe public void GetColorPointer(out int SliceCount, out double* Value)
 		{
-			fixed(double* p = &(FValues[0].R))
-			{
-				Value = p;
-			}
 			SliceCount = this.SliceCount;
+			
+			if (SliceCount > 0)
+			{
+				fixed(double* p = &(FValues[0].R))
+				{
+					Value = p;
+				}
+			}
+			else
+			{
+				Value = null;
+			}
 		}
 		
 		unsafe public void GetColorPointer(out double* Value)
 		{
-			fixed(double* p = &(FValues[0].R))
+			if (SliceCount > 0)
 			{
-				Value = p;
+				fixed(double* p = &(FValues[0].R))
+				{
+					Value = p;
+				}
+			}
+			else
+			{
+				Value = null;
 			}
 		}
-	}	
+		
+		unsafe public void GetColorPointer(out int* pLength, out double** ppData)
+		{
+			throw new NotImplementedException();
+		}
+		
+		unsafe public void GetColorPointer(out double** ppDst)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

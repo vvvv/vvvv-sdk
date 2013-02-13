@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using VVVV.Hosting.Interfaces;
 using VVVV.Hosting.Interfaces.EX9;
 using VVVV.PluginInterfaces.InteropServices.EX9;
 using VVVV.PluginInterfaces.V1;
@@ -22,6 +23,8 @@ namespace VVVV.Hosting
         void RemoveWindowSelectionListener(IWindowSelectionListener listener);
         void AddWindowListener(IWindowListener listener);
         void RemoveWindowListener(IWindowListener listener);
+        void AddComponentModeListener(IComponentModeListener listener);
+        void RemoveComponentModeListener(IComponentModeListener listener);
 
         /// <summary>
         /// The graphs root node
@@ -83,6 +86,20 @@ namespace VVVV.Hosting
         void SetComponentMode(INode node, ComponentMode componentMode);
         
         /// <summary>
+		/// Gives access to the XML-snippet describing the current selection in the active patch. 
+		/// </summary>
+		/// <returns>An XML-message snippet describing the currently selected nodes in the active patch.</returns>
+		string GetXMLSnippetFromSelection();
+        
+        /// <summary>
+        /// Allows sending of XML-message snippets to patches. 
+        /// </summary>
+        /// <param name="fileName">Filename of the patch to send the message to.</param>
+        /// <param name="message">The XML-message snippet.</param>
+        /// <param name="undoable">If TRUE the operation performed by this message can be undone by the user using the UNDO command.</param>
+        void SendXMLSnippet(string fileName, string message, bool undoable);
+        
+        /// <summary>
         /// Selects the given nodes in their patch.
         /// </summary>
         /// <param name="nodes">The nodes to be selected.</param>
@@ -131,10 +148,35 @@ namespace VVVV.Hosting
         /// <summary>
         /// Gets the Direct3D9 device service.
         /// </summary>
-        IDXDeviceService DeviceService
+        IInternalDXDeviceService DeviceService
         {
             get;
         }
+        
+        /// <summary>
+        /// Gets the main loop.
+        /// </summary>
+        IInternalMainLoop MainLoop
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// Gets the ExposedNode service.
+        /// </summary>
+        IInternalExposedNodeService ExposedNodeService
+        {
+        	get;
+        }
+        bool IsBoygroupClient 
+        {
+			get;
+		}
+    	
+		string BoygroupServerIP 
+		{
+			get;
+		}
     }
     
     #region Listeners
@@ -169,6 +211,17 @@ namespace VVVV.Hosting
     {
         void WindowAddedCB(IWindow window);
         void WindowRemovedCB(IWindow window);
+    }
+    
+    /// <summary>
+    /// Listener interface to be informed of changed componentmodes of windows.
+    /// </summary>
+    [Guid("F14A619F-9378-42CE-9F18-D96BAE3EEC16"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IComponentModeListener
+    {
+        void BeforeComponentModeChangedCB(IWindow window, ComponentMode componentMode);
+        void AfterComponentModeChangedCB(IWindow window, ComponentMode componentMode);
     }
     
     /// <summary>

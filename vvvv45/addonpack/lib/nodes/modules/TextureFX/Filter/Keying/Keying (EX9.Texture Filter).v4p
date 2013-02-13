@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
-   <PATCH nodename="D:\Program Files\vvvv_45beta27\addonpack\lib\nodes\modules\TextureFX\Filter\Keying\Keying (EX9.Texture Filter).v4p">
-   <BOUNDS height="11415" left="4800" top="2355" type="Window" width="16020">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.2.dtd" >
+   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Keying\Keying (EX9.Texture Filter).v4p">
+   <BOUNDS height="11415" left="8475" top="7770" type="Window" width="16020">
    </BOUNDS>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Filter\Keying\Keying.fx" id="28" nodename="Keying.fx" systemname="Keying (EX9.Effect)">
+   <NODE componentmode="Hidden" filename="Keying.fx" id="28" nodename="Keying.fx" systemname="Keying (EX9.Effect)">
    <BOUNDS height="270" left="2025" top="5415" type="Node" width="5055">
    </BOUNDS>
    <BOUNDS height="6090" left="4740" top="5415" type="Window" width="12000">
@@ -309,7 +309,11 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
+   <PIN pinname="Format" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Width" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Height" visible="1" pintype="Input">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="12" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
@@ -321,9 +325,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Backbuffer Width" visible="1">
+   <PIN pinname="Backbuffer Width" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Backbuffer Height" visible="1">
+   <PIN pinname="Backbuffer Height" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
@@ -344,20 +348,6 @@
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="11" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
-   <BOUNDS height="0" left="1680" top="2565" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="12" dstpinname="Backbuffer Width" linkstyle="PolyLine" srcnodeid="11" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="12" dstpinname="Backbuffer Height" linkstyle="PolyLine" srcnodeid="11" srcpinname="Y">
-   </LINK>
    <NODE componentmode="Hidden" id="10" nodename="Blend (EX9.RenderState Advanced)" systemname="Blend (EX9.RenderState Advanced)">
    <BOUNDS height="0" left="2010" top="4635" type="Node" width="0">
    </BOUNDS>
@@ -367,8 +357,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="13" dstpinname="Source" linkstyle="PolyLine" srcnodeid="12" srcpinname="EX9 Out">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="XY" srcnodeid="24" srcpinname="XY">
    </LINK>
    <LINK dstnodeid="28" dstpinname="tex0" srcnodeid="13" srcpinname="Texture Out">
    </LINK>
@@ -386,6 +374,8 @@
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Mode">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="| Luma|">
    </PIN>
    </NODE>
    <LINK dstnodeid="28" dstpinname="Technique" srcnodeid="6" srcpinname="Output Enum">
@@ -527,7 +517,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -535,9 +525,27 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Invert" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Invert">
    </PIN>
    </NODE>
    <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="28" dstpinname="Invert">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Format" dstnodeid="13" dstpinname="Format">
+   </LINK>
+   <NODE componentmode="Hidden" id="34" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="0" left="2820" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="34" dstpinname="XY" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="24" srcpinname="XY">
+   </LINK>
+   <LINK srcnodeid="34" srcpinname="X" dstnodeid="13" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="34" srcpinname="Y" dstnodeid="13" dstpinname="Height">
    </LINK>
    </PATCH>

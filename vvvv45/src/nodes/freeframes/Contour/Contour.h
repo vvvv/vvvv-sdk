@@ -3,7 +3,7 @@
 
 //////description
 //freeframe plugin.
-//outputs points(x/y) along contours found in the thresholded input.
+//returns points(x/y) along contours found in the thresholded input.
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -11,11 +11,11 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//opencv v2.31
+//http://opencv.willowgarage.com/wiki
 
 //////initial author
 //joreg -> joreg@gmx.at
@@ -28,8 +28,7 @@
 #include "FreeFrame.h"
 
 //opencv includes
-#include "cv.h"
-#include "highgui.h"
+#include <opencv/cv.h>
 
 //pin constants
 #define NUM_PARAMS 9
