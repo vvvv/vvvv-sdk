@@ -100,12 +100,13 @@ namespace VVVV.Nodes.Texture.HTML
             MouseState mouseState = default(MouseState),
             KeyboardState keyboardState = default(KeyboardState),
             Vector2D scrollTo = default(Vector2D),
+            bool updateDom = false,
             string javaScript = null,
             bool executeJavaScript = false,
             bool enabled = true
            )
         {
-            if (!CheckState(out dom, out rootElement, out isLoading, out currentUrl, out errorText, enabled))
+            if (!CheckState(out dom, out rootElement, out isLoading, out currentUrl, out errorText, enabled, updateDom))
             {
                 return FTextureResource;
             }
@@ -149,12 +150,13 @@ namespace VVVV.Nodes.Texture.HTML
             MouseState mouseState = default(MouseState),
             KeyboardState keyboardState = default(KeyboardState),
             Vector2D scrollTo = default(Vector2D),
+            bool updateDom = false,
             string javaScript = null,
             bool executeJavaScript = false,
             bool enabled = true
            )
         {
-            if (!CheckState(out dom, out rootElement, out isLoading, out currentUrl, out errorText, enabled))
+            if (!CheckState(out dom, out rootElement, out isLoading, out currentUrl, out errorText, enabled, updateDom))
             {
                 return FTextureResource;
             }
@@ -186,10 +188,12 @@ namespace VVVV.Nodes.Texture.HTML
             out bool isLoading,
             out string currentUrl,
             out string errorText,
-            bool enabled)
+            bool enabled,
+            bool updateDom)
         {
             lock (FLock)
             {
+                if (updateDom) UpdateDom();
                 dom = FCurrentDom;
                 rootElement = FCurrentDom != null ? FCurrentDom.Root : null;
                 isLoading = IsLoading;
@@ -343,6 +347,15 @@ namespace VVVV.Nodes.Texture.HTML
                     }
                 }
                 FKeyboardState = keyboardState;
+            }
+        }
+
+        private void UpdateDom()
+        {
+            using (var mainFrame = FBrowser.GetMainFrame())
+            {
+                var domVisitor = new WebClient.DomVisitor(this);
+                mainFrame.VisitDom(domVisitor);
             }
         }
 
