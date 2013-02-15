@@ -44,6 +44,12 @@ namespace VVVV.Nodes.ImagePlayer
         
         [Output("Texture")]
         ISpread<ISpread<Frame>> FTextureOut;
+
+        [Output("Width")]
+        ISpread<ISpread<int>> FTextureWidthOut;
+
+        [Output("Height")]
+        ISpread<ISpread<int>> FTextureHeightOut;
         
         [Output("Frame Count")]
         public ISpread<int> FFrameCountOut;
@@ -104,6 +110,8 @@ namespace VVVV.Nodes.ImagePlayer
             
             FImagePlayers.SliceCount = spreadMax;
             FTextureOut.SliceCount = spreadMax;
+            FTextureWidthOut.SliceCount = spreadMax;
+            FTextureHeightOut.SliceCount = spreadMax;
             FFrameCountOut.SliceCount = spreadMax;
             FDurationIOOut.SliceCount = spreadMax;
             FDurationTextureOut.SliceCount = spreadMax;
@@ -132,13 +140,14 @@ namespace VVVV.Nodes.ImagePlayer
                     imagePlayer.Reload();
                     FMemoryPool.Clear();
                 }
-                
+
                 int frameCount = 0;
                 double durationIO = 0.0;
                 double durationTexture = 0.0;
                 int unusedFrames = 0;
                 var loadedFrames = FLoadedOut[i];
-                FTextureOut[i] = imagePlayer.Preload(
+                
+                var frame = imagePlayer.Preload(
                     FVisibleFramesIn[i],
                     FPreloadFramesIn[i],
                     FBufferSizeIn[i],
@@ -148,6 +157,9 @@ namespace VVVV.Nodes.ImagePlayer
                     out unusedFrames,
                     ref loadedFrames);
                 
+                FTextureOut[i] = frame;
+                FTextureWidthOut[i] = frame.Select(f => f.Metadata.Width).ToSpread();
+                FTextureHeightOut[i] = frame.Select(f => f.Metadata.Height).ToSpread();
                 FFrameCountOut[i] = frameCount;
                 FDurationIOOut[i] = durationIO;
                 FDurationTextureOut[i] = durationTexture;
