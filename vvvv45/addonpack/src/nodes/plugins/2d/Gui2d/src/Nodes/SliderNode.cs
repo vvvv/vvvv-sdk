@@ -58,6 +58,11 @@ namespace VVVV.Nodes
 		[Input("Slider Size", DefaultValue = 0.1)]
 		IDiffSpread<double> FSizeSliderIn;
 		
+		//additional slider pins
+		[Input("Is Long Slider")]
+		IDiffSpread<bool> FIsLongSliderIn;
+		
+		
 		#region mainloop
 		
 		public override void Evaluate(int SpreadMax)
@@ -96,7 +101,7 @@ namespace VVVV.Nodes
 				{
 					SliderGroup group = (SliderGroup) FControllerGroups[slice];
 					
-					group.UpdateTransform(FTransformIn[slice], FCountIn[slice], FSizeIn[slice], FSizeSliderIn[slice], FColorIn[slice], FOverColorIn[slice], FActiveColorIn[slice], FSliderColorIn[slice], FSliderSpeedIn[slice], FIsXSliderIn[slice]);
+					group.UpdateTransform(FTransformIn[slice], FCountIn[slice], FSizeIn[slice], FSizeSliderIn[slice], FColorIn[slice], FOverColorIn[slice], FActiveColorIn[slice], FSliderColorIn[slice], FSliderSpeedIn[slice], FIsXSliderIn[slice], FIsLongSliderIn[slice]);
 					
 				}
 			}
@@ -134,13 +139,13 @@ namespace VVVV.Nodes
 						if (FSetValueIn[slice])
 						{
 							//update value
-							group.UpdateValue((Slider)group.FControllers[j], FValueIn[slice]);
+							group.UpdateValue((Slider)group.FControllers[j], FValueIn[slice], FIsLongSliderIn[slice]);
 							valueSet = true;
 						}
 						else if (FFirstframe) 
 						{
 							//load from config pin on first frame
-							group.UpdateValue((Slider)group.FControllers[j], FInternalValueConfig[slice]);
+							group.UpdateValue((Slider)group.FControllers[j], FInternalValueConfig[slice], FIsLongSliderIn[slice]);
 							
 						}
 						
