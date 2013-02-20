@@ -119,8 +119,6 @@ namespace VVVV.Nodes.Texture.HTML
                 FHtml = html ?? string.Empty;
                 using (var mainFrame = FBrowser.GetMainFrame())
                 {
-                    byte[] utf8bytes = Encoding.Default.GetBytes(html);
-                    html = Encoding.UTF8.GetString(utf8bytes);
                     mainFrame.LoadString(html, baseUrl);
                 }
             }
