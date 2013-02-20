@@ -85,6 +85,10 @@ namespace VVVV.Hosting.IO.Streams
                                         break;
                                 }
                             }
+                            // Reset the changed flags
+                            var flushable = stream as IFlushable;
+                            if (flushable != null)
+                                flushable.Flush(force);
                         }
                         else
                             dataWriter.Position += stream.Length;
