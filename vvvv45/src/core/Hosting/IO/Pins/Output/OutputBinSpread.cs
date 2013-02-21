@@ -62,7 +62,7 @@ namespace VVVV.Hosting.Pins.Output
                     FDataStream.Length = dataStreamLength;
                     using (var dataWriter = FDataStream.GetWriter())
                     {
-                        bool anyChanged = force;
+                        bool anyChanged = force || IsChanged;
                         for (int i = 0; i < Length; i++)
                         {
                             var spread = Buffer[i];
