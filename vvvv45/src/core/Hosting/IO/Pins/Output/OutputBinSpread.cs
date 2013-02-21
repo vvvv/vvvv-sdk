@@ -81,6 +81,8 @@ namespace VVVV.Hosting.Pins.Output
                                         dataWriter.Write(stream.Buffer, 0, stream.Length);
                                         break;
                                 }
+                                // Reset the changed flags
+                                stream.Flush(force);
                             }
                             else
                                 dataWriter.Position += spread.SliceCount;

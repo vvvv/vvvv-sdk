@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
-using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Algorithm;
@@ -49,7 +48,7 @@ namespace VVVV.Nodes.Devices.Leap
         [Output("Hand ID")]
         ISpread<int> FHandIDOut;
         
-        [Output("Finger Is Tool")]
+        [Output("Is Tool")]
         ISpread<bool> FFingerIsToolOut;
         
         [Output("Finger Position")]
@@ -72,62 +71,62 @@ namespace VVVV.Nodes.Devices.Leap
 		#pragma warning restore
 		
 		Controller FLeapController = new Controller();
-		Frame FCurrentFrame;
-		HandArray FCurrentHands;
-		FingerArray FCurrentFingers;
 		
 		#endregion fields & pins
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			FCurrentFrame = FLeapController.frame();
-			FCurrentHands = FCurrentFrame.hands();
-			
-			FHandPosOut.SliceCount = FCurrentHands.Count;
-			FHandDirOut.SliceCount = FCurrentHands.Count;
-			FHandVelOut.SliceCount = FCurrentHands.Count;
-			FHandNormOut.SliceCount = FCurrentHands.Count;
-			FHandBallCentOut.SliceCount = FCurrentHands.Count;
-			FHandBallRadOut.SliceCount = FCurrentHands.Count;
-			FHandIDOut.SliceCount = FCurrentHands.Count;
-			
-			FFingerPosOut.SliceCount = 0;
-			FFingerDirOut.SliceCount = 0;
-			FFingerVelOut.SliceCount = 0;
-			FFingerIsToolOut.SliceCount = 0;
-			FFingerSizeOut.SliceCount = 0;
-			FFingerIDOut.SliceCount = 0;
-			FHandSliceOut.SliceCount = 0;
-			
-			for(int i=0; i < FCurrentHands.Count; i++)
+			if(FLeapController.IsConnected)
 			{
-				var hand = FCurrentHands[i];
+				var hands = FLeapController.Frame().Hands;
 				
-				if(hand.palm() != null)
+				SpreadMax = hands.Count;
+				
+				FHandPosOut.SliceCount = SpreadMax;
+				FHandDirOut.SliceCount = SpreadMax;
+				FHandVelOut.SliceCount = SpreadMax;
+				FHandNormOut.SliceCount = SpreadMax;
+				FHandBallCentOut.SliceCount = SpreadMax;
+				FHandBallRadOut.SliceCount = SpreadMax;
+				FHandIDOut.SliceCount = SpreadMax;
+				
+				FFingerPosOut.SliceCount = 0;
+				FFingerDirOut.SliceCount = 0;
+				FFingerVelOut.SliceCount = 0;
+				FFingerIsToolOut.SliceCount = 0;
+				FFingerSizeOut.SliceCount = 0;
+				FFingerIDOut.SliceCount = 0;
+				FHandSliceOut.SliceCount = 0;
+				
+				for(int i=0; i < SpreadMax; i++)
 				{
-					FHandPosOut[i] = hand.palm().position.ToVector3DPos();
-					FHandDirOut[i] = hand.palm().direction.ToVector3DDir();
-					FHandNormOut[i] = hand.normal().ToVector3DDir();
-					FHandBallCentOut[i] = hand.ball().position.ToVector3DPos();
-					FHandBallRadOut[i] = hand.ball().radius * 0.001;
-					FHandVelOut[i] = hand.velocity().ToVector3DPos();
-				}
-
-				FHandIDOut[i] = hand.id();
-				
-				FCurrentFingers = hand.fingers();
-				
-				for(int j=0; j < FCurrentFingers.Count; j++)
-				{
-					var finger = FCurrentFingers[j];
-					FFingerPosOut.Add(finger.tip().position.ToVector3DPos());
-					FFingerDirOut.Add(-finger.tip().direction.ToVector3DDir());
-					FFingerVelOut.Add(finger.velocity().ToVector3DPos());
-					FFingerIsToolOut.Add(finger.isTool());
-					FFingerSizeOut.Add(new Vector2D(finger.width() * 0.001, finger.length() * 0.001));
-					FFingerIDOut.Add(finger.id());
-					FHandSliceOut.Add(i);
+					var hand = hands[i];
+					
+					if(hand != null)
+					{
+						FHandPosOut[i] = hand.PalmPosition.ToVector3DPos();
+						FHandDirOut[i] = hand.Direction.ToVector3DDir();
+						FHandNormOut[i] = hand.PalmNormal.ToVector3DDir();
+						FHandBallCentOut[i] = hand.SphereCenter.ToVector3DPos();
+						FHandBallRadOut[i] = hand.SphereRadius * 0.001;
+						FHandVelOut[i] = hand.PalmVelocity.ToVector3DPos();
+						FHandIDOut[i] = hand.Id;
+					}
+					
+					var pointables = hand.Pointables;
+					
+					for(int j=0; j < pointables.Count; j++)
+					{
+						var pointable = pointables[j];
+						FFingerPosOut.Add(pointable.TipPosition.ToVector3DPos());
+						FFingerDirOut.Add(pointable.Direction.ToVector3DDir());
+						FFingerVelOut.Add(pointable.TipVelocity.ToVector3DPos());
+						FFingerIsToolOut.Add(pointable.IsTool);
+						FFingerSizeOut.Add(new Vector2D(pointable.Width * 0.001, pointable.Length * 0.001));
+						FFingerIDOut.Add(pointable.Id);
+						FHandSliceOut.Add(i);
+					}
 				}
 			}
 			
