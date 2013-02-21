@@ -58,7 +58,7 @@ namespace VVVV.Hosting.IO.Streams
                 FDataStream.Length = dataStreamLength;
                 using (var dataWriter = FDataStream.GetWriter())
                 {
-                    bool anyChanged = force;
+                    bool anyChanged = force || IsChanged;
                     var numSlicesBuffered = 0;
                     for (int i = 0; i < Length; i++)
                     {
