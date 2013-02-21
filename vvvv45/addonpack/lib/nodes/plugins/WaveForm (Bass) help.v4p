@@ -1,0 +1,157 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\help\WaveForm (Bass) help.v4p">
+   <BOUNDS height="8145" left="1725" top="570" type="Window" width="9930">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="8" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode">
+   <BOUNDS height="0" left="5250" top="1515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7230" top="5220" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="5250" top="1515" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
+   <PIN pinname="Mono" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Tempo" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="File End" visible="1">
+   </PIN>
+   <PIN pinname="CurrentPosition" visible="1">
+   </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
+   <PIN pinname="Current Position" visible="1">
+   </PIN>
+   <PIN pinname="Do Seek" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Length" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="7" nodename=":PLUGINS:\BassSound.dll|BassSound.BassAudioOutNode">
+   <BOUNDS height="0" left="3435" top="2460" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7530" top="7035" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="3435" top="2460" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="HandleIn" visible="1">
+   </PIN>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1515" top="615" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9480" top="5625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1515" top="615" type="Box" width="3765">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\..\..\..\Music\Prefuse 73\Piano overlord\01 track 01.mp3|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3030" top="1200" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7095" top="5835" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="3030" top="1200" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Play" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Handles In" srcnodeid="8" srcpinname="Handle Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="File Name" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename=":PLUGINS:\BassSound.dll|BassSound.UI.WaveFormNode">
+   <BOUNDS height="0" left="675" top="5100" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="11580" top="7065" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="2460" left="675" top="5100" type="Box" width="7590">
+   </BOUNDS>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
+   <PIN pinname="Current Position" visible="1">
+   </PIN>
+   <PIN pinname="End Position" visible="1">
+   </PIN>
+   <PIN pinname="Start Position" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Markers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="File Name" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
+   <BOUNDS type="Node" left="2145" top="3645" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5430" top="5685" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2145" top="3645" width="1290" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Position">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Current Position">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Length" dstnodeid="4" dstpinname="End Position">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Current Position" dstnodeid="9" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12">
+   <BOUNDS type="Node" left="7350" top="1770" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="11025" top="4170" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7350" top="1770" width="1410" height="1830">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Markers">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="5" values="5,10,30,20,15">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Markers">
+   </LINK>
+   </PATCH>

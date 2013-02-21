@@ -1,0 +1,133 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Scroll (Spreads) help.v4p">
+   <BOUNDS height="6600" left="4395" top="2010" type="Window" width="5910">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3240" top="135" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4245" top="3765" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1920" left="3240" top="135" type="Box" width="1275">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="5.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="5" values="0.00000,1.00000,2.00000,3.00000,4.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3240" top="2970" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4545" top="4065" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3195" left="3240" top="2970" type="Box" width="1215">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="20.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="10" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Scroll (Spreads)">
+   <BOUNDS height="0" left="4440" top="2460" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="-1.00000">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="20.00000">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Index" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Output Index" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4620" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6630" top="3675" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4620" top="1230" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="input">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input Index" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1230" top="2040" type="Node" width="2085">
+   </BOUNDS>
+   <BOUNDS height="1140" left="1230" top="2040" type="Box" width="1935">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Play arround with the Input and Output Index Pins to see the results.&cr;&lf;Empty Slices will be filled with the Default value|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5100" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6930" top="3975" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5100" top="1230" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="output">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Output Index" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="720" left="15" top="390" type="Box" width="2895">
+   </BOUNDS>
+   <BOUNDS height="160" left="19230" top="37230" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|generates a spread with the given count out of the given input spread. &cr;&lf;Allow for scolling in the source|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="15" top="15" type="Box" width="2940">
+   </BOUNDS>
+   <BOUNDS height="160" left="19230" top="37230" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Scroll - Spreads|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

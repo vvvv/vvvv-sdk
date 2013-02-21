@@ -1,0 +1,103 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Node\Select (Node).v4p" systemname="Select (Node)" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\Node\Select (Node).v4p">
+   <BOUNDS type="Window" left="16125" top="6495" width="5190" height="5040">
+   </BOUNDS>
+   <NODE systemname="GetSlice (Node)" nodename="GetSlice (Node)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="1155" top="2385" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Select (Value)" nodename="Select (Value)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="2640" top="1845" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="3135" top="360" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3135" top="360" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Select">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Former Slice" dstnodeid="0" dstpinname="Index">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="3" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="1155" top="3615" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1155" top="3615" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Output">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output Node" dstnodeid="3" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="4" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="1155" top="360" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1155" top="360" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Input">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="0" dstpinname="Input Node">
+   </LINK>
+   <INFO author="vvvv group" description="select the slices which form the new spread." tags="">
+   </INFO>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="3120" top="3615" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3120" top="3615" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Former Slice|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Former Slice" dstnodeid="6" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Count (Node)" nodename="Count (Node)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="1845" top="930" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="7" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Select (Value)" nodename="Select (Value)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="1845" top="1335" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Count" dstnodeid="8" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="1" dstpinname="Input">
+   </LINK>
+   </PATCH>

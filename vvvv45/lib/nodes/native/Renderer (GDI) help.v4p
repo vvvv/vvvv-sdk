@@ -1,0 +1,361 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="V:\releases\vvvv_33beta9a\help\Renderer (GDI) help.v4p">
+   <BOUNDS height="8100" left="1485" top="1155" type="Window" width="14940">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="21" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="555" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="9585" top="7800" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3120" left="555" top="2370" type="Box" width="3270">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="GDI Out" visible="1">
+   </PIN>
+   <PIN pinname="Backbuffer Width" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Height" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Autosize Backbuffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Global Visual Range" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Clear" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Viewport Matrix Transformation" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="GDITexture (EX9.Texture)">
+   <BOUNDS height="0" left="3765" top="5820" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Render Mode" slicecount="1" values="Copy">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Source" srcnodeid="21" srcpinname="GDI Out">
+   </LINK>
+   <NODE id="19" nodename="Circle (GDI)">
+   <BOUNDS height="0" left="10065" top="1455" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render Pass" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="Text (GDI)">
+   <BOUNDS height="0" left="270" top="1860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Text" slicecount="1" values="|Hello World!|">
+   </PIN>
+   <PIN pinname="Render Pass" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1350" top="6030" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5835" top="5340" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="540" left="1350" top="6030" type="Box" width="555">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|left click|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Y Input Value" srcnodeid="21" srcpinname="Left Button">
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1965" top="6030" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6135" top="5640" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="540" left="1965" top="6030" type="Box" width="555">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="middle">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Y Input Value" srcnodeid="21" srcpinname="Middle Button">
+   </LINK>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2610" top="6030" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6435" top="5940" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="540" left="2610" top="6030" type="Box" width="555">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="right">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Y Input Value" srcnodeid="21" srcpinname="Right Button">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="420" left="4830" top="5760" type="Node" width="5160">
+   </BOUNDS>
+   <BOUNDS height="1410" left="4830" top="5760" type="Box" width="3885">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The GDI Renderer Delivers x and y coordinates of the&cr;&lf;mousecursor (if inside, otherwise it stores the last known position of the cursor) and the state of 3 mouse buttons.&cr;&lf;PLUS: you can write the GDI renderer&apos;s content in a texture and apply it to a DX9 Object|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2925" top="945" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6135" top="5640" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="450" left="2925" top="945" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="enabled">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Enabled" srcnodeid="13" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="630" top="945" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6435" top="5940" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="450" left="630" top="945" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="clear">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Clear" srcnodeid="12" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="12225" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="10515" top="4635" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="1785" left="12225" top="1905" type="Box" width="2025">
+   </BOUNDS>
+   <PIN pinname="Render Pass" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Line (GDI)">
+   <BOUNDS height="0" left="12210" top="1365" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render Pass" visible="1">
+   </PIN>
+   <PIN pinname="Y1" slicecount="1" values="-0.21">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="420" left="10110" top="3885" type="Node" width="1590">
+   </BOUNDS>
+   <BOUNDS height="810" left="10110" top="3885" type="Box" width="4290">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|By connecting the layers to the renderer, u can specify which object will be rendered in a render window.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="10065" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="10815" top="4935" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="1785" left="10065" top="1905" type="Box" width="2025">
+   </BOUNDS>
+   <PIN pinname="Render Pass" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Transform (Transform 3d)">
+   <BOUNDS height="0" left="3765" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="TranslateZ" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Yaw" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Viewport Matrix Transformation" srcnodeid="7" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="5820" top="1710" type="Node" width="3675">
+   </BOUNDS>
+   <BOUNDS height="540" left="5820" top="1710" type="Box" width="2295">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|you can transform a render window as u like|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="420" left="5490" top="11985" type="Node" width="5160">
+   </BOUNDS>
+   <BOUNDS height="1410" left="5490" top="11985" type="Box" width="3885">
+   </BOUNDS>
+   <BOUNDS height="160" left="690" top="6450" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The GDI Renderer Delivers x and y coordinates of the&cr;&lf;mousecursor (if inside, otherwise it stores the last known position of the cursor) and the state of 3 mouse buttons.&cr;&lf;PLUS: you can write the GDI renderer&apos;s content in a texture and apply it to a DX9 Object|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="10050" top="855" type="Node" width="780">
+   </BOUNDS>
+   <BOUNDS height="420" left="10050" top="855" type="Box" width="3975">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|About layers and renderers|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4830" top="7305" type="Node" width="2055">
+   </BOUNDS>
+   <BOUNDS height="255" left="4830" top="7305" type="Box" width="4815">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|right click for more info about GDI Textures on DX9 Objects|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="2" nodename="Renderer (GDI) morehelp.v4p">
+   <BOUNDS height="100" left="3750" top="7320" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="3750" top="7320" type="Box">
+   </BOUNDS>
+   <PIN pinname="texture_in" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS type="Window" left="9480" top="2655" width="9285" height="9375">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="texture_in" srcnodeid="20" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="2670">
+   </BOUNDS>
+   <BOUNDS height="160" left="2190" top="34290" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Graphic Device Interface Window|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="2190" top="34290" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Renderer - GDI|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Layers" srcnodeid="18" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Layers" srcnodeid="19" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Layers" srcnodeid="10" srcpinname="Layer">
+   </LINK>
+   </PATCH>
