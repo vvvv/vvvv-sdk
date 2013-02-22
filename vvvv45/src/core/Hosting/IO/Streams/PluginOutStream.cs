@@ -9,6 +9,8 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 using SlimDX;
+using System.Runtime.InteropServices;
+using System.IO;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -20,10 +22,10 @@ namespace VVVV.Hosting.IO.Streams
         {
             FStringOut = stringOut;
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FStringOut.SliceCount = Length;
                 for (int i = 0; i < Length; i++)
@@ -31,7 +33,7 @@ namespace VVVV.Hosting.IO.Streams
                     FStringOut.SetString(i, this[i]);
                 }
             }
-            base.Flush();
+            base.Flush(force);
         }
     }
     
@@ -43,10 +45,10 @@ namespace VVVV.Hosting.IO.Streams
         {
             FEnumOut = enumOut;
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FEnumOut.SliceCount = Length;
                 for (int i = 0; i < Length; i++)
@@ -54,7 +56,7 @@ namespace VVVV.Hosting.IO.Streams
                     SetSlice(i, this[i]);
                 }
             }
-            base.Flush();
+            base.Flush(force);
         }
         
         protected virtual void SetSlice(int index, T value)
@@ -97,15 +99,111 @@ namespace VVVV.Hosting.IO.Streams
         {
             return this[VMath.Zmod(index, Length)];
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FNodeOut.SliceCount = Length;
                 FNodeOut.MarkPinAsChanged();
             }
-            base.Flush();
+            base.Flush(force);
+        }
+    }
+
+    class RawOutStream : IOutStream<System.IO.Stream>
+    {
+        private readonly IRawOut FRawOut;
+        private int FLength;
+        private bool FMarkPinAsChanged;
+
+        public RawOutStream(IRawOut rawOut)
+        {
+            FRawOut = rawOut;
+        }
+
+        public void Flush(bool force = false)
+        {
+            if (force || FMarkPinAsChanged)
+            {
+                this.FRawOut.MarkPinAsChanged();
+            }
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Length
+        {
+            get { return this.FLength; }
+            set
+            {
+                if (value != this.FLength)
+                {
+                    this.FRawOut.SliceCount = value;
+                    this.FLength = value;
+                }
+            }
+        }
+
+        public IStreamWriter<System.IO.Stream> GetWriter()
+        {
+            FMarkPinAsChanged = true;
+            return new Writer(this);
+        }
+
+        class Writer : IStreamWriter<System.IO.Stream>
+        {
+            private RawOutStream FRawOutStream;
+
+            public Writer(RawOutStream rawOutStream)
+            {
+                this.FRawOutStream = rawOutStream;
+            }
+
+            public void Write(System.IO.Stream value, int stride = 1)
+            {
+                this.FRawOutStream.FRawOut.SetData(this.Position, new ComIStream(value));
+                this.Position += stride;
+            }
+
+            public int Write(System.IO.Stream[] buffer, int index, int length, int stride = 1)
+            {
+                var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+                for (int i = index; i < numSlicesToWrite; i++)
+                {
+                    Write(buffer[i], stride);
+                }
+                return numSlicesToWrite;
+            }
+
+            public void Reset()
+            {
+                Position = 0;
+            }
+
+            public bool Eos
+            {
+                get { return Position >= Length; }
+            }
+
+            public int Position
+            {
+                get;
+                set;
+            }
+
+            public int Length
+            {
+                get { return this.FRawOutStream.Length; }
+            }
+
+            public void Dispose()
+            {
+                
+            }
         }
     }
 
@@ -152,15 +250,15 @@ namespace VVVV.Hosting.IO.Streams
                 (TPinVisibility) attribute.Visibility
                );
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FInternalTextureOut.SliceCount = Length;
                 FInternalTextureOut.MarkPinAsChanged();
             }
-            base.Flush();
+            base.Flush(force);
         }
         
         Texture IDXTexturePin.this[Device device, int slice]
@@ -187,14 +285,14 @@ namespace VVVV.Hosting.IO.Streams
                );
         }
 
-        public override void Flush()
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FInternalMeshOut.SliceCount = Length;
                 FInternalMeshOut.MarkPinAsChanged();
             }
-            base.Flush();
+            base.Flush(force);
         }
 
         Mesh IDXMeshPin.this[Device device, int slice]

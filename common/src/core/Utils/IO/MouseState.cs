@@ -1,4 +1,5 @@
 ﻿using System;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Utils.IO
 {
@@ -42,6 +43,38 @@ namespace VVVV.Utils.IO
             Y = y;
             Button = button;
             MouseWheel = mouseWheel;
+        }
+        
+        public Vector2D Position
+        {
+        	get
+        	{
+        		return new Vector2D(X, Y);
+        	}
+        }
+        
+        public bool IsLeft
+        {
+        	get
+        	{
+        		return (Button & MouseButton.Left) > 0;
+        	}
+        }
+        
+        public bool IsMiddle
+        {
+        	get
+        	{
+        		return (Button & MouseButton.Middle) > 0;
+        	}
+        }
+        
+        public bool IsRight
+        {
+        	get
+        	{
+        		return (Button & MouseButton.Right) > 0;
+        	}
         }
         
         #region Equals and GetHashCode implementation

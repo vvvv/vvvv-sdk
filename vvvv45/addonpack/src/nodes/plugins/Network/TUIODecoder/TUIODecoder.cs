@@ -248,7 +248,8 @@ namespace TUIODecoder
                         currentSeperatedPacket = currentPacket.Substring(tuioPosition, nextpos - tuioPosition);
                         currentPacket = currentPacket.Substring(nextpos);
                     }
-                    OSC.NET.OSCPacket packet = OSC.NET.OSCPacket.Unpack(Encoding.Default.GetBytes(currentSeperatedPacket));
+
+                    OSC.NET.OSCPacket packet = OSC.NET.OSCPacket.Unpack(OSC.NET.OSCPacket.ASCIIEncoding8Bit.GetBytes(currentSeperatedPacket));
                     if (packet.IsBundle())
                     {
                         ArrayList messages = packet.Values;

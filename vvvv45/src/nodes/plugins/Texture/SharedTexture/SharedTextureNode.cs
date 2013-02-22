@@ -36,23 +36,25 @@ namespace VVVV.Nodes
 	public class EX9_TextureSharedReaderNode : DXTextureOutPluginBase, IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Width", DefaultValue = 64)]
-		IDiffSpread<int> FWidthIn;
+#pragma warning disable 0649
+        [Input("Width", DefaultValue = 64)]
+        IDiffSpread<int> FWidthIn;
 
-		[Input("Height", DefaultValue = 64)]
-		IDiffSpread<int> FHeightIn;
-		
-		[Input("Format", EnumName = "TextureFormat")]
-		IDiffSpread<EnumEntry> FFormat;
-		
-		[Input("Usage", EnumName = "TextureUsage")]
-		IDiffSpread<EnumEntry> FUsage;
+        [Input("Height", DefaultValue = 64)]
+        IDiffSpread<int> FHeightIn;
 
-		[Input("Handle")]
-		IDiffSpread<uint> FHandleIn;
-		
-		[Import()]
-		ILogger FLogger;
+        [Input("Format", EnumName = "TextureFormat")]
+        IDiffSpread<EnumEntry> FFormat;
+
+        [Input("Usage", EnumName = "TextureUsage")]
+        IDiffSpread<EnumEntry> FUsage;
+
+        [Input("Handle")]
+        IDiffSpread<uint> FHandleIn;
+
+        [Import()]
+        ILogger FLogger; 
+#pragma warning restore
 
 		//track the current texture slice
 		int FCurrentSlice;
@@ -81,8 +83,8 @@ namespace VVVV.Nodes
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int slice, Device device)
 		{
-			int p = (int) FHandleIn[slice];
-			IntPtr share = (IntPtr) p;
+			int p = unchecked((int) FHandleIn[slice]);
+			IntPtr share = new IntPtr(p);
 			Format format;
 			if (FFormat[slice].Name == "INTZ")
 				format = D3DX.MakeFourCC((byte)'I', (byte)'N', (byte)'T', (byte)'Z');

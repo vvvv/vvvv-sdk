@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace VVVV.Utils.Streams
 {
@@ -9,31 +10,28 @@ namespace VVVV.Utils.Streams
     {
         public class RangeStreamReader : IStreamReader<T>
         {
-            private readonly RangeStream<T> FRangeStream;
-            private readonly IStreamReader<T> FSourceReader;
+            private RangeStream<T> FRangeStream;
+            private IStreamReader<T> FSourceReader;
 
             public RangeStreamReader(RangeStream<T> rangeStream)
             {
                 FRangeStream = rangeStream;
                 var sourceStream = rangeStream.FSource;
-                if (rangeStream.FOffset + rangeStream.Length > sourceStream.Length)
-                    FSourceReader = sourceStream.GetCyclicReader();
-                else
-                    FSourceReader = sourceStream.GetReader();
+                FSourceReader = sourceStream.GetReader();
                 FSourceReader.Position = rangeStream.FOffset;
             }
 
             public T Read(int stride = 1)
             {
                 if (Eos) throw new InvalidOperationException();
-                position += stride;
+                FPosition += stride;
                 return FSourceReader.Read(stride);
             }
 
             public int Read(T[] buffer, int offset, int length, int stride = 1)
             {
                 int numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, offset, length, stride);
-                position += numSlicesToRead * stride;
+                FPosition += numSlicesToRead * stride;
                 return FSourceReader.Read(buffer, offset, numSlicesToRead, stride);
             }
 
@@ -42,16 +40,16 @@ namespace VVVV.Utils.Streams
                 get { return Position >= Length; }
             }
 
-            private int position;
+            private int FPosition;
             public int Position
             {
                 get
                 {
-                    return position;
+                    return FPosition;
                 }
                 set
                 {
-                    position = value;
+                    FPosition = value;
                     FSourceReader.Position = FRangeStream.FOffset + value;
                 }
             }
@@ -64,6 +62,8 @@ namespace VVVV.Utils.Streams
             public void Dispose()
             {
                 FSourceReader.Dispose();
+                FSourceReader = null;
+                FRangeStream = null;
             }
 
             public T Current
@@ -99,9 +99,12 @@ namespace VVVV.Utils.Streams
 
         public RangeStream(IInStream<T> source, int offset, int count)
         {
+            Debug.Assert(offset >= 0);
+            Debug.Assert(count >= 0);
+            Debug.Assert(offset + count <= source.Length || source is CyclicStream<T>);
             FSource = source;
             FOffset = offset;
-            FCount = source.Length > 0 ? count : 0;
+            FCount = count;
         }
 
         public RangeStreamReader GetReader()

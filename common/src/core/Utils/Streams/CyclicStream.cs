@@ -7,16 +7,16 @@ namespace VVVV.Utils.Streams
 {
     public class CyclicStream<T> : IInStream<T>
     {
-        private readonly IInStream<T> source;
+        private readonly IInStream<T> FSource;
 
         public CyclicStream(IInStream<T> source)
         {
-            this.source = source;
+            FSource = source;
         }
 
         public CyclicStreamReader<T> GetReader()
         {
-            return new CyclicStreamReader<T>(source);
+            return new CyclicStreamReader<T>(FSource);
         }
 
         IStreamReader<T> IInStream<T>.GetReader()
@@ -26,22 +26,22 @@ namespace VVVV.Utils.Streams
 
         public int Length
         {
-            get { return source.Length; }
+            get { return FSource.Length; }
         }
 
         public object Clone()
         {
-            return new CyclicStream<T>(source);
+            return new CyclicStream<T>(FSource);
         }
 
         public bool Sync()
         {
-            return source.Sync();
+            return FSource.Sync();
         }
 
         public bool IsChanged
         {
-            get { return source.IsChanged; }
+            get { return FSource.IsChanged; }
         }
 
         public System.Collections.Generic.IEnumerator<T> GetEnumerator()

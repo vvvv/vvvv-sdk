@@ -1,25 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Pipet (EX9.Texture) help.v4p">
-   <BOUNDS height="8295" left="4635" top="3120" type="Window" width="8355">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.3.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\native\Pipet (EX9.Texture) help.v4p">
+   <BOUNDS height="8295" left="3300" top="3210" type="Window" width="8355">
    </BOUNDS>
-   <NODE id="12" nodename="Pipet (EX9.Texture Legacy)" systemname="Pipet (EX9.Texture Legacy)">
-   <BOUNDS height="0" left="4965" top="4500" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Texture" visible="1">
-   </PIN>
-   <PIN pinname="Color" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Width" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Height" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE id="11" nodename="VIDEOIN (DSHOW9)" systemname="VideoIn (DShow9)">
    <BOUNDS height="0" left="345" top="2250" type="Node" width="0">
    </BOUNDS>
@@ -31,25 +13,25 @@
    </PIN>
    <PIN pinname="Video Format" slicecount="1" values="(nil)">
    </PIN>
-   <PIN pinname="Driver" slicecount="1" values="(nil)">
+   <PIN pinname="Driver" slicecount="1" values="|Sony Visual Communication Camera|">
    </PIN>
    <PIN pinname="Property Page" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Force Preview Output (via SmartT)" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE id="10" nodename="FileStream (DShow9)" systemname="FileStream (DShow9)">
+   <NODE id="10" nodename="FileStream (DShow9)" systemname="FILESTREAM (DSHOW9)">
    <BOUNDS height="0" left="1815" top="2250" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="X:\vvvv33\file.mp3" encoded="0">
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="file.avi">
    </PIN>
    <PIN pinname="Play" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Loop" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="End Time" slicecount="1" values="59">
+   <PIN pinname="Loop End Time" slicecount="1" values="59">
    </PIN>
    <PIN pinname="Do Seek" slicecount="1" values="0">
    </PIN>
@@ -82,18 +64,16 @@
    </LINK>
    <LINK dstnodeid="8" dstpinname="Y In" linkstyle="PolyLine" srcnodeid="9" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="12" dstpinname="X" srcnodeid="8" srcpinname="X Out">
-   </LINK>
-   <LINK dstnodeid="12" dstpinname="Y" linkstyle="PolyLine" srcnodeid="8" srcpinname="Y Out">
-   </LINK>
    <NODE id="7" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
    <BOUNDS height="0" left="3285" top="2250" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="..\..\assets\images\earth_512x512.jpg" encoded="0">
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\..\assets\images\earth_512x512.jpg">
    </PIN>
    <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -103,7 +83,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="2430" top="44340" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Get the color of the specified pixel|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Get the color of the specified pixel|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -117,7 +97,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="2430" top="44340" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Pipet - EX9.Texture|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Pipet (EX9.Texture)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -142,8 +122,6 @@
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Color Input" srcnodeid="12" srcpinname="Color">
-   </LINK>
    <NODE id="3" nodename="VIDEOTEXTURE (EX9.TEXTURE VMR9)" systemname="VideoTexture (EX9.Texture VMR9)">
    <BOUNDS height="0" left="330" top="2805" type="Node" width="0">
    </BOUNDS>
@@ -189,8 +167,6 @@
    <LINK dstnodeid="1" dstpinname="Input 2" srcnodeid="2" srcpinname="Texture Out">
    </LINK>
    <LINK dstnodeid="1" dstpinname="Input 1" srcnodeid="3" srcpinname="Texture Out">
-   </LINK>
-   <LINK dstnodeid="12" dstpinname="Texture" srcnodeid="1" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="0" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1215" top="3660" type="Node" width="0">
@@ -241,7 +217,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|note that the coordinates in texture space have to specified like this:|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|note that the coordinates in texture space have to specified like this:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -255,11 +231,37 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|0/0   top left&cr;&lf;1/1   bottom right|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|0/0   top left&cr;&lf;1/1   bottom right|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE id="12" nodename="Pipet (EX9.Texture)" systemname="Pipet (EX9.Texture)">
+   <BOUNDS height="0" left="4965" top="4500" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Width">
+   </PIN>
+   <PIN pinname="Height">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="X" srcnodeid="8" srcpinname="X Out">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Y" linkstyle="PolyLine" srcnodeid="8" srcpinname="Y Out">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Color Input" srcnodeid="12" srcpinname="Color">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Texture" srcnodeid="1" srcpinname="Output">
+   </LINK>
    </PATCH>

@@ -19,7 +19,7 @@ namespace VVVV.Nodes
         [Input("Offset")]
         IInStream<int> FOffset;
         
-        [Input("Count", DefaultValue = 1, MinValue = 0)]
+        [Input("Count", DefaultValue = 1)]
         IInStream<int> FCount;
 
         [Output("Output")]
@@ -52,7 +52,31 @@ namespace VVVV.Nodes
 
                         for (int i = 0; i < blockSize; i++)
                         {
-                            inputBuffer[i] = inputBuffer[i].GetRange(offsetBuffer[i], countBuffer[i]);
+                            var source = inputBuffer[i];
+                            var sourceLength = source.Length;
+                            if (sourceLength > 0)
+                            {
+                                var offset = offsetBuffer[i];
+                                var count = countBuffer[i];
+
+                                if (offset < 0 || offset >= sourceLength)
+                                {
+                                    offset = VMath.Zmod(offset, sourceLength);
+                                }
+                                if (count < 0)
+                                {
+                                    source = source.Reverse();
+                                    count = -count;
+                                    offset = sourceLength - offset;
+                                }
+                                // offset and count are positive now
+                                if (offset + count > sourceLength)
+                                {
+                                    source = source.Cyclic();
+                                }
+
+                                inputBuffer[i] = source.GetRange(offset, count);
+                            }
                         }
 
                         numSlicesToWrite -= outputWriter.Write(inputBuffer, 0, blockSize);

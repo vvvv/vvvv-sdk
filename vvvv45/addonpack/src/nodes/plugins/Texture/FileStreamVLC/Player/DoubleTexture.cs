@@ -101,6 +101,7 @@ namespace VVVV.Nodes.Vlc.Player
 			{
 				Dispose();
 			}
+			
 			public Texture GetFrontTexture()
 			{
 				return (frontBuffer ? texture1 : texture0);
@@ -206,7 +207,7 @@ namespace VVVV.Nodes.Vlc.Player
 			 */
 			public int SetNewSize(int w, int h)
 			{
-				if (texture0 != null && texture1 != null && !texture0.Disposed && !texture1.Disposed && width == w && height == h) {
+				if ( texture0 != null && texture1 != null && !texture0.Disposed && !texture1.Disposed && width == w && height == h ) {
 					//do nothing
 					return 0;
 				}
@@ -226,8 +227,8 @@ namespace VVVV.Nodes.Vlc.Player
 					try {
 						//if ( texture0 != null ) { device = texture0.Device; }
 						
-						Texture newTexture0 = VlcUtils.CreateManagedTexture(device, w, h);
-						Texture newTexture1 = VlcUtils.CreateManagedTexture(device, w, h);
+						Texture newTexture0 = VlcUtils.CreateManagedTexture( device, w, h );
+						Texture newTexture1 = VlcUtils.CreateManagedTexture( device, w, h );
 	
 						Dispose();
 	
@@ -320,18 +321,23 @@ namespace VVVV.Nodes.Vlc.Player
 			{
 				return texture0 != null ? texture0.Device : null;
 			}
-			public void Dispose()
+			
+			public void Dispose() 
 			{
-				if (texture0 != null && !texture0.Disposed) {
+				if ( texture0 != null && ! texture0.Disposed ) {
 					try {					
 						texture0.Dispose();
 					} catch {}
 				}
-				if (texture1 != null && !texture1.Disposed) {
+				if ( texture1 != null && ! texture1.Disposed ) {
 					try {
 						texture1.Dispose();
 					} catch {}
 				}
+
+				// Use SupressFinalize in case a subclass of this type implements a finalizer.
+				GC.SuppressFinalize( this );
 			}
+			
 		}
 }

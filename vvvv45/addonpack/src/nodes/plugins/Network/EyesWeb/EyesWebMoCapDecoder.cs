@@ -107,6 +107,7 @@ namespace vvvv.Nodes
             {
                 string val;
                 this.FPinInValue.GetString(0, out val);
+                val = val == null ? String.Empty : val;
 
                 if (val.Length > 0)
                 {

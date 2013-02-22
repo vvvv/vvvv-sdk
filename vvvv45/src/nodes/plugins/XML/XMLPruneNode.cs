@@ -23,6 +23,7 @@ namespace VVVV.Nodes.XML
             public string AttributeName;
         }
 
+#pragma warning disable 0649
         [Config("Element Name", DefaultString = "MyElement", IsSingle = true)]
         public IDiffSpread<string> ElementNamePin;
 
@@ -36,7 +37,8 @@ namespace VVVV.Nodes.XML
         public ISpread<ISpread<XElement>> Elements;
 
         [Import()]
-        IIOFactory IOFactory;
+        IIOFactory IOFactory; 
+#pragma warning restore
 
         XName ElementName;
         string[] AttributeNames;

@@ -56,10 +56,10 @@ namespace VVVV.PluginInterfaces.V2
                 return FStream.IsChanged;
             }
         }
-        
-        public virtual void Flush()
+
+        public virtual void Flush(bool force = false)
         {
-            FStream.Flush();
+            FStream.Flush(force);
         }
         
         public BufferedIOStream<T> Stream

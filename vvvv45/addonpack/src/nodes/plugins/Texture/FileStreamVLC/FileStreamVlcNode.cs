@@ -47,6 +47,11 @@ using System.Drawing.Drawing2D;
 using System.Text;
 //using Un4seen.Bass;
 //using BassSound.Internals;
+//needed for loading the file with extra search paths
+using System.Windows.Forms;
+using System.Reflection;
+using System.Collections;
+using System.IO;
 
 
 
@@ -58,13 +63,12 @@ using VertexType = VVVV.Utils.SlimDX.TexturedVertex;
 namespace VVVV.Nodes.Vlc
 {
 	#region PluginInfo
-	[PluginInfo(Name = "FileStream", Category = "VLC", Version = "1.0", Author = "ft", Help = "Fully spreadeble video/image to texture player based on LibVlc", Tags = "video, audio, image, texture", Credits = "Frederik Tilkin, the authors of Vlc player, Roman Ginzburg", Bugs = "see http://trac.videolan.org/vlc/ticket/3152 | Don't trust the position and frame pins.", Warnings = "")]
+    [PluginInfo(Name = "FileStream", Category = "EX9.Texture", Version = "VLC", Author = "ft", Help = "Fully spreadeble video/image to texture player based on LibVlc", Tags = "video, audio, image, texture", Credits = "Frederik Tilkin, the authors of Vlc player, Roman Ginzburg", Bugs = "see http://trac.videolan.org/vlc/ticket/3152 | Don't trust the position and frame pins.", Warnings = "")]
 	#endregion PluginInfo
 	public class FileStreamVlcNode : DXTextureOutPluginBase, IPluginEvaluate, IDisposable
 	{
 		
 		#region pins
-
 
 		[Input("Play", DefaultValue = 1)]
 		IDiffSpread<bool> FPlayIn;
@@ -72,10 +76,10 @@ namespace VVVV.Nodes.Vlc
 		[Input("Loop", DefaultValue = 0)]
 		IDiffSpread<bool> FLoopIn;
 
-        [Input("Loop Start", DefaultValue = 0)]
+        [Input("Loop Start Time", DefaultValue = 0)]
         IDiffSpread<float> FLoopStartIn;
 
-        [Input("Loop End", DefaultValue = 999999)]
+        [Input("Loop End Time", DefaultValue = 999999)]
         IDiffSpread<float> FLoopEndIn;
 
 		[Input("Do Seek", DefaultValue = 0, IsBang = true)]
@@ -99,18 +103,18 @@ namespace VVVV.Nodes.Vlc
 		[Input("Rotate", DefaultValue = 0, Visibility = PinVisibility.False)]
 		IDiffSpread<int> FRotateIn;
 
-		[Input("Filename", DefaultString = "C:\\video.avi | deinterlace=1 | video-filter=gradient{type=1}")]
-		IDiffSpread<string> FFileNameIn;
-
-		[Input("NextFilename", DefaultString = "", Visibility = PinVisibility.Hidden)]
+		[Input("NextFilename", StringType = StringType.Filename, DefaultString = "", Visibility = PinVisibility.Hidden)]
 		IDiffSpread<string> FNextFileNameIn;
 
+		[Input("Filename", StringType = StringType.Filename, DefaultString = "C:\\video.avi | deinterlace=1 | video-filter=gradient{type=1}")]
+		IDiffSpread<string> FFileNameIn;
 
-		[Output("Position")]
-		ISpread<float> FPositionOut;
 
 		[Output("Duration")]
 		ISpread<float> FDurationOut;
+		
+		[Output("Position")]
+		ISpread<float> FPositionOut;
 
 		[Output("Frame")]
 		ISpread<int> FFrameOut;
@@ -130,7 +134,7 @@ namespace VVVV.Nodes.Vlc
 		[Output("Pixel Aspect Ratio", DefaultValue = 1, Visibility = PinVisibility.OnlyInspector)]
 		ISpread<float> FPixelAspectRatioOut;
 
-		[Output("Next Ready")]
+		[Output("Next Ready", Visibility = PinVisibility.Hidden)]
 		ISpread<bool> FNextReadyOut;
 
 //		[Output("Bass Handle")]
@@ -176,11 +180,11 @@ namespace VVVV.Nodes.Vlc
 			private EventWaitHandle evaluateStopThreadWaitHandle;
 			private Mutex mediaPlayerBusyMutex;
 			//used for starting and stopping etc. in separate thread
-			private IntPtr media;
-			private IntPtr preloadMedia;
-			private IntPtr mediaPlayer;
+			private IntPtr media = IntPtr.Zero;
+			private IntPtr preloadMedia = IntPtr.Zero;
+			private IntPtr mediaPlayer = IntPtr.Zero;
 	
-			private IntPtr opaqueForCallbacks;
+			private IntPtr opaqueForCallbacks = IntPtr.Zero;
 			private DoubleMemoryBuffer pixelPlanes;
 	
 			private int preloadingStatus;
@@ -230,12 +234,98 @@ namespace VVVV.Nodes.Vlc
 			private int bassStreamHandle; //the handle of the BASS stream we will push the audio to c
 	
 			private bool disposing = false;
+			private bool initialized = false;
 			
 			#endregion MediaRenderer fields
 	
+			#region MediaRenderer static helper functions
+			/// <summary>
+			/// The function returns the file path of the assembly (the dll file) this class resides in. 
+			/// </summary>
+			static public string AssemblyDirectory
+			{
+			    get
+			    {
+			        string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+			        UriBuilder uri = new UriBuilder(codeBase);
+			        string path = Uri.UnescapeDataString(uri.Path);
+			        return Path.GetDirectoryName(path);
+			    }
+			}
+	
+			/// <summary>
+			/// This function will look for the file in all of the folders defined in the searchPathFile, 
+			/// and returns the FIRST path where the given fileName is found. It will also look in the 
+			/// same directory as this dll itself.
+			/// </summary>
+			/// <param name="fileName"></param>
+			/// <param name="searchPathFileName"></param>
+			/// <returns></returns>
+			private static string FindFilePath(string fileName, string searchPathFileName) {
+				//if the libvlc dll is not found in any folder of the PATH environment variable,
+				//search also in directories specified in the text-file
+	
+				string sameDirAsCallingCode = AssemblyDirectory + "\\";
+				if ( File.Exists( sameDirAsCallingCode + fileName) ) {
+					return sameDirAsCallingCode;
+				}
+				
+				//const string searchPathFileName = "libvlc_searchpath.txt";
+				string searchPathFilePath = sameDirAsCallingCode + searchPathFileName;
+				
+				//string searchpath = searchPathFilePath + "\n";
+				try {
+					foreach ( string row in File.ReadAllLines( searchPathFilePath ) ) {
+						//ignore lines starting with # and ignore empty lines
+						if ( ! ( row.Length == 0 || row.StartsWith("#") ) ) {
+							string currentPath = row + ( row.EndsWith( "\\" ) ? "" : "\\" );
+							
+							currentPath = Environment.ExpandEnvironmentVariables( currentPath );
+							
+							if ( row.StartsWith(".") ) {
+								//relative path
+								currentPath = AssemblyDirectory + "\\" + currentPath;
+							}
+							else {
+								//absolute path								
+							}
+	
+							if ( File.Exists( currentPath + fileName) ) {
+								//ideally check if the version is ok to use
+								return currentPath;
+							}
+						}
+					}
+				}
+				catch (IOException) {
+					throw new Exception( "A file named " + searchPathFilePath + " should exist (in the same folder as the Vlc node's dll). This file, which contains paths where the plugin should look for the libvlc.dll (and others) could not be opened, so probably, loading the Vlc plugin will fail." );
+					//MessageBox.Show( "A file named " + searchPathFilePath + " should exist (in the same folder as the Vlc node's dll). This file, which contains paths where the plugin should look for the libvlc.dll (and others) could not be opened, so probably, loading the Vlc plugin will fail.", "Vlc plugin error.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
+				return null;
+			}
+
+			static void TryToFindLibVLC()
+			{
+				string libvlcdllPath = FindFilePath( "libvlc.dll", "libvlc_searchpath.txt" );
+				if ( libvlcdllPath != null ) {
+					string pathEnvVar = Environment.GetEnvironmentVariable( "PATH" );
+					Environment.SetEnvironmentVariable( "PATH", pathEnvVar + ";" + libvlcdllPath );
+				}
+				else {
+					throw new Exception( "The libvlc.dll file could not be found in any of the paths specified in libvlc_searchpath.txt, so probably, loading the Vlc plugin will fail." );
+					//MessageBox.Show( "The libvlc.dll file could not be found in any of the paths specified in libvlc_searchpath.txt, so probably, loading the Vlc plugin will fail.", "Vlc plugin error.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
+
+			}
+	
+	        #endregion MediaRenderer static helper functions
+
 			#region MediaRenderer constructor/destructor			
 
 			static MediaRenderer() {
+				
+				TryToFindLibVLC();
+				
 				string[] argv = {
 					"--no-video-title",
 					"--no-one-instance",
@@ -244,6 +334,7 @@ namespace VVVV.Nodes.Vlc
 
 				libVLC = LibVlcMethods.libvlc_new(argv.GetLength(0), argv);				
 			}
+			
 			
 			public MediaRenderer(FileStreamVlcNode parentObject, int index)
 			{
@@ -265,12 +356,14 @@ namespace VVVV.Nodes.Vlc
 					
 				PrepareMediaPlayer();
 			}
-	
+
+/* this way Dispose might get called twice
 			~MediaRenderer()
 			{
 				Dispose();
 			}
-	
+*/
+
 			private void PrepareMediaPlayer()
 			{
 	
@@ -325,8 +418,12 @@ namespace VVVV.Nodes.Vlc
 				evaluateEventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
 				evaluateStopThreadWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
 				evaluateThread = new Thread(new ThreadStart(EvaluateThreadProc));
+				
+				initialized = true;
+				
 				evaluateThread.Start();
 
+				
 /*				TIMERS SUCK, THEY ARE ALWAYS TOO LATE !!!
 
 				loopTimer = new System.Timers.Timer( 1000 );		
@@ -343,29 +440,53 @@ namespace VVVV.Nodes.Vlc
 				loopTimer.Tick += new EventHandler( LoopTimerEventHandler );
 			}
 	
+			/*
+			 * Makes sure we stop the media-player completely when it's no longer needed, 
+			 * after that the GC can do it's job when it wants to.
+			 */
+			public void PrepareForDisposal() {
+				loopTimer.Stop();
+				evaluateStopThreadWaitHandle.Set();				
+			}
+			
+			/*
+			 * Should be callable multiple times without causing exceptions !!!
+			 */  
 			public void Dispose()
 			{
+				disposing = true;
+				
 				//parent.FLogger.Log( LogType.Debug, "[Dispose] Disposing media renderer " + mediaRendererIndex);
 				//evaluateThread.Abort();
 				evaluateStopThreadWaitHandle.Set();
 				evaluateThread.Join();
 				//preloadingStatus = STATUS_INACTIVE;
-	
+				
+				//deallocate video memory etc.
 				try {
-					LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
-				} catch {
-				}
-				try {
-					LibVlcMethods.libvlc_media_player_release(mediaPlayer);
-				} catch {
-				}
-	
-				//deallocate video memory
-				try {
+					loopTimer.Stop();
+					loopTimer.Dispose();
+
+					
+					//DONE IN evaluateThread!!! LibVlcMethods.libvlc_media_player_release( mediaPlayer );
+
 					pixelPlanes.Dispose();
-					Marshal.FreeHGlobal(opaqueForCallbacks);
+					
+					Marshal.FreeHGlobal( opaqueForCallbacks );
+
+					mediaPlayerBusyMutex.Dispose();		
+		
+					evaluateEventWaitHandle.Dispose();
+					evaluateStopThreadWaitHandle.Dispose();
+				
 				} catch {
 				}
+
+
+				Log( LogType.Debug, "[Dispose] done...");
+
+				// Use SupressFinalize in case a subclass of this type implements a finalizer.
+				GC.SuppressFinalize( this );
 			}
 			#endregion MediaRenderer constructor/destructor
 	
@@ -456,11 +577,7 @@ namespace VVVV.Nodes.Vlc
 			//////////////////////////////////////////////////
 			public IntPtr VlcVideoLockCallBack(ref IntPtr data, ref IntPtr pixelPlane)
 			{
-				if (disposing) {
-					Log( LogType.Error, ("VlcLockCallback(" + data.ToInt32() + ") : PLAYER HAS BEEN DISPOSED AND STILL PLAYING ???") );
-					return IntPtr.Zero;
-				}
-				else {
+				if ( initialized ) {
 					switch ( preloadingStatus ) {
 						case STATUS_GETFIRSTFRAME:
 						case STATUS_PLAYING:
@@ -480,6 +597,10 @@ namespace VVVV.Nodes.Vlc
 							//Log( LogType.Debug, "Hmm" );
 							break;
 					}
+				}
+				else {
+					Log( LogType.Error, ("VlcLockCallback(" + data.ToInt32() + ") : PLAYER HAS BEEN DISPOSED AND STILL PLAYING ???") );
+					return IntPtr.Zero;
 				}
 				//if (lockCalled != unlockCalled) Log( LogType.Error, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "(lock/unlock=" + lockCalled  + "/" + unlockCalled + ")" );
 	
@@ -511,7 +632,7 @@ namespace VVVV.Nodes.Vlc
 			public void VlcVideoUnlockCallBack(ref IntPtr data, ref IntPtr id, ref IntPtr pixelPlane)
 			{
 				try {
-					if (disposing) {
+					if ( ! initialized ) {
 						Log( LogType.Error, ("VlcUnlockCallback(" + data.ToInt32() + ") : PLAYER HAS BEEN DISPOSED AND STILL PLAYING ???") );
 						return;
 					}
@@ -584,7 +705,7 @@ namespace VVVV.Nodes.Vlc
 	
 			private void EvaluateThreadProc()
 			{
-				while (true) {
+				while ( initialized ) {
 					int waitHandleIndex = WaitHandle.WaitAny( new EventWaitHandle[2] {
 						evaluateEventWaitHandle,
 						evaluateStopThreadWaitHandle
@@ -599,16 +720,26 @@ namespace VVVV.Nodes.Vlc
 						}
 						//Thread.Sleep(2);
 					} else if (waitHandleIndex == 1) {
-						if (mediaPlayerBusyMutex.WaitOne(10000)) {
-							try {
-								LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
-							} catch {
+						if ( mediaPlayerBusyMutex.WaitOne(10000) ) {
+							if ( mediaPlayer != IntPtr.Zero ) {
+								try {
+									LibVlcMethods.libvlc_media_player_stop(mediaPlayer);
+								}
+								catch { }
+								try {
+									LibVlcMethods.libvlc_media_player_release(mediaPlayer);
+								}
+								catch { }
 							}
+							mediaPlayer = IntPtr.Zero;
+							
 							mediaPlayerBusyMutex.ReleaseMutex();
 						} else {
 	
 						}
+
 						disposing = true;
+						initialized = false;
 						break;
 					}
 				}
@@ -911,8 +1042,8 @@ namespace VVVV.Nodes.Vlc
 								if ( nrOfStreams > 0 && isStream ) { //&& newFileNameIn.StartsWith("dvb-")
 									//not all streams end up in the structure at the same time
 									if ( nrOfStreams == 1 ) {
-									Log( LogType.Debug, "Stream detected: wait some time to see if there are more streams..." );
-									Thread.Sleep(3000);
+										Log( LogType.Debug, "Stream detected: wait some time to see if there are more streams..." );
+										Thread.Sleep(3000);
 									}
 									//and check again
 									nrOfStreams = LibVlcMethods.libvlc_media_get_tracks_info(preloadMedia, out trackInfoArray);
@@ -1314,7 +1445,7 @@ namespace VVVV.Nodes.Vlc
 	
 			private void Log( LogType logType, string message)
 			{
-				parent.Log( logType, "[MediaRenderer " + (this == parent.mediaRendererA[slice] ? "A" : "B") + slice + (parent.IsFrontMediaRenderer(this) ? "+" : "-") + "] " + message);
+				parent.Log( logType, "[MediaRenderer " +  ( initialized ? (this == parent.mediaRendererA[slice] ? "A" : "B")  : "D" ) + slice + ( initialized ? ( parent.IsFrontMediaRenderer(this) ? "+" : "-" ) : "*" ) + "] " + message);
 			}
 	
 			private long MillisecondsToTicks(int millis) {
@@ -1794,6 +1925,9 @@ namespace VVVV.Nodes.Vlc
 			}
 
 			//base.Dispose();
+
+			// Use SupressFinalize in case a subclass of this type implements a finalizer.
+			GC.SuppressFinalize( this );
 		}
 
 
@@ -1895,13 +2029,20 @@ namespace VVVV.Nodes.Vlc
 		{
 			Log( LogType.Debug, "++++++++ disposing of renderer pair " + index + " ++++++++" );
 			//mediaRendererBackFrontMutex[index].WaitOne();
+			
+			memoryToTextureRendererA[index].PrepareForDisposal();
+			memoryToTextureRendererB[index].PrepareForDisposal();
+			
+			mediaRendererCurrent[index].PrepareForDisposal();
+			mediaRendererNext[index].PrepareForDisposal();
 
+			//Let TH GC do its job
 			memoryToTextureRendererA[index].Dispose();
 			memoryToTextureRendererB[index].Dispose();
 
 			mediaRendererCurrent[index].Dispose();
 			mediaRendererNext[index].Dispose();
-
+			
 			//mediaRendererBackFrontMutex[index].ReleaseMutex();
 		}
 

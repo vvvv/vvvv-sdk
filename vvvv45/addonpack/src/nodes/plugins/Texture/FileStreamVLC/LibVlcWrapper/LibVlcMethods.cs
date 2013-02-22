@@ -18,11 +18,6 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
-//needed for loading the file with extra search paths
-using System.Windows.Forms;
-using System.Reflection;
-using System.Collections;
-using System.IO;
 
 namespace LibVlcWrapper
 {
@@ -31,102 +26,8 @@ namespace LibVlcWrapper
     {
     	#region constructor/destructor
     	static LibVlcMethods() {
-			/* // the resolveeventhandler doesn't get called for unmanaged dll's
-    		try {
-				System.AppDomain currentDomain = System.AppDomain.CurrentDomain;
-				currentDomain.AssemblyResolve += new ResolveEventHandler( MyAssemblyResolveHandler );
-			} catch (Exception e) {
-				System.Windows.Forms.MessageBox.Show( "PROBLEM setting AppDomain:\n" + e.Message, "Vlc plugin error.", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Exclamation);
-			}
-    		*/
-    		
-			string libvlcdllPath = FindFilePath( "libvlc.dll", "libvlc_searchpath.txt" );
-			if ( libvlcdllPath != null ) {
-				string pathEnvVar = Environment.GetEnvironmentVariable( "PATH" );
-				Environment.SetEnvironmentVariable( "PATH", pathEnvVar + ";" + libvlcdllPath );
-			}
-			else {
-				throw new Exception( "The libvlc.dll file could not be found in any of the paths specified in libvlc_searchpath.txt, so probably, loading the Vlc plugin will fail." );
-				//MessageBox.Show( "The libvlc.dll file could not be found in any of the paths specified in libvlc_searchpath.txt, so probably, loading the Vlc plugin will fail.", "Vlc plugin error.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);				
-			}
 		}
-
-    	/*
-		static public System.Reflection.Assembly MyAssemblyResolveHandler(object source, ResolveEventArgs e) {
-			//System.Windows.Forms.MessageBox.Show( "LibVlcWrapper.MyAssemblyResolveHandler" + "\n" + e.Name, "MyAssemblyResolveHandler", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Exclamation);
-			if ( e.Name == "libvlc.dll" ) {
-				return Assembly.LoadFrom( FindFilePath( "libvlc.dll", "libvlc_searchpath.txt") + "libvlc.dll" );
-			}
-			return null;
-    	}
-		*/
     	#endregion constructor/destructor
-
-		#region MediaRenderer static helper functions
-		/// <summary>
-		/// The function returns the file path of the assembly (the dll file) this class resides in. 
-		/// </summary>
-		static public string AssemblyDirectory
-		{
-		    get
-		    {
-		        string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-		        UriBuilder uri = new UriBuilder(codeBase);
-		        string path = Uri.UnescapeDataString(uri.Path);
-		        return Path.GetDirectoryName(path);
-		    }
-		}
-
-		/// <summary>
-		/// This function will look for the file in all of the folders defined in the searchPathFile, 
-		/// and returns the FIRST path where the given fileName is found. It will also look in the 
-		/// same directory as this dll itself.
-		/// </summary>
-		/// <param name="fileName"></param>
-		/// <param name="searchPathFileName"></param>
-		/// <returns></returns>
-		private static string FindFilePath(string fileName, string searchPathFileName) {
-			//if the libvlc dll is not found in any folder of the PATH environment variable,
-			//search also in directories specified in the text-file
-
-			string sameDirAsCallingCode = AssemblyDirectory + "\\";
-			if ( File.Exists( sameDirAsCallingCode + fileName) ) {
-				return sameDirAsCallingCode;
-			}
-			
-			//const string searchPathFileName = "libvlc_searchpath.txt";
-			string searchPathFilePath = sameDirAsCallingCode + searchPathFileName;
-			
-			//string searchpath = searchPathFilePath + "\n";
-			try {
-				foreach ( string row in File.ReadAllLines( searchPathFilePath ) ) {
-					//ignore lines starting with # and ignore empty lines
-					if ( ! ( row.Length == 0 || row.StartsWith("#") ) ) {
-						string currentPath = row + ( row.EndsWith( "\\" ) ? "" : "\\" );
-						if ( row.StartsWith(".") ) {
-							//relative path
-							currentPath = AssemblyDirectory + "\\" + currentPath;
-						}
-						else {
-							//absolute path								
-						}
-
-						if ( File.Exists( currentPath + fileName) ) {
-							//ideally check if the version is ok to use
-							return currentPath;
-						}
-					}
-				}
-			}
-			catch (IOException) {
-				throw new Exception( "A file named " + searchPathFilePath + " should exist (in the same folder as the Vlc node's dll). This file, which contains paths where the plugin should look for the libvlc.dll (and others) could not be opened, so probably, loading the Vlc plugin will fail." );
-				//MessageBox.Show( "A file named " + searchPathFilePath + " should exist (in the same folder as the Vlc node's dll). This file, which contains paths where the plugin should look for the libvlc.dll (and others) could not be opened, so probably, loading the Vlc plugin will fail.", "Vlc plugin error.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-			}
-			return null;
-		}
-
-        #endregion MediaRenderer static helper functions
-		
 		
         #region libvlc.h
 
