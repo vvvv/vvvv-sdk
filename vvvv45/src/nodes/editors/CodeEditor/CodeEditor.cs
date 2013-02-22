@@ -151,7 +151,7 @@ namespace VVVV.HDE.CodeEditor
 				{
 					var csDoc = TextDocument as CSDocument;
 					if (csDoc != null)
-						csDoc.ParseCompleted -= CSDocument_ParseCompleted;
+						csDoc.ContentChanged -= HandleTextContentChanged;
 					EnableFolding = false;
 				}
 				
@@ -165,8 +165,8 @@ namespace VVVV.HDE.CodeEditor
 					var csDoc = TextDocument as CSDocument;
 					if (csDoc != null)
 					{
-						csDoc.ParseCompleted += CSDocument_ParseCompleted;
-						CSDocument_ParseCompleted(csDoc);
+                        csDoc.ContentChanged += HandleTextContentChanged;
+						HandleTextContentChanged(csDoc, csDoc.TextContent);
 					}
 				}
 			}
@@ -380,11 +380,12 @@ namespace VVVV.HDE.CodeEditor
 			doc.CommitUpdate();
 		}
 		
-		void CSDocument_ParseCompleted(CSDocument document)
+		void HandleTextContentChanged(ITextDocument textDocument, string content)
 		{
 			try
 			{
-				if (document.ParseInfo != null && document.ParseInfo.MostRecentCompilationUnit != null)
+                var document = textDocument as CSDocument;
+				if (document.ParseInfo.MostRecentCompilationUnit != null)
 					Document.FoldingManager.UpdateFoldings(document.Location.LocalPath, document.ParseInfo);
 			}
 			catch (Exception)
