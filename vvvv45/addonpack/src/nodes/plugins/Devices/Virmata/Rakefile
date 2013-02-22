@@ -1,7 +1,10 @@
 require "albacore"
 
-RELEASE_PROPS = {:configuration => :Release,:platform => "x86"}
-DEBUG_PROPS   = {:configuration => :Debug,:platform => "x86"}
+#RELEASE_PROPS = {:configuration => :Release,:platform => "x86"}
+#DEBUG_PROPS   = {:configuration => :Debug,:platform => "x86"}
+
+RELEASE_PROPS = {:configuration => :Release,:platform => "x64"}
+DEBUG_PROPS   = {:configuration => :Debug,:platform => "x64"}
 
 ROOT_DIR = '..\..\..\..\..\..\\'
 
@@ -37,12 +40,13 @@ msbuild :cleanaddons do |msb|
 	msb.solution = "#{ROOT_DIR}addonpack\\src\\Addonpack.sln"
 end
 
+
 task :all => [:core,:addons]
 task :cleanall => [:cleancore,:cleanaddons,:clean]
 
 
-PLUGIN_DEBUG   = {:configuration=>:Debug   } 
-PLUGIN_RELEASE = {:configuration=>:Release }
+PLUGIN_DEBUG   = {:configuration=>:Debug   ,:platform => "x64"} 
+PLUGIN_RELEASE = {:configuration=>:Release ,:platform => "x64"}
 
 MODULES_DIR = "addonpack\\lib\\nodes\\modules\\"
 HELPFILE = "Devices\\Arduino (Devices StandardFirmata 2.x) help.v4p"
