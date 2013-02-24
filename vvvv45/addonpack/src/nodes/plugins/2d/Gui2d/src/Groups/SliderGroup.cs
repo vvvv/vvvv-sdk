@@ -40,6 +40,7 @@ namespace VVVV.Nodes
 		private Vector2D FLastMouse;
 		private Matrix4x4 FSliderSize;
 		private double FSliderSpeed;
+		private bool FIsLong;
 		
 		//constructor
 		public SliderGroup()
@@ -56,13 +57,19 @@ namespace VVVV.Nodes
 		                            RGBAColor Active,
 		                            RGBAColor SliderCol,
 		                            double SliderSpeed,
-		                            bool isX)
+		                            bool isX,
+		                           	bool isLong)
 		{
 			//copy fields
 			FColSlider = SliderCol;
 			FSliderSpeed = SliderSpeed;
-			FSliderSize = VMath.Scale(1.0 , SizeSlider, 1);
+			FIsLong = isLong;
 			
+			if(!FIsLong)
+			{
+				FSliderSize = VMath.Scale(1.0, SizeSlider, 1);
+			}
+				
 			base.UpdateTransform(Transform, Count, Size, Col, Over, Active);
 			
 			//update slider control
@@ -77,8 +84,16 @@ namespace VVVV.Nodes
 					s.Transform = VMath.RotateZ(isX ? -0.25 * VMath.CycToRad : 0) * s.Transform;
 					s.InvTransform = !s.Transform;
 				}
-	
-				s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+				
+				if(!FIsLong)
+				{
+					s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+				}
+				else
+				{
+					s.SliderTransform = VMath.Scale(1, s.Value, 1) * VMath.Translate(0, s.Value*0.5 - 0.5 , 1) * s.Transform;
+				}
+				
 				
 			}
 			
@@ -87,7 +102,7 @@ namespace VVVV.Nodes
 		//update mouse
 		public override bool UpdateMouse(Vector2D Mouse, 
 		                          		 bool MouseLeftDownEdge,
-		                        		 bool MouseLeftPressed)
+		                          		 bool MouseLeftPressed)
 		{			
 			bool upEdgeHit = base.UpdateMouse(Mouse, MouseLeftDownEdge, MouseLeftPressed);
 					
@@ -106,9 +121,16 @@ namespace VVVV.Nodes
 					Vector2D invLastMouse = (s.InvTransform * FLastMouse).xy;
 					
 					s.Value = VMath.Clamp(s.Value + (invMouse.y - invLastMouse.y) * FSliderSpeed, 0, 1);
-					s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
-
-				}
+					if(!FIsLong)
+					{
+						s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+					}
+					else
+					{
+						s.SliderTransform = VMath.Scale(1, s.Value, 1) * VMath.Translate(0, s.Value*0.5 - 0.5 , 1) * s.Transform;
+					}
+						
+					}
 
 				s.ColorSlider = FColSlider;
 				
@@ -120,10 +142,18 @@ namespace VVVV.Nodes
 		}
 		
 		//set value
-		public void UpdateValue(Slider s, double val)
+		public void UpdateValue(Slider s, double val, bool isLong)
 		{
 			s.Value = VMath.Clamp(val, 0, 1);
-			s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+			if(!FIsLong)
+			{
+				s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+			}
+			else
+			{
+				s.SliderTransform = VMath.Scale(1, s.Value, 1) * VMath.Translate(0, s.Value*0.5 - 0.5 , 1) * s.Transform;
+			}
+			
 		}
 	}
 }

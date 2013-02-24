@@ -27,6 +27,8 @@ namespace VVVV.Nodes.Texture.HTML
         public ISpread<KeyboardState> FKeyEventIn;
         [Input("Scroll To")]
         public ISpread<Vector2D> FScrollToIn;
+        [Input("Update DOM", IsBang = true)]
+        public ISpread<bool> FUpdateDomIn;
         [Input("JavaScript")]
         public ISpread<string> FJavaScriptIn;
         [Input("Execute", IsBang = true)]
@@ -78,6 +80,7 @@ namespace VVVV.Nodes.Texture.HTML
                 var mouseEvent = FMouseEventIn[i];
                 var keyEvent = FKeyEventIn[i];
                 var scrollTo = FScrollToIn[i];
+                var updateDom = FUpdateDomIn[i];
                 var javaScript = FJavaScriptIn[i];
                 var execute = FExecuteIn[i];
                 var enabled = FEnabledIn[i];
@@ -100,6 +103,7 @@ namespace VVVV.Nodes.Texture.HTML
                     mouseEvent,
                     keyEvent,
                     scrollTo,
+                    updateDom,
                     javaScript,
                     execute,
                     enabled);
@@ -127,6 +131,7 @@ namespace VVVV.Nodes.Texture.HTML
             MouseState mouseEvent, 
             KeyboardState keyEvent, 
             Vector2D scrollTo, 
+            bool updateDom,
             string javaScript, 
             bool execute, 
             bool enabled);
@@ -145,7 +150,7 @@ namespace VVVV.Nodes.Texture.HTML
         [Input("Base Url", DefaultString = "about:blank")]
         public ISpread<string> FBaseUrlIn;
 
-        protected override DXResource<EX9.Texture, CefBrowser> DoRenderCall(HTMLTextureRenderer webRenderer, int slice, out XDocument dom, out XElement rootElement, out bool isLoading, out string currentUrl, out string errorText, bool reload, int width, int height, double zoomLevel, MouseState mouseEvent, KeyboardState keyEvent, Vector2D scrollTo, string javaScript, bool execute, bool enabled)
+        protected override DXResource<EX9.Texture, CefBrowser> DoRenderCall(HTMLTextureRenderer webRenderer, int slice, out XDocument dom, out XElement rootElement, out bool isLoading, out string currentUrl, out string errorText, bool reload, int width, int height, double zoomLevel, MouseState mouseEvent, KeyboardState keyEvent, Vector2D scrollTo, bool updateDom, string javaScript, bool execute, bool enabled)
         {
             return webRenderer.RenderString(
                     out dom,
@@ -162,6 +167,7 @@ namespace VVVV.Nodes.Texture.HTML
                     mouseEvent,
                     keyEvent,
                     scrollTo,
+                    updateDom,
                     javaScript,
                     execute,
                     enabled);
@@ -174,7 +180,7 @@ namespace VVVV.Nodes.Texture.HTML
         [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
         public ISpread<string> FUrlIn;
 
-        protected override DXResource<EX9.Texture, CefBrowser> DoRenderCall(HTMLTextureRenderer webRenderer, int slice, out XDocument dom, out XElement rootElement, out bool isLoading, out string currentUrl, out string errorText, bool reload, int width, int height, double zoomLevel, MouseState mouseEvent, KeyboardState keyEvent, Vector2D scrollTo, string javaScript, bool execute, bool enabled)
+        protected override DXResource<EX9.Texture, CefBrowser> DoRenderCall(HTMLTextureRenderer webRenderer, int slice, out XDocument dom, out XElement rootElement, out bool isLoading, out string currentUrl, out string errorText, bool reload, int width, int height, double zoomLevel, MouseState mouseEvent, KeyboardState keyEvent, Vector2D scrollTo, bool updateDom, string javaScript, bool execute, bool enabled)
         {
             return webRenderer.RenderUrl(
                     out dom,
@@ -190,6 +196,7 @@ namespace VVVV.Nodes.Texture.HTML
                     mouseEvent,
                     keyEvent,
                     scrollTo,
+                    updateDom,
                     javaScript,
                     execute,
                     enabled);

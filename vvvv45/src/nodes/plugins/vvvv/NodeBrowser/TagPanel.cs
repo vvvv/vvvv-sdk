@@ -39,7 +39,7 @@ namespace VVVV.Nodes.NodeBrowser
         private List<string> FRTFSelectionList = new List<string>();
         private readonly Regex FVVVVGroupRegex = new Regex(@"vvvv\s+group", RegexOptions.IgnoreCase | RegexOptions.Multiline);
         
-        private List<string> FCategoryPriorities = new List<string>(new string[] { "DSHOW9", "OCTONION", "QUATERNION", "FLASH", "GDI", "TTY", "SVG", "TRANSFORM", "COLOR", "DX9", "EX9.GEOMETRY", "EX9.TEXTURE", "EX9", "DX11.GEOMETRY", "EX9.TEXTURE", "DX11", "RAW", "STRING", "FILE", "ANIMATION", "SPREADS", "4D", "3D", "2D", "VALUE" });
+        private List<string> FCategoryPriorities = new List<string>(new string[] { "DSHOW9", "OCTONION", "QUATERNION", "FLASH", "GDI", "TTY", "SVG", "TRANSFORM", "COLOR", "DX9", "EX9.GEOMETRY", "EX9.TEXTURE", "EX9", "DX11.LAYER", "DX11.GEOMETRY", "EX9.TEXTUREFX", "EX9.TEXTURE", "DX11", "RAW", "STRING", "FILE", "ANIMATION", "SPREADS", "4D", "3D", "2D", "VALUE" });
         
         private NodeBrowserPluginNode FNodeBrowser;
         public NodeBrowserPluginNode NodeBrowser
