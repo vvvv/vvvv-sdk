@@ -39,10 +39,10 @@ namespace VVVV.Nodes.Network.Wyphon
 		IDiffSpread<string> FDescriptionIn;
 
 		[Input("Width")]
-		IDiffSpread<uint> FWidthIn;
+		IDiffSpread<UInt32> FWidthIn;
 
 		[Input("Height")]
-		IDiffSpread<uint> FHeightIn;
+		IDiffSpread<UInt32> FHeightIn;
 				
 		[Input("Format", EnumName = "TextureFormat")]
 		IDiffSpread<EnumEntry> FFormatEnumIn;
@@ -52,7 +52,7 @@ namespace VVVV.Nodes.Network.Wyphon
 
 		
 		[Input("Handle")]
-		IDiffSpread<uint> FHandleIn;
+		IDiffSpread<UInt32> FHandleIn;
 
 		#endregion pins
 
@@ -62,8 +62,8 @@ namespace VVVV.Nodes.Network.Wyphon
 
 		private WyphonPartner wyphon = null;
 
-		private ISpread<uint> SharedTextureHandles = new Spread<uint>(0);
-		//private Dictionary<uint, ISpread<SharedTextureInfo>> SharedTexturesByHandle = new Dictionary<uint, ISpread<SharedTextureInfo>>();
+		private ISpread<UInt32> SharedTextureHandles = new Spread<UInt32>(0);
+		//private Dictionary<UInt32, ISpread<SharedTextureInfo>> SharedTexturesByHandle = new Dictionary<UInt32, ISpread<SharedTextureInfo>>();
 		
 		private int previousSpreadMax = 0;
 		
@@ -113,7 +113,7 @@ namespace VVVV.Nodes.Network.Wyphon
 				wyphon = WyphonNode.wyphonPartner;
 
 				//Unshare textures that have disappeared from the spread
-				foreach (uint handle in SharedTextureHandles) {
+				foreach (UInt32 handle in SharedTextureHandles) {
 //					LogNow(LogType.Debug, "Should the texture with handle " + handle + " still be shared?");
 					if ( FHandleIn.IndexOf(handle) == -1) {
 //						LogNow(LogType.Debug, "NO : stop sharing " + handle + "");
@@ -128,7 +128,7 @@ namespace VVVV.Nodes.Network.Wyphon
 				
 				//Share textures we didn't share before yet
 				for (int i = 0; i < FHandleIn.SliceCount; i++) {
-					uint handle = FHandleIn[i];
+					UInt32 handle = FHandleIn[i];
 
 					LogNow(LogType.Debug, "checking if handle " + handle + " already shared");
 
@@ -145,13 +145,13 @@ namespace VVVV.Nodes.Network.Wyphon
 						}
 
 						Format format = enumPin2Format(FFormatEnumIn[i]);
-						uint formatUint = (UInt32) format;
+						UInt32 formatUint = (UInt32) format;
 
 						Usage usage = enumPin2Usage(FUsageEnumIn[i]);
-						uint usageUint = (UInt32) usage;
+						UInt32 usageUint = (UInt32) usage;
 
-//						LogNow(LogType.Debug, " Format should be '" + FFormatEnumIn[i].Name + "' translated to D3D constant = " + formatUint + " as int = " + (int)format);
-//						LogNow(LogType.Debug, " Usage should be '" + FUsageEnumIn[i].Name + "' translated to D3D constant = " + usageUint);
+						LogNow(LogType.Debug, " Format should be '" + FFormatEnumIn[i].Name + "' translated to D3D constant = " + formatUint + " as int = " + (int)format);
+						LogNow(LogType.Debug, " Usage should be '" + FUsageEnumIn[i].Name + "' translated to D3D constant = " + usageUint);
 						
 						bool success = wyphon.ShareD3DTexture(handle, FWidthIn[i], FHeightIn[i], formatUint, usageUint, FDescriptionIn[i]);
 						if (success) {
@@ -182,7 +182,7 @@ namespace VVVV.Nodes.Network.Wyphon
 
 		public void Dispose() {
             LogNow(LogType.Debug, "[SendTexturesNode.Dispose()] ");
-            foreach (uint handle in SharedTextureHandles) {
+            foreach (UInt32 handle in SharedTextureHandles) {
                 LogNow(LogType.Debug, "Trying to unshare texture with handle " + handle + "");
                 wyphon.UnshareD3DTexture(handle);
 			}

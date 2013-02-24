@@ -15,15 +15,15 @@ namespace VVVV.Nodes.Network.Wyphon
 	/// </summary>
 	public class SharedTextureInfo
 	{
-		public uint partnerId;
-		public uint textureHandle;
-		public uint width;
-		public uint height;
-		public uint format;
-		public uint usage;
+		public UInt32 partnerId;
+		public UInt32 textureHandle;
+		public UInt32 width;
+		public UInt32 height;
+		public UInt32 format;
+		public UInt32 usage;
 		public string description;
 				
-		public SharedTextureInfo(uint partnerId, uint textureHandle, uint width, uint height, uint format, uint usage, string description) {
+		public SharedTextureInfo(UInt32 partnerId, UInt32 textureHandle, UInt32 width, UInt32 height, UInt32 format, UInt32 usage, string description) {
 			this.partnerId = partnerId;
 			this.textureHandle = textureHandle;
 			this.width = width;

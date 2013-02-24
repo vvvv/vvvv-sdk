@@ -27,10 +27,10 @@ namespace VVVV.Nodes.Network.Wyphon
 		IDiffSpread<string> FNameIn;
 		
 		[Output("Wyphon Id", IsSingle = true, Visibility = PinVisibility.True)]
-		ISpread<uint> FIdOut;
+		ISpread<UInt32> FIdOut;
 
 		[Output("Partner Id", IsSingle = false, Visibility = PinVisibility.True)]
-		ISpread<uint> FPartnerIdOut;
+		ISpread<UInt32> FPartnerIdOut;
 
 		[Output("Partner Name", IsSingle = false, Visibility = PinVisibility.True)]
 		ISpread<string> FPartnerNameOut;
@@ -46,7 +46,7 @@ namespace VVVV.Nodes.Network.Wyphon
 		[Import()]
 		ILogger FLogger;
 		
-		private uint previousPartnersUpdatedVersion = 0;
+		private UInt32 previousPartnersUpdatedVersion = 0;
 		
 		private static string logMe = "";
 		
@@ -56,19 +56,19 @@ namespace VVVV.Nodes.Network.Wyphon
 
 
 		public static Object partnersLock = new Object();
-		public static ISpread<uint> PartnerIds = new Spread<uint>();
+		public static ISpread<UInt32> PartnerIds = new Spread<UInt32>();
 		public static ISpread<string> PartnerNames = new Spread<string>();
-		private static uint partnersUpdatedVersion = 0; //whenever this goes up, something changed
+		private static UInt32 partnersUpdatedVersion = 0; //whenever this goes up, something changed
 		
 		
 		public static Object sharedTexturesLock = new Object();
-		public static Dictionary<uint, ISpread<SharedTextureInfo>> SharedTexturesPerPartner = new Dictionary<uint, ISpread<SharedTextureInfo>>();
+		public static Dictionary<UInt32, ISpread<SharedTextureInfo>> SharedTexturesPerPartner = new Dictionary<UInt32, ISpread<SharedTextureInfo>>();
 //		static BlockingCollection<SharedTextureInfo> newSharedTexturesForMainLoop = new BlockingCollection<SharedTextureInfo>();
 //		static BlockingCollection<SharedTextureInfo> obsoleteSharedTexturesForMainLoop = new BlockingCollection<SharedTextureInfo>();
 		//static List<SharedTextureInfo> newSharedTexturesForMainLoop = new List<SharedTextureInfo>();
 		//static List<SharedTextureInfo> obsoleteSharedTexturesForMainLoop = new List<SharedTextureInfo>();
 
-		private static uint texturesUpdatedVersion = 0; //whenever this goes up, something changed
+		private static UInt32 texturesUpdatedVersion = 0; //whenever this goes up, something changed
 
 		private bool disposed = false;
 		
@@ -103,7 +103,7 @@ namespace VVVV.Nodes.Network.Wyphon
 						Log(LogType.Error, "Returning wyphonPartnerForAllNodes = NULL ????");
 					}
 					else {
-						uint partnerId = 999999;
+						UInt32 partnerId = 999999;
 						try {
 							partnerId = wyphonPartnerForAllNodes.PartnerId;
 						}
@@ -117,7 +117,7 @@ namespace VVVV.Nodes.Network.Wyphon
 			}
 		}
 
-		public static uint texturesVersion {
+		public static UInt32 texturesVersion {
 			get { return texturesUpdatedVersion; }
 		}
 		
@@ -129,7 +129,7 @@ namespace VVVV.Nodes.Network.Wyphon
 		
 		#region WyphonCallbackDelegates
 		
-		private static void WyphonPartnerJoined(uint partnerId, string partnerName) {
+		private static void WyphonPartnerJoined(UInt32 partnerId, string partnerName) {
 			try {
 				Log(LogType.Debug, "WyphonPartner joined with id=" + partnerId + " and name=" + partnerName);
 				
@@ -146,7 +146,7 @@ namespace VVVV.Nodes.Network.Wyphon
 			}
 		}
 
-		private static void WyphonPartnerLeft(uint partnerId) {
+		private static void WyphonPartnerLeft(UInt32 partnerId) {
 			try {
 				Log(LogType.Debug, "WyphonPartner LEFT with id=" + partnerId);
 	
@@ -184,9 +184,9 @@ namespace VVVV.Nodes.Network.Wyphon
 
 		}
 		
-		private static void WyphonD3DTextureShared(uint sendingPartnerId, uint sharedTextureHandle, uint width, uint height, uint format, uint usage, string description) {
+		private static void WyphonD3DTextureShared(UInt32 sendingPartnerId, UInt32 sharedTextureHandle, UInt32 width, UInt32 height, UInt32 format, UInt32 usage, string description) {
 			try {
-				Log(LogType.Debug, "WyphonPartner " + sendingPartnerId +  " shared a new texture with handle " + sharedTextureHandle);
+				Log(LogType.Debug, "WyphonPartner " + sendingPartnerId +  " shared a new texture with handle " + sharedTextureHandle + " " + width + "x" + height + " fmt=" + format + " usg=" + usage + " descr=" + description);
 				
 				SharedTextureInfo sharedTextureInfo = new SharedTextureInfo(sendingPartnerId, sharedTextureHandle, width, height, format, usage, description);
 				
@@ -215,7 +215,7 @@ namespace VVVV.Nodes.Network.Wyphon
 			}
 		}
 				
-		private static void WyphonD3DTextureUnshared(uint sendingPartnerId, uint sharedTextureHandle, uint width, uint height, uint format, uint usage, string description) {
+		private static void WyphonD3DTextureUnshared(UInt32 sendingPartnerId, UInt32 sharedTextureHandle, UInt32 width, UInt32 height, UInt32 format, UInt32 usage, string description) {
 			try {
 				Log(LogType.Debug, "WyphonPartner " + sendingPartnerId +  " STOPPED sharing the texture with handle " + sharedTextureHandle);
 	
@@ -245,8 +245,8 @@ namespace VVVV.Nodes.Network.Wyphon
 			partnersUpdatedVersion = newVersion(partnersUpdatedVersion);
 		}
 		
-		static uint newVersion(uint currentVersion) {
-			if (currentVersion < uint.MaxValue) {
+		static UInt32 newVersion(UInt32 currentVersion) {
+			if (currentVersion < UInt32.MaxValue) {
 				return currentVersion + 1;
 			}
 			else {
@@ -260,7 +260,7 @@ namespace VVVV.Nodes.Network.Wyphon
 		/// </summary>
 		/// <param name="spread"></param>
 		/// <param name="sharedTextureHandle"></param>
-		static void RemoveFromTextureInfoSpread(ISpread<SharedTextureInfo> spread, uint sharedTextureHandle)
+		static void RemoveFromTextureInfoSpread(ISpread<SharedTextureInfo> spread, UInt32 sharedTextureHandle)
 		{
 			for ( int i = spread.SliceCount - 1; i >= 0; i--) {
 				if (spread[i].textureHandle == sharedTextureHandle) {
@@ -335,7 +335,7 @@ namespace VVVV.Nodes.Network.Wyphon
 						
 						LogNow(LogType.Debug, "[Evaluate] Something changed in WyphonPartners, so I will update the list of partners...");
 		
-	//					foreach (uint pId in PartnerIds) {
+	//					foreach (UInt32 pId in PartnerIds) {
 	//						LogNow(LogType.Debug, "[Evaluate] found partner with id " + pId);					
 	//					}
 	//	

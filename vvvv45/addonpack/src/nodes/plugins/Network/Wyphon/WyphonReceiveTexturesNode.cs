@@ -38,7 +38,7 @@ namespace VVVV.Nodes.Network.Wyphon
 	{
 		#region pins
 		[Input("Partner Id")]
-		IDiffSpread<uint> FPartnerIdIn;
+		IDiffSpread<UInt32> FPartnerIdIn;
 
 		[Input("Do Filter", IsSingle = true)]
 		IDiffSpread<bool> FDoFilterIn;
@@ -48,10 +48,10 @@ namespace VVVV.Nodes.Network.Wyphon
 		ISpread<string> FDescriptionOut;
 
 		[Output("Width")]
-		ISpread<uint> FWidthOut;
+		ISpread<UInt32> FWidthOut;
 
 		[Output("Height")]
-		ISpread<uint> FHeightOut;
+		ISpread<UInt32> FHeightOut;
 		
 		[Output("Format", EnumName = "TextureFormat")]
 		ISpread<EnumEntry> FFormatEnumOut;
@@ -61,7 +61,7 @@ namespace VVVV.Nodes.Network.Wyphon
 
 		
 		[Output("Handle")]
-		ISpread<uint> FHandleOut;
+		ISpread<UInt32> FHandleOut;
 
 		#endregion pins
 
@@ -69,7 +69,7 @@ namespace VVVV.Nodes.Network.Wyphon
 		[Import()]
 		ILogger FLogger;
 
-		private uint previousTexturesVersion = 0;
+		private UInt32 previousTexturesVersion = 0;
 						
 		private string logMe = "";
 		
@@ -84,8 +84,8 @@ namespace VVVV.Nodes.Network.Wyphon
 		#region helper functions
 		
 		//only keep the 4 flags that vvvv can handle, and filter out others like Usage.SoftwareProcessing etc.
-		private uint usage2enumUsage(uint usage) {
-			return usage & ((uint)Usage.None | (uint)Usage.RenderTarget | (uint)Usage.Dynamic | (uint)Usage.DepthStencil );
+		private UInt32 usage2enumUsage(UInt32 usage) {
+			return usage & ((UInt32)Usage.None | (UInt32)Usage.RenderTarget | (UInt32)Usage.Dynamic | (UInt32)Usage.DepthStencil );
 		}
 
 		#endregion helper functions
@@ -121,7 +121,7 @@ namespace VVVV.Nodes.Network.Wyphon
 //					FUsageUintOut.SliceCount = 0;
 					FHandleOut.SliceCount = 0;
 					
-					foreach ( uint partnerId in WyphonNode.SharedTexturesPerPartner.Keys ) {
+					foreach ( UInt32 partnerId in WyphonNode.SharedTexturesPerPartner.Keys ) {
 						if ( ! (FDoFilterIn.SliceCount > 0 && FDoFilterIn[0]) || FPartnerIdIn.IndexOf(partnerId) >= 0 ) {
 							//filter not enabled OR partnerId found in list => add this partner's textures to ouput
 

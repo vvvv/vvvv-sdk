@@ -43,7 +43,7 @@ namespace InterProcessSendReceiveNodes
 //		use good names and you can easily filter for the messages you are interested in
 ///////////////////////////////////////////////////////////////////////////////////////
 //		[Input("Partner Id", Visibility = PinVisibility.OnlyInspector)]
-//		IDiffSpread<uint> FPartnerIdIn;
+//		IDiffSpread<UInt32> FPartnerIdIn;
 //
 //		[Input("Do Filter", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
 //		IDiffSpread<bool> FDoFilterIn;
@@ -71,7 +71,7 @@ namespace InterProcessSendReceiveNodes
 		
 		private bool received = false;
 		ISpread<double> receivedSpread = new Spread<double>();
-		private Dictionary<uint, uint> lastVersionPerPartner = new Dictionary<uint, uint>();
+		private Dictionary<UInt32, UInt32> lastVersionPerPartner = new Dictionary<UInt32, UInt32>();
 		
 //		ISpread<double> receivedSpreadA = new Spread<double>();
 //		ISpread<double> receivedSpreadB = new Spread<double>();
@@ -98,7 +98,7 @@ namespace InterProcessSendReceiveNodes
 //			receivedSpreadB[0] = 1;
 //		}
 		
-		private void OnMessageHandler(uint sendingPartnerId, IntPtr msgData, uint msgLength) {
+		private void OnMessageHandler(UInt32 sendingPartnerId, IntPtr msgData, UInt32 msgLength) {
 //			Log(LogType.Debug, "[R.Double] Received new message from " + sendingPartnerId + " of size " + msgLength);
 			
 			byte[] bytes = new byte[msgLength];
@@ -108,8 +108,8 @@ namespace InterProcessSendReceiveNodes
 				//correct type: not really necessary anymore since different nodes will send on different channels
 				if (Utils.GetMessageType(bytes) == MessageTypeEnum.doubleSpread) {
 					//only parse the whole message if it's a version we have never received before from that partner
-					uint currVersion = Utils.GetVersion(bytes);
-					uint lastVersion;
+					UInt32 currVersion = Utils.GetVersion(bytes);
+					UInt32 lastVersion;
 					
 					if ( ! lastVersionPerPartner.TryGetValue(sendingPartnerId, out lastVersion) || (currVersion != lastVersion) ) {
 						Utils.ProcessMessage( bytes, receivedSpread );

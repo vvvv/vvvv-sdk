@@ -47,7 +47,7 @@ namespace InterProcessSendReceiveNodes
 		
 		
 		
-		public static byte[] GenerateMessage(ISpread<string> spread, uint version) {
+		public static byte[] GenerateMessage(ISpread<string> spread, UInt32 version) {
 			List<byte> bytes = new List<byte>();
 
 			//message type
@@ -59,7 +59,7 @@ namespace InterProcessSendReceiveNodes
 			//nr of slices
 			bytes.AddRange(BitConverter.GetBytes((Int32)spread.SliceCount));
 			
-			for ( int i = 0; i < spread.SliceCount; i++ ) {
+			for ( Int32 i = 0; i < spread.SliceCount; i++ ) {
 				//string length
 				bytes.AddRange( BitConverter.GetBytes((Int32)spread[i].Length) );
 				
@@ -71,15 +71,15 @@ namespace InterProcessSendReceiveNodes
 
 		public static void ProcessMessage(byte[] bytes, ISpread<string> spread) {
 			//skip message type & version
-			int pos = sizeof(uint) * 2;
+			Int32 pos = sizeof(UInt32) * 2;
 			
 			//Read slicecount
 			spread.SliceCount = BitConverter.ToInt32(bytes, pos);
 			pos += sizeof(Int32);
 			
-			for ( int i = 0; i < spread.SliceCount; i++ ) {
+			for ( Int32 i = 0; i < spread.SliceCount; i++ ) {
 				//Read string length (nr of characters)
-				int len = BitConverter.ToInt32(bytes, pos);
+				Int32 len = BitConverter.ToInt32(bytes, pos);
 				pos += sizeof(Int32);
 				
 				//Read string bytes
@@ -90,7 +90,7 @@ namespace InterProcessSendReceiveNodes
 		}
 
 		
-		public static byte[] GenerateMessage(ISpread<double> spread, uint version) {
+		public static byte[] GenerateMessage(ISpread<double> spread, UInt32 version) {
 			List<byte> bytes = new List<byte>();
 
 			//message type
@@ -102,7 +102,7 @@ namespace InterProcessSendReceiveNodes
 			//nr of slices
 			bytes.AddRange(BitConverter.GetBytes((Int32)spread.SliceCount));
 			
-			for ( int i = 0; i < spread.SliceCount; i++ ) {
+			for ( Int32 i = 0; i < spread.SliceCount; i++ ) {
 				//float bytes
 				bytes.AddRange( BitConverter.GetBytes((Double)spread[i]) );
 			}
@@ -111,13 +111,13 @@ namespace InterProcessSendReceiveNodes
 
 		public static void ProcessMessage(byte[] bytes, ISpread<double> spread) {
 			//skip message type & version
-			int pos = sizeof(uint) * 2;
+			Int32 pos = sizeof(UInt32) * 2;
 			
 			//Read slicecount
 			spread.SliceCount = BitConverter.ToInt32(bytes, pos);
 			pos += sizeof(Int32);
 			
-			for ( int i = 0; i < spread.SliceCount; i++ ) {
+			for ( Int32 i = 0; i < spread.SliceCount; i++ ) {
 				//Read Double bytes
 				spread[i] = BitConverter.ToDouble(bytes, pos);
 				pos += sizeof(Double);
@@ -125,7 +125,7 @@ namespace InterProcessSendReceiveNodes
 		}
 
 
-		public static byte[] GenerateMessage(ISpread<RGBAColor> spread, uint version) {
+		public static byte[] GenerateMessage(ISpread<RGBAColor> spread, UInt32 version) {
 			List<byte> bytes = new List<byte>();
 
 			//message type
@@ -137,7 +137,7 @@ namespace InterProcessSendReceiveNodes
 			//nr of slices
 			bytes.AddRange(BitConverter.GetBytes((Int32)spread.SliceCount));
 			
-			for ( int i = 0; i < spread.SliceCount; i++ ) {			
+			for ( Int32 i = 0; i < spread.SliceCount; i++ ) {			
 				//color bytes
 				bytes.AddRange( BitConverter.GetBytes((Double)spread[i].R) );
 				bytes.AddRange( BitConverter.GetBytes((Double)spread[i].G) );
@@ -149,13 +149,13 @@ namespace InterProcessSendReceiveNodes
 
 		public static void ProcessMessage(byte[] bytes, ISpread<RGBAColor> spread) {
 			//skip message type & version
-			int pos = sizeof(uint) * 2;
+			Int32 pos = sizeof(UInt32) * 2;
 			
 			//Read slicecount
 			spread.SliceCount = BitConverter.ToInt32(bytes, pos);
 			pos += sizeof(Int32);
 			
-			for ( int i = 0; i < spread.SliceCount; i++ ) {
+			for ( Int32 i = 0; i < spread.SliceCount; i++ ) {
 				//Read RGBAColor bytes
 				RGBAColor c = new RGBAColor();
 				c.R = BitConverter.ToDouble(bytes, pos);
@@ -171,70 +171,94 @@ namespace InterProcessSendReceiveNodes
 			}
 		}
 
-		
-		public static byte[] GenerateMessage(IInStream<Stream> spread, uint version) {
-			//message type
-			byte[] typeBytes = BitConverter.GetBytes((UInt32)MessageTypeEnum.rawSpread);
 
-			//message version
-			byte[] versionBytes = BitConverter.GetBytes((UInt32)version);
-			
-			//nr of slices
-			byte[] sliceCountBytes = BitConverter.GetBytes((Int32)spread.SliceCount);
+        //public static byte[] GenerateMessage(IInStream<Stream> spread, UInt32 version)
+        //{
+        //    //message type
+        //    byte[] typeBytes = BitConverter.GetBytes((UInt32)MessageTypeEnum.rawSpread);
 
-			
-			//first calculate the size
-			long size = typeBytes.Length + versionBytes.Length + sliceCountBytes.Length;
-			for ( int i = 0; i < spread.SliceCount; i++ ) {
-				//stream length
-				size += sizeof(long);
-				size += spread[i].Length;
-			}
-			
-			
-			byte[] bytes = new byte[size];
+        //    //message version
+        //    byte[] versionBytes = BitConverter.GetBytes((UInt32)version);
 
-			int index = 0;
-			typeBytes.CopyTo(bytes, index);
-			index += typeBytes.Length;
-			versionBytes.CopyTo(bytes, index);
-			index += versionBytes.Length;
-			sliceCountBytes.CopyTo(bytes, index);
-			index += sliceCountBytes.Length;
-			
-			for ( int i = 0; i < spread.SliceCount; i++ ) {
-				//stream length
-				BitConverter.GetBytes( spread[i].Length ).CopyTo(bytes, index);
-				index += sizeof(long);
-				
-				//stream bytes
-				spread[i].
-				spread[i].Read( bytes, index, (Int32)(spread[i].Length) );
-//				index += (Int32)spread[i].Length;
-			}
-			
-			return bytes;
-		}
-		
-		public static void ProcessMessage(byte[] bytes, IOutStream<Stream> spread) {
-			//skip message type & version
-			int pos = sizeof(uint) * 2;
-			
-			//Read slicecount
-			spread.SliceCount = BitConverter.ToInt32(bytes, pos);
-			pos += sizeof(Int32);
-			
-			for ( int i = 0; i < spread.SliceCount; i++ ) {
-				//Read Stream nr of bytes
-				Int32 streamLength = BitConverter.ToInt32(bytes, pos);
-				pos += sizeof(Int32);
+        //    //first calculate the size
+        //    UInt64 size = (UInt64)(typeBytes.Length + versionBytes.Length);
 
-				//Read Stream bytes
-				spread[i] = new MemoryStream();
-				spread[i].Read(bytes, pos, streamLength);
-				pos += streamLength;
-			}
-		}
+        //    //stream length
+        //    UInt64 dataLength = (UInt64)spread.Length;
+        //    byte[] dataLengthBytes = BitConverter.GetBytes((UInt64)dataLength);
+        //    size += (UInt64)dataLengthBytes.Length;
+        //    size += dataLength;
+
+        //    byte[] bytes = new byte[size];
+
+        //    Int32 index = 0;
+        //    typeBytes.CopyTo(bytes, index);
+        //    index += typeBytes.Length;
+        //    versionBytes.CopyTo(bytes, index);
+        //    index += versionBytes.Length;
+        //    dataLengthBytes.CopyTo(bytes, index);
+        //    index += dataLengthBytes.Length;
+
+        //    //stream bytes
+        //    spread.ToStream().Buffer.CopyTo(bytes, index);
+
+        //    //using ( var reader = spread.GetReader() ) {
+        //    //    while (!reader.Eos)
+        //    //    {
+        //    //        var numSlicesRead = reader.Read(bytes, index, bytes.Length);
+        //    //        for (int i = 0; i < numSlicesRead; i++)
+        //    //        {
+        //    //            var slice = buffer[i];
+        //    //            // Do something with the slice
+        //    //        }
+        //    //    }
+        //    //}
+
+        //    //spread.Read(bytes, index, dataLength);
+        //    //spread.GetReader().Read(bytes, index, (Int32)dataLength);
+
+        //    //var memoryStream = new MemoryStream();
+        //    //spread.ToStream().Buffer.CopyTo(bytes, index); //.CopyTo(memoryStream);
+        //    //return memoryStream.ToArray();
+
+        //    return bytes;
+        //}
+
+        //public static void ProcessMessage(byte[] bytes, IOutStream<Stream> spread)
+        //{
+        //    //skip message type & version
+        //    Int32 pos = sizeof(UInt32) * 2;
+
+        //    //Read dataLength
+        //    UInt64 dataLength = BitConverter.ToUInt64(bytes, pos);
+        //    pos += sizeof(UInt64);
+
+        //    ////Read Stream bytes
+        //    //spread.GetWriter().Write<
+        //    //spread.GetWriter().Write(bytes, 0,  dataLength);
+
+        //    //var numSlicesToRead = ...;
+ 
+
+        //    // First set the length of the output stream
+        //    spread.Length = (Int32)dataLength;
+
+        //    UInt64 numSlicesToRead = dataLength;
+        //    UInt32 chunkSize = 1;
+        //    //using (var reader1 = spread.GetCyclicReader())
+        //    using (var writer = spread.GetWriter())
+        //    {
+        //        while (numSlicesToRead > 0) {
+        //            // Read chunks of data
+        //            // Call your basic op on the data chunks and put results
+        //            // in a result buffer
+        //            // Write the result buffer to the output
+        //            writer.Write(bytes, pos, chunkSize);
+        //            // Decrease the number of slices to read by our chunk size
+        //            numSlicesToRead -= chunkSize;
+        //        }
+        //    }
+        //}
 
 		
 		
@@ -244,7 +268,7 @@ namespace InterProcessSendReceiveNodes
 			return (MessageTypeEnum)BitConverter.ToUInt32(bytes, 0);
 		}
 		
-		public static uint GetVersion(byte[] bytes) {
+		public static UInt32 GetVersion(byte[] bytes) {
 			//Read version
 			return BitConverter.ToUInt32(bytes, sizeof(UInt32));
 		}

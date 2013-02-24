@@ -21,7 +21,7 @@ using LocalMessageBroadcast;
 
 #endregion usings
 
-
+/*
 namespace InterProcessSendReceiveNodes
 {
 	#region PluginInfo
@@ -50,7 +50,7 @@ namespace InterProcessSendReceiveNodes
 		
 		private bool newPartner = false;
 	
-		private uint messageVersion = 1; //never 0, so 0 can be used to know someone has never received a msg yet
+		private UInt32 messageVersion = 1; //never 0, so 0 can be used to know someone has never received a msg yet
 		
 		#endregion fields
 
@@ -76,7 +76,7 @@ namespace InterProcessSendReceiveNodes
 				localMessageBroadcastPartner = new LocalMessageBroadcastPartner("vvvv", Utils.GetChannelPrefix(FStreamIn) + FChannelIn[0]);
 				LogNow(LogType.Debug, "[S.Raw] New LocalMessageBroadcastPartner created with id = " + localMessageBroadcastPartner.PartnerId);
 				localMessageBroadcastPartner.OnPartnerJoined += 
-					delegate(uint partnerId, string partnerName) { 
+					delegate(UInt32 partnerId, string partnerName) { 
 						newPartner = true;
 					};
 			}
@@ -86,7 +86,7 @@ namespace InterProcessSendReceiveNodes
 				
 				if (FStreamIn.IsChanged) {
 					//never return 0, because 0 means uninitialized
-					if (messageVersion == uint.MaxValue) {
+					if (messageVersion == UInt32.MaxValue) {
 						messageVersion = 0;
 					}
 					messageVersion++;
@@ -117,3 +117,4 @@ namespace InterProcessSendReceiveNodes
 
 	}
 }
+*/

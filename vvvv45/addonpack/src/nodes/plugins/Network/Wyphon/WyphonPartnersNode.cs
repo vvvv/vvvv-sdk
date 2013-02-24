@@ -32,7 +32,7 @@ namespace VVVV.Nodes.Network.Wyphon
 //		IDiffSpread<string> FFileNameIn;
 		
 		[Output("Partner Id", IsSingle = false, Visibility = PinVisibility.True)]
-		ISpread<uint> FPartnerIdOut;
+		ISpread<UInt32> FPartnerIdOut;
 
 		[Output("Partner Name", IsSingle = false, Visibility = PinVisibility.True)]
 		ISpread<string> FPartnerNameOut;
@@ -55,18 +55,18 @@ namespace VVVV.Nodes.Network.Wyphon
 		
 		#region WyphonCallbackDelegates
 		
-//		private static void WyphonPartnerJoined(uint partnerId, string partnerName) {
+//		private static void WyphonPartnerJoined(UInt32 partnerId, string partnerName) {
 //			//Log(LogType.Debug, "WyphonPartner joined with id=" + partnerId + " and name=" + partnerName);
 //			
 //			//partnersChanged
 //		}
 //
-//		private static void WyphonPartnerLeft(uint partnerId) {
+//		private static void WyphonPartnerLeft(UInt32 partnerId) {
 //			//Log(LogType.Debug, "WyphonPartner LEFT with id=" + partnerId);
 //
 //		}
 //		
-//		private static void WyphonD3DTextureShared(uint sendingPartnerId, uint sharedTextureHandle, uint width, uint height, uint usage, string description) {
+//		private static void WyphonD3DTextureShared(UInt32 sendingPartnerId, UInt32 sharedTextureHandle, UInt32 width, UInt32 height, UInt32 usage, string description) {
 //			Log(LogType.Debug, "WyphonPartner " + sendingPartnerId +  " shared a new texture with handle " + sharedTextureHandle);
 //			
 //			SharedTextureInfo sharedTextureInfo = new SharedTextureInfo(sendingPartnerId, sharedTextureHandle, width, height, usage, description);
@@ -88,7 +88,7 @@ namespace VVVV.Nodes.Network.Wyphon
 //			}
 //		}
 //		
-//		private static void WyphonD3DTextureUnshared(uint sendingPartnerId, uint sharedTextureHandle, uint width, uint height, uint usage, string description) {
+//		private static void WyphonD3DTextureUnshared(UInt32 sendingPartnerId, UInt32 sharedTextureHandle, UInt32 width, UInt32 height, UInt32 usage, string description) {
 //			Log(LogType.Debug, "WyphonPartner " + sendingPartnerId +  " STOPPED sharing the texture with handle " + sharedTextureHandle);
 //
 //			lock (sharedTexturesLock) {
@@ -125,7 +125,7 @@ namespace VVVV.Nodes.Network.Wyphon
 //				FPartnerIdOut = WyphonNode.FPartnerIdOut;
 //				FPartnerNameOut = WyphonNode.FPartnerNameOut;
 //				FPartnerIdOut.SliceCount = 0;
-//				foreach (uint pId in WyphonNode.FPartnerIdOut) {
+//				foreach (UInt32 pId in WyphonNode.FPartnerIdOut) {
 //					FPartnerIdOut.Add(pId);
 //				}
 			}
@@ -137,7 +137,7 @@ namespace VVVV.Nodes.Network.Wyphon
 //					
 //					LogNow(LogType.Error, "[Evaluate] Something changed in WyphonPartners, so I will update the list of partners...");
 //	
-//					foreach (uint pId in PartnerIds) {
+//					foreach (UInt32 pId in PartnerIds) {
 //						LogNow(LogType.Error, "[Evaluate] found partner with id " + pId);					
 //					}
 //	

@@ -51,7 +51,7 @@ namespace InterProcessSendReceiveNodes
 		
 		private bool newPartner = false;
 	
-		private uint messageVersion = 1; //never 0, so 0 can be used to know someone has never received a msg yet
+		private UInt32 messageVersion = 1; //never 0, so 0 can be used to know someone has never received a msg yet
 		
 		#endregion fields
 
@@ -78,7 +78,7 @@ namespace InterProcessSendReceiveNodes
 				LogNow(LogType.Debug, "[S.String] New LocalMessageBroadcastPartner created with id = " + localMessageBroadcastPartner.PartnerId);
 				if (localMessageBroadcastPartner != null) {
 					localMessageBroadcastPartner.OnPartnerJoined += 
-						delegate(uint partnerId, string partnerName) { 
+						delegate(UInt32 partnerId, string partnerName) { 
 							newPartner = true;
 						};
 				}
@@ -92,7 +92,7 @@ namespace InterProcessSendReceiveNodes
 				
 				if (FValueIn.IsChanged) {
 					//never return 0, because 0 means uninitialized
-					if (messageVersion == uint.MaxValue) {
+					if (messageVersion == UInt32.MaxValue) {
 						messageVersion = 0;
 					}
 					messageVersion++;
