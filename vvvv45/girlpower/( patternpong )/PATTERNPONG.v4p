@@ -1,0 +1,333 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\girlpower\( patternpong )\PATTERNPONG.v4p" componentmode="InAWindow">
+   <BOUNDS height="5955" left="1125" top="8160" type="Window" width="9720">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="21" nodename="pong.v4p" path="C:\Users\joreg\dev\vake\source\complete\vvvv45\girlpower\( patternpong )\">
+   <BOUNDS height="100" left="1770" top="360" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="5955" left="1125" top="8160" type="Window" width="9720">
+   </BOUNDS>
+   <BOUNDS left="1770" top="360" type="Box">
+   </BOUNDS>
+   <PIN pinname="pongtexture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="pongblur" visible="1">
+   </PIN>
+   <PIN pinname="pong_backbuffer" visible="1">
+   </PIN>
+   <PIN pinname="x_ball" visible="1">
+   </PIN>
+   <PIN pinname="y_ball" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="2085" top="4245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Render Pass" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Texture Transform" visible="1">
+   </PIN>
+   <PIN pinname="Sampler State" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="2235" top="3825" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" visible="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Transform" srcnodeid="19" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="18" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="2715" top="2550" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1">
+   </PIN>
+   <PIN pinname="Rotate" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" visible="1" values="-0.33019">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3645" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12210" top="6000" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3645" top="1905" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1.83000">
+   </PIN>
+   <PIN pinname="Texture">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="ScaleX" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="ScaleY" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="16" nodename="WaveShaper (Value)">
+   <BOUNDS height="0" left="4365" top="690" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Shape" slicecount="1" values="Sine">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Map (Value)">
+   <BOUNDS height="0" left="4380" top="1275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="1.14">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="3.54">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Input" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE id="14" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="4365" top="285" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE id="13" nodename="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="2415" top="3105" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture State In" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="256">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="256">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Texture" srcnodeid="13" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Source" srcnodeid="21" srcpinname="pong_backbuffer">
+   </LINK>
+   <NODE id="12" nodename="MapRange (Value)">
+   <BOUNDS height="0" left="1740" top="1290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Source Center" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Source Width" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Destination Center" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="21" srcpinname="x_ball">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="TranslateX" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <NODE id="11" nodename="MapRange (Value)">
+   <BOUNDS height="0" left="2745" top="1290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Source Center" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Source Width" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Destination Center" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input" srcnodeid="21" srcpinname="y_ball">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="TranslateY" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <NODE id="10" nodename="Oscillator (Animation)">
+   <BOUNDS height="0" left="5715" top="2040" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="FilterTime" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Cyclics / second" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="MapRange (Value)">
+   <BOUNDS height="0" left="5715" top="1575" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Destination Center" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Destination Width" slicecount="1" values="0.16">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Random (Value)">
+   <BOUNDS height="0" left="5715" top="1155" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Go To Position" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InAWindow" id="7" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="2085" top="4815" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="7560" left="1125" top="600" type="Window" width="9720">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2085" top="4815" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Render Pass" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Clear" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Clear Depth Buffer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="|XGA Default: [1024x768 32bit] if possible|">
+   </PIN>
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Y Input Value" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <NODE id="6" nodename="R (Value)">
+   <BOUNDS height="0" left="5715" top="600" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" slicecount="1" values="ball_out">
+   </PIN>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Enabled" srcnodeid="6" srcpinname="Input Value">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Rotate" srcnodeid="10" srcpinname="Position Out">
+   </LINK>
+   <NODE id="5" nodename="R (Value)">
+   <BOUNDS height="0" left="5025" top="3555" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" slicecount="1" values="ball_out">
+   </PIN>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="R (Value)">
+   <BOUNDS height="0" left="5610" top="3540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ReceiveString" slicecount="1" values="beep">
+   </PIN>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Beep (Windows)">
+   <BOUNDS height="0" left="5025" top="4140" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Duration" slicecount="1" values="0.1">
+   </PIN>
+   <PIN pinname="Frequency" slicecount="1" values="200">
+   </PIN>
+   <PIN pinname="DoBeep" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Beep (Windows)">
+   <BOUNDS height="0" left="5610" top="4140" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Duration" slicecount="1" values="0.02">
+   </PIN>
+   <PIN pinname="Frequency" slicecount="1" values="400">
+   </PIN>
+   <PIN pinname="DoBeep" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="DoBeep" srcnodeid="5" srcpinname="Input Value">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="DoBeep" srcnodeid="4" srcpinname="Input Value">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Texture Transform" srcnodeid="18" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Layers" srcnodeid="20" srcpinname="Layer">
+   </LINK>
+   <NODE id="1" nodename="Address (EX9.SamplerState)">
+   <BOUNDS height="0" left="855" top="3750" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Sampler State Out" visible="1">
+   </PIN>
+   <PIN pinname="Cycle U" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Cycle V" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Texture Address Mode U" slicecount="1" values="Wrap">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Sampler State" srcnodeid="1" srcpinname="Sampler State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
+   <BOUNDS height="480" left="6870" top="615" type="Node" width="1095">
+   </BOUNDS>
+   <BOUNDS height="855" left="6870" top="615" type="Box" width="2250">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|player 1: Q, Y&cr;&lf;player 2: M, I|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   </PATCH>

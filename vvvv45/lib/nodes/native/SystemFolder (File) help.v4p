@@ -1,0 +1,139 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH componentmode="InAWindow" nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\SystemFolder (File) help.v4p">
+   <NODE id="7" nodename="SystemFolder (File)">
+   <BOUNDS height="0" left="6780" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Folder" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="315" top="2850" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="322" top="257" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="315" top="2850" type="Box" width="7785">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input String" srcnodeid="7" srcpinname="Output" linkstyle="VHV">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="4845" top="1455" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="362" top="135" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="4845" top="1455" type="Box" width="3000">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Recent">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Folder" srcnodeid="5" srcpinname="Output Enum" linkstyle="VHV">
+   </LINK>
+   <NODE id="4" nodename="Dir (File)">
+   <BOUNDS height="0" left="7395" top="4080" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Directory" slicecount="2" visible="1">
+   </PIN>
+   <PIN pinname="Filenames" visible="1">
+   </PIN>
+   <PIN pinname="Short Filenames" visible="1">
+   </PIN>
+   <PIN pinname="Include Subdirectories" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Include Hidden" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <BOUNDS height="10140" left="570" top="135" type="Window" width="8745">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="0" left="255" top="5085" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="269" top="390" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="4455" left="255" top="5085" type="Box" width="7905">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="55" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="7.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="20.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input String" srcnodeid="4" srcpinname="Short Filenames">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Directory" linkstyle="Bezier" srcnodeid="7" srcpinname="Output">
+   <LINKPOINT x="5970" y="3465">
+   </LINKPOINT>
+   <LINKPOINT x="8625" y="3435">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4860" top="1095" type="Node" width="1860">
+   </BOUNDS>
+   <BOUNDS height="270" left="4860" top="1095" type="Box" width="2145">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|try out the different paths|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="240" top="4710" type="Node" width="1935">
+   </BOUNDS>
+   <BOUNDS height="270" left="240" top="4710" type="Box" width="2355">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|list of files in that directory|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="2970">
+   </BOUNDS>
+   <BOUNDS height="160" left="9900" top="42960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns various folders in the system|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9900" top="42960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SystemFolder - File|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

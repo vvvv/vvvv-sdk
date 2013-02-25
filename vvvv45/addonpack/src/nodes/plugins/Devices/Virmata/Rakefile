@@ -1,0 +1,83 @@
+require "albacore"
+
+#RELEASE_PROPS = {:configuration => :Release,:platform => "x86"}
+#DEBUG_PROPS   = {:configuration => :Debug,:platform => "x86"}
+
+RELEASE_PROPS = {:configuration => :Release,:platform => "x64"}
+DEBUG_PROPS   = {:configuration => :Debug,:platform => "x64"}
+
+ROOT_DIR = '..\..\..\..\..\..\\'
+
+desc "Build VVVV core"
+msbuild :core do |msb|
+	msb.properties RELEASE_PROPS
+	msb.targets :Build
+	msb.log_level = :verbose
+	msb.solution = "#{ROOT_DIR}src\\vvvv45.sln"
+end
+
+desc "Clean VVVV core"
+msbuild :cleancore do |msb|
+	msb.properties RELEASE_PROPS
+	msb.targets :Clean
+	msb.log_level = :verbose
+	msb.solution = "#{ROOT_DIR}src\\vvvv45.sln"
+end
+
+desc "Build VVVV AddOns"
+msbuild :addons do |msb|
+	msb.properties RELEASE_PROPS
+	msb.targets :Build
+	# msb.log_level = :verbose
+	msb.solution = "#{ROOT_DIR}addonpack\\src\\Addonpack.sln"
+end
+
+desc "Clean VVVV AddOns"
+msbuild :cleanaddons do |msb|
+	msb.properties RELEASE_PROPS
+	msb.targets :Clean
+	# msb.log_level = :verbose
+	msb.solution = "#{ROOT_DIR}addonpack\\src\\Addonpack.sln"
+end
+
+
+task :all => [:core,:addons]
+task :cleanall => [:cleancore,:cleanaddons,:clean]
+
+
+PLUGIN_DEBUG   = {:configuration=>:Debug   ,:platform => "x64"} 
+PLUGIN_RELEASE = {:configuration=>:Release ,:platform => "x64"}
+
+MODULES_DIR = "addonpack\\lib\\nodes\\modules\\"
+HELPFILE = "Devices\\Arduino (Devices StandardFirmata 2.x) help.v4p"
+
+VVVV = 'vvvv.exe'
+
+PLUGIN_SOLUTION = "Virmata.sln"
+
+task :default => [:build,:test]
+task :rebuild => [:cleanall,:all,:build]
+
+desc "Build Virmata Addon"
+msbuild :build do |build|
+	build.properties PLUGIN_DEBUG
+	build.targets :Build
+	build.solution = PLUGIN_SOLUTION
+end
+
+desc "Clean Virmata Addon"
+msbuild :clean do |build|
+	build.targets :Clean
+	build.solution = PLUGIN_SOLUTION
+end
+
+desc "Re-Build Virmata"
+task :rebuild => [:clean,:build] {}
+
+desc "Test current build"
+exec :test do |cmd|
+	cmd.working_directory = ROOT_DIR
+	cmd.command = VVVV 
+	cmd.parameters = "/o \"#{MODULES_DIR}\\#{HELPFILE}\""
+end
+

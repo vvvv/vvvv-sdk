@@ -1,0 +1,275 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\TreeView (String) help.v4p">
+   <BOUNDS height="10920" left="1545" top="1620" type="Window" width="10500">
+   </BOUNDS>
+   <NODE id="15" nodename="TreeView (String)">
+   <BOUNDS height="270" left="2505" top="1695" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Depth" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2520" top="1185" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="330" left="2520" top="1185" type="Box" width="2925">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="22420" visible="1" values="c:\root\subdir\subsbdir\filename.ext">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Input" srcnodeid="14" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="0" left="0" top="3750" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7905" top="8805" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="6585" left="0" top="3750" type="Box" width="2580">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="26">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input String" hiddenwhenlocked="1" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2595" top="3750" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7020" top="8010" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="6600" left="2595" top="3750" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="26">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Y Input Value" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="15" srcpinname="Depth">
+   <LINKPOINT x="3465" y="2835">
+   </LINKPOINT>
+   <LINKPOINT x="3015" y="2850">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="11" nodename="Dir (File)">
+   <BOUNDS height="0" left="5400" top="720" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Directory" visible="1">
+   </PIN>
+   <PIN pinname="Include Hidden" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Include Subdirectories" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Filenames" visible="1">
+   </PIN>
+   <PIN pinname="Mask" slicecount="1" visible="1" values="*.*">
+   </PIN>
+   <PIN pinname="doRescan" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="SystemFolder (File)">
+   <BOUNDS height="0" left="5550" top="315" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Folder" slicecount="1" values="WindowsTemp">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Directory" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="11" srcpinname="Filenames">
+   </LINK>
+   <NODE id="9" nodename="Text (GDI)">
+   <BOUNDS height="0" left="7035" top="5850" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="HorizontalAlign" slicecount="1" values="Left">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="3075" top="3705" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="14085" top="7905" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="6720" left="3075" top="3705" type="Box" width="2565">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Text" linkstyle="PolyLine" srcnodeid="15" srcpinname="Output">
+   <LINKPOINT x="2535" y="2820">
+   </LINKPOINT>
+   <LINKPOINT x="7680" y="2820">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="7" nodename="Count (String)">
+   <BOUNDS height="0" left="7965" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="I (Spreads)">
+   <BOUNDS height="0" left="7785" top="3240" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname=".. To [" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname=".. To [" srcnodeid="7" srcpinname="Count">
+   </LINK>
+   <NODE id="5" nodename="Map (Value)">
+   <BOUNDS height="0" left="7785" top="3690" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Source Maximum" slicecount="1" values="24.48">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="0.9">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="-0.9">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Y" linkstyle="PolyLine" srcnodeid="5" srcpinname="Output">
+   <LINKPOINT x="7815" y="5370">
+   </LINKPOINT>
+   <LINKPOINT x="7215" y="5370">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input" linkstyle="Bezier" srcnodeid="15" srcpinname="Output">
+   <LINKPOINT x="2535" y="2415">
+   </LINKPOINT>
+   <LINKPOINT x="7995" y="2190">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="4" nodename="Map (Value)">
+   <BOUNDS height="270" left="6720" top="3720" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Source Maximum" slicecount="1" values="17.96">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="-0.9">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="0.9">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" linkstyle="Bezier" srcnodeid="15" srcpinname="Depth">
+   <LINKPOINT x="3375" y="2835">
+   </LINKPOINT>
+   <LINKPOINT x="6720" y="2700">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="X" linkstyle="PolyLine" srcnodeid="4" srcpinname="Output">
+   <LINKPOINT x="6750" y="5370">
+   </LINKPOINT>
+   <LINKPOINT x="7065" y="5370">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="9090" top="9720" type="Node" width="855">
+   </BOUNDS>
+   <BOUNDS height="255" left="9090" top="9720" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="TreeView (String Advanced)">
+   <BOUNDS height="0" left="9150" top="9990" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10800" top="43860" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|TreeView - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="0" managers="" nodename="IOBox (String)">
+   <BOUNDS height="720" left="15" top="390" type="Box" width="4185">
+   </BOUNDS>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="0" values="|Tree View takes a input directory and creates a string of directories and files, where each item recieves a &quot;Depth&quot;, that states how far it is from the root directory.|">
+   </PIN>
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="160" left="10800" top="43860" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
+   <LINKPOINT x="7035" y="6150">
+   </LINKPOINT>
+   <LINKPOINT x="5880" y="6150">
+   </LINKPOINT>
+   <LINKPOINT x="5880" y="3540">
+   </LINKPOINT>
+   <LINKPOINT x="3135" y="3540">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

@@ -1,0 +1,181 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Pad (String) help.v4p">
+   <BOUNDS height="8835" left="1530" top="1260" type="Window" width="6585">
+   </BOUNDS>
+   <NODE id="10" nodename="Pad (String)">
+   <BOUNDS height="0" left="1980" top="2580" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Size" slicecount="23" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Align" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Padding" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="0" left="960" top="3150" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5074" top="7884" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="4890" left="960" top="3150" type="Box" width="2850">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="20.00000" slices="0">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Courier New|" slices="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10.00000" slices="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input String" linkstyle="PolyLine" srcnodeid="10" srcpinname="Output">
+   <LINKPOINT x="2010" y="2970">
+   </LINKPOINT>
+   <LINKPOINT x="3780" y="2970">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="915" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4965" top="4566" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="915" top="1335" type="Box" width="1140">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="everything" slices="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input" linkstyle="PolyLine" srcnodeid="8" srcpinname="Output String">
+   <LINKPOINT x="945" y="1995">
+   </LINKPOINT>
+   <LINKPOINT x="2010" y="1995">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2145" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5044" top="4555" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="2145" top="1335" type="Box" width="750">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="&amp;" slices="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Padding" srcnodeid="7" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="3690" top="2055" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5253" top="4619" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="3690" top="2055" type="Box" width="990">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Center" slices="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Align" linkstyle="PolyLine" srcnodeid="6" srcpinname="Output Enum">
+   <LINKPOINT x="3720" y="2430">
+   </LINKPOINT>
+   <LINKPOINT x="2550" y="2430">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3870" top="7530" type="Node" width="810">
+   </BOUNDS>
+   <BOUNDS height="495" left="3870" top="7530" type="Box" width="2280">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Bugs: uses only the first char of the padding string|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4770" top="2100" type="Node" width="2580">
+   </BOUNDS>
+   <BOUNDS height="525" left="4770" top="2100" type="Box" width="1515">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|try out the different alignment modes|" slices="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3825" top="1485" type="Node" width="1470">
+   </BOUNDS>
+   <BOUNDS height="300" left="3825" top="1485" type="Box" width="1620">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|this will get a string|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="I (Spreads)">
+   <BOUNDS height="0" left="3360" top="1485" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Max" slicecount="1">
+   </PIN>
+   <PIN pinname="Integer" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname=".. To [" slicecount="1" values="23.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Size" linkstyle="PolyLine" srcnodeid="2" srcpinname="Output">
+   <LINKPOINT x="3390" y="1995">
+   </LINKPOINT>
+   <LINKPOINT x="2370" y="1995">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="495" left="15" top="390" type="Box" width="5130">
+   </BOUNDS>
+   <BOUNDS height="160" left="2190" top="33690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Fills up the given string with the padding character to reach the given length. If the given length it is smaller, the string will be clipped&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="2190" top="33690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Pad - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
