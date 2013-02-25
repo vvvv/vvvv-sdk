@@ -2,13 +2,18 @@ float2 R;
 float Threshold <float uimin=-1.0; float uimax=2.0;> = 0.3;
 float AntiAlias <float uimin=0.0; float uimax=1.0;> = 0.0;
 bool Alpha = false;
+float4 Color1 = float4(0.0, 0.0, 0.0, 1.0);
+float4 Color2 = float4(1.0, 1.0, 1.0, 1.0);
 float Dither <float uimin=0.0; float uimax=4.0;> = 0.0;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float4 c=tex2D(s0,x);float pa=c.a;
     float grey=dot(c.rgb,1)/3.+dot(round(vp)%2-1,.07)*Dither;
-    c=grey>Threshold;
+    if (grey>Threshold)
+		c = Color2;
+	else
+		c = Color1;
     if(!Alpha)c.a=pa;
     return c;
 }

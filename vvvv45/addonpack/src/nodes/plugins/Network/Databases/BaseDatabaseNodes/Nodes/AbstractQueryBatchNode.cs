@@ -34,7 +34,7 @@ namespace VVVV.Nodes
             //cache a reference to the upstream interface when the NodeInput pin is being connected
             if (Pin == FPinInConnection)
             {
-                INodeIOBase usI;
+                object usI;
                 FPinInConnection.GetUpstreamInterface(out usI);
                 FConnectionObject = usI as AbstractDbConnection<D>;
             }
