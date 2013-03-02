@@ -407,7 +407,7 @@ namespace VVVV.Nodes.Vlc.Player {
 		private DoubleTexture CreateDoubleTexture( Device device ) {
 			int w = Math.Max( this.doubleBuffer.Width, 2 );
 			int h = Math.Max( this.doubleBuffer.Height, 2 );
-			Log( LogType.Debug, "CreateDoubleTexture(" + " device " + device.ComPointer.ToInt64( ) + ", " + w + "x" + h + " ) called " );
+			//Log( LogType.Debug, "CreateDoubleTexture(" + " device " + device.ComPointer.ToInt64( ) + ", " + w + "x" + h + " ) called " );
 
 
 
@@ -426,36 +426,36 @@ namespace VVVV.Nodes.Vlc.Player {
 					//try to find an already existing shared texture with the right dimensions
 					foreach ( DoubleTexture t2Temp in device2DoubleTexture.Values ) {
 						if ( t2Temp.Width == w && t2Temp.Height == h && !t2Temp.Disposed && t2Temp.BaseDoubleTexture == null ) {
-							Log( LogType.Debug, "[CreateDoubleTexture] Found an existing shared DoubleTexture created on another device " + t2Temp.Device.ComPointer.ToInt64() );
+							//Log( LogType.Debug, "[CreateDoubleTexture] Found an existing shared DoubleTexture created on another device " + t2Temp.Device.ComPointer.ToInt64() );
 							t2Base = t2Temp;
 							break;
 						}
 					}
 					if ( t2Base == null ) {
-						Log( LogType.Debug, "[CreateDoubleTexture] Need to create new DoubleTexture ..." + ( device is DeviceEx ? " (dx9ex shared is ON)" : " (dx9ex shared is OFF)" ) );
+						//Log( LogType.Debug, "[CreateDoubleTexture] Need to create new DoubleTexture ..." + ( device is DeviceEx ? " (dx9ex shared is ON)" : " (dx9ex shared is OFF)" ) );
 					}
 				}
 
 				//only create a new one if necessary
 				t2 = t2Base != null && t2Base.Device == device ? t2Base : new DoubleTexture( device, w, h, t2Base );
-				Log( LogType.Debug, "[CreateDoubleTexture] Created new DoubleTexture (" + t2.Width + "x" + t2.Height + " pitch/4=" + ( t2.Pitch / 4 ) + ") for device " + device.ComPointer.ToInt64( ) + " created..." + ( device is DeviceEx ? " (dx9ex shared is ON)" : " (dx9ex shared is OFF)" ) );
+				Log( LogType.Debug, "[CreateDoubleTexture] Created new DoubleTexture (" + t2.Width + "x" + t2.Height + " pitch/4=" + ( t2.Pitch / 4 ) + ") for device " + device.ComPointer + " created" + ( t2Base != null ? " based on sharedTexture on device " + t2Base.Device.ComPointer : "" ) + ( device is DeviceEx ? " (dx9ex shared is ON)" : " (dx9ex shared is OFF)" ) );
 
 				if ( t2 != null && t2 != t2Base ) {
-					try {
-						DoubleTexture t2Temp;
-						if ( device2DoubleTexture.TryGetValue( device, out t2Temp ) ) {
-							Log( LogType.Debug, "\tTrying to dispose old DoubleTexture (device  " + device.ComPointer.ToInt64( ) + ", " + t2Temp.Width + "x" + t2Temp.Height + ")" );
-							//if ( t2.BaseDoubleTexture != t2Temp ) { 
-							t2Temp.Dispose( );
-							//}
+					DoubleTexture t2Temp;
+					if ( device2DoubleTexture.TryGetValue( device, out t2Temp ) ) {
+						try {
+								//Log( LogType.Debug, "\tTrying to dispose old DoubleTexture (device  " + device.ComPointer.ToInt64( ) + ", " + t2Temp.Width + "x" + t2Temp.Height + ")" );
+								//if ( t2.BaseDoubleTexture != t2Temp ) { 
+								t2Temp.Dispose( );
+								//}
 						}
-					}
-					catch {
-						Log( LogType.Debug, "\tfailed" );
+						catch {
+							Log( LogType.Debug, "Disposing old DoubleTexture (device  " + device.ComPointer.ToInt64( ) + ", " + t2Temp.Width + "x" + t2Temp.Height + ") failed" );
+						}
 					}
 
 					device2DoubleTexture[device] = t2;
-					Log( LogType.Debug, "Added new DoubleTexture to device2DoubleTexture..." );
+					//Log( LogType.Debug, "Added new DoubleTexture to device2DoubleTexture..." );
 				}
 
 				//Log( LogType.Debug , (this == parent.mediaRendererA ? "A " : "B ") + (active ? "(FRONT) " + parent.FFileNameIn[GetMediaRendererIndex()] : "(BACK) " + parent.FNextFileNameIn[GetMediaRendererIndex()] ) + " Created new texture (" + w + "x" + h + ") for device " + device.ComPointer.ToInt64() + ". " );
@@ -519,14 +519,14 @@ namespace VVVV.Nodes.Vlc.Player {
 
 				int x = 1;
 				foreach ( Device d in devicesToDelete ) {
-					Log( LogType.Debug, "[CleanupDevice2DoubleTexture] trying to remove device " + d.ComPointer.ToInt64() + " being device " + ( x++ ) + " of " + devicesToDelete.Count + " devices to delete..." );
+					//Log( LogType.Debug, "[CleanupDevice2DoubleTexture] trying to remove device " + d.ComPointer.ToInt64() + " being device " + ( x++ ) + " of " + devicesToDelete.Count + " devices to delete..." );
 					device2DoubleTexture[d].Dispose( );
 					device2DoubleTexture.Remove( d );
-					Log( LogType.Debug, "[CleanupDevice2DoubleTexture] removed device " + d.ComPointer.ToInt64( ) );
+					//Log( LogType.Debug, "[CleanupDevice2DoubleTexture] removed device " + d.ComPointer.ToInt64( ) );
 				}
 
 				if ( devicesToDelete.Count > 0 ) {
-					Log( LogType.Debug, "[CleanupDevice2DoubleTexture] after cleaning up " + devicesToDelete.Count + " devices, there's only " + device2DoubleTexture.Keys.Count + " devices left !" );
+					//Log( LogType.Debug, "[CleanupDevice2DoubleTexture] after cleaning up " + devicesToDelete.Count + " devices, there's only " + device2DoubleTexture.Keys.Count + " devices left !" );
 				}
 
 				//for dx9ex !!!
@@ -536,7 +536,7 @@ namespace VVVV.Nodes.Vlc.Player {
 
 					foreach ( Device d in devicesToKeep ) {
 						if ( d is DeviceEx ) {
-							Log( LogType.Debug, "[CleanupDevice2DoubleTexture] (DX9EX is ON) so recreating the texture on device " + d.ComPointer.ToInt64() );
+							//Log( LogType.Debug, "[CleanupDevice2DoubleTexture] (DX9EX is ON) so recreating the texture on device " + d.ComPointer.ToInt64() );
 							device2DoubleTexture[d].Dispose( );
 							device2DoubleTexture.Remove( d );
 
@@ -596,12 +596,12 @@ namespace VVVV.Nodes.Vlc.Player {
 							//THIS DOESN'T SEEM TO BE A PROBLEM !!!
 							else if ( ! parent.DeviceData.TryGetValue(d, out textureDeviceData) ) {
 								//success = false;
-								Log( LogType.Warning, "[FillTextureUsingLockRectangle WARNING] parent.DeviceData.TryGetValue(" + d.ComPointer + ", out textureDeviceData) = FALSE" );
+								//Log( LogType.Warning, "[FillTextureUsingLockRectangle WARNING] parent.DeviceData.TryGetValue(" + d.ComPointer + ", out textureDeviceData) = FALSE" );
 							}
 							
 							if ( success ) {
 
-								Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "TEXTURE on device " + d.ComPointer + " SHOULD BE updated..." );
+								//Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "TEXTURE on device " + d.ComPointer + " SHOULD BE updated..." );
 
 								//string errDescription = "";
 
@@ -610,7 +610,7 @@ namespace VVVV.Nodes.Vlc.Player {
 								// we COULD d this by checking if baseDoubleTexture is null?
 								// Don't care about that, just fill the first texture you get, and don't do the other ones
 								if ( firstTextureFilled && t2.Device is DeviceEx ) { //t2.BaseDoubleTexture != null ) { //
-									Log( LogType.Debug, "[FillTextureUsingLockRectangle DEBUG] We will not fill texture on device " + d.ComPointer + " because we already filled another texture with the same shared handle..." );
+									//Log( LogType.Debug, "[FillTextureUsingLockRectangle DEBUG] We will not fill texture on device " + d.ComPointer + " because we already filled another texture with the same shared handle..." );
 								}
 								else if ( ! t2.LockBackTextureForWriting( 100 ) ) {
 									success = false;
@@ -633,10 +633,10 @@ namespace VVVV.Nodes.Vlc.Player {
 										Log( LogType.Error, "[FillTextureUsingLockRectangle ERROR] " + "TEXTURE disposed !!!" );
 									}
 									else if ( devicesDone.Contains( t2.Device ) ) {
-										Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "TEXTURE on device " + d.ComPointer + " already updated, don't do it again..." );
+										//Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "TEXTURE on device " + d.ComPointer + " already updated, don't do it again..." );
 									}
 									else if ( t2.BackTexture.Device.ComPointer.ToInt64() != d.ComPointer.ToInt64() ) {
-										Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "t2.BackTexture.Device=" + t2.BackTexture.Device.ComPointer.ToInt64( ) + " t2.Device=" + d.ComPointer + " don't match. So we will not try to update this texture, but the one where the devices do match." );
+										//Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "t2.BackTexture.Device=" + t2.BackTexture.Device.ComPointer.ToInt64( ) + " t2.Device=" + d.ComPointer + " don't match. So we will not try to update this texture, but the one where the devices do match." );
 									}
 									else {
 										//DataRectangle rDst = t2.BackTexture.LockRectangle(0, LockFlags.Discard);
@@ -645,19 +645,19 @@ namespace VVVV.Nodes.Vlc.Player {
 
 										DataRectangle rDst = null;
 										try {
-											Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "Trying to t2.BackTexture.LockRectangle(...) TEXTURE on device " + d.ComPointer + "" );
+											//Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "Trying to t2.BackTexture.LockRectangle(...) TEXTURE on device " + d.ComPointer + "" );
 
 											rDst = t2.BackTexture.LockRectangle( 0, LockFlags.Discard );
 
-											Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "Done t2.BackTexture.LockRectangle(...) TEXTURE on device " + d.ComPointer + "" );
+											//Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "Done t2.BackTexture.LockRectangle(...) TEXTURE on device " + d.ComPointer + "" );
 
 											try {
 												if ( t2.Pitch == t2.Width * 4 ) {
-													Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "Trying to WriteRange TEXTURE on device " + d.ComPointer + "" );
+													//Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "Trying to WriteRange TEXTURE on device " + d.ComPointer + "" );
 													rDst.Data.WriteRange( doubleBuffer.FrontBuffer, t2.Pitch * t2.Height );
 												}
 												else {
-													Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "Trying to Write LINE PER LINE TEXTURE on device " + d.ComPointer + "" );
+													//Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "Trying to Write LINE PER LINE TEXTURE on device " + d.ComPointer + "" );
 													//writing line per line
 													IntPtr fb = doubleBuffer.FrontBuffer;
 													int width = doubleBuffer.Width * 4;
@@ -667,7 +667,7 @@ namespace VVVV.Nodes.Vlc.Player {
 														rDst.Data.Position += remainder;
 													}
 												}
-												Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "Done writing TEXTURE on device " + d.ComPointer + "" );
+												//Log( LogType.Debug, "[FillTextureUsingLockRectangle] " + "Done writing TEXTURE on device " + d.ComPointer + "" );
 											}
 											catch {
 												success = false;
@@ -703,7 +703,7 @@ namespace VVVV.Nodes.Vlc.Player {
 										devicesDone.Add( t2.Device );
 										firstTextureFilled = true;
 
-										Log( LogType.Debug, "[FillTextureUsingLockRectangle] Updated texture on device " + d.ComPointer + "\n" );
+										//Log( LogType.Debug, "[FillTextureUsingLockRectangle] Updated texture on device " + d.ComPointer + "\n" );
 									}
 									else {
 										deviceDataNeedsUpdatingOnEvaluate = true;
