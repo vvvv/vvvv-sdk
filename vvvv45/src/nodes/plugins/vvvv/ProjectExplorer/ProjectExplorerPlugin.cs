@@ -33,7 +33,7 @@ namespace VVVV.HDE.ProjectExplorer
                 InitialWindowHeight = 550,
                 InitialComponentMode = TComponentMode.InAWindow)]
     #endregion PluginInfo
-    public partial class ProjectExplorerPlugin : TopControl, IPluginBase
+    public partial class ProjectExplorerPlugin : TopControl, IPluginBase, IDisposable
     {
         private readonly INode2 FRootNode;
         
@@ -108,11 +108,27 @@ namespace VVVV.HDE.ProjectExplorer
                 // Workaround because config pins do not send changed on reload :/
                 FHideUnusedProjectsIn.Sync();
                 FBuildConfigIn.Sync();
+
+                Solution.Projects.Added += Projects_Added;
             }
             catch (Exception e)
             {
                 logger.Log(e);
                 throw e;
+            }
+        }
+
+        public void Dispose()
+        {
+            Solution.Projects.Added -= Projects_Added;
+        }
+
+        void Projects_Added(IViewableCollection<IProject> collection, IProject item)
+        {
+            var project = item as MsBuildProject;
+            if (project != null)
+            {
+                UpdataBuildConfigOfProject(project);
             }
         }
         
@@ -129,19 +145,20 @@ namespace VVVV.HDE.ProjectExplorer
         void FBuildConfigIn_Changed(IDiffSpread<BuildConfiguration> spread)
         {
             FBuildConfigComboBox.SelectedIndex = (int) spread[0];
-            
-            var projects =
-                from p in Solution.Projects
-                where p is MsBuildProject
-                select p as MsBuildProject;
-            
+
+            var projects = Solution.Projects.OfType<MsBuildProject>();
             foreach (var project in projects)
             {
-                project.BuildConfiguration = spread[0];
-                if (IsProjectInUse(project))
-                {
-                    project.CompileAsync();
-                }
+                UpdataBuildConfigOfProject(project);
+            }
+        }
+
+        void UpdataBuildConfigOfProject(MsBuildProject project)
+        {
+            project.BuildConfiguration = FBuildConfigIn[0];
+            if (IsProjectInUse(project))
+            {
+                project.CompileAsync();
             }
         }
 

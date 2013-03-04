@@ -188,16 +188,34 @@ namespace VVVV.Hosting.Factories
                 // We only check the PluginInterfaces assembly here to save performance.
                 var assembly = Assembly.ReflectionOnlyLoadFrom(project.AssemblyLocation);
                 var piAssembly = assembly.GetReferencedAssemblies().Where(assemblyName => assemblyName.Name == typeof(IPluginBase).Assembly.GetName().Name).FirstOrDefault();
-                
-                if (piAssembly != null)
-                {
-                    return piAssembly.Version == FPluginInterfacesVersion;
-                }
 
-                // PluginInterfaces wasn't referenced. Simply return true.
-                return true;
+                if (piAssembly != null && piAssembly.Version != FPluginInterfacesVersion)
+                    return false;
+
+                switch (project.BuildConfiguration)
+                {
+                    case BuildConfiguration.Release:
+                        return !IsAssemblyDebugBuild(assembly);
+                    case BuildConfiguration.Debug:
+                        return IsAssemblyDebugBuild(assembly);
+                    default:
+                        return true;
+                }
             }
             
+            return false;
+        }
+
+        private bool IsAssemblyDebugBuild(Assembly assembly)
+        {
+            foreach (var attribute in assembly.GetCustomAttributesData())
+            {
+                if (attribute.ToString().Contains(typeof(DebuggableAttribute).FullName))
+                {
+                    var debuggingModes = (DebuggableAttribute.DebuggingModes)attribute.ConstructorArguments.First().Value;
+                    return (debuggingModes & DebuggableAttribute.DebuggingModes.DisableOptimizations) > 0;
+                }
+            }
             return false;
         }
         
