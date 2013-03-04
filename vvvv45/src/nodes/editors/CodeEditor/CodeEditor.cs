@@ -877,8 +877,7 @@ namespace VVVV.HDE.CodeEditor
         private void InitializeTextDocument(ITextDocument doc)
         {
             var fileName = doc.LocalPath;
-            var isReadOnly = (File.GetAttributes(fileName) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
-            Document.ReadOnly = isReadOnly;
+            Document.ReadOnly = doc.IsReadOnly;
             
             // Setup code highlighting
             var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(fileName);

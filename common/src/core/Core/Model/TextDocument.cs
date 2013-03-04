@@ -90,7 +90,10 @@ namespace VVVV.Core.Model
         {
             get
             {
-                return (File.GetAttributes(LocalPath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+                if (File.Exists(LocalPath))
+                    return (File.GetAttributes(LocalPath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+                else
+                    return false;
             }
             set
             {

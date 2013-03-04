@@ -187,12 +187,6 @@ namespace VVVV.Core.Model
             get;
             set;
         }
-        
-        public string AssemblyLocation
-        {
-            get;
-            protected set;
-        }
 
         public event CompiledEventHandler ProjectCompiledSuccessfully;
         public event CompiledEventHandler CompileCompleted;
@@ -227,7 +221,6 @@ namespace VVVV.Core.Model
         {
             try
             {
-                AssemblyLocation = args.CompilerResults.PathToAssembly;
                 if (ProjectCompiledSuccessfully != null)
                     ProjectCompiledSuccessfully(this, args);
             }
@@ -322,12 +315,19 @@ namespace VVVV.Core.Model
                     path = Path.Combine(projectDir, reference.GetRelativePath());
                 else
                     path = relativePath;
-
-                if (reference.AssemblyLocation != path)
+                path = Path.GetFullPath(path);
+                if (string.Compare(reference.AssemblyLocation, path, StringComparison.InvariantCultureIgnoreCase) != 0)
                 {
-                    File.Copy(reference.AssemblyLocation, path, true);
-                    var fileInfo = new FileInfo(path);
-                    fileInfo.IsReadOnly = false;
+                    try
+                    {
+                        File.Copy(reference.AssemblyLocation, path, true);
+                        var fileInfo = new FileInfo(path);
+                        fileInfo.IsReadOnly = false;
+                    }
+                    catch (IOException e)
+                    {
+                        Shell.Instance.Logger.Log(e);
+                    }
                 }
             }
         }

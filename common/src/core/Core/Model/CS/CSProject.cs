@@ -114,13 +114,12 @@ namespace VVVV.Core.Model.CS
                 where doc is CSDocument
                 select doc.LocalPath;
 
-            var assemblyBaseDir = Path.GetDirectoryName(AssemblyLocation);
+            var assemblyLocation = GetFreshAssemblyLocation(LocalPath);
+            var assemblyBaseDir = Path.GetDirectoryName(assemblyLocation);
 
             if (!Directory.Exists(assemblyBaseDir))
                 Directory.CreateDirectory(assemblyBaseDir);
 
-
-            var assemblyLocation = GetFreshAssemblyLocation(LocalPath);
             var compilerParams = new CompilerParameters();
             compilerParams.OutputAssembly = assemblyLocation;
             compilerParams.GenerateExecutable = false;

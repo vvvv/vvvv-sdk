@@ -166,6 +166,8 @@ namespace VVVV.Hosting.Factories
         
         private bool IsAssemblyUpToDate(CSProject project)
         {
+            if (project.AssemblyLocation == null) return false;
+
             var now = DateTime.Now;
             var projectTime = new [] { File.GetLastWriteTime(project.LocalPath) }
                 .Concat(project.Documents.Select(d => File.GetLastWriteTime(d.LocalPath)))

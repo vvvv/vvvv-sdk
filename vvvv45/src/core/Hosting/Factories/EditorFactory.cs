@@ -108,7 +108,7 @@ namespace VVVV.Hosting.Factories
                     var project = FSolution.FindProject(filename);
                     if (project != null)
                     {
-                        foreach (var doc in project.Documents)
+                        foreach (var doc in project.Documents.OfType<ITextDocument>())
                         {
                             var docFilename = doc.LocalPath;
                             
