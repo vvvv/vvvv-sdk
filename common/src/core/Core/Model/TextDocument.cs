@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.Caching;
 using System.Collections.Generic;
+using VVVV.Core.Logging;
 
 namespace VVVV.Core.Model
 {
@@ -16,9 +17,7 @@ namespace VVVV.Core.Model
             get
             {
                 if (FTextContent == null)
-                {
                     FTextContent = TextContentOnDisk;
-                }
                 return FTextContent;
             }
             set
@@ -75,7 +74,7 @@ namespace VVVV.Core.Model
             }
             catch (Exception e)
             {
-
+                Shell.Instance.Logger.Log(e);
             }
         }
         
@@ -87,7 +86,7 @@ namespace VVVV.Core.Model
 
         public bool IsDirty { get { return TextContent != TextContentOnDisk; } }
 
-        public virtual bool IsReadOnly
+        public bool IsReadOnly
         {
             get
             {
