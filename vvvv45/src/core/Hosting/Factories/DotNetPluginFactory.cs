@@ -18,6 +18,7 @@ using VVVV.Hosting.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Collections;
+using VVVV.Core.Model;
 
 namespace VVVV.Hosting.Factories
 {
@@ -52,10 +53,6 @@ namespace VVVV.Hosting.Factories
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
         
-        protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
-
-
-
         public Dictionary<string, IPluginBase> FNodesPath = new Dictionary<string, IPluginBase>();
         public Dictionary<IPluginBase, IPluginHost2> FNodes = new Dictionary<IPluginBase, IPluginHost2>();
         
@@ -136,7 +133,7 @@ namespace VVVV.Hosting.Factories
             var nodeInfos = new List<INodeInfo>();
             
             // We can't handle dynamic plugins
-            if (!IsDynamicAssembly(filename))
+            if (!MsBuildProject.IsDynamicAssembly(filename))
                 LoadNodeInfosFromFile(filename, filename, ref nodeInfos, true);
             
             return nodeInfos;
@@ -531,11 +528,6 @@ namespace VVVV.Hosting.Factories
                 }
 
             }
-        }
-        
-        private bool IsDynamicAssembly(string filename)
-        {
-            return FDynamicRegExp.IsMatch(filename);
         }
     }
     

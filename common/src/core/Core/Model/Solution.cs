@@ -10,14 +10,15 @@ using VVVV.Core.Runtime;
 
 namespace VVVV.Core.Model
 {
-    public class Solution : PersistentIDContainer, ISolution, IIDContainer
+    public class Solution : IDContainer, ISolution, IIDContainer
     {
-    	private MappingRegistry FRegistry;
-    	
-    	public Solution(Uri location, MappingRegistry registry)
-    	    : base(Path.GetFileName(location.LocalPath), location, true)
+        private MappingRegistry FRegistry;
+        
+        public Solution(string path, MappingRegistry registry)
+            : base(Path.GetFileName(path), true)
         {
-    		FRegistry = registry;
+            LocalPath = path;
+            FRegistry = registry;
             Mapper = new ModelMapper(this, registry);
             
             // Do not allow rename on add. Rename triggers save/delete in case of PersistentIDContainer.
@@ -35,7 +36,7 @@ namespace VVVV.Core.Model
             
             OnRootingChanged(RootingAction.Rooted);
         }
-    	
+        
         public event CompiledEventHandler ProjectCompiledSuccessfully;
         
         public IEditableIDList<IProject> Projects 
@@ -46,13 +47,13 @@ namespace VVVV.Core.Model
         
         public ProjectContentRegistry ProjectContentRegistry
         {
-        	get;
-        	private set;
+            get;
+            private set;
         }
         
         void Projects_Added(IViewableCollection<IProject> collection, IProject project)
         {
-        	project.Solution = this;
+            project.Solution = this;
             project.ProjectCompiledSuccessfully += Project_Compiled;
         }
 
@@ -78,25 +79,11 @@ namespace VVVV.Core.Model
             ProjectCompiledSuccessfully = null;
             base.DisposeManaged();
         }
-        
-		protected override string CreateName(Uri location)
-		{
-			return Path.GetFileNameWithoutExtension(location.LocalPath);
-		}
-        
-        public override void SaveTo(Uri location)
+
+        public string LocalPath
         {
-            // TODO: Implement this
+            get;
+            private set;
         }
-        
-		protected override void DoLoad()
-		{
-			// TODO: Implement this
-		}
-		
-		protected override void DoUnload()
-		{
-			// TODO: Implement this
-		}
     }
 }

@@ -83,13 +83,13 @@ namespace VVVV.Hosting.Factories
             var project = FSolution.Projects[filename] as CSProject;
             if (project == null)
             {
-                project = new CSProject(filename, new Uri(filename));
+                var binDir = Path.GetDirectoryName(filename).ConcatPath("bin").ConcatPath("Dynamic");
+                DeleteArtefacts(binDir);
+
+                project = new CSProject(filename);
                 FSolution.Projects.Add(project);
                 project.ProjectCompiledSuccessfully += project_ProjectCompiled;
                 project.CompileCompleted += project_CompileCompleted;
-                
-                var binDir = Path.GetDirectoryName(filename).ConcatPath("bin").ConcatPath("Dynamic");
-                DeleteArtefacts(binDir);
             }
             return project;
         }
@@ -125,16 +125,9 @@ namespace VVVV.Hosting.Factories
             {
                 FLogger.Log(LogType.Message, "Assembly of {0} is not up to date. Need to recompile ...", project.Name);
                 
-                var isLoaded = project.IsLoaded;
-                if (!isLoaded)
-                    project.Load();
-                
                 project.ProjectCompiledSuccessfully -= project_ProjectCompiled;
                 project.Compile();
                 project.ProjectCompiledSuccessfully += project_ProjectCompiled;
-                
-                if (!isLoaded)
-                    project.Unload();
                 
                 if (project.CompilerResults.Errors.HasErrors)
                 {
@@ -168,13 +161,15 @@ namespace VVVV.Hosting.Factories
         void project_ProjectCompiled(object sender, CompilerEventArgs args)
         {
             var project = sender as IProject;
-            base.FileChanged(project.Location.LocalPath);
+            base.FileChanged(project.LocalPath);
         }
         
-        private bool IsAssemblyUpToDate(IProject project)
+        private bool IsAssemblyUpToDate(CSProject project)
         {
             var now = DateTime.Now;
-            var projectTime = File.GetLastWriteTime(project.Location.LocalPath);
+            var projectTime = new [] { File.GetLastWriteTime(project.LocalPath) }
+                .Concat(project.Documents.Select(d => File.GetLastWriteTime(d.LocalPath)))
+                .Max();
             var assemblyTime = File.GetLastWriteTime(project.AssemblyLocation);
             
             // This can happen in case the computer time is wrong or
@@ -217,7 +212,7 @@ namespace VVVV.Hosting.Factories
             {
                 try
                 {
-                    var match = FDynamicRegExp.Match(file);
+                    var match = MsBuildProject.DynamicRegExp.Match(file);
                     if (match.Success)
                     {
                         var fileName = match.Groups[1].Value;
@@ -282,10 +277,7 @@ namespace VVVV.Hosting.Factories
             // See if this nodeInfo belongs to us.
             var filename = nodeInfo.Filename;
             var project = CreateProject(filename);
-            
-            if (!project.IsLoaded)
-                project.Load();
-            
+
             string className = string.Format("{0}{1}{2}Node", version, category, name);
             className = Regex.Replace(className, @"[^a-zA-Z0-9]+", "_");
             var regexp = new Regex(@"^[0-9]+");
@@ -306,11 +298,7 @@ namespace VVVV.Hosting.Factories
                 newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
             }
             
-            var newLocation = new Uri(newProjectPath);
-            project.SaveTo(newLocation);
-            
-            var newProject = new CSProject(newProjectPath, newLocation);
-            newProject.Load();
+            var newProject = new CSProject(newProjectPath);
             
             var foundContainingDocument = false;
             foreach (var doc in newProject.Documents)
@@ -352,14 +340,8 @@ namespace VVVV.Hosting.Factories
             
             // Save the project.
             newProject.Save();
-            
-            // Unload it.
-            newProject.Unload();
-            
-            // Dispose it.
-            newProject.Dispose();
-            
-            newFilename = newLocation.LocalPath;
+
+            newFilename = newProject.LocalPath;
             return true;
         }
         

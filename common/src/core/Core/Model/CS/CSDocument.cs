@@ -50,9 +50,9 @@ namespace VVVV.Core.Model.CS
                 return true;
             }
         }
-        
-        public CSDocument(string name, Uri location)
-            : base(name, location)
+
+        public CSDocument(string name, string path)
+            : base(name, path)
         {
             FParseInfo = new ParseInformation();
             ExpressionFinder = new CSharpExpressionFinder(FParseInfo);
@@ -61,13 +61,6 @@ namespace VVVV.Core.Model.CS
         public override bool CanRenameTo(string value)
         {
             return base.CanRenameTo(value) && Path.GetExtension(value) == ".cs";
-        }
-        
-        protected override void DisposeManaged()
-        {
-            if (IsLoaded)
-                Unload();
-            base.DisposeManaged();
         }
         
         /// <summary>
@@ -123,7 +116,7 @@ namespace VVVV.Core.Model.CS
 
         private void UpdateParseInfo(CSParserResults results)
         {
-            var filename = Location.LocalPath;
+            var filename = LocalPath;
             var oldCompilationUnit = FParseInfo.MostRecentCompilationUnit;
             var projectContent = GetProjectContent();
 

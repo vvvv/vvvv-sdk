@@ -21,5 +21,7 @@ namespace VVVV.Core.Model
         {
         	get;
         }
+
+        event EventHandler Disposed;
     }
 }
