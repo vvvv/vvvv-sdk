@@ -118,7 +118,6 @@ namespace VVVV.Core.Model
             : base(path)
         {
             LocalPath = path;
-            AssemblyLocation = GenerateAssemblyLocation();
 
             FReferenceConverter = new ReferenceConverter(path);
             FDocumentConverter = new DocumentConverter(path);
@@ -208,37 +207,12 @@ namespace VVVV.Core.Model
             item.Project = this;
         }
         
-        public string GenerateAssemblyLocation()
-        {
-            var assemblyBaseDir = Path.GetDirectoryName(LocalPath).ConcatPath("bin").ConcatPath("Dynamic");
-            
-            int i = 0;
-            var name = LocalPath.GetHashCode().ToString();
-            var assemblyName = string.Format("{0}._dynamic_.{1}.dll", name, i);
-            var assemblyLocation = assemblyBaseDir.ConcatPath(assemblyName);
-            while (File.Exists(assemblyLocation))
-            {
-                assemblyName = string.Format("{0}._dynamic_.{1}.dll", name, ++i);
-                assemblyLocation = assemblyBaseDir.ConcatPath(assemblyName);
-            }
-            
-            return assemblyLocation;
-        }
-        
         protected abstract CompilerResults DoCompile();
         
         public void Compile()
         {
             CompilerResults = DoCompile();
-            
-            var args = new CompilerEventArgs(CompilerResults);
-            if (!CompilerResults.Errors.HasErrors)
-            {
-                AssemblyLocation = CompilerResults.PathToAssembly;
-                OnProjectCompiledSuccessfully(args);
-            }
-            
-            OnCompileCompleted(args);
+            OnCompileCompleted(new CompilerEventArgs(CompilerResults));
         }
         
         public virtual void CompileAsync()
@@ -253,6 +227,7 @@ namespace VVVV.Core.Model
         {
             try
             {
+                AssemblyLocation = args.CompilerResults.PathToAssembly;
                 if (ProjectCompiledSuccessfully != null)
                     ProjectCompiledSuccessfully(this, args);
             }
@@ -266,6 +241,8 @@ namespace VVVV.Core.Model
         {
             try
             {
+                if (!args.CompilerResults.Errors.HasErrors)
+                    OnProjectCompiledSuccessfully(args);
                 if (CompileCompleted != null)
                     CompileCompleted(this, args);
             }
@@ -303,15 +280,7 @@ namespace VVVV.Core.Model
         private void RunWorkerCompletedCB(object sender, RunWorkerCompletedEventArgs args)
         {
             CompilerResults = args.Result as CompilerResults;
-            
-            var compilerArgs = new CompilerEventArgs(CompilerResults);
-            if (!CompilerResults.Errors.HasErrors)
-            {
-                AssemblyLocation = CompilerResults.PathToAssembly;
-                OnProjectCompiledSuccessfully(compilerArgs);
-            }
-            
-            OnCompileCompleted(compilerArgs);
+            OnCompileCompleted(new CompilerEventArgs(CompilerResults));
         }
 
         public void Save()

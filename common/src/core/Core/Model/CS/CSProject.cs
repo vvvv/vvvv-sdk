@@ -1,22 +1,27 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
-using System.Threading;
+using System.Linq;
 
 using ICSharpCode.SharpDevelop.Dom;
 using VVVV.Core.Logging;
-using VVVV.Core.Model;
-using VVVV.Core.Runtime;
-using VVVV.Core.Runtime.CS;
+using Microsoft.CSharp;
+using System.IO;
 
 namespace VVVV.Core.Model.CS
 {
     // TODO: Parsing of references and documents is not complete. Missing events (doc added/removed, ref added/removed..)
     public class CSProject : MsBuildProject
     {
+        private static CSharpCodeProvider FProvider;
+
+        static CSProject()
+        {
+            var options = new Dictionary<string, string>();
+            options.Add("CompilerVersion", "v4.0");
+            FProvider = new CSharpCodeProvider(options);
+        }
+
         public CSProject(string path)
             : base(path)
         {
@@ -63,9 +68,9 @@ namespace VVVV.Core.Model.CS
                 // Add referenced contents
                 foreach (var reference in References)
                 {
-                    if (reference is ProjectReference)
+                    if (reference is MsBuildProjectReference)
                     {
-                        var projectReference = reference as ProjectReference;
+                        var projectReference = reference as MsBuildProjectReference;
                         if (projectReference.ReferencedProject is CSProject)
                         {
                             var referencePC = ((CSProject)projectReference.ReferencedProject).ProjectContent;
@@ -104,7 +109,45 @@ namespace VVVV.Core.Model.CS
         
         protected override CompilerResults DoCompile()
         {
-            return CSCompiler.Instance.Compile(this);
+            var files =
+                from doc in Documents
+                where doc is CSDocument
+                select doc.LocalPath;
+
+            var assemblyBaseDir = Path.GetDirectoryName(AssemblyLocation);
+
+            if (!Directory.Exists(assemblyBaseDir))
+                Directory.CreateDirectory(assemblyBaseDir);
+
+
+            var assemblyLocation = GetFreshAssemblyLocation(LocalPath);
+            var compilerParams = new CompilerParameters();
+            compilerParams.OutputAssembly = assemblyLocation;
+            compilerParams.GenerateExecutable = false;
+            compilerParams.GenerateInMemory = false;
+
+            switch (BuildConfiguration)
+            {
+                case BuildConfiguration.Release:
+                    compilerParams.IncludeDebugInformation = false;
+                    compilerParams.CompilerOptions += "/unsafe /optimize ";
+                    break;
+                case BuildConfiguration.Debug:
+                    compilerParams.IncludeDebugInformation = true;
+                    compilerParams.CompilerOptions += "/unsafe";
+                    break;
+            }
+
+            foreach (var reference in References)
+            {
+                var location = reference.AssemblyLocation;
+                if (Path.GetExtension(location) != ".dll")
+                    location = string.Format("{0}.dll", location);
+
+                compilerParams.ReferencedAssemblies.Add(location);
+            }
+
+            return FProvider.CompileAssemblyFromFile(compilerParams, files.ToArray());
         }
     }
 }

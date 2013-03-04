@@ -58,19 +58,6 @@ namespace VVVV.Core.Model
         }
         
         /// <summary>
-        /// The full path to the compiled assembly.
-        /// </summary>
-        string AssemblyLocation
-        {
-            get;
-        }
-        
-        /// <summary>
-        /// Called by ICompiler to retrieve a new assembly location.
-        /// </summary>
-        string GenerateAssemblyLocation();
-        
-        /// <summary>
         /// Compiles this project with the ICompiler stored in the Compiler property.
         /// </summary>
         void Compile();

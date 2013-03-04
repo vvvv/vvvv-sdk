@@ -83,13 +83,13 @@ namespace VVVV.Hosting.Factories
             var project = FSolution.Projects[filename] as CSProject;
             if (project == null)
             {
+                var binDir = Path.GetDirectoryName(filename).ConcatPath("bin").ConcatPath("Dynamic");
+                DeleteArtefacts(binDir);
+
                 project = new CSProject(filename);
                 FSolution.Projects.Add(project);
                 project.ProjectCompiledSuccessfully += project_ProjectCompiled;
                 project.CompileCompleted += project_CompileCompleted;
-                
-                var binDir = Path.GetDirectoryName(filename).ConcatPath("bin").ConcatPath("Dynamic");
-                DeleteArtefacts(binDir);
             }
             return project;
         }
@@ -164,10 +164,12 @@ namespace VVVV.Hosting.Factories
             base.FileChanged(project.LocalPath);
         }
         
-        private bool IsAssemblyUpToDate(IProject project)
+        private bool IsAssemblyUpToDate(CSProject project)
         {
             var now = DateTime.Now;
-            var projectTime = File.GetLastWriteTime(project.LocalPath);
+            var projectTime = new [] { File.GetLastWriteTime(project.LocalPath) }
+                .Concat(project.Documents.Select(d => File.GetLastWriteTime(d.LocalPath)))
+                .Max();
             var assemblyTime = File.GetLastWriteTime(project.AssemblyLocation);
             
             // This can happen in case the computer time is wrong or
@@ -210,7 +212,7 @@ namespace VVVV.Hosting.Factories
             {
                 try
                 {
-                    var match = FDynamicRegExp.Match(file);
+                    var match = MsBuildProject.DynamicRegExp.Match(file);
                     if (match.Success)
                     {
                         var fileName = match.Groups[1].Value;

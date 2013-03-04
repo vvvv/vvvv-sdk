@@ -9,6 +9,7 @@ using VVVV.Core.Logging;
 using VVVV.Core.Runtime;
 using VVVV.Utils;
 using MsBuild = Microsoft.Build;
+using System.Text.RegularExpressions;
 
 namespace VVVV.Core.Model
 {
@@ -53,21 +54,21 @@ namespace VVVV.Core.Model
                 return FGuid;
             }
         }
+
+        /// <summary>
+        /// The full path to the compiled assembly.
+        /// </summary>
+        public string AssemblyLocation
+        {
+            get;
+            private set;
+        }
         
         public MsBuildProject(string path)
             : base(path)
         {
             // Try to find an assembly
-            var assemblyBaseDir = Path.GetDirectoryName(AssemblyLocation);
-            if (Directory.Exists(assemblyBaseDir))
-            {
-                foreach (var file in Directory.GetFiles(assemblyBaseDir, "*.dll"))
-                {
-                    AssemblyLocation = file;
-                    break;
-                }
-            }
-            
+            AssemblyLocation = GetExistingAssemblyLocation(path);
             ProjectCompiledSuccessfully += this_ProjectCompiledSuccessfully;
             try
             {
@@ -88,6 +89,8 @@ namespace VVVV.Core.Model
 
         void this_ProjectCompiledSuccessfully(object sender, CompilerEventArgs args)
         {
+            // Retrieve new assembly location
+            AssemblyLocation = args.CompilerResults.PathToAssembly;
             // Copy local references
             var results = args.CompilerResults;
             var assemblyDir = Path.GetDirectoryName(results.PathToAssembly);
@@ -380,6 +383,44 @@ namespace VVVV.Core.Model
             msBuildProject.Save(projectPath);
 
             base.SaveTo(projectPath);
+        }
+
+        protected static string GetFreshAssemblyLocation(string path)
+        {
+            var assemblyBaseDir = Path.GetDirectoryName(path).ConcatPath("bin").ConcatPath("Dynamic");
+
+            var i = 0;
+            var name = path.GetHashCode().ToString();
+            string assemblyLocation = null;
+            while (true)
+            {
+                var assemblyName = string.Format("{0}._dynamic_.{1}.dll", name, ++i);
+                assemblyLocation = assemblyBaseDir.ConcatPath(assemblyName);
+                if (!File.Exists(assemblyLocation)) break;
+            }
+
+            return assemblyLocation;
+        }
+
+        public static readonly Regex DynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
+        protected static string GetExistingAssemblyLocation(string path)
+        {
+            var assemblyBaseDir = Path.GetDirectoryName(path).ConcatPath("bin").ConcatPath("Dynamic");
+            if (Directory.Exists(assemblyBaseDir))
+            {
+                var dirInfo = new DirectoryInfo(assemblyBaseDir);
+                return dirInfo.GetFiles("*.dll")
+                    .Where(fi => MsBuildProject.DynamicRegExp.Match(fi.FullName).Success)
+                    .OrderBy(fi => fi.LastWriteTime)
+                    .Select(fi => fi.FullName)
+                    .FirstOrDefault();
+            }
+            return null;
+        }
+
+        public static bool IsDynamicAssembly(string filename)
+        {
+            return DynamicRegExp.IsMatch(filename);
         }
     }
 }
