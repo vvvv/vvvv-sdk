@@ -1,0 +1,119 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha18.1.dtd" >
+   <PATCH nodename="Y:\vvvv_trunk\help\ShellExecute (Windows) help.v4p">
+   <BOUNDS height="6090" left="3030" top="4380" type="Window" width="4125">
+   </BOUNDS>
+   <NODE id="6" nodename="ShellExecute (Windows)">
+   <BOUNDS height="0" left="345" top="2535" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="File" visible="1">
+   </PIN>
+   <PIN pinname="Do Execute" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Window" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Commandline Arguments" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="330" top="975" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3930" top="5415" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="330" top="975" type="Box" width="1785">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="C:\WINDOWS\NOTEPAD.EXE">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2205" top="975" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6405" top="5625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="690" left="2205" top="975" type="Box" width="705">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Do Execute" linkstyle="PolyLine" srcnodeid="4" srcpinname="Y Output Value">
+   <LINKPOINT x="2880" y="2250">
+   </LINKPOINT>
+   <LINKPOINT x="1320" y="2250">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3075" top="975" type="Node" width="1215">
+   </BOUNDS>
+   <BOUNDS height="255" left="3075" top="975" type="Box" width="1215">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="doExecute">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="240" left="15" top="390" type="Box" width="2100">
+   </BOUNDS>
+   <BOUNDS height="160" left="9630" top="41520" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Execute a specified file.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9630" top="41520" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ShellExecute - Windows|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="240" top="3255" type="Node" width="3495">
+   </BOUNDS>
+   <BOUNDS height="2280" left="240" top="3255" type="Box" width="3555">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|to execute windows shell commands use as file: c:\windows\system32\cmd.exe&cr;&lf;&cr;&lf;and as arguments:&cr;&lf;/c command arguments&cr;&lf;&cr;&lf;where command is any of the shell commands like &apos;del&apos; or &apos;md&apos; and arguments is an argument as you would give it on the shell. don&apos;t forget double quotes for filenames with spaces!&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="6" dstpinname="File">
+   </LINK>
+   </PATCH>

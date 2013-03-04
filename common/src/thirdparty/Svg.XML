@@ -1,0 +1,2107 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Svg</name>
+    </assembly>
+    <members>
+        <member name="T:Svg.Web.SvgHandler">
+            <summary>
+            A handler to asynchronously render Scalable Vector Graphics files (usually *.svg or *.xml file extensions).
+            </summary>
+            <remarks>
+            <para>If a crawler requests the SVG file the raw XML will be returned rather than the image to allow crawlers to better read the image.</para>
+            <para>Adding "?raw=true" to the querystring will alos force the handler to render the raw SVG.</para>
+            </remarks>
+        </member>
+        <member name="M:Svg.Web.SvgHandler.ProcessRequest(System.Web.HttpContext)">
+            <summary>
+            Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
+            </summary>
+            <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
+        </member>
+        <member name="M:Svg.Web.SvgHandler.BeginProcessRequest(System.Web.HttpContext,System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates an asynchronous call to the HTTP handler.
+            </summary>
+            <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
+            <param name="cb">The <see cref="T:System.AsyncCallback"/> to call when the asynchronous method call is complete. If <paramref name="cb"/> is null, the delegate is not called.</param>
+            <param name="extraData">Any extra data needed to process the request.</param>
+            <returns>
+            An <see cref="T:System.IAsyncResult"/> that contains information about the status of the process.
+            </returns>
+        </member>
+        <member name="M:Svg.Web.SvgHandler.EndProcessRequest(System.IAsyncResult)">
+            <summary>
+            Provides an asynchronous process End method when the process ends.
+            </summary>
+            <param name="result">An <see cref="T:System.IAsyncResult"/> that contains information about the status of the process.</param>
+        </member>
+        <member name="P:Svg.Web.SvgHandler.IsReusable">
+            <summary>
+            Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.
+            </summary>
+            <value></value>
+            <returns>true if the <see cref="T:System.Web.IHttpHandler"/> instance is reusable; otherwise, false.</returns>
+        </member>
+        <member name="T:Svg.Web.SvgHandler.SvgAsyncRender">
+            <summary>
+            The class to be used when 
+            </summary>
+        </member>
+        <member name="T:Svg.Web.SvgHandler.SvgAsyncRenderState">
+            <summary>
+            Represents the state of a request for SVG rendering.
+            </summary>
+        </member>
+        <member name="M:Svg.Web.SvgHandler.SvgAsyncRenderState.#ctor(System.Web.HttpContext,System.AsyncCallback,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.Web.SvgHandler.SvgAsyncRenderState"/> class.
+            </summary>
+            <param name="context">The <see cref="T:System.Web.HttpContext"/> of the request.</param>
+            <param name="callback">The delegate to be called when the rendering is complete.</param>
+            <param name="extraData">The extra data.</param>
+        </member>
+        <member name="M:Svg.Web.SvgHandler.SvgAsyncRenderState.CompleteRequest">
+            <summary>
+            Indicates that the rendering is complete and the waiting thread may proceed.
+            </summary>
+        </member>
+        <member name="P:Svg.Web.SvgHandler.SvgAsyncRenderState.AsyncState">
+            <summary>
+            Gets a user-defined object that qualifies or contains information about an asynchronous operation.
+            </summary>
+            <value></value>
+            <returns>A user-defined object that qualifies or contains information about an asynchronous operation.</returns>
+        </member>
+        <member name="P:Svg.Web.SvgHandler.SvgAsyncRenderState.CompletedSynchronously">
+            <summary>
+            Gets an indication of whether the asynchronous operation completed synchronously.
+            </summary>
+            <value></value>
+            <returns>true if the asynchronous operation completed synchronously; otherwise, false.</returns>
+        </member>
+        <member name="P:Svg.Web.SvgHandler.SvgAsyncRenderState.IsCompleted">
+            <summary>
+            Gets an indication whether the asynchronous operation has completed.
+            </summary>
+            <value></value>
+            <returns>true if the operation is complete; otherwise, false.</returns>
+        </member>
+        <member name="P:Svg.Web.SvgHandler.SvgAsyncRenderState.AsyncWaitHandle">
+            <summary>
+            Gets a <see cref="T:System.Threading.WaitHandle"/> that is used to wait for an asynchronous operation to complete.
+            </summary>
+            <value></value>
+            <returns>A <see cref="T:System.Threading.WaitHandle"/> that is used to wait for an asynchronous operation to complete.</returns>
+        </member>
+        <member name="T:Svg.ISvgTransformable">
+            <summary>
+            Represents and element that may be transformed.
+            </summary>
+        </member>
+        <member name="M:Svg.ISvgTransformable.PushTransforms(Svg.SvgRenderer)">
+            <summary>
+            Applies the required transforms to <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to be transformed.</param>
+        </member>
+        <member name="M:Svg.ISvgTransformable.PopTransforms(Svg.SvgRenderer)">
+            <summary>
+            Removes any previously applied transforms from the specified <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> that should have transforms removed.</param>
+        </member>
+        <member name="P:Svg.ISvgTransformable.Transforms">
+            <summary>
+            Gets or sets an <see cref="T:Svg.Transforms.SvgTransformCollection"/> of element transforms.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgPath">
+            <summary>
+            Represents an SVG path element.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgVisualElement">
+            <summary>
+            The class that all SVG elements should derive from when they are to be rendered.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgElement">
+            <summary>
+            The base class of which all SVG elements are derived from.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgElement.HasChildren">
+            <summary>
+            Gets a value to determine whether the element has children.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgElement.PushTransforms(Svg.SvgRenderer)">
+            <summary>
+            Applies the required transforms to <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to be transformed.</param>
+        </member>
+        <member name="M:Svg.SvgElement.PopTransforms(Svg.SvgRenderer)">
+            <summary>
+            Removes any previously applied transforms from the specified <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> that should have transforms removed.</param>
+        </member>
+        <member name="M:Svg.SvgElement.Svg#ISvgTransformable#PushTransforms(Svg.SvgRenderer)">
+            <summary>
+            Applies the required transforms to <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to be transformed.</param>
+        </member>
+        <member name="M:Svg.SvgElement.Svg#ISvgTransformable#PopTransforms(Svg.SvgRenderer)">
+            <summary>
+            Removes any previously applied transforms from the specified <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> that should have transforms removed.</param>
+        </member>
+        <member name="M:Svg.SvgElement.AddElement(Svg.SvgElement,System.Int32)">
+            <summary>
+            Called by the underlying <see cref="T:Svg.SvgElement"/> when an element has been added to the
+            <see cref="P:Svg.SvgElement.Children"/> collection.
+            </summary>
+            <param name="child">The <see cref="T:Svg.SvgElement"/> that has been added.</param>
+            <param name="index">An <see cref="T:System.Int32"/> representing the index where the element was added to the collection.</param>
+        </member>
+        <member name="M:Svg.SvgElement.OnElementAdded(Svg.SvgElement,System.Int32)">
+            <summary>
+            Calls the <see cref="M:Svg.SvgElement.AddElement(Svg.SvgElement,System.Int32)"/> method with the specified parameters.
+            </summary>
+            <param name="child">The <see cref="T:Svg.SvgElement"/> that has been added.</param>
+            <param name="index">An <see cref="T:System.Int32"/> representing the index where the element was added to the collection.</param>
+        </member>
+        <member name="M:Svg.SvgElement.RemoveElement(Svg.SvgElement)">
+            <summary>
+            Called by the underlying <see cref="T:Svg.SvgElement"/> when an element has been removed from the
+            <see cref="P:Svg.SvgElement.Children"/> collection.
+            </summary>
+            <param name="child">The <see cref="T:Svg.SvgElement"/> that has been removed.</param>
+        </member>
+        <member name="M:Svg.SvgElement.OnElementRemoved(Svg.SvgElement)">
+            <summary>
+            Calls the <see cref="M:Svg.SvgElement.RemoveElement(Svg.SvgElement)"/> method with the specified <see cref="T:Svg.SvgElement"/> as the parameter.
+            </summary>
+            <param name="child">The <see cref="T:Svg.SvgElement"/> that has been removed.</param>
+        </member>
+        <member name="M:Svg.SvgElement.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgElement"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgElement.RenderElement(Svg.SvgRenderer)">
+            <summary>
+            Renders this element to the <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> that the element should use to render itself.</param>
+        </member>
+        <member name="M:Svg.SvgElement.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:Svg.SvgRenderer"/> object.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="M:Svg.SvgElement.RenderChildren(Svg.SvgRenderer)">
+            <summary>
+            Renders the children of this <see cref="T:Svg.SvgElement"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to render the child <see cref="T:Svg.SvgElement"/>s to.</param>
+        </member>
+        <member name="M:Svg.SvgElement.Svg#ISvgElement#Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:Svg.SvgRenderer"/> object.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="M:Svg.SvgElement.AddPaths(Svg.SvgElement,System.Drawing.Drawing2D.GraphicsPath)">
+            <summary>
+            Recursive method to add up the paths of all children
+            </summary>
+            <param name="elem"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:Svg.SvgElement.GetPaths(Svg.SvgElement)">
+            <summary>
+            Recursive method to add up the paths of all children
+            </summary>
+            <param name="elem"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:Svg.SvgElement.Clone">
+            <summary>
+            Creates a new object that is a copy of the current instance.
+            </summary>
+            <returns>
+            A new object that is a copy of this instance.
+            </returns>
+        </member>
+        <member name="P:Svg.SvgElement.ElementName">
+            <summary>
+            Gets the name of the element.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgElement.Content">
+            <summary>
+            Gets or sets the content of the element.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgElement.Events">
+            <summary>
+            Gets an <see cref="T:System.ComponentModel.EventHandlerList"/> of all events belonging to the element.
+            </summary>
+        </member>
+        <member name="E:Svg.SvgElement.Load">
+            <summary>
+            Occurs when the element is loaded.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgElement.Children">
+            <summary>
+            Gets a collection of all child <see cref="!:SvgElements"/>.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgElement.Parent">
+            <summary>
+            Gets the parent <see cref="T:Svg.SvgElement"/>.
+            </summary>
+            <value>An <see cref="T:Svg.SvgElement"/> if one exists; otherwise null.</value>
+        </member>
+        <member name="P:Svg.SvgElement.OwnerDocument">
+            <summary>
+            Gets the owner <see cref="T:Svg.SvgDocument"/>.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgElement.Attributes">
+            <summary>
+            Gets a collection of element attributes.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgElement.Transforms">
+            <summary>
+            Gets or sets the element transforms.
+            </summary>
+            <value>The transforms.</value>
+        </member>
+        <member name="P:Svg.SvgElement.ID">
+            <summary>
+            Gets or sets the ID of the element.
+            </summary>
+            <exception cref="T:Svg.SvgException">The ID is already used within the <see cref="T:Svg.SvgDocument"/>.</exception>
+        </member>
+        <member name="T:Svg.ISvgStylable">
+            <summary>
+            Defines the methods and properties required for an SVG element to be styled.
+            </summary>
+        </member>
+        <member name="T:Svg.ISvgClipable">
+            <summary>
+            Defines the methods and properties that an <see cref="T:Svg.SvgElement"/> must implement to support clipping.
+            </summary>
+        </member>
+        <member name="M:Svg.ISvgClipable.SetClip(Svg.SvgRenderer)">
+            <summary>
+            Sets the clipping region of the specified <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to have its clipping region set.</param>
+        </member>
+        <member name="M:Svg.ISvgClipable.ResetClip(Svg.SvgRenderer)">
+            <summary>
+            Resets the clipping region of the specified <see cref="T:Svg.SvgRenderer"/> back to where it was before the <see cref="M:Svg.ISvgClipable.SetClip(Svg.SvgRenderer)"/> method was called.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to have its clipping region reset.</param>
+        </member>
+        <member name="P:Svg.ISvgClipable.ClipPath">
+            <summary>
+            Gets or sets the ID of the associated <see cref="T:Svg.SvgClipPath"/> if one has been specified.
+            </summary>
+        </member>
+        <member name="P:Svg.ISvgClipable.ClipRule">
+            <summary>
+            Specifies the rule used to define the clipping region when the element is within a <see cref="T:Svg.SvgClipPath"/>.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgVisualElement.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="!:SvgGraphicsElement"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgVisualElement.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:System.Drawing.Graphics"/> object.
+            </summary>
+            <param name="graphics">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="M:Svg.SvgVisualElement.RenderFill(Svg.SvgRenderer)">
+            <summary>
+            Renders the fill of the <see cref="T:Svg.SvgVisualElement"/> to the specified <see cref="T:Svg.SvgRenderer"/>
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="M:Svg.SvgVisualElement.RenderStroke(Svg.SvgRenderer)">
+            <summary>
+            Renders the stroke of the <see cref="T:Svg.SvgVisualElement"/> to the specified <see cref="T:Svg.SvgRenderer"/>
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="M:Svg.SvgVisualElement.SetClip(Svg.SvgRenderer)">
+            <summary>
+            Sets the clipping region of the specified <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to have its clipping region set.</param>
+        </member>
+        <member name="M:Svg.SvgVisualElement.ResetClip(Svg.SvgRenderer)">
+            <summary>
+            Resets the clipping region of the specified <see cref="T:Svg.SvgRenderer"/> back to where it was before the <see cref="M:Svg.SvgVisualElement.SetClip(Svg.SvgRenderer)"/> method was called.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to have its clipping region reset.</param>
+        </member>
+        <member name="M:Svg.SvgVisualElement.Svg#ISvgClipable#SetClip(Svg.SvgRenderer)">
+            <summary>
+            Sets the clipping region of the specified <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to have its clipping region set.</param>
+        </member>
+        <member name="M:Svg.SvgVisualElement.Svg#ISvgClipable#ResetClip(Svg.SvgRenderer)">
+            <summary>
+            Resets the clipping region of the specified <see cref="T:Svg.SvgRenderer"/> back to where it was before the <see cref="M:Svg.SvgVisualElement.SetClip(Svg.SvgRenderer)"/> method was called.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to have its clipping region reset.</param>
+        </member>
+        <member name="P:Svg.SvgVisualElement.Visible">
+            <summary>
+            Gets or sets a value to determine whether the element will be rendered.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.Fill">
+            <summary>
+            Gets or sets the fill <see cref="T:Svg.SvgPaintServer"/> of this element.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.Stroke">
+            <summary>
+            Gets or sets the <see cref="T:Svg.SvgPaintServer"/> to be used when rendering a stroke around this element.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.FillOpacity">
+            <summary>
+            Gets or sets the opacity of this element's <see cref="P:Svg.SvgVisualElement.Fill"/>.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.StrokeWidth">
+            <summary>
+            Gets or sets the width of the stroke (if the <see cref="P:Svg.SvgVisualElement.Stroke"/> property has a valid value specified.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.StrokeOpacity">
+            <summary>
+            Gets or sets the opacity of the stroke, if the <see cref="P:Svg.SvgVisualElement.Stroke"/> property has been specified. 1.0 is fully opaque; 0.0 is transparent.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.Opacity">
+            <summary>
+            Gets or sets the opacity of the element. 1.0 is fully opaque; 0.0 is transparent.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.Path">
+            <summary>
+            Gets the <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> for this element.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.Bounds">
+            <summary>
+            Gets the bounds of the element.
+            </summary>
+            <value>The bounds.</value>
+        </member>
+        <member name="P:Svg.SvgVisualElement.IsPathDirty">
+            <summary>
+            Gets or sets a value indicating whether this element's <see cref="P:Svg.SvgVisualElement.Path"/> is dirty.
+            </summary>
+            <value>
+            	<c>true</c> if the path is dirty; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Svg.SvgVisualElement.ClipPath">
+            <summary>
+            Gets the associated <see cref="T:Svg.SvgClipPath"/> if one has been specified.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.ClipRule">
+            <summary>
+            Gets or sets the algorithm which is to be used to determine the clipping region.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.Filter">
+            <summary>
+            Gets the associated <see cref="T:Svg.SvgClipPath"/> if one has been specified.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgVisualElement.RequiresSmoothRendering">
+            <summary>
+            Gets or sets a value to determine if anti-aliasing should occur when the element is being rendered.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgPath.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgPath"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgPath.RenderStroke(Svg.SvgRenderer)">
+            <summary>
+            Renders the stroke of the <see cref="T:Svg.SvgVisualElement"/> to the specified <see cref="T:Svg.SvgRenderer"/>
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="P:Svg.SvgPath.PathData">
+            <summary>
+            Gets or sets a <see cref="T:Svg.Pathing.SvgPathSegmentList"/> of path data.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPath.PathLength">
+            <summary>
+            Gets or sets the length of the path.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPath.MarkerEnd">
+            <summary>
+            Gets or sets the marker (end cap) of the path.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPath.MarkerStart">
+            <summary>
+            Gets or sets the marker (start cap) of the path.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPath.Path">
+            <summary>
+            Gets the <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> for this element.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPath.RequiresSmoothRendering">
+            <summary>
+            Gets or sets a value to determine if anti-aliasing should occur when the element is being rendered.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPath.Bounds">
+            <summary>
+            Gets the bounds of the element.
+            </summary>
+            <value>The bounds.</value>
+        </member>
+        <member name="T:Svg.SvgElementAttribute">
+            <summary>
+            Specifies the SVG name of an <see cref="T:Svg.SvgElement"/>.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgElementAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgElementAttribute"/> class with the specified element name;
+            </summary>
+            <param name="elementName">The name of the SVG element.</param>
+        </member>
+        <member name="P:Svg.SvgElementAttribute.ElementName">
+            <summary>
+            Gets the name of the SVG element.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgOrient">
+            <summary>
+            Represents an orientation in an Scalable Vector Graphics document.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgOrient.Equals(System.Object)">
+            <summary>
+            Indicates whether this instance and a specified object are equal.
+            </summary>
+            <param name="obj">Another object to compare to.</param>
+            <returns>
+            true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:Svg.SvgOrient.op_Implicit(System.Single)~Svg.SvgOrient">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.Single"/> to <see cref="T:Svg.SvgOrient"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="P:Svg.SvgOrient.Angle">
+            <summary>
+            Gets the value of the unit.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgOrient.IsAuto">
+            <summary>
+            Gets the value of the unit.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgLine">
+            <summary>
+            Represents and SVG line element.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgImage">
+            <summary>
+            Represents and SVG image
+            </summary>
+        </member>
+        <member name="M:Svg.SvgImage.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgImage"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgImage.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:System.Drawing.Graphics"/> object.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgImage.Location">
+            <summary>
+            Gets an <see cref="T:Svg.SvgPoint"/> representing the top left point of the rectangle.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgImage.Bounds">
+            <summary>
+            Gets the bounds of the element.
+            </summary>
+            <value>The bounds.</value>
+        </member>
+        <member name="P:Svg.SvgImage.Path">
+            <summary>
+            Gets the <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> for this element.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgPatternServer">
+            <summary>
+            A pattern is used to fill or stroke an object using a pre-defined graphic object which can be replicated ("tiled") at fixed intervals in x and y to cover the areas to be painted.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgPaintServer">
+            <summary>
+            Represents the base class for all paint servers that are intended to be used as a fill or stroke.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgPaintServer.None">
+            <summary>
+            An unspecified <see cref="T:Svg.SvgPaintServer"/>.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgPaintServer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgPaintServer"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgPaintServer.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:Svg.SvgRenderer"/> object.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="M:Svg.SvgPaintServer.GetBrush(Svg.SvgVisualElement,System.Single)">
+            <summary>
+            Gets a <see cref="T:System.Drawing.Brush"/> representing the current paint server.
+            </summary>
+            <param name="styleOwner">The owner <see cref="T:Svg.SvgVisualElement"/>.</param>
+            <param name="opacity">The opacity of the brush.</param>
+        </member>
+        <member name="M:Svg.SvgPaintServer.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Svg.ISvgViewPort">
+            <summary>
+            Provides properties and methods to be implemented by view port elements.
+            </summary>
+        </member>
+        <member name="P:Svg.ISvgViewPort.ViewBox">
+            <summary>
+            Gets or sets the viewport of the element.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgPatternServer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgPatternServer"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgPatternServer.GetBrush(Svg.SvgVisualElement,System.Single)">
+            <summary>
+            Gets a <see cref="T:System.Drawing.Brush"/> representing the current paint server.
+            </summary>
+            <param name="styleOwner">The owner <see cref="T:Svg.SvgVisualElement"/>.</param>
+            <param name="opacity">The opacity of the brush.</param>
+        </member>
+        <member name="P:Svg.SvgPatternServer.ViewBox">
+            <summary>
+            Specifies a supplemental transformation which is applied on top of any 
+            transformations necessary to create a new pattern coordinate system.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPatternServer.AspectRatio">
+            <summary>
+            Gets or sets the aspect of the viewport.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Svg.SvgPatternServer.Width">
+            <summary>
+            Gets or sets the width of the pattern.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPatternServer.Height">
+            <summary>
+            Gets or sets the height of the pattern.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPatternServer.X">
+            <summary>
+            Gets or sets the X-axis location of the pattern.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPatternServer.Y">
+            <summary>
+            Gets or sets the Y-axis location of the pattern.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgGradientServer">
+            <summary>
+            Provides the base class for all paint servers that wish to render a gradient.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgGradientServer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgGradientServer"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgGradientServer.AddElement(Svg.SvgElement,System.Int32)">
+            <summary>
+            Called by the underlying <see cref="T:Svg.SvgElement"/> when an element has been added to the
+            <see cref="!:Children"/> collection.
+            </summary>
+            <param name="child">The <see cref="T:Svg.SvgElement"/> that has been added.</param>
+            <param name="index">An <see cref="T:System.Int32"/> representing the index where the element was added to the collection.</param>
+        </member>
+        <member name="M:Svg.SvgGradientServer.RemoveElement(Svg.SvgElement)">
+            <summary>
+            Called by the underlying <see cref="T:Svg.SvgElement"/> when an element has been removed from the
+            <see cref="!:Children"/> collection.
+            </summary>
+            <param name="child">The <see cref="T:Svg.SvgElement"/> that has been removed.</param>
+        </member>
+        <member name="M:Svg.SvgGradientServer.GetColourBlend(Svg.SvgVisualElement,System.Single)">
+            <summary>
+            Gets a <see cref="!:ColourBlend"/> representing the <see cref="T:Svg.SvgGradientServer"/>'s gradient stops.
+            </summary>
+            <param name="owner">The parent <see cref="T:Svg.SvgVisualElement"/>.</param>
+            <param name="opacity">The opacity of the colour blend.</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Svg.SvgGradientServer.InheritStops" -->
+        <member name="P:Svg.SvgGradientServer.Stops">
+            <summary>
+            Gets the ramp of colors to use on a gradient.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgGradientServer.SpreadMethod">
+            <summary>
+            Specifies what happens if the gradient starts or ends inside the bounds of the target rectangle.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgGradientServer.GradientUnits">
+            <summary>
+            Gets or sets the coordinate system of the gradient.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgGradientServer.InheritGradient">
+            <summary>
+            Gets or sets another gradient fill from which to inherit the stops from.
+            </summary>
+        </member>
+        <member name="M:Svg.Transforms.SvgTransformCollection.GetMatrix">
+            <summary>
+            Multiplies all matrices
+            </summary>
+            <returns>The result of all transforms</returns>
+        </member>
+        <member name="M:Svg.SvgUse.PushTransforms(Svg.SvgRenderer)">
+            <summary>
+            Applies the required transforms to <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to be transformed.</param>
+        </member>
+        <member name="M:Svg.SvgUse.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgUse"/> class.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgFragment">
+            <summary>
+            An <see cref="T:Svg.SvgFragment"/> represents an SVG fragment that can be the root element or an embedded fragment of an SVG document.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgFragment.Namespace">
+            <summary>
+            Gets the SVG namespace string.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgFragment.PushTransforms(Svg.SvgRenderer)">
+            <summary>
+            Applies the required transforms to <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to be transformed.</param>
+        </member>
+        <member name="M:Svg.SvgFragment.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgFragment"/> class.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgFragment.Width">
+            <summary>
+            Gets or sets the width of the fragment.
+            </summary>
+            <value>The width.</value>
+        </member>
+        <member name="P:Svg.SvgFragment.Height">
+            <summary>
+            Gets or sets the height of the fragment.
+            </summary>
+            <value>The height.</value>
+        </member>
+        <member name="P:Svg.SvgFragment.ViewBox">
+            <summary>
+            Gets or sets the viewport of the element.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Svg.SvgFragment.AspectRatio">
+            <summary>
+            Gets or sets the aspect of the viewport.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Svg.SvgFragment.Path">
+            <summary>
+            Gets the <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> for this element.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Svg.SvgFragment.Bounds">
+            <summary>
+            Gets the bounds of the svg element.
+            </summary>
+            <value>The bounds.</value>
+        </member>
+        <member name="T:Svg.SvgClipRule">
+            <summary>
+            Indicates the algorithm which is to be used to determine the clipping region.
+            </summary>
+            <remarks>
+                <para>This rule determines the "insideness" of a point on the canvas by drawing a ray from 
+                that point to infinity in any direction and then examining the places where a segment of the 
+                shape crosses the ray.</para>
+            </remarks>
+        </member>
+        <member name="F:Svg.SvgClipRule.NonZero">
+            <summary>
+            This rule determines the "insideness" of a point on the canvas by drawing a ray from that point to infinity in any direction and then examining the places where a segment of the shape crosses the ray. Starting with a count of zero, add one each time a path segment crosses the ray from left to right and subtract one each time a path segment crosses the ray from right to left. After counting the crossings, if the result is zero then the point is outside  the path. Otherwise, it is inside.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgClipRule.EvenOdd">
+            <summary>
+            This rule determines the "insideness" of a point on the canvas by drawing a ray from that point to infinity in any direction and counting the number of path segments from the given shape that the ray crosses. If this number is odd, the point is inside; if even, the point is outside.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgDocument">
+            <summary>
+            The class used to create and load SVG documents.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgDocument.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgDocument"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgDocument.GetElementById(System.String)">
+            <summary>
+            Retrieves the <see cref="T:Svg.SvgElement"/> with the specified ID.
+            </summary>
+            <param name="id">A <see cref="T:System.String"/> containing the ID of the element to find.</param>
+            <returns>An <see cref="T:Svg.SvgElement"/> of one exists with the specified ID; otherwise false.</returns>
+        </member>
+        <member name="M:Svg.SvgDocument.GetElementById``1(System.String)">
+            <summary>
+            Retrieves the <see cref="T:Svg.SvgElement"/> with the specified ID.
+            </summary>
+            <param name="id">A <see cref="T:System.String"/> containing the ID of the element to find.</param>
+            <returns>An <see cref="T:Svg.SvgElement"/> of one exists with the specified ID; otherwise false.</returns>
+        </member>
+        <member name="M:Svg.SvgDocument.Open(System.String)">
+            <summary>
+            Opens the document at the specified path and loads the SVG contents.
+            </summary>
+            <param name="path">A <see cref="T:System.String"/> containing the path of the file to open.</param>
+            <returns>An <see cref="T:Svg.SvgDocument"/> with the contents loaded.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">The document at the specified <paramref name="path"/> cannot be found.</exception>
+        </member>
+        <member name="M:Svg.SvgDocument.Open(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Opens the document at the specified path and loads the SVG contents.
+            </summary>
+            <param name="path">A <see cref="T:System.String"/> containing the path of the file to open.</param>
+            <param name="entities">A dictionary of custom entity definitions to be used when resolving XML entities within the document.</param>
+            <returns>An <see cref="T:Svg.SvgDocument"/> with the contents loaded.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">The document at the specified <paramref name="path"/> cannot be found.</exception>
+        </member>
+        <member name="M:Svg.SvgDocument.Open(System.IO.Stream)">
+            <summary>
+            Attempts to open an SVG document from the specified <see cref="T:System.IO.Stream"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> containing the SVG document to open.</param>
+        </member>
+        <member name="M:Svg.SvgDocument.Open(System.IO.Stream,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Opens an SVG document from the specified <see cref="T:System.IO.Stream"/> and adds the specified entities.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> containing the SVG document to open.</param>
+            <param name="entities">Custom entity definitions.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="stream"/> parameter cannot be <c>null</c>.</exception>
+        </member>
+        <member name="M:Svg.SvgDocument.Open(System.Xml.XmlDocument)">
+            <summary>
+            Opens an SVG document from the specified <see cref="T:System.Xml.XmlDocument"/>.
+            </summary>
+            <param name="document">The <see cref="T:System.Xml.XmlDocument"/> containing the SVG document XML.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="document"/> parameter cannot be <c>null</c>.</exception>
+        </member>
+        <member name="M:Svg.SvgDocument.Draw(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgDocument"/> to the specified <see cref="T:Svg.SvgRenderer"/>.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> to render the document with.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="renderer"/> parameter cannot be <c>null</c>.</exception>
+        </member>
+        <member name="M:Svg.SvgDocument.Draw(System.Drawing.Graphics)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgDocument"/> to the specified <see cref="T:System.Drawing.Graphics"/>.
+            </summary>
+            <param name="graphics">The <see cref="T:System.Drawing.Graphics"/> to be rendered to.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="graphics"/> parameter cannot be <c>null</c>.</exception>
+        </member>
+        <member name="M:Svg.SvgDocument.Draw">
+            <summary>
+            Renders the <see cref="T:Svg.SvgDocument"/> and returns the image as a <see cref="T:System.Drawing.Bitmap"/>.
+            </summary>
+            <returns>A <see cref="T:System.Drawing.Bitmap"/> containing the rendered document.</returns>
+        </member>
+        <member name="M:Svg.SvgDocument.Draw(System.Drawing.Bitmap)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgDocument"/> into a given Bitmap <see cref="T:System.Drawing.Bitmap"/>.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgDocument.IdManager">
+            <summary>
+            Gets an <see cref="T:Svg.SvgElementIdManager"/> for this document.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgDocument.Ppi">
+            <summary>
+            Gets or sets the Pixels Per Inch of the rendered image.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgPathBuilder.Parse(System.String)">
+            <summary>
+            Parses the specified string into a collection of path segments.
+            </summary>
+            <param name="path">A <see cref="T:System.String"/> containing path data.</param>
+        </member>
+        <member name="M:Svg.SvgPathBuilder.ToAbsolute(System.Single,System.Single,Svg.Pathing.SvgPathSegmentList,System.Boolean)">
+            <summary>
+            Creates point with absolute coorindates.
+            </summary>
+            <param name="x">Raw X-coordinate value.</param>
+            <param name="y">Raw Y-coordinate value.</param>
+            <param name="segments">Current path segments.</param>
+            <param name="isRelativeBoth"><b>true</b> if <paramref name="x"/> and <paramref name="y"/> contains relative coordinate values, otherwise <b>false</b>.</param>
+            <returns><see cref="T:System.Drawing.PointF"/> that contains absolute coordinates.</returns>
+        </member>
+        <member name="M:Svg.SvgPathBuilder.ToAbsolute(System.Single,System.Single,Svg.Pathing.SvgPathSegmentList,System.Boolean,System.Boolean)">
+            <summary>
+            Creates point with absolute coorindates.
+            </summary>
+            <param name="x">Raw X-coordinate value.</param>
+            <param name="y">Raw Y-coordinate value.</param>
+            <param name="segments">Current path segments.</param>
+            <param name="isRelativeX"><b>true</b> if <paramref name="x"/> contains relative coordinate value, otherwise <b>false</b>.</param>
+            <param name="isRelativeY"><b>true</b> if <paramref name="y"/> contains relative coordinate value, otherwise <b>false</b>.</param>
+            <returns><see cref="T:System.Drawing.PointF"/> that contains absolute coordinates.</returns>
+        </member>
+        <member name="M:Svg.SvgDtdResolver.GetEntity(System.Uri,System.String,System.Type)">
+            <summary>
+            Maps a URI to an object containing the actual resource.
+            </summary>
+            <param name="absoluteUri">The URI returned from <see cref="M:System.Xml.XmlResolver.ResolveUri(System.Uri,System.String)"/></param>
+            <param name="role">The current implementation does not use this parameter when resolving URIs. This is provided for future extensibility purposes. For example, this can be mapped to the xlink:role and used as an implementation specific argument in other scenarios.</param>
+            <param name="ofObjectToReturn">The type of object to return. The current implementation only returns System.IO.Stream objects.</param>
+            <returns>
+            A System.IO.Stream object or null if a type other than stream is specified.
+            </returns>
+            <exception cref="T:System.Xml.XmlException">
+            	<paramref name="ofObjectToReturn"/> is neither null nor a Stream type. </exception>
+            <exception cref="T:System.UriFormatException">The specified URI is not an absolute URI. </exception>
+            <exception cref="T:System.NullReferenceException">
+            	<paramref name="absoluteUri"/> is null. </exception>
+            <exception cref="T:System.Exception">There is a runtime error (for example, an interrupted server connection). </exception>
+        </member>
+        <member name="P:Svg.FilterEffects.SvgGaussianBlur.StdDeviation">
+            <summary>
+            Gets or sets the radius of the blur (only allows for one value - not the two specified in the SVG Spec)
+            </summary>
+        </member>
+        <member name="T:Svg.FilterEffects.SvgOffset">
+            <summary>
+            Note: this is not used in calculations to bitmap - used only to allow for svg xml output
+            </summary>
+        </member>
+        <member name="P:Svg.FilterEffects.SvgOffset.Dx">
+            <summary>
+            The amount to offset the input graphic along the x-axis. The offset amount is expressed in the coordinate system established by attribute ‘primitiveUnits’ on the ‘filter’ element.
+            If the attribute is not specified, then the effect is as if a value of 0 were specified.
+            Note: this is not used in calculations to bitmap - used only to allow for svg xml output
+            </summary>
+        </member>
+        <member name="P:Svg.FilterEffects.SvgOffset.Dy">
+            <summary>
+            The amount to offset the input graphic along the y-axis. The offset amount is expressed in the coordinate system established by attribute ‘primitiveUnits’ on the ‘filter’ element.
+            If the attribute is not specified, then the effect is as if a value of 0 were specified.
+            Note: this is not used in calculations to bitmap - used only to allow for svg xml output
+            </summary>
+        </member>
+        <member name="T:Svg.SvgAspectRatio">
+            <summary>
+            Description of SvgAspectRatio.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgElementFactory">
+            <summary>
+            Provides the methods required in order to parse and create <see cref="T:Svg.SvgElement"/> instances from XML.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgElementFactory.CreateDocument(System.Xml.XmlTextReader)">
+            <summary>
+            Creates an <see cref="T:Svg.SvgDocument"/> from the current node in the specified <see cref="T:System.Xml.XmlTextReader"/>.
+            </summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlTextReader"/> containing the node to parse into an <see cref="T:Svg.SvgDocument"/>.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="reader"/> parameter cannot be <c>null</c>.</exception>
+            <exception cref="T:System.InvalidOperationException">The CreateDocument method can only be used to parse root &lt;svg&gt; elements.</exception>
+        </member>
+        <member name="M:Svg.SvgElementFactory.CreateElement(System.Xml.XmlTextReader,Svg.SvgDocument)">
+            <summary>
+            Creates an <see cref="T:Svg.SvgElement"/> from the current node in the specified <see cref="T:System.Xml.XmlTextReader"/>.
+            </summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlTextReader"/> containing the node to parse into a subclass of <see cref="T:Svg.SvgElement"/>.</param>
+            <param name="document">The <see cref="T:Svg.SvgDocument"/> that the created element belongs to.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="reader"/> and <paramref name="document"/> parameters cannot be <c>null</c>.</exception>
+        </member>
+        <member name="P:Svg.SvgElementFactory.AvailableElements">
+            <summary>
+            Gets a list of available types that can be used when creating an <see cref="T:Svg.SvgElement"/>.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgElementFactory.ElementInfo">
+            <summary>
+            Contains information about a type inheriting from <see cref="T:Svg.SvgElement"/>.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgElementFactory.ElementInfo.#ctor(System.String,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgElementFactory.ElementInfo"/> struct.
+            </summary>
+            <param name="elementName">Name of the element.</param>
+            <param name="elementType">Type of the element.</param>
+        </member>
+        <member name="M:Svg.SvgElementFactory.ElementInfo.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgElementFactory.ElementInfo"/> class.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgElementFactory.ElementInfo.ElementName">
+            <summary>
+            Gets the SVG name of the <see cref="T:Svg.SvgElement"/>.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgElementFactory.ElementInfo.ElementType">
+            <summary>
+            Gets the <see cref="T:System.Type"/> of the <see cref="T:Svg.SvgElement"/> subclass.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgAttributeAttribute">
+            <summary>
+            Specifies the SVG attribute name of the associated property.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgAttributeAttribute.SVG_NAMESPACE">
+            <summary>
+            Gets a <see cref="T:System.String"/> containing the XLink namespace (http://www.w3.org/1999/xlink).
+            </summary>
+        </member>
+        <member name="M:Svg.SvgAttributeAttribute.Match(System.Object)">
+            <summary>
+            When overridden in a derived class, returns a value that indicates whether this instance equals a specified object.
+            </summary>
+            <param name="obj">An <see cref="T:System.Object"/> to compare with this instance of <see cref="T:System.Attribute"/>.</param>
+            <returns>
+            true if this instance equals <paramref name="obj"/>; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:Svg.SvgAttributeAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgAttributeAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgAttributeAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgAttributeAttribute"/> class with the specified attribute name.
+            </summary>
+            <param name="name">The name of the SVG attribute.</param>
+        </member>
+        <member name="M:Svg.SvgAttributeAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgAttributeAttribute"/> class with the specified SVG attribute name and namespace.
+            </summary>
+            <param name="name">The name of the SVG attribute.</param>
+            <param name="nameSpace">The namespace of the SVG attribute (e.g. http://www.w3.org/2000/svg).</param>
+        </member>
+        <member name="P:Svg.SvgAttributeAttribute.NamespaceAndName">
+            <summary>
+            Gets the name of the SVG attribute.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgAttributeAttribute.Name">
+            <summary>
+            Gets the name of the SVG attribute.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgAttributeAttribute.NameSpace">
+            <summary>
+            Gets the namespace of the SVG attribute.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgCircle">
+            <summary>
+            An SVG element to render circles to the document.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgCircle.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the circle to the specified <see cref="T:System.Drawing.Graphics"/> object.
+            </summary>
+            <param name="graphics">The graphics object.</param>
+        </member>
+        <member name="M:Svg.SvgCircle.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgCircle"/> class.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgCircle.Center">
+            <summary>
+            Gets the center point of the circle.
+            </summary>
+            <value>The center.</value>
+        </member>
+        <member name="P:Svg.SvgCircle.CenterX">
+            <summary>
+            Gets or sets the center X co-ordinate.
+            </summary>
+            <value>The center X.</value>
+        </member>
+        <member name="P:Svg.SvgCircle.CenterY">
+            <summary>
+            Gets or sets the center Y co-ordinate.
+            </summary>
+            <value>The center Y.</value>
+        </member>
+        <member name="P:Svg.SvgCircle.Radius">
+            <summary>
+            Gets or sets the radius of the circle.
+            </summary>
+            <value>The radius.</value>
+        </member>
+        <member name="P:Svg.SvgCircle.Bounds">
+            <summary>
+            Gets the bounds of the circle.
+            </summary>
+            <value>The rectangular bounds of the circle.</value>
+        </member>
+        <member name="P:Svg.SvgCircle.RequiresSmoothRendering">
+            <summary>
+            Gets a value indicating whether the circle requires anti-aliasing when being rendered.
+            </summary>
+            <value>
+            	<c>true</c> if the circle requires anti-aliasing; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Svg.SvgCircle.Path">
+            <summary>
+            Gets the <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> representing this element.
+            </summary>
+        </member>
+        <member name="T:Svg.Transforms.SvgShear">
+            <summary>
+            The class which applies the specified shear vector to this Matrix.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgTextAnchor">
+            <summary>
+            Text anchor is used to align (start-, middle- or end-alignment) a string of text relative to a given point.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgTextAnchor.Start">
+            <summary>
+            The rendered characters are aligned such that the start of the text string is at the initial current text position.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgTextAnchor.Middle">
+            <summary>
+            The rendered characters are aligned such that the middle of the text string is at the current text position.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgTextAnchor.End">
+            <summary>
+            The rendered characters are aligned such that the end of the text string is at the initial current text position.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgTextReader.MoveToNextAttribute">
+            <summary>
+            Moves to the next attribute.
+            </summary>
+            <returns>
+            true if there is a next attribute; false if there are no more attributes.
+            </returns>
+        </member>
+        <member name="M:Svg.SvgTextReader.Read">
+            <summary>
+            Reads the next node from the stream.
+            </summary>
+            <returns>
+            true if the next node was read successfully; false if there are no more nodes to read.
+            </returns>
+            <exception cref="T:System.Xml.XmlException">An error occurred while parsing the XML. </exception>
+        </member>
+        <member name="M:Svg.SvgTextReader.ResolveEntity">
+            <summary>
+            Resolves the entity reference for EntityReference nodes.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgTextReader.Value">
+            <summary>
+            Gets the text value of the current node.
+            </summary>
+            <value></value>
+            <returns>The value returned depends on the <see cref="P:System.Xml.XmlTextReader.NodeType"/> of the node. The following table lists node types that have a value to return. All other node types return String.Empty.Node Type Value AttributeThe value of the attribute. CDATAThe content of the CDATA section. CommentThe content of the comment. DocumentTypeThe internal subset. ProcessingInstructionThe entire content, excluding the target. SignificantWhitespaceThe white space within an xml:space= 'preserve' scope. TextThe content of the text node. WhitespaceThe white space between markup. XmlDeclarationThe content of the declaration. </returns>
+        </member>
+        <member name="P:Svg.SvgTextReader.LocalName">
+            <summary>
+            Gets the local name of the current node.
+            </summary>
+            <value></value>
+            <returns>The name of the current node with the prefix removed. For example, LocalName is book for the element &lt;bk:book&gt;.For node types that do not have a name (like Text, Comment, and so on), this property returns String.Empty.</returns>
+        </member>
+        <member name="T:Svg.SvgElementCollection">
+            <summary>
+            Represents a collection of <see cref="T:Svg.SvgElement"/>s.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgElementCollection.#ctor(Svg.SvgElement)">
+            <summary>
+            Initialises a new instance of an <see cref="T:Svg.SvgElementCollection"/> class.
+            </summary>
+            <param name="owner">The owner <see cref="T:Svg.SvgElement"/> of the collection.</param>
+        </member>
+        <member name="M:Svg.SvgElementCollection.IndexOf(Svg.SvgElement)">
+            <summary>
+            Returns the index of the specified <see cref="T:Svg.SvgElement"/> in the collection.
+            </summary>
+            <param name="item">The <see cref="T:Svg.SvgElement"/> to search for.</param>
+            <returns>The index of the element if it is present; otherwise -1.</returns>
+        </member>
+        <member name="M:Svg.SvgElementCollection.Insert(System.Int32,Svg.SvgElement)">
+            <summary>
+            Inserts the given <see cref="T:Svg.SvgElement"/> to the collection at the specified index.
+            </summary>
+            <param name="index">The index that the <paramref name="item"/> should be added at.</param>
+            <param name="item">The <see cref="T:Svg.SvgElement"/> to be added.</param>
+        </member>
+        <member name="M:Svg.SvgElementCollection.FindSvgElementsOf``1">
+            <summary>
+            expensive recursive search for nodes of type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Svg.SvgElementCollection.FindSvgElementOf``1">
+            <summary>
+            expensive recursive search for first node of type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Svg.SvgRadialGradientServer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgRadialGradientServer"/> class.
+            </summary>
+        </member>
+        <member name="T:Svg.FilterEffects.SvgFilter">
+            <summary>
+            A filter effect consists of a series of graphics operations that are applied to a given source graphic to produce a modified graphical result.
+            </summary>
+        </member>
+        <member name="M:Svg.FilterEffects.SvgFilter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.FilterEffects.SvgFilter"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.FilterEffects.SvgFilter.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:Svg.SvgRenderer"/> object.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="M:Svg.FilterEffects.SvgFilter.Clone">
+            <summary>
+            Creates a new object that is a copy of the current instance.
+            </summary>
+            <returns>
+            A new object that is a copy of this instance.
+            </returns>
+        </member>
+        <member name="P:Svg.FilterEffects.SvgFilter.X">
+            <summary>
+            Gets or sets the position where the left point of the filter.
+            </summary>
+        </member>
+        <member name="P:Svg.FilterEffects.SvgFilter.Y">
+            <summary>
+            Gets or sets the position where the top point of the filter.
+            </summary>
+        </member>
+        <member name="P:Svg.FilterEffects.SvgFilter.Width">
+            <summary>
+            Gets or sets the width of the resulting filter graphic.
+            </summary>
+        </member>
+        <member name="P:Svg.FilterEffects.SvgFilter.Height">
+            <summary>
+            Gets or sets the height of the resulting filter graphic.
+            </summary>
+        </member>
+        <member name="P:Svg.FilterEffects.SvgFilter.ColorInterpolationFilters">
+            <summary>
+            Gets or sets the color-interpolation-filters of the resulting filter graphic.
+            NOT currently mapped through to bitmap
+            </summary>
+        </member>
+        <member name="T:Svg.FilterEffects.SvgColourMatrix">
+            <summary>
+            Note: this is not used in calculations to bitmap - used only to allow for svg xml output
+            </summary>
+        </member>
+        <member name="P:Svg.FilterEffects.SvgColourMatrix.Type">
+            <summary>
+            matrix | saturate | hueRotate | luminanceToAlpha
+            Indicates the type of matrix operation. The keyword 'matrix' indicates that a full 5x4 matrix of values will be provided. The other keywords represent convenience shortcuts to allow commonly used color operations to be performed without specifying a complete matrix. If attribute ‘type’ is not specified, then the effect is as if a value of matrix were specified.
+            Note: this is not used in calculations to bitmap - used only to allow for svg xml output
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Svg.FilterEffects.SvgColourMatrix.Values" -->
+        <member name="T:Svg.SvgEllipse">
+            <summary>
+            Represents and SVG ellipse element.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgEllipse.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:System.Drawing.Graphics"/> object.
+            </summary>
+            <param name="graphics">The <see cref="T:System.Drawing.Graphics"/> object to render to.</param>
+        </member>
+        <member name="M:Svg.SvgEllipse.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgEllipse"/> class.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgEllipse.RequiresSmoothRendering">
+            <summary>
+            Gets or sets a value to determine if anti-aliasing should occur when the element is being rendered.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Svg.SvgEllipse.Bounds">
+            <summary>
+            Gets the bounds of the element.
+            </summary>
+            <value>The bounds.</value>
+        </member>
+        <member name="P:Svg.SvgEllipse.Path">
+            <summary>
+            Gets the <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> for this element.
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Svg.SvgAttributeCollection">
+            <summary>
+            A collection of Scalable Vector Attributes that can be inherited from the owner elements ancestors.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgAttributeCollection.#ctor(Svg.SvgElement)">
+            <summary>
+            Initialises a new instance of a <see cref="T:Svg.SvgAttributeCollection"/> with the given <see cref="T:Svg.SvgElement"/> as the owner.
+            </summary>
+            <param name="owner">The <see cref="T:Svg.SvgElement"/> owner of the collection.</param>
+        </member>
+        <member name="M:Svg.SvgAttributeCollection.GetAttribute``1(System.String)">
+            <summary>
+            Gets the attribute with the specified name.
+            </summary>
+            <typeparam name="TAttributeType">The type of the attribute value.</typeparam>
+            <param name="attributeName">A <see cref="T:System.String"/> containing the name of the attribute.</param>
+            <returns>The attribute value if available; otherwise the default value of <typeparamref name="TAttributeType"/>.</returns>
+        </member>
+        <member name="M:Svg.SvgAttributeCollection.GetAttribute``1(System.String,``0)">
+            <summary>
+            Gets the attribute with the specified name.
+            </summary>
+            <typeparam name="T">The type of the attribute value.</typeparam>
+            <param name="attributeName">A <see cref="T:System.String"/> containing the name of the attribute.</param>
+            <param name="defaultValue">The value to return if a value hasn't already been specified.</param>
+            <returns>The attribute value if available; otherwise the default value of <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:Svg.SvgAttributeCollection.GetInheritedAttribute``1(System.String)">
+            <summary>
+            Gets the attribute with the specified name and inherits from ancestors if there is no attribute set.
+            </summary>
+            <typeparam name="TAttributeType">The type of the attribute value.</typeparam>
+            <param name="attributeName">A <see cref="T:System.String"/> containing the name of the attribute.</param>
+            <returns>The attribute value if available; otherwise the ancestors value for the same attribute; otherwise the default value of <typeparamref name="TAttributeType"/>.</returns>
+        </member>
+        <member name="P:Svg.SvgAttributeCollection.Item(System.String)">
+            <summary>
+            Gets the attribute with the specified name.
+            </summary>
+            <param name="attributeName">A <see cref="T:System.String"/> containing the attribute name.</param>
+            <returns>The attribute value associated with the specified name; If there is no attribute the parent's value will be inherited.</returns>
+        </member>
+        <member name="T:Svg.SvgClipPath">
+            <summary>
+            Defines a path that can be used by other <see cref="T:Svg.ISvgClipable"/> elements.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgClipPath.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgClipPath"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgClipPath.GetClipRegion(Svg.SvgVisualElement)">
+            <summary>
+            Gets this <see cref="T:Svg.SvgClipPath"/>'s region to be used as a clipping region.
+            </summary>
+            <returns>A new <see cref="T:System.Drawing.Region"/> containing the <see cref="T:System.Drawing.Region"/> to be used for clipping.</returns>
+        </member>
+        <member name="M:Svg.SvgClipPath.CombinePaths(System.Drawing.Drawing2D.GraphicsPath,Svg.SvgElement)">
+            <summary>
+            
+            </summary>
+            <param name="region"></param>
+            <param name="element"></param>
+        </member>
+        <member name="M:Svg.SvgClipPath.AddElement(Svg.SvgElement,System.Int32)">
+            <summary>
+            Called by the underlying <see cref="T:Svg.SvgElement"/> when an element has been added to the
+            <see cref="!:Children"/> collection.
+            </summary>
+            <param name="child">The <see cref="T:Svg.SvgElement"/> that has been added.</param>
+            <param name="index">An <see cref="T:System.Int32"/> representing the index where the element was added to the collection.</param>
+        </member>
+        <member name="M:Svg.SvgClipPath.RemoveElement(Svg.SvgElement)">
+            <summary>
+            Called by the underlying <see cref="T:Svg.SvgElement"/> when an element has been removed from the
+            <see cref="!:Children"/> collection.
+            </summary>
+            <param name="child">The <see cref="T:Svg.SvgElement"/> that has been removed.</param>
+        </member>
+        <member name="M:Svg.SvgClipPath.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:Svg.SvgRenderer"/> object.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="P:Svg.SvgClipPath.ClipPathUnits">
+            <summary>
+            Specifies the coordinate system for the clipping path.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgPolygon">
+            <summary>
+            SvgPolygon defines a closed shape consisting of a set of connected straight line segments.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgPolygon.Points">
+            <summary>
+            The points that make up the SvgPolygon
+            </summary>
+        </member>
+        <member name="T:Svg.Transforms.SvgSkew">
+            <summary>
+            The class which applies the specified skew vector to this Matrix.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgUnitCollection">
+            <summary>
+            Represents a list of <see cref="!:SvgUnits"/>.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgUnitCollectionConverter">
+            <summary>
+            A class to convert string into <see cref="T:Svg.SvgUnitCollection"/> instances.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgUnitCollectionConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts the given object to the type of this converter, using the specified context and culture information.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="culture">The <see cref="T:System.Globalization.CultureInfo"/> to use as the current culture.</param>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <returns>
+            An <see cref="T:System.Object"/> that represents the converted value.
+            </returns>
+            <exception cref="T:System.NotSupportedException">The conversion cannot be performed. </exception>
+        </member>
+        <member name="T:Svg.SvgPolyline">
+            <summary>
+            SvgPolyline defines a set of connected straight line segments. Typically, <see cref="T:Svg.SvgPolyline"/> defines open shapes.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgCoordinateUnits">
+            <summary>
+            Defines the various coordinate units certain SVG elements may use.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgCoordinateUnits.UserSpaceOnUse">
+            <summary>
+            Indicates that the coordinate system of the entire document is to be used.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgCoordinateUnits.ObjectBoundingBox">
+            <summary>
+            Indicates that the coordinate system of the owner element is to be used.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgRectangle">
+            <summary>
+            Represents and SVG rectangle that could also have reounded edges.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgRectangle.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgRectangle"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgRectangle.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:System.Drawing.Graphics"/> object.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgRectangle.Location">
+            <summary>
+            Gets an <see cref="T:Svg.SvgPoint"/> representing the top left point of the rectangle.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgRectangle.X">
+            <summary>
+            Gets or sets the position where the left point of the rectangle should start.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgRectangle.Y">
+            <summary>
+            Gets or sets the position where the top point of the rectangle should start.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgRectangle.Width">
+            <summary>
+            Gets or sets the width of the rectangle.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgRectangle.Height">
+            <summary>
+            Gets or sets the height of the rectangle.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgRectangle.CornerRadiusX">
+            <summary>
+            Gets or sets the X-radius of the rounded edges of this rectangle.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgRectangle.CornerRadiusY">
+            <summary>
+            Gets or sets the Y-radius of the rounded edges of this rectangle.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgRectangle.RequiresSmoothRendering">
+            <summary>
+            Gets or sets a value to determine if anti-aliasing should occur when the element is being rendered.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgRectangle.Bounds">
+            <summary>
+            Gets the bounds of the element.
+            </summary>
+            <value>The bounds.</value>
+        </member>
+        <member name="P:Svg.SvgRectangle.Path">
+            <summary>
+            Gets the <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> for this element.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgViewBox">
+            <summary>
+            It is often desirable to specify that a given set of graphics stretch to fit a particular container element. The viewBox attribute provides this capability.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgViewBox.op_Implicit(Svg.SvgViewBox)~System.Drawing.RectangleF">
+            <summary>
+            Performs an implicit conversion from <see cref="T:Svg.SvgViewBox"/> to <see cref="T:System.Drawing.RectangleF"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Svg.SvgViewBox.op_Implicit(System.Drawing.RectangleF)~Svg.SvgViewBox">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.Drawing.RectangleF"/> to <see cref="T:Svg.SvgViewBox"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Svg.SvgViewBox.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgViewBox"/> struct.
+            </summary>
+            <param name="minX">The min X.</param>
+            <param name="minY">The min Y.</param>
+            <param name="width">The width.</param>
+            <param name="height">The height.</param>
+        </member>
+        <member name="P:Svg.SvgViewBox.MinX">
+            <summary>
+            Gets or sets the position where the viewport starts horizontally.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgViewBox.MinY">
+            <summary>
+            Gets or sets the position where the viewport starts vertically.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgViewBox.Width">
+            <summary>
+            Gets or sets the width of the viewport.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgViewBox.Height">
+            <summary>
+            Gets or sets the height of the viewport.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgViewBoxConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts the given object to the type of this converter, using the specified context and culture information.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="culture">The <see cref="T:System.Globalization.CultureInfo"/> to use as the current culture.</param>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <returns>
+            An <see cref="T:System.Object"/> that represents the converted value.
+            </returns>
+            <exception cref="T:System.NotSupportedException">The conversion cannot be performed. </exception>
+        </member>
+        <member name="M:Svg.Transforms.SvgTransformConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts the given object to the type of this converter, using the specified context and culture information.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="culture">The <see cref="T:System.Globalization.CultureInfo"/> to use as the current culture.</param>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <returns>
+            An <see cref="T:System.Object"/> that represents the converted value.
+            </returns>
+            <exception cref="T:System.NotSupportedException">The conversion cannot be performed. </exception>
+        </member>
+        <member name="T:Svg.SvgGroup">
+            <summary>
+            An element used to group SVG shapes.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgGroup.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:System.Drawing.Graphics"/> object.
+            </summary>
+            <param name="graphics">The <see cref="T:System.Drawing.Graphics"/> object to render to.</param>
+        </member>
+        <member name="P:Svg.SvgGroup.Fill">
+            <summary>
+            Gets or sets the fill.
+            </summary>
+            <value>The fill.</value>
+        </member>
+        <member name="P:Svg.SvgGroup.Path">
+            <summary>
+            Gets the <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> for this element.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Svg.SvgGroup.Bounds">
+            <summary>
+            Gets the bounds of the element.
+            </summary>
+            <value>The bounds.</value>
+        </member>
+        <member name="P:Svg.SvgTextSpan.X">
+            <summary>
+            Gets or sets the X.
+            </summary>
+            <value>The X.</value>
+        </member>
+        <member name="P:Svg.SvgTextSpan.Y">
+            <summary>
+            Gets or sets the X.
+            </summary>
+            <value>The X.</value>
+        </member>
+        <member name="P:Svg.SvgTextSpan.DX">
+            <summary>
+            Gets or sets the deltaX from the containing text.
+            </summary>
+            <value>The dX.</value>
+        </member>
+        <member name="P:Svg.SvgTextSpan.DY">
+            <summary>
+            Gets or sets the deltaY from the containing text.
+            </summary>
+            <value>The dY.</value>
+        </member>
+        <member name="P:Svg.SvgTextSpan.Text">
+            <summary>
+            Gets or sets the text to be rendered.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgText">
+            <summary>
+            The <see cref="T:Svg.SvgText"/> element defines a graphics element consisting of text.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgText.#cctor">
+            <summary>
+            Initializes the <see cref="T:Svg.SvgText"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgText.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgText"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgText.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgText"/> class.
+            </summary>
+            <param name="text">The text.</param>
+        </member>
+        <member name="M:Svg.SvgText.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="P:Svg.SvgText.Text">
+            <summary>
+            Gets or sets the text to be rendered.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgText.TextAnchor">
+            <summary>
+            Gets or sets the text anchor.
+            </summary>
+            <value>The text anchor.</value>
+        </member>
+        <member name="P:Svg.SvgText.X">
+            <summary>
+            Gets or sets the X.
+            </summary>
+            <value>The X.</value>
+        </member>
+        <member name="P:Svg.SvgText.Y">
+            <summary>
+            Gets or sets the Y.
+            </summary>
+            <value>The Y.</value>
+        </member>
+        <member name="P:Svg.SvgText.LetterSpacing">
+            <summary>
+            Specifies spacing behavior between text characters.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgText.WordSpacing">
+            <summary>
+            Specifies spacing behavior between words.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgText.FontFamily">
+            <summary>
+            Indicates which font family is to be used to render the text.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgText.FontSize">
+            <summary>
+            Refers to the size of the font from baseline to baseline when multiple lines of text are set solid in a multiline layout environment.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgText.FontWeight">
+            <summary>
+            Refers to the boldness of the font.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgText.Font">
+            <summary>
+            Set all font information.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgText.Fill">
+            <summary>
+            Gets or sets the fill.
+            </summary>
+            <remarks>
+            <para>Unlike other <see cref="!:SvgGraphicsElement"/>s, <see cref="T:Svg.SvgText"/> has a default fill of black rather than transparent.</para>
+            </remarks>
+            <value>The fill.</value>
+        </member>
+        <member name="P:Svg.SvgText.RequiresSmoothRendering">
+            <summary>
+            Gets or sets a value to determine if anti-aliasing should occur when the element is being rendered.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Svg.SvgText.Bounds">
+            <summary>
+            Gets the bounds of the element.
+            </summary>
+            <value>The bounds.</value>
+        </member>
+        <member name="P:Svg.SvgText.Path">
+            <summary>
+            Gets the <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> for this element.
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Svg.SvgUnit">
+            <summary>
+            Represents a unit in an Scalable Vector Graphics document.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnit.Empty">
+            <summary>
+            Gets and empty <see cref="T:Svg.SvgUnit"/>.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnit.None">
+            <summary>
+            Gets an <see cref="T:Svg.SvgUnit"/> with a value of none.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgUnit.ToDeviceValue">
+            <summary>
+            Converts the current unit to one that can be used at render time.
+            </summary>
+            <returns>The representation of the current unit in a device value (usually pixels).</returns>
+        </member>
+        <member name="M:Svg.SvgUnit.ToDeviceValue(Svg.ISvgStylable)">
+            <summary>
+            Converts the current unit to one that can be used at render time.
+            </summary>
+            <returns>The representation of the current unit in a device value (usually pixels).</returns>
+        </member>
+        <member name="M:Svg.SvgUnit.ToDeviceValue(Svg.ISvgStylable,System.Boolean)">
+            <summary>
+            Converts the current unit to one that can be used at render time.
+            </summary>
+            <returns>The representation of the current unit in a device value (usually pixels).</returns>
+        </member>
+        <member name="M:Svg.SvgUnit.ToPercentage">
+            <summary>
+            Converts the current unit to a percentage, if applicable.
+            </summary>
+            <returns>An <see cref="T:Svg.SvgUnit"/> of type <see cref="!:SvgUnitType.Perscentage"/>.</returns>
+        </member>
+        <member name="M:Svg.SvgUnit.Equals(System.Object)">
+            <summary>
+            Indicates whether this instance and a specified object are equal.
+            </summary>
+            <param name="obj">Another object to compare to.</param>
+            <returns>
+            true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:Svg.SvgUnit.op_Implicit(Svg.SvgUnit)~System.Single">
+            <summary>
+            Performs an implicit conversion from <see cref="T:Svg.SvgUnit"/> to <see cref="T:System.Single"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Svg.SvgUnit.op_Implicit(System.Single)~Svg.SvgUnit">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.Single"/> to <see cref="T:Svg.SvgUnit"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Svg.SvgUnit.#ctor(Svg.SvgUnitType,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgUnit"/> struct.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Svg.SvgUnit.#ctor(System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgUnit"/> struct.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="P:Svg.SvgUnit.IsEmpty">
+            <summary>
+            Gets a value to determine whether the unit is empty.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgUnit.IsNone">
+            <summary>
+            Gets whether this unit is none.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgUnit.Value">
+            <summary>
+            Gets the value of the unit.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgUnit.Type">
+            <summary>
+            Gets the <see cref="T:Svg.SvgUnitType"/> of unit.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgUnitType">
+            <summary>
+            Defines the various types of unit an <see cref="T:Svg.SvgUnit"/> can be.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnitType.None">
+            <summary>
+            Indicates that the unit holds no value.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnitType.Pixel">
+            <summary>
+            Indicates that the unit is in pixels.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnitType.Em">
+            <summary>
+            Indicates that the unit is equal to the pt size of the current font.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnitType.Percentage">
+            <summary>
+            Indicates that the unit is a percentage.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnitType.User">
+            <summary>
+            Indicates that the unit has no unit identifier and is a value in the current user coordinate system.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnitType.Inch">
+            <summary>
+            Indicates the the unit is in inches.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnitType.Centimeter">
+            <summary>
+            Indicates that the unit is in centimeters.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnitType.Millimeter">
+            <summary>
+            Indicates that the unit is in millimeters.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnitType.Pica">
+            <summary>
+            Indicates that the unit is in picas.
+            </summary>
+        </member>
+        <member name="F:Svg.SvgUnitType.Point">
+            <summary>
+            Indicates that the unit is in points, the smallest unit of measure, being a subdivision of the larger <see cref="F:Svg.SvgUnitType.Pica"/>. There are 12 points in the <see cref="F:Svg.SvgUnitType.Pica"/>.
+            </summary>
+        </member>
+        <member name="T:Svg.SvgElementIdManager">
+            <summary>
+            Provides methods to ensure element ID's are valid and unique.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgElementIdManager.GetElementById(System.String)">
+            <summary>
+            Retrieves the <see cref="T:Svg.SvgElement"/> with the specified ID.
+            </summary>
+            <param name="id">A <see cref="T:System.String"/> containing the ID of the element to find.</param>
+            <returns>An <see cref="T:Svg.SvgElement"/> of one exists with the specified ID; otherwise false.</returns>
+        </member>
+        <member name="M:Svg.SvgElementIdManager.Add(Svg.SvgElement)">
+            <summary>
+            Adds the specified <see cref="T:Svg.SvgElement"/> for ID management.
+            </summary>
+            <param name="element">The <see cref="T:Svg.SvgElement"/> to be managed.</param>
+        </member>
+        <member name="M:Svg.SvgElementIdManager.Remove(Svg.SvgElement)">
+            <summary>
+            Removed the specified <see cref="T:Svg.SvgElement"/> from ID management.
+            </summary>
+            <param name="element">The <see cref="T:Svg.SvgElement"/> to be removed from ID management.</param>
+        </member>
+        <member name="M:Svg.SvgElementIdManager.EnsureValidId(System.String)">
+            <summary>
+            Ensures that the specified ID is valid within the containing <see cref="T:Svg.SvgDocument"/>.
+            </summary>
+            <param name="id">A <see cref="T:System.String"/> containing the ID to validate.</param>
+            <exception cref="T:Svg.SvgException">
+            <para>The ID cannot start with a digit.</para>
+            <para>An element with the same ID already exists within the containing <see cref="T:Svg.SvgDocument"/>.</para>
+            </exception>
+        </member>
+        <member name="M:Svg.SvgElementIdManager.#ctor(Svg.SvgDocument)">
+            <summary>
+            Initialises a new instance of an <see cref="T:Svg.SvgElementIdManager"/>.
+            </summary>
+            <param name="document">The <see cref="T:Svg.SvgDocument"/> containing the <see cref="T:Svg.SvgElement"/>s to manage.</param>
+        </member>
+        <member name="T:Svg.SvgColourConverter">
+            <summary>
+            Converts string representations of colours into <see cref="T:System.Drawing.Color"/> objects.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgColourConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts the given object to the converter's native type.
+            </summary>
+            <param name="context">A <see cref="T:System.ComponentModel.TypeDescriptor"/> that provides a format context. You can use this object to get additional information about the environment from which this converter is being invoked.</param>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/> that specifies the culture to represent the color.</param>
+            <param name="value">The object to convert.</param>
+            <returns>
+            An <see cref="T:System.Object"/> representing the converted value.
+            </returns>
+            <exception cref="T:System.ArgumentException">The conversion cannot be performed.</exception>
+            <PermissionSet>
+            	<IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/>
+            </PermissionSet>
+        </member>
+        <member name="T:Svg.SvgDefinitionList">
+            <summary>
+            Represents a list of re-usable SVG components.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgDefinitionList.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgDefinitionList"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgDefinitionList.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:Svg.SvgRenderer"/> object.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="T:Svg.SvgDocumentMetadata">
+            <summary>
+            Represents a list of re-usable SVG components.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgDocumentMetadata.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgDocumentMetadata"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgDocumentMetadata.Render(Svg.SvgRenderer)">
+            <summary>
+            Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:Svg.SvgRenderer"/> object.
+            </summary>
+            <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> object to render to.</param>
+        </member>
+        <member name="T:Svg.Transforms.SvgMatrix">
+            <summary>
+            The class which applies custom transform to this Matrix (Required for projects created by the Inkscape).
+            </summary>
+        </member>
+        <member name="T:Svg.SvgGradientStop">
+            <summary>
+            Represents a colour stop in a gradient.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgGradientStop.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgGradientStop"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgGradientStop.#ctor(Svg.SvgUnit,System.Drawing.Color)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgGradientStop"/> class.
+            </summary>
+            <param name="offset">The offset.</param>
+            <param name="colour">The colour.</param>
+        </member>
+        <member name="P:Svg.SvgGradientStop.Offset">
+            <summary>
+            Gets or sets the offset, i.e. where the stop begins from the beginning, of the gradient stop.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgGradientStop.Colour">
+            <summary>
+            Gets or sets the colour of the gradient stop.
+            </summary>
+        </member>
+        <member name="P:Svg.SvgGradientStop.Opacity">
+            <summary>
+            Gets or sets the opacity of the gradient stop (0-1).
+            </summary>
+        </member>
+        <member name="M:Svg.SvgRenderer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Svg.SvgRenderer"/> class.
+            </summary>
+        </member>
+        <member name="M:Svg.SvgRenderer.FromImage(System.Drawing.Image)">
+            <summary>
+            Creates a new <see cref="T:Svg.SvgRenderer"/> from the specified <see cref="T:System.Drawing.Image"/>.
+            </summary>
+            <param name="image"><see cref="T:System.Drawing.Image"/> from which to create the new <see cref="T:Svg.SvgRenderer"/>.</param>
+        </member>
+        <member name="M:Svg.SvgRenderer.FromGraphics(System.Drawing.Graphics)">
+            <summary>
+            Creates a new <see cref="T:Svg.SvgRenderer"/> from the specified <see cref="T:System.Drawing.Graphics"/>.
+            </summary>
+            <param name="graphics">The <see cref="T:System.Drawing.Graphics"/> to create the renderer from.</param>
+        </member>
+    </members>
+</doc>
