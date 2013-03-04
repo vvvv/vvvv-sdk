@@ -605,10 +605,12 @@ namespace VVVV.Nodes.Vlc
 				//if (lockCalled != unlockCalled) Log( LogType.Error, (parent.IsFrontMediaRenderer(this) ? "FRONT " : "BACK ") + "(lock/unlock=" + lockCalled  + "/" + unlockCalled + ")" );
 	
 				try {
-					currentFrame++;
-					
+                    if ( currPlayIn && (preloadingStatus == STATUS_PLAYING || preloadingStatus == STATUS_NEWFILE) ) {
+                        currentFrame++;
+                    }
+
 					lockCalled++;
-					pixelPlane = pixelPlanes.GetBackBuffer();
+					pixelPlane = pixelPlanes.BackBuffer;
 					//writePixelPlane;
 					//pixelPlane = writeMemoryTexture.GetSurfaceLevel(0).LockRectangle(0, LockFlags.None).Data.DataPointer;
 					//pixelPlane = writeMemoryTexture.LockRectangle(0, LockFlags.None).Data.DataPointer;
@@ -1294,7 +1296,7 @@ namespace VVVV.Nodes.Vlc
 					}
 	
 	
-					if (parent.IsFrontMediaRenderer(this) && preloadingStatus == STATUS_PLAYING) {
+					if (parent.IsFrontMediaRenderer(this) && ( preloadingStatus == STATUS_PLAYING ) ) {
 	
 						//Log( LogType.Debug, "STATUS_PLAYING" );
 						try {
@@ -1373,7 +1375,9 @@ namespace VVVV.Nodes.Vlc
 			private void UpdateParent(bool active)
 			{
 				try {
-					if (active && preloadingStatus == STATUS_PLAYING) {
+					//if (active) Log( LogType.Debug, "current status = " + StatusToString(preloadingStatus) );
+					
+					if (active && ( preloadingStatus == STATUS_PLAYING || preloadingStatus == STATUS_READY) ) {
 						if (mediaPlayerBusyMutex.WaitOne(0)) {
 							try {
 								libvlc_state_t mediaPlayerState = LibVlcMethods.libvlc_media_player_get_state(mediaPlayer);
@@ -1381,15 +1385,18 @@ namespace VVVV.Nodes.Vlc
 								if ( mediaPlayerState == libvlc_state_t.libvlc_Playing || mediaPlayerState == libvlc_state_t.libvlc_Paused || mediaPlayerState == libvlc_state_t.libvlc_Ended ) {
 	
 									try {
-										if ( videoLength == 0 ) {
-											//videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_player_get_length(mediaPlayer) ) / 1000.0f;
-											videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_get_duration( media ) ) / 1000.0f;
-										}	
+										if ( videoLength <= 0 ) {
+                                            long duration = LibVlcMethods.libvlc_media_get_duration(media);
+                                            if (duration >= 0) {
+                                                //videoLength = Convert.ToSingle( LibVlcMethods.libvlc_media_player_get_length(mediaPlayer) ) / 1000.0f;
+                                                videoLength = Convert.ToSingle(duration) / 1000.0f;
+                                            }
+										}
 										videoFps = LibVlcMethods.libvlc_media_player_get_fps( mediaPlayer );
 										float absolutePosition;
 										if ( videoFps == 0 ) {
 											videoFps = -1;
-										//float relativePosition = currentFrame / videoFps / ( (float)LibVlcMethods.libvlc_media_player_get_time(mediaPlayer) / 1000 ); //LibVlcMethods.libvlc_media_player_get_position(mediaPlayer);
+											//float relativePosition = currentFrame / videoFps / ( (float)LibVlcMethods.libvlc_media_player_get_time(mediaPlayer) / 1000 ); //LibVlcMethods.libvlc_media_player_get_position(mediaPlayer);
 											absolutePosition = Convert.ToSingle( LibVlcMethods.libvlc_media_player_get_time(mediaPlayer) ) / 1000;
 										}
 										else {
@@ -1583,18 +1590,18 @@ namespace VVVV.Nodes.Vlc
 			unsafe private void UpdateOutput_TextureInfo()
 			{
 	//				if ( parent.currentFillTextureFunction == parent.FillTexure || parent.currentFillTextureFunction == parent.Rotate180FillTexure ) {
-				parent.FWidthOut[GetSlice()] = GetVideoWidth();
-				parent.FHeightOut[GetSlice()] = GetVideoHeight();
-				parent.FTextureAspectRatioOut[GetSlice()] = (float)GetVideoWidth() / (float)GetVideoHeight();
+				parent.FWidthOut[Slice] = VideoWidth;
+				parent.FHeightOut[Slice] = VideoHeight;
+				parent.FTextureAspectRatioOut[Slice] = (float)VideoWidth / (float)VideoHeight;
 				//TODO
-				parent.FPixelAspectRatioOut[GetSlice()] = 1f;
+				parent.FPixelAspectRatioOut[Slice] = 1f;
 	//				}
 	//				else if ( parent.currentFillTextureFunction == parent.RotateLeftFillTexure || parent.currentFillTextureFunction == parent.RotateRightFillTexure ) {
-	//					parent.FWidthOut[GetSlice()] = GetVideoHeight();
-	//					parent.FHeightOut[GetSlice()] = GetVideoWidth();
-	//					parent.FTextureAspectRatioOut[GetSlice()] = (float)GetVideoHeight() / (float)GetVideoWidth();
+	//					parent.FWidthOut[Slice] = VideoHeight;
+	//					parent.FHeightOut[Slice] = VideoWidth;
+	//					parent.FTextureAspectRatioOut[Slice] = (float)VideoHeight / (float)VideoWidth;
 	//					//TODO
-	//					parent.FPixelAspectRatioOut[GetSlice()] = 1.0F;
+	//					parent.FPixelAspectRatioOut[Slice] = 1.0F;
 	//				}
 			}
 	
@@ -1704,7 +1711,7 @@ namespace VVVV.Nodes.Vlc
 					locked = pixelPlanes.LockBackBufferForWriting( 3000 );
 					
 					if ( locked ) {
-						IntPtr pixelPlane = pixelPlanes.GetBackBuffer();
+						IntPtr pixelPlane = pixelPlanes.BackBuffer;
 						
 						//readPixelPlane
 						//copy to memory buffer (slow)
@@ -1771,23 +1778,19 @@ namespace VVVV.Nodes.Vlc
 				return active ? parent.FFileNameIn : parent.FNextFileNameIn;
 			}
 	
-			public int GetVideoWidth()
-			{
-				return videoWidth;
+			public int VideoWidth {
+				get { return videoWidth; }
 			}
-			public int GetVideoHeight()
-			{
-				return videoHeight;
+			public int VideoHeight {
+				get { return videoHeight; }
 			}
 	
-			public int GetSlice()
-			{
-				return slice;
+			public int Slice {
+				get { return slice; }
 			}
 	
-			public DoubleMemoryBuffer GetDoubleMemoryBuffer()
-			{
-				return pixelPlanes;
+			public DoubleMemoryBuffer DoubleMemoryBuffer {
+				get { return pixelPlanes; }
 			}
 	
 			private long prevTime = DateTime.Now.Ticks;
@@ -1957,7 +1960,7 @@ namespace VVVV.Nodes.Vlc
 			//change everything that has an influence if the spreadMax value changes, like the nr of mediaplayers
 			Log( LogType.Debug, "EXISTING MEDIA RENDERERS: --------------------------------" );
 			for (int i = 0; i < mediaRendererA.SliceCount; i++) {
-				Log( LogType.Debug, "    " + "A" + mediaRendererA[i].GetSlice() + " B" + mediaRendererB[i].GetSlice() + " C" + mediaRendererCurrent[i].GetSlice() + " N" + mediaRendererNext[i].GetSlice());
+				Log( LogType.Debug, "    " + "A" + mediaRendererA[i].Slice + " B" + mediaRendererB[i].Slice + " C" + mediaRendererCurrent[i].Slice + " N" + mediaRendererNext[i].Slice);
 			}
 			int c = spreadMax;
 			int prevc = Math.Max(0, mediaRendererA.SliceCount);
@@ -2003,7 +2006,7 @@ namespace VVVV.Nodes.Vlc
 
 			Log( LogType.Debug, "NEW MEDIA RENDERERS: --------------------------------" );
 			for (int i = 0; i < mediaRendererA.SliceCount; i++) {
-				Log( LogType.Debug, "    " + "A" + mediaRendererA[i].GetSlice() + " B" + mediaRendererB[i].GetSlice() + " C" + mediaRendererCurrent[i].GetSlice() + " N" + mediaRendererNext[i].GetSlice());
+				Log( LogType.Debug, "    " + "A" + mediaRendererA[i].Slice + " B" + mediaRendererB[i].Slice + " C" + mediaRendererCurrent[i].Slice + " N" + mediaRendererNext[i].Slice);
 			}
 
 		}
@@ -2019,8 +2022,8 @@ namespace VVVV.Nodes.Vlc
 			mediaRendererCurrent[index] = mediaRendererA[index];
 			mediaRendererNext[index] = mediaRendererB[index];
 
-			memoryToTextureRendererA[index] = new MemoryToTextureRenderer(this, index, 'A', mediaRendererA[index].GetDoubleMemoryBuffer());
-			memoryToTextureRendererB[index] = new MemoryToTextureRenderer(this, index, 'B', mediaRendererB[index].GetDoubleMemoryBuffer());
+			memoryToTextureRendererA[index] = new MemoryToTextureRenderer(this, index, 'A', mediaRendererA[index].DoubleMemoryBuffer);
+			memoryToTextureRendererB[index] = new MemoryToTextureRenderer(this, index, 'B', mediaRendererB[index].DoubleMemoryBuffer);
 
 			//mediaRendererBackFrontMutex[index].ReleaseMutex();
 		}
@@ -2097,7 +2100,7 @@ namespace VVVV.Nodes.Vlc
 //		private void SetFrontTexture(int deviceDataKey, Texture t, MediaRenderer r) {
 //			//at this time it only flips front and backbuffers, but in future we could blend multiple textures together here, and update the real output texture
 //			if ( IsFrontMediaRenderer(r) ) {
-//				FDeviceData[deviceDataKey].Data[r.GetSlice()] = t;
+//				FDeviceData[deviceDataKey].Data[r.Slice] = t;
 //			}
 //		}
 
@@ -2106,7 +2109,7 @@ namespace VVVV.Nodes.Vlc
 		public bool IsFrontMediaRenderer(MediaRenderer r)
 		{
 			try {
-				return r == mediaRendererCurrent[r.GetSlice()];
+				return r == mediaRendererCurrent[r.Slice];
 			} catch (Exception e) {
 				throw new Exception("[IsFrontMediaRenderer Exception] " + e.Message, e);
 			}
@@ -2115,7 +2118,7 @@ namespace VVVV.Nodes.Vlc
 		public bool IsFrontMemoryToTextureRenderer(MemoryToTextureRenderer r)
 		{
 			try {
-				return r == GetMemoryToTextureRendererCurrent( r.GetSlice() );
+				return r == GetMemoryToTextureRendererCurrent( r.Slice );
 			} catch (Exception e) {
 				throw new Exception("[IsFrontMemoryToTextureRenderer Exception] " + e.Message, e);
 			}
@@ -2132,10 +2135,8 @@ namespace VVVV.Nodes.Vlc
 			FLogger.Log( logType, message);
 		}
 		
-		public Dictionary<Device, TextureDeviceData> GetDeviceData() {
-			
-			return FDeviceData;
-			
+		public Dictionary<Device, TextureDeviceData> DeviceData {
+			get { return FDeviceData; }
 		}
 
 		public string GetFullPath(string path)
@@ -2281,16 +2282,16 @@ namespace VVVV.Nodes.Vlc
 
 			int index = slice;
 
-			Log( LogType.Debug, "CreateTexture(Slice " + index + (index != mediaRendererCurrent[index].GetSlice() ? " (INDEX PROBLEM: " + mediaRendererCurrent[index].GetSlice() + ") " : "") + ", Device " + device.ComPointer.ToInt64() + ")" );
+			Log( LogType.Debug, "CreateTexture(Slice " + index + (index != mediaRendererCurrent[index].Slice ? " (INDEX PROBLEM: " + mediaRendererCurrent[index].Slice + ") " : "") + ", Device " + device.ComPointer.ToInt64() + ")" );
 			//Log( LogType.Debug, "----------------------------------------" );
 
 			//Log( LogType.Debug, "--> CreateTexture(...) CURRENT" );
 			//refill the new texture (if display change)
-			Texture t = GetMemoryToTextureRendererCurrent(index).CreateOrReturnSharedTexture(device);
+			Texture t = GetMemoryToTextureRendererCurrent(index).CreateTexture(device);
 
 			//Log( LogType.Debug, "--> CreateTexture(...) NEXT" );
 			//refill the new texture (if display change)
-			GetMemoryToTextureRendererNext(index).CreateOrReturnSharedTexture(device);
+			GetMemoryToTextureRendererNext(index).CreateTexture(device);
 
 //			if ( ! device2QuadVertexBuffer.ContainsKey(device.ComPointer.ToInt64()) ) {
 //				device2QuadVertexBuffer[device.ComPointer.ToInt64()] = CreateQuadTexturedVertexBuffer(device);
