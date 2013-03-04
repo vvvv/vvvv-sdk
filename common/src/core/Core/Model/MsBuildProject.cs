@@ -69,7 +69,6 @@ namespace VVVV.Core.Model
         {
             // Try to find an assembly
             AssemblyLocation = GetExistingAssemblyLocation(path);
-            ProjectCompiledSuccessfully += this_ProjectCompiledSuccessfully;
             try
             {
                 Load();
@@ -82,19 +81,19 @@ namespace VVVV.Core.Model
         
         protected override void DisposeManaged()
         {
-            ProjectCompiledSuccessfully -= this_ProjectCompiledSuccessfully;
             Unload();
             base.DisposeManaged();
         }
 
-        void this_ProjectCompiledSuccessfully(object sender, CompilerEventArgs args)
+        protected override void OnProjectCompiledSuccessfully(CompilerEventArgs args)
         {
             // Retrieve new assembly location
             AssemblyLocation = args.CompilerResults.PathToAssembly;
-            // Copy local references
+
+            // Copy local references to the output folder
             var results = args.CompilerResults;
             var assemblyDir = Path.GetDirectoryName(results.PathToAssembly);
-            
+
             foreach (var reference in References.Where((r) => !r.IsGlobal))
             {
                 try
@@ -103,11 +102,14 @@ namespace VVVV.Core.Model
                     var dstFileName = assemblyDir.ConcatPath(Path.GetFileName(srcFileInfo.Name));
                     var dstFileInfo = srcFileInfo.CopyTo(dstFileName, true);
                     dstFileInfo.IsReadOnly = false;
-                } catch (IOException)
+                }
+                catch (IOException)
                 {
                     // Ignore as file is probably in use (because we loaded it)
                 }
             }
+
+            base.OnProjectCompiledSuccessfully(args);
         }
         
         public string AssemblyName
@@ -228,11 +230,15 @@ namespace VVVV.Core.Model
                         break;
                     case "Compile":
                     case "None":
-                        IDocument document;
-                        if (FDocumentConverter.Convert(projectDir.ConcatPath(projectItem.EvaluatedInclude), out document))
-                        {
+                        IDocument document = null;
+                        var canBeCompiled = projectItem.ItemType == "Compile";
+                        var documentPath = projectDir.ConcatPath(projectItem.EvaluatedInclude);
+                        if (!File.Exists(documentPath))
+                            document = new MissingDocument(documentPath, documentPath, canBeCompiled);
+                        else
+                            FDocumentConverter.Convert(documentPath, out document);
+                        if (document != null)
                             Documents.Add(document);
-                        }
                         break;
                     default:
                         break;
