@@ -273,7 +273,7 @@ namespace VVVV.Nodes.NodeBrowser
             //do this in mouseup (not mousedown) for ContextMenu not throwing error
             if (e.Button == MouseButtons.Right)
             {
-                OnPanelChange(NodeBrowserPage.ByCategory, null);
+                OnPanelChange(NodeBrowserPage.NodeCategories, null);
             }
         }
         
