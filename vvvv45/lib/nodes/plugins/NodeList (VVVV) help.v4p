@@ -1,0 +1,107 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\NodeList (VVVV) help.v4p" systemname="NodeList (VVVV) help" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\NodeList (VVVV) help.v4p">
+   <BOUNDS height="6690" left="6795" top="3195" type="Window" width="5805">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Collects nodes in Search Paths and returns the list of all known nodes. For now Search Paths are expected to have nodes sorted in subdirectories by type (effects, plugins, modules...)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|NodeList (VVVV)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="NodeList (VVVV)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="NodeList (VVVV)" componentmode="Hidden" id="-14">
+   <BOUNDS type="Node" left="810" top="2010" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Nodes" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="810" top="2010">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="375" top="3600" width="9450" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="375" top="3600" width="4905" height="915">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Mainly used in the root patch to let vvvv know where to look for addons. Have a look at the root patch (ALT+R) to see how it is used.&cr;&lf;&cr;&lf;additional information is available here:|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="4" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="525" top="4560" width="3945" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="525" top="4560" width="3945" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="http://vvvv.org/documentation/nodelist-(vvvv)" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Count (String)" nodename="Count (String)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="810" top="2460" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="-14" srcpinname="Nodes" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="810" top="3000" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="810" top="3000" width="570" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Count" dstnodeid="6" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="7" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1455" top="3000" width="2850" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1455" top="3000" width="2850" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; number of addons currently loaded.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>

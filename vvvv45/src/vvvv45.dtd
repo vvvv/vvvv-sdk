@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--This is the VVVV Document Type Definition. -->
+<!-- We are lucky you made it here...-->
+
+<!-- Patch Block-->
+<!ELEMENT PATCH (BOUNDS | NODE | LINK)+>
+<!ATTLIST PATCH
+	componentmode (Hidden | InABox | InAWindow)  #IMPLIED
+	locked (0 | 1)  #IMPLIED
+	nodename CDATA #REQUIRED
+	saveme CDATA #IMPLIED
+	createme CDATA #IMPLIED
+>
+
+<!-- Node Block-->
+<!ELEMENT NODE (BOUNDS | PIN | INFO)+>
+<!ATTLIST NODE
+	debug (0 | 1) #IMPLIED
+	id CDATA #REQUIRED
+	nodename CDATA #IMPLIED
+	systemname CDATA #IMPLIED
+	filename CDATA #IMPLIED
+	componentmode (Hidden | InABox | InAWindow) #IMPLIED
+	hiddenwhenlocked (0 | 1) #IMPLIED
+	managers CDATA #IMPLIED
+	path CDATA #IMPLIED
+	stayontop (0 | 1) #IMPLIED
+	mute (0 | 1) #IMPLIED
+	solo (0 | 1) #IMPLIED
+	ScrollX CDATA #IMPLIED
+	ScrollY CDATA #IMPLIED
+	createme CDATA #IMPLIED
+>
+
+<!-- Bounds Element -->
+<!ELEMENT BOUNDS (#PCDATA)>
+<!ATTLIST BOUNDS
+	height CDATA #IMPLIED
+	left CDATA #REQUIRED
+	top CDATA #REQUIRED
+	type (Window | Box | Node) #REQUIRED
+	width CDATA #IMPLIED
+	createme CDATA #IMPLIED
+>
+
+<!-- Link Element -->
+<!ELEMENT LINK (#PCDATA | LINKPOINT)*>
+<!ATTLIST LINK
+	dstnodeid CDATA #REQUIRED
+	dstpinname CDATA #REQUIRED
+	srcnodeid CDATA #REQUIRED
+	srcpinname CDATA #REQUIRED
+	linkstyle (Bezier | VHV | PolyLine) #IMPLIED
+	hiddenwhenlocked (0 | 1) #IMPLIED
+	color CDATA #IMPLIED
+	createme CDATA #IMPLIED
+>
+
+<!-- Linkpoint Element -->
+<!ELEMENT LINKPOINT (#PCDATA)>
+<!ATTLIST LINKPOINT
+	x CDATA #REQUIRED
+	y CDATA #REQUIRED
+>
+
+<!-- Pin Element -->
+<!ELEMENT PIN (#PCDATA)>
+<!ATTLIST PIN
+	pinname  CDATA #REQUIRED
+	visible (-2 | -1 | 0 | 1) #IMPLIED
+	slicecount CDATA #IMPLIED
+	slices CDATA #IMPLIED
+	values CDATA #IMPLIED
+	pintype (Input | Output | Configuration) #IMPLIED
+	valueslost CDATA #IMPLIED
+	createme CDATA #IMPLIED
+	encoded CDATA #IMPLIED
+>
+
+<!-- Info Element -->
+<!ELEMENT INFO (#PCDATA)>
+<!ATTLIST INFO
+	author CDATA #IMPLIED
+	description CDATA #IMPLIED
+	tags CDATA #IMPLIED
+>
+
+<!-- Entities that are not predefined in the specification -->
+<!ENTITY cr "&#13;">
+<!ENTITY lf "&#10;">
+<!ENTITY tab "&#9;">

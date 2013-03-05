@@ -1,0 +1,199 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha20.9.dtd" >
+   <PATCH nodename="Y:\vvvv_trunk\help\WordCount (String) help.v4p">
+   <BOUNDS height="8730" left="5835" top="5700" type="Window" width="9930">
+   </BOUNDS>
+   <NODE id="29" nodename="WordCount (String)">
+   <BOUNDS height="0" left="2025" top="4665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Words" visible="1">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Count per Word" visible="1">
+   </PIN>
+   <PIN pinname="Add Words" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="28" nodename="SystemFolder (File)">
+   <BOUNDS height="0" left="1500" top="1410" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Folder" slicecount="1" values="InternetCookies">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="27" nodename="Dir (File)">
+   <BOUNDS height="0" left="1335" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Directory" visible="1">
+   </PIN>
+   <PIN pinname="Mask" slicecount="1" values="*.txt">
+   </PIN>
+   <PIN pinname="Filenames" visible="1">
+   </PIN>
+   <PIN pinname="Short Filenames" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="27" dstpinname="Directory" srcnodeid="28" srcpinname="Output">
+   </LINK>
+   <NODE id="26" nodename="GetSlice (String)">
+   <BOUNDS height="0" left="2025" top="3075" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Input" srcnodeid="27" srcpinname="Short Filenames">
+   </LINK>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1215" top="5280" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8850" top="10485" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2985" left="1215" top="5280" type="Box" width="3150">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE id="24" nodename="RegExpr (String)">
+   <BOUNDS height="0" left="2025" top="3645" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Errors" visible="1">
+   </PIN>
+   <PIN pinname="Regular Expression" slicecount="1" values="@(.*?)\[">
+   </PIN>
+   <PIN pinname="Match 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="Input String" srcnodeid="24" srcpinname="Match 1">
+   </LINK>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4410" top="5280" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13215" top="10020" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2970" left="4410" top="5280" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Y Input Value" srcnodeid="29" srcpinname="Count per Word">
+   </LINK>
+   <NODE id="22" nodename="Count (String)">
+   <BOUNDS height="0" left="3225" top="3060" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   <PIN pinname="High" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Input" srcnodeid="27" srcpinname="Short Filenames">
+   </LINK>
+   <NODE id="21" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="2385" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Pause" visible="1">
+   </PIN>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Index" srcnodeid="21" srcpinname="Cycles">
+   </LINK>
+   <NODE id="20" nodename="FrameDelay (Animation)">
+   <BOUNDS height="0" left="4095" top="3060" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Input 1" srcnodeid="21" srcpinname="Cycles">
+   </LINK>
+   <NODE id="19" nodename="LT (Value)">
+   <BOUNDS height="0" left="3510" top="3705" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Input 1" srcnodeid="20" srcpinname="Output 1">
+   </LINK>
+   <NODE id="18" nodename="NOT (Boolean)">
+   <BOUNDS height="0" left="3525" top="4155" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Input" srcnodeid="19" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Input 2" srcnodeid="22" srcpinname="High">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Input String" srcnodeid="29" srcpinname="Words">
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="255" left="360" top="225" type="Node" width="1050">
+   </BOUNDS>
+   <BOUNDS height="435" left="360" top="225" type="Box" width="1830">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="WordCount">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="1245" left="5655" top="1920" type="Node" width="5340">
+   </BOUNDS>
+   <BOUNDS height="2535" left="5655" top="1920" type="Box" width="3525">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the topten cookie placers on your pc:&cr;&lf;&cr;&lf;read each file from the cookie directory and filter out the company name using RegExpr. &cr;&lf;&cr;&lf;everytime its input changes WordCount adds the incoming words to an internal list and generates a ranking of the most frequently used words.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Input" srcnodeid="26" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="15" nodename="Change (String)">
+   <BOUNDS height="0" left="2760" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Input" srcnodeid="24" srcpinname="Match 1">
+   </LINK>
+   <LINK dstnodeid="29" dstpinname="Add Words" srcnodeid="15" srcpinname="OnChange">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Pause" srcnodeid="18" srcpinname="Output">
+   </LINK>
+   </PATCH>

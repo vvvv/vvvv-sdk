@@ -1,0 +1,277 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Writer (EX9.Texture) help.v4p">
+   <BOUNDS height="6000" left="1455" top="1245" type="Window" width="9990">
+   </BOUNDS>
+   <NODE id="-4" nodename="MainLoop (VVVV)">
+   <BOUNDS height="0" left="6840" top="1050" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="IncrementMode" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Maximum forground fps" slicecount="1" visible="1" values="25.00000">
+   </PIN>
+   <PIN pinname="Maximum background fpsS" slicecount="1" visible="1" values="25.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6315" top="375" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12480" top="8580" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6315" top="375" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="25.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="FPS">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="-4" dstpinname="Maximum forground fps" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="-4" dstpinname="Maximum background fpsS" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="13" nodename="Writer (EX9.Texture)">
+   <BOUNDS height="270" left="2700" top="4830" type="Node" width="600">
+   </BOUNDS>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Offset" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="do save Texture to File" visible="1">
+   </PIN>
+   <PIN pinname="FileName" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Set File Format" visible="1">
+   </PIN>
+   <PIN pinname="File Format" visible="1">
+   </PIN>
+   <PIN pinname="Save" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="825" top="1080" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10170" top="10770" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="825" top="1080" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture In|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Texture" srcnodeid="12" srcpinname="Output Node" linkstyle="PolyLine">
+   <LINKPOINT x="855" y="1725">
+   </LINKPOINT>
+   <LINKPOINT x="2730" y="1725">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="11" nodename="FrameCounter (Animation)">
+   <BOUNDS height="0" left="3090" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Enable" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Frame Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3405" top="1080" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10950" top="9015" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3405" top="1080" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="SaveToFile">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="TogEdge (Animation)">
+   <BOUNDS height="0" left="4155" top="1830" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Up Edge" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Reset" srcnodeid="9" srcpinname="Up Edge">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Enable" srcnodeid="10" srcpinname="Y Output Value" linkstyle="PolyLine">
+   <LINKPOINT x="4170" y="1590">
+   </LINKPOINT>
+   <LINKPOINT x="3120" y="1590">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1710" top="1080" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10005" top="10305" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="1710" top="1080" type="Box" width="1590">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="render_">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="4290" top="2325" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12270" top="12375" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1590" left="4290" top="2325" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Format|">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="JPG">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="File Format" srcnodeid="7" srcpinname="Output Enum" linkstyle="PolyLine">
+   <LINKPOINT x="4320" y="4620">
+   </LINKPOINT>
+   <LINKPOINT x="3270" y="4620">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Save" srcnodeid="10" srcpinname="Y Output Value" linkstyle="Bezier">
+   <LINKPOINT x="4170" y="2880">
+   </LINKPOINT>
+   <LINKPOINT x="3090" y="2880">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="6" nodename="AsString (Value)">
+   <BOUNDS height="0" left="3105" top="2805" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (MinInt .. MaxInt)|">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="11" srcpinname="Frame Count">
+   </LINK>
+   <NODE id="5" nodename="Pad (String)">
+   <BOUNDS height="0" left="3105" top="3255" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Padding" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Align" slicecount="1" values="Right">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE id="4" nodename="Add (String)">
+   <BOUNDS height="0" left="2895" top="3750" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 2" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="8" srcpinname="Output String" linkstyle="PolyLine">
+   <LINKPOINT x="1740" y="1590">
+   </LINKPOINT>
+   <LINKPOINT x="2925" y="1590">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="FileName" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="375" top="5250" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11970" top="13785" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="375" top="5250" type="Box" width="4155">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input String" srcnodeid="4" srcpinname="Output" linkstyle="Bezier" hiddenwhenlocked="1">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4560" top="5265" type="Node" width="3450">
+   </BOUNDS>
+   <BOUNDS height="285" left="4560" top="5265" type="Box" width="3645">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|compose a filename that increases with each frame|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="7830" top="1035" type="Node" width="3480">
+   </BOUNDS>
+   <BOUNDS height="2700" left="7830" top="1035" type="Box" width="1680">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|set the mainloop to increment mode while recording.&cr;&lf;&cr;&lf;no matter how long saving the file takes in increment mode vvvvs inner clock is always only incremented 1/FPS seconds allowing to make smooth recordings|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="390" type="Box" width="3885">
+   </BOUNDS>
+   <BOUNDS height="160" left="10710" top="46530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|save the texture connected to the format selected|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="3180">
+   </BOUNDS>
+   <BOUNDS height="160" left="10710" top="46530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Writer - EX9.Texture|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
