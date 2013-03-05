@@ -192,24 +192,25 @@ namespace VVVV.Hosting.IO.Streams
             
             protected override void Copy(double[] destination, int destinationIndex, int length, int stride)
             {
-                switch (stride)
+                fixed (double* destinationPtr = destination)
                 {
-                    case 1:
-                        Marshal.Copy(new IntPtr(FPData + Position), destination, destinationIndex, length);
-                        break;
-                    default:
-                        fixed (double* destinationPtr = destination)
-                        {
+                    switch (stride)
+                    {
+                        case 1:
+                            //Marshal.Copy(new IntPtr(FPData + Position), destination, destinationIndex, length);
+                            Memory.Copy(destinationPtr + destinationIndex, FPData + Position, (uint)length * sizeof(double));
+                            break;
+                        default:
                             double* dst = destinationPtr + destinationIndex;
                             double* src = FPData + Position;
-                            
+
                             for (int i = 0; i < length; i++)
                             {
                                 *(dst++) = *src;
                                 src += stride;
                             }
-                        }
-                        break;
+                            break;
+                    }
                 }
             }
         }
