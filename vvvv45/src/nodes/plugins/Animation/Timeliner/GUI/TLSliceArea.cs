@@ -167,7 +167,9 @@ namespace VVVV.Nodes.Timeliner
 					foreach (TLStateKeyFrame state in FTimer.Automata.OutputSlices[0].KeyFrames)
 			{
 				time = FTransformer.TransformPoint(new PointF((float) state.Time, 0)).X;
-				if (time < float.MaxValue)
+
+				//may result in AV with extreme zooms if not checking bounds here
+				if ((time > g.ClipBounds.Left) && (time < g.ClipBounds.Right))
 					g.DrawLine(p, time, 0, time, Height);
 			}
 			

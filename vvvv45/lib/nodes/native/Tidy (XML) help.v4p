@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.11.dtd" >
-   <PATCH nodename="X:\help\Tidy (XML) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Tidy (XML) help.v4p">
    <BOUNDS height="10005" left="1260" top="2415" type="Window" width="9960">
    </BOUNDS>
    <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="600" top="2160" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tidy - (XML)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tidy (XML)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -86,7 +86,7 @@
    </LINK>
    <LINK dstnodeid="10" dstpinname="XML Input" srcnodeid="9" srcpinname="Output String">
    </LINK>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="375" top="3180" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7755" top="5445" type="Window" width="215">
@@ -100,7 +100,7 @@
    </NODE>
    <LINK dstnodeid="8" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="12" srcpinname="Is well formed">
    </LINK>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="240" top="8880" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8055" top="5745" type="Window" width="215">
@@ -160,18 +160,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="3" nodename="XPath (XML)">
-   <BOUNDS height="0" left="4065" top="9105" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="XML Input" slicecount="1" visible="1" values="text">
-   </PIN>
-   <PIN pinname="XPath Query" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Validate on parse" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Resolve externals" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
    <BOUNDS height="270" left="2160" top="9135" type="Node" width="1845">
    </BOUNDS>
@@ -214,6 +202,18 @@
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="XPath (XML)" systemname="XPath (XML)">
+   <BOUNDS height="0" left="4065" top="9105" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" slicecount="1" visible="1" values="text">
+   </PIN>
+   <PIN pinname="XPath Query" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Validate on parse">
+   </PIN>
+   <PIN pinname="Resolve externals">
    </PIN>
    </NODE>
    </PATCH>

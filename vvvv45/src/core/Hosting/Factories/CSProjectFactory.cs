@@ -327,7 +327,7 @@ namespace VVVV.Hosting.Factories
                         csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(className));
                     }
                     
-                    var parserResults = csDoc.ParserResults;
+                    var parserResults = csDoc.Parse();
                     var compilationUnit = parserResults.CompilationUnit;
                     
                     // Write new values to plugin info and remove all other plugin infos.
