@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
+using System.Xml;
 
 using VVVV.PluginInterfaces.V2;
 
@@ -100,15 +101,29 @@ namespace VVVV.Nodes.NodeBrowser
 		private void SaveFilter()
 		{
 			var savePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        	var sb = new StringBuilder();
-
-	        foreach (var category in FCategories.Keys)
-	        	if (!CategoryVisible(category))
-	        	    sb.AppendLine(category);
-	
-	        using (var outfile = new StreamWriter(savePath + @"\.vvvv"))
+			var xmlDoc = new XmlDocument();
+			var settings = xmlDoc.CreateElement("SETTINGS");
+			var nodeCategories = xmlDoc.CreateElement("NODECATEGORIES");
+			xmlDoc.AppendChild(settings);
+			settings.AppendChild(nodeCategories);
+			
+	        foreach (var categoryName in FCategories.Keys)
+	        	if (!CategoryVisible(categoryName))
 	        {
-	            outfile.Write(sb.ToString());
+	        	var category = xmlDoc.CreateElement("CATEGORY");
+	        	var attr = xmlDoc.CreateAttribute("name");
+	        	attr.Value = categoryName;
+	        	category.Attributes.Append(attr);
+	        	attr = xmlDoc.CreateAttribute("visible");
+	        	attr.Value = "false";
+	        	category.Attributes.Append(attr);
+	        	
+	        	nodeCategories.AppendChild(category);	        	
+	        }
+	
+	        using (var saveFile = new StreamWriter(savePath + @"\.vvvv"))
+	        {
+	            saveFile.Write(xmlDoc.OuterXml);
 	        }
 		}
 		
@@ -116,15 +131,16 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 			FHiddenCategories.Clear();
 			
-			var savePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+			var loadPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 			
 			try
 	        {
-	            using (StreamReader sr = new StreamReader(savePath + @"\.vvvv"))
-	            {
-	            	while (sr.Peek() >= 0) 
-	                    FHiddenCategories.Add(sr.ReadLine());
-	            }
+				var xmlDoc = new XmlDocument();
+	            xmlDoc.Load(loadPath + @"\.vvvv");
+	            
+	            var hiddenCategories = xmlDoc.SelectNodes("/SETTINGS/NODECATEGORIES/CATEGORY");
+	            foreach (XmlElement cat in hiddenCategories)
+	            	FHiddenCategories.Add(cat.GetAttributeNode("name").Value);
 	        }
 	        catch (Exception e)
 	        {
