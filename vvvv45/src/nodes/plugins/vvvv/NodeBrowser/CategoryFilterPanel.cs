@@ -40,8 +40,8 @@ namespace VVVV.Nodes.NodeBrowser
             get;
             set;
         }
-		
-		public void Redraw()
+
+		public void Update()
 		{
 			this.SuspendLayout();
 			CheckboxPanel.SuspendLayout();
@@ -138,11 +138,6 @@ namespace VVVV.Nodes.NodeBrowser
 		void CategoryFilterPanelVisibleChanged(object sender, EventArgs e)
 		{
             CheckboxPanel.Focus();
-            
-            if (PendingRedraw)
-            {
-                Redraw();
-            }
 		}
 	}
 }

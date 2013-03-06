@@ -216,6 +216,7 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void InitializeComponent()
         {
+        	this.components = new System.ComponentModel.Container();
         	this.FClonePanel = new VVVV.Nodes.NodeBrowser.ClonePanel();
         	this.FNodeTagPanel = new VVVV.Nodes.NodeBrowser.TagPanel();
         	this.FCategoryPanel = new VVVV.Nodes.NodeBrowser.CategoryPanel();
@@ -227,6 +228,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FFilterButton = new System.Windows.Forms.Button();
         	this.FCategoryFilterPanel = new VVVV.Nodes.NodeBrowser.CategoryFilterPanel();
         	this.FGirlpowerTagPanel = new VVVV.Nodes.NodeBrowser.TagPanel();
+        	this.FToolTip = new System.Windows.Forms.ToolTip(this.components);
         	this.FTopPanel.SuspendLayout();
         	this.SuspendLayout();
         	// 
@@ -313,6 +315,8 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FTagButton.Text = "T";
         	this.FTagButton.UseVisualStyleBackColor = false;
         	this.FTagButton.Click += new System.EventHandler(this.TopButtonClick);
+        	this.FTagButton.MouseEnter += new System.EventHandler(this.TopButtonEnter);
+        	this.FTagButton.MouseLeave += new System.EventHandler(this.TopButtonLeave);
         	// 
         	// FCategoryButton
         	// 
@@ -327,6 +331,8 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FCategoryButton.Text = "C";
         	this.FCategoryButton.UseVisualStyleBackColor = false;
         	this.FCategoryButton.Click += new System.EventHandler(this.TopButtonClick);
+        	this.FCategoryButton.MouseEnter += new System.EventHandler(this.TopButtonEnter);
+        	this.FCategoryButton.MouseLeave += new System.EventHandler(this.TopButtonLeave);
         	// 
         	// FGirlpowerButton
         	// 
@@ -342,6 +348,8 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FGirlpowerButton.UseVisualStyleBackColor = false;
         	this.FGirlpowerButton.Visible = false;
         	this.FGirlpowerButton.Click += new System.EventHandler(this.TopButtonClick);
+        	this.FGirlpowerButton.MouseEnter += new System.EventHandler(this.TopButtonEnter);
+        	this.FGirlpowerButton.MouseLeave += new System.EventHandler(this.TopButtonLeave);
         	// 
         	// FFilterButton
         	// 
@@ -356,6 +364,8 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FFilterButton.Text = "F";
         	this.FFilterButton.UseVisualStyleBackColor = false;
         	this.FFilterButton.Click += new System.EventHandler(this.TopButtonClick);
+        	this.FFilterButton.MouseEnter += new System.EventHandler(this.TopButtonEnter);
+        	this.FFilterButton.MouseLeave += new System.EventHandler(this.TopButtonLeave);
         	// 
         	// FCategoryFilterPanel
         	// 
@@ -394,6 +404,8 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FTopPanel.PerformLayout();
         	this.ResumeLayout(false);
         }
+        private System.ComponentModel.IContainer components;
+        private System.Windows.Forms.ToolTip FToolTip;
         private VVVV.Nodes.NodeBrowser.TagPanel FGirlpowerTagPanel;
         private VVVV.Nodes.NodeBrowser.CategoryFilterPanel FCategoryFilterPanel;
         private System.Windows.Forms.Button FFilterButton;
@@ -424,6 +436,8 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void UpdatePanels()
         {
+        	FCategoryFilterPanel.Update();
+        	
         	if (FNodeTagPanel.Visible)
                 FNodeTagPanel.Redraw();
             else
@@ -433,9 +447,6 @@ namespace VVVV.Nodes.NodeBrowser
                 FCategoryPanel.Redraw();
             else
                 FCategoryPanel.PendingRedraw = true;
-            
-            if (!FCategoryFilterPanel.Visible)
-                FCategoryFilterPanel.PendingRedraw = true;
         }
         
         void HandleOnPanelChange(NodeBrowserPage page, INodeInfo nodeInfo)
@@ -449,14 +460,14 @@ namespace VVVV.Nodes.NodeBrowser
 		        		FGirlpowerButton.Enabled = true;
         				FFilterButton.Enabled = true;   
         		
-        				FTagsTextBox.Text = "";
-        				FTagsTextBox.Enabled = true;
-        				
         				FNodeTagPanel.Visible = true;
                         FCategoryPanel.Visible = false;
                         FClonePanel.Visible = false;
                         FGirlpowerTagPanel.Visible = false;
                         FCategoryFilterPanel.Visible = false;
+        				
+        				FTagsTextBox.ReadOnly = false;
+        				FTagsTextBox.Text = "";        				
                         break;
                     }
                 case NodeBrowserPage.NodeCategories:
@@ -466,14 +477,14 @@ namespace VVVV.Nodes.NodeBrowser
 		        		FGirlpowerButton.Enabled = true;
         				FFilterButton.Enabled = true;
         				
-        				FTagsTextBox.Text = "Browse by Category";
-        				FTagsTextBox.Enabled = false;
-        				
-                        FNodeTagPanel.Visible = false;
+        				FNodeTagPanel.Visible = false;
                         FCategoryPanel.Visible = true;
                         FClonePanel.Visible = false;
                         FGirlpowerTagPanel.Visible = false;
                         FCategoryFilterPanel.Visible = false;
+        				
+        				FTagsTextBox.Text = "Browse by category";
+        				FTagsTextBox.ReadOnly = true;       				
                         break;
                     }
                 case NodeBrowserPage.Clone:
@@ -486,14 +497,14 @@ namespace VVVV.Nodes.NodeBrowser
                             path = "choose a directory to clone to...";
                         FClonePanel.Initialize(nodeInfo, path);
                         
-                        FTagsTextBox.Text = "Clone node";
-        				FTagsTextBox.Enabled = false;
-                        
                         FNodeTagPanel.Visible = false;
                         FCategoryPanel.Visible = false;
                         FClonePanel.Visible = true;
                         FGirlpowerTagPanel.Visible = false;
-                        FCategoryFilterPanel.Visible = false;                     
+                        FCategoryFilterPanel.Visible = false;
+                        
+                        FTagsTextBox.Text = "Clone node";
+        				FTagsTextBox.ReadOnly = true;
                         break;
                     }
             	case NodeBrowserPage.Girlpower:
@@ -503,14 +514,14 @@ namespace VVVV.Nodes.NodeBrowser
 		        		FGirlpowerButton.Enabled = false;
         				FFilterButton.Enabled = true;
         				
-        				FTagsTextBox.Text = "";
-        				FTagsTextBox.Enabled = true;
-        				
         				FNodeTagPanel.Visible = false;
                         FCategoryPanel.Visible = false;
                         FClonePanel.Visible = false;
                         FGirlpowerTagPanel.Visible = true;
                         FCategoryFilterPanel.Visible = false;
+        				
+        				FTagsTextBox.ReadOnly = false;
+        				FTagsTextBox.Text = "";        				
                         break;
                     }
             		case NodeBrowserPage.Filter:
@@ -520,14 +531,14 @@ namespace VVVV.Nodes.NodeBrowser
 		        		FGirlpowerButton.Enabled = true;
         				FFilterButton.Enabled = false;
         				
-        				FTagsTextBox.Text = "Deselect categories to hide in the browser";
-        				FTagsTextBox.Enabled = false;
-
         				FNodeTagPanel.Visible = false;
                         FCategoryPanel.Visible = false;
                         FClonePanel.Visible = false;
                         FGirlpowerTagPanel.Visible = false;
                         FCategoryFilterPanel.Visible = true;
+        				
+        				FTagsTextBox.Text = "Deselect categories to hide in the browser";
+        				FTagsTextBox.ReadOnly = true;
                         break;
                     }
             }
@@ -666,8 +677,6 @@ namespace VVVV.Nodes.NodeBrowser
         	}
 //          else if (!FGirlpowerPanel.Visible)
 //            	FGirlpowerTagPanel.TextChanged();
-
-			
         }
         
         void FTagsTextBoxKeyDown(object sender, KeyEventArgs e)
@@ -694,12 +703,33 @@ namespace VVVV.Nodes.NodeBrowser
         		if (FNodeTagPanel.Visible)
 	                HandleOnPanelChange(NodeBrowserPage.NodeCategories, null);
 	        	else if (FCategoryPanel.Visible)
-	        		HandleOnPanelChange(NodeBrowserPage.Girlpower, null);
-	            else if (FGirlpowerTagPanel.Visible)
 	        		HandleOnPanelChange(NodeBrowserPage.Filter, null);
+//	            else if (FGirlpowerTagPanel.Visible)
+//	        		HandleOnPanelChange(NodeBrowserPage.Filter, null);
 	        	else if (FCategoryFilterPanel.Visible)
 	        		HandleOnPanelChange(NodeBrowserPage.NodeTags, null);
         	}
+        }
+        
+        void TopButtonEnter(object sender, EventArgs e)
+        {
+        	var b = (sender as Button);
+        	string text = "";
+        	if (b == FTagButton)
+        		text = "Browse nodes by tags";
+        	else if (b == FCategoryButton)
+        		text = "Browse nodes by category";
+        	else if (b == FGirlpowerButton)
+        		text = "Browse girlpower demos";
+        	else if (b == FFilterButton)
+        		text = "Set node category filter";
+        	
+        	FToolTip.Show(text, this, b.Left, b.Bottom + 10);
+        }
+        
+        void TopButtonLeave(object sender, EventArgs e)
+        {
+        	FToolTip.Hide(this);
         }
     }
 
