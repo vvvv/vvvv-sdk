@@ -167,6 +167,11 @@ namespace VVVV.Nodes.NodeBrowser
             FCategoryFilterPanel.NodeBrowser = this;
             
             FCategoryFilterPanel.OnFilterChanged += FCategoryFilterPanel_OnFilterChanged;
+            
+            FTagsTextBox.ContextMenu = new ContextMenu();
+            FTagsTextBox.MouseWheel += FTagsTextBoxMouseWheel;
+            
+            FNodeTagPanel.TagsTextBox = FTagsTextBox;
         }
 
         void FCategoryFilterPanel_OnFilterChanged()
@@ -191,6 +196,8 @@ namespace VVVV.Nodes.NodeBrowser
                     // Dispose managed resources.
 					if (HDEHost != null)
 					   HDEHost.WindowSelectionChanged -= HandleWindowSelectionChanged;
+					
+					FTagsTextBox.MouseWheel -= FTagsTextBoxMouseWheel;
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
@@ -243,6 +250,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FNodeTagPanel.NodeBrowser = null;
         	this.FNodeTagPanel.Size = new System.Drawing.Size(120, 115);
         	this.FNodeTagPanel.TabIndex = 1;
+        	this.FNodeTagPanel.TagsTextBox = null;
         	this.FNodeTagPanel.OnPanelChange += new VVVV.Nodes.NodeBrowser.PanelChangeHandler(this.HandleOnPanelChange);
         	this.FNodeTagPanel.OnCreateNode += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.HandleCreateNode);
         	this.FNodeTagPanel.OnShowNodeReference += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.HandleShowNodeReference);
@@ -277,13 +285,20 @@ namespace VVVV.Nodes.NodeBrowser
         	// 
         	// FTagsTextBox
         	// 
+        	this.FTagsTextBox.AcceptsTab = true;
         	this.FTagsTextBox.BackColor = System.Drawing.Color.Silver;
         	this.FTagsTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
         	this.FTagsTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+        	this.FTagsTextBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         	this.FTagsTextBox.Location = new System.Drawing.Point(0, 0);
+        	this.FTagsTextBox.Multiline = true;
         	this.FTagsTextBox.Name = "FTagsTextBox";
-        	this.FTagsTextBox.Size = new System.Drawing.Size(515, 20);
+        	this.FTagsTextBox.Size = new System.Drawing.Size(515, 21);
         	this.FTagsTextBox.TabIndex = 4;
+        	this.FTagsTextBox.TabStop = false;
+        	this.FTagsTextBox.TextChanged += new System.EventHandler(this.FTagsTextBoxTextChanged);
+        	this.FTagsTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FTagsTextBoxKeyDown);
+        	this.FTagsTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FTagsTextBoxMouseUp);
         	// 
         	// FTagButton
         	// 
@@ -361,6 +376,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FGirlpowerTagPanel.NodeBrowser = null;
         	this.FGirlpowerTagPanel.Size = new System.Drawing.Size(121, 103);
         	this.FGirlpowerTagPanel.TabIndex = 5;
+        	this.FGirlpowerTagPanel.TagsTextBox = null;
         	// 
         	// NodeBrowserPluginNode
         	// 
@@ -574,7 +590,7 @@ namespace VVVV.Nodes.NodeBrowser
         
         public void BeforeHide(out string comment)
         {
-            if (string.IsNullOrEmpty(FInitialText))
+            if (string.IsNullOrEmpty(FInitialText) && FNodeTagPanel.Visible)
                 comment = FNodeTagPanel.CommentText;
             else
                 comment = "";
@@ -636,6 +652,54 @@ namespace VVVV.Nodes.NodeBrowser
         		HandleOnPanelChange(NodeBrowserPage.Girlpower, null);
 			else if (sender == FFilterButton)
         		HandleOnPanelChange(NodeBrowserPage.Filter, null);			
+        }
+        
+        #region TagsTextBox
+        void FTagsTextBoxTextChanged(object sender, EventArgs e)
+        {
+        	var CLineHeight = 13;
+
+        	if (FNodeTagPanel.Visible)
+        	{
+        		FNodeTagPanel.DoTextChanged();
+        		FTopPanel.Height = FNodeTagPanel.TextBoxHeight;
+        	}
+//          else if (!FGirlpowerPanel.Visible)
+//            	FGirlpowerTagPanel.TextChanged();
+
+			
+        }
+        
+        void FTagsTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+        	if (FNodeTagPanel.Visible)
+                FNodeTagPanel.DoKeyDown(e);
+//          else if (!FGirlpowerPanel.Visible)
+//            	FGirlpowerTagPanel.DoKeyDown(FTagsTextBox, e);
+        }
+        
+        void FTagsTextBoxMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+        	if (FNodeTagPanel.Visible)
+                FNodeTagPanel.DoMouseWheel(FTagsTextBox, e);
+//          else if (!FGirlpowerPanel.Visible)
+//            	FGirlpowerTagPanel.DoMouseWheel(FTagsTextBox, e);
+        }
+        #endregion
+        
+        void FTagsTextBoxMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+        	if (e.Button == MouseButtons.Right)
+        	{
+        		if (FNodeTagPanel.Visible)
+	                HandleOnPanelChange(NodeBrowserPage.NodeCategories, null);
+	        	else if (FCategoryPanel.Visible)
+	        		HandleOnPanelChange(NodeBrowserPage.Girlpower, null);
+	            else if (FGirlpowerTagPanel.Visible)
+	        		HandleOnPanelChange(NodeBrowserPage.Filter, null);
+	        	else if (FCategoryFilterPanel.Visible)
+	        		HandleOnPanelChange(NodeBrowserPage.NodeTags, null);
+        	}
         }
     }
 
