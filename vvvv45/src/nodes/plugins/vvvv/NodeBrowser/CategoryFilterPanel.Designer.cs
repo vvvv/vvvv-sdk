@@ -45,16 +45,16 @@ namespace VVVV.Nodes.NodeBrowser
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(10, 260);
+			this.panel1.Size = new System.Drawing.Size(5, 260);
 			this.panel1.TabIndex = 0;
 			// 
 			// CheckboxPanel
 			// 
 			this.CheckboxPanel.AutoScroll = true;
 			this.CheckboxPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.CheckboxPanel.Location = new System.Drawing.Point(10, 0);
+			this.CheckboxPanel.Location = new System.Drawing.Point(5, 0);
 			this.CheckboxPanel.Name = "CheckboxPanel";
-			this.CheckboxPanel.Size = new System.Drawing.Size(255, 260);
+			this.CheckboxPanel.Size = new System.Drawing.Size(260, 260);
 			this.CheckboxPanel.TabIndex = 1;
 			// 
 			// CategoryFilterPanel
@@ -67,6 +67,7 @@ namespace VVVV.Nodes.NodeBrowser
 			this.Controls.Add(this.panel1);
 			this.Name = "CategoryFilterPanel";
 			this.Size = new System.Drawing.Size(265, 260);
+			this.VisibleChanged += new System.EventHandler(this.CategoryFilterPanelVisibleChanged);
 			this.ResumeLayout(false);
 		}
 		private System.Windows.Forms.Panel CheckboxPanel;

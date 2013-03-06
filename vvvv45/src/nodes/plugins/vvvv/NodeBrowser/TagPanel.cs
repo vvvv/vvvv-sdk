@@ -479,7 +479,7 @@ namespace VVVV.Nodes.NodeBrowser
             
             FSelectionList.Clear();
 
-            var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(nodeInfo => nodeInfo.Ignore == false);
+            var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && NodeBrowser.CategoryFilter.CategoryVisible(ni.Category));
             
             // Cache current patch window nodeinfo and current dir
             var currentPatchWindow = NodeBrowser.CurrentPatchWindow;

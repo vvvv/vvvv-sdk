@@ -164,6 +164,14 @@ namespace VVVV.Nodes.NodeBrowser
             FClonePanel.NodeBrowser = this;
             FNodeTagPanel.NodeBrowser = this;
             FCategoryPanel.NodeBrowser = this;
+            FCategoryFilterPanel.NodeBrowser = this;
+            
+            FCategoryFilterPanel.OnFilterChanged += FCategoryFilterPanel_OnFilterChanged;
+        }
+
+        void FCategoryFilterPanel_OnFilterChanged()
+        {
+        	UpdatePanels();
         }
         
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -317,6 +325,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FGirlpowerButton.TabIndex = 1;
         	this.FGirlpowerButton.Text = "G";
         	this.FGirlpowerButton.UseVisualStyleBackColor = false;
+        	this.FGirlpowerButton.Visible = false;
         	this.FGirlpowerButton.Click += new System.EventHandler(this.TopButtonClick);
         	// 
         	// FFilterButton
@@ -339,6 +348,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FCategoryFilterPanel.BackColor = System.Drawing.Color.Silver;
         	this.FCategoryFilterPanel.Location = new System.Drawing.Point(37, 407);
         	this.FCategoryFilterPanel.Name = "FCategoryFilterPanel";
+        	this.FCategoryFilterPanel.NodeBrowser = null;
         	this.FCategoryFilterPanel.Size = new System.Drawing.Size(240, 69);
         	this.FCategoryFilterPanel.TabIndex = 4;
         	// 
@@ -389,29 +399,27 @@ namespace VVVV.Nodes.NodeBrowser
             bool isRedrawNeeded = NodeInfoFactory.Timestamp != FLastTimestamp || !CurrentPatchWindow.Equals(FLastPatchWindow);
             if (isRedrawNeeded)
             {
-            	FCategoryFilterPanel.SetCategories(FCategoryPanel.FCategoryDict.Keys.ToList());
-            	
-                if (FNodeTagPanel.Visible)
-                {
-                    FNodeTagPanel.Redraw();
-                }
-                else
-                {
-                    FNodeTagPanel.PendingRedraw = true;
-                }
-                
-                if (FCategoryPanel.Visible)
-                {
-                    FCategoryPanel.Redraw();
-                }
-                else
-                {
-                    FCategoryPanel.PendingRedraw = true;
-                }
+            	UpdatePanels();
             }
             
             FLastTimestamp = NodeInfoFactory.Timestamp;            
             FLastPatchWindow = CurrentPatchWindow;
+        }
+        
+        private void UpdatePanels()
+        {
+        	if (FNodeTagPanel.Visible)
+                FNodeTagPanel.Redraw();
+            else
+                FNodeTagPanel.PendingRedraw = true;
+            
+            if (FCategoryPanel.Visible)
+                FCategoryPanel.Redraw();
+            else
+                FCategoryPanel.PendingRedraw = true;
+            
+            if (!FCategoryFilterPanel.Visible)
+                FCategoryFilterPanel.PendingRedraw = true;
         }
         
         void HandleOnPanelChange(NodeBrowserPage page, INodeInfo nodeInfo)
@@ -504,7 +512,6 @@ namespace VVVV.Nodes.NodeBrowser
                         FClonePanel.Visible = false;
                         FGirlpowerTagPanel.Visible = false;
                         FCategoryFilterPanel.Visible = true;
-                        FCategoryFilterPanel.Focus();
                         break;
                     }
             }

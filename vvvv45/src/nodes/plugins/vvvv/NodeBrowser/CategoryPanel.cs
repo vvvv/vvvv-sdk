@@ -84,6 +84,7 @@ namespace VVVV.Nodes.NodeBrowser
         
         public void Redraw()
         {
+        	FCategoryTreeViewer.SuspendLayout();
             FCategoryList.BeginUpdate();
             FCategoryList.Clear();
             
@@ -94,6 +95,7 @@ namespace VVVV.Nodes.NodeBrowser
             }
             
             FCategoryList.EndUpdate();
+            FCategoryTreeViewer.ResumeLayout();
             
             PendingRedraw = false;
         }

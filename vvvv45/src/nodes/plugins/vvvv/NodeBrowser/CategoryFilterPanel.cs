@@ -5,6 +5,9 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
+
+using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.NodeBrowser
 {
@@ -14,7 +17,15 @@ namespace VVVV.Nodes.NodeBrowser
 	public partial class CategoryFilterPanel : UserControl
 	{
 		private Dictionary<string, CheckBox> FCategories = new Dictionary<string, CheckBox>();
-		private List<string> FVisibleCategories = new List<string>();
+		private List<string> FHiddenCategories = new List<string>();
+		
+		public Action OnFilterChanged;
+		
+		internal bool PendingRedraw
+        {
+            get;
+            set;
+        }
 		
 		public CategoryFilterPanel()
 		{
@@ -24,13 +35,32 @@ namespace VVVV.Nodes.NodeBrowser
 			InitializeComponent();
 		}
 		
-		public void SetCategories(List<string> categories)
+		public NodeBrowserPluginNode NodeBrowser
+        {
+            get;
+            set;
+        }
+		
+		public void Redraw()
 		{
 			this.SuspendLayout();
+			CheckboxPanel.SuspendLayout();
 
 			CheckboxPanel.Controls.Clear();
 			FCategories.Clear();
 			
+			//get a list of all current categories
+			var categories = new List<string>();
+			var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && ni.Type != NodeType.Patch && ni.Type != NodeType.Text);
+            foreach (var nodeInfo in nodeInfos)
+            {
+            	if (!categories.Contains(nodeInfo.Category))
+            		categories.Add(nodeInfo.Category);
+            }
+            
+            categories.Sort();
+			
+            //for each category make a checkbox
 			foreach (var category in categories)
 			{
 				var cb = new CheckBox();
@@ -47,12 +77,16 @@ namespace VVVV.Nodes.NodeBrowser
 			
 			LoadFilter();
 			
+			CheckboxPanel.ResumeLayout();
 			this.ResumeLayout();
 		}
 		
 		void CheckBox_Click(object sender, EventArgs e)
 		{
 			SaveFilter();
+			
+			if (OnFilterChanged != null)
+				OnFilterChanged();
 		}
 		
 		public bool CategoryVisible(string category)
@@ -69,7 +103,7 @@ namespace VVVV.Nodes.NodeBrowser
         	var sb = new StringBuilder();
 
 	        foreach (var category in FCategories.Keys)
-	        	if (CategoryVisible(category))
+	        	if (!CategoryVisible(category))
 	        	    sb.AppendLine(category);
 	
 	        using (var outfile = new StreamWriter(savePath + @"\.vvvv"))
@@ -80,7 +114,7 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		private void LoadFilter()
 		{
-			FVisibleCategories.Clear();
+			FHiddenCategories.Clear();
 			
 			var savePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 			
@@ -89,7 +123,7 @@ namespace VVVV.Nodes.NodeBrowser
 	            using (StreamReader sr = new StreamReader(savePath + @"\.vvvv"))
 	            {
 	            	while (sr.Peek() >= 0) 
-	                    FVisibleCategories.Add(sr.ReadLine());
+	                    FHiddenCategories.Add(sr.ReadLine());
 	            }
 	        }
 	        catch (Exception e)
@@ -98,7 +132,17 @@ namespace VVVV.Nodes.NodeBrowser
 	        }
 	        
 	        foreach (var cb in FCategories)
-	        	cb.Value.Checked = FVisibleCategories.Contains(cb.Key);
+	        	cb.Value.Checked = !FHiddenCategories.Contains(cb.Key);
 		}		
+		
+		void CategoryFilterPanelVisibleChanged(object sender, EventArgs e)
+		{
+            CheckboxPanel.Focus();
+            
+            if (PendingRedraw)
+            {
+                Redraw();
+            }
+		}
 	}
 }
