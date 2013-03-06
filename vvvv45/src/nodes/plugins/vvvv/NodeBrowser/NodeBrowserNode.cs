@@ -583,8 +583,8 @@ namespace VVVV.Nodes.NodeBrowser
             IsStandalone = false;
             FNodeTagPanel.NodeBrowser = this;
             FInitialText = text;
-            FNodeTagPanel.Initialize(FInitialText);
             HandleOnPanelChange(NodeBrowserPage.NodeTags, null);
+            FNodeTagPanel.Initialize(FInitialText);
         }
         
         public new void DragDrop(bool allow)
