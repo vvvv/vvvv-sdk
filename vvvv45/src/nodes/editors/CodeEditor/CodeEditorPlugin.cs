@@ -132,6 +132,12 @@ namespace VVVV.HDE.CodeEditor
             FErrorTableViewer.Input = FErrorList;
             
             FEditor.LinkClicked += FEditor_LinkClicked;
+            FEditor.SavePressed += FEditor_SavePressed;
+        }
+
+        void FEditor_SavePressed(object sender, EventArgs e)
+        {
+            document_ContentChanged(FEditor.TextDocument, FEditor.TextDocument.TextContent);
         }
 
         void FEditor_LinkClicked(object sender, Link link)
@@ -140,13 +146,13 @@ namespace VVVV.HDE.CodeEditor
             
             if (!File.Exists(fileName))
             {
-                var dir = Path.GetDirectoryName(FEditor.TextDocument.Location.LocalPath);
+                var dir = Path.GetDirectoryName(FEditor.TextDocument.LocalPath);
                 fileName = dir.ConcatPath(fileName);
             }
             
             if (File.Exists(fileName))
             {
-                if (new Uri(fileName) == FEditor.TextDocument.Location)
+                if (string.Compare(fileName, FEditor.TextDocument.LocalPath, StringComparison.InvariantCultureIgnoreCase) == 0)
                     MoveTo(link.Location.Line + 1, link.Location.Column + 1);
                 else
                     FEditorFactory.Open(fileName, link.Location.Line + 1, link.Location.Column + 1, FAttachedNode, FNode.Window);
@@ -171,9 +177,9 @@ namespace VVVV.HDE.CodeEditor
             {
                 // Check if opened document needs to be saved.
                 var doc = FEditor.TextDocument;
-                if (doc.IsDirty)
+                if (doc != null && doc.IsDirty)
                 {
-                    var saveDialog = new SaveDialog(doc.Location.LocalPath);
+                    var saveDialog = new SaveDialog(doc.LocalPath);
                     if (saveDialog.ShowDialog(this) == DialogResult.OK)
                     {
                         var result = saveDialog.SaveOptionResult;
@@ -242,7 +248,6 @@ namespace VVVV.HDE.CodeEditor
                 }
                 
                 document.ContentChanged += document_ContentChanged;
-                document.Saved += document_Saved;
                 document.Renamed += document_Renamed;
                 document.Disposed += document_Disposed;
                 
@@ -262,18 +267,6 @@ namespace VVVV.HDE.CodeEditor
         void document_Renamed(INamed sender, string newName)
         {
             UpdateWindowCaption(sender as ITextDocument, newName);
-        }
-
-        void document_Saved(object sender, EventArgs e)
-        {
-            // Trigger a recompile
-            var project = (sender as IDocument).Project;
-			if (project != null)
-			{
-				project.Save();
-				project.CompileAsync();
-			}
-            document_ContentChanged(sender as ITextDocument, string.Empty);
         }
 
         void document_ContentChanged(ITextDocument doc, string content)
@@ -314,7 +307,6 @@ namespace VVVV.HDE.CodeEditor
                 AttachedNode = null;
                 
                 document.ContentChanged -= document_ContentChanged;
-                document.Saved -= document_Saved;
                 document.Renamed -= document_Renamed;
                 document.Disposed -= document_Disposed;
                 
@@ -409,8 +401,6 @@ namespace VVVV.HDE.CodeEditor
                 
                 if (FAttachedProject != null)
                 {
-                    if (!FAttachedProject.IsLoaded)
-                        FAttachedProject.Load();
                     FAttachedProject.CompileCompleted += Project_CompileCompleted;
                     // Fake a compilation in order to show error messages on startup.
                     Project_CompileCompleted(FAttachedProject, new CompilerEventArgs(FAttachedProject.CompilerResults));
@@ -519,7 +509,7 @@ namespace VVVV.HDE.CodeEditor
             
             if (File.Exists(fileName))
             {
-                if (new Uri(fileName) == FEditor.TextDocument.Location)
+                if (string.Compare(fileName, FEditor.TextDocument.LocalPath, StringComparison.InvariantCultureIgnoreCase) == 0)
                     MoveTo(line, 1);
                 else
                     FEditorFactory.Open(fileName, line, 1, FAttachedNode, FNode.Window);

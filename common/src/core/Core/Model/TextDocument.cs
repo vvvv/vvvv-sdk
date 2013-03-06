@@ -1,72 +1,104 @@
 ﻿using System;
 using System.IO;
-
-// TODO: Work with URIs.
+using System.Runtime.Caching;
+using System.Collections.Generic;
+using VVVV.Core.Logging;
 
 namespace VVVV.Core.Model
 {
-	public class TextDocument : Document, ITextDocument
-	{
-		private string FTextContent = string.Empty;
-		private int FHashCodeOnDisk;
-		
-		public event TextDocumentHandler ContentChanged;
-		
-		public string TextContent
-		{
-			get
-			{
-				return FTextContent;
-			}
-			set
-			{
-				string oldValue = FTextContent;
-				FTextContent = value;
-				
-				if (FHashCodeOnDisk != FTextContent.GetHashCode())
-					IsDirty = true;
-				else
-					IsDirty = false;
-				
-				if (oldValue != value)
-					OnContentChanged(oldValue, value);
-			}
-		}
-		
-		public TextDocument(string name, Uri location)
-			:base(name, location)
-		{
-		}
-		
-		protected override void DoLoad()
-		{
-			string path = Location.LocalPath;
+    public class TextDocument : Document, ITextDocument
+    {
+        private string FTextContent;
+        
+        public event TextDocumentHandler ContentChanged;
+        
+        public string TextContent
+        {
+            get
+            {
+                if (FTextContent == null)
+                    FTextContent = TextContentOnDisk;
+                return FTextContent;
+            }
+            set
+            {
+                var oldValue = FTextContent;
+                FTextContent = value;
+                if (oldValue != value)
+                    OnContentChanged(oldValue, value);
+            }
+        }
 
-			FTextContent = File.ReadAllText(path);
-			FHashCodeOnDisk = FTextContent.GetHashCode();
-		}
-		
-		protected override void DoUnload()
-		{
-			FTextContent = string.Empty;
-		}
-		
-		public override void SaveTo(Uri location)
-		{
-			string path = location.LocalPath;
-			// Make sure the path exists.
-			var documentDir = location.GetLocalDir();
-			if (!Directory.Exists(documentDir))
-				Directory.CreateDirectory(documentDir);
-			
-			File.WriteAllText(path, FTextContent);
-			FHashCodeOnDisk = FTextContent.GetHashCode();
-		}
-		
-		protected virtual void OnContentChanged(string oldConent, string content)
-		{
-			if (ContentChanged != null)
-				ContentChanged(this, content);
-		}
-	}
+        public string TextContentOnDisk
+        {
+            get
+            {
+                var cache = MemoryCache.Default;
+                var path = LocalPath;
+                var content = cache.Get(path) as string;
+                if (content == null)
+                {
+                    var policy = new CacheItemPolicy();
+                    policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(10.0);
+
+                    var filePaths = new List<string>();
+                    filePaths.Add(path);
+
+                    policy.ChangeMonitors.Add(new
+                        HostFileChangeMonitor(filePaths));
+
+                    content = File.Exists(path)
+                        ? File.ReadAllText(path)
+                        : string.Empty;
+
+                    cache.Add(path, content, policy);
+                }
+                return content;
+            }
+        }
+        
+        public TextDocument(string name, string path)
+            : base(name, path)
+        {
+        }
+        
+        public override void SaveTo(string path)
+        {
+            // Make sure the path exists.
+            var documentDir = Path.GetDirectoryName(path);
+            if (!Directory.Exists(documentDir))
+                Directory.CreateDirectory(documentDir);
+            try
+            {
+                File.WriteAllText(path, TextContent);
+            }
+            catch (Exception e)
+            {
+                Shell.Instance.Logger.Log(e);
+            }
+        }
+        
+        protected virtual void OnContentChanged(string oldConent, string content)
+        {
+            if (ContentChanged != null)
+                ContentChanged(this, content);
+        }
+
+        public bool IsDirty { get { return TextContent != TextContentOnDisk; } }
+
+        public bool IsReadOnly
+        {
+            get
+            {
+                if (File.Exists(LocalPath))
+                    return (File.GetAttributes(LocalPath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+                else
+                    return false;
+            }
+            set
+            {
+                new FileInfo(LocalPath).IsReadOnly = value;
+            }
+        }
+    }
 }

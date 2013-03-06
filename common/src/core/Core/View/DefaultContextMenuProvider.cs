@@ -58,14 +58,6 @@ namespace VVVV.Core.View
 			
 			var commandHistory = idItem.Mapper.Map<ICommandHistory>();
 			
-			// IPersistent objects must be loaded before they can be edited.
-			var persistent = idItem as IPersistent;
-			if (persistent != null && !persistent.IsLoaded)
-			{
-				yield return new LoadMenuEntry(commandHistory, persistent, FLogger);
-				yield break;
-			}
-			
 			if (FMapper.CanMap<AddMenuEntry>())
 			{
 				var addMenuEntry = FMapper.Map<AddMenuEntry>();
@@ -104,12 +96,6 @@ namespace VVVV.Core.View
 
 				if (owner.CanRemove(idItem))
 					yield return new RemoveMenuEntry<IEditableIDList, IIDItem>(commandHistory, owner, idItem);
-			}
-			
-			if (persistent != null)
-			{
-				yield return new MenuSeparator();
-				yield return new UnloadMenuEntry(commandHistory, persistent, FLogger);
 			}
 		}
 		

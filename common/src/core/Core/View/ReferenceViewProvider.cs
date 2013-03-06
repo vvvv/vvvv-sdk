@@ -16,7 +16,7 @@ namespace VVVV.Core
 			string suffix = string.Empty;
 			
 			if (File.Exists(reference.AssemblyLocation))
-				Description = PathUtils.MakeRelativePath(reference.Project.Location.GetLocalDir(), reference.AssemblyLocation);
+				Description = PathUtils.MakeRelativePath(Path.GetDirectoryName(reference.Project.LocalPath), reference.AssemblyLocation);
 			else
 				suffix = " (missing)";
 			
