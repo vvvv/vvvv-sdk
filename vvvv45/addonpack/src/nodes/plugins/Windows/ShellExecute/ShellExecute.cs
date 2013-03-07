@@ -9,7 +9,7 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "ShellExecute", Category = "Windows", Version = "Advanced", AutoEvaluate = true, Help = "Executes a program (w/o parameters) and returns the output, errors and status", Tags = "execute, windows, process", Author="zeos", Credits = "alg - addonpack integration")]
+	[PluginInfo(Name = "ShellExecute", Category = "Windows", Version = "Advanced", AutoEvaluate = true, Help = "Executes a program (w/o parameters) and returns the output, errors and status", Tags = "process, command line, cmd", Author="zeos", Credits = "alg - addonpack integration")]
 	#endregion PluginInfo
 	public class ShellExecute : IPluginEvaluate, IDisposable
 	{
