@@ -50,7 +50,7 @@ namespace VVVV.Nodes
 		[Output("Completed", IsBang = true, IsSingle = true)]
 		ISpread<bool> FCompletedOut;
 		
-		private readonly Process FProcess;
+		private Process FProcess;
 	    private bool FRunning;
 		private bool FCompleted;
 		private readonly object FLock = new object();
@@ -88,9 +88,10 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
-					FProcess.OutputDataReceived 	-= OnDataReceived;
-		       	 	FProcess.ErrorDataReceived 	-= OnErrorReceived;
-					FProcess.Exited 				-= OnExited;		
+					FProcess.OutputDataReceived -= OnDataReceived;
+		       	 	FProcess.ErrorDataReceived -= OnErrorReceived;
+					FProcess.Exited -= OnExited;
+				    FProcess = null;
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
