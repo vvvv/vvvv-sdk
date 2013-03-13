@@ -156,4 +156,9 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class CDREnumBin : CDRNode<EnumEntry> {}
 	
+	#region PluginInfo
+	[PluginInfo(Name = "CDR", Category = "Raw", Version = "Bin", Help = "Splits the spread into the last element and the rest, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class CDRRawBin : CDRNode<System.IO.Stream> {}
+	
 }
