@@ -176,4 +176,9 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Store", Category = "Enumerations", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class StoreEnum: Store<EnumEntry> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Store", Category = "Raw", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei", AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class StoreRaw: Store<System.IO.Stream> {}
 }
