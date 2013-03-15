@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
    <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\OSCEncoder (Network) help.v4p" locked="0">
    <BOUNDS height="9525" left="945" top="435" type="Window" width="7380">
    </BOUNDS>
@@ -537,13 +537,13 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="50" nodename="IOBox (String)">
-   <BOUNDS height="255" left="90" top="5955" type="Node" width="1035">
+   <BOUNDS height="255" left="165" top="5985" type="Node" width="1035">
    </BOUNDS>
-   <BOUNDS height="300" left="90" top="5955" type="Box" width="2235">
+   <BOUNDS height="285" left="165" top="5985" type="Box" width="4020">
    </BOUNDS>
    <BOUNDS height="160" left="-120" top="915" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|the osc-encoded message|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the osc-encoded message represented as string|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -551,7 +551,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" hiddenwhenlocked="0" id="49" nodename="IOBox (String)">
-   <PIN pinname="Input String" visible="1" slicecount="1" values="I2J1bmRsZQAAAAAAAAAAAQAAACQvdGlja3RhY2sAAAAscwAAMjAxMy4wMS4wNy0wMi40MC4zMwA=" encoded="1">
+   <PIN pinname="Input String" visible="1" slicecount="1" encoded="1" values="I2J1bmRsZQAAAAAAAAAAAQAAACQvdGlja3RhY2sAAAAscwAAMjAxMy4wMS4wNy0wMi40MC4zMwA=">
    </PIN>
    <BOUNDS height="0" left="60" top="6300" type="Node" width="0">
    </BOUNDS>
@@ -682,4 +682,18 @@
    <BOUNDS height="0" left="240" top="8535" type="Node" width="0">
    </BOUNDS>
    </NODE>
+   <NODE systemname="AsString (Raw)" nodename="AsString (Raw)" componentmode="Hidden" id="95">
+   <BOUNDS type="Node" left="60" top="5490" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="us-ascii">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="88" srcpinname="OSCMessage" dstnodeid="95" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="95" srcpinname="Output" dstnodeid="49" dstpinname="Input String">
+   </LINK>
    </PATCH>
