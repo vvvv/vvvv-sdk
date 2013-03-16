@@ -14,7 +14,7 @@ using System.IO;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    class StringOutStream : BufferedIOStream<string>
+    class StringOutStream : MemoryIOStream<string>
     {
         private readonly IStringOut FStringOut;
         
@@ -37,7 +37,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class EnumOutStream<T> : BufferedIOStream<T>
+    class EnumOutStream<T> : MemoryIOStream<T>
     {
         protected readonly IEnumOut FEnumOut;
         
@@ -78,7 +78,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class NodeOutStream<T> : BufferedIOStream<T>, IGenericIO
+    class NodeOutStream<T> : MemoryIOStream<T>, IGenericIO
     {
         private readonly INodeOut FNodeOut;
         
@@ -207,7 +207,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
 
-    abstract class ResourceOutStream<T, TResource, TMetadata> : BufferedIOStream<T>, IDXResourcePin
+    abstract class ResourceOutStream<T, TResource, TMetadata> : MemoryIOStream<T>, IDXResourcePin
         where T : DXResource<TResource, TMetadata>
         where TResource : ComObject
     {

@@ -496,9 +496,9 @@ namespace VVVV.Utils.Streams
             return new ReverseStream<T>(source);
         }
 
-        public static BufferedIOStream<T> ToStream<T>(this IEnumerable<T> source)
+        public static MemoryIOStream<T> ToStream<T>(this IEnumerable<T> source)
         {
-            return new BufferedIOStream<T>(source.ToArray());
+            return new MemoryIOStream<T>(source.ToArray());
         }
     }
 }
