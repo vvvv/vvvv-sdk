@@ -9,7 +9,7 @@ namespace VVVV.Utils.Streams
 	{
         public class Buffer : IDisposable
         {
-            public T[] Array { get; private set; }
+            public readonly T[] Array;
 
             public Buffer(T[] array)
             {

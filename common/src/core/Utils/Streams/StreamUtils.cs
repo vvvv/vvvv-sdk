@@ -132,6 +132,11 @@ namespace VVVV.Utils.Streams
         {
             return new CyclicStreamReader<T>(stream);
         }
+
+        public static BufferedStreamWriter<T> GetBufferedWriter<T>(this IOutStream<T> stream)
+        {
+            return new BufferedStreamWriter<T>(stream);
+        }
         
         public static int GetNumSlicesAhead(IStreamer streamer, int index, int length, int stride)
         {
