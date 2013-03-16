@@ -1,0 +1,151 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\work\tempest\tempest\patches\ProjectiveToRealWorld.v4p" filename="D:\Video Screen\Work\vvvv\Modules\KinectDepth2World.v4p" systemname="KinectDepth2World">
+   <BOUNDS height="7200" left="1575" top="7335" type="Window" width="6180">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="3885" top="315" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="3885" top="315" type="Box" width="855">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="FOV">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.01446867075074">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="17">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="1755" top="270" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="1755" top="270" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|XYZ In|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="13" nodename="Expr (Value)" systemname="Expr (Value)">
+   <BOUNDS height="100" left="3885" top="1470" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Term" visible="1">
+   </PIN>
+   <PIN pinname="A" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="4305" top="960" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="255" left="4305" top="960" type="Box" width="960">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="tan(a/2)*2">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Term" srcnodeid="14" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="A" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="18" nodename="Multiply (Value)" systemname="Multiply (Value)">
+   <BOUNDS height="100" left="1005" top="2910" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="19" nodename="Multiply (Value)" systemname="Multiply (Value)">
+   <BOUNDS height="100" left="1005" top="3420" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="1755" top="5790" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="1755" top="5790" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|XYZ Out|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Input 1" srcnodeid="18" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="38" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
+   <BOUNDS height="100" left="1770" top="870" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="XYZ" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="39" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
+   <BOUNDS height="100" left="1755" top="5295" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="39" dstpinname="Z" srcnodeid="38" srcpinname="Z">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Y Input Value" srcnodeid="39" srcpinname="XYZ">
+   </LINK>
+   <NODE componentmode="Hidden" id="41" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
+   <BOUNDS height="100" left="1005" top="1560" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="41" dstpinname="X" srcnodeid="38" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="41" dstpinname="Y" srcnodeid="38" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Input 2" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="42" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="100" left="1005" top="4725" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="39" dstpinname="X" srcnodeid="42" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="39" dstpinname="Y" srcnodeid="42" srcpinname="Y">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Z" dstnodeid="18" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="XY" dstnodeid="18" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="42" dstpinname="XY">
+   </LINK>
+   </PATCH>

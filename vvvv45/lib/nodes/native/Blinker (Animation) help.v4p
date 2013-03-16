@@ -1,0 +1,123 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Blinker (Animation) help.v4p">
+   <BOUNDS height="4785" left="6990" top="2310" type="Window" width="4230">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1335" top="1500" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4680" top="7095" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="780" left="1335" top="1500" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Blinker (Animation)">
+   <BOUNDS height="270" left="2085" top="2880" type="Node" width="645">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="BlinkStyle" slicecount="1" visible="1" values="OkeyDokey">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1335" top="3540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11205" top="7395" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="780" left="1335" top="3540" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="2670" top="990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11415" top="7830" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1785" left="2670" top="990" type="Box" width="1095">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="BlinkSlow">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="BlinkStyle" srcnodeid="1" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="420" left="135" top="1470" type="Node" width="3615">
+   </BOUNDS>
+   <BOUNDS height="1125" left="135" top="1470" type="Box" width="1170">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|click to blink.&cr;&lf;some patterns (Standby) blink, when blinker&apos;s input = 0!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="510" left="15" top="390" type="Box" width="2910">
+   </BOUNDS>
+   <BOUNDS height="160" left="420" top="8280" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Generates various classic blink patterns used in consumer electronics|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4320">
+   </BOUNDS>
+   <BOUNDS height="160" left="420" top="8280" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Blinker - Animation|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

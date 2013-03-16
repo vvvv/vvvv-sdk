@@ -1,0 +1,227 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\help\AudioIn (BassAsio) help.v4p">
+   <BOUNDS height="9945" left="3210" top="1230" type="Window" width="8520">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3750" top="1635" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11670" top="7800" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="3750" top="1635" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="10" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.RMSNode">
+   <PIN pinname="Handle In" visible="1">
+   </PIN>
+   <PIN pinname="RMS" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2715" top="3300" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2715" top="3300" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="11520" top="4590" type="Window" width="0">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="10" srcpinname="RMS">
+   </LINK>
+   <NODE id="9" nodename="Map (Value)">
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2430" top="3960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source Minimum" slicecount="1" values="-100">
+   </PIN>
+   <PIN pinname="Source Maximum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Mapping" slicecount="1" values="Wrap">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE id="8" nodename="Queue (Spreads)">
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Frame Count" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1995" top="4755" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="do Insert" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="POINT (GDI)">
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1215" top="5760" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Type" slicecount="1" values="Dot">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="X" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE id="6" nodename="LinearSpread (Spreads)">
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="465" top="4425" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Layers" srcnodeid="7" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="Renderer (GDI)">
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="840" top="6375" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2310" left="840" top="6375" type="Box" width="4020">
+   </BOUNDS>
+   <BOUNDS height="4860" left="11625" top="7200" type="Window" width="6120">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Frame Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="810" top="3420" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="810" top="3420" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="12690" top="5385" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Queue Size|">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="100">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1860" top="1800" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4380" top="2160" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1860" top="1800" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Channel Count|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="615" top="1830" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4965" top="2655" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="615" top="1830" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Channel Index|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5160" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8505" top="2280" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="4155" left="5160" top="1605" type="Box" width="2895">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|Channel index is the index on your card.&cr;&lf;&cr;&lf;Channel count allows you to merge consecutive input chennels on your card into one (merging channel 1 and 2 gives you a stereo in for example)|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.BassAsioAudioInNode">
+   <BOUNDS height="0" left="2475" top="2685" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="4680" top="2835" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2475" top="2685" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Device" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Channel Index" visible="1">
+   </PIN>
+   <PIN pinname="Channels Count" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Channel Index" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Channels Count" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Enabled" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Handle In" srcnodeid="0" srcpinname="Handle">
+   </LINK>
+   <NODE id="13" componentmode="InABox" nodename="IOBox (String)">
+   <BOUNDS type="Node" height="255" left="240" top="645" width="570">
+   </BOUNDS>
+   <BOUNDS type="Box" height="330" left="240" top="645" width="2895">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="10110" top="16065" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Audio input from Asio card channel|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="12" componentmode="InABox" nodename="IOBox (String)">
+   <BOUNDS type="Node" height="270" left="240" top="270" width="915">
+   </BOUNDS>
+   <BOUNDS type="Box" height="390" left="240" top="270" width="4095">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="10110" top="16065" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|AudioIn - BassAsio|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>

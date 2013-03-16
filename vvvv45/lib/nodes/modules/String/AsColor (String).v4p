@@ -1,0 +1,139 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\String\AsColor (String).v4p">
+   <BOUNDS height="6000" left="4005" top="11295" type="Window" width="9000">
+   </BOUNDS>
+   <NODE id="7" nodename="Separate (String)" systemname="Separate (String)">
+   <BOUNDS height="0" left="1785" top="2010" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Keep Quotes" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Ignore between" slicecount="1" values="Pipe">
+   </PIN>
+   <PIN pinname="Former Index" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="RGB (Color Join)" systemname="RGB (Color Join)">
+   <BOUNDS height="270" left="1995" top="5025" type="Node" width="735">
+   </BOUNDS>
+   <PIN pinname="Red" visible="1">
+   </PIN>
+   <PIN pinname="Green" visible="1">
+   </PIN>
+   <PIN pinname="Blue" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="AsValue (String)" systemname="AsValue (String)">
+   <BOUNDS height="0" left="1800" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="645" top="5805" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5970" top="9975" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="645" top="5805" type="Box" width="1440">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Color Input" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1740" top="60" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4425" top="5430" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="645" left="1740" top="60" type="Box" width="7215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Input color String|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2580" top="6060" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11040" top="3660" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1545" left="2580" top="6060" type="Box" width="1965">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Former Index|">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Former Index">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="3" srcpinname="Output String">
+   </LINK>
+   <NODE id="1" nodename="Separate (String)" systemname="Separate (String)">
+   <BOUNDS height="0" left="1785" top="2490" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Ignore between" slicecount="1" values="None">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE id="0" nodename="Vector (4d Split)" systemname="Vector (4d Split)">
+   <BOUNDS height="0" left="1830" top="3585" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZW" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="W" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="XYZW" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Red" srcnodeid="0" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Green" srcnodeid="0" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Blue" srcnodeid="0" srcpinname="Z">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Alpha" srcnodeid="0" srcpinname="W">
+   </LINK>
+   <INFO author="vvvv group" description="Returns the Color to a String that is stored in the XML-Description of a patch." tags="convert">
+   </INFO>
+   </PATCH>
