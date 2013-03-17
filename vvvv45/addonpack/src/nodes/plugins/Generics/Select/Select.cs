@@ -101,4 +101,17 @@ namespace VVVV.Nodes
 	{	
 	}
 	#endregion Enumerations Node
+	
+	#region Raw Node
+	[PluginInfo(Name = "Select", 
+				Category = "Raw",
+				Version = "Bin",				
+				Help = "select the slices which form the new spread", 
+				Tags = "select, repeat",
+				Author = "woei")]
+	
+	public class SelectRaw : Select<System.IO.Stream>
+	{	
+	}
+	#endregion
 }
