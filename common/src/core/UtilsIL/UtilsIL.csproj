@@ -51,10 +51,10 @@
   </Target>
   <Target Name="CoreDecompile" Inputs="@(IntermediateAssembly)" Outputs="$(ILFile)" Condition=" Exists ( @(IntermediateAssembly) ) ">
     <GetFrameworkSdkPath>
-      <Output TaskParameter="Path" PropertyName="FrameworkSdkPath" />
+      <Output TaskParameter="FrameworkSdkVersion40Path" PropertyName="FrameworkSdkPath" />
     </GetFrameworkSdkPath>
     <PropertyGroup>
-      <ILDasm>"$(FrameworkSdkPath)bin\ildasm.exe" /nobar /linenum /output:"$(ILFile)" @(IntermediateAssembly->'"%(FullPath)"', ' ')</ILDasm>
+      <ILDasm>"$(FrameworkSdkPath)bin\NetFX 4.0 Tools\ildasm.exe" /nobar /linenum /output:"$(ILFile)" @(IntermediateAssembly->'"%(FullPath)"', ' ')</ILDasm>
     </PropertyGroup>
     <Exec Command="$(ILDasm)" />
     <ItemGroup>
