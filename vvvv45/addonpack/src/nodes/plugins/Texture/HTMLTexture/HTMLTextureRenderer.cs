@@ -227,10 +227,13 @@ namespace VVVV.Nodes.Texture.HTML
 
             if (width != FWidth || height != FHeight)
             {
-                FTextureResource.Dispose();
-                FWidth = width;
-                FHeight = height;
-                FBrowser.SetSize(CefPaintElementType.View, width, height);
+                lock (FTextures)
+                {
+                    FTextureResource.Dispose();
+                    FWidth = width;
+                    FHeight = height;
+                    FBrowser.SetSize(CefPaintElementType.View, width, height);
+                }
             }
         }
 
@@ -350,10 +353,13 @@ namespace VVVV.Nodes.Texture.HTML
 
         private void UpdateDom()
         {
-            using (var mainFrame = FBrowser.GetMainFrame())
+            if (FBrowser != null)
             {
-                var domVisitor = new WebClient.DomVisitor(this);
-                mainFrame.VisitDom(domVisitor);
+                using (var mainFrame = FBrowser.GetMainFrame())
+                {
+                    var domVisitor = new WebClient.DomVisitor(this);
+                    mainFrame.VisitDom(domVisitor);
+                }
             }
         }
 
@@ -453,7 +459,9 @@ namespace VVVV.Nodes.Texture.HTML
 
         private void WriteToTexture(Rectangle rect, IntPtr buffer, int stride, EX9.Texture texture)
         {
-            // TODO: Do not lock entire surface.
+            // Rect needs to be inside of Width/Height
+            rect = Rectangle.Intersect(new Rectangle(0, 0, FWidth, FHeight), rect);
+            if (rect == Rectangle.Empty) return;
             var dataRect = texture.LockRectangle(0, rect, LockFlags.None);
             try
             {
