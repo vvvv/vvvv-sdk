@@ -92,7 +92,7 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
-        class DomVisitor : CefDomVisitor
+        internal class DomVisitor : CefDomVisitor
         {
             private readonly HTMLTextureRenderer FRenderer;
 

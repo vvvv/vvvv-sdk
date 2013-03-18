@@ -93,6 +93,9 @@ namespace VVVV.Nodes.ImagePlayer
             set;
         }
 
+        public int Width { get { return Decoder != null ? Decoder.Width : -1; } }
+        public int Height { get { return Decoder != null ? Decoder.Height : -1; } }
+
         public FrameDecoder Decoder
         {
             get;

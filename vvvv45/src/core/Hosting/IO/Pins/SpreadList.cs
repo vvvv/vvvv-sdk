@@ -13,7 +13,7 @@ namespace VVVV.Hosting.Pins
 	abstract class SpreadList<TSpread> : Spread<TSpread>, IDisposable
 	    where TSpread : class, ISynchronizable, IFlushable
 	{
-	    class SpreadListStream : BufferedIOStream<TSpread>
+	    class SpreadListStream : MemoryIOStream<TSpread>
 	    {
             public override bool Sync()
             {

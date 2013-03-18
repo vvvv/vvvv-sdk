@@ -18,6 +18,7 @@ using VVVV.Hosting.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Collections;
+using VVVV.Core.Model;
 
 namespace VVVV.Hosting.Factories
 {
@@ -52,10 +53,6 @@ namespace VVVV.Hosting.Factories
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
         
-        protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
-
-
-
         public Dictionary<string, IPluginBase> FNodesPath = new Dictionary<string, IPluginBase>();
         public Dictionary<IPluginBase, IPluginHost2> FNodes = new Dictionary<IPluginBase, IPluginHost2>();
         
@@ -108,9 +105,8 @@ namespace VVVV.Hosting.Factories
             
             //create the new plugin
             plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
-            
-            pluginHost.Plugin = plugin;
-            
+            if (plugin != null)
+                pluginHost.Plugin = plugin;
             return true;
         }
         
@@ -136,7 +132,7 @@ namespace VVVV.Hosting.Factories
             var nodeInfos = new List<INodeInfo>();
             
             // We can't handle dynamic plugins
-            if (!IsDynamicAssembly(filename))
+            if (!MsBuildProject.IsDynamicAssembly(filename))
                 LoadNodeInfosFromFile(filename, filename, ref nodeInfos, true);
             
             return nodeInfos;
@@ -343,40 +339,49 @@ namespace VVVV.Hosting.Factories
             FStartableRegistry.ProcessAssembly(assembly);
 
             var type = assembly.GetType(nodeInfo.Arguments);
-            var attribute = GetPluginInfoAttributeData(type);
-            if (attribute != null)
+            // type can be null if assembly is corrupt or doesn't contain cached node info anymore
+            if (type != null)
             {
-                var pluginContainer = new PluginContainer(pluginHost as IInternalPluginHost, FIORegistry, FParentContainer, type, nodeInfo);
-
-                // We intercept the plugin to manage IOHandlers.
-                plugin = pluginContainer;
-                FPluginContainers[pluginContainer.PluginBase] = pluginContainer;
-                
-                // HACK: FPluginHost is null in case of WindowSwitcher and friends
-                if (pluginHost != null)
+                var attribute = GetPluginInfoAttributeData(type);
+                if (attribute != null)
                 {
-                    AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, pluginContainer.PluginBase);
+                    var pluginContainer = new PluginContainer(pluginHost as IInternalPluginHost, FIORegistry, FParentContainer, type, nodeInfo);
+
+                    // We intercept the plugin to manage IOHandlers.
+                    plugin = pluginContainer;
+                    FPluginContainers[pluginContainer.PluginBase] = pluginContainer;
+
+                    // HACK: FPluginHost is null in case of WindowSwitcher and friends
+                    if (pluginHost != null)
+                    {
+                        AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, pluginContainer.PluginBase);
+                    }
+
+                    // Send event, clients are not interested in wrapping plugin, so send original here.
+                    if (this.PluginCreated != null) { this.PluginCreated(pluginContainer.PluginBase, pluginHost); }
                 }
-                
-                // Send event, clients are not interested in wrapping plugin, so send original here.
-                if (this.PluginCreated != null) { this.PluginCreated(pluginContainer.PluginBase, pluginHost); }
+                else
+                {
+                    var v1Plugin = (IPlugin)assembly.CreateInstance(nodeInfo.Arguments);
+
+                    v1Plugin.SetPluginHost(pluginHost);
+
+                    plugin = v1Plugin;
+
+                    // HACK: FPluginHost is null in case of WindowSwitcher and friends
+                    if (pluginHost != null)
+                    {
+                        AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, plugin);
+                    }
+
+                    // Send event
+                    if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
+                }
             }
             else
             {
-                var v1Plugin = (IPlugin)assembly.CreateInstance(nodeInfo.Arguments);
-                
-                v1Plugin.SetPluginHost(pluginHost);
-                
-                plugin = v1Plugin;
-                
-                // HACK: FPluginHost is null in case of WindowSwitcher and friends
-                if (pluginHost != null)
-                {
-                    AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, plugin);
-                }
-                
-                // Send event
-                if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
+                pluginHost.Status |= StatusCode.HasInvalidData;
+                FLogger.Log(LogType.Warning, string.Format("Type '{0}' not found in assembly '{1}'. Failed to create plugin node {2} (ID: {3}).", nodeInfo.Arguments, assembly.FullName, nodeInfo.Username, pluginHost.GetID()));
             }
             
             return plugin;
@@ -531,11 +536,6 @@ namespace VVVV.Hosting.Factories
                 }
 
             }
-        }
-        
-        private bool IsDynamicAssembly(string filename)
-        {
-            return FDynamicRegExp.IsMatch(filename);
         }
     }
     

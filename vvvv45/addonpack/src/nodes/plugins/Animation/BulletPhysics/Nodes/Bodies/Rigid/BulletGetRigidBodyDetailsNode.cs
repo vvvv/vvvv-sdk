@@ -91,6 +91,8 @@ namespace VVVV.Nodes.Bullet
 				this.FStatic.SliceCount = this.FBodies.SliceCount;
 				this.FKinematic.SliceCount = this.FBodies.SliceCount;
                 this.FShapeTransform.SliceCount = this.FBodies.SliceCount;
+                this.FHasCustomObj.SliceCount = this.FBodies.SliceCount;
+                this.FCustomObj.SliceCount = this.FBodies.SliceCount;
 
 
 

@@ -44,6 +44,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
@@ -77,6 +78,9 @@
     <Compile Include="Commands\RenameCommand.cs" />
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Helper\NodeAndPinAttributes.cs" />
+    <Compile Include="Model\MissingDocument.cs" />
+    <Compile Include="View\MissingDocumentViewProvider.cs" />
+    <Compile Include="View\DocumentViewProvider.cs" />
     <Compile Include="View\HDEForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,21 +156,17 @@
     <Compile Include="Model\FX\FXDocument.cs" />
     <Compile Include="Model\FX\FXProject.cs" />
     <Compile Include="Model\FX\FXReference.cs" />
-    <Compile Include="Model\PersistentIDContainer.cs" />
     <Compile Include="Model\ProjectItem.cs" />
     <Compile Include="Model\Properties.cs" />
-    <Compile Include="Runtime\CS\CSCompiler.cs" />
     <Compile Include="Model\CS\CSDocument.cs" />
     <Compile Include="Model\CS\CSProject.cs" />
     <Compile Include="Runtime\CS\CSParser.cs" />
     <Compile Include="Runtime\CS\CSParserResults.cs" />
     <Compile Include="Model\Document.cs" />
-    <Compile Include="Runtime\ICompiler.cs" />
     <Compile Include="Model\IDContainer.cs" />
     <Compile Include="Model\IDItem.cs" />
     <Compile Include="Model\_Interfaces\IDocument.cs" />
     <Compile Include="Model\_Interfaces\IPatchDocument.cs" />
-    <Compile Include="Model\_Interfaces\IPersistent.cs" />
     <Compile Include="Model\_Interfaces\IProject.cs" />
     <Compile Include="Model\_Interfaces\IProjectFactory.cs" />
     <Compile Include="Model\_Interfaces\IProjectItem.cs" />
@@ -176,7 +176,7 @@
     <Compile Include="_Interfaces\IIDContainer.cs" />
     <Compile Include="Model\MsBuildProject.cs" />
     <Compile Include="Model\Project.cs" />
-    <Compile Include="Model\ProjectReference.cs" />
+    <Compile Include="Model\MsBuildProjectReference.cs" />
     <Compile Include="Model\RemotableObject.cs" />
     <Compile Include="Model\Solution.cs" />
     <Compile Include="Model\TextDocument.cs" />

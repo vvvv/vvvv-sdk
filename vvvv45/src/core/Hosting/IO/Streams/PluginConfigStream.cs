@@ -9,7 +9,7 @@ using VVVV.Utils.VColor;
 namespace VVVV.Hosting.IO.Streams
 {
     // Slow
-    abstract class PluginConfigStream<T> : BufferedIOStream<T>
+    abstract class PluginConfigStream<T> : MemoryIOStream<T>
     {  
         private readonly IPluginConfig FPluginConfig;
         private bool FIsFlushing;

@@ -39,7 +39,7 @@ namespace VVVV.PluginInterfaces.V2
 	    private readonly IIOFactory FFactory;
 		private readonly IPluginIO FPluginIO;
 		
-		public Pin(IIOFactory factory, IPluginIO pluginIO, BufferedIOStream<T> stream)
+		public Pin(IIOFactory factory, IPluginIO pluginIO, MemoryIOStream<T> stream)
 			: base(stream)
 		{
 		    FFactory = factory;
