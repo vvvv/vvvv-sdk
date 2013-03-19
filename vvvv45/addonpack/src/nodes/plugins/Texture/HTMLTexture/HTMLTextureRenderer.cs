@@ -408,6 +408,7 @@ namespace VVVV.Nodes.Texture.HTML
 
                 FBrowser = browser;
                 FBrowser.SetSize(CefPaintElementType.View, FWidth, FHeight);
+                FBrowser.SendFocusEvent(true);
             }
         }
 
@@ -512,10 +513,6 @@ namespace VVVV.Nodes.Texture.HTML
 
         private void UpdateTexture(CefBrowser browser, EX9.Texture texture)
         {
-            //            IntPtr buffer = Marshal.AllocHGlobal(FWidth * FHeight * 4);
-            //            FBrowser.GetImage(CefPaintElementType.View, FWidth, FHeight, buffer);
-            //            WriteToTexture(new Rectangle(0, 0, FWidth, FHeight), buffer, FWidth * 4, texture);
-            //            Marshal.FreeHGlobal(buffer);
         }
 
         private void DestroyTexture(CefBrowser browser, EX9.Texture texture, DestroyReason reason)
