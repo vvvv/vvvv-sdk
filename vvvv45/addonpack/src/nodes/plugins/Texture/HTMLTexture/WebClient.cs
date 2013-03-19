@@ -19,19 +19,16 @@ namespace VVVV.Nodes.Texture.HTML
             
             protected override bool GetScreenPoint(CefBrowser browser, int viewX, int viewY, out int screenX, out int screenY)
             {
-                Shell.Instance.Logger.Log(LogType.Debug, string.Format("GetScreenPoint ({0}, {0})", viewX, viewY));
                 return base.GetScreenPoint(browser, viewX, viewY, out screenX, out screenY);
             }
             
             protected override bool GetScreenRect(CefBrowser browser, out CefRect rect)
             {
-                Shell.Instance.Logger.Log(LogType.Debug, string.Format("GetScreenRect"));
                 return base.GetScreenRect(browser, out rect);
             }
             
             protected override bool GetViewRect(CefBrowser browser, out CefRect rect)
             {
-                Shell.Instance.Logger.Log(LogType.Debug, string.Format("GetViewRect"));
                 return base.GetViewRect(browser, out rect);
             }
             
