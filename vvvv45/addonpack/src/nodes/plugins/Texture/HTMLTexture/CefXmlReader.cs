@@ -221,6 +221,10 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 return xmlReader.MoveToNextAttribute();
             }
+            if (!currentNode.IsElement)
+            {
+                return false;
+            }
             if (!currentNode.HasElementAttributes())
             {
                 return false;
@@ -414,24 +418,24 @@ namespace VVVV.Nodes.Texture.HTML
                     else
                     {
                         var parent = nodeStack.Peek();
-                        var lastChild = parent.GetLastChild();
-                        if (currentNode.IsSame(lastChild))
+                        using (var lastChild = parent.GetLastChild())
                         {
-                            // Time to move back up
-                            nodeStack.Pop();
-                            traverseDirection = TraverseDirection.Up;
-                            currentNode.Dispose();
-                            currentNode = parent;
+                            if (currentNode.IsSame(lastChild))
+                            {
+                                // Time to move back up
+                                nodeStack.Pop();
+                                traverseDirection = TraverseDirection.Up;
+                                currentNode.Dispose();
+                                currentNode = parent;
+                            }
+                            else
+                            {
+                                // There're still siblings left to visit
+                                var nextSibling = currentNode.GetNextSibling();
+                                currentNode.Dispose();
+                                currentNode = nextSibling;
+                            }
                         }
-                        else
-                        {
-                            // There're still siblings left to visit
-                            var nextSibling = currentNode.GetNextSibling();
-                            currentNode.Dispose();
-                            currentNode = nextSibling;
-                        }
-                        // Avoid double disposal
-                        GC.SuppressFinalize(lastChild);
                     }
                     break;
                 case TraverseDirection.Up:
@@ -439,24 +443,24 @@ namespace VVVV.Nodes.Texture.HTML
                     if (nodeStack.Count > 1)
                     {
                         var parent = nodeStack.Peek();
-                        var lastChild = parent.GetLastChild();
-                        if (currentNode.IsSame(lastChild))
+                        using (var lastChild = parent.GetLastChild())
                         {
-                            // No sibling left, go further up
-                            nodeStack.Pop();
-                            currentNode.Dispose();
-                            currentNode = parent;
+                            if (currentNode.IsSame(lastChild))
+                            {
+                                // No sibling left, go further up
+                                nodeStack.Pop();
+                                currentNode.Dispose();
+                                currentNode = parent;
+                            }
+                            else
+                            {
+                                // There's a sibling, try to traverse down again (depth first)
+                                traverseDirection = TraverseDirection.Down;
+                                var nextSibling = currentNode.GetNextSibling();
+                                currentNode.Dispose();
+                                currentNode = nextSibling;
+                            }
                         }
-                        else
-                        {
-                            // There's a sibling, try to traverse down again (depth first)
-                            traverseDirection = TraverseDirection.Down;
-                            var nextSibling = currentNode.GetNextSibling();
-                            currentNode.Dispose();
-                            currentNode = nextSibling;
-                        }
-                        // Avoid double disposal
-                        GC.SuppressFinalize(lastChild);
                     }
                     else
                     {
@@ -472,7 +476,7 @@ namespace VVVV.Nodes.Texture.HTML
             if (currentNode != null)
             {
                 // See if this node defines a new namespace
-                if (currentNode.HasElementAttributes())
+                if (currentNode.IsElement && currentNode.HasElementAttributes())
                 {
                     attributeMap = currentNode.GetElementAttributes();
                     switch (traverseDirection)
