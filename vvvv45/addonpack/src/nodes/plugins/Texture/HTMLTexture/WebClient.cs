@@ -50,31 +50,29 @@ namespace VVVV.Nodes.Texture.HTML
         
         class LifeSpanHandler : CefLifeSpanHandler
         {
-            private readonly WebClient FWebClient;
             private readonly HTMLTextureRenderer FRenderer;
             
-            public LifeSpanHandler(WebClient webClient, HTMLTextureRenderer renderer)
+            public LifeSpanHandler(HTMLTextureRenderer renderer)
             {
-                FWebClient = webClient;
                 FRenderer = renderer;
             }
 
             protected override bool OnBeforePopup(CefBrowser parentBrowser, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, string url, ref CefClient client, CefBrowserSettings settings)
             {
+                // We do not support popups
                 FRenderer.LoadURL(url);
                 return true;
             }
             
             protected override void OnAfterCreated(CefBrowser browser)
             {
-                FRenderer.FErrorText = string.Empty;
                 FRenderer.Attach(browser);
                 base.OnAfterCreated(browser);
             }
             
             protected override void OnBeforeClose(CefBrowser browser)
             {
-                FRenderer.Detach(browser);
+                FRenderer.Detach();
                 browser.Dispose();
                 base.OnBeforeClose(browser);
             }
@@ -86,38 +84,6 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 var currentTarget = e.GetCurrentTarget();
                 var target = e.GetTarget();
-            }
-        }
-
-        internal class DomVisitor : CefDomVisitor
-        {
-            private readonly HTMLTextureRenderer FRenderer;
-
-            public DomVisitor(HTMLTextureRenderer renderer)
-            {
-                FRenderer = renderer;
-            }
-
-            protected override void Visit(CefDomDocument document)
-            {
-                //var rootNode = document.GetDocument();
-                //rootNode.AddEventListener("mouseover", new DomEventEventListener(), false);
-                using (var xmlReader = new CefXmlReader(document))
-                {
-                    XDocument dom = null;
-                    try
-                    {
-                        dom = XDocument.Load(xmlReader);
-                    }
-                    catch (Exception)
-                    {
-                        dom = null;
-                    }
-                    lock (FRenderer.FLock)
-                    {
-                        FRenderer.FCurrentDom = dom;
-                    }
-                }
             }
         }
         
@@ -132,40 +98,19 @@ namespace VVVV.Nodes.Texture.HTML
             
             protected override void OnLoadStart(CefBrowser browser, CefFrame frame)
             {
-                lock (FRenderer.FLock)
-                {
-                    FRenderer.FFrameLoadCount++;
-                    FRenderer.FErrorText = string.Empty;
-                    if (frame.IsMain)
-                    {
-                        FRenderer.FCurrentUrl = frame.GetURL();
-                    }
-                }
+                FRenderer.OnLoadStart(frame);
                 base.OnLoadStart(browser, frame);
             }
             
             protected override bool OnLoadError(CefBrowser browser, CefFrame frame, CefHandlerErrorCode errorCode, string failedUrl, ref string errorText)
             {
-                lock (FRenderer.FLock)
-                {
-                    FRenderer.FCurrentDom = null;
-                    FRenderer.FFrameLoadCount = 0;
-                    FRenderer.FErrorText = errorText;
-                }
+                FRenderer.OnLoadError(frame, errorCode, failedUrl, errorText);
                 return base.OnLoadError(browser, frame, errorCode, failedUrl, ref errorText);
             }
             
             protected override void OnLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode)
             {
-                lock (FRenderer.FLock)
-                {
-                    FRenderer.FFrameLoadCount--;
-                    FRenderer.FErrorText = string.Empty;
-                }
-                if (frame.IsMain)
-                {
-                    frame.VisitDom(new DomVisitor(FRenderer));
-                }
+                FRenderer.OnLoadEnd(frame, httpStatusCode);
                 base.OnLoadEnd(browser, frame, httpStatusCode);
             }
         }
@@ -207,7 +152,6 @@ namespace VVVV.Nodes.Texture.HTML
 
             protected override bool OnConsoleMessage(CefBrowser browser, string message, string source, int line)
             {
-                FRenderer.Logger.Log(LogType.Message, string.Format("{0} ({1}:{2})", message, source, line));
                 return base.OnConsoleMessage(browser, message, source, line);
             }
         }
@@ -222,7 +166,7 @@ namespace VVVV.Nodes.Texture.HTML
         public WebClient(HTMLTextureRenderer renderer)
         {
             FRenderHandler = new RenderHandler(renderer);
-            FLifeSpanHandler = new LifeSpanHandler(this, renderer);
+            FLifeSpanHandler = new LifeSpanHandler(renderer);
             FLoadHandler = new LoadHandler(renderer);
             FKeyboardHandler = new KeyboardHandler();
             FRequestHandler = new RequestHandler();

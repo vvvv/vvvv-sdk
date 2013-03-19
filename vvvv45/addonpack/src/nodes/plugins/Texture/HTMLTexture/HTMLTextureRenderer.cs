@@ -24,7 +24,6 @@ namespace VVVV.Nodes.Texture.HTML
         public const int DEFAULT_HEIGHT = 480;
         private readonly DXResource<EX9.Texture, CefBrowser> FTextureResource;
         private readonly List<EX9.Texture> FTextures = new List<EX9.Texture>();
-        private readonly WebClient FWebClient;
         private volatile bool FEnabled;
         private CefBrowser FBrowser;
         private int FWidth = DEFAULT_WIDTH;
@@ -35,16 +34,23 @@ namespace VVVV.Nodes.Texture.HTML
         private MouseState FMouseState;
         private KeyboardState FKeyboardState = KeyboardState.Empty;
         private Vector2D FScrollTo;
-        internal readonly object FLock = new object();
-        internal XDocument FCurrentDom;
-        internal int FFrameLoadCount;
-        internal string FCurrentUrl;
-        internal string FErrorText;
-        internal ILogger Logger;
+        private readonly object FLock = new object();
+        private XDocument FCurrentDom;
+        private int FFrameLoadCount;
+        private string FCurrentUrl;
+        private string FErrorText;
+        private ILogger Logger;
 
         public HTMLTextureRenderer(ILogger logger)
         {
             Logger = logger;
+
+            FTextureResource = new DXResource<EX9.Texture, CefBrowser>(
+                FBrowser,
+                CreateTexture,
+                UpdateTexture,
+                DestroyTexture
+               );
 
             var settings = new CefBrowserSettings();
             settings.DeveloperToolsDisabled = true;
@@ -59,16 +65,9 @@ namespace VVVV.Nodes.Texture.HTML
                 windowInfo.TransparentPainting = true;
                 windowInfo.SetAsOffScreen(IntPtr.Zero);
 
-                FWebClient = new WebClient(this);
-                CefBrowser.Create(windowInfo, FWebClient, DEFAULT_URL, settings);
+                var webClient = new WebClient(this);
+                CefBrowser.Create(windowInfo, webClient, DEFAULT_URL, settings);
             }
-
-            FTextureResource = new DXResource<EX9.Texture, CefBrowser>(
-                FBrowser,
-                CreateTexture,
-                UpdateTexture,
-                DestroyTexture
-               );
         }
 
         public void Dispose()
@@ -191,7 +190,11 @@ namespace VVVV.Nodes.Texture.HTML
         {
             lock (FLock)
             {
-                if (updateDom) UpdateDom();
+                if (updateDom && FBrowser != null)
+                {
+                    using (var frame = FBrowser.GetMainFrame())
+                        UpdateDom(frame);
+                }
                 dom = FCurrentDom;
                 rootElement = FCurrentDom != null ? FCurrentDom.Root : null;
                 isLoading = IsLoading;
@@ -351,15 +354,13 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
-        private void UpdateDom()
+        private void UpdateDom(CefFrame frame)
         {
-            if (FBrowser != null)
+            var visitor = new DomVisitor(this);
+            frame.VisitDom(visitor);
+            lock (FLock)
             {
-                using (var mainFrame = FBrowser.GetMainFrame())
-                {
-                    var domVisitor = new WebClient.DomVisitor(this);
-                    mainFrame.VisitDom(domVisitor);
-                }
+                FCurrentDom = visitor.Document;
             }
         }
 
@@ -409,10 +410,11 @@ namespace VVVV.Nodes.Texture.HTML
                 FBrowser = browser;
                 FBrowser.SetSize(CefPaintElementType.View, FWidth, FHeight);
                 FBrowser.SendFocusEvent(true);
+                FErrorText = string.Empty;
             }
         }
 
-        internal void Detach(CefBrowser browser)
+        internal void Detach()
         {
             lock (FLock)
             {
@@ -521,6 +523,42 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 FTextures.Remove(texture);
                 texture.Dispose();
+            }
+        }
+
+        internal void OnLoadStart(CefFrame frame)
+        {
+            lock (FLock)
+            {
+                FFrameLoadCount++;
+                FErrorText = string.Empty;
+                if (frame.IsMain)
+                {
+                    FCurrentUrl = frame.GetURL();
+                }
+            }
+        }
+
+        internal void OnLoadError(CefFrame frame, CefHandlerErrorCode errorCode, string failedUrl, string errorText)
+        {
+            lock (FLock)
+            {
+                FCurrentDom = null;
+                FFrameLoadCount = 0;
+                FErrorText = errorText;
+            }
+        }
+
+        internal void OnLoadEnd(CefFrame frame, int httpStatusCode)
+        {
+            lock (FLock)
+            {
+                FFrameLoadCount--;
+                FErrorText = string.Empty;
+            }
+            if (frame.IsMain)
+            {
+                UpdateDom(frame);
             }
         }
     }

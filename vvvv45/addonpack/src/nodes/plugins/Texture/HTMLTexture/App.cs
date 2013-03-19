@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CefGlue;
 
-namespace VVVV.Nodes.Texture
+namespace VVVV.Nodes.Texture.HTML
 {
     class App : CefApp
     {
