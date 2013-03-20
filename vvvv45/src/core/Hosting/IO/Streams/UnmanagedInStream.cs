@@ -133,6 +133,7 @@ namespace VVVV.Hosting.IO.Streams
         {
             FPLength = pLength;
             FValidateFunc = validateFunc;
+            IsChanged = true;
         }
         
         public int Length

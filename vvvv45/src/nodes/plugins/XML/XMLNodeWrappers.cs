@@ -6,6 +6,8 @@ using VVVV.Core;
 using System.Xml;
 using System.Xml.Linq;
 using VVVV.PluginInterfaces.V2;
+using System.ComponentModel.Composition;
+using VVVV.Core.Logging;
 
 
 namespace VVVV.Nodes.XML
@@ -301,26 +303,39 @@ namespace VVVV.Nodes.XML
         [Input("XML")]
         public IDiffSpread<string> XML;
 
+        [Input("Validation")]
+        public IDiffSpread<Validation> Validation;
+
         [Output("Element")]
         public ISpread<XElement> RootElement;
 
         [Output("Document")]
         public ISpread<XDocument> Document;
 
+        [Import]
+        public ILogger FLogger;
+
         public void Evaluate(int spreadMax)
         {
-            if (!XML.IsChanged) return;
+            if (!SpreadUtils.AnyChanged(XML, Validation)) return;
 
             RootElement.SliceCount = spreadMax;
             Document.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
-                XElement element;
-                XDocument dom;
-                XMLNodes.AsElement(XML[i], out dom, out element);
-                Document[i] = dom;
-                RootElement[i] = element;
+                try
+                {
+                    var document = XMLNodes.AsDocument(XML[i], Validation[i]);
+                    Document[i] = document;
+                    RootElement[i] = document.Root;
+                }
+                catch (Exception e)
+                {
+                    Document[i] = null;
+                    RootElement[i] = null;
+                    FLogger.Log(e);
+                }
             }
         }
     }

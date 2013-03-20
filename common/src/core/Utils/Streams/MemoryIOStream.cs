@@ -8,14 +8,14 @@ namespace VVVV.Utils.Streams
     /// Useful as wrapper if a stream is accessed randomly.
     /// </summary>
     [ComVisible(false)]
-    public class BufferedIOStream<T> : IIOStream<T>
+    public class MemoryIOStream<T> : IIOStream<T>
     {
         [ComVisible(false)]
         public class StreamReader : IStreamReader<T>
         {
-            private readonly BufferedIOStream<T> FStream;
+            private readonly MemoryIOStream<T> FStream;
             
-            internal StreamReader(BufferedIOStream<T> stream)
+            internal StreamReader(MemoryIOStream<T> stream)
             {
                 FStream = stream;
             }
@@ -114,9 +114,9 @@ namespace VVVV.Utils.Streams
         [ComVisible(false)]
         public class StreamWriter : IStreamWriter<T>
         {
-            private readonly BufferedIOStream<T> FStream;
+            private readonly MemoryIOStream<T> FStream;
             
-            internal StreamWriter(BufferedIOStream<T> stream)
+            internal StreamWriter(MemoryIOStream<T> stream)
             {
                 FStream = stream;
             }
@@ -196,14 +196,14 @@ namespace VVVV.Utils.Streams
         private int FCapacity;
         protected int FChangeCount;
         
-        public BufferedIOStream(int initialCapacity = 0)
+        public MemoryIOStream(int initialCapacity = 0)
         {
             FCapacity = initialCapacity;
             FBuffer = new T[initialCapacity];
             IsChanged = true;
         }
 
-        public BufferedIOStream(T[] buffer)
+        public MemoryIOStream(T[] buffer)
         {
             FCapacity = buffer.Length;
             FBuffer = buffer;
@@ -276,7 +276,7 @@ namespace VVVV.Utils.Streams
         
         public object Clone()
         {
-            var stream = new BufferedIOStream<T>(FCapacity);
+            var stream = new MemoryIOStream<T>(FCapacity);
             stream.Length = Length;
             Array.Copy(FBuffer, stream.FBuffer, stream.FBuffer.Length);
             return stream;

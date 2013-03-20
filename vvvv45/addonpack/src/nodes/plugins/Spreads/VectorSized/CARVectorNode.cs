@@ -152,5 +152,8 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class CAREnumBin : CARBinNode<EnumEntry> {}
 	
-	
+	#region PluginInfo
+	[PluginInfo(Name = "CAR", Category = "Raw", Version = "Bin", Help = "Splits the spread into the first element and the rest, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class CARRawBin : CARBinNode<System.IO.Stream> {}
 }
