@@ -36,7 +36,7 @@ namespace VVVV.Core.Model
     	/// </summary>
     	public static string GetRelativePath(this IReference reference, IProject project)
         {
-    		var projectDir = project.Location.GetLocalDir() + "\\";
+    		var projectDir = Path.GetDirectoryName(project.LocalPath) + "\\";
     		var relativePath = new Uri(projectDir).MakeRelativeUri(new Uri(reference.AssemblyLocation)).ToString();
             return Uri.UnescapeDataString(relativePath).Replace('/', '\\');
         }

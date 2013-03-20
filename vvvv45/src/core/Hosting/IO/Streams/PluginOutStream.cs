@@ -10,10 +10,11 @@ using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 using SlimDX;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    class StringOutStream : BufferedIOStream<string>
+    class StringOutStream : MemoryIOStream<string>
     {
         private readonly IStringOut FStringOut;
         
@@ -21,10 +22,10 @@ namespace VVVV.Hosting.IO.Streams
         {
             FStringOut = stringOut;
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FStringOut.SliceCount = Length;
                 for (int i = 0; i < Length; i++)
@@ -32,11 +33,11 @@ namespace VVVV.Hosting.IO.Streams
                     FStringOut.SetString(i, this[i]);
                 }
             }
-            base.Flush();
+            base.Flush(force);
         }
     }
     
-    class EnumOutStream<T> : BufferedIOStream<T>
+    class EnumOutStream<T> : MemoryIOStream<T>
     {
         protected readonly IEnumOut FEnumOut;
         
@@ -44,10 +45,10 @@ namespace VVVV.Hosting.IO.Streams
         {
             FEnumOut = enumOut;
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FEnumOut.SliceCount = Length;
                 for (int i = 0; i < Length; i++)
@@ -55,7 +56,7 @@ namespace VVVV.Hosting.IO.Streams
                     SetSlice(i, this[i]);
                 }
             }
-            base.Flush();
+            base.Flush(force);
         }
         
         protected virtual void SetSlice(int index, T value)
@@ -77,7 +78,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class NodeOutStream<T> : BufferedIOStream<T>, IGenericIO
+    class NodeOutStream<T> : MemoryIOStream<T>, IGenericIO
     {
         private readonly INodeOut FNodeOut;
         
@@ -98,32 +99,32 @@ namespace VVVV.Hosting.IO.Streams
         {
             return this[VMath.Zmod(index, Length)];
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FNodeOut.SliceCount = Length;
                 FNodeOut.MarkPinAsChanged();
             }
-            base.Flush();
+            base.Flush(force);
         }
     }
 
     class RawOutStream : IOutStream<System.IO.Stream>
     {
         private readonly IRawOut FRawOut;
-        private int length;
-        private bool markPinAsChanged;
+        private int FLength;
+        private bool FMarkPinAsChanged;
 
         public RawOutStream(IRawOut rawOut)
         {
             FRawOut = rawOut;
         }
 
-        public void Flush()
+        public void Flush(bool force = false)
         {
-            if (markPinAsChanged)
+            if (force || FMarkPinAsChanged)
             {
                 this.FRawOut.MarkPinAsChanged();
             }
@@ -136,56 +137,35 @@ namespace VVVV.Hosting.IO.Streams
 
         public int Length
         {
-            get { return this.length; }
+            get { return this.FLength; }
             set
             {
-                if (value != this.length)
+                if (value != this.FLength)
                 {
                     this.FRawOut.SliceCount = value;
-                    this.length = value;
+                    this.FLength = value;
                 }
             }
         }
 
         public IStreamWriter<System.IO.Stream> GetWriter()
         {
-            markPinAsChanged = true;
+            FMarkPinAsChanged = true;
             return new Writer(this);
         }
 
         class Writer : IStreamWriter<System.IO.Stream>
         {
-            private RawOutStream rawOutStream;
+            private RawOutStream FRawOutStream;
 
             public Writer(RawOutStream rawOutStream)
             {
-                this.rawOutStream = rawOutStream;
+                this.FRawOutStream = rawOutStream;
             }
 
-            public unsafe void Write(System.IO.Stream value, int stride = 1)
+            public void Write(System.IO.Stream value, int stride = 1)
             {
-                var buffer = MemoryPool<byte>.GetArray();
-                try
-                {
-                    byte* pByte;
-                    var itemsToRead = (int)value.Length;
-                    value.Position = 0;
-                    this.rawOutStream.FRawOut.SetDataLength(this.Position, itemsToRead, out pByte);
-                    while (itemsToRead > 0)
-                    {
-                        var destination = new IntPtr(pByte + value.Position);
-                        var itemsRead = value.Read(buffer, 0, buffer.Length);
-                        if (itemsRead > 0)
-                        {
-                            Marshal.Copy(buffer, 0, destination, itemsRead);
-                        }
-                        itemsToRead -= itemsRead;
-                    }
-                }
-                finally
-                {
-                    MemoryPool<byte>.PutArray(buffer);
-                }
+                this.FRawOutStream.FRawOut.SetData(this.Position, new ComIStream(value));
                 this.Position += stride;
             }
 
@@ -194,7 +174,7 @@ namespace VVVV.Hosting.IO.Streams
                 var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
                 for (int i = index; i < numSlicesToWrite; i++)
                 {
-                    Write(buffer[i]);
+                    Write(buffer[i], stride);
                 }
                 return numSlicesToWrite;
             }
@@ -217,7 +197,7 @@ namespace VVVV.Hosting.IO.Streams
 
             public int Length
             {
-                get { return this.rawOutStream.Length; }
+                get { return this.FRawOutStream.Length; }
             }
 
             public void Dispose()
@@ -227,7 +207,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
 
-    abstract class ResourceOutStream<T, TResource, TMetadata> : BufferedIOStream<T>, IDXResourcePin
+    abstract class ResourceOutStream<T, TResource, TMetadata> : MemoryIOStream<T>, IDXResourcePin
         where T : DXResource<TResource, TMetadata>
         where TResource : ComObject
     {
@@ -270,15 +250,15 @@ namespace VVVV.Hosting.IO.Streams
                 (TPinVisibility) attribute.Visibility
                );
         }
-        
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FInternalTextureOut.SliceCount = Length;
                 FInternalTextureOut.MarkPinAsChanged();
             }
-            base.Flush();
+            base.Flush(force);
         }
         
         Texture IDXTexturePin.this[Device device, int slice]
@@ -305,14 +285,14 @@ namespace VVVV.Hosting.IO.Streams
                );
         }
 
-        public override void Flush()
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 FInternalMeshOut.SliceCount = Length;
                 FInternalMeshOut.MarkPinAsChanged();
             }
-            base.Flush();
+            base.Flush(force);
         }
 
         Mesh IDXMeshPin.this[Device device, int slice]

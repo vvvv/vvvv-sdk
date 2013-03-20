@@ -47,7 +47,7 @@ namespace VVVV.Core.Helper
                 FTraverser.Traverse(assemblyReference);
             }
             
-            public void Visit(ProjectReference projectReference)
+            public void Visit(MsBuildProjectReference projectReference)
             {
                 FTraverser.Traverse(projectReference);
             }
@@ -86,7 +86,7 @@ namespace VVVV.Core.Helper
             TraverseChildren(assemblyReference);
         }
         
-        public void Traverse(ProjectReference projectReference)
+        public void Traverse(MsBuildProjectReference projectReference)
         {
             TraverseChildren(projectReference);
         }
@@ -141,7 +141,7 @@ namespace VVVV.Core.Helper
             TraverseChildren((IReference) assemblyReference);
         }
         
-        public virtual void TraverseChildren(ProjectReference projectReference)
+        public virtual void TraverseChildren(MsBuildProjectReference projectReference)
         {
             TraverseChildren((IReference) projectReference);
         }

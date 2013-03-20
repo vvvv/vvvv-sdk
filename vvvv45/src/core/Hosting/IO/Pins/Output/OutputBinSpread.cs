@@ -29,8 +29,8 @@ namespace VVVV.Hosting.Pins.Output
                 FDataContainer.Dispose();
                 FBinSizeContainer.Dispose();
             }
-            
-            public override void Flush()
+
+            public override void Flush(bool force = false)
             {
                 var buffer = MemoryPool<T>.GetArray();
                 var binSizeBuffer = MemoryPool<int>.GetArray();
@@ -62,7 +62,7 @@ namespace VVVV.Hosting.Pins.Output
                     FDataStream.Length = dataStreamLength;
                     using (var dataWriter = FDataStream.GetWriter())
                     {
-                        bool anyChanged = false;
+                        bool anyChanged = force || IsChanged;
                         for (int i = 0; i < Length; i++)
                         {
                             var spread = Buffer[i];
@@ -81,6 +81,8 @@ namespace VVVV.Hosting.Pins.Output
                                         dataWriter.Write(stream.Buffer, 0, stream.Length);
                                         break;
                                 }
+                                // Reset the changed flags
+                                stream.Flush(force);
                             }
                             else
                                 dataWriter.Position += spread.SliceCount;

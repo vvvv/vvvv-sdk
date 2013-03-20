@@ -51,7 +51,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Gets the stream this spread uses for reading and writing.
 		/// </summary>
-		BufferedIOStream<T> Stream
+		MemoryIOStream<T> Stream
 		{
 			get;
 		}

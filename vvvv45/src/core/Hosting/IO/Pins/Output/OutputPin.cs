@@ -8,7 +8,7 @@ namespace VVVV.Hosting.Pins.Output
 {
 	class OutputPin<T> : Pin<T>
 	{
-		public OutputPin(IIOFactory factory, IPluginOut pluginOut, BufferedIOStream<T> stream)
+		public OutputPin(IIOFactory factory, IPluginOut pluginOut, MemoryIOStream<T> stream)
 			: base(factory, pluginOut, stream)
 		{
 			SliceCount = 1;
@@ -20,7 +20,7 @@ namespace VVVV.Hosting.Pins.Output
 		}
 	}
 	
-	class BufferedOutputIOStream<T> : BufferedIOStream<T>
+	class BufferedOutputIOStream<T> : MemoryIOStream<T>
 	{
 	    private readonly IOutStream<T> FOutStream;
 	    
@@ -28,16 +28,16 @@ namespace VVVV.Hosting.Pins.Output
 	    {
 	        FOutStream = outStream;
 	    }
-	    
-        public override void Flush()
+
+        public override void Flush(bool force = false)
         {
-            if (IsChanged)
+            if (force || IsChanged)
             {
                 // Write the buffered data to the out stream.
                 FOutStream.AssignFrom(this);
-                FOutStream.Flush();
+                FOutStream.Flush(force);
             }
-            base.Flush();
+            base.Flush(force);
         }
 	}
 }

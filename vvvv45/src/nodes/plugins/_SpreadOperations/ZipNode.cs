@@ -15,7 +15,7 @@ namespace VVVV.Nodes
     static class ZipInfo 
     { 
         public const string HELP = "Zips spreads together";
-        public const string TAGS = "spread";
+        public const string TAGS = "spread, join";
     }
 
 	public abstract class ZipNode<T> : IPluginEvaluate, IPartImportsSatisfiedNotification

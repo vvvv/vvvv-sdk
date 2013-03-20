@@ -88,4 +88,13 @@ namespace VVVV.Nodes
 	            Author = "woei")]
 	#endregion PluginInfo
 	public class SetSpreadEnum : SetSpread<EnumEntry> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "SetSpread",
+	            Category = "Raw",
+	            Help = "SetSpread with Bin Size",
+	            Tags = "",
+	            Author = "woei")]
+	#endregion PluginInfo
+	public class SetSpreadRaw : SetSpread<System.IO.Stream> {}
 }

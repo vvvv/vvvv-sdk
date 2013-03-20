@@ -7,7 +7,7 @@ namespace VVVV.Core.Model.FX
 	public class FXReference : ProjectItem, IReference
 	{
 		public FXReference(FXDocument referencedDocument, bool isLocal)
-		    : base(Path.GetFileName(referencedDocument.Location.LocalPath))
+		    : base(Path.GetFileName(referencedDocument.LocalPath))
 		{
 			ReferencedDocument = referencedDocument;
 			ReferencedDocument.Saved += HandleReferencedDocumentSaved;
@@ -26,7 +26,7 @@ namespace VVVV.Core.Model.FX
 		{
 			get 
 			{
-				return ReferencedDocument.Location.LocalPath;
+				return ReferencedDocument.LocalPath;
 			}
 		}
 		

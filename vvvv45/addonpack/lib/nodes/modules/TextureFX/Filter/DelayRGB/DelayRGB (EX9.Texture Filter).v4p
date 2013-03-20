@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\DelayRGB\DelayRGB (EX9.Texture Filter).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.dtd" >
+   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\DelayRGB\DelayRGB (EX9.Texture Filter).v4p">
    <BOUNDS height="7995" left="14220" top="1530" type="Window" width="13740">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="DelayRGB.fx" id="16" nodename="DelayRGB.fx" systemname="DelayRGB (EX9.Effect)">
@@ -47,7 +47,7 @@
    </PIN>
    <PIN pinname="Levels " slicecount="4" visible="1" values="4,4,4,4">
    </PIN>
-   <PIN pinname="Parameter" slicecount="1" values="1" encoded="0">
+   <PIN pinname="Parameter" slicecount="1" encoded="0" values="1">
    </PIN>
    <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
@@ -285,7 +285,7 @@
    <NODE systemname="Queue (EX9.Texture)" nodename="Queue (EX9.Texture)" componentmode="Hidden" id="18">
    <BOUNDS type="Node" left="3990" top="1260" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Texture In" visible="1">
+   <PIN pinname="Texture In" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Insert" visible="1">
    </PIN>
@@ -303,13 +303,13 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="16">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Frame Count|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Frame Count|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -346,38 +346,10 @@
    </LINK>
    <LINK srcnodeid="18" srcpinname="Texture Out" dstnodeid="21" dstpinname="Input">
    </LINK>
-   <NODE id="22" systemname="Select (Node)" filename="..\..\..\Node\Select (Node).v4p" nodename="Select (Node)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Input" visible="1" pintype="Input" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Select" visible="1" pintype="Input">
-   </PIN>
-   <PIN pinname="Output" visible="1" pintype="Output">
-   </PIN>
-   <BOUNDS type="Node" left="2895" top="2790" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="165" top="180" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="13590" top="8805" width="5520" height="4860">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Window Handle" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Patch" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Former Slice" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="16" dstpinname="Transform">
-   </LINK>
    <NODE id="23" systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
    <PIN pinname="Transform Out" visible="1" pintype="Output">
    </PIN>
-   <BOUNDS type="Node" left="2820" top="2340" width="100" height="100">
+   <BOUNDS type="Node" left="2865" top="3300" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -388,8 +360,6 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="23" srcpinname="Transform Out" dstnodeid="22" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="27" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="1455" top="75" width="0" height="0">
    </BOUNDS>
@@ -397,11 +367,11 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Red" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Red">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Real">
    </PIN>
@@ -417,11 +387,11 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Green" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Green">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Real">
    </PIN>
@@ -437,11 +407,11 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Blue" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Blue">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Real">
    </PIN>
@@ -461,8 +431,6 @@
    <LINK srcnodeid="30" srcpinname="Render State Out" dstnodeid="9" dstpinname="Render State In">
    </LINK>
    <LINK srcnodeid="18" srcpinname="Texture Out" dstnodeid="16" dstpinname="tex0">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Select">
    </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="Hidden" id="31">
    <BOUNDS type="Node" left="2655" top="7125" width="100" height="100">
@@ -607,15 +575,15 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7995" top="4815" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Default" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Input String" visible="1" slicecount="1" values="A16B16G16R16F" encoded="0">
+   <PIN pinname="Input String" visible="1" slicecount="1" encoded="0" values="A16B16G16R16F">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -653,7 +621,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="32bit" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="32bit">
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
@@ -673,5 +641,21 @@
    <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Insert">
    </LINK>
    <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="31" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Transform Out" dstnodeid="16" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="Select (Value)" nodename="Select (Value)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="2955" top="2925" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="49" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Output" dstnodeid="23" dstpinname="XYZ">
    </LINK>
    </PATCH>

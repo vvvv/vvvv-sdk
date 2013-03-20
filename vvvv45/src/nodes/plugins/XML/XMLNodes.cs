@@ -15,6 +15,13 @@ using Commons.Xml.Relaxng.Rnc;
 
 namespace VVVV.Nodes.XML
 {
+    public enum Validation
+    {
+        None,
+        Dtd,
+        Schema
+    }
+
     public static class XMLNodes
     {
         public static readonly ISpread<XElement> NoElements = new Spread<XElement>();
@@ -142,17 +149,26 @@ namespace VVVV.Nodes.XML
         }
 
         [Node]
-        public static void AsElement(this string xml, out XDocument doc, out XElement element)
+        public static XDocument AsDocument(this string xml, Validation validation = Validation.None)
         {
-            try
+            var settings = new XmlReaderSettings();
+            switch (validation)
             {
-                doc = XDocument.Parse(xml);
-                element = doc.Root;                
+                case Validation.Dtd:
+                    settings.DtdProcessing = DtdProcessing.Parse;
+                    settings.ValidationType = ValidationType.DTD;
+                    break;
+                case Validation.Schema:
+                    settings.ValidationType = ValidationType.Schema;
+                    break;
+                default:
+                    settings.DtdProcessing = DtdProcessing.Ignore;
+                    break;
             }
-            catch
+            using (var textReader = new StringReader(xml))
+            using (var reader = XmlReader.Create(textReader, settings))
             {
-                doc = null;
-                element = null;
+                return XDocument.Load(reader);
             }
         }
 

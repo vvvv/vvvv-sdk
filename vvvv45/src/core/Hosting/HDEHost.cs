@@ -120,7 +120,7 @@ namespace VVVV.Hosting
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterMapping<ISolution, ICommandHistory, CommandHistory>(MapInstantiation.PerInstanceAndItsChilds);
             
-            var location = new Uri(Shell.CallerPath.ConcatPath(@"..\..\lib\nodes\plugins").ConcatPath("Solution.sln"));
+            var location = Shell.CallerPath.ConcatPath(@"..\..\lib\nodes\plugins").ConcatPath("Solution.sln");
             Solution = new Solution(location, mappingRegistry);
             
             EnumManager.SetHDEHost(this);
@@ -210,7 +210,7 @@ namespace VVVV.Hosting
             this.IsBoygroupClient = FVVVVHost.IsBoygroupClient;
             if(IsBoygroupClient)
             {
-            	this.BoygroupServerIP = FVVVVHost.BoygroupServerIP;
+                this.BoygroupServerIP = FVVVVHost.BoygroupServerIP;
             }
            
             
@@ -227,9 +227,9 @@ namespace VVVV.Hosting
 
         public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
         {
-        	// HACK hack hack :/
-        	nodeBrowser = ((PluginContainer) FNodeBrowser).PluginBase;
-        	((INodeBrowser) nodeBrowser).IsStandalone = false;
+            // HACK hack hack :/
+            nodeBrowser = ((PluginContainer) FNodeBrowser).PluginBase;
+            ((INodeBrowser) nodeBrowser).IsStandalone = false;
             ((INodeBrowser) nodeBrowser).DragDrop(false);
             windowSwitcher = ((PluginContainer) FWindowSwitcher).PluginBase;
             kommunikator = ((PluginContainer) FKommunikator).PluginBase;
@@ -306,8 +306,8 @@ namespace VVVV.Hosting
         
         public void RunRefactor()
         {
-        	//run Refactorer
-        	var refactorer = new PatchRefactorer(this, FSelectedNodes, NodeBrowserHost, NodeInfoFactory);
+            //run Refactorer
+            var refactorer = new PatchRefactorer(this, FSelectedNodes, NodeBrowserHost, NodeInfoFactory);
         }
 
         #endregion IInternalHDEHost
@@ -416,22 +416,22 @@ namespace VVVV.Hosting
         
         public INode2 GetNodeFromPath(string nodePath)
         {
-        	var ids = nodePath.Split('/');
-        	
-        	var result = RootNode[0];
-        	for (int i = 1; i < ids.Length; i++)
-        	{
-        		try
-        		{
-        			var id = int.Parse(ids[i]);
-        			result = (from node in result where node.ID == id select node).First();
-        		}
-        		catch
-        		{
-        			result = null;
-        			break;
-        		}       			
-        	}
+            var ids = nodePath.Split('/');
+            
+            var result = RootNode[0];
+            for (int i = 1; i < ids.Length; i++)
+            {
+                try
+                {
+                    var id = int.Parse(ids[i]);
+                    result = (from node in result where node.ID == id select node).First();
+                }
+                catch
+                {
+                    result = null;
+                    break;
+                }       			
+            }
 
             return result;
         }
@@ -464,26 +464,26 @@ namespace VVVV.Hosting
         
         public double FrameTime
         {
-        	get
-        	{
-        		double currentTime;
-        		FVVVVHost.GetCurrentTime(out currentTime);
-        		return currentTime;
-        	}
+            get
+            {
+                double currentTime;
+                FVVVVHost.GetCurrentTime(out currentTime);
+                return currentTime;
+            }
         }
         
         public double RealTime
         {
-        	get
-        	{
-        		return FNetTimeSync.ElapsedSeconds;
-        	}
+            get
+            {
+                return FNetTimeSync.ElapsedSeconds;
+            }
         }
         
         public void SetRealTime(double time = 0)
-		{
-        	FNetTimeSync.SetTime(time);
-		}
+        {
+            FNetTimeSync.SetTime(time);
+        }
         
         public void Open(string file, bool inActivePatch, IWindow window)
         {
@@ -535,7 +535,7 @@ namespace VVVV.Hosting
         
         public string GetXMLSnippetFromSelection()
         {
-        	return FVVVVHost.GetXMLSnippetFromSelection();
+            return FVVVVHost.GetXMLSnippetFromSelection();
         }
         
         public void SendXMLSnippet(string fileName, string message, bool undoable)
@@ -566,8 +566,8 @@ namespace VVVV.Hosting
         
         public IExposedNodeService ExposedNodeService
         {
-        	get;
-        	private set;
+            get;
+            private set;
         }
         
         [Export(typeof(IDXDeviceService))]
@@ -579,22 +579,22 @@ namespace VVVV.Hosting
 
         [Export(typeof(IMainLoop))]
         public IMainLoop MainLoop
-		{
-		    get;
-		    private set;
-		}
+        {
+            get;
+            private set;
+        }
         
-		public bool IsBoygroupClient 
-		{
-			get; 
-			private set;
-		}
-    	
-		public string BoygroupServerIP 
-		{
-			get;
-			private set;
-		}
+        public bool IsBoygroupClient 
+        {
+            get; 
+            private set;
+        }
+        
+        public string BoygroupServerIP 
+        {
+            get;
+            private set;
+        }
         
         #endregion 
         
@@ -691,18 +691,18 @@ namespace VVVV.Hosting
         
         public void BeforeComponentModeChangedCB(IWindow internalWindow, ComponentMode componentMode)
         {
-        	if (internalWindow == null)
-        		OnBeforeComponentModeChange(new ComponentModeEventArgs(null, componentMode));
-        	else
-        		OnBeforeComponentModeChange(new ComponentModeEventArgs(Window.Create(internalWindow), componentMode));
+            if (internalWindow == null)
+                OnBeforeComponentModeChange(new ComponentModeEventArgs(null, componentMode));
+            else
+                OnBeforeComponentModeChange(new ComponentModeEventArgs(Window.Create(internalWindow), componentMode));
         }
         
         public void AfterComponentModeChangedCB(IWindow internalWindow, ComponentMode componentMode)
         {
-        	if (internalWindow == null)
-        		OnAfterComponentModeChange(new ComponentModeEventArgs(null, componentMode));
-        	else
-        		OnAfterComponentModeChange(new ComponentModeEventArgs(Window.Create(internalWindow), componentMode));
+            if (internalWindow == null)
+                OnAfterComponentModeChange(new ComponentModeEventArgs(null, componentMode));
+            else
+                OnAfterComponentModeChange(new ComponentModeEventArgs(Window.Create(internalWindow), componentMode));
         }
         
         #endregion

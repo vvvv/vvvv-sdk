@@ -79,6 +79,7 @@ namespace VVVV.Hosting.Pins.Input
                         for (int i = 0; i < Length; i++)
                         {
                             var spread = Buffer[i];
+                            var stream = spread.Stream;
                             var binSize = SpreadUtils.NormalizeBinSize(dataStreamLength, binSizeReader.Read());
                             spread.SliceCount = binSize;
                             switch (binSize)
@@ -86,12 +87,14 @@ namespace VVVV.Hosting.Pins.Input
                                 case 0:
                                     break;
                                 case 1:
-                                    spread.Stream.Buffer[0] = dataReader.Read();
+                                    stream.Buffer[0] = dataReader.Read();
                                     break;
                                 default:
-                                    dataReader.Read(spread.Stream.Buffer, 0, binSize);
+                                    dataReader.Read(stream.Buffer, 0, binSize);
                                     break;
                             }
+                            // Mark the stream as changed
+                            stream.IsChanged = true;
                         }
                     }
                 }

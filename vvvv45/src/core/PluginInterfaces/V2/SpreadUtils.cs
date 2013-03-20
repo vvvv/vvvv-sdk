@@ -53,20 +53,15 @@ namespace VVVV.PluginInterfaces.V2
 
         public static int SpreadMax(params ISpread[] spreads)
         {
-            int max = -1;
-
-            foreach (IDiffSpread spread in spreads)
+            var max = 0;
+            foreach (var spread in spreads)
             {
-                if (spread.SliceCount == 0)
-                {
+                var sliceCount = spread.SliceCount;
+                if (sliceCount == 0)
                     return 0;
-                }
                 else
-                {
-                    max = spread.SliceCount > max ? spread.SliceCount : max;
-                }
+                    max = Math.Max(sliceCount, max);
             }
-
             return max;
         }
 	}

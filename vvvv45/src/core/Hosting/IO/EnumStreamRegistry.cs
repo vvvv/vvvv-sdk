@@ -12,9 +12,9 @@ namespace VVVV.Hosting.IO
     {
         public EnumStreamRegistry()
         {
-            RegisterInput(typeof(BufferedIOStream<>), CreateInput);
+            RegisterInput(typeof(MemoryIOStream<>), CreateInput);
             RegisterOutput(typeof(IOutStream<>), CreateOutput);
-            RegisterConfig(typeof(BufferedIOStream<>), CreateConfig);
+            RegisterConfig(typeof(MemoryIOStream<>), CreateConfig);
         }
         
         private static IIOContainer CreateInput(IIOFactory factory, IOBuildContext<InputAttribute> context)
@@ -34,7 +34,10 @@ namespace VVVV.Hosting.IO
             var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumOut)));
             var streamType = typeof(EnumOutStream<>).MakeGenericType(context.DataType);
             var stream = Activator.CreateInstance(streamType, container.RawIOObject) as IOutStream;
-            return IOContainer.Create(context, stream, container, null, s => s.Flush());
+            if (context.IOAttribute.AutoFlush)
+                return IOContainer.Create(context, stream, container, null, s => s.Flush());
+            else
+                return IOContainer.Create(context, stream, container);
         }
         
         private static IIOContainer CreateConfig(IIOFactory factory, IOBuildContext<ConfigAttribute> context)
