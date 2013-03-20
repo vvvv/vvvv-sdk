@@ -9,7 +9,6 @@ namespace VVVV.Nodes.Texture.HTML
     class CefXmlReader : XmlReader
     {
         private CefDomDocument document;
-        private CefDomNode rootNode;
         private CefDomNode currentNode;
         private XmlReader xmlReader; // Used to parse text nodes
         private TextReader textReader;
@@ -17,7 +16,6 @@ namespace VVVV.Nodes.Texture.HTML
         public CefXmlReader(CefDomDocument cefDomDocument)
         {
             this.document = cefDomDocument;
-            this.rootNode = document.GetDocument();
             this.nameTable = new NameTable();
             this.namespaceManager = new XmlNamespaceManager(nameTable);
         }
@@ -26,8 +24,14 @@ namespace VVVV.Nodes.Texture.HTML
         {
             if (disposing)
             {
-                this.rootNode.Dispose();
-                this.rootNode = null;
+                if (this.currentNode != null)
+                {
+                    this.currentNode.Dispose();
+                    this.currentNode = null;
+                }
+                foreach (var node in this.nodeStack)
+                    node.Dispose();
+                this.nodeStack.Clear();
                 this.document = null;
                 //System.GC.Collect();
                 //System.GC.WaitForPendingFinalizers();
@@ -365,6 +369,17 @@ namespace VVVV.Nodes.Texture.HTML
             return string.Empty;
         }
 
+        private static string GetNamespacePrefix(string name)
+        {
+            // Example: xmlns:m="http://www.w3.org/1998/Math/MathML"
+            var n = name.Split(':');
+            if (n.Length > 1)
+            {
+                return n[n.Length - 1];
+            }
+            return string.Empty;
+        }
+
         private static string GetLocalName(string name)
         {
             var n = name.ToLowerInvariant().Split(':');
@@ -385,7 +400,8 @@ namespace VVVV.Nodes.Texture.HTML
             // First call to Read
             if (ReadState == System.Xml.ReadState.Initial)
             {
-                nodeStack.Push(rootNode);
+                var rootNode = this.document.GetDocument();
+                this.nodeStack.Push(rootNode);
                 currentNode = rootNode.GetFirstChild();
                 return CheckReadStateAndReturn();
             }
@@ -489,7 +505,7 @@ namespace VVVV.Nodes.Texture.HTML
                                 {
                                     if (key.StartsWith("xmlns"))
                                     {
-                                        var prefix = GetPrefix(key);
+                                        var prefix = GetNamespacePrefix(key);
                                         namespaceManager.AddNamespace(prefix, value);
                                     }
                                 }
