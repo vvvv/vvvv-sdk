@@ -36,6 +36,7 @@ namespace VVVV.Nodes.Texture.HTML
         private string FErrorText;
         private ILogger Logger;
         private readonly AutoResetEvent FBrowserAttachedEvent = new AutoResetEvent(false);
+        private readonly AutoResetEvent FBrowserDetachedEvent = new AutoResetEvent(false);
 
         public HTMLTextureRenderer(ILogger logger)
         {
@@ -70,16 +71,17 @@ namespace VVVV.Nodes.Texture.HTML
 
         public void Dispose()
         {
-            lock (FLock)
+            if (FBrowser != null)
             {
-                if (FBrowser != null)
+                FBrowser.Close();
+                FBrowserDetachedEvent.WaitOne();
+                lock (FLock)
                 {
-                    FBrowser.Close();
                     FBrowser.Dispose();
                     FBrowser = null;
+                    FTextureResource.Dispose();
+                    FBrowserAttachedEvent.Dispose();
                 }
-                FTextureResource.Dispose();
-                FBrowserAttachedEvent.Dispose();
             }
         }
 
@@ -385,11 +387,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         internal void Detach()
         {
-            lock (FLock)
-            {
-                FBrowser.Dispose();
-                FBrowser = null;
-            }
+            FBrowserDetachedEvent.Set();
         }
 
         internal void Paint(CefRect[] cefRects, IntPtr buffer, int stride)
