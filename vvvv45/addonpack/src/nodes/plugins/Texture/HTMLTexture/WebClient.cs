@@ -60,7 +60,7 @@ namespace VVVV.Nodes.Texture.HTML
             protected override bool OnBeforePopup(CefBrowser parentBrowser, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, string url, ref CefClient client, CefBrowserSettings settings)
             {
                 // We do not support popups
-                FRenderer.LoadURL(url);
+                FRenderer.DoLoadURL(url);
                 return true;
             }
             
@@ -75,15 +75,6 @@ namespace VVVV.Nodes.Texture.HTML
                 FRenderer.Detach();
                 browser.Dispose();
                 base.OnBeforeClose(browser);
-            }
-        }
-
-        class DomEventEventListener : CefDomEventListener
-        {
-            protected override void HandleEvent(CefDomEvent e)
-            {
-                var currentTarget = e.GetCurrentTarget();
-                var target = e.GetTarget();
             }
         }
         

@@ -18,20 +18,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         protected override void Visit(CefDomDocument document)
         {
-            using (var xmlReader = new CefXmlReader(document))
-            {
-                try
-                {
-                    Document = XDocument.Load(xmlReader);
-                }
-                catch (Exception e)
-                {
-                    Exception = e;
-                }
-            }
+            FRenderer.OnVisitDom(document);
         }
-
-        public XDocument Document { get; private set; }
-        public Exception Exception { get; private set; }
     }
 }
