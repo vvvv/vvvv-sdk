@@ -80,8 +80,9 @@ namespace VVVV.Nodes.Texture.HTML
                     FBrowser.Dispose();
                     FBrowser = null;
                     FTextureResource.Dispose();
-                    FBrowserAttachedEvent.Dispose();
                 }
+                FBrowserAttachedEvent.Dispose();
+                FBrowserDetachedEvent.Dispose();
             }
         }
 
