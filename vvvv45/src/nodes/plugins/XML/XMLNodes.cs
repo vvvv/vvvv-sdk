@@ -66,8 +66,20 @@ namespace VVVV.Nodes.XML
         {
             if (element != null)
             {
-                var n = XName.Get(name);
-                return element.Elements(n).ToSpread();
+                string prefix = null;
+                string localName = name;
+                var s = name.Split(':');
+                if (s.Length > 1)
+                {
+                    prefix = s[0];
+                    localName = s[1];
+                }
+                XNamespace ns = null;
+                if (prefix != null)
+                    ns = element.GetNamespaceOfPrefix(prefix);
+                if (ns == null)
+                    ns = element.GetDefaultNamespace();
+                return element.Elements(ns + localName).ToSpread();
             }
             else
                 return NoElements;
@@ -177,13 +189,9 @@ namespace VVVV.Nodes.XML
         {
             //Grab the reader
             var reader = doc.CreateReader();
-            //Set the root
-            var root = doc.Root;
             //Use the reader NameTable
             var namespaceManager = new XmlNamespaceManager(reader.NameTable);
-            //Add the GeoRSS NS
-            //namespaceManager.AddNamespace(nameSpacePrefix, nameSpace);
-
+            namespaceManager.AddNamespace(nameSpacePrefix, nameSpace);
             return namespaceManager;
         }
 
