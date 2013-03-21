@@ -244,8 +244,8 @@ namespace VVVV.Nodes.XML
         [Input("XPath", DefaultString = "MyChildTag/MyChildsChildTag")]
         public IDiffSpread<string> XPath;
 
-        [Input("NameSpace Resolver", IsSingle = true)]
-        public IDiffSpread<IXmlNamespaceResolver> NameSpaceResolver;
+        [Input("Namespace Resolver", IsSingle = true)]
+        public IDiffSpread<IXmlNamespaceResolver> NamespaceResolver;
         
         [Output("Elements")]
         public ISpread<ISpread<XElement>> Elements;
@@ -255,7 +255,7 @@ namespace VVVV.Nodes.XML
 
         public void Evaluate(int spreadMax)
         {
-            if (!Element.IsChanged && !XPath.IsChanged && !NameSpaceResolver.IsChanged) return;
+            if (!SpreadUtils.AnyChanged(Element, XPath, NamespaceResolver)) return;
 
             Elements.SliceCount = spreadMax;
             ErrorMessage.SliceCount = spreadMax;
@@ -263,7 +263,7 @@ namespace VVVV.Nodes.XML
             for (int i = 0; i < spreadMax; i++)
             {
                 string error;
-                Elements[i] = Element[i].GetElementsByXPath(XPath[i], NameSpaceResolver[0], out error);
+                Elements[i] = Element[i].GetElementsByXPath(XPath[i], NamespaceResolver[0], out error);
                 ErrorMessage[i] = error;
             }
         }
@@ -347,31 +347,41 @@ namespace VVVV.Nodes.XML
     }
 
 
-    [PluginInfo(Name = "ManageNameSpaces", Category = "XML")]
-    public class XMLManageNameSpaces : IPluginEvaluate
+    [PluginInfo(Name = "NamespaceResolver", Category = "XML")]
+    public class NamespaceResolverNode : IPluginEvaluate
     {
-        [Input("Document", IsSingle = true)]
-        public ISpread<XDocument> Document;
+        [Input("Node", IsSingle = true)]
+        public IDiffSpread<XNode> FNodeIn;
 
-        [Input("NameSpace Prefix", DefaultString="myNS", IsSingle = true)]
-        public ISpread<string> NSPrefix;
+        [Input("Namespace Prefix", DefaultString = "myNS")]
+        public IDiffSpread<string> FPrefixIn;
 
-        [Input("NameSpace URI", DefaultString = "http://me.com", IsSingle = true)]
-        public ISpread<string> NameSpace;
+        [Input("Namespace URI", DefaultString = "http://me.com")]
+        public IDiffSpread<string> FNamespaceIn;
 
-        [Input("Update", IsSingle = true)]
-        public ISpread<bool> Update;
-
-        [Output("NameSpace Resolver")]
-        public ISpread<IXmlNamespaceResolver> NameSpaceResolver;
+        [Output("Namespace Resolver", IsSingle = true)]
+        public ISpread<IXmlNamespaceResolver> FNamespaceResolverOut;
 
         public void Evaluate(int spreadMax)
         {
-            if (Update.SliceCount > 0 && Update[0] && 
-                Document.SliceCount > 0 && Document[0] != null &&
-                NSPrefix.SliceCount > 0 && NameSpace.SliceCount > 0)
+            if (!SpreadUtils.AnyChanged(FNodeIn, FPrefixIn, FNamespaceIn)) return;
+            if (FNodeIn.SliceCount > 0)
             {
-                NameSpaceResolver[0] = XMLNodes.ManageNameSpaces(Document[0], NSPrefix[0], NameSpace[0]);
+                var namespaces = GetNamespaces(FPrefixIn, FNamespaceIn);
+                var node = FNodeIn[0] ?? new XElement("dummy");
+                FNamespaceResolverOut[0] = node.CreateNamespaceResolver(namespaces);
+            }
+            else
+            {
+                FNamespaceResolverOut.SliceCount = 0;
+            }
+        }
+
+        private IEnumerable<Tuple<string, string>> GetNamespaces(ISpread<string> prefixes, ISpread<string> namespaces)
+        {
+            for (int i = 0; i < SpreadUtils.SpreadMax(prefixes, namespaces); i++)
+            {
+                yield return Tuple.Create(prefixes[i], namespaces[i]);
             }
         }
     }

@@ -185,13 +185,14 @@ namespace VVVV.Nodes.XML
         }
 
         [Node]
-        public static IXmlNamespaceResolver ManageNameSpaces(XDocument doc, string nameSpacePrefix, string nameSpace)
+        public static IXmlNamespaceResolver CreateNamespaceResolver(this XNode node, IEnumerable<Tuple<string, string>> namespaces)
         {
             //Grab the reader
-            var reader = doc.CreateReader();
+            var reader = node.CreateReader();
             //Use the reader NameTable
             var namespaceManager = new XmlNamespaceManager(reader.NameTable);
-            namespaceManager.AddNamespace(nameSpacePrefix, nameSpace);
+            foreach (var t in namespaces)
+                namespaceManager.AddNamespace(t.Item1, t.Item2);
             return namespaceManager;
         }
 
