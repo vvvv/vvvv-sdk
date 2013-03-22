@@ -26,6 +26,59 @@ namespace VVVV.Utils.IO
             Empty = new KeyboardState(Enumerable.Empty<Keys>());
         }
 
+        public static KeyboardState Current
+        {
+            get
+            {
+                // Windows bug? Remove this call and GetKeyboardState will only
+                // work if process is not in background.
+                // See strange comment here: http://www.pinvoke.net/default.aspx/user32.getkeyboardstate
+                GetKeyState(Keys.None);
+                var lpKeyState = new byte[255];
+                if (GetKeyboardState(lpKeyState))
+                {
+                    var keys = new List<Keys>();
+                    for (int i = 0; i < lpKeyState.Length; i++)
+                    {
+                        if ((lpKeyState[i] & KEY_PRESSED) > 0)
+                            keys.Add((Keys)i);
+                    }
+                    var capsLock = (lpKeyState[(int)Keys.CapsLock] & KEY_TOGGLED) > 0;
+                    return new KeyboardState(keys, capsLock);
+                }
+                else
+                    return Empty;
+            }
+        }
+
+        // Slow
+        public static KeyboardState CurrentAsync
+        {
+            get
+            {
+                var keys = new List<Keys>();
+                for (int i = 0; i < 255; i++)
+                {
+                    var key = (Keys)i;
+                    if ((GetAsyncKeyState(key) & 0x8000) > 0)
+                        keys.Add(key);
+                }
+                var capsLock = (GetKeyState(Keys.CapsLock) & KEY_TOGGLED) > 0;
+                return new KeyboardState(keys, capsLock);
+            }
+        }
+
+        public static KeyboardState FromScanCodes(IEnumerable<uint> scanCodes)
+        {
+            var virtualKeys = scanCodes.Select(sc => ScanCodeToVirtualKey(sc));
+            return new KeyboardState(virtualKeys);
+        }
+
+        private static Keys ScanCodeToVirtualKey(uint scanCode)
+        {
+            return (Keys)MapVirtualKey(scanCode, MAPVK_VSC_TO_VK);
+        }
+
         #region virtual keycode to character translation
 
         // From: http://stackoverflow.com/questions/6214326/translate-keys-to-char
@@ -35,12 +88,11 @@ namespace VVVV.Utils.IO
 
             byte[] keyStates = new byte[256];
 
-            const byte keyPressed = 0x80;
-            keyStates[(int)(keys & Keys.KeyCode)] = keyPressed;
+            keyStates[(int)(keys & Keys.KeyCode)] = KEY_PRESSED;
             keyStates[(int)Keys.Capital] = capsLock ? (byte)0x01 : (byte)0;
-            keyStates[(int)Keys.ShiftKey] = ((keys & Keys.Shift) == Keys.Shift) ? keyPressed : (byte)0;
-            keyStates[(int)Keys.ControlKey] = ((keys & Keys.Control) == Keys.Control) ? keyPressed : (byte)0;
-            keyStates[(int)Keys.Menu] = ((keys & Keys.Alt) == Keys.Alt) ? keyPressed : (byte)0;
+            keyStates[(int)Keys.ShiftKey] = ((keys & Keys.Shift) == Keys.Shift) ? KEY_PRESSED : (byte)0;
+            keyStates[(int)Keys.ControlKey] = ((keys & Keys.Control) == Keys.Control) ? KEY_PRESSED : (byte)0;
+            keyStates[(int)Keys.Menu] = ((keys & Keys.Alt) == Keys.Alt) ? KEY_PRESSED : (byte)0;
 
             StringBuilder sb = new StringBuilder(10);
             int ret = ToUnicodeEx(keys, 0, keyStates, sb, sb.Capacity, 0, inputLanguage.Handle);
@@ -58,8 +110,33 @@ namespace VVVV.Utils.IO
             return null;
         }
 
+        #endregion
+
+        #region native methods
+
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        private static extern int ToUnicodeEx(Keys wVirtKey, uint wScanCode, byte[] lpKeyState, StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
+        static extern int ToUnicodeEx(Keys wVirtKey, uint wScanCode, byte[] lpKeyState, StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetKeyboardState(byte[] lpKeyState);
+
+        [DllImport("user32.dll")]
+        static extern int MapVirtualKey(uint uCode, uint uMapType);
+
+        [DllImport("user32.dll")]
+        static extern short GetAsyncKeyState(System.Windows.Forms.Keys vKey);
+
+        [DllImport("user32.dll")]
+        static extern short GetKeyState(System.Windows.Forms.Keys vKey); 
+
+        private const byte KEY_PRESSED = 0x80;
+        private const byte KEY_TOGGLED = 0x01;
+        private const uint MAPVK_VK_TO_VSC = 0x00;
+        private const uint MAPVK_VSC_TO_VK = 0x01;
+        private const uint MAPVK_VK_TO_CHAR = 0x02;
+        private const uint MAPVK_VSC_TO_VK_EX = 0x03;
+        private const uint MAPVK_VK_TO_VSC_EX = 0x04;
 
         #endregion
 
