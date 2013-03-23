@@ -2,7 +2,7 @@
 using VVVV.Core;
 using VVVV.Utils.IO;
 
-namespace VVVV.Nodes.IO
+namespace VVVV.Nodes.Input
 {
     public struct MouseStateNodes
     {

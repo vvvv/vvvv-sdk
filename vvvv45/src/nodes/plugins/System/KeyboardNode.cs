@@ -6,7 +6,7 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
 using System.ComponentModel.Composition;
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.Input
 {
     [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global New")]
     public class GlobalKeyboardNode : IPluginEvaluate

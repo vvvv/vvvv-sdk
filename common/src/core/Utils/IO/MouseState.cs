@@ -20,40 +20,6 @@ namespace VVVV.Utils.IO
     /// </summary>
     public struct MouseState : IEquatable<MouseState>
     {
-        public static MouseState Current
-        {
-            get
-            {
-                Point p;
-                if (GetCursorPos(out p))
-                {
-                    MouseButton button = MouseButton.None;
-                    if ((GetKeyState(Keys.LButton) & KEY_PRESSED) > 0)
-                        button |= MouseButton.Left;
-                    if ((GetKeyState(Keys.RButton) & KEY_PRESSED) > 0)
-                        button |= MouseButton.Right;
-                    if ((GetKeyState(Keys.MButton) & KEY_PRESSED) > 0)
-                        button |= MouseButton.Middle;
-                    return new MouseState(p.X, p.Y, button, 0);
-                }
-                else
-                    return new MouseState();
-            }
-        }
-
-        #region native methods
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetCursorPos(out Point lpPoint);
-
-        [DllImport("user32.dll")]
-        static extern short GetKeyState(System.Windows.Forms.Keys vKey);
-
-        const byte KEY_PRESSED = 0x80;
-
-        #endregion
-
         /// <summary>
         /// The x coordinate of the mouse.
         /// </summary>

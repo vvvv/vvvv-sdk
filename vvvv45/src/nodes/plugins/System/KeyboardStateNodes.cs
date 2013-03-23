@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using VVVV.Utils.IO;
 
-namespace VVVV.Nodes.IO
+namespace VVVV.Nodes.Input
 {
     public static class KeyboardStateNodes
     {

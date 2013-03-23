@@ -5,7 +5,7 @@ using System.Text;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
 
-namespace VVVV.Nodes.IO
+namespace VVVV.Nodes.Input
 {
     [PluginInfo(Name = "MouseState", Category = "System", Version = "Split")]
     public class MouseStatetSplitNode : IPluginEvaluate
