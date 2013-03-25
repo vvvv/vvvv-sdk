@@ -23,22 +23,22 @@ namespace VVVV.Utils.IO
         /// <summary>
         /// The x coordinate of the mouse.
         /// </summary>
-        public readonly double X;
+        public double X;
 
         /// <summary>
         /// The y coordinate of the mouse.
         /// </summary>
-        public readonly double Y;
+        public double Y;
 
         /// <summary>
         /// The pressed mouse button.
         /// </summary>
-        public readonly MouseButton Button;
+        public MouseButton Button;
 
         /// <summary>
         /// The position of the mouse wheel.
         /// </summary>
-        public readonly int MouseWheel;
+        public int MouseWheel;
         
         public MouseState(double x, double y, MouseButton button, int mouseWheel)
         {

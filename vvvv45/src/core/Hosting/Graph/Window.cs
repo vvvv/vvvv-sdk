@@ -65,6 +65,11 @@ namespace VVVV.Hosting.Graph
         {
             FNativeWindow = internalCOMInterf;
         }
+
+        public IWindow InternalCOMInterf
+        {
+            get { return FNativeWindow; }
+        }
         
         public string Caption
         {
@@ -90,7 +95,11 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
-                return VVVV.Hosting.Graph.Node.Create(FNativeWindow.GetNode(), ProxyNodeInfoFactory.Instance);
+                var nativeNode = FNativeWindow.GetNode();
+                if (nativeNode != null)
+                    return VVVV.Hosting.Graph.Node.Create(nativeNode, ProxyNodeInfoFactory.Instance);
+                else
+                    return null;
             }
         }
         
