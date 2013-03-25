@@ -21,7 +21,7 @@ namespace VVVV.Nodes.Input
     public class GlobalMouseNode : IPluginEvaluate
     {
 #pragma warning disable 0649
-        [Input("Enabled", IsSingle = true)]
+        [Input("Enabled", IsSingle = true, DefaultBoolean = true)]
         ISpread<bool> FEnabledIn;
         [Input("Cycle Mode", IsSingle = true)]
         ISpread<CycleMode> FCycleModeIn;
@@ -31,10 +31,6 @@ namespace VVVV.Nodes.Input
 
         private readonly DeltaMouse FDeltaMouse = new DeltaMouse();
         private bool FLastFrameCycle;
-
-        bool Enabled { get { return FEnabledIn[0]; } }
-        CycleMode Mode { get { return FCycleModeIn[0]; } }
-        MouseState MouseState { get { return FMouseOut[0]; } set { FMouseOut[0] = value; } }
 
         public void Evaluate(int SpreadMax)
         {
