@@ -16,5 +16,8 @@ namespace VVVV.Utils.Win32
         [DllImport("user32")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32")]
+        public static extern short GetKeyState(System.Windows.Forms.Keys vKey);
     }
 }
