@@ -29,7 +29,7 @@ namespace VVVV.Nodes.Input
         ISpread<bool> FEnabledIn;
         [Input("Cycle Mode", IsSingle = true)]
         ISpread<CycleMode> FCycleModeIn;
-        [Output("Mouse State", IsSingle = true)]
+        [Output("Mouse", IsSingle = true)]
         ISpread<MouseState> FMouseOut; 
 #pragma warning restore 0649
 
@@ -48,7 +48,7 @@ namespace VVVV.Nodes.Input
                 FDeltaMouse.EnableCycles = doCycle;
 
                 if (doCycle != FLastFrameCycle)
-                    FDeltaMouse.Initialize(Cursor.Position);
+                    FDeltaMouse.Initialize(Control.MousePosition);
                 else
                     FDeltaMouse.Update();
 
@@ -65,22 +65,10 @@ namespace VVVV.Nodes.Input
                         break;
                 }
 
-                var buttons = GetPressedMouseButtons();
+                var buttons = Control.MouseButtons;
                 FMouseOut[0] = new MouseState(x, y, buttons, 0);
             }
             FLastFrameCycle = doCycle;
-        }
-
-        static MouseButton GetPressedMouseButtons()
-        {
-            MouseButton button = MouseButton.None;
-            if ((User32.GetKeyState(Keys.LButton) & Const.KEY_PRESSED) > 0)
-                button |= MouseButton.Left;
-            if ((User32.GetKeyState(Keys.RButton) & Const.KEY_PRESSED) > 0)
-                button |= MouseButton.Right;
-            if ((User32.GetKeyState(Keys.MButton) & Const.KEY_PRESSED) > 0)
-                button |= MouseButton.Middle;
-            return button;
         }
     }
 
@@ -88,7 +76,7 @@ namespace VVVV.Nodes.Input
     public class WindowMouseNode : UserInputNode, IPluginEvaluate
     {
 #pragma warning disable 0649
-        [Output("Mouse State", IsSingle = true)]
+        [Output("Mouse", IsSingle = true)]
         ISpread<MouseState> FMouseOut;
 #pragma warning restore 0649
 
@@ -117,24 +105,17 @@ namespace VVVV.Nodes.Input
                         break;
                     case WM.LBUTTONDOWN:
                     case WM.LBUTTONDBLCLK:
-                        FMouseState.Button = FMouseState.Button | MouseButton.Left;
-                        break;
+                    case WM.LBUTTONUP:
                     case WM.MBUTTONDOWN:
                     case WM.MBUTTONDBLCLK:
-                        FMouseState.Button = FMouseState.Button | MouseButton.Middle;
-                        break;
+                    case WM.MBUTTONUP:
                     case WM.RBUTTONDOWN:
                     case WM.RBUTTONDBLCLK:
-                        FMouseState.Button = FMouseState.Button | MouseButton.Right;
-                        break;
-                    case WM.LBUTTONUP:
-                        FMouseState.Button = FMouseState.Button & ~MouseButton.Left;
-                        break;
-                    case WM.MBUTTONUP:
-                        FMouseState.Button = FMouseState.Button & ~MouseButton.Middle;
-                        break;
                     case WM.RBUTTONUP:
-                        FMouseState.Button = FMouseState.Button & ~MouseButton.Right;
+                    case WM.XBUTTONDOWN:
+                    case WM.XBUTTONDBLCLK:
+                    case WM.XBUTTONUP:
+                        FMouseState.Buttons = Control.MouseButtons;
                         break;
                 }
             }

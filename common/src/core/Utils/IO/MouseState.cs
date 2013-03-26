@@ -6,20 +6,27 @@ using System.Windows.Forms;
 
 namespace VVVV.Utils.IO
 {
-    [Flags]
-    public enum MouseButton
-    {
-        None = 0,
-        Left = 1,
-        Middle = 2,
-        Right = 4
-    }
-
     /// <summary>
     /// Encapsulates the state of a mouse.
     /// </summary>
     public struct MouseState : IEquatable<MouseState>
     {
+        public static MouseState Create(double x, double y, bool left, bool middle, bool right, bool xButton1, bool xButton2, int mouseWheel)
+        {
+            var buttons = MouseButtons.None;
+            if (left)
+                buttons |= MouseButtons.Left;
+            if (middle)
+                buttons |= MouseButtons.Middle;
+            if (right)
+                buttons |= MouseButtons.Right;
+            if (xButton1)
+                buttons |= MouseButtons.XButton1;
+            if (xButton2)
+                buttons |= MouseButtons.XButton2;
+            return new MouseState(x, y, buttons, mouseWheel);
+        }
+
         /// <summary>
         /// The x coordinate of the mouse.
         /// </summary>
@@ -33,18 +40,18 @@ namespace VVVV.Utils.IO
         /// <summary>
         /// The pressed mouse button.
         /// </summary>
-        public MouseButton Button;
+        public MouseButtons Buttons;
 
         /// <summary>
         /// The position of the mouse wheel.
         /// </summary>
         public int MouseWheel;
         
-        public MouseState(double x, double y, MouseButton button, int mouseWheel)
+        public MouseState(double x, double y, MouseButtons buttons, int mouseWheel)
         {
             X = x;
             Y = y;
-            Button = button;
+            Buttons = buttons;
             MouseWheel = mouseWheel;
         }
         
@@ -60,7 +67,7 @@ namespace VVVV.Utils.IO
         {
         	get
         	{
-        		return (Button & MouseButton.Left) > 0;
+        		return (Buttons & MouseButtons.Left) > 0;
         	}
         }
         
@@ -68,7 +75,7 @@ namespace VVVV.Utils.IO
         {
         	get
         	{
-        		return (Button & MouseButton.Middle) > 0;
+        		return (Buttons & MouseButtons.Middle) > 0;
         	}
         }
         
@@ -76,8 +83,24 @@ namespace VVVV.Utils.IO
         {
         	get
         	{
-        		return (Button & MouseButton.Right) > 0;
+        		return (Buttons & MouseButtons.Right) > 0;
         	}
+        }
+
+        public bool IsXButton1
+        {
+            get
+            {
+                return (Buttons & MouseButtons.XButton1) > 0;
+            }
+        }
+
+        public bool IsXButton2
+        {
+            get
+            {
+                return (Buttons & MouseButtons.XButton2) > 0;
+            }
         }
         
         #region Equals and GetHashCode implementation
@@ -95,13 +118,13 @@ namespace VVVV.Utils.IO
         public bool Equals(MouseState other)
         {
             // add comparisions for all members here
-            return this.X == other.X && this.Y == other.Y && this.Button == other.Button && this.MouseWheel == other.MouseWheel;
+            return this.X == other.X && this.Y == other.Y && this.Buttons == other.Buttons && this.MouseWheel == other.MouseWheel;
         }
         
         public override int GetHashCode()
         {
             // combine the hash codes of all members here (e.g. with XOR operator ^)
-            return X.GetHashCode() ^ Y.GetHashCode() ^ Button.GetHashCode() ^ MouseWheel.GetHashCode();
+            return X.GetHashCode() ^ Y.GetHashCode() ^ Buttons.GetHashCode() ^ MouseWheel.GetHashCode();
         }
         
         public static bool operator ==(MouseState left, MouseState right)

@@ -26,7 +26,7 @@ namespace VVVV.Nodes.Input
         public void Dispose()
         {
             FHost.WindowAdded -= HandleWindowAdded;
-            foreach (var subclass in FSubclasses)
+            foreach (var subclass in FSubclasses.ToArray())
                 subclass.Dispose();
         }
 

@@ -218,6 +218,16 @@ namespace VVVV.Utils.IO
             }
         }
 
+        public IEnumerable<Keys> ModifierKeys
+        {
+            get
+            {
+                if ((Modifiers & Keys.Control) > 0) yield return Keys.ControlKey;
+                if ((Modifiers & Keys.Alt) > 0) yield return Keys.Menu;
+                if ((Modifiers & Keys.Shift) > 0) yield return Keys.ShiftKey;
+            }
+        }
+
         private void InitModifiers()
         {
             FModifiers = Keys.None;

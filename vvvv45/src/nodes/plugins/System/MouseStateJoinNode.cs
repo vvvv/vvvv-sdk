@@ -22,6 +22,10 @@ namespace VVVV.Nodes.Input
         public ISpread<bool> FMiddleButtonIn;
         [Input("Right Button")]
         public ISpread<bool> FRightButtonIn;
+        [Input("X Button 1")]
+        public ISpread<bool> FXButton1In;
+        [Input("X Button 2")]
+        public ISpread<bool> FXButton2In;
         [Output("Mouse")]
         public ISpread<MouseState> FOutput;
 
@@ -30,12 +34,14 @@ namespace VVVV.Nodes.Input
             FOutput.SliceCount = spreadMax;
             for (int i = 0; i < spreadMax; i++)
             {
-                FOutput[i] = MouseStateNodes.Join(
+                FOutput[i] = MouseState.Create(
                     FXIn[i], 
                     FYIn[i], 
                     FLeftButtonIn[i], 
                     FMiddleButtonIn[i], 
                     FRightButtonIn[i],  
+                    FXButton1In[i],
+                    FXButton2In[i],
                     FMouseWheelIn[i]
                    );
             }

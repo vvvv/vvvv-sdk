@@ -8,23 +8,37 @@ using System.ComponentModel.Composition;
 using VVVV.Utils.Win32;
 using VVVV.Hosting.Graph;
 using System.Windows.Forms;
+using WindowsInput;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global New")]
+    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global New", AutoEvaluate = true)]
     public class GlobalKeyboardNode : IPluginEvaluate
     {
-        [Input("Keyboard State")]
+        [Input("Keyboard", IsSingle = true)]
         protected ISpread<KeyboardState> FKeyboardIn;
 
-        [Output("Keyboard State")]
+        [Output("Keyboard", IsSingle = true)]
         protected ISpread<KeyboardState> FKeyboardOut;
 
         [Import]
         protected IHDEHost FHost;
 
+        KeyboardState FLastKeyboardIn = KeyboardState.Empty;
+
         public void Evaluate(int SpreadMax)
         {
+            if (FKeyboardIn.SliceCount > 0)
+            {
+                var currentKeyboardIn = FKeyboardIn[0] ?? KeyboardState.Empty;
+                if (currentKeyboardIn != FLastKeyboardIn)
+                {
+                    var modifierKeys = currentKeyboardIn.ModifierKeys.Select(k => (VirtualKeyCode)k);
+                    var keys = currentKeyboardIn.KeyCodes.Select(k => (VirtualKeyCode)k).Except(modifierKeys);
+                    InputSimulator.SimulateModifiedKeyStroke(modifierKeys, keys);
+                }
+                FLastKeyboardIn = currentKeyboardIn;
+            }
             // Works when we call GetKeyState before calling GetKeyboardState ?!
             //if (FHost.IsRunningInBackground)
             //    FKeysOut[0] = KeyboardState.CurrentAsync;
@@ -37,7 +51,7 @@ namespace VVVV.Nodes.Input
     public class WindowKeyboardNode : UserInputNode, IPluginEvaluate
     {
 #pragma warning disable 0649
-        [Output("Keyboard State")]
+        [Output("Keyboard", IsSingle = true)]
         ISpread<KeyboardState> FKeyboardOut;
 #pragma warning restore 0649
 
