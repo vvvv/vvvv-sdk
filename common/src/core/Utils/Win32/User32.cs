@@ -19,5 +19,8 @@ namespace VVVV.Utils.Win32
 
         [DllImport("user32")]
         public static extern short GetKeyState(System.Windows.Forms.Keys vKey);
+
+        [DllImport("user32")]
+        public static extern int GetMessageTime();
     }
 }

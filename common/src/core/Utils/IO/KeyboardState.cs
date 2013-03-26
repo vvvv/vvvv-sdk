@@ -145,10 +145,24 @@ namespace VVVV.Utils.IO
         private readonly int FTime;
         private ReadOnlyCollection<char> FKeyChars;
 
+        public KeyboardState()
+            : this(Enumerable.Empty<Keys>())
+        {
+        }
+
+        // This overload will try to compute the chars from the given keys (doesn't work with dead keys)
         public KeyboardState(IEnumerable<Keys> keys, bool capsLock = false, int time = 0)
         {
-            FKeys = keys.ToReadOnlyCollection();
+            FKeys = keys.Distinct().ToReadOnlyCollection();
         	FCapsLock = capsLock;
+            FTime = time;
+        }
+
+        public KeyboardState(IEnumerable<Keys> keys, IEnumerable<char> chars, bool capsLock = false, int time = 0)
+        {
+            FKeys = keys.Distinct().ToReadOnlyCollection();
+            FKeyChars = chars.Distinct().ToReadOnlyCollection();
+            FCapsLock = capsLock;
             FTime = time;
         }
 
@@ -175,7 +189,7 @@ namespace VVVV.Utils.IO
             {
                 if (FKeyChars == null)
                 {
-                    InitKeys();
+                    InitChars();
                 }
                 return FKeyChars;
             } 
@@ -198,15 +212,14 @@ namespace VVVV.Utils.IO
             {
                 if (!FModifiers.HasValue)
                 {
-                    InitKeys();
+                    InitModifiers();
                 }
                 return FModifiers.Value;
             }
         }
 
-        private void InitKeys()
+        private void InitModifiers()
         {
-            var realKeys = new List<Keys>();
             FModifiers = Keys.None;
             foreach (var key in FKeys)
             {
@@ -225,14 +238,14 @@ namespace VVVV.Utils.IO
                     case Keys.RMenu:
                         FModifiers |= Keys.Alt;
                         break;
-                    default:
-                        // Do not allow more than one "normal" key
-                        realKeys.Add(key);
-                        break;
                 }
             }
-            FKeyChars = realKeys
-                .Select(keyCode => FromKeys(keyCode | FModifiers.Value, FCapsLock))
+        }
+
+        private void InitChars()
+        {
+            FKeyChars = FKeys
+                .Select(keyCode => FromKeys(keyCode | Modifiers, FCapsLock))
                 .Where(c => c != null)
                 .Select(c => c.Value)
                 .ToReadOnlyCollection();

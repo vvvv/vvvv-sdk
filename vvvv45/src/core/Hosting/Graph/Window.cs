@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils;
+using VVVV.Hosting.Interfaces;
+using VVVV.Hosting.Factories;
 
 namespace VVVV.Hosting.Graph
 {
@@ -49,7 +51,7 @@ namespace VVVV.Hosting.Graph
         }
     }
     
-    internal class Window : WrapperBase, IWindow2
+    public class Window : WrapperBase, IWindow2
     {
         #region factory methods
         static internal Window Create(IWindow internalCOMInterf)
@@ -135,6 +137,29 @@ namespace VVVV.Hosting.Graph
         public bool Equals(IWindow2 other)
         {
             return base.Equals(other);
+        }
+
+        public IUserInputWindow UserInputWindow
+        {
+            get
+            {
+                var window = InternalCOMInterf;
+                var inputWindow = window as IUserInputWindow;
+                if (inputWindow != null)
+                    return inputWindow;
+                // Special treatment for plugins
+                var pluginHost = window.GetNode() as IInternalPluginHost;
+                if (pluginHost != null)
+                {
+                    inputWindow = pluginHost.Plugin as IUserInputWindow;
+                    if (inputWindow != null)
+                        return inputWindow;
+                    var pluginContainer = pluginHost.Plugin as PluginContainer;
+                    if (pluginContainer != null)
+                        return pluginContainer.PluginBase as IUserInputWindow;
+                }
+                return null;
+            }
         }
     }
 }

@@ -10,8 +10,7 @@ using System.Runtime.InteropServices;
 using System.ComponentModel.Composition;
 using VVVV.Utils.Win32;
 using System.Diagnostics;
-using VVVV.Hosting.Interfaces;
-using VVVV.Hosting.Factories;
+using VVVV.Hosting.Graph;
 
 namespace VVVV.Nodes.Input
 {
@@ -86,73 +85,14 @@ namespace VVVV.Nodes.Input
     }
 
     [PluginInfo(Name = "Mouse", Category = "System", Version = "Window New")]
-    public class WindowMouseNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+    public class WindowMouseNode : UserInputNode, IPluginEvaluate
     {
 #pragma warning disable 0649
         [Output("Mouse State", IsSingle = true)]
         ISpread<MouseState> FMouseOut;
-
-        [Import]
-        IHDEHost FHost;
 #pragma warning restore 0649
 
-        private readonly List<Subclass> FSubclasses = new List<Subclass>();
-
-        public void OnImportsSatisfied()
-        {
-            FHost.WindowAdded += HandleWindowAdded;
-        }
-
-        public void Dispose()
-        {
-            FHost.WindowAdded -= HandleWindowAdded;
-            foreach (var subclass in FSubclasses)
-                subclass.Dispose();
-        }
-
-        void HandleWindowAdded(object sender, WindowEventArgs args)
-        {
-            var window = args.Window.InternalCOMInterf;
-            var inputWindow = window as IUserInputWindow;
-            if (inputWindow == null)
-            {
-                // Special treatment for plugins
-                var pluginHost = window.GetNode() as IInternalPluginHost;
-                if (pluginHost != null)
-                {
-                    inputWindow = pluginHost.Plugin as IUserInputWindow;
-                    if (inputWindow == null)
-                    {
-                        var pluginContainer = pluginHost.Plugin as PluginContainer;
-                        if (pluginContainer != null)
-                        {
-                            inputWindow = pluginContainer.PluginBase as IUserInputWindow;
-                        }
-                    }
-                }
-            }
-            if (inputWindow != null)
-            {
-                var handle = inputWindow.InputWindowHandle;
-                if (handle != IntPtr.Zero)
-                {
-                    var subclass = Subclass.Create(handle);
-                    subclass.WindowMessage += HandleSubclassWindowMessage;
-                    subclass.Disposed += HandleSubclassDisposed;
-                    FSubclasses.Add(subclass);
-                }
-            }
-        }
-
-        void HandleSubclassDisposed(object sender, EventArgs e)
-        {
-            var subclass = sender as Subclass;
-            subclass.WindowMessage -= HandleSubclassWindowMessage;
-            subclass.Disposed -= HandleSubclassDisposed;
-            FSubclasses.Remove(subclass);
-        }
-
-        void HandleSubclassWindowMessage(object sender, WMEventArgs e)
+        protected override void HandleSubclassWindowMessage(object sender, WMEventArgs e)
         {
             if (e.Message >= WM.MOUSEFIRST && e.Message <= WM.MOUSELAST)
             {

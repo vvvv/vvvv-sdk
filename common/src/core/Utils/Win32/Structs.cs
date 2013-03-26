@@ -142,4 +142,29 @@ namespace VVVV.Utils.Win32
             return false;
         }
     }
+
+    public struct KeyInfo
+    {
+        IntPtr LParam;
+
+        public KeyInfo(IntPtr lParam)
+        {
+            this.LParam = lParam;
+        }
+
+        public short RepeatCount
+        {
+            get { return (short)(LParam.ToInt32() & 0xFFFF); }
+        }
+
+        public byte ScanCode
+        {
+            get { return (byte)((LParam.ToInt32() & 0xFF0000) >> 16);}
+        }
+
+        public bool IsExtendedKey
+        {
+            get { return ((LParam.ToInt32() & 0x1000000) >> 24) > 0; }
+        }
+    }
 }
