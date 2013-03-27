@@ -310,6 +310,14 @@ namespace VVVV.Hosting.Factories
             
             return nodeInfo;
         }
+
+        public Type GetPluginType(INodeInfo nodeInfo)
+        {
+            string assemblyLocation = string.Empty;
+            var isUpToDate = GetAssemblyLocation(nodeInfo, out assemblyLocation);
+            var assembly = Assembly.LoadFrom(assemblyLocation);
+            return assembly.GetType(nodeInfo.Arguments);
+        }
         
         public IPluginBase CreatePlugin(INodeInfo nodeInfo, IPluginHost2 pluginHost)
         {
@@ -345,7 +353,14 @@ namespace VVVV.Hosting.Factories
                 var attribute = GetPluginInfoAttributeData(type);
                 if (attribute != null)
                 {
-                    var pluginContainer = new PluginContainer(pluginHost as IInternalPluginHost, FIORegistry, FParentContainer, type, nodeInfo);
+                    var pluginContainer = new PluginContainer(
+                        pluginHost as IInternalPluginHost, 
+                        FIORegistry, 
+                        FParentContainer,
+                        FNodeInfoFactory,
+                        this,
+                        type,
+                        nodeInfo);
 
                     // We intercept the plugin to manage IOHandlers.
                     plugin = pluginContainer;
@@ -535,81 +550,6 @@ namespace VVVV.Hosting.Factories
                     fs.Close();
                 }
 
-            }
-        }
-    }
-    
-    public class PluginContainer : IPlugin, IDisposable
-    {
-        [Export(typeof(IIOFactory))]
-        private readonly IOFactory FIOFactory;
-        private readonly CompositionContainer FContainer;
-        private readonly IPluginEvaluate FPlugin;
-        private readonly bool FAutoEvaluate;
-        
-        [Import(typeof(IPluginBase))]
-        public IPluginBase PluginBase
-        {
-            get;
-            private set;
-        }
-        
-        public PluginContainer(
-            IInternalPluginHost pluginHost,
-            IORegistry ioRegistry,
-            CompositionContainer parentContainer,
-            Type pluginType,
-            INodeInfo nodeInfo
-           )
-        {
-            FIOFactory = new IOFactory(pluginHost, ioRegistry);
-            
-            var catalog = new TypeCatalog(pluginType);
-            var ioExportProvider = new IOExportProvider(FIOFactory);
-            var hostExportProvider = new HostExportProvider() { PluginHost = pluginHost };
-            var exportProviders = new ExportProvider[] { hostExportProvider, ioExportProvider, parentContainer };
-            FContainer = new CompositionContainer(catalog, exportProviders);
-            FContainer.ComposeParts(this);
-            FPlugin = PluginBase as IPluginEvaluate;
-
-            FAutoEvaluate = nodeInfo.AutoEvaluate;
-            FIOFactory.OnCreated(EventArgs.Empty);
-        }
-        
-        public void Dispose()
-        {
-            FContainer.Dispose();
-            FIOFactory.Dispose();
-        }
-        
-        void IPlugin.SetPluginHost(IPluginHost Host)
-        {
-            throw new NotImplementedException();
-        }
-        
-        void IPlugin.Configurate(IPluginConfig configPin)
-        {
-            FIOFactory.OnConfiguring(new ConfigEventArgs(configPin));
-        }
-        
-        void IPlugin.Evaluate(int spreadMax)
-        {
-            FIOFactory.OnSynchronizing(EventArgs.Empty);
-            
-            // HACK: Can we remove this? Maybe by seperating...
-            if (FPlugin != null)
-            {
-                FPlugin.Evaluate(spreadMax);
-            }
-            
-            FIOFactory.OnFlushing(EventArgs.Empty);
-        }
-        
-        bool IPlugin.AutoEvaluate
-        {
-            get
-            {
-                return FAutoEvaluate;
             }
         }
     }

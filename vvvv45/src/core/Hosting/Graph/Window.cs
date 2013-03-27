@@ -9,6 +9,7 @@ using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils;
 using VVVV.Hosting.Interfaces;
 using VVVV.Hosting.Factories;
+using VVVV.Hosting.IO;
 
 namespace VVVV.Hosting.Graph
 {
