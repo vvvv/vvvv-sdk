@@ -16,7 +16,7 @@ namespace VVVV.Nodes.Input
         IncrementCycle
     }
 
-    [PluginInfo(Name = "Mouse", Category = "System", Version = "Global New")]
+    [PluginInfo(Name = "Mouse", Category = "System", Version = "Global")]
     public class GlobalMouseNode : GlobalInputNode
     {
 #pragma warning disable 0649
@@ -81,7 +81,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Mouse", Category = "System", Version = "Window New")]
+    [PluginInfo(Name = "Mouse", Category = "System", Version = "Window")]
     public class WindowMouseNode : WindowInputNode
     {
 #pragma warning disable 0649

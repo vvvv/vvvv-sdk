@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global New", AutoEvaluate = true)]
+    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global", AutoEvaluate = true)]
     public class GlobalKeyboardNode : GlobalInputNode
     {
 #pragma warning disable 0649
@@ -136,7 +136,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Window New")]
+    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Window")]
     public class WindowKeyboardNode : WindowInputNode
     {
 #pragma warning disable 0649
