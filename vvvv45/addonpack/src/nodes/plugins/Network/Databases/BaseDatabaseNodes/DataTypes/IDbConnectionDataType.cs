@@ -6,7 +6,7 @@ using System.Data;
 
 namespace VVVV.DataTypes
 {
-    public interface IDbConnectionDataType<T> : INodeIOBase where T : IDbConnection
+    public interface IDbConnectionDataType<T> where T : IDbConnection
     {
         bool HasChanged { get; }
         T Connection { get; }

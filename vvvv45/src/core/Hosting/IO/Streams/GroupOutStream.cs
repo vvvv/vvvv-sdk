@@ -7,13 +7,14 @@ namespace VVVV.Hosting.IO.Streams
 {
     class GroupOutStream<T> : IInStream<IOutStream<T>>, IFlushable, IDisposable
     {
-        private readonly BufferedIOStream<IOutStream<T>> FStreams = new BufferedIOStream<IOutStream<T>>(2);
+        private readonly MemoryIOStream<IOutStream<T>> FStreams = new MemoryIOStream<IOutStream<T>>(2);
         private readonly List<IIOContainer> FIOContainers = new List<IIOContainer>();
         private readonly IDiffSpread<int> FCountSpread;
         private readonly IIOFactory FFactory;
         private readonly OutputAttribute FOutputAttribute;
         private readonly int FOffsetCounter;
         private static int FInstanceCounter = 1;
+        private bool FForceOnNextFlush;
         
         public GroupOutStream(IIOFactory factory, OutputAttribute attribute)
         {
@@ -66,6 +67,8 @@ namespace VVVV.Hosting.IO.Streams
                     writer.Write(io.RawIOObject as IOutStream<T>);
                 }
             }
+
+            FForceOnNextFlush = true;
         }
         
         public int Length
@@ -93,13 +96,15 @@ namespace VVVV.Hosting.IO.Streams
                 return FStreams.IsChanged;
             }
         }
-        
-        public void Flush()
+
+        public void Flush(bool force = false)
         {
-            FStreams.Flush();
+            force |= FForceOnNextFlush;
+            FForceOnNextFlush = false;
+            FStreams.Flush(force);
             foreach (var stream in this)
             {
-                stream.Flush();
+                stream.Flush(force);
             }
         }
         

@@ -42,6 +42,7 @@ namespace VVVV.Nodes
 		//additional slider size pin
 		private IValueIn FIsXSliderIn;
 		private IValueIn FSizeSliderIn;
+		private IValueIn FIsLongSliderIn;
 		private IValueIn FSliderSpeedIn;
         private ITransformOut FPinOutSliderTransform;
 		#endregion field declaration
@@ -107,6 +108,9 @@ namespace VVVV.Nodes
 			
 			FHost.CreateValueInput("Size Slider", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSizeSliderIn);
 			FSizeSliderIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.02, false, false, false);
+			
+			FHost.CreateValueInput("Is Long Slider", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsLongSliderIn);
+			FIsLongSliderIn.SetSubType(0, 1, 1, 0, false, true, false);
 				
 			FHost.CreateValueInput("Slider Speed", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSliderSpeedIn);
 			FSliderSpeedIn.SetSubType(0, double.MaxValue, 0.01, 1, false, false, false);
@@ -162,7 +166,7 @@ namespace VVVV.Nodes
 					
 					Matrix4x4 trans;
 					Vector2D count, size;
-					double sizeSlider, sliderSpeed, isX;
+					double sizeSlider, sliderSpeed, isX, isLong;
 					
 					FTransformIn.GetMatrix(slice, out trans);
 					FCountXIn.GetValue(slice, out count.x);
@@ -172,8 +176,9 @@ namespace VVVV.Nodes
 					FSizeSliderIn.GetValue(slice, out sizeSlider);
 					FSliderSpeedIn.GetValue(slice, out sliderSpeed);
 					FIsXSliderIn.GetValue(slice, out isX);
+					FIsLongSliderIn.GetValue(slice, out isLong);
 
-					group.UpdateTransform(trans, count, size, sizeSlider, sliderSpeed, isX >= 0.5);
+					group.UpdateTransform(trans, count, size, sizeSlider, sliderSpeed, isX >= 0.5, isLong >= 0.5);
 					
 				}
 			}

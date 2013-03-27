@@ -2,9 +2,9 @@
 
 namespace VVVV.Core
 {
-	public interface IRenameable : IIDItem
+	public interface IRenameable
 	{
-	    new string Name
+	    string Name
 	    {
 	        get;
 	        set;

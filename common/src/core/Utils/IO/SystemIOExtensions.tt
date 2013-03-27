@@ -46,7 +46,7 @@ namespace System.IO
             {
                 for (int i = 0; i < bytesRead; i += fieldSize)
                     for (int j = 0; j < fieldSize / 2; j++)
-                          buffer.Swap(i + j, i + fieldSize - j);
+                          buffer.Swap(i + j, i + fieldSize - j - 1);
             }
             return bytesRead;
         }
@@ -96,7 +96,7 @@ namespace System.IO
             var byteBuffer = new byte[count * sizeof(<#= primitiveType #>)];
             var itemsRead = reader.ReadValues(byteBuffer, sizeof(<#= primitiveType #>), byteOrder);
             var resultBuffer = new <#= primitiveType #>[itemsRead / sizeof(<#= primitiveType #>)];
-            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, itemsRead);
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(<#= primitiveType #>));
             return resultBuffer;
         }
 

@@ -125,7 +125,7 @@ namespace VVVV.Hosting.IO
                               return IOContainer.Create(context, stream, container);
                           });
             
-            RegisterInput<BufferedIOStream<string>>(
+            RegisterInput<MemoryIOStream<string>>(
                 (factory, context) =>
                 {
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringIn)));
@@ -138,7 +138,7 @@ namespace VVVV.Hosting.IO
                         return IOContainer.Create(context, stream, container);
                 });
 
-            RegisterInput<BufferedIOStream<System.IO.Stream>>(
+            RegisterInput<MemoryIOStream<System.IO.Stream>>(
                 (factory, context) =>
                 {
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IRawIn)));
@@ -151,7 +151,7 @@ namespace VVVV.Hosting.IO
                         return IOContainer.Create(context, stream, container);
                 });
 
-            RegisterInput<BufferedIOStream<EnumEntry>>(
+            RegisterInput<MemoryIOStream<EnumEntry>>(
                 (factory, context) =>
                 {
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumIn)));
@@ -320,7 +320,10 @@ namespace VVVV.Hosting.IO
             RegisterOutput(typeof(IOutStream<EnumEntry>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumOut)));
                                var enumOut = container.RawIOObject as IEnumOut;
-                               return IOContainer.Create(context, new DynamicEnumOutStream(enumOut), container, null, s => s.Flush());
+                               if (context.IOAttribute.AutoFlush)
+                                   return IOContainer.Create(context, new DynamicEnumOutStream(enumOut), container, null, s => s.Flush());
+                               else
+                                   return IOContainer.Create(context, new DynamicEnumOutStream(enumOut), container);
                            });
 
             RegisterOutput<IOutStream<System.IO.Stream>>(
@@ -328,15 +331,21 @@ namespace VVVV.Hosting.IO
                 {
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IRawOut)));
                     var rawOut = container.RawIOObject as IRawOut;
-                    return IOContainer.Create(context, new RawOutStream(rawOut), container, null, s => s.Flush());
+                    if (context.IOAttribute.AutoFlush)
+                        return IOContainer.Create(context, new RawOutStream(rawOut), container, null, s => s.Flush());
+                    else
+                        return IOContainer.Create(context, new RawOutStream(rawOut), container);
                 });
-            
-            RegisterOutput<BufferedIOStream<string>>(
+
+            RegisterOutput<MemoryIOStream<string>>(
                 (factory, context) =>
                 {
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringOut)));
                     var stringOut = container.RawIOObject as IStringOut;
-                    return IOContainer.Create(context, new StringOutStream(stringOut), container, null, s => s.Flush());
+                    if (context.IOAttribute.AutoFlush)
+                        return IOContainer.Create(context, new StringOutStream(stringOut), container, null, s => s.Flush());
+                    else
+                        return IOContainer.Create(context, new StringOutStream(stringOut), container);
                 });
             
             RegisterOutput(typeof(IOutStream<>), (factory, context) => {
@@ -353,7 +362,10 @@ namespace VVVV.Hosting.IO
                                            {
                                                var multiDimStreamType = typeof(MultiDimOutStream<>).MakeGenericType(t.GetGenericArguments().First());
                                                var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IOutStream;
-                                               return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                               if (context.IOAttribute.AutoFlush)
+                                                   return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                               else
+                                                   return GenericIOContainer.Create(context, factory, stream);
                                            }
                                            try
                                            {
@@ -386,7 +398,10 @@ namespace VVVV.Hosting.IO
                                            if (streamType != null)
                                            {
                                                var stream = Activator.CreateInstance(streamType, host, attribute) as IOutStream;
-                                               return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                               if (context.IOAttribute.AutoFlush)
+                                                   return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                               else
+                                                   return GenericIOContainer.Create(context, factory, stream);
                                            }
                                            break;
                                        case 2:
@@ -409,7 +424,10 @@ namespace VVVV.Hosting.IO
                                                    if (streamType != null)
                                                    {
                                                        var stream = Activator.CreateInstance(streamType, host, attribute) as IOutStream;
-                                                       return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                                       if (context.IOAttribute.AutoFlush)
+                                                           return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                                       else
+                                                           return GenericIOContainer.Create(context, factory, stream);
                                                    }
                                                    else
                                                    {
@@ -429,7 +447,10 @@ namespace VVVV.Hosting.IO
                                    var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeOut)));
                                    var nodeOut = container.RawIOObject as INodeOut;
                                    var stream = Activator.CreateInstance(typeof(NodeOutStream<>).MakeGenericType(context.DataType), nodeOut) as IOutStream;
-                                   return IOContainer.Create(context, stream, container, null, s => s.Flush());
+                                   if (context.IOAttribute.AutoFlush)
+                                       return IOContainer.Create(context, stream, container, null, s => s.Flush());
+                                   else
+                                       return IOContainer.Create(context, stream, container);
                                }
                            });
             
@@ -447,7 +468,10 @@ namespace VVVV.Hosting.IO
                                        }
                                        
                                        var stream = Activator.CreateInstance(multiDimStreamType, factory, attribute.Clone()) as IFlushable;
-                                       return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                       if (context.IOAttribute.AutoFlush)
+                                           return GenericIOContainer.Create(context, factory, stream, null, s => s.Flush());
+                                       else
+                                           return GenericIOContainer.Create(context, factory, stream);
                                    }
                                }
                                
@@ -459,25 +483,28 @@ namespace VVVV.Hosting.IO
                                var ioStreamType = typeof(BufferedOutputIOStream<>).MakeGenericType(context.DataType);
                                var container = factory.CreateIOContainer(outStreamType, context.IOAttribute, false);
                                var ioStream = (IIOStream) Activator.CreateInstance(ioStreamType, container.RawIOObject);
-                               return IOContainer.Create(context, ioStream, container, null, s => s.Flush());
+                               if (context.IOAttribute.AutoFlush)
+                                   return IOContainer.Create(context, ioStream, container, null, s => s.Flush());
+                               else
+                                   return IOContainer.Create(context, ioStream, container);
                            },
                            false);
 
-            RegisterConfig(typeof(BufferedIOStream<Vector2>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector2>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
                 var stream = new Vector2ConfigStream(valueConfig);
                 return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
             });
-            RegisterConfig(typeof(BufferedIOStream<Vector3>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector3>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
                 var stream = new Vector3ConfigStream(valueConfig);
                 return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
             });
-            RegisterConfig(typeof(BufferedIOStream<Vector4>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector4>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
@@ -487,7 +514,7 @@ namespace VVVV.Hosting.IO
 
 
 
-            RegisterConfig(typeof(BufferedIOStream<Quaternion>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Quaternion>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
@@ -497,21 +524,21 @@ namespace VVVV.Hosting.IO
 
 
 
-            RegisterConfig(typeof(BufferedIOStream<Vector2D>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector2D>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
                 var stream = new Vector2DConfigStream(valueConfig);
                 return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
             });
-            RegisterConfig(typeof(BufferedIOStream<Vector3D>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector3D>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
                 var stream = new Vector3DConfigStream(valueConfig);
                 return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
             });
-            RegisterConfig(typeof(BufferedIOStream<Vector4D>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector4D>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
@@ -519,34 +546,34 @@ namespace VVVV.Hosting.IO
                 return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
             });
             
-            RegisterConfig(typeof(BufferedIOStream<string>), (factory, context) => {
+            RegisterConfig(typeof(MemoryIOStream<string>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringConfig)));
                                var stringConfig = container.RawIOObject as IStringConfig;
                                var stream = new StringConfigStream(stringConfig);
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
             
-            RegisterConfig(typeof(BufferedIOStream<RGBAColor>), (factory, context) => {
+            RegisterConfig(typeof(MemoryIOStream<RGBAColor>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorConfig)));
                                var colorConfig = container.RawIOObject as IColorConfig;
                                var stream = new ColorConfigStream(colorConfig);
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
             
-            RegisterConfig(typeof(BufferedIOStream<Color4>), (factory, context) => {
+            RegisterConfig(typeof(MemoryIOStream<Color4>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorConfig)));
                                var colorConfig = container.RawIOObject as IColorConfig;
                                var stream = new SlimDXColorConfigStream(colorConfig);
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
 
-            RegisterConfig(typeof(BufferedIOStream<EnumEntry>), (factory, context) => {
+            RegisterConfig(typeof(MemoryIOStream<EnumEntry>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumConfig)));
                                var enumConfig = container.RawIOObject as IEnumConfig;
                                var stream = new DynamicEnumConfigStream(enumConfig,context.IOAttribute.EnumName);
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });        
-            RegisterConfig(typeof(BufferedIOStream<>), (factory, context) => {
+            RegisterConfig(typeof(MemoryIOStream<>), (factory, context) => {
                                var t = context.DataType;
                                if (t.IsPrimitive)
                                {

@@ -94,7 +94,7 @@ namespace VVVV.Utils.Streams
             
             public bool IsChanged { get { return false; } }
             
-            public void Flush()
+            public void Flush(bool force = false)
             {
                 
             }
@@ -131,6 +131,11 @@ namespace VVVV.Utils.Streams
         public static CyclicStreamReader<T> GetCyclicReader<T>(this IInStream<T> stream)
         {
             return new CyclicStreamReader<T>(stream);
+        }
+
+        public static BufferedStreamWriter<T> GetBufferedWriter<T>(this IOutStream<T> stream)
+        {
+            return new BufferedStreamWriter<T>(stream);
         }
         
         public static int GetNumSlicesAhead(IStreamer streamer, int index, int length, int stride)
@@ -496,9 +501,45 @@ namespace VVVV.Utils.Streams
             return new ReverseStream<T>(source);
         }
 
-        public static BufferedIOStream<T> ToStream<T>(this IEnumerable<T> source)
+        public static MemoryIOStream<T> ToStream<T>(this IEnumerable<T> source)
         {
-            return new BufferedIOStream<T>(source.ToArray());
+            return new MemoryIOStream<T>(source.ToArray());
+        }
+
+        public static int Sum(this IInStream<int> stream)
+        {
+            var result = 0;
+            var buffer = MemoryPool<int>.GetArray();
+            var reader = stream.GetReader();
+            try
+            {
+                while (!reader.Eos)
+                {
+                    var itemsRead = reader.Read(buffer, 0, buffer.Length);
+                    for (int i = 0; i < itemsRead; i++)
+                        result += buffer[i];
+                }
+            }
+            finally
+            {
+                MemoryPool<int>.PutArray(buffer);
+                reader.Dispose();
+            }
+            return result;
+        }
+
+        public static bool AnyChanged(params IInStream[] streams)
+        {
+            foreach (var stream in streams)
+                if (stream.IsChanged) { return true; }
+            return false;
+        }
+
+        public static bool AllChanged(params IInStream[] streams)
+        {
+            foreach (var stream in streams)
+                if (!stream.IsChanged) { return false; }
+            return true;
         }
     }
 }

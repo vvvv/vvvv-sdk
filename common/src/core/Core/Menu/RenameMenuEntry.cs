@@ -64,12 +64,12 @@ namespace VVVV.Core.Menu
 
         void LabelEditor_BeforeLabelEdit(object sender, VVVV.Core.Viewer.LabelEditEventArgs args)
         {
-            args.CancelEdit = !args.Model.Equals(Renameable);
+            //args.CancelEdit = !args.Model.Equals(Renameable);
         }
 
         void LabelEditor_AfterLabelEdit(object sender, VVVV.Core.Viewer.LabelEditEventArgs args)
         {
-            if (args.Model.Equals(Renameable))
+            //if (args.Model.Equals(Renameable))
             {
                 var label = args.Label;
                 if (Renameable.CanRenameTo(label))
