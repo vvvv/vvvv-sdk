@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using VVVV.Utils.Collections;
+using VVVV.Utils.Win32;
 
 namespace VVVV.Utils.IO
 {
@@ -33,17 +34,38 @@ namespace VVVV.Utils.IO
                 // Windows bug? Remove this call and GetKeyboardState will only
                 // work if process is not in background.
                 // See strange comment here: http://www.pinvoke.net/default.aspx/user32.getkeyboardstate
-                GetKeyState(Keys.None);
+                User32.GetKeyState(Keys.None);
                 var lpKeyState = new byte[255];
-                if (GetKeyboardState(lpKeyState))
+                if (User32.GetKeyboardState(lpKeyState))
                 {
                     var keys = new List<Keys>();
                     for (int i = 0; i < lpKeyState.Length; i++)
                     {
-                        if ((lpKeyState[i] & KEY_PRESSED) > 0)
-                            keys.Add((Keys)i);
+                        var key = (Keys)i;
+                        switch (key)
+                        {
+                            case Keys.LButton:
+                            case Keys.MButton:
+                            case Keys.RButton:
+                            case Keys.XButton1:
+                            case Keys.XButton2:
+                                // Do not include the mouse
+                                continue;
+                            case Keys.LControlKey:
+                            case Keys.RControlKey:
+                            case Keys.LShiftKey:
+                            case Keys.RShiftKey:
+                            case Keys.LMenu:
+                            case Keys.RMenu:
+                                // Only include ControlKey/ShiftKey/Alt
+                                continue;
+                            default:
+                                if ((lpKeyState[i] & Const.KEY_PRESSED) > 0)
+                                    keys.Add(key);
+                                break;
+                        }
                     }
-                    var capsLock = (lpKeyState[(int)Keys.CapsLock] & KEY_TOGGLED) > 0;
+                    var capsLock = (lpKeyState[(int)Keys.CapsLock] & Const.KEY_TOGGLED) > 0;
                     return new KeyboardState(keys, capsLock);
                 }
                 else
@@ -60,23 +82,12 @@ namespace VVVV.Utils.IO
                 for (int i = 0; i < 255; i++)
                 {
                     var key = (Keys)i;
-                    if ((GetAsyncKeyState(key) & 0x8000) > 0)
+                    if ((User32.GetAsyncKeyState(key) & 0x8000) > 0)
                         keys.Add(key);
                 }
-                var capsLock = (GetKeyState(Keys.CapsLock) & KEY_TOGGLED) > 0;
+                var capsLock = (User32.GetKeyState(Keys.CapsLock) & Const.KEY_TOGGLED) > 0;
                 return new KeyboardState(keys, capsLock);
             }
-        }
-
-        public static KeyboardState FromScanCodes(IEnumerable<uint> scanCodes)
-        {
-            var virtualKeys = scanCodes.Select(sc => ScanCodeToVirtualKey(sc));
-            return new KeyboardState(virtualKeys);
-        }
-
-        private static Keys ScanCodeToVirtualKey(uint scanCode)
-        {
-            return (Keys)MapVirtualKey(scanCode, MAPVK_VSC_TO_VK);
         }
 
         #region virtual keycode to character translation
@@ -88,14 +99,14 @@ namespace VVVV.Utils.IO
 
             byte[] keyStates = new byte[256];
 
-            keyStates[(int)(keys & Keys.KeyCode)] = KEY_PRESSED;
+            keyStates[(int)(keys & Keys.KeyCode)] = Const.KEY_PRESSED;
             keyStates[(int)Keys.Capital] = capsLock ? (byte)0x01 : (byte)0;
-            keyStates[(int)Keys.ShiftKey] = ((keys & Keys.Shift) == Keys.Shift) ? KEY_PRESSED : (byte)0;
-            keyStates[(int)Keys.ControlKey] = ((keys & Keys.Control) == Keys.Control) ? KEY_PRESSED : (byte)0;
-            keyStates[(int)Keys.Menu] = ((keys & Keys.Alt) == Keys.Alt) ? KEY_PRESSED : (byte)0;
+            keyStates[(int)Keys.ShiftKey] = ((keys & Keys.Shift) == Keys.Shift) ? Const.KEY_PRESSED : (byte)0;
+            keyStates[(int)Keys.ControlKey] = ((keys & Keys.Control) == Keys.Control) ? Const.KEY_PRESSED : (byte)0;
+            keyStates[(int)Keys.Menu] = ((keys & Keys.Alt) == Keys.Alt) ? Const.KEY_PRESSED : (byte)0;
 
             StringBuilder sb = new StringBuilder(10);
-            int ret = ToUnicodeEx(keys, 0, keyStates, sb, sb.Capacity, 0, inputLanguage.Handle);
+            int ret = User32.ToUnicodeEx(keys, 0, keyStates, sb, sb.Capacity, 0, inputLanguage.Handle);
             if (ret == 1) return sb[0];
 
             if (ret == -1)
@@ -109,34 +120,6 @@ namespace VVVV.Utils.IO
             }
             return null;
         }
-
-        #endregion
-
-        #region native methods
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        static extern int ToUnicodeEx(Keys wVirtKey, uint wScanCode, byte[] lpKeyState, StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetKeyboardState(byte[] lpKeyState);
-
-        [DllImport("user32.dll")]
-        static extern int MapVirtualKey(uint uCode, uint uMapType);
-
-        [DllImport("user32.dll")]
-        static extern short GetAsyncKeyState(System.Windows.Forms.Keys vKey);
-
-        [DllImport("user32.dll")]
-        static extern short GetKeyState(System.Windows.Forms.Keys vKey); 
-
-        private const byte KEY_PRESSED = 0x80;
-        private const byte KEY_TOGGLED = 0x01;
-        private const uint MAPVK_VK_TO_VSC = 0x00;
-        private const uint MAPVK_VSC_TO_VK = 0x01;
-        private const uint MAPVK_VK_TO_CHAR = 0x02;
-        private const uint MAPVK_VSC_TO_VK_EX = 0x03;
-        private const uint MAPVK_VK_TO_VSC_EX = 0x04;
 
         #endregion
 

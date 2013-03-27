@@ -9,51 +9,161 @@ using VVVV.Utils.Win32;
 using VVVV.Hosting.Graph;
 using System.Windows.Forms;
 using WindowsInput;
+using VVVV.Hosting.IO;
+using System.Diagnostics;
 
 namespace VVVV.Nodes.Input
 {
     [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global New", AutoEvaluate = true)]
-    public class GlobalKeyboardNode : IPluginEvaluate
+    public class GlobalKeyboardNode : GlobalInputNode
     {
+#pragma warning disable 0649
         [Input("Keyboard", IsSingle = true)]
-        protected ISpread<KeyboardState> FKeyboardIn;
+        ISpread<KeyboardState> FKeyboardIn;
+
+        // For backward compatibility only
+        [Input("Keyboard Input", Visibility = PinVisibility.OnlyInspector)]
+        ISpread<string> FLegacyKeyStringIn;
 
         [Output("Keyboard", IsSingle = true)]
-        protected ISpread<KeyboardState> FKeyboardOut;
+        ISpread<KeyboardState> FKeyboardOut;
 
-        [Import]
-        protected IHDEHost FHost;
+        // For backward compatibility only
+        [Output("Keyboard Output", Visibility = PinVisibility.OnlyInspector)]
+        ISpread<string> FLegacyKeyStringOut;
+        [Output("Buffered Keyboard Output", Visibility = PinVisibility.OnlyInspector)]
+        ISpread<string> FLegacyKeyBufferOut; // Outputs all keys from WM_KEYDOWN
+#pragma warning restore 0649
 
         KeyboardState FLastKeyboardIn = KeyboardState.Empty;
+        KeyboardState FLastKeyboard = KeyboardState.Empty;
+        PluginContainer FKeyboardSplitNode;
+        Stopwatch FStopwatch = new Stopwatch();
+        List<string> FKeyDowns = new List<string>();
 
-        public void Evaluate(int SpreadMax)
+        public override void OnImportsSatisfied()
         {
-            if (FKeyboardIn.SliceCount > 0)
+            // Create a keyboard split node for us and connect our keyboard out to its keyboard in
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardState" && n.Category == "System" && n.Version == "Split");
+            FKeyboardSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => FKeyboardOut);
+            base.OnImportsSatisfied();
+        }
+
+        public override void Dispose()
+        {
+            FKeyboardSplitNode.Dispose();
+            base.Dispose();
+        }
+
+        protected override void Evaluate(int spreadMax, bool enabled)
+        {
+            if (enabled)
             {
-                var currentKeyboardIn = FKeyboardIn[0] ?? KeyboardState.Empty;
-                if (currentKeyboardIn != FLastKeyboardIn)
+                // To support old keyboard node
+                if (FLegacyKeyStringIn.SliceCount > 0 && !string.IsNullOrEmpty(FLegacyKeyStringIn[0]))
                 {
-                    var modifierKeys = currentKeyboardIn.ModifierKeys.Select(k => (VirtualKeyCode)k);
-                    var keys = currentKeyboardIn.KeyCodes.Select(k => (VirtualKeyCode)k).Except(modifierKeys);
-                    InputSimulator.SimulateModifiedKeyStroke(modifierKeys, keys);
+                    var keys = FLegacyKeyStringIn.Select(keyAsString => LegacyKeyboardHelper.StringToVirtualKeycode(keyAsString));
+                    FKeyboardIn.SliceCount = 1;
+                    FKeyboardIn[0] = new KeyboardState(keys);
                 }
-                FLastKeyboardIn = currentKeyboardIn;
+                if (FKeyboardIn.SliceCount > 0)
+                {
+                    var currentKeyboardIn = FKeyboardIn[0] ?? KeyboardState.Empty;
+                    if (currentKeyboardIn != FLastKeyboardIn)
+                    {
+                        var modifierKeys = currentKeyboardIn.ModifierKeys.Select(k => (VirtualKeyCode)k);
+                        var keys = currentKeyboardIn.KeyCodes.Select(k => (VirtualKeyCode)k).Except(modifierKeys);
+                        InputSimulator.SimulateModifiedKeyStroke(modifierKeys, keys);
+                    }
+                    FLastKeyboardIn = currentKeyboardIn;
+                }
+                // Works when we call GetKeyState before calling GetKeyboardState ?!
+                //if (FHost.IsRunningInBackground)
+                //    FKeysOut[0] = KeyboardState.CurrentAsync;
+                //else
+                var keyboard = KeyboardState.Current;
+                if (keyboard != KeyboardState.Empty && keyboard == FLastKeyboard)
+                {
+                    // Keyboard stayed the same
+                    if (FStopwatch.ElapsedMilliseconds > 500)
+                    {
+                        // Simulate key repeat by generating a new keyboard with different time code
+                        var time = FStopwatch.ElapsedMilliseconds / 50;
+                        var isNewKeyDown = time != FKeyboardOut[0].Time;
+                        FKeyboardOut[0] = new KeyboardState(keyboard.KeyCodes, keyboard.CapsLock, (int)time);
+                        // Simulate legacy output
+                        if (isNewKeyDown)
+                        {
+                            FLegacyKeyBufferOut.AssignFrom(FKeyDowns);
+                        }
+                        else
+                        {
+                            FLegacyKeyBufferOut.SliceCount = 1;
+                            FLegacyKeyBufferOut[0] = string.Empty;
+                        }
+                        // Evaluate our split plugin
+                        FKeyboardSplitNode.Evaluate(spreadMax);
+                    }
+                    else
+                    {
+                        // Simulate legacy output
+                        FLegacyKeyBufferOut.SliceCount = 1;
+                        FLegacyKeyBufferOut[0] = string.Empty;
+                    }
+                }
+                else
+                {
+                    FStopwatch.Restart();
+                    FKeyboardOut[0] = keyboard;
+                    // Simulate legacy output
+                    FLegacyKeyStringOut.AssignFrom(keyboard.KeyCodes.Select(k => LegacyKeyboardHelper.VirtualKeycodeToString(k)));
+                    FKeyDowns = keyboard.KeyCodes
+                        .Except(FLastKeyboard.KeyCodes)
+                        .Select(k => LegacyKeyboardHelper.VirtualKeycodeToString(k))
+                        .ToList();
+                    if (FKeyDowns.Count > 0)
+                        FLegacyKeyBufferOut.AssignFrom(FKeyDowns);
+                    else
+                    {
+                        FLegacyKeyBufferOut.SliceCount = 1;
+                        FLegacyKeyBufferOut[0] = string.Empty;
+                    }
+                    // Evaluate our split plugin
+                    FKeyboardSplitNode.Evaluate(spreadMax);
+                }
+                FLastKeyboard = keyboard;
             }
-            // Works when we call GetKeyState before calling GetKeyboardState ?!
-            //if (FHost.IsRunningInBackground)
-            //    FKeysOut[0] = KeyboardState.CurrentAsync;
-            //else
-                FKeyboardOut[0] = KeyboardState.Current;
         }
     }
 
     [PluginInfo(Name = "Keyboard", Category = "System", Version = "Window New")]
-    public class WindowKeyboardNode : UserInputNode, IPluginEvaluate
+    public class WindowKeyboardNode : WindowInputNode
     {
 #pragma warning disable 0649
         [Output("Keyboard", IsSingle = true)]
         ISpread<KeyboardState> FKeyboardOut;
+
+        // For backward compatibility only
+        [Output("Keyboard Output", Visibility = PinVisibility.OnlyInspector)]
+        ISpread<string> FLegacyKeyStringOut;
 #pragma warning restore 0649
+
+        KeyboardState FKeyboardState = KeyboardState.Empty;
+        PluginContainer FKeyboardSplitNode;
+
+        public override void OnImportsSatisfied()
+        {
+            // Create a keyboard split node for us and connect our keyboard out to its keyboard in
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardState" && n.Category == "System" && n.Version == "Split");
+            FKeyboardSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => FKeyboardOut);
+            base.OnImportsSatisfied();
+        }
+
+        public override void Dispose()
+        {
+            FKeyboardSplitNode.Dispose();
+            base.Dispose();
+        }
 
         protected override unsafe void HandleSubclassWindowMessage(object sender, WMEventArgs e)
         {
@@ -84,11 +194,17 @@ namespace VVVV.Nodes.Input
             }
         }
 
-        private KeyboardState FKeyboardState = KeyboardState.Empty;
-
-        public void Evaluate(int SpreadMax)
+        protected override void Evaluate(int spreadMax, bool enabled)
         {
-            FKeyboardOut[0] = FKeyboardState;
+            if (enabled)
+            {
+                if (FKeyboardOut[0] != FKeyboardState)
+                {
+                    FKeyboardOut[0] = FKeyboardState;
+                    FLegacyKeyStringOut.AssignFrom(FKeyboardState.KeyCodes.Select(k => LegacyKeyboardHelper.VirtualKeycodeToString(k)));
+                    FKeyboardSplitNode.Evaluate(spreadMax);
+                }
+            }
         }
     }
 }

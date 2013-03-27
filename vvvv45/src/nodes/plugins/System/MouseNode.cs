@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
+using System.Windows.Forms;
+using VVVV.Hosting.IO;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
-using System.Windows.Forms;
-using VVVV.Utils.VMath;
-using System.Runtime.InteropServices;
-using System.ComponentModel.Composition;
 using VVVV.Utils.Win32;
-using System.Diagnostics;
-using VVVV.Hosting.Graph;
 
 namespace VVVV.Nodes.Input
 {
@@ -22,31 +17,43 @@ namespace VVVV.Nodes.Input
     }
 
     [PluginInfo(Name = "Mouse", Category = "System", Version = "Global New")]
-    public class GlobalMouseNode : IPluginEvaluate
+    public class GlobalMouseNode : GlobalInputNode
     {
 #pragma warning disable 0649
-        [Input("Enabled", IsSingle = true, DefaultBoolean = true)]
-        ISpread<bool> FEnabledIn;
         [Input("Cycle Mode", IsSingle = true)]
         ISpread<CycleMode> FCycleModeIn;
         [Output("Mouse", IsSingle = true)]
-        ISpread<MouseState> FMouseOut; 
+        ISpread<MouseState> FMouseOut;
 #pragma warning restore 0649
 
-        private readonly DeltaMouse FDeltaMouse = new DeltaMouse();
-        private bool FLastFrameCycle;
+        readonly DeltaMouse FDeltaMouse = new DeltaMouse();
+        bool FLastFrameCycle;
+        PluginContainer FMouseSplitNode;
 
-        public void Evaluate(int SpreadMax)
+        public override void OnImportsSatisfied()
         {
-            var enabled = FEnabledIn.SliceCount > 0 && FEnabledIn[0];
+            // Create a mouse split node for us and connect our mouse out to its mouse in
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseState" && n.Category == "System" && n.Version == "Split");
+            FMouseSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => FMouseOut);
+            base.OnImportsSatisfied();
+        }
+
+        public override void Dispose()
+        {
+            FMouseSplitNode.Dispose();
+            base.Dispose();
+        }
+
+        protected override void Evaluate(int spreadMax, bool enabled)
+        {
             var cycleMode = FCycleModeIn.SliceCount > 0
                 ? FCycleModeIn[0]
                 : CycleMode.NoCycle;
             var doCycle = cycleMode != CycleMode.NoCycle;
+
             if (enabled)
             {
                 FDeltaMouse.EnableCycles = doCycle;
-
                 if (doCycle != FLastFrameCycle)
                     FDeltaMouse.Initialize(Control.MousePosition);
                 else
@@ -67,18 +74,37 @@ namespace VVVV.Nodes.Input
 
                 var buttons = Control.MouseButtons;
                 FMouseOut[0] = new MouseState(x, y, buttons, 0);
+                FMouseSplitNode.Evaluate(spreadMax);
             }
+
             FLastFrameCycle = doCycle;
         }
     }
 
     [PluginInfo(Name = "Mouse", Category = "System", Version = "Window New")]
-    public class WindowMouseNode : UserInputNode, IPluginEvaluate
+    public class WindowMouseNode : WindowInputNode
     {
 #pragma warning disable 0649
         [Output("Mouse", IsSingle = true)]
         ISpread<MouseState> FMouseOut;
 #pragma warning restore 0649
+
+        MouseState FMouseState = new MouseState();
+        PluginContainer FMouseSplitNode;
+
+        public override void OnImportsSatisfied()
+        {
+            // Create a mouse split node for us and connect our mouse out to its mouse in
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseState" && n.Category == "System" && n.Version == "Split");
+            FMouseSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => FMouseOut);
+            base.OnImportsSatisfied();
+        }
+
+        public override void Dispose()
+        {
+            FMouseSplitNode.Dispose();
+            base.Dispose();
+        }
 
         protected override void HandleSubclassWindowMessage(object sender, WMEventArgs e)
         {
@@ -120,11 +146,14 @@ namespace VVVV.Nodes.Input
                 }
             }
         }
-
-        private MouseState FMouseState = new MouseState();
-        public void Evaluate(int SpreadMax)
+        
+        protected override void Evaluate(int spreadMax, bool enabled)
         {
-            FMouseOut[0] = FMouseState;
+            if (enabled)
+            {
+                FMouseOut[0] = FMouseState;
+                FMouseSplitNode.Evaluate(spreadMax);
+            }
         }
     }
 }
