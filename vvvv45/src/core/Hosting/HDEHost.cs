@@ -93,6 +93,8 @@ namespace VVVV.Hosting
         [Import]
         private IStartableRegistry FStartableRegistry; 
 #pragma warning restore
+
+        private List<string> FAssemblySearchPaths = new List<string>();
         
         public HDEHost()
         {
@@ -179,10 +181,30 @@ namespace VVVV.Hosting
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(NodeCollection).Assembly.Location));
-            //allow plugin writers to add their own factories
+            //allow plugin writers to add their own factories (deprecated, see below)
             var factoriesPath = ExePath.ConcatPath(@"lib\factories");
             if (Directory.Exists(factoriesPath))
                 catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
+
+            //search for packs, add factories dir to this catalog, add core dir to assembly search path,
+            //add nodes to nodes search path
+            var packsDirInfo = new DirectoryInfo(Path.Combine(ExePath, "packs"));
+            if (packsDirInfo.Exists)
+            {
+                AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+                foreach (var packDirInfo in packsDirInfo.GetDirectories())
+                {
+                    var packDir = packDirInfo.FullName;
+                    var coreDirInfo = new DirectoryInfo(Path.Combine(packDir, "core"));
+                    if (coreDirInfo.Exists)
+                        FAssemblySearchPaths.Add(coreDirInfo.FullName);
+                    var factoriesDirInfo = new DirectoryInfo(Path.Combine(packDir, "factories"));
+                    if (factoriesDirInfo.Exists)
+                        catalog.Catalogs.Add(new DirectoryCatalog(factoriesDirInfo.FullName));
+                    // We look for nodes later
+                }
+            }
+
             Container = new CompositionContainer(catalog);
             Container.ComposeParts(this);
             
@@ -217,7 +239,32 @@ namespace VVVV.Hosting
             //start time server of client
             FNetTimeSync = IsBoygroupClient ? new UDPTimeClient(BoygroupServerIP, 3334) : new UDPTimeServer(3334);
             FNetTimeSync.Start();
-            
+
+            //now that all basics are set up, see if there are any node search paths to add
+            //from the installed packs
+            if (packsDirInfo.Exists)
+            {
+                foreach (var packDirInfo in packsDirInfo.GetDirectories())
+                {
+                    var packDir = packDirInfo.FullName;
+                    var nodesDirInfo = new DirectoryInfo(Path.Combine(packDir, "nodes"));
+                    if (nodesDirInfo.Exists)
+                        NodeCollection.AddJob(nodesDirInfo.FullName, false);
+                }
+            }
+        }
+
+        Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var assemblyName = new AssemblyName(args.Name);
+            foreach (var searchPath in FAssemblySearchPaths)
+            {
+                var assemblyFileName = assemblyName.Name + ".dll";
+                var assemblyLocation = Path.Combine(searchPath, assemblyFileName);
+                if (File.Exists(assemblyLocation))
+                    return Assembly.LoadFrom(assemblyLocation);
+            }
+            return null;
         }
         
         private INodeInfo GetNodeInfo(string systemName)
