@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta22.dtd" >
-   <PATCH nodename="C:\SVN_ROOT\vvvv\plugins\c#\Mesh\Penthacoron\Penthacoron (EX9.Geometry) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Penthacoron (EX9.Geometry) help.v4p">
    <BOUNDS height="10635" left="480" top="240" type="Window" width="11130">
    </BOUNDS>
-   <NODE componentmode="InABox" id="24" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="24" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="2505" top="5415" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4665" left="2505" top="5415" type="Box" width="4890">
@@ -11,15 +11,25 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
-   <BOUNDS height="270" left="120" top="1650" type="Node" width="3105">
+   <BOUNDS height="270" left="600" top="1560" type="Node" width="3105">
    </BOUNDS>
-   <BOUNDS height="270" left="120" top="1650" type="Box" width="3105">
+   <BOUNDS height="270" left="600" top="1560" type="Box" width="3105">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -28,6 +38,8 @@
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="21" nodename="IOBox (String)">
@@ -404,7 +416,7 @@
    </LINK>
    <LINK dstnodeid="2" dstpinname="Mesh" srcnodeid="25" srcpinname="Mesh">
    </LINK>
-   <NODE nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" componentmode="Hidden" id="27" path="C:\Program Files\vvvv_40beta22\modules\vvvv group\Transform\">
+   <NODE nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" componentmode="Hidden" id="27">
    <BOUNDS type="Node" left="6075" top="4815" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="6075" top="4815" width="4800" height="3600">
@@ -418,8 +430,8 @@
    <PIN pinname="Inital Distance" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <LINK srcnodeid="27" srcpinname="View" dstnodeid="24" dstpinname="View Transform">
+   <LINK srcnodeid="27" srcpinname="View" dstnodeid="24" dstpinname="View">
    </LINK>
-   <LINK srcnodeid="27" srcpinname="Projection" dstnodeid="24" dstpinname="Projection Transform">
+   <LINK srcnodeid="27" srcpinname="Projection" dstnodeid="24" dstpinname="Projection">
    </LINK>
    </PATCH>
