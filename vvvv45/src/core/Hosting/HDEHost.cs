@@ -192,6 +192,7 @@ namespace VVVV.Hosting
             if (packsDirInfo.Exists)
             {
                 AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+                AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
                 foreach (var packDirInfo in packsDirInfo.GetDirectories())
                 {
                     var packDir = packDirInfo.FullName;
@@ -249,9 +250,22 @@ namespace VVVV.Hosting
                     var packDir = packDirInfo.FullName;
                     var nodesDirInfo = new DirectoryInfo(Path.Combine(packDir, "nodes"));
                     if (nodesDirInfo.Exists)
-                        NodeCollection.AddJob(nodesDirInfo.FullName, false);
+                        NodeCollection.AddJob(nodesDirInfo.FullName, true);
                 }
             }
+        }
+
+        Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var assemblyName = new AssemblyName(args.Name);
+            foreach (var searchPath in FAssemblySearchPaths)
+            {
+                var assemblyFileName = assemblyName.Name + ".dll";
+                var assemblyLocation = Path.Combine(searchPath, assemblyFileName);
+                if (File.Exists(assemblyLocation))
+                    return Assembly.ReflectionOnlyLoadFrom(assemblyLocation);
+            }
+            return null;
         }
 
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
