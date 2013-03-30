@@ -1,36 +1,36 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Diagnostics;
+using VVVV.Utils;
 
 namespace VVVV.Core.Model
 {
-    public interface IDocument : IIDItem, IProjectItem, IPersistent
+    public interface IDocument : IIDItem, IProjectItem
     {
+        string LocalPath { get; }
+        void SaveTo(string path);
     }
     
     public static class DocumentExtensionMethods
     {
+        /// <summary>
+        /// Returns the relative path from the specified persistent to this IPersistent.
+        /// Example: Foo\Bar\ThisDocument.txt
+        /// </summary>
+        public static string GetRelativePath(this Uri location1, Uri location2)
+        {
+            var persistent2Dir = location2.GetLocalDir() + "\\";
+            var relativePath = new Uri(persistent2Dir).MakeRelativeUri(location1).ToString();
+            return Uri.UnescapeDataString(relativePath).Replace('/', '\\');
+        }
+
     	/// <summary>
     	/// Returns the relative path from the containing IProject to this IDocument.
     	/// Example: Foo\Bar\ThisDocument.txt
     	/// </summary>
     	public static string GetRelativePath(this IDocument doc)
         {
-    		return doc.GetRelativePath(doc.Project);
-        }
-
-        /// <summary>
-        /// Returns the relative path from the given IProject to this IDocument.
-        /// Example: Foo\Bar\ThisDocument.txt
-        /// </summary>
-        public static string GetRelativeDir(this IDocument doc, IProject project)
-        {
-            var relativePath = doc.GetRelativePath(project);
-            if (string.IsNullOrEmpty(relativePath))
-                return string.Empty;
-            else
-                return Path.GetDirectoryName(relativePath);
+            return PathUtils.MakeRelativePath(Path.GetDirectoryName(doc.Project.LocalPath), doc.LocalPath);
         }
     	
     	/// <summary>
@@ -39,8 +39,16 @@ namespace VVVV.Core.Model
     	/// </summary>
     	public static string GetRelativeDir(this IDocument doc)
         {
-            Debug.Assert(doc.Project != null); // Document must be rooted
-            return doc.GetRelativeDir(doc.Project);
+            var relativePath = doc.GetRelativePath();
+            if (string.IsNullOrEmpty(relativePath))
+            	return string.Empty;
+            else
+            	return Path.GetDirectoryName(relativePath);
+        }
+
+        public static void Save(this IDocument doc)
+        {
+            doc.SaveTo(doc.LocalPath);
         }
     }
 }

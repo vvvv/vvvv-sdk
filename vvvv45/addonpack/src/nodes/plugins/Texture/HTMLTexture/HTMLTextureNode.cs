@@ -8,6 +8,7 @@ using System.ComponentModel.Composition;
 using VVVV.Utils.IO;
 using System.Xml.Linq;
 using EX9 = SlimDX.Direct3D9;
+using System.Drawing;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -22,9 +23,9 @@ namespace VVVV.Nodes.Texture.HTML
         [Input("Zoom Level")]
         public ISpread<double> FZoomLevelIn;
         [Input("Mouse Event")]
-        public ISpread<MouseState> FMouseEventIn;
+        public ISpread<MouseState> FMouseIn;
         [Input("Key Event")]
-        public ISpread<KeyboardState> FKeyEventIn;
+        public ISpread<KeyboardState> FKeyboardIn;
         [Input("Scroll To")]
         public ISpread<Vector2D> FScrollToIn;
         [Input("Update DOM", IsBang = true)]
@@ -37,7 +38,7 @@ namespace VVVV.Nodes.Texture.HTML
         public ISpread<bool> FEnabledIn;
 
         [Output("Output")]
-        public ISpread<DXResource<EX9.Texture, CefBrowser>> FOutput;
+        public ISpread<DXResource<EX9.Texture, CefBrowser>> FTextureOut;
         [Output("Root Element")]
         public ISpread<XElement> FRootElementOut;
         [Output("Document")]
@@ -56,14 +57,14 @@ namespace VVVV.Nodes.Texture.HTML
 
         public void OnImportsSatisfied()
         {
-            FOutput.SliceCount = 0;
+            FTextureOut.SliceCount = 0;
         }
 
         public void Evaluate(int spreadMax)
         {
             FWebRenderers.ResizeAndDispose(spreadMax, () => new HTMLTextureRenderer(FLogger));
 
-            FOutput.SliceCount = spreadMax;
+            FTextureOut.SliceCount = spreadMax;
             FRootElementOut.SliceCount = spreadMax;
             FDomOut.SliceCount = spreadMax;
             FIsLoadingOut.SliceCount = spreadMax;
@@ -73,68 +74,46 @@ namespace VVVV.Nodes.Texture.HTML
             for (int i = 0; i < spreadMax; i++)
             {
                 var webRenderer = FWebRenderers[i];
-                var reload = FReloadIn[i];
-                var width = FWidthIn[i];
-                var height = FHeightIn[i];
-                var zoomLevel = FZoomLevelIn[i];
-                var mouseEvent = FMouseEventIn[i];
-                var keyEvent = FKeyEventIn[i];
-                var scrollTo = FScrollToIn[i];
-                var updateDom = FUpdateDomIn[i];
-                var javaScript = FJavaScriptIn[i];
-                var execute = FExecuteIn[i];
-                var enabled = FEnabledIn[i];
-                XDocument dom; 
-                XElement rootElement;
-                bool isLoading;
-                string currentUrl, errorText;
-                var output = DoRenderCall(
-                    webRenderer,
-                    i,
-                    out dom,
-                    out rootElement,
-                    out isLoading, 
-                    out currentUrl, 
-                    out errorText,
-                    reload,
-                    width, 
-                    height, 
-                    zoomLevel,
-                    mouseEvent,
-                    keyEvent,
-                    scrollTo,
-                    updateDom,
-                    javaScript,
-                    execute,
-                    enabled);
-                if (FOutput[i] != output) FOutput[i] = output;
-                if (FDomOut[i] != dom) FDomOut[i] = dom;
-                if (FRootElementOut[i] != rootElement) FRootElementOut[i] = rootElement;
-                FIsLoadingOut[i] = isLoading;
-                if (FCurrentUrlOut[i] != currentUrl) FCurrentUrlOut[i] = currentUrl;
-                if (FErrorTextOut[i] != errorText) FErrorTextOut[i] = errorText;
+
+                // Check enabled state
+                webRenderer.Enabled = FEnabledIn[i];
+                if (!webRenderer.Enabled) continue;
+
+                // LoadUrl or LoadString
+                LoadContent(webRenderer, i);
+
+                // Assign inputs
+                webRenderer.Size = new Size(FWidthIn[i], FHeightIn[i]);
+                webRenderer.ZoomLevel = FZoomLevelIn[i];
+                webRenderer.Mouse = FMouseIn[i];
+                webRenderer.Keyboard = FKeyboardIn[i];
+                webRenderer.ScrollTo = FScrollToIn[i];
+
+                if (FExecuteIn[i])
+                    webRenderer.ExecuteJavaScript(FJavaScriptIn[i]);
+
+                if (FUpdateDomIn[i])
+                    webRenderer.UpdateDom();
+
+                if (FReloadIn[i])
+                    webRenderer.Reload();
+
+                // Set outputs
+                FTextureOut[i] = webRenderer.TextureResource;
+                if (FDomOut[i] != webRenderer.CurrentDom)
+                    FDomOut[i] = webRenderer.CurrentDom;
+                var rootElement = webRenderer.CurrentDom != null
+                    ? webRenderer.CurrentDom.Root
+                    : null;
+                if (FRootElementOut[i] != rootElement)
+                    FRootElementOut[i] = rootElement;
+                FIsLoadingOut[i] = webRenderer.IsLoading;
+                FCurrentUrlOut[i] = webRenderer.CurrentUrl;
+                FErrorTextOut[i] = webRenderer.CurrentError;
             }
         }
 
-        protected abstract DXResource<EX9.Texture, CefBrowser> DoRenderCall(
-            HTMLTextureRenderer webRenderer,
-            int slice,
-            out XDocument dom, 
-            out XElement rootElement, 
-            out bool isLoading, 
-            out string currentUrl, 
-            out string errorText, 
-            bool reload, 
-            int width, 
-            int height, 
-            double zoomLevel, 
-            MouseState mouseEvent, 
-            KeyboardState keyEvent, 
-            Vector2D scrollTo, 
-            bool updateDom,
-            string javaScript, 
-            bool execute, 
-            bool enabled);
+        protected abstract void LoadContent(HTMLTextureRenderer renderer, int slice);
 
         public void Dispose()
         {
@@ -150,27 +129,9 @@ namespace VVVV.Nodes.Texture.HTML
         [Input("Base Url", DefaultString = "about:blank")]
         public ISpread<string> FBaseUrlIn;
 
-        protected override DXResource<EX9.Texture, CefBrowser> DoRenderCall(HTMLTextureRenderer webRenderer, int slice, out XDocument dom, out XElement rootElement, out bool isLoading, out string currentUrl, out string errorText, bool reload, int width, int height, double zoomLevel, MouseState mouseEvent, KeyboardState keyEvent, Vector2D scrollTo, bool updateDom, string javaScript, bool execute, bool enabled)
+        protected override void LoadContent(HTMLTextureRenderer renderer, int slice)
         {
-            return webRenderer.RenderString(
-                    out dom,
-                    out rootElement,
-                    out isLoading,
-                    out currentUrl,
-                    out errorText,
-                    FBaseUrlIn[slice],
-                    FHtmlIn[slice],
-                    reload,
-                    width,
-                    height,
-                    zoomLevel,
-                    mouseEvent,
-                    keyEvent,
-                    scrollTo,
-                    updateDom,
-                    javaScript,
-                    execute,
-                    enabled);
+            renderer.LoadString(FHtmlIn[slice], FBaseUrlIn[slice]);
         }
     }
 
@@ -180,26 +141,9 @@ namespace VVVV.Nodes.Texture.HTML
         [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
         public ISpread<string> FUrlIn;
 
-        protected override DXResource<EX9.Texture, CefBrowser> DoRenderCall(HTMLTextureRenderer webRenderer, int slice, out XDocument dom, out XElement rootElement, out bool isLoading, out string currentUrl, out string errorText, bool reload, int width, int height, double zoomLevel, MouseState mouseEvent, KeyboardState keyEvent, Vector2D scrollTo, bool updateDom, string javaScript, bool execute, bool enabled)
+        protected override void LoadContent(HTMLTextureRenderer renderer, int slice)
         {
-            return webRenderer.RenderUrl(
-                    out dom,
-                    out rootElement,
-                    out isLoading,
-                    out currentUrl,
-                    out errorText,
-                    FUrlIn[slice],
-                    reload,
-                    width,
-                    height,
-                    zoomLevel,
-                    mouseEvent,
-                    keyEvent,
-                    scrollTo,
-                    updateDom,
-                    javaScript,
-                    execute,
-                    enabled);
+            renderer.LoadURL(FUrlIn[slice]);
         }
     }
 }

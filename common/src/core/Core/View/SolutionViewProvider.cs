@@ -80,13 +80,10 @@ namespace VVVV.Core.View
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 var name = dialog.EnteredText;
-                var solutionDir = FSolution.Location.GetLocalDir();
+                var solutionDir = Path.GetDirectoryName(FSolution.LocalPath);
                 var projectPath = solutionDir.ConcatPath(name).ConcatPath(name + ".csproj");
-                var location = new Uri(projectPath);
-                var project = new CSProject(Path.GetFileName(location.LocalPath), location);
-                if (File.Exists(project.Location.LocalPath))
-                    project.Load();
-                else
+                var project = new CSProject(projectPath);
+                if (!File.Exists(project.LocalPath))
                     project.Save();
                 return project;
             }

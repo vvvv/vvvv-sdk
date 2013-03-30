@@ -127,18 +127,7 @@ namespace VVVV.MSKinect.Nodes
                     int pos = 0;
                     lock (this.m_lock)
                     {
-                        fixed (short* b = &this.rawdepth[0])
-                        {
-                            short* ptr = b;
-                            for (int i = 0; i < 240; i++)
-                            {
-                                rect.Data.WriteRange((IntPtr)ptr, 320);
-
-                                pos += rect.Pitch;
-                                rect.Data.Position = pos;
-                                ptr += 320;
-                            }
-                        }
+                        rect.Data.WriteRange(this.rawdepth);
                     }
 
 

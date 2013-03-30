@@ -18,63 +18,42 @@ using VVVV.Core.Logging;
 namespace VVVV.Core.Model.CS
 {
     public delegate void ParseCompletedEventHandler(CSDocument document);
-
+    
     public class CSDocument : TextDocument
     {
-        private readonly object FParseLock = new object();
-        private readonly ManualResetEvent FParsingDone = new ManualResetEvent(true);
-        private readonly SynchronizationContext FSyncContext;
-
-        public event ParseCompletedEventHandler ParseCompleted;
-
-        private ParseInformation FParseInfo;
+        private readonly ParseInformation FParseInfo;
+        private bool FIsParseInfoValid;
         public ParseInformation ParseInfo
         {
-            get
+            get 
             {
-                FParsingDone.WaitOne();
-
-                lock (FParseLock)
+                if (!FIsParseInfoValid)
                 {
-                    return FParseInfo;
+                    FIsParseInfoValid = true;
+                    var parserResults = Parse();
+                    UpdateParseInfo(parserResults);
                 }
+                return FParseInfo; 
             }
         }
-
+        
         public CSharpExpressionFinder ExpressionFinder
         {
             get;
             private set;
         }
-
-        private CSParserResults FParserResults;
-        public CSParserResults ParserResults
+        
+        public override bool CanBeCompiled 
         {
-            get
-            {
-                FParsingDone.WaitOne();
-
-                lock (FParseLock)
-                {
-                    return FParserResults;
-                }
-            }
-        }
-
-        public override bool CanBeCompiled
-        {
-            get
+            get 
             {
                 return true;
             }
         }
 
-        public CSDocument(string name, Uri location)
-            : base(name, location)
+        public CSDocument(string name, string path)
+            : base(name, path)
         {
-            FSyncContext = SynchronizationContext.Current;
-            Debug.Assert(FSyncContext != null, "Current SynchronizationContext must be set.");
-
             FParseInfo = new ParseInformation();
             ExpressionFinder = new CSharpExpressionFinder(FParseInfo);
         }
@@ -83,30 +62,7 @@ namespace VVVV.Core.Model.CS
         {
             return base.CanRenameTo(value) && Path.GetExtension(value) == ".cs";
         }
-
-        protected override void OnLoaded(EventArgs e)
-        {
-            ParseAsync(true);
-            base.OnLoaded(e);
-        }
-
-        protected override void DoUnload()
-        {
-            FParsingDone.WaitOne();
-
-            lock (FParseLock)
-            {
-                base.DoUnload();
-            }
-        }
-
-        protected override void DisposeManaged()
-        {
-            if (IsLoaded)
-                Unload();
-            base.DisposeManaged();
-        }
-
+        
         /// <summary>
         /// Finds an expression around the current offset.
         /// </summary>
@@ -114,7 +70,7 @@ namespace VVVV.Core.Model.CS
         {
             return ExpressionFinder.FindFullExpression(TextContent, offset);
         }
-
+        
         /// <summary>
         /// Finds an expression before the current offset.
         /// </summary>
@@ -122,24 +78,24 @@ namespace VVVV.Core.Model.CS
         {
             return ExpressionFinder.FindExpression(TextContent, offset);
         }
-
+        
         public ResolveResult Resolve(ExpressionResult expression)
         {
             var resolver = new NRefactoryResolver(LanguageProperties.CSharp);
             return resolver.Resolve(expression, ParseInfo, TextContent);
         }
-
+        
         protected override void OnContentChanged(string oldConent, string content)
         {
+            FIsParseInfoValid = false;
             base.OnContentChanged(oldConent, content);
-            ParseAsync(false);
         }
 
-        public void Parse()
+        public CSParserResults Parse()
         {
-            Parse(false);
+            return Parse(false);
         }
-
+        
         private IProjectContent GetProjectContent()
         {
             var project = Project as CSProject;
@@ -152,63 +108,38 @@ namespace VVVV.Core.Model.CS
                 return projectContent;
             }
         }
-
-        public void Parse(bool parseMethodBodies)
+        
+        public CSParserResults Parse(bool parseMethodBodies)
         {
-            try
-            {
-                DebugHelpers.CatchAndLog(() =>
-                {
-                    lock (FParseLock)
-                    {
-                        FParserResults = CSParser.Parse(TextContent, parseMethodBodies);
-
-                        var filename = Location.LocalPath;
-                        var oldCompilationUnit = FParseInfo.MostRecentCompilationUnit;
-                        var projectContent = GetProjectContent();
-
-                        var visitor = new NRefactoryASTConvertVisitor(projectContent);
-                        visitor.Specials = FParserResults.Specials;
-                        visitor.VisitCompilationUnit(FParserResults.CompilationUnit, null);
-
-                        var newCompilationUnit = visitor.Cu;
-                        newCompilationUnit.ErrorsDuringCompile = FParserResults.HasErrors;
-                        newCompilationUnit.FileName = filename;
-
-                        UpdateFoldingRegions(newCompilationUnit, FParserResults);
-                        AddCommentTags(newCompilationUnit, FParserResults);
-
-                        // Remove information from lastCompilationUnit and add information from newCompilationUnit.
-                        projectContent.UpdateCompilationUnit(oldCompilationUnit, newCompilationUnit, filename);
-                        FParseInfo.SetCompilationUnit(newCompilationUnit);
-                    }
-                }, "CSDocument.Parse");
-            }
-            finally
-            {
-                FParsingDone.Set();
-            }
+            return CSParser.Parse(TextContent, parseMethodBodies);
         }
 
-        public void ParseAsync()
+        private void UpdateParseInfo(CSParserResults results)
         {
-            ParseAsync(false);
+            var filename = LocalPath;
+            var oldCompilationUnit = FParseInfo.MostRecentCompilationUnit;
+            var projectContent = GetProjectContent();
+
+            var visitor = new NRefactoryASTConvertVisitor(projectContent);
+            visitor.Specials = results.Specials;
+            visitor.VisitCompilationUnit(results.CompilationUnit, null);
+
+            var newCompilationUnit = visitor.Cu;
+            newCompilationUnit.ErrorsDuringCompile = results.HasErrors;
+            newCompilationUnit.FileName = filename;
+
+            UpdateFoldingRegions(newCompilationUnit, results);
+            AddCommentTags(newCompilationUnit, results);
+
+            projectContent.UpdateCompilationUnit(oldCompilationUnit, newCompilationUnit, filename);
+            FParseInfo.SetCompilationUnit(newCompilationUnit);
         }
-
-        public void ParseAsync(bool parseMethodBodies)
-        {
-            if (!IsLoaded)
-                throw new InvalidOperationException("Document is not loaded.");
-
-            FParsingDone.Reset();
-            ThreadPool.QueueUserWorkItem(DoParseAsync, parseMethodBodies);
-        }
-
+        
         private void UpdateFoldingRegions(ICompilationUnit compilationUnit, CSParserResults parserResults)
         {
             var directives = new Stack<PreprocessingDirective>();
             var foldingRegions = compilationUnit.FoldingRegions;
-
+            
             // Collect all #region and #endregion directives and push them on a stack.
             foreach (var special in parserResults.Specials)
             {
@@ -229,7 +160,7 @@ namespace VVVV.Core.Model.CS
                 }
             }
         }
-
+        
         private void AddCommentTags(ICompilationUnit compilationUnit, CSParserResults parserResults)
         {
             foreach (var tagComment in parserResults.TagComments)
@@ -237,20 +168,6 @@ namespace VVVV.Core.Model.CS
                 var tagRegion = new DomRegion(tagComment.StartPosition.Y, tagComment.StartPosition.X);
                 var tag = new TagComment(tagComment.Tag, tagRegion, tagComment.CommentText);
                 compilationUnit.TagComments.Add(tag);
-            }
-        }
-
-        void DoParseAsync(object state)
-        {
-            Parse((bool)state);
-            FSyncContext.Post((s) => OnParseCompleted(), null);
-        }
-
-        protected virtual void OnParseCompleted()
-        {
-            if (ParseCompleted != null)
-            {
-                ParseCompleted(this);
             }
         }
     }

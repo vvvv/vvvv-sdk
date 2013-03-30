@@ -39,7 +39,6 @@ namespace VVVV.Nodes.NodeBrowser
         	this.label3 = new System.Windows.Forms.Label();
         	this.label4 = new System.Windows.Forms.Label();
         	this.FCancelButton = new System.Windows.Forms.Button();
-        	this.label5 = new System.Windows.Forms.Label();
         	this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
         	this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
         	this.label6 = new System.Windows.Forms.Label();
@@ -86,7 +85,7 @@ namespace VVVV.Nodes.NodeBrowser
         	// 
         	this.label1.AutoSize = true;
         	this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.label1.Location = new System.Drawing.Point(3, 21);
+        	this.label1.Location = new System.Drawing.Point(3, 0);
         	this.label1.Name = "label1";
         	this.label1.Size = new System.Drawing.Size(363, 78);
         	this.label1.TabIndex = 99;
@@ -149,19 +148,9 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FCancelButton.Click += new System.EventHandler(this.FCancelButtonClick);
         	this.FCancelButton.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FCancelButtonKeyPress);
         	// 
-        	// label5
-        	// 
-        	this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        	this.label5.Location = new System.Drawing.Point(3, 0);
-        	this.label5.Name = "label5";
-        	this.label5.Size = new System.Drawing.Size(231, 21);
-        	this.label5.TabIndex = 100;
-        	this.label5.Text = "Clone Node";
-        	// 
         	// flowLayoutPanel1
         	// 
         	this.flowLayoutPanel1.AutoScroll = true;
-        	this.flowLayoutPanel1.Controls.Add(this.label5);
         	this.flowLayoutPanel1.Controls.Add(this.label1);
         	this.flowLayoutPanel1.Controls.Add(this.tableLayoutPanel1);
         	this.flowLayoutPanel1.Controls.Add(this.tableLayoutPanel2);
@@ -190,7 +179,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.tableLayoutPanel1.Controls.Add(this.FPathTextBox, 1, 3);
         	this.tableLayoutPanel1.Controls.Add(this.FPathButton, 2, 3);
         	this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 102);
+        	this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 81);
         	this.tableLayoutPanel1.Name = "tableLayoutPanel1";
         	this.tableLayoutPanel1.RowCount = 4;
         	this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -240,7 +229,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.tableLayoutPanel2.Controls.Add(this.FCloneButton, 0, 0);
         	this.tableLayoutPanel2.Controls.Add(this.FCancelButton, 1, 0);
         	this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 215);
+        	this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 194);
         	this.tableLayoutPanel2.Name = "tableLayoutPanel2";
         	this.tableLayoutPanel2.RowCount = 1;
         	this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -270,7 +259,6 @@ namespace VVVV.Nodes.NodeBrowser
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button FCloneButton;
         private System.Windows.Forms.Button FCancelButton;
         private System.Windows.Forms.Label label4;

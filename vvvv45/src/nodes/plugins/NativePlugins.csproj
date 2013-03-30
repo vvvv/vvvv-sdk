@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Threading.Tasks.Dataflow">
       <HintPath>..\..\..\..\common\src\thirdparty\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
@@ -69,12 +70,14 @@
     <Compile Include="Spreads\Lindenmayer\Lindenmayer.cs" />
     <Compile Include="Spreads\Lindenmayer\LindenmayerNode.cs" />
     <Compile Include="String\ApplyModifiersNode.cs" />
+    <Compile Include="String\Base64Nodes.cs" />
     <Compile Include="String\KeyMatchNodes.cs" />
     <Compile Include="String\StringInsertNode.cs" />
     <Compile Include="SVG\SVGGeomNodes.cs" />
     <Compile Include="SVG\SVGTextureNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="System\SystemProcessorsNode.cs" />
     <Compile Include="Texture\ImagePlayer\FrameDecoder.cs" />
     <Compile Include="Texture\ImagePlayer\FrameInfo.cs" />
     <Compile Include="Texture\ImagePlayer\ImagePlayer.cs" />
@@ -109,6 +112,12 @@
     <Compile Include="vvvv\Kontrolleur\KontrolleurNode.cs" />
     <Compile Include="vvvv\Kontrolleur\RemoteValue.cs" />
     <Compile Include="vvvv\NodeBrowser\CategoryEntry.cs" />
+    <Compile Include="vvvv\NodeBrowser\CategoryFilterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="vvvv\NodeBrowser\CategoryFilterPanel.Designer.cs">
+      <DependentUpon>CategoryFilterPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="vvvv\NodeBrowser\CategoryPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -144,13 +153,12 @@
       <DependentUpon>TagPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="vvvv\NodeCollector\NodeCollector.cs" />
+    <Compile Include="vvvv\PID\VVVVPIDNode.cs" />
     <Compile Include="vvvv\PinInfo\VVVVPinInfoNode.cs" />
     <Compile Include="vvvv\ProjectExplorer\DescriptedProjectViewProvider.cs" />
-    <Compile Include="vvvv\ProjectExplorer\FXProjectMenuProvider.cs" />
     <Compile Include="vvvv\ProjectExplorer\FXProjectViewProvider.cs" />
     <Compile Include="vvvv\ProjectExplorer\LoadedProjectsSolutionViewProvider.cs" />
     <Compile Include="vvvv\ProjectExplorer\MsBuildProjectViewProvider.cs" />
-    <Compile Include="vvvv\ProjectExplorer\PersistentNameProvider.cs" />
     <Compile Include="vvvv\ProjectExplorer\ProjectExplorerPlugin.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -181,6 +189,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="vvvv\Kommunikator\KommunikatorNode.resx">
       <DependentUpon>KommunikatorNode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="vvvv\NodeBrowser\CategoryFilterPanel.resx">
+      <DependentUpon>CategoryFilterPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="vvvv\NodeBrowser\CategoryPanel.resx">
       <DependentUpon>CategoryPanel.cs</DependentUpon>

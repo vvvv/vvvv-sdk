@@ -12,6 +12,6 @@ namespace VVVV.Core
         void Visit(IDocument document);
         void Visit(IReference reference);
         void Visit(AssemblyReference assemblyReference);
-        void Visit(ProjectReference projectReference);
+        void Visit(MsBuildProjectReference projectReference);
     }
 }

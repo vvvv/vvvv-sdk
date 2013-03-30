@@ -8,7 +8,7 @@ namespace VVVV.Hosting.Pins.Output
 {
 	class OutputPin<T> : Pin<T>
 	{
-		public OutputPin(IIOFactory factory, IPluginOut pluginOut, BufferedIOStream<T> stream)
+		public OutputPin(IIOFactory factory, IPluginOut pluginOut, MemoryIOStream<T> stream)
 			: base(factory, pluginOut, stream)
 		{
 			SliceCount = 1;
@@ -20,7 +20,7 @@ namespace VVVV.Hosting.Pins.Output
 		}
 	}
 	
-	class BufferedOutputIOStream<T> : BufferedIOStream<T>
+	class BufferedOutputIOStream<T> : MemoryIOStream<T>
 	{
 	    private readonly IOutStream<T> FOutStream;
 	    

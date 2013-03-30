@@ -5,9 +5,9 @@ namespace VVVV.Core.Model
     /// <summary>
     /// Represents a reference to a loaded project.
     /// </summary>
-    public class ProjectReference: ProjectItem, IReference
+    public class MsBuildProjectReference: ProjectItem, IReference
     {
-    	public ProjectReference(IProject project)
+    	public MsBuildProjectReference(MsBuildProject project)
             : base(project.Name)
         {
             ReferencedProject = project;
@@ -25,9 +25,9 @@ namespace VVVV.Core.Model
         }
         
         /// <summary>
-        /// The IProject this reference points to.
+        /// The MsBuildProject this reference points to.
         /// </summary>
-        public IProject ReferencedProject 
+        public MsBuildProject ReferencedProject 
         { 
             get; 
             protected set; 

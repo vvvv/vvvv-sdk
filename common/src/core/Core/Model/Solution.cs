@@ -11,13 +11,14 @@ using VVVV.Core.Commands;
 
 namespace VVVV.Core.Model
 {
-    public class Solution : PersistentIDContainer, IIDContainer
+    public class Solution : IDContainer, IIDContainer
     {
         private readonly ServiceProvider FServiceProvider;
-    	
-    	public Solution(Uri location, IServiceProvider serviceProvider)
-    	    : base(Path.GetFileName(location.LocalPath), location, true)
+
+        public Solution(string path, IServiceProvider serviceProvider)
+            : base(Path.GetFileName(path), true)
         {
+            LocalPath = path;
             FServiceProvider = new ServiceProvider(serviceProvider);
             if (Shell.Instance.IsRuntime || Shell.CommandLineArguments.Local)
                 FServiceProvider.RegisterService<ICommandHistory>(new CommandHistory(FServiceProvider));
@@ -39,7 +40,7 @@ namespace VVVV.Core.Model
             
             OnRootingChanged(RootingAction.Rooted);
         }
-
+        
         public override IServiceProvider ServiceProvider
         {
             get
@@ -58,13 +59,13 @@ namespace VVVV.Core.Model
         
         public ProjectContentRegistry ProjectContentRegistry
         {
-        	get;
-        	private set;
+            get;
+            private set;
         }
         
         void Projects_Added(IViewableCollection<Project> collection, Project project)
         {
-        	project.Solution = this;
+            project.Solution = this;
             project.ProjectCompiledSuccessfully += Project_Compiled;
         }
 
@@ -90,63 +91,11 @@ namespace VVVV.Core.Model
             ProjectCompiledSuccessfully = null;
             base.DisposeManaged();
         }
-        
-		protected override string CreateName(Uri location)
-		{
-			return Path.GetFileNameWithoutExtension(location.LocalPath);
-		}
-        
-        public override void SaveTo(Uri location)
+
+        public string LocalPath
         {
-            // TODO: Implement this
-        }
-        
-		protected override void DoLoad()
-		{
-			// TODO: Implement this
-		}
-		
-		protected override void DoUnload()
-		{
-			// TODO: Implement this
-		}
-
-        /// <summary>
-        /// Finds the document with the specified filename. Looks through all documents in all projects
-        /// of this solution.
-        /// </summary>
-        /// <param name="filename">The filename where the document is located on the local filesystem.</param>
-        /// <returns>The document located at filename or null if not found.</returns>
-        public IDocument FindDocument(string filename)
-        {
-            filename = filename.ToLower().Replace('/', '\\');
-
-            foreach (var project in Projects)
-            {
-                var path = filename;
-
-                if (!Path.IsPathRooted(path))
-                    path = project.Location.GetLocalDir().ConcatPath(filename).ToLower();
-
-                foreach (var document in project.Documents)
-                {
-                    if (document.Location.LocalPath.ToLower() == path)
-                        return document;
-                }
-            }
-
-            return null;
-        }
-
-        public IProject FindProject(string filename)
-        {
-            foreach (var project in Projects)
-            {
-                if (project.Location.LocalPath == filename)
-                    return project;
-            }
-
-            return null;
+            get;
+            private set;
         }
     }
 }

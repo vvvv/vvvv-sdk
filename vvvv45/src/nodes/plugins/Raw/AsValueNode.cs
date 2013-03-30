@@ -35,7 +35,7 @@ namespace VVVV.Nodes.Raw
         public void Evaluate(int spreadMax)
         {
             spreadMax = StreamUtils.GetSpreadMax(FInputStreams, FFormats, FByteOrder);
-            FOutputs.ResizeAndDismiss(spreadMax, () => new BufferedIOStream<double>());
+            FOutputs.ResizeAndDismiss(spreadMax, () => new MemoryIOStream<double>());
             var buffer = MemoryPool<double>.GetArray();
             try
             {
@@ -43,7 +43,7 @@ namespace VVVV.Nodes.Raw
                 using (var formatReader = FFormats.GetCyclicReader())
                 using (var byteOrderReader = FByteOrder.GetCyclicReader())
                 {
-                    foreach (BufferedIOStream<double> outputStream in FOutputs)
+                    foreach (MemoryIOStream<double> outputStream in FOutputs)
                     {
                         using (var inputStream = reader.Read())
                         {
@@ -69,7 +69,7 @@ namespace VVVV.Nodes.Raw
             }
         }
 
-        static void ConvertAllAtOnce(Stream srcStream, BufferedIOStream<double> dstStream, double[] buffer, ValueTypeFormat format, ByteOrder byteOrder)
+        static void ConvertAllAtOnce(Stream srcStream, MemoryIOStream<double> dstStream, double[] buffer, ValueTypeFormat format, ByteOrder byteOrder)
         {
             var binaryReader = new BinaryReader(srcStream);
             var sizeOfT = ValueTypeFormatUtils.SizeOf(format);
@@ -152,7 +152,7 @@ namespace VVVV.Nodes.Raw
             }
         }
 
-        static void ConvertOneByOne(Stream srcStream, BufferedIOStream<double> dstStream, IInStream<ValueTypeFormat> formatStream, ByteOrder byteOrder)
+        static void ConvertOneByOne(Stream srcStream, MemoryIOStream<double> dstStream, IInStream<ValueTypeFormat> formatStream, ByteOrder byteOrder)
         {
             var binaryReader = new BinaryReader(srcStream);
             int dstStreamLength = 0;

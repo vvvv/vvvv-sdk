@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.11.dtd" >
-   <PATCH nodename="X:\help\Tidy (XML) help.v4p">
-   <BOUNDS height="10005" left="1260" top="2415" type="Window" width="9960">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\native\Tidy (XML) help.v4p">
+   <BOUNDS height="10155" left="1260" top="2415" type="Window" width="9960">
    </BOUNDS>
    <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
    <BOUNDS height="255" left="150" top="525" type="Node" width="570">
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="600" top="2160" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tidy - (XML)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tidy (XML)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -86,7 +86,7 @@
    </LINK>
    <LINK dstnodeid="10" dstpinname="XML Input" srcnodeid="9" srcpinname="Output String">
    </LINK>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="375" top="3180" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7755" top="5445" type="Window" width="215">
@@ -100,7 +100,7 @@
    </NODE>
    <LINK dstnodeid="8" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="12" srcpinname="Is well formed">
    </LINK>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="240" top="8880" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8055" top="5745" type="Window" width="215">
@@ -160,18 +160,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="3" nodename="XPath (XML)">
-   <BOUNDS height="0" left="4065" top="9105" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="XML Input" slicecount="1" visible="1" values="text">
-   </PIN>
-   <PIN pinname="XPath Query" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Validate on parse" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Resolve externals" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
    <BOUNDS height="270" left="2160" top="9135" type="Node" width="1845">
    </BOUNDS>
@@ -209,11 +197,23 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|On the Output Type-Pin you can choose the desired Output-Format. If set to &quot;XMLNoHeader&quot; Tidy will strip the XML- and Doctype-declaration, this can be useful if you want to concatenate several XML-documents.&cr;&lf;&cr;&lf;Doctype Mode  allows to specify  the Doctype of the resulting Document.&cr;&lf;If set to &quot;None&quot; the output won&apos;t contain a DOCTYPE declaration. If set to &quot;Auto&quot; (the default) Tidy will &quot;guess&quot;  based upon the contents of the document. If set to &quot;Strict&quot;,  the DOCTYPE will be set to the strict DTD. If set to &quot;Transitional&quot;, the DOCTYPE is set to the transitional DTD.&cr;&lf;&cr;&lf;Input Encoding Type specifies the character encoding Tidy uses for the input.&cr;&lf;Output Encoding Type specifies the character encoding Tidy uses for the output&cr;&lf;For ASCII, Tidy will accept Latin-1 (ISO-8859-1) character values, but will use entities for all characters whose value &gt; 127. For raw, Tidy will output values above 127 without translating them into entities. For Latin1, characters above 255 will be written as entities. For UTF8, Tidy assumes that both input and output is encoded as UTF-8. You can use ISO2022 for files encoded using the ISO-2022 family of encodings e.g. ISO-2022-JP. For MAC and WIN1252, Tidy will accept vendor specific character values, but will use entities for all characters whose value &gt; 127.&cr;&lf;&cr;&lf;Clean Up specifies if  surplus presentational tags and attributes should be stripped out replacing them by style rules and structural markup as appropriate. This works well on the HTML saved by Microsoft Office (TM) products.&cr;&lf;&cr;&lf;The Ouput of Tidy is always pretty printed but if you set Pretty Print to 1 it will be even prettier.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|On the Output Type-Pin you can choose the desired Output-Format. If set to &quot;XMLNoHeader&quot; Tidy will strip the XML- and Doctype-declaration, this can be useful if you want to concatenate several XML-documents.&cr;&lf;&cr;&lf;Doctype Mode  allows to specify  the Doctype of the resulting Document.&cr;&lf;If set to &quot;None&quot; the output won&apos;t contain a DOCTYPE declaration. If set to &quot;Auto&quot; (the default) Tidy will &quot;guess&quot;  based upon the contents of the document. If set to &quot;Strict&quot;,  the DOCTYPE will be set to the strict DTD. If set to &quot;Transitional&quot;, the DOCTYPE is set to the transitional DTD.&cr;&lf;&cr;&lf;Clean Up specifies if  surplus presentational tags and attributes should be stripped out replacing them by style rules and structural markup as appropriate. This works well on the HTML saved by Microsoft Office (TM) products.&cr;&lf;&cr;&lf;The Ouput of Tidy is always pretty printed but if you set Pretty Print to 1 it will be even prettier.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="XPath (XML)" systemname="XPath (XML)">
+   <BOUNDS height="0" left="4065" top="9105" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" slicecount="1" visible="1" values="text">
+   </PIN>
+   <PIN pinname="XPath Query" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Validate on parse">
+   </PIN>
+   <PIN pinname="Resolve externals">
    </PIN>
    </NODE>
    </PATCH>

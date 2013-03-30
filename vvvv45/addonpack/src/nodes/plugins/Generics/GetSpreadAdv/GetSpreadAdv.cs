@@ -139,4 +139,12 @@ namespace VVVV.Nodes
     #endregion PluginInfo
     public class GetSpreadEnum : GetSpread<EnumEntry> {}
     
+    #region PluginInfo
+    [PluginInfo(Name = "GetSpread",
+                Category = "Raw",
+                Help = "returns sub-spreads from the input specified via offset and count, with Bin Size Option",
+                Tags = "",
+                Author = "woei")]
+    #endregion PluginInfo
+    public class GetSpreadRaw : GetSpread<System.IO.Stream> {}
 }

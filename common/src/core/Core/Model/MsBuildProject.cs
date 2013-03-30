@@ -9,17 +9,18 @@ using VVVV.Core.Logging;
 using VVVV.Core.Runtime;
 using VVVV.Utils;
 using MsBuild = Microsoft.Build;
+using System.Text.RegularExpressions;
 
 namespace VVVV.Core.Model
 {
-	/// <summary>
-	/// Base class for all MSBuild based projects, like C#/F#/VB.NET etc.
-	/// Uses internal MSBuild project object to load and save.
-	/// 
-	/// TODO: Handle ProjectReference items in Load/Save
-	/// </summary>
-	public abstract class MsBuildProject : Project
-	{
+    /// <summary>
+    /// Base class for all MSBuild based projects, like C#/F#/VB.NET etc.
+    /// Uses internal MSBuild project object to load and save.
+    /// 
+    /// TODO: Handle ProjectReference items in Load/Save
+    /// </summary>
+    public abstract class MsBuildProject : Project
+    {
         private MsBuild.Evaluation.Project FMsProject;
         protected MsBuild.Evaluation.Project MsProject
         {
@@ -27,147 +28,147 @@ namespace VVVV.Core.Model
             {
                 if (FMsProject == null)
                 {
-                    FMsProject = new MsBuild.Evaluation.Project(Location.LocalPath);
+                    FMsProject = new MsBuild.Evaluation.Project(LocalPath);
                 }
                 return FMsProject;
             }
         }
 
-		private Guid FGuid;
-		public Guid ProjectGuid
-		{
-			get
-			{
-				if (FGuid == Guid.Empty)
-				{
-					if (File.Exists(Location.LocalPath))
-					{
-                        var guid = MsProject.GetPropertyValue("ProjectGuid");
-						if (guid != null)
-							FGuid = new Guid(guid);
-					}
-					
-					if (FGuid == Guid.Empty)
-						FGuid = Guid.NewGuid();
-				}
-				return FGuid;
-			}
-		}
-		
-		public MsBuildProject(string name, Uri location)
-			:base(name, location)
-		{
-			ProjectCompiledSuccessfully += this_ProjectCompiledSuccessfully;
-		}
-		
-		protected override void DisposeManaged()
-		{
-			ProjectCompiledSuccessfully -= this_ProjectCompiledSuccessfully;
-			base.DisposeManaged();
-		}
-
-        private string assemblyLocation;
-        public override string AssemblyLocation
+        private Guid FGuid;
+        public Guid ProjectGuid
         {
             get
             {
-                if (this.assemblyLocation == null)
+                if (FGuid == Guid.Empty)
                 {
-                    // Try to find an assembly
-                    var assemblyBaseDir = Path.GetDirectoryName(AssemblyLocation);
-                    if (Directory.Exists(assemblyBaseDir))
+                    if (File.Exists(LocalPath))
                     {
-                        foreach (var file in Directory.GetFiles(assemblyBaseDir, "*.dll"))
-                        {
-                            this.assemblyLocation = file;
-                            break;
-                        }
+                        var guid = MsProject.GetPropertyValue("ProjectGuid");
+                        if (guid != null)
+                            FGuid = new Guid(guid);
                     }
-                    if (this.assemblyLocation == null)
-                        this.assemblyLocation = base.AssemblyLocation;
+                    
+                    if (FGuid == Guid.Empty)
+                        FGuid = Guid.NewGuid();
                 }
-                return this.assemblyLocation;
+                return FGuid;
             }
         }
 
-		void this_ProjectCompiledSuccessfully(object sender, CompilerEventArgs args)
-		{
-			// Copy local references
-			var results = args.CompilerResults;
-			var assemblyDir = Path.GetDirectoryName(results.PathToAssembly);
-			
-			foreach (var reference in References.Where((r) => !r.IsGlobal))
-			{
-				try
-				{
-					var srcFileInfo = new FileInfo(reference.AssemblyLocation);
-					var dstFileName = assemblyDir.ConcatPath(Path.GetFileName(srcFileInfo.Name));
-					var dstFileInfo = srcFileInfo.CopyTo(dstFileName, true);
-					dstFileInfo.IsReadOnly = false;
-				} catch (IOException)
-				{
-					// Ignore as file is probably in use (because we loaded it)
-				}
-			}
-		}
-		
-		public string AssemblyName
-		{
-			get
-			{
-				return Path.GetFileNameWithoutExtension(Name);
-			}
-		}
-		
-		public BuildConfiguration BuildConfiguration
-		{
-			get;
-			set;
-		}
+        /// <summary>
+        /// The full path to the compiled assembly.
+        /// </summary>
+        public string AssemblyLocation
+        {
+            get;
+            private set;
+        }
+        
+        public MsBuildProject(string path)
+            : base(path)
+        {
+            // Try to find an assembly
+            AssemblyLocation = GetExistingAssemblyLocation(path);
+            try
+            {
+                Load();
+            }
+            catch (Exception e)
+            {
+                Shell.Instance.Logger.Log(e);
+            }
+        }
+        
+        protected override void DisposeManaged()
+        {
+            Unload();
+            base.DisposeManaged();
+        }
 
-		public List<string> ReferencePaths
-		{
-			get;
-			protected set;
-		}
-		
+        protected override void OnProjectCompiledSuccessfully(CompilerEventArgs args)
+        {
+            // Retrieve new assembly location
+            AssemblyLocation = args.CompilerResults.PathToAssembly;
+
+            // Copy local references to the output folder
+            var results = args.CompilerResults;
+            var assemblyDir = Path.GetDirectoryName(results.PathToAssembly);
+
+            foreach (var reference in References.Where((r) => !r.IsGlobal))
+            {
+                try
+                {
+                    var srcFileInfo = new FileInfo(reference.AssemblyLocation);
+                    var dstFileName = assemblyDir.ConcatPath(Path.GetFileName(srcFileInfo.Name));
+                    var dstFileInfo = srcFileInfo.CopyTo(dstFileName, true);
+                    dstFileInfo.IsReadOnly = false;
+                }
+                catch (IOException)
+                {
+                    // Ignore as file is probably in use (because we loaded it)
+                }
+            }
+
+            base.OnProjectCompiledSuccessfully(args);
+        }
+        
+        public string AssemblyName
+        {
+            get
+            {
+                return Path.GetFileNameWithoutExtension(Name);
+            }
+        }
+        
+        public BuildConfiguration BuildConfiguration
+        {
+            get;
+            set;
+        }
+
+        public List<string> ReferencePaths
+        {
+            get;
+            protected set;
+        }
+        
         static readonly char[] FSplitChars = new char[] { ';' };
-		protected override void DoLoad()
-		{
-			var projectPath = Location.LocalPath;
-			var projectDir = Path.GetDirectoryName(projectPath);
+        private void Load()
+        {
+            var projectPath = LocalPath;
+            var projectDir = Path.GetDirectoryName(projectPath);
 
             var msBuildProject = MsProject;
-			var splitOptions = StringSplitOptions.RemoveEmptyEntries;
-			var setupInformation = AppDomain.CurrentDomain.SetupInformation;
-			// Always null, why? probing path is set in vvvv.exe.config
-			// var searchPath = AppDomain.CurrentDomain.RelativeSearchPath;
-			ReferencePaths = new List<string>()
-			{
-				Path.GetFullPath(Path.Combine(setupInformation.ApplicationBase, "lib", "core")),
+            var splitOptions = StringSplitOptions.RemoveEmptyEntries;
+            var setupInformation = AppDomain.CurrentDomain.SetupInformation;
+            // Always null, why? probing path is set in vvvv.exe.config
+            // var searchPath = AppDomain.CurrentDomain.RelativeSearchPath;
+            ReferencePaths = new List<string>()
+            {
+                Path.GetFullPath(Path.Combine(setupInformation.ApplicationBase, "lib", "core")),
                 Path.GetFullPath(Path.Combine(setupInformation.ApplicationBase, "lib", "nodes", "plugins"))
-			};
-			
-			var referencePathProperty = msBuildProject.GetPropertyValue("ReferencePath");
-			if (!string.IsNullOrEmpty(referencePathProperty))
-			{
+            };
+            
+            var referencePathProperty = msBuildProject.GetPropertyValue("ReferencePath");
+            if (!string.IsNullOrEmpty(referencePathProperty))
+            {
                 foreach (var refPath in referencePathProperty.Split(FSplitChars, splitOptions))
-				{
+                {
                     var trimmedRefPath = refPath.Trim();
                     trimmedRefPath = refPath.TrimEnd(Path.DirectorySeparatorChar);
                     var absoluteRefPath = Path.IsPathRooted(trimmedRefPath)
                         ? trimmedRefPath
                         : Path.Combine(projectDir, trimmedRefPath);
                     absoluteRefPath = Path.GetFullPath(absoluteRefPath);
-                    if (!ReferencePaths.Contains(absoluteRefPath))
-					{
+                    if (!ReferencePaths.Contains(absoluteRefPath) && Directory.Exists(absoluteRefPath))
+                    {
                         ReferencePaths.Add(absoluteRefPath);
-					}
-				}
-			}
-			
-			// Iterate through the various itemgroups
-			// and subsequently through the items
+                    }
+                }
+            }
+            
+            // Iterate through the various itemgroups
+            // and subsequently through the items
             foreach (var projectItem in msBuildProject.Items)
             {
                 switch (projectItem.ItemType)
@@ -187,16 +188,16 @@ namespace VVVV.Core.Model
                             {
                                 assemblyLocation = projectDir.ConcatPath(hintPath);
                             }
-								
+                                
                             if (!File.Exists(assemblyLocation))
                             {
                                 //search in reference paths
                                 assemblyLocation = TryAddReferencePath(assemblyLocation, include);
                             }
-								
+                                
                             if (File.Exists(assemblyLocation))
                                 assemblyLocation = Path.GetFullPath(assemblyLocation);
-								
+                                
                             reference = new AssemblyReference(assemblyLocation);
                         }
                         else
@@ -205,8 +206,8 @@ namespace VVVV.Core.Model
                             if (File.Exists(assemblyLocation))
                                 reference = new AssemblyReference(assemblyLocation, true);
                         }
-							
-							
+                            
+                            
                         // Reference couldn't be found, try GAC
                         if (reference == null)
                         {
@@ -220,7 +221,7 @@ namespace VVVV.Core.Model
                                 reference = new AssemblyReference(string.Format("{0}.dll", include), true);
                             }
                         }
-							
+                            
                         if (reference != null)
                             References.Add(reference);
                         break;
@@ -229,53 +230,53 @@ namespace VVVV.Core.Model
                         break;
                     case "Compile":
                     case "None":
-                        IDocument document;
-                        if (FDocumentConverter.Convert(projectDir.ConcatPath(projectItem.EvaluatedInclude), out document))
-                        {
+                        IDocument document = null;
+                        var canBeCompiled = projectItem.ItemType == "Compile";
+                        var documentPath = projectDir.ConcatPath(projectItem.EvaluatedInclude);
+                        if (!File.Exists(documentPath))
+                            document = new MissingDocument(documentPath, documentPath, canBeCompiled);
+                        else
+                            FDocumentConverter.Convert(documentPath, out document);
+                        if (document != null)
                             Documents.Add(document);
-                            document.Load();
-                        }
                         break;
                     default:
                         break;
                 }
             }
-			
-			base.DoLoad();
-		}
+        }
 
-        protected override void DoUnload()
+        private void Unload()
         {
             if (FMsProject != null)
             {
                 FMsProject.ProjectCollection.UnloadProject(FMsProject);
                 FMsProject = null;
             }
-            base.DoUnload();
         }
 
-		//tries to combine the given path and reference name with the reference paths
-		protected string TryAddReferencePath(string path, string referenceName)
-		{
-			foreach (var refPath in ReferencePaths)
-			{
-				var pathToTest = string.Format("{0}.dll", refPath.ConcatPath(referenceName));
-				if (File.Exists(pathToTest))
-				{
-					path = pathToTest;
-					break;
-				}
-			}
+        //tries to combine the given path and reference name with the reference paths
+        protected string TryAddReferencePath(string path, string referenceName)
+        {
+            foreach (var refPath in ReferencePaths)
+            {
+                var pathToTest = string.Format("{0}.dll", refPath.ConcatPath(referenceName));
+                if (File.Exists(pathToTest))
+                {
+                    path = pathToTest;
+                    break;
+                }
+            }
 
-			return path;
-		}
+            return path;
+        }
 
-		//tests if a reference name is in the reference paths
-		private bool InReferencePaths(string refName)
-		{
-			var testPath = TryAddReferencePath("", refName);
-			return testPath != "";
-		}
+        //tests if a reference name is in the reference paths
+        private bool InReferencePaths(string refName)
+        {
+            var testPath = TryAddReferencePath("", refName);
+            return testPath != "";
+        }
 
         static MsBuild.Construction.ProjectPropertyElement CreateProperty(MsBuild.Construction.ProjectRootElement project, string name, string value, string condition = null)
         {
@@ -284,10 +285,9 @@ namespace VVVV.Core.Model
             propertyElement.Condition = condition;
             return propertyElement;
         }
-		
-		public override void SaveTo(Uri location)
+
+        public override void SaveTo(string projectPath)
         {
-            var projectPath = location.LocalPath;
             var projectDir = Path.GetDirectoryName(projectPath);
 
             var msBuildProject = MsBuild.Construction.ProjectRootElement.Create();
@@ -388,7 +388,45 @@ namespace VVVV.Core.Model
 
             msBuildProject.Save(projectPath);
 
-            base.SaveTo(location);
+            base.SaveTo(projectPath);
         }
-	}
+
+        protected static string GetFreshAssemblyLocation(string path)
+        {
+            var assemblyBaseDir = Path.GetDirectoryName(path).ConcatPath("bin").ConcatPath("Dynamic");
+
+            var i = 0;
+            var name = path.GetHashCode().ToString();
+            string assemblyLocation = null;
+            while (true)
+            {
+                var assemblyName = string.Format("{0}._dynamic_.{1}.dll", name, ++i);
+                assemblyLocation = assemblyBaseDir.ConcatPath(assemblyName);
+                if (!File.Exists(assemblyLocation)) break;
+            }
+
+            return assemblyLocation;
+        }
+
+        public static readonly Regex DynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
+        protected static string GetExistingAssemblyLocation(string path)
+        {
+            var assemblyBaseDir = Path.GetDirectoryName(path).ConcatPath("bin").ConcatPath("Dynamic");
+            if (Directory.Exists(assemblyBaseDir))
+            {
+                var dirInfo = new DirectoryInfo(assemblyBaseDir);
+                return dirInfo.GetFiles("*.dll")
+                    .Where(fi => MsBuildProject.DynamicRegExp.Match(fi.FullName).Success)
+                    .OrderBy(fi => fi.LastWriteTime)
+                    .Select(fi => fi.FullName)
+                    .FirstOrDefault();
+            }
+            return null;
+        }
+
+        public static bool IsDynamicAssembly(string filename)
+        {
+            return DynamicRegExp.IsMatch(filename);
+        }
+    }
 }

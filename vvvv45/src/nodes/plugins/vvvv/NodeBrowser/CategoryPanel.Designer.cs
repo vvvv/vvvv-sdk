@@ -28,48 +28,46 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.FTopLabel = new System.Windows.Forms.Label();
 			this.FCategoryTreeViewer = new VVVV.HDE.Viewer.WinFormsViewer.TreeViewer();
+			this.panel1 = new System.Windows.Forms.Panel();
 			this.SuspendLayout();
-			// 
-			// FTopLabel
-			// 
-			this.FTopLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(154)))), ((int)(((byte)(154)))), ((int)(((byte)(154)))));
-			this.FTopLabel.Dock = System.Windows.Forms.DockStyle.Top;
-			this.FTopLabel.Location = new System.Drawing.Point(0, 0);
-			this.FTopLabel.Name = "FTopLabel";
-			this.FTopLabel.Size = new System.Drawing.Size(368, 15);
-			this.FTopLabel.TabIndex = 8;
-			this.FTopLabel.Text = "Click here to browse by tags";
-			this.FTopLabel.Click += new System.EventHandler(this.HandleTopLabelClick);
 			// 
 			// FCategoryTreeViewer
 			// 
 			this.FCategoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.FCategoryTreeViewer.FlatStyle = true;
-			this.FCategoryTreeViewer.Location = new System.Drawing.Point(0, 15);
+			this.FCategoryTreeViewer.Location = new System.Drawing.Point(5, 0);
 			this.FCategoryTreeViewer.Name = "FCategoryTreeViewer";
 			this.FCategoryTreeViewer.ShowLines = false;
 			this.FCategoryTreeViewer.ShowPlusMinus = false;
 			this.FCategoryTreeViewer.ShowRoot = false;
 			this.FCategoryTreeViewer.ShowRootLines = false;
 			this.FCategoryTreeViewer.ShowTooltip = true;
-			this.FCategoryTreeViewer.Size = new System.Drawing.Size(368, 383);
+			this.FCategoryTreeViewer.Size = new System.Drawing.Size(363, 398);
 			this.FCategoryTreeViewer.TabIndex = 9;
 			this.FCategoryTreeViewer.MouseDown += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.HandleTreeViewerMouseDown);
+			// 
+			// panel1
+			// 
+			this.panel1.BackColor = System.Drawing.Color.DarkGray;
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+			this.panel1.Location = new System.Drawing.Point(0, 0);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(5, 398);
+			this.panel1.TabIndex = 10;
 			// 
 			// CategoryPanel
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.FCategoryTreeViewer);
-			this.Controls.Add(this.FTopLabel);
+			this.Controls.Add(this.panel1);
 			this.Name = "CategoryPanel";
 			this.Size = new System.Drawing.Size(368, 398);
 			this.VisibleChanged += new System.EventHandler(this.HandlePanelVisibleChanged);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Panel panel1;
 		private VVVV.HDE.Viewer.WinFormsViewer.TreeViewer FCategoryTreeViewer;
-		private System.Windows.Forms.Label FTopLabel;
 	}
 }
