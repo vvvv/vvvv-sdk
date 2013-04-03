@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Metaballs (EX9.Geometry) help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Metaballs (EX9.Geometry) help.v4p" locked="0">
    <BOUNDS height="10845" left="-15" top="-45" type="Window" width="7575">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="29" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
@@ -141,7 +141,7 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" pintype="Input" slicecount="1" visible="0" values="lib\assets\images\meso_cubemap.dds" encoded="0">
+   <PIN pinname="Input 2" pintype="Input" slicecount="1" visible="0" encoded="0" values="lib\assets\images\meso_cubemap.dds">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -154,7 +154,7 @@
    </LINK>
    <LINK dstnodeid="29" dstpinname="Layers" srcnodeid="26" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="Hidden" id="21" nodename="DriveMB.v4p" systemname="DriveMB" filename="%VVVV%\addonpack\lib\nodes\plugins\DriveMB.v4p" path="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\">
+   <NODE componentmode="Hidden" id="21" nodename="DriveMB.v4p" systemname="DriveMB" filename="%VVVV%\addonpack\lib\nodes\plugins\DriveMB.v4p">
    <BOUNDS height="270" left="930" top="3210" type="Node" width="1665">
    </BOUNDS>
    <BOUNDS left="930" top="3210" type="Box">
@@ -261,7 +261,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="MetaballsMesh" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="MetaballsMesh">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -279,7 +279,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Number of Metaballs|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Number of Metaballs|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -295,7 +295,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Range (0.00 - 1.00)|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Range (0.00 - 1.00)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -311,7 +311,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Pause movement|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Pause movement|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -425,7 +425,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Metaball mass (spreadable)|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Metaball mass (spreadable)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -441,7 +441,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Grid size in all 3 dimensions|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Grid size in all 3 dimensions|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -457,7 +457,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Treshold Level|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Treshold Level|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -473,7 +473,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Smooth Mesh&cr;&lf;(check with WireFrame&cr;&lf;Fill Mode)|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Smooth Mesh&cr;&lf;(check with WireFrame&cr;&lf;Fill Mode)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -483,17 +483,19 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="165" top="555" type="Node" width="1230">
+   <BOUNDS height="270" left="555" top="570" type="Node" width="1230">
    </BOUNDS>
-   <BOUNDS height="315" left="165" top="555" type="Box" width="3120">
+   <BOUNDS height="315" left="555" top="570" type="Box" width="3120">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="http://en.wikipedia.org/wiki/Metaballs" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="http://en.wikipedia.org/wiki/Metaballs">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="2" nodename="LFO (Animation)" systemname="LFO (Animation)">
@@ -513,7 +515,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;-- number of position&cr;&lf;       vectors determines&cr;&lf;       the number of metaballs|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|&lt;-- number of position&cr;&lf;       vectors determines&cr;&lf;       the number of metaballs|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

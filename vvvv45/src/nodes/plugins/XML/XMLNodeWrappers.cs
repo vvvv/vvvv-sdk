@@ -386,7 +386,7 @@ namespace VVVV.Nodes.XML
     }
 
 
-    [PluginInfo(Name = "IsValid", Category = "XML RelaxNG")]
+    [PluginInfo(Name = "IsValid", Category = "XML", Version = "RelaxNG")]
     public class RelaxNGValidateNode : IPluginEvaluate
     {
         [Input("Xml String")]
