@@ -130,8 +130,9 @@ namespace VVVV.Nodes.Input
 
         public static Keys StringToVirtualKeycode(string key)
         {
-            var c = key[1];
-            if (char.IsLetterOrDigit(c)) return (Keys)c;
+            if (string.IsNullOrEmpty(key)) return Keys.None;
+            var c = key[0];
+            if (char.IsLetterOrDigit(c)) return (Keys)char.ToUpperInvariant(c);
             switch (key)
             {
                 case "<LBUTTON>": return Keys.LButton;

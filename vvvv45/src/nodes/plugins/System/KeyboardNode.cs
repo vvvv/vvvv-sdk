@@ -60,7 +60,7 @@ namespace VVVV.Nodes.Input
             if (enabled)
             {
                 // To support old keyboard node
-                if (FLegacyKeyStringIn.SliceCount > 0 && !string.IsNullOrEmpty(FLegacyKeyStringIn[0]))
+                if (FLegacyKeyStringIn.SliceCount > 0)
                 {
                     var keys = FLegacyKeyStringIn.Select(keyAsString => LegacyKeyboardHelper.StringToVirtualKeycode(keyAsString));
                     FKeyboardIn.SliceCount = 1;
