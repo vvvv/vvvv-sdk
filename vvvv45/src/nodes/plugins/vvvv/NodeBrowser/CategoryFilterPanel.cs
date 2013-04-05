@@ -107,6 +107,7 @@ namespace VVVV.Nodes.NodeBrowser
 			xmlDoc.AppendChild(settings);
 			settings.AppendChild(nodeCategories);
 			
+			int hiddenCount = 0;
 	        foreach (var categoryName in FCategories.Keys)
 	        	if (!CategoryVisible(categoryName))
 	        {
@@ -118,13 +119,16 @@ namespace VVVV.Nodes.NodeBrowser
 	        	attr.Value = "false";
 	        	category.Attributes.Append(attr);
 	        	
-	        	nodeCategories.AppendChild(category);	        	
+	        	nodeCategories.AppendChild(category);	  
+				hiddenCount++;
 	        }
 	
 	        using (var saveFile = new StreamWriter(savePath + @"\.vvvv"))
 	        {
 	            saveFile.Write(xmlDoc.OuterXml);
 	        }
+	        
+	        FHiddenCategoryCountLabel.Text = "Hidden Categories: " + hiddenCount.ToString();
 		}
 		
 		private void LoadFilter()
@@ -149,6 +153,8 @@ namespace VVVV.Nodes.NodeBrowser
 	        
 	        foreach (var cb in FCategories)
 	        	cb.Value.Checked = !FHiddenCategories.Contains(cb.Key);
+	        
+	        FHiddenCategoryCountLabel.Text = "Hidden Categories: " + FHiddenCategories.Count.ToString();
 		}		
 		
 		void CategoryFilterPanelVisibleChanged(object sender, EventArgs e)
