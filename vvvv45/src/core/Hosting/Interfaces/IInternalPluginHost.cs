@@ -16,9 +16,10 @@ namespace VVVV.Hosting.Interfaces
             get;
             set;
         }
-        
+
         IWin32Window Win32Window
         {
+            get;
             set;
         }
         

@@ -48,5 +48,16 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		bool DeleteMe();
 	}
+
+    /// <summary>
+    /// Implement this interface on your plugin if the Mouse (System Window)
+    /// or Keyboard (System Window) nodes should output data for it.
+    /// </summary>
+    [Guid("E8C47417-6146-472B-BCE5-A9550AA30C3A"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IUserInputWindow
+    {
+        IntPtr InputWindowHandle { get; }
+    }
 	#endregion basic interfaces
 }

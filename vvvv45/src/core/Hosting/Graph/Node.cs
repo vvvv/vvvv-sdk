@@ -10,7 +10,7 @@ using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Hosting.Graph
 {
-    internal class Node : ViewableList<INode2>, INode2
+    public class Node : ViewableList<INode2>, INode2
     {
         #region nested class InternalNodeListener
         class InternalNodeListener : INodeListener, IDisposable

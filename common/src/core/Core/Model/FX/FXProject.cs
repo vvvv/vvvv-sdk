@@ -80,6 +80,18 @@ namespace VVVV.Core.Model.FX
             // Needs to be done synchronously. Otherwise cast exceptions with IAddonHost COM object (threads...)
             Compile();
         }
+
+        public override void SaveTo(string projectPath)
+        {
+            var projectDir = Path.GetDirectoryName(projectPath);
+
+            // Create the project directory if it doesn't exist yet.
+            if (!Directory.Exists(projectDir))
+                Directory.CreateDirectory(projectDir);
+
+            Document.SaveTo(projectPath);
+            CopyReferencesTo(projectDir);
+        }
         
         private void UpdateReferences()
         {

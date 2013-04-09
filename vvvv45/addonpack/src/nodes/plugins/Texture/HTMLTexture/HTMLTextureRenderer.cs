@@ -16,6 +16,7 @@ using EX9 = SlimDX.Direct3D9;
 using VVVV.PluginInterfaces.V2;
 using System.Threading;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -261,21 +262,21 @@ namespace VVVV.Nodes.Texture.HTML
                 {
                     var x = (int)VMath.Map(value.X, -1, 1, 0, FSize.Width, TMapMode.Clamp);
                     var y = (int)VMath.Map(value.Y, 1, -1, 0, FSize.Height, TMapMode.Clamp);
-                    var mouseDown = FMouse.Button == MouseButton.None && value.Button != MouseButton.None;
-                    var mouseUp = FMouse.Button != MouseButton.None && value.Button == MouseButton.None;
-                    var button = value.Button;
-                    if (mouseUp) button = FMouse.Button;
+                    var mouseDown = FMouse.Buttons == MouseButtons.None && value.Buttons != MouseButtons.None;
+                    var mouseUp = FMouse.Buttons != MouseButtons.None && value.Buttons == MouseButtons.None;
+                    var button = value.Buttons;
+                    if (mouseUp) button = FMouse.Buttons;
                     if (mouseDown || mouseUp)
                     {
                         switch (button)
                         {
-                            case MouseButton.Left:
+                            case MouseButtons.Left:
                                 FBrowser.SendMouseClickEvent(x, y, CefMouseButtonType.Left, mouseUp, 1);
                                 break;
-                            case MouseButton.Middle:
+                            case MouseButtons.Middle:
                                 FBrowser.SendMouseClickEvent(x, y, CefMouseButtonType.Middle, mouseUp, 1);
                                 break;
-                            case MouseButton.Right:
+                            case MouseButtons.Right:
                                 FBrowser.SendMouseClickEvent(x, y, CefMouseButtonType.Right, mouseUp, 1);
                                 break;
                             default:
