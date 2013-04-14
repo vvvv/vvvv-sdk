@@ -8,7 +8,7 @@ using VVVV.Utils;
 
 namespace VVVV.Hosting.Graph
 {
-    internal class Pin: Disposable, IPin2
+    public class Pin: Disposable, IPin2
     {
         #region IPinListener implementation
         

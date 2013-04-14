@@ -16,7 +16,7 @@ namespace VVVV.HDE.ProjectExplorer
 		
 		public string Description {
 			get {
-				return FProject.Location.LocalPath;
+				return FProject.LocalPath;
 			}
 		}
 	}

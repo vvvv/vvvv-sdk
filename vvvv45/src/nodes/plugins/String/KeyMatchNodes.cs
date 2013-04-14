@@ -126,7 +126,7 @@ namespace VVVV.Nodes
                     var key = outputInfo.KeyToLower;
                     var output = outputInfo.Output;
                     var lastFrame = outputInfo.PressedLastFrame;
-                    var thisFrame = currentKeys.Contains(key);
+                    var thisFrame = currentKeys.Contains(key) || (key.Length == 1 ? keyboardState.KeyChars.Contains(key[0]) : false);
                     
                     switch (keyMode)
 					{

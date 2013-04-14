@@ -6,6 +6,8 @@ using VVVV.Core;
 using System.Xml;
 using System.Xml.Linq;
 using VVVV.PluginInterfaces.V2;
+using System.ComponentModel.Composition;
+using VVVV.Core.Logging;
 
 
 namespace VVVV.Nodes.XML
@@ -242,6 +244,9 @@ namespace VVVV.Nodes.XML
         [Input("XPath", DefaultString = "MyChildTag/MyChildsChildTag")]
         public IDiffSpread<string> XPath;
 
+        [Input("Namespace Resolver", IsSingle = true)]
+        public IDiffSpread<IXmlNamespaceResolver> NamespaceResolver;
+        
         [Output("Elements")]
         public ISpread<ISpread<XElement>> Elements;
 
@@ -250,15 +255,15 @@ namespace VVVV.Nodes.XML
 
         public void Evaluate(int spreadMax)
         {
-            if (!Element.IsChanged && !XPath.IsChanged) return;
+            if (!SpreadUtils.AnyChanged(Element, XPath, NamespaceResolver)) return;
 
             Elements.SliceCount = spreadMax;
             ErrorMessage.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
-                string error; 
-                Elements[i] = Element[i].GetElementsByXPath(XPath[i], out error);
+                string error;
+                Elements[i] = Element[i].GetElementsByXPath(XPath[i], NamespaceResolver[0], out error);
                 ErrorMessage[i] = error;
             }
         }
@@ -273,6 +278,9 @@ namespace VVVV.Nodes.XML
         [Input("XPath", DefaultString = "MyChildTag/@OneOfItsAttributes")]
         public IDiffSpread<string> XPath;
 
+        [Input("NameSpace Resolver", IsSingle = true)]
+        public IDiffSpread<IXmlNamespaceResolver> NameSpaceResolver;
+
         [Output("Attributes")]
         public ISpread<ISpread<XAttribute>> Attributes;
 
@@ -281,7 +289,7 @@ namespace VVVV.Nodes.XML
 
         public void Evaluate(int spreadMax)
         {
-            if (!Element.IsChanged && !XPath.IsChanged) return;
+            if (!Element.IsChanged && !XPath.IsChanged && !NameSpaceResolver.IsChanged) return;
 
             Attributes.SliceCount = spreadMax;
             ErrorMessage.SliceCount = spreadMax;
@@ -289,7 +297,7 @@ namespace VVVV.Nodes.XML
             for (int i = 0; i < spreadMax; i++)
             {
                 string error;
-                Attributes[i] = Element[i].GetAttributesByXPath(XPath[i], out error);
+                Attributes[i] = Element[i].GetAttributesByXPath(XPath[i], NameSpaceResolver[0], out error);
                 ErrorMessage[i] = error;
             }
         }
@@ -301,26 +309,79 @@ namespace VVVV.Nodes.XML
         [Input("XML")]
         public IDiffSpread<string> XML;
 
+        [Input("Validation")]
+        public IDiffSpread<Validation> Validation;
+
         [Output("Element")]
         public ISpread<XElement> RootElement;
 
         [Output("Document")]
         public ISpread<XDocument> Document;
 
+        [Import]
+        public ILogger FLogger;
+
         public void Evaluate(int spreadMax)
         {
-            if (!XML.IsChanged) return;
+            if (!SpreadUtils.AnyChanged(XML, Validation)) return;
 
             RootElement.SliceCount = spreadMax;
             Document.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
-                XElement element;
-                XDocument dom;
-                XMLNodes.AsElement(XML[i], out dom, out element);
-                Document[i] = dom;
-                RootElement[i] = element;
+                try
+                {
+                    var document = XMLNodes.AsDocument(XML[i], Validation[i]);
+                    Document[i] = document;
+                    RootElement[i] = document.Root;
+                }
+                catch (Exception e)
+                {
+                    Document[i] = null;
+                    RootElement[i] = null;
+                    FLogger.Log(e);
+                }
+            }
+        }
+    }
+
+
+    [PluginInfo(Name = "NamespaceResolver", Category = "XML")]
+    public class NamespaceResolverNode : IPluginEvaluate
+    {
+        [Input("Node", IsSingle = true)]
+        public IDiffSpread<XNode> FNodeIn;
+
+        [Input("Namespace Prefix", DefaultString = "myNS")]
+        public IDiffSpread<string> FPrefixIn;
+
+        [Input("Namespace URI", DefaultString = "http://me.com")]
+        public IDiffSpread<string> FNamespaceIn;
+
+        [Output("Namespace Resolver", IsSingle = true)]
+        public ISpread<IXmlNamespaceResolver> FNamespaceResolverOut;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!SpreadUtils.AnyChanged(FNodeIn, FPrefixIn, FNamespaceIn)) return;
+            if (FNodeIn.SliceCount > 0)
+            {
+                var namespaces = GetNamespaces(FPrefixIn, FNamespaceIn);
+                var node = FNodeIn[0] ?? new XElement("dummy");
+                FNamespaceResolverOut[0] = node.CreateNamespaceResolver(namespaces);
+            }
+            else
+            {
+                FNamespaceResolverOut.SliceCount = 0;
+            }
+        }
+
+        private IEnumerable<Tuple<string, string>> GetNamespaces(ISpread<string> prefixes, ISpread<string> namespaces)
+        {
+            for (int i = 0; i < SpreadUtils.SpreadMax(prefixes, namespaces); i++)
+            {
+                yield return Tuple.Create(prefixes[i], namespaces[i]);
             }
         }
     }
@@ -371,7 +432,7 @@ namespace VVVV.Nodes.XML
     }
 
 
-    [PluginInfo(Name = "IsValid", Category = "XML RelaxNG")]
+    [PluginInfo(Name = "IsValid", Category = "XML", Version = "RelaxNG")]
     public class RelaxNGValidateNode : IPluginEvaluate
     {
         [Input("Xml String")]

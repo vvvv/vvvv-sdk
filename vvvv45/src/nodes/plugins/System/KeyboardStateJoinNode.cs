@@ -5,7 +5,7 @@ using System.Text;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
 
-namespace VVVV.Nodes.IO
+namespace VVVV.Nodes.Input
 {
     [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Join")]
     public class KeyStateJoinNode : IPluginEvaluate

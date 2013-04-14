@@ -15,17 +15,17 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Core.Model
 {
-    public abstract class Project : PersistentIDContainer, IProject, IIDContainer, IRenameable
+    public abstract class Project : IDContainer, IProject, IIDContainer
     {
         #region Converter classes
         
         protected class DocumentConverter : IConverter
         {
-            protected Uri FLocation;
+            protected string FLocalPath;
             
-            public DocumentConverter(Uri location)
+            public DocumentConverter(string path)
             {
-                FLocation = location;
+                FLocalPath = path;
             }
             
             public bool Convert<TFrom, TTo>(TFrom fromItem, out TTo toItem)
@@ -61,11 +61,11 @@ namespace VVVV.Core.Model
         
         protected class ReferenceConverter : IConverter
         {
-            protected Uri FLocation;
-            
-            public ReferenceConverter(Uri location)
+            protected string FLocalPath;
+
+            public ReferenceConverter(string location)
             {
-                FLocation = location;
+                FLocalPath = location;
             }
             
             public bool Convert<TFrom, TTo>(TFrom fromItem, out TTo toItem)
@@ -114,13 +114,13 @@ namespace VVVV.Core.Model
         protected DocumentConverter FDocumentConverter;
         protected ReferenceConverter FReferenceConverter;
         
-        public Project(string name, Uri location)
-            : base(name, location)
+        public Project(string path)
+            : base(path)
         {
-            AssemblyLocation = GenerateAssemblyLocation();
-            
-            FReferenceConverter = new ReferenceConverter(location);
-            FDocumentConverter = new DocumentConverter(location);
+            LocalPath = path;
+
+            FReferenceConverter = new ReferenceConverter(path);
+            FDocumentConverter = new DocumentConverter(path);
             
             FReferences = new EditableIDList<IReference>("References");
             FReferences.RootingChanged += FReferences_RootingChanged;
@@ -164,21 +164,6 @@ namespace VVVV.Core.Model
             }
         }
         
-        void References_Changed(IViewableCollection<IReference> collection, IReference item)
-        {
-            IsDirty = true;
-        }
-
-        void Documents_Changed(IViewableCollection<IDocument> collection, IDocument item)
-        {
-            IsDirty = true;
-        }
-        
-        protected override string CreateName(Uri location)
-        {
-            return Path.GetFileName(location.LocalPath);
-        }
-        
         public IEditableIDList<IDocument> Documents
         {
             get;
@@ -202,12 +187,6 @@ namespace VVVV.Core.Model
             get;
             set;
         }
-        
-        public string AssemblyLocation
-        {
-            get;
-            protected set;
-        }
 
         public event CompiledEventHandler ProjectCompiledSuccessfully;
         public event CompiledEventHandler CompileCompleted;
@@ -215,8 +194,6 @@ namespace VVVV.Core.Model
         void Document_Added(IViewableCollection<IDocument> collection, IDocument item)
         {
             item.Project = this;
-            if (item.IsDirty)
-                item.Save();
         }
         
         void Reference_Added(IViewableCollection<IReference> collection, IReference item)
@@ -224,37 +201,12 @@ namespace VVVV.Core.Model
             item.Project = this;
         }
         
-        public string GenerateAssemblyLocation()
-        {
-            var assemblyBaseDir = Location.GetLocalDir().ConcatPath("bin").ConcatPath("Dynamic");
-            
-            int i = 0;
-            var name = Location.LocalPath.GetHashCode().ToString();
-            var assemblyName = string.Format("{0}._dynamic_.{1}.dll", name, i);
-            var assemblyLocation = assemblyBaseDir.ConcatPath(assemblyName);
-            while (File.Exists(assemblyLocation))
-            {
-                assemblyName = string.Format("{0}._dynamic_.{1}.dll", name, ++i);
-                assemblyLocation = assemblyBaseDir.ConcatPath(assemblyName);
-            }
-            
-            return assemblyLocation;
-        }
-        
         protected abstract CompilerResults DoCompile();
         
         public void Compile()
         {
             CompilerResults = DoCompile();
-            
-            var args = new CompilerEventArgs(CompilerResults);
-            if (!CompilerResults.Errors.HasErrors)
-            {
-                AssemblyLocation = CompilerResults.PathToAssembly;
-                OnProjectCompiledSuccessfully(args);
-            }
-            
-            OnCompileCompleted(args);
+            OnCompileCompleted(new CompilerEventArgs(CompilerResults));
         }
         
         public virtual void CompileAsync()
@@ -282,6 +234,8 @@ namespace VVVV.Core.Model
         {
             try
             {
+                if (!args.CompilerResults.Errors.HasErrors)
+                    OnProjectCompiledSuccessfully(args);
                 if (CompileCompleted != null)
                     CompileCompleted(this, args);
             }
@@ -295,12 +249,6 @@ namespace VVVV.Core.Model
         {
             FDocuments.Added -= Document_Added;
             FReferences.Added -= Reference_Added;
-            
-            Documents.Added -= Documents_Changed;
-            Documents.Removed -= Documents_Changed;
-            
-            References.Added -= References_Changed;
-            References.Removed -= References_Changed;
             
             FBackgroundWorker.DoWork -= DoWorkCB;
             FBackgroundWorker.RunWorkerCompleted -= RunWorkerCompletedCB;
@@ -325,86 +273,65 @@ namespace VVVV.Core.Model
         private void RunWorkerCompletedCB(object sender, RunWorkerCompletedEventArgs args)
         {
             CompilerResults = args.Result as CompilerResults;
-            
-            var compilerArgs = new CompilerEventArgs(CompilerResults);
-            if (!CompilerResults.Errors.HasErrors)
-            {
-                AssemblyLocation = CompilerResults.PathToAssembly;
-                OnProjectCompiledSuccessfully(compilerArgs);
-            }
-            
-            OnCompileCompleted(compilerArgs);
+            OnCompileCompleted(new CompilerEventArgs(CompilerResults));
+        }
+
+        public void Save()
+        {
+            SaveTo(LocalPath);
         }
         
-		protected override void DoLoad()
-		{
-			Documents.Added += Documents_Changed;
-            Documents.Removed += Documents_Changed;
-            References.Added += References_Changed;
-            References.Removed += References_Changed;
-		}
-        
-        protected override void DoUnload()
+        public virtual void SaveTo(string projectPath)
         {
-        	Documents.Added -= Documents_Changed;
-            Documents.Removed -= Documents_Changed;
-            References.Added -= References_Changed;
-            References.Removed -= References_Changed;
-        	
-            foreach (var doc in Documents)
-                doc.Unload();
-            
-            Documents.Clear();
-            References.Clear();
-        }
-        
-        public override void SaveTo(Uri newLocation)
-        {
-            var projectPath = newLocation.LocalPath;
             var projectDir = Path.GetDirectoryName(projectPath);
             
             // Create the project directory if it doesn't exist yet.
             if (!Directory.Exists(projectDir))
                 Directory.CreateDirectory(projectDir);
-            
-            SaveDocumentsTo(newLocation);
-            CopyReferencesTo(newLocation);
+
+            SaveDocumentsTo(projectDir);
+            CopyReferencesTo(projectDir);
         }
         
-        protected virtual void SaveDocumentsTo(Uri newLocation)
+        protected virtual void SaveDocumentsTo(string projectDir)
         {
-            var projectDir = newLocation.GetLocalDir();
-            
             // Save all documents to the new location.
             foreach (var document in Documents)
             {
-                var destLocation = new Uri(projectDir + "/" + document.GetRelativePath());
-                document.SaveTo(destLocation);
+                var path = Path.Combine(projectDir, document.GetRelativePath());
+                document.SaveTo(path);
             }
         }
-        
-        protected virtual void CopyReferencesTo(Uri newLocation)
+
+        protected virtual void CopyReferencesTo(string projectDir)
         {
-            var projectDir = newLocation.GetLocalDir();
-            
             // Copy all local references to the new location.
             foreach (var reference in References.Where((r) => !r.IsGlobal))
             {
                 var relativePath = reference.GetRelativePath();
                 
-                Uri destLocation = null;
+                string path = null;
                 if (!Path.IsPathRooted(relativePath))
-                    destLocation = new Uri(projectDir + "/" + reference.GetRelativePath());
+                    path = Path.Combine(projectDir, reference.GetRelativePath());
                 else
-                    destLocation = new Uri(relativePath);
-
-                if (reference.AssemblyLocation != destLocation.LocalPath)
+                    path = relativePath;
+                path = Path.GetFullPath(path);
+                if (string.Compare(reference.AssemblyLocation, path, StringComparison.InvariantCultureIgnoreCase) != 0)
                 {
-                    File.Copy(reference.AssemblyLocation, destLocation.LocalPath, true);
-                    var fileInfo = new FileInfo(destLocation.LocalPath);
-                    fileInfo.IsReadOnly = false;
+                    try
+                    {
+                        File.Copy(reference.AssemblyLocation, path, true);
+                        var fileInfo = new FileInfo(path);
+                        fileInfo.IsReadOnly = false;
+                    }
+                    catch (IOException e)
+                    {
+                        Shell.Instance.Logger.Log(e);
+                    }
                 }
             }
         }
+
+        public string LocalPath { get; private set; }
     }
 }

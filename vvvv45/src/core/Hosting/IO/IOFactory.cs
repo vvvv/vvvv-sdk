@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -6,6 +7,7 @@ using System.Windows.Forms;
 using VVVV.Hosting.Interfaces;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Hosting.Factories;
 
 namespace VVVV.Hosting.IO
 {
@@ -13,11 +15,22 @@ namespace VVVV.Hosting.IO
     {
         private readonly IInternalPluginHost FPluginHost;
         private readonly IIORegistry FIORegistry;
+        private readonly CompositionContainer FContainer;
+        private readonly INodeInfoFactory FNodeInfoFactory;
+        private readonly DotNetPluginFactory FPluginFactory;
         
-        public IOFactory(IInternalPluginHost pluginHost, IIORegistry streamRegistry)
+        public IOFactory(
+            IInternalPluginHost pluginHost, 
+            IIORegistry ioRegistry, 
+            CompositionContainer container, 
+            INodeInfoFactory nodeInfoFactory, 
+            DotNetPluginFactory pluginFactory)
         {
             FPluginHost = pluginHost;
-            FIORegistry = streamRegistry;
+            FIORegistry = ioRegistry;
+            FContainer = container;
+            FNodeInfoFactory = nodeInfoFactory;
+            FPluginFactory = pluginFactory;
             // HACK
             if (FPluginHost != null)
             {
@@ -148,6 +161,105 @@ namespace VVVV.Hosting.IO
         void IInternalPluginHostListener.DisconnectCB(IPluginIO pluginIO, IPin otherPin)
         {
             OnDisconnected(new ConnectionEventArgs(pluginIO, otherPin));
+        }
+
+
+        #region IIORegistry & IIOContainer
+        class DelegatingIORegistry : IIORegistry
+        {
+            readonly IIORegistry FRegistry;
+            readonly Predicate<IOBuildContext> FCanCreate;
+            readonly Func<IIOFactory, IOBuildContext, IIOContainer> FCreate;
+            public DelegatingIORegistry(IIORegistry registry, Predicate<IOBuildContext> canCreate, Func<IIOFactory, IOBuildContext, IIOContainer> create)
+            {
+                FRegistry = registry;
+                FCanCreate = canCreate;
+                FCreate = create;
+            }
+            public void Register(IIORegistry registry, bool first)
+            {
+                FRegistry.Register(registry, first);
+            }
+
+            public bool CanCreate(IOBuildContext context)
+            {
+                if (FCanCreate(context))
+                    return true;
+                return FRegistry.CanCreate(context);
+            }
+
+            public IIOContainer CreateIOContainer(IIOFactory factory, IOBuildContext context)
+            {
+                if (FCanCreate(context))
+                    return FCreate(factory, context);
+                return FRegistry.CreateIOContainer(factory, context);
+            }
+        }
+
+        class WrappingIOContainer : IIOContainer
+        {
+            public object RawIOObject
+            {
+                get;
+                set;
+            }
+
+            public IIOContainer BaseContainer
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public IIOFactory Factory
+            {
+                get;
+                set;
+            }
+
+            public void Dispose()
+            {
+                // Do nothing
+            }
+        }
+        #endregion
+
+        public PluginContainer CreatePlugin(INodeInfo nodeInfo, Predicate<IOBuildContext> ioPredicate, Func<IOBuildContext, object> ioCreator)
+        {
+            var registry = new DelegatingIORegistry(FIORegistry,
+                (context) =>
+                {
+                    if (ioPredicate(context))
+                        return true;
+                    return false;
+                },
+                (factory, context) =>
+                {
+                    return new WrappingIOContainer()
+                    {
+                        RawIOObject = ioCreator(context),
+                        Factory = factory
+                    };
+                }
+            );
+            return new PluginContainer(
+                FPluginHost as IInternalPluginHost,
+                registry,
+                FContainer,
+                FNodeInfoFactory,
+                FPluginFactory,
+                FPluginFactory.GetPluginType(nodeInfo),
+                nodeInfo
+            );
+        }
+
+        /// <summary>
+        /// Node infos for plugins which can be created by this hoster.
+        /// </summary>
+        public IEnumerable<INodeInfo> NodeInfos
+        {
+            get
+            {
+                return FNodeInfoFactory.NodeInfos.Where(n => n.Factory == FPluginFactory);
+            }
         }
     }
 }
