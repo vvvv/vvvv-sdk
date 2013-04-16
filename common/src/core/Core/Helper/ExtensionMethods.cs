@@ -29,58 +29,6 @@ namespace VVVV.Core
         {
             return Path.Combine(path1, path2);
         }
-        
-        /// <summary>
-        /// Returns the center of this RectangleF
-        /// </summary>
-        public static PointF GetCenter(this RectangleF rect)
-        {
-        	return new PointF(rect.X + 0.5f*rect.Width, rect.Y + 0.5f*rect.Height);
-        }
-
-        /// <summary>
-        /// Returns a rectangle for given center position and size.
-        /// </summary>
-        public static RectangleF GetRectangleForCenterAndSize(this PointF centerPosition, SizeF size)
-        {
-            return new RectangleF(centerPosition.X - size.Width * 0.5f, centerPosition.Y - size.Height * 0.5f, size.Width, size.Height);
-        }
-
-        /// <summary>
-        /// Translates a given <see cref="PointF">p1</see> by a specified <see cref="PointF">p2</see>.
-        /// </summary>
-        public static PointF Add(this PointF p1, PointF p2)
-        {
-            return new PointF(p1.X + p2.X, p1.Y + p2.Y);
-        }
-
-        /// <summary>
-        /// Translates a given <see cref="PointF">p1</see> by a specified <see cref="PointF">p2</see>.
-        /// </summary>
-        public static PointF Minus(this PointF p1, PointF p2)
-        {
-            return new PointF(p1.X - p2.X, p1.Y - p2.Y);
-        }
-        
-        /// <summary>
-        /// Returns the distance to another point
-        /// </summary>
-        public static float GetDistanceTo(this PointF from, PointF to)
-        {
-        	float x = from.X - to.X;
-        	float y = from.Y - to.Y;
-        	return (float)Math.Sqrt(x*x + y*y);
-        }
-        
-        /// <summary>
-        /// Returns the distance to another point
-        /// </summary>
-        public static float GetDistanceTo(this Point from, Point to)
-        {
-        	float x = from.X - to.X;
-        	float y = from.Y - to.Y;
-        	return (float)Math.Sqrt(x*x + y*y);
-        }
 
         /// <summary>
         /// Serializes the items in the list and adds the xml to the XElement
