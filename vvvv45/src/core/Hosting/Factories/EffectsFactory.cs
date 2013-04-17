@@ -17,7 +17,7 @@ namespace VVVV.Hosting.Factories
     /// <summary>
     /// Effects factory, parses and watches the effect directory
     /// </summary>
-    [Export(typeof(IAddonFactory))]
+    [Export(	typeof(IAddonFactory))]
     [Export(typeof(EffectsFactory))]
     [ComVisible(false)]
     public class EffectsFactory : AbstractFileFactory<IEffectHost>
@@ -58,13 +58,14 @@ namespace VVVV.Hosting.Factories
         protected override IEnumerable<INodeInfo> LoadNodeInfos(string filename)
         {
             var project = CreateProject(filename);
-            yield return LoadNodeInfoFromEffect(filename, project);
+            if (project != null)
+            	yield return LoadNodeInfoFromEffect(filename, project);
         }
         
         protected override void DoAddFile(string filename)
         {
-            CreateProject(filename);
-            base.DoAddFile(filename);
+        	if (CreateProject(filename) != null)
+            	base.DoAddFile(filename);
         }
         
         protected override void DoRemoveFile(string filename)
@@ -88,23 +89,46 @@ namespace VVVV.Hosting.Factories
             FXProject project;
             if (!FProjects.TryGetValue(filename, out project))
             {
-                project = new FXProject(filename, FHDEHost.ExePath);
-                if (FSolution.Projects.CanAdd(project))
+            	var isDX9 = true;
+            	//check if this is a dx9 effect in that it does not contain "technique10" or "technique11"
+            	using (StreamReader sr = new StreamReader(filename))
                 {
-                    FSolution.Projects.Add(project);
-                    //effects are actually being compiled by vvvv when nodeinfo is update
-                    //so we need to intervere with the doCompile
-                    project.DoCompileEvent += project_DoCompileEvent;
-                    //in turn not longer needs the following:
-                    //project.ProjectCompiledSuccessfully += project_ProjectCompiledSuccessfully;
-                }
-                else
-                {
-                    // Project was renamed
-                    project = FSolution.Projects[project.Name] as FXProject;
-                }
-                
-                FProjects[filename] = project;
+            		string line;
+            		var t10 = "technique10";
+            		var t11 = "technique11";
+                    
+                    // Parse lines from the file until the end of
+                    // the file is reached.
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                    	if (line.Contains(t10) || line.Contains(t11))
+                    	{
+                    		isDX9 = false;
+                    		break;
+                    	}
+                    }
+            	}
+            	
+            	if (isDX9)
+	            {
+	                project = new FXProject(filename, FHDEHost.ExePath);
+	                if (FSolution.Projects.CanAdd(project))
+	                {
+	                    FSolution.Projects.Add(project);
+	                    //effects are actually being compiled by vvvv when nodeinfo is update
+	                    //so we need to intervere with the doCompile
+	                    project.DoCompileEvent += project_DoCompileEvent;
+	                    //in turn not longer needs the following:
+	                    //project.ProjectCompiledSuccessfully += project_ProjectCompiledSuccessfully;
+	                }
+	                else
+	                {
+	                    // Project was renamed
+	                    project = FSolution.Projects[project.Name] as FXProject;
+	                }
+	                
+                	FProjects[filename] = project;
+            	}
             }
             
             return project;

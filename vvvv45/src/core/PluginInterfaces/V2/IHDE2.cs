@@ -323,7 +323,14 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
-		
+
+        /// <summary>
+        /// Whether or not vvvv is running in background.
+        /// </summary>
+        bool IsRunningInBackground
+        {
+            get;
+        }
 	}
 	#endregion IHDEHost
 	

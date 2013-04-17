@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
    <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\girlpower\+ XML_API\_root_xml out of twitter API_vvvvshoutbox.v4p">
    <BOUNDS height="3285" left="2310" top="8040" type="Window" width="11430">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="2" nodename="HTTP (Network Get)">
+   <NODE componentmode="Hidden" id="2" nodename="HTTP (Network Get)" systemname="HTTP (Network Get String)">
    <BOUNDS height="100" left="4065" top="4710" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="0" left="4065" top="4710" type="Box" width="0">
@@ -18,6 +18,8 @@
    <PIN pinname="Header" visible="1">
    </PIN>
    <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)">
@@ -49,7 +51,7 @@
    </BOUNDS>
    <BOUNDS height="450" left="150" top="150" type="Box" width="4935">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|load an xml out of the twitter API|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|load an xml out of the twitter API|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -59,11 +61,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
-   <BOUNDS height="270" left="180" top="1275" type="Node" width="4020">
+   <BOUNDS height="270" left="645" top="1290" type="Node" width="4020">
    </BOUNDS>
-   <BOUNDS height="330" left="180" top="1275" type="Box" width="4860">
+   <BOUNDS height="330" left="645" top="1290" type="Box" width="4860">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="http://apiwiki.twitter.com/Twitter-API-Documentation" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="http://apiwiki.twitter.com/Twitter-API-Documentation">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -71,13 +73,15 @@
    </PIN>
    <PIN pinname="Size" slicecount="1" values="9">
    </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
    <BOUNDS height="270" left="180" top="1020" type="Node" width="780">
    </BOUNDS>
    <BOUNDS height="240" left="180" top="1020" type="Box" width="3975">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|here you find the documentation of the twitter API|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|here you find the documentation of the twitter API|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -89,7 +93,7 @@
    </BOUNDS>
    <BOUNDS height="495" left="4755" top="3945" type="Box" width="3465">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; this url gives you the 20 newest tweets and information abou the vvvvshoutbox|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|&lt;&lt; this url gives you the 20 newest tweets and information abou the vvvvshoutbox|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -101,7 +105,7 @@
    </BOUNDS>
    <BOUNDS height="480" left="5400" top="1830" type="Box" width="2340">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; rightclick to refresh the data from twitter|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|&lt;&lt; rightclick to refresh the data from twitter|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -117,7 +121,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="/statuses/status/text" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="/statuses/status/text">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="26" nodename="IOBox (String)">
@@ -159,7 +163,7 @@
    </BOUNDS>
    <BOUNDS height="495" left="6675" top="5115" type="Box" width="2535">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; type here the coccect path to the information you want to get|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|&lt;&lt; type here the coccect path to the information you want to get|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -203,7 +207,7 @@
    </BOUNDS>
    <BOUNDS height="495" left="165" top="555" type="Box" width="4665">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|(tweet döner)|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|(tweet döner)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -219,7 +223,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="12120" top="12150" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values=".xml" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values=".xml">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -251,7 +255,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="5580" top="12225" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="http://api.twitter.com/1/statuses/user_timeline/" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="http://api.twitter.com/1/statuses/user_timeline/">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -265,7 +269,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="8280" top="12585" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="vvvvshoutbox" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="vvvvshoutbox">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -331,7 +335,7 @@
    </BOUNDS>
    <BOUNDS height="480" left="2445" top="1830" type="Box" width="2340">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; type in a twitter account you want to have visualised|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|&lt;&lt; type in a twitter account you want to have visualised|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -597,7 +601,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="200">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Speed" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Speed">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -613,7 +617,7 @@
    </BOUNDS>
    <BOUNDS height="480" left="8745" top="1800" type="Box" width="2340">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; customize the speed of the text roation|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|&lt;&lt; customize the speed of the text roation|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -639,7 +643,7 @@
    </BOUNDS>
    <BOUNDS height="495" left="585" top="5685" type="Box" width="3765">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|The XPath node splits the xml and so you just get the tweets from a twitter user out of the API path|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|The XPath node splits the xml and so you just get the tweets from a twitter user out of the API path|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -651,7 +655,7 @@
    </BOUNDS>
    <BOUNDS height="435" left="7905" top="7470" type="Box" width="2535">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt;this subpatch uses the xml to visualise the information|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|&lt;&lt;this subpatch uses the xml to visualise the information|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -663,7 +667,7 @@
    </BOUNDS>
    <BOUNDS height="315" left="7755" top="10230" type="Box" width="1905">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|patch by roman_g|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|patch by roman_g|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
