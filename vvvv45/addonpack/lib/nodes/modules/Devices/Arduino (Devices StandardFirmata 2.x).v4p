@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.4.dtd" >
    <PATCH nodename="C:\Users\horst\DEV\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" filename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" systemname="Arduino (Devices StandardFirmata 2.x)">
-   <BOUNDS height="12900" left="10980" top="975" type="Window" width="8985">
+   <BOUNDS height="12900" left="11160" top="120" type="Window" width="8985">
    </BOUNDS>
    <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="3585" top="2445" type="Node" width="100">
@@ -564,62 +564,6 @@
    </LINK>
    <LINK srcnodeid="1" srcpinname="I2C Data" dstnodeid="35" dstpinname="Input Node">
    </LINK>
-   <NODE componentmode="Hidden" filename="" id="10" nodename="RS232 (Devices)" systemname="RS232 (Devices)">
-   <BOUNDS height="270" left="1275" top="9075" type="Node" width="3420">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="ComPort" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <PIN pinname="Baudrate">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="On Data" visible="1">
-   </PIN>
-   <PIN pinname="Do Send" visible="1">
-   </PIN>
-   <PIN pinname="Baud Rate" slicecount="1" visible="1" values="57600">
-   </PIN>
-   <PIN pinname="IsConnected" visible="1">
-   </PIN>
-   <PIN pinname="Encoding">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="10" dstpinname="ComPort" linkstyle="Bezier" srcnodeid="9" srcpinname="Output Enum">
-   <LINKPOINT x="7590" y="5880">
-   </LINKPOINT>
-   <LINKPOINT x="4665" y="5880">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="10" dstpinname="Enabled" linkstyle="Bezier" srcnodeid="8" srcpinname="Y Output Value">
-   <LINKPOINT x="6000" y="6000">
-   </LINKPOINT>
-   <LINKPOINT x="4290" y="6000">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="10" srcpinname="IsConnected">
-   </LINK>
-   <LINK dstnodeid="22" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="10" srcpinname="On Data">
-   <LINKPOINT x="3000" y="10103">
-   </LINKPOINT>
-   <LINKPOINT x="3510" y="10103">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="25" dstpinname="Input 1" srcnodeid="10" srcpinname="IsConnected">
-   </LINK>
-   <LINK dstnodeid="10" dstpinname="Do Send" linkstyle="Bezier" srcnodeid="0" srcpinname="On Change">
-   <LINKPOINT x="3690" y="8490">
-   </LINKPOINT>
-   <LINKPOINT x="1710" y="8490">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Firmata Message" dstnodeid="10" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="1" dstpinname="Firmata Message">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6405" top="1170" width="1440" height="270">
    </BOUNDS>
@@ -634,4 +578,88 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="10" nodename="RS232 (Devices)" systemname="RS232 (Devices)">
+   <BOUNDS height="270" left="1275" top="9075" type="Node" width="3420">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="ComPort" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Baudrate" slicecount="1" values="57600">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   <PIN pinname="Baud Rate" visible="1">
+   </PIN>
+   <PIN pinname="IsConnected" visible="1">
+   </PIN>
+   <PIN pinname="Encoding">
+   </PIN>
+   <PIN pinname="Port Name" visible="1">
+   </PIN>
+   <PIN pinname="Connected" visible="1">
+   </PIN>
+   <PIN pinname="DTR Enable" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Enabled" linkstyle="Bezier" srcnodeid="8" srcpinname="Y Output Value">
+   <LINKPOINT x="6000" y="6000">
+   </LINKPOINT>
+   <LINKPOINT x="4290" y="6000">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="10" srcpinname="On Data">
+   <LINKPOINT x="4155" y="10103">
+   </LINKPOINT>
+   <LINKPOINT x="3525" y="10103">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Do Send" linkstyle="Bezier" srcnodeid="0" srcpinname="On Change">
+   <LINKPOINT x="6120" y="8490">
+   </LINKPOINT>
+   <LINKPOINT x="1635" y="8490">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Firmata Message" dstnodeid="10" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="1" dstpinname="Firmata Message">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output Enum" dstnodeid="10" dstpinname="Port Name" linkstyle="Bezier">
+   <LINKPOINT x="7590" y="5880">
+   </LINKPOINT>
+   <LINKPOINT x="4380" y="5880">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Connected" dstnodeid="6" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Connected" dstnodeid="25" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="42" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3450" top="8325" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3450" top="8325" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|DTR Enable (Auto Reset)|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="10" dstpinname="DTR Enable">
+   </LINK>
    </PATCH>
