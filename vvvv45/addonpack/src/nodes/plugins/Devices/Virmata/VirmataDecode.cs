@@ -131,7 +131,13 @@ namespace VVVV.Nodes
         using (IStreamReader<Stream> InputReader = FirmataIn.GetReader())
         {
           while (!InputReader.Eos) {
-            HandleStream(InputReader.Read());
+            Stream InStream = InputReader.Read();
+            if(InStream == null || InStream.Length == 0 || !InStream.CanRead) continue;
+
+            // Read the incoming bytes to the internal stream buffer
+            for (int i=InStream.ReadByte(); i != -1; i = InStream.ReadByte())
+              Decode((byte) i);
+            
           }
         }
       } catch (Exception e) {
@@ -140,68 +146,75 @@ namespace VVVV.Nodes
     }
 
     #region Plugin Functions
-    private Queue<byte> Buffer = new Queue<byte>();
 
-    private void HandleStream(Stream InStream) {
-      // Check, if the incoming Stream is usable
-      if(InStream == null || InStream.Length == 0 || !InStream.CanRead) return;
+    private Queue<byte> buffer = new Queue<byte>();
+    private int remaining = 0;
+    private byte lastCommand = Command.RESERVED_COMMAND;
 
-      // Read the incoming bytes to the internal stream buffer
-      while (InStream.Position < InStream.Length) {
-        Buffer.Enqueue((byte)InStream.ReadByte());
-      }
+    private void Decode(byte data) {
 
-      // A cache for sysex data
-      Queue<byte> cache = new Queue<byte>();
-      // A flag if parsing sysex data
-      bool bIsSysex = false;
+      if ((data & 0x80) > 0) {
+        byte cmd = FirmataUtils.GetCommandFromByte( data );
 
-      // PARSE:
-      while (Buffer.Count > 0) {
-        byte current = Buffer.Dequeue();
-        switch(current){
+        lastCommand = cmd;
+        switch (cmd) {
+          case Command.RESET:
+            buffer.Clear();
+            break;
+          case Command.DIGITALMESSAGE:
+          case Command.ANALOGMESSAGE:
+          case Command.REPORT_VERSION:
+          case Command.SETPINMODE:
+            remaining = 2;
+            buffer.Clear();
+            buffer.Enqueue(data);
+            break;
+          case Command.TOGGLEDIGITALREPORT:
+          case Command.TOGGLEANALOGREPORT:
+            remaining = 1;
+            buffer.Clear();
+            buffer.Enqueue(data);
+            break;
           case Command.SYSEX_START:
+            buffer.Clear();
+            break;
           case Command.SYSEX_END:
-            if (current == Command.SYSEX_START)
-              bIsSysex = true;
-            else if(current == Command.SYSEX_END) {
-              // Process the Sysexdata:
-              ProcessSysex(cache);
-              bIsSysex = false;
-            }
-            cache.Clear();
+            // Fire Sysex event
+            ProcessSysex(buffer);
             break;
           default:
-            if (bIsSysex) { // Collect bytes for the SysSex message cache
-              cache.Enqueue(current);
-            } else {
-              // Treat Ananlog & Digital Messages:
-              bool hasDigitalMessage = FirmataUtils.VerifiyCommand(current,Command.DIGITALMESSAGE);
-              bool hasAnalogMessage  = FirmataUtils.VerifiyCommand(current,Command.ANALOGMESSAGE);
-              // We have a data for commands
-              if(Buffer.Count >= 2 && (hasDigitalMessage || hasAnalogMessage))
-              {
-                // Reihenfolge matters!
-                byte[] data = {current, Buffer.Dequeue(),Buffer.Dequeue()};
-                // Check for Analog Command
-                if (hasAnalogMessage) {
-                  int pinNum,value;
-                  FirmataUtils.DecodeAnalogMessage(data,out pinNum,out value);
-                  if (pinNum < FAnalogInputCount[0]) FAnalogIns[pinNum] = value; // assign the found value to the spread
-                }
-                else if (hasDigitalMessage) {
-                  int port; int[] vals;
-                  // Decode the values from the bytes:
-                  FirmataUtils.DecodePortMessage(data,out port, out vals);
-                  // Fill the spread with parsed pinstates
-                  for (int i=0; i<Constants.BitsPerPort; i++) {
-                    int pinNum = i+Constants.BitsPerPort*port;
-                    if ( pinNum < FDigitalIns.SliceCount) FDigitalIns[pinNum] = vals[i];
-                  }
-                }
-              }
-            }
+            // unknown command
             break;
+        }
+      }
+      else {
+        buffer.Enqueue(data);
+        if (--remaining==0) {
+          // process the message
+          switch (lastCommand) {
+            case Command.ANALOGMESSAGE:
+              int pin,value;
+              FirmataUtils.DecodeAnalogMessage(buffer.ToArray(),out pin,out value);
+              if (pin < FAnalogInputCount[0]) FAnalogIns[pin] = value; // assign the found value to the spread
+              break;
+            case Command.DIGITALMESSAGE:
+              int port; int[] vals;
+              // Decode the values from the bytes:
+              FirmataUtils.DecodePortMessage(buffer.ToArray(),out port, out vals);
+              // Fill the spread with parsed pinstates
+              for (int i=0; i<Constants.BitsPerPort; i++) {
+                int pinNum = i+Constants.BitsPerPort*port;
+                if ( pinNum < FDigitalIns.SliceCount) FDigitalIns[pinNum] = vals[i];
+              }
+              break;
+            case Command.REPORT_VERSION:
+              int major = (int) buffer.Dequeue();
+              int minor = (int) buffer.Dequeue();
+              break;
+            default:
+              // unkown byte...
+              break;
+          }
         }
       }
     }

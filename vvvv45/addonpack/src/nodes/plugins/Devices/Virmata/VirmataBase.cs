@@ -62,21 +62,25 @@ namespace Firmata
   public static class FirmataUtils {
 
     public static bool ContainsCommand(byte[] msg, byte cmd) {
-      bool hasCommand = false;
       foreach (byte b in msg) {
-        if (hasCommand == true) break;
-        hasCommand = VerifiyCommand(b,cmd);
+        if (VerifiyCommand(b,cmd)) return true;
       }
-      return hasCommand;
+      return false;
     }
 
     public static bool VerifiyCommand(byte b, byte cmd) {
-      return  GetCommandFromByte(b) == cmd;
+      return GetCommandFromByte(b) == cmd;
     }
 
     public static byte GetCommandFromByte (byte data) {
-      // Commands in the 0xF* region do not have channel data
-      return data > 0xF0 ? data :  (byte)(data & 0xF0); // else mask out the Commandbits
+      // Commands with channel data need to be masked
+      int masked = data & 0xF0;
+      return (
+           masked != Command.DIGITALMESSAGE
+        && masked != Command.ANALOGMESSAGE
+        && masked != Command.TOGGLEDIGITALREPORT
+        && masked != Command.TOGGLEANALOGREPORT
+      ) ? data :  (byte)(data & 0xF0);
     }
 
     public static byte[] PortMessage(int port, int[] values) {
