@@ -35,6 +35,8 @@ namespace VVVV.Nodes.Devices
         public ISpread<bool> RtsEnableIn;
         [Input("Break State")]
         public ISpread<bool> BreakStateIn;
+        [Input("Update Port List", IsSingle=true, IsBang=true, Visibility = PinVisibility.Hidden)]
+        public IDiffSpread<bool> UpdatePortListIn;
         [Input("Port Name", EnumName = COM_PORT_ENUM_NAME)]
         public ISpread<EnumEntry> ComPortIn;
         [Input("Enabled")]
@@ -60,6 +62,11 @@ namespace VVVV.Nodes.Devices
         private readonly Spread<SerialPort> FPorts = new Spread<SerialPort>();
 
         static Rs232Node()
+        {
+            UpdatePortList();
+        }
+
+        static void UpdatePortList()
         {
             var portNames = SerialPort.GetPortNames()
                 .Where(n => n.StartsWith("com", StringComparison.InvariantCultureIgnoreCase))
@@ -87,6 +94,8 @@ namespace VVVV.Nodes.Devices
 
             FPorts.Resize(spreadMax, CreatePort, DestroyPort);
             DataOut.ResizeAndDispose(spreadMax, () => new MemoryStream());
+
+            if (UpdatePortListIn.IsChanged && UpdatePortListIn[0]) UpdatePortList();
 
             for (int i = 0; i < spreadMax; i++)
             {
