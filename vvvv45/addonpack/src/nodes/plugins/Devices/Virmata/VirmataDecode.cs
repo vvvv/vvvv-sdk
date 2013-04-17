@@ -110,6 +110,9 @@ namespace VVVV.Nodes
     [Output("I2C Data",Visibility = PinVisibility.OnlyInspector)]
     IOutStream<Stream> FI2CData;
 
+    [Output("Capabilities", Visibility = PinVisibility.Hidden)]
+    ISpread<string> FCapabilities;
+
     [Output("Debug", Visibility = PinVisibility.OnlyInspector)]
     ISpread<string> FDebug;
 
@@ -270,7 +273,65 @@ namespace VVVV.Nodes
           data.Clear();
 
           break;
-          // Todo: Implement Capability reports!
+          
+        case Command.CAPABILITY_RESPONSE:
+          string report = "";
+          int pinCount = 0;
+
+          int digitalPins = 0;
+          int analogPins = 0;
+          int servoPins = 0;
+          int pwmPins = 0;
+          int shiftPins = 0;
+          int i2cPins = 0;
+          byte[] buffer = data.ToArray();
+
+          for(int a=0; a<buffer.Length; a++) {
+            pinCount++;
+            report += "Pin "+pinCount.ToString()+":";
+
+            if (buffer[a]==0x7f) {
+              report += "\tNot available!";
+            }
+
+            while(buffer[a]!=0x7f) {
+              PinMode mode = (PinMode) buffer[a++];
+              switch(mode) {
+                case PinMode.ANALOG:
+                  analogPins++;
+                  break;
+                case PinMode.INPUT:
+                case PinMode.OUTPUT:
+                  digitalPins++;
+                  break;
+                case PinMode.SERVO:
+                  servoPins++;
+                  break;
+                case PinMode.PWM:
+                  pwmPins++;
+                  break;
+                case PinMode.I2C:
+                  i2cPins++;
+                  break;
+                case PinMode.SHIFT:
+                  shiftPins++;
+                  break;
+              }
+
+              int resolution = buffer[a++];
+
+              report += "\t"+FirmataUtils.PinModeToString(mode);
+              report += " ("+resolution.ToString()+" bit) ";
+            }
+            
+            report += "\r\n";
+          }
+          digitalPins /= 2;
+          report += "Total number of pins: "+pinCount.ToString()+"\r\n";
+          report += string.Format("{0} digital, {1} analog, {2} servo, {3} pwm and {4} i2c pins\r\n",digitalPins,analogPins,servoPins,pwmPins,i2cPins);
+          FCapabilities.SliceCount = 1;
+          FCapabilities[0] = report;
+          break;
       }
     }
     #endregion Plugin Functions

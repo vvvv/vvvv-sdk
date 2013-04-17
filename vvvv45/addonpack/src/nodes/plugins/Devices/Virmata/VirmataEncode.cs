@@ -142,6 +142,7 @@ namespace VVVV.Nodes
       /// Shall we reset?
       if (ShouldReset) {
         GetResetCommand();
+        GetCapabilityReport();
       }
 
       /// Firmware Version requested?
@@ -392,6 +393,12 @@ namespace VVVV.Nodes
     void GetResetCommand()
     {
       CommandBuffer.Enqueue(Command.RESET);
+    }
+
+    void GetCapabilityReport() {
+      CommandBuffer.Enqueue(Command.SYSEX_START);
+      CommandBuffer.Enqueue(Command.CAPABILITY_QUERY);
+      CommandBuffer.Enqueue(Command.SYSEX_END);
     }
 
     #endregion

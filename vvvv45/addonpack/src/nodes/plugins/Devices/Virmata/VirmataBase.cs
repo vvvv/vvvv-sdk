@@ -245,7 +245,23 @@ namespace Firmata
       }
       return s;
     }
+
+    public static string PinModeToString(PinMode mode)
+    {
+      string s = "";
+      switch(mode) {
+        case PinMode.INPUT:   s="INPUT";  break;
+        case PinMode.OUTPUT:  s="OUTPUT"; break;
+        case PinMode.ANALOG:  s="ANALOG"; break;
+        case PinMode.PWM:     s="PWM";    break;
+        case PinMode.SERVO:   s="SERVO";  break;
+        case PinMode.SHIFT:   s="SHIFT";  break;
+        case PinMode.I2C:     s="I2C";    break;
+      }
+      return s;
+    }
   }
+
   #endregion
 
   #region Definitions
