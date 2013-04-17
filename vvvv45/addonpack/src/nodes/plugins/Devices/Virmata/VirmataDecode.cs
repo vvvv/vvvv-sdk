@@ -202,14 +202,17 @@ namespace VVVV.Nodes
               // Decode the values from the bytes:
               FirmataUtils.DecodePortMessage(buffer.ToArray(),out port, out vals);
               // Fill the spread with parsed pinstates
+              int pinNum;
               for (int i=0; i<Constants.BitsPerPort; i++) {
-                int pinNum = i+Constants.BitsPerPort*port;
+                pinNum = i+Constants.BitsPerPort*port;
                 if ( pinNum < FDigitalIns.SliceCount) FDigitalIns[pinNum] = vals[i];
               }
               break;
             case Command.REPORT_VERSION:
               int major = (int) buffer.Dequeue();
               int minor = (int) buffer.Dequeue();
+              FFirmwareMajorVersion[0] = major;
+              FFirmwareMinorVersion[0] = minor;
               break;
             default:
               // unkown byte...
