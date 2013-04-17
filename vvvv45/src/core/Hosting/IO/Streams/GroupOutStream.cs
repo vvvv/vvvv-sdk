@@ -7,7 +7,7 @@ namespace VVVV.Hosting.IO.Streams
 {
     class GroupOutStream<T> : IInStream<IOutStream<T>>, IFlushable, IDisposable
     {
-        private readonly BufferedIOStream<IOutStream<T>> FStreams = new BufferedIOStream<IOutStream<T>>(2);
+        private readonly MemoryIOStream<IOutStream<T>> FStreams = new MemoryIOStream<IOutStream<T>>(2);
         private readonly List<IIOContainer> FIOContainers = new List<IIOContainer>();
         private readonly IDiffSpread<int> FCountSpread;
         private readonly IIOFactory FFactory;

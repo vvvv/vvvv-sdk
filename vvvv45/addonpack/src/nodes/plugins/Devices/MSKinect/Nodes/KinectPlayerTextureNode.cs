@@ -20,10 +20,10 @@ namespace VVVV.MSKinect.Nodes
         [Input("Kinect Runtime")]
         private Pin<KinectRuntime> FInRuntime;
 
-        [Input("Back Color", DefaultColor=new double[] {0,0,0,0})]
+        [Input("Back Color", DefaultColor=new double[] {0,0,0,1})]
         private IDiffSpread<RGBAColor> FInBgColor;
 
-        [Input("Player Color", DefaultColor = new double[] { 1, 0, 0, 0 })]
+        [Input("Player Color", DefaultColor = new double[] { 1, 0, 0, 1 })]
         private IDiffSpread<RGBAColor> FInPlayerColor;
 
         private IDXTextureOut FOutTexture;

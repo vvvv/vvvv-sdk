@@ -76,6 +76,12 @@ namespace VVVV.Nodes.NodeBrowser
             set;
         }
         
+        public TextBox TagsTextBox
+        {
+            get;
+            set;
+        }
+        
         internal bool PendingRedraw
         {
             get;
@@ -101,7 +107,15 @@ namespace VVVV.Nodes.NodeBrowser
         {
             get
             {
-                return FTagsTextBox.Text.Trim();
+                return TagsTextBox.Text.Trim();
+            }
+        }
+        
+        public int TextBoxHeight
+        {
+            get
+            {
+                return  Math.Max(20, TagsTextBox.Lines.Length * CLineHeight + 7);
             }
         }
         
@@ -117,9 +131,7 @@ namespace VVVV.Nodes.NodeBrowser
             FToolTip.ShowAlways = false;
             FToolTip.Popup += ToolTipPopupHandler;
             
-            FTagsTextBox.ContextMenu = new ContextMenu();
-            FTagsTextBox.MouseWheel += FTagsTextBoxMouseWheel;
-            FRichTextBox.MouseWheel += FTagsTextBoxMouseWheel;
+            FRichTextBox.MouseWheel += DoMouseWheel;
         }
         
         private void ToolTipPopupHandler(object sender, PopupEventArgs e)
@@ -145,11 +157,11 @@ namespace VVVV.Nodes.NodeBrowser
         public void Initialize(string text)
         {
             if (string.IsNullOrEmpty(text))
-                FTagsTextBox.Text = "";
+                TagsTextBox.Text = "";
             else
-                FTagsTextBox.Text = text.Trim();
+                TagsTextBox.Text = text.Trim();
 
-            FTagsTextBox.SelectAll();
+            TagsTextBox.SelectAll();
             
             FHoverLine = -1;
             ScrolledLine = 0;
@@ -162,13 +174,13 @@ namespace VVVV.Nodes.NodeBrowser
         public void AfterShow()
         {
             this.FRichTextBox.Resize += this.HandleRichTextBoxResize;
-            FTagsTextBox.Focus();
+            TagsTextBox.Focus();
         }
         
         public void BeforeHide()
         {
         	//reset text to "" before removing resizeHandler in order to get FVisible lines computed correctly
-            FTagsTextBox.Text = "";
+            TagsTextBox.Text = "";
         	this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
             FToolTip.Hide(FRichTextBox);
         }
@@ -185,14 +197,13 @@ namespace VVVV.Nodes.NodeBrowser
             }
             catch
             {
-                OnCreateNodeFromString(FTagsTextBox.Text.Trim());
+                OnCreateNodeFromString(TagsTextBox.Text.Trim());
             }
         }
+        
         #region TagsTextBox
-        void FTagsTextBoxTextChanged(object sender, EventArgs e)
+        public void DoTextChanged()
         {
-            FTagsTextBox.Height = Math.Max(20, FTagsTextBox.Lines.Length * CLineHeight + 7);
-            
             //saving the last manual entry for recovery when stepping through list and reaching index -1 again
             FToolTip.Hide(FRichTextBox);
             
@@ -206,7 +217,7 @@ namespace VVVV.Nodes.NodeBrowser
             RedrawSelection();
         }
 
-        void FTagsTextBoxKeyDown(object sender, KeyEventArgs e)
+        public void DoKeyDown(KeyEventArgs e)
         {
             if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
             {
@@ -215,7 +226,7 @@ namespace VVVV.Nodes.NodeBrowser
             }
             else if (e.KeyCode == Keys.Escape)
                 OnCreateNode(null);
-            else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Down))
+            else if ((TagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Down))
             {
                 FHoverLine += 1;
                 //if this is exceeding the FSelectionList.Count -> jump to line 0
@@ -234,7 +245,7 @@ namespace VVVV.Nodes.NodeBrowser
                 RedrawSelection();
                 ShowToolTip(0);
             }
-            else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Up))
+            else if ((TagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Up))
             {
                 FHoverLine -= 1;
                 //if this is exceeding the currently visible lines -> scroll up a line
@@ -258,26 +269,17 @@ namespace VVVV.Nodes.NodeBrowser
                 if (FHoverLine != -1)
                 {
                     FHoverLine = -1;
-                    FTagsTextBox.SelectionStart = FTagsTextBox.Text.Length;
+                    TagsTextBox.SelectionStart = TagsTextBox.Text.Length;
                     RedrawSelection();
                 }
             }
             else if ((e.Control) && (e.KeyCode == Keys.A))
             {
-                FTagsTextBox.SelectAll();
+                TagsTextBox.SelectAll();
             }
         }
         
-        void FTagsTextBoxMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            //do this in mouseup (not mousedown) for ContextMenu not throwing error
-            if (e.Button == MouseButtons.Right)
-            {
-                OnPanelChange(NodeBrowserPage.ByCategory, null);
-            }
-        }
-        
-        void FTagsTextBoxMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        public void DoMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             //clear old selection
             FRichTextBox.SelectionBackColor = Color.Silver;
@@ -306,13 +308,13 @@ namespace VVVV.Nodes.NodeBrowser
             
             string username = FRichTextBox.Lines[FHoverLine].Trim();
             FRichTextBox.SelectionStart = FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)+1;
-            FTagsTextBox.Focus();
+            TagsTextBox.Focus();
             
             //as plugin in its own window
             if (AllowDragDrop)
             {
                 var selNode = FSelectionList[FHoverLine + ScrolledLine];
-                FTagsTextBox.DoDragDrop(string.Format("{0}||{1}", selNode.Systemname, selNode.Filename), DragDropEffects.All);
+                TagsTextBox.DoDragDrop(string.Format("{0}||{1}", selNode.Systemname, selNode.Filename), DragDropEffects.All);
                 return;
             }
             //else popped up on doubleclick
@@ -327,7 +329,7 @@ namespace VVVV.Nodes.NodeBrowser
                         OnShowNodeReference(selNode);
                     else
                     {
-                    	FTagsTextBox.Text = "";
+                    	TagsTextBox.Text = "";
                         OnShowHelpPatch(selNode);
                     }
                 }
@@ -365,7 +367,7 @@ namespace VVVV.Nodes.NodeBrowser
                 //after this mouseup set the focus to the already hidden NodeBrowser window
                 OnCreateNodeFromString("");
                 
-                FTagsTextBox.Focus();
+                TagsTextBox.Focus();
             }
         }
         
@@ -479,7 +481,7 @@ namespace VVVV.Nodes.NodeBrowser
             
             FSelectionList.Clear();
 
-            var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(nodeInfo => nodeInfo.Ignore == false);
+            var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && NodeBrowser.CategoryFilter.CategoryVisible(ni.Category));
             
             // Cache current patch window nodeinfo and current dir
             var currentPatchWindow = NodeBrowser.CurrentPatchWindow;
@@ -661,7 +663,7 @@ namespace VVVV.Nodes.NodeBrowser
 
         public void Redraw()
         {
-            string query = FTagsTextBox.Text.ToLower();
+            string query = TagsTextBox.Text.ToLower();
             query += (char) 160;
             FTags = query.Split(new char[1]{' '}).ToList();
             
@@ -834,8 +836,12 @@ namespace VVVV.Nodes.NodeBrowser
 
         void TagPanelVisibleChanged(object sender, EventArgs e)
         {
-            FTagsTextBox.Text = FTagsTextBox.Text.Trim();
-            FTagsTextBox.Focus();
+        	//TagsTextBox not assigned during designtime
+        	if (TagsTextBox != null)
+        	{
+	            TagsTextBox.Text = TagsTextBox.Text.Trim();
+	            TagsTextBox.Focus();
+        	}
             FToolTip.Hide(FRichTextBox);
             
             if (PendingRedraw)

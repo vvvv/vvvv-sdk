@@ -12,14 +12,13 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.NodeBrowser
 {
-    public partial class CategoryPanel : UserControl
+    public partial class CategoryPanel: UserControl
     {
-        public event PanelChangeHandler OnPanelChange;
         public event CreateNodeHandler OnCreateNode;
         public event CreateNodeHandler OnShowNodeReference;
         public event CreateNodeHandler OnShowHelpPatch;
         
-        Dictionary<string, string> FCategoryDict = new Dictionary<string, string>();
+        public Dictionary<string, string> FCategoryDict = new Dictionary<string, string>();
         SortedEditableList<CategoryEntry, string> FCategoryList = new SortedEditableList<CategoryEntry, string>(ce => ce.Name);
         
         internal bool PendingRedraw
@@ -85,16 +84,18 @@ namespace VVVV.Nodes.NodeBrowser
         
         public void Redraw()
         {
+        	FCategoryTreeViewer.SuspendLayout();
             FCategoryList.BeginUpdate();
             FCategoryList.Clear();
             
-            var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && ni.Type != NodeType.Patch && ni.Type != NodeType.Text);
+            var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && ni.Type != NodeType.Patch && ni.Type != NodeType.Text && NodeBrowser.CategoryFilter.CategoryVisible(ni.Category));
             foreach (var nodeInfo in nodeInfos)
             {
                 Add(nodeInfo);
             }
             
             FCategoryList.EndUpdate();
+            FCategoryTreeViewer.ResumeLayout();
             
             PendingRedraw = false;
         }
@@ -134,12 +135,7 @@ namespace VVVV.Nodes.NodeBrowser
         {
             FCategoryTreeViewer.HideToolTip();
         }
-        
-        void HandleTopLabelClick(object sender, EventArgs e)
-        {
-            OnPanelChange(NodeBrowserPage.ByTags, null);
-        }
-        
+
         void HandlePanelVisibleChanged(object sender, EventArgs e)
         {
             FCategoryTreeViewer.HideToolTip();

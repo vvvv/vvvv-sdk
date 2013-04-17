@@ -108,16 +108,13 @@ namespace VVVV.Hosting.Factories
                     var project = FSolution.FindProject(filename);
                     if (project != null)
                     {
-                        if (!project.IsLoaded)
-                            project.Load();
-                        
-                        foreach (var doc in project.Documents)
+                        foreach (var doc in project.Documents.OfType<ITextDocument>())
                         {
-                            var docFilename = doc.Location.LocalPath;
+                            var docFilename = doc.LocalPath;
                             
                             if (docFilename != filename)
                             {
-                                nodeInfo = CreateNodeInfo(doc.Location.LocalPath);
+                                nodeInfo = CreateNodeInfo(doc.LocalPath);
                                 if (nodeInfo != null)
                                     result.Add(nodeInfo);
                             }
@@ -372,14 +369,11 @@ namespace VVVV.Hosting.Factories
                     var project = FSolution.FindProject(filename) as CSProject;
                     if (project != null)
                     {
-                        if (!project.IsLoaded)
-                            project.Load();
-                        
                         // Find the document where this nodeinfo is defined.
                         var doc = FindDefiningDocument(project, nodeInfo);
                         if (doc != null)
                         {
-                            filename = doc.Location.LocalPath;
+                            filename = doc.LocalPath;
                             line = FindDefiningLine(doc, nodeInfo);
                         }
                     }

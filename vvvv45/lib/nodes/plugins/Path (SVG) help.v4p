@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.6.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Path (SVG) help.v4p" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Path (SVG) help.v4p" systemname="Path (SVG) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Path (SVG) help.v4p" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Path (SVG) help.v4p" systemname="Path (SVG) help">
    <BOUNDS height="9735" left="1665" top="915" type="Window" width="12180">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -252,16 +252,12 @@
    </LINK>
    <LINK dstnodeid="2" dstpinname="VerticesXY" srcnodeid="31" srcpinname="Output">
    </LINK>
-   <NODE systemname="OpenURL (Network)" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" nodename="OpenURL (Network)" componentmode="Hidden" id="35">
-   <BOUNDS type="Node" left="5985" top="5544" width="100" height="100">
-   </BOUNDS>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="36" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5970" top="4755" width="0" height="0">
+   <BOUNDS type="Node" left="5910" top="5055" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="5970" top="4755" width="5205" height="270">
+   <BOUNDS type="Box" left="5910" top="5055" width="5205" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="http://www.w3.org/TR/SVG11/paths.html#PathDataGeneralInformation">
+   <PIN pinname="Input String" slicecount="1" visible="-1" pintype="Input" values="http://www.w3.org/TR/SVG11/paths.html#PathDataGeneralInformation">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="text">
    </PIN>
@@ -269,37 +265,17 @@
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
-   </NODE>
-   <LINK srcnodeid="36" srcpinname="Output String" dstnodeid="35" dstpinname="Url">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="37" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="7095" top="5109" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7095" top="5109" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Bang">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Open">
+   <PIN pinname="Output String" visible="-1" pintype="Output">
    </PIN>
    </NODE>
-   <LINK srcnodeid="37" srcpinname="Y Output Value" dstnodeid="35" dstpinname="Open">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="39" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7710" top="5190" width="1860" height="270">
+   <BOUNDS type="Node" left="5910" top="4695" width="1860" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7710" top="5190" width="2115" height="270">
+   <BOUNDS type="Box" left="5910" top="4695" width="2115" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;- hit me for specifications|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|path data specification:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -309,9 +285,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="40" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5907" top="420" width="11400" height="2790">
+   <BOUNDS type="Node" left="5910" top="420" width="11400" height="2790">
    </BOUNDS>
-   <BOUNDS type="Box" left="5907" top="420" width="5805" height="4050">
+   <BOUNDS type="Box" left="5910" top="420" width="5805" height="4050">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|The following commands and parameters are available for path data:&cr;&lf;&cr;&lf;M = moveto (xy)&cr;&lf;L = lineto (xy)&cr;&lf;H = horizontal lineto (xy)&cr;&lf;V = vertical lineto (xy)&cr;&lf;C = curveto (xy cont1 cont2)&cr;&lf;S = smooth curveto (xy cont1) &cr;&lf;Q = quadratic Bézier curve (xy cont1)&cr;&lf;T = smooth quadratic Bézier curveto (xy)&cr;&lf;A = elliptical Arc (xy cont1(rx, ry) cont2(large-arc-flag, sweep-flag) arc-rot)&cr;&lf;Z = closepath (no params, just closes the path)&cr;&lf;&cr;&lf;The first command must be &apos;M&apos; and the last &apos;Z&apos;. If thats not the case, the plugin will replace them automatically.&cr;&lf;&cr;&lf;Note: All of the commands above can also be expressed with lower letters. Capital letters means absolutely positioned, lower cases means relatively positioned to the previous end point.|">
    </PIN>
@@ -385,7 +361,7 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Spread Count" slicecount="1" values="9" visible="1">
+   <PIN pinname="Spread Count" slicecount="1" visible="1" values="9">
    </PIN>
    <PIN pinname="Width" slicecount="1" values="1.79">
    </PIN>

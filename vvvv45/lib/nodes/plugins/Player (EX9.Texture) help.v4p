@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
-   <PATCH nodename="\\PRAXIS-SERVER\joreg\Player (EX9.Texture) help.v4p" systemname="Player (EX9.Texture) help" filename="C:\Users\enohenze\Desktop\Player (EX9.Texture) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.6.dtd" >
+   <PATCH nodename="C:\Users\elias\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Player (EX9.Texture) help.v4p" systemname="Player (EX9.Texture) help" filename="C:\Users\enohenze\Desktop\Player (EX9.Texture) help.v4p">
    <BOUNDS type="Window" left="6525" top="795" width="18645" height="13545">
    </BOUNDS>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="1">
@@ -206,16 +206,6 @@
    <PIN pinname="Y Input Value" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE systemname="Info (EX9.Texture)" nodename="Info (EX9.Texture)" componentmode="Hidden" id="31">
-   <BOUNDS type="Node" left="5727" top="10305" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Width" visible="1">
-   </PIN>
-   <PIN pinname="Height" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="32">
    <BOUNDS type="Node" left="5487" top="10785" width="100" height="100">
    </BOUNDS>
@@ -230,10 +220,6 @@
    <PIN pinname="Alignment" slicecount="1" values="FitIn">
    </PIN>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Width" dstnodeid="32" dstpinname="Aspect Width">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="Height" dstnodeid="32" dstpinname="Aspect Height">
-   </LINK>
    <LINK srcnodeid="32" srcpinname="Transform Out" dstnodeid="23" dstpinname="Transform">
    </LINK>
    <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="33">
@@ -443,14 +429,16 @@
    </PIN>
    <PIN pinname="Reload" visible="1" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="55" dstpinname="Directory">
    </LINK>
    <LINK srcnodeid="55" srcpinname="Texture" dstnodeid="23" dstpinname="Texture">
    </LINK>
    <LINK srcnodeid="55" srcpinname="Frame Count" dstnodeid="30" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="55" srcpinname="Texture" dstnodeid="31" dstpinname="Texture">
    </LINK>
    <LINK srcnodeid="42" srcpinname="Output String" dstnodeid="55" dstpinname="Filemask">
    </LINK>
@@ -769,5 +757,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="55" dstpinname="Reload">
+   </LINK>
+   <LINK srcnodeid="55" srcpinname="Width" dstnodeid="32" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="55" srcpinname="Height" dstnodeid="32" dstpinname="Aspect Height">
    </LINK>
    </PATCH>

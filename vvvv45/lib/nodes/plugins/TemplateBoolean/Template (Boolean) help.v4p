@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv45\plugins\TemplateBoolean\Template (Boolean) help.v4p" filename="C:\dev\vvvv\vvvv45\plugins\Template\Template (Value) help.v4p" systemname="Template (Value) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\TemplateBoolean\Template (Boolean) help.v4p" filename="C:\dev\vvvv\vvvv45\plugins\Template\Template (Value) help.v4p" systemname="Template (Value) help">
    <BOUNDS height="6420" left="9480" top="1890" type="Window" width="8790">
    </BOUNDS>
    <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -82,7 +82,7 @@
    <PIN pinname="bool" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="4920" top="3870" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="480" left="4920" top="3870" type="Box" width="480">
@@ -102,7 +102,7 @@
    </NODE>
    <LINK dstnodeid="16" dstpinname="Y Input Value" srcnodeid="3" srcpinname="bool">
    </LINK>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="4920" top="2220" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="480" left="4920" top="2220" type="Box" width="480">
@@ -134,48 +134,16 @@
    <BOUNDS height="6420" left="465" top="1890" type="Window" width="9000">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" hiddenwhenlocked="1" id="25" nodename="OpenURL (Network)" systemname="OpenURL (Network)">
-   <BOUNDS height="100" left="6450" top="1725" type="Node" width="100">
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="27">
+   <BOUNDS type="Node" left="765" top="1545" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Url" visible="1">
+   <BOUNDS type="Box" left="765" top="1545" width="3825" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="-1" pintype="Input" values="http://vvvv.org/documentation/dynamic-plugins">
    </PIN>
-   <PIN pinname="Open" visible="1">
+   <PIN pinname="Output String" visible="-1" pintype="Output">
    </PIN>
-   <PIN pinname="URL" visible="1">
+   <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="100" left="360" top="1515" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="285" left="360" top="1515" type="Box" width="3825">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org/documentation/dynamic-plugins">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="6990" top="900" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="480" left="6990" top="900" type="Box" width="480">
-   </BOUNDS>
-   <PIN pinname="Show Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Show Slider" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Open">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="25" dstpinname="Open" hiddenwhenlocked="1" srcnodeid="23" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="25" dstpinname="Url" hiddenwhenlocked="1" srcnodeid="24" srcpinname="Output String">
-   </LINK>
    </PATCH>

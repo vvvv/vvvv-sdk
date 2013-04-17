@@ -19,8 +19,6 @@ namespace VVVV.Nodes.ImagePlayer
             private static ImagingFactory Factory = new ImagingFactory();
 
             private DataPointer FBuffer;
-            private readonly int FWidth;
-            private readonly int FHeight;
             private readonly int FStride;
             private readonly int FLength;
             
@@ -35,10 +33,10 @@ namespace VVVV.Nodes.ImagePlayer
                     {
                         var dstPixelFormat = PixelFormat.Format32bppBGRA;
                             
-                        FWidth = frame.Size.Width;
-                        FHeight = frame.Size.Height;
-                        FStride = PixelFormat.GetStride(dstPixelFormat, FWidth);
-                        FLength = FStride * FHeight;
+                        Width = frame.Size.Width;
+                        Height = frame.Size.Height;
+                        FStride = PixelFormat.GetStride(dstPixelFormat, Width);
+                        FLength = FStride * Height;
 
                         FBuffer = memoryPool.UnmanagedPool.GetMemory(FLength);
 
@@ -72,7 +70,7 @@ namespace VVVV.Nodes.ImagePlayer
             public override Texture Decode(Device device)
             {
                 var usage = Usage.Dynamic & ~Usage.AutoGenerateMipMap;
-                var texture = FTextureFactory(device, FWidth, FHeight, 1, Format.A8R8G8B8, usage);
+                var texture = FTextureFactory(device, Width, Height, 1, Format.A8R8G8B8, usage);
                 var dataRectangle = texture.LockRectangle(0, LockFlags.Discard);
 
                 try
@@ -83,7 +81,7 @@ namespace VVVV.Nodes.ImagePlayer
                     }
                     else
                     {
-                        for (int y = 0; y < FHeight; y++)
+                        for (int y = 0; y < Height; y++)
                         {
                             var src = FBuffer.Pointer +  y * FStride;
                             var dst = dataRectangle.DataPointer + y * dataRectangle.Pitch;
@@ -127,6 +125,8 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 FStream = stream;
                 FImageInformation = ImageInformation.FromStream(stream);
+                Width = FImageInformation.Width;
+                Height = FImageInformation.Height;
             }
             
             public override Texture Decode(Device device)
@@ -234,5 +234,8 @@ namespace VVVV.Nodes.ImagePlayer
         }
         
         public abstract Texture Decode(Device device);
+
+        public int Width { get; set; }
+        public int Height { get; set; }
     }
 }

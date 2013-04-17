@@ -177,6 +177,14 @@ namespace VVVV.Hosting
 		{
 			get;
 		}
+
+        /// <summary>
+        /// Whether or not vvvv is running in background.
+        /// </summary>
+        bool IsInBackground
+        {
+            get;
+        }
     }
     
     #region Listeners

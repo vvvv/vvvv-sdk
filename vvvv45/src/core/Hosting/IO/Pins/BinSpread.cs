@@ -11,7 +11,7 @@ namespace VVVV.Hosting.Pins
 	[ComVisible(false)]
 	public abstract class BinSpread<T> : Spread<ISpread<T>>
 	{
-		public class BinSpreadStream : BufferedIOStream<ISpread<T>>
+		public class BinSpreadStream : MemoryIOStream<ISpread<T>>
 		{
 			protected override void BufferIncreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)
 			{

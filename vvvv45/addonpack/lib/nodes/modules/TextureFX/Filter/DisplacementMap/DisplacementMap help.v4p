@@ -1,23 +1,23 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\GiggelzGoggelz\extras\effects\DisplacementMap\DisplacementMap help.v4p" filename="C:\GiggelzGoggelz\extras\effects\DisplacementMap\DisplacementMap help.v4p" systemname="DisplacementMap help">
-   <BOUNDS height="6660" left="13815" top="1470" type="Window" width="9000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.dtd" >
+   <PATCH nodename="D:\Imppaus\DisplacementMap_0\DisplacementMap\DisplacementMap help.v4p" filename="C:\GiggelzGoggelz\extras\effects\DisplacementMap\DisplacementMap help.v4p" systemname="DisplacementMap help">
+   <BOUNDS height="6075" left="13815" top="1470" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="Hidden" id="1" nodename="DynamicTexture (EX9.Texture Color)" systemname="DynamicTexture (EX9.Texture Color)">
-   <BOUNDS height="100" left="4065" top="1320" type="Node" width="100">
+   <BOUNDS height="100" left="3855" top="2370" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Color" slicecount="9" values="|1.00000,1.00000,1.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Width" visible="1">
+   <PIN pinname="Width" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Height" visible="1">
+   <PIN pinname="Height" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Depth" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="5" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
-   <BOUNDS height="100" left="3675" top="1830" type="Node" width="100">
+   <BOUNDS height="100" left="5325" top="1830" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
@@ -37,7 +37,17 @@
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|strength map|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|strength map|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="9" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
@@ -51,7 +61,7 @@
    <LINK dstnodeid="9" dstpinname="Source" srcnodeid="8" srcpinname="EX9 Out">
    </LINK>
    <NODE componentmode="Hidden" id="10" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
-   <BOUNDS height="100" left="5910" top="1845" type="Node" width="100">
+   <BOUNDS height="100" left="5910" top="1830" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -64,18 +74,8 @@
    <PIN pinname="TranslateY" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="11" nodename="LFO (Animation)" systemname="LFO (Animation)" hiddenwhenlocked="1">
-   <BOUNDS height="100" left="7185" top="870" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Period" slicecount="1" values="5">
-   </PIN>
-   <PIN pinname="Pause" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="17" nodename="Quad (DX9)" systemname="Quad (DX9)">
-   <BOUNDS height="100" left="3825" top="4410" type="Node" width="100">
+   <BOUNDS height="100" left="3825" top="3660" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
    </PIN>
@@ -85,7 +85,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="18" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
-   <BOUNDS height="100" left="3990" top="3975" type="Node" width="100">
+   <BOUNDS height="100" left="3990" top="3225" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -95,29 +95,31 @@
    <LINK dstnodeid="17" dstpinname="Transform" srcnodeid="18" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="InABox" id="19" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
-   <BOUNDS height="100" left="165" top="3240" type="Node" width="100">
+   <BOUNDS height="100" left="165" top="2490" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="2805" left="165" top="3240" type="Box" width="3570">
+   <BOUNDS height="2805" left="165" top="2490" type="Box" width="3570">
    </BOUNDS>
    <BOUNDS height="9375" left="3060" top="6375" type="Window" width="10785">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="output" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="output">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="19" dstpinname="Layers" srcnodeid="17" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="Hidden" id="20" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)" hiddenwhenlocked="1">
-   <BOUNDS height="100" left="3870" top="2310" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="24" nodename="Map (Value)" systemname="Map (Value)">
-   <BOUNDS height="100" left="2655" top="1455" type="Node" width="100">
+   <BOUNDS height="100" left="7455" top="1455" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -125,11 +127,11 @@
    </PIN>
    <PIN pinname="Destination Minimum" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Destination Maximum" slicecount="1" values="0.89">
+   <PIN pinname="Destination Maximum" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="23" nodename="WaveShaper (Value)" systemname="WaveShaper (Value)">
-   <BOUNDS height="100" left="2655" top="1065" type="Node" width="100">
+   <BOUNDS height="100" left="7455" top="1065" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -143,7 +145,7 @@
    <NODE componentmode="Hidden" id="30" nodename="CircularSpread (Spreads)" systemname="CircularSpread (Spreads)">
    <BOUNDS height="100" left="6075" top="1260" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Phase" visible="1">
+   <PIN pinname="Phase" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output X" visible="1">
    </PIN>
@@ -152,8 +154,6 @@
    <PIN pinname="Spread Count" slicecount="1" values="3">
    </PIN>
    </NODE>
-   <LINK dstnodeid="30" dstpinname="Phase" srcnodeid="11" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="10" dstpinname="TranslateX" srcnodeid="30" srcpinname="Output X">
    </LINK>
    <LINK dstnodeid="10" dstpinname="TranslateY" srcnodeid="30" srcpinname="Output Y">
@@ -192,74 +192,10 @@
    </LINK>
    <LINK dstnodeid="7" dstpinname="Mesh" srcnodeid="5" srcpinname="Mesh">
    </LINK>
-   <NODE componentmode="InABox" id="33" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="100" left="3495" top="645" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="240" left="3495" top="645" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="1" dstpinname="Width" srcnodeid="33" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="1" dstpinname="Height" srcnodeid="33" srcpinname="Y Output Value">
-   </LINK>
-   <NODE componentmode="Hidden" id="34" nodename="DynamicTexture (EX9.Texture Color)" systemname="DynamicTexture (EX9.Texture Color)">
-   <BOUNDS height="270" left="4500" top="2700" type="Node" width="1485">
-   </BOUNDS>
-   <PIN pinname="Color" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Width" slicecount="1" visible="-1" pintype="Input" values="256">
-   </PIN>
-   <PIN pinname="Height" slicecount="1" visible="-1" pintype="Input" values="256">
-   </PIN>
-   <PIN pinname="Depth" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="35" nodename="Quad (DX9)" systemname="Quad (DX9)">
-   <BOUNDS height="100" left="420" top="2280" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Texture" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InAWindow" hiddenwhenlocked="1" id="36" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
-   <BOUNDS height="100" left="420" top="2835" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="1800" left="420" top="2835" type="Box" width="2400">
-   </BOUNDS>
-   <BOUNDS height="4890" left="0" top="510" type="Window" width="6120">
-   </BOUNDS>
-   <PIN pinname="Layers" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|direction vectors|" encoded="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="36" dstpinname="Layers" hiddenwhenlocked="1" srcnodeid="35" srcpinname="Layer">
-   </LINK>
-   <LINK dstnodeid="35" dstpinname="Transform" linkstyle="Bezier" srcnodeid="20" srcpinname="Transform Out">
-   <LINKPOINT x="3750" y="2565">
-   </LINKPOINT>
-   <LINKPOINT x="855" y="1890">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="35" dstpinname="Texture" linkstyle="Bezier" srcnodeid="34" srcpinname="Texture Out">
-   <LINKPOINT x="4200" y="3105">
-   </LINKPOINT>
-   <LINKPOINT x="1230" y="1980">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="38" nodename="IOBox (Color)" systemname="IOBox (Color)">
-   <BOUNDS height="100" left="4290" top="1830" type="Node" width="100">
+   <BOUNDS height="100" left="4290" top="1380" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="4290" top="1830" type="Box" width="1380">
+   <BOUNDS height="240" left="4290" top="1380" type="Box" width="1380">
    </BOUNDS>
    <PIN pinname="Color Output" visible="1">
    </PIN>
@@ -268,14 +204,8 @@
    <PIN pinname="Color Input" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="34" dstpinname="Color" srcnodeid="38" srcpinname="Color Output" linkstyle="Bezier">
-   <LINKPOINT x="4350" y="2370">
-   </LINKPOINT>
-   <LINKPOINT x="5925" y="2370">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="Hidden" id="25" nodename="LFO (Animation)" systemname="LFO (Animation)">
-   <BOUNDS height="100" left="2670" top="630" type="Node" width="100">
+   <BOUNDS height="100" left="7470" top="630" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -287,9 +217,9 @@
    <LINK dstnodeid="23" dstpinname="Input" srcnodeid="25" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="40" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="100" left="4755" top="0" type="Node" width="100">
+   <BOUNDS height="100" left="4275" top="0" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="375" left="4755" top="0" type="Box" width="735">
+   <BOUNDS height="420" left="4275" top="0" type="Box" width="735">
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
@@ -299,7 +229,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|displace direction xy|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|displace direction xy|">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="0">
    </PIN>
@@ -307,7 +237,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="42" nodename="RGB (Color Join)" systemname="RGB (Color Join)">
-   <BOUNDS height="270" left="4755" top="945" type="Node" width="765">
+   <BOUNDS height="270" left="4275" top="1005" type="Node" width="765">
    </BOUNDS>
    <PIN pinname="Red" visible="1">
    </PIN>
@@ -321,7 +251,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="41" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
-   <BOUNDS height="100" left="4755" top="585" type="Node" width="100">
+   <BOUNDS height="100" left="4275" top="645" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -343,10 +273,6 @@
    <LINK dstnodeid="42" dstpinname="Green" srcnodeid="41" srcpinname="Y">
    </LINK>
    <LINK dstnodeid="38" dstpinname="Color Input" srcnodeid="42" srcpinname="Output" linkstyle="Bezier">
-   <LINKPOINT x="4740" y="1515">
-   </LINKPOINT>
-   <LINKPOINT x="4350" y="1515">
-   </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="45" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="90" top="60" type="Node" width="915">
@@ -355,7 +281,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="7350" top="4620" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|DisplacementMap (EX9.Effect)|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|DisplacementMap (EX9.Effect)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -371,7 +297,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6750" top="4020" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Displace input texture into direction specified by RG components of direction vectors and strength from displacement map &quot;brightness&quot;.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Displace input texture into direction specified by RG (=XY) components of direction vectors and strength from displacement map alpha.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -384,10 +310,8 @@
    </LINK>
    <LINK dstnodeid="29" dstpinname="Map" srcnodeid="9" srcpinname="Texture Out">
    </LINK>
-   <LINK dstnodeid="29" dstpinname="Direction vectors" srcnodeid="34" srcpinname="Texture Out">
-   </LINK>
    <NODE componentmode="Hidden" id="31" nodename="SetAlpha (Color)" systemname="SetAlpha (Color)">
-   <BOUNDS height="100" left="7155" top="1845" type="Node" width="100">
+   <BOUNDS height="100" left="7155" top="1830" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -403,19 +327,19 @@
    <LINK dstnodeid="7" dstpinname="Inner Color" srcnodeid="31" srcpinname="Output">
    </LINK>
    <LINK srcnodeid="38" srcpinname="Color Output" dstnodeid="31" dstpinname="Input" linkstyle="Bezier">
-   <LINKPOINT x="4680" y="2430">
+   <LINKPOINT x="4680" y="2130">
    </LINKPOINT>
-   <LINKPOINT x="8085" y="1200">
+   <LINKPOINT x="8085" y="1050">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="24" srcpinname="Output" dstnodeid="31" dstpinname="Alpha" linkstyle="VHV">
-   <LINKPOINT x="2690" y="1765">
+   <LINKPOINT x="5890" y="1765">
    </LINKPOINT>
-   <LINKPOINT x="8050" y="1775">
+   <LINKPOINT x="9650" y="1775">
    </LINKPOINT>
    </LINK>
    <NODE systemname="DisplacementMap (EX9.Texture Filter)" filename="DisplacementMap (EX9.Texture Filter).v4p" nodename="DisplacementMap (EX9.Texture Filter)" componentmode="Hidden" id="47">
-   <BOUNDS type="Node" left="3855" top="3615" width="100" height="100">
+   <BOUNDS type="Node" left="3855" top="2865" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -429,9 +353,9 @@
    <LINK srcnodeid="1" srcpinname="Texture Out" dstnodeid="47" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="9" srcpinname="Texture Out" dstnodeid="47" dstpinname="Control">
-   <LINKPOINT x="6630" y="5295">
+   <LINKPOINT x="6630" y="5045">
    </LINKPOINT>
-   <LINKPOINT x="5580" y="3270">
+   <LINKPOINT x="5580" y="2770">
    </LINKPOINT>
    </LINK>
    </PATCH>

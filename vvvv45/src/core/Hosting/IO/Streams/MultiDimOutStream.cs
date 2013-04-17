@@ -4,7 +4,7 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    class MultiDimOutStream<T> : BufferedIOStream<IInStream<T>>, IDisposable
+    class MultiDimOutStream<T> : MemoryIOStream<IInStream<T>>, IDisposable
     {
         private readonly IIOContainer<IOutStream<T>> FDataContainer;
         private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
@@ -58,7 +58,7 @@ namespace VVVV.Hosting.IO.Streams
                 FDataStream.Length = dataStreamLength;
                 using (var dataWriter = FDataStream.GetWriter())
                 {
-                    bool anyChanged = force;
+                    bool anyChanged = force || IsChanged;
                     var numSlicesBuffered = 0;
                     for (int i = 0; i < Length; i++)
                     {
@@ -85,6 +85,10 @@ namespace VVVV.Hosting.IO.Streams
                                         break;
                                 }
                             }
+                            // Reset the changed flags
+                            var flushable = stream as IFlushable;
+                            if (flushable != null)
+                                flushable.Flush(force);
                         }
                         else
                             dataWriter.Position += stream.Length;
