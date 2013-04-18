@@ -120,9 +120,6 @@ namespace VVVV.Nodes
     [Output("On Change")]
     ISpread<bool> FChangedOut;
 
-    //[Output("Debug")]
-    //ISpread<string> FDebugOut;
-
     #endregion Pin Definitions
 
     /// Use a Queue for a command byte buffer:
