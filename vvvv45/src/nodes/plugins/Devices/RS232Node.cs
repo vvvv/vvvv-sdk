@@ -92,10 +92,10 @@ namespace VVVV.Nodes.Devices
             RiStateOut.SliceCount = spreadMax;
             BreakStateOut.SliceCount = spreadMax;
 
+            if (UpdatePortListIn.IsChanged && UpdatePortListIn[0]) UpdatePortList();
+
             FPorts.Resize(spreadMax, CreatePort, DestroyPort);
             DataOut.ResizeAndDispose(spreadMax, () => new MemoryStream());
-
-            if (UpdatePortListIn.IsChanged && UpdatePortListIn[0]) UpdatePortList();
 
             for (int i = 0; i < spreadMax; i++)
             {
