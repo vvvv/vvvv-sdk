@@ -141,9 +141,14 @@ namespace VVVV.Nodes.Devices
                     var totalBytesToWrite = dataIn.Length;
                     if (totalBytesToWrite > 0 && DoSendIn[i])
                     {
-                        var buffer = new byte[totalBytesToWrite];
-                        dataIn.Read(buffer,0,totalBytesToWrite);
-                        port.Write(buffer,0,totalBytesToWrite);
+                        var buffer = new byte[1024];
+                        while (totalBytesToWrite > 0)
+                        {
+                            var bytesToWrite = (int)Math.Min(buffer.Length, totalBytesToWrite);
+                            var bytesRead = dataIn.Read(buffer, 0, bytesToWrite);
+                            port.Write(buffer, 0, bytesRead);
+                            totalBytesToWrite -= bytesRead;
+                        }
                     }
 
                     // Read data from the port
@@ -151,9 +156,14 @@ namespace VVVV.Nodes.Devices
                     if (totalBytesToRead > 0)
                     {
                         dataOut.SetLength(totalBytesToRead);
-                        var buffer = new byte[totalBytesToRead];
-                        port.Read(buffer,0,totalBytesToRead);
-                        dataOut.Write(buffer,0,totalBytesToRead);
+                        var buffer = new byte[1024];
+                        while (totalBytesToRead > 0)
+                        {
+                            var bytesToRead = Math.Min(buffer.Length, totalBytesToRead);
+                            var bytesRead = port.Read(buffer, 0, bytesToRead);
+                            dataOut.Write(buffer, 0, bytesRead);
+                            totalBytesToRead -= bytesRead;
+                        }
                         // Marks the pin as changed
                         DataOut[i] = dataOut;
                         // Set the OnData flag
