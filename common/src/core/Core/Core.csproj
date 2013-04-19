@@ -79,6 +79,7 @@
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Helper\NodeAndPinAttributes.cs" />
     <Compile Include="Model\MissingDocument.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
     <Compile Include="View\MissingDocumentViewProvider.cs" />
     <Compile Include="View\DocumentViewProvider.cs" />
     <Compile Include="View\HDEForm.cs">
@@ -257,4 +258,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
 </Project>

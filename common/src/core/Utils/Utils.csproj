@@ -69,6 +69,7 @@
     <Compile Include="OSC\OSCReceiver.cs" />
     <Compile Include="OSC\OSCTransmitter.cs" />
     <Compile Include="PathUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
     <Compile Include="Reflection\TypeExtensions.cs" />
     <Compile Include="SharedMemory\Segment.cs" />
     <Compile Include="SharedMemory\Win32Native.cs" />
@@ -116,4 +117,5 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
 </Project>

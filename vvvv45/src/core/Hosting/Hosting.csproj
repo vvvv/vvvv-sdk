@@ -106,6 +106,7 @@
     <Compile Include="PluginLogger.cs" />
     <Compile Include="Properties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
     <Compile Include="ProxyNodeBrowserHost.cs" />
     <Compile Include="ProxyNodeInfoFactory.cs" />
     <Compile Include="Refactoring\Refactorer.cs" />
@@ -158,4 +159,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
 </Project>

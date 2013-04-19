@@ -15,6 +15,7 @@
     <Compile Include="InteropServices\EX9\DeviceMarshaler.cs" />
     <Compile Include="InteropServices\EX9\MeshMarshaler.cs" />
     <Compile Include="InteropServices\EX9\TextureMarshaler.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
     <Compile Include="V1\Enumerations1.cs" />
     <Compile Include="V1\IPlugin1.cs" />
     <Compile Include="V1\IPluginHost1.cs" />
@@ -90,4 +91,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
 </Project>

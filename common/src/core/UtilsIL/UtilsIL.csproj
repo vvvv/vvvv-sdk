@@ -26,6 +26,7 @@
     <Compile Include="Memory.cs" />
     <Compile Include="Memory.il" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -131,4 +132,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
 </Project>

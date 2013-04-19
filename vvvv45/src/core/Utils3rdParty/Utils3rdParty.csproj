@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
     <Compile Include="SlimDX\MatrixExtensions.cs" />
     <Compile Include="SlimDX\TextureUtils.cs" />
     <Compile Include="SlimDX\UInt32Utils.cs" />
@@ -36,4 +37,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
 </Project>
