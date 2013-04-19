@@ -1,0 +1,99 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.1.dtd" >
+   <PATCH nodename="C:\_vvvv\public sources\_TRUNK vvvv\girlpower\kolor.v4p" componentmode="InAWindow" locked="1">
+   <BOUNDS height="5940" left="1305" top="825" type="Window" width="6135">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="15" top="15" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7650" top="8445" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="5475" left="15" top="15" type="Box" width="6000">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="CircularSpread (Spreads)">
+   <BOUNDS height="0" left="6915" top="1935" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="200">
+   </PIN>
+   <PIN pinname="Input X" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Input Y" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Phase" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Factor" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="HSL (Color Join)">
+   <BOUNDS height="0" left="7065" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Hue" srcnodeid="4" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Saturation" srcnodeid="4" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Color Input" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE id="2" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="7800" top="525" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="0.75">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Phase" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE id="1" nodename="WaveShaper (Value)">
+   <BOUNDS height="0" left="7260" top="1290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Shape" slicecount="1" values="Sine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Width" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE id="0" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="6750" top="465" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="3.19">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   </PATCH>

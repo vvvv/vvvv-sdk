@@ -1,0 +1,219 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH locked="0" nodename="Y:\vvvv33\help\RandomSpread (Spreads) help.v4p">
+   <LINK dstnodeid="14" dstpinname="Random Seed" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Minimum" slicecount="1" values="-100000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="100000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="163">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="960" top="1650" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1527" top="1855" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="960" top="1650" type="Box" width="795">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Spread Count" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="14" nodename="RandomSpread (Spreads)">
+   <PIN pinname="Random Seed Mode" slicecount="1" values="Spreaded">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Alignment">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1920" top="2460" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Factor">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3285" top="2475" type="Node" width="1545">
+   </BOUNDS>
+   <BOUNDS height="360" left="3285" top="2475" type="Box" width="2175">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|this creates the coordinates|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <BOUNDS height="8700" left="1440" top="795" type="Window" width="8490">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="255" left="435" top="1050" type="Node" width="3495">
+   </BOUNDS>
+   <BOUNDS height="570" left="435" top="1050" type="Box" width="2040">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|change the random seed to get different patterns|" slices="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3285" top="2970" type="Node" width="1815">
+   </BOUNDS>
+   <BOUNDS height="540" left="3285" top="2970" type="Box" width="1575">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|this draws &cr;&lf;all the asterisks|" slices="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3075" top="3840" type="Node" width="3975">
+   </BOUNDS>
+   <BOUNDS height="3000" left="3075" top="3840" type="Box" width="5070">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|understanding more...&cr;&lf;&cr;&lf;try changing the input and width pins. this will move and &cr;&lf;scale the range. Each random seed will generate one unique pattern&cr;&lf;of random values. &cr;&lf;&cr;&lf;the values generated are fully reproducible and are not random in any sense. You can build your patches on the fact, that each  random spread with the same seed will genereate exactly the same values on all machines. &cr;&lf;if you dont need that behaviour, build a patch which will calculate an unique seed out of something like the MAC adress of your machines and the system time.  |" slices="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3195" top="1125" type="Node" width="2355">
+   </BOUNDS>
+   <BOUNDS height="495" left="3195" top="1125" type="Box" width="1935">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|change the number of points here|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="1" values="19" slices="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="3240" top="1695" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2733" top="2165" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3240" top="1695" type="Box" width="795">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="Renderer (GDI)">
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000" slices="0">
+   </PIN>
+   <BOUNDS height="0" left="360" top="3870" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="3001" top="2227" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="2385" left="360" top="3870" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Point (GDI)">
+   <PIN pinname="Y" slicecount="1" visible="1" values="0">
+   </PIN>
+   <BOUNDS height="0" left="1905" top="3105" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Type" slicecount="1" values="Asterisk">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="330" top="6585" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="255" left="330" top="6585" type="Node" width="825">
+   </BOUNDS>
+   </NODE>
+   <NODE id="4" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="1695" top="6885" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="X" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="GaussianSpread (Spreads)">
+   <BOUNDS height="0" left="420" top="6885" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="2" nodename="Random (Value)">
+   <BOUNDS height="0" left="420" top="7215" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="2865">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|creates a spread of random values|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|RandomSpread - Spreads|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Layer" dstnodeid="7" dstpinname="Layers">
+   </LINK>
+   </PATCH>

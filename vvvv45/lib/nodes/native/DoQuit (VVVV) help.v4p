@@ -1,0 +1,171 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\DoQuit (VVVV) help.v4p">
+   <BOUNDS height="7395" left="7545" top="2100" type="Window" width="7005">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="585" left="1755" top="1380" type="Node" width="1890">
+   </BOUNDS>
+   <BOUNDS height="2010" left="1755" top="1380" type="Box" width="1935">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; Set the input of DoQuit to 1 if you want to close vvvv. &cr;&lf;&cr;&lf;vvvv may not quit immediately though if there is still a FinallyNode in any patch that is not set to 1.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="30" top="6495" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="240" left="30" top="6495" type="Box" width="705">
+   </BOUNDS>
+   <BOUNDS height="160" left="1200" top="1200" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="OnActivate (VVVV)">
+   <BOUNDS height="0" left="1635" top="6495" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="4" nodename="OnOpen (VVVV)">
+   <BOUNDS height="0" left="825" top="6495" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="3" nodename="Finally (VVVV)">
+   <BOUNDS height="0" left="3375" top="6495" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="2" nodename="DoQuit (VVVV)">
+   <BOUNDS height="0" left="585" top="4860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Quit VVVV" visible="1">
+   </PIN>
+   <PIN pinname="Query Save">
+   </PIN>
+   <PIN pinname="Error Code">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="OnQuit (VVVV)">
+   <BOUNDS height="0" left="2655" top="6495" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="4350">
+   </BOUNDS>
+   <BOUNDS height="160" left="4440" top="9180" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Banging this node is the same as selecting Quit in the menu|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="5040" top="9780" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|DoQuit - VVVV|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="585" top="1395" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="585" top="1395" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Quit VVVV">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="885" top="3480" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="885" top="3480" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Query Save">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1755" top="3465" width="5955" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1755" top="3465" width="2505" height="660">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Enable &apos;Query Save&apos; to make vvvv ask for saving changed patches before quitting.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1185" top="4365" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1185" top="4365" width="390" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="-21">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Error Code">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1755" top="4335" width="13230" height="690">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1755" top="4335" width="4815" height="1890">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Set an error code if you want to hand back information to a calling commandline. In order to read that information from the commandline you need to start vvvv using:&cr;&lf; start /wait vvvv.exe&cr;&lf;&cr;&lf;and when this call returns (ie. vvvv quit) you can call&cr;&lf; echo %errorlevel% &cr;&lf;to read that errorcode. |" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>
