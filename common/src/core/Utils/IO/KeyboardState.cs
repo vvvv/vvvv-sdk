@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using VVVV.Utils.Collections;
+using VVVV.Utils.Win32;
 
 namespace VVVV.Utils.IO
 {
@@ -26,6 +27,69 @@ namespace VVVV.Utils.IO
             Empty = new KeyboardState(Enumerable.Empty<Keys>());
         }
 
+        public static KeyboardState Current
+        {
+            get
+            {
+                // Windows bug? Remove this call and GetKeyboardState will only
+                // work if process is not in background.
+                // See strange comment here: http://www.pinvoke.net/default.aspx/user32.getkeyboardstate
+                User32.GetKeyState(Keys.None);
+                var lpKeyState = new byte[255];
+                if (User32.GetKeyboardState(lpKeyState))
+                {
+                    var keys = new List<Keys>();
+                    for (int i = 0; i < lpKeyState.Length; i++)
+                    {
+                        var key = (Keys)i;
+                        switch (key)
+                        {
+                            case Keys.LButton:
+                            case Keys.MButton:
+                            case Keys.RButton:
+                            case Keys.XButton1:
+                            case Keys.XButton2:
+                                // Do not include the mouse
+                                continue;
+                            case Keys.LControlKey:
+                            case Keys.RControlKey:
+                            case Keys.LShiftKey:
+                            case Keys.RShiftKey:
+                            case Keys.LMenu:
+                            case Keys.RMenu:
+                                // Only include ControlKey/ShiftKey/Alt
+                                continue;
+                            default:
+                                if ((lpKeyState[i] & Const.KEY_PRESSED) > 0)
+                                    keys.Add(key);
+                                break;
+                        }
+                    }
+                    var capsLock = (lpKeyState[(int)Keys.CapsLock] & Const.KEY_TOGGLED) > 0;
+                    return new KeyboardState(keys, capsLock);
+                }
+                else
+                    return Empty;
+            }
+        }
+
+        // Slow
+        public static KeyboardState CurrentAsync
+        {
+            get
+            {
+                var keys = new List<Keys>();
+                for (int i = 0; i < 255; i++)
+                {
+                    var key = (Keys)i;
+                    if ((User32.GetAsyncKeyState(key) & 0x8000) > 0)
+                        keys.Add(key);
+                }
+                var capsLock = (User32.GetKeyState(Keys.CapsLock) & Const.KEY_TOGGLED) > 0;
+                return new KeyboardState(keys, capsLock);
+            }
+        }
+
         #region virtual keycode to character translation
 
         // From: http://stackoverflow.com/questions/6214326/translate-keys-to-char
@@ -35,15 +99,14 @@ namespace VVVV.Utils.IO
 
             byte[] keyStates = new byte[256];
 
-            const byte keyPressed = 0x80;
-            keyStates[(int)(keys & Keys.KeyCode)] = keyPressed;
+            keyStates[(int)(keys & Keys.KeyCode)] = Const.KEY_PRESSED;
             keyStates[(int)Keys.Capital] = capsLock ? (byte)0x01 : (byte)0;
-            keyStates[(int)Keys.ShiftKey] = ((keys & Keys.Shift) == Keys.Shift) ? keyPressed : (byte)0;
-            keyStates[(int)Keys.ControlKey] = ((keys & Keys.Control) == Keys.Control) ? keyPressed : (byte)0;
-            keyStates[(int)Keys.Menu] = ((keys & Keys.Alt) == Keys.Alt) ? keyPressed : (byte)0;
+            keyStates[(int)Keys.ShiftKey] = ((keys & Keys.Shift) == Keys.Shift) ? Const.KEY_PRESSED : (byte)0;
+            keyStates[(int)Keys.ControlKey] = ((keys & Keys.Control) == Keys.Control) ? Const.KEY_PRESSED : (byte)0;
+            keyStates[(int)Keys.Menu] = ((keys & Keys.Alt) == Keys.Alt) ? Const.KEY_PRESSED : (byte)0;
 
             StringBuilder sb = new StringBuilder(10);
-            int ret = ToUnicodeEx(keys, 0, keyStates, sb, sb.Capacity, 0, inputLanguage.Handle);
+            int ret = User32.ToUnicodeEx(keys, 0, keyStates, sb, sb.Capacity, 0, inputLanguage.Handle);
             if (ret == 1) return sb[0];
 
             if (ret == -1)
@@ -58,9 +121,6 @@ namespace VVVV.Utils.IO
             return null;
         }
 
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        private static extern int ToUnicodeEx(Keys wVirtKey, uint wScanCode, byte[] lpKeyState, StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
-
         #endregion
 
         private readonly ReadOnlyCollection<Keys> FKeys;
@@ -68,10 +128,24 @@ namespace VVVV.Utils.IO
         private readonly int FTime;
         private ReadOnlyCollection<char> FKeyChars;
 
+        public KeyboardState()
+            : this(Enumerable.Empty<Keys>())
+        {
+        }
+
+        // This overload will try to compute the chars from the given keys (doesn't work with dead keys)
         public KeyboardState(IEnumerable<Keys> keys, bool capsLock = false, int time = 0)
         {
-            FKeys = keys.ToReadOnlyCollection();
+            FKeys = keys.Distinct().ToReadOnlyCollection();
         	FCapsLock = capsLock;
+            FTime = time;
+        }
+
+        public KeyboardState(IEnumerable<Keys> keys, IEnumerable<char> chars, bool capsLock = false, int time = 0)
+        {
+            FKeys = keys.Distinct().ToReadOnlyCollection();
+            FKeyChars = chars.Distinct().ToReadOnlyCollection();
+            FCapsLock = capsLock;
             FTime = time;
         }
 
@@ -98,7 +172,7 @@ namespace VVVV.Utils.IO
             {
                 if (FKeyChars == null)
                 {
-                    InitKeys();
+                    InitChars();
                 }
                 return FKeyChars;
             } 
@@ -121,15 +195,24 @@ namespace VVVV.Utils.IO
             {
                 if (!FModifiers.HasValue)
                 {
-                    InitKeys();
+                    InitModifiers();
                 }
                 return FModifiers.Value;
             }
         }
 
-        private void InitKeys()
+        public IEnumerable<Keys> ModifierKeys
         {
-            var realKeys = new List<Keys>();
+            get
+            {
+                if ((Modifiers & Keys.Control) > 0) yield return Keys.ControlKey;
+                if ((Modifiers & Keys.Alt) > 0) yield return Keys.Menu;
+                if ((Modifiers & Keys.Shift) > 0) yield return Keys.ShiftKey;
+            }
+        }
+
+        private void InitModifiers()
+        {
             FModifiers = Keys.None;
             foreach (var key in FKeys)
             {
@@ -148,14 +231,14 @@ namespace VVVV.Utils.IO
                     case Keys.RMenu:
                         FModifiers |= Keys.Alt;
                         break;
-                    default:
-                        // Do not allow more than one "normal" key
-                        realKeys.Add(key);
-                        break;
                 }
             }
-            FKeyChars = realKeys
-                .Select(keyCode => FromKeys(keyCode | FModifiers.Value, FCapsLock))
+        }
+
+        private void InitChars()
+        {
+            FKeyChars = FKeys
+                .Select(keyCode => FromKeys(keyCode | Modifiers, FCapsLock))
                 .Where(c => c != null)
                 .Select(c => c.Value)
                 .ToReadOnlyCollection();

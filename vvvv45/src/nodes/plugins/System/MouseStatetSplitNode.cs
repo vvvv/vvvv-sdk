@@ -5,7 +5,7 @@ using System.Text;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
 
-namespace VVVV.Nodes.IO
+namespace VVVV.Nodes.Input
 {
     [PluginInfo(Name = "MouseState", Category = "System", Version = "Split")]
     public class MouseStatetSplitNode : IPluginEvaluate
@@ -24,41 +24,33 @@ namespace VVVV.Nodes.IO
         public ISpread<bool> FMiddleButtonOut;
         [Output("Right Button")]
         public ISpread<bool> FRightButtonOut;
+        [Output("X Button 1")]
+        public ISpread<bool> FXButton1Out;
+        [Output("X Button 2")]
+        public ISpread<bool> FXButton2Out;
 
         public void Evaluate(int spreadMax)
         {
             FXOut.SliceCount = spreadMax;
             FYOut.SliceCount = spreadMax;
+            FMouseWheelOut.SliceCount = spreadMax;
             FLeftButtonOut.SliceCount = spreadMax;
             FMiddleButtonOut.SliceCount = spreadMax;
             FRightButtonOut.SliceCount = spreadMax;
-            FMouseWheelOut.SliceCount = spreadMax;
+            FXButton1Out.SliceCount = spreadMax;
+            FXButton2Out.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
                 var mouseState = FInput[i];
-                double x, y;
-                bool leftButton, middleButton, rightButton;
-                int mouseWheel;
-
-                if (mouseState != null)
-                    MouseStateNodes.Split(mouseState, out x, out y, out leftButton, out middleButton, out rightButton, out mouseWheel);
-                else
-                {
-                    x = 0;
-                    y = 0;
-                    leftButton = false;
-                    middleButton = false;
-                    rightButton = false;
-                    mouseWheel = 0;
-                }
-
-                FXOut[i] = x;
-                FYOut[i] = y;
-                FLeftButtonOut[i] = leftButton;
-                FMiddleButtonOut[i] = middleButton;
-                FRightButtonOut[i] = rightButton;
-                FMouseWheelOut[i] = mouseWheel;
+                FXOut[i] = mouseState.X;
+                FYOut[i] = mouseState.Y;
+                FLeftButtonOut[i] = mouseState.IsLeft;
+                FMiddleButtonOut[i] = mouseState.IsMiddle;
+                FRightButtonOut[i] = mouseState.IsRight;
+                FXButton1Out[i] = mouseState.IsXButton1;
+                FXButton2Out[i] = mouseState.IsXButton2;
+                FMouseWheelOut[i] = mouseState.MouseWheel;
             }
         }
     }

@@ -8,6 +8,14 @@ namespace VVVV.PluginInterfaces.V2.Graph
     public interface IWindow2 : IEquatable<IWindow2>
     {
         /// <summary>
+        /// Reference to the internal COM interface. Use with caution.
+        /// </summary>
+        IWindow InternalCOMInterf
+        {
+            get;
+        }
+
+        /// <summary>
 		/// Gets/sets the window's caption.
 		/// </summary>
 		string Caption

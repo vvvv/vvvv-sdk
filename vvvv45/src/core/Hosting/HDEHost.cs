@@ -699,6 +699,11 @@ namespace VVVV.Hosting
                 }
             }
         }
+
+        public bool IsRunningInBackground
+        {
+            get { return FVVVVHost.IsInBackground; }
+        }
         
         #region Listeners
         
