@@ -100,6 +100,7 @@ namespace VVVV.Nodes
                 {
                     if (FStepper != null)
                     {
+						FStepper.Close();
                         FStepper = null;
                     }
                     FStepper = new WrapperStepperController(FSerial[0]);
@@ -167,8 +168,6 @@ namespace VVVV.Nodes
                                 }
                             }
 
-                            //if (ChangedIndex[i])
-                            //{
                                 FPositionOut[i] = VMath.Map(Convert.ToDouble(FStepper.GetCurrentMotorPosition(i)), 0, (double)FStepsCycle[i],0,1, TMapMode.Float);
                                 FVelocityOut[i] = VMath.Map(Convert.ToDouble(FStepper.GetVelocity(i)),FStepper.GetVelocityMin(i),FStepper.GetVelocityMax(i),0,1, TMapMode.Float);
                                 FCurrentPosition[i] = Convert.ToDouble(FStepper.GetCurrentMotorPosition(i));
@@ -179,7 +178,7 @@ namespace VVVV.Nodes
                                 else
                                 	FCurrentOut[i] = 1;
 
-                            //}
+							
                         }
 
                         FStoppedOut[i] = FStepper.GetStopped(i);
