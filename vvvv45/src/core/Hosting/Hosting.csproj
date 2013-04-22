@@ -7,6 +7,8 @@
     <RootNamespace>VVVV.Hosting</RootNamespace>
     <AssemblyName>VVVV.Hosting</AssemblyName>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.NRefactory">
@@ -17,9 +19,6 @@
     </Reference>
     <Reference Include="Nito.Async">
       <HintPath>..\..\..\..\common\src\thirdparty\Nito.Async.dll</HintPath>
-    </Reference>
-    <Reference Include="SlimDX">
-      <HintPath>..\..\..\..\common\src\thirdparty\$(PlatformTarget)\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition.Codeplex">
@@ -127,7 +126,9 @@
     <Compile Include="Factories\FreeFrameFactory.cs" />
     <Compile Include="Factories\VSTFactory.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\common\src\core\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
@@ -160,4 +161,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Target Name="BeforeBuild" DependsOnTargets="Version" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\..\..\..\packages\SlimDX.1.0.0\build\net40\SlimDX.targets" Condition="Exists('..\..\..\..\packages\SlimDX.1.0.0\build\net40\SlimDX.targets')" />
 </Project>
