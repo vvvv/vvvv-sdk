@@ -5,12 +5,14 @@
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.PluginInterfaces</RootNamespace>
     <AssemblyName>VVVV.PluginInterfaces</AssemblyName>
+    <AssemblyDescription>The VVVV Plugin Interfaces Library</AssemblyDescription>
     <ProjectGuid>{837C740A-485C-424C-8C38-086ED3DC73CB}</ProjectGuid>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <NoWarn>1591 1587</NoWarn>
     <DocumentationFile>$(OutputPath)\VVVV.PluginInterfaces.xml</DocumentationFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <PackageIsAnyCPU>false</PackageIsAnyCPU>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="PluginInterfaces.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Target Name="BeforeBuild" DependsOnTargets="Version" />

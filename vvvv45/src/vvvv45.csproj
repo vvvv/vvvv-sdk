@@ -10,6 +10,7 @@
     <BuildingInsideVisualStudio Condition=" '$(BuildingInsideVisualStudio)' == '' ">false</BuildingInsideVisualStudio>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <PackageOutputDir Condition="'$(PackageOutputDir)' == ''">$(MSBuildThisFileDirectory)..\..\build\packages</PackageOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
@@ -158,6 +159,20 @@
   </Target>
   <Target Name="_PostZip_">
     <RemoveDir Directories="$(TempBaseDir)" />
+  </Target>
+  <Target Name="CleanPackages">
+    <ItemGroup>
+      <PackagesToRemove Include="$(PackageOutputDir)\*.nupkg"/>
+    </ItemGroup>
+    <Delete Files="@(PackagesToRemove)" />
+  </Target>
+  <Target Name="BuildPackages" DependsOnTargets="CleanPackages">
+    <MakeDir Directories="$(PackageOutputDir)" />
+    <ItemGroup>
+      <ProjectsToPack Include="..\..\common\src\core\*\*.csproj" />
+      <ProjectsToPack Include="core\*\*.csproj" />
+    </ItemGroup>
+    <MSBuild Projects="@(ProjectsToPack)" Targets="BuildPackage" Properties="PackageOutputDir=$(PackageOutputDir)" />
   </Target>
   <Import Project="vvvv45.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

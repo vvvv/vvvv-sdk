@@ -9,9 +9,12 @@
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Utils</RootNamespace>
     <AssemblyName>VVVV.UtilsIL</AssemblyName>
+    <AssemblyDescription>The VVVV Utility Library</AssemblyDescription>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DocumentationFile>$(OutputPath)\VVVV.UtilsIL.xml</DocumentationFile>
     <NoWarn>1591 1587</NoWarn>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\vvvv45\src\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -133,4 +136,5 @@
   </Target>
   -->
   <Target Name="BeforeBuild" DependsOnTargets="Version" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

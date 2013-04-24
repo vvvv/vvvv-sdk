@@ -6,11 +6,13 @@
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Utils</RootNamespace>
     <AssemblyName>VVVV.Utils3rdParty</AssemblyName>
+    <AssemblyDescription>The VVVV Utility Library</AssemblyDescription>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DocumentationFile>$(OutputPath)\VVVV.Utils3rdParty.xml</DocumentationFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <PackageIsAnyCPU>false</PackageIsAnyCPU>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -37,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Utils3rdParty.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Target Name="BeforeBuild" DependsOnTargets="Version" />
