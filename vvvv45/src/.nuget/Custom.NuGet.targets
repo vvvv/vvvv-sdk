@@ -4,10 +4,11 @@
     <PackageIsAnyCPU Condition="'$(PackageIsAnyCPU)' == ''">true</PackageIsAnyCPU>
     <NuspecFile Condition="'$(PackageIsAnyCPU)' == 'true'">$(ProjectPath)</NuspecFile>
     <NuspecFile Condition="'$(PackageIsAnyCPU)' == 'false'">$(ProjectDir)$(ProjectName).nuspec</NuspecFile>
-    <BuildPackageDependsOn Condition="'$(PackageIsAnyCPU)' == 'true'">CheckPrerequisites;Build</BuildPackageDependsOn>
+    <BuildPackageDependsOn Condition="'$(PackageIsAnyCPU)' == 'true'">CheckPrerequisites;_BuildAnyCPU_</BuildPackageDependsOn>
     <BuildPackageDependsOn Condition="'$(PackageIsAnyCPU)' == 'false'">CheckPrerequisites;_BuildAllPlatforms_</BuildPackageDependsOn>
     <PackageVersion Condition="'$(PackageVersion)' == ''">$(InformationalVersion)</PackageVersion>
-    <PackageProperties>Configuration="$(Configuration)";Id="$(AssemblyName)";Title="$(AssemblyName)";Version="$(PackageVersion)";Author="$(AssemblyCompany)";Description="$(AssemblyDescription)";Copyright="$(AssemblyCopyright)"</PackageProperties>
+    <PackageProperties Condition="'$(PackageIsAnyCPU)' == 'true'">Platform=AnyCPU;</PackageProperties>
+    <PackageProperties>$(PackageProperties)Configuration="$(Configuration)";Id="$(AssemblyName)";Title="$(AssemblyName)";Version="$(PackageVersion)";Author="$(AssemblyCompany)";Description="$(AssemblyDescription)";Copyright="$(AssemblyCopyright)"</PackageProperties>
     <NuGetPackCommandLineArguments>-o "$(PackageOutputDir.Trim('\\'))" -version $(PackageVersion) -verbosity detailed -p $(PackageProperties)</NuGetPackCommandLineArguments>
     <BuildCommand>
       $(NuGetCommand) pack "$(NuspecFile)" $(NuGetPackCommandLineArguments)
@@ -24,6 +25,15 @@
       </ThisProject>
     </ItemGroup>
     <MSBuild Projects="@(ThisProject)" Properties="Configuration=$(Configuration)" />
+  </Target>
+
+  <Target Name="_BuildAnyCPU_">
+    <ItemGroup>
+      <ThisProject Include="$(ProjectPath)">
+        <AdditionalProperties>Platform=AnyCPU</AdditionalProperties>
+      </ThisProject>
+    </ItemGroup>
+    <MSBuild Projects="@(ThisProject)" Properties="Configuration=$(Configuration);" />
   </Target>
 
   <Target Name="BuildPackage" DependsOnTargets="$(BuildPackageDependsOn)">
