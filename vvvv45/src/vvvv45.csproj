@@ -112,7 +112,7 @@
   </ItemGroup>
   <PropertyGroup>
     <ZipSteps>_PreZip_;_Zip_;_PostZip_</ZipSteps>
-    <ZipOutputDir>..\..\</ZipOutputDir>
+    <ZipOutputDir>..\..\build\vvvv45\</ZipOutputDir>
     <TempBaseDir>$(ZipOutputDir)temp\</TempBaseDir>
   </PropertyGroup>
   <Target Name="Zip">
@@ -122,6 +122,7 @@
     <RemoveDir Directories="$(TempBaseDir)" />
   </Target>
   <Target Name="_Zip_">
+    <MakeDir Directories="$(ZipOutputDir)" />
     <GetVersionInfo File="$(StartProgram)">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </GetVersionInfo>
