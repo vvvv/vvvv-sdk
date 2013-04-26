@@ -39,16 +39,13 @@ namespace IS1
         [Input("EytrackerInfo", IsSingle = true)]
         IDiffSpread<EyetrackerInfo> FEyetrackerInfoIn;
 
-        [Input("Sync State", IsSingle = true)]
-        IDiffSpread<SyncStateFlag> FSyncState;
-
         [Input("Framerate", DefaultValue = 40, IsSingle = true)]
         IDiffSpread<float> FFramerateIn;
 
-        [Input("Low Blink Mode", DefaultValue = 0, IsSingle = true)]
-        IDiffSpread<bool> FLowBlinkMode;
+        // [Input("Low Blink Mode", DefaultValue = 0, IsSingle = true)]
+        // IDiffSpread<bool> FLowBlinkMode;
 
-        [Input("Update", IsToggle = true, DefaultValue = 0, IsSingle = true)]
+        [Input("Update", IsBang = true, DefaultValue = 0, IsSingle = true)]
         IDiffSpread<bool> FUpdateIn;
 
         [Input("Enable", IsToggle = true, DefaultValue = 0, IsSingle = true)]
@@ -216,20 +213,16 @@ namespace IS1
             #region update by input params
             if (FSyncManager != null && FEyetracker != null)
             {
-                if (FSyncState.IsChanged)
-                {
-                    //TODO: Set SyncMode (cannot set syncstate, syncstate is only readable ..)
-                }
-
                 if (FFramerateIn.IsChanged)
                 {
                     FEyetracker.SetFramerate(FFramerateIn[0]);
                 }
 
-                if (FLowBlinkMode.IsChanged)
+                /* if (FLowBlinkMode.IsChanged)
                 {
                     FEyetracker.SetLowblinkMode(FLowBlinkMode[0]);
                 }
+                */
 
                 if (FUpdateIn.IsChanged && FUpdateIn[0] == true)
                 {
