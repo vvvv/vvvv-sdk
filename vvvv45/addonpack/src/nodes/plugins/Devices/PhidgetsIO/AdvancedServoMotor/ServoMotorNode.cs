@@ -99,7 +99,6 @@ namespace VVVV.Nodes
 
         //priavte fields
         WrapperServoMotor FServo;
-        private bool disposed;
         private bool FInit = true;
 		#endregion fields & piins
 
@@ -113,6 +112,7 @@ namespace VVVV.Nodes
                 {
                     if (FServo != null)
                     {
+						FServo.Close();
                         FServo = null;
                     }
                     FServo = new WrapperServoMotor(FSerial[0]);
@@ -121,16 +121,6 @@ namespace VVVV.Nodes
 
                 if (FServo.Attached)
                 {
-
-                    if (FInit)
-                    {
-                        FPositionOut.SliceCount = FServo.Count;
-                        FPowerConsumptionOut.SliceCount = FServo.Count;
-                        FStoppedOut.SliceCount = FServo.Count;
-                        FServoTypeOut.SliceCount = FServo.Count;
-                        FVelocityOut.SliceCount = FServo.Count;
-                        FCountOut[0] = FServo.Count;
-                    }
 
                     bool Changed = FServo.Changed;
 
@@ -178,6 +168,12 @@ namespace VVVV.Nodes
                                 FServo.SetVelocityLimit(i, Velocity);
                             }
 
+							
+							FPowerConsumptionOut.SliceCount = FServo.Count;
+							FStoppedOut.SliceCount = FServo.Count;
+							FServoTypeOut.SliceCount = FServo.Count;
+							FCountOut[0] = FServo.Count;
+
                             //output
                             FPowerConsumptionOut[i] = FServo.GetCurrent(i);
                             FStoppedOut[i] = FServo.GetStopped(i);
@@ -187,6 +183,9 @@ namespace VVVV.Nodes
                             //general
                         if (Changed)
                         {
+							FPositionOut.SliceCount = FServo.Count;
+							FVelocityOut.SliceCount = FServo.Count;
+							
                             //Position
                             FPositionOut[i] = VMath.Map(FServo.GetPosition(i), FServo.GetPositionMin(i), FServo.GetPositionMax(i), 0, 1, TMapMode.Float);
 
