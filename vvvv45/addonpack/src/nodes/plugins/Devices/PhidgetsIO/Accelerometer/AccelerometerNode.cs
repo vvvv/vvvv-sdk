@@ -70,6 +70,7 @@ namespace VVVV.Nodes
                 {
                     if (FAccelerometer != null)
                     {
+                    	FAccelerometer.Close();
                         FAccelerometer = null;
                     }
                     FAccelerometer = new WrapperAccelerometer(FSerial[0]);
