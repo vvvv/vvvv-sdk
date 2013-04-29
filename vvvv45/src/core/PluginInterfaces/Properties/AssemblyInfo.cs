@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -6,8 +6,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("VVVV.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("VVVV.PluginInterfaces")]
+[assembly: AssemblyDescription("Plugin Interfaces for VVVV Plugins")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("vvvv group")]
 [assembly: AssemblyProduct("vvvv")]
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 
 // This sets the default COM visibility of types in the assembly to invisible.
 // If you need to expose a type to COM, use [ComVisible(true)] on that type.
-[assembly: ComVisible(false)]
+[assembly: ComVisible(true)]
 
 // The assembly version has following format :
 //
@@ -33,5 +33,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.*")]
 [assembly: AssemblyInformationalVersion("1.0.*")]
 
-[assembly: InternalsVisibleTo("Lang")]
-[assembly: InternalsVisibleTo("Lang.dll")]
+// Give access to custom marshalers
+[assembly: InternalsVisibleTo("VVVV.Hosting")]
