@@ -89,13 +89,24 @@
     <Delete Files="@(PackagesToRemove)" />
   </Target>
   
-  <Target Name="BuildPackages" DependsOnTargets="CleanPackages">
+  <Target Name="RestoreAllPackages">
+    <ItemGroup>
+      <ProjectsToRestore Include="..\..\common\src\core\*\*.csproj" />
+      <ProjectsToRestore Include="core\*\*.csproj" />
+    </ItemGroup>
+    <MSBuild Projects="@(ProjectsToRestore)" 
+             Targets="RestorePackages" />
+  </Target>
+  
+  <Target Name="BuildPackages" DependsOnTargets="CleanPackages;RestoreAllPackages">
     <MakeDir Directories="$(PackageOutputDir)" />
     <ItemGroup>
       <ProjectsToPack Include="..\..\common\src\core\*\*.csproj" />
       <ProjectsToPack Include="core\*\*.csproj" />
     </ItemGroup>
-    <MSBuild Projects="@(ProjectsToPack)" Targets="BuildPackage" Properties="PackageOutputDir=$(PackageOutputDir)" />
+    <MSBuild Projects="@(ProjectsToPack)" 
+             Targets="BuildPackage" 
+             Properties="PackageOutputDir=$(PackageOutputDir)" />
   </Target>
   
   <Import Project="vvvv45.targets" />
