@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
+using System.Threading;
 
 using Phidgets;
 using Phidgets.Events;
@@ -63,8 +64,8 @@ namespace VVVV.Nodes
         {
             FPhidget = new T();
             AddEventHandler();
-            FPhidget.open();
             AddChangedHandler();
+            FPhidget.open();
         }
 
         public Phidgets(int SerialNumber)
@@ -73,7 +74,6 @@ namespace VVVV.Nodes
             AddEventHandler();
             AddChangedHandler();
            
-
             try
             {
                 if (SerialNumber > 0)
@@ -91,8 +91,13 @@ namespace VVVV.Nodes
                 FPhidget.open();
             }
         }
-
-
+        
+        public void Close()
+        {
+        	FPhidget.close();
+        	//give the hardware some time to dissconected
+        	Thread.Sleep(30);
+        }
 
         #endregion constructor + Close
 
@@ -139,7 +144,7 @@ namespace VVVV.Nodes
         {
             FPhidgetErrors.Add(e.exception);
         }
-
+        
         #endregion Attach Detach Event Handler
 
 
