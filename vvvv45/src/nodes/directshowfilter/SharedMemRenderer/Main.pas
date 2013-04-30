@@ -155,7 +155,8 @@ end;
 
 function TMSharedMemRenderer.SetSharename(Sharename: PChar): HRESULT;
 begin
-  FPin.FFilename := Sharename;
+  if Assigned(FPin) then
+    FPin.FFilename := Sharename;
   Result := S_OK;
 end;
 
