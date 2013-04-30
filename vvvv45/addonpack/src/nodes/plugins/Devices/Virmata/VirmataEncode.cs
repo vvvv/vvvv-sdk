@@ -1,6 +1,6 @@
 #region Copyright notice
 /*
-A Firmata Plugin for VVVV - v 1.1
+A Firmata Plugin for VVVV - v 1.2
 ----------------------------------
 Encoding control and configuration messages for Firmata enabled MCUs. This
 Plugin encodes to a ANSI string and a byte array, so you can send via any
@@ -103,6 +103,10 @@ namespace VVVV.Nodes
                                       Visibility = PinVisibility.OnlyInspector, IsSingle=true)]
     IDiffSpread<bool> FReportFirmwareVersion;
 
+    [Input("Report Capabilities", IsSingle = true,
+                    Visibility = PinVisibility.OnlyInspector, IsBang=true, DefaultValue = 0)]
+    IDiffSpread<bool> FReportCapabilities;
+
     [Input("Analog Input Count",  DefaultValue = 6, MaxValue = Default.MaxAnalogPins, MinValue = 0,
                                   Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
     IDiffSpread<int> FAnalogInputCount;
@@ -110,6 +114,7 @@ namespace VVVV.Nodes
     [Input("Digital Input Count", DefaultValue = 20, MaxValue = Default.MaxDigitalPins, MinValue = 0,
                                   Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
     IDiffSpread<int> FDigitalInputCount;
+
 
     ///
     /// OUTPUT
@@ -139,6 +144,10 @@ namespace VVVV.Nodes
       /// Shall we reset?
       if (ShouldReset) {
         GetResetCommand();
+        GetCapabilityReport();
+      }
+
+      if (FReportCapabilities.IsChanged && FReportCapabilities[0] && !ShouldReset) {
         GetCapabilityReport();
       }
 

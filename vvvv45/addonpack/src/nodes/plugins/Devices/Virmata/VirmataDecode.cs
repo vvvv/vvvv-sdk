@@ -1,6 +1,6 @@
 #region Copyright notice
 /*
-A Firmata Plugin for VVVV - v 1.1
+A Firmata Plugin for VVVV - v 1.2
 ----------------------------------
 Encoding control and configuration messages for Firmata enabled MCUs. This
 Plugin encodes to a ANSI string and a byte array, so you can send via any
@@ -107,17 +107,14 @@ namespace VVVV.Nodes
     [Output("Firmware Version")]
     ISpread<string> FFirmwareVersion;
 
-    [Output("I2C Data",Visibility = PinVisibility.OnlyInspector)]
-    IOutStream<Stream> FI2CData;
-
     [Output("Capabilities", Visibility = PinVisibility.Hidden)]
     ISpread<string> FCapabilities;
 
-    [Output("Debug", Visibility = PinVisibility.OnlyInspector)]
-    ISpread<string> FDebug;
-
+    [Output("I2C Data",Visibility = PinVisibility.OnlyInspector)]
+    IOutStream<Stream> FI2CData;
 
     #endregion fields & pins
+
 
     //called when data for any output pin is requested
     public void Evaluate(int SpreadMax)
@@ -254,8 +251,6 @@ namespace VVVV.Nodes
 
           /// Handle I2C replies
         case Command.I2C_REPLY:
-          FDebug.SliceCount = 1;
-          FDebug[0] = data.Count.ToString();
           try {
 
             MemoryStream i2cStream = new MemoryStream(data.ToArray());
@@ -267,8 +262,6 @@ namespace VVVV.Nodes
 
           } catch (Exception e) {
             FI2CData.Length = 0;
-            FDebug.SliceCount = 1;
-            FDebug[0] = "Error: " + e.ToString();
           }
           data.Clear();
 
