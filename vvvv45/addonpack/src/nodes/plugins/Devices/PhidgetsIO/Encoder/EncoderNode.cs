@@ -79,6 +79,7 @@ namespace VVVV.Nodes
                 {
                     if (FEncoder != null)
                     {
+                    	FEncoder.Close();
                         FEncoder = null;
                     }
 
@@ -103,7 +104,7 @@ namespace VVVV.Nodes
                         FEnableFlag = false;
                     }
 
-                    if (FSet.IsChanged || FInit)
+                    if (FSet.IsChanged)
                     {
                         for (int i = 0; i < SpreadMax; i++)
                         {
@@ -120,7 +121,7 @@ namespace VVVV.Nodes
                     }
 
 
-                    if (FEncoder.Changed || FInit)
+                    if (FEncoder.Changed)
                     {
                         for (int i = 0; i < FEncoder.GetInputCount(); i++)
                             FDigitalOut[i] = FEncoder.GetInputState(i);

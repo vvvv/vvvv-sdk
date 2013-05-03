@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv45\lib\nodes\modules\Network\OpenURL (Network) help.v4p" systemname="OpenURL (Network) help" filename="C:\Dev\vvvv\vvvv45\lib\nodes\modules\Network\OpenURL (Network) help.v4p">
-   <BOUNDS type="Window" left="8100" top="4875" width="4290" height="3795">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\OpenURL (Network) help.v4p" systemname="OpenURL (Network) help" filename="C:\Dev\vvvv\vvvv45\lib\nodes\modules\Network\OpenURL (Network) help.v4p">
+   <BOUNDS type="Window" left="8100" top="4875" width="4290" height="5850">
    </BOUNDS>
    <NODE systemname="OpenURL (Network)" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" nodename="OpenURL (Network)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="930" top="2685" width="2070" height="270">
@@ -36,7 +36,7 @@
    </NODE>
    <LINK srcnodeid="2" srcpinname="Output String" dstnodeid="0" dstpinname="Url">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="3">
+   <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="3">
    <BOUNDS type="Node" left="2505" top="1725" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="2505" top="1725" width="480" height="480">
@@ -70,6 +70,32 @@
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="360" top="3540" width="10395" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="360" top="3540" width="3450" height="930">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|note that alternatively you can set an IOBox (String)&apos;s String Type to &quot;URL&quot; (via Inspektor) and it will get an open-button that you can click, like so:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="810" top="4665" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="810" top="4665" width="1440" height="300">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="-1" pintype="Input" values="http://vvvv.org">
+   </PIN>
+   <PIN pinname="Output String" visible="-1" pintype="Output">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
    </PATCH>

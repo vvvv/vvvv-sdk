@@ -294,10 +294,6 @@ namespace VVVV.Hosting.Factories
         
         protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version, out string newFilename)
         {
-            // See if this nodeInfo belongs to us.
-            var filename = nodeInfo.Filename;
-            var project = CreateProject(filename);
-
             string className = string.Format("{0}{1}{2}Node", version, category, name);
             className = Regex.Replace(className, @"[^a-zA-Z0-9]+", "_");
             var regexp = new Regex(@"^[0-9]+");
@@ -317,52 +313,57 @@ namespace VVVV.Hosting.Factories
                 className = tmpClassName + i++;
                 newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
             }
-            
-            var newProject = new CSProject(newProjectPath);
-            
-            var foundContainingDocument = false;
-            foreach (var doc in newProject.Documents)
-            {
-                // Now scan the document for possible plugin infos.
-                // If we find one, update its properties and rename the class and document.
-                var csDoc = doc as CSDocument;
-                if (csDoc != null)
-                {
-                    // Rename the CSDocument
-                    if (!foundContainingDocument && ContainsNodeInfo(csDoc, nodeInfo))
-                    {
-                        foundContainingDocument = true;
-                        csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(className));
-                    }
-                    
-                    var parserResults = csDoc.Parse();
-                    var compilationUnit = parserResults.CompilationUnit;
-                    
-                    // Write new values to plugin info and remove all other plugin infos.
-                    var pluginInfoTransformer = new PluginClassTransformer(nodeInfo, name, category, version, className);
-                    compilationUnit.AcceptVisitor(pluginInfoTransformer, null);
-                    
-                    var outputVisitor = new CSharpOutputVisitor();
-                    var specials = parserResults.Specials;
-                    
-                    using (SpecialNodesInserter.Install(specials, outputVisitor))
-                    {
-                        outputVisitor.VisitCompilationUnit(compilationUnit, null);
-                    }
-                    
-                    csDoc.TextContent = outputVisitor.Text;
-                }
-            }
-            
-            // Save all the documents.
-            foreach (var doc in newProject.Documents)
-                doc.Save();
-            
-            // Save the project.
-            newProject.Save();
 
-            newFilename = newProject.LocalPath;
-            return true;
+            var filename = nodeInfo.Filename;
+            var project = CreateProject(filename);
+            project.SaveTo(newProjectPath);
+
+            using (var newProject = new CSProject(newProjectPath))
+            {
+                var foundContainingDocument = false;
+                foreach (var doc in newProject.Documents)
+                {
+                    // Now scan the document for possible plugin infos.
+                    // If we find one, update its properties and rename the class and document.
+                    var csDoc = doc as CSDocument;
+                    if (csDoc != null)
+                    {
+                        // Rename the CSDocument
+                        if (!foundContainingDocument && ContainsNodeInfo(csDoc, nodeInfo))
+                        {
+                            foundContainingDocument = true;
+                            csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(className));
+                        }
+
+                        var parserResults = csDoc.Parse(true);
+                        var compilationUnit = parserResults.CompilationUnit;
+
+                        // Write new values to plugin info and remove all other plugin infos.
+                        var pluginInfoTransformer = new PluginClassTransformer(nodeInfo, name, category, version, className);
+                        compilationUnit.AcceptVisitor(pluginInfoTransformer, null);
+
+                        var outputVisitor = new CSharpOutputVisitor();
+                        var specials = parserResults.Specials;
+
+                        using (SpecialNodesInserter.Install(specials, outputVisitor))
+                        {
+                            outputVisitor.VisitCompilationUnit(compilationUnit, null);
+                        }
+
+                        csDoc.TextContent = outputVisitor.Text;
+                    }
+                }
+
+                // Save all the documents.
+                foreach (var doc in newProject.Documents)
+                    doc.Save();
+
+                // Save the project.
+                newProject.Save();
+
+                newFilename = newProject.LocalPath;
+                return true;
+            }
         }
         
         private static bool ContainsNodeInfo(CSDocument document, INodeInfo nodeInfo)

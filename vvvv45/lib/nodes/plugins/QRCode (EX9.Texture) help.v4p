@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
    <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\QRCode (EX9.Texture) help.v4p">
    <BOUNDS height="8745" left="5715" top="1530" type="Window" width="13215">
    </BOUNDS>
@@ -238,58 +238,18 @@
    </NODE>
    <LINK dstnodeid="3" dstpinname="Switch" srcnodeid="2" srcpinname="Y Output Value">
    </LINK>
-   <NODE systemname="OpenURL (Network)" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" nodename="OpenURL (Network)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="7800" top="6990" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Url" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8835" top="6780" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8835" top="6780" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Bang">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Open">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7800" top="6405" width="3120" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7800" top="6405" width="3120" height="270">
+   <BOUNDS type="Box" left="7800" top="6405" width="3330" height="285">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="http://www.qrcode.com/en/qrgene2.html">
+   <PIN pinname="Input String" visible="-1" slicecount="1" pintype="Input" values="http://www.qrcode.com/en/qrgene2.html">
    </PIN>
-   <PIN pinname="Output String" visible="1">
+   <PIN pinname="Output String" visible="-1" pintype="Output">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="20" srcpinname="Output String" dstnodeid="18" dstpinname="Url">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9345" top="6855" width="2415" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="9345" top="6855" width="2415" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; bang to open url in a browser|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Color)" componentmode="InABox" id="22" systemname="IOBox (Color)">

@@ -37,15 +37,12 @@ namespace VVVV.Tools
             }
             
             var vi = FileVersionInfo.GetVersionInfo(filename);
-            string version = string.Format("{0}{1}{2}", vi.FileMajorPart, vi.FileMinorPart, vi.ProductVersion );
+            var version = string.Format("45{0}{1}", vi.ProductVersion, vi.FileMajorPart);
+            if (vi.FileMinorPart > 0)
+                version += "." + vi.FileMinorPart;
             if (vi.FilePrivatePart > 0)
-            {
-                return version + vi.FileBuildPart + "." + vi.FilePrivatePart;
-            }
-            else
-            {
-                return version + vi.FileBuildPart;
-            }
+                version += "." + vi.FilePrivatePart;
+            return version;
         }
     }
 }

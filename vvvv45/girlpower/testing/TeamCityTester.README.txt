@@ -1,0 +1,14 @@
+Used by TeamCity build server to run *test.v4p files.
+
+Requirements
+    Needs vvvv.exe compiled with configuration 'Release Test'.
+
+Usage
+    vvvv.exe /o TeamCityTester.v4p /test_dir dir\to\test
+  
+Will write to standard output something like:
+    ##teamcity[testSuiteStarted name='test']
+    ##teamcity[testStarted name='foobar-test']
+    ##teamcity[testFailed name='foobar-test' message='assertion failure message']
+    ##teamcity[testFinished name='foobar-test']
+    ##teamcity[testSuiteFinished name='test']

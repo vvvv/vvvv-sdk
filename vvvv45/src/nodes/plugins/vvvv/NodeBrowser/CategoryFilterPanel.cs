@@ -66,7 +66,7 @@ namespace VVVV.Nodes.NodeBrowser
 			{
 				var cb = new CheckBox();
 				cb.Text = category;
-				cb.Click += CheckBox_Click;
+				cb.MouseDown += CheckBox_MouseDown;
 				cb.Dock = DockStyle.Top;
 				cb.Checked = true;
 				CheckboxPanel.Controls.Add(cb);
@@ -82,8 +82,19 @@ namespace VVVV.Nodes.NodeBrowser
 			this.ResumeLayout();
 		}
 		
-		void CheckBox_Click(object sender, EventArgs e)
+		void CheckBox_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
+			var box = sender as CheckBox;
+			box.Checked = !box.Checked;
+
+			if (e.Button == MouseButtons.Left)
+			{
+				//un/check all other categories as well that start with this + Dot, like EX9. or DX11.
+				foreach (var categoryName in FCategories.Keys)
+					if (categoryName.StartsWith(box.Text + "."))
+						FCategories[categoryName].Checked = box.Checked;  
+			}
+			
 			SaveFilter();
 			
 			if (OnFilterChanged != null)
@@ -107,6 +118,7 @@ namespace VVVV.Nodes.NodeBrowser
 			xmlDoc.AppendChild(settings);
 			settings.AppendChild(nodeCategories);
 			
+			int hiddenCount = 0;
 	        foreach (var categoryName in FCategories.Keys)
 	        	if (!CategoryVisible(categoryName))
 	        {
@@ -118,13 +130,16 @@ namespace VVVV.Nodes.NodeBrowser
 	        	attr.Value = "false";
 	        	category.Attributes.Append(attr);
 	        	
-	        	nodeCategories.AppendChild(category);	        	
+	        	nodeCategories.AppendChild(category);	  
+				hiddenCount++;
 	        }
 	
 	        using (var saveFile = new StreamWriter(savePath + @"\.vvvv"))
 	        {
 	            saveFile.Write(xmlDoc.OuterXml);
 	        }
+	        
+	        FHiddenCategoryCountLabel.Text = "Hidden Categories: " + hiddenCount.ToString();
 		}
 		
 		private void LoadFilter()
@@ -149,6 +164,8 @@ namespace VVVV.Nodes.NodeBrowser
 	        
 	        foreach (var cb in FCategories)
 	        	cb.Value.Checked = !FHiddenCategories.Contains(cb.Key);
+	        
+	        FHiddenCategoryCountLabel.Text = "Hidden Categories: " + FHiddenCategories.Count.ToString();
 		}		
 		
 		void CategoryFilterPanelVisibleChanged(object sender, EventArgs e)

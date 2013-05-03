@@ -339,7 +339,7 @@ namespace VVVV.Nodes
                 InitialWindowHeight = 300,
 	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
-	public class SvgRendererNode : UserControl, IPluginEvaluate
+    public class SvgRendererNode : UserControl, IPluginEvaluate, IUserInputWindow
 	{
 		#region fields & pins
 		#pragma warning disable 649,169
@@ -466,9 +466,13 @@ namespace VVVV.Nodes
 				FSVGDoc.Draw(FBitMap);
 				FPicBox.Image = FBitMap;
 			}
-			
 		}
-	}
+
+        public IntPtr InputWindowHandle
+        {
+            get { return FPicBox.Handle; }
+        }
+    }
 	
 	#region PluginInfo
 	[PluginInfo(Name = "SVGTexture", 

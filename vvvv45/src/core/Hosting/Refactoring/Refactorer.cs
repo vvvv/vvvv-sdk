@@ -77,8 +77,24 @@ namespace VVVV.Hosting
 			
 			//modify the current selection XML
 			FDocument = new XmlDocument();
-			FDocument.LoadXml(hdeHost.GetXMLSnippetFromSelection());
-			
+			var snippet = hdeHost.GetXMLSnippetFromSelection();
+			try 
+			{
+				//since lately the doctypes uri is pathencoded..
+				//and the xmlparser does not understand that..
+				//first extract the doctypes uri..
+				var doctype = snippet.Split(new Char[] {'>'}, 2);
+				//unescape it..
+				//write it back to the snippet..
+				snippet = Uri.UnescapeDataString(doctype[0]) + ">" + doctype[1];
+				//snippet = Uri.UnescapeDataString(snippet);
+				FDocument.LoadXml(snippet);	
+			} 
+			catch (Exception e)
+			{
+				System.Windows.Forms.MessageBox.Show(e.Message);
+			}
+				
 			//create new subpatch
 			var subID = nodeBrowserHost.CreateNode(ni, selectionCenter);
 			var patch = new PatchMessage(patchPath);

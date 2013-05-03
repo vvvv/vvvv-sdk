@@ -20,6 +20,9 @@
     <Reference Include="Gma.QrCodeNet.Encoding">
       <HintPath>..\..\..\..\common\src\thirdparty\Gma.QrCodeNet.Encoding.dll</HintPath>
     </Reference>
+    <Reference Include="InputSimulator">
+      <HintPath>..\..\..\..\common\src\thirdparty\InputSimulator\InputSimulator.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\..\..\common\src\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -61,6 +64,7 @@
     <Compile Include="Animation\ParticlesThreaded\ParticleSystem.cs" />
     <Compile Include="Animation\ParticlesThreaded\ParticleSystemNode.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Devices\RS232Node.cs" />
     <Compile Include="Layer\DrawText\DrawText.cs" />
     <Compile Include="Layer\DrawText\DrawTextLegacy.cs" />
     <Compile Include="Network\Clock.cs" />
@@ -70,13 +74,21 @@
     <Compile Include="Spreads\Lindenmayer\Lindenmayer.cs" />
     <Compile Include="Spreads\Lindenmayer\LindenmayerNode.cs" />
     <Compile Include="String\ApplyModifiersNode.cs" />
+    <Compile Include="String\Base64Nodes.cs" />
+    <Compile Include="String\FormatNode.cs" />
     <Compile Include="String\KeyMatchNodes.cs" />
     <Compile Include="String\StringInsertNode.cs" />
     <Compile Include="SVG\SVGGeomNodes.cs" />
     <Compile Include="SVG\SVGTextureNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="System\DeltaMouse.cs" />
+    <Compile Include="System\GlobalInputNode.cs" />
+    <Compile Include="System\KeyboardNode.cs" />
+    <Compile Include="System\LegacyKeyboardHelper.cs" />
+    <Compile Include="System\MouseNode.cs" />
     <Compile Include="System\SystemProcessorsNode.cs" />
+    <Compile Include="System\WindowInputNode.cs" />
     <Compile Include="Texture\ImagePlayer\FrameDecoder.cs" />
     <Compile Include="Texture\ImagePlayer\FrameInfo.cs" />
     <Compile Include="Texture\ImagePlayer\ImagePlayer.cs" />
@@ -88,7 +100,6 @@
     <Compile Include="Texture\QrCode\QrCodeTextureNode.cs" />
     <Compile Include="Texture\SharedTexture\SharedTextureNode.cs" />
     <Compile Include="System\KeyboardStateSplitNode.cs" />
-    <Compile Include="System\MouseStateNodes.cs" />
     <Compile Include="System\MouseStateJoinNode.cs" />
     <Compile Include="System\MouseStatetSplitNode.cs" />
     <Compile Include="Transform\Decompose\DecomposeNode.cs" />
