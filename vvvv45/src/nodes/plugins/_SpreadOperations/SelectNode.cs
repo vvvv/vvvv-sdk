@@ -97,6 +97,6 @@ namespace VVVV.Nodes._SpreadOperations
         }
     }
 
-    [PluginInfo(Name = "Select", Category = "Value", Version = "Streams")]
+    [PluginInfo(Name = "Select", Category = "Value")]
     public class ValueSelectNode : SelectNode<double> { }
 }
