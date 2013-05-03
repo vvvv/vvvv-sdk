@@ -1,19 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta29.5.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.5.dtd" >
    <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\girlpower\testing\TeamCityTester.v4p" systemname="TeamCityTester" filename="D:\devvvv\vvvv\public\vvvv45\girlpower\testing\TeamCityTester.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="14400" height="17550">
+   <BOUNDS type="Window" left="2295" top="585" width="12645" height="12450">
    </BOUNDS>
-   <NODE systemname="Dir (File)" nodename="Dir (File)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="1170" top="1995" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Directory" slicecount="1" visible="1" values="lib\nodes">
-   </PIN>
-   <PIN pinname="Include Subdirectories" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Mask" slicecount="1" values="*test.v4p">
-   </PIN>
-   <PIN pinname="Filenames" visible="1">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5490" top="735" width="480" height="480">
    </BOUNDS>
@@ -41,7 +29,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="2955" top="780" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\lib\nodes">
+   <PIN pinname="Input String" slicecount="1" values="..\..\tests\patches">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -82,16 +70,6 @@
    </NODE>
    <LINK srcnodeid="17" srcpinname="Output String" dstnodeid="16" dstpinname="Input">
    </LINK>
-   <NODE systemname="FileName (File Split)" nodename="FileName (File Split)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="6765" top="2685" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Filename" visible="1">
-   </PIN>
-   <PIN pinname="Shortname" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="18" srcpinname="Shortname" dstnodeid="16" dstpinname="Argument 1">
-   </LINK>
    <NODE systemname="Format (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Format (String)" componentmode="Hidden" id="20">
    <BOUNDS type="Node" left="4230" top="4425" width="100" height="100">
    </BOUNDS>
@@ -117,8 +95,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="Output String" dstnodeid="20" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="18" srcpinname="Shortname" dstnodeid="20" dstpinname="Argument 1">
    </LINK>
    <NODE systemname="Format (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Format (String)" componentmode="Hidden" id="23">
    <BOUNDS type="Node" left="1155" top="7485" width="100" height="100">
@@ -278,52 +254,6 @@
    </LINK>
    <LINK srcnodeid="34" srcpinname="Layer" dstnodeid="33" dstpinname="Layers">
    </LINK>
-   <NODE systemname="TestRunner (Test Files)" filename="%VVVV%\lib\nodes\modules\Test\TestRunner (Test Files).v4p" nodename="TestRunner (Test Files)" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="1155" top="2625" width="4380" height="270">
-   </BOUNDS>
-   <PIN pinname="Test Patches" visible="1">
-   </PIN>
-   <PIN pinname="DoWrite" visible="1">
-   </PIN>
-   <PIN pinname="Test Name" visible="1">
-   </PIN>
-   <PIN pinname="DoStart" visible="1">
-   </PIN>
-   <PIN pinname="DoStop" visible="1">
-   </PIN>
-   <PIN pinname="Success" visible="1">
-   </PIN>
-   <PIN pinname="Message" visible="1">
-   </PIN>
-   <PIN pinname="Tests Started" visible="1">
-   </PIN>
-   <PIN pinname="Tests Finished" visible="1">
-   </PIN>
-   <PIN pinname="Test Started" visible="1">
-   </PIN>
-   <PIN pinname="Test Finished" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="14385" top="0" width="14415" height="17550">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1155" top="2625">
-   </BOUNDS>
-   <PIN pinname="Run Tests" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="2" srcpinname="Filenames" dstnodeid="1" dstpinname="Test Patches">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Tests Finished" dstnodeid="21" dstpinname="DoWrite">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Test Started" dstnodeid="24" dstpinname="DoWrite">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Test Finished" dstnodeid="27" dstpinname="DoWrite">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Test Name" dstnodeid="23" dstpinname="Argument 1">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Test Name" dstnodeid="26" dstpinname="Argument 1">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Tests Started" dstnodeid="14" dstpinname="DoWrite">
-   </LINK>
    <NODE systemname="Format (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Format (String)" componentmode="Hidden" id="40">
    <BOUNDS type="Node" left="5235" top="7485" width="100" height="100">
    </BOUNDS>
@@ -368,10 +298,6 @@
    </NODE>
    <LINK srcnodeid="40" srcpinname="Output" dstnodeid="38" dstpinname="input">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Test Name" dstnodeid="40" dstpinname="Argument 1">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Message" dstnodeid="40" dstpinname="Argument 2">
-   </LINK>
    <LINK srcnodeid="27" srcpinname="Layer" dstnodeid="34" dstpinname="Layer 5">
    </LINK>
    <LINK srcnodeid="38" srcpinname="Layer" dstnodeid="34" dstpinname="Layer 4">
@@ -384,8 +310,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Success" dstnodeid="41" dstpinname="Input">
-   </LINK>
    <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="42">
    <BOUNDS type="Node" left="5505" top="6405" width="100" height="100">
    </BOUNDS>
@@ -397,8 +321,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="41" srcpinname="Output" dstnodeid="42" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Test Finished" dstnodeid="42" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="42" srcpinname="Output" dstnodeid="38" dstpinname="DoWrite">
    </LINK>
@@ -430,22 +352,14 @@
    </NODE>
    <LINK srcnodeid="15" srcpinname="Output String" dstnodeid="45" dstpinname="Default">
    </LINK>
-   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="2" dstpinname="Directory">
-   </LINK>
-   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="18" dstpinname="Filename">
-   </LINK>
    <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Simulate">
-   </LINK>
-   <LINK srcnodeid="43" srcpinname="Bang" dstnodeid="1" dstpinname="Run Tests">
    </LINK>
    <NODE systemname="DoQuit (VVVV)" nodename="DoQuit (VVVV)" componentmode="Hidden" id="46">
    <BOUNDS type="Node" left="9090" top="4050" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Quit VVVV" visible="1">
+   <PIN pinname="Quit VVVV" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Tests Finished" dstnodeid="46" dstpinname="Quit VVVV">
-   </LINK>
    <NODE systemname="AbsolutePath (File)" nodename="AbsolutePath (File)" componentmode="Hidden" id="48">
    <BOUNDS type="Node" left="780" top="870" width="100" height="100">
    </BOUNDS>
@@ -467,5 +381,163 @@
    <LINK srcnodeid="49" srcpinname="Output" dstnodeid="48" dstpinname="Base Path">
    </LINK>
    <LINK srcnodeid="48" srcpinname="Absolute Path" dstnodeid="45" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Count (String)" nodename="Count (String)" componentmode="Hidden" id="50">
+   <BOUNDS type="Node" left="8820" top="2325" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="Absolute Path" dstnodeid="50" dstpinname="Input">
+   </LINK>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="51">
+   <BOUNDS type="Node" left="8820" top="2895" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="50" srcpinname="Count" dstnodeid="51" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="8325" top="3390" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="51" srcpinname="Output" dstnodeid="52" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="46" dstpinname="Quit VVVV">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="53" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9480" top="3225" width="2655" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9480" top="3225" width="2655" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|quit when called with /test_dir only|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="TestRunner (Test Directories)" filename="%VVVV%\lib\nodes\modules\Test\TestRunner (Test Directories).v4p" nodename="TestRunner (Test Directories)" componentmode="Hidden" id="54">
+   <BOUNDS type="Node" left="1350" top="2580" width="4215" height="270">
+   </BOUNDS>
+   <PIN pinname="TestSuit Name" visible="1">
+   </PIN>
+   <PIN pinname="TestSuit Started" visible="1">
+   </PIN>
+   <PIN pinname="TestSuit Finished" visible="1">
+   </PIN>
+   <PIN pinname="Test Name" visible="1">
+   </PIN>
+   <PIN pinname="Success" visible="1">
+   </PIN>
+   <PIN pinname="Message" visible="1">
+   </PIN>
+   <PIN pinname="Test Started" visible="1">
+   </PIN>
+   <PIN pinname="Test Finished" visible="1">
+   </PIN>
+   <PIN pinname="Finished" visible="1">
+   </PIN>
+   <PIN pinname="Run TestSuits" visible="1">
+   </PIN>
+   <PIN pinname="Test Directories" visible="1">
+   </PIN>
+   <PIN pinname="Directory" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="54" srcpinname="TestSuit Started" dstnodeid="14" dstpinname="DoWrite">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="TestSuit Finished" dstnodeid="21" dstpinname="DoWrite">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Test Name" dstnodeid="23" dstpinname="Argument 1">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Test Name" dstnodeid="40" dstpinname="Argument 1">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Test Name" dstnodeid="26" dstpinname="Argument 1">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Success" dstnodeid="41" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Message" dstnodeid="40" dstpinname="Argument 2">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Test Started" dstnodeid="24" dstpinname="DoWrite">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Test Finished" dstnodeid="42" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Test Finished" dstnodeid="27" dstpinname="DoWrite">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Finished" dstnodeid="52" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Bang" dstnodeid="54" dstpinname="Run TestSuits">
+   </LINK>
+   <NODE systemname="SubDir (File)" nodename="SubDir (File)" componentmode="Hidden" id="56">
+   <BOUNDS type="Node" left="1335" top="1980" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Directory" visible="1">
+   </PIN>
+   <PIN pinname="Subdirectories" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="56" dstpinname="Directory">
+   </LINK>
+   <LINK srcnodeid="56" srcpinname="Subdirectories" dstnodeid="54" dstpinname="Test Directories">
+   </LINK>
+   <NODE systemname="RelativePath (File)" nodename="RelativePath (File)" componentmode="Hidden" id="57">
+   <BOUNDS type="Node" left="420" top="3105" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Absolute Path" visible="1">
+   </PIN>
+   <PIN pinname="Base Path" visible="1" slicecount="1" values="..\..\tests\">
+   </PIN>
+   <PIN pinname="Relative Path" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="54" srcpinname="Directory" dstnodeid="57" dstpinname="Absolute Path">
+   </LINK>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="60">
+   <BOUNDS type="Node" left="405" top="2670" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="DosPath">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="60" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="60" srcpinname="Output" dstnodeid="57" dstpinname="Base Path">
+   </LINK>
+   <NODE systemname="Subtract (String)" nodename="Subtract (String)" componentmode="Hidden" id="61">
+   <BOUNDS type="Node" left="435" top="3525" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Occurence Mode" slicecount="1" values="Last">
+   </PIN>
+   <PIN pinname="Operand 2" slicecount="1" values="\">
+   </PIN>
+   <PIN pinname="Operand 1" visible="1">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="57" srcpinname="Relative Path" dstnodeid="61" dstpinname="Operand 1">
+   </LINK>
+   <LINK srcnodeid="61" srcpinname="Result" dstnodeid="16" dstpinname="Argument 1">
+   </LINK>
+   <LINK srcnodeid="61" srcpinname="Result" dstnodeid="20" dstpinname="Argument 1">
    </LINK>
    </PATCH>
