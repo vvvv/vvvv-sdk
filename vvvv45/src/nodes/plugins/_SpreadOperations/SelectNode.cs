@@ -57,22 +57,25 @@ namespace VVVV.Nodes._SpreadOperations
             {
                 var numSlicesToRead = spreadMax;
                 var offset = 0;
+                var formerSlice = 0;
                 while (numSlicesToRead > 0)
                 {
                     var blockSize = Math.Min(StreamUtils.BUFFER_SIZE, numSlicesToRead);
                     dataReader.Read(dataInBuffer.Array, 0, blockSize);
                     selectReader.Read(selectBuffer.Array, 0, blockSize);
 
+                    // This loop iterates through the input data
                     for (int i = 0; i < blockSize; i++)
                     {
                         var data = dataInBuffer.Array[i];
                         var select = selectBuffer.Array[i];
 
+                        // This loop replicates the input data on the output select times
                         for (int j = 0; j < select; j++)
                         {
                             // Buffer result data
                             dataOutBuffer.Array[offset] = data;
-                            sliceBuffer.Array[offset] = i;
+                            sliceBuffer.Array[offset] = formerSlice;
                             offset++;
 
                             // Write data out if buffer is full
@@ -83,6 +86,8 @@ namespace VVVV.Nodes._SpreadOperations
                                 offset = 0;
                             }
                         }
+
+                        formerSlice++;
                     }
 
                     numSlicesToRead -= blockSize;
