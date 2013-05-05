@@ -100,7 +100,14 @@ namespace VVVV.PluginInterfaces.V1
 		/// further processing is needed or can be ommited.
 		/// </summary>
 		bool PinIsChanged{get;}
+        /// <summary>
+        /// Validates the upstream pin for this frame. Normally this leads to the evaluation of the upstream node.
+        /// </summary>
+        /// <returns>Whether or not the data changed.</returns>
 		bool Validate();
+        /// <summary>
+        /// Gets or sets whether the upstream pin gets validated automatically before calling evaluate on the plugin.
+        /// </summary>
 		bool AutoValidate{get;set;}
 	}
 	
@@ -120,7 +127,14 @@ namespace VVVV.PluginInterfaces.V1
 		/// Returns a String of the pins concatenated Values. Typcally used internally only to save a pins state to disk.
 		/// </summary>
 		string SpreadAsString{get;}
+        /// <summary>
+        /// Validates the upstream pin for this frame. Normally this leads to the evaluation of the upstream node.
+        /// </summary>
+        /// <returns>Whether or not the data changed.</returns>
 		bool Validate();
+        /// <summary>
+        /// Gets or sets whether the upstream pin gets validated automatically before calling evaluate on the plugin.
+        /// </summary>
 		bool AutoValidate{get;set;}
 	}
 	
@@ -139,6 +153,10 @@ namespace VVVV.PluginInterfaces.V1
 		/// Returns a String of the pins concatenated Values. Typcally used internally only to save a pins state to disk.
 		/// </summary>
 		string SpreadAsString{set;}
+        /// <summary>
+        /// Whether or not feedback loops are allowed on this pin.
+        /// </summary>
+        bool AllowFeedback { get; set; }
 	}
 	
 	#endregion basic pins
