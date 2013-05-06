@@ -509,21 +509,25 @@ namespace VVVV.Utils.Streams
         public static int Sum(this IInStream<int> stream)
         {
             var result = 0;
-            var buffer = MemoryPool<int>.GetArray();
-            var reader = stream.GetReader();
-            try
+            using (var buffer = MemoryPool<int>.GetBuffer())
+            using (var reader = stream.GetReader())
             {
+                var array = buffer.Array;
                 while (!reader.Eos)
                 {
-                    var itemsRead = reader.Read(buffer, 0, buffer.Length);
-                    for (int i = 0; i < itemsRead; i++)
-                        result += buffer[i];
+                    var itemsRead = reader.Read(array, 0, array.Length);
+                    if (itemsRead != array.Length)
+                    {
+                        for (int i = 0; i < itemsRead; i++)
+                            result += array[i];
+                    }
+                    else
+                    {
+                        // No index out of bounds check
+                        for (int i = 0; i < array.Length; i++)
+                            result += array[i];
+                    }
                 }
-            }
-            finally
-            {
-                MemoryPool<int>.PutArray(buffer);
-                reader.Dispose();
             }
             return result;
         }
