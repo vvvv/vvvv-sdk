@@ -35,9 +35,9 @@ namespace VVVV.Nodes.XML
 
         class ChildElementInfo
         {
-            public IIOContainer<ISpread<string>> ChildElementContainer;
+            public IIOContainer<ISpread<XElement>> ChildElementContainer;
             public IIOContainer<ISpread<bool>> ChildElementExistsContainer;
-            public ISpread<string> ChildElementOutputPin { get { return ChildElementContainer.IOObject; } }
+            public ISpread<XElement> ChildElementOutputPin { get { return ChildElementContainer.IOObject; } }
             public ISpread<bool> ChildElementExistsOutputPin { get { return ChildElementExistsContainer.IOObject; } }
             public string ChildElementName;
         }
@@ -62,6 +62,10 @@ namespace VVVV.Nodes.XML
         [Input("Element")]
         public IDiffSpread<XElement> Element;
 
+        [Input("NoRootTag", IsToggle=true, DefaultBoolean=false, IsSingle=true)]
+        public IDiffSpread<bool> FInNoRootTag;
+
+
         [Output("Elements")]
         public ISpread<ISpread<XElement>> Elements;
 
@@ -78,6 +82,7 @@ namespace VVVV.Nodes.XML
         List<ChildElementInfo> ChildElementInfos = new List<ChildElementInfo>();
 
         private bool ConfigChanged;
+        private bool NoRootTag = false;
 
         public void OnImportsSatisfied()
         {
@@ -173,11 +178,7 @@ namespace VVVV.Nodes.XML
                     var outputInfo = new ChildElementInfo()
                     {
                         ChildElementName = elementName,
-                        
-                        // change this one from type string to XElement
-                        ChildElementContainer = IOFactory.CreateIOContainer<ISpread<string>>(new OutputAttribute(elementName)),
-                        
-                        
+                        ChildElementContainer = IOFactory.CreateIOContainer<ISpread<XElement>>(new OutputAttribute(elementName)),
                         ChildElementExistsContainer = IOFactory.CreateIOContainer<ISpread<bool>>(
                             new OutputAttribute(elementName + " Available") { Visibility = PinVisibility.Hidden }
                         ),
@@ -209,6 +210,7 @@ namespace VVVV.Nodes.XML
             }
             catch (ArgumentException ae)
             {
+                BaseElementName = null;
                 ConfigChanged = true;
             }
         }
@@ -221,23 +223,36 @@ namespace VVVV.Nodes.XML
                 return XMLNodes.NoElements;
         }
 
-        static ISpread<XElement> GetElementsByXPathQuery(XElement xElement, string xPath)
+        static ISpread<XElement> GetElementsByXPathQuery(XElement xElement, string xPath, bool noRootTag)
         {
+            ISpread<XElement> xS;
             if (xElement != null)
             {
-                return xElement.XPathSelectElements(xPath).ToSpread();
+                if (noRootTag)
+                    return xElement.XPathSelectElements("self::*").ToSpread();
+                else
+                    return xElement.XPathSelectElements(xPath).ToSpread();
             }
             else
-            {
                 return XMLNodes.NoElements;
-            }
         }
 
-
-        
+        static XElement GetElementByXPathQuery(XElement xElement, string xPath) 
+        {
+            if (xElement != null)
+                return xElement.XPathSelectElements(xPath).FirstOrDefault();
+            else
+                return XMLNodes.NoElements.FirstOrDefault();
+        }
 
         public void Evaluate(int SpreadMax)
         {
+            if (FInNoRootTag.IsChanged)
+            {
+                NoRootTag = FInNoRootTag[0];
+                ConfigChanged = true;
+            }
+
             if (SpreadMax == 0) return;
 
             if (!Element.IsChanged && !ConfigChanged) return;
@@ -247,10 +262,8 @@ namespace VVVV.Nodes.XML
             for (int i = 0; i < SpreadMax; i++)
             {
                 var element = Element[i];
-                // following line: original version
-                // Elements[i] = element != null ? GetElementsByName(element, BaseElementName) : XMLNodes.NoElements;
-
-                Elements[i] = element != null ? GetElementsByXPathQuery(element, BaseElementName.LocalName) : XMLNodes.NoElements;
+                if (BaseElementName != null)
+                    Elements[i] = element != null ? GetElementsByXPathQuery(element, BaseElementName.LocalName, NoRootTag) : XMLNodes.NoElements;
             }
 
             var allElements = Elements.SelectMany(spread => spread).ToArray();
@@ -300,18 +313,17 @@ namespace VVVV.Nodes.XML
                 childElementInfo.ChildElementExistsOutputPin.SliceCount = allElements.Length;
 
                 int i = 0;
+
                 foreach (var element in allElements)
                 {
                     var elements = element.Elements(childElementInfo.ChildElementName);
                     var el = elements.FirstOrDefault();
-
-                    childElementInfo.ChildElementOutputPin[i] = el != null ? el.Value : "";
+                    childElementInfo.ChildElementOutputPin[i] = el != null ? GetElementByXPathQuery(element, childElementInfo.ChildElementName) : XMLNodes.NoElements.FirstOrDefault();
                     childElementInfo.ChildElementExistsOutputPin[i] = el != null;
 
                     i++;
                 }
             }
-
             ConfigChanged = false;
         }
     }
