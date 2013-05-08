@@ -4,16 +4,30 @@ Param(
 )
 
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$vvvvRootPath = Join-Path $scriptPath "..\vvvv45"
 $solutionPath = Join-Path $scriptPath "..\vvvv45\src"
 $nugetExe = Join-Path $solutionPath  ".nuget\nuget.exe"
+$packageName = "VVVV.Binaries.$platform"
+$packageVersion = ""
 
-$tagsUri = "http://vvvv.org:8111/guestAuth/app/rest/builds/id:$buildId/tags/"
-$buildsForTagUri = "http://vvvv.org:8111/guestAuth/app/rest/builds/?locator=branch:%28default:any%29,tags:test"
+$tcHost = "http://vvvv.org:8111"
+$tagsUri = "$tcHost/guestAuth/app/rest/builds/id:$buildId/tags/"
 
-#$git = bash -c "git log -1 | grep URI | sed -e 's/.* //g'"
-$commitId = git log | where {$_ -match "git-subtree-split"} | select -first 1 | %{$_ -split " "} | select -last 1
-$version = $commitId.Substring(0,8) + "-$platform"
+Write-Host "Looking for last split commit ..."
 
-& $nugetExe pack $nuspecFile -o $packageOutputDir -version $version -p Version=$version
-
-Write-Host $commitId
+$localCommits = git log --format=%H
+foreach ($c in $localCommits)
+{
+    $buildsForTagUri = "$tcHost/guestAuth/app/rest/builds/?locator=branch:(default:any),tags:$c"
+    $response = Invoke-RestMethod -Uri $buildsForTagUri
+    $build = $response.builds.ChildNodes | select -first 1
+    if ($build)
+    {
+        Write-Host "Using build $($build.webUrl)"
+        $semVerUri = "$tcHost$($build.href)/resulting-properties/system.SemVer"
+        $packageVersion = Invoke-RestMethod -Uri $semVerUri
+        Write-Host "Package version is $packageVersion"
+        & $nugetExe install $packageName -Version $packageVersion -OutputDirectory "$vvvvRootPath"
+        break
+    }
+}
