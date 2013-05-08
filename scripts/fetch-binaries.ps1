@@ -12,13 +12,14 @@ $packageVersion = ""
 
 $tcHost = "http://vvvv.org:8111"
 $tagsUri = "$tcHost/guestAuth/app/rest/builds/id:$buildId/tags/"
+$currentBranch = git rev-parse --abbrev-ref HEAD
 
-Write-Host "Looking for last split commit ..."
+Write-Host "Looking for last split commit in branch $currentBranch ..."
 
 $localCommits = git log --format=%H
 foreach ($c in $localCommits)
 {
-    $buildsForTagUri = "$tcHost/guestAuth/app/rest/builds/?locator=branch:(default:any),tags:$c"
+    $buildsForTagUri = "$tcHost/guestAuth/app/rest/builds/?locator=branch:(name:$currentBranch,default:any),tags:$c"
     $response = Invoke-RestMethod -Uri $buildsForTagUri
     $build = $response.builds.ChildNodes | select -first 1
     if ($build)
