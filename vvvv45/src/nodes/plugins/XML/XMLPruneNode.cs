@@ -23,12 +23,26 @@ namespace VVVV.Nodes.XML
             public string AttributeName;
         }
 
+        class ElementInfo
+        {
+            public IIOContainer<ISpread<string>> ElementContainer;
+            public IIOContainer<ISpread<bool>> ElementExistsContainer;
+            public ISpread<string> ElementOutputPin { get { return ElementContainer.IOObject; } }
+            public ISpread<bool> ElementExistsOutputPin { get { return ElementExistsContainer.IOObject; } }
+            public string ElementName;
+        }
+
+
+
 #pragma warning disable 0649
-        [Config("Element Name", DefaultString = "MyElement", IsSingle = true)]
-        public IDiffSpread<string> ElementNamePin;
+        [Config("Base Element Name", DefaultString = "MyElement", IsSingle = true)]
+        public IDiffSpread<string> BaseElementNamePin;
 
         [Config("Attribute Names", DefaultString = "AttribA, AttribB", IsSingle = true)]
         public IDiffSpread<string> AttributeNamesPin;
+
+        [Config("Element Names", DefaultString = "ElementA, ElementB", IsSingle=true)]
+        public IDiffSpread<string> ElementNamesPin;
 
         [Input("Element")]
         public IDiffSpread<XElement> Element;
@@ -40,15 +54,19 @@ namespace VVVV.Nodes.XML
         IIOFactory IOFactory; 
 #pragma warning restore
 
-        XName ElementName;
+        XName BaesElementName;
         string[] AttributeNames;
+        string[] ElementNames;
         List<AttributeInfo> AttributeInfos = new List<AttributeInfo>();
+        List<ElementInfo> ElementInfos = new List<ElementInfo>();
         private bool ConfigChanged;
 
         public void OnImportsSatisfied()
         {
-            ElementNamePin.Changed += ElementName_Changed;
+            BaseElementNamePin.Changed += BaseElementName_Changed;
+            ElementNamesPin.Changed += ElementNamesPin_Changed;
             AttributeNamesPin.Changed += AttributeNamesPin_Changed;
+            
         }
 
         void AttributeNamesPin_Changed(IDiffSpread<string> spread)
@@ -65,7 +83,7 @@ namespace VVVV.Nodes.XML
                     var outputInfo = new AttributeInfo()
                     {
                         AttributeName = attributeName,
-                        AttributeContainer = IOFactory.CreateIOContainer<ISpread<string>>(new OutputAttribute(attributeName + " Value")),
+                        AttributeContainer = IOFactory.CreateIOContainer<ISpread<string>>(new OutputAttribute(attributeName)),
                         AttributeExistsContainer = IOFactory.CreateIOContainer<ISpread<bool>>(
                             new OutputAttribute(attributeName + " Available") { Visibility = PinVisibility.Hidden }
                         ),
@@ -86,9 +104,47 @@ namespace VVVV.Nodes.XML
             ConfigChanged = true;
         }
 
-        void ElementName_Changed(IDiffSpread<string> spread)
+        void ElementNamesPin_Changed(IDiffSpread<string> spread)
         {
-            ElementName = XName.Get(ElementNamePin[0]);
+            if (spread.SliceCount == 0) return;
+
+            ElementNames = ElementNamesPin[0].Split(',').ToList().Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
+            int z = 1;
+            // add new pins
+            foreach (var elementName in ElementNames)
+            {
+                if (!ElementInfos.Any(info => info.ElementName == elementName)) 
+                {
+                    var outputInfo = new ElementInfo()
+                    {
+                        ElementName = elementName,
+                        ElementContainer = IOFactory.CreateIOContainer<ISpread<string>>( new OutputAttribute(elementName)),
+                        ElementExistsContainer = IOFactory.CreateIOContainer<ISpread<bool>>(
+                            new OutputAttribute(elementName + " Available") { Visibility = PinVisibility.Hidden }
+                        ),
+                    };
+                    ElementInfos.Add(outputInfo);
+                }
+            }
+            int a = 1;
+
+            // remove obsolete pins
+            foreach (var outputInfo in ElementInfos.ToArray())
+            {
+                if (!ElementNames.Contains(outputInfo.ElementName)) 
+                {
+                    ElementInfos.Remove(outputInfo);
+                    outputInfo.ElementContainer.Dispose();
+                    outputInfo.ElementExistsContainer.Dispose();
+                }
+            }
+
+            ConfigChanged = true;
+        }
+
+        void BaseElementName_Changed(IDiffSpread<string> spread)
+        {
+            BaesElementName = XName.Get(BaseElementNamePin[0]);
 
             ConfigChanged = true;
         }
@@ -112,11 +168,12 @@ namespace VVVV.Nodes.XML
             for (int i = 0; i < SpreadMax; i++)
             {
                 var element = Element[i];
-                Elements[i] = element != null ? GetElementsByName(element, ElementName) : XMLNodes.NoElements;
+                Elements[i] = element != null ? GetElementsByName(element, BaesElementName) : XMLNodes.NoElements;
             }
 
             var allElements = Elements.SelectMany(spread => spread).ToArray();
 
+            // process attributes
             foreach (var attributeInfo in AttributeInfos)
             {
                 attributeInfo.AttributeOutputPin.SliceCount = allElements.Length;
@@ -134,6 +191,26 @@ namespace VVVV.Nodes.XML
                     i++;
                 }
             }
+
+            // process elements
+            foreach (var elementInfo in ElementInfos)
+            {
+                elementInfo.ElementOutputPin.SliceCount = allElements.Length;
+                elementInfo.ElementExistsOutputPin.SliceCount = allElements.Length;
+
+                int i = 0;
+                foreach (var element in allElements)
+                {
+                    var elements = element.Elements(elementInfo.ElementName);
+                    var el = elements.FirstOrDefault();
+
+                    elementInfo.ElementOutputPin[i] = el != null ? el.Value : "";
+                    elementInfo.ElementExistsOutputPin[i] = el != null;
+
+                    i++;
+                }
+            }
+
 
             ConfigChanged = false;
         }
