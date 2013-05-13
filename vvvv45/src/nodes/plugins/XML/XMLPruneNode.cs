@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-// using System.Text;
 using VVVV.Core;
 using System.Xml;
 using System.Xml.Linq;
@@ -12,7 +11,7 @@ using System.ComponentModel.Composition;
 
 namespace VVVV.Nodes.XML
 {
-    [PluginInfo(Name = "Prune", Category = "XML")]
+    [PluginInfo(Name = "Prune", Category = "XElement")]
     public class XMLPruneNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         class AttributeInfo
