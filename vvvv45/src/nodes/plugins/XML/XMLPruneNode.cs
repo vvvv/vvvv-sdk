@@ -12,7 +12,7 @@ using System.ComponentModel.Composition;
 
 namespace VVVV.Nodes.XML
 {
-    [PluginInfo(Name = "Prune", Category = "XML")]
+    [PluginInfo(Name = "Prune", Category = "XElement")]
     public class XMLPruneNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         class AttributeInfo
