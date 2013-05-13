@@ -42,8 +42,6 @@ namespace VVVV.Nodes.XML
             public string ChildElementName;
         }
 
-        // XElementContainer = IOFactory.CreateIOContainer<ISpread<XElement>>(
-        //new OutputAttribute(elementName + " (XElement)")),
 
 #pragma warning disable 0649
         [Config("Base Element Name", DefaultString = "MyElement", IsSingle = true)]
@@ -65,9 +63,11 @@ namespace VVVV.Nodes.XML
         [Input("NoRootTag", IsToggle=true, DefaultBoolean=false, IsSingle=true)]
         public IDiffSpread<bool> FInNoRootTag;
 
-
         [Output("Elements")]
         public ISpread<ISpread<XElement>> Elements;
+
+        [Output("Error Message", DefaultString=ERROR_MESSAGE_OK)]
+        public ISpread<string> ErrorMessage;
 
         [Import()]
         IIOFactory IOFactory; 
@@ -83,6 +83,8 @@ namespace VVVV.Nodes.XML
 
         private bool ConfigChanged;
         private bool NoRootTag = false;
+        private const string ERROR_MESSAGE_OK = "OK";
+        private const string ERROR_MESSAGE_NOBASEELEMENTNAME = "No BaseElementName defined";
 
         public void OnImportsSatisfied()
         {
@@ -210,9 +212,11 @@ namespace VVVV.Nodes.XML
             {
                 BaseElementName = XName.Get(BaseElementNamePin[0]);
                 ConfigChanged = true;
+                ErrorMessage[0] = ERROR_MESSAGE_OK;
             }
             catch (ArgumentException ae)
             {
+                ErrorMessage[0] = ERROR_MESSAGE_NOBASEELEMENTNAME;
                 BaseElementName = null;
                 ConfigChanged = true;
             }
