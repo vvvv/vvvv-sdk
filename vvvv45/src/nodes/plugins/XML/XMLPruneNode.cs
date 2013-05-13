@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+// using System.Text;
 using VVVV.Core;
 using System.Xml;
 using System.Xml.Linq;
@@ -40,40 +40,38 @@ namespace VVVV.Nodes.XML
             public ISpread<XElement> ChildElementOutputPin { get { return ChildElementContainer.IOObject; } }
             public ISpread<bool> ChildElementExistsOutputPin { get { return ChildElementExistsContainer.IOObject; } }
             public string ChildElementName;
+            public string ChildElementPinName;
         }
 
 
 #pragma warning disable 0649
-        [Config("Base Element Name", DefaultString = "MyElement", IsSingle = true)]
-        public IDiffSpread<string> BaseElementNamePin;
 
-        [Config("Attribute Names", DefaultString = "AttribA, AttribB", IsSingle = true)]
+        [Config("Attributes", DefaultString = "AttribA, AttribB", IsSingle = true)]
         public IDiffSpread<string> AttributeNamesPin;
 
-        [Config("ContentElement Names", DefaultString = "ElementA, ElementB", IsSingle=true)]
+        [Config("Texts", DefaultString = "TextNodeA, TextNodeB", IsSingle = true)]
         public IDiffSpread<string> ContentElementNamesPin;
 
-        [Config("ChildElement Names", DefaultString = "ChildA, ChildB", IsSingle = true)]
+        [Config("Children", DefaultString = "ChildA, ChildB", IsSingle = true)]
         public IDiffSpread<string> ChildElementNamesPin;
 
 
         [Input("Element")]
         public IDiffSpread<XElement> Element;
 
-        [Input("NoRootTag", IsToggle=true, DefaultBoolean=false, IsSingle=true)]
-        public IDiffSpread<bool> FInNoRootTag;
+        [Input("XPath", DefaultString = "MyRoot/MyChild", IsSingle = true)]
+        public IDiffSpread<string> XPathNamePin;
 
         [Output("Elements")]
         public ISpread<ISpread<XElement>> Elements;
-
-        [Output("Error Message", DefaultString=ERROR_MESSAGE_OK)]
-        public ISpread<string> ErrorMessage;
 
         [Import()]
         IIOFactory IOFactory; 
 #pragma warning restore
 
-        XName BaseElementName;
+        #region fields
+
+        string BaseElementName;
         string[] AttributeNames;
         string[] ContentElementNames;
         string[] ChildElementNames;
@@ -82,13 +80,12 @@ namespace VVVV.Nodes.XML
         List<ChildElementInfo> ChildElementInfos = new List<ChildElementInfo>();
 
         private bool ConfigChanged;
-        private bool NoRootTag = false;
-        private const string ERROR_MESSAGE_OK = "OK";
-        private const string ERROR_MESSAGE_NOBASEELEMENTNAME = "No BaseElementName defined";
+
+        #endregion
 
         public void OnImportsSatisfied()
         {
-            BaseElementNamePin.Changed += BaseElementName_Changed;
+            XPathNamePin.Changed += BaseElementName_Changed;
             AttributeNamesPin.Changed += AttributeNamesPin_Changed;
             ContentElementNamesPin.Changed += ContentElementNamesPin_Changed;
             ChildElementNamesPin.Changed += ChildElementNamesPin_Changed;
@@ -111,7 +108,7 @@ namespace VVVV.Nodes.XML
                         AttributeName = attributeName,
                         AttributeContainer = IOFactory.CreateIOContainer<ISpread<string>>(new OutputAttribute(attributeName)),
                         AttributeExistsContainer = IOFactory.CreateIOContainer<ISpread<bool>>(
-                            new OutputAttribute(attributeName + " Available") { Visibility = PinVisibility.Hidden }
+                            new OutputAttribute(attributeName + " Available") { Visibility = PinVisibility.OnlyInspector}
                         ),
                     };
                     AttributeInfos.Add(outputInfo);
@@ -147,7 +144,7 @@ namespace VVVV.Nodes.XML
                         ContentElementName = elementName,
                         ContentElementContainer = IOFactory.CreateIOContainer<ISpread<string>>(new OutputAttribute(elementName)),
                         ContentElementExistsContainer = IOFactory.CreateIOContainer<ISpread<bool>>(
-                            new OutputAttribute(elementName + " Available") { Visibility = PinVisibility.Hidden }
+                            new OutputAttribute(elementName + " Available") { Visibility = PinVisibility.OnlyInspector }
                         ),
                     };
                     ContentElementInfos.Add(outputInfo);
@@ -183,9 +180,10 @@ namespace VVVV.Nodes.XML
                     var outputInfo = new ChildElementInfo()
                     {
                         ChildElementName = elementName,
-                        ChildElementContainer = IOFactory.CreateIOContainer<ISpread<XElement>>(new OutputAttribute(elementName)),
+                        ChildElementPinName = elementName + " (Children)",
+                        ChildElementContainer = IOFactory.CreateIOContainer<ISpread<XElement>>(new OutputAttribute(elementName + " (Children)")),
                         ChildElementExistsContainer = IOFactory.CreateIOContainer<ISpread<bool>>(
-                            new OutputAttribute(elementName + " Available") { Visibility = PinVisibility.Hidden }
+                            new OutputAttribute(elementName + " Available") { Visibility = PinVisibility.OnlyInspector}
                         ),
                     };
                     ChildElementInfos.Add(outputInfo);
@@ -210,13 +208,12 @@ namespace VVVV.Nodes.XML
         {
             try
             {
-                BaseElementName = XName.Get(BaseElementNamePin[0]);
+                // BaseElementName = XName.Get(BaseElementNamePin[0]);
+                BaseElementName = XPathNamePin[0];
                 ConfigChanged = true;
-                ErrorMessage[0] = ERROR_MESSAGE_OK;
             }
             catch (ArgumentException ae)
             {
-                ErrorMessage[0] = ERROR_MESSAGE_NOBASEELEMENTNAME;
                 BaseElementName = null;
                 ConfigChanged = true;
             }
@@ -232,17 +229,23 @@ namespace VVVV.Nodes.XML
         }
 
         // using xPath expression for selecting elements
-        static ISpread<XElement> GetElementsByXPathQuery(XElement xElement, string xPath, bool noRootTag)
+        static ISpread<XElement> GetElementsByXPathQuery(XElement xElement, string xPath)
         {
-            if (xElement != null)
+
+            try
             {
-                if (noRootTag)
-                    return xElement.XPathSelectElements("self::*").ToSpread();
+                if (xElement != null)
+                {
+                        return xElement.XPathSelectElements("self::" + xPath).ToSpread();
+                }
                 else
-                    return xElement.XPathSelectElements(xPath).ToSpread();
+                    return XMLNodes.NoElements;
             }
-            else
+            catch (Exception)
+            {
                 return XMLNodes.NoElements;
+                
+            }
         }
 
         // using xPath expression for selecting single element
@@ -257,12 +260,6 @@ namespace VVVV.Nodes.XML
         // method called each frame in vvvv
         public void Evaluate(int SpreadMax)
         {
-            if (FInNoRootTag.IsChanged)
-            {
-                NoRootTag = FInNoRootTag[0];
-                ConfigChanged = true;
-            }
-
             if (SpreadMax == 0) return;
 
             if (!Element.IsChanged && !ConfigChanged) return;
@@ -273,7 +270,7 @@ namespace VVVV.Nodes.XML
             {
                 var element = Element[i];
                 if (BaseElementName != null)
-                    Elements[i] = element != null ? GetElementsByXPathQuery(element, BaseElementName.LocalName, NoRootTag) : XMLNodes.NoElements;
+                    Elements[i] = element != null ? GetElementsByXPathQuery(element, BaseElementName) : XMLNodes.NoElements;
             }
 
             var allElements = Elements.SelectMany(spread => spread).ToArray();
