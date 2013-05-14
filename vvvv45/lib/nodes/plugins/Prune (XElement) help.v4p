@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.5.dtd" >
-   <PATCH nodename="C:\Users\type name here\Documents\GitHub\vvvv-sdk\vvvv45\lib\nodes\plugins\Prune (XElement) help.v4p">
-   <BOUNDS type="Window" left="5955" top="2625" width="15915" height="12240">
+   <PATCH nodename="C:\Users\MobDef\Documents\GitHub\vvvv-sdk\vvvv45\lib\nodes\plugins\Prune (XElement) help.v4p">
+   <BOUNDS type="Window" left="5820" top="390" width="15915" height="12240">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
@@ -17,7 +17,7 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="550" width="5000" height="500">
    </BOUNDS>
-   <BOUNDS type="Box" left="150" top="550" width="5000" height="500">
+   <BOUNDS type="Box" left="150" top="550" width="4995" height="495">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="0" values="||">
    </PIN>
@@ -230,12 +230,12 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="infoheadline">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="8" systemname="IOBox (String)">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8" systemname="IOBox (String)" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="5475" top="330" width="6075" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="5475" top="330" width="10155" height="2850">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Prune (XML) takes XElement(s) as input and separates it&apos;s content to userdefined output pins, assuming that the user knows the structure of the xml input file. &cr;&lf;&cr;&lf;Select a root element with an XPath-expression (InputPin &quot;XPath&quot;) and define your desired attributes, texts and children to be generated as output-pins by using the inspector.&cr;&lf;&cr;&lf;Note that there are hidden output pins called &quot;&lt;MyNode&gt; Available&quot; for each Attribute/Name/Child telling you whether the corresponding element has been found.&cr;&lf;&cr;&lf;All generated output pins generated should have the same SpreadCount.&cr;&lf;&cr;&lf;The output pin &quot;Elements&quot; contains all nodes matching the xpath query defined by input pin &quot;XPath&quot;.&cr;&lf;|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Prune (XML) takes XElement(s) as input and separates it&apos;s content to userdefined output pins, assuming that the user knows the structure of the input tree. &cr;&lf;&cr;&lf;Select a root element with an XPath-expression (InputPin &quot;XPath&quot;) and define your desired attributes, texts and children to be generated as output-pins by using the inspector.&cr;&lf;&cr;&lf;Sometimes attributes or elements are either without content (attribute=&quot;&quot;) and sometimes they don&apos;t exist. Note that there are hidden output pins called &lt;myname&gt; available, which indicates wheather your desired Attributes/Texts/Children are found in the source tree or not. Prune makes sure that you always get the same slicecount on each output pin. &cr;&lf;&cr;&lf;The output pin &quot;Elements&quot; contains all nodes matching the xpath query defined by input pin &quot;XPath&quot;.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -324,8 +324,6 @@
    </LINK>
    <LINK srcnodeid="6" srcpinname="infoheadline" dstnodeid="9" dstpinname="Input String">
    </LINK>
-   <LINK srcnodeid="7" srcpinname="subelement (Children)" dstnodeid="6" dstpinname="Element">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
    <BOUNDS type="Box" left="11040" top="8355" width="1545" height="270">
    </BOUNDS>
@@ -361,5 +359,7 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="4" srcpinname="Output String" dstnodeid="7" dstpinname="XPath">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="subelement (Children)" dstnodeid="6" dstpinname="Element">
    </LINK>
    </PATCH>
