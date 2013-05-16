@@ -121,6 +121,7 @@ namespace VVVV.Core.Model.CS
                 Directory.CreateDirectory(assemblyBaseDir);
 
             var compilerParams = new CompilerParameters();
+            compilerParams.WarningLevel = 4;
             compilerParams.OutputAssembly = assemblyLocation;
             compilerParams.GenerateExecutable = false;
             compilerParams.GenerateInMemory = false;

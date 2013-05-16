@@ -1166,8 +1166,28 @@
     </NODE>
   </PATCH>
   <PATCH version="45alpha29.5">
-	<NODE old="RS232 (Devices)" new="RS232 (Devices Legacy)"></NODE>
-	<NODE old="RS232 (Devices String)" new="RS232 (Devices String Legacy)"></NODE>
-	<NODE old="RS232 (Devices Spreadable)" new="RS232 (Devices Spreadable Legacy)"></NODE>
+	  <NODE old="RS232 (Devices)" new="RS232 (Devices Legacy)"></NODE>
+	  <NODE old="RS232 (Devices String)" new="RS232 (Devices String Legacy)"></NODE>
+	  <NODE old="RS232 (Devices Spreadable)" new="RS232 (Devices Spreadable Legacy)"></NODE>
   </PATCH>
+  <NODE old="Prune (XML)" new="Prune (XElement)">
+    <PIN old="Element Name" new="XPath"></PIN>
+    <PIN old="Attribute Names" new="Attributes"></PIN>
+  </NODE>
+  <PATCH version="45alpha29.6">
+	  <NODE old="IsValid (XML)" new="IsValid (XML DTD)"></NODE>
+	  <NODE old="AsElement (XML)" new="AsXElement (XML)"></NODE>
+	  <NODE old="Element (XML Split)" new="Element (XElement Split)">
+		  <PIN old="Childs" new="Children"></PIN>
+	  </NODE>
+	  <NODE old="Element (XML Join)" new="Element (XElement Join)">
+		  <PIN old="Childs" new="Children"></PIN>
+	  </NODE>
+	  <NODE old="Attribute (XML Split)" new="Attribute (XElement Split)"></NODE>
+	  <NODE old="Attribute (XML Join)" new="Attribute (XElement Join)"></NODE>
+	  <NODE old="GetElements (XML ByName)" new="GetElements (XElement ByName)"></NODE>
+	  <NODE old="GetAttributes (XML ByName)" new="GetAttributes (XElement ByName)"></NODE>
+	  <NODE old="GetElements (XML ByXPath)" new="GetElements (XElement ByXPath)"></NODE>
+	  <NODE old="GetAttributes (XML ByXPath)" new="GetAttributes (XElement ByXPath)"></NODE>
+  </PATCH>  
 </CONVVVVERTER>

@@ -637,7 +637,7 @@ namespace VVVV.HDE.CodeEditor
                 return base.ProcessKeyPreview(ref m);
         }
         
-        void AddErrorMarker(List<SD.TextMarker> errorMarkers, int column, int line)
+        void AddErrorMarker(List<SD.TextMarker> errorMarkers, int column, int line, Color color)
         {
             column = Math.Max(column, 0);
             line = Math.Max(line, 0);
@@ -647,7 +647,7 @@ namespace VVVV.HDE.CodeEditor
             var offset = doc.PositionToOffset(location);
             var segment = doc.GetLineSegment(location.Line);
             var length = segment.Length - offset + segment.Offset;
-            var marker = new SD.TextMarker(offset, length, SD.TextMarkerType.WaveLine);
+            var marker = new SD.TextMarker(offset, length, SD.TextMarkerType.WaveLine, color);
             doc.MarkerStrategy.AddMarker(marker);
             doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, segment.LineNumber));
             errorMarkers.Add(marker);
@@ -679,15 +679,18 @@ namespace VVVV.HDE.CodeEditor
             
             foreach (var compilerError in compilerErrors)
             {
+                var color = compilerError.IsWarning
+                    ? Color.Orange
+                    : Color.Red;
                 try
                 {
                     if (string.Compare(compilerError.FileName, TextDocument.LocalPath, StringComparison.InvariantCultureIgnoreCase) == 0)
-                        AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1);
+                        AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1, color);
                 }
                 catch (Exception)
                 {
                     // Better show the error with illegal filename than crash
-                    AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1);
+                    AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1, color);
                 }
             }
 
@@ -711,12 +714,12 @@ namespace VVVV.HDE.CodeEditor
                 if (!string.IsNullOrEmpty(runtimeError.FileName))
                 {
                     if (string.Compare(runtimeError.FileName, TextDocument.LocalPath, StringComparison.InvariantCultureIgnoreCase) == 0)
-                       AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1);
+                       AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1, Color.Red);
                 }
                 else
                 {
                     // Showing the error in wrong editor is better than not to.
-                    AddErrorMarker(FRuntimeErrorMarkers, 0, 0);
+                    AddErrorMarker(FRuntimeErrorMarkers, 0, 0, Color.Red);
                 }
             }
 
