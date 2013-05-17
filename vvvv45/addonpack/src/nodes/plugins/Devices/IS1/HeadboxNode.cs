@@ -5,18 +5,9 @@
 
 #region usings
 
-using System;
 using System.ComponentModel.Composition;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Timers;
-using System.IO;
 
-using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 
@@ -31,7 +22,6 @@ namespace IS1
     #region PluginInfo
     [PluginInfo(Name = "Headbox", Category = "Devices", Version = "IS1", Help = "Eyetracker IS1 Node", Tags = "")]
     #endregion PluginInfo
-
 
     public class HeadboxNode : IPluginEvaluate
     {
@@ -51,10 +41,6 @@ namespace IS1
         [Output("Output")]
         ISpread<Vector3D> FPointsOut;
 
-
-
-
-
         #endregion Output
 
         [Import()]
@@ -63,6 +49,7 @@ namespace IS1
         private IEyetracker FEyetracker;
         private bool FConnected = false;
         private bool Finit = true;
+
         #endregion fields & pins
 
 
@@ -86,15 +73,12 @@ namespace IS1
                     FPointsOut[5] = new Vector3D(Box.Point6.X, Box.Point6.Y, Box.Point6.Z);
                     FPointsOut[6] = new Vector3D(Box.Point7.X, Box.Point7.Y, Box.Point7.Z);
                     FPointsOut[7] = new Vector3D(Box.Point8.X, Box.Point8.Y, Box.Point8.Z);
-
-
                 }
                 else if (FEnable.IsChanged && FEnable[0] == false)
                 {
                     FPointsOut.SliceCount = 0;
                 }
             }
-
             FConnected = false;
             Finit = false;
         }
@@ -110,7 +94,6 @@ namespace IS1
             {
                 if (FEyetracker != null)
                 {
-                    // added this line newly
                     FEyetracker.Dispose();
                     FEyetracker = null;
                 }

@@ -2,11 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Timers;
-using System.Windows.Forms;
 
 using VVVV.Utils.VMath;
 
@@ -18,8 +14,6 @@ namespace IS1
 {
     public class CalibrationRunner
     {
-
-        //TODO:Clean up the class
         #region attributes
 
         private Queue<Point2D> FCalibrationPoints;
@@ -72,12 +66,7 @@ namespace IS1
             FIntervalTime = Interval;
             FCalibrationPoints = new Queue<Point2D>();
             FSleepTimer = new System.Timers.Timer();
-            // FSleepTimer.Interval = interval;
-            // FSleepTimer.Elapsed += HandleTimerElapsed;
         }
-
-
-
 
         // start the calibration process on the given Eyetracker
         public void RunCalibration(IEyetracker tracker, float interval, double threshold)
@@ -89,7 +78,6 @@ namespace IS1
                 FSleepTimer.Interval = interval;
                 FSleepTimer.Elapsed += HandleTimerElapsed;
                 FEyetracker.StartCalibration();
-
             }
             catch (Exception ee)
             {
@@ -99,8 +87,6 @@ namespace IS1
             // begin collecting data for the calibration points
             StartNextOrFinish();
         }
-
-
 
         // trigger next calib point or finish calibration
         private void StartNextOrFinish()
@@ -123,7 +109,6 @@ namespace IS1
                 // TODO: HandleConnectionError object disposed Exception here when eytracker is disabled during calibration
                 FEyetracker.ComputeCalibrationAsync(ComputeCompleted);
                 FSleepTimer.Elapsed -= HandleTimerElapsed;
-
             }
         }
 
@@ -142,7 +127,6 @@ namespace IS1
             {
 
             }
-
         }
 
         // handle calibration Point processing completed
@@ -150,7 +134,6 @@ namespace IS1
         {
             StartNextOrFinish();
         }
-
 
         // called when computing the calibration has finished
         private void ComputeCompleted(object sender, AsyncCompletedEventArgs<Empty> e)
@@ -165,7 +148,6 @@ namespace IS1
                 }
                 else
                 {
-
                     // inform tracker that calibration is finished
                     // Save collected calibration data to eyetracker
                     SetCalibration(Calib, true);
@@ -174,14 +156,9 @@ namespace IS1
                 FEyetracker.StopCalibration();
                 FCalibrationState = false;
             }
-            else
-            {
-                // not in calib state;
-                int t = 1;
-            }
-
         }
 
+        // write calibration to eyetracker device if succssful
         private void SetCalibration(Calibration calibration, bool Success)
         {
             if (FEyetracker != null)
@@ -190,14 +167,14 @@ namespace IS1
                 {
                     if (Success)
                     {
-                        // try to remove bad Plot Samples here?
+                        // try to remove bad Plot Samples here
                         calibration = RemoveBadSamplesFromCalibrationPlot(calibration);
                         FEyetracker.SetCalibration(calibration);
                     }
                 }
                 catch (Exception ex)
                 {
-                    String s = "error Jung'";
+
                 }
                 finally
                 {
@@ -206,38 +183,31 @@ namespace IS1
             }
         }
 
+        // remove bad samples from calib plot
         private Tobii.Eyetracking.Sdk.Calibration RemoveBadSamplesFromCalibrationPlot(Tobii.Eyetracking.Sdk.Calibration calibration)
         {
             int n = calibration.Plot.Count;
-            double threshold = 0.03f;
             List<CalibrationPlotItem> calibPlotList = new List<CalibrationPlotItem>();
-
 
             try
             {
                 for (int i = n; i > 1; i--)
                 {
                     CalibrationPlotItem cpi = calibration.Plot[i - 1];
-
-                    // if (cpi.ValidityLeft < 1 || cpi.ValidityRight < 1)
-                    // {
-                    //     calibration.Plot.Remove(cpi);
-                    // } 
                     if (IsBadCalibrationPlot(cpi, FCalibThreshold))
                     {
                         calibration.Plot.Remove(cpi);
                     }
                 }
             }
-            catch (Exception eee)
+            catch (Exception e)
             {
-                String s = eee.Message;
-                s = s + " ";
-            }
 
+            }
             return calibration;
         }
 
+        // helper
         private bool IsBadCalibrationPlot(CalibrationPlotItem cpi, double threshold)
         {
             Vector2D vLeft = new Vector2D(cpi.MapLeftX, cpi.MapLeftY);
@@ -256,12 +226,11 @@ namespace IS1
             }
         }
 
+
         public void GetCalibration()
         {
             FCalibration = FEyetracker.GetCalibration();
         }
-
-
 
         // handle connection error (abort calibration)
         private void HandleConnectionError(object sender, ConnectionErrorEventArgs e)
@@ -269,7 +238,6 @@ namespace IS1
             // Abort calibration if the connection fails
             AbortCalibration();
         }
-
 
         // cancel calibration
         public void AbortCalibration()

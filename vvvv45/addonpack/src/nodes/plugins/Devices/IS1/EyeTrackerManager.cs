@@ -75,24 +75,15 @@ namespace IS1
 
         }
 
-
-        // Init the library, add eventlisteners to TrackerBrowser, and start trackerBrowser
+        // browse for eyetracker
         public void FindAndStartEyeTracker()
         {
-            if (FEyetrackerBrowser != null)
-            {
-
-            }
             FEyetrackerBrowser = new EyetrackerBrowser();
             FClock = new Clock();
-
             FEyetrackerBrowser.Start();
         }
 
-
-
-
-        // establich sonnection to eytracker device
+        // establich connection to eyetracker device
         private void ConnectToTrackerAndStartTracking(EyetrackerInfo info)
         {
             try
@@ -103,9 +94,7 @@ namespace IS1
                     FEyetracker = EyetrackerFactory.CreateEyetracker(info);
                 }
 
-
                 FEyetracker.ConnectionError -= HandleConnectionError;
-
 
                 // Trigger device-status-update event for IS1Node
                 UpdateDeviceStatus(FTrackerInfo.Status);
@@ -117,25 +106,15 @@ namespace IS1
                     FSyncManager.SyncStateChanged += HandleSyncStateChanged;
                 }
 
-
-
                 SyncState st = FSyncManager.SyncState;
                 if (st.StateFlag == SyncStateFlag.Unsynchronized)
                 {
-                    // handle the case that eyetracker is unsynchronized to make sure that et-status gets OK
-
+                    // TODO: handle the case that eyetracker is unsynchronized to make sure that et-status gets OK
                 }
 
                 // register eventhandlers
                 FEyetracker.ConnectionError += HandleConnectionError;
-                //FConnectedTracker.GazeDataReceived += FConnectedTracker_GazeDataReceived;
-
-
-                // tell device to start tracking
-                //FConnectedTracker.StartTracking();
-
-
-
+                
                 // trigger device-status-update event for IS1Node
                 UpdateDeviceStatus(FTrackerInfo.Status);
 
@@ -163,8 +142,6 @@ namespace IS1
             }
         }
 
-
-
         // update device state, notify IS1Node by event if state has changed
         private void UpdateDeviceStatus(string status)
         {
@@ -177,25 +154,21 @@ namespace IS1
             }
         }
 
-
         // handle connection errors
         private void HandleConnectionError(object sender, ConnectionErrorEventArgs e)
         {
-            // If the connection goes down we dispose 
-            // the IAsyncEyetracker instance. This will release 
-            // all resources held by the connection
+            // If the connection goes down we dispose the IAsyncEyetracker instance. This will release all resources held by the connection
             OnConnectionError(sender, e);
             DisconnectEyetracker(false);
-
         }
 
+        // sync state changed
         private void HandleSyncStateChanged(object sender, SyncStateChangedEventArgs e)
         {
             OnSyncStateChanged(sender, e);
         }
 
-
-        // disconnect the Eyetracker
+        // helper
         private void DisconnectEyetracker(bool DoRescan)
         {
             if (FEyetracker != null)
@@ -222,13 +195,11 @@ namespace IS1
             }
         }
 
-
-        // public method to disconnect the eyetracker
+        // disconnect the eyetracker
         public void DisconnectEyeTracker(bool restartTrackerBrowser)
         {
             DisconnectEyetracker(restartTrackerBrowser);
         }
-
 
         // set the XConfiguration to eyetracker, if useCurrentXConfig
         public void UpdateXConfiguration(XConfiguration xconfig, bool useCurrentXConfig)
@@ -253,14 +224,9 @@ namespace IS1
             }
         }
 
-
-
-
-
-
         public void Dispose()
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
     }
 }

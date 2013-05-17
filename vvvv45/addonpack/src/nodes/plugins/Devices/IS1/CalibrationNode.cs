@@ -10,14 +10,9 @@ using System.ComponentModel.Composition;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Timers;
 using System.IO;
 
-using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 
@@ -48,7 +43,7 @@ namespace IS1
         [Input("Cancel", IsBang = true, DefaultValue = 0, IsSingle = true)]
         IDiffSpread<bool> FInputCancelCalibration;
 
-        [Input("Calibration Point XY")]
+        [Input("Calibration Points")]
         ISpread<Vector2D> FCalibrationPointsXY;
 
         [Input("Interval", IsSingle = true, DefaultValue = 2500)]
@@ -115,9 +110,7 @@ namespace IS1
 
         private List<Vector2D> FCalibrationPointsLoaded;
 
-
         #endregion fields & pins
-
 
         // called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
@@ -177,8 +170,6 @@ namespace IS1
             FInit = false;
         }
 
-
-
         private void InitBackgroundWorkers()
         {
             saveCalibFileWorker = new BackgroundWorker();
@@ -187,7 +178,6 @@ namespace IS1
             loadCalibFileWorker = new BackgroundWorker();
             loadCalibFileWorker.DoWork += new DoWorkEventHandler(loadCalibFileWorker_DoWork);
             loadCalibFileWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(loadCalibFileWorker_RunWorkerCompleted);
-
         }
 
         void loadCalibFileWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -226,7 +216,6 @@ namespace IS1
             }
         }
 
-
         void loadCalibFileWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             FLogger.Log(LogType.Debug, "Loading Calibration File done ...");
@@ -236,7 +225,6 @@ namespace IS1
         {
             FLogger.Log(LogType.Debug, "Saving Calibration File done ...");
         }
-
 
         void FEyetrackerIn_Changed(IDiffSpread<IEyetracker> spread)
         {
@@ -269,7 +257,6 @@ namespace IS1
         // Start calibration procedure
         private void DoCalibrationProcedure()
         {
-
             FCalibrationRunner.SetCalibrationPoints(MapValues_VVVVToET(FCalibrationPointsXY.ToList()));
 
             try
@@ -325,11 +312,11 @@ namespace IS1
             FOutputIsCollectingSamples[0] = false;
         }
 
+        // write calib result to outputs
         private void WriteCalibDataToOutput(Calibration calibration)
         {
             List<CalibrationPlotItem> calibPlot = calibration.Plot;
             List<Vector2D> TrueXYPoints = new List<Vector2D>();
-
 
             FMapLeft.SliceCount = FMapRight.SliceCount = FTrue.SliceCount = FValidity.SliceCount = calibPlot.Count;
 
@@ -351,15 +338,14 @@ namespace IS1
                         exists = true;
                     }
                 }
+                // avoid double entries in List TrueXYPoints
                 if (c == 0 || (c > 0 && !exists))
                 {
                     TrueXYPoints.Add(v);
                 }
             }
             FLoadedCalibrationPoints.AssignFrom(TrueXYPoints);
-
         }
-
 
         // OnCalibrationPointTriggered
         internal void FCalibrationRunner_OnTriggerCalibrationPoint(Point2D point, int pointCount, int index)
@@ -368,11 +354,11 @@ namespace IS1
             onCalibPointChanged = true;
         }
 
+        // OnLastCalibrationPointTriggered
         internal void FCalibrationRunner_OnLastCalibPointTriggered()
         {
             FOutputIsCollectingSamples[0] = false;
         }
-
 
         // vvvv to eyetracker mapping
         private List<Vector2D> MapValues_VVVVToET(List<Vector2D> pointList)

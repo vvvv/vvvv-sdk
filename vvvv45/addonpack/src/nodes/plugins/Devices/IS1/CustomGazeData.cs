@@ -1,9 +1,5 @@
 ﻿#region usings
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using VVVV.Utils.VMath;
 using Tobii.Eyetracking.Sdk;
 #endregion

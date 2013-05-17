@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Timers;
 
 using VVVV.Utils.VMath;
@@ -10,10 +7,14 @@ namespace IS1
 {
     public class GazeDataDummySender
     {
+        #region fields
+
         MyGazeDataItem _myGdItem;
         private float _testValue;
         Object myLock = new object();
         Random rand = new Random();
+
+        #endregion
 
         // constructor
         public GazeDataDummySender()
@@ -83,7 +84,6 @@ namespace IS1
                 _myGdItem = CreateDummyGazeData();
             }
         }
-
 
         private MyGazeDataItem CreateDummyGazeData()
         {

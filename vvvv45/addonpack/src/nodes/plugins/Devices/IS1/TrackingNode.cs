@@ -7,16 +7,8 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Timers;
-using System.IO;
 
-using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 
@@ -96,7 +88,6 @@ namespace IS1
 
         #endregion fields & pins
 
-
         // called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
@@ -154,7 +145,6 @@ namespace IS1
             {
                 if (FEyetracker != null)
                 {
-
                     FEyetracker.StopTracking();
                     FEyetracker.Dispose();
                     FEyetracker = null;
@@ -170,12 +160,7 @@ namespace IS1
                 FSliceCount = spread.SliceCount;
             }
             FConnectionChanged = true;
-
         }
-
-        #region data handler
-
-
         // OnGazeDataReceive handler
         void GazeDataReceive(object sender, GazeDataEventArgs e)
         {
@@ -195,15 +180,10 @@ namespace IS1
                 FOutputRightEyePupilDiameter[0] = cgd.REPupilDiameter;
                 FOutputRightEyeValidity[0] = cgd.REValidity;
 
-
                 Vector2D? gazeVec = GetAverageGazePoint(e.GazeDataItem);
                 if (gazeVec.HasValue)
                 {
                     FOutputGazePoint2D[0] = MapValue_ETToVVVV(gazeVec.Value);
-                }
-                else
-                {
-                    // 
                 }
             }
         }
@@ -233,7 +213,6 @@ namespace IS1
             }
         }
 
-
         // Eyetracker to vvvv mapping
         private Vector2D MapValue_ETToVVVV(Vector2D v)
         {
@@ -250,9 +229,6 @@ namespace IS1
 
             return new Vector2D(x, y);
         }
-
-        #endregion data handler
-
 
     }
 }

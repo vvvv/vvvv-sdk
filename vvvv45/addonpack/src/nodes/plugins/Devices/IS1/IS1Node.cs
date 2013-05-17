@@ -3,15 +3,8 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Timers;
-using System.IO;
 
-using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 
@@ -28,11 +21,8 @@ namespace IS1
     [PluginInfo(Name = "Eyetracker", Category = "Devices", Version = "IS1", Help = "Eyetracker IS1 Node", Tags = "tobii,tracking", Author = "niggos, phlegma")]
     #endregion PluginInfo
 
-
-
     public class IS1 : IPluginEvaluate
     {
-
 
         #region fields & pins
 
@@ -41,9 +31,6 @@ namespace IS1
 
         [Input("Framerate", DefaultValue = 40, IsSingle = true)]
         IDiffSpread<float> FFramerateIn;
-
-        // [Input("Low Blink Mode", DefaultValue = 0, IsSingle = true)]
-        // IDiffSpread<bool> FLowBlinkMode;
 
         [Input("Update", IsBang = true, DefaultValue = 0, IsSingle = true)]
         IDiffSpread<bool> FUpdateIn;
@@ -81,9 +68,6 @@ namespace IS1
         [Output("Calibration Upper Right")]
         ISpread<Vector3D> FUpperRight;
 
-
-
-
         [Import()]
         ILogger FLogger;
         private IEyetracker FEyetracker;
@@ -109,7 +93,6 @@ namespace IS1
         private CalibrationRunner FCalibrationRunner;
         #endregion fields & pins
 
-
         // called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
@@ -117,18 +100,12 @@ namespace IS1
             if (FInit)
                 FEyetrackerInfoIn.Changed += new SpreadChangedEventHander<EyetrackerInfo>(FEyetrackerInfo_Changed);
 
-            if (!FXConfigSetToOutput)
+            if (!FXConfigSetToOutput && FUpdateIn.IsChanged && FUpdateIn[0] == true)
             {
-                frameCount += 1;
-                if (frameCount > 180 && noXConfCount < 2)
-                {
-                    ReadAndOutputXConfig();
-                }
+                ReadAndOutputXConfig();
             }
-
-            // wenn USB Stecker gezogen, dann FyetrackerInfo == null
-
-            #region Enabled is true
+            
+            // Enabled true
             if ((FConnectionChanged || FEnable.IsChanged) && FEnable[0] == true)
             {
                 try
@@ -155,10 +132,6 @@ namespace IS1
                             ReadAndOutputXConfig();
                         }
                     }
-                    else
-                    {
-                        // FLogger.Log(LogType.Error, "No EyetrackerInfoObject available");
-                    }
                 }
                 catch (EyetrackerException ex)
                 {
@@ -179,10 +152,8 @@ namespace IS1
                     FLogger.Log(LogType.Error, "Could not connect to eyetracker. " + "Connection failed" + "(" + e.Message + ")");
                 }
             }
-            #endregion
-
-
-            #region Enabled Is false
+            
+            // Enabled false
             else if ((FConnectionChanged || FEnable.IsChanged) && FEnable[0] == false)
             {
                 // disconnect and stop eye tracker correctly
@@ -203,14 +174,9 @@ namespace IS1
                 }
                 frameCount = 0;
                 noXConfCount = 0;
-
-
-                // check for slicecount = 0 here?
             }
 
-            #endregion
-
-            #region update by input params
+            // input params changed
             if (FSyncManager != null && FEyetracker != null)
             {
                 if (FFramerateIn.IsChanged)
@@ -218,30 +184,19 @@ namespace IS1
                     FEyetracker.SetFramerate(FFramerateIn[0]);
                 }
 
-                /* if (FLowBlinkMode.IsChanged)
-                {
-                    FEyetracker.SetLowblinkMode(FLowBlinkMode[0]);
-                }
-                */
-
                 if (FUpdateIn.IsChanged && FUpdateIn[0] == true)
                 {
-
                     FSerial[0] = FEyetracker.GetUnitInfo().SerialNumber;
-
                     IList<float> Framerate = FEyetracker.EnumerateFramerates();
                     FFramerates.SliceCount = Framerate.Count;
-
                     if (Framerate.Count == 1)
                     {
                         FCurrentFramerate[0] = Framerate[0];
                     }
-
                     for (int i = 0; i < Framerate.Count; i++)
                     {
                         FFramerates[i] = Framerate[i];
                     }
-
                     try
                     {
                         IList<string> IlluminationModes = FEyetracker.EnumerateIlluminationModes();
@@ -274,24 +229,20 @@ namespace IS1
                     }
                 }
             }
-            #endregion
-
+            
             if (FConnectionChanged && FEyetrackerInfo == null)
             {
                 // Eyetracker has been disconnected, (recognized by error)
-                String s = "disconnected";
             }
 
             if (FEyetrackerInfoIn.IsChanged)
             {
-                // Trackerinfo did change
-
+                
             }
-
-
             FConnectionChanged = false;
             FInit = false;
         }
+
 
         void FEyetracker_FramerateChanged(object sender, FramerateChangedEventArgs e)
         {
@@ -340,7 +291,6 @@ namespace IS1
                 noXConfCount += 1;
             }
         }
-
 
         void FSyncManager_SyncManagerError(object sender, EventArgs e)
         {

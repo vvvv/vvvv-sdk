@@ -3,16 +3,8 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Timers;
-using System.IO;
 
-using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 
 using Tobii.Eyetracking.Sdk;
@@ -28,13 +20,11 @@ namespace IS1
     #endregion PluginInfo
 
 
-
     public class BrowserNode : IPluginEvaluate
     {
-
-        [Input("Update", IsToggle = true, DefaultValue = 0, IsSingle = true)]
+        #region fields & pins
+        [Input("Update", IsBang = true, DefaultValue = 0, IsSingle = true)]
         IDiffSpread<bool> FUpdateIn;
-
 
         [Input("Enable", IsToggle = true, DefaultValue = 0, IsSingle = true)]
         IDiffSpread<bool> FEnable;
@@ -60,6 +50,8 @@ namespace IS1
         [Output("Status")]
         ISpread<string> FStatus;
 
+        [Output("Initialized")]
+        ISpread<bool> FInitialized;
 
         EyetrackerBrowser FEyetrackerBrowser;
         private List<EyetrackerInfo> FEyetrackerInfo = new List<EyetrackerInfo>();
@@ -70,7 +62,15 @@ namespace IS1
         [Import()]
         ILogger FLogger;
 
+        #endregion
+
+        // constructor (init tobii library)
         public BrowserNode()
+        {
+            
+        }
+
+        private void Initialize()
         {
             try
             {
@@ -83,20 +83,16 @@ namespace IS1
             }
             catch (Exception ee)
             {
-                FLogger.Log(LogType.Error, "Failed to initialize Tobii library, seems like tobii sdk is not installed ..");
+                FLogger.Log(LogType.Debug, "Failed to initilize Library: " + ee.Message);
                 FLibraryInitialized = false;
             }
         }
 
-
         // called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
-
-            #region Enable Eyetracker and set handles
             if (FLibraryInitialized)
             {
-
                 if (FEnable.IsChanged && FEnable[0] == true)
                 {
                     FEyetrackerBrowser.Start();
@@ -111,9 +107,6 @@ namespace IS1
                     FModel.SliceCount = FName.SliceCount = FID.SliceCount = FGerneration.SliceCount = FVersion.SliceCount = FStatus.SliceCount = FEyetrackerInfoOut.SliceCount = FEyetrackerInfo.Count;
                     FEyetrackerInfoOut.AssignFrom(FEyetrackerInfo);
 
-                    // int n = FModel.SliceCount;
-                    // String s = "";
-
                     for (int i = 0; i < FEyetrackerInfo.Count; i++)
                     {
                         FModel[i] = FEyetrackerInfo[i].Model;
@@ -122,20 +115,19 @@ namespace IS1
                         FGerneration[i] = FEyetrackerInfo[i].Generation;
                         FVersion[i] = FEyetrackerInfo[i].Version;
                         FStatus[i] = FEyetrackerInfo[i].Status;
-
                     }
-                    if (FEyetrackerInfo.Count == 0)
-                    {
-
-                    }
-
-
                     FUpdate = false;
-            #endregion Enable Eyetracker and set handles
                 }
             }
+            else
+            {
+                if (FEnable[0] == true)
+                    Initialize();
+            }
+            FInitialized[0] = FLibraryInitialized;
         }
 
+        // Eyetracker found
         private void _browser_EyetrackerFound(object sender, EyetrackerInfoEventArgs e)
         {
             FEyetrackerInfo.Add(e.EyetrackerInfo);
@@ -143,8 +135,7 @@ namespace IS1
             FLogger.Log(LogType.Debug, "Eyetracker has been detected");
         }
 
-
-        // react on EyetrackerRemoved
+        // EyetrackerRemoved
         private void _browser_EyetrackerRemoved(object sender, EyetrackerInfoEventArgs e)
         {
             if (FEyetrackerInfo.Contains(e.EyetrackerInfo))
@@ -153,8 +144,7 @@ namespace IS1
             FLogger.Log(LogType.Debug, "Eyetracker has been removed");
         }
 
-
-        // react on EyetrackerUpdated
+        // EyetrackerUpdated
         private void _browser_EyetrackerUpdated(object sender, EyetrackerInfoEventArgs e)
         {
             EyetrackerInfo Info = e.EyetrackerInfo;
@@ -164,7 +154,6 @@ namespace IS1
                 FEyetrackerInfo.RemoveAt(Index);
                 FEyetrackerInfo.Insert(Index, Info);
             }
-
             FUpdate = true;
             FLogger.Log(LogType.Debug, "Eyetracker has been updated");
         }

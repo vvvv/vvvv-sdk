@@ -7,16 +7,9 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Timers;
-using System.IO;
 
-using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 
@@ -104,7 +97,6 @@ namespace IS1
 
         #endregion fields & pins
 
-
         // called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
@@ -163,10 +155,9 @@ namespace IS1
                 FXconfig[0] = XConfig.ToString();
                 CalcXConfigPointsToOutput(FUseInitOffset[0]);
             }
-
-
         }
 
+        // XConfig calculation
         void CalcXConfigPointsToOutput(bool compensateInitOffset)
         {
             Vector3D ll = new Vector3D();
@@ -240,8 +231,6 @@ namespace IS1
             ul = RotateArbitrary(ul, angle, planeCenter, dir);
             ur = RotateArbitrary(ur, angle, planeCenter, dir);
 
-
-
             XConfiguration xConfig = new XConfiguration();
             xConfig.LowerLeft = new Point3D(ll.x * 10, ll.y * 10, ll.z * 10);
             xConfig.UpperLeft = new Point3D(ul.x * 10, ul.y * 10, ul.z * 10);
@@ -254,9 +243,7 @@ namespace IS1
             FXConfiguration[0] = xConfig;
         }
 
-
-        // rotate "point" about the angle "phi" about the line going through "planeCenter" with the direction "dir"
-        // phi comes as degree
+        // rotate "point" about angle "phi" about the line going through "planeCenter" with the direction "dir", phi comes as degree
         private Vector3D RotateArbitrary(Vector3D point, double phi, Vector3D planeCenter, Vector3D dir)
         {
             double x, y, z, a, b, c, u, v, w, fi;
