@@ -72,7 +72,7 @@ namespace VVVV.Core.Commands
             FMainThread = serviceProvider.GetService<SynchronizationContext>();
         }
 
-        public virtual void Insert(Command command)
+        public void Insert(Command command)
         {
             if (command is CompoundCommand)
             {
@@ -82,7 +82,7 @@ namespace VVVV.Core.Commands
             {
                 ExecuteAndInsert(command);
             }
-
+            OnCommandExecuted(command);
         }
 
         private void HandleCompoundCommand(CompoundCommand command)
@@ -125,11 +125,7 @@ namespace VVVV.Core.Commands
                     //Debug.WriteLine(string.Format("Command {0} executed and inserted.", command));
                 },
                 string.Format("Innsertion and execution of command {0}", command));
-
-                if (OnChange != null)
-                    OnChange();
             }
-            
         }
 
         public virtual void OnlyExecute(Command command)
@@ -144,9 +140,6 @@ namespace VVVV.Core.Commands
                     //Debug.WriteLine(string.Format("Command {0} executed.", command));
                 },
                 string.Format("Execution of command {0}", command));
-
-                if (OnChange != null)
-                    OnChange();
             }
 
             //Debug.WriteLine("StackSize: " + FCompoundStack.Count);
@@ -223,7 +216,7 @@ namespace VVVV.Core.Commands
 
 
         //xml from HDE
-        public virtual void ExecuteAndInsert(string xml)
+        public void ExecuteAndInsert(string xml)
         {
             var x = XElement.Parse(xml);
 
@@ -233,7 +226,7 @@ namespace VVVV.Core.Commands
                 ExecuteAndInsert(FSerializer.Deserialize<Command>(x));
         }
 
-        public virtual void OnlyExecute(string xml)
+        public void OnlyExecute(string xml)
         {
             var x = XElement.Parse(xml);
 
@@ -248,7 +241,6 @@ namespace VVVV.Core.Commands
         /// </summary>
         public virtual void Redo()
         {
-
             if (FMainThread != null)
                 FMainThread.Send((state) => PrivateRedo(), null);
             else
@@ -260,7 +252,6 @@ namespace VVVV.Core.Commands
         /// </summary>
         public virtual void Undo()
         {
-
             if (FMainThread != null)
                 FMainThread.Send((state) => PrivateUndo(), null);
             else
@@ -280,8 +271,7 @@ namespace VVVV.Core.Commands
                 },
                 string.Format("Undo of command {0}", command));
 
-                if (OnChange != null)
-                    OnChange();
+                OnCommandExecuted(command);
             }
         }
 
@@ -305,12 +295,17 @@ namespace VVVV.Core.Commands
                 },
                 string.Format("Redo of command {0}", command));
 
-                if (OnChange != null)
-                    OnChange();
+                OnCommandExecuted(command);
             }
         }
-        
-        public Action OnChange {get;set;}
+
+        public event EventHandler<CommandExecutedEventArgs> CommandExecuted;
+
+        protected virtual void OnCommandExecuted(Command cmd)
+        {
+            if (CommandExecuted != null)
+                CommandExecuted(this, new CommandExecutedEventArgs(cmd));
+        }
 
         //IIDItem Interface
         public IIDContainer Parent { get; set; }
