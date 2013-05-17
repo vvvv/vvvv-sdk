@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.5.dtd" >
    <PATCH nodename="C:\Users\type name here\Documents\GitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Calibration (Devices IS1) help.v4p">
-   <BOUNDS type="Window" left="4005" top="2595" width="21825" height="11940">
+   <BOUNDS type="Window" left="7920" top="3270" width="21825" height="12015">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
@@ -34,6 +34,8 @@
    <PIN pinname="File" slicecount="1" values="||">
    </PIN>
    <PIN pinname="OnCalibrationPointChange" visible="1">
+   </PIN>
+   <PIN pinname="Calibration PointsXY" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="4" systemname="IOBox (Node)">
@@ -161,7 +163,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="5">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Calibration Point XYXY|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Calibration PointsXY|">
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
@@ -193,7 +195,7 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7890" top="4545" width="7170" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7890" top="4545" width="2970" height="960">
+   <BOUNDS type="Box" left="7890" top="4545" width="2820" height="915">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|the time in milliseconds every calibration point is being displayed. Setting this to a value lower than 1500 might lead to bad calibration results&cr;&lf;|">
    </PIN>
@@ -205,9 +207,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="12060" top="4680" width="795" height="240">
+   <BOUNDS type="Box" left="12075" top="4515" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="12060" top="4680" width="0" height="0">
+   <BOUNDS type="Node" left="12075" top="4515" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0.05">
    </PIN>
@@ -221,11 +223,11 @@
    <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Calibration Threshold">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="12075" top="3870" width="4620" height="270">
+   <BOUNDS type="Node" left="11235" top="2910" width="4620" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="12075" top="3870" width="1935" height="750">
+   <BOUNDS type="Box" left="11235" top="2910" width="3525" height="1545">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|experimental parameter for improving calibration results , wip|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|(experimental) parameter for improving calibration results. &cr;&lf;All calibration plot items (dataset consisting of &quot;MapLeft, MapRight, True, Validity&quot;) where the length between MapLeft / MapRight point and True point is higher than threshold value, should be removed from calibration result.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -531,9 +533,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="37" systemname="IOBox (String)">
    <BOUNDS type="Node" left="11910" top="10875" width="12585" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="11910" top="10875" width="3795" height="975">
+   <BOUNDS type="Box" left="11910" top="10875" width="3810" height="975">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|TrueXY points are also part of the calibration result. They describe the actual coordinates of the given calibration points and can be used to check the quality of the calibration (see MapLeft/PapRight).|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|TrueXY points are also part of the calibration result. They describe the actual coordinates of the given calibration points and can be used to check the quality of the calibration (see MapLeft/MapRight).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -585,9 +587,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="40" systemname="IOBox (String)">
    <BOUNDS type="Node" left="15975" top="6675" width="7425" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="15975" top="6675" width="2925" height="750">
+   <BOUNDS type="Box" left="15975" top="6675" width="2970" height="960">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|hmm, should be the same as &quot;TrueXY&quot;, currently unable to test because of missing eyetracking device .. shame|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|true calibration points used during calibration, in contrary to output TrueXY these points have no double entries|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -610,4 +612,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Calibration PointsXY">
+   </LINK>
    </PATCH>
