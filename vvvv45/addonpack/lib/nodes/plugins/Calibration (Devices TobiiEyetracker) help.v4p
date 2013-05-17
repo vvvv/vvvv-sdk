@@ -1,13 +1,13 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.5.dtd" >
-   <PATCH nodename="C:\Users\type name here\Documents\GitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Calibration (Devices IS1) help.v4p">
+   <PATCH nodename="C:\Users\type name here\Documents\GitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Calibration (Devices TobiiEyetracker) help.v4p">
    <BOUNDS type="Window" left="7920" top="3270" width="21825" height="12015">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
    </BOUNDS>
-   <BOUNDS type="Box" left="150" top="150" width="5000" height="450">
+   <BOUNDS type="Box" left="150" top="150" width="5610" height="450">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calibration (Devices IS1)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calibration (Devices TobiiEyetracker)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -19,23 +19,9 @@
    </BOUNDS>
    <BOUNDS type="Box" left="150" top="550" width="5000" height="500">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calibration for Eyetracker IS1|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calibration for Tobii Eyetracker|">
    </PIN>
    <PIN pinname="Output String" visible="0">
-   </PIN>
-   </NODE>
-   <NODE nodename="Calibration (Devices IS1)" componentmode="Hidden" id="0" systemname="Calibration (Devices IS1)" filename="%VVVV%\addonpack\lib\nodes\plugins\IS1.dll">
-   <BOUNDS type="Node" left="655" top="6095" width="14505" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="655" top="6095" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Calibration Point XYXY" slicecount="2" visible="1" values="0.1,0.1">
-   </PIN>
-   <PIN pinname="File" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="OnCalibrationPointChange" visible="1">
-   </PIN>
-   <PIN pinname="Calibration PointsXY" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="4" systemname="IOBox (Node)">
@@ -48,8 +34,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Device">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="0" dstpinname="Device" linkstyle="PolyLine">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
    <BOUNDS type="Node" left="345" top="1695" width="12960" height="270">
    </BOUNDS>
@@ -84,8 +68,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Calibrate">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Calibrate">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="7" systemname="IOBox (String)">
    <BOUNDS type="Node" left="2490" top="2910" width="3450" height="270">
    </BOUNDS>
@@ -118,8 +100,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Cancel">
    </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Cancel">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="9" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4245" top="3720" width="2460" height="270">
    </BOUNDS>
@@ -174,8 +154,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Calibration Point XYXY">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7890" top="5520" width="795" height="240">
    </BOUNDS>
@@ -190,8 +168,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Interval">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Interval">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7890" top="4545" width="7170" height="270">
    </BOUNDS>
@@ -220,8 +196,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Calibration Threshold|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Calibration Threshold">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
    <BOUNDS type="Node" left="11235" top="2910" width="4620" height="270">
    </BOUNDS>
@@ -254,8 +228,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Save">
    </PIN>
    </NODE>
-   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Save">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="18" systemname="IOBox (String)">
    <BOUNDS type="Node" left="15870" top="3900" width="4605" height="270">
    </BOUNDS>
@@ -288,8 +260,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Load">
    </PIN>
    </NODE>
-   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Load">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
    <BOUNDS type="Node" left="17205" top="4380" width="2805" height="270">
    </BOUNDS>
@@ -322,8 +292,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="File">
    </PIN>
    </NODE>
-   <LINK srcnodeid="22" srcpinname="Output String" dstnodeid="0" dstpinname="File">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
    <BOUNDS type="Node" left="17235" top="5445" width="3270" height="270">
    </BOUNDS>
@@ -354,8 +322,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="State">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="State" dstnodeid="24" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="25" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="2265" top="6720" width="480" height="480">
    </BOUNDS>
@@ -372,8 +338,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Collecting gaze samples|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Collecting gaze samples" dstnodeid="25" dstpinname="Y Input Value">
-   </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="28">
    <BOUNDS type="Node" left="5460" top="7395" width="100" height="100">
    </BOUNDS>
@@ -383,13 +347,11 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="OnCalibrationPointChange">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="OnCalibrationPointChange" dstnodeid="28" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6000" top="7380" width="2895" height="270">
    </BOUNDS>
@@ -420,8 +382,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Last Calibration succesful|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Last Calibration succesful" dstnodeid="30" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7095" top="9435" width="795" height="480">
    </BOUNDS>
@@ -435,13 +395,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="PointXY">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="PointXY" dstnodeid="31" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7905" top="9435" width="10815" height="270">
    </BOUNDS>
@@ -469,13 +427,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Map LeftXY|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Map LeftXY" dstnodeid="33" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="34" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="10305" top="8535" width="795" height="480">
    </BOUNDS>
@@ -489,13 +445,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Map RightXY|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Map RightXY" dstnodeid="34" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
    <BOUNDS type="Node" left="8610" top="6645" width="19440" height="270">
    </BOUNDS>
@@ -523,13 +477,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="TrueXY">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="TrueXY" dstnodeid="36" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="37" systemname="IOBox (String)">
    <BOUNDS type="Node" left="11910" top="10875" width="12585" height="270">
    </BOUNDS>
@@ -557,13 +509,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="ValidityXY">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="ValidityXY" dstnodeid="38" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="39" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="15105" top="6675" width="795" height="480">
    </BOUNDS>
@@ -577,13 +527,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|True Calibration PointsXY|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="True Calibration PointsXY" dstnodeid="39" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="40" systemname="IOBox (String)">
    <BOUNDS type="Node" left="15975" top="6675" width="7425" height="270">
    </BOUNDS>
@@ -612,6 +560,56 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="Calibration (Devices TobiiEyetracker)" componentmode="Hidden" id="0" systemname="Calibration (Devices TobiiEyetracker)" filename="%VVVV%\addonpack\lib\nodes\plugins\TobiiEyetracker.dll">
+   <BOUNDS type="Node" left="655" top="6095" width="14505" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="655" top="6095" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Calibration Point XYXY" visible="1">
+   </PIN>
+   <PIN pinname="File">
+   </PIN>
+   <PIN pinname="OnCalibrationPointChange" visible="1">
+   </PIN>
+   <PIN pinname="Calibration PointsXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="0" dstpinname="Device" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Calibrate">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Cancel">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Interval">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Calibration Threshold">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Save">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Load">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Output String" dstnodeid="0" dstpinname="File">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="State" dstnodeid="24" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Collecting gaze samples" dstnodeid="25" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="OnCalibrationPointChange" dstnodeid="28" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Last Calibration succesful" dstnodeid="30" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="PointXY" dstnodeid="31" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Map LeftXY" dstnodeid="33" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Map RightXY" dstnodeid="34" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="TrueXY" dstnodeid="36" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="ValidityXY" dstnodeid="38" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="True Calibration PointsXY" dstnodeid="39" dstpinname="Y Input Value">
+   </LINK>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Calibration PointsXY">
    </LINK>
    </PATCH>

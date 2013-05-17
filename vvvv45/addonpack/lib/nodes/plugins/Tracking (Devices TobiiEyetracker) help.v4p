@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.5.dtd" >
-   <PATCH nodename="C:\Users\type name here\Documents\GitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Tracking (Devices IS1) help.v4p">
+   <PATCH nodename="C:\Users\type name here\Documents\GitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Tracking (Devices TobiiEyetracker) help.v4p">
    <BOUNDS type="Window" left="10260" top="2970" width="18000" height="13035">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -7,7 +7,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="150" top="150" width="5000" height="450">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tracking (Devices IS1)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tracking (Devices TobiiEyetracker)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -19,16 +19,10 @@
    </BOUNDS>
    <BOUNDS type="Box" left="150" top="550" width="5000" height="500">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Eyetracker IS1 Node|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tobii Eyetracker Tracking Node|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   </NODE>
-   <NODE nodename="Tracking (Devices IS1)" componentmode="Hidden" id="0" systemname="Tracking (Devices IS1)" filename="%VVVV%\addonpack\lib\nodes\plugins\IS1.dll">
-   <BOUNDS type="Node" left="190" top="4925" width="15705" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="190" top="4925" width="0" height="0">
-   </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="4" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="195" top="3120" width="795" height="240">
@@ -40,8 +34,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Device">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="0" dstpinname="Device">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
    <BOUNDS type="Node" left="210" top="2520" width="8310" height="270">
    </BOUNDS>
@@ -84,8 +76,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="TimeStamp">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="TimeStamp" dstnodeid="7" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="8" systemname="IOBox (String)">
    <BOUNDS type="Node" left="285" top="5640" width="3390" height="270">
    </BOUNDS>
@@ -113,13 +103,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Left Eye PosXYZ|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Left Eye PosXYZ" dstnodeid="9" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
    <BOUNDS type="Node" left="1545" top="8745" width="5190" height="270">
    </BOUNDS>
@@ -147,13 +135,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Right Eye PosXYZ|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Right Eye PosXYZ" dstnodeid="13" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="4470" top="7440" width="795" height="720">
    </BOUNDS>
@@ -167,13 +153,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Left Eye Pos RelXYZ|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Left Eye Pos RelXYZ" dstnodeid="14" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5895" top="7680" width="795" height="720">
    </BOUNDS>
@@ -187,13 +171,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Right Eye Pos RelXYZ|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Right Eye Pos RelXYZ" dstnodeid="15" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4245" top="6360" width="5190" height="270">
    </BOUNDS>
@@ -221,13 +203,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Left Eye Gaze PointXYZ|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Left Eye Gaze PointXYZ" dstnodeid="17" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="18" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8715" top="10410" width="795" height="720">
    </BOUNDS>
@@ -241,13 +221,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Right Eye Gaze PointXYZ|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Right Eye Gaze PointXYZ" dstnodeid="18" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7200" top="8340" width="5190" height="270">
    </BOUNDS>
@@ -275,13 +253,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Gaze Point 2DXY|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Gaze Point 2DXY" dstnodeid="20" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
    <BOUNDS type="Node" left="10185" top="5955" width="4395" height="270">
    </BOUNDS>
@@ -310,8 +286,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Left Eye Validity|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Left Eye Validity" dstnodeid="22" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="13005" top="9510" width="795" height="240">
    </BOUNDS>
@@ -326,8 +300,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Right Eye Validity|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Right Eye Validity" dstnodeid="23" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
    <BOUNDS type="Node" left="11535" top="8055" width="4860" height="1320">
    </BOUNDS>
@@ -354,8 +326,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Left Eye Pupil Diameter|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Left Eye Pupil Diameter" dstnodeid="25" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="26" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="15840" top="6975" width="795" height="240">
    </BOUNDS>
@@ -368,8 +338,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Right Eye Pupil Diameter|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Right Eye Pupil Diameter" dstnodeid="26" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)">
    <BOUNDS type="Node" left="14325" top="5970" width="4380" height="270">
    </BOUNDS>
@@ -402,8 +370,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
    </PIN>
    </NODE>
-   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Enable">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
    <BOUNDS type="Node" left="16380" top="3120" width="3075" height="270">
    </BOUNDS>
@@ -418,4 +384,38 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="Tracking (Devices TobiiEyetracker)" componentmode="Hidden" id="0" systemname="Tracking (Devices TobiiEyetracker)" filename="%VVVV%\addonpack\lib\nodes\plugins\TobiiEyetracker.dll">
+   <BOUNDS type="Node" left="190" top="4925" width="15705" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="190" top="4925" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="0" dstpinname="Device">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="TimeStamp" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Left Eye PosXYZ" dstnodeid="9" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Right Eye PosXYZ" dstnodeid="13" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Left Eye Pos RelXYZ" dstnodeid="14" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Right Eye Pos RelXYZ" dstnodeid="15" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Left Eye Gaze PointXYZ" dstnodeid="17" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Right Eye Gaze PointXYZ" dstnodeid="18" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Gaze Point 2DXY" dstnodeid="20" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Left Eye Validity" dstnodeid="22" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Right Eye Validity" dstnodeid="23" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Left Eye Pupil Diameter" dstnodeid="25" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Right Eye Pupil Diameter" dstnodeid="26" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Enable">
+   </LINK>
    </PATCH>

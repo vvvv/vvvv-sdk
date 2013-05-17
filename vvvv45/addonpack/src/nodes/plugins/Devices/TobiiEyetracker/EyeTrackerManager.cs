@@ -15,7 +15,7 @@ using Tobii.Eyetracking.Sdk.Time;
 #endregion
 
 //TODO: Clean me up
-namespace IS1
+namespace TobiiEyetracker
 {
     public class EyetrackerManager : IDisposable
     {

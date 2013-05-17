@@ -5,7 +5,7 @@ using System.Text;
 
 using Tobii.Eyetracking.Sdk;
 
-namespace IS1
+namespace TobiiEyetracker
 {
     public class Constants
     {

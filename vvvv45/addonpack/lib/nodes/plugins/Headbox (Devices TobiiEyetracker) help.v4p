@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.5.dtd" >
-   <PATCH nodename="C:\Users\type name here\Documents\GitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Headbox (Devices IS1) help.v4p">
+   <PATCH nodename="C:\Users\type name here\Documents\GitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Headbox (Devices TobiiEyetracker) help.v4p">
    <BOUNDS type="Window" left="8445" top="4065" width="11400" height="11070">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -19,14 +19,10 @@
    </BOUNDS>
    <BOUNDS type="Box" left="150" top="550" width="5000" height="500">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Eyetracker IS1 Node|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|TobiiEyetracker Headbox Node|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   </NODE>
-   <NODE systemname="Headbox (Devices IS1)" filename="%VVVV%\addonpack\lib\nodes\plugins\IS1.dll" nodename="Headbox (Devices IS1)" componentmode="Hidden" id="11">
-   <BOUNDS type="Node" left="1245" top="4620" width="100" height="100">
-   </BOUNDS>
    </NODE>
    <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="180" top="1290" type="Node" width="570">
@@ -62,8 +58,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Enable">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="8" systemname="IOBox (String)">
    <BOUNDS type="Node" left="3480" top="4320" width="3900" height="270">
    </BOUNDS>
@@ -88,8 +82,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Device">
    </PIN>
    </NODE>
-   <LINK srcnodeid="7" srcpinname="Output Node" dstnodeid="11" dstpinname="Device">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="6" systemname="IOBox (String)">
    <BOUNDS type="Node" left="1245" top="2700" width="7635" height="270">
    </BOUNDS>
@@ -117,13 +109,11 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="OutputXYZ">
    </PIN>
    </NODE>
-   <LINK srcnodeid="11" srcpinname="OutputXYZ" dstnodeid="5" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="4" systemname="IOBox (String)">
    <BOUNDS type="Node" left="2070" top="5265" width="6330" height="270">
    </BOUNDS>
@@ -138,4 +128,14 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Headbox (Devices TobiiEyetracker)" filename="%VVVV%\addonpack\lib\nodes\plugins\TobiiEyetracker.dll" nodename="Headbox (Devices TobiiEyetracker)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="1245" top="4620" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Enable">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Output Node" dstnodeid="11" dstpinname="Device">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="OutputXYZ" dstnodeid="5" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>

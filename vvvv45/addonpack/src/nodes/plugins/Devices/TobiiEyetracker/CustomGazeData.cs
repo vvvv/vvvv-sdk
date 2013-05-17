@@ -4,7 +4,7 @@ using VVVV.Utils.VMath;
 using Tobii.Eyetracking.Sdk;
 #endregion
 
-namespace IS1
+namespace TobiiEyetracker
 {
     public class CustomGazeData
     {

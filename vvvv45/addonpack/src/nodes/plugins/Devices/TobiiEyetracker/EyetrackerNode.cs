@@ -15,13 +15,13 @@ using Tobii.Eyetracking.Sdk.Time;
 #endregion usings
 
 
-namespace IS1
+namespace TobiiEyetracker
 {
     #region PluginInfo
-    [PluginInfo(Name = "Eyetracker", Category = "Devices", Version = "IS1", Help = "Eyetracker IS1 Node", Tags = "tobii,tracking", Author = "niggos, phlegma")]
+    [PluginInfo(Name = "Eyetracker", Category = "Devices", Version = "TobiiEyetracker", Help = "Tobii Eyetracker Node", Tags = "", Author = "niggos, phlegma")]
     #endregion PluginInfo
 
-    public class IS1 : IPluginEvaluate
+    public class TobiiEyetracker : IPluginEvaluate
     {
 
         #region fields & pins

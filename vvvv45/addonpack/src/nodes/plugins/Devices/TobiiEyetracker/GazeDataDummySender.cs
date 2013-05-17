@@ -3,7 +3,7 @@ using System.Timers;
 
 using VVVV.Utils.VMath;
 
-namespace IS1
+namespace TobiiEyetracker
 {
     public class GazeDataDummySender
     {

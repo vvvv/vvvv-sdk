@@ -17,10 +17,10 @@ using Tobii.Eyetracking.Sdk.Exceptions;
 #endregion usings
 
 
-namespace IS1
+namespace TobiiEyetracker
 {
     #region PluginInfo
-    [PluginInfo(Name = "Headbox", Category = "Devices", Version = "IS1", Help = "Eyetracker IS1 Node", Tags = "")]
+    [PluginInfo(Name = "Headbox", Category = "Devices", Version = "TobiiEyetracker", Help = "Headbox of a Tobii Eyetracker", Tags = "", Author = "niggos, phlegma")]
     #endregion PluginInfo
 
     public class HeadboxNode : IPluginEvaluate
@@ -51,7 +51,6 @@ namespace IS1
         private bool Finit = true;
 
         #endregion fields & pins
-
 
         // called when data for any output pin is requested
         public void Evaluate(int SpreadMax)

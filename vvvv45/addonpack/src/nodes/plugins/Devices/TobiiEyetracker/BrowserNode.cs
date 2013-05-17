@@ -13,10 +13,10 @@ using Tobii.Eyetracking.Sdk.Exceptions;
 #endregion usings
 
 
-namespace IS1
+namespace TobiiEyetracker
 {
     #region PluginInfo
-    [PluginInfo(Name = "Browser", Category = "Devices", Version = "IS1", Help = "Eyetracker IS1 Node", Tags = "tobii,tracking", Author = "niggos, phlegma")]
+    [PluginInfo(Name = "Browser", Category = "Devices", Version = "TobiiEyetracker", Help = "TobiiEyetracker Browser Node", Tags = "", Author = "niggos, phlegma")]
     #endregion PluginInfo
 
 

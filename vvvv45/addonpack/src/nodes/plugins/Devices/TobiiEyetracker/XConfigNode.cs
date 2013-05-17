@@ -19,10 +19,10 @@ using Tobii.Eyetracking.Sdk.Exceptions;
 #endregion usings
 
 
-namespace IS1
+namespace TobiiEyetracker
 {
     #region PluginInfo
-    [PluginInfo(Name = "XConfig", Category = "Devices", Version = "IS1", Help = "Eyetracker IS1 Node", Tags = "")]
+    [PluginInfo(Name = "XConfig", Category = "Devices", Version = "TobiiEyetracker", Help = "Tobii Eyetracker XConfiguration Node", Tags = "", Author = "niggos, phlegma")]
     #endregion PluginInfo
 
 

@@ -22,10 +22,10 @@ using Tobii.Eyetracking.Sdk.Exceptions;
 #endregion usings
 
 
-namespace IS1
+namespace TobiiEyetracker
 {
     #region PluginInfo
-    [PluginInfo(Name = "Calibration", Category = "Devices", Version = "IS1", Help = "Calibration for Eyetracker IS1", Tags = "Eytracker, Tobii")]
+    [PluginInfo(Name = "Calibration", Category = "Devices", Version = "TobiiEyetracker", Help = "Calibration for Tobii Eyetracker", Tags = "", Author = "niggos, phlegma")]
     #endregion PluginInfo
 
 
