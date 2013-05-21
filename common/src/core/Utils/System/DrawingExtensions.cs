@@ -21,6 +21,26 @@ namespace System.Drawing
         }
 
         /// <summary>
+        /// Returns the bounds of the given rectangle cloud.
+        /// </summary>
+        public static RectangleF GetBounds(this IEnumerable<RectangleF> bounds)
+        {
+            var top = bounds.Min(b => b.Top);
+            var bottom = bounds.Max(b => b.Bottom);
+            var left = bounds.Min(b => b.Left);
+            var right = bounds.Max(b => b.Right);
+            return RectangleF.FromLTRB(left, top, right, bottom);
+        }
+
+        /// <summary>
+        /// Returns the area.
+        /// </summary>
+        public static float Area(this SizeF size)
+        {
+            return size.Width * size.Height;
+        }
+
+        /// <summary>
         /// Returns the center of this RectangleF.
         /// </summary>
         public static PointF GetCenter(this RectangleF rect)

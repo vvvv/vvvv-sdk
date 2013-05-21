@@ -138,6 +138,14 @@ namespace VVVV.HDE.GraphicalEditing
             }
         }
 
+        public RectangleF FullBounds
+        {
+            get
+            {
+                return PNode.FullBounds;
+            }
+        }
+
         protected PositionMode FPositionMode;
         public virtual PositionMode PositionMode
         {
