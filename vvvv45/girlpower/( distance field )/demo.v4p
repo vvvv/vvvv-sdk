@@ -3,9 +3,9 @@
    <BOUNDS type="Window" left="9810" top="570" width="4770" height="8760">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="0">
-   <BOUNDS type="Node" left="1245" top="7125" width="100" height="100">
+   <BOUNDS type="Node" left="1695" top="7125" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1245" top="7125" width="2400" height="1800">
+   <BOUNDS type="Box" left="1695" top="7125" width="2400" height="1800">
    </BOUNDS>
    <BOUNDS type="Window" left="975" top="570" width="8820" height="8775">
    </BOUNDS>
@@ -13,7 +13,7 @@
    </PIN>
    </NODE>
    <NODE systemname="DistanceField2dDemo (EX9.Effect)" filename="%VVVV%\girlpower\( distance field )\effects\DistanceField2dDemo.fx" nodename="DistanceField2dDemo (EX9.Effect)" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="1260" top="6510" width="100" height="100">
+   <BOUNDS type="Node" left="1710" top="6510" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -25,7 +25,7 @@
    <LINK srcnodeid="1" srcpinname="Layer" dstnodeid="0" dstpinname="Layers">
    </LINK>
    <NODE systemname="Grid (EX9.Geometry)" nodename="Grid (EX9.Geometry)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="1545" top="5880" width="100" height="100">
+   <BOUNDS type="Node" left="1995" top="5880" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
@@ -33,7 +33,7 @@
    <LINK srcnodeid="2" srcpinname="Mesh" dstnodeid="1" dstpinname="Mesh">
    </LINK>
    <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="3">
-   <BOUNDS type="Node" left="2094" top="4935" width="100" height="100">
+   <BOUNDS type="Node" left="2544" top="4935" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -41,7 +41,7 @@
    </PIN>
    </NODE>
    <NODE systemname="WaveShaper (Value)" nodename="WaveShaper (Value)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="2094" top="5385" width="100" height="100">
+   <BOUNDS type="Node" left="2544" top="5385" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Shape" slicecount="1" values="Triangle">
    </PIN>
@@ -53,7 +53,7 @@
    <LINK srcnodeid="3" srcpinname="Output" dstnodeid="4" dstpinname="Input">
    </LINK>
    <NODE systemname="Map (Value)" nodename="Map (Value)" componentmode="Hidden" id="5">
-   <BOUNDS type="Node" left="2100" top="5880" width="100" height="100">
+   <BOUNDS type="Node" left="2550" top="5880" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -69,9 +69,9 @@
    <LINK srcnodeid="5" srcpinname="Output" dstnodeid="1" dstpinname="ShrinkAmount">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="6" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Node" left="2415" top="3180" width="0" height="0">
+   <BOUNDS type="Node" left="2865" top="3180" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="2415" top="3180" width="915" height="1140">
+   <BOUNDS type="Box" left="2865" top="3180" width="915" height="1140">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="| TShape4|">
    </PIN>
@@ -105,11 +105,11 @@
    </BOUNDS>
    <BOUNDS type="Box" left="600" top="1005" width="3480" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="-1" slicecount="1" values="http://vvvv.org/documentation/change-log" pintype="Input">
+   <PIN pinname="Input String" visible="-1" slicecount="1" pintype="Input" values="http://vvvv.org/documentation/change-log">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
+   <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
@@ -119,7 +119,35 @@
    </BOUNDS>
    <BOUNDS type="Box" left="600" top="705" width="1290" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|for changes see:|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for changes see|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="600" top="1755" width="3255" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="1755" width="3480" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="-1" slicecount="1" pintype="Input" values="http://vvvv.org/documentation/tutorials">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="600" top="1455" width="1290" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="1455" width="1860" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for getting started see|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
