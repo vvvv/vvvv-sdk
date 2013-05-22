@@ -53,7 +53,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         public bool ShowPlusMinus{get{return FTreeView.ShowPlusMinus;}set{FTreeView.ShowPlusMinus = value;}}
         public bool ShowRootLines{get{return FTreeView.ShowRootLines;}set{FTreeView.ShowRootLines = value;}}
         public bool ShowLines{get{return FTreeView.ShowLines;}set{FTreeView.ShowLines = value;}}
-        public Font Font { get { return FTreeView.Font; } set { FTreeView.Font = value; } }
+        public override Font Font { get { return FTreeView.Font; } set { FTreeView.Font = value; } }
         
         [Browsable(true), DefaultValue(typeof(System.Drawing.Color), "Silver")]
         public override Color BackColor
