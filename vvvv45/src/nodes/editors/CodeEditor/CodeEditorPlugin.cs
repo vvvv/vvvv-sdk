@@ -522,7 +522,7 @@ namespace VVVV.HDE.CodeEditor
             ClearRuntimeError();
             
             var results = args.CompilerResults;
-            if (results != null && results.Errors.HasErrors)
+            if (results != null && (results.Errors.HasErrors || results.Errors.HasWarnings))
             {
                 var compilerErrors =
                     from CompilerError error in results.Errors
