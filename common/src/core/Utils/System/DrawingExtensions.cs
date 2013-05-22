@@ -91,5 +91,13 @@ namespace System.Drawing
             float y = from.Y - to.Y;
             return (float)Math.Sqrt(x * x + y * y);
         }
+
+        public static IEnumerable<PointF> GetVertices(this RectangleF rectangle)
+        {
+            yield return new PointF(rectangle.Left, rectangle.Top);
+            yield return new PointF(rectangle.Right, rectangle.Top);
+            yield return new PointF(rectangle.Right, rectangle.Bottom);
+            yield return new PointF(rectangle.Left, rectangle.Bottom);
+        }
     }
 }
