@@ -99,5 +99,12 @@ namespace System.Drawing
             yield return new PointF(rectangle.Right, rectangle.Bottom);
             yield return new PointF(rectangle.Left, rectangle.Bottom);
         }
+
+        public static IEnumerable<PointF> GetVertices(this IEnumerable<RectangleF> rectangles)
+        {
+            foreach (var rectangle in rectangles)
+                foreach (var vertex in rectangle.GetVertices())
+                    yield return vertex;
+        }
     }
 }
