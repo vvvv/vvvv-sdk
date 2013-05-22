@@ -298,9 +298,7 @@ namespace VVVV.HDE.GraphicalEditing
             
             if (IsScrollable)
             {
-                PNode.MouseDown += PNode_ScrollableMouseDown;
                 PNode.MouseDrag += PNode_ScrollableMouseDrag;
-                PNode.MouseUp += PNode_ScrollableMouseUp;
             }
 
             InitialBounds = PNode.Bounds;
@@ -345,13 +343,19 @@ namespace VVVV.HDE.GraphicalEditing
         {
             FMouseDownPos = Cursor.Position;
             if (PreventEvent(e)) return;
-            Clickable.MouseDown(e.Position, Helpers.GetButton(e));
+            if (IsClickable)
+                Clickable.MouseDown(e.Position, Helpers.GetButton(e));
+            else if (IsScrollable)
+                Scrollable.MouseDown(e.Position, Helpers.GetButton(e));
         }
 
         void PNode_MouseUp(object sender, PInputEventArgs e)
         {
             if (PreventEvent(e)) return;
-            Clickable.MouseUp(e.Position, Helpers.GetButton(e));
+            if (IsClickable)
+                Clickable.MouseUp(e.Position, Helpers.GetButton(e));
+            else if (IsScrollable)
+                Scrollable.MouseUp(e.Position, Helpers.GetButton(e));
         }
         #endregion clickable
         
@@ -378,23 +382,10 @@ namespace VVVV.HDE.GraphicalEditing
         #endregion hoverable
         
         #region scrollable
-        void PNode_ScrollableMouseDown(object sender, PInputEventArgs e)
-        {
-            FMouseDownPos = Cursor.Position;
-            if (PreventEvent(e)) return;
-            Scrollable.MouseDown(e.Position, Helpers.GetButton(e));
-        }
-
         void PNode_ScrollableMouseDrag(object sender, PInputEventArgs e)
         {
             if (PreventEvent(e)) return;
             Scrollable.MouseMove(e.Position, Helpers.GetButton(e));
-        }
-        
-        void PNode_ScrollableMouseUp(object sender, PInputEventArgs e)
-        {
-            if (PreventEvent(e)) return;
-            Scrollable.MouseUp(e.Position, Helpers.GetButton(e));
         }
         #endregion scrollable
 
