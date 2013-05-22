@@ -99,9 +99,10 @@ namespace VVVV.Hosting.Factories
                     
                     // Parse lines from the file until the end of
                     // the file is reached.
+                    //note: this may still return false positives is t10 or t11 is mentioned within a /**/ comment
                     while ((line = sr.ReadLine()) != null)
                     {
-                    	if (line.Contains(t10) || line.Contains(t11))
+                    	if ((line.Contains(t10) || line.Contains(t11)) && !line.Trim().StartsWith("//"))
                     	{
                     		isDX9 = false;
                     		break;
