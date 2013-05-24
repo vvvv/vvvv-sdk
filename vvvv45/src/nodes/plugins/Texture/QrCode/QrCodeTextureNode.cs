@@ -47,30 +47,30 @@ namespace VVVV.Nodes
 		}
 
 		[Input("Text", DefaultString = "vvvv")]
-		ISpread<string> FText;
+        public ISpread<string> FText;
 		
 		[Input("Pixel Size", DefaultValue = 5, MinValue = 1)]
-		ISpread<int> FPixelSize;
+        public ISpread<int> FPixelSize;
 		
 		[Input("Back Color", DefaultColor = new double[] {1, 1, 1, 1})]
-		IDiffSpread<RGBAColor> FBackColor;
+        public IDiffSpread<RGBAColor> FBackColor;
 
 		[Input("Fore Color", DefaultColor = new double[] {0, 0, 0, 1})]
-		IDiffSpread<RGBAColor> FForeColor;
+        public IDiffSpread<RGBAColor> FForeColor;
 		
 		[Input("Error Correction Level", DefaultEnumEntry="H", Visibility=PinVisibility.OnlyInspector)]
-		ISpread<ErrorCorrectionLevel> FErrorCorrectionLevel;
+        public ISpread<ErrorCorrectionLevel> FErrorCorrectionLevel;
 		
 		[Input("Quiet Zone Modules", DefaultEnumEntry="Two", Visibility=PinVisibility.OnlyInspector)]
-		ISpread<QuietZoneModules> FQuietZoneModules;
+        public ISpread<QuietZoneModules> FQuietZoneModules;
 		
 		[Output("Texture Out")]
-		ISpread<TextureResource<Info>> FTextureOut;
+        ISpread<TextureResource<Info>> FTextureOut;
 		
 		private MemoryStream FMemoryStream;
 
 		[Import()]
-		ILogger FLogger;
+        public ILogger FLogger;
 
 		public void OnImportsSatisfied()
 		{

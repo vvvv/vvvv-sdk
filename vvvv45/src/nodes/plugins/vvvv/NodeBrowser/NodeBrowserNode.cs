@@ -668,8 +668,6 @@ namespace VVVV.Nodes.NodeBrowser
         #region TagsTextBox
         void FTagsTextBoxTextChanged(object sender, EventArgs e)
         {
-        	var CLineHeight = 13;
-
         	if (FNodeTagPanel.Visible)
         	{
         		FNodeTagPanel.DoTextChanged();

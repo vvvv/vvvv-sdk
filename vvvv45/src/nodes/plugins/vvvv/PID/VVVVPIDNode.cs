@@ -22,7 +22,7 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Output("ID", IsSingle=true)]
-		ISpread<int> FOutput;
+        public ISpread<int> FOutput;
 		#endregion fields & pins
 
 		//called when data for any output pin is requested
