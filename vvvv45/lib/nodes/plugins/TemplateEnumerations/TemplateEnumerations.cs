@@ -24,22 +24,22 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Input", EnumName = "MyDynamicEnum")]
-		IDiffSpread<EnumEntry> FInput;
+        public IDiffSpread<EnumEntry> FInput;
 
 		[Input("UpdateEnum", IsBang = true)]
-		ISpread<bool> FChangeEnum;
+        public ISpread<bool> FChangeEnum;
 
 		[Input("Enum Entries")]
-		ISpread<string> FEnumStrings;
+        public ISpread<string> FEnumStrings;
 		
 		[Output("Name")]
-		ISpread<string> FNameOutput;
+        public ISpread<string> FNameOutput;
 		
 		[Output("Index")]
-		ISpread<int> FOrdOutput;
+        public ISpread<int> FOrdOutput;
 
 		[Import()]
-		ILogger Flogger;
+        public ILogger Flogger;
 		#endregion fields & pins
 		
 		//add some entries to the enum in the constructor

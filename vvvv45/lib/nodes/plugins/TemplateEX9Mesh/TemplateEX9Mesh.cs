@@ -35,19 +35,19 @@ namespace VVVV.Nodes
 		#region fields & pins
 		
         [Input("Randomize")]
-		ISpread<Vector3> FRandomizeIn;
+        public ISpread<Vector3> FRandomizeIn;
 		
 		[Input("Reset", IsBang = true)]
-		ISpread<bool> FResetIn;
+        public ISpread<bool> FResetIn;
 
 		[Input("Resolution", DefaultValue = 20, IsSingle = true)]
-		ISpread<int> FResoIn;
-		
-		[Output("Mesh")]
-		ISpread<MeshResource<MeshData>> FMeshOut;
+        public ISpread<int> FResoIn;
+
+        [Output("Mesh")]
+        ISpread<MeshResource<MeshData>> FMeshOut;
 
 		[Import()]
-		ILogger FLogger;
+        public ILogger FLogger;
 
 		#endregion fields & pins
 		

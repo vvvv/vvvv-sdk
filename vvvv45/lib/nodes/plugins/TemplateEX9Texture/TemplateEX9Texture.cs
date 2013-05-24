@@ -40,19 +40,19 @@ namespace VVVV.Nodes
 		}
 		
 		[Input("Wave Count", DefaultValue = 1)]
-		ISpread<double> FWaveCountIn;
+        public ISpread<double> FWaveCountIn;
 		
 		[Input("Width", DefaultValue = 64, MinValue = 1)]
-		ISpread<int> FWidthIn;
+        public ISpread<int> FWidthIn;
 
 		[Input("Height", DefaultValue = 64, MinValue = 1)]
-		ISpread<int> FHeightIn;
-		
-		[Output("Texture Out")]
-		ISpread<TextureResource<Info>> FTextureOut;
+        public ISpread<int> FHeightIn;
 
-		[Import]
-		ILogger FLogger;
+        [Output("Texture Out")]
+        ISpread<TextureResource<Info>> FTextureOut;
+
+        [Import]
+        public ILogger FLogger;
 		
 		public void OnImportsSatisfied()
 		{

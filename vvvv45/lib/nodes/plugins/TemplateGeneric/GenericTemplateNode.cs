@@ -24,7 +24,7 @@ namespace VVVV.Nodes
 		}
 		
 		[Output("Output")]
-		ISpread<Func<DerivedObject>> FOutput;
+        ISpread<Func<DerivedObject>> FOutput;
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
@@ -37,10 +37,10 @@ namespace VVVV.Nodes
 	public class GenericTemplateSinkNode : IPluginEvaluate
 	{
 		[Input("Input")]
-		ISpread<Func<object>> FInput;
+        public ISpread<Func<object>> FInput;
 		
 		[Output("Name")]
-		ISpread<string> FOutput;
+        public ISpread<string> FOutput;
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
