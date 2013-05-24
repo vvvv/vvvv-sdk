@@ -26,7 +26,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class Template : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
-		class MeshData
+		public class MeshData
 		{
 			public Vector3 Randomness;
 			public int Resolution;
@@ -44,7 +44,7 @@ namespace VVVV.Nodes
         public ISpread<int> FResoIn;
 
         [Output("Mesh")]
-        ISpread<MeshResource<MeshData>> FMeshOut;
+        public ISpread<MeshResource<MeshData>> FMeshOut;
 
 		[Import()]
         public ILogger FLogger;

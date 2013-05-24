@@ -15,7 +15,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Template", Category = "Node", Version = "Source", Help = "Basic template with one value in/out", Tags = "")]
 	public class GenericTemplateSourceNode : IPluginEvaluate
 	{
-		class DerivedObject
+		public class DerivedObject
 		{
 			public override string ToString()
 			{
@@ -24,7 +24,7 @@ namespace VVVV.Nodes
 		}
 		
 		[Output("Output")]
-        ISpread<Func<DerivedObject>> FOutput;
+        public ISpread<Func<DerivedObject>> FOutput;
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)

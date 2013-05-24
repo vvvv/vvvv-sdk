@@ -31,7 +31,7 @@ namespace VVVV.Nodes
 	{
 		//little helper class used to store information for each
 		//texture resource
-		class Info
+		public class Info
 		{
 			public int Slice;
 			public int Width;
@@ -49,7 +49,7 @@ namespace VVVV.Nodes
         public ISpread<int> FHeightIn;
 
         [Output("Texture Out")]
-        ISpread<TextureResource<Info>> FTextureOut;
+        public ISpread<TextureResource<Info>> FTextureOut;
 
         [Import]
         public ILogger FLogger;
