@@ -50,5 +50,24 @@ namespace VVVV.Core.Model
         {
             doc.SaveTo(doc.LocalPath);
         }
+
+        public static void Rename(this IDocument doc, string filename)
+        {
+            var path = Path.Combine(Path.GetDirectoryName(doc.LocalPath), filename);
+            doc.SaveTo(path);
+            var project = doc.Project;
+            if (project != null)
+            {
+                project.Documents.Remove(doc);
+            }
+            File.Delete(doc.LocalPath);
+            doc.Dispose();
+            if (project != null)
+            {
+                var document = DocumentFactory.CreateDocumentFromFile(path);
+                project.Documents.Add(document);
+                project.Save();
+            }
+        }
     }
 }
