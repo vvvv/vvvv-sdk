@@ -320,21 +320,29 @@ namespace VVVV.Hosting.Factories
 
             using (var newProject = new CSProject(newProjectPath))
             {
-                var foundContainingDocument = false;
                 foreach (var doc in newProject.Documents)
                 {
-                    // Now scan the document for possible plugin infos.
-                    // If we find one, update its properties and rename the class and document.
                     var csDoc = doc as CSDocument;
                     if (csDoc != null)
                     {
                         // Rename the CSDocument
-                        if (!foundContainingDocument && ContainsNodeInfo(csDoc, nodeInfo))
+                        if (ContainsNodeInfo(csDoc, nodeInfo))
                         {
-                            foundContainingDocument = true;
-                            csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(className));
+                            var newDocName = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(className));
+                            csDoc.Name = newDocName;
+                            csDoc.Rename(newDocName);
+                            break;
                         }
+                    }
+                }
 
+                foreach (var doc in newProject.Documents)
+                {
+                    // Now scan the document for possible plugin infos.
+                    // If we find one, update its properties and rename the class.
+                    var csDoc = doc as CSDocument;
+                    if (csDoc != null)
+                    {
                         var parserResults = csDoc.Parse(true);
                         var compilationUnit = parserResults.CompilationUnit;
 
@@ -353,10 +361,6 @@ namespace VVVV.Hosting.Factories
                         csDoc.TextContent = outputVisitor.Text;
                     }
                 }
-
-                // Save all the documents.
-                foreach (var doc in newProject.Documents)
-                    doc.Save();
 
                 // Save the project.
                 newProject.Save();

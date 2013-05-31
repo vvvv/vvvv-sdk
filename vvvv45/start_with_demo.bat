@@ -1,2 +1,2 @@
 @ECHO OFF
-start vvvv.exe /o "girlpower\( 10th anniversary )\_root.v4p"
+start vvvv.exe /o "girlpower\( distance field )\demo.v4p"

@@ -2,6 +2,8 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.IO;
+using System.Management;
 
 using VVVV.PluginInterfaces.V2;
 #endregion usings
@@ -13,23 +15,29 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class ShellExecute : IPluginEvaluate, IDisposable
 	{
-		#region fields & pins & contructor & destructor & private members 
-		[Input("File", DefaultString = "CMD.EXE", StringType = StringType.Filename, IsSingle = true, Order = 0)]
+		#region fields & pins & contructor & destructor & private members
+		[Input("File", DefaultString = @"C:\Windows\system32\cmd.exe", StringType = StringType.Filename, IsSingle = true)]
 		ISpread<string> FFileIn;
 		
-		[Input("Commandline Arguments", DefaultString = "/c dir", IsSingle = true, Order = 1)]
-		ISpread<string>FArgsIn;
+		[Input("Working Directory", DefaultString = "", StringType = StringType.Directory, IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
+		ISpread<string> FWorkingDirIn;
 		
-		[Input("Show Window", DefaultValue = 0, IsSingle = true, Order = 2)]
-		ISpread<bool>FWindowIn;
+		[Input("Commandline Arguments", DefaultString = "/c dir", IsSingle = true)]
+		ISpread<string> FArgsIn;
 		
-		[Input("Block until finished", DefaultValue = 0, IsSingle = true, Order = 3)]
-		ISpread<bool>FWaitIn;
+		[Input("Show Window", DefaultValue = 0, IsSingle = true)]
+		ISpread<bool> FWindowIn;
 		
-		[Input("Kill", DefaultValue = 0, IsBang=true, IsSingle = true, Order =4)]
-		IDiffSpread<bool>FKillIn;
+		[Input("Block until finished", DefaultValue = 0, IsSingle = true)]
+		ISpread<bool> FWaitIn;
 		
-		[Input("Execute", IsBang=true, IsSingle = true, Order = 5)]
+		[Input("Kill", DefaultValue = 0, IsBang=true, IsSingle = true)]
+		IDiffSpread<bool> FKillIn;
+		
+		[Input("Kill Children", DefaultValue = 1, Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
+		IDiffSpread<bool> FKillChilldrenIn;
+		
+		[Input("Execute", IsBang=true, IsSingle = true)]
 		IDiffSpread<bool> FExecuteIn;
 
 		[Output("Result")]
@@ -38,20 +46,20 @@ namespace VVVV.Nodes
 		[Output("Error")]
 		ISpread<string> FErrorOut;
 		
-		[Output("PID", IsSingle = true, Visibility = PinVisibility.Hidden)]
-		ISpread<string> FProcIDOut;
+		[Output("PID", IsSingle = true, DefaultValue = -1, Visibility = PinVisibility.OnlyInspector)]
+		ISpread<int> FProcIDOut;
 		
 		[Output("ExitCode", IsSingle = true)]
 		ISpread<int> FExitCodeOut;
 		
-		[Output("IsRunning", IsBang = true, IsSingle = true)]
+		[Output("IsRunning", IsSingle = true)]
 		ISpread<bool> FRunningOut;
 		
 		[Output("Completed", IsBang = true, IsSingle = true)]
 		ISpread<bool> FCompletedOut;
 		
 		private Process FProcess;
-	    private bool FRunning;
+		private bool FRunning;
 		private bool FCompleted;
 		private readonly object FLock = new object();
 		private bool FDisposed;
@@ -61,12 +69,12 @@ namespace VVVV.Nodes
 		public ShellExecute()
 		{
 			FProcess = new Process {EnableRaisingEvents = true};
-		    FProcess.OutputDataReceived += OnDataReceived;
-	        FProcess.ErrorDataReceived 	+= OnErrorReceived;
-			FProcess.Exited += OnExited;	
+			FProcess.OutputDataReceived += OnDataReceived;
+			FProcess.ErrorDataReceived 	+= OnErrorReceived;
+			FProcess.Exited += OnExited;
 			
 			FProcess.StartInfo.RedirectStandardOutput = true;
-	        FProcess.StartInfo.RedirectStandardError = true;
+			FProcess.StartInfo.RedirectStandardError = true;
 			FProcess.StartInfo.UseShellExecute = false;
 		}
 		
@@ -89,9 +97,9 @@ namespace VVVV.Nodes
 				{
 					// Dispose managed resources.
 					FProcess.OutputDataReceived -= OnDataReceived;
-		       	 	FProcess.ErrorDataReceived -= OnErrorReceived;
+					FProcess.ErrorDataReceived -= OnErrorReceived;
 					FProcess.Exited -= OnExited;
-				    FProcess = null;
+					FProcess = null;
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
@@ -110,54 +118,61 @@ namespace VVVV.Nodes
 				FProcIDOut.SliceCount = 1;
 				FExitCodeOut.SliceCount = 1;
 				FExitCodeOut[0] = -1;
-				FProcIDOut[0] = string.Empty;
+				FProcIDOut[0] = -1;
 				FCompletedOut[0] = false;
 				FCompleted = false;
 				FRunning = false;
 				
-				try 
+				try
 				{
 					FProcess.CancelOutputRead();
 					FProcess.CancelErrorRead();
 				}
-				catch 
+				catch
 				{
 					
 				}
 				
 				//set up process info
-		        FProcess.StartInfo.CreateNoWindow = !FWindowIn[0];
+				FProcess.StartInfo.CreateNoWindow = !FWindowIn[0];
+				FProcess.StartInfo.UseShellExecute = false;
 				FProcess.StartInfo.FileName = FFileIn[0];
 				FProcess.StartInfo.Arguments = FArgsIn[0];
+				
+				var dir = Path.GetDirectoryName(FWorkingDirIn[0].Trim());
+				if (string.IsNullOrEmpty(dir))
+					FProcess.StartInfo.WorkingDirectory = Path.GetDirectoryName(FFileIn[0]);
+				else
+					FProcess.StartInfo.WorkingDirectory = dir;
 				
 				try
 				{
 					FRunning = FProcess.Start();
 					
-					FProcIDOut[0] = FProcess.Id.ToString();
+					FProcIDOut[0] = FProcess.Id;
 					
 					FProcess.BeginOutputReadLine();
 					FProcess.BeginErrorReadLine();
 					
-					if(FWaitIn[0]) 
+					if(FWaitIn[0])
 					{
 						FProcess.WaitForExit();
 						FDoBang = 2;
 					}
-				
+					
 				}
 				catch (Exception e)
 				{
-					FErrorOut.Add("Error on start: " +e.Message); 
+					FErrorOut.Add("Error on start: " +e.Message);
 				}
 			}
 			
 			
-			if(FDoBang>0) 
+			if(FDoBang>0)
 			{
 				FDoBang--;
 				if(FDoBang == 0)
-				FRunningOut[0] = true;
+					FRunningOut[0] = true;
 			}
 			else lock(FLock) { FCompletedOut[0] = FCompleted; }
 			
@@ -168,7 +183,10 @@ namespace VVVV.Nodes
 			{
 				try
 				{
-					FProcess.Kill();	
+					if (FKillChilldrenIn[0])
+						KillProcessAndChildren(FProcess.Id);
+					else
+						FProcess.Kill();
 				}
 				catch (Exception e)
 				{
@@ -176,23 +194,23 @@ namespace VVVV.Nodes
 				}
 			}
 		}
-		 
+		
 		internal void OnDataReceived(object sender, DataReceivedEventArgs e)
 		{
 			//FLogger.Log(LogType.Debug, "DataReceived.");
 			if (e.Data != null)
-		    {
-		        string ln = (e.Data) + Environment.NewLine;
-		    	//FOutputQueue.Enqueue(ln);
-		    	FResultOut.Add(ln);
-		    
+			{
+				string ln = (e.Data) + Environment.NewLine;
+				//FOutputQueue.Enqueue(ln);
+				FResultOut.Add(ln);
+				
 			}
 		}
 		
 		internal void OnErrorReceived(object sender, DataReceivedEventArgs e)
 		{
 			//FLogger.Log(LogType.Debug, "ErrorReceived.{0}", e.Data);
-		    if( e.Data != null ) 
+			if( e.Data != null )
 			{
 				string ln = (e.Data) + Environment.NewLine;
 				FErrorOut.Add(ln);
@@ -203,13 +221,33 @@ namespace VVVV.Nodes
 		{
 			//FLogger.Log(LogType.Debug, "Done.");
 			var p = sender as Process;
-			if(p != null) lock(FLock) 
+			if(p != null) lock(FLock)
 			{
 				FExitCodeOut[0] = FProcess.ExitCode;
-				FProcIDOut[0] = string.Empty;
+				FProcIDOut[0] = -1;
 				
 				FRunning = false;
 				FCompleted = true;
+			}
+		}
+		
+		//via http://stackoverflow.com/questions/5901679/kill-process-tree-programatically-in-c-sharp
+		private static void KillProcessAndChildren(int pid)
+		{
+			var searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
+			var moc = searcher.Get();
+			foreach (var mo in moc)
+			{
+				KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
+			}
+			try
+			{
+				Process proc = Process.GetProcessById(pid);
+				proc.Kill();
+			}
+			catch (ArgumentException)
+			{
+				// Process already exited.
 			}
 		}
 	}

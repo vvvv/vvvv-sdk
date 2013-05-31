@@ -22,13 +22,13 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Input", DefaultColor = new double[] { 0.1, 0.2, 0.3, 1.0 })]
-		ISpread<RGBAColor> FInput;
+        public ISpread<RGBAColor> FInput;
 
 		[Output("Output")]
-		ISpread<RGBAColor> FOutput;
+        public ISpread<RGBAColor> FOutput;
 
 		[Import()]
-		ILogger FLogger;
+        public ILogger FLogger;
 		#endregion fields & pins
 
 		//called when data for any output pin is requested

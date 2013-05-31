@@ -81,6 +81,7 @@ namespace VVVV.Nodes
                 {
                     if (FLed != null)
                     {
+                    	FLed.Close();
                         FLed = null;
                     }
                     FLed = new WrapperLED64Advanced(FSerial[0]);

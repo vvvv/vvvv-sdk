@@ -64,10 +64,16 @@
     <Compile Include="Animation\ParticlesThreaded\ParticleSystem.cs" />
     <Compile Include="Animation\ParticlesThreaded\ParticleSystemNode.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Devices\RS232Node.cs" />
     <Compile Include="Layer\DrawText\DrawText.cs" />
     <Compile Include="Layer\DrawText\DrawTextLegacy.cs" />
     <Compile Include="Network\Clock.cs" />
     <Compile Include="Network\Sync.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Raw\AsValueNode.cs" />
     <Compile Include="Raw\PlusNode.cs" />
     <Compile Include="Spreads\Lindenmayer\Lindenmayer.cs" />
@@ -161,7 +167,7 @@
       <DependentUpon>TagPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="vvvv\NodeCollector\NodeCollector.cs" />
-    <Compile Include="vvvv\PID\VVVVPIDNode.cs" />
+    <Compile Include="Windows\PID\VVVVPIDNode.cs" />
     <Compile Include="vvvv\PinInfo\VVVVPinInfoNode.cs" />
     <Compile Include="vvvv\ProjectExplorer\DescriptedProjectViewProvider.cs" />
     <Compile Include="vvvv\ProjectExplorer\FXProjectViewProvider.cs" />
@@ -178,6 +184,7 @@
     <Compile Include="vvvv\WindowSwitcher\WindowSwitcherNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Windows\WindowsKill\WindowsKillNode.cs" />
     <Compile Include="XML\XMLNodes.cs" />
     <Compile Include="XML\XMLNodeWrappers.cs" />
     <Compile Include="XML\XMLPruneNode.cs" />
@@ -246,6 +253,15 @@
       <Name>Utils3rdParty</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Windows" />
+    <Folder Include="Windows\WindowsKill" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

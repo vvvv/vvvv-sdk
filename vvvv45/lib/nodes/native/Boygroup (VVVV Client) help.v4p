@@ -1,130 +1,118 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Boygroup (VVVV Client) help.v4p">
-   <BOUNDS height="6315" left="5730" top="3315" type="Window" width="10080">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.5.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Boygroup (VVVV Client) help.v4p">
+   <BOUNDS height="9225" left="9465" top="390" type="Window" width="8400">
    </BOUNDS>
    <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|serverID: if Boygroup(Client) node is working on the boygroup server, this integer is directly passed to the output pin ClientID. Has no function when working on a boygroup client|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; ServerID: Only relevant on the Server where this ID is returned on the ClientID output. Has no use on clients.|">
    </PIN>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="1335" left="45" top="1035" type="Box" width="2415">
+   <BOUNDS height="900" left="1140" top="2250" type="Box" width="2535">
    </BOUNDS>
-   <BOUNDS height="255" left="45" top="1035" type="Node" width="1350">
+   <BOUNDS height="255" left="1140" top="2250" type="Node" width="1350">
    </BOUNDS>
    </NODE>
-   <NODE id="-4" nodename="Boygroup (VVVV Client)">
-   <BOUNDS height="0" left="3195" top="2730" type="Node" width="0">
+   <NODE id="12" nodename="Boygroup (VVVV Client)">
+   <BOUNDS height="0" left="540" top="6480" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="ServerID" visible="1">
    </PIN>
    <PIN pinname="ClientID" visible="1">
    </PIN>
-   <PIN pinname="Graph Request" slicecount="1" visible="1">
+   <PIN pinname="Graph Request" visible="1">
    </PIN>
    <PIN pinname="Log to TTY" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="2775" top="1125" type="Node" width="0">
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="540" top="2265" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="4125" top="5445" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="2775" top="1125" type="Box" width="480">
+   <BOUNDS height="240" left="540" top="2265" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="3.00000">
+   <PIN pinname="Y Input Value" slicecount="1" values="3">
    </PIN>
    </NODE>
-   <LINK dstnodeid="-4" dstpinname="ServerID" srcnodeid="6" srcpinname="Y Output Value">
-   </LINK>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="2400" top="3555" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="4425" top="5745" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="240" left="2400" top="3555" type="Box" width="855">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="-4" srcpinname="ClientID">
+   <LINK dstnodeid="12" dstpinname="ServerID" srcnodeid="6" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBox (Enumerations)">
-   <BOUNDS height="0" left="3975" top="2160" type="Node" width="0">
+   <BOUNDS height="0" left="1245" top="4485" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6735" top="7650" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="3975" top="2160" type="Box" width="1845">
+   <BOUNDS height="240" left="1245" top="4485" type="Box" width="1845">
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="OnFirstConnectOnly">
+   <PIN pinname="Input Enum" slicecount="1" values="OnEveryConnect">
    </PIN>
    </NODE>
-   <LINK dstnodeid="-4" dstpinname="Graph Request" srcnodeid="4" srcpinname="Output Enum">
+   <LINK dstnodeid="12" dstpinname="Graph Request" srcnodeid="4" srcpinname="Output Enum">
    </LINK>
    <NODE componentmode="InABox" id="3" nodename="IOBox (Enumerations)">
-   <BOUNDS height="0" left="3570" top="1740" type="Node" width="0">
+   <BOUNDS height="0" left="885" top="3495" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7035" top="7950" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="255" left="3570" top="1740" type="Box" width="1275">
+   <BOUNDS height="255" left="885" top="3495" type="Box" width="1275">
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="Connection">
+   <PIN pinname="Input Enum" slicecount="1" values="None">
    </PIN>
    </NODE>
-   <LINK dstnodeid="-4" dstpinname="Log to TTY" srcnodeid="3" srcpinname="Output Enum">
+   <LINK dstnodeid="12" dstpinname="Log to TTY" srcnodeid="3" srcpinname="Output Enum">
    </LINK>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|clientID: if Boygroup(Client) node is working on a boygroup client this will be the machine id starting from 1. see the Boygroup(Server) for details.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; ClientID: On a client this will be the machine ID starting from 0 in the order the clients IPs are specified to the Boygroup (Network Server) node.&cr;&lf;&cr;&lf;On a server this will return the ServerID as specified above.|">
    </PIN>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="1185" left="360" top="3990" type="Box" width="2925">
+   <BOUNDS height="1605" left="1125" top="7095" type="Box" width="2955">
    </BOUNDS>
-   <BOUNDS height="255" left="360" top="3990" type="Node" width="1350">
+   <BOUNDS height="255" left="1125" top="7095" type="Node" width="1350">
    </BOUNDS>
    </NODE>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Log to TTY: defines the loglevel for the messages written to the TTY-renderer|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; Log to TTY: defines the loglevel for the messages written to the TTY-renderer|">
    </PIN>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="525" left="3555" top="1170" type="Box" width="2940">
+   <BOUNDS height="495" left="2235" top="3510" type="Box" width="3105">
    </BOUNDS>
-   <BOUNDS height="255" left="3555" top="1170" type="Node" width="1350">
+   <BOUNDS height="255" left="2235" top="3510" type="Node" width="1350">
    </BOUNDS>
    </NODE>
    <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|GraphRequest:&cr;&lf;+ OnEveryConnect: the client should request a complete scene request form the server each time it connects to the server. if the connection is lost and found again for some reason, you will notice that the scene going to be destroyed and then build up again when connecting. use this for the development phase.&cr;&lf;+ OnFirstConnectOnly: when the connection is lost, connect again but do NOT request a scene graph. use this for the final installation setup.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; Graph Request:&cr;&lf;+ OnEveryConnect: the client should request a complete scene request form the server each time it connects to the server. if the connection is lost and found again for some reason, you will notice that the scene is being destroyed and then built up again when connecting. use this for the development phase.&cr;&lf;+ OnFirstConnectOnly: when the connection is lost, connect again but do NOT request a scene graph. use this for the final installation setup.|">
    </PIN>
    <BOUNDS height="160" left="600" top="600" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="2040" left="4650" top="2475" type="Box" width="4620">
+   <BOUNDS height="2040" left="3210" top="4470" type="Box" width="4620">
    </BOUNDS>
-   <BOUNDS height="255" left="4650" top="2475" type="Node" width="1350">
+   <BOUNDS height="255" left="3210" top="4470" type="Node" width="1350">
    </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
    <BOUNDS height="255" left="15" top="390" type="Node" width="570">
@@ -137,7 +125,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
@@ -147,19 +135,19 @@
    </BOUNDS>
    <BOUNDS height="160" left="510" top="7440" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Boygroup - VVVV Client|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Boygroup (VVVV Client)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="12.00000">
+   <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="11">
-   <BOUNDS type="Node" left="405" top="5475" width="750" height="270">
+   <BOUNDS type="Node" left="6105" top="8115" width="750" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="405" top="5475" width="750" height="270">
+   <BOUNDS type="Box" left="6105" top="8115" width="750" height="270">
    </BOUNDS>
    <BOUNDS type="Window" left="0" top="0" width="215" height="160">
    </BOUNDS>
@@ -167,11 +155,53 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE nodename="Boygroup (VVVV Server)" id="-5">
-   <BOUNDS type="Node" left="1155" top="5475" width="0" height="0">
+   <NODE nodename="Boygroup (VVVV Server)" id="-3" systemname="Boygroup (VVVV Server)" componentmode="Hidden">
+   <BOUNDS type="Node" left="6900" top="8175" width="100" height="100">
    </BOUNDS>
    </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="630" top="1305" width="3375" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="1305" width="3930" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="http://vvvv.org/documentation/boygrouping-basics">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="645" top="1035" width="2985" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="1035" width="2985" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for an introduction to boygrouping see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="540" top="7080" width="480" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="540" top="7080" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="ClientID" dstnodeid="16" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>

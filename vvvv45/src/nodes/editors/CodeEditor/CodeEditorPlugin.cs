@@ -113,8 +113,6 @@ namespace VVVV.HDE.CodeEditor
             FErrorTableViewer.Dock = DockStyle.Bottom;
             FErrorTableViewer.TabIndex = 0;
             FErrorTableViewer.DoubleClick += FErrorTableViewerDoubleClick;
-            FErrorTableViewer.AutoSize = true;
-            FErrorTableViewer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             FErrorTableViewer.MaximumSize = new Size(0, 100);
             
             Controls.Add(FCodeEditorForm);
@@ -522,7 +520,7 @@ namespace VVVV.HDE.CodeEditor
             ClearRuntimeError();
             
             var results = args.CompilerResults;
-            if (results != null && results.Errors.HasErrors)
+            if (results != null && (results.Errors.HasErrors || results.Errors.HasWarnings))
             {
                 var compilerErrors =
                     from CompilerError error in results.Errors

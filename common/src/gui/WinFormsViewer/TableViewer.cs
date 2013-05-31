@@ -113,59 +113,6 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             }
         }
         
-        private bool FAutoSize;
-        public override bool AutoSize
-        {
-            get
-            {
-                return FAutoSize;
-            }
-            set
-            {
-                if (FAutoSize)
-                {
-                    FDataGridView.RowsAdded -= FDataGridView_RowsAdded;
-                    FDataGridView.RowsRemoved -= FDataGridView_RowsRemoved;
-                }
-                
-                FAutoSize = value;
-                
-                if (FAutoSize)
-                {
-                    FDataGridView.RowsAdded += FDataGridView_RowsAdded;
-                    FDataGridView.RowsRemoved += FDataGridView_RowsRemoved;
-                }
-            }
-        }
-        
-        void FDataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            AdjustHeight();
-        }
-        
-        void FDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
-        {
-            AdjustHeight();
-        }
-        
-        void AdjustHeight()
-        {
-            if (AutoSizeMode == AutoSizeMode.GrowOnly) return;
-            
-            int height = FDataGridView.ColumnHeadersHeight;
-            foreach (DataGridViewRow row in FDataGridView.Rows)
-            {
-                int maxCellHeight = row.Height;
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    maxCellHeight = Math.Max(maxCellHeight, cell.PreferredSize.Height);
-                }
-                height += maxCellHeight;
-            }
-            
-            SetClientSizeCore(ClientSize.Width, height);
-        }
-        
         public override void Reload()
         {
             FDataGridView.Rows.Clear();
@@ -214,13 +161,36 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
                     if (FDataGridView.Columns.Count > 0)
                     {
                         var entries = FMapper.Map<IEnumerable>();
-                        FRowSynchronizer = FDataGridView.Rows.SyncWith(entries, CreateRow, (r) => {});
+                        FRowSynchronizer = FDataGridView.Rows.SyncWith(entries, CreateRow, (r) => { }, null, FRowSynchronizer_Synced);
                     }
                 }
                 catch (Exception e)
                 {
                     Shell.Instance.Logger.Log(e);
                 }
+            }
+        }
+
+        void FRowSynchronizer_Synced(object sender, SyncEventArgs<object, object> args)
+        {
+            switch (args.Action)
+            {
+                case CollectionAction.Added:
+                    break;
+                case CollectionAction.Removed:
+                    break;
+                case CollectionAction.Cleared:
+                    break;
+                case CollectionAction.OrderChanged:
+                    break;
+                case CollectionAction.Updating:
+                    ((ISupportInitialize)FDataGridView).BeginInit();
+                    break;
+                case CollectionAction.Updated:
+                    ((ISupportInitialize)FDataGridView).EndInit();
+                    break;
+                default:
+                    break;
             }
         }
 

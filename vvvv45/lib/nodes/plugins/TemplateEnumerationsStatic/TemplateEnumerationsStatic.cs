@@ -34,16 +34,16 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Input", DefaultEnumEntry = "B")]
-		IDiffSpread<MyEnum> FInput;
+        public IDiffSpread<MyEnum> FInput;
 
 		[Output("Name")]
-		ISpread<string> FNameOutput;
+        public ISpread<string> FNameOutput;
 		
 		[Output("Index")]
-		ISpread<int> FOrdOutput;
+        public ISpread<int> FOrdOutput;
 
 		[Import()]
-		ILogger Flogger;
+        public ILogger Flogger;
 		#endregion fields & pins
 
 		//called when data for any output pin is requested

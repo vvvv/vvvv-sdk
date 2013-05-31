@@ -55,11 +55,13 @@ namespace VVVV.Nodes.Input
         void Subscribe()
         {
             FHost.WindowAdded += HandleWindowAdded;
+            FHost.AfterComponentModeChange += HandleAfterComponentModeChange;
         }
 
         void Unsubscribe()
         {
             FHost.WindowAdded -= HandleWindowAdded;
+            FHost.AfterComponentModeChange -= HandleAfterComponentModeChange;
             foreach (var subclass in FSubclasses.ToArray())
                 subclass.Dispose();
         }
@@ -67,6 +69,25 @@ namespace VVVV.Nodes.Input
         void HandleWindowAdded(object sender, WindowEventArgs args)
         {
             var window = args.Window as Window;
+            TrySubclassWindow(window);
+        }
+
+        void HandleAfterComponentModeChange(object sender, ComponentModeEventArgs args)
+        {
+            var window = args.Window as Window;
+            TrySubclassWindow(window);
+        }
+
+        void HandleSubclassDisposed(object sender, EventArgs e)
+        {
+            var subclass = sender as Subclass;
+            subclass.WindowMessage -= HandleSubclassWindowMessage;
+            subclass.Disposed -= HandleSubclassDisposed;
+            FSubclasses.Remove(subclass);
+        }
+
+        void TrySubclassWindow(Window window)
+        {
             var inputWindow = window.UserInputWindow;
             if (inputWindow != null)
             {
@@ -79,14 +100,6 @@ namespace VVVV.Nodes.Input
                     FSubclasses.Add(subclass);
                 }
             }
-        }
-
-        void HandleSubclassDisposed(object sender, EventArgs e)
-        {
-            var subclass = sender as Subclass;
-            subclass.WindowMessage -= HandleSubclassWindowMessage;
-            subclass.Disposed -= HandleSubclassDisposed;
-            FSubclasses.Remove(subclass);
         }
 
         public void Evaluate(int spreadMax)
