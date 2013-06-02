@@ -18,7 +18,9 @@ using Wyphon;
 namespace VVVV.Nodes.Network.Wyphon
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Wyphon", Category = "Network", Author="ft", Help = "Share DX9ex shared textures", Tags = "")]
+	[PluginInfo(Name = "Wyphon", Category = "Network",
+				AutoEvaluate = true, 
+				Author = "ft", Help = "Share DX9ex shared textures", Tags = "" )]
 	#endregion PluginInfo
 	public class WyphonNode : IPluginEvaluate, IDisposable
 	{
