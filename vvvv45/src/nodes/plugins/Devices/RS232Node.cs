@@ -100,25 +100,6 @@ namespace VVVV.Nodes.Devices
             for (int i = 0; i < spreadMax; i++)
             {
                 var port = FPorts[i];
-                // Configure the port
-                var portName = ComPortIn[i].Name;
-                if (port.PortName != portName)
-                    port.PortName = portName;
-                if (port.BaudRate != BaudRateIn[i])
-                    port.BaudRate = BaudRateIn[i];
-                if (port.DataBits != DataBitsIn[i])
-                    port.DataBits = DataBitsIn[i];
-                if (port.StopBits != StopBitsIn[i])
-                    port.StopBits = StopBitsIn[i];
-                if (port.Parity != ParityIn[i])
-                    port.Parity = ParityIn[i];
-                if (port.Handshake != HandshakeIn[i])
-                    port.Handshake = HandshakeIn[i];
-                if (port.DtrEnable != DtrEnableIn[i])
-                    port.DtrEnable = DtrEnableIn[i];
-                if (port.RtsEnable != RtsEnableIn[i])
-                    port.RtsEnable = RtsEnableIn[i];
-
                 // Get the in and output streams
                 var dataIn = DataIn[i];
                 var dataOut = DataOut[i];
@@ -128,6 +109,24 @@ namespace VVVV.Nodes.Devices
 
                 if (EnabledIn[i])
                 {
+                    // Configure the port
+                    var portName = ComPortIn[i].Name;
+                    if (port.PortName != portName)
+                        port.PortName = portName;
+                    if (port.BaudRate != BaudRateIn[i])
+                        port.BaudRate = BaudRateIn[i];
+                    if (port.DataBits != DataBitsIn[i])
+                        port.DataBits = DataBitsIn[i];
+                    if (port.StopBits != StopBitsIn[i])
+                        port.StopBits = StopBitsIn[i];
+                    if (port.Parity != ParityIn[i])
+                        port.Parity = ParityIn[i];
+                    if (port.Handshake != HandshakeIn[i])
+                        port.Handshake = HandshakeIn[i];
+                    if (port.DtrEnable != DtrEnableIn[i])
+                        port.DtrEnable = DtrEnableIn[i];
+                    if (port.RtsEnable != RtsEnableIn[i])
+                        port.RtsEnable = RtsEnableIn[i];
                     // Open the port
                     if (!port.IsOpen)
                     {
