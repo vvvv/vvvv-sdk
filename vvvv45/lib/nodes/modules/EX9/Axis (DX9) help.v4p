@@ -1,0 +1,97 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\EX9\Axis (DX9) help.v4p" componentmode="InAWindow">
+   <BOUNDS height="7215" left="2010" top="2100" type="Window" width="7125">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1815" left="255" top="525" type="Box" width="4470">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Draw three axis and three arrows in 3d space to visualize the origin of a coordinate system.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Axis - DX9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="1950" top="4335" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="11520" top="2955" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="2145" left="1950" top="4335" type="Box" width="2235">
+   </BOUNDS>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Perspective (Transform)" systemname="Perspective (Transform)">
+   <BOUNDS height="0" left="4470" top="3675" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="FOV" slicecount="1" values="0.08">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Projection Transform" srcnodeid="1" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="5" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
+   <BOUNDS height="0" left="3375" top="3690" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.04">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.32">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="View Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="6" nodename="Translate (Transform)" systemname="Translate (Transform)">
+   <BOUNDS height="0" left="3240" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="5.16999999999999">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Transform In" srcnodeid="6" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="7" nodename="Axis (DX9)" systemname="Axis (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Axis (DX9).v4p">
+   <BOUNDS height="100" left="1800" top="3660" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1800" top="3660" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS height="6000" left="4200" top="6360" type="Window" width="9000">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Layers" srcnodeid="7" srcpinname="Layer">
+   </LINK>
+   </PATCH>

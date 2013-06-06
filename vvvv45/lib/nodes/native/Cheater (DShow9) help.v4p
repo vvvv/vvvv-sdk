@@ -1,0 +1,125 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH nodename="Y:\vvvv33\help\Cheater (DShow9) help.v4p">
+   <BOUNDS height="7950" left="480" top="330" type="Window" width="5340">
+   </BOUNDS>
+   <NODE id="8" nodename="Cheater (DShow9)">
+   <BOUNDS height="0" left="1035" top="4680" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video Input" visible="1">
+   </PIN>
+   <PIN pinname="Video Output" visible="1">
+   </PIN>
+   <PIN pinname="Clear TimeStamps" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="165" top="615" type="Node" width="435">
+   </BOUNDS>
+   <BOUNDS height="540" left="165" top="615" type="Box" width="4710">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Set some flags for a direct show live video input stream for deinterlacing in the VideoTexture (EX9.Texture YUVMixingMode)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="VideoIn (DShow9)">
+   <BOUNDS height="0" left="1035" top="1440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Video Input" srcnodeid="6" srcpinname="Video">
+   </LINK>
+   <NODE id="5" nodename="VideoTexture (EX9.Texture VMR9 YUVMixingMode)">
+   <BOUNDS height="0" left="1035" top="5295" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Video" srcnodeid="8" srcpinname="Video Output">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="180" top="135" type="Node" width="1695">
+   </BOUNDS>
+   <BOUNDS height="450" left="180" top="135" type="Box" width="2730">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Cheater (DShow9)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2295" top="5310" type="Node" width="1365">
+   </BOUNDS>
+   <BOUNDS height="270" left="2295" top="5310" type="Box" width="1365">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="(YUVMixingMode)">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Quad (DX9)">
+   <BOUNDS height="270" left="705" top="6405" type="Node" width="1200">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Texture" srcnodeid="5" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="1" nodename="Renderer (EX9)">
+   <BOUNDS height="270" left="690" top="6870" type="Node" width="1350">
+   </BOUNDS>
+   <BOUNDS height="4860" left="5820" top="330" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="690" top="6870" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <NODE id="0" nodename="Scale (Transform Vector)">
+   <BOUNDS height="270" left="870" top="5955" type="Node" width="555">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="0" srcpinname="Transform Out">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="9">
+   <BOUNDS type="Node" left="1860" top="1830" width="5070" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1860" top="1830" width="2880" height="2925">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|only makes sense in combination with VideoTexture (YUVMixingMode)&cr;&lf;which can deinterlace a PAL or NTSC videostream. &cr;&lf;&cr;&lf;when deinterlacing doesn&apos;t work without Cheater try with Cheater. here you can set FieldOrder and drop samples to get back in sync.&cr;&lf;&cr;&lf;if you are using a bt878 or compatible capture card have a look at this driver:&cr;&lf;http://btwincap.sourceforge.net/|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

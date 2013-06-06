@@ -1,0 +1,373 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH nodename="X:\vvvv33svn\public\vvvv33\help\VertexBuffer (EX9.Geometry Split) help.v4p">
+   <BOUNDS height="14490" left="780" top="1140" type="Window" width="4950">
+   </BOUNDS>
+   <NODE id="24" nodename="Box (EX9.Geometry)">
+   <BOUNDS height="0" left="660" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="525" top="2700" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6045" top="10125" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="5925" left="525" top="2700" type="Box" width="2085">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="24">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="22" nodename="Multiply (Value)">
+   <BOUNDS height="0" left="2550" top="8835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Input 1" srcnodeid="23" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="21" nodename="DrawFixed (EX9.Effect)">
+   <BOUNDS height="0" left="480" top="10545" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="DrawFixed (EX9.Effect)">
+   <BOUNDS height="0" left="1965" top="10545" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Mesh" srcnodeid="24" srcpinname="Mesh">
+   </LINK>
+   <NODE id="19" nodename="VertexBuffer (EX9.Geometry Join)">
+   <BOUNDS height="0" left="2100" top="9255" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="do Write VertexBuffer" visible="1">
+   </PIN>
+   <PIN pinname="PositionXYZ" visible="1">
+   </PIN>
+   <PIN pinname="VertexBuffer" visible="1">
+   </PIN>
+   <PIN pinname="Diffuse Color" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Apply" visible="1">
+   </PIN>
+   <PIN pinname="Enable Diffuse Color" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="Mesh (EX9.Geometry Join)">
+   <BOUNDS height="0" left="2115" top="9660" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="do create Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="VertexBuffer" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Apply" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Mesh" srcnodeid="18" srcpinname="Mesh">
+   </LINK>
+   <NODE id="17" nodename="Renderer (EX9)" componentmode="InAWindow">
+   <BOUNDS height="0" left="480" top="11700" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="5730" top="1140" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="1800" left="480" top="11700" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="1980" top="10110" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Render State" srcnodeid="16" srcpinname="Render State Out">
+   </LINK>
+   <NODE id="15" nodename=":MODULES:\Camera (Transform Softimage).v4p">
+   <BOUNDS height="0" left="1455" top="11310" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="9630" top="13725" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1455" top="11310" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="2895" top="8835" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9405" top="12015" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="2895" top="8835" type="Box" width="1725">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3225" top="4785" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6900" top="12165" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3855" left="3225" top="4785" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.36206015810276">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="1.1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Input 2" linkstyle="VHV" srcnodeid="13" srcpinname="Y Output Value">
+   <LINKPOINT x="3570" y="8430">
+   </LINKPOINT>
+   <LINKPOINT x="2820" y="8430">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="View Transform" srcnodeid="15" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Projection Transform" srcnodeid="15" srcpinname="Projection">
+   </LINK>
+   <NODE id="12" nodename="VertexBuffer (EX9.Geometry Split)">
+   <BOUNDS height="270" left="960" top="2160" type="Node" width="1230">
+   </BOUNDS>
+   <PIN pinname="VertexBuffer" visible="1">
+   </PIN>
+   <PIN pinname="Position XYZXYZ" visible="1">
+   </PIN>
+   <PIN pinname="do Read VertexBuffer" visible="1">
+   </PIN>
+   <PIN pinname="Enable Diffuse Color" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Enable Normal" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Normal XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="VertexBuffer (EX9.Geometry Join)">
+   <BOUNDS height="0" left="60" top="13020" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="12060" type="Node" width="11370">
+   </BOUNDS>
+   <BOUNDS height="675" left="15" top="12060" type="Box" width="11190">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="_____________________________________________________________">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="Arial">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="75" top="12735" type="Node" width="690">
+   </BOUNDS>
+   <BOUNDS height="270" left="75" top="12735" type="Box" width="690">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|related :|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1065" top="13020" type="Node" width="2550">
+   </BOUNDS>
+   <BOUNDS height="270" left="1065" top="13020" type="Box" width="2550">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|VertexBuffer ( Ex.9 Geometry Join )|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="105" top="135" type="Node" width="2535">
+   </BOUNDS>
+   <BOUNDS height="450" left="105" top="135" type="Box" width="4260">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|VertexBuffer - Ex9.Geometry Split|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="105" top="615" type="Node" width="2160">
+   </BOUNDS>
+   <BOUNDS height="270" left="105" top="615" type="Box" width="2160">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|deconstructs a vertex buffer|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2820" top="2160" type="Node" width="5595">
+   </BOUNDS>
+   <BOUNDS height="990" left="2820" top="2160" type="Box" width="1635">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|via the vertexbuffer - split node you can retrieve the data in a vertexbuffer|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Mesh (EX9.Geometry Join)">
+   <BOUNDS height="270" left="75" top="13635" type="Node" width="570">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="690" top="13650" type="Node" width="2175">
+   </BOUNDS>
+   <BOUNDS height="270" left="690" top="13650" type="Box" width="2175">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Mesh ( Ex.9 Geometry Join )|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Mesh (EX9.Geometry Split)">
+   <BOUNDS height="0" left="945" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Mesh" srcnodeid="24" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Vertex Buffer" srcnodeid="2" srcpinname="Vertex Buffer">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Position XYZ">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Vertex Buffer" srcnodeid="19" srcpinname="Vertex Buffer">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Position XYZ" srcnodeid="22" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Indices" srcnodeid="2" srcpinname="Indices">
+   </LINK>
+   <NODE id="1" nodename="Group (EX9)">
+   <BOUNDS height="0" left="480" top="11040" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Layer 1" srcnodeid="21" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Layer 2" srcnodeid="20" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Layers" srcnodeid="1" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3330" top="9450" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4455" top="10860" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3330" top="9450" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Apply" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Apply" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Diffuse Color" srcnodeid="14" srcpinname="Color Output">
+   </LINK>
+   </PATCH>
