@@ -1,5 +1,7 @@
 // indexsort.cpp
 #include "indexsort.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 int adaptindex(Obj* Objlist1, Obj* Objlist2, int NUMOBS1, int NUMOBS2, int* IDs_old, int* IDs_new, int* Sortlist, int* inc, int DoInc)
 {

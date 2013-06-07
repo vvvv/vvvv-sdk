@@ -79,7 +79,7 @@ namespace VVVV.Nodes
         private ITransformOut FInvBindPoseTransformOutput;
         private ITransformOut FBindShapeTransformOutput;
 		
-		private Dictionary<int, Mesh> FDeviceMeshes;
+		private Dictionary<Device, Mesh> FDeviceMeshes;
     	private Model FColladaModel;
     	private List<Model.InstanceMesh> FSelectedInstanceMeshes;
     	private static Model.BasicMaterial FNoMaterial = new Model.BasicMaterial();
@@ -95,7 +95,7 @@ namespace VVVV.Nodes
             IDiffSpread<bool> opaqueIsOneInput)
         {
             //the nodes constructor
-            FDeviceMeshes = new Dictionary<int, Mesh>();
+            FDeviceMeshes = new Dictionary<Device, Mesh>();
             FSelectedInstanceMeshes = new List<Model.InstanceMesh>();
             
             host.CreateMeshOutput("Mesh", TSliceMode.Dynamic, TPinVisibility.True, out FMyMeshOutput);
@@ -284,7 +284,7 @@ namespace VVVV.Nodes
         #endregion mainloop  
         
         #region DXMesh
-		public void UpdateResource(IPluginOut ForPin, int OnDevice)
+		public void UpdateResource(IPluginOut ForPin, Device OnDevice)
 		{
 			//Called by the PluginHost every frame for every device. Therefore a plugin should only do 
 			//device specific operations here and still keep node specific calculations in the Evaluate call.
@@ -298,48 +298,42 @@ namespace VVVV.Nodes
 					if (FSelectedInstanceMeshes.Count > 0)
 					{
 						FLogger.Log(LogType.Debug, "Creating Resource...");
-						Device dev = Device.FromPointer(new IntPtr(OnDevice));
 						try
 						{
-							m = CreateUnion3D9Mesh(dev, FSelectedInstanceMeshes);
+							m = CreateUnion3D9Mesh(OnDevice, FSelectedInstanceMeshes);
 							FDeviceMeshes.Add(OnDevice, m);
 						}
 						catch (Exception e)
 						{
 							FLogger.Log(LogType.Error, e.Message);
 						}
-						finally
-						{
-							//dispose device
-							dev.Dispose();
-						}
 					}
 				}
 			}
 		}
 		
-		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+		public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
 		{
 			//Called by the PluginHost whenever a resource for a specific pin needs to be destroyed on a specific device. 
 			//This is also called when the plugin is destroyed, so don't dispose dxresources in the plugins destructor/Dispose()
-			
-			Mesh m = FDeviceMeshes[OnDevice];
-			if (m != null)
-			{
-				FLogger.Log(LogType.Debug, "Destroying Resource...");
-				FDeviceMeshes.Remove(OnDevice);
-				//dispose mesh
-				m.Dispose();
-			}
+			Mesh m;
+            if (FDeviceMeshes.TryGetValue(OnDevice, out m))
+            {
+                if (m != null)
+                {
+                    FLogger.Log(LogType.Debug, "Destroying Resource...");
+                    FDeviceMeshes.Remove(OnDevice);
+                    //dispose mesh
+                    m.Dispose();
+                }
+            }
 		}
 		
-		public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int Mesh)
+		public Mesh GetMesh(IDXMeshOut ForPin, Device OnDevice)
 		{
-			Mesh m = FDeviceMeshes[OnDevice];
-			if (m != null)
-				Mesh = m.ComPointer.ToInt32();
-			else
-				Mesh = 0;
+		    Mesh mesh = null;
+			FDeviceMeshes.TryGetValue(OnDevice, out mesh);
+			return mesh;
 		}
 		#endregion
         
@@ -358,7 +352,12 @@ namespace VVVV.Nodes
 				}
     		}
         	
-			Mesh mesh = Mesh.Concatenate(graphicsDevice, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+			var options = MeshFlags.Use32Bit;
+			if (graphicsDevice is DeviceEx)
+				options |= MeshFlags.Dynamic;
+			else
+				options |= MeshFlags.Managed;
+			Mesh mesh = Mesh.Concatenate(graphicsDevice, meshes.ToArray(), options);
 			
 			foreach (Mesh m in meshes)
 				m.Dispose();

@@ -52,19 +52,19 @@ namespace VVVV.Nodes.Bullet
 			this.FMeshOut.SliceCount = validcnt;
 		}
 
-		public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int Mesh)
+		public Mesh GetMesh(IDXMeshOut ForPin, Device OnDevice)
 		{
 			if (this.FMesh != null)
 			{
-				Mesh = this.FMesh.ComPointer.ToInt32();
+				return this.FMesh;
 			}
 			else
 			{
-				Mesh = 0;
+				return null;
 			}		
 		}
 
-		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+		public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
 		{
 			if (this.FMesh != null)
 			{
@@ -73,10 +73,8 @@ namespace VVVV.Nodes.Bullet
 			}
 		}
 
-		public void UpdateResource(IPluginOut ForPin, int OnDevice)
+		public void UpdateResource(IPluginOut ForPin, Device OnDevice)
 		{
-
-			Device dev = Device.FromPointer(new IntPtr(OnDevice));
 			List<Mesh> soft = new List<Mesh>();
 
 			if (this.FMesh != null)
@@ -111,7 +109,7 @@ namespace VVVV.Nodes.Bullet
 								decl = VertexFormat.Position | VertexFormat.Normal;
 							}
 
-							Mesh mesh = new Mesh(dev, faces.Count, faces.Count * 3, MeshFlags.SystemMemory | MeshFlags.Use32Bit, decl);
+							Mesh mesh = new Mesh(OnDevice, faces.Count, faces.Count * 3, MeshFlags.SystemMemory | MeshFlags.Use32Bit, decl);
 
 							SlimDX.DataStream verts = mesh.LockVertexBuffer(LockFlags.None);
 							SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.None);
@@ -187,7 +185,7 @@ namespace VVVV.Nodes.Bullet
 								decl = VertexFormat.Position | VertexFormat.Normal;
 							}
 
-							Mesh mesh = new Mesh(dev, tetraCount * 4, vertexCount, MeshFlags.SystemMemory | MeshFlags.Use32Bit, decl);
+							Mesh mesh = new Mesh(OnDevice, tetraCount * 4, vertexCount, MeshFlags.SystemMemory | MeshFlags.Use32Bit, decl);
 
 							
 							SlimDX.DataStream indices = mesh.LockIndexBuffer(LockFlags.Discard);
@@ -253,7 +251,18 @@ namespace VVVV.Nodes.Bullet
 					}
 				}
 
-				this.FMesh = Mesh.Concatenate(dev, soft.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+                Mesh merge = null;
+                if (OnDevice is DeviceEx)
+                {
+                    merge = Mesh.Concatenate(OnDevice, soft.ToArray(), MeshFlags.Use32Bit);
+                }
+                else
+                {
+                    merge = Mesh.Concatenate(OnDevice, soft.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+                }
+
+
+                this.FMesh = merge;
 
 				foreach (Mesh m in soft)
 				{

@@ -58,9 +58,6 @@ namespace VVVV.Nodes
 		[Input("Text", DefaultString = "vvvv")]
 		protected ISpread<string> FTextInput;
 
-		[Input("Character Encoding", EnumName = "CharEncoding")]
-		protected ISpread<EnumEntry> FCharEncoding;
-
 		[Input("Font", EnumName = "SystemFonts")]
 		protected IDiffSpread<EnumEntry> FFontInput;
 
@@ -126,7 +123,7 @@ namespace VVVV.Nodes
 		private IDXLayerIO FLayerOutput;
 		private int FSpreadMax;
 		private Dictionary<int, SlimDX.Direct3D9.Font> FFonts = new Dictionary<int, SlimDX.Direct3D9.Font>();
-		private Dictionary<IntPtr, DeviceHelpers> FDeviceHelpers = new Dictionary<IntPtr, DeviceHelpers>();
+		private Dictionary<Device, DeviceHelpers> FDeviceHelpers = new Dictionary<Device, DeviceHelpers>();
 		#endregion field declarationPL
 
 		#region constructur
@@ -215,46 +212,38 @@ namespace VVVV.Nodes
 			return font;
 		}
 
-		public void UpdateResource(IPluginOut ForPin, int OnDevice)
+		public void UpdateResource(IPluginOut ForPin, Device OnDevice)
 		{
-			var dev = Device.FromPointer(new IntPtr(OnDevice));
-
 			//create device specific helpers on given device if not already present
-			if (!FDeviceHelpers.ContainsKey(dev.ComPointer))
+			if (!FDeviceHelpers.ContainsKey(OnDevice))
 			{
 				var dh = new DeviceHelpers(
-					new Sprite(dev),
-					new Texture(dev, 1, 1, 1, Usage.None, Format.L8, Pool.Managed)); // Format.A8R8G8B8, Pool.Default)
+					new Sprite(OnDevice),
+					new Texture(OnDevice, 1, 1, 1, Usage.Dynamic, Format.L8, Pool.Default)); // Format.A8R8G8B8, Pool.Default)
 				
 				//need to fill texture white to be able to set color on sprite later
 				DataRectangle tex = dh.Texture.LockRectangle(0, LockFlags.None);
 				tex.Data.WriteByte(255);
 				dh.Texture.UnlockRectangle(0);
 
-				FDeviceHelpers.Add(dev.ComPointer, dh);
+				FDeviceHelpers.Add(OnDevice, dh);
 			}
-			
-			dev.Dispose();
 		}
 
-		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+		public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
 		{
-			Device dev = Device.FromPointer(new IntPtr(OnDevice));
-
 			//dispose resources that were created on given device
 			DeviceHelpers dh = null;
-			if (FDeviceHelpers.TryGetValue(dev.ComPointer, out dh))
+			if (FDeviceHelpers.TryGetValue(OnDevice, out dh))
 			{
 				dh.Dispose();
 
-				var ids = FFonts.Where(kv => kv.Value.Tag == dev).Select(kv => kv.Key).ToArray();
+				var ids = FFonts.Where(kv => kv.Value.Tag == OnDevice).Select(kv => kv.Key).ToArray();
 				foreach (var id in ids)
 					RemoveFont(id);
 				
-				FDeviceHelpers.Remove(dev.ComPointer);
+				FDeviceHelpers.Remove(OnDevice);
 			}
-			
-			dev.Dispose();
 		}
 
 		public void SetStates()
@@ -264,7 +253,7 @@ namespace VVVV.Nodes
 			FRenderStatePin.SetRenderState(RenderState.DestinationBlend, (int)Blend.InverseSourceAlpha);
 		}
 
-		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
+		public void Render(IDXLayerIO ForPin, Device OnDevice)
 		{
 			//concerning the cut characters in some fonts, especially when rendered italic see:
 			//http://www.gamedev.net/community/forums/topic.asp?topic_id=441338
@@ -273,19 +262,17 @@ namespace VVVV.Nodes
 			if (!FEnabledInput[0])
 				return;
 
-			Device dev = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
-
 			//from the docs: D3DXSPRITE_OBJECTSPACE -> The world, view, and projection transforms are not modified.
 			//for view and projection transforms this is exactly what we want: it allows placing the text within the
 			//same world as all the other objects. however we don't want to work in object space but in world space
 			//that's why we need to to set the world transform to a neutral value: identity
-			dev.SetTransform(TransformState.World, Matrix.Identity);
+			OnDevice.SetTransform(TransformState.World, Matrix.Identity);
 			FTransformIn.SetRenderSpace();
 
 			//set states that are defined via upstream nodes
 			FRenderStatePin.SetSliceStates(0);
 
-			DeviceHelpers dh = FDeviceHelpers[dev.ComPointer];
+			DeviceHelpers dh = FDeviceHelpers[OnDevice];
 
 			dh.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);
 			try
@@ -302,18 +289,12 @@ namespace VVVV.Nodes
 
 				for (int i = 0; i < FSpreadMax; i++)
 				{
-					var font = CreateFont(dev, i);
+					var font = CreateFont(OnDevice, i);
 
 					text = FTextInput[i];
 
 					if (string.IsNullOrEmpty(text))
 						continue;
-
-					if (FCharEncoding[i] == "UTF8")
-					{
-						byte[] utf8bytes = Encoding.Default.GetBytes(text);
-						text = Encoding.UTF8.GetString(utf8bytes);
-					}
 
 					DrawTextFormat format = DrawTextFormat.NoClip | DrawTextFormat.ExpandTabs;
 
@@ -343,6 +324,8 @@ namespace VVVV.Nodes
 					font.MeasureString(dh.Sprite, text, format, ref tmpRect);
 					width = tmpRect.Width;
 					height = tmpRect.Height;
+					
+					FSizeOutput[i] = new Vector2D(width, height);
 
 					switch (normalize)
 					{
@@ -386,8 +369,6 @@ namespace VVVV.Nodes
 							default: x = 0; break;
 					}
 					font.DrawString(dh.Sprite, text, new Rectangle((int)-x, (int)-y, width, height), format, (Color)FColorInput[i]);
-
-					FSizeOutput[i] = new Vector2D(width, height);
 				}
 			}
 			catch (Exception e)
@@ -397,7 +378,6 @@ namespace VVVV.Nodes
 			finally
 			{
 				dh.Sprite.End();
-				dev.Dispose();
 			}
 		}
 		#endregion

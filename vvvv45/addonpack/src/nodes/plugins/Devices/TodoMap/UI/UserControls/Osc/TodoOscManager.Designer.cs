@@ -62,7 +62,7 @@
             this.tblLayout.RowCount = 2;
             this.tblLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tblLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblLayout.Size = new System.Drawing.Size(607, 167);
+            this.tblLayout.Size = new System.Drawing.Size(607, 228);
             this.tblLayout.TabIndex = 0;
             // 
             // grpOscIn
@@ -71,7 +71,7 @@
             this.grpOscIn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpOscIn.Location = new System.Drawing.Point(3, 3);
             this.grpOscIn.Name = "grpOscIn";
-            this.grpOscIn.Size = new System.Drawing.Size(601, 77);
+            this.grpOscIn.Size = new System.Drawing.Size(601, 108);
             this.grpOscIn.TabIndex = 0;
             this.grpOscIn.TabStop = false;
             this.grpOscIn.Text = "Input";
@@ -86,7 +86,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(595, 58);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(595, 89);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // label1
@@ -127,9 +127,9 @@
             // 
             // lblstatus
             // 
-            this.lblstatus.Location = new System.Drawing.Point(3, 30);
+            this.lblstatus.Location = new System.Drawing.Point(377, 0);
             this.lblstatus.Name = "lblstatus";
-            this.lblstatus.Size = new System.Drawing.Size(296, 23);
+            this.lblstatus.Size = new System.Drawing.Size(185, 23);
             this.lblstatus.TabIndex = 3;
             this.lblstatus.Text = "Status: ";
             this.lblstatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -138,9 +138,9 @@
             // 
             this.groupBox1.Controls.Add(this.flowLayoutPanel2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 86);
+            this.groupBox1.Location = new System.Drawing.Point(3, 117);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(601, 78);
+            this.groupBox1.Size = new System.Drawing.Size(601, 108);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Output";
@@ -154,7 +154,7 @@
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(595, 59);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(595, 89);
             this.flowLayoutPanel2.TabIndex = 0;
             // 
             // label2
@@ -199,7 +199,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tblLayout);
             this.Name = "TodoOscManager";
-            this.Size = new System.Drawing.Size(607, 167);
+            this.Size = new System.Drawing.Size(607, 228);
             this.tblLayout.ResumeLayout(false);
             this.grpOscIn.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);

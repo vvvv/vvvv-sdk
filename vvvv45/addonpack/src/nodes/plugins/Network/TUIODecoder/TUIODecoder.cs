@@ -30,6 +30,9 @@ namespace TUIODecoder
         private IValueOut FUniqueIDOut;
         private IValueOut FPosXOut;
         private IValueOut FPosYOut;
+        private IValueOut FWidthOut;
+        private IValueOut FHeightOut;
+        private IValueOut FAreaOut;
         private IValueOut FAngleOut;
         private IValueOut FMovementXOut;
         private IValueOut FMovementYOut;
@@ -166,7 +169,6 @@ namespace TUIODecoder
 
             FHost.CreateValueOutput("Unique ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FUniqueIDOut);
             FUniqueIDOut.SetSubType(0, int.MaxValue, 1, 0, false, false, true);
-            
 
             FHost.CreateValueOutput("Position X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosXOut);
             FPosXOut.SetSubType(0, 1, 0.0001, 0, false, false, false);
@@ -175,7 +177,16 @@ namespace TUIODecoder
             FPosYOut.SetSubType(0, 1, 0.0001, 0, false, false, false);
 
             FHost.CreateValueOutput("Angle", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FAngleOut);
-            FAngleOut.SetSubType(0, Math.PI*2, 0.0001, 0, false, false, false);
+            FAngleOut.SetSubType(0, Math.PI * 2, 0.0001, 0, false, false, false);
+
+            FHost.CreateValueOutput("Width", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FWidthOut);
+            FPosYOut.SetSubType(0, 1, 0.0001, 0, false, false, false);
+
+            FHost.CreateValueOutput("Height", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FHeightOut);
+            FPosYOut.SetSubType(0, 1, 0.0001, 0, false, false, false);
+
+            FHost.CreateValueOutput("Area", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FAreaOut);
+            FPosYOut.SetSubType(0, 1, 0.0001, 0, false, false, false);
 
             FHost.CreateValueOutput("Movement X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMovementXOut);
             FMovementXOut.SetSubType(float.MinValue, float.MaxValue, 0.0001, 0, false, false, false);
@@ -214,7 +225,7 @@ namespace TUIODecoder
             //if any of the inputs has changed
             //recompute the outputs
             if (FTUIOPacketInput.PinIsChanged)
-            {                
+            {
                 string currentPacket;
                 FTUIOPacketInput.GetString(0, out currentPacket);
                 if (currentPacket == "" || currentPacket == null) return;
@@ -237,7 +248,8 @@ namespace TUIODecoder
                         currentSeperatedPacket = currentPacket.Substring(tuioPosition, nextpos - tuioPosition);
                         currentPacket = currentPacket.Substring(nextpos);
                     }
-                    OSC.NET.OSCPacket packet = OSC.NET.OSCPacket.Unpack(Encoding.Default.GetBytes(currentSeperatedPacket));
+
+                    OSC.NET.OSCPacket packet = OSC.NET.OSCPacket.Unpack(OSC.NET.OSCPacket.ASCIIEncoding8Bit.GetBytes(currentSeperatedPacket));
                     if (packet.IsBundle())
                     {
                         ArrayList messages = packet.Values;
@@ -247,17 +259,21 @@ namespace TUIODecoder
                         }
                     }
                     else
-                        FTuioClient.ProcessMessage((OSC.NET.OSCMessage)packet);		
+                        FTuioClient.ProcessMessage((OSC.NET.OSCMessage)packet);
                 }
             }
             List<TuioCursor> cursors = FTuioClient.getTuioCursors();
             List<TuioObject> objects = FTuioClient.getTuioObjects();
-            int slicecount = cursors.Count + objects.Count;
+            List<TuioBlob> blobs = FTuioClient.getTuioBlobs();
+            int slicecount = cursors.Count + objects.Count + blobs.Count;
             FSessionIDOut.SliceCount = slicecount;
             FClassIDOut.SliceCount = slicecount;
             FUniqueIDOut.SliceCount = slicecount;
             FPosXOut.SliceCount = slicecount;
             FPosYOut.SliceCount = slicecount;
+            FWidthOut.SliceCount = slicecount;
+            FHeightOut.SliceCount = slicecount;
+            FAreaOut.SliceCount = slicecount;
             FAngleOut.SliceCount = slicecount;
             FMovementXOut.SliceCount = slicecount;
             FMovementYOut.SliceCount = slicecount;
@@ -302,6 +318,29 @@ namespace TUIODecoder
                 FRotationSpeedOut.SetValue(curindex, obj.getRotationSpeed());
                 curindex++;
             }
+
+            int blobOffset = 2000;
+            for (int i = 0; i < blobs.Count; i++)
+            {
+                TuioBlob blb = blobs[i];
+                FSessionIDOut.SetValue(curindex, blb.getSessionID());
+                FClassIDOut.SetValue(curindex, 2);
+                FUniqueIDOut.SetValue(curindex, blb.getBlobID() + blobOffset);
+                FPosXOut.SetValue(curindex, blb.getPosition().getX() * 2 - 1);
+                FPosYOut.SetValue(curindex, -blb.getPosition().getY() * 2 + 1);
+                FWidthOut.SetValue(curindex, blb.getWidth());
+                FHeightOut.SetValue(curindex, blb.getHeight());
+                FAreaOut.SetValue(curindex, blb.getArea());
+                FAngleOut.SetValue(curindex, 1 - ((blb.getAngle()) / (Math.PI + Math.PI)));
+                FMovementXOut.SetValue(curindex, blb.getXSpeed());
+                FMovementYOut.SetValue(curindex, blb.getYSpeed());
+                FMotionAccelerationOut.SetValue(curindex, blb.getMotionAccel());
+                FRotationAccelerationOut.SetValue(curindex, blb.getRotationAccel());
+                FMotionSpeedOut.SetValue(curindex, blb.getMotionSpeed());
+                FRotationSpeedOut.SetValue(curindex, blb.getRotationSpeed());
+                curindex++;
+            }
+
         }
 
         #endregion mainloop

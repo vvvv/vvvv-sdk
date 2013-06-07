@@ -12,11 +12,11 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//opencv v2.31
+//http://opencv.willowgarage.com/wiki
 
 //////initial author
 //joreg -> joreg@gmx.at
@@ -28,8 +28,9 @@
 #include "FreeFrame.h"
 
 //opencv includes
-#include <cv.h>
-#include <highgui.h>
+#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
+
 #include <string.h>
 #include <string>
 using namespace std;
@@ -129,8 +130,8 @@ private:
 
     CRITICAL_SECTION CriticalSection;
     CvSize FImageSize;
-    string Filename;
-    bool newMask;
+    string FFilename;
+    bool FNewMask;
 
     IplImage* FCurrentImage;
     IplImage* FGrayImage;

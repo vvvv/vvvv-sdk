@@ -4,6 +4,7 @@ using System.Text;
 using VVVV.TodoMap.Lib.Modules.Midi;
 using System.Xml;
 using VVVV.TodoMap.Lib.Modules.Osc;
+using System.Globalization;
 
 namespace VVVV.TodoMap.Lib.Persist
 {
@@ -60,13 +61,13 @@ namespace VVVV.TodoMap.Lib.Persist
             {
                 if (child.Name == "Input")
                 {
-                    engine.Osc.AutoStartInput = bool.Parse(child.Attributes["AutoStart"].Value);
+                    engine.Osc.AutoStartInput = BoolExtension.ParseEnglish(child.Attributes["AutoStart"].Value);
                     engine.Osc.LocalPort = int.Parse(child.Attributes["Port"].Value);
                 }
 
                 if (child.Name == "Output")
                 {
-                    engine.Osc.AutoStartOutput = bool.Parse(child.Attributes["AutoStart"].Value);
+                    engine.Osc.AutoStartOutput = BoolExtension.ParseEnglish(child.Attributes["AutoStart"].Value);
                     engine.Osc.RemotePort = int.Parse(child.Attributes["Port"].Value);
                 }
             }
@@ -78,7 +79,37 @@ namespace VVVV.TodoMap.Lib.Persist
 
         private static void LoadMidiModule(TodoEngine engine, XmlNode node)
         {
+            foreach (XmlNode child in node.ChildNodes)
+            {
+                if (child.Name == "Inputs")
+                {
+                    foreach (XmlNode n in child.ChildNodes)
+                    {
+                        if (n.Name == "Input")
+                        {
+                            engine.Midi.SetInputAutoStart(n.Attributes["AutoStart"].Value, true);
+                            //engine.Osc.AutoStartInput = bool.Parse(child.Attributes["AutoStart"].Value);
+                            //engine.Osc.LocalPort = int.Parse(child.Attributes["Port"].Value);
+                        }
+                    }
+                }
 
+                if (child.Name == "Outputs")
+                {
+                    foreach (XmlNode n in child.ChildNodes)
+                    {
+                        if (n.Name == "Output")
+                        {
+                            engine.Midi.SetOutputAutoStart(n.Attributes["AutoStart"].Value, true);
+                            //engine.Osc.AutoStartOutput = bool.Parse(child.Attributes["AutoStart"].Value);
+                            //engine.Osc.RemotePort = int.Parse(child.Attributes["Port"].Value);
+                        }
+                    }
+                }
+            }
+
+            if (engine.Osc.AutoStartInput) { engine.Osc.SetEnabled(true); }
+            if (engine.Osc.AutoStartOutput) { engine.Osc.SetOutputEnabled(true); }
         }
 
         private static void LoadVariable(TodoEngine engine, XmlNode node)
@@ -98,19 +129,19 @@ namespace VVVV.TodoMap.Lib.Persist
                 }
                 if (child.Name == "AllowFeedBack")
                 {
-                    var.AllowFeedBack = Convert.ToBoolean(child.InnerText);
+                    var.AllowFeedBack = BoolExtension.ParseEnglish(child.InnerText);
                 }
                 if (child.Name == "Default")
                 {
-                    var.Default = Convert.ToDouble(child.InnerText);
+                    var.Default = Convert.ToDouble(child.InnerText,CultureInfo.InvariantCulture);
                 }
                 if (child.Name == "MinValue")
                 {
-                    var.Mapper.MinValue = Convert.ToDouble(child.InnerText);
+                    var.Mapper.MinValue = Convert.ToDouble(child.InnerText, CultureInfo.InvariantCulture);
                 }
                 if (child.Name == "MaxValue")
                 {
-                    var.Mapper.MaxValue = Convert.ToDouble(child.InnerText);
+                    var.Mapper.MaxValue = Convert.ToDouble(child.InnerText, CultureInfo.InvariantCulture);
                 }
                 if (child.Name == "TweenMode")
                 {
@@ -135,7 +166,7 @@ namespace VVVV.TodoMap.Lib.Persist
 
             if (var.Category == null) { var.Category = "Global"; }
             else { if (var.Category.Length == 0) { var.Category = "Global"; } }
-            engine.RegisterVariable(var);
+            engine.RegisterVariable(var,false);
             var.SetDefault();
             
             //foreach (AbstractTodoInput ti in var.Inputs)

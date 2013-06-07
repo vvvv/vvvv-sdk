@@ -15,7 +15,7 @@ using VVVV.TodoMap.Lib;
 
 namespace VVVV.Nodes
 {
-    [PluginInfo(Name="TodoSequencer",Category="Animation",Version="TodoMap",
+    [PluginInfo(Name = "TodoSequencer", Category = "TodoMap", Version = "Animation",
         Help="Sequencer with track system",Author="vux",Tags="midi,record,playback")]
     public class MidiSequencerNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {

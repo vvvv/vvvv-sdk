@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Security;
 
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -22,21 +23,6 @@ using VVVV.Utils.VMath;
 namespace VVVV.PluginInterfaces.V1
 {
 	#region basic pins
-	/// <summary>
-	/// Helper interface for having a callback mechanism between host and pin.
-	/// </summary>
-	[Guid("60842D2E-FBA6-456C-A7AE-C3708D06B5C1"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPinUpdater
-	{
-	    //Called by the host before Evaluate for Inputs and after Evaluate for Outputs.
-	    void Update();
-	    
-	    void Connect(IPin otherPin);
-	    
-	    void Disconnect(IPin otherPin);
-	}
-	
 	[Guid("19D25C40-AE80-4960-9847-4FECF661522B"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IConnectionHandler
@@ -50,7 +36,8 @@ namespace VVVV.PluginInterfaces.V1
 	/// Base interface of all pin interfaces. Never used directly.
 	/// </summary>
 	[Guid("D3C5CB5C-C054-4AB6-AC04-6BDB34692B25"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	public interface IPluginIO
 	{
 		/// <summary>
@@ -66,9 +53,9 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		bool IsConnected{get;}
 		/// <summary>
-		/// Called by the plugin to set a callback on the host for the pin to be called to updat before/after Evaluate.
+		/// Gets the plugin host which created this plugin io.
 		/// </summary>
-		void SetPinUpdater(IPinUpdater pinUpdater);
+		IPluginHost PluginHost{get;}
 	}
 	
 	/// <summary>
@@ -113,13 +100,23 @@ namespace VVVV.PluginInterfaces.V1
 		/// further processing is needed or can be ommited.
 		/// </summary>
 		bool PinIsChanged{get;}
+        /// <summary>
+        /// Validates the upstream pin for this frame. Normally this leads to the evaluation of the upstream node.
+        /// </summary>
+        /// <returns>Whether or not the data changed.</returns>
+		bool Validate();
+        /// <summary>
+        /// Gets or sets whether the upstream pin gets validated automatically before calling evaluate on the plugin.
+        /// </summary>
+		bool AutoValidate{get;set;}
 	}
 	
 	/// <summary>
 	/// Base interface of all fast InputPin interfaces. Never used directly.
 	/// </summary>
 	[Guid("9AFAD289-7C11-4296-B232-8B33FAC3E27D"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	public interface IPluginFastIn: IPluginIO
 	{
 		/// <summary>
@@ -130,6 +127,15 @@ namespace VVVV.PluginInterfaces.V1
 		/// Returns a String of the pins concatenated Values. Typcally used internally only to save a pins state to disk.
 		/// </summary>
 		string SpreadAsString{get;}
+        /// <summary>
+        /// Validates the upstream pin for this frame. Normally this leads to the evaluation of the upstream node.
+        /// </summary>
+        /// <returns>Whether or not the data changed.</returns>
+		bool Validate();
+        /// <summary>
+        /// Gets or sets whether the upstream pin gets validated automatically before calling evaluate on the plugin.
+        /// </summary>
+		bool AutoValidate{get;set;}
 	}
 	
 	/// <summary>
@@ -147,6 +153,10 @@ namespace VVVV.PluginInterfaces.V1
 		/// Returns a String of the pins concatenated Values. Typcally used internally only to save a pins state to disk.
 		/// </summary>
 		string SpreadAsString{set;}
+        /// <summary>
+        /// Whether or not feedback loops are allowed on this pin.
+        /// </summary>
+        bool AllowFeedback { get; set; }
 	}
 	
 	#endregion basic pins
@@ -163,141 +173,142 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to write a Value to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Value to.</param>
-		/// <param name="Value">The Value to write.</param>
-		void SetValue(int Index, double Value);
+		/// <param name="index">The index of the slice to write the Value to.</param>
+		/// <param name="value">The Value to write.</param>
+		void SetValue(int index, double value);
 		/// <summary>
 		/// Used to write a 2D Vector to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the 2D Vector to.</param>
-		/// <param name="Value1">The Value to write to the 1st dimension.</param>
-		/// <param name="Value2">The Value to write to the 2nd dimension.</param>
-		void SetValue2D(int Index, double Value1, double Value2);
+		/// <param name="index">The index of the slice to write the 2D Vector to.</param>
+		/// <param name="value1">The Value to write to the 1st dimension.</param>
+		/// <param name="value2">The Value to write to the 2nd dimension.</param>
+		void SetValue2D(int index, double value1, double value2);
 		/// <summary>
 		/// Used to write a 3D Vector to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the 3D Vector to.</param>
-		/// <param name="Value1">The Value to write to the 1st dimension.</param>
-		/// <param name="Value2">The Value to write to the 2nd dimension.</param>
-		/// <param name="Value3">The Value to write to the 3rd dimension.</param>
-		void SetValue3D(int Index, double Value1, double Value2, double Value3);
+		/// <param name="index">The index of the slice to write the 3D Vector to.</param>
+		/// <param name="value1">The Value to write to the 1st dimension.</param>
+		/// <param name="value2">The Value to write to the 2nd dimension.</param>
+		/// <param name="value3">The Value to write to the 3rd dimension.</param>
+		void SetValue3D(int index, double value1, double value2, double value3);
 		/// <summary>
 		/// Used to write a 4D Vector to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the 4D Vector to.</param>
-		/// <param name="Value1">The Value to write to the 1st dimension.</param>
-		/// <param name="Value2">The Value to write to the 2nd dimension.</param>
-		/// <param name="Value3">The Value to write to the 3rd dimension.</param>
-		/// <param name="Value4">The Value to write to the 4th dimension.</param>
-		void SetValue4D(int Index, double Value1, double Value2, double Value3, double Value4);
+		/// <param name="index">The index of the slice to write the 4D Vector to.</param>
+		/// <param name="value1">The Value to write to the 1st dimension.</param>
+		/// <param name="value2">The Value to write to the 2nd dimension.</param>
+		/// <param name="value3">The Value to write to the 3rd dimension.</param>
+		/// <param name="value4">The Value to write to the 4th dimension.</param>
+		void SetValue4D(int index, double value1, double value2, double value3, double value4);
 		/// <summary>
 		/// Used to write a Matrix to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Matrix to.</param>
-		/// <param name="Value">The Matrix to write.</param>
-		void SetMatrix(int Index, Matrix4x4 Value);
+		/// <param name="index">The index of the slice to write the Matrix to.</param>
+		/// <param name="value">The Matrix to write.</param>
+		void SetMatrix(int index, Matrix4x4 value);
 		
 		/// <summary>
 		/// Used to retrieve a Value from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Value from.</param>
-		/// <param name="Value">The retrieved Value.</param>
-		void GetValue(int Index, out double Value);
+		/// <param name="index">The index of the slice to retrieve the Value from.</param>
+		/// <param name="value">The retrieved Value.</param>
+		void GetValue(int index, out double value);
 		/// <summary>
 		/// Used to retrieve a 2D Vector from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 2D Vector from.</param>
-		/// <param name="Value1">The retrieved 1st dimension of the Vector.</param>
-		/// <param name="Value2">The retrieved 2nd dimension of the Vector.</param>
-		void GetValue2D(int Index, out double Value1, out double Value2);
+		/// <param name="index">The index of the slice to retrieve the 2D Vector from.</param>
+		/// <param name="value1">The retrieved 1st dimension of the Vector.</param>
+		/// <param name="value2">The retrieved 2nd dimension of the Vector.</param>
+		void GetValue2D(int index, out double value1, out double value2);
 		/// <summary>
 		/// Used to retrieve a 3D Vector from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 3D Vector from.</param>
-		/// <param name="Value1">The retrieved 1st dimension of the Vector.</param>
-		/// <param name="Value2">The retrieved 2nd dimension of the Vector.</param>
-		/// <param name="Value3">The retrieved 3rd dimension of the Vector.</param>
-		void GetValue3D(int Index, out double Value1, out double Value2, out double Value3);
+		/// <param name="index">The index of the slice to retrieve the 3D Vector from.</param>
+		/// <param name="value1">The retrieved 1st dimension of the Vector.</param>
+		/// <param name="value2">The retrieved 2nd dimension of the Vector.</param>
+		/// <param name="value3">The retrieved 3rd dimension of the Vector.</param>
+		void GetValue3D(int index, out double value1, out double value2, out double value3);
 		/// <summary>
 		/// Used to retrieve a 4D Vector from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 4D Vector from.</param>
-		/// <param name="Value1">The retrieved 1st dimension of the Vector.</param>
-		/// <param name="Value2">The retrieved 2nd dimension of the Vector.</param>
-		/// <param name="Value3">The retrieved 3rd dimension of the Vector.</param>
-		/// <param name="Value4">The retrieved 4th dimension of the Vector.</param>
-		void GetValue4D(int Index, out double Value1, out double Value2, out double Value3, out double Value4);
+		/// <param name="index">The index of the slice to retrieve the 4D Vector from.</param>
+		/// <param name="value1">The retrieved 1st dimension of the Vector.</param>
+		/// <param name="value2">The retrieved 2nd dimension of the Vector.</param>
+		/// <param name="value3">The retrieved 3rd dimension of the Vector.</param>
+		/// <param name="value4">The retrieved 4th dimension of the Vector.</param>
+		void GetValue4D(int index, out double value1, out double value2, out double value3, out double value4);
 		/// <summary>
 		/// Used to retrieve a 4x4 Matrix from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 4x4 Matrix from.</param>
-		/// <param name="Value">The retrieved 4x4 Matrix.</param>
-		void GetMatrix(int Index, out Matrix4x4 Value);
+		/// <param name="index">The index of the slice to retrieve the 4x4 Matrix from.</param>
+		/// <param name="value">The retrieved 4x4 Matrix.</param>
+		void GetMatrix(int index, out Matrix4x4 value);
 		/// <summary>
 		/// Used to retrieve a Pointer to the Values of the pin.
 		/// </summary>
-		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
-		/// <param name="Value">A Pointer to the pins first Value.</param>
-		void GetValuePointer(out int SliceCount, out double* Value);
+		/// <param name="sliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
+		/// <param name="value">A Pointer to the pins first Value.</param>
+		void GetValuePointer(out int sliceCount, out double* value);
+		void GetValuePointer(out int* length, out double** dataPointer);
 
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default">The Value the pin is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType  (double Min, double Max, double StepSize, double Default, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default">The Value the pin is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType(double min, double max, double stepSize, double @default, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 2D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType2D(double Min, double Max, double StepSize, double Default1, double Default2, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType2D(double min, double max, double stepSize, double default1, double default2, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 3D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType3D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType3D(double min, double max, double stepSize, double default1, double default2, double default3, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 4D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default4">The Value the pins 4th dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType4D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, double Default4, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default4">The Value the pins 4th dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType4D(double min, double max, double stepSize, double default1, double default2, double default3, double default4, bool isBang, bool isToggle, bool isInteger);
 	}
 	
 	/// <summary>
@@ -310,326 +321,331 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to retrieve a Value from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Value from.</param>
-		/// <param name="Value">The retrieved Value.</param>
-		void GetValue(int Index, out double Value);
+		/// <param name="index">The index of the slice to retrieve the Value from.</param>
+		/// <param name="value">The retrieved Value.</param>
+		void GetValue(int index, out double value);
 		/// <summary>
 		/// Used to retrieve a 2D Vector from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 2D Vector from.</param>
-		/// <param name="Value1">The retrieved 1st dimension of the Vector.</param>
-		/// <param name="Value2">The retrieved 2nd dimension of the Vector.</param>
-		void GetValue2D(int Index, out double Value1, out double Value2);
+		/// <param name="index">The index of the slice to retrieve the 2D Vector from.</param>
+		/// <param name="value1">The retrieved 1st dimension of the Vector.</param>
+		/// <param name="value2">The retrieved 2nd dimension of the Vector.</param>
+		void GetValue2D(int index, out double value1, out double value2);
 		/// <summary>
 		/// Used to retrieve a 3D Vector from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 3D Vector from.</param>
-		/// <param name="Value1">The retrieved 1st dimension of the Vector.</param>
-		/// <param name="Value2">The retrieved 2nd dimension of the Vector.</param>
-		/// <param name="Value3">The retrieved 3rd dimension of the Vector.</param>
-		void GetValue3D(int Index, out double Value1, out double Value2, out double Value3);
+		/// <param name="index">The index of the slice to retrieve the 3D Vector from.</param>
+		/// <param name="value1">The retrieved 1st dimension of the Vector.</param>
+		/// <param name="value2">The retrieved 2nd dimension of the Vector.</param>
+		/// <param name="value3">The retrieved 3rd dimension of the Vector.</param>
+		void GetValue3D(int index, out double value1, out double value2, out double value3);
 		/// <summary>
 		/// Used to retrieve a 4D Vector from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 4D Vector from.</param>
-		/// <param name="Value1">The retrieved 1st dimension of the Vector.</param>
-		/// <param name="Value2">The retrieved 2nd dimension of the Vector.</param>
-		/// <param name="Value3">The retrieved 3rd dimension of the Vector.</param>
-		/// <param name="Value4">The retrieved 4th dimension of the Vector.</param>
-		void GetValue4D(int Index, out double Value1, out double Value2, out double Value3, out double Value4);
+		/// <param name="index">The index of the slice to retrieve the 4D Vector from.</param>
+		/// <param name="value1">The retrieved 1st dimension of the Vector.</param>
+		/// <param name="value2">The retrieved 2nd dimension of the Vector.</param>
+		/// <param name="value3">The retrieved 3rd dimension of the Vector.</param>
+		/// <param name="value4">The retrieved 4th dimension of the Vector.</param>
+		void GetValue4D(int index, out double value1, out double value2, out double value3, out double value4);
 		/// <summary>
 		/// Used to retrieve a 4x4 Matrix from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 4x4 Matrix from.</param>
-		/// <param name="Value">The retrieved 4x4 Matrix.</param>
-		void GetMatrix(int Index, out Matrix4x4 Value);
+		/// <param name="index">The index of the slice to retrieve the 4x4 Matrix from.</param>
+		/// <param name="value">The retrieved 4x4 Matrix.</param>
+		void GetMatrix(int index, out Matrix4x4 value);
 		/// <summary>
 		/// Used to retrieve a Pointer to the Values of the pin, which can be used to retrive large Spreads of Values more efficiently.
 		/// Attention: Don't use this Pointer to write Values to the pin!
 		/// </summary>
-		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
-		/// <param name="Value">A Pointer to the pins first Value.</param>
-		void GetValuePointer(out int SliceCount, out double* Value);
+		/// <param name="sliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
+		/// <param name="value">A Pointer to the pins first Value.</param>
+		void GetValuePointer(out int sliceCount, out double* value);
+		void GetValuePointer(out int* length, out double** dataPointer);
 		
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default">The Value the pin is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType  (double Min, double Max, double StepSize, double Default, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default">The Value the pin is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType  (double min, double max, double stepSize, double @default, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 2D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType2D(double Min, double Max, double StepSize, double Default1, double Default2, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType2D(double min, double max, double stepSize, double default1, double default2, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 3D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType3D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType3D(double min, double max, double stepSize, double default1, double default2, double default3, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 4D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default4">The Value the pins 4th dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType4D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, double Default4, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default4">The Value the pins 4th dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType4D(double min, double max, double stepSize, double default1, double default2, double default3, double default4, bool isBang, bool isToggle, bool isInteger);
 	}
 
 	/// <summary>
 	/// Interface to a fast InputPin of type Value.
 	/// </summary>
 	[Guid("095081B7-D929-4459-83C0-18AA809E6635"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	unsafe public interface IValueFastIn: IPluginFastIn		//fast value input pin
 	{
 		/// <summary>
 		/// Used to retrieve a Value from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Value from.</param>
-		/// <param name="Value">The retrieved Value.</param>
-		void GetValue(int Index, out double Value);
+		/// <param name="index">The index of the slice to retrieve the Value from.</param>
+		/// <param name="value">The retrieved Value.</param>
+		void GetValue(int index, out double value);
 		/// <summary>
 		/// Used to retrieve a 2D Vector from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 2D Vector from.</param>
-		/// <param name="Value1">The retrieved 1st dimension of the Vector.</param>
-		/// <param name="Value2">The retrieved 2nd dimension of the Vector.</param>
-		void GetValue2D(int Index, out double Value1, out double Value2);
+		/// <param name="index">The index of the slice to retrieve the 2D Vector from.</param>
+		/// <param name="value1">The retrieved 1st dimension of the Vector.</param>
+		/// <param name="value2">The retrieved 2nd dimension of the Vector.</param>
+		void GetValue2D(int index, out double value1, out double value2);
 		/// <summary>
 		/// Used to retrieve a 3D Vector from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 3D Vector from.</param>
-		/// <param name="Value1">The retrieved 1st dimension of the Vector.</param>
-		/// <param name="Value2">The retrieved 2nd dimension of the Vector.</param>
-		/// <param name="Value3">The retrieved 3rd dimension of the Vector.</param>
-		void GetValue3D(int Index, out double Value1, out double Value2, out double Value3);
+		/// <param name="index">The index of the slice to retrieve the 3D Vector from.</param>
+		/// <param name="value1">The retrieved 1st dimension of the Vector.</param>
+		/// <param name="value2">The retrieved 2nd dimension of the Vector.</param>
+		/// <param name="value3">The retrieved 3rd dimension of the Vector.</param>
+		void GetValue3D(int index, out double value1, out double value2, out double value3);
 		/// <summary>
 		/// Used to retrieve a 4D Vector from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 4D Vector from.</param>
-		/// <param name="Value1">The retrieved 1st dimension of the Vector.</param>
-		/// <param name="Value2">The retrieved 2nd dimension of the Vector.</param>
-		/// <param name="Value3">The retrieved 3rd dimension of the Vector.</param>
-		/// <param name="Value4">The retrieved 4th dimension of the Vector.</param>
-		void GetValue4D(int Index, out double Value1, out double Value2, out double Value3, out double Value4);
+		/// <param name="index">The index of the slice to retrieve the 4D Vector from.</param>
+		/// <param name="value1">The retrieved 1st dimension of the Vector.</param>
+		/// <param name="value2">The retrieved 2nd dimension of the Vector.</param>
+		/// <param name="value3">The retrieved 3rd dimension of the Vector.</param>
+		/// <param name="value4">The retrieved 4th dimension of the Vector.</param>
+		void GetValue4D(int index, out double value1, out double value2, out double value3, out double value4);
 		/// <summary>
 		/// Used to retrieve a 4x4 Matrix from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the 4x4 Matrix from.</param>
-		/// <param name="Value">The retrieved 4x4 Matrix.</param>
-		void GetMatrix(int Index, out Matrix4x4 Value);
+		/// <param name="index">The index of the slice to retrieve the 4x4 Matrix from.</param>
+		/// <param name="value">The retrieved 4x4 Matrix.</param>
+		void GetMatrix(int index, out Matrix4x4 value);
 		/// <summary>
 		/// Used to retrieve a Pointer to the Values of the pin, which can be used to retrive large Spreads of Values more efficiently.
 		/// Attention: Don't use this Pointer to write Values to the pin!
 		/// </summary>
-		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
-		/// <param name="Value">A Pointer to the pins first Value.</param>
-		void GetValuePointer(out int SliceCount, out double* Value);
+		/// <param name="sliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
+		/// <param name="value">A Pointer to the pins first Value.</param>
+		void GetValuePointer(out int sliceCount, out double* value);
+		void GetValuePointer(out int* length, out double** dataPointer);
 		
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default">The Value the pin is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType  (double Min, double Max, double StepSize, double Default, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default">The Value the pin is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType  (double min, double max, double stepSize, double @default, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 2D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType2D(double Min, double Max, double StepSize, double Default1, double Default2, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType2D(double min, double max, double stepSize, double default1, double default2, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 3D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType3D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType3D(double min, double max, double stepSize, double default1, double default2, double default3, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 4D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default4">The Value the pins 4th dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType4D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, double Default4, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default4">The Value the pins 4th dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType4D(double min, double max, double stepSize, double default1, double default2, double default3, double default4, bool isBang, bool isToggle, bool isInteger);
 	}
 	
 	/// <summary>
 	/// Interface to an OutputPin of type Value.
 	/// </summary>
 	[Guid("B55B70E8-9C3D-408D-B9F9-A90CF8288FC7"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown), 
+	 SuppressUnmanagedCodeSecurity]
 	unsafe public interface IValueOut: IPluginOut			//value output pin
 	{
 		/// <summary>
 		/// Used to write a Value to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Value to.</param>
-		/// <param name="Value">The Value to write.</param>
-		void SetValue(int Index, double Value);
+		/// <param name="index">The index of the slice to write the Value to.</param>
+		/// <param name="value">The Value to write.</param>
+		void SetValue(int index, double value);
 		/// <summary>
 		/// Used to write a 2D Vector to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the 2D Vector to.</param>
-		/// <param name="Value1">The Value to write to the 1st dimension.</param>
-		/// <param name="Value2">The Value to write to the 2nd dimension.</param>
-		void SetValue2D(int Index, double Value1, double Value2);
+		/// <param name="index">The index of the slice to write the 2D Vector to.</param>
+		/// <param name="value1">The Value to write to the 1st dimension.</param>
+		/// <param name="value2">The Value to write to the 2nd dimension.</param>
+		void SetValue2D(int index, double value1, double value2);
 		/// <summary>
 		/// Used to write a 3D Vector to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the 3D Vector to.</param>
-		/// <param name="Value1">The Value to write to the 1st dimension.</param>
-		/// <param name="Value2">The Value to write to the 2nd dimension.</param>
-		/// <param name="Value3">The Value to write to the 3rd dimension.</param>
-		void SetValue3D(int Index, double Value1, double Value2, double Value3);
+		/// <param name="index">The index of the slice to write the 3D Vector to.</param>
+		/// <param name="value1">The Value to write to the 1st dimension.</param>
+		/// <param name="value2">The Value to write to the 2nd dimension.</param>
+		/// <param name="value3">The Value to write to the 3rd dimension.</param>
+		void SetValue3D(int index, double value1, double value2, double value3);
 		/// <summary>
 		/// Used to write a 4D Vector to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the 4D Vector to.</param>
-		/// <param name="Value1">The Value to write to the 1st dimension.</param>
-		/// <param name="Value2">The Value to write to the 2nd dimension.</param>
-		/// <param name="Value3">The Value to write to the 3rd dimension.</param>
-		/// <param name="Value4">The Value to write to the 4th dimension.</param>
-		void SetValue4D(int Index, double Value1, double Value2, double Value3, double Value4);
+		/// <param name="index">The index of the slice to write the 4D Vector to.</param>
+		/// <param name="value1">The Value to write to the 1st dimension.</param>
+		/// <param name="value2">The Value to write to the 2nd dimension.</param>
+		/// <param name="value3">The Value to write to the 3rd dimension.</param>
+		/// <param name="value4">The Value to write to the 4th dimension.</param>
+		void SetValue4D(int index, double value1, double value2, double value3, double value4);
 		/// <summary>
 		/// Used to write a Matrix to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Matrix to.</param>
-		/// <param name="Value">The Matrix to write.</param>
-		void SetMatrix(int Index, Matrix4x4 Value);
+		/// <param name="index">The index of the slice to write the Matrix to.</param>
+		/// <param name="value">The Matrix to write.</param>
+		void SetMatrix(int index, Matrix4x4 value);
 		/// <summary>
 		/// Used to retrieve a Pointer to the Values of the pin, which can be used to write large number of values more efficiently.
 		/// Note though, that when writing Values to the Pointer the pins dimensions and overall SliceCount have to be taken care of manually.
 		/// </summary>
-		/// <param name="Value">A Pointer to the pins first Value.</param>
-		void GetValuePointer(out double* Value);
+		/// <param name="value">A Pointer to the pins first Value.</param>
+		void GetValuePointer(out double* value);
+		void GetValuePointer(out double** value);
 
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default">The Value the pin is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType  (double Min, double Max, double StepSize, double Default, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default">The Value the pin is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType  (double min, double max, double stepSize, double @default, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 2D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType2D(double Min, double Max, double StepSize, double Default1, double Default2, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType2D(double min, double max, double stepSize, double default1, double default2, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 3D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType3D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType3D(double min, double max, double stepSize, double default1, double default2, double default3, bool isBang, bool isToggle, bool isInteger);
 		/// <summary>
 		/// Used to set the SubType of a 4D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Min">Minimum of the Values range.</param>
-		/// <param name="Max">Maximum of the Values range.</param>
-		/// <param name="StepSize">StepSize used when scrolling the value up or down via the GUI.</param>
-		/// <param name="Default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="Default4">The Value the pins 4th dimension is initialized with and can be reset to at any time.</param>
-		/// <param name="IsBang">Hint to the GUI that this Value is a bang.</param>
-		/// <param name="IsToggle">Hint to the GUI that this is a toggling Value.</param>
-		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
-		void SetSubType4D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, double Default4, bool IsBang, bool IsToggle, bool IsInteger);
+		/// <param name="min">Minimum of the Values range.</param>
+		/// <param name="max">Maximum of the Values range.</param>
+		/// <param name="stepSize">StepSize used when scrolling the value up or down via the GUI.</param>
+		/// <param name="default1">The Value the pins 1st dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default2">The Value the pins 2nd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default3">The Value the pins 3rd dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="default4">The Value the pins 4th dimension is initialized with and can be reset to at any time.</param>
+		/// <param name="isBang">Hint to the GUI that this Value is a bang.</param>
+		/// <param name="isToggle">Hint to the GUI that this is a toggling Value.</param>
+		/// <param name="isInteger">Hint to the GUI that this is an integer Value.</param>
+		void SetSubType4D(double min, double max, double stepSize, double default1, double default2, double default3, double default4, bool isBang, bool isToggle, bool isInteger);
 	}
 	
 	#endregion value pins
@@ -646,31 +662,31 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to write a String to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the String to.</param>
-		/// <param name="Value">The String to write.</param>
-		void SetString(int Index, string Value);
+		/// <param name="index">The index of the slice to write the String to.</param>
+		/// <param name="value">The String to write.</param>
+		void SetString(int index, string value);
 		/// <summary>
 		/// Used to retrieve a String from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the String from.</param>
-		/// <param name="Value">The retrieved String.</param>
-		void GetString(int Index, out string Value);
+		/// <param name="index">The index of the slice to retrieve the String from.</param>
+		/// <param name="value">The retrieved String.</param>
+		void GetString(int index, out string value);
 		/// <summary>
 		/// Used to set the SubType of a String pin, which is a more detailed specification of the String, used by the GUI to guide the user to insert correct Strings.
 		/// Note though that this does not prevent a user from setting "wrong" Strings on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Default">The String the pin is initialized with and can be reset to at any time.</param>
-		/// <param name="IsFilename">Hint to the GUI that this String is a filename</param>
-		void SetSubType(string Default, bool IsFilename);
+		/// <param name="default">The String the pin is initialized with and can be reset to at any time.</param>
+		/// <param name="isFilename">Hint to the GUI that this String is a filename</param>
+		void SetSubType(string @default, bool isFilename);
 		/// <summary>
 		/// Alternative version to <see cref="SetSubType(string, bool)">IStringConfig.SetSubType()</see> with more options.
 		/// </summary>
-		/// <param name="Default">The String the pin is initialized with and can be reset to at any time</param>
-		/// <param name="MaxCharacters">Constrains the string to a given number of characters. Use -1 for unlimited characters</param>
-		/// <param name="FileMask">Filemask in the form of: Audio File (*.wav, *.mp3)|*.wav;*.mp3</param>
-		/// <param name="StringType">Enum specifying the type of string more precisely.</param>
-		void SetSubType2(string Default, int MaxCharacters, string FileMask, TStringType StringType);
+		/// <param name="default">The String the pin is initialized with and can be reset to at any time</param>
+		/// <param name="maxCharacters">Constrains the string to a given number of characters. Use -1 for unlimited characters</param>
+		/// <param name="fileMask">Filemask in the form of: Audio File (*.wav, *.mp3)|*.wav;*.mp3</param>
+		/// <param name="stringType">Enum specifying the type of string more precisely.</param>
+		void SetSubType2(string @default, int maxCharacters, string fileMask, TStringType stringType);
 	}
 	
 	/// <summary>
@@ -683,25 +699,25 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to retrieve a String from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the String from.</param>
-		/// <param name="Value">The retrieved String.</param>
-		void GetString(int Index, out string Value);
+		/// <param name="index">The index of the slice to retrieve the String from.</param>
+		/// <param name="value">The retrieved String.</param>
+		void GetString(int index, out string value);
 		/// <summary>
 		/// Used to set the SubType of a String pin, which is a more detailed specification of the String, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" Strings on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Default">The String the pin is initialized with and can be reset to at any time.</param>
-		/// <param name="IsFilename">Hint to the GUI that this String is a filename</param>
-		void SetSubType(string Default, bool IsFilename);
+		/// <param name="default">The String the pin is initialized with and can be reset to at any time.</param>
+		/// <param name="isFilename">Hint to the GUI that this String is a filename</param>
+		void SetSubType(string @default, bool isFilename);
 		/// <summary>
 		/// Alternative version to <see cref="SetSubType(string, bool)">IStringIn.SetSubType()</see> with more options.
 		/// </summary>
-		/// <param name="Default">The String the pin is initialized with and can be reset to at any time</param>
-		/// <param name="MaxCharacters">Constrains the string to a given number of characters</param>
-		/// <param name="FileMask">Filemask in the form of: Audio File (*.wav, *.mp3)|*.wav;*.mp3</param>
-		/// <param name="StringType">Enum specifying the type of string more precisely.</param>
-		void SetSubType2(string Default, int MaxCharacters, string FileMask, TStringType StringType);
+		/// <param name="default">The String the pin is initialized with and can be reset to at any time</param>
+		/// <param name="maxCharacters">Constrains the string to a given number of characters</param>
+		/// <param name="fileMask">Filemask in the form of: Audio File (*.wav, *.mp3)|*.wav;*.mp3</param>
+		/// <param name="stringType">Enum specifying the type of string more precisely.</param>
+		void SetSubType2(string @default, int maxCharacters, string fileMask, TStringType stringType);
 	}
 
 	/// <summary>
@@ -714,25 +730,25 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to write a String to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the String to.</param>
-		/// <param name="Value">The String to write.</param>
-		void SetString(int Index, string Value);
+		/// <param name="index">The index of the slice to write the String to.</param>
+		/// <param name="value">The String to write.</param>
+		void SetString(int index, string value);
 		/// <summary>
 		/// Used to set the SubType of a String pin, which is a more detailed specification of the String, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" Strings on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Default">The String the pin is initialized with and can be reset to at any time.</param>
-		/// <param name="IsFilename">Hint to the GUI that this String is a filename</param>
-		void SetSubType(string Default, bool IsFilename);
+		/// <param name="default">The String the pin is initialized with and can be reset to at any time.</param>
+		/// <param name="isFilename">Hint to the GUI that this String is a filename</param>
+		void SetSubType(string @default, bool isFilename);
 		/// <summary>
 		/// Alternative version to <see cref="SetSubType(string, bool)">IStringOut.SetSubType()</see> with more options.
 		/// </summary>
-		/// <param name="Default">The String the pin is initialized with and can be reset to at any time</param>
-		/// <param name="MaxCharacters">Constrains the string to a given number of characters</param>
-		/// <param name="FileMask">Filemask in the form of: Audio File (*.wav, *.mp3)|*.wav;*.mp3</param>
-		/// <param name="StringType">Enum specifying the type of string more precisely.</param>
-		void SetSubType2(string Default, int MaxCharacters, string FileMask, TStringType StringType);
+		/// <param name="default">The String the pin is initialized with and can be reset to at any time</param>
+		/// <param name="maxCharacters">Constrains the string to a given number of characters</param>
+		/// <param name="fileMask">Filemask in the form of: Audio File (*.wav, *.mp3)|*.wav;*.mp3</param>
+		/// <param name="stringType">Enum specifying the type of string more precisely.</param>
+		void SetSubType2(string @default, int maxCharacters, string fileMask, TStringType stringType);
 	}
 	
 	#endregion string pins
@@ -749,33 +765,34 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to write a Color to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Color to.</param>
-		/// <param name="Color">The Color to write.</param>
-		void SetColor(int Index, RGBAColor Color);
+		/// <param name="index">The index of the slice to write the Color to.</param>
+		/// <param name="color">The Color to write.</param>
+		void SetColor(int index, RGBAColor color);
 		/// <summary>
 		/// Used to retrieve a Color from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Color from.</param>
-		/// <param name="Color">The retrieved Color.</param>
-		void GetColor(int Index, out RGBAColor Color);
+		/// <param name="index">The index of the slice to retrieve the Color from.</param>
+		/// <param name="color">The retrieved Color.</param>
+		void GetColor(int index, out RGBAColor color);
 		/// <summary>
 		/// Used to retrieve a Pointer to the Colors of the pin, which can be used to retrive large Spreads of Colors more efficiently.
 		/// Each Color consists of 4 doubles, one for each of Red, Green, Blue and Alpha.
 		/// Attention: Don't use this Pointer to write Colors to the pin!
 		/// </summary>
-		/// <param name="SliceCount">The pins current SliceCount, specifying the number of colors accessible via the Pointer.</param>
-		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
+		/// <param name="sliceCount">The pins current SliceCount, specifying the number of colors accessible via the Pointer.</param>
+		/// <param name="value">A Pointer to the pins first Colors Red channel double.</param>
 		
-		void GetColorPointer(out int SliceCount, out double* Value);
+		void GetColorPointer(out int sliceCount, out double* value);
+		void GetColorPointer(out int* pLength, out double** ppData);
 
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Default">The Color the pin is initialized with and can be reset to at any time.</param>
-		/// <param name="HasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
-		void SetSubType(RGBAColor Default, bool HasAlpha);
+		/// <param name="default">The Color the pin is initialized with and can be reset to at any time.</param>
+		/// <param name="hasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
+		void SetSubType(RGBAColor @default, bool hasAlpha);
 	}
 	
 	/// <summary>
@@ -788,25 +805,26 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to retrieve a Color from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Color from.</param>
-		/// <param name="Color">The retrieved Color.</param>
-		void GetColor(int Index, out RGBAColor Color);
+		/// <param name="index">The index of the slice to retrieve the Color from.</param>
+		/// <param name="color">The retrieved Color.</param>
+		void GetColor(int index, out RGBAColor color);
 		/// <summary>
 		/// Used to retrieve a Pointer to the Colors of the pin, which can be used to retrive large Spreads of Colors more efficiently.
 		/// Each Color consists of 4 doubles, one for each of Red, Green, Blue and Alpha.
 		/// Attention: Don't use this Pointer to write Colors to the pin!
 		/// </summary>
-		/// <param name="SliceCount">The pins current SliceCount, specifying the number of colors accessible via the Pointer.</param>
-		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
-		void GetColorPointer(out int SliceCount, out double* Value);
+		/// <param name="sliceCount">The pins current SliceCount, specifying the number of colors accessible via the Pointer.</param>
+		/// <param name="value">A Pointer to the pins first Colors Red channel double.</param>
+		void GetColorPointer(out int sliceCount, out double* value);
+		void GetColorPointer(out int* pLength, out double** ppData);
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Default">The Color the pin is initialized with and can be reset to at any time.</param>
-		/// <param name="HasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
-		void SetSubType(RGBAColor Default, bool HasAlpha);
+		/// <param name="default">The Color the pin is initialized with and can be reset to at any time.</param>
+		/// <param name="hasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
+		void SetSubType(RGBAColor @default, bool hasAlpha);
 	}
 	
 	/// <summary>
@@ -819,24 +837,25 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to write a Color to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Color to.</param>
-		/// <param name="Color">The Color to write.</param>
-		void SetColor(int Index, RGBAColor Color);
+		/// <param name="index">The index of the slice to write the Color to.</param>
+		/// <param name="color">The Color to write.</param>
+		void SetColor(int index, RGBAColor color);
 		/// <summary>
 		/// Used to retrieve a Pointer to the Colors of the pin, which can be used to write large number of Colors more efficiently.
 		/// Each Color consists of 4 doubles, one for each of Red, Green, Blue and Alpha.
 		/// Note though, that when writing Colors to the Pointer the pins SliceCount has to be taken care of manually.
 		/// </summary>
-		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
-		void GetColorPointer(out double* Value);
+		/// <param name="value">A Pointer to the pins first Colors Red channel double.</param>
+		void GetColorPointer(out double* value);
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Default">The Color the pin is initialized with and can be reset to at any time.</param>
-		/// <param name="HasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
-		void SetSubType(RGBAColor Default, bool HasAlpha);
+		/// <param name="default">The Color the pin is initialized with and can be reset to at any time.</param>
+		/// <param name="hasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
+		void SetSubType(RGBAColor @default, bool hasAlpha);
+		void GetColorPointer(out double** ppDst);
 	}
 	
 	#endregion color pins
@@ -852,36 +871,36 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to write an Enum given as an ordinal value to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Enum to.</param>
-		/// <param name="Value">The ordinal Enum value to write.</param>
-		void SetOrd(int Index, int Value);
+		/// <param name="index">The index of the slice to write the Enum to.</param>
+		/// <param name="value">The ordinal Enum value to write.</param>
+		void SetOrd(int index, int value);
 		/// <summary>
 		/// Used to write an Enum given as an string value to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Enum to.</param>
-		/// <param name="Value">The string Enum value to write.</param>
-		void SetString(int Index, string Value);
+		/// <param name="index">The index of the slice to write the Enum to.</param>
+		/// <param name="value">The string Enum value to write.</param>
+		void SetString(int index, string value);
 		/// <summary>
 		/// Used to retrieve an Enum in ordinal form from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Enum from.</param>
-		/// <param name="Value">The retrieved Enum.</param>
-		void GetOrd(int Index, out int Value);
+		/// <param name="index">The index of the slice to retrieve the Enum from.</param>
+		/// <param name="value">The retrieved Enum.</param>
+		void GetOrd(int index, out int value);
 		/// <summary>
 		/// Used to retrieve an Enum in string form from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Enum from.</param>
-		/// <param name="Value">The retrieved Enum.</param>
-		void GetString(int Index, out string Value);
+		/// <param name="index">The index of the slice to retrieve the Enum from.</param>
+		/// <param name="value">The retrieved Enum.</param>
+		void GetString(int index, out string value);
 		/// <summary>
 		/// Used to set the SubType of an Enum pin. Should only be called once immediately 
 		/// after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="EnumName">Name of the Enum type to set to the pin. If the given name 
+		/// <param name="enumName">Name of the Enum type to set to the pin. If the given name 
 		/// is not yet registered with vvvv a new type with this name is created. 
 		/// Using <see cref="VVVV.PluginInterfaces.V1.IPluginHost.UpdateEnum">IPluginHost.UpdateEnum</see> 
 		/// a newly created Enum can be filled with custom entries.</param>
-		void SetSubType(string EnumName);
+		void SetSubType(string enumName);
 	}
 	
 	/// <summary>
@@ -894,24 +913,24 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to retrieve an Enum in ordinal form from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Enum from.</param>
-		/// <param name="Value">The retrieved Enum.</param>
-		void GetOrd(int Index, out int Value);
+		/// <param name="index">The index of the slice to retrieve the Enum from.</param>
+		/// <param name="value">The retrieved Enum.</param>
+		void GetOrd(int index, out int value);
 		/// <summary>
 		/// Used to retrieve an Enum in string form from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Enum from.</param>
-		/// <param name="Value">The retrieved Enum.</param>
-		void GetString(int Index, out string Value);
+		/// <param name="index">The index of the slice to retrieve the Enum from.</param>
+		/// <param name="value">The retrieved Enum.</param>
+		void GetString(int index, out string value);
 		/// <summary>
 		/// Used to set the SubType of an Enum pin. Should only be called once immediately 
 		/// after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="EnumName">Name of the Enum type to set to the pin. If the given name 
+		/// <param name="enumName">Name of the Enum type to set to the pin. If the given name 
 		/// is not yet registered with vvvv a new type with this name is created. 
 		/// Using <see cref="VVVV.PluginInterfaces.V1.IPluginHost.UpdateEnum">IPluginHost.UpdateEnum</see> 
 		/// a newly created Enum can be filled with custom entries.</param>
-		void SetSubType(string EnumName);
+		void SetSubType(string enumName);
 	}
 
 	/// <summary>
@@ -924,24 +943,24 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to write an Enum given as an ordinal value to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Enum to.</param>
-		/// <param name="Value">The ordinal Enum value to write.</param>
-		void SetOrd(int Index, int Value);
+		/// <param name="index">The index of the slice to write the Enum to.</param>
+		/// <param name="value">The ordinal Enum value to write.</param>
+		void SetOrd(int index, int value);
 		/// <summary>
 		/// Used to write an Enum given as an string value to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Enum to.</param>
-		/// <param name="Value">The string Enum value to write.</param>
-		void SetString(int Index, string Value);
+		/// <param name="index">The index of the slice to write the Enum to.</param>
+		/// <param name="value">The string Enum value to write.</param>
+		void SetString(int index, string value);
 		/// <summary>
 		/// Used to set the SubType of an Enum pin. Should only be called once immediately 
 		/// after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="EnumName">Name of the Enum type to set to the pin. If the given name 
+		/// <param name="enumName">Name of the Enum type to set to the pin. If the given name 
 		/// is not yet registered with vvvv a new type with this name is created. 
 		/// Using <see cref="VVVV.PluginInterfaces.V1.IPluginHost.UpdateEnum">IPluginHost.UpdateEnum</see> 
 		/// a newly created Enum can be filled with custom entries.</param>
-		void SetSubType(string EnumName);
+		void SetSubType(string enumName);
 	}
 	#endregion enum pins
 	
@@ -967,27 +986,38 @@ namespace VVVV.PluginInterfaces.V1
 		/// index maybe convoluted by an upstream node like GetSlice (node).
 		/// </summary>
 		/// <param name="slice">The slice index as seen by this pin.</param>
-		/// <param name="UpstreamSlice">The actual slice index as probably convoluted via upstream GetSlice (node).</param>
-		void GetUpsreamSlice(int slice, out int UpstreamSlice);
+		/// <param name="upstreamSlice">The actual slice index as probably convoluted via upstream GetSlice (node).</param>
+		void GetUpsreamSlice(int slice, out int upstreamSlice);
 		/// <summary>
 		/// Used to retrieve a reference of an interface offered by the upstream connected node.
 		/// </summary>
-		/// <param name="UpstreamInterface">The retrieved interface.</param>
+		/// <param name="upstreamInterface">The retrieved interface.</param>
 		[Obsolete("Replaced by GetUpstreamInterface(object UpstreamInterface).")]
-		void GetUpstreamInterface(out INodeIOBase UpstreamInterface);
+		void GetUpstreamInterface(out INodeIOBase upstreamInterface);
 		/// <summary>
 		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces accepted on this pin.
 		/// The SubType is used by the GUI to guide the user to make only links between pins that understand the same interfaces.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Guids">An array of Guids (typically only one) that specifies the interfaces that this input accepts.</param>
-		/// <param name="FriendlyName">A user readable name specifying the type of the node connection.</param>
-		void SetSubType(Guid[] Guids, string FriendlyName);
+		/// <param name="guids">An array of Guids (typically only one) that specifies the interfaces that this input accepts.</param>
+		/// <param name="friendlyName">A user readable name specifying the type of the node connection.</param>
+		[Obsolete("Replaced by SetSubType2(Type type, Guid[] guids, string friendlyName).")]
+		void SetSubType(Guid[] guids, string friendlyName);
+		
+		/// <summary>
+		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces accepted on this pin.
+		/// The SubType is used by the GUI to guide the user to make only links between pins that understand the same interfaces.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
+		/// </summary>
+		/// <param name="type">The Pins Type.</param>
+		/// <param name="guids">An array of Guids (typically only one) that specifies the interfaces that this input accepts.</param>
+		/// <param name="friendlyName">A user readable name specifying the type of the node connection.</param>
+		void SetSubType2(Type type, Guid[] guids, string friendlyName);
 		/// <summary>
 		/// Used to retrieve a reference of an interface offered by the upstream connected node.
 		/// </summary>
-		/// <param name="UpstreamInterface">The retrieved interface.</param>
-		void GetUpstreamInterface([MarshalAs(UnmanagedType.IUnknown)] out object UpstreamInterface);
+		/// <param name="upstreamInterface">The retrieved interface.</param>
+		void GetUpstreamInterface([MarshalAs(UnmanagedType.IUnknown)] out object upstreamInterface);
 		void SetConnectionHandler(IConnectionHandler handler, [MarshalAs(UnmanagedType.IUnknown)] object sink);
 	}
 	
@@ -1001,17 +1031,29 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the interface this
 		/// </summary>
-		/// <param name="TheInterface"></param>
+		/// <param name="theInterface"></param>
 		[Obsolete("Replaced by SetInterface(object TheInterface).")]
-		void SetInterface(INodeIOBase TheInterface);
+		void SetInterface(INodeIOBase theInterface);
 		/// <summary>
 		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces offered on this pin.
 		/// The SubType is used by the GUI to guide the user to make only links between pins that understand the same interfaces.
 		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
-		/// <param name="Guids">An array of Guids (typically only one) that specifies the interfaces that this output accepts.</param>
-		/// <param name="FriendlyName">A user readable name specifying the type of the node connection.</param>
-		void SetSubType(Guid[] Guids, string FriendlyName);
+		/// <param name="guids">An array of Guids (typically only one) that specifies the interfaces that this output accepts.</param>
+		/// <param name="friendlyName">A user readable name specifying the type of the node connection.</param>
+		[Obsolete("Replaced by SetSubType2(Type type, Guid[] guids, string friendlyName).")]
+		void SetSubType(Guid[] guids, string friendlyName);
+		
+		/// <summary>
+		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces accepted on this pin.
+		/// The SubType is used by the GUI to guide the user to make only links between pins that understand the same interfaces.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
+		/// </summary>
+		/// <param name="type">The Pins Type.</param>
+		/// <param name="guids">An array of Guids (typically only one) that specifies the interfaces that this input accepts.</param>
+		/// <param name="friendlyName">A user readable name specifying the type of the node connection.</param>
+		void SetSubType2(Type type, Guid[] guids, string friendlyName);
+		
 		/// <summary>
 		/// Used to mark this pin as being changed compared to the last frame. 
 		/// </summary>
@@ -1019,8 +1061,8 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the interface this
 		/// </summary>
-		/// <param name="TheInterface"></param>
-		void SetInterface([MarshalAs(UnmanagedType.IUnknown)] object TheInterface);
+		/// <param name="theInterface"></param>
+		void SetInterface([MarshalAs(UnmanagedType.IUnknown)] object theInterface);
 		void SetConnectionHandler(IConnectionHandler handler, [MarshalAs(UnmanagedType.IUnknown)] object source);
 	}
 	
@@ -1034,23 +1076,24 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to retrieve a Matrix from the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Matrix from.</param>
-		/// <param name="Value">The retrieved Matrix.</param>
-		void GetMatrix(int Index, out Matrix4x4 Value);
+		/// <param name="index">The index of the slice to retrieve the Matrix from.</param>
+		/// <param name="value">The retrieved Matrix.</param>
+		void GetMatrix(int index, out Matrix4x4 value);
 		/// <summary>
 		/// Used to retrieve a Pointer to the Values of the pin, which can be used to retrive large Spreads of Values more efficiently.
 		/// Attention: Don't use this Pointer to write Values to the pin!
 		/// </summary>
-		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
-		/// <param name="Value">A Pointer to the pins first Value.</param>
-		void GetMatrixPointer(out int SliceCount, out float* Value);
+		/// <param name="sliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
+		/// <param name="value">A Pointer to the pins first Value.</param>
+		void GetMatrixPointer(out int sliceCount, out float* value);
+		void GetMatrixPointer(out int* pLength, out float** ppData);
 		/// <summary>
 		/// Used to retrieve a World Matrix from the pin at the specified slice. 
 		/// You should call this method only from within your Render method when supporting the IPluginDXLayer interface.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Matrix from.</param>
-		/// <param name="Value">The retrieved Matrix.</param>
-		void GetRenderWorldMatrix(int Index, out Matrix4x4 Value);
+		/// <param name="index">The index of the slice to retrieve the Matrix from.</param>
+		/// <param name="value">The retrieved Matrix.</param>
+		void GetRenderWorldMatrix(int index, out Matrix4x4 value);
 		/// <summary>
 		/// Used to initialize rendering by letting vvvv know which transform pin controls spaces. 
 		/// This sets view and projection matrices.
@@ -1060,9 +1103,9 @@ namespace VVVV.PluginInterfaces.V1
 		/// Used to retrieve a World Matrix from the pin at the specified slice. 
 		/// You should call this method only from within your Render method when supporting the IPluginDXLayer interface.
 		/// </summary>
-		/// <param name="Index">The index of the slice to retrieve the Matrix from.</param>
-		/// <param name="Value">The retrieved Matrix.</param>
-		void GetRenderWorldMatrix(int Index, [Out, MarshalAs(UnmanagedType.Struct)] out Matrix Value);
+		/// <param name="index">The index of the slice to retrieve the Matrix from.</param>
+		/// <param name="value">The retrieved Matrix.</param>
+		void GetRenderWorldMatrix(int index, [Out, MarshalAs(UnmanagedType.Struct)] out Matrix value);
 	}
 	
 	/// <summary>
@@ -1075,16 +1118,36 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to write a Matrix to the pin at the specified slice.
 		/// </summary>
-		/// <param name="Index">The index of the slice to write the Matrix to.</param>
-		/// <param name="Value">The Matrix to write.</param>
-		void SetMatrix(int Index, Matrix4x4 Value);
+		/// <param name="index">The index of the slice to write the Matrix to.</param>
+		/// <param name="value">The Matrix to write.</param>
+		void SetMatrix(int index, Matrix4x4 value);
 		/// <summary>
 		/// Used to retrieve a Pointer to the Values of the pin, which can be used to write large number of values more efficiently.
 		/// Note though, that when writing Values to the Pointer the pins dimensions and overall SliceCount have to be taken care of manually.
 		/// </summary>
-		/// <param name="Value">A Pointer to the pins first Value.</param>
-		void GetMatrixPointer(out float* Value);
+		/// <param name="value">A Pointer to the pins first Value.</param>
+		void GetMatrixPointer(out float* value);
+		void GetMatrixPointer(out float** ppDst);
 	}
+
+    [Guid("d1db8373-78f0-4e75-af23-d344daa06472"),
+        InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    unsafe public interface IRawIn : IPluginIn
+    {
+        void GetData(int slice, out VVVV.Utils.Win32.IStream stream);
+    }
+
+    [Guid("8943c8e5-4833-4ca2-baea-2e32e627ffcf"),
+        InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    unsafe public interface IRawOut : IPluginOut
+    {
+        void SetData(int slice, VVVV.Utils.Win32.IStream stream);
+        /// <summary>
+        /// Used to mark this pin as being changed compared to the last frame. 
+        /// </summary>
+        void MarkPinAsChanged();
+    }
+
 	#endregion node pins	
 	
 	#region DXPins
@@ -1131,8 +1194,8 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set States connected to this input slicewise during the RenderLoop.
 		/// </summary>
-		/// <param name="Index">The Index of the currently rendered slice</param>
-		void SetSliceStates(int Index);
+		/// <param name="index">The Index of the currently rendered slice</param>
+		void SetSliceStates(int index);
 	}
 	
 	/// <summary>
@@ -1145,9 +1208,9 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set RenderStates from within <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.SetStates()">IPluginDXLayer.SetStates</see>.
 		/// </summary>
-		/// <param name="State">The RenderState</param>
-		/// <param name="Value">The RenderStates value</param>
-		void SetRenderState([MarshalAs(UnmanagedType.I4)] RenderState State, int Value);
+		/// <param name="state">The RenderState</param>
+		/// <param name="value">The RenderStates value</param>
+		void SetRenderState([MarshalAs(UnmanagedType.I4)] RenderState state, int value);
 	}
 	
 	/// <summary>
@@ -1160,17 +1223,17 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		///  Used to set SamplerStates from within <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.SetStates()">IPluginDXLayer.SetStates</see>.
 		/// </summary>
-		/// <param name="Sampler">The sampler index to apply the SamplerState to</param>
-		/// <param name="State">The SamplerState</param>
-		/// <param name="Value">The SamplerStates value</param>
-		void SetSamplerState(int Sampler, [MarshalAs(UnmanagedType.I4)] SamplerState State, int Value);
+		/// <param name="sampler">The sampler index to apply the SamplerState to</param>
+		/// <param name="state">The SamplerState</param>
+		/// <param name="value">The SamplerStates value</param>
+		void SetSamplerState(int sampler, [MarshalAs(UnmanagedType.I4)] SamplerState state, int value);
 		/// <summary>
 		/// Used to set TextureStageStates from within <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.SetStates()">IPluginDXLayer.SetStates</see>.
 		/// </summary>
-		/// <param name="Sampler"></param>
-		/// <param name="State"></param>
-		/// <param name="Value"></param>
-		void SetTextureStageState(int Sampler, [MarshalAs(UnmanagedType.I4)] TextureStage State, int Value);
+		/// <param name="sampler"></param>
+		/// <param name="state"></param>
+		/// <param name="value"></param>
+		void SetTextureStageState(int sampler, [MarshalAs(UnmanagedType.I4)] TextureStage state, int value);
 	}
 	#endregion DXPins
 }

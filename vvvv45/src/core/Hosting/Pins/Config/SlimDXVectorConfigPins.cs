@@ -76,4 +76,27 @@ namespace VVVV.Hosting.Pins.Config
 			}
 		}
 	}
+
+    [ComVisible(false)]
+    public class QuaternionConfigPin : VectorConfigPin<Quaternion>
+    {
+        public QuaternionConfigPin(IPluginHost host, ConfigAttribute attribute)
+            : base(host, attribute, 4, float.MinValue, float.MaxValue, 0.01)
+        {
+        }
+
+        public override Quaternion this[int index]
+        {
+            get
+            {
+                double value1, value2, value3, value4;
+                FValueConfig.GetValue4D(index, out value1, out value2, out value3, out value4);
+                return new Quaternion((float)value1, (float)value2, (float)value3, (float)value4);
+            }
+            set
+            {
+                FValueConfig.SetValue4D(index, (double)value.X, (double)value.Y, (double)value.Z, (double)value.W);
+            }
+        }
+    }
 }

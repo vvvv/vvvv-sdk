@@ -1,4 +1,6 @@
 library WavePlayer;
+{$IFOPT D-}{$WEAKLINKRTTI ON}{$ENDIF}
+{$RTTI EXPLICIT METHODS([]) PROPERTIES([]) FIELDS([])}
 
 uses
   BaseClass,

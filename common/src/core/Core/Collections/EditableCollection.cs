@@ -51,7 +51,19 @@ namespace VVVV.Core.Collections
         	if (Updated != null)
         		Updated(this);
         }
-                
+
+        public bool Changed { get; private set; }
+
+        public virtual void MarkChanged()
+        {
+            Changed = true;
+        }
+
+        public virtual void AcknowledgeChanges()
+        {
+            Changed = false;
+        }
+
         #region IEditableCollection<T> Members
         
         public CollectionPredicate<T> AllowAdd;
@@ -63,6 +75,7 @@ namespace VVVV.Core.Collections
                 throw new Exception(string.Format("Can't add {0} to collection {1}.", item, this));
             
             AddToInternalCollection(item);
+            MarkChanged();
             OnAdded(item);
         }
         
@@ -73,7 +86,10 @@ namespace VVVV.Core.Collections
             
             var removed = RemoveFromInternalCollection(item);
             if (removed)
+            {
+                MarkChanged();
                 OnRemoved(item);
+            }
             return removed;
         }
         
@@ -115,6 +131,7 @@ namespace VVVV.Core.Collections
             }
             
             ClearInternalCollection();
+            MarkChanged();
             OnCleared();
             
             EndUpdate();

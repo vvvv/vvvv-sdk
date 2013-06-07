@@ -8,6 +8,14 @@ namespace VVVV.PluginInterfaces.V2.Graph
     public interface IWindow2 : IEquatable<IWindow2>
     {
         /// <summary>
+        /// Reference to the internal COM interface. Use with caution.
+        /// </summary>
+        IWindow InternalCOMInterf
+        {
+            get;
+        }
+
+        /// <summary>
 		/// Gets/sets the window's caption.
 		/// </summary>
 		string Caption
@@ -17,7 +25,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		}
 		
 		/// <summary>
-		/// Get the window's type.
+		/// Returns the window's type.
 		/// </summary>
 		WindowType WindowType
 		{
@@ -25,7 +33,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		}
 		
 		/// <summary>
-		/// Get the window's associated INode2.
+		/// Returns the window's associated INode2.
 		/// </summary>
 		INode2 Node
 		{
@@ -33,8 +41,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		}
 		
 		/// <summary>
-		/// Gets the window's visible state. 
-		/// Returns true if this window is visible, false if not.
+		/// Returns the window's visible state (true if visible, false if not).
 		/// </summary>
 		bool IsVisible
 		{
@@ -42,9 +49,17 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		}
 		
 		/// <summary>
-		/// Gets the window's bounds.
+		/// Returns the window's bounds.
 		/// </summary>
 		Rectangle Bounds
+		{
+		    get;
+		}
+		
+		/// <summary>
+		/// Returns the window's handle
+		/// </summary>
+		IntPtr Handle
 		{
 		    get;
 		}

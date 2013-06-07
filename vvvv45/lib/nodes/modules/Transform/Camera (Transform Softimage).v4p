@@ -45,7 +45,7 @@
    </BOUNDS>
    <PIN encoded="0" pinname="Key Match" slicecount="1" values="|o, z, p, r|">
    </PIN>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" encoded="0">
    </PIN>
    <PIN pinname="O Output" visible="1">
    </PIN>
@@ -1212,14 +1212,6 @@
    </LINK>
    <LINK dstnodeid="23" dstpinname="Transform" srcnodeid="43" srcpinname="Transform Out">
    </LINK>
-   <NODE id="20" nodename="Keyboard (System Global)" systemname="Keyboard (System Global)">
-   <BOUNDS height="0" left="9750" top="75" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Keyboard Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="100" dstpinname="Input" srcnodeid="20" srcpinname="Keyboard Output">
-   </LINK>
    <LINK dstnodeid="48" dstpinname="Transform In 2" srcnodeid="29" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="43" dstpinname="Source" srcnodeid="48" srcpinname="Transform Out">
@@ -1540,7 +1532,7 @@
    </LINK>
    <LINK dstnodeid="-2" dstpinname="Cycle Mode" srcnodeid="105" srcpinname="Enum">
    </LINK>
-   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="6" dstpinname="Update">
+   <LINK dstnodeid="6" dstpinname="Update" srcnodeid="41" srcpinname="Output">
    <LINKPOINT x="1350" y="1740">
    </LINKPOINT>
    <LINKPOINT x="750" y="1035">
@@ -1549,5 +1541,13 @@
    </LINKPOINT>
    <LINKPOINT x="1260" y="105">
    </LINKPOINT>
+   </LINK>
+   <NODE id="20" nodename="Keyboard (System Window)" systemname="Keyboard (System Window)">
+   <BOUNDS height="0" left="9750" top="75" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Keyboard Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="100" dstpinname="Input" srcnodeid="20" srcpinname="Keyboard Output">
    </LINK>
    </PATCH>

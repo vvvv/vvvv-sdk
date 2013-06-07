@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Linq;
+using System.Drawing;
+
 using VVVV.Core;
 
 namespace VVVV.PluginInterfaces.V2.Graph
@@ -25,6 +27,20 @@ namespace VVVV.PluginInterfaces.V2.Graph
         {
             get;
         }
+        
+        /// <summary>
+		/// Returns a slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.
+		/// </summary>
+		/// <param name="useDescriptiveNames">If TRUE descriptive node names are used where available instead of the node ID.</param>
+		/// <returns>A slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.</returns>
+		string GetNodePath(bool useDescriptiveNames);
+		
+		/// <summary>
+		/// Returns the requested (node, box or window) bounds.
+		/// </summary>
+		/// <param name="boundsType">The type of bounds to be returned.</param>
+		/// <returns></returns>
+		Rectangle GetBounds(BoundsType boundsType);			
         
         IViewableCollection<IPin2> Pins
         {
@@ -92,6 +108,19 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		
 		event EventHandler InnerStatusChanged;
     }
+
+    [ComVisible(false)]
+    public class BoundsChangedEventArgs : EventArgs
+    {
+        private BoundsType boundsType;
+
+        public BoundsChangedEventArgs(BoundsType boundsType)
+        {
+            this.boundsType = boundsType;
+        }
+
+        public BoundsType BoundsType { get { return this.boundsType; } }
+    }
 	
     [ComVisible(false)]
 	public static class Node2ExtensionMethods
@@ -111,7 +140,6 @@ namespace VVVV.PluginInterfaces.V2.Graph
 			return (node.InnerStatus & (StatusCode.IsMissing | StatusCode.HasInvalidData | StatusCode.HasRuntimeError)) > 0;
         }
         
-        
         public static bool IsConnected(this INode2 node)
 		{
 			return (node.InnerStatus & StatusCode.IsConnected) == StatusCode.IsConnected;
@@ -127,6 +155,16 @@ namespace VVVV.PluginInterfaces.V2.Graph
 			return (node.Status & StatusCode.IsBoygrouped) == StatusCode.IsBoygrouped;
 		}
         
+        public static bool IsExposed(this INode2 node)
+		{
+			return (node.Status & StatusCode.IsExposed) == StatusCode.IsExposed;
+		}
+        
+        public static bool ContainsExposedNodes(this INode2 node)
+		{
+			return (node.InnerStatus & StatusCode.IsExposed) == StatusCode.IsExposed;
+		}
+        
         public static bool HasProblem(this INode2 node)
         {
             return (node.Status & (StatusCode.IsMissing | StatusCode.HasInvalidData | StatusCode.HasRuntimeError)) > 0;
@@ -136,7 +174,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
         {
             var query =
 				from pin in node.Pins
-				where pin.Name == name
+            	where pin.Name == name || pin.NameByParent(node) == name
 				select pin;
             return query.FirstOrDefault();
         }

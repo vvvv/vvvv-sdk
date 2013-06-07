@@ -39,6 +39,8 @@ namespace VVVV.Nodes.NodeBrowser
         private List<string> FRTFSelectionList = new List<string>();
         private readonly Regex FVVVVGroupRegex = new Regex(@"vvvv\s+group", RegexOptions.IgnoreCase | RegexOptions.Multiline);
         
+        private List<string> FCategoryPriorities = new List<string>(new string[] { "DSHOW9", "OCTONION", "QUATERNION", "FLASH", "GDI", "TTY", "SVG", "TRANSFORM", "COLOR", "DX9", "EX9.GEOMETRY", "EX9.TEXTURE", "EX9", "DX11.LAYER", "DX11.GEOMETRY", "EX9.TEXTUREFX", "EX9.TEXTURE", "DX11", "RAW", "STRING", "FILE", "ANIMATION", "SPREADS", "4D", "3D", "2D", "VALUE" });
+        
         private NodeBrowserPluginNode FNodeBrowser;
         public NodeBrowserPluginNode NodeBrowser
         {
@@ -48,6 +50,11 @@ namespace VVVV.Nodes.NodeBrowser
             }
             set
             {
+                if (FNodeBrowser != null)
+                {
+                    this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
+                }
+                
                 FNodeBrowser = value;
                 
                 if (FNodeBrowser != null && FNodeBrowser.IsStandalone)
@@ -64,6 +71,12 @@ namespace VVVV.Nodes.NodeBrowser
         }
         
         public bool AllowDragDrop
+        {
+            get;
+            set;
+        }
+        
+        public TextBox TagsTextBox
         {
             get;
             set;
@@ -94,7 +107,15 @@ namespace VVVV.Nodes.NodeBrowser
         {
             get
             {
-                return FTagsTextBox.Text.Trim();
+                return TagsTextBox.Text.Trim();
+            }
+        }
+        
+        public int TextBoxHeight
+        {
+            get
+            {
+                return  Math.Max(20, TagsTextBox.Lines.Length * CLineHeight + 7);
             }
         }
         
@@ -110,9 +131,7 @@ namespace VVVV.Nodes.NodeBrowser
             FToolTip.ShowAlways = false;
             FToolTip.Popup += ToolTipPopupHandler;
             
-            FTagsTextBox.ContextMenu = new ContextMenu();
-            FTagsTextBox.MouseWheel += FTagsTextBoxMouseWheel;
-            FRichTextBox.MouseWheel += FTagsTextBoxMouseWheel;
+            FRichTextBox.MouseWheel += DoMouseWheel;
         }
         
         private void ToolTipPopupHandler(object sender, PopupEventArgs e)
@@ -138,11 +157,11 @@ namespace VVVV.Nodes.NodeBrowser
         public void Initialize(string text)
         {
             if (string.IsNullOrEmpty(text))
-                FTagsTextBox.Text = "";
+                TagsTextBox.Text = "";
             else
-                FTagsTextBox.Text = text.Trim();
+                TagsTextBox.Text = text.Trim();
 
-            FTagsTextBox.SelectAll();
+            TagsTextBox.SelectAll();
             
             FHoverLine = -1;
             ScrolledLine = 0;
@@ -155,13 +174,14 @@ namespace VVVV.Nodes.NodeBrowser
         public void AfterShow()
         {
             this.FRichTextBox.Resize += this.HandleRichTextBoxResize;
-            FTagsTextBox.Focus();
+            TagsTextBox.Focus();
         }
         
         public void BeforeHide()
         {
-            this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
-            FTagsTextBox.Text = "";
+        	//reset text to "" before removing resizeHandler in order to get FVisible lines computed correctly
+            TagsTextBox.Text = "";
+        	this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
             FToolTip.Hide(FRichTextBox);
         }
         
@@ -177,14 +197,13 @@ namespace VVVV.Nodes.NodeBrowser
             }
             catch
             {
-                OnCreateNodeFromString(FTagsTextBox.Text.Trim());
+                OnCreateNodeFromString(TagsTextBox.Text.Trim());
             }
         }
+        
         #region TagsTextBox
-        void FTagsTextBoxTextChanged(object sender, EventArgs e)
+        public void DoTextChanged()
         {
-            FTagsTextBox.Height = Math.Max(20, FTagsTextBox.Lines.Length * CLineHeight + 7);
-            
             //saving the last manual entry for recovery when stepping through list and reaching index -1 again
             FToolTip.Hide(FRichTextBox);
             
@@ -198,7 +217,7 @@ namespace VVVV.Nodes.NodeBrowser
             RedrawSelection();
         }
 
-        void FTagsTextBoxKeyDown(object sender, KeyEventArgs e)
+        public void DoKeyDown(KeyEventArgs e)
         {
             if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
             {
@@ -207,7 +226,7 @@ namespace VVVV.Nodes.NodeBrowser
             }
             else if (e.KeyCode == Keys.Escape)
                 OnCreateNode(null);
-            else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Down))
+            else if ((TagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Down))
             {
                 FHoverLine += 1;
                 //if this is exceeding the FSelectionList.Count -> jump to line 0
@@ -226,7 +245,7 @@ namespace VVVV.Nodes.NodeBrowser
                 RedrawSelection();
                 ShowToolTip(0);
             }
-            else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Up))
+            else if ((TagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Up))
             {
                 FHoverLine -= 1;
                 //if this is exceeding the currently visible lines -> scroll up a line
@@ -250,26 +269,17 @@ namespace VVVV.Nodes.NodeBrowser
                 if (FHoverLine != -1)
                 {
                     FHoverLine = -1;
-                    FTagsTextBox.SelectionStart = FTagsTextBox.Text.Length;
+                    TagsTextBox.SelectionStart = TagsTextBox.Text.Length;
                     RedrawSelection();
                 }
             }
             else if ((e.Control) && (e.KeyCode == Keys.A))
             {
-                FTagsTextBox.SelectAll();
+                TagsTextBox.SelectAll();
             }
         }
         
-        void FTagsTextBoxMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            //do this in mouseup (not mousedown) for ContextMenu not throwing error
-            if (e.Button == MouseButtons.Right)
-            {
-                OnPanelChange(NodeBrowserPage.ByCategory, null);
-            }
-        }
-        
-        void FTagsTextBoxMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        public void DoMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             //clear old selection
             FRichTextBox.SelectionBackColor = Color.Silver;
@@ -298,13 +308,13 @@ namespace VVVV.Nodes.NodeBrowser
             
             string username = FRichTextBox.Lines[FHoverLine].Trim();
             FRichTextBox.SelectionStart = FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)+1;
-            FTagsTextBox.Focus();
+            TagsTextBox.Focus();
             
             //as plugin in its own window
             if (AllowDragDrop)
             {
                 var selNode = FSelectionList[FHoverLine + ScrolledLine];
-                FTagsTextBox.DoDragDrop(string.Format("{0}||{1}", selNode.Systemname, selNode.Filename), DragDropEffects.All);
+                TagsTextBox.DoDragDrop(string.Format("{0}||{1}", selNode.Systemname, selNode.Filename), DragDropEffects.All);
                 return;
             }
             //else popped up on doubleclick
@@ -318,7 +328,10 @@ namespace VVVV.Nodes.NodeBrowser
                     if (e.Button == MouseButtons.Middle)
                         OnShowNodeReference(selNode);
                     else
+                    {
+                    	TagsTextBox.Text = "";
                         OnShowHelpPatch(selNode);
+                    }
                 }
                 catch //username is a filename..do nothing
                 {}
@@ -354,7 +367,7 @@ namespace VVVV.Nodes.NodeBrowser
                 //after this mouseup set the focus to the already hidden NodeBrowser window
                 OnCreateNodeFromString("");
                 
-                FTagsTextBox.Focus();
+                TagsTextBox.Focus();
             }
         }
         
@@ -468,7 +481,7 @@ namespace VVVV.Nodes.NodeBrowser
             
             FSelectionList.Clear();
 
-            var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(nodeInfo => nodeInfo.Ignore == false);
+            var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && NodeBrowser.CategoryFilter.CategoryVisible(ni.Category));
             
             // Cache current patch window nodeinfo and current dir
             var currentPatchWindow = NodeBrowser.CurrentPatchWindow;
@@ -556,87 +569,8 @@ namespace VVVV.Nodes.NodeBrowser
                 int v1, v2;
                 
                 //special sorting for categories
-                if (cat1.Contains("Value"))
-                    v1 = 99;
-                else if (cat1.ToUpper().Contains("2D"))
-                    v1 = 98;
-                else if (cat1.ToUpper().Contains("3D"))
-                    v1 = 97;
-                else if (cat1.ToUpper().Contains("4D"))
-                    v1 = 96;
-                else if (cat1.Contains("Spreads"))
-                    v1 = 95;
-                else if (cat1.Contains("Animation"))
-                    v1 = 94;
-                else if (cat1.Contains("EX9"))
-                    v1 = 93;
-                else if (cat1.Contains("DX9"))
-                    v1 = 92;
-                else if (cat1.Contains("File"))
-                    v1 = 91;
-                else if (cat1.Contains("SVG"))
-                    v1 = 90;
-                else if (cat1.Contains("TTY"))
-                    v1 = 89;
-                else if (cat1.Contains("GDI"))
-                    v1 = 88;
-                else if (cat1.Contains("Flash"))
-                    v1 = 87;
-                else if (cat1.Contains("Transform"))
-                    v1 = 86;
-                else if (cat1.Contains("Quaternion"))
-                    v1 = 85;
-                else if (cat1.Contains("Octonion"))
-                    v1 = 84;
-                else if (cat1.Contains("String"))
-                    v1 = 83;
-                else if (cat1.Contains("Color"))
-                    v1 = 82;
-                else if (cat1.Contains("DShow9"))
-                    v1 = 81;
-                else
-                    v1 = 0;
-                
-                if (cat2.Contains("Value"))
-                    v2 = 99;
-                else if (cat2.ToUpper().Contains("2D"))
-                    v2 = 98;
-                else if (cat2.ToUpper().Contains("3D"))
-                    v2 = 97;
-                else if (cat2.ToUpper().Contains("4D"))
-                    v2 = 96;
-                else if (cat2.Contains("Spreads"))
-                    v2 = 95;
-                else if (cat2.Contains("Animation"))
-                    v2 = 94;
-                else if (cat2.Contains("EX9"))
-                    v2 = 93;
-                else if (cat2.Contains("DX9"))
-                    v2 = 92;
-                else if (cat2.Contains("File"))
-                    v2 = 91;
-                else if (cat2.Contains("SVG"))
-                    v2 = 90;
-                else if (cat2.Contains("TTY"))
-                    v2 = 89;
-                else if (cat2.Contains("GDI"))
-                    v2 = 88;
-                else if (cat2.Contains("Flash"))
-                    v2 = 87;
-                else if (cat2.Contains("Transform"))
-                    v2 = 86;
-                else if (cat2.Contains("Quaternion"))
-                    v2 = 85;
-                else if (cat2.Contains("Octonion"))
-                    v2 = 84;
-                else if (cat2.Contains("String"))
-                    v2 = 83;
-                else if (cat2.Contains("Color"))
-                    v2 = 82;
-                else if (cat2.Contains("DShow9"))
-                    v2 = 81;
-                else
-                    v2 = 0;
+                v1 = FCategoryPriorities.IndexOf(cat1.Split(' ')[0].ToUpper());
+                v2 = FCategoryPriorities.IndexOf(cat2.Split(' ')[0].ToUpper());
                 
                 if (v1 > v2)
                     return -1;
@@ -729,7 +663,7 @@ namespace VVVV.Nodes.NodeBrowser
 
         public void Redraw()
         {
-            string query = FTagsTextBox.Text.ToLower();
+            string query = TagsTextBox.Text.ToLower();
             query += (char) 160;
             FTags = query.Split(new char[1]{' '}).ToList();
             
@@ -902,8 +836,12 @@ namespace VVVV.Nodes.NodeBrowser
 
         void TagPanelVisibleChanged(object sender, EventArgs e)
         {
-            FTagsTextBox.Text = FTagsTextBox.Text.Trim();
-            FTagsTextBox.Focus();
+        	//TagsTextBox not assigned during designtime
+        	if (TagsTextBox != null)
+        	{
+	            TagsTextBox.Text = TagsTextBox.Text.Trim();
+	            TagsTextBox.Focus();
+        	}
             FToolTip.Hide(FRichTextBox);
             
             if (PendingRedraw)

@@ -58,6 +58,8 @@ namespace VVVV.Nodes
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
+            this.FInvalidate = false;
+
             if (this.FPinInInnerRadius.PinIsChanged
                || this.FPinInOuterRadius.PinIsChanged
                || this.FPinInCornerResolution.PinIsChanged)

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
-   <PATCH nodename="A:\vvvv\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Extended) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Extended) help.v4p">
    <BOUNDS height="9795" left="135" top="135" type="Window" width="13590">
    </BOUNDS>
    <NODE componentmode="InABox" id="32" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Edit a point cloud persitently via mouse and keyboard within the ex9 renderer. Trigger Load / Save to do the disk operation. Additionally edit whatever you want. Just spread the Extras Pin with all the Keys the PointEditor should manage for you. |" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Edit a point cloud persitently via mouse and keyboard within the ex9 renderer. Trigger Load / Save to do the disk operation. Additionally edit whatever you want. Just spread the Extras Pin with all the Keys the PointEditor should manage for you. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|PointEditor - 3d Persistent Extended|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|PointEditor - 3d Persistent Extended|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -32,7 +32,7 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="30" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="30" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4725" top="3195" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="12425" top="5953" type="Window" width="215">
@@ -53,23 +53,23 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Reset" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Reset">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Aspect Ratio">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="29" nodename="Renderer (EX9)" stayontop="0" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="29" nodename="Renderer (EX9)" stayontop="0" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="8850" top="8160" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="5625" left="13740" top="150" type="Window" width="7140">
+   <BOUNDS height="9300" left="13770" top="150" type="Window" width="12195">
    </BOUNDS>
    <BOUNDS height="1800" left="8850" top="8160" type="Box" width="2400">
    </BOUNDS>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Depth Buffer">
    </PIN>
@@ -89,55 +89,15 @@
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
    </PIN>
-   </NODE>
-   <NODE id="28" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="0" left="5580" top="2445" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
-   <PIN pinname="Y" visible="1">
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
    </PIN>
-   <PIN pinname="XYZ" visible="1">
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
-   <PIN pinname="Z" slicecount="1" values="0">
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
    </NODE>
-   <NODE id="27" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="0" left="6330" top="2445" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Z" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="26" nodename="Mouse (System Window)" systemname="Mouse (System Window)">
-   <BOUNDS height="0" left="5895" top="1980" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="28" dstpinname="X" srcnodeid="26" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="28" dstpinname="Y" srcnodeid="26" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="27" dstpinname="X" srcnodeid="26" srcpinname="Left Button">
-   </LINK>
-   <LINK dstnodeid="27" dstpinname="Y" srcnodeid="26" srcpinname="Middle Button">
-   </LINK>
-   <LINK dstnodeid="27" dstpinname="Z" srcnodeid="26" srcpinname="Right Button">
-   </LINK>
    <NODE id="25" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="270" left="4275" top="7935" type="Node" width="2100">
    </BOUNDS>
@@ -163,7 +123,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|This demo shows how to edit control points and wrylyness of a wryly B-Spline.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|This demo shows how to edit control points and wrylyness of a wryly B-Spline.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -172,12 +132,12 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="6510" top="3135" type="Node" width="0">
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="6825" top="2580" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="13025" top="6553" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="465" left="6510" top="3135" type="Box" width="540">
+   <BOUNDS height="465" left="6825" top="2580" type="Box" width="540">
    </BOUNDS>
    <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
    </PIN>
@@ -193,19 +153,19 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Save" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Save">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Aspect Ratio">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="7515" top="3120" type="Node" width="0">
+   <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="7545" top="2580" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="14660" top="6688" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="465" left="7515" top="3120" type="Box" width="540">
+   <BOUNDS height="465" left="7545" top="2580" type="Box" width="540">
    </BOUNDS>
    <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
    </PIN>
@@ -217,7 +177,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Load" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Load">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -256,7 +216,7 @@
    <PIN pinname="Period" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" hiddenwhenlocked="1" id="18" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="18" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3450" top="2235" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6405" top="4605" type="Window" width="215">
@@ -267,7 +227,7 @@
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="10">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Control Count|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Control Count|">
    </PIN>
    </NODE>
    <NODE id="17" nodename="LinearSpread (Spreads)" systemname="LinearSpread (Spreads)">
@@ -289,7 +249,7 @@
    </BOUNDS>
    <BOUNDS height="660" left="8550" top="4935" type="Box" width="435">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="u" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="u">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="30">
    </PIN>
@@ -305,7 +265,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="hold" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="hold">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -321,7 +281,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|key on your keyboard|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|key on your keyboard|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -337,7 +297,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="600" top="600" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|and then drag a control point up and down to control its wrylyness. u stands for Up Angle in this case.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|and then drag a control point up and down to control its wrylyness. u stands for Up Angle in this case.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -447,7 +407,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|F1 -&gt;|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|F1 -&gt;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -461,14 +421,14 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|another good example would be a NURBS curve... or a Wryly NURBS curve .....|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|another good example would be a NURBS curve... or a Wryly NURBS curve .....|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" hiddenwhenlocked="1" id="3" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="3" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="315" top="4770" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="-274" top="1782" type="Window" width="215">
@@ -489,7 +449,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Show Helpers|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Show Helpers|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -554,17 +514,21 @@
    <PIN pinname="Initial Yaw" slicecount="1" values="0.77">
    </PIN>
    </NODE>
-   <LINK dstnodeid="29" dstpinname="View Transform" srcnodeid="35" srcpinname="View">
+   <LINK dstnodeid="29" dstpinname="View" srcnodeid="35" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="29" dstpinname="Projection Transform" srcnodeid="35" srcpinname="Projection">
+   <LINK dstnodeid="29" dstpinname="Projection" srcnodeid="35" srcpinname="Projection">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\PointEditor (3D Persistent Extended).v4p" id="39" nodename="PointEditor (3d Persistent Extended)" stayontop="0" systemname="PointEditor (3d Persistent Extended)">
    <BOUNDS height="100" left="5295" top="4395" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="5295" top="4395" type="Box" width="4800">
    </BOUNDS>
-   <BOUNDS height="9765" left="6630" top="4980" type="Window" width="21990">
+   <BOUNDS height="9765" left="2280" top="7680" type="Window" width="21990">
    </BOUNDS>
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="39" dstpinname="Input" srcnodeid="10" srcpinname="XYZ">
    </LINK>
@@ -578,14 +542,18 @@
    </LINK>
    <LINK dstnodeid="39" dstpinname="Init" linkstyle="Bezier" srcnodeid="30" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="39" dstpinname="Mouse XYZ" srcnodeid="28" srcpinname="XYZ">
-   </LINK>
-   <LINK dstnodeid="39" dstpinname="Mouse Down" srcnodeid="27" srcpinname="XYZ">
-   </LINK>
    <LINK dstnodeid="1" dstpinname="Up Angle" srcnodeid="39" srcpinname="ExtraData Out">
    </LINK>
    <LINK dstnodeid="1" dstpinname="Control XYZ" srcnodeid="39" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="39" dstpinname="View Projection" srcnodeid="35" srcpinname="View Projection">
+   </LINK>
+   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="40">
+   <BOUNDS type="Node" left="5625" top="3435" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Mouse" dstnodeid="39" dstpinname="Mouse">
    </LINK>
    </PATCH>

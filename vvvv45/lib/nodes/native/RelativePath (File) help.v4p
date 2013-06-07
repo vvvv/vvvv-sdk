@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
    <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\RelativePath (File) help.v4p" filename="C:\GiggelzGoggelz\vvvv_45beta26\help\RelativePath (File) help.v4p" systemname="RelativePath (File) help">
    <BOUNDS height="6240" left="10260" top="2070" type="Window" width="7530">
    </BOUNDS>
@@ -77,14 +77,14 @@
    </BOUNDS>
    <BOUNDS height="270" left="375" top="1860" type="Box" width="1605">
    </BOUNDS>
-   <PIN pinname="Input String" visible="1" slicecount="1" values="C:\temp\Test.v4p" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="1" values="C:\temp\Test.v4p">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="10" srcpinname="Output String" dstnodeid="0" dstpinname="Absolute Path">
+   <LINK dstnodeid="0" dstpinname="Absolute Path" srcnodeid="10" srcpinname="Output String">
    </LINK>
    <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="0" left="1440" top="2280" type="Node" width="0">
@@ -118,14 +118,14 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Output String" dstnodeid="0" dstpinname="Base Path">
+   <LINK dstnodeid="0" dstpinname="Base Path" srcnodeid="12" srcpinname="Output String">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1980" top="1860" width="1680" height="270">
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1980" top="1860" type="Node" width="1680">
    </BOUNDS>
-   <BOUNDS type="Box" left="1980" top="1860" width="1680" height="270">
+   <BOUNDS height="270" left="1980" top="1860" type="Box" width="1680">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; given absolute path|" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; given absolute path|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -147,5 +147,11 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
+   </NODE>
+   <NODE systemname="MakePath (String)" filename="%VVVV%\addonpack\lib\nodes\plugins\MakePath.dll" nodename="MakePath (String)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="2610" top="5220" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2610" top="5220">
+   </BOUNDS>
    </NODE>
    </PATCH>

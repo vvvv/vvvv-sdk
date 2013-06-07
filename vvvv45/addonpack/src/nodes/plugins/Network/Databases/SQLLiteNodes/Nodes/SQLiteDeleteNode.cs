@@ -18,7 +18,7 @@ namespace VVVV.Nodes
                 {
                     FPluginInfo = new PluginInfo();
                     FPluginInfo.Name = "Delete";
-                    FPluginInfo.Category = "SQlite";
+                    FPluginInfo.Category = "SQLite";
                     FPluginInfo.Version = "Network";
                     FPluginInfo.Author = "vux";
                     FPluginInfo.Help = "Delete records on a sqlite database";

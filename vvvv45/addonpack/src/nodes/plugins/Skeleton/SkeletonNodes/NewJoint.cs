@@ -159,10 +159,10 @@ namespace VVVV.Nodes
 					//the nodes main name: use CamelCaps and no spaces
 					FPluginInfo.Name = "Joint";
 					//the nodes category: try to use an existing one
-					FPluginInfo.Category = "Skeleton Join";
+					FPluginInfo.Category = "Skeleton";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "";
+					FPluginInfo.Version = "Join";
 					
 					//the nodes author: your sign
 					FPluginInfo.Author = "Matthias Zauner";

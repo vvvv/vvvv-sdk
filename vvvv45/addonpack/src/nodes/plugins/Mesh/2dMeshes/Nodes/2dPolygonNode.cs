@@ -59,6 +59,8 @@ namespace VVVV.Nodes
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
+            this.FInvalidate = false;
+
             if (this.FPinInVertices.PinIsChanged || this.FPinInVerticesCount.PinIsChanged)
             {
                 this.FVertex.Clear();

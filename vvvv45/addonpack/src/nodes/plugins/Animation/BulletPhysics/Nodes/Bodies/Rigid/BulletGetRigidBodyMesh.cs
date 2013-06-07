@@ -21,7 +21,7 @@ namespace VVVV.Nodes.Bullet
 
 		IPluginHost FHost;
 
-		private Dictionary<int, Mesh> FMeshes = new Dictionary<int, Mesh>();
+		private Dictionary<Device, Mesh> FMeshes = new Dictionary<Device, Mesh>();
 
 	
 		protected IDXMeshOut FMeshOut;
@@ -47,16 +47,18 @@ namespace VVVV.Nodes.Bullet
 			this.FMeshOut.SliceCount = cnt;
 		}
 
-		public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int Mesh)
+		public Mesh GetMesh(IDXMeshOut ForPin, Device OnDevice)
 		{
-            Mesh = 0;
+            
             if (this.FMeshes.ContainsKey(OnDevice))
             {
-                Mesh = this.FMeshes[OnDevice].ComPointer.ToInt32();
+               return this.FMeshes[OnDevice];
             }
+            else
+            	return null;
 		}
 
-		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+		public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
 		{
             if (this.FMeshes.ContainsKey(OnDevice))
             {
@@ -65,10 +67,8 @@ namespace VVVV.Nodes.Bullet
             }
 		}
 
-		public void UpdateResource(IPluginOut ForPin, int OnDevice)
+		public void UpdateResource(IPluginOut ForPin, Device OnDevice)
 		{
-
-			Device dev = Device.FromPointer(new IntPtr(OnDevice));
             if (this.FMeshes.ContainsKey(OnDevice))
             {
 				this.FMeshes[OnDevice].Dispose();
@@ -88,11 +88,21 @@ namespace VVVV.Nodes.Bullet
 					RigidBody body = this.FBodies[i];
 					CollisionShape shape = body.CollisionShape;
 					ShapeCustomData sd = (ShapeCustomData)shape.UserObject;
-					BulletMesh m = sd.ShapeDef.GetMesh(dev);
+					BulletMesh m = sd.ShapeDef.GetMesh(OnDevice);
 					meshes.AddRange(m.Meshes);
 				}
 
-				this.FMeshes.Add(OnDevice,Mesh.Concatenate(dev, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed));
+                Mesh merge = null;
+                if (OnDevice is DeviceEx)
+                {
+                    merge = Mesh.Concatenate(OnDevice, meshes.ToArray(), MeshFlags.Use32Bit);
+                }
+                else
+                {
+                    merge = Mesh.Concatenate(OnDevice, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+                }
+
+				this.FMeshes.Add(OnDevice,merge);
 			}
 
 		}

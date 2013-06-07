@@ -17,7 +17,7 @@ namespace VVVV.Hosting.Factories
     /// <summary>
     /// Effects factory, parses and watches the effect directory
     /// </summary>
-    [Export(typeof(IAddonFactory))]
+    [Export(	typeof(IAddonFactory))]
     [Export(typeof(EffectsFactory))]
     [ComVisible(false)]
     public class EffectsFactory : AbstractFileFactory<IEffectHost>
@@ -42,7 +42,7 @@ namespace VVVV.Hosting.Factories
 
         void HandleNodeInfoAdded(object sender, INodeInfo nodeInfo)
         {
-            if (nodeInfo.Type == NodeType.Effect)
+            if (nodeInfo.Type == NodeType.Effect && nodeInfo.Factory == this)
             {
                 nodeInfo.UserData = CreateProject(nodeInfo.Filename);
             }
@@ -58,13 +58,14 @@ namespace VVVV.Hosting.Factories
         protected override IEnumerable<INodeInfo> LoadNodeInfos(string filename)
         {
             var project = CreateProject(filename);
-            yield return LoadNodeInfoFromEffect(filename, project);
+            if (project != null)
+            	yield return LoadNodeInfoFromEffect(filename, project);
         }
         
         protected override void DoAddFile(string filename)
         {
-            CreateProject(filename);
-            base.DoAddFile(filename);
+        	if (CreateProject(filename) != null)
+            	base.DoAddFile(filename);
         }
         
         protected override void DoRemoveFile(string filename)
@@ -88,23 +89,47 @@ namespace VVVV.Hosting.Factories
             FXProject project;
             if (!FProjects.TryGetValue(filename, out project))
             {
-                project = new FXProject(filename, new Uri(filename), FHDEHost.ExePath);
-                if (FSolution.Projects.CanAdd(project))
+            	var isDX9 = true;
+            	//check if this is a dx9 effect in that it does not contain "technique10" or "technique11"
+            	using (StreamReader sr = new StreamReader(filename))
                 {
-                    FSolution.Projects.Add(project);
-                    //effects are actually being compiled by vvvv when nodeinfo is update
-                    //so we need to intervere with the doCompile
-                    project.DoCompileEvent += project_DoCompileEvent;
-                    //in turn not longer needs the following:
-                    //project.ProjectCompiledSuccessfully += project_ProjectCompiledSuccessfully;
-                }
-                else
-                {
-                    // Project was renamed
-                    project = FSolution.Projects[project.Name] as FXProject;
-                }
-                
-                FProjects[filename] = project;
+            		string line;
+            		var t10 = "technique10";
+            		var t11 = "technique11";
+                    
+                    // Parse lines from the file until the end of
+                    // the file is reached.
+                    //note: this may still return false positives is t10 or t11 is mentioned within a /**/ comment
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                    	if ((line.Contains(t10) || line.Contains(t11)) && !line.Trim().StartsWith("//"))
+                    	{
+                    		isDX9 = false;
+                    		break;
+                    	}
+                    }
+            	}
+            	
+            	if (isDX9)
+	            {
+	                project = new FXProject(filename, FHDEHost.ExePath);
+	                if (FSolution.Projects.CanAdd(project))
+	                {
+	                    FSolution.Projects.Add(project);
+	                    //effects are actually being compiled by vvvv when nodeinfo is update
+	                    //so we need to intervere with the doCompile
+	                    project.DoCompileEvent += project_DoCompileEvent;
+	                    //in turn not longer needs the following:
+	                    //project.ProjectCompiledSuccessfully += project_ProjectCompiledSuccessfully;
+	                }
+	                else
+	                {
+	                    // Project was renamed
+	                    project = FSolution.Projects[project.Name] as FXProject;
+	                }
+	                
+                	FProjects[filename] = project;
+            	}
             }
             
             return project;
@@ -113,7 +138,7 @@ namespace VVVV.Hosting.Factories
         void project_DoCompileEvent(object sender, EventArgs e)
         {
             var project = sender as FXProject;
-            var filename = project.Location.LocalPath;
+            var filename = project.LocalPath;
             
             LoadNodeInfoFromEffect(filename, project);
         }
@@ -186,8 +211,6 @@ namespace VVVV.Hosting.Factories
                 return false;
             
             var project = nodeInfo.UserData as FXProject;
-            if (!project.IsLoaded)
-                project.Load();
             
             //get the code of the FXProject associated with the nodeinfos filename
             effectHost.SetEffect(nodeInfo.Filename, project.Code);
@@ -203,7 +226,7 @@ namespace VVVV.Hosting.Factories
             var errorlines = e.Split(new char[1]{'\n'});
             foreach (var line in errorlines)
             {
-                string filePath = project.Location.LocalPath;
+                string filePath = project.LocalPath;
                 string eCoords = string.Empty;
                 int eLine = 0;
                 int eChar = 0;
@@ -238,14 +261,14 @@ namespace VVVV.Hosting.Factories
                         // we need to guess here. shader compiler outputs relative paths.
                         // we don't know if the include was "local" or <global>
                         
-                        filePath = Path.Combine(project.Location.GetLocalDir(), relativePath);
+                        filePath = Path.Combine(Path.GetDirectoryName(project.LocalPath), relativePath);
                         if (!File.Exists(filePath))
                         {
                             string fileName = Path.GetFileName(relativePath);
                             
                             foreach (var reference in project.References)
                             {
-                                var referenceFileName = Path.GetFileName((reference as FXReference).ReferencedDocument.Location.LocalPath);
+                                var referenceFileName = Path.GetFileName((reference as FXReference).ReferencedDocument.LocalPath);
                                 if (referenceFileName.ToLower() == fileName.ToLower())
                                 {
                                     filePath = reference.AssemblyLocation;
@@ -305,16 +328,11 @@ namespace VVVV.Hosting.Factories
             if (nodeInfo.Type == NodeType.Effect)
             {
                 var project = nodeInfo.UserData as FXProject;
-                if (!project.IsLoaded)
-                    project.Load();
-                
                 var projectDir = path;
                 var newProjectName = name + ".fx";
-                var newLocation = new Uri(projectDir.ConcatPath(newProjectName));
-                
-                project.SaveTo(newLocation);
-                
-                filename = newLocation.LocalPath;
+                filename = projectDir.ConcatPath(newProjectName);
+
+                project.SaveTo(filename);
                 
                 return true;
             }

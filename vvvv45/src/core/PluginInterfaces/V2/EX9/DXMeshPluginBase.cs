@@ -18,11 +18,11 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		protected abstract Mesh CreateMesh(Device device);
 		protected abstract void UpdateMesh(Mesh mesh);
 		
-		public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int Mesh)
+		public Mesh GetMesh(IDXMeshOut ForPin, Device OnDevice)
 		{
-			Mesh = 0;
 			if(FDeviceData.ContainsKey(OnDevice))
-				Mesh = FDeviceData[OnDevice].Data.ComPointer.ToInt32();
+				return FDeviceData[OnDevice].Data;
+			return null;
 		}
 		
 		protected override MeshDeviceData CreateDeviceData(Device device)
@@ -38,6 +38,11 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		protected override void DestroyDeviceData(MeshDeviceData deviceData, bool OnlyUnManaged)
 		{
 			deviceData.Data.Dispose();
+		}
+		
+		protected override void SetResourcePinsChanged()
+		{
+			FMeshOut.MarkPinAsChanged();
 		}
 	}
 }

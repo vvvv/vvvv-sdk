@@ -12,36 +12,36 @@ float4 texIN(sampler s,float2 x){
 }
 float4 pLIN(float2 x:TEXCOORD0):color{
     float4 c=texIN(s0,x);
-    c=(c+Phase)*Frequency;
+    c=(c*Frequency+Phase);
     return c;
 }
 float4 pINV(float2 x:TEXCOORD0):color{
     float4 c=texIN(s0,x);float pa=c.a;
-    c=1-(c+Phase)*Frequency;
+    c=1-(c*Frequency+Phase);
     if(!Alpha)c.a=pa;
     return c;
 }
 float4 pTRI(float2 x:TEXCOORD0):color{
     float4 c=texIN(s0,x);float pa=c.a;
-    c=1-2*abs(frac((c+Phase)*Frequency)-.5);
+    c=1-2*abs(frac((c)*Frequency+Phase)-.5);
     if(!Alpha)c.a=pa;
     return c;
 }
 float4 pSIN(float2 x:TEXCOORD0):color{
     float4 c=texIN(s0,x);float pa=c.a;
-    c=.5+.5*cos((c+Phase)*acos(-1)*2*Frequency);
+    c=.5+.5*cos((c*Frequency+Phase)*acos(-1)*2);
     if(!Alpha)c.a=pa;
     return c;
 }
 float4 pREC(float2 x:TEXCOORD0):color{
     float4 c=texIN(s0,x);float pa=c.a;
-    c=step(-(frac((c+Phase)*Frequency*254./255.)-.5),0);
+    c=step(-(frac((c*Frequency*254./255.+Phase))-.5),0);
     if(!Alpha)c.a=pa;
     return c;
 }
 float4 pFRA(float2 x:TEXCOORD0):color{
     float4 c=texIN(s0,x);float pa=c.a;
-    c=(frac((c+Phase)*Frequency*254./255.));
+    c=(frac((c*Frequency*254./255.+Phase)));
     if(!Alpha)c.a=pa;
     return c;
 }

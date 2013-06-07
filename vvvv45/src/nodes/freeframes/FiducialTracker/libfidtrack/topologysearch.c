@@ -1,6 +1,7 @@
 /*
   Fiducial tracking library.
   Copyright (C) 2004 Ross Bencina <rossb@audiomulch.com>
+  Maintainer (C) 2005-2008 Martin Kaltenbrunner <mkalten@iua.upf.edu>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -29,10 +30,10 @@
 static void find_black_leafs( PartialSegmentTopology *pst, Segmenter *s )
 {
     int i;
-    
+
     for( i=0; i < s->region_count; ++i ){
         Region *r = LOOKUP_SEGMENTER_REGION( s, i );
-        
+
         if( r->colour == BLACK
                 && r->adjacent_region_count == 1 ){ /* it's a leaf */
 
@@ -48,7 +49,7 @@ static void find_black_leafs( PartialSegmentTopology *pst, Segmenter *s )
 static int has_only_one_non_leaf_adjacent_region( Region* r )
 {
     int i;
-    
+
     int non_leaf_adjacent_count = 0;
     for( i=0; i < r->adjacent_region_count; ++i ){
         if( r->adjacent_regions[i]->level != LEAF_LEVEL )
@@ -85,7 +86,7 @@ static void find_black_leaf_container_regions( PartialSegmentTopology *pst, Segm
 
                 potential_container->level = LEAF_CONTAINER_LEVEL;
                 link_region( &pst->black_leaf_container_regions_head, potential_container );
-                
+
             }else{
                 potential_container->level = DISCARDED_LEVEL;
             }
@@ -113,7 +114,7 @@ static int count_non_leaf_container_adjacent_regions( Region* r )
 static void find_root_regions( PartialSegmentTopology *pst, Segmenter *s, int symbol_count )
 {
     int i;
-    
+
     Region *next = pst->black_leaf_container_regions_head.next;
     while( next != &pst->black_leaf_container_regions_head ){
 
@@ -124,7 +125,7 @@ static void find_root_regions( PartialSegmentTopology *pst, Segmenter *s, int sy
 
             non_leaf_container_adjacent_count =
                     count_non_leaf_container_adjacent_regions( potential_root );
-            
+
             if( potential_root->level == UNKNOWN_LEVEL
                     && ((potential_root->adjacent_region_count == symbol_count
                          && non_leaf_container_adjacent_count == 0 )

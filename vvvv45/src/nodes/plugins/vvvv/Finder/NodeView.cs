@@ -20,6 +20,10 @@ namespace VVVV.Nodes.Finder
         static SolidBrush SLightGray = new SolidBrush(Color.FromArgb(192, 192, 192));
         static SolidBrush SHoverGray = new SolidBrush(Color.FromArgb(216, 216, 216));
         
+        static SolidBrush SDarkGreen = new SolidBrush(Color.FromArgb(81, 163, 96));
+        static SolidBrush SLightGreen = new SolidBrush(Color.FromArgb(157, 232, 177));
+        static SolidBrush SHoverGreen = new SolidBrush(Color.FromArgb(161, 226, 185));
+        
         static SolidBrush SDarkRed = new SolidBrush(Color.FromArgb(168, 82, 82));
         static SolidBrush SLightRed = new SolidBrush(Color.FromArgb(229, 162, 162));
         static SolidBrush SHoverRed = new SolidBrush(Color.FromArgb(233, 158, 158));
@@ -511,13 +515,15 @@ namespace VVVV.Nodes.Finder
                     return Brushes.White;
 
                 if (FNode.ContainsProblem())
-                    return SDarkRed;
-                else if (FNode.ContainsBoygroupedNodes())
-                    return SDarkBlue;
-                else if (FNode.HasProblem())
                     return SLightRed;
-                else if (FNode.IsBoygrouped())
+                else if (FNode.ContainsBoygroupedNodes())
                     return SLightBlue;
+                else if (FNode.HasProblem())
+                    return SDarkRed;
+                else if (FNode.IsExposed())
+                    return SDarkGreen;
+                else if (FNode.IsBoygrouped())
+                    return SDarkBlue;
                 else if (FNode.HasPatch)
                     return SDarkGray;
                 else

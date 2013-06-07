@@ -91,6 +91,8 @@ namespace VVVV.Hosting.Factories
         {
             if (!FileExtension.Contains(Path.GetExtension(filename)))
                 return new INodeInfo[0];
+            if (filename.EndsWith("nodelist.xml"))
+                return new INodeInfo[0];
             
             // Regardless of the arguments, we need to load the node infos first.
             var nodeInfos = LoadNodeInfos(filename).ToArray();
@@ -162,6 +164,18 @@ namespace VVVV.Hosting.Factories
         {
             filename = null;
             return false;
+        }
+
+        public virtual bool GetNodeListAttribute(INodeInfo nodeInfo, out string name, out string value)
+        {
+            name = string.Empty;
+            value = string.Empty;
+            return false;
+        }
+
+        public virtual void ParseNodeEntry(System.Xml.XmlReader xmlReader, INodeInfo nodeInfo)
+        {
+            
         }
         
         #endregion IAddonFactory

@@ -63,9 +63,13 @@ namespace VVVV.TodoMap.UI.UserControls
                 this.engine = value;
                 this.engine.Midi.DeviceInputStatusChanged += Midi_DeviceInputStatusChanged;
                 this.engine.Midi.DeviceOutputStatusChanged += Midi_DeviceOutputStatusChanged;
+                this.engine.Midi.DeviceInputAutoChanged += Midi_DeviceInputAutoChanged;
+                this.engine.Midi.DeviceOutputAutoChanged += Midi_DeviceOutputAutoChanged;
                 this.engine.Midi.ClockValueChanged += Midi_ClockValueChangedDelegate;
             }
         }
+
+
 
         void Midi_ClockValueChangedDelegate(int ticks)
         {
@@ -81,25 +85,41 @@ namespace VVVV.TodoMap.UI.UserControls
         {
             BeginInvoke((MethodInvoker)delegate()
             {
-                this.lvMidiInput.Items[index].SubItems[3].Text = status.ToString();
+                this.lvMidiInput.Items[index].SubItems[4].Text = status.ToString();
                 if (status == eTodoMidiStatus.Disconnected || status == eTodoMidiStatus.Error)
                 {
                     this.lvMidiInput.Items[index].BackColor = Color.LightSalmon;
-                    this.lvMidiInput.Items[index].SubItems[2].Text = "False";
+                    this.lvMidiInput.Items[index].SubItems[2].Text =  "False";
                 }
                 else
                 {
                     if (status == eTodoMidiStatus.Started)
                     {
                         this.lvMidiInput.Items[index].BackColor = Color.LightGreen;
-                        this.lvMidiInput.Items[index].SubItems[2].Text = "True";
+                        this.lvMidiInput.Items[index].SubItems[2].Text =  "True";
                     }
                     else
                     {
                         this.lvMidiInput.Items[index].BackColor = Color.White;
-                        this.lvMidiInput.Items[index].SubItems[2].Text = "False";
+                        this.lvMidiInput.Items[index].SubItems[2].Text =  "False";
                     }
                 }
+            });
+        }
+
+        private void Midi_DeviceInputAutoChanged(int index, bool auto)
+        {
+            BeginInvoke((MethodInvoker)delegate()
+            {
+                this.lvMidiInput.Items[index].SubItems[3].Text = auto.ToString();
+            });
+        }
+
+        private void Midi_DeviceOutputAutoChanged(int index, bool auto)
+        {
+            BeginInvoke((MethodInvoker)delegate()
+            {
+                this.lvMidiOutput.Items[index].SubItems[3].Text = auto.ToString();
             });
         }
 
@@ -107,23 +127,23 @@ namespace VVVV.TodoMap.UI.UserControls
         {
             BeginInvoke((MethodInvoker)delegate()
             {
-                this.lvMidiOutput.Items[index].SubItems[3].Text = status.ToString();
+                this.lvMidiOutput.Items[index].SubItems[4].Text = status.ToString();
                 if (status == eTodoMidiStatus.Disconnected || status == eTodoMidiStatus.Error)
                 {
                     this.lvMidiOutput.Items[index].BackColor = Color.LightSalmon;
-                    this.lvMidiOutput.Items[index].SubItems[2].Text = "False";
+                    this.lvMidiOutput.Items[index].SubItems[2].Text = false.ToString();// "False";
                 }
                 else
                 {
                     if (status == eTodoMidiStatus.Started)
                     {
                         this.lvMidiOutput.Items[index].BackColor = Color.LightGreen;
-                        this.lvMidiOutput.Items[index].SubItems[2].Text = "True";
+                        this.lvMidiOutput.Items[index].SubItems[2].Text = true.ToString();// "True";
                     }
                     else
                     {
                         this.lvMidiOutput.Items[index].BackColor = Color.White;
-                        this.lvMidiOutput.Items[index].SubItems[2].Text = "False";
+                        this.lvMidiOutput.Items[index].SubItems[2].Text = false.ToString(); //"False";
                     }
                 }
             });
@@ -138,20 +158,20 @@ namespace VVVV.TodoMap.UI.UserControls
             this.lvMidiInput.Columns[1].Width = 300;
             this.lvMidiInput.Columns.Add("Enabled");
             this.lvMidiInput.Columns[2].Width = 150;
-            //this.lvMidiInput.Columns.Add("Auto Start");
-            //this.lvMidiInput.Columns[3].Width = 150;
+            this.lvMidiInput.Columns.Add("Auto Start");
+            this.lvMidiInput.Columns[3].Width = 150;
             this.lvMidiInput.Columns.Add("Status");
-            this.lvMidiInput.Columns[3].Width = 400;
+            this.lvMidiInput.Columns[4].Width = 400;
 
             this.lvMidiOutput.Columns.Add("Index");
             this.lvMidiOutput.Columns.Add("Device Name");
             this.lvMidiOutput.Columns[1].Width = 300;
             this.lvMidiOutput.Columns.Add("Enabled");
             this.lvMidiOutput.Columns[2].Width = 150;
-            //this.lvMidiOutput.Columns.Add("Auto Start");
-            //this.lvMidiOutput.Columns[3].Width = 150;
+            this.lvMidiOutput.Columns.Add("Auto Start");
+            this.lvMidiOutput.Columns[3].Width = 150;
             this.lvMidiOutput.Columns.Add("Status");
-            this.lvMidiOutput.Columns[3].Width = 400;
+            this.lvMidiOutput.Columns[4].Width = 400;
 
             
             //Set editors
@@ -170,12 +190,12 @@ namespace VVVV.TodoMap.UI.UserControls
 
             this.midiInputEditors.Add(tb);
             this.midiInputEditors.Add(tb);
-            //this.midiInputEditors.Add(chkenabled);
+            this.midiInputEditors.Add(chkenabled);
             this.midiInputEditors.Add(chkenabled);
 
             this.midiOutputEditors.Add(tb);
             this.midiOutputEditors.Add(tb);
-            //this.midiOutputEditors.Add(chkenabled);
+            this.midiOutputEditors.Add(chkenabled);
             this.midiOutputEditors.Add(chkenabled);
         }
         #endregion
@@ -193,6 +213,7 @@ namespace VVVV.TodoMap.UI.UserControls
                 this.lvMidiInput.Items.Add(lv);
                 lv.SubItems.Add(InputDevice.GetDeviceCapabilities(i).name);
                 lv.SubItems.Add(new ListViewItem.ListViewSubItem(lv, "False"));
+                lv.SubItems.Add(new ListViewItem.ListViewSubItem(lv, "False"));
                 lv.SubItems.Add(new ListViewItem.ListViewSubItem(lv, "Connected"));
                 this.cmbClock.Items.Add(InputDevice.GetDeviceCapabilities(i).name);
             }
@@ -209,6 +230,7 @@ namespace VVVV.TodoMap.UI.UserControls
 
                 lv.SubItems.Add(OutputDevice.GetDeviceCapabilities(i).name);
                 lv.SubItems.Add(new ListViewItem.ListViewSubItem(lv, "False"));
+                lv.SubItems.Add(new ListViewItem.ListViewSubItem(lv, "False"));
                 lv.SubItems.Add(new ListViewItem.ListViewSubItem(lv, "Connected"));
             }
         }
@@ -217,9 +239,9 @@ namespace VVVV.TodoMap.UI.UserControls
         #region Manage Midi Input
         private void MidiInput_SubItemClicked(object sender, ListViewEx.SubItemEventArgs e)
         {
-            if (e.SubItem >= 2)
+            if (e.SubItem == 2 || e.SubItem == 3)
             {
-                this.chkenabled.Checked = bool.Parse(e.Item.SubItems[e.SubItem].Text);
+                this.chkenabled.Checked = BoolExtension.ParseEnglish(e.Item.SubItems[e.SubItem].Text);
                 this.lvMidiInput.StartEditing(this.midiInputEditors[e.SubItem], e.Item, e.SubItem);
             }
         }
@@ -230,8 +252,13 @@ namespace VVVV.TodoMap.UI.UserControls
             {
                 e.DisplayText = this.chkenabled.Checked.ToString();
                 e.Item.SubItems[e.SubItem].Text = this.chkenabled.Checked.ToString();
-                this.engine.Midi.SetInputEnabled(int.Parse(e.Item.Text),bool.Parse(e.DisplayText));
-
+                this.engine.Midi.SetInputEnabled(int.Parse(e.Item.Text), BoolExtension.ParseEnglish(e.DisplayText));
+            }
+            if (e.SubItem ==3)
+            {
+                e.DisplayText = this.chkenabled.Checked.ToString();
+                e.Item.SubItems[e.SubItem].Text = this.chkenabled.Checked.ToString();
+                this.engine.Midi.SetInputAutoStart(int.Parse(e.Item.Text), BoolExtension.ParseEnglish(e.DisplayText));
             }
         }
         #endregion
@@ -239,9 +266,9 @@ namespace VVVV.TodoMap.UI.UserControls
         #region Manage Midi Output
         private void MidiOutput_SubItemClicked(object sender, ListViewEx.SubItemEventArgs e)
         {
-            if (e.SubItem >= 2)
+            if (e.SubItem == 2 || e.SubItem == 3)
             {
-                this.chkenabled.Checked = bool.Parse(e.Item.SubItems[e.SubItem].Text);
+                this.chkenabled.Checked = BoolExtension.ParseEnglish(e.Item.SubItems[e.SubItem].Text);
                 this.lvMidiOutput.StartEditing(this.midiOutputEditors[e.SubItem], e.Item, e.SubItem);
             }
         }
@@ -252,8 +279,13 @@ namespace VVVV.TodoMap.UI.UserControls
             {
                 e.DisplayText = this.chkenabled.Checked.ToString();
                 e.Item.SubItems[e.SubItem].Text = this.chkenabled.Checked.ToString();
-
-                this.engine.Midi.SetOutputEnabled(int.Parse(e.Item.Text), bool.Parse(e.DisplayText));
+                this.engine.Midi.SetOutputEnabled(int.Parse(e.Item.Text), BoolExtension.ParseEnglish(e.DisplayText));
+            }
+            if (e.SubItem == 3)
+            {
+                e.DisplayText = this.chkenabled.Checked.ToString();
+                e.Item.SubItems[e.SubItem].Text = this.chkenabled.Checked.ToString();
+                this.engine.Midi.SetOutputAutoStart(int.Parse(e.Item.Text), BoolExtension.ParseEnglish(e.DisplayText));
             }
         }
         #endregion

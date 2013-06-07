@@ -41,17 +41,78 @@ namespace VVVV.Nodes
 	}
 	
 	#region PluginInfo
+	[PluginInfo(Name = "AsSVG",
+	            Category = "String",
+	            Help = "Reads an XML string and returns an SVG document, its elements (layers) and other properties",
+	            Tags = "xml")]
+	#endregion PluginInfo
+	public class DucumentSvgStringReaderNode : DucumentSvgReaderNode
+	{
+	    #pragma warning disable 649
+		[Input("XML", DefaultString = "<SVG></SVG>")]
+		IDiffSpread<string> FXMLIn;
+		#pragma warning restore
+		
+		protected override SvgDocument ReadDocument(int slice)
+		{
+			SvgDocument doc = null;
+			try
+			{
+				var s = new MemoryStream(UTF8Encoding.Default.GetBytes(FXMLIn[slice]));
+				doc = SvgDocument.Open(s, null);
+			}
+			catch (Exception e)
+			{
+				FLogger.Log(e);
+			}
+			
+			return doc;
+		}
+		
+		protected override bool InputChanged()
+		{
+			return FXMLIn.IsChanged;
+		}
+	}
+	
+	#region PluginInfo
 	[PluginInfo(Name = "Reader",
 	            Category = "SVG",
 	            Help = "Reads and returns an SVG document, its elements (layers) and other properties",
 	            Tags = "xml")]
 	#endregion PluginInfo
-	public class DucumentSvgReaderNode : IPluginEvaluate
+	public class DucumentSvgFileReaderNode : DucumentSvgReaderNode
+	{
+	    #pragma warning disable 649
+		[Input("Filename", StringType = StringType.Filename, DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg")]
+		IDiffSpread<string> FFilenameIn;
+		#pragma warning restore
+		
+		protected override SvgDocument ReadDocument(int slice)
+		{
+			SvgDocument doc = null;
+			try
+			{
+				doc = SvgDocument.Open(FFilenameIn[slice]);
+			}
+			catch (Exception e)
+			{
+				FLogger.Log(e);
+			}
+			
+			return doc;
+		}
+		
+		protected override bool InputChanged()
+		{
+			return FFilenameIn.IsChanged;
+		}
+	}
+	
+	public abstract class DucumentSvgReaderNode : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Filename", StringType = StringType.Filename, FileMask = "SVG Files (*.svg)|*.svg")]
-		IDiffSpread<string> FFilenameIn;
-		
+		#pragma warning disable 649,169
 		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 0 })]
 		IDiffSpread<RGBAColor> FBackgroundIn;
 		
@@ -77,13 +138,14 @@ namespace VVVV.Nodes
 		ISpread<bool> FHasSizeOut;
 
 		[Import()]
-		ILogger FLogger;
+		protected ILogger FLogger;
+		#pragma warning restore
 		#endregion fields & pins
  
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if(FFilenameIn.IsChanged || FBackgroundIn.IsChanged || FReloadIn[0])
+			if(InputChanged() || FBackgroundIn.IsChanged || FReloadIn[0])
 			{
 				FDocOut.SliceCount = SpreadMax;				
 				FLayerOut.SliceCount = SpreadMax;
@@ -94,15 +156,7 @@ namespace VVVV.Nodes
 				
 				for(int i=0; i<SpreadMax; i++)
 				{
-					SvgDocument doc = null;
-					try
-					{
-						doc = SvgDocument.Open(FFilenameIn[i]);
-					}
-					catch (Exception e)
-					{
-						FLogger.Log(e);
-					}
+					var doc = ReadDocument(i);
 					
 					if(doc != null)
 					{
@@ -151,37 +205,44 @@ namespace VVVV.Nodes
 						
 						FHasSizeOut[i] = !noSize;
 					}
+					else
+					{
+						FDocOut[i] = new SvgDoc();
+						FLayerOut[i].SliceCount = 0;
+						
+						FViewOut[i] = new SvgViewBox();
+						FHasViewOut[i] = false;
+						
+						FSizeOut[i] = new Vector2D();
+						FHasSizeOut[i] = false;
+					}
 				}
 			}
-				 
 			//FLogger.Log(LogType.Debug, "hi tty!");
 		}
+		
+		protected abstract SvgDocument ReadDocument(int slice);
+		protected abstract bool InputChanged();
 	}
 	
-	#region PluginInfo
-	[PluginInfo(Name = "Writer",
-	            Category = "SVG",
-	            Help = "Writes an SVG document to disk",
-	            Tags = "xml",
-	            AutoEvaluate = true)]
-	#endregion PluginInfo
-	public class DucumentSvgWriterNode : IPluginEvaluate
+	public abstract class DucumentSvgWriterNode : IPluginEvaluate
 	{
+	    #pragma warning disable 649
 		[Input("Document")]
 		ISpread<SvgDoc> FDocIn;
 		
-		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename)]
-		ISpread<string> FFilenameIn;
-		
-		[Input("Size", StepSize = 1)]
+		[Input("Size", StepSize = 1, Order = 10)]
 		ISpread<Vector2> FSizeIn;
 		
-		[Input("Write", IsBang = true)]
+		[Input("Write", IsBang = true, Order = 20)]
 		ISpread<bool> FDoWriteIn;
+		#pragma warning restore
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
+			SetSlicecount(SpreadMax);
+			
 			for(int i=0; i<SpreadMax; i++)
 			{
 				//save to disc
@@ -193,16 +254,76 @@ namespace VVVV.Nodes
 					
 					if(FSizeIn[i] != Vector2.Zero)
 					{
-						doc.Width = FSizeIn[i].X;
-						doc.Height = FSizeIn[i].Y;
+						doc.Width = Math.Max(FSizeIn[i].X, 1);
+						doc.Height = Math.Max(FSizeIn[i].Y, 1);
 					}
 					
-					doc.Write(FFilenameIn[i]);
+					WriteDoc(doc, i);
 					
 					doc.Width = oldW;
 					doc.Height = oldH;
 				}
 			}
+		}
+		
+		protected abstract void SetSlicecount(int spreadMax);
+		protected abstract void WriteDoc(SvgDocument doc, int slice);
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Writer",
+	            Category = "SVG",
+	            Help = "Writes an SVG document to disk",
+	            Tags = "xml",
+	            AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class DucumentSvgFileWriterNode : DucumentSvgWriterNode
+	{	
+	    #pragma warning disable 649
+		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
+		ISpread<string> FFilenameIn;
+		#pragma warning restore
+		
+		protected override void SetSlicecount(int spreadMax)
+		{
+			//nothing to do
+		}
+		
+		protected override void WriteDoc(SvgDocument doc, int slice)
+		{
+			doc.Write(FFilenameIn[slice]);
+		}
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "AsString",
+	            Category = "SVG",
+	            Help = "Writes an SVG document into a string",
+	            Tags = "xml",
+	            AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class DucumentSvgStringWriterNode : DucumentSvgWriterNode
+	{	
+	    #pragma warning disable 649
+		[Output("XML")]
+		ISpread<string> FStringOut;
+		#pragma warning restore
+		
+		protected override void SetSlicecount(int spreadMax)
+		{
+			FStringOut.SliceCount = spreadMax;
+		}
+		 
+		protected override void WriteDoc(SvgDocument doc, int slice)
+		{
+			using(var ms = new MemoryStream())
+            {
+                doc.Write(ms);
+                ms.Position = 0;
+                var sr = new StreamReader(ms);
+                FStringOut[slice] = sr.ReadToEnd();
+                sr.Close();
+            }
 		}
 	}
 	
@@ -218,10 +339,11 @@ namespace VVVV.Nodes
                 InitialWindowHeight = 300,
 	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
-	public class SvgRendererNode : UserControl, IPluginEvaluate
+    public class SvgRendererNode : UserControl, IPluginEvaluate, IUserInputWindow
 	{
 		#region fields & pins
-		[Input("Layer")]
+		#pragma warning disable 649,169
+		[Input("Layers")]
 		IDiffSpread<SvgElement> FSVGIn;
 		
 		[Input("View Box", IsSingle = true)]
@@ -239,6 +361,9 @@ namespace VVVV.Nodes
 		[Output("Document")]
 		ISpread<SvgDoc> FOutput;
 		
+		[Output("Size")]
+		ISpread<Vector2> FSizeOutput;
+		
 		SvgDocument FSVGDoc = new SvgDocument();
 		
 		SizeF FSize = new SizeF();
@@ -249,6 +374,7 @@ namespace VVVV.Nodes
 		
 		[Import]
 		INode FThisNode;
+		#pragma warning restore
 		
 		#endregion fields & pins
 		
@@ -257,6 +383,8 @@ namespace VVVV.Nodes
 			//clear controls in case init is called multiple times
 			Controls.Clear();
 			FPicBox.Dock = DockStyle.Fill;
+			
+			FPicBox.SizeMode = PictureBoxSizeMode.StretchImage;
 			
 			Controls.Add(FPicBox);
 			
@@ -314,6 +442,7 @@ namespace VVVV.Nodes
 				FSVGDoc.Height = new SvgUnit(SvgUnitType.User, Math.Max(FSize.Height, 1));
 				 
 				FOutput[0] = new SvgDoc(FSVGDoc, FBackgroundIn[0].Color);
+				FSizeOutput[0] = new Vector2(FSize.Width, FSize.Height);
 			}
 			
 			//render to window
@@ -337,9 +466,13 @@ namespace VVVV.Nodes
 				FSVGDoc.Draw(FBitMap);
 				FPicBox.Image = FBitMap;
 			}
-			
 		}
-	}
+
+        public IntPtr InputWindowHandle
+        {
+            get { return FPicBox.Handle; }
+        }
+    }
 	
 	#region PluginInfo
 	[PluginInfo(Name = "SVGTexture", 
@@ -350,7 +483,7 @@ namespace VVVV.Nodes
 	public class EX9_TextureSVGTextureNode : DXTextureOutPluginBase, IPluginEvaluate
 	{
 		#region fields & pins
-
+        #pragma warning disable 649,169
 		[Input("Document")]
 		IDiffSpread<SvgDoc> FSVGIn;
 		
@@ -362,9 +495,11 @@ namespace VVVV.Nodes
 
 		[Import()]
 		ILogger FLogger;
+		#pragma warning restore
 		
 		List<Bitmap> FBitmaps = new List<Bitmap>();
 		List<Size> FSizes = new List<Size>();
+		List<SvgDoc> FDocs = new List<SvgDoc>();
 
 		//track the current texture slice
 		int FCurrentSlice;
@@ -376,14 +511,17 @@ namespace VVVV.Nodes
 		public EX9_TextureSVGTextureNode(IPluginHost host) : base(host)
 		{
 		}
-		
-		//memcopy method
-		[DllImport("Kernel32.dll", EntryPoint="RtlMoveMemory", SetLastError=false)]
-        static extern void CopyMemory(IntPtr dest, IntPtr src, int size);
-
+        
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
+			FDocs.Clear();
+			foreach (var element in FSVGIn) 
+			{
+				if(element.Document != null) FDocs.Add(element);
+			}
+			
+			SpreadMax = FDocs.Count;
 			SetSliceCount(SpreadMax);
 			
 			if(FSVGIn.IsChanged || FTransformIn.IsChanged || FSizeIn.IsChanged)
@@ -392,12 +530,19 @@ namespace VVVV.Nodes
 				
 				if(FBitmaps.Count > SpreadMax)
 				{
+					//dispose unused
+					for (int i = SpreadMax; i < FBitmaps.Count; i++) 
+					{
+						FBitmaps[i].Dispose();
+					}
+					
+					//remove from list
 					FBitmaps.RemoveRange(SpreadMax, FBitmaps.Count - SpreadMax);
 				}
 				
 				for(int i=0; i<SpreadMax; i++)
 				{
-					var doc = FSVGIn[i].Document;
+					var doc = FDocs[i].Document;
 					
 					//calc size
 					var size = new Size((int)FSizeIn[0].X, (int)FSizeIn[0].Y);
@@ -434,7 +579,7 @@ namespace VVVV.Nodes
 						
 						//clear bitmap
 						var g = Graphics.FromImage(bm);
-						g.Clear(FSVGIn[i].BackgroundColor);
+						g.Clear(FDocs[i].BackgroundColor);
 						g.Dispose();
 						
 						//save old values
@@ -447,24 +592,26 @@ namespace VVVV.Nodes
 						}
 						
 						var m = FTransformIn[i];
-						var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
-						doc.Transforms.Add(mat);
-						doc.Width = new SvgUnit(SvgUnitType.Pixel, size.Width);
-						doc.Height = new SvgUnit(SvgUnitType.Pixel, size.Height);
 						
-						//draw into bitmap
-						doc.Draw(bm);
-						
-						doc.Width = oldW;
-						doc.Height = oldH;
-						doc.Transforms.Remove(mat);
+						if(m.M11 != 0 && m.M22 !=0)
+						{
+							var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
+							doc.Transforms.Add(mat);
+							doc.Width = new SvgUnit(SvgUnitType.Pixel, size.Width);
+							doc.Height = new SvgUnit(SvgUnitType.Pixel, size.Height);
+							
+							//draw into bitmap
+							doc.Draw(bm);
+							
+							doc.Width = oldW;
+							doc.Height = oldH;
+							doc.Transforms.Remove(mat);
+						}
 						
 						Update();
 					}
 				}
-				
 			}
-
 		}
 
 		//this method gets called, when Reinitialize() was called in evaluate,
@@ -482,134 +629,7 @@ namespace VVVV.Nodes
 		unsafe protected override void UpdateTexture(int Slice, Texture texture)
 		{
 			FCurrentSlice = Slice;
-			var bm = FBitmaps[Slice];
-			var data = bm.LockBits(new Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadOnly, bm.PixelFormat);
-			var rect = texture.LockRectangle(0, LockFlags.None);
-			
-			CopyMemory(rect.Data.DataPointer, data.Scan0, data.Stride * data.Height);
-			
-			texture.UnlockRectangle(0);
-			bm.UnlockBits(data);
-
-		}
-	}
-	
-	#region PluginInfo
-//	[PluginInfo(Name = "SVGTexture", 
-//	            Category = "EX9.Texture", 
-//	            Help = "Renders an SVG xml-string into a texture with a given size", 
-//	            Tags = "xml")]
-	#endregion PluginInfo
-	public class EX9_TextureSVGTextureXMLNode : DXTextureOutPluginBase, IPluginEvaluate
-	{
-		#region fields & pins
-
-		[Input("XML")]
-		IDiffSpread<string> FXMLIn;
-		
-		[Input("Transform")]
-		IDiffSpread<Matrix> FTransformIn;
-
-		[Input("Width", DefaultValue = 128)]
-		IDiffSpread<int> FWidthIn;
-
-		[Input("Height", DefaultValue = 128)]
-		IDiffSpread<int> FHeightIn;
-
-		[Import()]
-		ILogger FLogger;
-		
-		SvgDocument FSVGDoc;
-		Bitmap FBitmap;
-		RectangleF FOriginalDim;
-
-		//track the current texture slice
-		int FCurrentSlice;
-
-		#endregion fields & pins
-
-		// import host and hand it to base constructor
-		[ImportingConstructor()]
-		public EX9_TextureSVGTextureXMLNode(IPluginHost host) : base(host)
-		{
-		}
-		
-		//memcopy method
-		[DllImport("msvcrt.dll", EntryPoint="memcpy", SetLastError=false)]
-        static extern void CopyMemory(IntPtr dest, IntPtr src, int size);
-
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
-		{
-			SetSliceCount(SpreadMax);
-
-			//recreate texture if resolution was changed
-			if (FWidthIn.IsChanged || FHeightIn.IsChanged) {
-				//set new texture size
-				Reinitialize();
-			}
-			
-			if (FXMLIn.IsChanged)
-			{
-				var s = new MemoryStream(UTF8Encoding.Default.GetBytes(FXMLIn[0]));
-                FSVGDoc = SvgDocument.Open(s, null);
-				FOriginalDim = FSVGDoc.GetDimensions();
-			}
-
-			//update texture
-			if (FXMLIn.IsChanged || FWidthIn.IsChanged || FHeightIn.IsChanged || FTransformIn.IsChanged) {
-							
-				
-				FSVGDoc.Transforms = new SvgTransformCollection();
-
-			    var sx = FWidthIn[0] / (float)FOriginalDim.Width;
-				var sy = FHeightIn[0] / (float)FOriginalDim.Height;
-				
-				sx = Math.Max(sx, sy);
-				
-				var c = new SvgCircle();
-				c.CenterX = 50;
-				c.CenterY = 50;
-				c.Radius = 100;
-				
-				//FSVGDoc.Children.Add(c);
-				
-                FSVGDoc.Transforms.Add(new SvgScale(sx, sx));
-				var m = FTransformIn[0];
-				var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
-				FSVGDoc.Transforms.Add(mat);
-                FSVGDoc.Width = new SvgUnit(SvgUnitType.Pixel, FWidthIn[0]);
-                FSVGDoc.Height = new SvgUnit(SvgUnitType.Pixel, FHeightIn[0]);
-                FBitmap = FSVGDoc.Draw();
-				
-				Update();
-			}
-
-		}
-
-		//this method gets called, when Reinitialize() was called in evaluate,
-		//or a graphics device asks for its data
-		protected override Texture CreateTexture(int Slice, Device device)
-		{
-			FLogger.Log(LogType.Debug, "Creating new texture at slice: " + Slice);
-			return TextureUtils.CreateTexture(device, Math.Max(FWidthIn[Slice], 1), Math.Max(FHeightIn[Slice], 1));
-		}
-
-		//this method gets called, when Update() was called in evaluate,
-		//or a graphics device asks for its texture, here you fill the texture with the actual data
-		//this is called for each renderer, careful here with multiscreen setups, in that case
-		//calculate the pixels in evaluate and just copy the data to the device texture here
-		unsafe protected override void UpdateTexture(int Slice, Texture texture)
-		{
-			FCurrentSlice = Slice;
-			var data = FBitmap.LockBits(new Rectangle(0, 0, FBitmap.Width, FBitmap.Height), ImageLockMode.ReadOnly, FBitmap.PixelFormat);
-			var rect = texture.LockRectangle(0, LockFlags.None);
-			
-			CopyMemory(rect.Data.DataPointer, data.Scan0, data.Stride * data.Height);
-			
-			texture.UnlockRectangle(0);
-			FBitmap.UnlockBits(data);
-
+			TextureUtils.CopyBitmapToTexture(FBitmaps[Slice], texture);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
 
@@ -26,6 +27,15 @@ namespace VVVV.Hosting
 				nodeInfo = FNodeInfoFactory.ToInternal(nodeInfo);
 			}
 			FNodeBrowserHost.CreateNode(nodeInfo);
+		}
+		
+		public int CreateNode(INodeInfo nodeInfo, Point point)
+		{
+			if (nodeInfo != null)
+			{
+				nodeInfo = FNodeInfoFactory.ToInternal(nodeInfo);
+			}
+			return FNodeBrowserHost.CreateNode(nodeInfo, point);
 		}
 		
 		public void CloneNode(INodeInfo nodeInfo, string path, string Name, string Category, string Version)

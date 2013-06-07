@@ -27,5 +27,9 @@ namespace VVVV.Hosting
 	    INodeInfo Clone(INodeInfo nodeInfo, string path, string Name, string Category, string Version);
 
 		void AddSearchPath(string path);
+		
+		void Shutdown();
+		
+		void RunRefactor();
 	}
 }

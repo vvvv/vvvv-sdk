@@ -8,7 +8,8 @@ texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 p0(float2 x:TEXCOORD0):color{
     float4 c=tex2D(s0,x);
-    c.a=(pow(saturate((c-fromBlack)/(fromWhite-fromBlack)),Gamma)*(toWhite-toBlack)+toBlack).a;
+	c.a=saturate((c.a-fromBlack)/(fromWhite-fromBlack));
+    c.a=(sign(c.a)*pow(abs(c.a),Gamma)*(toWhite-toBlack)+toBlack);
     return c;
 }
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}

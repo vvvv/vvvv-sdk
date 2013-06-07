@@ -97,7 +97,7 @@ namespace VVVV.Nodes
 		private IDXLayerIO FLayerOutput;
 		
 		private int FSpreadMax;
-		private Dictionary<int, DeviceFont> FDeviceFonts = new Dictionary<int, DeviceFont>();
+		private Dictionary<Device, DeviceFont> FDeviceFonts = new Dictionary<Device, DeviceFont>();
 		#endregion field declarationPL
 		
 		#region constructur
@@ -122,7 +122,7 @@ namespace VVVV.Nodes
 		#endregion mainloop
 		
 		#region DXLayer
-		private void RemoveResource(int OnDevice)
+		private void RemoveResource(Device OnDevice)
 		{
 			DeviceFont df = FDeviceFonts[OnDevice];
 			FDeviceFonts.Remove(OnDevice);
@@ -132,7 +132,7 @@ namespace VVVV.Nodes
 			df.Texture.Dispose();
 		}
 		
-		public void UpdateResource(IPluginOut ForPin, int OnDevice)
+		public void UpdateResource(IPluginOut ForPin, Device OnDevice)
 		{
 			bool needsupdate = false;
 			
@@ -154,8 +154,6 @@ namespace VVVV.Nodes
 			if (needsupdate)
 			{
 				//FHost.Log(TLogType.Debug, "Creating Resource...");
-				Device dev = Device.FromPointer(new IntPtr(OnDevice));
-
 				DeviceFont df = new DeviceFont();
 				
 				FontWeight weight;
@@ -164,23 +162,20 @@ namespace VVVV.Nodes
 				else
 					weight = FontWeight.Light;
 				
-				df.Font = new SlimDX.Direct3D9.Font(dev, FSizeInput[0], 0, weight, 0, FItalicInput[0], CharacterSet.Default, Precision.Default, FontQuality.Default, PitchAndFamily.Default, FFontInput[0].Name);
-				df.Sprite = new Sprite(dev);
+				df.Font = new SlimDX.Direct3D9.Font(OnDevice, FSizeInput[0], 0, weight, 0, FItalicInput[0], CharacterSet.Default, Precision.Default, FontQuality.Default, PitchAndFamily.Default, FFontInput[0].Name);
+				df.Sprite = new Sprite(OnDevice);
 				
-				df.Texture = new Texture(dev, 1, 1, 1, Usage.None, Format.L8, Pool.Managed);// Format.A8R8G8B8, Pool.Default);
+				df.Texture = new Texture(OnDevice, 1, 1, 1, Usage.Dynamic, Format.L8, Pool.Default);// Format.A8R8G8B8, Pool.Default);
 				//need to fill texture white to be able to set color on sprite later
 				DataRectangle tex = df.Texture.LockRectangle(0, LockFlags.None);
 				tex.Data.WriteByte(255);
 				df.Texture.UnlockRectangle(0);
 				
 				FDeviceFonts.Add(OnDevice, df);
-				
-				//dispose device
-				dev.Dispose();
 			}
 		}
 		
-		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+		public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
 		{
 			//dispose resources that were created on given OnDevice
 			try
@@ -200,7 +195,7 @@ namespace VVVV.Nodes
 			FRenderStatePin.SetRenderState(RenderState.DestinationBlend, (int) Blend.InverseSourceAlpha);
 		}
 		
-		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
+		public void Render(IDXLayerIO ForPin, Device OnDevice)
 		{
 			//concerning the cut characters in some fonts, especially when rendered italic see:
 			//http://www.gamedev.net/community/forums/topic.asp?topic_id=441338
@@ -213,10 +208,9 @@ namespace VVVV.Nodes
 			//for view and projection transforms this is exactly what we want: it allows placing the text within the
 			//same world as all the other objects. however we don't want to work in object space but in world space
 			//that's why we need to to set the world transform to a neutral value: identity
-			Device dev = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
-			dev.SetTransform(TransformState.World, Matrix.Identity);
+			OnDevice.SetTransform(TransformState.World, Matrix.Identity);
 
-			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
+			DeviceFont df = FDeviceFonts[OnDevice];
 			FTransformIn.SetRenderSpace();
 
 			//set states that are defined via upstream nodes

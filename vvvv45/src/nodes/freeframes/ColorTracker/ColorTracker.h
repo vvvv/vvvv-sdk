@@ -3,7 +3,7 @@
 
 //////description
 //freeframe plugin.
-//outputs location(x/y) width/height and rotation angle
+//returns location(x/y) width/height and rotation angle
 //of tracked object from image thresholded with
 //user-defined color parameters
 
@@ -13,11 +13,11 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//opencv v2.31
+//http://opencv.willowgarage.com/wiki
 
 //////initial author
 //Marc Sandner -> ms@saphmar.net
@@ -29,7 +29,7 @@
 #include "FreeFrame.h"
 
 //opencv includes
-#include "cv.h"
+#include <opencv/cv.h>
 
 //pin constants
 #define NUM_PARAMS 12

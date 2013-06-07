@@ -39,6 +39,7 @@ namespace VVVV.Nodes
 		//fields
 		private Matrix4x4 FSliderSize;
 		private double FSliderSpeed;
+		private bool FIsLong;
 		
 		//constructor
 		public SliderGroup()
@@ -51,11 +52,17 @@ namespace VVVV.Nodes
 		                            Vector2D Size,
 		                            double SizeSlider,
 		                            double SliderSpeed,
-		                            bool isX)
+		                            bool isX,
+		                           	bool isLong)
 		{
 			//copy fields
 			FSliderSpeed = SliderSpeed;
-			FSliderSize = VMath.Scale(1.0 , SizeSlider, 1);
+			FIsLong = isLong;
+			
+			if(!FIsLong)
+			{
+				FSliderSize = VMath.Scale(1.0, SizeSlider, 1);
+			}
 			
 			base.UpdateTransform(Transform, Count, Size);
 			
@@ -72,7 +79,14 @@ namespace VVVV.Nodes
 					s.InvTransform = !s.Transform;
 				}
 	
-				s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+				if(!FIsLong)
+				{
+					s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+				}
+				else
+				{
+					s.SliderTransform = VMath.Scale(1, s.Value, 1) * VMath.Translate(0, s.Value*0.5 - 0.5 , 1) * s.Transform;
+				}
 				
 			}
 			
@@ -94,7 +108,14 @@ namespace VVVV.Nodes
                     Vector2D invMouse = (s.InvTransform * new Vector2D(s.AssignedTouch.X,s.AssignedTouch.Y)).xy;
                     Vector2D invLastMouse = (s.InvTransform * new Vector2D(s.LastTouchPos.X, s.LastTouchPos.Y)).xy;
                     s.Value = VMath.Clamp(s.Value + (invMouse.y - invLastMouse.y) * FSliderSpeed, 0, 1);
-                    s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+                    if(!FIsLong)
+					{
+						s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+					}
+					else
+					{
+						s.SliderTransform = VMath.Scale(1, s.Value, 1) * VMath.Translate(0, s.Value*0.5 - 0.5 , 1) * s.Transform;
+					}					
                 }			
 			}
 		}
@@ -103,7 +124,15 @@ namespace VVVV.Nodes
 		public void UpdateValue(Slider s, double val)
 		{
 			s.Value = VMath.Clamp(val, 0, 1);
-			s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+			if(!FIsLong)
+			{
+				s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
+			}
+			else
+			{
+				s.SliderTransform = VMath.Scale(1, s.Value, 1) * VMath.Translate(0, s.Value*0.5 - 0.5 , 1) * s.Transform;
+			}
+				
 		}
 	}
 }

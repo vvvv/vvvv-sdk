@@ -13,11 +13,11 @@ namespace VVVV.PluginInterfaces.V2.EX9
 	public abstract class DXResourcePluginBase<T> : IPluginDXResource where T : DeviceData
 	{
 		//the device datas per device
-		protected Dictionary<int, T> FDeviceData;
+		protected Dictionary<Device, T> FDeviceData;
 		
 		public DXResourcePluginBase()
 		{
-			FDeviceData = new Dictionary<int, T>();
+			FDeviceData = new Dictionary<Device, T>();
 		}
 		
 		/// <summary>
@@ -26,6 +26,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		protected void Update()
 		{
 			foreach (var dd in FDeviceData.Values) dd.Update = true;
+			SetResourcePinsChanged();
 		}
 		
 		/// <summary>
@@ -34,24 +35,24 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		protected void Reinitialize()
 		{
 			foreach (var dd in FDeviceData.Values) dd.Reinitialize = true;
+			SetResourcePinsChanged();
 		}
 		
+		protected abstract void SetResourcePinsChanged();
 		protected abstract T CreateDeviceData(Device device);
 		protected abstract void UpdateDeviceData(T deviceData);
 		protected abstract void DestroyDeviceData(T deviceData, bool OnlyUnManaged);
 		
-		private void CreateResource(IPluginOut ForPin, int OnDevice)
+		private void CreateResource(IPluginOut ForPin, Device OnDevice)
 		{
 			//destroy resource if it exists
 			if (FDeviceData.ContainsKey(OnDevice)) DestroyResource(ForPin, OnDevice, false);
 			
 			//call user create method to set the new device data
-			var dev = Device.FromPointer(new IntPtr(OnDevice));
-			FDeviceData.Add(OnDevice, CreateDeviceData(dev));
-			dev.Dispose();
+			FDeviceData.Add(OnDevice, CreateDeviceData(OnDevice));
 		}
 		
-		public void UpdateResource(IPluginOut ForPin, int OnDevice)
+		public void UpdateResource(IPluginOut ForPin, Device OnDevice)
 		{
 			if (!FDeviceData.ContainsKey(OnDevice))
 			{
@@ -61,7 +62,8 @@ namespace VVVV.PluginInterfaces.V2.EX9
 			else
 			{
 				//recreate data?
-				if (FDeviceData[OnDevice].Reinitialize) CreateResource(ForPin, OnDevice);
+				if (FDeviceData[OnDevice].Reinitialize) 
+					CreateResource(ForPin, OnDevice);
 				
 				//update data?
 				var dd = FDeviceData[OnDevice];
@@ -73,12 +75,18 @@ namespace VVVV.PluginInterfaces.V2.EX9
 			}
 		}
 		
-		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+		public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
 		{
 			if (FDeviceData.ContainsKey(OnDevice))
 			{
-				DestroyDeviceData(FDeviceData[OnDevice], OnlyUnManaged);
-				FDeviceData.Remove(OnDevice);
+				try
+				{
+					DestroyDeviceData(FDeviceData[OnDevice], OnlyUnManaged);
+				}
+				finally
+				{
+					FDeviceData.Remove(OnDevice);
+				}
 			}
 		}
 	}

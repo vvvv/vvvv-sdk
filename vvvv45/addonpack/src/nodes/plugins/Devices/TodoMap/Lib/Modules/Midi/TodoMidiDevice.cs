@@ -11,23 +11,23 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
     public enum eTodoMidiStatus { Connected, Disconnected, Started, Error }
 
     public delegate void DeviceStatusChangedDelegate(int index, eTodoMidiStatus status);
+    public delegate void DeviceAutoChangedDelegate(int index, bool auto);
     public delegate void ClockDeviceChangedDelegate();
     public delegate void ClockChangedDelegate(int ticks);
 
     public class TodoMidiDevice : AbstractTodoDevice<TodoMidiInput>
     {
-        //private List<InputDevice> inputs;
         private List<string> inputdevname = new List<string>();
 
         private List<eTodoMidiStatus> inputstatus = new List<eTodoMidiStatus>();
         private Dictionary<int, InputDevice> indevs = new Dictionary<int, InputDevice>();
         private int clockdevice = -1;
-
-        //private List<OutputDevice> outputs;
+        private List<string> inputauto = new List<string>();
 
         private List<eTodoMidiStatus> outputstatus = new List<eTodoMidiStatus>();
         private Dictionary<int, OutputDevice> outdevs = new Dictionary<int, OutputDevice>();
         private List<string> outputdevname = new List<string>();
+        private List<string> outputauto = new List<string>();
 
         private UsbDetector usb;
         private int FTicks = 0;
@@ -37,6 +37,10 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
         public event ClockChangedDelegate ClockValueChanged;
         public event ClockDeviceChangedDelegate ClockDeviceChanged;
 
+        public event DeviceAutoChangedDelegate DeviceInputAutoChanged;
+        public event DeviceAutoChangedDelegate DeviceOutputAutoChanged;
+
+        #region Clock
         public bool ClockEnabled
         {
             get
@@ -66,6 +70,7 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
                 }
             }
         }
+        #endregion
 
         #region Constructor
         public TodoMidiDevice(TodoEngine engine) : base(engine)
@@ -195,6 +200,106 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
                 this.DeviceOutputStatusChanged(index, status);
             }
         }
+
+        private void OnMidiInputAutoChange(int index, bool auto)
+        {
+            if (this.DeviceInputAutoChanged != null)
+            {
+                this.DeviceInputAutoChanged(index, auto);
+            }
+        }
+
+        private void OnMidiOutputAutoChange(int index, bool auto)
+        {
+            if (this.DeviceOutputAutoChanged != null)
+            {
+                this.DeviceOutputAutoChanged(index, auto);
+            }
+        }
+        #endregion
+
+        #region Auto Start
+
+        public List<string> InputAuto { get { return this.inputauto; } }
+        public List<string> OutputAuto { get { return this.outputauto; } }
+
+        public void SetInputAutoStart(int idx,bool auto)
+        {
+            string devname = this.inputdevname[idx];
+            if (auto)
+            {
+                if (!this.inputauto.Contains(devname)) { this.inputauto.Add(devname); }
+            }
+            else
+            {
+                if (this.inputauto.Contains(devname)) { this.inputauto.Remove(devname); }
+            }
+        }
+
+        public void SetOutputAutoStart(int idx, bool auto)
+        {
+            string devname = this.outputdevname[idx];
+            if (auto)
+            {
+                if (!this.outputauto.Contains(devname)) { this.outputauto.Add(devname); }
+            }
+            else
+            {
+                if (this.outputauto.Contains(devname)) { this.outputauto.Remove(devname); }
+            }
+        }
+
+        public void SetInputAutoStart(string devname, bool auto)
+        {
+            if (auto)
+            {
+                if (!this.inputauto.Contains(devname)) { this.inputauto.Add(devname); }
+            }
+            else
+            {
+                if (this.inputauto.Contains(devname)) { this.inputauto.Remove(devname); }
+            }
+            this.OnMidiInputAutoChange(this.inputdevname.IndexOf(devname), auto);
+
+
+            int idx = this.inputdevname.IndexOf(devname);
+
+            if (idx > -1)
+            {
+                if (this.inputstatus[idx] == eTodoMidiStatus.Connected)
+                {
+                    this.SetInputEnabled(idx, true);
+                }
+                this.OnMidiInputAutoChange(idx, auto);
+            }
+        }
+
+        public void SetOutputAutoStart(string devname, bool auto)
+        {
+            if (auto)
+            {
+                if (!this.outputauto.Contains(devname)) { this.outputauto.Add(devname); }
+            }
+            else
+            {
+                if (this.outputauto.Contains(devname)) { this.outputauto.Remove(devname); }
+            }
+
+            int idx = this.outputdevname.IndexOf(devname);
+
+            if (idx > -1)
+            {
+                if (this.outputstatus[idx] == eTodoMidiStatus.Connected)
+                {
+                    this.SetOutputEnabled(idx, true);
+                }
+                this.OnMidiOutputAutoChange(idx, auto);
+            }
+
+            
+
+            
+        }
         #endregion
 
         #region Set Input Enabled
@@ -215,7 +320,7 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
                         this.inputstatus[idx] = eTodoMidiStatus.Started;
                         this.OnMidiInputStatusChange(idx, eTodoMidiStatus.Started);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         this.inputstatus[idx] = eTodoMidiStatus.Error;
                         this.OnMidiInputStatusChange(idx, eTodoMidiStatus.Error);
@@ -230,8 +335,8 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
                     {
                         this.indevs[idx].ChannelMessageReceived -= dev_ChannelMessageReceived;
                         this.indevs[idx].StopRecording();
-                        this.indevs[idx].Close();
-                        this.indevs[idx].Dispose();
+                        //this.indevs[idx].Close();
+                        //this.indevs[idx].Dispose();
                         this.inputstatus[idx] = eTodoMidiStatus.Connected;
                         this.OnMidiInputStatusChange(idx, eTodoMidiStatus.Connected);
                     }
@@ -301,7 +406,7 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
                 try
                 {
                     dev.StopRecording();
-                    try { dev.Dispose(); } catch {}
+                    //try { dev.Dispose(); } catch {}
                 }
                 catch
                 {
@@ -493,6 +598,64 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
         }
         #endregion
 
+        #region Feedback
+        public void CustomFeedBack(string devname,TodoVariable var, double value)
+        {
+            int idx = this.outputdevname.IndexOf(devname);
+
+            //Need to find device and have it started
+            if (idx > -1)
+            {
+                if (this.outputstatus[idx] == eTodoMidiStatus.Started)
+                {
+                    try
+                    {
+                        OutputDevice dev = this.outdevs[idx];
+                        foreach (AbstractTodoInput ti in var.Inputs)
+                        {
+                            if (ti is TodoMidiInput)
+                            {
+                                TodoMidiInput mi = (TodoMidiInput)ti;
+
+                                if (mi.Device == devname || mi.Device == "Any")
+                                {
+
+                                    ChannelCommand cmd = ChannelCommand.Controller;
+                                    if (mi.ControlType == eTodoMidiType.Controller)
+                                    {
+                                        cmd = ChannelCommand.Controller;
+                                    }
+                                    else
+                                    {
+                                        if (mi.ControlType == eTodoMidiType.Note)
+                                        {
+                                            if (value == 0.0)
+                                            {
+                                                cmd = ChannelCommand.NoteOff;
+                                            }
+                                            else
+                                            {
+                                                cmd = ChannelCommand.NoteOn;
+                                            }
+                                        }
+                                    }
+                                    ChannelMessage msg = new ChannelMessage(cmd, mi.MidiChannel, mi.ControlValue, Convert.ToInt32(value * 127.0));
+                                    dev.Send(msg);
+
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Clock
         public void SetClockDevice(int index)
         {
             if (this.indevs.ContainsKey(this.clockdevice))
@@ -513,6 +676,7 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
 
         private void TodoMidiDevice_SysRealtimeMessageReceived(object sender, SysRealtimeMessageEventArgs e)
         {
+            
             if (e.Message.SysRealtimeType == SysRealtimeType.Start)
             {
                 this.FTicks = 0;
@@ -531,5 +695,6 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
                 this.ClockValueChanged(this.FTicks);
             }
         }
+        #endregion
     }
 }

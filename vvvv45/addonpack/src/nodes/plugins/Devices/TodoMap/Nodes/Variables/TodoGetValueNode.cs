@@ -71,7 +71,7 @@ namespace VVVV.TodoMap.Nodes.Variables
                             {
                                 TodoVariable nvar = new TodoVariable(this.FInVarName[i]);
                                 nvar.Category = "Global";
-                                this.FInEngine[0].RegisterVariable(nvar);
+                                this.FInEngine[0].RegisterVariable(nvar,false);
                                 this.FOutput[i] = 0;
                                 this.FOutIsFound[i] = true;
                             }
@@ -105,7 +105,7 @@ namespace VVVV.TodoMap.Nodes.Variables
 
         }
 
-        void TodoGetValueNode_VariableInvalidate(TodoVariable var)
+        void TodoGetValueNode_VariableInvalidate(TodoVariable var, bool gui)
         {
             this.FInvalidate = true;
         }

@@ -9,7 +9,7 @@ namespace VVVV.HDE.ProjectExplorer
 {
 	public class FXProjectViewProvider : ProjectViewProvider, IEnumerable
 	{
-		public FXProjectViewProvider(FXProject project, IModelMapper mapper)
+		public FXProjectViewProvider(FXProject project, ModelMapper mapper)
 			: base(project, mapper)
 		{
 			mapper.RegisterMapping<IEditableIDList<IReference>, INamed, FXReferenceListNameProvider>();

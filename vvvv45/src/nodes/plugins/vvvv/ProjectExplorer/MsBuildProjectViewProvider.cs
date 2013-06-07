@@ -8,7 +8,7 @@ namespace VVVV.HDE.ProjectExplorer
 {
 	public class MsBuildProjectViewProvider : ProjectViewProvider
 	{
-		public MsBuildProjectViewProvider(MsBuildProject project, IModelMapper mapper)
+		public MsBuildProjectViewProvider(MsBuildProject project, ModelMapper mapper)
 			:base(project, mapper)
 		{
 			mapper.RegisterMapping<IEditableIDList<IReference>, IAddMenuProvider, ReferencesViewProvider>();

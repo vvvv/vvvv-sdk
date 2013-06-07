@@ -64,7 +64,7 @@ namespace VVVV.Nodes
 		DataStream sVx;
 		DataStream sIx;
 		
-		private Dictionary<int, Mesh> FDeviceMeshes = new Dictionary<int, Mesh>();
+		private Dictionary<Device, Mesh> FDeviceMeshes = new Dictionary<Device, Mesh>();
 		
 		#endregion field declaration
 		
@@ -347,7 +347,7 @@ namespace VVVV.Nodes
 		#endregion mainloop
 		
 		#region DXMesh
-		private void RemoveResource(int OnDevice)
+		private void RemoveResource(Device OnDevice)
 		{
 			Mesh m = FDeviceMeshes[OnDevice];
 			//FHost.Log(TLogType.Debug, "Destroying Resource...");
@@ -355,7 +355,7 @@ namespace VVVV.Nodes
 			m.Dispose();
 		}
 		
-		public void UpdateResource(IPluginOut ForPin, int OnDevice)
+		public void UpdateResource(IPluginOut ForPin, Device OnDevice)
 		{
 			
 			try
@@ -373,11 +373,10 @@ namespace VVVV.Nodes
 			
 			if (update)
 			{
-				Device dev = Device.FromPointer(new IntPtr(OnDevice));
 				try
 				{
 					// create new Mesh
-					Mesh NewMesh = new Mesh(dev, NumIndices/3, NumVertices,
+					Mesh NewMesh = new Mesh(OnDevice, NumIndices/3, NumVertices,
 					                        MeshFlags.Dynamic | MeshFlags.WriteOnly,
 					                        VertexFormat.PositionNormal);
 
@@ -409,13 +408,12 @@ namespace VVVV.Nodes
 				}
 				finally
 				{
-					dev.Dispose();
 					update = false;
 				}
 			}
 		}
 		
-		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
+		public void DestroyResource(IPluginOut ForPin, Device OnDevice, bool OnlyUnManaged)
 		{
 			
 			//called when a resource needs to be disposed on a given device
@@ -431,19 +429,17 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int MeshPointer)
+		public Mesh GetMesh(IDXMeshOut ForPin, Device OnDevice)
 		{
 			//this is called from the plugin host from within directX beginscene/endscene
 			//therefore the plugin shouldn't be doing much here other than handing back the right mesh
 			
-			MeshPointer = 0;
 			//in case the plugin has several mesh outputpins a test for the pin can be made here to get the right mesh.
-			if (ForPin == FMyMeshOutput)
-			{
-				Mesh m = FDeviceMeshes[OnDevice];
-				if (m != null)
-					MeshPointer = m.ComPointer.ToInt32();
-			}
+			if (ForPin == FMyMeshOutput && FDeviceMeshes.ContainsKey(OnDevice))
+				return FDeviceMeshes[OnDevice];
+			else
+				return null;
+
 		}
 
 		#endregion

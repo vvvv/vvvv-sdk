@@ -38,13 +38,10 @@ namespace VVVV.Core.Collections
 
         public bool AllowRenameOnAdd { get; set; }
 
-        protected LazyModelMapper FMapper;
-        public IModelMapper Mapper
+        public ModelMapper Mapper
         {
-            get
-            {
-                return FMapper;
-            }
+            get;
+            private set;
         }
 
         public EditableIDList(KeyedIDCollection<T> collection, string name)
@@ -53,7 +50,6 @@ namespace VVVV.Core.Collections
             Name = name;
             FItems = collection;
             OwnsItems = true;
-            FMapper = new LazyModelMapper(this);
         }
 
         public EditableIDList(KeyedIDCollection<T> collection, string name, bool allowRenameOnAdd)
@@ -77,7 +73,6 @@ namespace VVVV.Core.Collections
             Name = name;
             FItems = collection;
             OwnsItems = true;
-            FMapper = new LazyModelMapper(this);
             AllowRenameOnAdd = allowRenameOnAdd;
         }
         
@@ -157,6 +152,26 @@ namespace VVVV.Core.Collections
         {
             FItems.ChangeKey((T)sender, newName);
             OnItemRenamed(sender, newName);
+        }
+
+        public override void MarkChanged()
+        {
+            base.MarkChanged();
+
+            if (Owner != null)
+            {
+                Owner.MarkChanged();
+            }
+        }
+
+        public override void AcknowledgeChanges()
+        {
+            base.AcknowledgeChanges();
+
+            foreach (IIDItem item in this)
+            {
+                item.AcknowledgeChanges();
+            }
         }
         
         #region IEditableIDList<T> Members
@@ -258,8 +273,6 @@ namespace VVVV.Core.Collections
 
                 if (FOwner != null)
                 {
-                    FMapper.Initialize(FOwner.Mapper);
-                    
                     // Subscribe to new owner
                     FOwner.RootingChanged += FOwner_RootingChanged;
                     
@@ -275,6 +288,11 @@ namespace VVVV.Core.Collections
         }
 
         public event RootingChangedEventHandler RootingChanged;
+        
+        public virtual void Dispatch(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
 
         private void CheckIfRootingChanged(RootingChangedEventArgs args)
         {
@@ -301,6 +319,7 @@ namespace VVVV.Core.Collections
         {
             if (args.Rooting == RootingAction.Rooted)
             {
+                Mapper = FOwner.Mapper.CreateChildMapper(this);
                 OnRootingChanged(RootingAction.Rooted);
             }
             
@@ -312,12 +331,13 @@ namespace VVVV.Core.Collections
             if (args.Rooting == RootingAction.ToBeUnrooted)
             {
                 OnRootingChanged(RootingAction.ToBeUnrooted);
+                Mapper.Dispose();
             }
         }
         
         protected virtual void OnRootingChanged(RootingAction rooting)
         {
-            
+
         }
         
         void FOwner_RootingChanged(object sender, RootingChangedEventArgs args)

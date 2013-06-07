@@ -9,22 +9,22 @@ using System.Collections;
 
 namespace VVVV.Core.Viewer.GraphicalEditor
 {
-	public interface IContentBounds
-	{
-		/// <summary>
-		/// Gets the bounds of all child elements
-		/// </summary>
-		RectangleF ContentBounds
-		{
-			get;
-		}
-		
-		/// <summary>
+    public interface IContentBounds
+    {
+        /// <summary>
+        /// Gets the bounds of all child elements
+        /// </summary>
+        RectangleF ContentBounds
+        {
+            get;
+        }
+        
+        /// <summary>
         /// Gets the center of all child elements
         /// </summary>
         PointF ContentCenter
         {
-        	get;
+            get;
         }
         
         /// <summary>
@@ -32,11 +32,11 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         /// </summary>
         SizeF ContentSize
         {
-        	get;
+            get;
         }
-	}
-	
-	public interface ICanvas : IContentBounds
+    }
+    
+    public interface ICanvas : IContentBounds
     {
         ICanvasHost Host
         {
@@ -67,8 +67,8 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         /// </summary>
         Color Color
         {
-        	get;
-        	set;
+            get;
+            set;
         }
         
         /// <summary>
@@ -76,8 +76,8 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         /// </summary>
         PointF ViewCenter
         {
-        	get;
-        	set;
+            get;
+            set;
         }
         
         /// <summary>
@@ -85,8 +85,8 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         /// </summary>
         SizeF ViewSize
         {
-        	get;
-        	set;
+            get;
+            set;
         }
 
         IDot CreateDot(IGraphElementHost host);
@@ -112,10 +112,10 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         void Invalidate();
         
         void ShowToolTip(Point tipPoint, string tip, bool center);
-        void HideToolTip();        	
+        void HideToolTip();
     }
 
-    public interface ICanvasHost
+    public interface ICanvasHost : ISelectionProvider
     {
         ICanvas Canvas
         {

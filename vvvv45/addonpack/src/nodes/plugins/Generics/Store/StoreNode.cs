@@ -75,7 +75,10 @@ namespace VVVV.Nodes
 					{
 						binSize = buffer[FId[i]].SliceCount;
 					}
-					catch {}
+					catch
+					{
+						binSize = FBinSize[FId[i]];
+					}
 					Alter(i, incr, binSize, ref buffer);		
 					incr+=binSize;
 				}
@@ -95,9 +98,9 @@ namespace VVVV.Nodes
 		
 		public virtual void Alter(int i, int incr, int binSize, ref Spread<Spread<T>> buffer)
 		{
-			if (FSet[i])
+			if (FSet[i] && buffer.SliceCount > 0)
 				buffer[FId[i]]=(Spread<T>)FIn.GetRange(incr,binSize);
-			if (FRemove[i])
+			if (FRemove[i] && buffer.SliceCount > 0)
 				buffer.RemoveAt(FId[i]);
 			if (FInsert[i])
 			{
@@ -125,7 +128,7 @@ namespace VVVV.Nodes
 		
 		public override void Alter(int i, int incr, int binSize, ref Spread<Spread<double>> buffer)
 		{
-			if (FIncrement[i])
+			if (FIncrement[i] && buffer.SliceCount > 0)
 			{
 				for (int s=0; s<binSize; s++)
 					buffer[FId[i]][s]+=FIn[incr+s];
@@ -150,7 +153,7 @@ namespace VVVV.Nodes
     	
     	public override void Alter(int i, int incr, int binSize, ref Spread<Spread<string>> buffer)
 		{
-			if (FIncrement[i])
+			if (FIncrement[i] && buffer.SliceCount > 0)
 			{
 				for (int s=0; s<binSize; s++)
 					buffer[FId[i]][s]+=FIn[incr+s];
@@ -173,4 +176,9 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Store", Category = "Enumerations", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class StoreEnum: Store<EnumEntry> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Store", Category = "Raw", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei", AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class StoreRaw: Store<System.IO.Stream> {}
 }

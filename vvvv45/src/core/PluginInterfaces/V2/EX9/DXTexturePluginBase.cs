@@ -14,17 +14,18 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		public DXTextureOutPluginBase(IPluginHost host)
 		{
 			host.CreateTextureOutput("Texture Out", TSliceMode.Dynamic, TPinVisibility.True, out FTextureOut);
+            FTextureOut.Order = int.MinValue;
 			FOldSliceCount = 1;
 		}
 		
 		protected abstract Texture CreateTexture(int Slice, Device device);
 		protected abstract void UpdateTexture(int Slice, Texture texture);
 		
-		public void GetTexture(IDXTextureOut ForPin, int OnDevice, int Slice, out int Texture)
+		public Texture GetTexture(IDXTextureOut ForPin, Device OnDevice, int Slice)
 		{
-			Texture = 0;
 			if(FDeviceData.ContainsKey(OnDevice)) 
-				Texture = FDeviceData[OnDevice].Data[Slice].ComPointer.ToInt32();
+				return FDeviceData[OnDevice].Data[Slice];
+			return null;
 		}
 		
 		protected override TextureDeviceData CreateDeviceData(Device device)
@@ -62,6 +63,11 @@ namespace VVVV.PluginInterfaces.V2.EX9
 				Reinitialize();
 				FOldSliceCount = SliceCount;
 			}
+		}
+		
+		protected override void SetResourcePinsChanged()
+		{
+			FTextureOut.MarkPinAsChanged();
 		}
 	}
 }
