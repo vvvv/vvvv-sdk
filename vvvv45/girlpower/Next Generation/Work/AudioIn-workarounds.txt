@@ -1,0 +1,27 @@
+AudioIn has only a Microphone device on some systems
+
+
+
+
+You want to receive some audio from your sound card (like listeting to Spotify and get the audio data in vvvv to conrol your patch), but the ((pin:Device )) pin of your ((node:AduioIn)) node shows only a Microphone? Here are some possible workarounds:
+
+!!! Step1 
+Make sure you have installed correct drivers for your sound card.
+
+!!! Step2
+''Skip this step if you're working on Win7/8 machine. There is no need in ((node:AudioRecordSelector(System))) anymore. All inputs should be available directly via ((node:AudioIn (Devices))) on the ((pin:Driver)) pin.''
+
+Try to create a ((node:AudioRecordSelector(System))) node, and if it's not red, check the ((pin:Device)) pin to see if there are some other devices available.
+
+!!! Step3
+Choose Stereomix (or stereo-out) on the rightmost ((pin:Device)) pin of the ((node:AudioIn)). This will route all stuff which gets played by the computer back in the computer.
+
+!!! Step4
+Check the Recording settings under: Control Panel > Sound > Recording Tab. Try to right click on empty space and check if Disabled and Disconnected Devices are visible. If the System Mixer is there, choose it as the default. Restart vvvv. Goto step 3.
+
+
+^note:
+If there are still no other devices than a Microphone under Recording Tab, then the only way to get a sound back from the sound card is to grab a cable and physically connect line-out and line-in (if you have one) on your machine.
+
+If this doesn't work for you as well, then sadly there is no chance for you to get a sound back.
+^
