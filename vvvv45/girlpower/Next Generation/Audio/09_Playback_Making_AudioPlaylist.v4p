@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.dtd" >
-   <PATCH nodename="C:\Work\girlpower - next gen\Audio\08_Playback_Making_AudioPlaylist.v4p" filename="C:\Work\girlpower - next gen\Audio\Playing_AudioPlaylist.v4p" systemname="Playing_AudioPlaylist">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\09_Playback_Making_AudioPlaylist.v4p" filename="C:\Work\girlpower - next gen\Audio\Playing_AudioPlaylist.v4p" systemname="Playing_AudioPlaylist">
    <BOUNDS height="9150" left="0" top="0" type="Window" width="13395">
    </BOUNDS>
    <NODE componentmode="Hidden" id="0" nodename="FileStream (DShow9)" systemname="FileStream (DShow9)">
@@ -77,13 +77,13 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Play">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Play">
@@ -207,7 +207,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7920" top="1335" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\vvvv\vvvv_45beta30_x86\lib\assets\sounds">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -301,8 +301,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="46" srcpinname="Y Output Value" dstnodeid="45" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="16" dstpinname="Maximum">
    </LINK>
    <NODE systemname="AudioOut (DShow9)" nodename="AudioOut (DShow9)" componentmode="Hidden" id="48">
    <BOUNDS type="Node" left="6630" top="8145" width="100" height="100">
@@ -596,8 +594,6 @@
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="65" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="65" srcpinname="OnChange" dstnodeid="0" dstpinname="Do Seek">
    </LINK>
    <NODE componentmode="InABox" id="66" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -633,5 +629,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Output" dstnodeid="0" dstpinname="Filename">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="16" dstpinname="Maximum">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Output" dstnodeid="65" dstpinname="Input">
    </LINK>
    </PATCH>
