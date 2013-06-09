@@ -341,7 +341,7 @@ namespace VVVV.Nodes.Vlc.Player
 				currentFrame++;
 				
 				lockCalled++;
-				pixelPlane = pixelPlanes.GetBackBuffer();
+				pixelPlane = pixelPlanes.BackBuffer;
 				//writePixelPlane;
 				//pixelPlane = writeMemoryTexture.GetSurfaceLevel(0).LockRectangle(0, LockFlags.None).Data.DataPointer;
 				//pixelPlane = writeMemoryTexture.LockRectangle(0, LockFlags.None).Data.DataPointer;
@@ -1235,16 +1235,16 @@ namespace VVVV.Nodes.Vlc.Player
 		unsafe private void UpdateOutput_TextureInfo()
 		{
 //				if ( parent.currentFillTextureFunction == parent.FillTexure || parent.currentFillTextureFunction == parent.Rotate180FillTexure ) {
-			parent.FWidthOut[GetMediaRendererIndex()] = GetVideoWidth();
-			parent.FHeightOut[GetMediaRendererIndex()] = GetVideoHeight();
-			parent.FTextureAspectRatioOut[GetMediaRendererIndex()] = (float)GetVideoWidth() / (float)GetVideoHeight();
+			parent.FWidthOut[GetMediaRendererIndex()] = VideoWidth;
+			parent.FHeightOut[GetMediaRendererIndex()] = VideoHeight;
+			parent.FTextureAspectRatioOut[GetMediaRendererIndex()] = (float)VideoWidth / (float)VideoHeight;
 			//TODO
 			parent.FPixelAspectRatioOut[GetMediaRendererIndex()] = 1f;
 //				}
 //				else if ( parent.currentFillTextureFunction == parent.RotateLeftFillTexure || parent.currentFillTextureFunction == parent.RotateRightFillTexure ) {
-//					parent.FWidthOut[GetMediaRendererIndex()] = GetVideoHeight();
-//					parent.FHeightOut[GetMediaRendererIndex()] = GetVideoWidth();
-//					parent.FTextureAspectRatioOut[GetMediaRendererIndex()] = (float)GetVideoHeight() / (float)GetVideoWidth();
+//					parent.FWidthOut[GetMediaRendererIndex()] = VideoHeight;
+//					parent.FHeightOut[GetMediaRendererIndex()] = VideoWidth;
+//					parent.FTextureAspectRatioOut[GetMediaRendererIndex()] = (float)VideoHeight / (float)VideoWidth;
 //					//TODO
 //					parent.FPixelAspectRatioOut[GetMediaRendererIndex()] = 1.0F;
 //				}
@@ -1354,7 +1354,7 @@ namespace VVVV.Nodes.Vlc.Player
 //					}
 
 				if (pixelPlanes.LockBackBufferForWriting(3000)) {
-					IntPtr pixelPlane = pixelPlanes.GetBackBuffer();
+					IntPtr pixelPlane = pixelPlanes.BackBuffer;
 					//readPixelPlane
 					//copy to memory buffer (slow)
 					for (int x = 0; x < newSize.Width; x++) {
@@ -1419,29 +1419,24 @@ namespace VVVV.Nodes.Vlc.Player
 			return active ? parent.FFileNameIn : parent.FNextFileNameIn;
 		}
 
-		public int GetVideoWidth()
-		{
-			return videoWidth;
+		public int VideoWidth {
+			get { return videoWidth; }
 		}
-		public int GetVideoHeight()
-		{
-			return videoHeight;
+		public int VideoHeight {
+			get { return videoHeight; }
 		}
 
-		public int GetMediaRendererIndex()
-		{
-			return mediaRendererIndex;
+		public int GetMediaRendererIndex() {
+			get { return mediaRendererIndex; }
 		}
 
-		public DoubleMemoryBuffer GetDoubleMemoryBuffer()
-		{
-			return pixelPlanes;
+		public DoubleMemoryBuffer DoubleMemoryBuffer {
+			get { return pixelPlanes; }
 		}
 
 		private long prevTime = DateTime.Now.Ticks;
 		private long currTime = DateTime.Now.Ticks;
-		private double ReportElapsedTime(string description, double reportOnlyIfMoreThanOrEqualToMillis)
-		{
+		private double ReportElapsedTime(string description, double reportOnlyIfMoreThanOrEqualToMillis) {
 			currTime = DateTime.Now.Ticks;
 
 			double ms = (double)(currTime - prevTime) / 10000;

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Kontrolleur (Network) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\Kontrolleur (Network) help.v4p" systemname="Kontrolleur (VVVV) help">
-   <BOUNDS height="9690" left="5880" top="2235" type="Window" width="12120">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Kontrolleur (Network) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\Kontrolleur (Network) help.v4p" systemname="Kontrolleur (VVVV) help">
+   <BOUNDS height="9645" left="5880" top="2235" type="Window" width="12900">
    </BOUNDS>
    <LINK dstnodeid="374" dstpinname="OSC Message" srcnodeid="356" srcpinname="Output">
    </LINK>
@@ -344,7 +344,7 @@
    <PIN pinname="Y Output Value" visible="1" pintype="Output">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="414" nodename="UDP (Network Client)" systemname="UDP (Network Client)">
+   <NODE componentmode="Hidden" id="414" nodename="UDP (Network Client)" systemname="UDP (Network Client String)">
    <BOUNDS height="100" left="600" top="8580" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -354,7 +354,7 @@
    <PIN pinname="Remote Port" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="413" nodename="OSCEncoder (Network)" systemname="OSCEncoder (Network)">
+   <NODE componentmode="Hidden" id="413" nodename="OSCEncoder (Network)" systemname="OSCEncoder (Network String Legacy)">
    <BOUNDS height="100" left="600" top="8100" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="OSCMessage" visible="1">
@@ -473,9 +473,9 @@
    <NODE componentmode="InABox" id="406" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="4800" top="750" type="Node" width="5550">
    </BOUNDS>
-   <BOUNDS height="4125" left="4800" top="750" type="Box" width="5325">
+   <BOUNDS height="705" left="4800" top="750" type="Box" width="5415">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|On your android device go to the market and search for:&cr;&lf; kontrolleur osc&cr;&lf;alternatively install via this link:&cr;&lf; https://market.android.com/details?id=processing.android.test.kontrolleur&cr;&lf;&cr;&lf;When running Kontrolleur for the first time you&apos;ll be prompted with the settings. Here you have to enter Target IP and Target Port, where target is this PC, so take the values you find on the left of this patch. Press [Save].&cr;&lf;&cr;&lf;Now you&apos;re supposed to see gui-elements already. If not, press your devices menu-button twice to reset. You can do this kind of reset anytime you&apos;re lost.&cr;&lf;&cr;&lf;You can expose ioboxes (only of type value for now) to Kontrolleur by selecting them and pressing CTRL+K. Pressing CTRL+SHIFT+K with nodes selected will first unexpose all exposed nodes, the expose the newly selected ones. |">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|On your android device go to the market and search for:&cr;&lf; kontrolleur osc&cr;&lf;alternatively install via this link:&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -646,4 +646,32 @@
    </NODE>
    <LINK srcnodeid="398" srcpinname="Contains Exposed Nodes" dstnodeid="438" dstpinname="Y Input Value">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="439" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4800" top="1440" width="5520" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4800" top="1440" width="5520" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="https://play.google.com/store/apps/details?id=processing.test.kontrolleur">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="440" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4800" top="1905" width="16140" height="1110">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4800" top="1905" width="5595" height="2460">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|When running Kontrolleur for the first time you&apos;ll be prompted with the settings. Here you have to enter Target IP and Target Port, where target is this PC, so take the values you find on the left of this patch. Press [Save].&cr;&lf;&cr;&lf;Now you&apos;re supposed to see gui-elements already. If not, press your devices menu-button twice to reset. You can do this kind of reset anytime you&apos;re lost.&cr;&lf;&cr;&lf;You can expose ioboxes (only of type value for now) to Kontrolleur by selecting them and pressing CTRL+K. Pressing CTRL+SHIFT+K with nodes selected will first unexpose all exposed nodes, the expose the newly selected ones.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

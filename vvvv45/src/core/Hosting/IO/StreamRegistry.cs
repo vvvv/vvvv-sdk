@@ -125,7 +125,7 @@ namespace VVVV.Hosting.IO
                               return IOContainer.Create(context, stream, container);
                           });
             
-            RegisterInput<BufferedIOStream<string>>(
+            RegisterInput<MemoryIOStream<string>>(
                 (factory, context) =>
                 {
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringIn)));
@@ -138,7 +138,7 @@ namespace VVVV.Hosting.IO
                         return IOContainer.Create(context, stream, container);
                 });
 
-            RegisterInput<BufferedIOStream<System.IO.Stream>>(
+            RegisterInput<MemoryIOStream<System.IO.Stream>>(
                 (factory, context) =>
                 {
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IRawIn)));
@@ -151,7 +151,7 @@ namespace VVVV.Hosting.IO
                         return IOContainer.Create(context, stream, container);
                 });
 
-            RegisterInput<BufferedIOStream<EnumEntry>>(
+            RegisterInput<MemoryIOStream<EnumEntry>>(
                 (factory, context) =>
                 {
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumIn)));
@@ -336,8 +336,8 @@ namespace VVVV.Hosting.IO
                     else
                         return IOContainer.Create(context, new RawOutStream(rawOut), container);
                 });
-            
-            RegisterOutput<BufferedIOStream<string>>(
+
+            RegisterOutput<MemoryIOStream<string>>(
                 (factory, context) =>
                 {
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringOut)));
@@ -490,21 +490,21 @@ namespace VVVV.Hosting.IO
                            },
                            false);
 
-            RegisterConfig(typeof(BufferedIOStream<Vector2>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector2>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
                 var stream = new Vector2ConfigStream(valueConfig);
                 return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
             });
-            RegisterConfig(typeof(BufferedIOStream<Vector3>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector3>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
                 var stream = new Vector3ConfigStream(valueConfig);
                 return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
             });
-            RegisterConfig(typeof(BufferedIOStream<Vector4>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector4>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
@@ -514,7 +514,7 @@ namespace VVVV.Hosting.IO
 
 
 
-            RegisterConfig(typeof(BufferedIOStream<Quaternion>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Quaternion>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
@@ -524,21 +524,21 @@ namespace VVVV.Hosting.IO
 
 
 
-            RegisterConfig(typeof(BufferedIOStream<Vector2D>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector2D>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
                 var stream = new Vector2DConfigStream(valueConfig);
                 return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
             });
-            RegisterConfig(typeof(BufferedIOStream<Vector3D>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector3D>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
                 var stream = new Vector3DConfigStream(valueConfig);
                 return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
             });
-            RegisterConfig(typeof(BufferedIOStream<Vector4D>), (factory, context) =>
+            RegisterConfig(typeof(MemoryIOStream<Vector4D>), (factory, context) =>
             {
                 var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueConfig)));
                 var valueConfig = container.RawIOObject as IValueConfig;
@@ -546,34 +546,34 @@ namespace VVVV.Hosting.IO
                 return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
             });
             
-            RegisterConfig(typeof(BufferedIOStream<string>), (factory, context) => {
+            RegisterConfig(typeof(MemoryIOStream<string>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringConfig)));
                                var stringConfig = container.RawIOObject as IStringConfig;
                                var stream = new StringConfigStream(stringConfig);
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
             
-            RegisterConfig(typeof(BufferedIOStream<RGBAColor>), (factory, context) => {
+            RegisterConfig(typeof(MemoryIOStream<RGBAColor>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorConfig)));
                                var colorConfig = container.RawIOObject as IColorConfig;
                                var stream = new ColorConfigStream(colorConfig);
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
             
-            RegisterConfig(typeof(BufferedIOStream<Color4>), (factory, context) => {
+            RegisterConfig(typeof(MemoryIOStream<Color4>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorConfig)));
                                var colorConfig = container.RawIOObject as IColorConfig;
                                var stream = new SlimDXColorConfigStream(colorConfig);
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });
 
-            RegisterConfig(typeof(BufferedIOStream<EnumEntry>), (factory, context) => {
+            RegisterConfig(typeof(MemoryIOStream<EnumEntry>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumConfig)));
                                var enumConfig = container.RawIOObject as IEnumConfig;
                                var stream = new DynamicEnumConfigStream(enumConfig,context.IOAttribute.EnumName);
                                return IOContainer.Create(context, stream, container, null, s => s.Flush(), s => s.Sync());
                            });        
-            RegisterConfig(typeof(BufferedIOStream<>), (factory, context) => {
+            RegisterConfig(typeof(MemoryIOStream<>), (factory, context) => {
                                var t = context.DataType;
                                if (t.IsPrimitive)
                                {

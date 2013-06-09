@@ -8,7 +8,7 @@ using System.IO;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    class StringInStream : BufferedIOStream<string>
+    class StringInStream : MemoryIOStream<string>
     {
         private readonly IStringIn FStringIn;
         private readonly bool FAutoValidate;
@@ -39,7 +39,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class EnumInStream<T> : BufferedIOStream<T>
+    class EnumInStream<T> : MemoryIOStream<T>
     {
         protected readonly IEnumIn FEnumIn;
         protected readonly bool FAutoValidate;
@@ -107,7 +107,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class NodeInStream<T> : BufferedIOStream<T>
+    class NodeInStream<T> : MemoryIOStream<T>
     {
         private readonly INodeIn FNodeIn;
         private readonly bool FAutoValidate;

@@ -78,7 +78,7 @@ namespace TypeWriter
 		private string FNewlineSymbol = Environment.NewLine;
 		private Dictionary<uint, double> FBufferedCommands = new Dictionary<uint, double>();
 		private Dictionary<string, double> FBufferedKeys = new Dictionary<string, double>();
-		private KeyboardState FLastKeyboardState;
+		private KeyboardState FLastKeyboardState = KeyboardState.Empty;
 		
 		// Track whether Dispose has been called.
 		private bool FDisposed = false;
@@ -370,16 +370,17 @@ namespace TypeWriter
 			
 			if (FKeyboardState.SliceCount > 0)
 			{
-				if (FKeyboardState[0] != FLastKeyboardState)
+                var keyboard = FKeyboardState[0] ?? KeyboardState.Empty;
+                if (keyboard != FLastKeyboardState)
 				{
-					if (FKeyboardState[0].KeyCodes.Count > 0)
+                    if (keyboard.KeyCodes.Count > 0)
 					{
-						FControlKeyPressed = (FKeyboardState[0].Modifiers & Keys.Control) > 0;
-						var altKeyPressed = (FKeyboardState[0].Modifiers & Keys.Alt) > 0;
-						var lastKeyCode = (uint)FKeyboardState[0].KeyCodes.Last();
-						
-						var keyUp = FKeyboardState[0].KeyCodes.Count < FLastKeyboardState.KeyCodes.Count;
-						var keyDown = FKeyboardState[0].KeyCodes.Count > FLastKeyboardState.KeyCodes.Count;
+                        FControlKeyPressed = (keyboard.Modifiers & Keys.Control) > 0;
+                        var altKeyPressed = (keyboard.Modifiers & Keys.Alt) > 0;
+                        var lastKeyCode = (uint)keyboard.KeyCodes.Last();
+
+                        var keyUp = keyboard.KeyCodes.Count < FLastKeyboardState.KeyCodes.Count;
+                        var keyDown = keyboard.KeyCodes.Count > FLastKeyboardState.KeyCodes.Count;
 							
 						if (keyDown || !keyUp)
 						{
@@ -388,11 +389,11 @@ namespace TypeWriter
 								if (!altKeyPressed)
 									RunCommand(lastKeyCode);
 							}
-							else if (FKeyboardState[0].KeyChars.Count > 0)
-                				AddNewChar(FKeyboardState[0].KeyChars.Last().ToString());
+                            else if (keyboard.KeyChars.Count > 0)
+                                AddNewChar(keyboard.KeyChars.Last().ToString());
 						}
 					}
-					FLastKeyboardState = FKeyboardState[0];
+                    FLastKeyboardState = keyboard;
 				}
 			}
 

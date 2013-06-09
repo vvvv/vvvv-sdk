@@ -190,4 +190,9 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Shift", Category = "Enumerations", Version = "Bin", Help = "Shifts the slices in the spread upwards by the given phase, with bin size", Author = "woei")]
 	#endregion PluginInfo
 	public class ShiftEnumBin : ShiftBinNode<EnumEntry> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Shift", Category = "Raw", Version = "Bin", Help = "Shifts the slices in the spread upwards by the given phase, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class ShiftRawBin : ShiftBinNode<System.IO.Stream> {}
 }

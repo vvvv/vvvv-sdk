@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
    <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Date (Astronomy) help.v4p">
    <BOUNDS height="7080" left="2640" top="2145" type="Window" width="8895">
    </BOUNDS>
@@ -192,16 +192,10 @@
    <LINKPOINT x="6015" y="4215">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="OpenURL (Network)" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" nodename="OpenURL (Network)" componentmode="Hidden" id="13">
-   <BOUNDS type="Node" left="345" top="5970" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Url" visible="1">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="345" top="5310" width="4245" height="270">
+   <BOUNDS type="Node" left="765" top="5235" width="4245" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="345" top="5310" width="4245" height="270">
+   <BOUNDS type="Box" left="765" top="5235" width="4245" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="http://msdn.microsoft.com/en-us/library/az4se3k1.aspx">
    </PIN>
@@ -209,43 +203,7 @@
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="14" srcpinname="Output String" dstnodeid="13" dstpinname="Url">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="1395" top="5760" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1395" top="5760" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Bang">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Open">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1980" top="5850" width="3015" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1980" top="5850" width="3015" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; rightclick to open the url in a browser|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
    </PATCH>

@@ -18,6 +18,7 @@ using VVVV.Hosting.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Collections;
+using VVVV.Core.Model;
 
 namespace VVVV.Hosting.Factories
 {
@@ -52,10 +53,6 @@ namespace VVVV.Hosting.Factories
         private readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
         
-        protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
-
-
-
         public Dictionary<string, IPluginBase> FNodesPath = new Dictionary<string, IPluginBase>();
         public Dictionary<IPluginBase, IPluginHost2> FNodes = new Dictionary<IPluginBase, IPluginHost2>();
         
@@ -108,9 +105,8 @@ namespace VVVV.Hosting.Factories
             
             //create the new plugin
             plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
-            
-            pluginHost.Plugin = plugin;
-            
+            if (plugin != null)
+                pluginHost.Plugin = plugin;
             return true;
         }
         
@@ -136,7 +132,7 @@ namespace VVVV.Hosting.Factories
             var nodeInfos = new List<INodeInfo>();
             
             // We can't handle dynamic plugins
-            if (!IsDynamicAssembly(filename))
+            if (!MsBuildProject.IsDynamicAssembly(filename))
                 LoadNodeInfosFromFile(filename, filename, ref nodeInfos, true);
             
             return nodeInfos;
@@ -314,6 +310,14 @@ namespace VVVV.Hosting.Factories
             
             return nodeInfo;
         }
+
+        public Type GetPluginType(INodeInfo nodeInfo)
+        {
+            string assemblyLocation = string.Empty;
+            var isUpToDate = GetAssemblyLocation(nodeInfo, out assemblyLocation);
+            var assembly = Assembly.LoadFrom(assemblyLocation);
+            return assembly.GetType(nodeInfo.Arguments);
+        }
         
         public IPluginBase CreatePlugin(INodeInfo nodeInfo, IPluginHost2 pluginHost)
         {
@@ -343,40 +347,56 @@ namespace VVVV.Hosting.Factories
             FStartableRegistry.ProcessAssembly(assembly);
 
             var type = assembly.GetType(nodeInfo.Arguments);
-            var attribute = GetPluginInfoAttributeData(type);
-            if (attribute != null)
+            // type can be null if assembly is corrupt or doesn't contain cached node info anymore
+            if (type != null)
             {
-                var pluginContainer = new PluginContainer(pluginHost as IInternalPluginHost, FIORegistry, FParentContainer, type, nodeInfo);
-
-                // We intercept the plugin to manage IOHandlers.
-                plugin = pluginContainer;
-                FPluginContainers[pluginContainer.PluginBase] = pluginContainer;
-                
-                // HACK: FPluginHost is null in case of WindowSwitcher and friends
-                if (pluginHost != null)
+                var attribute = GetPluginInfoAttributeData(type);
+                if (attribute != null)
                 {
-                    AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, pluginContainer.PluginBase);
+                    var pluginContainer = new PluginContainer(
+                        pluginHost as IInternalPluginHost, 
+                        FIORegistry, 
+                        FParentContainer,
+                        FNodeInfoFactory,
+                        this,
+                        type,
+                        nodeInfo);
+
+                    // We intercept the plugin to manage IOHandlers.
+                    plugin = pluginContainer;
+                    FPluginContainers[pluginContainer.PluginBase] = pluginContainer;
+
+                    // HACK: FPluginHost is null in case of WindowSwitcher and friends
+                    if (pluginHost != null)
+                    {
+                        AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, pluginContainer.PluginBase);
+                    }
+
+                    // Send event, clients are not interested in wrapping plugin, so send original here.
+                    if (this.PluginCreated != null) { this.PluginCreated(pluginContainer.PluginBase, pluginHost); }
                 }
-                
-                // Send event, clients are not interested in wrapping plugin, so send original here.
-                if (this.PluginCreated != null) { this.PluginCreated(pluginContainer.PluginBase, pluginHost); }
+                else
+                {
+                    var v1Plugin = (IPlugin)assembly.CreateInstance(nodeInfo.Arguments);
+
+                    v1Plugin.SetPluginHost(pluginHost);
+
+                    plugin = v1Plugin;
+
+                    // HACK: FPluginHost is null in case of WindowSwitcher and friends
+                    if (pluginHost != null)
+                    {
+                        AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, plugin);
+                    }
+
+                    // Send event
+                    if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
+                }
             }
             else
             {
-                var v1Plugin = (IPlugin)assembly.CreateInstance(nodeInfo.Arguments);
-                
-                v1Plugin.SetPluginHost(pluginHost);
-                
-                plugin = v1Plugin;
-                
-                // HACK: FPluginHost is null in case of WindowSwitcher and friends
-                if (pluginHost != null)
-                {
-                    AssignOptionalPluginInterfaces(pluginHost as IInternalPluginHost, plugin);
-                }
-                
-                // Send event
-                if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
+                pluginHost.Status |= StatusCode.HasInvalidData;
+                FLogger.Log(LogType.Warning, string.Format("Type '{0}' not found in assembly '{1}'. Failed to create plugin node {2} (ID: {3}).", nodeInfo.Arguments, assembly.FullName, nodeInfo.Username, pluginHost.GetID()));
             }
             
             return plugin;
@@ -530,86 +550,6 @@ namespace VVVV.Hosting.Factories
                     fs.Close();
                 }
 
-            }
-        }
-        
-        private bool IsDynamicAssembly(string filename)
-        {
-            return FDynamicRegExp.IsMatch(filename);
-        }
-    }
-    
-    public class PluginContainer : IPlugin, IDisposable
-    {
-        [Export(typeof(IIOFactory))]
-        private readonly IOFactory FIOFactory;
-        private readonly CompositionContainer FContainer;
-        private readonly IPluginEvaluate FPlugin;
-        private readonly bool FAutoEvaluate;
-        
-        [Import(typeof(IPluginBase))]
-        public IPluginBase PluginBase
-        {
-            get;
-            private set;
-        }
-        
-        public PluginContainer(
-            IInternalPluginHost pluginHost,
-            IORegistry ioRegistry,
-            CompositionContainer parentContainer,
-            Type pluginType,
-            INodeInfo nodeInfo
-           )
-        {
-            FIOFactory = new IOFactory(pluginHost, ioRegistry);
-            
-            var catalog = new TypeCatalog(pluginType);
-            var ioExportProvider = new IOExportProvider(FIOFactory);
-            var hostExportProvider = new HostExportProvider() { PluginHost = pluginHost };
-            var exportProviders = new ExportProvider[] { hostExportProvider, ioExportProvider, parentContainer };
-            FContainer = new CompositionContainer(catalog, exportProviders);
-            FContainer.ComposeParts(this);
-            FPlugin = PluginBase as IPluginEvaluate;
-
-            FAutoEvaluate = nodeInfo.AutoEvaluate;
-            FIOFactory.OnCreated(EventArgs.Empty);
-        }
-        
-        public void Dispose()
-        {
-            FContainer.Dispose();
-            FIOFactory.Dispose();
-        }
-        
-        void IPlugin.SetPluginHost(IPluginHost Host)
-        {
-            throw new NotImplementedException();
-        }
-        
-        void IPlugin.Configurate(IPluginConfig configPin)
-        {
-            FIOFactory.OnConfiguring(new ConfigEventArgs(configPin));
-        }
-        
-        void IPlugin.Evaluate(int spreadMax)
-        {
-            FIOFactory.OnSynchronizing(EventArgs.Empty);
-            
-            // HACK: Can we remove this? Maybe by seperating...
-            if (FPlugin != null)
-            {
-                FPlugin.Evaluate(spreadMax);
-            }
-            
-            FIOFactory.OnFlushing(EventArgs.Empty);
-        }
-        
-        bool IPlugin.AutoEvaluate
-        {
-            get
-            {
-                return FAutoEvaluate;
             }
         }
     }

@@ -548,14 +548,11 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         
         public bool BeginEdit(object model)
         {
-            foreach (MapperTreeNode rootNode in FTreeView.Nodes)
+            var node = SelectedNode as MapperTreeNode;
+            if (node != null)
             {
-                var node = FindNode(rootNode, model);
-                if (node != null)
-                {
-                    node.BeginEdit();
-                    return true;
-                }
+                node.BeginEdit();
+                return true;
             }
             return false;
         }

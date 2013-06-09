@@ -7,6 +7,20 @@ namespace VVVV.Utils.Streams
     [ComVisible(false)]
 	public static class MemoryPool<T>
 	{
+        public class Buffer : IDisposable
+        {
+            public readonly T[] Array;
+
+            public Buffer(T[] array)
+            {
+                this.Array = array;
+            }
+            
+            public void Dispose()
+            {
+                MemoryPool<T>.PutArray(this.Array);
+            }
+        }
 		private static readonly Dictionary<int, Stack<T[]>> FPool = new Dictionary<int, Stack<T[]>>();
 		
 		public static T[] GetArray(int length = StreamUtils.BUFFER_SIZE)
@@ -49,5 +63,11 @@ namespace VVVV.Utils.Streams
 				stack.Push(array);
 			}
 		}
+
+        public static Buffer GetBuffer()
+        {
+            var array = GetArray();
+            return new Buffer(array);
+        }
 	}
 }

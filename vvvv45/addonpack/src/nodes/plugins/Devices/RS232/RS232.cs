@@ -97,7 +97,7 @@ namespace VVVV.Nodes
                 ///////////////////////
                 Info.Name = "RS232";
                 Info.Category = "Devices";
-                Info.Version = "Spreadable";
+                Info.Version = "Spreadable Legacy";
                 Info.Help = "none";
                 Info.Bugs = "none";
 

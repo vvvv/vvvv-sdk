@@ -37,18 +37,20 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
+            if (!FInput.IsChanged) return;
+
 			FOutput.SliceCount = SpreadMax;
-			
-			if (FInput[0] != null && FInput.IsChanged)
-				for (int i = 0; i < SpreadMax; i++)
-				{
-					if (FInput[i].KeyCodes.Count > 0)
-					{
-						FOutput[i] = string.Join(string.Empty, FInput[i].KeyChars);
-					}
-					else
-						FOutput[i] = "";
-				}
+
+            for (int i = 0; i < SpreadMax; i++)
+            {
+                var input = FInput[i];
+                if (input != null)
+                {
+                    FOutput[i] = string.Join(string.Empty, input.KeyChars);
+                }
+                else
+                    FOutput[i] = string.Empty;
+            }
 		}
 	}
 }

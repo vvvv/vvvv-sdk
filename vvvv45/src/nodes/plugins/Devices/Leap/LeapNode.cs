@@ -13,7 +13,7 @@ using Leap;
 
 #endregion usings
 
-namespace VVVV.Nodes.Devices.Leap
+namespace VVVV.Nodes.Devices
 {
 	#region PluginInfo
 	[PluginInfo(Name = "Leap",
@@ -71,16 +71,16 @@ namespace VVVV.Nodes.Devices.Leap
 		#pragma warning restore
 		
 		Controller FLeapController = new Controller();
+		Frame FLastFrame = new Frame();
 		
 		#endregion fields & pins
-		
+
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if(FLeapController.IsConnected)
+			if(FLeapController.IsConnected && FLeapController.Frame().IsValid)
 			{
 				var hands = FLeapController.Frame().Hands;
-				
 				SpreadMax = hands.Count;
 				
 				FHandPosOut.SliceCount = SpreadMax;

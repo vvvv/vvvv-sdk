@@ -136,4 +136,9 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Reverse", Category = "Enumerations", Version = "Bin", Help = "Reverses the order of the slices in the spread, with bin size", Author = "woei")]
 	#endregion PluginInfo
 	public class ReverseEnumBin : ReverseBinNode<EnumEntry> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Reverse", Category = "Raw", Version = "Bin", Help = "Reverses the order of the slices in the spread, with bin size", Author = "woei")]
+	#endregion PluginInfo
+	public class ReverseRawBin : ReverseBinNode<System.IO.Stream> {}
 }

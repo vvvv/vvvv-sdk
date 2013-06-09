@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv45\plugins\TemplateGUI\Template (GUI) help.v4p" filename="C:\vvvv\testing\gui_template\Template (GUI) help.v4p" systemname="Template (GUI) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\TemplateGUI\Template (GUI) help.v4p" filename="C:\vvvv\testing\gui_template\Template (GUI) help.v4p" systemname="Template (GUI) help">
    <BOUNDS height="6000" left="585" top="480" type="Window" width="7305">
    </BOUNDS>
    <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\plugins\TemplateGUI\GUITemplate.csproj" id="14" nodename="Template (GUI)" systemname="Template (GUI)">
@@ -68,7 +68,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="570" top="3420" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="480" left="570" top="3420" type="Box" width="480">
@@ -90,7 +90,7 @@
    </NODE>
    <LINK dstnodeid="19" dstpinname="Y Input Value" srcnodeid="14" srcpinname="Button">
    </LINK>
-   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="2040" top="3420" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="480" left="2040" top="3420" type="Box" width="480">
@@ -124,7 +124,7 @@
    </NODE>
    <LINK dstnodeid="21" dstpinname="Input String" srcnodeid="14" srcpinname="Text Box">
    </LINK>
-   <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="4290" top="3615" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="4290" top="3615" type="Box" width="2235">
@@ -150,48 +150,16 @@
    </NODE>
    <LINK dstnodeid="22" dstpinname="X Input Value" srcnodeid="14" srcpinname="Slider">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" hiddenwhenlocked="1" id="25" nodename="OpenURL (Network)" systemname="OpenURL (Network)">
-   <BOUNDS height="100" left="4890" top="1935" type="Node" width="100">
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="26">
+   <BOUNDS type="Node" left="660" top="1710" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Url" visible="1">
+   <BOUNDS type="Box" left="660" top="1710" width="3825" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="-1" pintype="Input" values="http://vvvv.org/documentation/dynamic-plugins">
    </PIN>
-   <PIN pinname="Open" visible="1">
+   <PIN pinname="Output String" visible="-1" pintype="Output">
    </PIN>
-   <PIN pinname="URL" visible="1">
+   <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="100" left="240" top="1725" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="285" left="240" top="1725" type="Box" width="3825">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org/documentation/dynamic-plugins">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="5430" top="1110" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="480" left="5430" top="1110" type="Box" width="480">
-   </BOUNDS>
-   <PIN pinname="Show Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Show Slider" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Open">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="25" dstpinname="Open" hiddenwhenlocked="1" srcnodeid="23" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="25" dstpinname="Url" hiddenwhenlocked="1" srcnodeid="24" srcpinname="Output String">
-   </LINK>
    </PATCH>
