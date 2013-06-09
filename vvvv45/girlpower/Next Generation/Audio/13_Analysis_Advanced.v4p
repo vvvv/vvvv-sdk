@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\13_Analysis_Advanced.v4p" systemname="11_Analysis_Advanced" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\11_Analysis_Advanced.v4p">
-   <BOUNDS type="Window" left="195" top="0" width="16545" height="11445">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\13_Analysis_Advanced.v4p" systemname="11_Analysis_Advanced" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\11_Analysis_Advanced.v4p">
+   <BOUNDS type="Window" left="195" top="0" width="16590" height="11220">
    </BOUNDS>
    <NODE systemname="FileStream (Bass)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="FileStream (Bass)" componentmode="Hidden" id="3">
    <BOUNDS type="Node" left="7140" top="945" width="1500" height="270">
@@ -149,7 +149,7 @@
    </BOUNDS>
    <BOUNDS height="2850" left="675" top="1080" type="Box" width="3825">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|FFT returns a spread of amplitudes of lineary distributed scale of frequencies.&cr;&lf;But based on the experiments on human hearing perceptions it is known that the scale of frequencies is approximately logarithmic at the high-frequency end, and nearly linear at the low-frequency end.&cr;&lf;&cr;&lf;That means, that human meat bags can very good  distinguish between low frequencies but the high frequencies sounds almost all the same. Of course the music is constructed the same way.&cr;&lf;&cr;&lf;Please check this:|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|FFT returns a spread of amplitudes on lineary distributed scale of frequencies.&cr;&lf;But based on the experiments on human hearing perceptions it is known that the scale of frequencies is approximately logarithmic at the high-frequency end, and nearly linear at the low-frequency end.&cr;&lf;&cr;&lf;That means, that human meatbags can very good distinguish between low frequencies but the high frequencies sounds almost all the same. Of course the music is constructed the same way.&cr;&lf;&cr;&lf;Please check this:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -555,7 +555,7 @@
    </BOUNDS>
    <BOUNDS height="4575" left="675" top="4500" type="Box" width="3765">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A spread of amplitudes will be non-linearly distributed into bins, so that lower frequencies will occupy individual bins and higher frequencies will be more and more grouped together into one bin.&cr;&lf;&cr;&lf;This subpatch unilizes a Gamma (Value) to create a spread of bin sizes.&cr;&lf;&cr;&lf;This is how the the bin sizes look like in a graph and as s spread. The sum of all bin sizes is equal to the total number of frequencies. (Check the result of Add (Value Spectral) on the right).&cr;&lf;&cr;&lf;A Mean (Spectral) returns the average value of the values in each bin.&cr;&lf;&cr;&lf;Resulting average amplitudes of each bin are used for &apos;ScaleY&apos; pin of the Transform (Transform 2d), thus scaling the spreaded Quads.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A spread of amplitudes will be non-linearly distributed into bins, so that lower frequencies will occupy individual bins and higher frequencies will be more and more grouped together into one bin.&cr;&lf;&cr;&lf;This subpatch unilizes a Gamma (Value) to create a spread of bin sizes.&cr;&lf;&cr;&lf;This is how the the bin sizes look like in a graph and as a spread. The sum of all bin sizes is equal to the total number of frequencies. (Check the result of Add (Value Spectral) on the right).&cr;&lf;&cr;&lf;A Mean (Spectral) returns the average value of the values in each bin.&cr;&lf;&cr;&lf;Resulting average amplitudes of each bin are used for &apos;ScaleY&apos; pin of the Transform (Transform 2d), thus scaling the spreaded Quads.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -712,6 +712,20 @@
    <BOUNDS type="Box" left="6135" top="3630" width="1155" height="255">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Gamma value &gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="161" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10605" top="8760" width="2370" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10605" top="8760" width="1710" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|“I love you meatbags” &cr;&lf;- Bender|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
