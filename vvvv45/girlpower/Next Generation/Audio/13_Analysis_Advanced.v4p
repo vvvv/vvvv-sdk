@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\13_Analysis_Advanced.v4p" systemname="11_Analysis_Advanced" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\11_Analysis_Advanced.v4p">
-   <BOUNDS type="Window" left="195" top="0" width="16590" height="11460">
+   <BOUNDS type="Window" left="195" top="0" width="16590" height="11250">
    </BOUNDS>
    <NODE systemname="FileStream (Bass)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="FileStream (Bass)" componentmode="Hidden" id="3">
    <BOUNDS type="Node" left="7140" top="945" width="1500" height="270">
@@ -15,7 +15,7 @@
    </PIN>
    <PIN pinname="Length" visible="1">
    </PIN>
-   <PIN pinname="Loop End Time" visible="1">
+   <PIN pinname="Loop End Time" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Is Decoding" slicecount="1" values="0">
    </PIN>
@@ -53,7 +53,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6750" top="255" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -63,7 +63,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -95,7 +95,7 @@
    <LINK srcnodeid="38" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Loop">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="40" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="8565" top="390" width="1110" height="240">
+   <BOUNDS type="Box" left="8565" top="390" width="1395" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="8565" top="390" width="0" height="0">
    </BOUNDS>
@@ -113,22 +113,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="40" srcpinname="Output String" dstnodeid="3" dstpinname="File Name">
-   </LINK>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="41">
-   <BOUNDS type="Node" left="8115" top="1650" width="900" height="270">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output 1" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="3" srcpinname="Length" dstnodeid="41" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="41" srcpinname="Output 1" dstnodeid="3" dstpinname="Loop End Time" linkstyle="Bezier">
-   <LINKPOINT x="9915" y="3010">
-   </LINKPOINT>
-   <LINKPOINT x="9270" y="0">
-   </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="59" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -297,6 +281,8 @@
    </PIN>
    <BOUNDS type="Window" left="10365" top="1605" width="5835" height="10845">
    </BOUNDS>
+   <PIN pinname="Resulting Bin Count" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="132" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7350" top="3660" width="435" height="240">
@@ -679,9 +665,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="158" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9120" top="3585" width="2235" height="270">
+   <BOUNDS type="Node" left="9135" top="3570" width="2235" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="9120" top="3585" width="2655" height="255">
+   <BOUNDS type="Box" left="9135" top="3570" width="2655" height="255">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; How many bins (bars) will be used|">
    </PIN>
@@ -720,4 +706,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <LINK srcnodeid="133" srcpinname="Y Output Value" dstnodeid="131" dstpinname="Resulting Bin Count">
+   </LINK>
    </PATCH>

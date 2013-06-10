@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\11_Effects_Basics.v4p" systemname="10_Effects_Basics" filename="C:\Work\girlpower - next gen\Audio\10_Effects_Basics.v4p" locked="0">
-   <BOUNDS type="Window" left="4770" top="5790" width="20985" height="10965">
+   <BOUNDS type="Window" left="4770" top="5790" width="20985" height="11190">
    </BOUNDS>
    <NODE componentmode="InABox" id="59" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -183,7 +183,7 @@
    </PIN>
    <PIN pinname="Length" visible="1">
    </PIN>
-   <PIN pinname="Loop End Time" visible="1">
+   <PIN pinname="Loop End Time" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Is Decoding" slicecount="1" values="1">
    </PIN>
@@ -195,7 +195,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="8505" top="1170" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\demo.wav">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\vvvv.wav">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -699,7 +699,7 @@
    </PIN>
    <PIN pinname="Length" visible="1">
    </PIN>
-   <PIN pinname="Loop End Time" visible="1">
+   <PIN pinname="Loop End Time" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Do Seek" visible="1" slicecount="1" values="0">
    </PIN>
@@ -709,7 +709,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="14235" top="1155" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\vvvv.wav">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\demo.wav">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -802,22 +802,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="189">
-   <BOUNDS type="Node" left="8685" top="2535" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output 1" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="147" srcpinname="Length" dstnodeid="189" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="189" srcpinname="Output 1" dstnodeid="147" dstpinname="Loop End Time" linkstyle="Bezier">
-   <LINKPOINT x="9930" y="3930">
-   </LINKPOINT>
-   <LINKPOINT x="9390" y="735">
-   </LINKPOINT>
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="190" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8370" top="7620" width="480" height="480">
    </BOUNDS>
@@ -897,22 +881,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="192" srcpinname="Y Output Value" dstnodeid="183" dstpinname="Loop">
-   </LINK>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="193">
-   <BOUNDS type="Node" left="14610" top="2535" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output 1" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="183" srcpinname="Length" dstnodeid="193" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="193" srcpinname="Output 1" dstnodeid="183" dstpinname="Loop End Time" linkstyle="Bezier">
-   <LINKPOINT x="15810" y="3795">
-   </LINKPOINT>
-   <LINKPOINT x="15510" y="495">
-   </LINKPOINT>
    </LINK>
    <LINK srcnodeid="183" srcpinname="Handle Out" dstnodeid="160" dstpinname="Handle In">
    </LINK>
