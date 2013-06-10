@@ -1,13 +1,13 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\06_Playback_Routing_ManyStreams.v4p" systemname="Playing_WAV_RoutingAudiostreams" filename="C:\Work\girlpower - next gen\Audio\Audio Input\Playing_WAV_RoutingAudiostreams.v4p">
-   <BOUNDS height="7875" left="2805" top="360" type="Window" width="13320">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\06_Playback_Routing_MultiStreams.v4p" systemname="Playing_WAV_RoutingAudiostreams" filename="C:\Work\girlpower - next gen\Audio\Audio Input\Playing_WAV_RoutingAudiostreams.v4p">
+   <BOUNDS height="8760" left="2805" top="360" type="Window" width="13320">
    </BOUNDS>
    <NODE componentmode="InABox" id="40" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="585" top="2535" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="3555" left="585" top="2535" type="Box" width="3930">
+   <BOUNDS height="5265" left="585" top="2535" type="Box" width="4140">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The WavePlayer (DShow9) is capable of playing several audiostreams at the same time. The &apos;Play&apos; pin defines which files are turned on at the moment. (i.e. first, third and fourth files are played).&cr;&lf;&cr;&lf;In order to play files in the loop from the start to the end, the &apos;Duration&apos; pin is connected via FrameDelay (Animation) to the &apos;End Time&apos; pin. The &apos;End Time&apos; is now set to the duration of each file respectively.&cr;&lf;&cr;&lf;The second (which is not playing now) and the fourth files are played with the double speed.&cr;&lf;&cr;&lf;Routing indices are set for every file. Please check the helppatch of the WavePlayer for the full list of all possible outputs.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The WavePlayer (DShow9) is capable of playing several audiostreams at the same time. The &apos;Play&apos; pin defines which files are turned on at the moment. (i.e. first, third and fourth files are played).&cr;&lf;&cr;&lf;In order to play files in the loop from the start to the end, the &apos;Duration&apos; pin is connected via FrameDelay (Animation) to the &apos;End Time&apos; pin. The &apos;End Time&apos; is now set to the duration of each file respectively.&cr;&lf;&cr;&lf;The second (which is not playing now) and the fourth files are played with the double speed.&cr;&lf;&cr;&lf;Routing indices are set for every channel. Please check the helppatch of the WavePlayer for the full list of all possible outputs. &cr;&lf;&cr;&lf;Please note, that the routing is not per voice (file), but per channel. So if a file has two channels there should be two indices for this file in the routing spread. If the next voice is mono, it needs only one slice.&cr;&lf;&cr;&lf;In this example a mono file is used, so there is one slice per voice.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

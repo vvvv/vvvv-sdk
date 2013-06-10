@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\07_Playback_Routing_SingleStream.v4p" systemname="Playing_WAV_RoutingInCircle" filename="C:\Work\girlpower - next gen\Audio\Playing_WAV_RoutingInCircle.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="14715" height="10140">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\07_Playback_Routing_SingleStream.v4p" systemname="Playing_WAV_RoutingInCircle" filename="C:\Work\girlpower - next gen\Audio\Playing_WAV_RoutingInCircle.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="14715" height="10890">
    </BOUNDS>
    <NODE systemname="WavePlayer (DShow9)" nodename="WavePlayer (DShow9)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="6450" top="6705" width="100" height="100">
@@ -25,9 +25,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="1">
-   <BOUNDS type="Node" left="8175" top="4455" width="100" height="100">
+   <BOUNDS type="Node" left="8175" top="4830" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="8175" top="4455" width="435" height="1065">
+   <BOUNDS type="Box" left="8175" top="4830" width="435" height="1095">
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="6">
    </PIN>
@@ -42,8 +42,6 @@
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Routing">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)" hiddenwhenlocked="1">
    <BOUNDS type="Box" left="8340" top="8040" width="2850" height="1290">
    </BOUNDS>
@@ -63,9 +61,9 @@
    <LINK srcnodeid="0" srcpinname="Routing Info" dstnodeid="2" dstpinname="Input String" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)" hiddenwhenlocked="1">
-   <BOUNDS type="Box" left="9915" top="4455" width="2190" height="240">
+   <BOUNDS type="Box" left="9915" top="4755" width="2190" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9915" top="4455" width="0" height="0">
+   <BOUNDS type="Node" left="9915" top="4755" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\demo.wav">
    </PIN>
@@ -85,7 +83,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6105" top="6000" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -95,7 +93,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Play">
@@ -337,9 +335,9 @@
    <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="37" dstpinname="Input 1" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="39" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9885" top="3915" width="1035" height="270">
+   <BOUNDS type="Node" left="9885" top="4260" width="1035" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="9885" top="3915" width="1035" height="465">
+   <BOUNDS type="Box" left="9885" top="4260" width="1035" height="465">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Choose a file&cr;&lf;v|">
    </PIN>
@@ -365,9 +363,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8145" top="3915" width="1035" height="270">
+   <BOUNDS type="Node" left="8145" top="4260" width="1035" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8145" top="3915" width="1035" height="435">
+   <BOUNDS type="Box" left="8145" top="4260" width="1035" height="435">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Routing table&cr;&lf;v|">
    </PIN>
@@ -477,7 +475,7 @@
    <NODE componentmode="InABox" id="53" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="3630" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="2700" left="675" top="3630" type="Box" width="3615">
+   <BOUNDS height="2445" left="675" top="3630" type="Box" width="3420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|WavePlayer (DShow9) plays a WAV file and has a spread of routing indices on its &apos;Routing&apos; pin. So the same file is played through 6 speakers.&cr;&lf;&cr;&lf;The volume of each output is manipulated so, that the sound goes around. Therefore a spread of 6 values for the volumes is created.&cr;&lf;&cr;&lf;Values are smoothed over time, scaled a bit (see the Muliply (Value)) and cut, so the maximum volume value no mater what is 1.|">
    </PIN>
@@ -698,8 +696,6 @@
    </NODE>
    <LINK srcnodeid="66" srcpinname="Y Output Value" dstnodeid="65" dstpinname="Input 2">
    </LINK>
-   <LINK srcnodeid="65" srcpinname="Output" dstnodeid="0" dstpinname="Volume">
-   </LINK>
    <LINK srcnodeid="65" srcpinname="Output" dstnodeid="29" dstpinname="Y Input Value" hiddenwhenlocked="1">
    </LINK>
    <NODE componentmode="InABox" id="69" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -735,11 +731,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="71" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6120" top="5535" width="420" height="270">
+   <BOUNDS type="Node" left="6075" top="5535" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6120" top="5535" width="510" height="450">
+   <BOUNDS type="Box" left="6075" top="5535" width="1050" height="465">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Play&cr;&lf;v|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Play / Stop&cr;&lf;v|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -748,4 +744,8 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <LINK srcnodeid="65" srcpinname="Output" dstnodeid="0" dstpinname="Volume">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Routing">
+   </LINK>
    </PATCH>

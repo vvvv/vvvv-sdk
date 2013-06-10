@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\16_Analysis_Equalizer_JoyDivision.v4p" systemname="joyDivistion-meshAndLine" filename="C:\Work\Girlpower - next gen\Work\joyDivistion-meshAndLine.v4p">
-   <BOUNDS type="Window" left="8295" top="0" width="15255" height="16500">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\16_Analysis_Equalizer_JoyDivision.v4p" systemname="joyDivistion-meshAndLine" filename="C:\Work\Girlpower - next gen\Work\joyDivistion-meshAndLine.v4p">
+   <BOUNDS type="Window" left="8295" top="0" width="15255" height="16875">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="9255" top="2205" width="0" height="0">
@@ -93,7 +93,7 @@
    </PIN>
    </NODE>
    <NODE systemname="FFT (DShow9)" nodename="FFT (DShow9)" componentmode="Hidden" id="176">
-   <BOUNDS type="Node" left="10650" top="2745" width="100" height="100">
+   <BOUNDS type="Node" left="10650" top="2685" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Audio" visible="1" slicecount="1" values="||">
    </PIN>
@@ -199,8 +199,6 @@
    <LINK srcnodeid="189" srcpinname="Output Enum" dstnodeid="188" dstpinname="Alignment">
    </LINK>
    <LINK srcnodeid="181" srcpinname="Y Output Value" dstnodeid="180" dstpinname="Insert">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="177" dstpinname="Spread Count" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="33" dstpinname="BinSize" hiddenwhenlocked="1">
    </LINK>
@@ -397,7 +395,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="11790" top="525" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\demo.wav">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\vvvv.wav">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="file.avi">
    </PIN>
@@ -471,9 +469,9 @@
    <LINK srcnodeid="248" srcpinname="Audio" dstnodeid="176" dstpinname="Audio">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="249" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="11190" top="2340" width="0" height="0">
+   <BOUNDS type="Node" left="11190" top="2280" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="11190" top="2340" width="405" height="240">
+   <BOUNDS type="Box" left="11190" top="2280" width="405" height="240">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="256">
    </PIN>
@@ -482,6 +480,8 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="249" srcpinname="Y Output Value" dstnodeid="176" dstpinname="Spread Count">
@@ -590,8 +590,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="177" srcpinname="Output" dstnodeid="267" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="268" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8070" top="7230" width="480" height="240">
    </BOUNDS>
@@ -971,9 +969,9 @@
    <LINK srcnodeid="289" srcpinname="Color Output" dstnodeid="239" dstpinname="Input">
    </LINK>
    <NODE componentmode="InABox" id="290" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="10170" top="2685" type="Node" width="315">
+   <BOUNDS height="270" left="10170" top="2625" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="10170" top="2685" type="Box" width="405">
+   <BOUNDS height="390" left="10170" top="2625" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -1534,4 +1532,8 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
+   <LINK srcnodeid="177" srcpinname="Output" dstnodeid="267" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="177" dstpinname="Spread Count" hiddenwhenlocked="1">
+   </LINK>
    </PATCH>
