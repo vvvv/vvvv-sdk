@@ -376,6 +376,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FCategoryFilterPanel.NodeBrowser = null;
         	this.FCategoryFilterPanel.Size = new System.Drawing.Size(240, 69);
         	this.FCategoryFilterPanel.TabIndex = 4;
+        	this.FCategoryFilterPanel.Visible = false;
         	// 
         	// FGirlpowerTagPanel
         	// 
@@ -387,6 +388,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FGirlpowerTagPanel.Size = new System.Drawing.Size(121, 103);
         	this.FGirlpowerTagPanel.TabIndex = 5;
         	this.FGirlpowerTagPanel.TagsTextBox = null;
+        	this.FGirlpowerTagPanel.Visible = false;
         	// 
         	// NodeBrowserPluginNode
         	// 
