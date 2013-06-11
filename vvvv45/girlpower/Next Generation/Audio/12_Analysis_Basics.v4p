@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\12_Analysis_Basics.v4p" systemname="Analysis_Basics" filename="C:\Work\girlpower - next gen\Audio\Analysis_Basics.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="22290" height="12060">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\12_Analysis_Basics.v4p" systemname="Analysis_Basics" filename="C:\Work\girlpower - next gen\Audio\Analysis_Basics.v4p">
+   <BOUNDS type="Window" left="330" top="525" width="22290" height="12060">
    </BOUNDS>
    <NODE systemname="FileStream (Bass)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="FileStream (Bass)" componentmode="Hidden" id="3">
    <BOUNDS type="Node" left="8940" top="2145" width="1500" height="270">
@@ -15,7 +15,7 @@
    </PIN>
    <PIN pinname="Length" visible="1">
    </PIN>
-   <PIN pinname="Loop End Time" visible="1">
+   <PIN pinname="Loop End Time" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Is Decoding" slicecount="1" values="0">
    </PIN>
@@ -135,7 +135,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="10365" top="1275" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\demo.wav">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\vvvv.wav">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="file.avi">
    </PIN>
@@ -149,22 +149,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="40" srcpinname="Output String" dstnodeid="3" dstpinname="File Name">
-   </LINK>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="41">
-   <BOUNDS type="Node" left="9915" top="2820" width="900" height="270">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output 1" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="3" srcpinname="Length" dstnodeid="41" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="41" srcpinname="Output 1" dstnodeid="3" dstpinname="Loop End Time" linkstyle="Bezier">
-   <LINKPOINT x="11715" y="4230">
-   </LINKPOINT>
-   <LINKPOINT x="11070" y="1125">
-   </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="59" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -185,7 +169,7 @@
    </BOUNDS>
    <BOUNDS height="600" left="675" top="1065" type="Box" width="3585">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Let&apos;s say you want to control your patch with an audio from a MP3 File.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Let&apos;s say you want to control your patch with an audio from an MP3 File.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -193,13 +177,15 @@
    </PIN>
    <PIN pinname="Size" slicecount="1" values="7">
    </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="55" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="2340" type="Node" width="7425">
    </BOUNDS>
    <BOUNDS height="1830" left="675" top="2340" type="Box" width="3960">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|There is a BeatDetector (Bass) which is looking to a frequency range (defined by &apos;Center Frequency&apos; and &apos;BandWidth&apos; pins) and returns &apos;On Beat&apos; bangs.&cr;&lf;&cr;&lf;With the Bass system you can analyze a sound and listen to it at the same time. This is not possible with DShow9 nodes, as with those you can connect an output only to one input.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|There is a BeatDetector (Bass) which is looking at a frequency range (defined by &apos;Center Frequency&apos; and &apos;BandWidth&apos; pins) and returns &apos;On Beat&apos; bangs.&cr;&lf;&cr;&lf;With the Bass system you can analyze a sound and listen to it at the same time. This is not possible with DShow9 nodes, as with those you can connect an output only to one input.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -848,8 +834,6 @@
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="163" srcpinname="Output String" dstnodeid="165" dstpinname="Filename">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="162" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="19155" top="1320" width="405" height="390">
    </BOUNDS>
@@ -902,6 +886,10 @@
    <PIN pinname="Audio" visible="1">
    </PIN>
    <PIN pinname="FFT L" visible="1">
+   </PIN>
+   <PIN pinname="Windowing" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Frequency Scaling" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="165" srcpinname="Audio" dstnodeid="166" dstpinname="Audio">
@@ -1075,7 +1063,7 @@
    </BOUNDS>
    <BOUNDS height="1995" left="675" top="4875" type="Box" width="4050">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|RMS (DShow9) calculates the power of a sound signal. &cr;&lf;&cr;&lf;These values are then plugged in BeatDetector (DShow9) which returns bangs and some other parameters.&cr;&lf;&cr;&lf;Please note, you can&apos;t connect AudioOut (DShow9) to the FileStream, because there is already the RMS node receiving the stream.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|RMS (DShow9) calculates the power of a sound signal. &cr;&lf;&cr;&lf;These values are then plugged in BeatDetector (DShow9) which returns bangs and some other parameters.&cr;&lf;&cr;&lf;Please note, you can&apos;t connect AudioOut (DShow9) to the FileStream, because there is already the RMS node receiving the stream. This is a specific limitation of DShow9 nodes. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1222,4 +1210,6 @@
    <BOUNDS type="Node" left="15360" top="3420" width="100" height="100">
    </BOUNDS>
    </NODE>
+   <LINK srcnodeid="163" srcpinname="Output String" dstnodeid="165" dstpinname="Filename">
+   </LINK>
    </PATCH>
