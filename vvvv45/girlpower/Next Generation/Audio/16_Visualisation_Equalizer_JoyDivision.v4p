@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\16_Analysis_Equalizer_JoyDivision.v4p" systemname="joyDivistion-meshAndLine" filename="C:\Work\Girlpower - next gen\Work\joyDivistion-meshAndLine.v4p">
-   <BOUNDS type="Window" left="8295" top="0" width="15255" height="16875">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\16_Visualisation_Equalizer_JoyDivision.v4p" systemname="joyDivistion-meshAndLine" filename="C:\Work\Girlpower - next gen\Work\joyDivistion-meshAndLine.v4p">
+   <BOUNDS type="Window" left="8295" top="0" width="15255" height="17130">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="9255" top="2205" width="0" height="0">
@@ -687,9 +687,9 @@
    <NODE componentmode="InABox" id="277" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="720" top="5070" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="10890" left="720" top="5070" type="Box" width="4680">
+   <BOUNDS height="11145" left="720" top="5070" type="Box" width="4695">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A FileStream (DShow9) reads a file and returns Audio stream. In order to loop a file, a &apos;Loop&apos; pin should be activated AND &apos;Loop End Time&apos; pin should be set to some value. In this example a file will be played fully before the loop starts again, to achive this a &apos;Duration&apos; output pin is connected to the &apos;Loop End Time&apos; via a FrameDelay (Animation). Loop&apos;s start and end time could be set manually as well.&cr;&lf;&cr;&lf;FFT (DShow9) calculates amplitudes of different frequencies and returns them as a spread.&cr;&lf;&cr;&lf;A number of amplitudes are resampled (i.e. reduced) to a value defined in the &apos;X Resolution&apos; IOBox.&cr;&lf;&cr;&lf;The spread of amplitudes (their order) is reversed...&cr;&lf;&cr;&lf;... and the values are smoothed over time.&cr;&lf;&cr;&lf;In every frame this spread is saved in a Queue (Spreads). &apos;Frame Count&apos; pin of the Queue defines how many frames will be stored. When a new frame is saved, an oldest frame will be dropped. So the Queue keeps a &apos;history&apos; of how the incoming spread looked like.&cr;&lf;&cr;&lf;Values are shifted a bit and will be used to control Y coordinates of the vertices for the lines and meshes.&cr;&lf;&cr;&lf;This subpatch draws a spread of meshes. One mesh for every frame stored in the Queue. Try to right click the &apos;Enabled&apos; IOBox to turn off the meshes. Check this subpatch for more details.&cr;&lf;&cr;&lf;HSL (Color Join) receives a linear spread of values on its &apos;Hue&apos; pin and creates a spread of colors, one for every mesh.&cr;&lf;&cr;&lf;Meshes are distributed on Z axis, this LinearSpread (Value) creates Z coordinate for every mesh.&cr;&lf;&cr;&lf;The same spread is used to place the lines on Z axis. Vertices of each single line should have the same Z coordinate, that is why every slice of the linear spread is copied so many times as the resolution of the line (controlled via &apos;X Resolution&apos;).&cr;&lf;&cr;&lf;Vertices of every line are spreaded lineary on X axis (see the LinearSpread just above the Vector), their Y positions are coming from a stored amplitude values, and their Z positions are from the the Step 11.&cr;&lf;&cr;&lf;Lines are drawn using Line (DX9). All vertices (for all lines) are coming through pin &apos;VerticesXYZ&apos;. That is why the pin &apos;Single Input&apos; is set to 1 and the pin &apos;BinSize&apos;, which says how many vertices every line has, is set to the &apos;X Resolution&apos;.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A FileStream (DShow9) reads a file and returns Audio stream. In order to loop a file, a &apos;Loop&apos; pin should be activated AND &apos;Loop End Time&apos; pin should be set to some value. In this example a file will be played fully before the loop starts again, to achive this a &apos;Duration&apos; output pin is connected to the &apos;Loop End Time&apos; via a FrameDelay (Animation). Loop&apos;s start and end time could be set manually as well.&cr;&lf;&cr;&lf;FFT (DShow9) calculates amplitudes of different frequencies and returns them as a spread.&cr;&lf;&cr;&lf;A number of amplitudes are resampled (i.e. reduced) to a value defined in the &apos;X Resolution&apos; IOBox. In this case a linear resample is used.&cr;&lf;&cr;&lf;The spread of amplitudes (their order) is reversed...&cr;&lf;&cr;&lf;... and the values are smoothed over time.&cr;&lf;&cr;&lf;In every frame this spread is saved in a Queue (Spreads). &apos;Frame Count&apos; pin of the Queue defines how many frames will be stored. When a new frame is saved, an oldest frame will be dropped. So the Queue keeps a &apos;history&apos; of how the incoming spread looked like.&cr;&lf;&cr;&lf;Values are shifted a bit and will be used to control Y coordinates of the vertices for the lines and meshes.&cr;&lf;&cr;&lf;This subpatch draws a spread of meshes. One mesh for every frame stored in the Queue. Try to right click the &apos;Enabled&apos; IOBox to turn off the meshes. Check this subpatch for more details.&cr;&lf;&cr;&lf;HSL (Color Join) receives a linear spread of values on its &apos;Hue&apos; pin and creates a spread of colors, one for every mesh.&cr;&lf;&cr;&lf;Meshes are distributed on Z axis, this LinearSpread (Value) creates Z coordinate for every mesh.&cr;&lf;&cr;&lf;The same spread is used to place the lines on Z axis. Vertices of each single line should have the same Z coordinate, that is why every slice of the linear spread is copied so many times as the resolution of the line (controlled via &apos;X Resolution&apos;).&cr;&lf;&cr;&lf;Vertices of every line are spreaded lineary on X axis (see the LinearSpread just above the Vector), their Y positions are coming from a stored amplitude values, and their Z positions are from the the Step 11.&cr;&lf;&cr;&lf;Lines are drawn using Line (DX9). All vertices (for all lines) are coming through pin &apos;VerticesXYZ&apos;. That is why the pin &apos;Single Input&apos; is set to 1 and the pin &apos;BinSize&apos;, which says how many vertices every line has, is set to the &apos;X Resolution&apos;.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -845,9 +845,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="271" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="7920" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="8160" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="7920" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="8160" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -861,9 +861,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="270" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="8370" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="8610" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="8370" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="8610" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -1203,9 +1203,9 @@
    <LINK srcnodeid="267" srcpinname="Output" dstnodeid="304" dstpinname="Go To Position">
    </LINK>
    <NODE componentmode="InABox" id="305" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="8820" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="9045" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="8820" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="9045" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -1265,9 +1265,9 @@
    <LINK srcnodeid="307" srcpinname="Y Output Value" dstnodeid="264" dstpinname="Enabled">
    </LINK>
    <NODE componentmode="InABox" id="308" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="10140" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="10320" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="10140" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="10320" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -1309,9 +1309,9 @@
    <LINK srcnodeid="310" srcpinname="Y Output Value" dstnodeid="225" dstpinname="Lightness">
    </LINK>
    <NODE componentmode="InABox" id="311" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="10725" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="10965" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="10725" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="10965" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
@@ -1325,9 +1325,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="312" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="11565" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="11805" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="11565" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="11805" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="9.">
    </PIN>
@@ -1343,9 +1343,9 @@
    <LINK srcnodeid="304" srcpinname="Position Out" dstnodeid="180" dstpinname="Input">
    </LINK>
    <NODE componentmode="InABox" id="313" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="45" top="12225" type="Node" width="315">
+   <BOUNDS height="270" left="45" top="12465" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="405" left="45" top="12225" type="Box" width="570">
+   <BOUNDS height="405" left="45" top="12465" type="Box" width="570">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="10.">
    </PIN>
@@ -1359,9 +1359,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="314" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="45" top="12810" type="Node" width="315">
+   <BOUNDS height="270" left="45" top="13050" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="405" left="45" top="12810" type="Box" width="570">
+   <BOUNDS height="405" left="45" top="13050" type="Box" width="570">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="11.">
    </PIN>
@@ -1407,9 +1407,9 @@
    <LINK srcnodeid="316" srcpinname="Y Output Value" dstnodeid="33" dstpinname="Single Input">
    </LINK>
    <NODE componentmode="InABox" id="317" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="30" top="13860" type="Node" width="315">
+   <BOUNDS height="270" left="30" top="14100" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="405" left="30" top="13860" type="Box" width="570">
+   <BOUNDS height="405" left="30" top="14100" type="Box" width="570">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="12.">
    </PIN>
@@ -1423,9 +1423,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="318" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="30" top="14925" type="Node" width="315">
+   <BOUNDS height="270" left="30" top="15165" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="405" left="30" top="14925" type="Box" width="570">
+   <BOUNDS height="405" left="30" top="15165" type="Box" width="570">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="13.">
    </PIN>
