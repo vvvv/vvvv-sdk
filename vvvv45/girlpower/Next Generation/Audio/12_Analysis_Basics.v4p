@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\12_Analysis_Basics.v4p" systemname="Analysis_Basics" filename="C:\Work\girlpower - next gen\Audio\Analysis_Basics.v4p">
    <BOUNDS type="Window" left="330" top="525" width="22290" height="12060">
    </BOUNDS>
@@ -821,7 +821,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="20760" top="1320" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\vvvv.wav">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\vvvv.mp3">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="file.avi">
    </PIN>
@@ -1207,9 +1207,31 @@
    </PIN>
    </NODE>
    <NODE systemname="AudioOut (DShow9)" nodename="AudioOut (DShow9)" componentmode="Hidden" id="196">
-   <BOUNDS type="Node" left="15360" top="3420" width="100" height="100">
+   <BOUNDS type="Node" left="16380" top="10530" width="100" height="100">
    </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="163" srcpinname="Output String" dstnodeid="165" dstpinname="Filename">
+   </LINK>
+   <NODE systemname="AudioIn (DShow9)" nodename="AudioIn (DShow9)" componentmode="Hidden" id="197">
+   <BOUNDS type="Node" left="16380" top="10095" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="197" srcpinname="Audio" dstnodeid="196" dstpinname="Audio">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="198" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="17370" top="9630" width="1590" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="17370" top="9630" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="(nil)">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="198" srcpinname="Output Enum" dstnodeid="197" dstpinname="Driver">
    </LINK>
    </PATCH>
