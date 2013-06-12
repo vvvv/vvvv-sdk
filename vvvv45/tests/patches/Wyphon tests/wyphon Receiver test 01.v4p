@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.1.dtd" >
    <PATCH nodename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Wyphon tests\wyphon Receiver test 01.v4p" systemname="wyphon Receiver test 01" filename="C:\data\2\video\vvvv\_ft\development\vvvv-sdk\vvvv45\tests\patches\Wyphon tests\wyphon Receiver test 01.v4p">
    <BOUNDS type="Window" left="14040" top="0" width="3750" height="6960">
    </BOUNDS>
@@ -34,6 +34,14 @@
    <PIN pinname="Do Filter" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Partner Id" slicecount="3" values="6,2,4">
+   </PIN>
+   <PIN pinname="Partner Name" slicecount="1" values="|Wyphon sender test 32 BIT|">
+   </PIN>
+   <PIN pinname="Texture Description" slicecount="1" values="|screen output|">
+   </PIN>
+   <PIN pinname="Do Filter On Name/Description" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Do Filter On Partner Id" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="4" systemname="IOBox (String)">
@@ -223,9 +231,9 @@
    <LINK srcnodeid="5" srcpinname="Handle" dstnodeid="6" dstpinname="Handle">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="18" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="1848" top="285" width="0" height="0">
+   <BOUNDS type="Node" left="873" top="345" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1848" top="285" width="285" height="240">
+   <BOUNDS type="Box" left="873" top="345" width="285" height="240">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -238,6 +246,8 @@
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Do Filter">
@@ -267,5 +277,61 @@
    <LINK srcnodeid="5" srcpinname="Format" dstnodeid="6" dstpinname="Format">
    </LINK>
    <LINK srcnodeid="5" srcpinname="Usage" dstnodeid="6" dstpinname="Usage">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Do Filter On Partner Id">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1260" top="120" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1260" top="120" width="2160" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|Wyphon sender test 32 BIT|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Output String" dstnodeid="5" dstpinname="Partner Name">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1440" top="405" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1440" top="405" width="1620" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|screen output|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="5" dstpinname="Texture Description">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="22" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1845" top="765" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1845" top="765" width="285" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Do Filter On Name/Description">
    </LINK>
    </PATCH>
