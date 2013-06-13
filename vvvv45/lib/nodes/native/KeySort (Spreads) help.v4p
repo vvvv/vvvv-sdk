@@ -1,0 +1,263 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.1.dtd" >
+   <PATCH nodename="X:\vvvv33\help\KeySort (Spreads) help.v4p">
+   <BOUNDS height="6330" left="2235" top="885" type="Window" width="9015">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="270" left="180" top="165" type="Node" width="1380">
+   </BOUNDS>
+   <BOUNDS height="465" left="180" top="165" type="Box" width="2625">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|KeySort (Spreads)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="KeySort (Spreads)">
+   <BOUNDS height="270" left="3255" top="4095" type="Node" width="1170">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Key" visible="1">
+   </PIN>
+   <PIN pinname="Pack Size" visible="1">
+   </PIN>
+   <PIN pinname="Get Position" visible="1">
+   </PIN>
+   <PIN pinname="Key Position" visible="1">
+   </PIN>
+   <PIN pinname="Package Size" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1140" top="4635" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7365" top="7170" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="780" left="1140" top="4635" type="Box" width="2175">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Y Input Value" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="345" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7665" top="7470" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1425" left="345" top="2445" type="Box" width="2955">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="20" visible="1" values="333,1,2,3,222,4,5,6,555,7,8,9,111,10,11,12,999,13,14,15">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input" srcnodeid="12" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4395" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10035" top="3150" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="720" left="4395" top="2445" type="Box" width="885">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="111,333,222">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Key" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7455" top="2490" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10335" top="3450" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="405" left="7455" top="2490" type="Box" width="555">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="1,3">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Get Position" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="450" top="2055" type="Node" width="375">
+   </BOUNDS>
+   <BOUNDS height="270" left="450" top="2055" type="Box" width="375">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="key">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1215" top="2085" type="Node" width="450">
+   </BOUNDS>
+   <BOUNDS height="300" left="1215" top="2085" type="Box" width="2070">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="----------data----------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="690" left="195" top="750" type="Node" width="4770">
+   </BOUNDS>
+   <BOUNDS height="930" left="195" top="750" type="Box" width="4950">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sorts incoming spreads by key values.&cr;&lf;For example you get random ordered data packages over network&cr;&lf;and you want to sort them into a special order and you want to read only some of the data:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4545" top="1980" type="Node" width="795">
+   </BOUNDS>
+   <BOUNDS height="270" left="4545" top="1980" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|sort keys|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5940" top="2580" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10335" top="5370" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5940" top="2580" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Key Position" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="5910" top="1980" type="Node" width="1785">
+   </BOUNDS>
+   <BOUNDS height="510" left="5910" top="1980" type="Box" width="1020">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|key position in package|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3570" top="2475" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10395" top="5385" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3570" top="2475" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3510" top="1980" type="Node" width="1020">
+   </BOUNDS>
+   <BOUNDS height="450" left="3510" top="1980" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|package size|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="6990" top="1980" type="Node" width="2880">
+   </BOUNDS>
+   <BOUNDS height="540" left="6990" top="1980" type="Box" width="1845">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|output data at this position in package|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3420" top="4545" type="Node" width="3795">
+   </BOUNDS>
+   <BOUNDS height="1185" left="3420" top="4545" type="Box" width="4245">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|output spread count is: &cr;&lf;sort key spread count * get positions spread count&cr;&lf;&cr;&lf;the order of the output data is the order of the sort keys. if there is no new data found, the last values remain.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Package Size">
+   </LINK>
+   </PATCH>
