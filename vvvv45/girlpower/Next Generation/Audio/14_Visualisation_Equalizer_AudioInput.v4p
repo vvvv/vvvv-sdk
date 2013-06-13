@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\14_Visualisation_Equalizer_AudioInput.v4p" systemname="AudioInput_Bar_Equalizer" filename="C:\Work\girlpower - next gen\Audio\Audio Input\AudioInput_Bar_Equalizer.v4p">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\14_Visualisation_Equalizer_AudioInput.v4p" systemname="AudioInput_Bar_Equalizer" filename="C:\Work\girlpower - next gen\Audio\Audio Input\AudioInput_Bar_Equalizer.v4p">
    <BOUNDS type="Window" left="6930" top="0" width="19095" height="17295">
    </BOUNDS>
    <NODE systemname="FileStream (DShow9)" nodename="FileStream (DShow9)" componentmode="Hidden" id="43">
@@ -743,7 +743,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="8505" top="645" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="(nil)">
+   <PIN pinname="Input Enum" slicecount="1" values="|Mikrofon (Conexant 20671 SmartA|">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Driver">
    </PIN>
@@ -983,7 +983,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7515" top="165" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -994,6 +994,8 @@
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="77" srcpinname="Y Output Value" dstnodeid="55" dstpinname="Enabled">
@@ -1493,7 +1495,7 @@
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 1" slicecount="22" visible="1" values="4.3">
+   <PIN pinname="Input 1" slicecount="128" visible="1" values="4.3">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1503,7 +1505,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="10200" top="4140" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1.5">
+   <PIN pinname="Y Input Value" slicecount="1" values="1.2">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -1513,8 +1515,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="111" srcpinname="Y Output Value" dstnodeid="110" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="110" srcpinname="Output" dstnodeid="28" dstpinname="Go To Position">
    </LINK>
    <LINK srcnodeid="110" srcpinname="Output" dstnodeid="4" dstpinname="Input">
    </LINK>
@@ -1646,13 +1646,9 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="40" srcpinname="FFT L" dstnodeid="121" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="118" srcpinname="Y Output Value" dstnodeid="121" dstpinname="Gamma">
    </LINK>
    <LINK srcnodeid="34" srcpinname="Y Output Value" dstnodeid="121" dstpinname="Bin Count">
-   </LINK>
-   <LINK srcnodeid="121" srcpinname="Output" dstnodeid="110" dstpinname="Input 1">
    </LINK>
    <NODE componentmode="InABox" id="122" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="9450" top="3285" type="Node" width="315">
@@ -1677,5 +1673,121 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="55" srcpinname="Audio" dstnodeid="123" dstpinname="Audio">
+   </LINK>
+   <NODE systemname="FileStream (Bass)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="FileStream (Bass)" componentmode="Hidden" id="124">
+   <BOUNDS type="Node" left="13260" top="1440" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="Is Decoding" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="124" dstpinname="File Name">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="125" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="12855" top="795" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12855" top="795" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="125" srcpinname="Y Output Value" dstnodeid="124" dstpinname="Play">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="126" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13410" top="795" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13410" top="795" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="126" srcpinname="Y Output Value" dstnodeid="124" dstpinname="Loop">
+   </LINK>
+   <NODE systemname="AudioOut (Bass)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="AudioOut (Bass)" componentmode="Hidden" id="127">
+   <BOUNDS type="Node" left="12285" top="1935" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
+   <PIN pinname="Device" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="124" srcpinname="Handle Out" dstnodeid="127" dstpinname="Handles In">
+   </LINK>
+   <NODE systemname="FFT (Bass)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="FFT (Bass)" componentmode="Hidden" id="128">
+   <BOUNDS type="Node" left="13905" top="1980" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Handle In" visible="1">
+   </PIN>
+   <PIN pinname="Left" visible="1">
+   </PIN>
+   <PIN pinname="FFTSize" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="124" srcpinname="Handle Out" dstnodeid="128" dstpinname="Handle In">
+   </LINK>
+   <LINK srcnodeid="121" srcpinname="Output" dstnodeid="110" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="Power (Value)" nodename="Power (Value)" componentmode="Hidden" id="129">
+   <BOUNDS type="Node" left="13890" top="2430" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="0.21">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="128" srcpinname="Left" dstnodeid="129" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="130">
+   <BOUNDS type="Node" left="15630" top="1185" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="15630" top="1185" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="512">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="130" srcpinname="Y Output Value" dstnodeid="128" dstpinname="FFTSize">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="131" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13875" top="2880" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13875" top="2880" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="129" srcpinname="Output" dstnodeid="131" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="110" srcpinname="Output" dstnodeid="28" dstpinname="Go To Position">
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="FFT L" dstnodeid="121" dstpinname="Input">
    </LINK>
    </PATCH>
