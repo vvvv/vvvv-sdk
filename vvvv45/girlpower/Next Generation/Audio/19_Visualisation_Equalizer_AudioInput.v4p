@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\19_Visualisation_Equalizer_AudioInput.v4p" systemname="AudioInput_Bar_Equalizer" filename="C:\Work\girlpower - next gen\Audio\Audio Input\AudioInput_Bar_Equalizer.v4p">
-   <BOUNDS type="Window" left="7110" top="0" width="21495" height="17145">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\19_Visualisation_Equalizer_AudioInput.v4p" systemname="AudioInput_Bar_Equalizer" filename="C:\Work\girlpower - next gen\Audio\Audio Input\AudioInput_Bar_Equalizer.v4p">
+   <BOUNDS type="Window" left="6270" top="0" width="19455" height="17040">
    </BOUNDS>
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="38">
    <BOUNDS type="Node" left="9435" top="7455" width="100" height="100">
@@ -17,7 +17,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="11100" top="12840" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="705" top="0" width="6225" height="5595">
+   <BOUNDS type="Window" left="0" top="0" width="6225" height="5595">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -61,9 +61,9 @@
    <LINK srcnodeid="35" srcpinname="Transform Out" dstnodeid="37" dstpinname="Aspect Ratio">
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="34">
-   <BOUNDS type="Node" left="10845" top="4575" width="100" height="100">
+   <BOUNDS type="Node" left="10845" top="4380" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="10845" top="4575" width="390" height="240">
+   <BOUNDS type="Box" left="10845" top="4380" width="390" height="240">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -527,9 +527,9 @@
    <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Destination Maximum">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="46" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="11310" top="4575" width="1410" height="270">
+   <BOUNDS type="Node" left="11310" top="4350" width="1410" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="11310" top="4575" width="1410" height="270">
+   <BOUNDS type="Box" left="11310" top="4350" width="1410" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Number of bars|">
    </PIN>
@@ -609,9 +609,9 @@
    <NODE componentmode="InABox" id="49" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="585" top="3330" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="945" left="585" top="3330" type="Box" width="4275">
+   <BOUNDS height="2265" left="585" top="3330" type="Box" width="4260">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="---">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A FFT (Bass) calculates amplitudes on different frequencies and returns them as a spread (i.e. 128 amplitudes per channel).&cr;&lf;&cr;&lf;Amplitudes are scaled in a way, that higher frequencies has bigger scaling factor. Despite the fact that low frequencies carry high energies (resulting in a big FFT), humans percieve low frequencies dull. That is why mid and high frequencies should be scaled up. For more info on perception, check:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -639,9 +639,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="58" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="9420" top="3885" type="Node" width="315">
+   <BOUNDS height="270" left="9420" top="3780" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="9420" top="3885" type="Box" width="405">
+   <BOUNDS height="390" left="9420" top="3780" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -898,54 +898,6 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE id="82" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" height="270" left="585" top="4395" width="840">
-   </BOUNDS>
-   <BOUNDS type="Box" height="285" left="585" top="4395" width="3675">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" pintype="Input" values="---">
-   </PIN>
-   <PIN pinname="Output String" visible="0" pintype="Output">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" pintype="Configuration" values="0">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" pintype="Configuration" values="7">
-   </PIN>
-   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
-   </PIN>
-   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
-   </PIN>
-   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
-   </PIN>
-   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="String">
-   </PIN>
-   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
    <NODE id="51" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="675" top="1770" width="1875" height="270">
    </BOUNDS>
@@ -994,26 +946,10 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="87" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="585" top="5220" type="Node" width="7425">
-   </BOUNDS>
-   <BOUNDS height="3030" left="585" top="5220" type="Box" width="3915">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|---&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;FFT (DShow9) calculates amplitudes of different frequencies and returns them as a spread.&cr;&lf;&cr;&lf;256 amplitudes has to be visualized with N bars. Therefore a spread of 256 values has to be divided in N bins, and for every bin a mean (average) is calculated. &cr;&lf;Please check this patch for more details:|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="86" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="5265" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="4155" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="5265" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="4155" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -1027,9 +963,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="90" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="7080" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="6225" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="7080" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="6225" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -1043,9 +979,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="91" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="8820" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="7785" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="8820" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="7785" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -1059,9 +995,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="92" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="9450" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="8610" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="9450" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="8610" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -1075,9 +1011,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="93" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="10110" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="9435" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="10110" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="9435" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -1091,9 +1027,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="94" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="11145" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="10065" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="11145" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="10065" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -1107,9 +1043,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="95" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="11790" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="11115" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="11790" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="11115" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
@@ -1123,9 +1059,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="96" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="0" top="12600" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="11745" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="0" top="12600" type="Box" width="570">
+   <BOUNDS height="390" left="195" top="11745" type="Box" width="345">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="9.">
    </PIN>
@@ -1143,9 +1079,9 @@
    <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="13" dstpinname="Layer 4">
    </LINK>
    <NODE componentmode="InABox" id="97" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="0" top="13440" type="Node" width="315">
+   <BOUNDS height="270" left="0" top="12585" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="0" top="13440" type="Box" width="570">
+   <BOUNDS height="390" left="0" top="12585" type="Box" width="570">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="10.">
    </PIN>
@@ -1235,9 +1171,9 @@
    <LINK srcnodeid="103" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Inner Radius">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="104" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7395" top="9855" width="525" height="240">
+   <BOUNDS type="Box" left="7395" top="9840" width="600" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="7395" top="9855" width="0" height="0">
+   <BOUNDS type="Node" left="7395" top="9840" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1.42">
    </PIN>
@@ -1249,9 +1185,9 @@
    <LINK srcnodeid="104" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Outer Radius">
    </LINK>
    <NODE nodename="IOBox (Color)" componentmode="InABox" id="105" systemname="IOBox (Color)">
-   <BOUNDS type="Box" left="7950" top="9840" width="405" height="300">
+   <BOUNDS type="Box" left="8025" top="9840" width="405" height="300">
    </BOUNDS>
-   <BOUNDS type="Node" left="7950" top="9840" width="0" height="0">
+   <BOUNDS type="Node" left="8025" top="9840" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Color Input" slicecount="1" values="|0.86987,0.86987,0.86987,1.00000|">
    </PIN>
@@ -1301,7 +1237,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="110">
-   <BOUNDS type="Node" left="9930" top="5730" width="100" height="100">
+   <BOUNDS type="Node" left="9930" top="5700" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -1311,9 +1247,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="111" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="10200" top="5385" width="360" height="255">
+   <BOUNDS type="Box" left="10200" top="5355" width="360" height="255">
    </BOUNDS>
-   <BOUNDS type="Node" left="10200" top="5385" width="0" height="0">
+   <BOUNDS type="Node" left="10200" top="5355" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="2.03">
    </PIN>
@@ -1329,9 +1265,9 @@
    <LINK srcnodeid="110" srcpinname="Output" dstnodeid="4" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="112" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10665" top="5385" width="1410" height="270">
+   <BOUNDS type="Node" left="10665" top="5355" width="1410" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="10665" top="5385" width="2175" height="270">
+   <BOUNDS type="Box" left="10665" top="5355" width="2175" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Adjust to scale amplitudes|">
    </PIN>
@@ -1343,9 +1279,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="113" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="9450" top="5655" type="Node" width="315">
+   <BOUNDS height="270" left="9450" top="5625" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="9450" top="5655" type="Box" width="405">
+   <BOUNDS height="390" left="9450" top="5625" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -1359,9 +1295,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="114" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="0" top="14415" type="Node" width="315">
+   <BOUNDS height="270" left="0" top="13605" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="0" top="14415" type="Box" width="570">
+   <BOUNDS height="390" left="0" top="13605" type="Box" width="570">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="11.">
    </PIN>
@@ -1375,9 +1311,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="115" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="0" top="14895" type="Node" width="315">
+   <BOUNDS height="270" left="0" top="14055" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="0" top="14895" type="Box" width="570">
+   <BOUNDS height="390" left="0" top="14055" type="Box" width="570">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="12.">
    </PIN>
@@ -1391,11 +1327,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="118" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="10395" top="4575" width="360" height="240">
+   <BOUNDS type="Box" left="10395" top="4380" width="360" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="10395" top="4575" width="0" height="0">
+   <BOUNDS type="Node" left="10395" top="4380" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   <PIN pinname="Y Input Value" slicecount="1" values="3">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -1405,11 +1341,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="119" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="585" top="8835" type="Node" width="7425">
+   <BOUNDS height="270" left="585" top="7785" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="7485" left="585" top="8835" type="Box" width="4050">
+   <BOUNDS height="7725" left="585" top="7785" type="Box" width="4080">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Sometimes amplitudes are just too low. So they can be scaled (multiplied with a value) here.&cr;&lf;&cr;&lf;Now the changes of every amplitude are smoothed over time and these N values are used to scale bars on Y axis (see the Transform node in step 9).&cr;&lf;&cr;&lf;There are N bars &quot;spreaded&quot; on the screen. For their X position a LinearSpread (Spreads) is used.&cr;&lf;&cr;&lf;Every bar should be scaled on X axis in order to squeze all N bars into the window. Therefore width of the window (which is 2) is divided by number of the bars (see Count (Value)).&cr;&lf;&cr;&lf;Transform (Transform 2d) holds transformations (position, scale and rotation) for all N bars.&cr;&lf;&cr;&lf;A color of every bar corresponds to its amplitude (=height). An InputMorph (Color) is used to smoothly change between 3 defined colors.&cr;&lf;&cr;&lf;&apos;Switch&apos; pin of the InputMorph is connected to the amplitude values via Map (Value). Amplitudes are set in a range (0, 0.5) and InputMorph need values in a range of (0...2) to smoothly switch between its 3 inputs.&cr;&lf;&cr;&lf;Quad (DX9) is used to draw all N bars.&cr;&lf;&cr;&lf;A line between the bars is drawn with Line (EX9). Please note, that all points of the line are coming through its &apos;VerticesXYZ&apos; pin, therefor a &apos;Single Input&apos; pin should be set to 1. Coordinates of these points are: values coming from the LinearSpread (used for X), amplitude values (shifted a bit with a Substract (Value)) (used for Y).&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Sometimes amplitudes are just too low. So they all can be scaled (multiplied with a value) to make the bars higher.&cr;&lf;&cr;&lf;Now the changes of every amplitude are smoothed over time and these N values are used to scale bars on Y axis (see the Transform node in step 9).&cr;&lf;&cr;&lf;There are N bars &quot;spreaded&quot; on the screen. For their X position a LinearSpread (Spreads) is used.&cr;&lf;&cr;&lf;Every bar should be scaled on X axis in order to squeze all N bars into the window. Therefore width of the window (which is 2) is divided by number of the bars (see Count (Value)).&cr;&lf;&cr;&lf;Transform (Transform 2d) holds transformations (position, scale and rotation) for all N bars.&cr;&lf;&cr;&lf;A color of every bar corresponds to its amplitude (=height). An InputMorph (Color) is used to smoothly change between 3 defined colors.&cr;&lf;&cr;&lf;&apos;Switch&apos; pin of the InputMorph is connected to the amplitude values via Map (Value). Amplitudes are set in a range (0, 0.5) and InputMorph need values in a range of (0...2) to smoothly switch between its 3 inputs.&cr;&lf;&cr;&lf;Quad (DX9) is used to draw all N bars.&cr;&lf;&cr;&lf;A line between the bars is drawn with Line (EX9). Please note, that all points of the line are coming through its &apos;VerticesXYZ&apos; pin, therefor a &apos;Single Input&apos; pin should be set to 1. Coordinates of these points are: values coming from the LinearSpread (used for X), amplitude values (shifted a bit with a Substract (Value)) (used for Y).&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1431,9 +1367,9 @@
    </PIN>
    <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <BOUNDS height="100" left="585" top="8325" type="Node" width="100">
+   <BOUNDS height="100" left="585" top="7275" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="270" left="585" top="8325" type="Box" width="2895">
+   <BOUNDS height="270" left="585" top="7275" type="Box" width="2895">
    </BOUNDS>
    <PIN encoded="0" pinname="Mask">
    </PIN>
@@ -1445,9 +1381,9 @@
    </PIN>
    </NODE>
    <NODE systemname="Resample (Spreads Gamma)" filename="%VVVV%\lib\nodes\modules\Spreads\Resample (Spreads Gamma).v4p" nodename="Resample (Spreads Gamma)" componentmode="Hidden" id="121">
-   <BOUNDS type="Node" left="9915" top="4995" width="100" height="100">
+   <BOUNDS type="Node" left="9915" top="4800" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="256" values="0.016010582447052,0.072966456413269,0.103265136480331,0.0182219017297029,0.0201520440168679,0.0104873178061098,0.00307815446285531,0.00456060888245702,0.00472948624519631,0.0115021259989589,0.00557321612723172,0.013842361047864,0.0172070990083739,0.00232383963884786,0.0331818591803312,0.0380426831543446,0.0340415658429265,0.0214520038571209,0.0105538592906669,0.018071950180456,0.0130807844689116,0.00610922178020701,0.00236126183881424,0.00242187810363248,0.00683015459799208,0.00670947442995384,0.00758077370119281,0.00434937799582258,0.00243191370100249,0.00420098236645572,0.0043941282783635,0.00138705398421735,0.00488174849306233,0.00371555690071546,0.0034088808024535,0.00523013941710815,0.00383000377769349,0.00176492100581527,0.0029422341613099,0.00167586578754708,0.00184081452971441,0.00165865173039492,0.000647912376734894,0.00188505259575322,0.000283987146758591,0.00122554184054025,0.0013997491569171,0.00290097633842379,0.00343124150094809,0.00158963757712627,0.000429262854595436,0.000522691661899444,0.000590017573813384,0.000780938709795009,0.00108413302768895,0.000574505131226033,0.000338008654580335,0.000965970368270064,0.00111058998118096,0.00147525610373123,0.00115841508704762,0.000742853193514748,0.00112607833943912,0.000377323274733499,0.000916566273190256,0.000505669244375895,0.00037729421592303,0.000271216940745944,7.92834797493924E-005,0.000510731056238001,0.000556181577849202,0.000582326370931696,0.00140360883960966,0.000872087070092675,0.000259070145602891,0.000232866531405307,0.000281707893691419,7.40048919851688E-005,0.000386724728741683,0.000853011224535294,0.000583391670716082,0.000509303661601734,0.000441685018813587,3.10171637920575E-005,0.000407004376938858,0.000829227321446524,0.000995156561657495,0.000534840935870307,0.000468046900095942,0.00103309453152178,0.00125002195727575,0.00122644024304464,0.000944684263231466,0.000344570411925815,0.000322393843816826,0.000257210944255348,0.000252055429427855,0.000102588403478876,0.0002388468819845,0.000594288530919584,0.000420320076045755,0.000145116935982514,0.000182170142920768,0.000821415284008253,0.00161276594553783,0.00124349005818658,0.000665251086047647,0.000703109350070008,0.00100872053826606,0.00112832194645307,0.00142253319336305,0.00122470546921249,0.000608765311881143,0.000784578376624268,0.000953895405473304,0.00129013624609797,0.000897372422514309,0.000865572414113558,0.00056749244367893,0.000792186056060018,0.00099256565408723,0.00112240377529815,0.000754655470700527,0.000787845545346499,0.000984729240371962,0.000629597922852554,0.000542220390343573,0.000975242583081126,0.000616735144831182,0.000165860052447897,8.46837461381256E-005,4.96965552656548E-005,4.39727884895547E-005,0.000103289523167405,0.000576566255858779,0.000881215204572072,0.000652903695481655,0.000782765500844107,0.000820413760720839,0.000246386268827337,0.000243478199990932,0.000834876457702194,0.000883465336301015,0.000260295828411472,2.89060093194848E-005,4.80635390545103E-005,4.75073539973891E-005,5.80337642759332E-005,4.87216420026471E-005,4.8865202018078E-005,4.58199598654119E-005,4.88671937546314E-005,4.62600418131842E-005,4.82652623077229E-005,4.51461360739813E-005,4.73171186285981E-005,4.65010706705016E-005,5.00041270470319E-005,4.5053061995759E-005,4.09053745897836E-005,3.58843899448402E-005,2.85167724314306E-005,2.94753571523643E-005,4.46118211812063E-005,4.55152451195318E-005,4.5487364161545E-005,4.59862843058545E-005,4.69733518002613E-005,4.6217941900295E-005,4.59032543176363E-005,4.54120486494958E-005,4.53775335245155E-005,4.62260955202964E-005,4.51761119393268E-005,3.77633387671494E-005,3.59691618996294E-005,4.50455809186678E-005,5.71134410733976E-005,5.67399223143639E-005,4.55957831491105E-005,4.37553304095673E-005,4.37638487369441E-005,4.49017302059929E-005,4.33864289561825E-005,4.40263532652807E-005,4.34432387237393E-005,4.49025015143434E-005,4.36549320852464E-005,4.61110967648892E-005,4.29214716746174E-005,3.78551438871E-005,4.05575983677409E-005,4.87152651658107E-005,3.86041774333989E-005,3.27245822973055E-005,3.87573924172102E-005,4.45288415562572E-005,4.38298843619123E-005,4.57751124969263E-005,4.48242388983999E-005,4.53603855277152E-005,4.3968316504106E-005,4.45309289318629E-005,4.43018822693375E-005,4.64121028898035E-005,4.78213719929954E-005,4.49458793383428E-005,3.46823414929531E-005,2.85214116928501E-005,2.7133821163261E-005,3.50336565446696E-005,4.34475317661054E-005,4.44135506398879E-005,4.48907025543122E-005,4.56181526686805E-005,4.52754055686455E-005,4.56103377501904E-005,4.59773334000602E-005,4.56880681554139E-005,4.54036924679713E-005,4.38250130088136E-005,4.20370953406746E-005,3.83772609637845E-005,3.73252223653253E-005,4.53713099091146E-005,5.57512992713782E-005,5.38043859990012E-005,4.80048586268822E-005,4.63749644836753E-005,4.74561811358853E-005,4.69858183294036E-005,4.66156025140663E-005,4.60283572749631E-005,4.68712027270612E-005,4.68683120402602E-005,4.75311509831045E-005,4.51505182041956E-005,5.18176407808824E-005,7.72636088299805E-005,6.87738497617829E-005,3.42508517690021E-005,1.98030634663837E-005,2.21618660063427E-005,3.94477682448269E-005,4.84251124532875E-005,4.83353145455112E-005,4.84757435685879E-005,4.79169679010738E-005,4.73515017063164E-005,4.80720565576576E-005,4.93873660047939E-005,4.98061946245798E-005,4.95277389092053E-005,4.95672249485324E-005,4.50157464371159E-005,3.56620876118541E-005">
+   <PIN pinname="Input" visible="1" slicecount="256" values="0.197249114513397,0.132549345493317,0.0263108462095261,0.00509628094732761,0.00257290969602764,0.000255986960837618,0.00128106994088739,0.00121336348820478,0.00106354767922312,0.000444694538600743,0.000774052052292973,0.000349016801919788,0.00018842876306735,9.36332580749877E-005,0.000267313211224973,0.000260784756392241,0.000504208961501718,0.000432254804763943,0.000310595496557653,0.00014405012188945,0.000185194046935067,9.02188912732527E-005,0.000269293406745419,0.000449278100859374,0.00025463939527981,0.000143158758874051,0.00029096327489242,0.000194230378838256,0.000299933453788981,0.000454726134194061,0.000322708103340119,0.000234995430218987,0.000335545424604788,0.000218682471313514,0.000231988189625554,0.000185258657438681,0.000214550964301452,0.000133070410811342,0.00012807099847123,6.92501635057852E-005,0.000106582294392865,3.26762055919971E-005,0.000105704071756918,6.85093109495938E-005,0.000127762003103271,0.000122657278552651,4.94086416438222E-005,6.61034500808455E-005,0.000242142778006382,0.000313396390993148,0.000145740836160257,3.98571937694214E-005,3.71327405446209E-005,2.57801730185747E-005,3.00592018902535E-005,7.30017927708104E-005,6.43959283479489E-005,7.32544212951325E-005,7.48767561162822E-005,0.000107773637864739,9.24217602005228E-005,0.000105695246020332,6.10647330177017E-005,3.53293653461151E-005,4.99600682815071E-005,2.39406108448748E-005,7.43574564694427E-005,9.10984526854008E-005,0.000110832508653402,0.000119154647109099,8.03151560830884E-005,5.78150975343306E-005,6.17553378106095E-005,8.67444250616245E-005,6.92560279276222E-005,6.96281204000115E-005,7.58617388783023E-005,5.57445491722319E-005,0.000112820023787208,0.00013157025387045,3.29116628563497E-005,7.79386464273557E-005,0.000129853826365434,0.000106983032310382,5.41039044037461E-005,2.7288600904285E-005,0.000132733679492958,0.000148878039908595,4.06519429816399E-005,6.1699807702098E-005,6.58239441690966E-005,1.83213887794409E-005,3.25535656884313E-005,7.95366358943284E-005,9.22781764529645E-005,9.05821216292679E-005,9.2406029580161E-005,8.43142188386992E-005,0.000152090738993138,0.000154512119479477,0.000205075542908162,0.000166601632372476,7.79358524596319E-005,4.83762305520941E-005,7.90866906754673E-005,3.29643662553281E-005,2.06067124963738E-005,4.88960859001963E-006,2.67962877842365E-005,4.81580464111175E-005,5.23357048223261E-005,1.30891039589187E-005,2.97283040708862E-005,4.07187326345593E-005,8.18011976662092E-005,6.46594053250737E-005,2.33364989981055E-005,8.28789598017465E-006,2.32967613555957E-005,2.3450915250578E-005,1.96051587408874E-005,4.82951509184204E-005,6.73813920002431E-005,3.45291664416436E-005,1.54710487549892E-005,6.13208885624772E-006,1.04470268524892E-006,3.47254604093905E-006,5.05070374856587E-006,1.5956056813593E-005,2.9353173886193E-005,8.9982058852911E-006,2.1211428247625E-005,1.2566438272188E-005,2.18095374293625E-006,6.88673799231765E-006,7.2705597631284E-006,4.12861481891014E-006,4.43755425294512E-006,2.43928079726174E-005,3.42066559824161E-005,1.33255780383479E-005,3.88144735552487E-006,3.78369077225216E-006,1.08638741949107E-005,1.23633362818509E-005,5.1053043534921E-006,2.47232173933298E-006,1.42759217851562E-005,1.7634953110246E-005,6.07700485488749E-006,9.91246542980662E-006,1.30400503621786E-005,2.39328232964908E-006,1.53161499838461E-006,3.25765398656586E-007,1.18623511013993E-007,8.10167719578203E-008,8.68744507442898E-008,3.56980223159553E-007,5.07538004512753E-007,3.18491601092319E-007,4.64973837210891E-008,2.31379875259563E-008,1.40267131243377E-008,1.36535405204086E-008,7.64611485237765E-009,1.1800480592683E-008,1.02728536788277E-008,6.50829345971715E-009,1.59566191371141E-008,5.69720581822253E-009,1.18992637965221E-008,1.10142970299876E-008,6.81861749285417E-008,3.39254967229863E-007,3.89150073942801E-007,1.01818358189121E-007,4.28187085788068E-008,3.48307693798233E-008,2.06801176183546E-009,7.18976167490837E-009,8.30368929172209E-009,8.42661140865175E-009,9.28959487112024E-009,5.64851054818405E-009,8.35336955162802E-009,7.43958494808794E-009,8.28470270164416E-009,1.64882241193709E-008,1.18281249683605E-007,3.48097643154688E-007,3.32235515543289E-007,3.81948183303393E-007,1.00539587322146E-007,3.41645751689157E-008,7.55890905423939E-009,4.73017314206459E-009,5.99015859137353E-009,6.4035408087193E-009,6.14538731014136E-009,2.37781350165278E-009,9.13204178942806E-009,1.31014388227157E-009,4.16785361778693E-009,3.36973426939835E-009,8.19252718997632E-008,3.0369830028576E-007,2.34415026056922E-007,9.76479128667052E-008,4.92857523681778E-008,1.68528959676451E-008,5.59011281708877E-009,6.09829431397202E-009,5.10045028434547E-009,3.94147292581692E-009,5.7425779687037E-009,4.76315697994778E-009,1.54584822720238E-009,7.42361772054778E-009,2.62190891220371E-009,2.68753979071334E-008,4.73326622341119E-008,3.14037208681839E-007,4.04869894055082E-007,2.2520370634993E-007,5.40279074812133E-008,4.83448614474469E-009,1.94103932926737E-009,3.13634407334007E-009,2.33366459490014E-009,4.33774616226401E-009,2.06534567226413E-009,4.98274532745313E-009,3.80730558191544E-009,6.07400396646085E-009,3.32517124945753E-009,1.25777201986921E-008,1.55957593506173E-007,3.61167963092157E-007,2.93160553610505E-007,8.93215243991108E-008,4.74481822720918E-008,2.66966875273056E-008,5.46278799973265E-009,3.89808940681746E-009,6.02607386213094E-009,8.10137379403386E-009,2.71094480197576E-009,1.52705215139548E-009,5.22141574421653E-009,2.00006700090682E-009,5.12258502283203E-009,1.33980790906207E-008,8.98164955742686E-008,3.22782028661095E-007">
    </PIN>
    <PIN pinname="Gamma" visible="1">
    </PIN>
@@ -1461,9 +1397,9 @@
    <LINK srcnodeid="34" srcpinname="Y Output Value" dstnodeid="121" dstpinname="Bin Count">
    </LINK>
    <NODE componentmode="InABox" id="122" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="9420" top="4905" type="Node" width="315">
+   <BOUNDS height="270" left="9420" top="4710" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="9420" top="4905" type="Box" width="405">
+   <BOUNDS height="390" left="9420" top="4710" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -1528,18 +1464,8 @@
    </NODE>
    <LINK srcnodeid="126" srcpinname="Y Output Value" dstnodeid="124" dstpinname="Loop">
    </LINK>
-   <NODE systemname="AudioOut (Bass)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="AudioOut (Bass)" componentmode="Hidden" id="127">
-   <BOUNDS type="Node" left="8310" top="2070" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Handles In" visible="1">
-   </PIN>
-   <PIN pinname="Device" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="124" srcpinname="Handle Out" dstnodeid="127" dstpinname="Handles In">
-   </LINK>
    <NODE systemname="FFT (Bass)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="FFT (Bass)" componentmode="Hidden" id="128">
-   <BOUNDS type="Node" left="9930" top="2055" width="100" height="100">
+   <BOUNDS type="Node" left="9930" top="2070" width="630" height="270">
    </BOUNDS>
    <PIN pinname="Handle In" visible="1">
    </PIN>
@@ -1551,15 +1477,17 @@
    </PIN>
    <PIN pinname="Individual" slicecount="1" values="1">
    </PIN>
+   <BOUNDS type="Box" left="9930" top="2070">
+   </BOUNDS>
    </NODE>
    <LINK srcnodeid="124" srcpinname="Handle Out" dstnodeid="128" dstpinname="Handle In">
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="130">
-   <BOUNDS type="Node" left="10680" top="1560" width="100" height="100">
+   <BOUNDS type="Node" left="10125" top="1650" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="10680" top="1560" width="510" height="240">
+   <BOUNDS type="Box" left="10125" top="1650" width="510" height="240">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="512">
+   <PIN pinname="Y Input Value" slicecount="1" values="256">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -1569,7 +1497,7 @@
    <LINK srcnodeid="110" srcpinname="Output" dstnodeid="28" dstpinname="Go To Position">
    </LINK>
    <NODE id="133" systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="10500" top="3405" width="100" height="100">
+   <BOUNDS type="Node" left="10500" top="3375" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1" pintype="Output">
    </PIN>
@@ -1584,10 +1512,8 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="121" srcpinname="Output" dstnodeid="110" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="137">
-   <BOUNDS type="Node" left="10680" top="2550" width="300" height="270">
+   <BOUNDS type="Node" left="10965" top="2520" width="300" height="270">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -1597,9 +1523,9 @@
    <LINK srcnodeid="130" srcpinname="Y Output Value" dstnodeid="137" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="138" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="11070" top="2175" width="390" height="240">
+   <BOUNDS type="Box" left="11220" top="2145" width="390" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="11070" top="2175" width="0" height="0">
+   <BOUNDS type="Node" left="11220" top="2145" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
@@ -1617,13 +1543,13 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="137" srcpinname="Output" dstnodeid="139" dstpinname="Input 1">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="140" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="11145" top="2610" width="330" height="240">
+   <BOUNDS type="Box" left="10515" top="2550" width="330" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="11145" top="2610" width="0" height="0">
+   <BOUNDS type="Node" left="10515" top="2550" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -1631,15 +1557,15 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="140" srcpinname="Y Output Value" dstnodeid="139" dstpinname="Input 2">
-   </LINK>
    <LINK srcnodeid="139" srcpinname="Output" dstnodeid="133" dstpinname=".. To [">
    </LINK>
    <NODE componentmode="InABox" id="141" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="9405" top="1080" type="Node" width="315">
+   <BOUNDS height="270" left="9465" top="1995" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="9405" top="1080" type="Box" width="405">
+   <BOUNDS height="390" left="9465" top="1995" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
@@ -1652,28 +1578,12 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="142" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="10290" top="2985" width="285" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="10290" top="2985" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="142" srcpinname="Y Output Value" dstnodeid="133" dstpinname="[ From ..">
-   </LINK>
    <NODE id="135" systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Input 1" visible="1" pintype="Input">
+   <PIN pinname="Input 1" visible="1" pintype="Input" slicecount="22" values="0.197249114513397,0.132549345493317,0.0263108462095261,0.00509628094732761,0.00257290969602764,0.000255986960837618,0.00128106994088739,0.00121336348820478,0.00106354767922312,0.000444694538600743,0.000774052052292973,0.000349016801919788,0.00018842876306735,9.36332580749877E-005,0.000267313211224973,0.000399082840885967,0.000243324208505718,0.00025075474248017,9.56425576739341E-005,7.72164421983976E-005,2.96588434733867E-005,6.6408846565695E-008">
    </PIN>
    <PIN pinname="Input 2" visible="1" slicecount="256" pintype="Input" values="1,2.32946717293691,3.82021610181858,5.42641730979069,7.12431978745256,8.89906800271141,10.7403790510039,12.640660989814,14.594051064594,16.5958690743756,18.6422821147839,20.7300867820495,22.8565611485351,25.0193604242128,27.216441166531,29.446004819996,31.7064547410982,33.9963628751367,36.3144434959518,38.6595322151169,41.03056899028,43.4265842150179,45.8466872156049,48.2900566509176,50.755932433888,53.2436088817378,55.7524288677246,58.2817787960807,60.8310842588443,63.3998062616028,65.9874379270492,68.5935016023228,71.2175463095419,73.8591454895982,76.5178949978079,79.193411316882,81.8853299582476,84.5933040272919,87.3170029318349,90.0561112162117,92.8103275059029,95.5793635497805,98.3629433488243,101.160802361664,103.97268677858,106.798352856658,109.637566309742,112.490101747576,115.355742159243,118.234278436546,121.125508933526,124.0292390587,126.945280897023,129.873452858865,132.813579353628,135.765490485841,138.729021771816,141.704013875137,144.690312359422,147.687767456964,150.696233851971,153.715570477273,156.745640323446,159.786310259406,162.837450863628,165.898936265192,168.970643993956,172.05245483919,175.144252716094,178.245924539627,181.357360105173,184.478451975567,187.609095374062,190.749188082845,193.898630346755,197.057324781848,200.225176288529,203.402091968946,206.5879810484,209.782754800521,212.986326475977,216.198611234524,219.419526080192,222.648989799417,225.886922901975,229.133247564539,232.38788757672,235.650768289456,238.921816565625,242.200960732754,245.488130537716,248.783257103318,252.086272886668,255.397111639237,258.715708368537,262.041999301312,265.375921848195,268.717414569731,272.066417143723,275.422870333817,278.786715959283,282.157896865925,285.53635689807,288.922040871587,292.314894547889,295.71486460887,299.121898632736,302.535945070695,305.956953224458,309.384873224527,312.819656009225,316.261253304444,319.709617604075,323.164702151096,326.626460919282,330.094848595529,333.569820562736,337.051332883262,340.539342282894,344.033806135337,347.53468244719,351.041929843389,354.555507553107,358.075375396078,361.601493769354,365.133823634444,368.672326504856,372.216964433999,375.767700003448,379.324496311549,382.887316962362,386.456126054918,390.030888172784,393.611568373929,397.198132180871,400.790545571105,404.388774967791,407.992787230708,411.602549647447,415.218029924851,418.839196180678,422.466016935499,426.0984611048,429.736497991302,433.380097277478,437.029229018267,440.683863633973,444.343971903357,448.009524956891,451.680494270195,455.356851657636,459.038569266083,462.725619568826,466.417975359634,470.115609746974,473.818496148353,477.526608284817,481.239920175561,484.95840613269,488.682040756087,492.410798928411,496.144655810212,499.883586835158,503.627567705374,507.376574386888,511.130583105181,514.88957034084,518.653512825306,522.422387536725,526.196171695882,529.974842762233,533.758378430021,537.546756624481,541.339955498123,545.137953427099,548.940729007651,552.748261052626,556.560528588078,560.377510849935,564.199187280732,568.025537526425,571.85654143326,575.692179044717,579.532430598503,583.377276523625,587.226697437508,591.08067414318,594.939187626507,598.802219053493,602.669749767626,606.541761287279,610.418235303164,614.299153675835,618.184498433242,622.074251768325,625.968396036668,629.866913754186,633.769787594862,637.677000388529,641.588535118685,645.504374920365,649.424503078036,653.348903023543,657.27755833409,661.210452730256,665.147570074051,669.088894367006,673.034409748298,676.984100492911,680.937951009823,684.89594584024,688.858069655846,692.824307257093,696.794643571521,700.769063652104,704.747552675628,708.730095941098,712.716678868169,716.707286995608,720.701905979784,724.700521593173,728.703119722907,732.70968636933,736.720207644588,740.734669771244,744.753059080907,748.775362012894,752.801565112912,756.831655031754,760.865618524029,764.903442446903,768.945113758864,772.99061951851,777.03994688335,781.093083108635,785.150015546191,789.210731643291,793.275218941529,797.343465075718,801.41545777281,805.49118485082,809.570634217783,813.653793870716,817.740651894598,821.83119646137,825.925415828947,830.023298340245,834.124832422225,838.230006584951,842.33880942066,846.451229602849,850.567255885373,854.686877101561,858.810082163341,862.936860060378,867.067199859228">
    </PIN>
-   <BOUNDS type="Node" left="9930" top="3945" width="630" height="270">
+   <BOUNDS type="Node" left="9930" top="3840" width="630" height="270">
    </BOUNDS>
    <PIN pinname="Output" visible="1" pintype="Output">
    </PIN>
@@ -1688,10 +1598,96 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="135" srcpinname="Output" dstnodeid="121" dstpinname="Input">
+   <LINK srcnodeid="133" srcpinname="Output" dstnodeid="135" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="AudioOut (Bass)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="AudioOut (Bass)" componentmode="Hidden" id="144">
+   <BOUNDS type="Node" left="8310" top="2070" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8310" top="2070">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="124" srcpinname="Handle Out" dstnodeid="144" dstpinname="Handles In">
    </LINK>
    <LINK srcnodeid="128" srcpinname="Left" dstnodeid="135" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="133" srcpinname="Output" dstnodeid="135" dstpinname="Input 2">
+   <LINK srcnodeid="135" srcpinname="Output" dstnodeid="121" dstpinname="Input">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="145" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8295" top="1620" width="300" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8295" top="1620" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="145" srcpinname="Y Output Value" dstnodeid="144" dstpinname="Device">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="146" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6870" top="1620" width="1410" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6870" top="1620" width="1410" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Choose a device &gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="140" srcpinname="Y Output Value" dstnodeid="133" dstpinname="[ From ..">
+   </LINK>
+   <LINK srcnodeid="137" srcpinname="Output" dstnodeid="139" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="140" srcpinname="Y Output Value" dstnodeid="139" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="121" srcpinname="Output" dstnodeid="110" dstpinname="Input 1">
+   </LINK>
+   <NODE componentmode="InABox" id="147" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="file.foo">
+   </PIN>
+   <PIN pinname="Content Type">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <BOUNDS height="100" left="585" top="5670" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="270" left="585" top="5670" type="Box" width="3510">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Mask">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
+   </PIN>
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="http://en.wikipedia.org/wiki/Equal-loudness_contour">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="148" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="585" top="6255" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="1275" left="585" top="6255" type="Box" width="4065">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|128 amplitudes has to be visualized with N bars. Therefore a spread of 128 values has to be divided into N bins, and for every bin a mean (average) is calculated. &cr;&lf;Please check this patch for more details:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
    </PATCH>
