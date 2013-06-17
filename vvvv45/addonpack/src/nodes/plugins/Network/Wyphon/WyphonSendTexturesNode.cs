@@ -29,8 +29,8 @@ namespace VVVV.Nodes.Network.Wyphon
 {
 	#region PluginInfo
 	[PluginInfo(Name = "WyphonSendTextures", Category = "Network", 
-	            AutoEvaluate = true, 
-	            Author="ft", Help = "Receieves DX9ex shared textures by other Wyphon partner applications", Tags = "")]
+				AutoEvaluate = true, 
+				Author="ft", Help = "Receives DX9ex shared textures by other Wyphon partner applications", Tags = "")]
 	#endregion PluginInfo
 	public class WyphonSendTexturesNode : IPluginEvaluate, IDisposable
 	{
@@ -103,12 +103,23 @@ namespace VVVV.Nodes.Network.Wyphon
 		public WyphonSendTexturesNode()
 		{
 		}
-				
+
+		~WyphonSendTexturesNode()
+		{
+			//Unshare textures that have disappeared from the spread
+			foreach (UInt32 handle in SharedTextureHandles) {
+				//LogNow(LogType.Debug, "stop sharing " + handle + "");
+				wyphon.UnshareD3DTexture(handle);
+				//LogNow(LogType.Debug, "YES : keep sharing " + handle + "");
+			}
+			SharedTextureHandles.SliceCount = 0;
+		}
+		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax) {
 			//ignore spreadmax, use FHandle in as the reference spread !!!
 			if ( (wyphon != WyphonNode.wyphonPartner || FHandleIn.IsChanged || FDescriptionIn.IsChanged || FWidthIn.IsChanged || FHeightIn.IsChanged || FFormatEnumIn.IsChanged || FUsageEnumIn.IsChanged) 
-			    && WyphonNode.wyphonPartner != null ) {
+				&& WyphonNode.wyphonPartner != null ) {
 				
 				wyphon = WyphonNode.wyphonPartner;
 
@@ -181,10 +192,10 @@ namespace VVVV.Nodes.Network.Wyphon
 		}
 
 		public void Dispose() {
-            LogNow(LogType.Debug, "[SendTexturesNode.Dispose()] ");
-            foreach (UInt32 handle in SharedTextureHandles) {
-                LogNow(LogType.Debug, "Trying to unshare texture with handle " + handle + "");
-                wyphon.UnshareD3DTexture(handle);
+			LogNow(LogType.Debug, "[SendTexturesNode.Dispose()] ");
+			foreach (UInt32 handle in SharedTextureHandles) {
+				LogNow(LogType.Debug, "Trying to unshare texture with handle " + handle + "");
+				wyphon.UnshareD3DTexture(handle);
 			}
 			SharedTextureHandles.SliceCount = 0;
 			
