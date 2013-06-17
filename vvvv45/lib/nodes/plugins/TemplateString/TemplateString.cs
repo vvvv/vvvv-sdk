@@ -22,13 +22,13 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Input", DefaultString = "hello c#")]
-		ISpread<string> FInput;
+        public ISpread<string> FInput;
 
 		[Output("Output")]
-		ISpread<string> FOutput;
+        public ISpread<string> FOutput;
 
 		[Import()]
-		ILogger FLogger;
+        public ILogger FLogger;
 		#endregion fields & pins
 
 		//called when data for any output pin is requested

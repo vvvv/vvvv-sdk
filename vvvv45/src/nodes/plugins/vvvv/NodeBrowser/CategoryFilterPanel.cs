@@ -43,7 +43,7 @@ namespace VVVV.Nodes.NodeBrowser
             set;
         }
 
-		public void Update()
+		public new void Update()
 		{
 			this.SuspendLayout();
 			CheckboxPanel.SuspendLayout();
@@ -112,7 +112,6 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		private void SaveFilter()
 		{
-			int hiddenCount = 0;
 			var hiddenCategories = new List<string>();
 	        foreach (var categoryName in FCategories.Keys)
 	        	if (!CategoryVisible(categoryName))
