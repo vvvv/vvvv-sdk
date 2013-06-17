@@ -51,7 +51,7 @@ namespace vvvv.Nodes
             this.FPinInHanning.SetSubType(0, 1, 1, 1, false, true, true);
             
             this.FHost.CreateValueInput("Frequency Scaling", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInScaling);
-            this.FPinInHanning.SetSubType(0, 1, 1, 1, false, true, true);
+            this.FPinInScaling.SetSubType(0, 1, 1, 1, false, true, true);
         
         }
 
