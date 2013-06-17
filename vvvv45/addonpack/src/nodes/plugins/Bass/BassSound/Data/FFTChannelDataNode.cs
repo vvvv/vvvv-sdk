@@ -40,6 +40,7 @@ namespace vvvv.Nodes
 
         private IValueIn FPinInInvidivual;
         private IValueIn FPinInHanning;
+        private IValueIn FPinInScaling;
 
         protected override void OnPluginHostSet()
         {     
@@ -47,6 +48,9 @@ namespace vvvv.Nodes
             this.FPinInInvidivual.SetSubType(0, 1, 1, 1, false, true, true);
          
             this.FHost.CreateValueInput("Windowed", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHanning);
+            this.FPinInHanning.SetSubType(0, 1, 1, 1, false, true, true);
+            
+            this.FHost.CreateValueInput("Frequency Scaling", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInScaling);
             this.FPinInHanning.SetSubType(0, 1, 1, 1, false, true, true);
         
         }
@@ -164,6 +168,8 @@ namespace vvvv.Nodes
         protected override void SetData(float[] samples)
         {
             int len = this.DataLength;
+            double doScaling;
+            FPinInScaling.GetValue(0, out doScaling);
 
             BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(this.FChannel.BassHandle.Value);
             if (info.chans == 1 || !this.Individual)
@@ -172,9 +178,9 @@ namespace vvvv.Nodes
                 this.FPinOutRight.SliceCount = len;
                 for (int i = 0; i < len; i++)
                 {
-                    this.FPinOutLeft.SetValue(i, (double)samples[i]);
+                	this.FPinOutLeft.SetValue(i, (double)samples[i] * (i*doScaling+1));
                     //this.FPinOutLeft.SetValue(i, (double)samples[i]);
-                    this.FPinOutRight.SetValue(i, (double)samples[i]);
+                    this.FPinOutRight.SetValue(i, (double)samples[i] * (i*doScaling+1));
                 }
             }
             else
@@ -183,13 +189,14 @@ namespace vvvv.Nodes
                 this.FPinOutRight.SliceCount = len / 2;
                 for (int i = 0; i < len; i++)
                 {
+                	var slice = i / 2;
                     if (i % 2 == 0)
                     {
-                        this.FPinOutLeft.SetValue(i / 2, (double)samples[i]);
+                    	this.FPinOutLeft.SetValue(slice, (double)samples[i] * (slice*doScaling+1));
                     }
                     else
                     {
-                        this.FPinOutRight.SetValue(i / 2, (double)samples[i]);
+                    	this.FPinOutRight.SetValue(slice, (double)samples[i] * (slice*doScaling+1));
                     }
                 }
             }
