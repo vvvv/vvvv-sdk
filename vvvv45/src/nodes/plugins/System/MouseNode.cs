@@ -91,6 +91,7 @@ namespace VVVV.Nodes.Input
 
         MouseState FMouseState = new MouseState();
         PluginContainer FMouseSplitNode;
+        int FMouseWheel;
 
         public override void OnImportsSatisfied()
         {
@@ -113,8 +114,12 @@ namespace VVVV.Nodes.Input
                 switch (e.Message)
                 {
                     case WM.MOUSEWHEEL:
-                        var wheel = e.WParam.ToInt32().HiWord();
-                        FMouseState.MouseWheel = FMouseState.MouseWheel + (wheel / Const.WHEEL_DELTA);
+                        unchecked
+                        {
+                            var wheel = e.WParam.ToInt32().HiWord();
+                            FMouseWheel += wheel;
+                            FMouseState.MouseWheel = (int)Math.Round((float)FMouseWheel / Const.WHEEL_DELTA);
+                        }
                         break;
                     case WM.MOUSEMOVE:
                         RECT cr;

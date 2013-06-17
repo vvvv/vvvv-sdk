@@ -22,13 +22,13 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Input")]
-		ISpread<Matrix4x4> FInput;
+		public ISpread<Matrix4x4> FInput;
 
 		[Output("Output")]
-		ISpread<Matrix4x4> FOutput;
+        public ISpread<Matrix4x4> FOutput;
 
 		[Import()]
-		ILogger FLogger;
+        public ILogger FLogger;
 		#endregion fields & pins
 
 		//called when data for any output pin is requested

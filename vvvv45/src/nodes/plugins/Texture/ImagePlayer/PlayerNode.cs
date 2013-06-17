@@ -43,13 +43,13 @@ namespace VVVV.Nodes.ImagePlayer
         public ISpread<int> FThreadsTextureConfig;
         
         [Output("Texture")]
-        ISpread<ISpread<Frame>> FTextureOut;
+        ISpread<ISpread<Frame>> FTextureOut = null;
 
         [Output("Width")]
-        ISpread<ISpread<int>> FTextureWidthOut;
+        public ISpread<ISpread<int>> FTextureWidthOut;
 
         [Output("Height")]
-        ISpread<ISpread<int>> FTextureHeightOut;
+        public ISpread<ISpread<int>> FTextureHeightOut;
         
         [Output("Frame Count")]
         public ISpread<int> FFrameCountOut;
