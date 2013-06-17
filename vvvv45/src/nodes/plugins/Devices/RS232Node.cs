@@ -7,6 +7,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.Devices
 {
@@ -59,6 +60,9 @@ namespace VVVV.Nodes.Devices
         [Output("Connected")]
         public ISpread<bool> ConnectedOut;
 
+        [Import]
+        protected ILogger FLogger;
+
         private readonly Spread<SerialPort> FPorts = new Spread<SerialPort>();
 
         static Rs232Node()
@@ -109,32 +113,25 @@ namespace VVVV.Nodes.Devices
 
                 if (EnabledIn[i])
                 {
-                    // Configure the port
-                    var portName = ComPortIn[i].Name;
-                    if (port.PortName != portName)
-                        port.PortName = portName;
-                    if (port.BaudRate != BaudRateIn[i])
-                        port.BaudRate = BaudRateIn[i];
-                    if (port.DataBits != DataBitsIn[i])
-                        port.DataBits = DataBitsIn[i];
-                    if (port.StopBits != StopBitsIn[i])
-                        port.StopBits = StopBitsIn[i];
-                    if (port.Parity != ParityIn[i])
-                        port.Parity = ParityIn[i];
-                    if (port.Handshake != HandshakeIn[i])
-                        port.Handshake = HandshakeIn[i];
-                    if (port.DtrEnable != DtrEnableIn[i])
-                        port.DtrEnable = DtrEnableIn[i];
-                    if (port.RtsEnable != RtsEnableIn[i])
-                        port.RtsEnable = RtsEnableIn[i];
+                    // Try to configure the port
+                    TryConfigurePort(port, i);
+
                     // Open the port
                     if (!port.IsOpen)
                     {
                         port.Open();
                         SetStates(i);
                     }
-                    // Set the break state
-                    port.BreakState = BreakStateIn[i];
+
+                    // Can only be set if port is open
+                    try
+                    {
+                        TrySetBreakState(port, BreakStateIn[i]);
+                    }
+                    catch (Exception e)
+                    {
+                        FLogger.Log(e);
+                    }
 
                     // Write data to the port
                     var totalBytesToWrite = dataIn.Length;
@@ -260,6 +257,283 @@ namespace VVVV.Nodes.Devices
                     break;
                 default:
                     break;
+            }
+        }
+
+        void TryConfigurePort(SerialPort port, int slice)
+        {
+            try
+            {
+                TrySetPortName(port, ComPortIn[slice].Name);
+            }
+            catch (Exception e)
+            {
+                FLogger.Log(e);
+            }
+            try
+            {
+                TrySetBaudRate(port, BaudRateIn[slice]);
+            }
+            catch (Exception e)
+            {
+                FLogger.Log(e);
+            }
+            try
+            {
+                TrySetDataBits(port, DataBitsIn[slice]);
+            }
+            catch (Exception e)
+            {
+                FLogger.Log(e);
+            }
+            try
+            {
+                TrySetStopBits(port, StopBitsIn[slice]);
+            }
+            catch (Exception e)
+            {
+                FLogger.Log(e);
+            }
+            try
+            {
+                TrySetParity(port, ParityIn[slice]);
+            }
+            catch (Exception e)
+            {
+                FLogger.Log(e);
+            }
+            try
+            {
+                TrySetHandshake(port, HandshakeIn[slice]);
+            }
+            catch (Exception e)
+            {
+                FLogger.Log(e);
+            }
+            try
+            {
+                TrySetDtrEnable(port, DtrEnableIn[slice]);
+            }
+            catch (Exception e)
+            {
+                FLogger.Log(e);
+            }
+            try
+            {
+                TrySetRtsEnable(port, RtsEnableIn[slice]);
+            }
+            catch (Exception e)
+            {
+                FLogger.Log(e);
+            }
+        }
+
+        static void TrySetPortName(SerialPort port, string portName)
+        {
+            try
+            {
+                if (port.PortName != portName)
+                    port.PortName = portName;
+            }
+            catch (ArgumentNullException e)
+            {
+                throw e;
+            }
+            catch (ArgumentException e)
+            {
+                throw e;
+            }
+            catch (InvalidOperationException e)
+            {
+                if (port.IsOpen)
+                {
+                    port.Close();
+                    port.PortName = portName;
+                    port.Open();
+                }
+                else
+                    throw e;
+            }
+        }
+
+        static void TrySetBaudRate(SerialPort port, int baudRate)
+        {
+            try
+            {
+                if (port.BaudRate != baudRate)
+                    port.BaudRate = baudRate;
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                throw e;
+            }
+            catch (IOException e)
+            {
+                if (port.IsOpen)
+                {
+                    port.Close();
+                    port.BaudRate = baudRate;
+                    port.Open();
+                }
+                else
+                    throw e;
+            }
+        }
+
+        static void TrySetDataBits(SerialPort port, int dataBits)
+        {
+            try
+            {
+                if (port.DataBits != dataBits)
+                    port.DataBits = dataBits;
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                throw e;
+            }
+            catch (IOException e)
+            {
+                if (port.IsOpen)
+                {
+                    port.Close();
+                    port.DataBits = dataBits;
+                    port.Open();
+                }
+                else
+                    throw e;
+            }
+        }
+
+        static void TrySetStopBits(SerialPort port, StopBits stopBits)
+        {
+            try
+            {
+                if (port.StopBits != stopBits)
+                    port.StopBits = stopBits;
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                throw e;
+            }
+            catch (IOException e)
+            {
+                if (port.IsOpen)
+                {
+                    port.Close();
+                    port.StopBits = stopBits;
+                    port.Open();
+                }
+                else
+                    throw e;
+            }
+        }
+
+        static void TrySetParity(SerialPort port, Parity parity)
+        {
+            try
+            {
+                if (port.Parity != parity)
+                    port.Parity = parity;
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                throw e;
+            }
+            catch (IOException e)
+            {
+                if (port.IsOpen)
+                {
+                    port.Close();
+                    port.Parity = parity;
+                    port.Open();
+                }
+                else
+                    throw e;
+            }
+        }
+
+        static void TrySetHandshake(SerialPort port, Handshake handshake)
+        {
+            try
+            {
+                if (port.Handshake != handshake)
+                    port.Handshake = handshake;
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                throw e;
+            }
+            catch (IOException e)
+            {
+                if (port.IsOpen)
+                {
+                    port.Close();
+                    port.Handshake = handshake;
+                    port.Open();
+                }
+                else
+                    throw e;
+            }
+        }
+
+        static void TrySetDtrEnable(SerialPort port, bool dtrEnable)
+        {
+            try
+            {
+                if (port.DtrEnable != dtrEnable)
+                    port.DtrEnable = dtrEnable;
+            }
+            catch (IOException e)
+            {
+                if (port.IsOpen)
+                {
+                    port.Close();
+                    port.DtrEnable = dtrEnable;
+                    port.Open();
+                }
+                else
+                    throw e;
+            }
+        }
+
+        static void TrySetRtsEnable(SerialPort port, bool rtsEnable)
+        {
+            try
+            {
+                if (port.RtsEnable != rtsEnable)
+                    port.RtsEnable = rtsEnable;
+            }
+            catch (InvalidOperationException e)
+            {
+                throw e;
+            }
+            catch (IOException e)
+            {
+                if (port.IsOpen)
+                {
+                    port.Close();
+                    port.RtsEnable = rtsEnable;
+                    port.Open();
+                }
+                else
+                    throw e;
+            }
+        }
+
+        static void TrySetBreakState(SerialPort port, bool breakState)
+        {
+            try
+            {
+                if (port.BreakState != breakState)
+                    port.BreakState = breakState;
+            }
+            catch (InvalidOperationException e)
+            {
+                throw e;
+            }
+            catch (IOException e)
+            {
+                throw e;
             }
         }
     }
