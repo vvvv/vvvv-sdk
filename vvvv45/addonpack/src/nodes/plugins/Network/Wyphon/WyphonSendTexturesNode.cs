@@ -104,13 +104,10 @@ namespace VVVV.Nodes.Network.Wyphon
 		{
 		}
 
-		~WyphonSendTexturesNode()
-		{
-			//Unshare textures that have disappeared from the spread
-			foreach (UInt32 handle in SharedTextureHandles) {
-				//LogNow(LogType.Debug, "stop sharing " + handle + "");
-				wyphon.UnshareD3DTexture(handle);
-				//LogNow(LogType.Debug, "YES : keep sharing " + handle + "");
+		~WyphonSendTexturesNode() {
+			//Unshare all textures
+			foreach ( UInt32 handle in SharedTextureHandles ) {
+				wyphon.UnshareD3DTexture( handle );
 			}
 			SharedTextureHandles.SliceCount = 0;
 		}

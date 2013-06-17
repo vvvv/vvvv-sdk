@@ -40,9 +40,21 @@ namespace VVVV.Nodes.Network.Wyphon
 		[Input("Partner Id")]
 		IDiffSpread<UInt32> FPartnerIdIn;
 
-		[Input("Do Filter", IsSingle = true)]
-		IDiffSpread<bool> FDoFilterIn;
-		
+		[Input("Do Filter On Partner Id", IsSingle = true)]
+		IDiffSpread<bool> FDoFilterIdIn;
+
+		[Input( "Partner Name" )]
+		IDiffSpread<string> FPartnerNameIn;
+
+		[Input( "Texture Description" )]
+		IDiffSpread<string> FTextureDescriptionIn;
+
+		[Input( "Do Filter On Name/Description", IsSingle = true )]
+		IDiffSpread<bool> FDoFilterNameIn;
+
+
+		[Output( "Partner Id" )]
+		ISpread<UInt32> FPartnerIdOut;
 		
 		[Output("Description")]
 		ISpread<string> FDescriptionOut;
@@ -88,6 +100,16 @@ namespace VVVV.Nodes.Network.Wyphon
 			return usage & ((UInt32)Usage.None | (UInt32)Usage.RenderTarget | (UInt32)Usage.Dynamic | (UInt32)Usage.DepthStencil );
 		}
 
+
+		private bool spreadContains<T>(ISpread<T> spread, T value) {
+			foreach (T currVal in spread) {
+				if (currVal.Equals(value)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		#endregion helper functions
 
 		
@@ -104,14 +126,18 @@ namespace VVVV.Nodes.Network.Wyphon
 			    	&& (
 				    	( previousTexturesVersion != WyphonNode.texturesVersion )
 						|| FPartnerIdIn.IsChanged
-						|| FDoFilterIn.IsChanged
+						|| FDoFilterIdIn.IsChanged
+						|| FPartnerNameIn.IsChanged
+						|| FTextureDescriptionIn.IsChanged
+						|| FDoFilterNameIn.IsChanged
 					)
 				) {
 				
 				//LogNow(LogType.Debug, "Something happened with the textures shared by others, update our output !");
 				
 				lock (WyphonNode.sharedTexturesLock) {
-					
+
+					FPartnerIdOut.SliceCount = 0;
 					FDescriptionOut.SliceCount = 0;
 					FWidthOut.SliceCount = 0;
 					FHeightOut.SliceCount = 0;
@@ -122,38 +148,44 @@ namespace VVVV.Nodes.Network.Wyphon
 					FHandleOut.SliceCount = 0;
 					
 					foreach ( UInt32 partnerId in WyphonNode.SharedTexturesPerPartner.Keys ) {
-						if ( ! (FDoFilterIn.SliceCount > 0 && FDoFilterIn[0]) || FPartnerIdIn.IndexOf(partnerId) >= 0 ) {
+						if ( ! (FDoFilterIdIn.SliceCount > 0 && FDoFilterIdIn[0]) || FPartnerIdIn.IndexOf(partnerId) >= 0 ) {
 							//filter not enabled OR partnerId found in list => add this partner's textures to ouput
 
 							ISpread<SharedTextureInfo> textureInfoSpread;
 							if ( WyphonNode.SharedTexturesPerPartner.TryGetValue(partnerId, out textureInfoSpread) && textureInfoSpread != null) {
-								
+
 								foreach ( SharedTextureInfo textureInfo in textureInfoSpread ) {
-									FDescriptionOut.Add(textureInfo.description);
-									FWidthOut.Add(textureInfo.width);
-									FHeightOut.Add(textureInfo.height);
+									//filter on name if necessary
+									//Log(LogType.Debug, "Do we utput this texture? Filter on " + FPartnerNameIn + " and "+ FPartnerNameIn.c.Equals( WyphonNode.wyphonPartner.GetPartnerName( partnerId ) ) && FTextureDescriptionIn.Equals( textureInfo.description );
+									if ( !( FDoFilterNameIn.SliceCount > 0 && FDoFilterNameIn[0] ) || ( spreadContains( FPartnerNameIn, WyphonNode.wyphonPartner.GetPartnerName( partnerId ) ) && spreadContains( FTextureDescriptionIn, textureInfo.description ) ) ) {
+
+										FPartnerIdOut.Add( partnerId );
+										FDescriptionOut.Add( textureInfo.description );
+										FWidthOut.Add( textureInfo.width );
+										FHeightOut.Add( textureInfo.height );
 									
-									Format format = (Format) textureInfo.format;
-									EnumEntry formatEnumEntry = EnumManager.GetEnumEntry("TextureFormat", 0);
-									for ( int i = 0; i < EnumManager.GetEnumEntryCount("TextureFormat"); i++ ) {
-										if ( EnumManager.GetEnumEntryString("TextureFormat", i).CompareTo( format.ToString() ) == 0 ) {
-											formatEnumEntry = EnumManager.GetEnumEntry("TextureFormat", i);
+										Format format = (Format) textureInfo.format;
+										EnumEntry formatEnumEntry = EnumManager.GetEnumEntry("TextureFormat", 0);
+										for ( int i = 0; i < EnumManager.GetEnumEntryCount("TextureFormat"); i++ ) {
+											if ( EnumManager.GetEnumEntryString("TextureFormat", i).CompareTo( format.ToString() ) == 0 ) {
+												formatEnumEntry = EnumManager.GetEnumEntry("TextureFormat", i);
+											}
 										}
+									
+										//GetEnumEntryByUint("TextureFormat", textureInfo.format);
+										EnumEntry usageEnumEntry = EnumManager.GetEnumEntry("TextureUsage", (int) usage2enumUsage(textureInfo.usage) );
+									
+										LogNow ( LogType.Debug, "FORMAT Received = " + formatEnumEntry.ToString() + " index=" + formatEnumEntry.Index + " D3D const = " + textureInfo.format);
+									
+										FFormatEnumOut.Add(formatEnumEntry);
+										FUsageEnumOut.Add(usageEnumEntry);
+									
+	//									FFormatUintOut.Add(textureInfo.format);
+	//									FUsageUintOut.Add(textureInfo.usage);
+										FHandleOut.Add(textureInfo.textureHandle);
+
 									}
-									
-									//GetEnumEntryByUint("TextureFormat", textureInfo.format);
-									EnumEntry usageEnumEntry = EnumManager.GetEnumEntry("TextureUsage", (int) usage2enumUsage(textureInfo.usage) );
-									
-									LogNow ( LogType.Debug, "FORMAT Received = " + formatEnumEntry.ToString() + " index=" + formatEnumEntry.Index + " D3D const = " + textureInfo.format);
-									
-									FFormatEnumOut.Add(formatEnumEntry);
-									FUsageEnumOut.Add(usageEnumEntry);
-									
-//									FFormatUintOut.Add(textureInfo.format);
-//									FUsageUintOut.Add(textureInfo.usage);
-									FHandleOut.Add(textureInfo.textureHandle);
 								}
-								
 							}
 						}
 					}
