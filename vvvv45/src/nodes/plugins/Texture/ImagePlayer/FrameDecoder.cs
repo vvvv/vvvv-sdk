@@ -92,22 +92,30 @@ namespace VVVV.Nodes.ImagePlayer
             // Assertions
             System.Diagnostics.Debug.Assert(FChosenFormat != Format.Unknown);
 
-            // Check if the texture format is supported on this device
-            using (var direct3D = device.Direct3D)
+            Format format;
+            if (!FFallbackFormats.TryGetValue(FChosenFormat, out format))
             {
-                var adapter = 0;
-                var displayMode = direct3D.GetAdapterDisplayMode(adapter);
-                if (!direct3D.CheckDeviceFormat(adapter, DeviceType.Hardware, direct3D.GetAdapterDisplayMode(0).Format, Usage.None, ResourceType.Texture, FChosenFormat))
+                // Check if the texture format is supported on this device
+                using (var direct3D = device.Direct3D)
                 {
-                    // Ouch - the chosen format is not supported on this device
-                    // Add this format to the list of unsupported formats so we 
-                    // can avoid this for future frames.
-                    var fallbackFormat = Format.A8R8G8B8;
-                    FFallbackFormats.Add(FChosenFormat, fallbackFormat);
-                    return Decode(device, fallbackFormat);
+                    var adapter = 0;
+                    var displayMode = direct3D.GetAdapterDisplayMode(adapter);
+                    if (!direct3D.CheckDeviceFormat(adapter, DeviceType.Hardware, direct3D.GetAdapterDisplayMode(0).Format, Usage.None, ResourceType.Texture, FChosenFormat))
+                    {
+                        // Ouch - the chosen format is not supported on this device
+                        // Add this format to the list of unsupported formats so we 
+                        // can avoid this for future frames.
+                        var fallbackFormat = Format.A8R8G8B8;
+                        FFallbackFormats.Add(FChosenFormat, fallbackFormat);
+                        format = fallbackFormat;
+                    }
+                    else
+                    {
+                        format = FChosenFormat;
+                    }
                 }
             }
-            return Decode(device, FChosenFormat);
+            return Decode(device, format);
         }
 
         protected abstract Texture Decode(Device device, Format format);
