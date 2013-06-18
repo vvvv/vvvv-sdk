@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // you compile.
 
 [assembly: AssemblyTitle("Gui2d")]
-[assembly: AssemblyDescription("Nodes to build 2d guis in a EX9 renderer")]
+[assembly: AssemblyDescription("Nodes to build 2d guis in a renderer")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("tonfilm")]
 [assembly: AssemblyProduct("Gui2d")]
