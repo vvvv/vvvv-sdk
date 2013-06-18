@@ -15,7 +15,6 @@ using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.VMath;
-using VVVV.Utils.Win32;
 using EX9 = SlimDX.Direct3D9;
 using Frame = VVVV.PluginInterfaces.V2.EX9.TextureResource<VVVV.Nodes.ImagePlayer.FrameInfo>;
 
@@ -534,8 +533,8 @@ namespace VVVV.Nodes.ImagePlayer
         private Tuple<FrameInfo, Stream> PreloadFile(FrameInfo frameInfo)
         {
             // TODO: Consider using CopyStreamToStreamAsync from TPL extensions
-            var timer = new HiPerfTimer();
-            timer.Start();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             
             var filename = frameInfo.Filename;
             var bufferSize = frameInfo.BufferSize;
@@ -579,16 +578,16 @@ namespace VVVV.Nodes.ImagePlayer
                 FMemoryPool.ManagedPool.PutMemory(buffer);
             }
             
-            timer.Stop();
-            frameInfo.DurationIO = timer.Duration;
+            stopwatch.Stop();
+            frameInfo.DurationIO = stopwatch.Elapsed.TotalSeconds;
             
             return Tuple.Create(frameInfo, memoryStream);
         }
         
         private Frame PreloadFrame(Tuple<FrameInfo, Stream> tuple)
         {
-            var timer = new HiPerfTimer();
-            timer.Start();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             
             var frameInfo = tuple.Item1;
             var stream = tuple.Item2;
@@ -627,8 +626,8 @@ namespace VVVV.Nodes.ImagePlayer
                 }
             }
             
-            timer.Stop();
-            frameInfo.DurationTexture = timer.Duration;
+            stopwatch.Stop();
+            frameInfo.DurationTexture = stopwatch.Elapsed.TotalSeconds;
             
             return frame;
         }
