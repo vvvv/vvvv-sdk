@@ -145,6 +145,13 @@
             <param name="methodBody"></param>
             <returns></returns>
         </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.Decompiler.LocalScopeProvider.GetSynchronizationInformation(Microsoft.Cci.IMethodBody)">
+            <summary>
+            If the given method body is the "MoveNext" method of the state class of an asynchronous method, the returned
+            object describes where synchronization points occur in the IL operations of the "MoveNext" method. Otherwise
+            the result is null.
+            </summary>
+        </member>
         <member name="T:Microsoft.Cci.ILToCodeModel.ReplaceMetadataMethodBodiesWithDecompiledMethodBodies">
             <summary>
             A mutator that copies metadata models into mutable code models by using the base MetadataMutator class to make a mutable copy
@@ -306,6 +313,28 @@
             for maintaining the state of closures and anonymous delegates.
             </summary>
         </member>
+        <member name="T:Microsoft.Cci.ILToCodeModel.SourceMethodBody">
+            <summary>
+            A metadata (IL) representation along with a source level representation of the body of a method or of a property/event accessor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.SourceMethodBody.#ctor(Microsoft.Cci.IMethodBody,Microsoft.Cci.IMetadataHost,Microsoft.Cci.ISourceLocationProvider,Microsoft.Cci.ILocalScopeProvider,Microsoft.Cci.ILToCodeModel.DecompilerOptions)">
+            <summary>
+            Allocates a metadata (IL) representation along with a source level representation of the body of a method or of a property/event accessor.
+            </summary>
+            <param name="ilMethodBody">A method body whose IL operations should be decompiled into a block of statements that will be the
+            result of the Block property of the resulting source method body.</param>
+            <param name="host">An object representing the application that is hosting the converter. It is used to obtain access to some global
+            objects and services such as the shared name table and the table for interning references.</param>
+            <param name="sourceLocationProvider">An object that can map some kinds of ILocation objects to IPrimarySourceLocation objects. May be null.</param>
+            <param name="localScopeProvider">An object that can provide information about the local scopes of a method.</param>
+            <param name="options">Set of options that control decompilation.</param>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.SourceMethodBody.GetBlock">
+            <summary>
+            Decompile the IL operations of this method body into a block of statements.
+            </summary>
+        </member>
         <member name="T:Microsoft.Cci.ILToCodeModel.DecompiledBlock">
             <summary>
             A delimited collection of statements to execute in a new (nested) scope.
@@ -345,26 +374,54 @@
             A reference to System.Type.GetTypeFromHandle(System.Runtime.TypeHandle).
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.ILToCodeModel.SourceMethodBody">
+        <member name="T:Microsoft.Cci.ILToCodeModel.ClosureFieldMapper">
             <summary>
-            A metadata (IL) representation along with a source level representation of the body of a method or of a property/event accessor.
+            The purpose of this traverser is to discover the mapping between fields in a closure state class and the original locals and parameters that were
+            captured into the closure state class, so that we can substitute field accesses with local and parameter accesses during decompilation of anonymous
+            delegates. Things are complicated by having to deal with a variety of compilers that potentially use different name mangling schemes
+            and moreover we might not have a PDB file available and so might not know the name of a local or parameter. The bottom line is that we
+            cannot rely on naming conventions. Generally, we rely on the source operand of the first assignment to a state field as providing the local
+            or parameter that is being captured. However, if an anonymous delegate uses a local that is not used outside of it (or other anonymous delegates)
+            then a compiler (such as, alas, the C# compiler) might provide a state field for the local while not actually defining a real local of inserting
+            an assignment to capture the value of the local in the state class before constructing a closure. We therefore recurse into anonymous delegate 
+            bodies to find assignments to state fields, assume those are captured locals, and then dummy up locals for use in the decompiled method.
             </summary>
         </member>
-        <member name="M:Microsoft.Cci.ILToCodeModel.SourceMethodBody.#ctor(Microsoft.Cci.IMethodBody,Microsoft.Cci.IMetadataHost,Microsoft.Cci.ISourceLocationProvider,Microsoft.Cci.ILocalScopeProvider,Microsoft.Cci.ILToCodeModel.DecompilerOptions)">
+        <member name="M:Microsoft.Cci.ILToCodeModel.PatternReplacer.ReplaceCompilerGeneratedLocalUsedForInitializersPattern(Microsoft.Cci.MutableCodeModel.BlockStatement)">
             <summary>
-            Allocates a metadata (IL) representation along with a source level representation of the body of a method or of a property/event accessor.
+            The source expression "new C(){ f1 = e1, f2 = e2, ... }" (where the f's can be fields
+            or properties) turns into "cgl = new C(); cgl.f1 = e1; cg1.f2 = e2; ...".
+            ("cgl" means "compiler-generated local".)
+            Turn it into a block expression whose Statements are the statements above (but where
+            the first one becomes a local declaration statement), and with an Expression that is
+            just the local, cgl', where cgl' is a freshly created local.
             </summary>
-            <param name="ilMethodBody">A method body whose IL operations should be decompiled into a block of statements that will be the
-            result of the Block property of the resulting source method body.</param>
-            <param name="host">An object representing the application that is hosting the converter. It is used to obtain access to some global
-            objects and services such as the shared name table and the table for interning references.</param>
-            <param name="sourceLocationProvider">An object that can map some kinds of ILocation objects to IPrimarySourceLocation objects. May be null.</param>
-            <param name="localScopeProvider">An object that can provide information about the local scopes of a method.</param>
-            <param name="options">Set of options that control decompilation.</param>
         </member>
-        <member name="M:Microsoft.Cci.ILToCodeModel.SourceMethodBody.GetBlock">
+        <member name="M:Microsoft.Cci.ILToCodeModel.PatternReplacer.ReplacePlusAssignForStringPattern(Microsoft.Cci.MutableCodeModel.BlockStatement)">
             <summary>
-            Decompile the IL operations of this method body into a block of statements.
+            For a string field, s, the source expression e.s += ""
+            turns into a specific pattern.
+            That pattern here looks like:
+            i:   push e
+            i+1: push dup.s
+            i+2: (!= dup (default_value string)) ? goto L2 : empty
+            i+3: L1
+            i+4: pop
+            i+5: push ""
+            i+6: L2
+            i+7: pop.s = pop
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.PopCounter.TraverseChildren(Microsoft.Cci.IAnonymousDelegate)">
+            <summary>
+            Do not count pops in lambdas: they must not be confused with pops that
+            are not within them.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILToCodeModel.PopReplacer.Rewrite(Microsoft.Cci.IAnonymousDelegate)">
+            <summary>
+            Do not replace pops in lambdas: they must not be confused with pops that
+            are not within them.
             </summary>
         </member>
     </members>

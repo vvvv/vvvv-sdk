@@ -311,6 +311,20 @@ namespace VVVV.Utils.VMath
 		 	double maxTemp = Max(min, max);
 		 	return Min(Max(x, minTemp), maxTemp);
 		}
+
+        /// <summary>
+        /// Clamp function, clamps a floating point value into the range [min..max]
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static double Clamp(float x, float min, float max)
+        {
+            double minTemp = Math.Min(min, max);
+            double maxTemp = Math.Max(min, max);
+            return Math.Min(Math.Max(x, minTemp), maxTemp);
+        }
 		
 		/// <summary>
 		/// Clamp function, clamps an integer value into the range [min..max]

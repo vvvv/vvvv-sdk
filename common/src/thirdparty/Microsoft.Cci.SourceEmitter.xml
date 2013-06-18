@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Cci.SourceEmitter</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Cci.SourceEmitter">
+            <summary>
+            A wrapper for a TextWriter instance that adds various methods for emitting source code in a nicely formatted way.
+            The formatting conventions can be specified via options.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.#ctor(System.IO.TextWriter)">
+            <summary>
+            A wrapper for a TextWriter instance that adds various methods for emitting source code in a nicely formatted way.
+            The formatting conventions can be specified via options.
+            </summary>
+            <param name="textWriter">The TextWriter instance to which the formatted source code is written.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitBlockClosingDelimiter(System.String)">
+            <summary>
+            Write out the given string and note that it is the closing delimiter of a block.
+            If this.IdentBlockContents is true then this.IndentationLevel will be incremented before writing out the delimiter.
+            If this.IndentBlockDelimiters is true then this.IndentationLevel will be decremented after writing out the delimiter.
+            </summary>
+            <param name="delimiter">A string representing the start of a block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitBlockOpeningDelimiter(System.String)">
+            <summary>
+            Write out the given string and note that it is the opening delimiter of a block.
+            If this.IndentBlockDelimiters is true then this.IndentationLevel will be incremented before writing out the delimiter.
+            If this.IdentBlockContents is true then this.IndentationLevel will be incremented after writing out the delimiter.
+            </summary>
+            <param name="delimiter">A string representing the start of a block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitCaseClosingDelimiter(System.String)">
+            <summary>
+            Write out the given string and note that it is the closing delimiter of a switch case.
+            If this.IndentCaseContents is true then this.IndentationLevel will be decremented before writing out the delimiter.
+            </summary>
+            <param name="delimiter">A string representing the start of a block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitCaseOpeningDelimiter(System.String)">
+            <summary>
+            Write out the given string and note that it is the opening delimiter of a switch case.
+            If this.IndentCaseContents is true then this.IndentationLevel will be incremented after writing out the delimiter.
+            </summary>
+            <param name="delimiter">A string representing the start of a block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitCatch(System.String)">
+            <summary>
+            If this.PlaceCatchOnNewLine is true then a new line will be emitted, if necessary, 
+            before calling this.EmitString with the given catch delimiter string.
+            </summary>
+            <param name="catchDelimiter">A string representing the start of the else part of an if statement.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitElse(System.String)">
+            <summary>
+            If this.PlaceElseOnNewLine is true then a new line will be emitted, if necessary, 
+            before calling this.EmitString with the given else delimiter string.
+            </summary>
+            <param name="elseDelimiter">A string representing the start of the else part of an if statement.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitFinally(System.String)">
+            <summary>
+            If this.PlaceFinallyOnNewLine is true then a new line will be emitted, if necessary, 
+            before calling this.EmitString with the given finally delimiter string.
+            </summary>
+            <param name="finallyDelimiter">A string representing the start of the else part of an if statement.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitLabel(System.String)">
+            <summary>
+            Emits the given string, after applying the indentation rules applicable to labels.
+            </summary>
+            <param name="label">The string to emit as a label.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitNewLine">
+            <summary>
+            Emits a new line character, thus starting a new source line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitString(System.String)">
+            <summary>
+            Emits the given string to the current source line.
+            If this is the first string on the line, indentation will be emitted before the string.
+            Note, however, that if the string is empty nothing is emitted, not even indentation.
+            </summary>
+            <param name="str">The string to emit.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitAnonymousMethodBodyOpeningDelimiter(System.String)">
+            <summary>
+            If this.PlaceAnonymousMethodBodyOpeningDelimitersOnNewLine is true a new line is emitted, if necessary,
+            before calling this.EmitBlockOpeningDelimiter with the given delimiter.
+            </summary>
+            <param name="delimiter">A string representing the start of an anonymous method body block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitAnonymousTypeBodyOpeningDelimiter(System.String)">
+            <summary>
+            If this.PlaceAnonymousTypeBodyOpeningDelimitersOnNewLine is true a new line is emitted, if necessary,
+            before calling this.EmitBlockOpeningDelimiter with the given delimiter.
+            </summary>
+            <param name="delimiter">A string representing the start of a anonymous type body block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitControlBlockOpeningDelimiter(System.String)">
+            <summary>
+            If this.PlaceControlBlockOpeningDelimitersOnNewLine is true a new line is emitted, if necessary,
+            before calling this.EmitBlockOpeningDelimiter with the given delimiter.
+            A control block is the body of an loop or the true/false part of an if statement, for example.
+            </summary>
+            <param name="delimiter">A string representing the start of a control block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitLambdaBodyOpeningDelimiter(System.String)">
+            <summary>
+            If this.PlaceLambdaBodyOpeningDelimitersOnNewLine is true a new line is emitted, if necessary,
+            before calling this.EmitBlockOpeningDelimiter with the given delimiter.
+            </summary>
+            <param name="delimiter">A string representing the start of a lambda body block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitMethodBodyOpeningDelimiter(System.String)">
+            <summary>
+            If this.PlaceMethodBodyOpeningDelimitersOnNewLine is true a new line is emitted, if necessary,
+            before calling this.EmitBlockOpeningDelimiter with the given delimiter.
+            </summary>
+            <param name="delimiter">A string representing the start of a method body block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.EmitTypeBodyOpeningDelimiter(System.String)">
+            <summary>
+            If this.PlaceTypeBodyOpeningDelimitersOnNewLine is true a new line is emitted, if necessary,
+            before calling this.EmitBlockOpeningDelimiter with the given delimiter.
+            </summary>
+            <param name="delimiter">A string representing the start of a type body block.</param>
+        </member>
+        <member name="M:Microsoft.Cci.SourceEmitter.IndentIfAtStartOfNewLine">
+            <summary>
+            If nothing has yet been written to the current line, write out this.IndentationLevel*this.IndentSize number of spaces.
+            (Calling this again before first calling EmitNewLine, will have no effect.)
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.IndentBlockContents">
+            <summary>
+            If true the indentation level is incremented after the opening delimiter for a block has been emitted
+            and decreased again after the closing delimiter has been emitted.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.IndentBlockDelimiters">
+            <summary>
+            If true then EmitBlockOpeningDelimiter increments the indentation level before writing out the delimiter
+            and EmitBlockClosingDelimiter decrements the indentation level after writing out the delimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.IndentCaseContents">
+            <summary>
+            If true the indentation level is incremented after the opening delimiter for a switch case has been emitted
+            and decreased again after the closing delimiter has been emitted.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.IndentCaseDelimiters">
+            <summary>
+            If true then EmitCaseOpeningDelimiter increments the indentation level before writing out the delimiter
+            and EmitCaseClosingDelimiter decrements the indentation level after writing out the delimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.LeaveBlankLinesBetweenNamespaceMembers">
+            <summary>
+            If true, namespace members (for example: types) are separated by blank lines.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.LeaveBlankLinesBetweenTypeMembers">
+            <summary>
+            If true, type members (for example: fields) are separated by blank lines.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.PlaceAnonymousMethodBodyOpeningDelimitersOnNewLine">
+            <summary>
+            If true then EmitAnonymousMethodBodyOpeningDelimiter starts a new line before calling EmitBlockOpeningDelimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.PlaceAnonymousTypeBodyOpeningDelimitersOnNewLine">
+            <summary>
+            If true then EmitAnonymousTypeBodyOpeningDelimiter starts a new line before calling EmitBlockOpeningDelimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.PlaceControlBlockOpeningDelimitersOnNewLine">
+            <summary>
+            If true then EmitControlBlockOpeningDelimiter starts a new line before calling EmitBlockOpeningDelimiter.
+            A control block is the body of an loop or the true/false part of an if statement, for example.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.PlaceCatchOnNewLine">
+            <summary>
+            If true then EmitCatch starts a new line before emitting the catch delimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.PlaceElseOnNewLine">
+            <summary>
+            If true then EmitElse starts a new line before emitting the else delimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.PlaceFinallyOnNewLine">
+            <summary>
+            If true then EmitFinally starts a new line before emitting the finally delimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.PlaceLambdaBodyOpeningDelimitersOnNewLine">
+            <summary>
+            If true then EmitLambdaBodyOpeningDelimiter starts a new line before calling EmitBlockOpeningDelimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.PlaceMethodBodyOpeningDelimitersOnNewLine">
+            <summary>
+            If true then EmitMethodBodyOpeningDelimiter starts a new line before calling EmitBlockOpeningDelimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.PlaceObjectInitializerBodyOpeningDelimitersOnNewLine">
+            <summary>
+            If true then EmitObjectInitializerBodyOpeningDelimiter starts a new line before calling EmitBlockOpeningDelimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.PlaceTypeBodyOpeningDelimitersOnNewLine">
+            <summary>
+            If true then EmitTypeBodyOpeningDelimiter starts a new line before calling EmitBlockOpeningDelimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.IndentationLevel">
+            <summary>
+            The number of times this.IndentSize spaces are added to the start of a new line before writing source to it.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.IndentSize">
+            <summary>
+            The number of spaces, for each level of indentation, to add to the start of a new line before writing source code to it.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.SourceEmitter.LabelIndentation">
+            <summary>
+            The kind of indentation that is to precede a label when it is the first thing on a new line.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.SourceEmitter.LabelIndentationKind">
+            <summary>
+            Choices for how labels are to be indented when they start a new line.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.SourceEmitter.LabelIndentationKind.PlaceLabelsInLeftmostColumn">
+            <summary>
+            Nothing is to precede the label when it is the first thing on a new line.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.SourceEmitter.LabelIndentationKind.PlaceLabelsOneIndentationLessThanCurrentLevel">
+            <summary>
+            The label is to be indented one level less than the current level of indentation when it is the first thing on a new line.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.SourceEmitter.LabelIndentationKind.PlaceLabelsAtCurrentIndentation">
+            <summary>
+            The label is to be indented at the current level of indentation when it is the first thing on a new line.
+            </summary>
+        </member>
+    </members>
+</doc>

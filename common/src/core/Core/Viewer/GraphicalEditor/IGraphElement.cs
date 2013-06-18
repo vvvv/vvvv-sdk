@@ -52,5 +52,13 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         }
 
         void BringToFront();
+
+        object Tag
+        {
+            get;
+            set;
+        }
+
+        void Redraw();
     }        
 }

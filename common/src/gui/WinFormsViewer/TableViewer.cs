@@ -51,32 +51,38 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
 
         void HandleCellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            var gridViewCell = FDataGridView[e.ColumnIndex, e.RowIndex];
-            var cell = gridViewCell.Tag as ICell;
-            var value = Convert.ChangeType(gridViewCell.FormattedValue, cell.ValueType);
-            
-            if (!cell.ReadOnly)
+            DebugHelpers.CatchAndLogNeverStop(() =>
             {
-                if (cell.AcceptsValue(value))
+                var gridViewCell = FDataGridView[e.ColumnIndex, e.RowIndex];
+                var cell = gridViewCell.Tag as ICell;
+                var value = Convert.ChangeType(gridViewCell.FormattedValue, cell.ValueType);
+
+                if (!cell.ReadOnly)
                 {
-                    cell.Value = value;
+                    if (cell.AcceptsValue(value))
+                    {
+                        cell.Value = value;
+                    }
                 }
-            }
+            }, "Cell Value Changed");
         }
 
         void HandleCellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            var gridViewCell = FDataGridView[e.ColumnIndex, e.RowIndex];
-            var cell = gridViewCell.Tag as ICell;
-            var value = Convert.ChangeType(gridViewCell.FormattedValue, cell.ValueType);
+            DebugHelpers.CatchAndLogNeverStop(() =>
+            {            
+                var gridViewCell = FDataGridView[e.ColumnIndex, e.RowIndex];
+                var cell = gridViewCell.Tag as ICell;
+                var value = Convert.ChangeType(gridViewCell.FormattedValue, cell.ValueType);
 
-            if (!cell.ReadOnly)
-            {
-                if (!cell.AcceptsValue(value))
+                if (!cell.ReadOnly)
                 {
-                    FDataGridView.CancelEdit();
+                    if (!cell.AcceptsValue(value))
+                    {
+                        FDataGridView.CancelEdit();
+                    }
                 }
-            }
+            }, "Cell Validating");
         }
 
         public int RowCount
@@ -120,7 +126,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
                 FRowSynchronizer.Dispose();
             }
             
-            FMapper = new ModelMapper(Input, Registry);
+            FMapper = new ModelMapper(Model, Registry);
             
             if (FMapper.CanMap<IEnumerable<Column>>())
             {
@@ -188,13 +194,27 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             }
         }
 
-        void FDataGridViewCellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        void FDataGridViewCellMouseDoubleClick(object sender, System.Windows.Forms.DataGridViewCellMouseEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.RowIndex < FDataGridView.Rows.Count)
+        	if (e.RowIndex >= 0 && e.RowIndex < FDataGridView.Rows.Count)
             {
                 var mapper = new ModelMapper(FDataGridView.Rows[e.RowIndex].Tag, Registry);
                 OnDoubleClick(mapper, null);
+                if (e.Button == MouseButtons.Left)
+	        	{
+	      			FDataGridView.CurrentCell = FDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+	        		FDataGridView.BeginEdit(true);
+	        	}
             }
+        }
+        
+        void FDataGridViewCellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+        	if (e.Button == MouseButtons.Right)
+        	{
+      			FDataGridView.CurrentCell = FDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+        		FDataGridView.BeginEdit(true);
+        	}
         }
         
         object CreateRow(object entry)
@@ -286,5 +306,13 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             }
             base.Dispose(disposing);
         }
+
+
+        private void TableViewer_BackColorChanged(object sender, EventArgs e)
+        {
+            FDataGridView.BackgroundColor = BackColor;
+        }
+        
+        
     }
 }

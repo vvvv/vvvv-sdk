@@ -109,7 +109,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             if (FRootMapper != null)
                 FRootMapper.Dispose();
             
-            FRootMapper = new ModelMapper(Input, Registry);
+            FRootMapper = new ModelMapper(Model, Registry);
             
             FCanvas.Root.Add(Background);
             FCanvas.Root.Add(Foreground);

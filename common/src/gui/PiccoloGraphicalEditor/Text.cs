@@ -7,10 +7,10 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Linq;
 
-using UMD.HCIL.Piccolo;
-using UMD.HCIL.Piccolo.Event;
-using UMD.HCIL.Piccolo.Nodes;
-using UMD.HCIL.Piccolo.Util;
+using Piccolo.NET;
+using Piccolo.NET.Event;
+using Piccolo.NET.Nodes;
+using Piccolo.NET.Util;
 using VVVV.Core.View.GraphicalEditor;
 using VVVV.Core.Viewer.GraphicalEditor;
 
@@ -157,7 +157,19 @@ namespace VVVV.HDE.GraphicalEditing
 	    		AddChild(t);
     		}
 
-            Bounds = UnionOfChildrenBounds;
+            this.Width = this.UnionOfChildrenBounds.Width;
+            this.Height = this.UnionOfChildrenBounds.Height;
+
+            //position may have changed when in center mode
+            foreach (var item in this.AllNodes)
+            {
+                if (item is PText)
+                {
+                    (item as PText).X = this.X;
+                    (item as PText).Y = this.Y;
+                }
+            }
+
     	}
     	
     	protected Font FFont;

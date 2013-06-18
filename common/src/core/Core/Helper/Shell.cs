@@ -16,6 +16,7 @@ using VVVV.Core.Model;
 using VVVV.Core.Logging;
 using VVVV.Utils.Network;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace VVVV.Core
 {
@@ -72,15 +73,15 @@ namespace VVVV.Core
 
         public CompositionContainer Container { get; private set; }
         
-        public CommandLineArguments CommandLineArguments { get; private set; }
+        public static CommandLineArguments CommandLineArguments { get; private set; }
         
         [Export(typeof(ILogger))]
         public DefaultLogger Logger { get; private set; }
         
         //the solution
         [Export]
-        private ISolution FSolution;
-        public ISolution Solution 
+        private Solution FSolution;
+        public Solution Solution 
         { 
             get
             {
@@ -107,21 +108,22 @@ namespace VVVV.Core
         }
 
         //port and remoting manager
-        private int FPort = 3344;
-        private RemotingManagerTCP FRemoter;
+        private static RemotingManagerTCP FRemoter = new RemotingManagerTCP();
+
+        static Shell()
+        {
+            CommandLineArguments = new CommandLineArguments();
+            CommandLineArguments.Parse();
+        }
 
         private Shell()
         {
         	if (!Directory.Exists(FTempPath))
         		Directory.CreateDirectory(TempPath);
         	
-            CommandLineArguments = new CommandLineArguments();
+            
             Logger = new DefaultLogger();
-            FRemoter = new RemotingManagerTCP();
-
-            Compose();
-
-            CommandLineArguments.Parse();
+            Compose();  
         }
         
         public static Shell Initialize()
@@ -163,22 +165,26 @@ namespace VVVV.Core
         public T GetAtID<T>(string id)
         {
             var item = GetIDItem(id);
-            return item.Mapper.Map<T>();
+            return (T)item.ServiceProvider.GetService(typeof(T));
         }
 
         //publish an object
-        public void PublishObject(string objectName, MarshalByRefObject obj)
+        public static void PublishObject(string objectName, MarshalByRefObject obj)
         {
             var channelName = "ShellChannel";
 
             if (!RemotingUtils.ChannelExists(channelName))
             {
-                FRemoter.InitializeServerChannel(channelName, FPort, false);
+                FRemoter.InitializeServerChannel(channelName, Shell.CommandLineArguments.Port, false);
                 Console.WriteLine("Channel crated: " + channelName);
             }
 
             FRemoter.PublishObject(obj, objectName);
             Console.WriteLine("Published object: " + objectName);
         }
+
+        public bool IsRuntime { get; set; }
+
+        public SynchronizationContext MainThread { get; set; }
     }
 }

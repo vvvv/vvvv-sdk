@@ -58,5 +58,10 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         {
             get;
         }
+
+        RectangleF FullBounds
+        {
+            get;
+        }
     }
 }

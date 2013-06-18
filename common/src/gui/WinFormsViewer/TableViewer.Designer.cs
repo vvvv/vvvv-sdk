@@ -35,7 +35,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         	this.FDataGridView.AllowUserToResizeRows = false;
         	this.FDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
         	this.FDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-        	this.FDataGridView.BackgroundColor = System.Drawing.Color.Gray;
+        	this.FDataGridView.BackgroundColor = System.Drawing.Color.DimGray;
         	this.FDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
         	this.FDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
         	this.FDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
@@ -63,7 +63,8 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         	this.FDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
         	this.FDataGridView.Size = new System.Drawing.Size(556, 430);
         	this.FDataGridView.TabIndex = 0;
-        	this.FDataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FDataGridViewCellDoubleClick);
+        	this.FDataGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FDataGridViewCellMouseClick);
+        	this.FDataGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FDataGridViewCellMouseDoubleClick);
         	// 
         	// TableViewer
         	// 
@@ -73,9 +74,12 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         	this.Margin = new System.Windows.Forms.Padding(0);
         	this.Name = "TableViewer";
         	this.Size = new System.Drawing.Size(556, 430);
+        	this.BackColorChanged += new System.EventHandler(this.TableViewer_BackColorChanged);
         	((System.ComponentModel.ISupportInitialize)(this.FDataGridView)).EndInit();
         	this.ResumeLayout(false);
         }
         private System.Windows.Forms.DataGridView FDataGridView;
+        
+        
     }
 }

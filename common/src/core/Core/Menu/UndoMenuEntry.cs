@@ -9,8 +9,15 @@ namespace VVVV.Core.Menu
         public UndoMenuEntry(ICommandHistory commandHistory)
             :base(commandHistory, string.Format("Undo {0}", commandHistory.PreviousCommand), Keys.Control | Keys.Z)
         {
-            var prevCommand = commandHistory.PreviousCommand;
-            Enabled = prevCommand != null && prevCommand.HasUndo;
+        }
+
+        public override bool Enabled
+        {
+            get
+            {
+                var prevCommand = CommandHistory.PreviousCommand;
+                return prevCommand != null && prevCommand.HasUndo;
+            }
         }
         
         public override void Click()

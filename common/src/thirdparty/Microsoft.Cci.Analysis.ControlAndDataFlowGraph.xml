@@ -9,9 +9,136 @@
             
             </summary>
         </member>
+        <member name="T:Microsoft.Cci.Analysis.TypeInferencer`2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.Analysis.TypeInferencer`2.FillInTypes(Microsoft.Cci.IMetadataHost,Microsoft.Cci.Analysis.ControlAndDataFlowGraph{`0,`1})">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Microsoft.Cci.Analysis.DataFlowInferencer`2.SetupDataFlow(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IMethodBody,Microsoft.Cci.Analysis.ControlAndDataFlowGraph{`0,`1})">
             <summary>
             
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.Analysis.ControlGraphQueries`2">
+            <summary>
+            Presents information derived from a simple control flow graph. For example, traversal orders, predecessors, dominators and dominance frontiers.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.Analysis.ControlGraphQueries`2.#ctor(Microsoft.Cci.Analysis.ControlAndDataFlowGraph{`0,`1})">
+            <summary>
+            Presents information derived from a simple control flow graph. For example, traversal orders, predecessors, dominators and dominance frontiers.
+            </summary>
+            <param name="controlFlowGraph">The simple control flow graph from which to derive the information.</param>
+        </member>
+        <member name="M:Microsoft.Cci.Analysis.ControlGraphQueries`2.DominanceFrontierFor(`0)">
+            <summary>
+            Returns zero or more nodes that are reachable from the given basic block, but are not dominated by the given basic block.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.Analysis.ControlGraphQueries`2.Dominates(`0,`0)">
+            <summary>
+            Returns true if the first block dominates the second block. That is, if all control paths from the applicable root node
+            lead to the second block only via the first block.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.Analysis.ControlGraphQueries`2.ImmediateDominator(`0)">
+            <summary>
+            Returns the last block through which all control flows from a root must pass in order to reach the given block. 
+            This block can be a root, however, it will not be the given block, except when the given block is a root.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.Analysis.ControlGraphQueries`2.PredeccessorsFor(`0)">
+            <summary>
+            All basic blocks from which control can flow to the given basic block.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Analysis.ControlGraphQueries`2.BlocksInPostorder">
+            <summary>
+            Contains the same nodes as the AllBlocks property of the control flow graph, but in the order they will be visited by a depth first, post order traversal of successor nodes.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.Analysis.ControlGraphQueries`2.BlocksInPreorder">
+            <summary>
+            Contains the same nodes as the AllBlocks property of the control flow graph, but in the order they will be visited by a depth first, pre order traversal of successor nodes.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.Analysis.EnhancedBasicBlock`1">
+            <summary>
+            A basic block with additional fields to help compute things such as predecessor edges, dominance and dominance frontiers.
+            </summary>
+            <typeparam name="Instruction"></typeparam>
+        </member>
+        <member name="T:Microsoft.Cci.Analysis.BasicBlock`1">
+            <summary>
+            A block of instructions of which only the first instruction can be reached via explicit control flow.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.Analysis.BasicBlock`1.firstSuccessorEdge">
+            <summary>
+            The first edge that leaves this block. The edges are a contiguous sublist of the the SuccessorEdges list of the ControlAndDataFlowGraph that contains this block.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.Analysis.BasicBlock`1.successorCount">
+            <summary>
+            The number of edges that leave this block. The edges are a contiguous sublist of the the SuccessorEdges list of the ControlAndDataFlowGraph that contains this block.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.Analysis.BasicBlock`1.OperandStack">
+            <summary>
+            A list of pseudo instructions that initialize the operand stack when the block is entered. No actual code should be generated for these instructions
+            as the actual stack will be set up by the code transferring control to this block.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.Analysis.BasicBlock`1.Instructions">
+            <summary>
+            The instructions making up this block.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.Analysis.BasicBlock`1.ToString">
+            <summary>
+            Returns a string describing the basic block.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Microsoft.Cci.Analysis.BasicBlock`1.Offset">
+            <summary>
+            The IL offset of the first instruction in this basic block. If the block is empty, it is the same as the Offset of the following block. If there is no following block, 
+            it is the offset where the next instruction would have appeared.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.Analysis.EnhancedBasicBlock`1.firstDominanceFrontierNode">
+            <summary>
+            The first block in a list of blocks that are reachable from, but not dominated by this block.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.Analysis.EnhancedBasicBlock`1.dominanceFrontierCount">
+            <summary>
+            The number of blocks that are reachable from, but not dominated by this block.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.Analysis.EnhancedBasicBlock`1.firstPredecessorEdge">
+            <summary>
+            The first edge that enters this block. The edges are a contiguous sublist of the the PredeccessorEdges list of the ControlAndDataFlowGraph that contains this block.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.Analysis.EnhancedBasicBlock`1.predeccessorCount">
+            <summary>
+            The number of edges that enter this block. The edges are a contiguous sublist of the the PredeccessorEdges list of the ControlAndDataFlowGraph that contains this block.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.Analysis.EnhancedBasicBlock`1.immediateDominator">
+            <summary>
+            The block through which all control flows from a root must pass in order to reach this block. Can be a root. Will not be the block itself, except when the block is a root.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.Analysis.EnhancedBasicBlock`1.postOrderNumber">
+            <summary>
+            The position of the node in a depth first, post order traversal of successor edges.
             </summary>
         </member>
         <member name="T:Microsoft.Cci.Analysis.ControlAndDataFlowGraph`2">
@@ -56,44 +183,6 @@
             The master list of all successor edges. The successor list for each basic block is a sublist of this list.
             </summary>
         </member>
-        <member name="T:Microsoft.Cci.Analysis.BasicBlock`1">
-            <summary>
-            A block of instructions of which only the first instruction can be reached via explicit control flow.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Cci.Analysis.BasicBlock`1.firstSuccessorEdge">
-            <summary>
-            The first edge that leaves this block. The edges are a contiguous sublist of the the SuccessorEdges list of the ControlAndDataFlowGraph that contains this block.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Cci.Analysis.BasicBlock`1.successorCount">
-            <summary>
-            The number of edges that leave this block. The edges are a contiguous sublist of the the SuccessorEdges list of the ControlAndDataFlowGraph that contains this block.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Cci.Analysis.BasicBlock`1.OperandStack">
-            <summary>
-            A list of pseudo instructions that initialize the operand stack when the block is entered. No actual code should be generated for these instructions
-            as the actual stack will be set up by the code transferring control to this block.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Cci.Analysis.BasicBlock`1.Instructions">
-            <summary>
-            The instructions making up this block.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Analysis.BasicBlock`1.ToString">
-            <summary>
-            Returns a string describing the basic block.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:Microsoft.Cci.Analysis.BasicBlock`1.Offset">
-            <summary>
-            The IL offset of the first instruction in this basic block. If the block is empty, it is the same as the Offset of the following block. If there is no following block, 
-            it is the offset where the next instruction would have appeared.
-            </summary>
-        </member>
         <member name="T:Microsoft.Cci.Analysis.Instruction">
             <summary>
             A model of an IL operation, but with the implicit operand stack made explicit via the properties Operand1 and Operand2
@@ -133,16 +222,6 @@
         <member name="P:Microsoft.Cci.Analysis.Instruction.Type">
             <summary>
             The type of the result this instruction pushes onto the stack. Void if none.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Cci.Analysis.TypeInferencer`2">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.Analysis.TypeInferencer`2.FillInTypes(Microsoft.Cci.IMetadataHost,Microsoft.Cci.Analysis.ControlAndDataFlowGraph{`0,`1})">
-            <summary>
-            
             </summary>
         </member>
     </members>

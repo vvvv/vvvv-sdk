@@ -9,7 +9,7 @@ namespace VVVV.Core.Menu
     /// <summary>
     /// Abstract implemention of IMenuEntry.
     /// </summary>
-    public class MenuEntry : List<IMenuEntry>, IMenuEntry
+    public class MenuEntry : IMenuEntry
     {
         protected ICommandHistory CommandHistory
         {
@@ -28,26 +28,55 @@ namespace VVVV.Core.Menu
             get;
             private set;
         }
-        
-        public bool Enabled
+
+        private Func<bool> enabledFunc;
+        public virtual bool Enabled
+        {
+            get
+            {
+                if (enabledFunc != null)
+                {
+                    return enabledFunc();
+                }
+                return true;
+            }
+        }
+
+        public bool? Checked
         {
             get;
-            protected set;
+            set;
         }
 
         Action<MenuEntry> ClickCB;
+        List<IMenuEntry> entries = new List<IMenuEntry>();
 
-        public MenuEntry(ICommandHistory commandHistory, string name)
-            : this(commandHistory, name, Keys.None)
+        public MenuEntry(string name)
+            : this(name, null)
         {
         }
 
         public MenuEntry(string name, Action<MenuEntry> clickCB)
+            : this(name, Keys.None, clickCB)
+        {
+        }
+
+        public MenuEntry(string name, Keys shortcutKeys)
+            : this(name, shortcutKeys, null)
+        {
+        }
+
+        public MenuEntry(string name, Keys shortcutKeys, Action<MenuEntry> clickCB, Func<bool> enabledFunc = null)
         {
             Name = name;
             ClickCB = clickCB;
-            Enabled = true;
-            ShortcutKeys = Keys.None;
+            ShortcutKeys = shortcutKeys;
+            this.enabledFunc = enabledFunc;
+        }
+
+        public MenuEntry(ICommandHistory commandHistory, string name)
+            : this(commandHistory, name, Keys.None)
+        {
         }
 
         public MenuEntry(ICommandHistory commandHistory, string name, Keys shortcutKeys)
@@ -55,14 +84,13 @@ namespace VVVV.Core.Menu
             CommandHistory = commandHistory;
             Name = name;
             ShortcutKeys = shortcutKeys;
-            Enabled = true;
         }
 
         public bool HasSubMenuEntries
         {
             get
             {
-                return Count > 0;;
+                return entries.Count > 0;;
             }
         }
 
@@ -70,6 +98,13 @@ namespace VVVV.Core.Menu
         {
             if (ClickCB != null)
                 ClickCB(this);
+        }
+
+        public IEnumerable<IMenuEntry> Entries { get { return entries.AsReadOnly(); } }
+
+        public void AddEntry(IMenuEntry entry)
+        {
+            entries.Add(entry);
         }
     }
 }

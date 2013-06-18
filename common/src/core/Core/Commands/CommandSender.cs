@@ -1,40 +1,159 @@
 ﻿using System;
 using System.Threading;
+using System.Xml.Linq;
 using VVVV.Utils.Network;
 using VVVV.Core.Model;
 using System.Runtime.Remoting.Messaging;
 using VVVV.Core.Serialization;
+using System.Collections.Generic;
 
 namespace VVVV.Core.Commands
 {
     //sends a command to the remote server
-    public class CommandSender
+    public class CommandSender : RemotingProxyManagerTCP<CommandHistory>
     {
         //port and remoting manager
-        private int FPort = 3344;
-        private string FHost;
         private IIDItem FIDItem;
-        private RemotingManagerTCP FRemoter;
         private readonly Serializer FSerializer;
 
-        public CommandSender(string host, IIDItem idItem)
+
+        public CommandSender(string[] hosts, int port, IIDItem idItem)
+            : base(hosts, port)
         {
-            FRemoter = new RemotingManagerTCP();
-            FHost = host;
+
             FIDItem = idItem;
-            FSerializer = idItem.Mapper.Map<Serializer>();
+            FSerializer = idItem.GetSerializer();
+
+            foreach (var item in FHosts)
+            {
+                Console.WriteLine("Remote History: {0}", item);
+            }
         }
 
+        //proxy object creation for base class
+        protected override CommandHistory GetProxyElement(string host, int port)
+        {
+            return FRemoter.GetRemoteObject<Shell>("Shell", host, port).GetAtID<ICommandHistory>(FIDItem.GetID()) as CommandHistory;
+        }
+
+        public void ExecuteAndInsert(string xml)
+        {
+            for (int i = 0; i < FHosts.Length; i++)
+            {
+                try
+                {
+                    //h is a proxy objec of the remote history
+                    //the xml string gets sent as value and is executed on the remote host
+                    var h = GetProxy(i);
+                    h.ExecuteAndInsert(xml);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Command could not be inserted and executed on remote history: " + e.Message);
+                }
+            }
+        }
+
+        //try to send a command
+        public void OnlyExecute(string xml)
+        {
+            for (int i = 0; i < FHosts.Length; i++)
+            {
+                try
+                {
+                    //h is a proxy objec of the remote history
+                    //the xml string gets sent as value and is executed on the remote host
+                    var h = GetProxy(i);
+                    h.OnlyExecute(xml);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Command could not be executed on remote history: " + e.Message);
+                }
+            }
+        }
+
+        //try to call undo on remote history
+        public void RemoteUndo()
+        {
+            for (int i = 0; i < FHosts.Length; i++)
+            {
+                try
+                {
+                    var h = GetProxy(i);
+                    h.Undo();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Undo could not be executed on remote server: " + e.Message);
+                }
+            }
+        }
+
+        //try to call redo on remote history
+        public void RemoteRedo()
+        {
+            for (int i = 0; i < FHosts.Length; i++)
+            {
+                try
+                {
+                    var h = GetProxy(i);
+                    h.Redo();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Redo could not be executed on remote server: " + e.Message);
+                }
+            }
+        }
+
+        public void StartCompound()
+        {
+            for (int i = 0; i < FHosts.Length; i++)
+            {
+                try
+                {
+                    var h = GetProxy(i);
+                    h.StartCompound();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("StartCompound could not be executed on remote server: " + e.Message);
+                }
+            }
+        }
+
+        public void StopCompound()
+        {
+            for (int i = 0; i < FHosts.Length; i++)
+            {
+                try
+                {
+                    var h = GetProxy(i);
+                    h.StopCompound();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("StopCompound could not be executed on remote server: " + e.Message);
+                }
+            }
+            
+        }
+
+        #region async
         //async execute
         private delegate void SendAsync(string xml);
 
-        public void SendCommandAsync(Command command)
+        public void ExecuteAndInsertAsync(XElement xCommand)
         {
-            var xCommand = FSerializer.Serialize(command);
-
-            var sender = new SendAsync(SendCommand);
+            var sender = new SendAsync(ExecuteAndInsert);
             sender.BeginInvoke(xCommand.ToString(), new AsyncCallback(AfterSend), null);
+        }
 
+        public void OnlyExecuteAsync(XElement xCommand)
+        {
+            var sender = new SendAsync(OnlyExecute);
+            sender.BeginInvoke(xCommand.ToString(), new AsyncCallback(AfterSend), null);
         }
 
         //async undo
@@ -61,58 +180,6 @@ namespace VVVV.Core.Commands
             Console.WriteLine("Async remote call completed.");
         }
 
-        //get remote history
-        private CommandHistory GetHistory()
-        {
-            var remoteShell = FRemoter.GetRemoteObject<Shell>("Shell", FHost, FPort);
-            return remoteShell.GetAtID<CommandHistory>(FIDItem.GetID());
-        }
-
-        //try to send a command
-        private void SendCommand(string xml)
-        {
-      
-            try
-            {
-                var h = GetHistory();
-                h.Insert(xml);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Command could not be executed on remote server: " + e.Message);
-                //Console.WriteLine("Command could not be executed on remote server");
-                //throw e;
-            }
-        }
-
-        //try to call undo on remote history
-        private void RemoteUndo()
-        {
-            try
-            {
-                var h = GetHistory();
-                h.Undo();
-            }
-            catch (Exception)
-            {
-                //Console.WriteLine("Undo could not be executed on remote server: " + e.Message);
-                Console.WriteLine("Undo could not be executed on remote server");
-            }
-        }
-
-        //try to call redo on remote history
-        private void RemoteRedo()
-        {
-            try
-            {
-                var h = GetHistory();
-                h.Redo();
-            }
-            catch (Exception)
-            {
-                //Console.WriteLine("Redo could not be executed on remote server: " + e.Message);
-                Console.WriteLine("Redo could not be executed on remote server");
-            }
-        }
+        #endregion async
     }
 }

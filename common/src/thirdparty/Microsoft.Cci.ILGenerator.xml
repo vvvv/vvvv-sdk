@@ -16,12 +16,13 @@
             Code Model has been built.
             </remarks>
         </member>
-        <member name="M:Microsoft.Cci.ILGenerator.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IMethodDefinition)">
+        <member name="M:Microsoft.Cci.ILGenerator.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IMethodDefinition,Microsoft.Cci.IMethodDefinition)">
             <summary>
             Allocates an object that helps with the generation of Microsoft intermediate language (MSIL) instructions corresponding to a method body.
             </summary>
             <param name="host">Provides a standard abstraction over the applications that host components that provide or consume objects from the metadata model.</param>
             <param name="methodDefinition">The method to generate MSIL for.</param>
+            <param name="asyncMethodDefinition">The async method for which this generator will generate the "MoveNext" method of its state class.</param>
         </member>
         <member name="M:Microsoft.Cci.ILGenerator.AddConstantToCurrentScope(Microsoft.Cci.ILocalDefinition)">
             <summary>
@@ -252,6 +253,16 @@
             </summary>
             <param name="location">The location of the sequence point.</param>
         </member>
+        <member name="M:Microsoft.Cci.ILGenerator.MarkSynchronizationPoint(Microsoft.Cci.IMethodDefinition,Microsoft.Cci.ILGeneratorLabel)">
+            <summary>
+            Marks the offset of the next IL operation as the first of a sequence of instructions that will cause the thread executing the "MoveNext" method
+            of the state class of an async method to await the completion of a call to another async method.
+            </summary>
+            <param name="continuationMethod">The helper method that will execute once the execution of the current async method resumes.
+            Usually this will be the same method as the one for which this generator is generating a body, but this is not required.</param>
+            <param name="continuationLabel">The label inside the continuation method where execution will resume. It should be marked by the
+            time this generator is being used to construct a method body.</param>
+        </member>
         <member name="M:Microsoft.Cci.ILGenerator.LongVersionOf(Microsoft.Cci.OperationCode)">
             <summary>
             If the given operation code is a short branch, return the corresponding long branch. Otherwise return the given operation code.
@@ -300,6 +311,13 @@
             Returns a sequence of descriptors that define where try blocks and their associated handlers can be found in the instruction sequence.
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.ILGenerator.GetSynchronizationInformation">
+            <summary>
+            Returns an object that describes where synchronization points occur in the IL operations of the "MoveNext" method of the state class of
+            an asynchronous method. This returns null unless the generator has been supplied with an non null value for asyncMethodDefinition parameter
+            during construction.
+            </summary>
+        </member>
         <member name="P:Microsoft.Cci.ILGenerator.CurrentOffset">
             <summary>
             The offset in the IL stream where the next instruction will be emitted.
@@ -334,8 +352,6 @@
             to the local stored in field &lt;localName&gt;x_i of the class used to store the local values in between
             calls to MoveNext.
             </summary>
-            <param name="methodBody"></param>
-            <returns></returns>
         </member>
         <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.GetLocalScopes(Microsoft.Cci.IMethodBody)">
             <summary>
@@ -351,15 +367,11 @@
             component in the namespace type name. For istance namespace type x.y.z will have two namespace scopes, the first is for the x and the second
             is for the y.
             </summary>
-            <param name="methodBody"></param>
-            <returns></returns>
         </member>
         <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.GetConstantsInScope(Microsoft.Cci.ILocalScope)">
             <summary>
             Returns zero or more local constant definitions that are local to the given scope.
             </summary>
-            <param name="scope"></param>
-            <returns></returns>
         </member>
         <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.GetVariablesInScope(Microsoft.Cci.ILocalScope)">
             <summary>
@@ -372,8 +384,13 @@
             <summary>
             Returns true if the method body is an iterator.
             </summary>
-            <param name="methodBody"></param>
-            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILGenerator.LocalScopeProvider.GetSynchronizationInformation(Microsoft.Cci.IMethodBody)">
+            <summary>
+            If the given method body is the "MoveNext" method of the state class of an asynchronous method, the returned
+            object describes where synchronization points occur in the IL operations of the "MoveNext" method. Otherwise
+            the result is null.
+            </summary>
         </member>
         <member name="T:Microsoft.Cci.ILGeneratorLabel">
             <summary>
@@ -388,6 +405,11 @@
         <member name="F:Microsoft.Cci.ILGeneratorLabel.locationOfReturnInstruction">
             <summary>
             Non-null only when labelsReturnInstruction is true.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ILGeneratorLabel.Offset">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:Microsoft.Cci.GeneratorLocal">
@@ -560,6 +582,14 @@
             Calls visitor.Visit(IMethodBody).
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.ILGeneratorMethodBody.GetIteratorScopes">
+            <summary>
+            Returns a block scope associated with each local variable in the iterator for which this is the generator for its MoveNext method.
+            May return null.
+            </summary>
+            <remarks>The PDB file model seems to be that scopes are duplicated if necessary so that there is a separate scope for each
+            local variable in the original iterator and the mapping from local to scope is done by position.</remarks>
+        </member>
         <member name="M:Microsoft.Cci.ILGeneratorMethodBody.GetLocalScopes">
             <summary>
             Returns zero or more local (block) scopes into which the CLR IL operations of this method body is organized.
@@ -571,6 +601,12 @@
             These scopes determine how simple names are looked up inside the method body. There is a separate scope for each dotted
             component in the namespace type name. For istance namespace type x.y.z will have two namespace scopes, the first is for the x and the second
             is for the y.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILGeneratorMethodBody.GetSynchronizationInformation">
+            <summary>
+            Returns an object that describes where synchronization points occur in the IL operations of the "MoveNext" method of
+            the state class of an async method. Returns null otherwise.
             </summary>
         </member>
         <member name="P:Microsoft.Cci.ILGeneratorMethodBody.OperationExceptionInformation">
@@ -660,6 +696,13 @@
             Returns true if the method body is an iterator.
             </summary>
         </member>
+        <member name="M:Microsoft.Cci.ILGeneratorSourceInformationProvider.GetSynchronizationInformation(Microsoft.Cci.IMethodBody)">
+            <summary>
+            If the given method body is the "MoveNext" method of the state class of an asynchronous method, the returned
+            object describes where synchronization points occur in the IL operations of the "MoveNext" method. Otherwise
+            the result is null.
+            </summary>
+        </member>
         <member name="M:Microsoft.Cci.ILGeneratorSourceInformationProvider.GetPrimarySourceLocationsFor(System.Collections.Generic.IEnumerable{Microsoft.Cci.ILocation})">
             <summary>
             Return zero or more locations in primary source documents that correspond to one or more of the given derived (non primary) document locations.
@@ -679,6 +722,87 @@
             <summary>
             Returns the source name of the given local definition, if this is available.
             Otherwise returns the value of the Name property and sets isCompilerGenerated to true.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.ILRewriter">
+            <summary>
+            Rewrites the IL of method bodies.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILRewriter.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.ILocalScopeProvider,Microsoft.Cci.ISourceLocationProvider)">
+            <summary>
+            
+            </summary>
+            <param name="host"></param>
+            <param name="localScopeProvider"></param>
+            <param name="sourceLocationProvider"></param>
+        </member>
+        <member name="F:Microsoft.Cci.ILRewriter.host">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILRewriter.localScopeProvider">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILRewriter.sourceLocationProvider">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ILRewriter.maxStack">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.ILRewriter.Rewrite(Microsoft.Cci.IMethodBody)">
+            <summary>
+            
+            </summary>
+            <param name="methodBody"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Cci.ILRewriter.EmitMethodBody(Microsoft.Cci.IMethodBody)">
+            <summary>
+            
+            </summary>
+            <param name="methodBody"></param>
+        </member>
+        <member name="M:Microsoft.Cci.ILRewriter.EmitDebugInformationFor(Microsoft.Cci.IOperation)">
+            <summary>
+            
+            </summary>
+            <param name="operation"></param>
+        </member>
+        <member name="M:Microsoft.Cci.ILRewriter.EmitOperation(Microsoft.Cci.IOperation)">
+            <summary>
+            Emits the given operation at the current position of the new IL stream. Also tracks any referenced local definitions,
+            so that this.localVariables will contain the exact list of locals used in the new method body.
+            </summary>
+            <param name="operation"></param>
+        </member>
+        <member name="M:Microsoft.Cci.ILRewriter.TrackLocal(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="operationValue"></param>
+        </member>
+        <member name="M:Microsoft.Cci.ILRewriter.GetLabelFor(System.UInt32)">
+            <summary>
+            Returns a label that represents the given offset in the original IL. This label must be marked
+            at the corresponding location in the rewritten IL.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ILRewriter.Generator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Microsoft.Cci.ILRewriter.Host">
+            <summary>
+            
             </summary>
         </member>
     </members>

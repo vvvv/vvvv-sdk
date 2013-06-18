@@ -230,15 +230,14 @@ namespace VVVV.Core.View
                 }
             }
             
+            public bool? Checked { get; set; }
+			
             public void Click()
             {
                 // Nothing to do here
             }
             
-            IEnumerator<IMenuEntry> IEnumerable<IMenuEntry>.GetEnumerator()
-            {
-                yield break;
-            }
+            public IEnumerable<IMenuEntry> Entries { get { return Enumerable.Empty<IMenuEntry>(); } }
             
             #endregion
         }

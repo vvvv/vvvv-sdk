@@ -38,5 +38,19 @@ namespace VVVV.Core.Commands
 		{
 		    get;
 		}
+
+        /// <summary>
+        /// Raised when a command executed.
+        /// </summary>
+        event EventHandler<CommandExecutedEventArgs> CommandExecuted;
 	}
+
+    public class CommandExecutedEventArgs : EventArgs
+    {
+        public Command Command { get; private set; }
+        public CommandExecutedEventArgs(Command command)
+        {
+            Command = command;
+        }
+    }
 }

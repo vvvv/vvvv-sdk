@@ -40,10 +40,10 @@ namespace VVVV.Core.Model
         }
         
         /// <summary>
-        /// The ISolution this project belongs to. This property is set by
-        /// ISolution after a project has been added to it.
+        /// The Solution this project belongs to. This property is set by
+        /// Solution after a project has been added to it.
         /// </summary>
-        ISolution Solution
+        Solution Solution
         {
             get;
             set;

@@ -23,7 +23,9 @@ namespace VVVV.Core.Commands
                 
                 foreach (var subCmd in command.FCommands)
                 {
+
                     xElement.Add(serializer.Serialize(subCmd));
+                    
                 }
                 
                 return xElement;
@@ -44,6 +46,11 @@ namespace VVVV.Core.Commands
         #endregion
         
         private readonly IList<Command> FCommands;
+
+        public IList<Command> Commands
+        {
+            get { return FCommands; }
+        }
         
         public CompoundCommand()
             :this(new List<Command>())
@@ -51,6 +58,11 @@ namespace VVVV.Core.Commands
         }
         
         public CompoundCommand(IEnumerable<Command> commands)
+        {
+            FCommands = new List<Command>(commands);
+        }
+
+        public CompoundCommand(params Command[] commands)
         {
             FCommands = new List<Command>(commands);
         }
@@ -76,11 +88,26 @@ namespace VVVV.Core.Commands
             }
         }
 
-        public override sealed void Execute()
+        public sealed override void Execute()
         {
-            foreach (var cmd in FCommands) 
+           throw new NotImplementedException("Should not call execute on compound command, only insert it into a ICommandHistory)");
+        }
+
+        /// <summary>
+        /// Does only execute each command, no history or remoting magic
+        /// </summary>
+        public void OnlyExecuteLocal()
+        {
+            foreach (var cmd in FCommands)
             {
-                cmd.Execute();
+                if (cmd is CompoundCommand)
+                {
+                    (cmd as CompoundCommand).OnlyExecuteLocal();
+                }
+                else
+                {
+                    cmd.Execute();
+                }
             }
         }
 
@@ -94,10 +121,23 @@ namespace VVVV.Core.Commands
                 }
             }
         }
+
+        public bool IsEmpty
+        {
+            get { return FCommands.Count == 0; }
+        }
         
         public override string ToString()
         {
-            return string.Join(", ", (from cmd in FCommands select cmd.ToString()).ToArray());
+            var result = "Compound Command:";
+
+            for (int i = 0; i < FCommands.Count; i++)
+            {
+                result += " " + i + " ";
+                result += FCommands[i].ToString();
+            }
+
+            return result; // "Compound: " + string.Join(", ", (from cmd in FCommands select cmd.ToString()).ToArray());
         }
 
     }

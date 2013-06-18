@@ -115,7 +115,7 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         void HideToolTip();
     }
 
-    public interface ICanvasHost : ISelectionProvider
+    public interface ICanvasHost
     {
         ICanvas Canvas
         {
@@ -128,16 +128,24 @@ namespace VVVV.Core.Viewer.GraphicalEditor
         void CreateSolid(IIDItem item, PointF pos);
         void CreateSolid(string name, PointF pos);
 
+        void StartPath();
         /// <summary>
         /// typically a language would create an IPathHost, and by that call ICanvas.CreatePath to establish the link
         /// </summary>
         /// <param name="apath"></param>
         void FinishPath(ITempPath apath, IConnectable end);
+        
+        void FinishPathWithNode(ITempPath apath);
+        
+        void HighlightElement(IGraphElement element);
 
-        void MoveSelected();
-        void DeleteSelected();
+        void StartMarqueeSelection(PointF position);
+        void EndMarqueeSelection(RectangleF bounds);
 
-        void Undo();
-        void Redo();
+        void StartMoveSelected(IEnumerable<IGraphElement> selection, PointF position);
+        void MoveSelected(IEnumerable<IGraphElement> selection, PointF position);
+        void EndMoveSelected(IEnumerable<IGraphElement> selection, PointF position);
+
+        bool IsSelectable(IGraphElement graphElement);
     }
 }

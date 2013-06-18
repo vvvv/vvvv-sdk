@@ -34,13 +34,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(249, 501);
+            this.ClientSize = new System.Drawing.Size(307, 249);
             this.ControlBox = false;
             this.Name = "HDEForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "HDEForm";
-            this.Activated += new System.EventHandler(this.HDEForm_Activated);
-            //this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HDEForm_MouseDown);
             this.ResumeLayout(false);
 
         }

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Xml.Linq;
 using System.Collections;
 using VVVV.Core.Serialization;
+using VVVV.Core.Logging;
 
 namespace VVVV.Core
 {
@@ -27,34 +28,6 @@ namespace VVVV.Core
         public static string ConcatPath(this string path1, string path2)
         {
             return Path.Combine(path1, path2);
-        }
-        
-        /// <summary>
-        /// Returns the center of this RectangleF
-        /// </summary>
-        public static PointF GetCenter(this RectangleF rect)
-        {
-        	return new PointF(rect.X + 0.5f*rect.Width, rect.Y + 0.5f*rect.Height);
-        }
-        
-        /// <summary>
-        /// Returns the distance to another point
-        /// </summary>
-        public static float GetDistanceTo(this PointF from, PointF to)
-        {
-        	float x = from.X - to.X;
-        	float y = from.Y - to.Y;
-        	return (float)Math.Sqrt(x*x + y*y);
-        }
-        
-        /// <summary>
-        /// Returns the distance to another point
-        /// </summary>
-        public static float GetDistanceTo(this Point from, Point to)
-        {
-        	float x = from.X - to.X;
-        	float y = from.Y - to.Y;
-        	return (float)Math.Sqrt(x*x + y*y);
         }
 
         /// <summary>
@@ -90,7 +63,12 @@ namespace VVVV.Core
             if(x != null)
                 foreach (var item in x.Elements())
                 {
-                    list.Add(serializer.Deserialize<T>(item));
+                    DebugHelpers.CatchAndLog(() =>
+                        {
+                            list.Add(serializer.Deserialize<T>(item));
+                        }, "deserializing an XElement", (e) =>
+                            {
+                            });
                 }
         }
 
