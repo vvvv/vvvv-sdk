@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv45\lib\nodes\modules\DShow9\FFT (DShow9 4Channels Win7).v4p" systemname="FFT (DShow9 4Channels Win7)" filename="C:\Dev\vvvv\vvvv45\lib\nodes\modules\DShow9\FFT (DShow9 4Channels Win7).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\DShow9\FFT (DShow9 4Channels).v4p">
    <BOUNDS height="9510" left="7800" top="375" type="Window" width="11025">
    </BOUNDS>
    <NODE id="65" nodename="FFT (DSHOW9)" systemname="FFT (DShow9)">
@@ -933,7 +933,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="AudioDriver">
    </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="|Mikrofon (Realtek High Definiti|">
+   <PIN pinname="Input Enum" slicecount="1" values="(nil)">
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Driver" srcnodeid="4" srcpinname="Output Enum">
@@ -952,6 +952,50 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE id="2" nodename="AudioRecordSelector (System)" systemname="AudioRecordSelector (System)">
+   <BOUNDS height="0" left="720" top="5505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="1" managers="" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <PIN pinname="Input Enum" pintype="Input" slicecount="1" visible="1" values="Stereomix">
+   </PIN>
+   <BOUNDS height="285" left="1500" top="4830" type="Box" width="1110">
+   </BOUNDS>
+   <PIN pinname="Style" pintype="Configuration" slicecount="1" values="PullDown">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="AudioInDevice">
+   </PIN>
+   <BOUNDS height="0" left="1500" top="4830" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output Enum" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="160" left="9570" top="6240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Device" srcnodeid="1" srcpinname="Output Enum">
+   <LINKPOINT x="735" y="5070">
+   </LINKPOINT>
+   </LINK>
    <INFO author="tonfilm" description="FFT outputting 4Channels (Bass, LoMid, HighMid, High) for main frequencies. Internally works with a 256 channels FFT." tags="beat, sound, audio, bang, vj, channel, band">
    </INFO>
    <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
