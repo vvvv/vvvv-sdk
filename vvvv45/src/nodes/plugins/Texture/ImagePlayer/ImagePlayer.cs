@@ -42,7 +42,7 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly TransformBlock<FrameInfo, Tuple<FrameInfo, Stream>> FFilePreloader;
         private readonly TransformBlock<Tuple<FrameInfo, Stream>, Frame> FFramePreloader;
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
-        private readonly Dictionary<string, Frame> FPreloadedFrames = new Dictionary<string, Frame>();
+        private readonly Dictionary<FrameInfo, Frame> FPreloadedFrames = new Dictionary<FrameInfo, Frame>();
         private readonly IDXDeviceService FDeviceService;
         private bool FClearedMemoryPool;
         
@@ -286,9 +286,8 @@ namespace VVVV.Nodes.ImagePlayer
         private void Dispose(Frame frame)
         {
             var frameInfo = frame.Metadata;
-            var filename = frameInfo.Filename;
-            if (!string.IsNullOrEmpty(filename))
-                FPreloadedFrames.Remove(filename);
+            if (frameInfo != null)
+                FPreloadedFrames.Remove(frameInfo);
             frameInfo.Dispose();
             frame.Dispose();
         }
@@ -308,14 +307,14 @@ namespace VVVV.Nodes.ImagePlayer
             return new FrameInfo(string.Empty, DEFAULT_BUFFER_SIZE, SharpDX.Direct3D9.Format.Unknown);
         }
 
-        private bool IsScheduled(string file)
+        private bool IsScheduled(FrameInfo frameInfo)
         {
-            return FScheduledFrameInfos.Any(frameInfo => frameInfo.Filename == file && !frameInfo.IsCanceled);
+            return FScheduledFrameInfos.Any(fi => fi == frameInfo && !fi.IsCanceled);
         }
 
-        private bool IsPreloaded(string file)
+        private bool IsPreloaded(FrameInfo frameInfo)
         {
-            return FPreloadedFrames.ContainsKey(file);
+            return FPreloadedFrames.ContainsKey(frameInfo);
         }
         
         public ISpread<Frame> Preload(
@@ -343,7 +342,13 @@ namespace VVVV.Nodes.ImagePlayer
             }
 
             // Map frame numbers to file names
-            var preloadFiles = preloadFrameNrs.Select(frameNr => files[VMath.Zmod(frameNr, files.Length)]).ToArray();
+            var preloadFiles = preloadFrameNrs.Select(
+                frameNr => 
+                {
+                    var fileName = files[VMath.Zmod(frameNr, files.Length)];
+                    return CreateFrameInfo(fileName, bufferSize, preferedFormat);
+                })
+                .ToArray();
 
             // Dispose previously loaded frames
             foreach (var file in FPreloadedFrames.Keys.ToArray())
@@ -360,7 +365,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 var frame = Dequeue();
                 var frameInfo = frame.Metadata;
-                if (!preloadFiles.Contains(frameInfo.Filename) || frameInfo.IsCanceled)
+                if (!preloadFiles.Contains(frameInfo) || frameInfo.IsCanceled)
                 {
                     // Not needed anymore
                     Dispose(frame);
@@ -368,14 +373,14 @@ namespace VVVV.Nodes.ImagePlayer
                 }
                 else
                 {
-                    FPreloadedFrames.Add(frameInfo.Filename, frame);
+                    FPreloadedFrames.Add(frameInfo, frame);
                 }
             }
             
             // Cancel unused scheduled frames
             foreach (var frameInfo in FScheduledFrameInfos.Where(fi => !fi.IsCanceled))
             {
-                if (!preloadFiles.Contains(frameInfo.Filename))
+                if (!preloadFiles.Contains(frameInfo))
                 {
                     frameInfo.Cancel();
                 }
@@ -394,8 +399,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 if (!IsScheduled(file) && !IsPreloaded(file))
                 {
-                    var frameInfo = CreateFrameInfo(file, bufferSize, preferedFormat);
-                    Enqueue(frameInfo);
+                    Enqueue(file);
                 }
                 // We're back using resources from the pool -> not clean anymore
                 FClearedMemoryPool = false;
@@ -408,7 +412,7 @@ namespace VVVV.Nodes.ImagePlayer
                 var file = preloadFiles[i];
                 if (!IsPreloaded(file))
                 {
-                    var frameInfo = FScheduledFrameInfos.First(fi => fi.Filename == file);
+                    var frameInfo = FScheduledFrameInfos.First(fi => fi == file);
                     loadedFrames[i] = frameInfo.IsLoaded;
                 }
                 else
@@ -422,14 +426,14 @@ namespace VVVV.Nodes.ImagePlayer
             // Map frame numbers to file names
             var visibleFiles = preloadFiles.Length > 0 
                 ? visibleFrameIndices.Select(i => preloadFiles[VMath.Zmod(i, preloadFiles.Length)]) 
-                : Enumerable.Empty<string>();
+                : Enumerable.Empty<FrameInfo>();
             foreach (var file in visibleFiles)
             {
                 while (!IsPreloaded(file))
                 {
                     var frame = Dequeue();
                     var frameInfo = frame.Metadata;
-                    if (!preloadFiles.Contains(frameInfo.Filename) || frameInfo.IsCanceled)
+                    if (!preloadFiles.Contains(frameInfo) || frameInfo.IsCanceled)
                     {
                         // Not needed anymore
                         Dispose(frame);
@@ -437,7 +441,7 @@ namespace VVVV.Nodes.ImagePlayer
                     }
                     else
                     {
-                        FPreloadedFrames.Add(frameInfo.Filename, frame);
+                        FPreloadedFrames.Add(frameInfo, frame);
                     }
                 }
                 var visibleFrame = FPreloadedFrames[file];
