@@ -165,9 +165,12 @@ namespace VVVV.Core.Collections
             }
         }
 
-        public IServiceProvider ServiceProvider
+        public ModelMapper Mapper
         {
-            get { return FInternalIDList.ServiceProvider; }
+            get
+            {
+                return FInternalIDList.Mapper;
+            }
         }
 
         public event RootingChangedEventHandler RootingChanged;

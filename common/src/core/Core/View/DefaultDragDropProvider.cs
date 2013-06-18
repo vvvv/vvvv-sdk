@@ -53,13 +53,15 @@ namespace VVVV.Core.View
             {
                 object targetItem;
                 var destination = FIdItem as IEditableCollection;
-                var converter = FIdItem.ServiceProvider.GetService<IConverter>();
+                var mapper = FIdItem.Mapper;
                 
                 foreach (var item in items.Values)
                 {
-                    if (item is string[] && converter != null)
+                    if (item is string[] && mapper.CanMap<IConverter>())
                     {
                         var entries = item as string[];
+                        var converter = mapper.Map<IConverter>();
+                        
                         foreach (var entry in entries)
                         {
                             if (converter.Convert(entry, out targetItem))
@@ -67,8 +69,9 @@ namespace VVVV.Core.View
                                     return true;
                         }
                     }
-                    else if (converter != null)
+                    else if (mapper.CanMap<IConverter>())
                     {
+                        var converter = mapper.Map<IConverter>();
                         if (converter.Convert(item, out targetItem))
                             return destination.CanAdd(targetItem);
                     }
@@ -89,14 +92,15 @@ namespace VVVV.Core.View
                 {
                     IIDItem targetItem;
                     var destination = FIdItem as IEditableIDList;
-                    var commandHistory = FIdItem.GetCommandHistory();
-                    var converter = FIdItem.ServiceProvider.GetService<IConverter>();
-
+                    var mapper = FIdItem.Mapper;
+                    var commandHistory = mapper.Map<ICommandHistory>();
+                    
                     foreach (var item in items.Values)
                     {
-                        if (item is string[] && converter != null)
+                        if (item is string[] && mapper.CanMap<IConverter>())
                         {
                             var entries = item as string[];
+                            var converter = mapper.Map<IConverter>();
                             var command = new CompoundCommand();
                             
                             foreach (var entry in entries)
@@ -109,8 +113,9 @@ namespace VVVV.Core.View
                             commandHistory.Insert(command);
                             break;
                         }
-                        else if (converter != null)
+                        else if (mapper.CanMap<IConverter>())
                         {
+                            var converter = mapper.Map<IConverter>();
                             if (converter.Convert(item, out targetItem))
                             {
                                 if (destination.CanAdd(targetItem))

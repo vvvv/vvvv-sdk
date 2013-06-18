@@ -38,10 +38,10 @@ namespace VVVV.Core.Collections
 
         public bool AllowRenameOnAdd { get; set; }
 
-        public IServiceProvider ServiceProvider
+        public ModelMapper Mapper
         {
             get;
-            set;
+            private set;
         }
 
         public EditableIDList(KeyedIDCollection<T> collection, string name)
@@ -114,7 +114,7 @@ namespace VVVV.Core.Collections
             item.Renamed += item_Renamed;
         }
 
-        public string GetNewQualifyingName(string name)
+        private string GetNewQualifyingName(string name)
         {
             var x = 2;
 
@@ -319,7 +319,7 @@ namespace VVVV.Core.Collections
         {
             if (args.Rooting == RootingAction.Rooted)
             {
-                ServiceProvider = Owner.ServiceProvider;
+                Mapper = FOwner.Mapper.CreateChildMapper(this);
                 OnRootingChanged(RootingAction.Rooted);
             }
             
@@ -331,7 +331,7 @@ namespace VVVV.Core.Collections
             if (args.Rooting == RootingAction.ToBeUnrooted)
             {
                 OnRootingChanged(RootingAction.ToBeUnrooted);
-                ServiceProvider = null;
+                Mapper.Dispose();
             }
         }
         

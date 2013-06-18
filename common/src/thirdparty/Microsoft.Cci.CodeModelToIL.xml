@@ -18,7 +18,7 @@
             <param name="method">The method that contains the block of statements that will be converted.</param>
             <param name="sourceLocationProvider">An object that can map the ILocation objects found in the block of statements to IPrimarySourceLocation objects.  May be null.</param>
         </member>
-        <member name="M:Microsoft.Cci.CodeModelToILConverter.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IMethodDefinition,Microsoft.Cci.ISourceLocationProvider,Microsoft.Cci.IMethodDefinition,System.Collections.Generic.IDictionary{Microsoft.Cci.IBlockStatement,System.UInt32})">
+        <member name="M:Microsoft.Cci.CodeModelToILConverter.#ctor(Microsoft.Cci.IMetadataHost,Microsoft.Cci.IMethodDefinition,Microsoft.Cci.ISourceLocationProvider,System.Collections.Generic.IDictionary{Microsoft.Cci.IBlockStatement,System.UInt32})">
             <summary>
             Initializes an object with a method that converts a given block of statements to a list of IL operations, exception information and possibly some private helper types.
             </summary>
@@ -26,7 +26,6 @@
             objects and services such as the shared name table and the table for interning references.</param>
             <param name="method">The method that contains the block of statements that will be converted.</param>
             <param name="sourceLocationProvider">An object that can map the ILocation objects found in the block of statements to IPrimarySourceLocation objects.  May be null.</param>
-            <param name="asyncMethod">May be null.</param>
             <param name="iteratorLocalCount">A map that indicates how many iterator locals are present in a given block. Only useful for generated MoveNext methods. May be null.</param>
         </member>
         <member name="F:Microsoft.Cci.CodeModelToILConverter.currentBreakTarget">
@@ -722,13 +721,6 @@
         <member name="M:Microsoft.Cci.CodeModelToILConverter.GetOperations">
             <summary>
             Returns the IL operations that correspond to the statements that have been converted to IL by this converter.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Cci.CodeModelToILConverter.GetSynchronizationInformation">
-            <summary>
-            Returns an object that describes where synchronization points occur in the IL operations of the "MoveNext" method of the state class of
-            an asynchronous method. This returns null unless the generator has been supplied with an non null value for asyncMethodDefinition parameter
-            during construction.
             </summary>
         </member>
         <member name="M:Microsoft.Cci.CodeModelToILConverter.GetOperationExceptionInformation">

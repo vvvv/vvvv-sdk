@@ -66,30 +66,18 @@
     <Compile Include="Collections\ViewableCollection.cs" />
     <Compile Include="Collections\ViewableIDList.cs" />
     <Compile Include="Collections\ViewableList.cs" />
-    <Compile Include="Dialogs\NameAndTypeDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\NameAndTypeDialog.Designer.cs">
-      <DependentUpon>NameAndTypeDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Helper\CommandlineArguments.cs" />
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandHistory.cs" />
     <Compile Include="Commands\CompoundCommand.cs" />
-    <Compile Include="Commands\HDECommandHistory.cs" />
+    <Compile Include="Commands\ClientCommandHistory.cs" />
     <Compile Include="Commands\ICommandHistory.cs" />
     <Compile Include="Commands\CommandSender.cs" />
     <Compile Include="Commands\RemoveCommand.cs" />
     <Compile Include="Commands\RenameCommand.cs" />
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Helper\NodeAndPinAttributes.cs" />
-    <Compile Include="Helper\ServiceProvider.cs" />
-    <Compile Include="Menu\IMenuProvider.cs" />
-    <Compile Include="Serialization\ObjectExtentions.cs" />
-    <Compile Include="Viewer\IViewer.cs" />
-    <Compile Include="Viewer\IViewerService.cs" />
-    <Compile Include="Viewer\ViewerService.cs" />
     <Compile Include="Model\MissingDocument.cs" />
     <Compile Include="View\MissingDocumentViewProvider.cs" />
     <Compile Include="View\DocumentViewProvider.cs" />
@@ -131,6 +119,7 @@
     <Compile Include="_Interfaces\IEditableIDList.cs" />
     <Compile Include="_Interfaces\IEditableCollection.cs" />
     <Compile Include="_Interfaces\IEditableList.cs" />
+    <Compile Include="_Interfaces\IFocus.cs" />
     <Compile Include="_Interfaces\INamed.cs" />
     <Compile Include="_Interfaces\IParent.cs" />
     <Compile Include="_Interfaces\IViewableIDList.cs" />
@@ -182,6 +171,7 @@
     <Compile Include="Model\_Interfaces\IProjectFactory.cs" />
     <Compile Include="Model\_Interfaces\IProjectItem.cs" />
     <Compile Include="Model\_Interfaces\IReference.cs" />
+    <Compile Include="Model\_Interfaces\ISolution.cs" />
     <Compile Include="Model\_Interfaces\ITextDocument.cs" />
     <Compile Include="_Interfaces\IIDContainer.cs" />
     <Compile Include="Model\MsBuildProject.cs" />
@@ -208,7 +198,7 @@
     <Compile Include="Viewer\GraphicalEditor\ISolid.cs" />
     <Compile Include="Viewer\GraphicalEditor\IText.cs" />
     <Compile Include="Viewer\ILabelEditor.cs" />
-    <Compile Include="_Interfaces\ISelection.cs" />
+    <Compile Include="Viewer\ISelection.cs" />
     <Compile Include="Viewer\ISelectionProvider.cs" />
     <Compile Include="Viewer\ISelectionService.cs" />
     <Compile Include="Viewer\Selection.cs" />
@@ -249,9 +239,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Dialogs\BaseDialog.resx">
       <DependentUpon>BaseDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\NameAndTypeDialog.resx">
-      <DependentUpon>NameAndTypeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\NameDialog.resx">
       <DependentUpon>NameDialog.cs</DependentUpon>

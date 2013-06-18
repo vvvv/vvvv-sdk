@@ -7,6 +7,6 @@ namespace VVVV.Core.View.GraphicalEditor
 {
     public interface IMovable
     {
-        void UpdateBounds(RectangleF bounds);
+        void UpdateBounds(RectangleF Bounds);
     }
 }

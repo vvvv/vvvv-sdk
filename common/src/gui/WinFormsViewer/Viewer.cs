@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 using VVVV.Core;
-using VVVV.Core.Viewer;
 
 namespace VVVV.HDE.Viewer.WinFormsViewer
 {
@@ -13,7 +12,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
     /// TODO: Make it abstract once all work is done here.
     /// TODO: Should implement ISelectionProvider once it is abstract.
     /// </summary>
-    public class Viewer : UserControl, IViewer
+    public class Viewer : UserControl
     {
         private MappingRegistry FRegistry;
         private object FInput;
@@ -36,7 +35,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         
         [Browsable(false)]
         [ReadOnly(true)]
-        public object Model
+        public object Input
         {
             get
             {

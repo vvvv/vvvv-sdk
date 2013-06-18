@@ -65,7 +65,7 @@ namespace VVVV.Core.View
         {
             FProject = project;
             FReferences = references;
-            FCommandHistory = FReferences.GetCommandHistory();
+            FCommandHistory = FReferences.Mapper.Map<ICommandHistory>();
         }
         
         public IEnumerable<IMenuEntry> GetEnumerator()

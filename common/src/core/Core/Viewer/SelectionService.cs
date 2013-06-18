@@ -8,27 +8,17 @@ namespace VVVV.Core.Viewer
     /// </summary>
     public class SelectionService : ISelectionService
     {
-        class DefaultSelectionProvider : ISelectionProvider
-        {
-            public ISelection CurrentSelection
-            {
-                get { return Selection.Empty; }
-            }
-
-            public event SelectionChangedEventHandler SelectionChanged;
-        }
-
         private ISelectionProvider FSelectionProvider;
         
         public SelectionService()
         {
-            FSelectionProvider = new DefaultSelectionProvider();
         }
         
-        public event EventHandler<SelectionProviderChangedEventArgs> SelectionProviderChanged;
+        public event SelectionProviderChangedEventHandler SelectionProviderChanged;
         
         protected virtual void OnSelectionProviderChanged(SelectionProviderChangedEventArgs args)
         {
+            Debug.WriteLine("OnSelectionProviderChanged");
             if (SelectionProviderChanged != null) 
             {
                 SelectionProviderChanged(this, args);

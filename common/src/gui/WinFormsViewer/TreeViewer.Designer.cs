@@ -74,7 +74,7 @@
 			this.FTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.FTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.FTreeView.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
-			this.FTreeView.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.FTreeView.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FTreeView.FullRowSelect = true;
 			this.FTreeView.HideSelection = false;
 			this.FTreeView.LabelEdit = true;

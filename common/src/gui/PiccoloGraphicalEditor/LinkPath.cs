@@ -3,57 +3,22 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-using Piccolo.NET;
-using Piccolo.NET.Util;
-using Piccolo.NET.Nodes;
-using Piccolo.NET.Event;
+using UMD.HCIL.Piccolo;
+using UMD.HCIL.Piccolo.Util;
+using UMD.HCIL.Piccolo.Nodes;
+using UMD.HCIL.Piccolo.Event;
 
 using VVVV.Core.Viewer.GraphicalEditor;
 using VVVV.Core.View.GraphicalEditor;
 
 namespace VVVV.HDE.GraphicalEditing
 {
-    //TODO: finish this, or better solve in piccolo
-    public class PBiggerSelectionPath : PPath
-    {
-        public PBiggerSelectionPath()
-        {
-            //AddBiggerPath();    
-            this.PathChanged += new PPropertyEventHandler(PBiggerSelectionPath_PathChanged);
-        }
-
-        void PBiggerSelectionPath_PathChanged(object sender, PPropertyEventArgs e)
-        {
-            AddBiggerPath();
-        }
-
-        private void AddBiggerPath()
-        {
-            this.RemoveAllChildren();
-
-            var bigger = new PPath();
-            if(this.PathData.Points.Length > 1)
-                bigger.AddLine(this.PathData.Points[0].X, this.PathData.Points[0].Y, this.PathData.Points[1].X, this.PathData.Points[1].Y);
-            bigger.Pickable = true;
-            bigger.Click += new PInputEventHandler(bigger_Click);
-            var pen = this.Pen.Clone() as Pen;
-            pen.Width = pen.Width + 2;
-            
-            //this.AddChild(bigger);
-            //this.Pickable = true;
-        }
-
-        void bigger_Click(object sender, PInputEventArgs e)
-        {
-            OnClick(e);
-        }
-    }
 	
     public class TempPath : GraphElement, ITempPath
     {
         protected override PNode CreatePNode()
         {
-            return new PPath(); // new PBiggerSelectionPath();
+            return new PPath();
         }
 
         #region ITempPath Members     
@@ -97,18 +62,7 @@ namespace VVVV.HDE.GraphicalEditing
             }
             set
             {
-                if (value != PPath.Pen)
-                {
-                    if (value != null)
-                    {
-                        if (value.Width != PPath.Pen.Width || value.Color != PPath.Pen.Color)
-                        {
-                            PPath.Pen = value;
-                        }
-                    }
-                    else
-                        PPath.Pen = null;
-                }
+                PPath.Pen = value;
             }
         }
 
@@ -224,17 +178,15 @@ namespace VVVV.HDE.GraphicalEditing
 
             //react to position-changes of the pins node
             //which apparently is Parent.Parent for nodes and the PNode itself for Inlets/Outlets
-
-            //added IGraphElement.Redraw() -> much simpler
-            //if (StartSolid is Rectangle)
-                //StartSolid.PNode.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
-            //else
-                //StartSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
+            if (StartSolid is Rectangle)
+            	StartSolid.PNode.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
+            else
+            	StartSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
             
-            //if (EndSolid is Rectangle)
-                //EndSolid.PNode.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
-            //else
-                //EndSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
+            if (EndSolid is Rectangle)
+            	EndSolid.PNode.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
+            else
+            	EndSolid.PNode.Parent.Parent.TransformChanged += new PPropertyEventHandler(PinBoundsChanged);
         }
 
         public LinkPath(IGraphElementHost host, ISolid start, ISolid end)
@@ -278,27 +230,20 @@ namespace VVVV.HDE.GraphicalEditing
                 FReactingOnTransform = false;
             }
         }
-
-        public override void Redraw()
-        {
-            BuildLine();
-            base.Redraw();
-        }
         
-        public override void Dispose()
+        public void Dispose()
         {
             PNode.TransformChanged -= PathChanged;
 
-            //if (StartSolid is Rectangle)
-                //StartSolid.PNode.TransformChanged -= PinBoundsChanged;
-            //else
-                //StartSolid.PNode.Parent.Parent.TransformChanged -= PinBoundsChanged;
+            if (StartSolid is Rectangle)
+            	StartSolid.PNode.TransformChanged -= PinBoundsChanged;
+            else
+            	StartSolid.PNode.Parent.Parent.TransformChanged -= PinBoundsChanged;
             
-            //if (EndSolid is Rectangle)
-                //EndSolid.PNode.TransformChanged -= PinBoundsChanged;
-            //else
-                //EndSolid.PNode.Parent.Parent.TransformChanged -= PinBoundsChanged;
-            base.Dispose();
+            if (EndSolid is Rectangle)
+            	EndSolid.PNode.TransformChanged -= PinBoundsChanged;
+            else
+            	EndSolid.PNode.Parent.Parent.TransformChanged -= PinBoundsChanged;
         }
     }
 }

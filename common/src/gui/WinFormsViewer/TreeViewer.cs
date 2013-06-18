@@ -53,7 +53,6 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         public bool ShowPlusMinus{get{return FTreeView.ShowPlusMinus;}set{FTreeView.ShowPlusMinus = value;}}
         public bool ShowRootLines{get{return FTreeView.ShowRootLines;}set{FTreeView.ShowRootLines = value;}}
         public bool ShowLines{get{return FTreeView.ShowLines;}set{FTreeView.ShowLines = value;}}
-        public override Font Font { get { return FTreeView.Font; } set { FTreeView.Font = value; } }
         
         [Browsable(true), DefaultValue(typeof(System.Drawing.Color), "Silver")]
         public override Color BackColor
@@ -131,7 +130,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             if (FRootMapper != null)
                 FRootMapper.Dispose();
             
-            FRootMapper = new ModelMapper(Model, Registry);
+            FRootMapper = new ModelMapper(Input, Registry);
             
             if (ShowRoot)
             {
@@ -377,7 +376,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         {
             bool separatorPending = false;
             
-            foreach(IMenuEntry mi in parentMenuItem.Entries)
+            foreach(IMenuEntry mi in parentMenuItem)
             {
                 if (mi is MenuSeparator)
                     separatorPending = true;
@@ -532,7 +531,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
             if (parent.ShortcutKeys == keyData)
                 return parent;
             
-            foreach (var entry in parent.Entries)
+            foreach (var entry in parent)
             {
                 var result = FindMenuEntryByKeyData(entry, keyData);
                 if (result != null)

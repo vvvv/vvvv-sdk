@@ -7,26 +7,22 @@ using ICSharpCode.SharpDevelop.Dom;
 using VVVV.Core;
 using VVVV.Core.Collections;
 using VVVV.Core.Runtime;
-using VVVV.Core.Commands;
 
 namespace VVVV.Core.Model
 {
-    public class Solution : IDContainer, IIDContainer
+    public class Solution : IDContainer, ISolution, IIDContainer
     {
-        private readonly ServiceProvider FServiceProvider;
-
-        public Solution(string path, IServiceProvider serviceProvider)
+        private MappingRegistry FRegistry;
+        
+        public Solution(string path, MappingRegistry registry)
             : base(Path.GetFileName(path), true)
         {
             LocalPath = path;
-            FServiceProvider = new ServiceProvider(serviceProvider);
-            if (Shell.Instance.IsRuntime || Shell.CommandLineArguments.Local)
-                FServiceProvider.RegisterService<ICommandHistory>(new CommandHistory(FServiceProvider));
-            else
-                FServiceProvider.RegisterService<ICommandHistory>(new HDECommandHistory(this));
+            FRegistry = registry;
+            Mapper = new ModelMapper(this, registry);
             
             // Do not allow rename on add. Rename triggers save/delete in case of PersistentIDContainer.
-            Projects = new EditableIDList<Project>("Projects", false);
+            Projects = new EditableIDList<IProject>("Projects", false);
             Add(Projects);
             
             ProjectContentRegistry = new ProjectContentRegistry();
@@ -41,17 +37,9 @@ namespace VVVV.Core.Model
             OnRootingChanged(RootingAction.Rooted);
         }
         
-        public override IServiceProvider ServiceProvider
-        {
-            get
-            {
-                return FServiceProvider;
-            }
-        }
-    	
         public event CompiledEventHandler ProjectCompiledSuccessfully;
         
-        public IEditableIDList<Project> Projects 
+        public IEditableIDList<IProject> Projects 
         { 
             get;
             private set;
@@ -63,13 +51,13 @@ namespace VVVV.Core.Model
             private set;
         }
         
-        void Projects_Added(IViewableCollection<Project> collection, Project project)
+        void Projects_Added(IViewableCollection<IProject> collection, IProject project)
         {
             project.Solution = this;
             project.ProjectCompiledSuccessfully += Project_Compiled;
         }
 
-        void Projects_Removed(IViewableCollection<Project> collection, Project project)
+        void Projects_Removed(IViewableCollection<IProject> collection, IProject project)
         {
             project.ProjectCompiledSuccessfully -= Project_Compiled;
         }

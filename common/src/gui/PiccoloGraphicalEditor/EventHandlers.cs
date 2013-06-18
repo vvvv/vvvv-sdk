@@ -5,12 +5,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections;
-using System.Linq;
-using Piccolo.NET;
-using Piccolo.NET.Nodes;
-using Piccolo.NET.PiccoloX.Events;
-using Piccolo.NET.Event;
-using Piccolo.NET.Util;
+using UMD.HCIL.Piccolo;
+using UMD.HCIL.Piccolo.Nodes;
+using UMD.HCIL.PiccoloX.Events;
+using UMD.HCIL.Piccolo.Event;
+using UMD.HCIL.Piccolo.Util;
 using System.Reflection;
 using VVVV.Core.Viewer.GraphicalEditor;
 using VVVV.Core.View.GraphicalEditor;
@@ -38,8 +37,6 @@ namespace VVVV.HDE.GraphicalEditing
         private bool FTempPathStarted = false;
         private TempPath FTempPath;
         private IConnectable FStartingConnectable;
-        private bool FMultiConnect = false;
-        private Solid FMultiTarget;
 
         private void DrawingEnded()
         {
@@ -49,18 +46,6 @@ namespace VVVV.HDE.GraphicalEditing
             FStartingConnectable = null;
             FGraphEditor.NoAwaitingConnections();
         }
-        
-        private void StartLink(Solid target)
-        {
-            FTempPath = new TempPath(null, target);
-            FTempPathStarted = true;
-            FStartingConnectable = target.Connectable;
-            target.Connectable.DecorateStartingPath(FTempPath);
-            FGraphEditor.ShowAwaitingConnections(target.Connectable);
-
-            FGraphEditor.LinkRoot.Add(FTempPath);
-            FGraphEditor.Host.StartPath();
-        }
 
         public override void OnClick(object sender, PInputEventArgs e)
         {
@@ -68,27 +53,17 @@ namespace VVVV.HDE.GraphicalEditing
 
             Solid target = FGraphEditor.GetConnectionCandidate(e.Position, FStartingConnectable);
 
-            if (FTempPathStarted && (e.Button == MouseButtons.Right))
+            if ((FTempPathStarted) && (e.Button == MouseButtons.Right))
             {
-                // cancel link
-                FGraphEditor.Host.FinishPath(FTempPath, null);
+                // stop drawing path
                 DrawingEnded();
-                
-                FMultiConnect = false;
-                FMultiTarget = null;
-            }
-            else if (FTempPathStarted && (e.Button == MouseButtons.Middle))
-            {
-            	//create constant at click
-            	FGraphEditor.Host.FinishPathWithNode(FTempPath);
-            	DrawingEnded();            	
             }
             else if ((target == null) && (FTempPath != null))
             {
                 //add linkpoint
                 FTempPath.AddPoint(e.Position);
             }
-            else if (target != null && (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right))
+            else if (target != null)
             {
                 var t = target.Connectable;
 
@@ -113,9 +88,6 @@ namespace VVVV.HDE.GraphicalEditing
 
                         FGraphEditor.Host.FinishPath(FTempPath, target.Connectable);
                         DrawingEnded();
-                        
-                        if (FMultiConnect)
-                        	StartLink(FMultiTarget);
                     }
                 }
                 else
@@ -125,13 +97,14 @@ namespace VVVV.HDE.GraphicalEditing
                     var y = Math.Pow(e.Position.Y - FMouseDownPoint.Y, 2);
                     if (Math.Sqrt(x + y) < 5)
                     {
-                    	StartLink(target);
-                        
-                        if (e.Button == MouseButtons.Right)
-                        {
-                        	FMultiConnect = true;
-                        	FMultiTarget = target;
-                        }
+                        // start link
+                        FTempPath = new TempPath(null, target);
+                        FTempPathStarted = true;
+                        FStartingConnectable = target.Connectable;
+                        t.DecorateStartingPath(FTempPath);
+                        FGraphEditor.ShowAwaitingConnections(target.Connectable);
+
+                        FGraphEditor.LinkRoot.Add(FTempPath);
                     }
                 }
             }
@@ -151,42 +124,12 @@ namespace VVVV.HDE.GraphicalEditing
             base.OnMouseDown(sender, e);
             FMouseDownPoint = e.Position;
         }
-        
-        public override void OnMouseUp(object sender, PInputEventArgs e)
-        {
-            base.OnMouseUp(sender, e);
-            FGraphEditor.FCanvas_MouseUp(sender, e.SourceEventArgs as MouseEventArgs, e);
-        }
 
         // Make the event handler only work with BUTTON1 events, so that it does
         // not conflict with the zoom event handler that is installed by default.
         public override bool DoesAcceptEvent(PInputEventArgs e)
         {
             return (base.DoesAcceptEvent(e) && e.IsMouseEvent);
-        }
-    }
-    
-    internal class TipEventHandler : PBasicInputEventHandler
-    {
-        GraphEditor FGraphEditor;
-
-        public TipEventHandler(GraphEditor graphEditor)
-        {
-            FGraphEditor = graphEditor;
-        }
-
-        public override void OnMouseMove(object sender, PInputEventArgs e)
-        {
-        	IGraphElement element;
-            //element = FGraphEditor.GetClosestConnectable(e.Position);
-            //if (element == null)
-            //    element = FGraphEditor.GetHoverableFromPoint(e.Position);
-            if (e.PickedNode != null)
-                element = e.PickedNode.Tag as GraphElement;
-            else
-                element = FGraphEditor.GetHoverableFromPoint(e.Position);
-
-            FGraphEditor.Host.HighlightElement(element);
         }
     }
 
@@ -325,42 +268,19 @@ namespace VVVV.HDE.GraphicalEditing
         //node is selectable if its tag is an ISelectable
         protected override bool IsSelectable(PNode node)
         {
-            return FGraphEditor.IsSelectable(node);
-        }
-
-        protected override void StartStandardSelection(PInputEventArgs e)
-        {
-            base.StartStandardSelection(e);
-            FGraphEditor.StartSelectionDrag(SelectionReference.Cast<PNode>(), e.Position);
-        }
-
-        protected override void DragStandardSelection(PInputEventArgs e)
-        {
-            base.DragStandardSelection(e);
-            FGraphEditor.DragSelection(SelectionReference.Cast<PNode>(), e.Position);
+            var host = node.Tag as GraphElement;
+            if (host != null) return host.IsSelectable;
+            else return false;
         }
 
         protected override void EndStandardSelection(PInputEventArgs e)
         {
             base.EndStandardSelection(e);
-            FGraphEditor.EndSelectionDrag(SelectionReference.Cast<PNode>(), e.Position);
-        }
 
-        protected override void StartMarqueeSelection(PInputEventArgs e)
-        {
-            base.StartMarqueeSelection(e);
-            FGraphEditor.Host.StartMarqueeSelection(e.Position);
-        }
-        
-        protected override void EndMarqueeSelection(PInputEventArgs e)
-        {
-        	if ((MarqueeBounds.Width > 10) && (MarqueeBounds.Height > 10))
-            	FGraphEditor.Host.EndMarqueeSelection(MarqueeBounds);
-            
-        	base.EndMarqueeSelection(e);
+            FGraphEditor.EndSelectionDrag();
         }
     }
-    
+
     /// <summary>
     /// handles the zoom of the canvas
     /// </summary>
@@ -407,49 +327,25 @@ namespace VVVV.HDE.GraphicalEditing
         public override void OnClick(object sender, PInputEventArgs e)
         {
             base.OnClick(sender, e);
-            FGraphEditor.FCanvas_MouseClick(sender, e.SourceEventArgs as MouseEventArgs, e);
+            FGraphEditor.FCanvas_MouseClick(sender, e.SourceEventArgs as MouseEventArgs);
         }
 
         public override void OnDoubleClick(object sender, PInputEventArgs e)
         {
             base.OnDoubleClick(sender, e);
-            FGraphEditor.FCanvas_MouseDoubleClick(sender, e.SourceEventArgs as MouseEventArgs, e);
+            FGraphEditor.FCanvas_MouseDoubleClick(sender, e.SourceEventArgs as MouseEventArgs);
         }
 
         public override void OnMouseDown(object sender, PInputEventArgs e)
         {
             base.OnMouseDown(sender, e);
-            FGraphEditor.FCanvas_MouseDown(sender, e.SourceEventArgs as MouseEventArgs, e);
+            FGraphEditor.FCanvas_MouseDown(sender, e.SourceEventArgs as MouseEventArgs);
         }
 
         public override void OnMouseUp(object sender, PInputEventArgs e)
         {
             base.OnMouseUp(sender, e);
-            FGraphEditor.FCanvas_MouseUp(sender, e.SourceEventArgs as MouseEventArgs, e);
-        }
-
-        public override void OnMouseEnter(object sender, PInputEventArgs e)
-        {
-            base.OnMouseEnter(sender, e);
-            FGraphEditor.FCanvas_MouseEnter(sender, e.SourceEventArgs as MouseEventArgs, e);
-        }
-
-        public override void OnMouseMove(object sender, PInputEventArgs e)
-        {
-            base.OnMouseMove(sender, e);
-            FGraphEditor.FCanvas_MouseMove(sender, e.SourceEventArgs as MouseEventArgs, e);
-        }
-
-        public override void OnMouseLeave(object sender, PInputEventArgs e)
-        {
-            base.OnMouseLeave(sender, e);
-            FGraphEditor.FCanvas_MouseLeave(sender, e.SourceEventArgs as MouseEventArgs, e);
-        }
-
-        public override void OnMouseDrag(object sender, PInputEventArgs e)
-        {
-            base.OnMouseDrag(sender, e);
-            FGraphEditor.FCanvas_MouseMove(sender, e.SourceEventArgs as MouseEventArgs, e);
+            FGraphEditor.FCanvas_MouseUp(sender, e.SourceEventArgs as MouseEventArgs);
         }
         #endregion mouse
     }

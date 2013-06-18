@@ -8,20 +8,17 @@ namespace VVVV.Core.Menu
 {
     public class DefaultAddMenuEntry : AddMenuEntry
     {
+        ModelMapper FMapper;
         IIDItem FModel;
 
-        public DefaultAddMenuEntry(IIDItem model, ModelMapper mapper)
-            : base(model.GetCommandHistory())
+        public DefaultAddMenuEntry(ModelMapper mapper, IIDItem model)
+            :base(model.Mapper.Map<ICommandHistory>())
         {
             if (mapper.CanMap<IAddMenuProvider>())
-            {
-                var addMenuProvider = mapper.Map<IAddMenuProvider>();
-                foreach (var a in addMenuProvider.GetEnumerator())
-                {
-                    AddEntry(a);
-                }
-            }
+                foreach (var a in mapper.Map<IAddMenuProvider>().GetEnumerator())
+                    Add(a);
             
+            FMapper = mapper;
             FModel = model;                       
         }
     }
