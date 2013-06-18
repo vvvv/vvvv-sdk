@@ -54,7 +54,7 @@ namespace VVVV.HDE.GraphicalEditing
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.FCanvas = new Piccolo.NET.PCanvas();
+			this.FCanvas = new UMD.HCIL.Piccolo.PCanvas();
 			this.FToolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.SuspendLayout();
 			// 
@@ -84,6 +84,6 @@ namespace VVVV.HDE.GraphicalEditing
 			this.ResumeLayout(false);
         }
 		private System.Windows.Forms.ToolTip FToolTip;
-		private Piccolo.NET.PCanvas FCanvas;
+		private UMD.HCIL.Piccolo.PCanvas FCanvas;
 	}
 }

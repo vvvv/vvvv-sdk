@@ -22,7 +22,7 @@ namespace VVVV.Core.Helper
                 Contract.Assume(false);
             }
             
-            public void Visit(Solution solution)
+            public void Visit(ISolution solution)
             {
                 FTraverser.Traverse(solution);
             }
@@ -61,7 +61,7 @@ namespace VVVV.Core.Helper
             FDispatcher = new Dispatcher(this);
         }
         
-        public void Traverse(Solution solution)
+        public void Traverse(ISolution solution)
         {
             TraverseChildren(solution);
         }
@@ -115,7 +115,7 @@ namespace VVVV.Core.Helper
             }
         }
         
-        public virtual void TraverseChildren(Solution solution)
+        public virtual void TraverseChildren(ISolution solution)
         {
             Traverse(solution.Projects);
         }

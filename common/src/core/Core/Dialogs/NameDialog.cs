@@ -12,33 +12,31 @@ namespace VVVV.Core.Dialogs
     {
         //needed to check whether the textbox was edited
         protected string FInitialText;
-        private readonly Func<string, string, char, bool> FIsValidChar;
 
-        public NameDialog(string initText = null, Func<string, string, char, bool> isValidChar = null)
+        public NameDialog()
+            : this("Name")
+        {
+        }
+
+        public NameDialog(string initText)
         {
             InitializeComponent();
-            initText = initText ?? "Name";
             TextBoxName.Text = initText;
             FInitialText = initText;
             StartPosition = FormStartPosition.CenterParent;
-            FIsValidChar = isValidChar ?? DefaultIsValidChar;
-            IsValidName = DefaultIsValidName;
         }
 
-        public Point Position
+        //create dialog with a position which will be the center
+        public NameDialog(Point pos)
+            : this("Name", pos)
         {
-            set
-            {
-                StartPosition = FormStartPosition.Manual;
-                Location = Point.Subtract(value, new Size(Width / 2, Height / 2));
-            }
         }
 
-        public Func<string, bool> IsValidName { get; set; }
-
-        private static bool DefaultIsValidName(string name)
+        public NameDialog(string initText, Point pos)
+            : this(initText)
         {
-            return true;
+            StartPosition = FormStartPosition.Manual;
+            Location = Point.Subtract(pos, new Size(Width / 2, Height / 2));
         }
 
         //empty textbox if it contains the initial text
@@ -66,9 +64,9 @@ namespace VVVV.Core.Dialogs
             }
         }
 
-        private static bool DefaultIsValidChar(string currentText, string initialText, char chr)
+        protected virtual bool AllowCharacter(char chr)
         {
-            if (string.IsNullOrEmpty(currentText) || currentText == initialText)
+            if (TextBoxName.Text == "" || TextBoxName.Text == FInitialText)
             {
                 return Char.IsLetter(chr) ||
                     Char.IsControl(chr);
@@ -77,14 +75,10 @@ namespace VVVV.Core.Dialogs
             {
                 return Char.IsLetterOrDigit(chr) ||
                     chr == '_' ||
-                    chr == '.' ||
+                	chr == '.' ||
                     Char.IsControl(chr);
             }
-        }
 
-        protected bool AllowCharacter(char chr)
-        {
-            return FIsValidChar(TextBoxName.Text, FInitialText, chr);
         }
 
         //check if pasted text is ok
@@ -110,7 +104,7 @@ namespace VVVV.Core.Dialogs
 
             TextBoxName.Text = text;
 
-            if (text != "") ButtonOK.Enabled = IsValidName(text);
+            if (text != "") ButtonOK.Enabled = true;
         }
     }
 }

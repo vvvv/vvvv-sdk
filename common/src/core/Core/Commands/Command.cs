@@ -16,7 +16,7 @@ namespace VVVV.Core.Commands
     public abstract class Command
     {
         #region Serialization
-        public class CommandSerializer : ISerializer<Command>
+        internal class CommandSerializer : ISerializer<Command>
         {
             public XElement Serialize(Command cmd, Serializer serializer)
             {
@@ -24,7 +24,7 @@ namespace VVVV.Core.Commands
                 throw new NotImplementedException();
             }
             
-            public virtual Command Deserialize(XElement data, Type type, Serializer serializer)
+            public Command Deserialize(XElement data, Type type, Serializer serializer)
             {
                 var itemResolver = Shell.Instance;
                 
@@ -86,34 +86,12 @@ namespace VVVV.Core.Commands
                             return serializer.Deserialize<CompoundCommand>(data);
                         }
                     default:
-                        return null;
+                        throw new NotSupportedException(string.Format("Can't deserialize command '{0}'.", cmdName));
                 }
             }
         }
         #endregion
-
-        #region EmptyCommand
-
-        class EmptyCommand : Command
-        {
-            public override void Execute()
-            {
-                // Do nothing
-            }
-
-            public override void Undo()
-            {
-                // Do nothing
-            }
-
-            public override bool HasUndo
-            {
-                get { return true; }
-            }
-        }
-
-        #endregion
-
+        
         /// <summary>
         /// Execute this command.
         /// </summary>
@@ -176,7 +154,5 @@ namespace VVVV.Core.Commands
             moveCommand.Append(new AddCommand<TDestination, TItem>(destination, item));
             return moveCommand;
         }
-
-        public static readonly Command Empty = new EmptyCommand();
     }
 }

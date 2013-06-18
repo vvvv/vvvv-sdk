@@ -146,24 +146,20 @@ namespace VVVV.Core.Model
 
         void FReferences_RootingChanged(object sender, RootingChangedEventArgs args)
         {
-            switch (args.Rooting)
+            switch (args.Rooting) 
             {
                 case RootingAction.Rooted:
-                    var serviceProvider = new ServiceProvider(FReferences.ServiceProvider);
-                    serviceProvider.RegisterService<IConverter>(FReferenceConverter);
-                    FReferences.ServiceProvider = serviceProvider;
+                    FReferences.Mapper.RegisterMapping<IConverter>(FReferenceConverter);
                     break;
             }
         }
-
+        
         void FDocuments_RootingChanged(object sender, RootingChangedEventArgs args)
         {
-            switch (args.Rooting)
+            switch (args.Rooting) 
             {
                 case RootingAction.Rooted:
-                    var serviceProvider = new ServiceProvider(FDocuments.ServiceProvider);
-                    serviceProvider.RegisterService<IConverter>(FDocumentConverter);
-                    FDocuments.ServiceProvider = serviceProvider;
+                    FDocuments.Mapper.RegisterMapping<IConverter>(FDocumentConverter);
                     break;
             }
         }
@@ -180,7 +176,7 @@ namespace VVVV.Core.Model
             private set;
         }
         
-        public Solution Solution
+        public ISolution Solution
         {
             get;
             set;

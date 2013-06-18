@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.Core.Model;
-using VVVV.Core.Commands;
-using VVVV.Core.Serialization;
 
 namespace VVVV.Core
 {
@@ -38,7 +36,7 @@ namespace VVVV.Core
             set;
         }
 
-        IServiceProvider ServiceProvider
+        ModelMapper Mapper
         {
             get;
         }
@@ -79,26 +77,6 @@ namespace VVVV.Core
         public static string GetIDRelativeTo(this IIDItem item, IIDItem other)
         {
             return item.GetID().Replace(other.GetID()+"/", "");
-        }
-
-        public static ICommandHistory GetCommandHistory(this IIDItem item)
-        {
-            return item.ServiceProvider.GetService<ICommandHistory>();
-        }
-
-        public static Serializer GetSerializer(this IIDItem item)
-        {
-            return item.ServiceProvider.GetService<Serializer>();
-        }
-
-        public static bool HasService<T>(this IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetService(typeof(T)) != null;
-        }
-
-        public static T GetService<T>(this IServiceProvider serviceProvider)
-        {
-            return (T)serviceProvider.GetService(typeof(T));
         }
     }
 }

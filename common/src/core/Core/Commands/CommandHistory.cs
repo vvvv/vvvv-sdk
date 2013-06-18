@@ -3,9 +3,6 @@ using System.Diagnostics;
 using VVVV.Core.Logging;
 using System.Xml.Linq;
 using VVVV.Core.Serialization;
-using System.Threading;
-using System.Collections.Generic;
-using System.Security;
 
 namespace VVVV.Core.Commands
 {
@@ -35,11 +32,10 @@ namespace VVVV.Core.Commands
         #endregion
 
         private readonly Node<Command> FFirstNode = new Node<Command>();
-        protected readonly Serializer FSerializer;
+        private readonly Serializer FSerializer;
 
         // Position in command list of last executed command.
         private Node<Command> FCurrentNode;
-        private SynchronizationContext FMainThread;
 
         /// <summary>
         /// The command which will be executed on redo.
@@ -65,200 +61,51 @@ namespace VVVV.Core.Commands
             }
         }
 
-        public CommandHistory(IServiceProvider serviceProvider)
+        public CommandHistory(Serializer serializer)
         {
             FCurrentNode = FFirstNode;
-            FSerializer = serviceProvider.GetService<Serializer>();
-            FMainThread = serviceProvider.GetService<SynchronizationContext>();
-        }
-
-        public void Insert(Command command)
-        {
-            if (command is CompoundCommand)
-            {
-                HandleCompoundCommand(command as CompoundCommand);
-            }
-            else
-            {
-                ExecuteAndInsert(command);
-            }
-            OnCommandExecuted(command);
-        }
-
-        private void HandleCompoundCommand(CompoundCommand command)
-        {
-            StartCompound();
-            foreach (var subCom in command.Commands)
-            {
-                if (subCom is CompoundCommand)
-                {
-                    HandleCompoundCommand(subCom as CompoundCommand);
-                }
-                else
-                    OnlyExecute(subCom);
-            }
-            StopCompound();
-        }
-
-        public virtual void ExecuteAndInsert(Command command)
-        {
-            //insert command
-            if (command != Command.Empty)
-            {
-                DebugHelpers.CatchAndLog(() =>
-                {
-                    command.Execute();
-
-                    if (command.HasUndo)
-                    {
-                        var newNode = new Node<Command>(command);
-                        newNode.Previous = FCurrentNode;
-                        FCurrentNode.Next = newNode;
-                        FCurrentNode = newNode;
-                    }
-                    else
-                    {
-                        FFirstNode.Next = null;
-                        FCurrentNode = FFirstNode;
-                    }
-
-                    //Debug.WriteLine(string.Format("Command {0} executed and inserted.", command));
-                },
-                string.Format("Innsertion and execution of command {0}", command));
-            }
-        }
-
-        public virtual void OnlyExecute(Command command)
-        {
-            //execute command
-            if (command != Command.Empty)
-            {
-                DebugHelpers.CatchAndLog(() =>
-                {
-                    command.Execute();
-
-                    //Debug.WriteLine(string.Format("Command {0} executed.", command));
-                },
-                string.Format("Execution of command {0}", command));
-            }
-
-            //Debug.WriteLine("StackSize: " + FCompoundStack.Count);
-
-            if (FCompoundStack.Count > 0)
-            {
-                FCompoundStack.Peek().Append(command);
-                //Debug.WriteLine("Append");
-            }
-        }
-
-        public virtual void OnlyInsert(Command command)
-        {
-            //insert command
-            if (command != Command.Empty)
-            {
-                DebugHelpers.CatchAndLog(() =>
-                {
-                    if (command.HasUndo)
-                    {
-                        var newNode = new Node<Command>(command);
-                        newNode.Previous = FCurrentNode;
-                        FCurrentNode.Next = newNode;
-                        FCurrentNode = newNode;
-                    }
-                    else
-                    {
-                        FFirstNode.Next = null;
-                        FCurrentNode = FFirstNode;
-                    }
-
-                    //Debug.WriteLine(string.Format("Command {0} inserted.", command));
-                },
-                string.Format("Insertion of command {0}", command));
-            }
-        }
-
-
-        private Stack<CompoundCommand> FCompoundStack = new Stack<CompoundCommand>();
-
-        public virtual void StartCompound()
-        {
-            if (FMainThread != null)
-                FMainThread.Send((state) => PrivateStartCompound(), null);
-            else
-                PrivateStartCompound();
-        }
-
-        private void PrivateStartCompound()
-        {
-            //Debug.WriteLine("StartCompound: " + FCompoundStack.Count);
-            FCompoundStack.Push(new CompoundCommand());
-        }
-
-        public virtual void StopCompound()
-        {
-            if (FMainThread != null)
-                FMainThread.Send((state) => PrivateStopCompound(), null);
-            else
-                PrivateStopCompound();
-        }
-
-        private void PrivateStopCompound()
-        {
-            //Debug.WriteLine("StopCompound " + FCompoundStack.Count);
-            var comp = FCompoundStack.Pop();
-
-            if (FCompoundStack.Count == 0)
-                OnlyInsert(comp);
-            else
-                FCompoundStack.Peek().Append(comp);
-
-        }
-
-
-        //xml from HDE
-        public void ExecuteAndInsert(string xml)
-        {
-            var x = XElement.Parse(xml);
-
-            if (FMainThread != null)
-                FMainThread.Send((state) => ExecuteAndInsert(FSerializer.Deserialize<Command>(x)), null);
-            else
-                ExecuteAndInsert(FSerializer.Deserialize<Command>(x));
-        }
-
-        public void OnlyExecute(string xml)
-        {
-            var x = XElement.Parse(xml);
-
-            if (FMainThread != null)
-                FMainThread.Send((state) => OnlyExecute(FSerializer.Deserialize<Command>(x)), null);
-            else
-                OnlyExecute(FSerializer.Deserialize<Command>(x));
+            FSerializer = serializer;
         }
 
         /// <summary>
-        /// Redo last command.
+        /// Executes a command and adds it to the command history if the command
+        /// is undoable.
         /// </summary>
-        public virtual void Redo()
+        /// <param name="command">The command to be executed.</param>
+        public virtual void Insert(Command command)
         {
-            if (FMainThread != null)
-                FMainThread.Send((state) => PrivateRedo(), null);
-            else
-                PrivateRedo();
+            DebugHelpers.CatchAndLog(() =>
+            {
+                command.Execute();
+
+                if (command.HasUndo)
+                {
+                    var newNode = new Node<Command>(command);
+                    newNode.Previous = FCurrentNode;
+                    FCurrentNode.Next = newNode;
+                    FCurrentNode = newNode;
+                }
+                else
+                {
+                    FFirstNode.Next = null;
+                    FCurrentNode = FFirstNode;
+                }
+
+                Debug.WriteLine(string.Format("Command {0} executed.", command));
+            },
+            string.Format("Execution of command {0}", command));
+        }
+
+        public virtual void Insert(string xml)
+        {
+            var x = XElement.Parse(xml);
+            Insert(FSerializer.Deserialize<Command>(x));
         }
 
         /// <summary>
         /// Undo last command.
         /// </summary>
         public virtual void Undo()
-        {
-            if (FMainThread != null)
-                FMainThread.Send((state) => PrivateUndo(), null);
-            else
-                PrivateUndo();
-        }
-
-        private void PrivateUndo()
         {
             var command = PreviousCommand;
             if (command != null)
@@ -270,41 +117,25 @@ namespace VVVV.Core.Commands
                     Debug.WriteLine(string.Format("Command {0} undone.", command));
                 },
                 string.Format("Undo of command {0}", command));
-
-                OnCommandExecuted(command);
             }
         }
 
-        private void PrivateRedo()
+        /// <summary>
+        /// Redo last command.
+        /// </summary>
+        public virtual void Redo()
         {
             var command = NextCommand;
             if (command != null)
             {
                 DebugHelpers.CatchAndLog(() =>
                 {
-                    if (command is CompoundCommand)
-                    {
-                        (command as CompoundCommand).OnlyExecuteLocal();
-                    }
-                    else
-                    {
-                        command.Redo();
-                    }
+                    command.Redo();
                     FCurrentNode = FCurrentNode.Next;
                     Debug.WriteLine(string.Format("Command {0} redone.", command));
                 },
                 string.Format("Redo of command {0}", command));
-
-                OnCommandExecuted(command);
             }
-        }
-
-        public event EventHandler<CommandExecutedEventArgs> CommandExecuted;
-
-        protected virtual void OnCommandExecuted(Command cmd)
-        {
-            if (CommandExecuted != null)
-                CommandExecuted(this, new CommandExecutedEventArgs(cmd));
         }
 
         //IIDItem Interface

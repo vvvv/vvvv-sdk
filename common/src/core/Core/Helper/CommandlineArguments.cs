@@ -15,23 +15,8 @@ namespace VVVV.Core
         [Option("e", "throwexceptions", Required = false, HelpText = "If true, vvvv will stop on exceptions")]
         public bool ThrowExceptions = false;
 
-        [Option("f", "throwfrontendexceptions", Required = false, HelpText = "If true, vvvv will stop on frontend compiler exceptions")]
-        public bool ThrowFrontEndExceptions = false;
-
-        [Option("b", "throwbackendexceptions", Required = false, HelpText = "If true, vvvv will stop on backend compiler exceptions")]
-        public bool ThrowBackEndExceptions = false;
-
-        [Option("l", "local", Required = false, HelpText = "If true, vvvv will not try to communicate with a runtime")]
+        [Option("l", "local", Required = false, HelpText = "If true, vvvv will not try to comunicate with a runtime")]
         public bool Local = false;
-
-        [OptionArray("c", "client", Required = false, HelpText = "Space separated list of the IP's of the clients to connect to")]
-        public string[] ClientIPs;
-
-        [Option("p", "port", Required = false, HelpText = "Sets the port in which the HDE communicates with the clients, default is 3344")]
-        public int Port = 3344;
-
-        [Option("s", "startruntime", Required = false, HelpText = "If set, the Runtime.exe at the given path will be started")]
-        public string RuntimePath = @"..\..\..\Runtime\bin\Debug\VClient.exe";
 
         //help string
         [HelpOption(HelpText = "Dispaly this help screen")]

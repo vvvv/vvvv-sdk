@@ -9,9 +9,29 @@ namespace VVVV.Core.Dialogs
 {
     public partial class NamespaceNameDialog : NameDialog
     {
-        public NamespaceNameDialog(string initText = "Name", Func<string, string, char, bool> isValidChar = null)
-            : base(initText, isValidChar)
+        public NamespaceNameDialog(Point loc)
+            : base(loc)
         {
+            InitializeComponent();
+
+            FInitialText = TextBoxName.Text;
+        }
+
+        protected override bool AllowCharacter(char chr)
+        {
+            if (TextBoxName.Text == "" || TextBoxName.Text == FInitialText)
+            {
+                return Char.IsLetter(chr) ||
+                    Char.IsControl(chr);
+            }
+            else
+            {
+                return Char.IsLetterOrDigit(chr) ||
+                    chr == '_' ||
+                    chr == '.' ||
+                    Char.IsControl(chr);
+            }
+
         }
 
         //check if pasted text is ok

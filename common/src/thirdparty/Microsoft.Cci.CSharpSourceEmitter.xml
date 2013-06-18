@@ -40,15 +40,14 @@
             call PrintAttribute.
             </remarks>
         </member>
-        <member name="M:CSharpSourceEmitter.SourceEmitter.Precedence(Microsoft.Cci.IExpression)">
+        <member name="P:CSharpSourceEmitter.ISourceEmitterOutput.CurrentLineEmpty">
             <summary>
-            Higher precedence means more tightly binding.
+            Indicates whether anything has been written to the current line yet
             </summary>
         </member>
-        <member name="M:CSharpSourceEmitter.SourceEmitter.TraverseChildren(Microsoft.Cci.IBlockExpression)">
+        <member name="E:CSharpSourceEmitter.ISourceEmitterOutput.LineStart">
             <summary>
-            Special case for the source expression "new C(){ f1 = e1, f2 = e2, ... }" (where the f's can be fields
-            or properties). See comment in the decompiler.
+            Invoked at the start of a new non-empty line, just before writing the indent
             </summary>
         </member>
         <member name="M:CSharpSourceEmitter.Utils.IsMscorlibTypeNamed(Microsoft.Cci.ITypeReference,System.String)">
@@ -82,16 +81,6 @@
         <member name="T:CSharpSourceEmitter.SpecialAttribute">
             <summary>
             Identifiers for some common attribute types
-            </summary>
-        </member>
-        <member name="P:CSharpSourceEmitter.ISourceEmitterOutput.CurrentLineEmpty">
-            <summary>
-            Indicates whether anything has been written to the current line yet
-            </summary>
-        </member>
-        <member name="E:CSharpSourceEmitter.ISourceEmitterOutput.LineStart">
-            <summary>
-            Invoked at the start of a new non-empty line, just before writing the indent
             </summary>
         </member>
     </members>
