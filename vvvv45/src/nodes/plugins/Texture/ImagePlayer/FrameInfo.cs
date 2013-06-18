@@ -1,30 +1,25 @@
-﻿using System;
+﻿using SharpDX.Direct3D9;
+using System;
 using System.Threading;
 
 namespace VVVV.Nodes.ImagePlayer
 {
     class FrameInfo : IEquatable<FrameInfo>, IDisposable
     {
-        static int liveCount;
-        private readonly string FFilename;
-        private readonly int FBufferSize;
+        public readonly string Filename;
+        public readonly int BufferSize;
+        public readonly Format PreferedFormat;
+        public double DurationIO;
+        public double DurationTexture;
         private readonly Lazy<CancellationTokenSource> FCancellationTokenSource;
         
-        public FrameInfo(string filename, int bufferSize)
+        public FrameInfo(string filename, int bufferSize, Format preferedFormat)
         {
-            FFilename = filename;
-            FBufferSize = bufferSize;
+            Filename = filename;
+            BufferSize = bufferSize;
+            PreferedFormat = preferedFormat;
             
             FCancellationTokenSource = new Lazy<CancellationTokenSource>(() => new CancellationTokenSource());
-            System.Threading.Interlocked.Increment(ref liveCount);
-        }
-        
-        public string Filename
-        {
-            get
-            {
-                return FFilename;
-            }
         }
         
         public bool IsLoaded
@@ -32,14 +27,6 @@ namespace VVVV.Nodes.ImagePlayer
             get
             {
                 return DurationTexture > 0 && !IsCanceled;
-            }
-        }
-        
-        public int BufferSize
-        {
-            get
-            {
-                return FBufferSize;
             }
         }
         
@@ -78,19 +65,6 @@ namespace VVVV.Nodes.ImagePlayer
                 Decoder.Dispose();
                 Decoder = null;
             }
-            System.Threading.Interlocked.Decrement(ref liveCount);
-        }
-        
-        public double DurationIO
-        {
-            get;
-            set;
-        }
-        
-        public double DurationTexture
-        {
-            get;
-            set;
         }
 
         public int Width { get { return Decoder != null ? Decoder.Width : -1; } }
@@ -113,15 +87,16 @@ namespace VVVV.Nodes.ImagePlayer
         
         public bool Equals(FrameInfo other)
         {
-            return this.FFilename == other.FFilename;
+            return this.Filename == other.Filename && this.PreferedFormat == other.PreferedFormat;
         }
         
         public override int GetHashCode()
         {
             int hashCode = 0;
             unchecked {
-                if (FFilename != null)
-                    hashCode += 1000000009 * FFilename.GetHashCode();
+                if (Filename != null)
+                    hashCode += 1000000009 * Filename.GetHashCode();
+                hashCode += PreferedFormat.GetHashCode();
             }
             return hashCode;
         }
@@ -143,7 +118,7 @@ namespace VVVV.Nodes.ImagePlayer
 
         public override string ToString()
         {
-            return string.Format("[FFilename={0}]", FFilename);
+            return string.Format("[Filename={0}, PreferedFormat={1}]", Filename, PreferedFormat);
         }
     }
 }

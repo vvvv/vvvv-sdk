@@ -30,6 +30,9 @@ namespace VVVV.Nodes.ImagePlayer
         [Input("IO Buffer Size", DefaultValue = ImagePlayer.DEFAULT_BUFFER_SIZE, Visibility = PinVisibility.OnlyInspector)]
         public ISpread<int> FBufferSizeIn;
 
+        [Input("Format", EnumName = "TextureFormat", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<EnumEntry> FFormatIn;
+
         [Input("Preload Frames")]
         public ISpread<ISpread<int>> FPreloadFramesIn;
 
@@ -102,6 +105,7 @@ namespace VVVV.Nodes.ImagePlayer
             spreadMax = FDirectoryIn
                 .CombineWith(FFilemaskIn)
                 .CombineWith(FBufferSizeIn)
+                .CombineWith(FFormatIn)
                 .CombineWith(FVisibleFramesIn)
                 .CombineWith(FPreloadFramesIn)
                 .CombineWith(FReloadIn);
@@ -159,11 +163,13 @@ namespace VVVV.Nodes.ImagePlayer
                 double durationTexture = 0.0;
                 int unusedFrames = 0;
                 var loadedFrames = FLoadedOut[i];
+                var format = EnumEntryToEx9Format(FFormatIn[i]);
                 
                 var frame = imagePlayer.Preload(
                     FVisibleFramesIn[i],
                     FPreloadFramesIn[i],
                     FBufferSizeIn[i],
+                    format,
                     out frameCount,
                     out durationIO,
                     out durationTexture,
@@ -192,6 +198,14 @@ namespace VVVV.Nodes.ImagePlayer
             FImagePlayers.SliceCount = 0;
             FIOTaskScheduler.Dispose();
             FMemoryPool.Dispose();
+        }
+
+        static EX9.Format EnumEntryToEx9Format(EnumEntry entry)
+        {
+            var enumName = entry.Name
+                .Replace("_", string.Empty)
+                .Replace("No Specific", "Unknown");
+            return (EX9.Format)Enum.Parse(typeof(EX9.Format), enumName, true);
         }
     }
 }

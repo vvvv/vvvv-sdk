@@ -293,9 +293,9 @@ namespace VVVV.Nodes.ImagePlayer
             frame.Dispose();
         }
         
-        private FrameInfo CreateFrameInfo(string filename, int bufferSize)
+        private FrameInfo CreateFrameInfo(string filename, int bufferSize, EX9.Format preferedFormat)
         {
-            return new FrameInfo(filename, bufferSize);
+            return new FrameInfo(filename, bufferSize, (SharpDX.Direct3D9.Format)preferedFormat);
         }
         
         private static Frame GetEmptyFrame()
@@ -305,7 +305,7 @@ namespace VVVV.Nodes.ImagePlayer
         
         private static FrameInfo GetEmptyFrameInfo()
         {
-            return new FrameInfo(string.Empty, DEFAULT_BUFFER_SIZE);
+            return new FrameInfo(string.Empty, DEFAULT_BUFFER_SIZE, SharpDX.Direct3D9.Format.Unknown);
         }
 
         private bool IsScheduled(string file)
@@ -322,6 +322,7 @@ namespace VVVV.Nodes.ImagePlayer
             ISpread<int> visibleFrameIndices,
             ISpread<int> preloadFrameNrs,
             int bufferSize,
+            EX9.Format preferedFormat,
             out int frameCount,
             out double durationIO,
             out double durationTexture,
@@ -393,7 +394,7 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 if (!IsScheduled(file) && !IsPreloaded(file))
                 {
-                    var frameInfo = CreateFrameInfo(file, bufferSize);
+                    var frameInfo = CreateFrameInfo(file, bufferSize, preferedFormat);
                     Enqueue(frameInfo);
                 }
                 // We're back using resources from the pool -> not clean anymore
@@ -419,7 +420,9 @@ namespace VVVV.Nodes.ImagePlayer
             // Wait for the visible frames (and dipose unused ones)
             var visibleFrames = new Spread<Frame>(0);
             // Map frame numbers to file names
-            var visibleFiles = preloadFiles.Length > 0 ? visibleFrameIndices.Select(i => preloadFiles[VMath.Zmod(i, preloadFiles.Length)]) : Enumerable.Empty<string>();
+            var visibleFiles = preloadFiles.Length > 0 
+                ? visibleFrameIndices.Select(i => preloadFiles[VMath.Zmod(i, preloadFiles.Length)]) 
+                : Enumerable.Empty<string>();
             foreach (var file in visibleFiles)
             {
                 while (!IsPreloaded(file))
@@ -597,7 +600,7 @@ namespace VVVV.Nodes.ImagePlayer
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                frameInfo.Decoder = FrameDecoder.Create(frameInfo.Filename, CreateTextureForDecoder, FMemoryPool, stream);
+                frameInfo.Decoder = FrameDecoder.Create(frameInfo.Filename, CreateTextureForDecoder, FMemoryPool, stream, frameInfo.PreferedFormat);
             }
             catch (OperationCanceledException)
             {
