@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\20_Visualisation_Equalizer_AudioFile.v4p" systemname="Bar_Equalizer_with_Audio_File" filename="C:\Work\Girlpower - next gen\Audio\Audio Input\Bar_Equalizer_with_Audio_File.v4p">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\20_Visualisation_Equalizer_AudioFile.v4p" systemname="Bar_Equalizer_with_Audio_File" filename="C:\Work\Girlpower - next gen\Audio\Audio Input\Bar_Equalizer_with_Audio_File.v4p">
    <BOUNDS type="Window" left="6225" top="0" width="17940" height="17085">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="46" systemname="IOBox (String)">
@@ -35,7 +35,7 @@
    </BOUNDS>
    <BOUNDS height="12105" left="600" top="3840" type="Box" width="4605">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Two LineSpread&apos;s (Spreads) are used to destribute columns and rows of bars on the screen. First LineSpread is used to define X positions for the columns. The second one defines vertical positions (Y) for the bars in every column.&cr;&lf;&cr;&lf;So there are M positions on X axis and N position on Y axis. Cross (2d) creates a XY position for every bar. It takes X and Y values and returns all their possible combinations. So there are M x N bars on the screen. Amplitudes of the audio signal are controlling alpha channel (transparency) of their color, that&apos;s only some of the bars are visible in any given time.&cr;&lf;&cr;&lf;Transform (Transform 2d) creates a spread of transformations used to place and scale (try also to rotate) every bar which will be later drawn using Quad (DX9).&cr;&lf;&cr;&lf;Amplitudes are in a range (0,1), but there are N bars in every column, so the amplitudes should be mapped to (0, N). Map (Value) has its &apos;Source Maximum&apos; pin set to a value below 1 to scale an input range a bit. So, the amplitudes with a value below 1 will activate N-th bar as well.&cr;&lf;&cr;&lf;BarSpread (Spreads) receives a spread of mapped amplitude values (one amplitude for every column of the bars) and returns a spread where for every column a 1 is set for those slices with a slice number below an amplitude value for this column. Number of the slices per column is defined on the &apos;Spread Count&apos; input pin. Please note, that the amplitudes were mapped in the step 8 to be in a range (0, N), where N is the highest bar of every column.&cr;&lf;&cr;&lf;In order to smooth fast-changing values over time a Decay (Animation) is used.&cr;&lf;&cr;&lf;Cross (2d) from the step 4 returns a spreads of the positions in row-major order, which means that the quads are drawn row after row. BarSpread (Spreads) on the other hand returns a spread in a column-major order, so there are values for one column, then for the next one and so on. This order has to be flipped to match the Quads. SwapDim (Spreads) does exactly this: i.e. it takes a spread of values placed column after column and returns a spread where full rows and placed after each other.&cr;&lf;&cr;&lf;A color of every bar corresponds to its Y position. LinearSpread returns a spread of values for one column, its values will be used as hue paratemeters of the colors. &cr;&lf;&cr;&lf;Each value is copied so many times as there are columns.&cr;&lf;&cr;&lf;A color for every bar is created.&cr;&lf;&cr;&lf;In the background grid lines are drawn. A spread of vertices for these lines is constructed here. On X axis vertices are placed only in two positions. On Y axis every line needs two vertices having the same Y position (that is why every Y coordinate is duplicated using Select (Value)).|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Two LineSpread&apos;s (Spreads) are used to distribute columns and rows of bars on the screen. First LinearSpread is used to define X positions for the columns. The second one defines vertical positions (Y) for the bars in every column.&cr;&lf;&cr;&lf;So there are M positions on X axis and N position on Y axis. Cross (2d) creates a XY position for every bar. It takes X and Y values and returns all their possible combinations. So there are M x N bars on the screen. Amplitudes of the audio signal are controlling the alpha channel (transparency) of their color, that&apos;s only some of the bars are visible in any given time.&cr;&lf;&cr;&lf;Transform (Transform 2d) creates a spread of transformations used to place and scale (try also to rotate) every bar which will be later drawn using Quad (DX9).&cr;&lf;&cr;&lf;Amplitudes are in a range (0..1), but there are N bars in every column, so the amplitudes have to be mapped to (0..N). Map (Value) has its &apos;Source Maximum&apos; pin set to a value below 1 to scale the input range a bit. So, the amplitudes with a value below 1 will activate N-th bar as well.&cr;&lf;&cr;&lf;BarSpread (Spreads) receives a spread of mapped amplitude values (one amplitude for every column of the bars) and returns a spread where for every column a 1 is set for those slices with a slice number below the amplitude value for this column. Number of the slices per column is defined on the &apos;Spread Count&apos; input pin. Please note, that the amplitudes were mapped in step 8 to be in a range (0..N), where N is the highest bar of every column.&cr;&lf;&cr;&lf;In order to smooth fast-changing values over time a Decay (Animation) is used.&cr;&lf;&cr;&lf;Cross (2d) from the step 4 returns a spreads of the positions in row-major order, which means that the quads are drawn row after row. BarSpread (Spreads) on the other hand returns a spread in a column-major order, so there are values for one column, then for the next one and so on. This order has to be flipped to match the Quads. SwapDim (Spreads) does exactly this: i.e. it takes a spread of values placed column after column and returns a spread where full rows are placed after each other.&cr;&lf;&cr;&lf;The color of every bar corresponds to its Y position. LinearSpread returns a spread of values for one column, its values will be used as hue parameters of the colors. &cr;&lf;&cr;&lf;Each value is copied so many times as there are columns.&cr;&lf;&cr;&lf;A color for every bar is created.&cr;&lf;&cr;&lf;In the background grid lines are drawn. A spread of vertices for these lines is constructed here. On the X axis vertices are placed only in two positions. On the Y axis every line needs two vertices having the same Y position (that is why every Y coordinate is duplicated using Select (Value)).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -635,6 +635,8 @@
    </PIN>
    <BOUNDS type="Box" left="6825" top="10620">
    </BOUNDS>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="190" srcpinname="XYZ" dstnodeid="194" dstpinname="VerticesXYZ">
    </LINK>
@@ -1307,7 +1309,7 @@
    </BOUNDS>
    <BOUNDS type="Box" height="690" left="600" top="1440" width="4245">
    </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" pintype="Input" values="|A FFT (Bass) calculates amplitudes on different frequencies and returns them as a spread (i.e. 128 amplitudes per channel).|">
+   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" pintype="Input" values="|An FFT (Bass) calculates amplitudes on different frequencies and returns them as a spread (i.e. 128 amplitudes per channel).|">
    </PIN>
    <PIN pinname="Output String" visible="0" pintype="Output">
    </PIN>
@@ -1369,7 +1371,7 @@
    </PIN>
    <PIN pinname="File Mask" encoded="0" slicecount="1" pintype="Configuration" values="|all foos||*.foo;*.bar|">
    </PIN>
-   <PIN pinname="Input String" encoded="0" pintype="Input" slicecount="1" visible="-1" values="13_Analysis_Advanced.v4p">
+   <PIN pinname="Input String" encoded="0" pintype="Input" slicecount="1" visible="-1" values="19_Analysis_Advanced.v4p">
    </PIN>
    <PIN pinname="String Type" slicecount="1" pintype="Configuration" values="Filename">
    </PIN>

@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\19_Visualisation_Equalizer_AudioInput.v4p" systemname="AudioInput_Bar_Equalizer" filename="C:\Work\girlpower - next gen\Audio\Audio Input\AudioInput_Bar_Equalizer.v4p">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\19_Visualisation_Equalizer_Bars.v4p" systemname="AudioInput_Bar_Equalizer" filename="C:\Work\girlpower - next gen\Audio\Audio Input\AudioInput_Bar_Equalizer.v4p">
    <BOUNDS type="Window" left="6570" top="375" width="19455" height="15315">
    </BOUNDS>
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="38">
@@ -295,7 +295,7 @@
    </PIN>
    <PIN pinname="Outer Radius" slicecount="1" values="1.42">
    </PIN>
-   <PIN pinname="Transform" visible="1">
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Inner Radius" slicecount="1" values="0.04">
    </PIN>
@@ -344,8 +344,6 @@
    <PIN pinname="XYZ">
    </PIN>
    </NODE>
-   <LINK srcnodeid="11" srcpinname="Transform Out" dstnodeid="14" dstpinname="Transform">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7200" top="7260" width="300" height="240">
    </BOUNDS>
@@ -547,7 +545,7 @@
    </BOUNDS>
    <BOUNDS height="690" left="585" top="1380" type="Box" width="4245">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A FFT (Bass) calculates amplitudes on different frequencies and returns them as a spread (i.e. 128 amplitudes per channel).|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|An FFT (Bass) calculates amplitudes on different frequencies and returns them as a spread (i.e. 128 amplitudes per channel).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1079,7 +1077,7 @@
    </BOUNDS>
    <BOUNDS height="10620" left="585" top="3810" type="Box" width="4080">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Values are scaled a bit just to make the bars higher.&cr;&lf;&cr;&lf;Now the changes of every amplitude are smoothed over time and these N values are used to scale bars on Y axis (see the Transform node in step 9).&cr;&lf;&cr;&lf;There are N bars &quot;spreaded&quot; on the screen. For their X position a LinearSpread (Spreads) is used.&cr;&lf;&cr;&lf;Every bar is scaled onthe X axis in order to squeze all N bars into the window. Therefore the width of the window (which is 2) is divided by the number of the bars (see Count (Value)).&cr;&lf;&cr;&lf;Transform (Transform 2d) holds transformations (position, scale and rotation) for all N bars.&cr;&lf;&cr;&lf;The color of every bar corresponds to its amplitude (=height). An InputMorph (Color) is used to smoothly interpolate between 3 defined colors.&cr;&lf;&cr;&lf;The &apos;Switch&apos; pin of the InputMorph is connected to the amplitude values via Map (Value). Amplitudes are set in the range (0...0.5) and InputMorph need values in a range of (0...2) to smoothly interpolate between its 3 inputs.&cr;&lf;&cr;&lf;Quad (DX9) is used to draw all N bars.&cr;&lf;&cr;&lf;A line between the bars is drawn with Line (EX9). Please note, that all points of the line are coming through its &apos;VerticesXYZ&apos; pin, therefor the &apos;Single Input&apos; pin is set to 1. Coordinates of these points are: values coming from the LinearSpread (used for X), amplitude values (shifted a bit with a Substract (Value)) (used for Y).&cr;&lf;&cr;&lf;Circles are drawn with GridSegment (DX9). In order to draw outlines and not filled circles the &apos;Inner Radius&apos; pin is set to some value. Positions and a size for these circles are defined in the Transform (Transform 2d) node.&cr;&lf;&cr;&lf;The Halo (EX9.Effect) is used to create a radial gradient on the background. This node needs a simple mesh (see Grid (EX9.Geometry)) in order to be drawn, and is scaled to fill the whole window unsing a UniformScale (Transform).&cr;&lf;&cr;&lf;All individual layers are grouped together and rendered on a grey background.&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Values are scaled a bit just to make the bars higher.&cr;&lf;&cr;&lf;Now the changes of every amplitude are smoothed over time and these N values are used to scale bars on Y axis (see the Transform node in step 9).&cr;&lf;&cr;&lf;There are N bars &quot;spreaded&quot; on the screen. For their X position a LinearSpread (Spreads) is used.&cr;&lf;&cr;&lf;Every bar is scaled on the X axis in order to squeeze all N bars into the window. Therefore the width of the window (which is 2 units) is divided by the number of the bars (see Count (Value)).&cr;&lf;&cr;&lf;Transform (Transform 2d) holds transformations (position, scale and rotation) for all N bars.&cr;&lf;&cr;&lf;The color of every bar corresponds to its amplitude (=height). An InputMorph (Color) is used to smoothly interpolate between 3 defined colors.&cr;&lf;&cr;&lf;The &apos;Switch&apos; pin of the InputMorph is connected to the amplitude values via Map (Value). Amplitudes are set in the range (0...0.5) and InputMorph need values in a range of (0...2) to smoothly interpolate between its 3 inputs.&cr;&lf;&cr;&lf;Quad (DX9) is used to draw all N bars.&cr;&lf;&cr;&lf;A line between the bars is drawn with Line (EX9). Please note, that all points of the line are set at once via its &apos;VerticesXYZ&apos; pin, therefor the &apos;Single Input&apos; pin is set to 1. Coordinates of these points are: values coming from the LinearSpread (used for X), amplitude values (shifted a bit with a Substract (Value)) (used for Y).&cr;&lf;&cr;&lf;Circles are drawn with GridSegment (DX9). In order to draw outlines and not filled circles the &apos;Inner Radius&apos; pin is set to some value. Positions and a size for these circles are defined in the Transform (Transform 2d) node.&cr;&lf;&cr;&lf;The Halo (EX9.Effect) is used to create a radial gradient on the background. This node needs a simple mesh (see Grid (EX9.Geometry)) in order to be drawn, and is scaled to fill the whole window unsing a UniformScale (Transform).&cr;&lf;&cr;&lf;All individual layers are grouped together and rendered on a grey background.&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1109,7 +1107,7 @@
    </PIN>
    <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
    </PIN>
-   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="13_Analysis_Advanced.v4p">
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="19_Analysis_Advanced.v4p">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
@@ -1327,6 +1325,8 @@
    </BOUNDS>
    <BOUNDS type="Box" left="9900" top="2385">
    </BOUNDS>
+   <PIN pinname="Frequency Scaling" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="124" srcpinname="Handle Out" dstnodeid="171" dstpinname="Handle In">
    </LINK>
@@ -1350,4 +1350,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <LINK srcnodeid="11" srcpinname="Transform Out" dstnodeid="14" dstpinname="Transform">
+   </LINK>
    </PATCH>
