@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\17_Analysis_Basics.v4p" systemname="Analysis_Basics" filename="C:\Work\girlpower - next gen\Audio\Analysis_Basics.v4p">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Audio\18_Analysis_Basics.v4p" systemname="Analysis_Basics" filename="C:\Work\girlpower - next gen\Audio\Analysis_Basics.v4p">
    <BOUNDS type="Window" left="960" top="660" width="22485" height="13965">
    </BOUNDS>
    <NODE systemname="FileStream (Bass)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="FileStream (Bass)" componentmode="Hidden" id="3">
@@ -458,18 +458,6 @@
    </NODE>
    <LINK srcnodeid="131" srcpinname="Audio" dstnodeid="132" dstpinname="Audio">
    </LINK>
-   <NODE systemname="BeatDetector (Value)" filename="%VVVV%\lib\nodes\modules\Value\BeatDetector (Value).v4p" nodename="BeatDetector (Value)" componentmode="Hidden" id="133">
-   <BOUNDS type="Node" left="13275" top="4020" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="BangOut" visible="1">
-   </PIN>
-   <PIN pinname="DecayOut" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="132" srcpinname="RMS" dstnodeid="133" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="134" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="14415" top="3660" width="555" height="240">
    </BOUNDS>
@@ -482,8 +470,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="134" srcpinname="Y Output Value" dstnodeid="133" dstpinname="DecayOfDecayOut">
-   </LINK>
    <NODE systemname="Segment (DX9)" nodename="Segment (DX9)" componentmode="Hidden" id="135">
    <BOUNDS type="Node" left="13305" top="6390" width="100" height="100">
    </BOUNDS>
@@ -623,13 +609,11 @@
    <NODE systemname="Damper (Animation)" nodename="Damper (Animation)" componentmode="Hidden" id="148">
    <BOUNDS type="Node" left="14400" top="4965" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Go To Position" visible="1">
+   <PIN pinname="Go To Position" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Position Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="133" srcpinname="DecayOut" dstnodeid="148" dstpinname="Go To Position">
-   </LINK>
    <LINK srcnodeid="148" srcpinname="Position Out" dstnodeid="135" dstpinname="Cycles">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="151" systemname="IOBox (Value Advanced)">
@@ -657,9 +641,9 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="133" srcpinname="BangOut" dstnodeid="152" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="153" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="10155" top="4545" width="525" height="525">
    </BOUNDS>
@@ -1187,7 +1171,7 @@
    </PIN>
    <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
    </PIN>
-   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="18_Analysis_Advanced.v4p">
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="19_Analysis_Advanced.v4p">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
@@ -1215,7 +1199,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="17385" top="10215" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|Integrated Microphone Array (ID|">
+   <PIN pinname="Input Enum" slicecount="1" values="|Microphone (High Definition Aud|">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
@@ -1392,4 +1376,26 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
+   <NODE id="133" componentmode="Hidden" systemname="BeatDetector (Value)" filename="%VVVV%\lib\nodes\modules\Value\BeatDetector (Value).v4p" nodename="BeatDetector (Value)">
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="DecayOfDecayOut">
+   </PIN>
+   <BOUNDS type="Window" left="20565" top="3315" width="7725" height="11475">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13275" top="4020" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="BangOut" visible="1">
+   </PIN>
+   <PIN pinname="DecayOut" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="133" srcpinname="BangOut" dstnodeid="152" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="133" srcpinname="DecayOut" dstnodeid="148" dstpinname="Go To Position">
+   </LINK>
+   <LINK srcnodeid="134" srcpinname="Y Output Value" dstnodeid="133" dstpinname="DecayOfDecayOut">
+   </LINK>
+   <LINK srcnodeid="132" srcpinname="RMS" dstnodeid="133" dstpinname="Input">
+   </LINK>
    </PATCH>
