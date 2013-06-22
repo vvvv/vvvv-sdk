@@ -110,7 +110,10 @@ namespace VVVV.Nodes
     [Output("Capabilities", Visibility = PinVisibility.Hidden)]
     ISpread<string> FCapabilities;
 
-    [Output("I2C Data",Visibility = PinVisibility.OnlyInspector)]
+    [Output("String",Visibility = PinVisibility.Hidden)]
+    ISpread<string> StringOut;
+
+    [Output("I2C Data", Visibility = PinVisibility.OnlyInspector)]
     IOutStream<Stream> FI2CData;
 
     #endregion fields & pins
@@ -122,6 +125,8 @@ namespace VVVV.Nodes
       /// Configure the output count
       if (FAnalogIns.IsChanged) FAnalogIns.SliceCount  = FAnalogInputCount[0];
       if (FDigitalIns.IsChanged) FDigitalIns.SliceCount = FDigitalInputCount[0];
+
+      StringOut.SliceCount = 0;
 
       /// If there is nothing new to read, there is nothing to parse
       if (!FirmataIn.IsChanged) return;
@@ -248,8 +253,12 @@ namespace VVVV.Nodes
           FFirmwareName[0] = name.ToString();
           FFirmwareVersion[0] = the_name;
           break;
-
-          /// Handle I2C replies
+        case Command.STRING_DATA:
+          string message = Encoding.ASCII.GetString(data.ToArray());
+          StringOut.Add(message);
+          StringOut.Flush(true); // Signal change, regardless of the message
+          break;
+        /// Handle I2C replies
         case Command.I2C_REPLY:
           try {
 

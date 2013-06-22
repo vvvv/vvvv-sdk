@@ -99,6 +99,13 @@ namespace VVVV.Nodes
                          Visibility = PinVisibility.Hidden, IsSingle = true)]
     IDiffSpread<int> FSamplerate;
 
+    [Input("Use I2C", DefaultBoolean = true, IsToggle = true, IsSingle = true)]
+    IDiffSpread<bool> UseI2C;
+
+    [Input("I2C")]
+    IDiffSpread<Stream> I2CDataIn;
+
+
     [Input("Report Firmware Version", IsBang = true,
                                       Visibility = PinVisibility.OnlyInspector, IsSingle=true)]
     IDiffSpread<bool> FReportFirmwareVersion;
@@ -114,7 +121,6 @@ namespace VVVV.Nodes
     [Input("Digital Input Count", DefaultValue = 20, MaxValue = Default.MaxDigitalPins, MinValue = 0,
                                   Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
     IDiffSpread<int> FDigitalInputCount;
-
 
     ///
     /// OUTPUT
@@ -144,26 +150,24 @@ namespace VVVV.Nodes
       /// Shall we reset?
       if (ShouldReset) {
         GetResetCommand();
-        GetCapabilityReport();
-      }
-
-      if (FReportCapabilities.IsChanged && FReportCapabilities[0] && !ShouldReset) {
-        GetCapabilityReport();
-      }
-
-      /// Firmware Version requested?
-      if ((FReportFirmwareVersion.IsChanged && FReportFirmwareVersion[0]) || ShouldReset) {
-        GetFirmwareVersionCommand();
-      }
-
-      // TODO: Find out if we have pull-up configured input pins and if so, update the config too
-      if(FPinModeSetup.IsChanged || ShouldReset) {
-        UpdatePinConfiguration();
       }
 
       /// Write the values to the pins
-      if (FPinModeSetup.IsChanged || FPinValues.IsChanged || ShouldReset) {
+      if (FPinModeSetup.IsChanged || FPinValues.IsChanged || ShouldReset)
+      {
         SetPinStates(FPinValues);
+      }
+
+      // TODO: Find out if we have pull-up configured input pins and if so, update the config too
+      if (FPinModeSetup.IsChanged || ShouldReset)
+      {
+        UpdatePinConfiguration();
+      }
+
+      /// Firmware Version requested?
+      if ((FReportFirmwareVersion.IsChanged && FReportFirmwareVersion[0]) || ShouldReset)
+      {
+        GetFirmwareVersionCommand();
       }
 
       /// Set sample rate
@@ -181,6 +185,19 @@ namespace VVVV.Nodes
         for(int port=0; port<NUM_PORTS; port++) {
           GetDigitalPinReportingCommandForState(FReportDigitalPins[0],port);
         }
+      }
+
+      if (I2CDataIn.IsChanged && I2CDataIn.SliceCount>0) {
+        // copy the incoming stream to the command buffer
+        for (int data = I2CDataIn[0].ReadByte(); data != -1; data = I2CDataIn[0].ReadByte())
+        {
+          CommandBuffer.Enqueue((byte)data);
+        }
+      }
+
+      if ((FReportCapabilities.IsChanged && FReportCapabilities[0]) || ShouldReset)
+      {
+        GetCapabilityReport();
       }
 
       bool HasData = CommandBuffer.Count>0;
@@ -203,7 +220,6 @@ namespace VVVV.Nodes
     }
 
     #region Helper Functions
-
     // Make a shortcut for FResetSystem[0]
     bool hasLaunched = false; // always reset on first launch
     bool ShouldReset {
@@ -408,6 +424,166 @@ namespace VVVV.Nodes
     }
 
     #endregion
+
+  }
+
+
+  #region PluginInfo
+  [PluginInfo(Name = "I2CEncode",
+              Category = "Devices",
+              Version  = "2.x",
+              Author = "jens a. ewald",
+              Help = "Encodes I2C Firmata messages",
+              Tags = "Firmata,Arduino")]
+  #endregion PluginInfo
+
+  public class I2CEncode : IPluginEvaluate, IPartImportsSatisfiedNotification
+  {
+    const string FIRMATA_ADDRESS_MODE_ENUM_NAME = "Firmata.I2CAddressMode";
+
+    #region Pin Definitions
+    ///
+    /// INPUT
+    ///
+    [Input("Input")]
+    ISpread<Stream> DataIn;
+
+    [Input("Register", MinValue = -1, MaxValue = 255, DefaultValue = -1)]
+    ISpread<int> Register;
+
+    [Input("Num Bytes to Read", MinValue = 1, MaxValue = 255, DefaultValue = 1)]
+    ISpread<int> BytesToRead;
+
+    [Input("Address", MinValue = 0, MaxValue = 0x3FF, DefaultValue = 0x00)]
+    ISpread<int> Address;
+
+    [Input("Address Mode", EnumName = FIRMATA_ADDRESS_MODE_ENUM_NAME, Visibility=PinVisibility.Hidden)]
+    ISpread<EnumEntry> AddressMode;
+
+    [Input("Read/Write Mode", DefaultEnumEntry = "WRITE")]
+    ISpread<I2CMode> ReadWriteMode;
+
+    [Input("Do Send", IsBang = true)]
+    IDiffSpread<bool> DoSend;
+
+    [Input("I2C Delay (Microseconds)", MinValue = 0, DefaultValue = Default.I2CDelay,
+                         Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
+    IDiffSpread<int> I2CDelay;
+
+
+    [Output("Data")]
+    ISpread<Stream> DataOut;
+
+    [Output("Debug")]
+    ISpread<string> Debug;
+
+    #endregion
+
+    static string[] AddressModes = {"7-bit", "10-bit"};
+    static bool ENUM_BUILD = false;
+
+    static I2CEncode() {
+      if (ENUM_BUILD) return;
+      EnumManager.UpdateEnum(FIRMATA_ADDRESS_MODE_ENUM_NAME, "7-Bit", AddressModes);
+      ENUM_BUILD = true;
+    }
+
+    public void OnImportsSatisfied()
+    {
+      DataOut.SliceCount = 1;
+    }
+
+    Stream Out = new MemoryStream();
+    List<int> ContinuouslyReadings = new List<int>();
+
+    public void Evaluate(int SpreadMax) {
+
+      SpreadMax = SpreadUtils.SpreadMax(Address,ReadWriteMode);
+
+      if (DoSend.IndexOf(true) < 0 || SpreadMax == 0)
+      {
+        DataOut[0] = Stream.Null;
+        return; // return when nothing to send
+      }
+
+      Out.Position = 0;
+      Out.SetLength(0);
+
+      byte lsb, msb;
+
+      // I2C config up front
+      Out.WriteByte(Command.SYSEX_START);
+      Out.WriteByte(Command.I2C_CONFIG);
+      FirmataUtils.GetBytesFromValue(I2CDelay[0], out msb, out lsb);
+      Out.WriteByte(lsb); Out.WriteByte(msb);
+      Out.WriteByte(Command.SYSEX_END);
+
+      for (int i = 0; i < SpreadMax; i++)
+      {
+        if ( (ReadWriteMode[i] != I2CMode.WRITE && DoSend[i] == false) ||
+             (ReadWriteMode[i] == I2CMode.WRITE && DataIn[i].Length == 0)
+          ) continue;
+
+        // handle read continuously readings, keep track of requests
+        if (ReadWriteMode[i] == I2CMode.READ_CONTINUOUSLY)
+        {
+          if (ContinuouslyReadings.Contains(Address[i])) continue;
+          else ContinuouslyReadings.Add(Address[i]);
+        }
+        else if (ReadWriteMode[i] == I2CMode.STOP_READING && ContinuouslyReadings.Contains(Address[i]))
+        {
+          ContinuouslyReadings.Remove(Address[i]);
+        }
+
+        // Write the request header
+        Out.WriteByte(Firmata.Command.SYSEX_START);
+        Out.WriteByte(Firmata.Command.I2C_REQUEST);
+        
+        // Write therequest address and mode
+        Out.WriteByte((byte)(Address[i] & 0x7F)); // LSB
+
+        byte mode = (byte)ReadWriteMode[i];
+        // Handle 10-bit mode
+        if (AddressMode[i].Index > 0)
+        {
+          mode |= 0x20; // enable
+          mode |= (byte)((Address[i] >> 8) & 0x03); // add MSB of address
+        }
+        Out.WriteByte(mode);
+
+        switch (ReadWriteMode[i])
+        {
+          case I2CMode.WRITE:
+            if (Register[i] > 0)
+            {
+              FirmataUtils.GetBytesFromValue(Math.Max(Register[i], 0), out msb, out lsb);
+              Out.WriteByte(lsb); Out.WriteByte(msb);
+            }
+            while (DataIn[i].Position < DataIn[i].Length)
+            {
+              FirmataUtils.GetBytesFromValue((int)DataIn[i].ReadByte(), out msb, out lsb);
+              Out.WriteByte(lsb); Out.WriteByte(msb);
+            }
+            break;
+          case I2CMode.READ_ONCE:
+          case I2CMode.READ_CONTINUOUSLY:
+            if (Register[i] > 0 || ReadWriteMode[i] == I2CMode.READ_CONTINUOUSLY)
+            {
+              FirmataUtils.GetBytesFromValue(Math.Max(Register[i], 0), out msb, out lsb);
+              Out.WriteByte(lsb); Out.WriteByte(msb);
+            }
+            FirmataUtils.GetBytesFromValue(BytesToRead[i], out msb, out lsb);
+            Out.WriteByte(lsb); Out.WriteByte(msb);
+            break;
+        }
+
+        // Close SysEx message
+        Out.WriteByte(Firmata.Command.SYSEX_END);
+      }
+
+      DataOut[0] = Out;
+
+    }
 
   }
 
