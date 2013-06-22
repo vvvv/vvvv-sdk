@@ -49,16 +49,16 @@ namespace VVVV.Nodes
 		#region fields & pins
 		
 		[Input("Transform In")]
-		IDiffSpread<Matrix> FTransformIn;
+        public IDiffSpread<Matrix> FTransformIn;
 		
 		[Input("Vertex Positions")]
-		IDiffSpread<Vector3> FVertexIn;
+        public IDiffSpread<Vector3> FVertexIn;
 		
 		[Input("Texture Filename", StringType = StringType.Filename)]
-		IDiffSpread<string> FTexFileName;
+        public IDiffSpread<string> FTexFileName;
 
 		[Import]
-		ILogger FLogger;
+        public ILogger FLogger;
 		
 		//slice count
 		int FSpreadCount;

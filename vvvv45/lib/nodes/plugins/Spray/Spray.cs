@@ -22,28 +22,28 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Input")]
-		ISpread<Vector3D> FInput;
+        public ISpread<Vector3D> FInput;
 		
 		[Input("Bang")]
-		ISpread<bool> FBang;
+        public ISpread<bool> FBang;
 		
 		[Input("Acceleration")]
-		ISpread<double> FAcc;
+        public ISpread<double> FAcc;
 		
 		[Input("Max Lifetime")]
-		ISpread<double> FMaxLifeTime;
+        public ISpread<double> FMaxLifeTime;
 
 		[Output("Output")]
-		ISpread<Vector3D> FOutput;
+        public ISpread<Vector3D> FOutput;
 
         [Output("Age")]
-		ISpread<double> FAge;
+        public ISpread<double> FAge;
 		
 		[Import()]
-		ILogger FLogger;
+        public ILogger FLogger;
 		
 		[Import()]
-		IHDEHost FHDEHost;
+        public IHDEHost FHDEHost;
 		
 		List<Particle> FParticles = new List<Particle>();
 		Random FRandom = new Random();

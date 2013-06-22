@@ -27,31 +27,31 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Button Names", DefaultString = "Bang")]
-		IDiffSpread<string> FButtonNames;
+        public IDiffSpread<string> FButtonNames;
 
 		[Input("Check Box Names", DefaultString = "Toggle")]
-		IDiffSpread<string> FCheckBoxNames;
+        public IDiffSpread<string> FCheckBoxNames;
 
 		[Input("Text Box Count", DefaultValue = 1, IsSingle = true)]
-		IDiffSpread<int> FTextBoxCount;
+        public IDiffSpread<int> FTextBoxCount;
 
 		[Input("Slider Count", DefaultValue = 1, IsSingle = true)]
-		IDiffSpread<int> FSliderCount;
+        public IDiffSpread<int> FSliderCount;
 
 		[Output("Buttons")]
-		ISpread<bool> FButtonOut;
+        public ISpread<bool> FButtonOut;
 
 		[Output("Check Boxes")]
-		ISpread<bool> FCheckBoxOut;
+        public ISpread<bool> FCheckBoxOut;
 
 		[Output("Text Boxes")]
-		ISpread<string> FTextBoxOut;
+        public ISpread<string> FTextBoxOut;
 
 		[Output("Sliders")]
-		ISpread<double> FSlidersOut;
+        public ISpread<double> FSlidersOut;
 
 		[Import()]
-		ILogger FLogger;
+        public ILogger FLogger;
 
 		//layout panels
 		TableLayoutPanel FMainPanel = new TableLayoutPanel();

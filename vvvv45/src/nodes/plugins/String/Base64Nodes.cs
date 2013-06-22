@@ -12,10 +12,10 @@ namespace VVVV.Nodes.Text
     public class Base64EncodeNode : IPluginEvaluate
     {
         [Input("Input Data")]
-        IDiffSpread<Stream> FInput;
+        public IDiffSpread<Stream> FInput;
 
         [Output("Output String")]
-        ISpread<string> FOutput;
+        public ISpread<string> FOutput;
 
         public void Evaluate(int spreadMax)
         {
@@ -37,10 +37,10 @@ namespace VVVV.Nodes.Text
     public class Base64DecodeNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Input String")]
-        IDiffSpread<string> FInput;
+        public IDiffSpread<string> FInput;
 
         [Output("Output Data")]
-        ISpread<Stream> FOutput;
+        public ISpread<Stream> FOutput;
 
         public void OnImportsSatisfied()
         {

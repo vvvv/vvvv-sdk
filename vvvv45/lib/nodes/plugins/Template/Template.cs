@@ -22,18 +22,18 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Input", DefaultValue = 1.0)]
-		ISpread<double> FInput;
+        public ISpread<double> FInput;
 
 		[Output("Output")]
-		ISpread<double> FOutput;
+        public ISpread<double> FOutput;
 
 		[Import()]
-		ILogger FLogger;
+        public ILogger FLogger;
 		#endregion fields & pins
  
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
-		{
+		{ 
 			FOutput.SliceCount = SpreadMax;
 
 			for (int i = 0; i < SpreadMax; i++)
