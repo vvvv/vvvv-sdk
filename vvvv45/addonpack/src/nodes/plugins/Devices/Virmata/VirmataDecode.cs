@@ -344,7 +344,7 @@ namespace VVVV.Nodes
 
   #region PluginInfo
   [PluginInfo(Name = "I2CDecode",
-              Category = "Devices",
+              Category = "Devices Firmata",
               Version  = "2.x",
               Author = "jens a. ewald",
               Help = "Decodes I2C data from Firmata messages",

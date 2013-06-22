@@ -430,7 +430,7 @@ namespace VVVV.Nodes
 
   #region PluginInfo
   [PluginInfo(Name = "I2CEncode",
-              Category = "Devices",
+              Category = "Devices Firmata",
               Version  = "2.x",
               Author = "jens a. ewald",
               Help = "Encodes I2C Firmata messages",
