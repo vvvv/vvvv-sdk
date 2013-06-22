@@ -237,7 +237,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="25" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
@@ -712,42 +712,32 @@
    </NODE>
    <LINK srcnodeid="1" srcpinname="String" dstnodeid="46" dstpinname="Input String">
    </LINK>
-   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="47">
-   <BOUNDS type="Node" left="8190" top="7110" width="100" height="100">
+   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="8415" top="9150" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Switch" visible="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="48">
-   <BOUNDS type="Node" left="8190" top="6315" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="48" dstpinname="Input">
+   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="49" dstpinname="Switch">
    </LINK>
-   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="47" dstpinname="Input 1">
+   <LINK srcnodeid="38" srcpinname="Output" dstnodeid="49" dstpinname="Input 2">
    </LINK>
-   <LINK srcnodeid="38" srcpinname="Output" dstnodeid="47" dstpinname="Input 2">
-   <LINKPOINT x="8940" y="9150">
-   </LINKPOINT>
-   <LINKPOINT x="10650" y="9150">
-   </LINKPOINT>
-   <LINKPOINT x="10665" y="6690">
-   </LINKPOINT>
-   <LINKPOINT x="8625" y="6690">
-   </LINKPOINT>
+   <LINK srcnodeid="24" srcpinname="Up Edge" dstnodeid="49" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="47" srcpinname="Output" dstnodeid="23" dstpinname="Input 2">
-   <LINKPOINT x="8100" y="7620">
+   <LINK srcnodeid="49" srcpinname="Output" dstnodeid="23" dstpinname="Input 2">
+   <LINKPOINT x="8430" y="9540">
    </LINKPOINT>
-   <LINKPOINT x="6225" y="6660">
+   <LINKPOINT x="10800" y="9540">
+   </LINKPOINT>
+   <LINKPOINT x="10800" y="6540">
+   </LINKPOINT>
+   <LINKPOINT x="5475" y="6555">
    </LINKPOINT>
    </LINK>
    </PATCH>
