@@ -1,6 +1,6 @@
 #region Copyright notice
 /*
-A Firmata Plugin for VVVV - v 1.2
+A Firmata Plugin for VVVV - v 1.3
 ----------------------------------
 Encoding control and configuration messages for Firmata enabled MCUs. This
 Plugin encodes to a ANSI string and a byte array, so you can send via any
