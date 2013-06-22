@@ -474,9 +474,6 @@ namespace VVVV.Nodes
     [Output("Data")]
     ISpread<Stream> DataOut;
 
-    [Output("Debug")]
-    ISpread<string> Debug;
-
     #endregion
 
     static string[] AddressModes = {"7-bit", "10-bit"};
