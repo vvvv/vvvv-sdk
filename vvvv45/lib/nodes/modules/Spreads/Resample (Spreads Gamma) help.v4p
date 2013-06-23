@@ -31,6 +31,8 @@
    </PIN>
    <BOUNDS type="Window" left="3540" top="330" width="6360" height="10680">
    </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="5" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9000" top="2505" width="420" height="240">
@@ -161,15 +163,13 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="|0, 0, 0, 1|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Bin Sizes Used For Calculation" dstnodeid="13" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7815" top="4680" width="585" height="270">
    </BOUNDS>
@@ -488,4 +488,6 @@
    <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\girlpower\The Next Generation\Audio\23_Visualisation_Equalizer_JoyDivision.v4p|">
    </PIN>
    </NODE>
+   <LINK srcnodeid="4" srcpinname="Spread Count" dstnodeid="13" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>
