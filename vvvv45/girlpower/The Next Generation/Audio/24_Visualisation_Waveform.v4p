@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\The Next Generation\Audio\24_Visualisation_Waveform.v4p" systemname="22_Visualisation_Waveform" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\22_Visualisation_Waveform.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.1.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Audio\23_Visualisation_Waveform.v4p" systemname="22_Visualisation_Waveform" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Next Generation\Audio\22_Visualisation_Waveform.v4p">
    <BOUNDS type="Window" left="4260" top="600" width="19875" height="12630">
    </BOUNDS>
    <NODE componentmode="InABox" id="47" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -21,7 +21,7 @@
    </BOUNDS>
    <BOUNDS height="645" left="13620" top="7110" type="Box" width="4260">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is a WaveForm (Bass) node &apos;boxed&apos; with Alt+2. Select this box and press Alt+1 to open a waveform in a window.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is a WaveForm (Bass) node &apos;boxed&apos; with Alt+2. Select this box and press Alt+1 to open the waveform in a window.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -56,6 +56,10 @@
    <PIN pinname="Current Position" slicecount="1" visible="1" values="0.43">
    </PIN>
    <PIN pinname="Markers" visible="1">
+   </PIN>
+   <PIN pinname="Start Position" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="End Position" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="FileStream (DShow9)" nodename="FileStream (DShow9)" componentmode="Hidden" id="164">
@@ -344,6 +348,8 @@
    </LINK>
    <LINK srcnodeid="191" srcpinname="Output" dstnodeid="190" dstpinname="Y">
    </LINK>
+   <LINK srcnodeid="169" srcpinname="Y Output Value" dstnodeid="171" dstpinname="BinSize">
+   </LINK>
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="192">
    <BOUNDS type="Node" left="7575" top="5700" width="1905" height="270">
    </BOUNDS>
@@ -391,7 +397,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="10545" top="6255" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.42681,0.98001,1.00000|">
+   <PIN pinname="Color Input" slicecount="2" values="|0.00000,0.42681,0.98001,1.00000|,|0.00000,0.54189,1.00000,1.00000|">
    </PIN>
    <PIN pinname="Color Output" visible="1">
    </PIN>
@@ -475,7 +481,7 @@
    </BOUNDS>
    <BOUNDS height="5850" left="675" top="3690" type="Box" width="3945">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|ScopeSpread (DShow9) returns two spreads with the content of the last read block (for left and right channels), downsampled to the value on its &apos;Spread Count&apos; pin.&cr;&lf;&cr;&lf;These two spreads are used as Y values of the vertices for the two lines.&cr;&lf;&cr;&lf;LinearSpread (Spreads) returns a spread used as X values for the lines.&cr;&lf;&cr;&lf;Vertices for both lines are constructed here.&cr;&lf;&cr;&lf;A spread of vertices for the second line is concatenated after the spread of points for the first line.&cr;&lf;&cr;&lf;Line (EX9) draws two lines. Please note, that &apos;Single Input&apos; pin is set to 1, because all points coming through one &apos;VerticesXYZ&apos; pin. &apos;BinSize&apos; pin is set to the number of vertices in every line.&cr;&lf;&cr;&lf;For every vertex on a line a color can be defined. In order to draw a line in one color, a color has to be copied as many times as there are vertices in a line. Two spread of colors are combined together and used for the &apos;Color&apos; pin of the Line (EX9).|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|ScopeSpread (DShow9) returns two spreads with the content of the last read block (for left and right channels), downsampled to the value on its &apos;Spread Count&apos; pin.&cr;&lf;&cr;&lf;These two spreads are used as Y values of the vertices for the two lines.&cr;&lf;&cr;&lf;LinearSpread (Spreads) returns a spread used as X values for the lines.&cr;&lf;&cr;&lf;Vertices for both lines are constructed here.&cr;&lf;&cr;&lf;A spread of vertices for the second line is concatenated after the spread of points for the first line.&cr;&lf;&cr;&lf;Line (EX9) draws two lines. Please note, that &apos;Single Input&apos; pin is set to 1, because all points are set via the  &apos;VerticesXYZ&apos; pin. &apos;BinSize&apos; pin is set to the number of vertices in every line.&cr;&lf;&cr;&lf;For every vertex on a line a color can be defined. In order to draw a line in one color, a color has to be selected as many times as there are vertices in the line. Two spreads of colors are combined together and used for the &apos;Color&apos; pin of the Line (EX9).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -695,7 +701,7 @@
    </BOUNDS>
    <BOUNDS height="1605" left="675" top="870" type="Box" width="4215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|There are two ways how to peek at the sounds waveform: &cr;&lf;&cr;&lf;- ScopeSpread (DShow9) returns a content of a current block coming from Audio Source (AudioIn / FileStream / WavePlayer)&cr;&lf;&cr;&lf;- WaveForm (Bass) returns a waveform of the whole file.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|There are two ways how to peek at a sounds waveform: &cr;&lf;&cr;&lf;- ScopeSpread (DShow9) returns the content of a current block coming from Audio Source (AudioIn / FileStream / WavePlayer)&cr;&lf;&cr;&lf;- WaveForm (Bass) returns the waveform of the whole file.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -727,7 +733,7 @@
    </BOUNDS>
    <BOUNDS height="1155" left="675" top="10500" type="Box" width="3945">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|WaveForm (Bass) is used to display a waveform of a file. Its &apos;Current position&apos; can be used to visualize a position in a file. And also a spread of &apos;Markers&apos; can be used as a visual aid.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|WaveForm (Bass) is used to display a waveform of a file. Its &apos;Current position&apos; can be used to visualize a position in the file. And also a spread of &apos;Markers&apos; can be used as a visual aid.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -767,7 +773,7 @@
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="3" values="1.08,2.88,1.84">
+   <PIN pinname="Y Input Value" slicecount="3" values="0.91,2.88,1.84">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -898,6 +904,4 @@
    <PIN pinname="Size" slicecount="1" values="7">
    </PIN>
    </NODE>
-   <LINK srcnodeid="169" srcpinname="Y Output Value" dstnodeid="171" dstpinname="BinSize">
-   </LINK>
    </PATCH>
