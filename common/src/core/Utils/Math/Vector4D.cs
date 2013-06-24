@@ -7,6 +7,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace VVVV.Utils.VMath
 {
@@ -15,27 +16,45 @@ namespace VVVV.Utils.VMath
 	/// Fast 4d vector struct with operators
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct Vector4D
+    [DataContract]
+    public struct Vector4D
 	{
 		#region data fields
 		
 		/// <summary>
 		/// Data component for the x dimension
 		/// </summary>
-		public double x;
+        public double x;
 		/// <summary>
 		/// Data component for the y dimension
 		/// </summary>
-		public double y;
+        public double y;
 		/// <summary>
 		/// Data component for the z dimension
 		/// </summary>
-		public double z;
+        public double z;
 		/// <summary>
 		/// Data component for the w dimension
 		/// </summary>
-		public double w;
-		
+        public double w;
+
+        [DataMember]
+        public double[] xyzw
+        {
+            get
+            {
+                double[] l = { x, y, z, w };
+                return l;
+            }
+            set
+            {
+                x = value[0];
+                y = value[1];
+                z = value[2];
+                w = value[3];
+            }
+        }		
+
 		#endregion data fields
 		
 		#region constructors

@@ -7,6 +7,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace VVVV.Utils.VMath
 {
@@ -14,6 +15,7 @@ namespace VVVV.Utils.VMath
     /// 2x2 transform matrix struct with operators
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
+    [DataContract]
     public struct Matrix2x2
     {
         #region data fields
@@ -38,6 +40,23 @@ namespace VVVV.Utils.VMath
         /// </summary>
         public double d;
 
+        [DataMember]
+        public double[] abcd
+        {
+            get
+            {
+                double[] l = { a, b, c, d};
+                return l;
+            }
+            set
+            {
+                a = value[0];
+                b = value[1];
+                c = value[2];
+                d = value[3];
+            }
+        }
+        
         #endregion data fields
 
         #region constructors
