@@ -12,7 +12,7 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.XML
 {
-    [PluginInfo(Name = "Element", Category = "XElement", Version = "Split")]
+    [PluginInfo(Name = "Element", Category = "XElement", Version = "Split", Tags = "xml")]
     public class ElementSplitNode : IPluginEvaluate
     {
         [Input("Element")]
@@ -73,7 +73,7 @@ namespace VVVV.Nodes.XML
         }
     }
 
-    [PluginInfo(Name = "Element", Category = "XElement", Version = "Join")]
+    [PluginInfo(Name = "Element", Category = "XElement", Version = "Join", Tags = "xml")]
     public class ElementJoinNode : IPluginEvaluate
     {
         [Input("Name", DefaultString = "MyTag")]
@@ -122,7 +122,7 @@ namespace VVVV.Nodes.XML
         }
     }
 
-    [PluginInfo(Name = "Attribute", Category = "XElement", Version = "Split")]
+    [PluginInfo(Name = "Attribute", Category = "XElement", Version = "Split", Tags = "xml")]
     public class AttributeSplitNode : IPluginEvaluate
     {
         [Input("Attribute")]
@@ -162,7 +162,7 @@ namespace VVVV.Nodes.XML
         }
     }
 
-    [PluginInfo(Name = "Attribute", Category = "XElement", Version = "Join")]
+    [PluginInfo(Name = "Attribute", Category = "XElement", Version = "Join", Tags = "xml")]
     public class AttributeJoinNode : IPluginEvaluate
     {
         [Input("Name", DefaultString = "MyAttribute")]
@@ -185,7 +185,7 @@ namespace VVVV.Nodes.XML
         }
     }
 
-    [PluginInfo(Name = "GetElements", Category = "XElement", Version = "ByName")]
+    [PluginInfo(Name = "GetElements", Category = "XElement", Version = "ByName", Tags = "xml")]
     public class GetElementsNode : IPluginEvaluate
     {
         [Input("Element")]
@@ -210,7 +210,7 @@ namespace VVVV.Nodes.XML
         }
     }
 
-    [PluginInfo(Name = "GetAttributes", Category = "XElement", Version = "ByName")]
+    [PluginInfo(Name = "GetAttributes", Category = "XElement", Version = "ByName", Tags = "xml")]
     public class GetAttributesNode : IPluginEvaluate
     {
         [Input("Element")]
@@ -235,7 +235,7 @@ namespace VVVV.Nodes.XML
         }
     }
 
-    [PluginInfo(Name = "GetElements", Category = "XElement", Version = "ByXPath")]
+    [PluginInfo(Name = "GetElements", Category = "XElement", Version = "ByXPath", Tags = "xml")]
     public class GetElementsByXPathNode : IPluginEvaluate
     {
         [Input("Element")]
@@ -269,7 +269,7 @@ namespace VVVV.Nodes.XML
         }
     }
 
-    [PluginInfo(Name = "GetAttributes", Category = "XElement", Version = "ByXPath")]
+    [PluginInfo(Name = "GetAttributes", Category = "XElement", Version = "ByXPath", Tags = "xml")]
     public class GetAttributesByXPathNode : IPluginEvaluate
     {
         [Input("Element")]
@@ -303,7 +303,7 @@ namespace VVVV.Nodes.XML
         }
     }
 
-    [PluginInfo(Name = "AsXElement", Category = "XML")]
+    [PluginInfo(Name = "AsXElement", Category = "XML", Tags = "xml")]
     public class XMLAsElementNode : IPluginEvaluate
     {
         [Input("XML")]
@@ -347,7 +347,7 @@ namespace VVVV.Nodes.XML
     }
 
 
-    [PluginInfo(Name = "NamespaceResolver", Category = "XML")]
+    [PluginInfo(Name = "NamespaceResolver", Category = "XML", Tags = "xml")]
     public class NamespaceResolverNode : IPluginEvaluate
     {
         [Input("Node", IsSingle = true)]
@@ -408,7 +408,7 @@ namespace VVVV.Nodes.XML
     //    }
     //}
 
-    [PluginInfo(Name = "AsString", Category = "Object")]
+    [PluginInfo(Name = "AsString", Category = "Object", Tags = "xml")]
     public class AsStringNode : IPluginEvaluate
     {
         [Input("Object")]
@@ -432,7 +432,7 @@ namespace VVVV.Nodes.XML
     }
 
 
-    [PluginInfo(Name = "IsValid", Category = "XML", Version = "RelaxNG")]
+    [PluginInfo(Name = "IsValid", Category = "XML", Version = "RelaxNG", Tags = "xml")]
     public class RelaxNGValidateNode : IPluginEvaluate
     {
         [Input("Xml String")]
