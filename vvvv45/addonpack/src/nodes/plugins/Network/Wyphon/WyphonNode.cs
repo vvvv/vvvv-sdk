@@ -19,8 +19,8 @@ namespace VVVV.Nodes.Network.Wyphon
 {
 	#region PluginInfo
 	[PluginInfo(Name = "Wyphon", Category = "Network",
-				AutoEvaluate = true, 
-				Author = "ft", Help = "Share DX9ex shared textures", Tags = "" )]
+				Author = "ft", Help = "Share DX9ex shared textures", Tags = "",
+				AutoEvaluate = true )]
 	#endregion PluginInfo
 	public class WyphonNode : IPluginEvaluate, IDisposable
 	{
@@ -284,7 +284,9 @@ namespace VVVV.Nodes.Network.Wyphon
 		public void Evaluate(int SpreadMax) {
 
 			try {
-	            if (FNameIn.IsChanged && FNameIn.SliceCount > 0) {
+				//LogNow( LogType.Debug, "[Evaluate]" );
+
+				if ( FNameIn.IsChanged && FNameIn.SliceCount > 0 ) {
 					LogNow(LogType.Debug, "[Evaluate] FNameIn.IsChanged: creating a new WyphonPartner...");
 					wyphonPartnerName = FNameIn[0];
 					
