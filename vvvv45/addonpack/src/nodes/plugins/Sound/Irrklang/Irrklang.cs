@@ -111,13 +111,13 @@ namespace VVVV.Nodes
 		IDiffSpread<bool> FPauseAll;
 
 		// 3D Listener Position
-		[Input("View Position", DefaultValue = 0, IsSingle = true)]
+		[Input("View Position", DefaultValue = 0)]
 		IDiffSpread<Vector3D> FViewPos;
-		[Input("View Direction", DefaultValue = 0, IsSingle = true)]
+		[Input("View Direction", DefaultValue = 0)]
 		IDiffSpread<Vector3D> FViewDir;
-		[Input("View Velocity Per Second", DefaultValue = 0, IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
+		[Input("View Velocity Per Second", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<Vector3D> FViewVelocity;
-		[Input("View Up Vector", DefaultValue = 0, IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
+		[Input("View Up Vector", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<Vector3D> FViewUpVector;
 
 		//RollOff
@@ -667,7 +667,7 @@ namespace VVVV.Nodes
 					{
 						foreach(ISound Sound in SoundsPerSlice)
 						{
-							Sound.MaxDistance = FMinDist[i];
+							Sound.MaxDistance = FMaxDist[i];
 						}
 					}
 				}
@@ -937,7 +937,8 @@ namespace VVVV.Nodes
 				IrrKlang.Vector3D ViewPos = new IrrKlang.Vector3D((float)FViewPos[0].x, (float)FViewPos[0].y, (float)FViewPos[0].z);
 				IrrKlang.Vector3D ViewVelocity = new IrrKlang.Vector3D((float)FViewVelocity[0].x, (float)FViewVelocity[0].y, (float)FViewVelocity[0].z);
 				IrrKlang.Vector3D ViewUp = new IrrKlang.Vector3D((float)FViewUpVector[0].x, (float)FViewUpVector[0].y, (float)FViewUpVector[0].z);
-				FEngine.SetListenerPosition(ViewDir, ViewPos, ViewVelocity, ViewUp);
+				// FEngine.SetListenerPosition(ViewDir, ViewPos, ViewVelocity, ViewUp);
+                FEngine.SetListenerPosition(ViewDir, ViewPos);
 			}
 
 			#endregion View Listener
