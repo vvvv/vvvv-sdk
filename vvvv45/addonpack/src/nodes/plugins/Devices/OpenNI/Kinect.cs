@@ -22,6 +22,7 @@ namespace VVVV.Nodes
 	            Category = "Devices",
 	            Version = "OpenNI",
 	            Help = "Provides access to a Kinect through the OpenNI API",
+	            Tags = "EX9",
 	            Author = "Phlegma, joreg")]
 	#endregion PluginInfo
 	public class KinectContext: IPluginEvaluate, IDisposable

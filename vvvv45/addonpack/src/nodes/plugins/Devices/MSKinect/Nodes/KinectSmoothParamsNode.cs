@@ -8,7 +8,7 @@ using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace MSKinect.Nodes
 {
-    [PluginInfo(Name = "SmoothSettings", Category = "Kinect", Version = "Microsoft", Author = "vux")]
+    [PluginInfo(Name = "SmoothSettings", Category = "Kinect", Version = "Microsoft", Author = "vux", Tags = "EX9")]
     public class KinectSmoothParamsNode : IPluginEvaluate
     {
 

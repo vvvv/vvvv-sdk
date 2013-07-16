@@ -21,7 +21,7 @@ namespace VVVV.Nodes
 	            Category = "Kinect",
 	            Version = "OpenNI",
 	            Help = "Returns skeleton information for each recognized user",
-	            Tags = "tracking, person, user, people",
+	            Tags = "tracking, person, user",
 	            Author = "Phlegma, joreg")]
 	#endregion PluginInfo
 	public class Skeleton2OpenNI: IPluginEvaluate, IPluginConnections, IDisposable
