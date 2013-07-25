@@ -631,7 +631,7 @@
    <LINK srcnodeid="117" srcpinname="Output String" dstnodeid="113" dstpinname="Type Tags">
    </LINK>
    <NODE systemname="MultiFlipFlop (Animation)" nodename="MultiFlipFlop (Animation)" componentmode="Hidden" id="124">
-   <BOUNDS type="Node" left="6780" top="3555" width="100" height="100">
+   <BOUNDS type="Node" left="6780" top="3870" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Set Count" slicecount="1" values="5">
    </PIN>
@@ -736,8 +736,6 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="119" srcpinname="Y Output Value" dstnodeid="124" dstpinname="Set 4">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="118" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6150" top="2190" width="3150" height="270">
    </BOUNDS>
@@ -752,14 +750,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="AsString (Value)" nodename="AsString (Value)" componentmode="Hidden" id="125">
-   <BOUNDS type="Node" left="6780" top="4920" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="126" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="7410" top="4530" width="1635" height="240">
    </BOUNDS>
@@ -768,8 +758,6 @@
    <PIN pinname="Input Enum" slicecount="1" values="|Integer (0 .. MaxInt)|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="126" srcpinname="Output Enum" dstnodeid="125" dstpinname="SubType">
-   </LINK>
    <NODE systemname="AsString (Raw)" nodename="AsString (Raw)" componentmode="Hidden" id="127" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="6135" top="8340" width="100" height="100">
    </BOUNDS>
@@ -881,17 +869,13 @@
    <NODE systemname="Cons (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (String)" componentmode="Hidden" id="153">
    <BOUNDS type="Node" left="8175" top="5610" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="125" srcpinname="Output" dstnodeid="153" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="152" srcpinname="Output" dstnodeid="153" dstpinname="Input 2">
-   </LINK>
    <LINK srcnodeid="153" srcpinname="Output" dstnodeid="113" dstpinname="Arguments">
    </LINK>
    <LINK srcnodeid="2" srcpinname="Output" dstnodeid="112" dstpinname="Input">
@@ -946,8 +930,6 @@
    </LINK>
    <LINK srcnodeid="167" srcpinname="Output" dstnodeid="161" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="161" srcpinname="Output" dstnodeid="162" dstpinname="Color Input">
-   </LINK>
    <NODE systemname="S+H (String)" nodename="S+H (String)" componentmode="Hidden" id="168">
    <BOUNDS type="Node" left="14730" top="6315" width="100" height="100">
    </BOUNDS>
@@ -998,8 +980,6 @@
    </LINK>
    <LINK srcnodeid="30" srcpinname="Output" dstnodeid="35" dstpinname="Input String">
    </LINK>
-   <LINK srcnodeid="124" srcpinname="Output" dstnodeid="125" dstpinname="Input">
-   </LINK>
    <NODE systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox" id="178">
    <BOUNDS type="Node" left="9285" top="2745" width="100" height="100">
    </BOUNDS>
@@ -1007,7 +987,7 @@
    </BOUNDS>
    <PIN pinname="Chooser Style" slicecount="1" values="RGBASlider">
    </PIN>
-   <PIN pinname="Color Input" slicecount="1" values="|1.00000,0.58880,0.00000,1.00000|">
+   <PIN pinname="Color Input" slicecount="1" values="|0.86489,0.58880,0.00000,0.99499|">
    </PIN>
    <PIN pinname="Color Output" visible="1">
    </PIN>
@@ -1051,9 +1031,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="183" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="6315" top="4095" width="285" height="240">
+   <BOUNDS type="Box" left="6315" top="4290" width="285" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="6315" top="4095" width="0" height="0">
+   <BOUNDS type="Node" left="6315" top="4290" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -1298,4 +1278,58 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="199">
+   <BOUNDS type="Node" left="8295" top="3390" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Simulate" visible="1">
+   </PIN>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="119" srcpinname="Y Output Value" dstnodeid="199" dstpinname="Simulate">
+   </LINK>
+   <LINK srcnodeid="199" srcpinname="Bang" dstnodeid="124" dstpinname="Set 4">
+   </LINK>
+   <NODE systemname="AsColor (String)" filename="%VVVV%\lib\nodes\modules\String\AsColor (String).v4p" nodename="AsColor (String)" componentmode="Hidden" id="200">
+   <BOUNDS type="Node" left="17580" top="7335" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14580" top="7410" width="9600" height="8415">
+   </BOUNDS>
+   <PIN pinname="Input color String" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsString (Color)" filename="%VVVV%\lib\nodes\modules\Color\AsString (Color).v4p" nodename="AsString (Color)" componentmode="Hidden" id="201">
+   <BOUNDS type="Node" left="10155" top="4920" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="4215" top="10080" width="6210" height="6735">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="178" srcpinname="Color Output" dstnodeid="201" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="201" srcpinname="Output" dstnodeid="153" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="167" srcpinname="Output" dstnodeid="200" dstpinname="Input color String">
+   </LINK>
+   <LINK srcnodeid="200" srcpinname="Output" dstnodeid="162" dstpinname="Color Input">
+   </LINK>
+   <NODE systemname="FormatValue (String)" nodename="FormatValue (String)" componentmode="Hidden" id="125">
+   <BOUNDS type="Node" left="6780" top="4920" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="125" srcpinname="Output" dstnodeid="153" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="124" srcpinname="Output" dstnodeid="125" dstpinname="Input">
+   </LINK>
    </PATCH>

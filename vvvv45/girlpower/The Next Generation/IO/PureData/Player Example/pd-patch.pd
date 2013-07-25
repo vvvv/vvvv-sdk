@@ -1,0 +1,106 @@
+#N canvas 144 99 1444 828 12;
+#X msg 469 353 disconnect;
+#X obj 456 692 netsend 1;
+#X msg 456 324 connect localhost 3001;
+#X floatatom 456 729 0 0 0 0 - - -;
+#X obj 480 619 pack 0 0 0 0;
+#X floatatom 686 505 5 0 0 0 - - -;
+#X floatatom 633 505 5 0 0 0 - - -;
+#X floatatom 586 505 5 0 0 0 - - -;
+#X obj 511 578 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 480 650 send \$1 \$2 \$3 \$4;
+#X obj 803 227 netreceive 4001 1;
+#X obj 803 264 unpack 0 0 0 0;
+#X obj 803 420 readsf~;
+#X obj 849 472 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 804 711 *~;
+#X obj 869 783 dac~;
+#X obj 950 721 *~;
+#X obj 822 675 -;
+#X obj 456 235 loadbang;
+#X floatatom 968 579 5 0 1 0 - - -;
+#X msg 822 636 1 \$1;
+#X msg 1202 376 stop;
+#X obj 480 466 t b b;
+#X msg 512 504 1;
+#X msg 480 504 0;
+#X obj 904 307 select 1;
+#X obj 803 307 select 1;
+#X obj 31 108 pddp/dsp;
+#X obj 803 512 *~;
+#X msg 803 376 open ../../../../lib/assets/sounds/vvvv.wav \, start
+;
+#X text 107 104 < First of all left click to turn it on.;
+#X text 803 161 Receives data from vvvv.;
+#X text 440 159 Sends data to vvvv.;
+#X text 440 181 --------------------------;
+#X text 803 183 -----------------------------;
+#X text 988 420 < Loads a file \, plays it and bangs its right output
+if the file's end is reached.;
+#X text 989 510 < Multiplies the audio stream with the last value of
+the package from vvvv. This is overal volume.;
+#X text 991 717 < Multiplies the audio stream with the third value
+(and its 1 minus x version) to set a panning.;
+#X text 988 302 < Bangs are made from the first two values. These are
+controlling Play / Stop.;
+#X text 987 221 < Values from vvvv are coming to this UDP port. "1"
+at the end means UDP.;
+#X text 985 263 < Its like Unzip (Spreads) in vvvv.;
+#X text 29 20 This patch is a part of vvvv-pd example on how to communicate.
+Check this: http://vvvv.org/documentation/pure-data;
+#X text 987 779 < Line out 2 channels to soundcard.;
+#X text 560 54 A message to a netsend object It will connect to a defined
+port on localhost. >;
+#X text 27 322 A message to a netsend object It will connect to a defined
+port on localhost.;
+#X text 263 231 It's like OnOpen (vvvv).;
+#X text 25 463 When a [readsf~] bangs with its right output this trigger
+[t b b] returns a bang on its right pin and then on its left pin. So
+the two messages will be send: 0 and 1 \, they will represent a bang
+on vvvv side.;
+#X text 87 613 Packs a values together. Its like Cons (Spreads).;
+#X text 268 650 Creates a send message.;
+#X text 82 690 Sends messages over UDP. "1" at the end means UDP.;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 4 0 9 0;
+#X connect 5 0 4 3;
+#X connect 5 0 8 0;
+#X connect 6 0 4 2;
+#X connect 6 0 8 0;
+#X connect 7 0 4 1;
+#X connect 7 0 8 0;
+#X connect 8 0 4 0;
+#X connect 9 0 1 0;
+#X connect 10 0 11 0;
+#X connect 11 0 26 0;
+#X connect 11 1 25 0;
+#X connect 11 2 19 0;
+#X connect 11 3 28 1;
+#X connect 12 0 28 0;
+#X connect 12 1 13 0;
+#X connect 12 1 22 0;
+#X connect 13 0 29 0;
+#X connect 14 0 15 0;
+#X connect 16 0 15 1;
+#X connect 17 0 14 1;
+#X connect 18 0 2 0;
+#X connect 18 0 19 0;
+#X connect 18 0 29 0;
+#X connect 19 0 16 1;
+#X connect 19 0 17 0;
+#X connect 19 0 20 0;
+#X connect 20 0 17 0;
+#X connect 21 0 12 0;
+#X connect 22 0 24 0;
+#X connect 22 1 23 0;
+#X connect 23 0 4 0;
+#X connect 24 0 4 0;
+#X connect 25 0 21 0;
+#X connect 26 0 29 0;
+#X connect 28 0 14 0;
+#X connect 28 0 16 0;
+#X connect 29 0 12 0;
