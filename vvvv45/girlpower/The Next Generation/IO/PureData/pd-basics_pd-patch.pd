@@ -1,39 +1,39 @@
-#N canvas 898 128 602 663 12;
-#X obj -17 182 netreceive 4001 1;
-#X obj -16 107 pddp/dsp;
-#X text 60 103 < First of all left click to turn it on.;
-#X text -18 19 This patch is a part of vvvv-pd example on how to communicate.
+#N canvas 537 49 653 661 12;
+#X obj 35 187 netreceive 4001 1;
+#X obj 36 112 pddp/dsp;
+#X text 34 24 This patch is a part of vvvv-pd example on how to communicate.
 Check this: http://vvvv.org/documentation/pure-data;
-#X obj -17 590 dac~;
-#X obj -17 527 *~;
-#X obj -17 259 unpack 0 0 0;
-#X obj -17 314 osc~ 1000;
-#X obj -17 384 *~;
-#X text 26 589 < audio output;
-#X msg 64 440 1 \$1;
-#X obj 64 472 -;
-#X text 126 179 < netreceive listens to the port 4001 and receives
+#X obj 35 595 dac~;
+#X obj 35 532 *~;
+#X obj 35 264 unpack 0 0 0;
+#X obj 35 319 osc~ 1000;
+#X obj 35 389 *~;
+#X text 78 594 < audio output;
+#X msg 116 445 1 \$1;
+#X obj 116 477 -;
+#X text 178 184 < netreceive listens to the port 4001 and receives
 data from vvvv. "1" as the last argument means UDP network perception.
 ;
-#X text 125 257 < The data is unpacked: the incoming values are distributed
+#X text 177 262 < The data is unpacked: the incoming values are distributed
 into 3 output pins.;
-#X text 126 311 < [osc~] is the Oscillator object which returns a cosine
+#X text 178 316 < [osc~] is the Oscillator object which returns a cosine
 wave. Its frequency is defined by the value from vvvv.;
-#X text 127 438 < when the mute button in vvvv is on \, volume should
+#X text 179 443 < when the mute button in vvvv is on \, volume should
 be set to 0 Therefore a message with 1 and a value from vvvv is created.
 Then this message is sent to minus object which calculates 1-x. So
 if the button in vvvv is pressed \, the wave signal is multiplied with
 0;
-#X text 126 375 < wave signal is multiplied with the second value from
+#X text 178 380 < wave signal is multiplied with the second value from
 vvvv \, this defines an amplitude of the wave (aka volume of the sound).
 ;
-#X connect 0 0 6 0;
-#X connect 5 0 4 0;
-#X connect 5 0 4 1;
+#X text 112 111 < First of all click to turn this toggle on.;
+#X connect 0 0 5 0;
+#X connect 4 0 3 0;
+#X connect 4 0 3 1;
+#X connect 5 0 6 0;
+#X connect 5 1 7 1;
+#X connect 5 2 9 0;
 #X connect 6 0 7 0;
-#X connect 6 1 8 1;
-#X connect 6 2 10 0;
-#X connect 7 0 8 0;
-#X connect 8 0 5 0;
-#X connect 10 0 11 0;
-#X connect 11 0 5 1;
+#X connect 7 0 4 0;
+#X connect 9 0 10 0;
+#X connect 10 0 4 1;

@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\OSC_AudioPlayer.v4p" systemname="OSC_AudioPlayer" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\OSC_AudioPlayer.v4p">
-   <BOUNDS type="Window" left="1650" top="915" width="21825" height="14625">
+   <BOUNDS type="Window" left="-840" top="1170" width="19380" height="12660">
    </BOUNDS>
    <NODE systemname="UDP (Network Server)" nodename="UDP (Network Server)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="14205" top="2670" width="100" height="100">
@@ -31,7 +31,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="13755" top="1965" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -41,7 +41,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Enable">
@@ -463,7 +463,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="8370" top="8130" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="4445">
+   <PIN pinname="Y Input Value" slicecount="1" values="4444">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -543,7 +543,7 @@
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
-   <PIN pinname="Input String" slicecount="5" values="player/play,player/seek,player/vol,player/pan,player/speed">
+   <PIN pinname="Input String" slicecount="5" values="/play,/seek,/vol,/pan,/speed">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -559,9 +559,9 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="221">
@@ -575,7 +575,7 @@
    </PIN>
    </NODE>
    <NODE systemname="OSCEncoder (Network)" nodename="OSCEncoder (Network)" componentmode="Hidden" id="223">
-   <BOUNDS type="Node" left="6240" top="6855" width="1140" height="270">
+   <BOUNDS type="Node" left="6240" top="6885" width="1140" height="270">
    </BOUNDS>
    <PIN pinname="Address" visible="1" slicecount="1" values="||">
    </PIN>
@@ -601,13 +601,15 @@
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="223" srcpinname="OSCMessage" dstnodeid="226" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="227" systemname="IOBox (String)" hiddenwhenlocked="1">
-   <BOUNDS type="Box" left="9510" top="8475" width="2490" height="240">
+   <BOUNDS type="Box" left="9510" top="10065" width="2490" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9510" top="8475" width="0" height="0">
+   <BOUNDS type="Node" left="9510" top="10065" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -617,9 +619,9 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="226" srcpinname="Output" dstnodeid="227" dstpinname="Input String" hiddenwhenlocked="1">
-   </LINK>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="230">
    <BOUNDS type="Node" left="7395" top="2880" width="100" height="100">
    </BOUNDS>
@@ -645,7 +647,7 @@
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
-   <PIN pinname="Input String" slicecount="5" values="player/play,player/seek,player/vol,player/pan,player/speed">
+   <PIN pinname="Input String" slicecount="5" values="/play,/seek,/vol,/pan,/speed">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -777,9 +779,9 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0.5">
+   <PIN pinname="X Input Value" slicecount="1" values="0.6">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.405882352941176">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -801,9 +803,9 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="8.76666666666667">
+   <PIN pinname="X Input Value" slicecount="1" values="6.66666666666667">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="2.12941176470588">
+   <PIN pinname="Y Input Value" slicecount="1" values="4.48235294117647">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -1106,4 +1108,30 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Change (String)" nodename="Change (String)" componentmode="Hidden" id="331">
+   <BOUNDS type="Node" left="9840" top="8985" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="226" srcpinname="Output" dstnodeid="331" dstpinname="Input">
+   </LINK>
+   <NODE systemname="S+H (String)" nodename="S+H (String)" componentmode="Hidden" id="330">
+   <BOUNDS type="Node" left="9510" top="9510" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="331" srcpinname="OnChange" dstnodeid="330" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="226" srcpinname="Output" dstnodeid="330" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="330" srcpinname="Output" dstnodeid="227" dstpinname="Input String">
+   </LINK>
    </PATCH>
