@@ -200,7 +200,7 @@ namespace VVVV.Nodes.ImagePlayer
         
         public static FrameDecoder Create(string filename, Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
         {
-            var extension = Path.GetExtension(filename);
+            var extension = Path.GetExtension(filename).ToLowerInvariant();
 
             Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory = null;
             if (!FDecoderFactories.TryGetValue(extension, out decoderFactory))
