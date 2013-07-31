@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
 
-namespace VVVV.Nodes.IO
+namespace VVVV.Nodes.Input
 {
     [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Split")]
     public class KeyStateSplitNode : IPluginEvaluate

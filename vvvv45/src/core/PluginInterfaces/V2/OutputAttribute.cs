@@ -53,6 +53,16 @@ namespace VVVV.PluginInterfaces.V2
             get;
             set;
         }
+
+        /// <summary>
+        /// Whether or not feedback loops are allowed on this pin.
+        /// By default disabled.
+        /// </summary>
+        public bool AllowFeedback
+        {
+            get;
+            set;
+        }
         
         public override object Clone()
         {
@@ -60,7 +70,9 @@ namespace VVVV.PluginInterfaces.V2
             {
                 BinName = this.BinName,
                 BinVisibility = this.BinVisibility,
-                BinOrder = this.BinOrder
+                BinOrder = this.BinOrder,
+                AutoFlush = this.AutoFlush,
+                AllowFeedback = this.AllowFeedback
             };
             return base.Clone(clonedInstance);
         }

@@ -20,6 +20,9 @@
     <Reference Include="Gma.QrCodeNet.Encoding">
       <HintPath>..\..\..\..\common\src\thirdparty\Gma.QrCodeNet.Encoding.dll</HintPath>
     </Reference>
+    <Reference Include="InputSimulator">
+      <HintPath>..\..\..\..\common\src\thirdparty\InputSimulator\InputSimulator.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\..\..\common\src\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -47,6 +50,7 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Threading.Tasks.Dataflow">
       <HintPath>..\..\..\..\common\src\thirdparty\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
@@ -60,21 +64,35 @@
     <Compile Include="Animation\ParticlesThreaded\ParticleSystem.cs" />
     <Compile Include="Animation\ParticlesThreaded\ParticleSystemNode.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Devices\RS232Node.cs" />
     <Compile Include="Layer\DrawText\DrawText.cs" />
     <Compile Include="Layer\DrawText\DrawTextLegacy.cs" />
     <Compile Include="Network\Clock.cs" />
     <Compile Include="Network\Sync.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Raw\AsValueNode.cs" />
     <Compile Include="Raw\PlusNode.cs" />
     <Compile Include="Spreads\Lindenmayer\Lindenmayer.cs" />
     <Compile Include="Spreads\Lindenmayer\LindenmayerNode.cs" />
     <Compile Include="String\ApplyModifiersNode.cs" />
+    <Compile Include="String\Base64Nodes.cs" />
     <Compile Include="String\KeyMatchNodes.cs" />
     <Compile Include="String\StringInsertNode.cs" />
     <Compile Include="SVG\SVGGeomNodes.cs" />
     <Compile Include="SVG\SVGTextureNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="System\DeltaMouse.cs" />
+    <Compile Include="System\GlobalInputNode.cs" />
+    <Compile Include="System\KeyboardNode.cs" />
+    <Compile Include="System\LegacyKeyboardHelper.cs" />
+    <Compile Include="System\MouseNode.cs" />
+    <Compile Include="System\SystemProcessorsNode.cs" />
+    <Compile Include="System\WindowInputNode.cs" />
     <Compile Include="Texture\ImagePlayer\FrameDecoder.cs" />
     <Compile Include="Texture\ImagePlayer\FrameInfo.cs" />
     <Compile Include="Texture\ImagePlayer\ImagePlayer.cs" />
@@ -86,7 +104,6 @@
     <Compile Include="Texture\QrCode\QrCodeTextureNode.cs" />
     <Compile Include="Texture\SharedTexture\SharedTextureNode.cs" />
     <Compile Include="System\KeyboardStateSplitNode.cs" />
-    <Compile Include="System\MouseStateNodes.cs" />
     <Compile Include="System\MouseStateJoinNode.cs" />
     <Compile Include="System\MouseStatetSplitNode.cs" />
     <Compile Include="Transform\Decompose\DecomposeNode.cs" />
@@ -109,6 +126,12 @@
     <Compile Include="vvvv\Kontrolleur\KontrolleurNode.cs" />
     <Compile Include="vvvv\Kontrolleur\RemoteValue.cs" />
     <Compile Include="vvvv\NodeBrowser\CategoryEntry.cs" />
+    <Compile Include="vvvv\NodeBrowser\CategoryFilterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="vvvv\NodeBrowser\CategoryFilterPanel.Designer.cs">
+      <DependentUpon>CategoryFilterPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="vvvv\NodeBrowser\CategoryPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -144,13 +167,12 @@
       <DependentUpon>TagPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="vvvv\NodeCollector\NodeCollector.cs" />
+    <Compile Include="Windows\PID\VVVVPIDNode.cs" />
     <Compile Include="vvvv\PinInfo\VVVVPinInfoNode.cs" />
     <Compile Include="vvvv\ProjectExplorer\DescriptedProjectViewProvider.cs" />
-    <Compile Include="vvvv\ProjectExplorer\FXProjectMenuProvider.cs" />
     <Compile Include="vvvv\ProjectExplorer\FXProjectViewProvider.cs" />
     <Compile Include="vvvv\ProjectExplorer\LoadedProjectsSolutionViewProvider.cs" />
     <Compile Include="vvvv\ProjectExplorer\MsBuildProjectViewProvider.cs" />
-    <Compile Include="vvvv\ProjectExplorer\PersistentNameProvider.cs" />
     <Compile Include="vvvv\ProjectExplorer\ProjectExplorerPlugin.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -162,6 +184,7 @@
     <Compile Include="vvvv\WindowSwitcher\WindowSwitcherNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Windows\WindowsKill\WindowsKillNode.cs" />
     <Compile Include="XML\XMLNodes.cs" />
     <Compile Include="XML\XMLNodeWrappers.cs" />
     <Compile Include="XML\XMLPruneNode.cs" />
@@ -181,6 +204,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="vvvv\Kommunikator\KommunikatorNode.resx">
       <DependentUpon>KommunikatorNode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="vvvv\NodeBrowser\CategoryFilterPanel.resx">
+      <DependentUpon>CategoryFilterPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="vvvv\NodeBrowser\CategoryPanel.resx">
       <DependentUpon>CategoryPanel.cs</DependentUpon>
@@ -227,6 +253,15 @@
       <Name>Utils3rdParty</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Windows" />
+    <Folder Include="Windows\WindowsKill" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

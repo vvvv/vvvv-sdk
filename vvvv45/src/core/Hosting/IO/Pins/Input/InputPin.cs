@@ -9,7 +9,7 @@ namespace VVVV.Hosting.Pins.Input
     [ComVisible(false)]
     class InputPin<T> : Pin<T>
     {
-        public InputPin(IIOFactory factory, IPluginIn pluginIn, BufferedIOStream<T> stream)
+        public InputPin(IIOFactory factory, IPluginIn pluginIn, MemoryIOStream<T> stream)
             : base(factory, pluginIn, stream)
         {
         }
@@ -21,7 +21,7 @@ namespace VVVV.Hosting.Pins.Input
         }
     }
     
-    class BufferedInputIOStream<T> : BufferedIOStream<T>
+    class BufferedInputIOStream<T> : MemoryIOStream<T>
     {
         private readonly IInStream<T> FInStream;
         
@@ -45,13 +45,13 @@ namespace VVVV.Hosting.Pins.Input
     class InputIOStream<T> : IIOStream<T>
     {
         private readonly IInStream<T> FInStream;
-        private readonly BufferedIOStream<T> FIOStream;
+        private readonly MemoryIOStream<T> FIOStream;
         private IInStream<T> FCurrentInStream;
         
         public InputIOStream(IInStream<T> inStream)
         {
             FInStream = inStream;
-            FIOStream = new BufferedIOStream<T>();
+            FIOStream = new MemoryIOStream<T>();
             FCurrentInStream = FInStream;
         }
         

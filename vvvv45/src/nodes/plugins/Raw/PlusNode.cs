@@ -13,13 +13,13 @@ namespace VVVV.Nodes.Raw
     public class PlusNode : IPluginEvaluate
     {
         [Input("Input", IsPinGroup = true)]
-        IInStream<IInStream<Stream>> FInputGroup;
+        public IInStream<IInStream<Stream>> FInputGroup;
 
         [Input("Intersperse Sequence", Order = int.MaxValue)]
-        IInStream<Stream> FIntersperseSequence;
+        public IInStream<Stream> FIntersperseSequence;
 
         [Output("Output")]
-        IOutStream<Stream> FOutput;
+        public IOutStream<Stream> FOutput;
 
         public void Evaluate(int spreadMax)
         {

@@ -7,6 +7,7 @@ using SlimDX;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
+using VVVV.Utils;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -135,24 +136,25 @@ namespace VVVV.Hosting.IO.Streams
             
             protected override void Copy(double[] source, int sourceIndex, int length, int stride)
             {
-                switch (stride)
+                fixed (double* pSrc = source)
                 {
-                    case 1:
-                        Marshal.Copy(source, sourceIndex, new IntPtr(FPDst + Position), length);
-                        break;
-                    default:
-                        fixed (double* pSrc = source)
-                        {
+                    switch (stride)
+                    {
+                        case 1:
+                            //Marshal.Copy(source, sourceIndex, new IntPtr(FPDst + Position), length);
+                            Memory.Copy(FPDst + Position, pSrc + sourceIndex, (uint)length * sizeof(double));
+                            break;
+                        default:
                             double* src = pSrc + sourceIndex;
                             double* dst = FPDst + Position;
-                            
+
                             for (int i = 0; i < length; i++)
                             {
                                 *dst = *(src++);
                                 dst += stride;
                             }
-                        }
-                        break;
+                            break;
+                    }
                 }
             }
         }

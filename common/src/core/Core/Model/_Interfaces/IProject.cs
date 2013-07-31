@@ -5,23 +5,23 @@ using VVVV.Core.Runtime;
 
 namespace VVVV.Core.Model
 {
-	public class CompilerEventArgs : EventArgs
-	{
-		public CompilerEventArgs(CompilerResults results)
-		{
-			CompilerResults = results;
-		}
-		
-		public CompilerResults CompilerResults
-		{
-			get;
-			private set;
-		}
-	}
-	
+    public class CompilerEventArgs : EventArgs
+    {
+        public CompilerEventArgs(CompilerResults results)
+        {
+            CompilerResults = results;
+        }
+        
+        public CompilerResults CompilerResults
+        {
+            get;
+            private set;
+        }
+    }
+    
     public delegate void CompiledEventHandler(object sender, CompilerEventArgs args);
     
-    public interface IProject : IIDContainer, IPersistent
+    public interface IProject : IIDContainer, IDisposable
     {
         /// <summary>
         /// List of Documents which belong to this project.
@@ -45,8 +45,8 @@ namespace VVVV.Core.Model
         /// </summary>
         ISolution Solution
         {
-        	get;
-        	set;
+            get;
+            set;
         }
         
         /// <summary>
@@ -54,21 +54,8 @@ namespace VVVV.Core.Model
         /// </summary>
         CompilerResults CompilerResults
         {
-        	get;
-        }
-        
-        /// <summary>
-        /// The full path to the compiled assembly.
-        /// </summary>
-        string AssemblyLocation
-        {
             get;
         }
-        
-        /// <summary>
-        /// Called by ICompiler to retrieve a new assembly location.
-        /// </summary>
-        string GenerateAssemblyLocation();
         
         /// <summary>
         /// Compiles this project with the ICompiler stored in the Compiler property.
@@ -90,5 +77,17 @@ namespace VVVV.Core.Model
         /// The OnCompileCompleted event occurs when the CompileAsync finished executing.
         /// </summary>
         event CompiledEventHandler CompileCompleted;
+
+        string LocalPath { get; }
+
+        void SaveTo(string path);
+    }
+
+    public static class ProjectExtensions
+    {
+        public static void Save(this IProject project)
+        {
+            project.SaveTo(project.LocalPath);
+        }
     }
 }

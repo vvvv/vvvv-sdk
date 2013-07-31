@@ -67,13 +67,13 @@ namespace VVVV.Nodes.Vlc.Player
 		}
 
 
-		public IntPtr GetFrontBuffer()
+		public IntPtr FrontBuffer
 		{
-			return (frontBuffer ? pixelPlane1 : pixelPlane0);
+			get { return (frontBuffer ? pixelPlane1 : pixelPlane0); }
 		}
-		public IntPtr GetBackBuffer()
+		public IntPtr BackBuffer
 		{
-			return (frontBuffer ? pixelPlane0 : pixelPlane1);
+			get { return (frontBuffer ? pixelPlane0 : pixelPlane1); }
 		}
 		public bool LockFrontBufferForReading(int millisecondsTimeout)
 		{
@@ -180,17 +180,17 @@ namespace VVVV.Nodes.Vlc.Player
 			return true;
 		}
 
-		public int GetWidth()
+		public int Width
 		{
-			return width;
+			get { return width; }
 		}
-		public int GetHeight()
+		public int Height
 		{
-			return height;
+			get { return height; }
 		}
-		public int GetPitch()
+		public int Pitch
 		{
-			return pitch;
+			get { return pitch; }
 		}
 		public void Dispose()
 		{

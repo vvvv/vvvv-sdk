@@ -7,19 +7,20 @@ namespace VVVV.Core.Menu
 {
     public class LoadMenuEntry : MenuEntry
     {
-        protected IPersistent FPersistent;
+        //protected IPersistent FPersistent;
         protected ILogger FLogger;
         
-        public LoadMenuEntry(ICommandHistory history, IPersistent persistent, ILogger logger)
+        public LoadMenuEntry(ICommandHistory history, /*IPersistent persistent, */ILogger logger)
             : base(history, "Open")
         {
-            FPersistent = persistent;
+            //FPersistent = persistent;
             FLogger = logger;
         }
         
         public override void Click()
         {
-            FPersistent.Load();
+            throw new NotImplementedException();
+            //FPersistent.Load();
         }
     }
 }

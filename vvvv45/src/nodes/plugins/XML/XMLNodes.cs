@@ -15,6 +15,13 @@ using Commons.Xml.Relaxng.Rnc;
 
 namespace VVVV.Nodes.XML
 {
+    public enum Validation
+    {
+        None,
+        Dtd,
+        Schema
+    }
+
     public static class XMLNodes
     {
         public static readonly ISpread<XElement> NoElements = new Spread<XElement>();
@@ -59,8 +66,20 @@ namespace VVVV.Nodes.XML
         {
             if (element != null)
             {
-                var n = XName.Get(name);
-                return element.Elements(n).ToSpread();
+                string prefix = null;
+                string localName = name;
+                var s = name.Split(':');
+                if (s.Length > 1)
+                {
+                    prefix = s[0];
+                    localName = s[1];
+                }
+                XNamespace ns = null;
+                if (prefix != null)
+                    ns = element.GetNamespaceOfPrefix(prefix);
+                if (ns == null)
+                    ns = element.GetDefaultNamespace();
+                return element.Elements(ns + localName).ToSpread();
             }
             else
                 return NoElements;
@@ -79,13 +98,13 @@ namespace VVVV.Nodes.XML
         }
 
         [Node]
-        public static ISpread<T> GetElementsByXPath<T>(this XElement element, string xPath, string nodesName, out string errorMessage) where T : XObject
+        public static ISpread<T> GetElementsByXPath<T>(this XElement element, string xPath, string nodesName, IXmlNamespaceResolver nameSpaceResolver, out string errorMessage) where T : XObject
         {
             if (element != null)
             {
                 try
                 {
-                    var obj = (IEnumerable)element.XPathEvaluate(xPath);
+                    var obj = (IEnumerable)element.XPathEvaluate(xPath, nameSpaceResolver);
                     var whatINeed = obj.Cast<T>();
                     errorMessage = "";
                     return whatINeed.ToSpread();
@@ -103,17 +122,22 @@ namespace VVVV.Nodes.XML
             }
         }
 
+        //public static ISpread<T> GetElementsByXPath<T>(this XElement element, string xPath, string nodesName, out string errorMessage) where T : XObject
+        //{
+        //    return GetElementsByXPath<T>(element, xPath, nodesName, null, out errorMessage);
+        //}
+
         [Node]
-        public static ISpread<XElement> GetElementsByXPath(this XElement element, string xPath, out string errorMessage)
+        public static ISpread<XElement> GetElementsByXPath(this XElement element, string xPath, IXmlNamespaceResolver nameSpaceResolver, out string errorMessage)
         {
-            var result = element.GetElementsByXPath<XElement>(xPath, "elements", out errorMessage);
+            var result = element.GetElementsByXPath<XElement>(xPath, "elements", nameSpaceResolver, out errorMessage);
             return result != null ? result : NoElements;
         }
 
         [Node]
-        public static ISpread<XAttribute> GetAttributesByXPath(this XElement element, string xPath, out string errorMessage)
+        public static ISpread<XAttribute> GetAttributesByXPath(this XElement element, string xPath, IXmlNamespaceResolver nameSpaceResolver, out string errorMessage)
         {
-            var result = element.GetElementsByXPath<XAttribute>(xPath, "attributes", out errorMessage);
+            var result = element.GetElementsByXPath<XAttribute>(xPath, "attributes", nameSpaceResolver, out errorMessage);
             return result != null ? result : NoAttributes;
         }
 
@@ -137,18 +161,39 @@ namespace VVVV.Nodes.XML
         }
 
         [Node]
-        public static void AsElement(this string xml, out XDocument doc, out XElement element)
+        public static XDocument AsDocument(this string xml, Validation validation = Validation.None)
         {
-            try
+            var settings = new XmlReaderSettings();
+            switch (validation)
             {
-                doc = XDocument.Parse(xml);
-                element = doc.Root;
+                case Validation.Dtd:
+                    settings.DtdProcessing = DtdProcessing.Parse;
+                    settings.ValidationType = ValidationType.DTD;
+                    break;
+                case Validation.Schema:
+                    settings.ValidationType = ValidationType.Schema;
+                    break;
+                default:
+                    settings.DtdProcessing = DtdProcessing.Ignore;
+                    break;
             }
-            catch
+            using (var textReader = new StringReader(xml))
+            using (var reader = XmlReader.Create(textReader, settings))
             {
-                doc = null;
-                element = null;
+                return XDocument.Load(reader);
             }
+        }
+
+        [Node]
+        public static IXmlNamespaceResolver CreateNamespaceResolver(this XNode node, IEnumerable<Tuple<string, string>> namespaces)
+        {
+            //Grab the reader
+            var reader = node.CreateReader();
+            //Use the reader NameTable
+            var namespaceManager = new XmlNamespaceManager(reader.NameTable);
+            foreach (var t in namespaces)
+                namespaceManager.AddNamespace(t.Item1, t.Item2);
+            return namespaceManager;
         }
 
         [Node]

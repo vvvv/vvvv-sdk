@@ -12,8 +12,9 @@ namespace VVVV.Core.Commands
             public XElement Serialize(RenameCommand command, Serializer serializer)
             {
                 var xElement = new XElement("RENAME");
-                
-                xElement.Add(new XAttribute("Item", command.FRenameable.GetID()));
+
+                var idItem = command.FRenameable as IIDItem;
+                xElement.Add(new XAttribute("Item", idItem.GetID()));
                 xElement.Add(new XAttribute("Name", command.FNewName));
                 
                 return xElement;

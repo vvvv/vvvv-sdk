@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv45\plugins\TemplateTransform\Template (Transform) help.v4p" filename="C:\Dev\vvvv\vvvv45\plugins\TemplateTransform\Template (Transform) help.v4p" systemname="Template (Transform) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\TemplateTransform\Template (Transform) help.v4p" filename="C:\Dev\vvvv\vvvv45\plugins\TemplateTransform\Template (Transform) help.v4p" systemname="Template (Transform) help">
    <BOUNDS height="6420" left="9180" top="285" type="Window" width="8790">
    </BOUNDS>
    <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -60,50 +60,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" hiddenwhenlocked="1" id="18" nodename="OpenURL (Network)" systemname="OpenURL (Network)">
-   <BOUNDS height="100" left="6435" top="1770" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Url" visible="1">
-   </PIN>
-   <PIN pinname="Open" visible="1">
-   </PIN>
-   <PIN pinname="URL" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="100" left="345" top="1560" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="285" left="345" top="1560" type="Box" width="3825">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org/documentation/dynamic-plugins">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="6975" top="945" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="480" left="6975" top="945" type="Box" width="480">
-   </BOUNDS>
-   <PIN pinname="Show Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Show Slider" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Open">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="18" dstpinname="Open" hiddenwhenlocked="1" srcnodeid="20" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Url" hiddenwhenlocked="1" srcnodeid="19" srcpinname="Output String">
-   </LINK>
    <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="6870" top="3495" type="Node" width="1965">
    </BOUNDS>
@@ -178,7 +134,7 @@
    </NODE>
    <LINK srcnodeid="21" srcpinname="Output" dstnodeid="49" dstpinname="Transform">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="51">
+   <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="51">
    <BOUNDS type="Node" left="4260" top="2295" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="4260" top="2295" width="2265" height="750">
@@ -196,7 +152,7 @@
    </NODE>
    <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="48" dstpinname="Matrix In">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="53">
+   <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="53">
    <BOUNDS type="Node" left="3510" top="4260" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="3510" top="4260" width="2265" height="750">
@@ -214,4 +170,16 @@
    </NODE>
    <LINK srcnodeid="49" srcpinname="Matrix Out" dstnodeid="53" dstpinname="Y Input Value">
    </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="54">
+   <BOUNDS type="Node" left="780" top="1560" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="780" top="1560" width="3825" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="-1" pintype="Input" values="http://vvvv.org/documentation/dynamic-plugins">
+   </PIN>
+   <PIN pinname="Output String" visible="-1" pintype="Output">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
    </PATCH>

@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Collections.Generic;
+ using System.Threading;
 
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
@@ -91,92 +92,97 @@ namespace VVVV.Nodes
                 {
                     if (FIO != null)
                     {
+						FIO.Close();
                         FIO = null;
                     }
                     FIO = new WrapperIOBoards(FSerial[0]);
-                    FInit = true;
+					FInit = false;
                 }
 
-                if (FIO.Attached)
+				if (FIO.Attached && FInit == false)
                 {
 
-                    if (FInit)
-                    {
-                        FDigitalOut.SliceCount = FIO.GetInputCount();
-                        FSensorOut.SliceCount = FIO.GetSensorCount();
-                        FDataRateMaxOut.SliceCount = FIO.GetSensorCount();
-                        FDataRateMinOut.SliceCount = FIO.GetSensorCount();
-                        FDataRateOut.SliceCount = FIO.GetSensorCount();
-                    }
+					if (!(FIO.FPhidget.ID .ToString()== Phidget.PhidgetID.LINEAR_TOUCH.ToString() || FIO.FPhidget.ID.ToString() == Phidget.PhidgetID.ROTARY_TOUCH.ToString()))
+					{
+						if (FRadiometricIn.IsChanged || FInit)
+							FIO.SetRadiometric(FRadiometricIn[0]);
 
-                    if (!(FIO.FPhidget.ID == Phidget.PhidgetID.LINEAR_TOUCH || FIO.FPhidget.ID == Phidget.PhidgetID.ROTARY_TOUCH))
-                    {
-                        if (FRadiometricIn.IsChanged || FInit)
-                            FIO.SetRadiometric(FRadiometricIn[0]);
+						if (FDataRateIn.IsChanged || FInit)
+						{
+							for (int i = 0; i < FIO.GetSensorCount(); i++)
+								FIO.SetDataRate(i, FDataRateIn[i]);
+						}
+					}
 
-                        if (FDataRateIn.IsChanged || FInit)
+					if (FIO.DigitalInputChanged)
+                    {
+						FDigitalOut.SliceCount = FIO.GetInputCount();
+						
+						for (int i = 0; i < FIO.GetInputCount(); i++)
+							FDigitalOut[i] = FIO.GetInputState(i);
+					}
+					
+					if(FIO.SensorChanged)
+					{
+						FSensorOut.SliceCount  = FIO.GetSensorCount();
+						
+						for (int i = 0; i < FIO.GetSensorCount(); i++)
+						{
+							if (!(FIO.FPhidget.ID.ToString() == Phidget.PhidgetID.LINEAR_TOUCH.ToString() || FIO.FPhidget.ID.ToString() == Phidget.PhidgetID.ROTARY_TOUCH.ToString()))
                         {
-                            for (int i = 0; i < FIO.GetSensorCount(); i++)
-                                FIO.SetDataRate(i, FDataRateIn[i]);
-                        }
-                    }
-
-                    if (FIO.Changed || FInit)
-                    {
-                        for (int i = 0; i < FIO.GetInputCount(); i++)
-                            FDigitalOut[i] = FIO.GetInputState(i);
-                    }
-
-                    for (int i = 0; i < FIO.GetSensorCount(); i++)
-                    {
-                        if (!(FIO.FPhidget.ID == Phidget.PhidgetID.LINEAR_TOUCH || FIO.FPhidget.ID == Phidget.PhidgetID.ROTARY_TOUCH))
-                        {
-                            FSensorOut[i] = Convert.ToDouble(FIO.GetSensorRawValue(i)) / 4095;
-                            FDataRateOut[i] = FIO.GetDataRate(i);
-                            FDataRateMinOut[i] = FIO.GetDataRateMin(i);
-                            FDataRateMaxOut[i] = FIO.GetDataRateMax(i);
-                        }
-                        else
-                        {
-                            FSensorOut[i] = Convert.ToDouble(FIO.GetSensorValue(i)) / 1000;
-                            FDataRateOut[i] = FIO.GetDataRate(i);
-                            FDataRateMinOut[i] = FIO.GetDataRateMin(i);
-                            FDataRateMaxOut[i] = FIO.GetDataRateMax(i);
+								FDataRateMaxOut.SliceCount = FIO.GetSensorCount();
+								FDataRateMinOut.SliceCount = FIO.GetSensorCount();
+								FDataRateOut.SliceCount = FIO.GetSensorCount();
+								
+								FSensorOut[i] = Convert.ToDouble(FIO.GetSensorRawValue(i)) / 4095;
+								FDataRateOut[i] = FIO.GetDataRate(i);
+								FDataRateMinOut[i] = FIO.GetDataRateMin(i);
+								FDataRateMaxOut[i] = FIO.GetDataRateMax(i);
+							}
+							else
+							{
+								FSensorOut[i] = Convert.ToDouble(FIO.GetSensorValue(i)) / 1000;
+								//FDataRateOut[i] = FIO.GetDataRate(i);
+								//FDataRateMinOut[i] = FIO.GetDataRateMin(i);
+								//FDataRateMaxOut[i] = FIO.GetDataRateMax(i);
                         }
 
                     }
-
-
-                    if (FDigitalIn.IsChanged || FInit)
-                    {
-                        for (int i = 0; i < SpreadMax; i++)
-                        {
-                            if (i < FIO.Count)
-                            {
-                                if (FDigitalIn.IsChanged)
-                                    FIO.SetDigitalOutput(i, FDigitalIn[i]);
-                            }
-                        }
-                    }
+					}
 
 
 
-                    FInit = false;
+					if (FDigitalIn.IsChanged)
+					{
+						for (int i = 0; i < SpreadMax; i++)
+						{
+							if (i < FIO.Count)
+							{
+								if (FDigitalIn.IsChanged)
+									FIO.SetDigitalOutput(i, FDigitalIn[i]);
+							}
+						}
+					}
+					
+				}else
+				{
+					FSensorOut.SliceCount = 0;
+					FDigitalOut.SliceCount = 0;
                 }
 
-                FAttached[0] = FIO.Attached;
-
-                List<PhidgetException> Exceptions = FIO.Errors;
-                if (Exceptions != null)
-                {
-                    foreach (Exception e in Exceptions)
-                        FLogger.Log(e);
-                }
-            }
-            catch (PhidgetException ex)
-            {
-                FLogger.Log(ex);
-            }
-        }
-    }
+				FAttached[0] = FIO.Attached;
+				
+				List<PhidgetException> Exceptions = FIO.Errors;
+				if (Exceptions != null)
+				{
+					foreach (Exception e in Exceptions)
+						FLogger.Log(e);
+				}
+			}
+			catch (PhidgetException ex)
+			{
+				FLogger.Log(ex);
+			}
+		}
+	}
 }

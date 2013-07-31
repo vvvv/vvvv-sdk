@@ -1,10 +1,10 @@
 require "albacore"
 
-#RELEASE_PROPS = {:configuration => :Release,:platform => "x86"}
-#DEBUG_PROPS   = {:configuration => :Debug,:platform => "x86"}
+RELEASE_PROPS = {:configuration => :Release,:platform => "x86"}
+DEBUG_PROPS   = {:configuration => :Debug,:platform => "x86"}
 
-RELEASE_PROPS = {:configuration => :Release,:platform => "x64"}
-DEBUG_PROPS   = {:configuration => :Debug,:platform => "x64"}
+#RELEASE_PROPS = {:configuration => :Release,:platform => "x64"}
+#DEBUG_PROPS   = {:configuration => :Debug,:platform => "x64"}
 
 ROOT_DIR = '..\..\..\..\..\..\\'
 
@@ -41,12 +41,21 @@ msbuild :cleanaddons do |msb|
 end
 
 
+desc "Build core and addons"
 task :all => [:core,:addons]
+
+desc "Clean everything"
 task :cleanall => [:cleancore,:cleanaddons,:clean]
 
+desc "Rebuild everything"
+task :rebuildall => [:cleanall,:all]
 
-PLUGIN_DEBUG   = {:configuration=>:Debug   ,:platform => "x64"} 
-PLUGIN_RELEASE = {:configuration=>:Release ,:platform => "x64"}
+
+PLUGIN_DEBUG   = {:configuration=>:Debug   ,:platform => "Any CPU"} 
+PLUGIN_RELEASE = {:configuration=>:Release ,:platform => "Any CPU"}
+
+#PLUGIN_DEBUG   = {:configuration=>:Debug   ,:platform => "x64"} 
+#PLUGIN_RELEASE = {:configuration=>:Release ,:platform => "x64"}
 
 MODULES_DIR = "addonpack\\lib\\nodes\\modules\\"
 HELPFILE = "Devices\\Arduino (Devices StandardFirmata 2.x) help.v4p"
@@ -55,8 +64,8 @@ VVVV = 'vvvv.exe'
 
 PLUGIN_SOLUTION = "Virmata.sln"
 
+desc "Build and test the addon alone by default"
 task :default => [:build,:test]
-task :rebuild => [:cleanall,:all,:build]
 
 desc "Build Virmata Addon"
 msbuild :build do |build|
@@ -72,7 +81,7 @@ msbuild :clean do |build|
 end
 
 desc "Re-Build Virmata"
-task :rebuild => [:clean,:build] {}
+task :rebuild => [:clean,:build]
 
 desc "Test current build"
 exec :test do |cmd|

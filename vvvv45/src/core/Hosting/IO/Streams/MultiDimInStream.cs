@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    class MultiDimInStream<T> : BufferedIOStream<IInStream<T>>, IDisposable
+    class MultiDimInStream<T> : MemoryIOStream<IInStream<T>>, IDisposable
     {
         class InnerStream : IInStream<T>
         {
