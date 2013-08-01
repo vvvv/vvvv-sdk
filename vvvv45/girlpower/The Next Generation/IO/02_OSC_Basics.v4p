@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\OSC_Basics.v4p" systemname="OSC_Basics" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\OSC_Basics.v4p">
-   <BOUNDS type="Window" left="4560" top="2385" width="19020" height="13335">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\02_OSC_Basics.v4p" systemname="OSC_Basics" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\OSC_Basics.v4p">
+   <BOUNDS type="Window" left="1950" top="1170" width="17520" height="13485">
    </BOUNDS>
    <NODE systemname="UDP (Network Server)" nodename="UDP (Network Server)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="14595" top="2820" width="100" height="100">
@@ -15,7 +15,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="14775" top="2190" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="4444">
+   <PIN pinname="Y Input Value" slicecount="1" values="4442">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -79,7 +79,7 @@
    <LINK srcnodeid="28" srcpinname="Output String" dstnodeid="29" dstpinname="Input">
    </LINK>
    <NODE systemname="GetSlice (String)" nodename="GetSlice (String)" componentmode="Hidden" id="30">
-   <BOUNDS type="Node" left="13995" top="6570" width="100" height="100">
+   <BOUNDS type="Node" left="13995" top="6870" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -89,9 +89,9 @@
    <LINK srcnodeid="29" srcpinname="Output" dstnodeid="30" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="13995" top="7095" width="2220" height="420">
+   <BOUNDS type="Box" left="13995" top="7395" width="2220" height="420">
    </BOUNDS>
-   <BOUNDS type="Node" left="13995" top="7095" width="0" height="0">
+   <BOUNDS type="Node" left="13995" top="7395" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Default" slicecount="1" values="text">
    </PIN>
@@ -277,9 +277,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="69" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5100" top="1080" type="Node" width="945">
+   <BOUNDS height="270" left="7485" top="960" type="Node" width="945">
    </BOUNDS>
-   <BOUNDS height="420" left="5100" top="1080" type="Box" width="5505">
+   <BOUNDS height="405" left="7485" top="960" type="Box" width="1125">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Sender">
    </PIN>
@@ -291,9 +291,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="71" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="11940" top="1080" type="Node" width="945">
+   <BOUNDS height="270" left="14265" top="960" type="Node" width="945">
    </BOUNDS>
-   <BOUNDS height="435" left="11940" top="1080" type="Box" width="5835">
+   <BOUNDS height="420" left="14265" top="960" type="Box" width="1350">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Receiver">
    </PIN>
@@ -479,9 +479,9 @@
    <NODE componentmode="InABox" id="101" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="8760" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="3315" left="675" top="8760" type="Box" width="3885">
+   <BOUNDS height="3525" left="675" top="8760" type="Box" width="3930">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A UDP (Network Server) listens to a port and returns a data, when something arrives.&cr;&lf;&cr;&lf;OSCDecoder (Network) decodes the data coming as UDP-datagrams on the defined OSC-Adresses.&cr;&lf;&cr;&lf;Arguments are represented as strings and should be converted to their suitable data types, values in this example.&cr;&lf;&cr;&lf;OSCDecoder (Network) bangs its &apos;OnReceive&apos; output pin when something is arrived on the defined address. This bang is used for S+H (Animation) to hold the last received value.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A UDP (Network Server) listens to a port and returns a data, when something arrives.&cr;&lf;&cr;&lf;OSCDecoder (Network) decodes the data coming as UDP-datagrams to the defined OSC-Adresses.&cr;&lf;&cr;&lf;Arguments are represented as strings and should be converted to their suitable data types (i.e. values).&cr;&lf;&cr;&lf;OSCDecoder (Network) bangs its &apos;OnReceive&apos; output pin when something is arrived on the defined address. This bang is used for S+H (Animation) to hold the last received value.&cr;&lf;&cr;&lf;According to the received value, one of the slices from a spread of separated string is selected.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -741,7 +741,7 @@
    <LINK srcnodeid="113" srcpinname="OSCMessage" dstnodeid="127" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="128" systemname="IOBox (String)" hiddenwhenlocked="1">
-   <BOUNDS type="Box" left="6195" top="6765" width="1935" height="270">
+   <BOUNDS type="Box" left="6195" top="6765" width="1905" height="255">
    </BOUNDS>
    <BOUNDS type="Node" left="6195" top="6765" width="0" height="0">
    </BOUNDS>
@@ -765,9 +765,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="140" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="7875" top="7560" width="960" height="255">
+   <BOUNDS type="Box" left="7875" top="7440" width="960" height="255">
    </BOUNDS>
-   <BOUNDS type="Node" left="7875" top="7560" width="0" height="0">
+   <BOUNDS type="Node" left="7875" top="7440" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="localhost">
    </PIN>
@@ -783,11 +783,11 @@
    <LINK srcnodeid="140" srcpinname="Output String" dstnodeid="141" dstpinname="Remote Host">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="139" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8595" top="7890" width="570" height="255">
+   <BOUNDS type="Box" left="8595" top="7770" width="570" height="255">
    </BOUNDS>
-   <BOUNDS type="Node" left="8595" top="7890" width="0" height="0">
+   <BOUNDS type="Node" left="8595" top="7770" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="4444">
+   <PIN pinname="Y Input Value" slicecount="1" values="4442">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -1017,9 +1017,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="166" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="10830" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="10635" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="10830" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="10635" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -1058,4 +1058,20 @@
    </LINK>
    <LINK srcnodeid="125" srcpinname="Output" dstnodeid="113" dstpinname="Arguments">
    </LINK>
+   <NODE componentmode="InABox" id="170" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="195" top="11700" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="195" top="11700" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
    </PATCH>
