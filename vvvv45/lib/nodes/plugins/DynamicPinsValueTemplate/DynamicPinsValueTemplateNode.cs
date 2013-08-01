@@ -21,19 +21,19 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		// A spread which contains our inputs
-		Spread<IIOContainer<ISpread<double>>> FInputs = new Spread<IIOContainer<ISpread<double>>>();
+        public Spread<IIOContainer<ISpread<double>>> FInputs = new Spread<IIOContainer<ISpread<double>>>();
 		
 		// A spread which contains our outputs
-		Spread<IIOContainer<ISpread<double>>> FOutputs = new Spread<IIOContainer<ISpread<double>>>();
+        public Spread<IIOContainer<ISpread<double>>> FOutputs = new Spread<IIOContainer<ISpread<double>>>();
 		
 		[Config("Input Count", DefaultValue = 1, MinValue = 0)]
-		IDiffSpread<int> FInputCountIn;
+        public IDiffSpread<int> FInputCountIn;
 		
 		[Config("Output Count", DefaultValue = 1, MinValue = 0)]
-		IDiffSpread<int> FOutputCountIn;
+        public IDiffSpread<int> FOutputCountIn;
 		
 		[Import]
-		IIOFactory FIOFactory;
+        public IIOFactory FIOFactory;
 		#endregion fields & pins
 		
 		#region pin management

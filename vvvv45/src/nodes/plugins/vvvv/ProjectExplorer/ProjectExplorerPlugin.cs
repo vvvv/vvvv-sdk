@@ -118,11 +118,6 @@ namespace VVVV.HDE.ProjectExplorer
             }
         }
 
-        public void Dispose()
-        {
-            Solution.Projects.Added -= Projects_Added;
-        }
-
         void Projects_Added(IViewableCollection<IProject> collection, IProject item)
         {
             var project = item as MsBuildProject;

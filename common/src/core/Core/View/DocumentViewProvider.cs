@@ -33,21 +33,7 @@ namespace VVVV.Core
             {
                 if (value != Name)
                 {
-                    var path = Path.Combine(Path.GetDirectoryName(FDocument.LocalPath), value);
-                    FDocument.SaveTo(path);
-                    var project = FDocument.Project;
-                    if (project != null)
-                    {
-                        project.Documents.Remove(FDocument);
-                    }
-                    File.Delete(FDocument.LocalPath);
-                    FDocument.Dispose();
-                    if (project != null)
-                    {
-                        var document = DocumentFactory.CreateDocumentFromFile(path);
-                        project.Documents.Add(document);
-                        project.Save();
-                    }
+                    FDocument.Rename(value);
                 }
             }
         }

@@ -39,7 +39,7 @@ namespace VVVV.Nodes
 {
 
 	#region PluginInfo
-	[PluginInfo(Name = "FileStream", Category = "Irrklang", Help = "Irrklang Gamesound Engine", Tags = "Audio, 3D, Sampleplayer, Sound", AutoEvaluate = true, Author = "sanch, phlegma", Bugs = "Does not play samples shorter than 0,17s")]
+	[PluginInfo(Name = "FileStream", Category = "Irrklang", Help = "Irrklang Gamesound Engine", Tags = "Audio, 3D, Sampleplayer, Sound", AutoEvaluate = true, Author = "sanch, phlegma, readme", Bugs = "Does not play samples shorter than 0,17s")]
 	#endregion PluginInfo
 
 
@@ -91,13 +91,13 @@ namespace VVVV.Nodes
 		IDiffSpread<float> FPan;
 		
 		// 3D Sound Position
-		[Input("Position", DefaultValue = 0)]
+        [Input("Position", DefaultValues = new double[] { 0, 0, 0 })]
 		IDiffSpread<Vector3D> FSoundPosition;
-		[Input("Velocity", DefaultValue = 0)]
+        [Input("Velocity", DefaultValues = new double[] { 0, 0, 0 })]
 		IDiffSpread<Vector3D> FSoundVelocity;
 		[Input("Minimal Distance", DefaultValue = 0, MinValue = float.MinValue)]
 		IDiffSpread<float> FMinDist;
-		[Input("Maximal Distance", DefaultValue = 100, MaxValue = float.MaxValue)]
+        [Input("Maximal Distance", DefaultValue = 1000000000, MaxValue = float.MaxValue)]
 		IDiffSpread<float> FMaxDist;
 		
 		//Main Volume
@@ -111,13 +111,13 @@ namespace VVVV.Nodes
 		IDiffSpread<bool> FPauseAll;
 
 		// 3D Listener Position
-		[Input("View Position", DefaultValue = 0, IsSingle = true)]
+        [Input("View Position", DefaultValues = new double[] { 0, 0, 0 })]
 		IDiffSpread<Vector3D> FViewPos;
-		[Input("View Direction", DefaultValue = 0, IsSingle = true)]
+        [Input("View Direction", DefaultValues = new double[] { 0, 0, 1 })]
 		IDiffSpread<Vector3D> FViewDir;
-		[Input("View Velocity Per Second", DefaultValue = 0, IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
+		[Input("View Velocity Per Second", DefaultValues = new double[] { 0, 0, 0 }, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<Vector3D> FViewVelocity;
-		[Input("View Up Vector", DefaultValue = 0, IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("View Up Vector", DefaultValues = new double[] { 0, 1, 0 }, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<Vector3D> FViewUpVector;
 
 		//RollOff
@@ -667,7 +667,7 @@ namespace VVVV.Nodes
 					{
 						foreach(ISound Sound in SoundsPerSlice)
 						{
-							Sound.MaxDistance = FMinDist[i];
+							Sound.MaxDistance = FMaxDist[i];
 						}
 					}
 				}
@@ -937,7 +937,7 @@ namespace VVVV.Nodes
 				IrrKlang.Vector3D ViewPos = new IrrKlang.Vector3D((float)FViewPos[0].x, (float)FViewPos[0].y, (float)FViewPos[0].z);
 				IrrKlang.Vector3D ViewVelocity = new IrrKlang.Vector3D((float)FViewVelocity[0].x, (float)FViewVelocity[0].y, (float)FViewVelocity[0].z);
 				IrrKlang.Vector3D ViewUp = new IrrKlang.Vector3D((float)FViewUpVector[0].x, (float)FViewUpVector[0].y, (float)FViewUpVector[0].z);
-				FEngine.SetListenerPosition(ViewDir, ViewPos, ViewVelocity, ViewUp);
+				FEngine.SetListenerPosition(ViewPos, ViewDir, ViewVelocity, ViewUp);
 			}
 
 			#endregion View Listener
