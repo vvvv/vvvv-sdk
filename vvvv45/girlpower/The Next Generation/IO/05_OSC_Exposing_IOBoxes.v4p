@@ -17,7 +17,7 @@
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.298">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.48">
    </PIN>
    </NODE>
    <NODE systemname="UDP (Network Client)" nodename="UDP (Network Client)" componentmode="Hidden" id="41">
@@ -251,9 +251,9 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0.925925925925926">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.573665082471344">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.614481409001956">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -295,7 +295,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.298154878389712">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.502236511042773">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -423,9 +423,9 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0.259259259259259">
+   <PIN pinname="X Input Value" slicecount="1" values="0.296296296296296">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.359379368185631">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.420603857981549">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -462,6 +462,8 @@
    <PIN pinname="Exposed Pins" visible="1">
    </PIN>
    <PIN pinname="Feedback Target UDP Port" slicecount="1" values="55556">
+   </PIN>
+   <PIN pinname="Feedback Accepted" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Listening UDP Port">
@@ -621,5 +623,21 @@
    <LINK srcnodeid="9" srcpinname="Exposed Pins" dstnodeid="43" dstpinname="Input String">
    </LINK>
    <LINK srcnodeid="9" srcpinname="Exposed Pins" dstnodeid="36" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="57" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3285" top="2205" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3285" top="2205" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="55556">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="57" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Feedback Target UDP Port">
    </LINK>
    </PATCH>
