@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\PureData\Player Example\vvvv-osc-control-for-Live.v4p" systemname="vvvv-osc-control-for-Live" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\PureData\Player Example\vvvv-osc-control-for-Live.v4p" locked="0">
-   <BOUNDS type="Window" left="8295" top="2895" width="13725" height="12090">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.2.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Networking\2_Remote Audio Player Example\01_control-osc-vvvv.v4p" systemname="vvvv-osc-control-for-Live" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\PureData\Player Example\vvvv-osc-control-for-Live.v4p" locked="0">
+   <BOUNDS type="Window" left="0" top="0" width="13680" height="11865">
    </BOUNDS>
    <NODE componentmode="InABox" id="67" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -81,9 +81,9 @@
    <NODE componentmode="InABox" id="98" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="3795" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="4965" left="675" top="3795" type="Box" width="3720">
+   <BOUNDS height="4920" left="675" top="3795" type="Box" width="3735">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Different values are combined into one spread.&cr;&lf;&cr;&lf;According to what value was changed the slices from the spreads of adresses, types and values are selected. The Change (Animation) returns a spread of booleans and this spread is used to select right slices.&cr;&lf;&cr;&lf;OSCEncoder (Network) returns the OSCMessage. Please note, that the values should be converted into strings using FormatValue (String).&cr;&lf;&cr;&lf;Or (Sprectral) returns 1 if one of the values was changed. This bangs the &apos;Do Send&apos; of the UDP (Network Client).&cr;&lf;&cr;&lf;This node sends UDP datagrams to an IP address set for the &apos;Remote host&apos; pin and to a port number defined for the &apos;Remote Port&apos; pin. &cr;&lf;&cr;&lf;In this example 3 ports are defined - one for each player patch. UDP messages are going to all of them.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Different values are combined into one spread.&cr;&lf;&cr;&lf;According to what value was changed the slices from the spreads of adresses, types and values are selected. The Change (Animation) returns a spread of booleans and this spread is used to select right slices.&cr;&lf;&cr;&lf;OSCEncoder (Network) returns the OSCMessage. Please note, that the values should be converted into strings using FormatValue (String).&cr;&lf;&cr;&lf;Or (Sprectral) returns 1 if one of the values was changed. This bangs the &apos;Do Send&apos; of the UDP (Network Client).&cr;&lf;&cr;&lf;This node sends UDP datagrams to the IP address set for the &apos;Remote host&apos; pin and to a port number defined for the &apos;Remote Port&apos; pin. &cr;&lf;&cr;&lf;In this example 3 ports are defined - one for each player patch. UDP messages are going to all of them.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -170,6 +170,8 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
    </PIN>
    </NODE>
    <LINK srcnodeid="223" srcpinname="OSCMessage" dstnodeid="226" dstpinname="Input" hiddenwhenlocked="1">
@@ -283,9 +285,9 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0.533333333333334">
+   <PIN pinname="X Input Value" slicecount="1" values="0.466666666666667">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.205882352941176">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -309,7 +311,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="3.00000000000001">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="5">
+   <PIN pinname="Y Input Value" slicecount="1" values="6.05882352941176">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -359,9 +361,9 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="-4.66666666666667">
+   <PIN pinname="X Input Value" slicecount="1" values="-5">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="4.58823529411765">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -725,7 +727,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="2220" top="1725" width="2550" height="990">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|||  check vvvv-osc-player.v4p&cr;&lf;||  check vvvv-pd-player.pd&cr;&lf;||  check vvvv-max-player.max&cr;&lf;||  check Live folder|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|||  vvvv-osc-player.v4p&cr;&lf;||  vvvv-pd-player.pd&cr;&lf;||  vvvv-max-player.max&cr;&lf;||  Live folder|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -781,9 +783,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="349" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5670" top="6690" type="Node" width="315">
+   <BOUNDS height="270" left="5670" top="6960" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="5670" top="6690" type="Box" width="405">
+   <BOUNDS height="390" left="5670" top="6960" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -1070,16 +1072,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="370" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="11490" top="6540" width="1590" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="11490" top="6540" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|System Default|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="370" srcpinname="Output Enum" dstnodeid="226" dstpinname="Encoding">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="371" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8415" top="6210" width="285" height="240">
    </BOUNDS>

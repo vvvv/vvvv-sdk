@@ -5,7 +5,7 @@
 			"major" : 6,
 			"minor" : 1,
 			"revision" : 3,
-			"architecture" : "x64"
+			"architecture" : "x86"
 		}
 ,
 		"rect" : [ 120.0, 355.0, 1169.0, 661.0 ],
@@ -37,8 +37,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 49.5, 96.0, 386.0, 379.0 ],
-					"text" : "Click to choose a file to play. And don't forget to turn on the Audio output (from the step 8).\n\nThis file will be read into the buffer named \"audio\".\n\n[udpreceive] listens to the port defined in vvvv patch.\n\n[route] looks for the defined OSC-addresses and if some value arrives it will be returned via according output pin.\n\n\"/play\" can be 0 or 1 and this value is multiplied with the speed of the playback.\nMax performs math expressions only if the value of the left pin (called hot) is changing. Values on the left pin (cold) will be just stored and the operation will not be performed immediately. The [t] object sends the value (float) from its second outlet and then bangs with its left outlet forcing the calculation.\n\nThe [groove~] plays the sample stored in the \"audio\" buffer.\n\n\"/pan\" and \"/vol\" values are mapped to the suitable ranges.\n\n[pan2] performs the panning. \n\nAfter adjusting the volume the signal is sent to the audio line out.\n\n"
+					"patching_rect" : [ 49.5, 96.0, 397.0, 379.0 ],
+					"text" : "Click to choose a file to play. And don't forget to turn on the Audio output (from the step 9).\n\nThis file will be read into the buffer named \"audio\".\n\n[udpreceive] listens to the port defined in vvvv patch.\n\n[route] looks for the defined OSC-addresses and if some value arrives it will be returned via according output pin.\n\n\"/play\" can be 0 or 1 and this value is multiplied with the speed of the playback.\nMax performs math expressions only if the value on the left pin (called hot) is changing. Values on the right pin (cold) will be just stored and the operation will not be performed immediately. The [trigger] object sends the value (float) from its second outlet and then bangs with its left outlet forcing the calculation.\n\nThe [groove~] plays the sample stored in the \"audio\" buffer.\n\n\"/pan\" and \"/vol\" values are mapped to the suitable ranges.\n\n[pan2] performs the panning. \n\nAfter adjusting the volume the signal is sent to the audio line out.\n\n"
 				}
 
 			}
@@ -1090,8 +1090,8 @@
 ,
 		"dependency_cache" : [ 			{
 				"name" : "pan2.maxpat",
-				"bootpath" : "/Program Files/Cycling '74/Max 6.1/examples/spatialization/panning/lib",
-				"patcherrelativepath" : "../../../../../../../Program Files/Cycling '74/Max 6.1/examples/spatialization/panning/lib",
+				"bootpath" : "/PROGRA~2/CYCLIN~1/MAX6~1.1/examples/spatialization/panning/lib",
+				"patcherrelativepath" : "../../../../../../../../PROGRA~2/CYCLIN~1/MAX6~1.1/examples/spatialization/panning/lib",
 				"type" : "JSON",
 				"implicit" : 1
 			}

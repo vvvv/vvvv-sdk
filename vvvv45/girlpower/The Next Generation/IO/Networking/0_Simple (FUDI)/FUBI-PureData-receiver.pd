@@ -7,33 +7,36 @@ Check this: http://vvvv.org/documentation/pure-data;
 #X obj 35 532 *~;
 #X obj 35 264 unpack 0 0 0;
 #X obj 35 319 osc~ 1000;
-#X obj 35 389 *~;
+#X obj 35 375 *~;
 #X text 78 594 < audio output;
-#X msg 116 445 1 \$1;
-#X obj 116 477 -;
-#X text 178 184 < netreceive listens to the port 4001 and receives
-data from vvvv. "1" as the last argument means UDP network perception.
-;
+#X obj 130 502 -;
 #X text 177 262 < The data is unpacked: the incoming values are distributed
 into 3 output pins.;
 #X text 178 316 < [osc~] is the Oscillator object which returns a cosine
 wave. Its frequency is defined by the value from vvvv.;
-#X text 179 443 < when the mute button in vvvv is on \, volume should
+#X text 179 434 < when the mute button in vvvv is on \, volume should
 be set to 0 Therefore a message with 1 and a value from vvvv is created.
 Then this message is sent to minus object which calculates 1-x. So
 if the button in vvvv is pressed \, the wave signal is multiplied with
 0;
-#X text 178 380 < wave signal is multiplied with the second value from
+#X text 178 366 < wave signal is multiplied with the second value from
 vvvv \, this defines an amplitude of the wave (aka volume of the sound).
 ;
 #X text 112 111 < First of all click to turn this toggle on.;
+#X obj 116 426 t b f;
+#X msg 116 465 1;
+#X text 178 184 < netreceive listens to the port 4001 and receives
+data from vvvv. "1" as the last argument means UDP network perception.
+FUBI protocol is used to exchage the data.;
 #X connect 0 0 5 0;
 #X connect 4 0 3 0;
 #X connect 4 0 3 1;
 #X connect 5 0 6 0;
 #X connect 5 1 7 1;
-#X connect 5 2 9 0;
+#X connect 5 2 15 0;
 #X connect 6 0 7 0;
 #X connect 7 0 4 0;
-#X connect 9 0 10 0;
-#X connect 10 0 4 1;
+#X connect 9 0 4 1;
+#X connect 15 0 16 0;
+#X connect 15 1 9 1;
+#X connect 16 0 9 0;

@@ -112,10 +112,10 @@ of the volume for the left and right channels and sent to line out.
 #X obj 650 195 udpreceive 4445;
 #X obj 703 359 t b f;
 #X text 87 252 PD performs math expressions only if the value on the
-left pin (called hot) is changing. Values on the left pin (cold) will
+left pin (called hot) is changing. Values on the right pin (cold) will
 be just stored and the operation will be not performed immediately.
-The [t] object sends the value (float) from its second pin and then
-bangs with its left pin forcing the calculation.;
+The [trigger] object sends the value (float) from its second pin and
+then bangs with its left pin forcing the calculation.;
 #X connect 0 0 3 0;
 #X connect 0 0 9 0;
 #X connect 1 0 2 0;
