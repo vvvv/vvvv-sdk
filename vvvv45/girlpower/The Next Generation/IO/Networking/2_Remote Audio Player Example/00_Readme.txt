@@ -7,5 +7,5 @@ vvvv is talking via OSC to:
 - pure data
 - vvvv
 
-Please start the control-osc-vvvv.v4p to have the controls over the different players.
-These players can be placed on different machines, you just need to update the IP-addresses and port numbers.
+Please start the 01_control-osc-vvvv.v4p to have the controls over the different players.
+These players can be placed on different machines, you just need to update the IP-address and the port number.
