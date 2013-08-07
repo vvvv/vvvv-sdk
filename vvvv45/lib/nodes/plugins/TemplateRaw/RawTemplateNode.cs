@@ -25,13 +25,13 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Input")]
-		ISpread<Stream> FStreamIn;
+        public ISpread<Stream> FStreamIn;
 		
 		[Input("Count", MinValue = 0)]
-		ISpread<int> FCountIn;
+        public ISpread<int> FCountIn;
 
 		[Output("Output")]
-		ISpread<Stream> FStreamOut;
+        public ISpread<Stream> FStreamOut;
 		
 		//when dealing with byte streams (what we call Raw in the GUI) it's always
 		//good to have a byte buffer around. we'll use it when copying the data.

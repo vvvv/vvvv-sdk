@@ -17,6 +17,7 @@ namespace VVVV.HDE.ProjectExplorer
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing) {
+                Solution.Projects.Added -= Projects_Added;
 		        FHideUnusedProjectsIn.Changed -= FHideUnusedProjectsIn_Changed;
 				FBuildConfigIn.Changed -= FBuildConfigIn_Changed;
 				FHideUnusedProjectsCheckBox.CheckedChanged -= FHideUnusedProjectsCheckBox_CheckedChanged;

@@ -12,10 +12,10 @@ namespace VVVV.Nodes.Text
     public class Base64EncodeNode : IPluginEvaluate
     {
         [Input("Input Data")]
-        IDiffSpread<Stream> FInput;
+        public IDiffSpread<Stream> FInput;
 
         [Output("Output String")]
-        ISpread<string> FOutput;
+        public ISpread<string> FOutput;
 
         public void Evaluate(int spreadMax)
         {
@@ -37,10 +37,10 @@ namespace VVVV.Nodes.Text
     public class Base64DecodeNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Input String")]
-        IDiffSpread<string> FInput;
+        public IDiffSpread<string> FInput;
 
-        [Output("Output Data")]
-        ISpread<Stream> FOutput;
+        [Output("Output Data", AutoFlush = false)]
+        public ISpread<Stream> FOutput;
 
         public void OnImportsSatisfied()
         {
@@ -60,6 +60,8 @@ namespace VVVV.Nodes.Text
                 outputStream.SetLength(outputArray.Length);
                 outputStream.Write(outputArray, 0, outputArray.Length);
             }
+            // Will mark all slices changed
+            FOutput.Flush(true);
         }
     }
 }

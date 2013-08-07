@@ -13,7 +13,7 @@ using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Nodes
 {
-    [PluginInfo(Name = "RGB", Category = "Kinect",Version="Microsoft", Author = "vux",Tags="directx,texture")]
+    [PluginInfo(Name = "RGB", Category = "Kinect",Version="Microsoft", Author = "vux", Tags = "EX9, texture")]
     public class KinectColorTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]

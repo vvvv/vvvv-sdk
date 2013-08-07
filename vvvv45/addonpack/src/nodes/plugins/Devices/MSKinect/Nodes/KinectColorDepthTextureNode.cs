@@ -14,7 +14,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.MSKinect.Nodes
 {
-    [PluginInfo(Name = "RGBDepth", Category = "Kinect",Version="Microsoft", Author = "vux",Tags="directx,texture")]
+    [PluginInfo(Name = "RGBDepth", Category = "Kinect",Version="Microsoft", Author = "vux", Tags = "EX9, texture")]
     public class KinectColorDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]

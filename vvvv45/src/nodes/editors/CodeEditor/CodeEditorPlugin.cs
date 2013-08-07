@@ -113,8 +113,6 @@ namespace VVVV.HDE.CodeEditor
             FErrorTableViewer.Dock = DockStyle.Bottom;
             FErrorTableViewer.TabIndex = 0;
             FErrorTableViewer.DoubleClick += FErrorTableViewerDoubleClick;
-            FErrorTableViewer.AutoSize = true;
-            FErrorTableViewer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             FErrorTableViewer.MaximumSize = new Size(0, 100);
             
             Controls.Add(FCodeEditorForm);
