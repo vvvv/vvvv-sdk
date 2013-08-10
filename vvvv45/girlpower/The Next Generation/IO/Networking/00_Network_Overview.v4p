@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.2.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Networking\00_Network_Overview.v4p" systemname="Network_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Network_Overview.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="20280" height="14190">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Networking\00_Network_Overview.v4p" systemname="Network_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Network_Overview.v4p">
+   <BOUNDS type="Window" left="990" top="465" width="20145" height="13440">
    </BOUNDS>
    <NODE systemname="UDP (Network Server)" nodename="UDP (Network Server)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="14595" top="3135" width="100" height="100">
@@ -351,7 +351,7 @@
    </PIN>
    <BOUNDS height="100" left="675" top="1950" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="675" top="1950" type="Box" width="3660">
+   <BOUNDS height="285" left="675" top="1950" type="Box" width="3735">
    </BOUNDS>
    <PIN encoded="0" pinname="Mask">
    </PIN>
@@ -627,9 +627,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="96" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5745" top="8985" type="Node" width="315">
+   <BOUNDS height="270" left="5745" top="8760" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="5745" top="8985" type="Box" width="405">
+   <BOUNDS height="390" left="5745" top="8760" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -643,9 +643,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="97" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5745" top="9825" type="Node" width="315">
+   <BOUNDS height="270" left="5745" top="9600" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="5745" top="9825" type="Box" width="405">
+   <BOUNDS height="390" left="5745" top="9600" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -663,7 +663,7 @@
    </BOUNDS>
    <BOUNDS height="3690" left="6225" top="7740" type="Box" width="4050">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Any values should be converted into Raw datatype.&cr;&lf;&cr;&lf;In this example a &apos;localhost&apos; is used for the &apos;Remote Host&apos; pin, everything will be send locally. Any IP address can be used here.&cr;&lf;&cr;&lf;&apos;Remote Port&apos; should match those of the receiver. This node is spreadable, so it&apos;s possible to send to multiple ports at once.&cr;&lf;&cr;&lf;A bang on the &apos;Do Send&apos; pin of the UDP (Network Client) sends the values over the network. It doesn&apos;t know if the messages will be received or lost, it just send them.&cr;&lf;&cr;&lf;If you want to use a TCP connection, just connect the output of the AsRaw (Value) to the input pin of the TCP (Network Client), and turn on its &apos;Enable&apos; pin.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Values are converted into Raw datatype.&cr;&lf;&cr;&lf;In this example &apos;localhost&apos; is used for the &apos;Remote Host&apos; pin, but of course any IP address can be used here.&cr;&lf;&cr;&lf;&apos;Remote Port&apos; has to match that of the receiver. This node is spreadable, so it&apos;s possible to send to multiple ports at once.&cr;&lf;&cr;&lf;A bang on the &apos;Do Send&apos; pin of the UDP (Network Client) sends the values over the network.&cr;&lf;&cr;&lf;If you want to use a TCP connection, just connect the output of the AsRaw (Value) to the input pin of the TCP (Network Client), and turn on its &apos;Enable&apos; pin. With TCP connections it is guaranteed that any sent messages arrive. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -741,7 +741,7 @@
    </BOUNDS>
    <BOUNDS height="5550" left="14010" top="7830" type="Box" width="3960">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A UDP (Network Server) just sits and listens to the port defined on its &apos;Local Port&apos; pin. Please check its helppatch for more info about the &apos;Queue Mode&apos; pin, it&apos;s about what to do with multiple messages received within one vvvv frame.&cr;&lf;&cr;&lf;UDP (Network Server) returns Raw values which can be converted to a datatype you like. In this example a AsValue (Raw) is used to represent a received data as values.&cr;&lf;&cr;&lf;After receiving and returning the data the UDP (Network Server) switches its &apos;Output&apos; immediately into NIL. That&apos;s why a S+H (Animation) is used to hold the values.&cr;&lf;&cr;&lf;These values are used to get a particular slice from a spread of colors.&cr;&lf;&cr;&lf;If the sender is using TCP as a transport protocol, a TCP (Network Server) should be used. Just connect its output pin to the input of the AsValue (Raw) and turn on its &apos;Enable&apos; pin.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A UDP (Network Server) just sits and listens to the port defined on its &apos;Local Port&apos; pin. Please check its helppatch for more info about the &apos;Queue Mode&apos; pin, it&apos;s about what to do with multiple messages received within one vvvv frame.&cr;&lf;&cr;&lf;UDP (Network Server) returns Raw values which can be converted to a datatype you like. In this example a AsValue (Raw) is used to represent the received data as values.&cr;&lf;&cr;&lf;After receiving and returning the data the UDP (Network Server) switches its &apos;Output&apos; immediately to NIL. That&apos;s why a S+H (Animation) is used to hold the values.&cr;&lf;&cr;&lf;These values are used to get a particular slice from a spread of colors.&cr;&lf;&cr;&lf;If the sender is using TCP as a transport protocol, a TCP (Network Server) has to be used. Just connect its output pin to the input of the AsValue (Raw) and turn on its &apos;Enable&apos; pin.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -845,9 +845,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="113" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="735" top="9480" width="1875" height="270">
+   <BOUNDS type="Node" left="435" top="10680" width="1875" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="735" top="9480" width="3525" height="240">
+   <BOUNDS type="Box" left="435" top="10680" width="3525" height="240">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
    </PIN>
@@ -859,9 +859,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="112" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="735" top="11505" width="1875" height="270">
+   <BOUNDS type="Node" left="435" top="12435" width="1875" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="735" top="11505" width="3525" height="240">
+   <BOUNDS type="Box" left="435" top="12435" width="3525" height="240">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
    </PIN>
@@ -873,11 +873,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="116" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="1035" top="9705" type="Node" width="7425">
+   <BOUNDS height="270" left="675" top="10905" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="1785" left="1035" top="9705" type="Box" width="3345">
+   <BOUNDS height="1575" left="675" top="10905" type="Box" width="3270">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Please note, only one UDP (Network Server) listening to a particular port (per machine) is alowed. There can be several UDP listeners, but they should listen to different ports or being enabled/disabled using &apos;Enable&apos; pin. This is a common source of errors when several UDP listeners are sitting in different patches.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Please note that only one UDP (Network Server) listening to a particular port (per machine) is allowed. There can be several UDP listeners, but they have to listen to different ports. This is a common source of errors when several UDP listeners are sitting in different patches.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1339,9 +1339,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="235" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5745" top="10680" type="Node" width="315">
+   <BOUNDS height="270" left="5745" top="10260" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="5745" top="10680" type="Box" width="405">
+   <BOUNDS height="390" left="5745" top="10260" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -1383,9 +1383,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="239" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="630" top="10080" width="525" height="270">
+   <BOUNDS type="Node" left="180" top="11280" width="525" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="630" top="10080" width="330" height="690">
+   <BOUNDS type="Box" left="180" top="11280" width="330" height="690">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="!">
    </PIN>
@@ -1403,7 +1403,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6225" top="11685" width="4050" height="1110">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|UDP is able to broadcast messages. To broadcast a message to all computers in an IP range, specify a UDP broadcast address ending with .255 (e.g. 192.168.0.255 is the broadcast address for the 192.168.0 range).|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|UDP is able to broadcast messages. To broadcast a message to all computers in an IP range, specify a UDP broadcast address ending with .255 (e.g. 192.168.0.255 is the broadcast address for the 192.168.0.x range).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1415,9 +1415,9 @@
    <NODE componentmode="InABox" id="241" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="5865" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="1305" left="675" top="5865" type="Box" width="3690">
+   <BOUNDS height="1050" left="675" top="5865" type="Box" width="3690">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|These 2 protocols are only responsible for transmitting the data. In order to commnunicate over the network vvvv uses protocols like FUDI or OSC, running on top of this transport layer.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|You can send data via UDP or TCP directly as shown in this example. If you want it a little more comfortable use FUDI or OSC as described in part II:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1428,118 +1428,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="9">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="246" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="7470" type="Node" width="7425">
-   </BOUNDS>
-   <BOUNDS height="285" left="675" top="7470" type="Box" width="3630">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Check the examples:|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="247" nodename="IOBox (String)" systemname="IOBox (String)">
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN encoded="0" pinname="Default" slicecount="1" values="file.foo">
-   </PIN>
-   <PIN pinname="Content Type">
-   </PIN>
-   <PIN pinname="Output String" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
-   </PIN>
-   <BOUNDS height="100" left="735" top="7815" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="240" left="735" top="7815" type="Box" width="2445">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Mask">
-   </PIN>
-   <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
-   </PIN>
-   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="00_Network_Overview_2.v4p">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="Filename">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="248" nodename="IOBox (String)" systemname="IOBox (String)">
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN encoded="0" pinname="Default" slicecount="1" values="file.foo">
-   </PIN>
-   <PIN pinname="Content Type">
-   </PIN>
-   <PIN pinname="Output String" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
-   </PIN>
-   <BOUNDS height="100" left="735" top="8160" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="240" left="735" top="8160" type="Box" width="2445">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Mask">
-   </PIN>
-   <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
-   </PIN>
-   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="00_Network_Overview_2.v4p">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="Filename">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="249" nodename="IOBox (String)" systemname="IOBox (String)">
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN encoded="0" pinname="Default" slicecount="1" values="file.foo">
-   </PIN>
-   <PIN pinname="Content Type">
-   </PIN>
-   <PIN pinname="Output String" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
-   </PIN>
-   <BOUNDS height="100" left="735" top="8490" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="240" left="735" top="8490" type="Box" width="2445">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Mask">
-   </PIN>
-   <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
-   </PIN>
-   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="00_Network_Overview_2.v4p">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="Filename">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="250" nodename="IOBox (String)" systemname="IOBox (String)">
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN encoded="0" pinname="Default" slicecount="1" values="file.foo">
-   </PIN>
-   <PIN pinname="Content Type">
-   </PIN>
-   <PIN pinname="Output String" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
-   </PIN>
-   <BOUNDS height="100" left="735" top="8805" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="240" left="735" top="8805" type="Box" width="2445">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Mask">
-   </PIN>
-   <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
-   </PIN>
-   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="00_Network_Overview_2.v4p">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="251" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -1590,24 +1478,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="264" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="840" top="12150" type="Node" width="7425">
-   </BOUNDS>
-   <BOUNDS height="345" left="840" top="12150" type="Box" width="2205">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|For Part II, check:|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="12">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="263" nodename="IOBox (String)" systemname="IOBox (String)">
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
@@ -1619,9 +1489,9 @@
    </PIN>
    <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <BOUNDS height="100" left="840" top="12615" type="Node" width="100">
+   <BOUNDS height="100" left="705" top="7005" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="840" top="12615" type="Box" width="2805">
+   <BOUNDS height="285" left="705" top="7005" type="Box" width="2490">
    </BOUNDS>
    <PIN encoded="0" pinname="Mask">
    </PIN>
@@ -1630,6 +1500,50 @@
    <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="00_Network_Overview_2.v4p">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="267" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="675" top="8700" width="3525" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="675" top="8700" width="3675" height="2025">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Data sent via UDP may get lost in transmission. &cr;&lf;Data sent via TCP is guaranteed to arrive.&cr;&lf;UDP is faster then TCP.&cr;&lf;&cr;&lf;Therefore when sending continuous data where you don&apos;t care if single values might get lost and want it to arrive as fast as possible use UDP. Otherwise if you are sending data that you need to be sure to arrive, use TCP.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="268" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="180" top="9270" width="525" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="180" top="9270" width="330" height="690">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="!">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="30">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="269" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="435" top="8385" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="435" top="8385" width="3525" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    </PATCH>

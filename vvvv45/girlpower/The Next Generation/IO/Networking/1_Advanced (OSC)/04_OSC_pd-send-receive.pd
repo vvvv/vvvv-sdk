@@ -1,4 +1,4 @@
-#N canvas 376 125 1228 733 12;
+#N canvas 641 129 1228 733 12;
 #X declare -lib mrpeach;
 #X obj 36 192 pddp/dsp;
 #X text 34 12 This patch is a part of vvvv-pd example on how to communicate.
@@ -11,7 +11,7 @@ Check this: http://vvvv.org/documentation/pure-data;
 #X obj 643 153 udpreceive 5556;
 #X obj 643 188 unpackOSC;
 #X obj 664 400 hsl 128 25 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--260097 -1 0 1;
+-260097 -1 500 1;
 #X obj 643 264 unpack 0 0;
 #X obj 643 308 osc~ 400;
 #X obj 726 309 osc~ 500;
@@ -51,17 +51,12 @@ Check this: http://vvvv.org/documentation/pure-data;
 -1;
 #X obj 34 427 bng 30 250 50 0 empty empty 5 10 15 0 20 -262144 -262144
 -1;
-#X text 78 241 [udpreceive] listens to the port defined in vvvv patch.
-;
 #X obj 35 473 bng 30 250 50 0 empty empty 6 10 15 0 20 -262144 -262144
 -1;
 #X obj 35 517 bng 30 250 50 0 empty empty 7 10 15 0 20 -262144 -262144
 -1;
 #X obj 37 568 bng 30 250 50 0 empty empty 8 10 15 0 20 -262144 -262144
 -1;
-#X text 34 71 Biderectional communication between Pd and vvvv. vvvv-patch
-sends two frequencies \, Pd-patch sends current amplitude level back.
-;
 #X text 34 141 Please open the vvvv-patch: 02_OSC_vvvv-send-receive.v4p
 ;
 #X text 79 276 After unpacking OSC-message the [routeOSC] returns the
@@ -80,11 +75,16 @@ generating cosine waves with defined frequencies.;
 on its third output pin.;
 #X text 80 515 The OSC-address is added before this amplitude value
 and [packOSC] constructs the message.;
-#X text 81 565 [udpsend] sends the message to the defined IP-address
-and the port.;
+#X text 34 71 Bidirectional communication between Pd and vvvv. vvvv-patch
+sends two frequencies \, Pd-patch sends current amplitude level back.
+;
+#X text 78 241 [udpreceive] listens to the port defined the in vvvv
+patch.;
+#X text 81 565 [udpsend] sends the message to the defined IP-address/port.
+;
 #X connect 3 0 2 0;
 #X connect 3 0 2 1;
-#X connect 3 0 46 0;
+#X connect 3 0 44 0;
 #X connect 7 0 8 0;
 #X connect 8 0 15 0;
 #X connect 9 0 3 1;
@@ -98,7 +98,7 @@ and the port.;
 #X connect 18 0 17 0;
 #X connect 19 0 17 0;
 #X connect 20 0 18 0;
-#X connect 46 2 48 0;
-#X connect 47 0 14 0;
-#X connect 47 0 16 0;
-#X connect 48 0 47 0;
+#X connect 44 2 46 0;
+#X connect 45 0 14 0;
+#X connect 45 0 16 0;
+#X connect 46 0 45 0;

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.2.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Networking\1_Advanced (OSC)\00_OSC_Basics.v4p" systemname="OSC_Advanced" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\OSC_Advanced.v4p">
-   <BOUNDS type="Window" left="1605" top="1005" width="21915" height="13065">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Networking\1_Advanced (OSC)\01_OSC_Communication.v4p" systemname="OSC_Advanced" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\OSC_Advanced.v4p">
+   <BOUNDS type="Window" left="1020" top="585" width="21735" height="12315">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="16635" top="2160" width="435" height="240">
@@ -119,7 +119,7 @@
    </BOUNDS>
    <BOUNDS height="720" left="675" top="1065" type="Box" width="3645">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Let&apos;s say you want to send several OSC-messages with different types of arguments to different addresses. Simulateniously.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Let&apos;s say you want to send several OSC-messages with different types of arguments to different addresses. Simultaniously.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -291,9 +291,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="91" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="3030" type="Node" width="7425">
+   <BOUNDS height="270" left="11535" top="390" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="510" left="675" top="3030" type="Box" width="3960">
+   <BOUNDS height="525" left="11535" top="390" type="Box" width="2580">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|These two parts of the patch can live on separate machines.|">
    </PIN>
@@ -307,9 +307,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="90" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="4200" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="3600" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="4200" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="3600" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
@@ -323,9 +323,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="89" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="5385" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="4785" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="5385" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="4785" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -339,9 +339,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="96" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="5865" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="5265" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="5865" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="5265" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -355,9 +355,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="97" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="7185" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="6315" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="7185" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="6315" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -371,11 +371,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="98" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="4200" type="Node" width="7425">
+   <BOUNDS height="270" left="675" top="3600" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="4710" left="675" top="4200" type="Box" width="4125">
+   <BOUNDS height="4710" left="675" top="3600" type="Box" width="4125">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|There will be 5 arguments send: one integer, one string (representing the color), two floats (mouse position) and a sting (version). Everything going to the &apos;Arguments&apos; pin of the OSCEncoder (Network) should be converted to a string. These 5 strings are combined into one spread.&cr;&lf;&cr;&lf;Three OSC addresses are defined.&cr;&lf;&cr;&lf;Three &apos;Type Tags&apos; are set for the arguments. There is an &apos;integer&apos; (going to the first address), the &apos;string&apos; (for the second address) and the &apos;float, float, string&apos; (to the third).Please check the helppatch for the OSCEncoder (Network) for more info about its pins.&cr;&lf;&cr;&lf;&apos;Spread as Bundle&apos; is turned on, this allows sending multiple OSC-messages as one bundle (with the same timestamp).&cr;&lf;&cr;&lf;UDP (Network Client) sends an OSC-encoded messages over the network. Its &apos;Do Send&apos; pin is banged when the string representation of the arguments changes.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|There will be 5 arguments sent: one integer, one string (representing the color), two floats (mouse position) and a sting (version). Everything going to the &apos;Arguments&apos; pin of the OSCEncoder (Network) has to be converted to a string. These 5 strings are combined into one spread.&cr;&lf;&cr;&lf;Three OSC addresses are defined.&cr;&lf;&cr;&lf;Three &apos;Type Tags&apos; are set for the arguments. There is an &apos;integer&apos; (going to the first address), the &apos;string&apos; (for the second address) and the &apos;float, float, string&apos; (to the third).&cr;&lf;&cr;&lf;&apos;Spread as Bundle&apos; is turned on, this allows sending multiple OSC-messages as one bundle (with the same timestamp).&cr;&lf;&cr;&lf;UDP (Network Client) sends the OSC-encoded message over the network. Its &apos;Do Send&apos; pin is banged when the string representation of the arguments changes.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -387,9 +387,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="99" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="690" top="3720" type="Node" width="945">
+   <BOUNDS height="270" left="690" top="3120" type="Node" width="945">
    </BOUNDS>
-   <BOUNDS height="435" left="690" top="3720" type="Box" width="1620">
+   <BOUNDS height="435" left="690" top="3120" type="Box" width="1620">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Sender">
    </PIN>
@@ -401,9 +401,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="105" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="9615" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="9015" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="9615" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="9015" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
@@ -417,9 +417,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="104" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="10230" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="9630" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="10230" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="9630" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -433,9 +433,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="103" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="10860" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="10260" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="10860" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="10260" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -449,11 +449,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="101" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="9615" type="Node" width="7425">
+   <BOUNDS height="270" left="675" top="9015" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="2490" left="675" top="9615" type="Box" width="3930">
+   <BOUNDS height="2490" left="675" top="9015" type="Box" width="3930">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The UDP (Network Server) listens to the port and returns a data, when something arrives.&cr;&lf;&cr;&lf;OSCDecoder (Network) decodes the data coming to the defined OSC-Adresses.&cr;&lf;&cr;&lf;Received arguments are unzipped according to their Bin Sizes (i.e. 1, 1, 3). &cr;&lf;&cr;&lf;All arguments are represented as strings and should be converted now to their suitable data types.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The UDP (Network Server) listens to the port and returns data, when something arrives.&cr;&lf;&cr;&lf;OSCDecoder (Network) decodes the data coming to the defined OSC-Adresses.&cr;&lf;&cr;&lf;Received arguments are unzipped according to their Bin Sizes (i.e. 1, 1, 3). &cr;&lf;&cr;&lf;All arguments are represented as strings and have to be converted back to their original data types.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -465,9 +465,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="100" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="9135" type="Node" width="945">
+   <BOUNDS height="270" left="675" top="8535" type="Node" width="945">
    </BOUNDS>
-   <BOUNDS height="435" left="675" top="9135" type="Box" width="1620">
+   <BOUNDS height="435" left="675" top="8535" type="Box" width="1620">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Receiver">
    </PIN>
@@ -769,7 +769,7 @@
    </BOUNDS>
    <BOUNDS height="390" left="6630" top="9465" type="Box" width="405">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -917,13 +917,13 @@
    </BOUNDS>
    <PIN pinname="Chooser Style" slicecount="1" values="HSVAField">
    </PIN>
-   <PIN pinname="Color Input" slicecount="1" values="|0.55260,0.72193,0.81998,0.99499|">
+   <PIN pinname="Color Input" slicecount="1" values="|0.56261,0.72478,0.83480,0.99499|">
    </PIN>
    <PIN pinname="Color Output" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Change (String)" nodename="Change (String)" componentmode="Hidden" id="180">
-   <BOUNDS type="Node" left="9225" top="7500" width="100" height="100">
+   <BOUNDS type="Node" left="8865" top="7545" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -933,7 +933,7 @@
    <LINK srcnodeid="153" srcpinname="Output" dstnodeid="180" dstpinname="Input">
    </LINK>
    <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="181">
-   <BOUNDS type="Node" left="9225" top="7980" width="100" height="100">
+   <BOUNDS type="Node" left="8865" top="8025" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -1053,11 +1053,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="191" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="7995" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="7125" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="7995" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="7125" type="Box" width="405">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1113,9 +1113,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="197" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="195" top="11475" type="Node" width="315">
+   <BOUNDS height="270" left="195" top="10875" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="11475" type="Box" width="405">
+   <BOUNDS height="390" left="195" top="10875" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -1323,7 +1323,7 @@
    </BOUNDS>
    <BOUNDS height="300" left="14520" top="1245" type="Box" width="4545">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|OSCDecoder (Network)  + UDP (Network Server)|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|UDP (Network Server) + OSCDecoder (Network)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
