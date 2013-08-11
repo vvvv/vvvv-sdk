@@ -11,7 +11,7 @@ Check this: http://vvvv.org/documentation/pure-data;
 #X obj 643 153 udpreceive 5556;
 #X obj 643 188 unpackOSC;
 #X obj 664 400 hsl 128 25 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--260097 -1 500 1;
+-260097 -1 0 1;
 #X obj 643 264 unpack 0 0;
 #X obj 643 308 osc~ 400;
 #X obj 726 309 osc~ 500;
@@ -57,8 +57,6 @@ Check this: http://vvvv.org/documentation/pure-data;
 -1;
 #X obj 37 568 bng 30 250 50 0 empty empty 8 10 15 0 20 -262144 -262144
 -1;
-#X text 34 141 Please open the vvvv-patch: 02_OSC_vvvv-send-receive.v4p
-;
 #X text 79 276 After unpacking OSC-message the [routeOSC] returns the
 data coming to the '/frequencies' address. There are two floats coming
 from vvvv \, [unpack] distributes the incoming list to its output pins.
@@ -82,9 +80,10 @@ sends two frequencies \, Pd-patch sends current amplitude level back.
 patch.;
 #X text 81 565 [udpsend] sends the message to the defined IP-address/port.
 ;
+#X text 34 141 Please open the vvvv-patch: Controller.v4p;
 #X connect 3 0 2 0;
 #X connect 3 0 2 1;
-#X connect 3 0 44 0;
+#X connect 3 0 43 0;
 #X connect 7 0 8 0;
 #X connect 8 0 15 0;
 #X connect 9 0 3 1;
@@ -98,7 +97,7 @@ patch.;
 #X connect 18 0 17 0;
 #X connect 19 0 17 0;
 #X connect 20 0 18 0;
-#X connect 44 2 46 0;
-#X connect 45 0 14 0;
-#X connect 45 0 16 0;
-#X connect 46 0 45 0;
+#X connect 43 2 45 0;
+#X connect 44 0 14 0;
+#X connect 44 0 16 0;
+#X connect 45 0 44 0;
