@@ -8,7 +8,7 @@
 			"architecture" : "x86"
 		}
 ,
-		"rect" : [ 600.0, 293.0, 994.0, 568.0 ],
+		"rect" : [ 108.0, 330.0, 994.0, 568.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -36,8 +36,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 216.5, 148.0, 213.0, 23.0 ],
-					"text" : "02_OSC_vvvv-send-receive.v4p"
+					"patching_rect" : [ 216.5, 148.0, 97.0, 23.0 ],
+					"text" : "Controller.v4p"
 				}
 
 			}
