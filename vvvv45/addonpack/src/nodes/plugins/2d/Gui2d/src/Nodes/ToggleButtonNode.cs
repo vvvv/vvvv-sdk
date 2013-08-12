@@ -160,7 +160,7 @@ namespace VVVV.Nodes
 					FTransformOut[slice] = s.Transform;
 					FColorOut[slice] = s.CurrentCol;
 					FValueOut[slice] = s.Value;
-					FMouseOverOut[slice] = s.MouseOver;
+					FMouseOverOut[slice] = s.GetAndResetMouseOver();
 					FHitOut[slice] = s.Hit;
 					FActiveOut[slice] = s.Active;
 					
