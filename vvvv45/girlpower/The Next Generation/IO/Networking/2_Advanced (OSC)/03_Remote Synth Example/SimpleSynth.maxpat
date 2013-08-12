@@ -96,7 +96,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 17.5, 77.0, 386.0, 55.0 ],
-					"text" : "Biderectional communication between Max and vvvv.\nvvvv-patch sends two frequencies, Max-patch sends current amplitude level back."
+					"text" : "Bidirectional communication between Max and vvvv.\nvvvv-patch sends two frequencies, Max-patch sends current amplitude level back."
 				}
 
 			}
