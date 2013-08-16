@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.CodeDom.Compiler;
 using System.IO;
+using System.Text.RegularExpressions;
 
 using VVVV.Core;
 using VVVV.Core.Model;
@@ -92,25 +93,19 @@ namespace VVVV.Hosting.Factories
             if (!FProjects.TryGetValue(filename, out project))
             {
                 var isDX9 = true;
-                //check if this is a dx9 effect in that it does not contain "technique10" or "technique11"
-                using (StreamReader sr = new StreamReader(filename))
+                //check if this is a dx11 effect in that it does not contain "technique10 " or "technique11 "
+                using (var sr = new StreamReader(filename))
                 {
-                    string line;
-                    var t10 = "technique10";
-                    var t11 = "technique11";
-
-                    // Parse lines from the file until the end of
-                    // the file is reached.
-                    //note: this may still return false positives is t10 or t11 is mentioned within a /**/ comment
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        if ((line.Contains(t10) || line.Contains(t11)) && !line.Trim().StartsWith("//"))
-                        {
-                            isDX9 = false;
-                            break;
-                        }
-                    }
-                }
+                	var code = sr.ReadToEnd();
+                	//remove comments: between (* and *)
+                	code = Regex.Replace(code, @"/\*.*?\*/", "", RegexOptions.Singleline);
+                	//remove comments: from // to lineend
+                	code = Regex.Replace(code, @"//.*?\n", "", RegexOptions.Singleline);
+                    
+                    //if the rest of the code contains "technique10 " or "technique11 " this must be a dx11 effect
+					if (code.Contains("technique10 ") || code.Contains("technique11 "))
+                		isDX9 = false;
+            	}
 
                 if (isDX9)
                 {
