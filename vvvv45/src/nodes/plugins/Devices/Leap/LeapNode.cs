@@ -26,6 +26,9 @@ namespace VVVV.Nodes.Devices
 	{
 		#region fields & pins
 		#pragma warning disable 0649
+		
+		[Input("Enable Gestures")]
+		ISpread<bool> FEnableGestures;
 
         [Output("Hand Position")]
         ISpread<Vector3D> FHandPosOut;
@@ -68,6 +71,10 @@ namespace VVVV.Nodes.Devices
         
         [Output("Hand Slice")]
         ISpread<int> FHandSliceOut;
+        
+        [Output("Calibrated Screens")]
+        ISpread<Vector3D> FScreensOut;
+        
 		#pragma warning restore
 		
 		Controller FLeapController = new Controller();
@@ -78,6 +85,15 @@ namespace VVVV.Nodes.Devices
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
+			if(FEnableGestures.IsChanged)
+			{
+				foreach (var gestureType in (Gesture.GestureType[])Enum.GetValues(typeof(Gesture.GestureType)))
+				{
+					if(gestureType != Gesture.GestureType.TYPEINVALID)
+						FLeapController.EnableGesture(gestureType, FEnableGestures[0]);
+				}
+			}
+			
 			if(FLeapController.IsConnected && FLeapController.Frame().IsValid)
 			{
 				var hands = FLeapController.Frame().Hands;
@@ -128,6 +144,58 @@ namespace VVVV.Nodes.Devices
 						FHandSliceOut.Add(i);
 					}
 				}
+				
+				//gestures
+				var gestures = FLeapController.Frame().Gestures();
+				for (int i = 0; i < gestures.Count; i++) 
+				{
+					var gesture = gestures[i];
+
+					switch (gesture.Type) 
+					{
+						case Gesture.GestureType.TYPECIRCLE:
+							CircleGesture circle = new CircleGesture (gesture);
+
+							break;
+						case Gesture.GestureType.TYPESWIPE:
+							SwipeGesture swipe = new SwipeGesture (gesture);
+//							SafeWriteLine ("Swipe id: " + swipe.Id
+//							               + ", " + swipe.State
+//							               + ", position: " + swipe.Position
+//							               + ", direction: " + swipe.Direction
+//							               + ", speed: " + swipe.Speed);
+							break;
+						case Gesture.GestureType.TYPEKEYTAP:
+							KeyTapGesture keytap = new KeyTapGesture (gesture);
+//							SafeWriteLine ("Tap id: " + keytap.Id
+//							               + ", " + keytap.State
+//							               + ", position: " + keytap.Position
+//							               + ", direction: " + keytap.Direction);
+							break;
+						case Gesture.GestureType.TYPESCREENTAP:
+							ScreenTapGesture screentap = new ScreenTapGesture (gesture);
+//							SafeWriteLine ("Tap id: " + screentap.Id
+//							               + ", " + screentap.State
+//							               + ", position: " + screentap.Position
+//							               + ", direction: " + screentap.Direction);
+							break;
+						default:
+//							SafeWriteLine ("Unknown gesture type.");
+							break;
+					}
+				}
+			}
+			
+			//screens
+			FScreensOut.SliceCount = 0;
+			foreach(var screen in FLeapController.CalibratedScreens)
+			{
+//				FScreensOut.Add(screen.WidthPixels);
+//				FScreensOut.Add(screen.HeightPixels);
+				FScreensOut.Add(screen.BottomLeftCorner.ToVector3DPos());
+				FScreensOut.Add(screen.HorizontalAxis.ToVector3DDir());
+				FScreensOut.Add(screen.VerticalAxis.ToVector3DDir());           
+				
 			}
 			
 		}
