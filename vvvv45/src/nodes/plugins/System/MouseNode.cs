@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Forms;
+using VVVV.Hosting;
 using VVVV.Hosting.IO;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
