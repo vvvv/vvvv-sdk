@@ -1,3 +1,3 @@
 @echo off
-cd .\LiveSet Project\
+cd .\Live\
 start LiveSet.als
