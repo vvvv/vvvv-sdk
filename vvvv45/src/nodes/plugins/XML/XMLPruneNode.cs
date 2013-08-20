@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using VVVV.Core;
 using System.Xml;
@@ -7,325 +8,222 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using VVVV.PluginInterfaces.V2;
 using System.ComponentModel.Composition;
+using VVVV.Utils.Streams;
 
-
-namespace VVVV.Nodes.XML
+using VVVV.Core.Logging;
+namespace VVVV.Nodes
 {
-    [PluginInfo(Name = "Prune", Category = "XElement", Tags = "xml")]
-    public class XMLPruneNode : IPluginEvaluate, IPartImportsSatisfiedNotification
+    [PluginInfo(Name = "Prune", Category = "XElement", Version = "", Tags = "xml")]
+    public class PruneFixNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
-        class AttributeInfo
+        private class QueryInfo
         {
-            public IIOContainer<ISpread<string>> AttributeContainer;
-            public IIOContainer<ISpread<bool>> AttributeExistsContainer;
-            public ISpread<string> AttributeOutputPin { get { return AttributeContainer.IOObject; } }
-            public ISpread<bool> AttributeExistsOutputPin { get { return AttributeExistsContainer.IOObject; } }
-            public string AttributeName;
+        	public string Name;
+        	public IIOContainer<IOutStream<bool>> QueryExistsContainer;
+            public IIOContainer<IOutStream<string>> QueryContainer;
+        	public IIOContainer<IOutStream<XElement>> FirstContainer;
+        	public IIOContainer<IOutStream<IInStream<XElement>>> AllContainer;
+            
+        	
+        	public QueryInfo(string Name, IIOFactory IOFactory)
+        	{
+        		string pinName = Name;//.Replace("/"," ");
+//        		if (pinName.StartsWith("/"))
+//        			pinName = pinName.Replace("/","|");
+        		this.Name = Name;
+        		QueryExistsContainer = IOFactory.CreateIOContainer<IOutStream<bool>>(new OutputAttribute(pinName + " Available") { Visibility = PinVisibility.OnlyInspector});
+				QueryExistsContainer.IOObject.Length = 0;
+        		QueryContainer = IOFactory.CreateIOContainer<IOutStream<string>>(new OutputAttribute(pinName));
+        		QueryContainer.IOObject.Length = 0;
+				FirstContainer = IOFactory.CreateIOContainer<IOutStream<XElement>>(new OutputAttribute(pinName + " (Child)"){Visibility = PinVisibility.OnlyInspector});
+        		FirstContainer.IOObject.Length = 0;
+        		AllContainer = IOFactory.CreateIOContainer<IOutStream<IInStream<XElement>>>(
+                    	new OutputAttribute(pinName + " (Children)"){ Visibility = PinVisibility.OnlyInspector, BinVisibility = PinVisibility.OnlyInspector } );
+        	
+        		AllContainer.IOObject.Length = 0;
+        	}
+        	
+        	public void Dispose()
+        	{
+        		QueryContainer.Dispose();
+        		QueryExistsContainer.Dispose();
+        		FirstContainer.Dispose();
+        		AllContainer.Dispose();
+        	}
         }
 
-        class ContentElementInfo
-        {
-            public IIOContainer<ISpread<string>> ContentElementContainer;
-            public IIOContainer<ISpread<bool>> ContentElementExistsContainer;
-            public ISpread<string> ContentElementOutputPin { get { return ContentElementContainer.IOObject; } }
-            public ISpread<bool> ContentElementExistsOutputPin { get { return ContentElementExistsContainer.IOObject; } }
-            public string ContentElementName;
-        }
-
-        class ChildElementInfo
-        {
-            public IIOContainer<ISpread<XElement>> ChildElementContainer;
-            public IIOContainer<ISpread<bool>> ChildElementExistsContainer;
-            public ISpread<XElement> ChildElementOutputPin { get { return ChildElementContainer.IOObject; } }
-            public ISpread<bool> ChildElementExistsOutputPin { get { return ChildElementExistsContainer.IOObject; } }
-            public string ChildElementName;
-            public string ChildElementPinName;
-        }
-
-
-#pragma warning disable 0649
-
-        [Config("Attributes", DefaultString = "AttribA, AttribB", IsSingle = true)]
-        public IDiffSpread<string> AttributeNamesPin;
-
-        [Config("Texts", DefaultString = "TextNodeA, TextNodeB", IsSingle = true)]
-        public IDiffSpread<string> ContentElementNamesPin;
-
-        [Config("Children", DefaultString = "ChildA, ChildB", IsSingle = true)]
-        public IDiffSpread<string> ChildElementNamesPin;
+    	#region pins
+		#pragma warning disable 649, 169
+        [Config("Queries", DefaultString = @"NodeA, AttribA", IsSingle = true)]
+        public IDiffSpread<string> QueryNamesPin;
 
 
         [Input("Element")]
         public IDiffSpread<XElement> Element;
 
-        [Input("XPath", DefaultString = "MyRoot/MyChild", IsSingle = true)]
+        [Input("XPath", DefaultString = ".", IsSingle = true)]
         public IDiffSpread<string> XPathNamePin;
 
-        [Output("Elements")]
+        [Input("Namespace Resolver", IsSingle = true)]
+        public IDiffSpread<IXmlNamespaceResolver> NamespaceResolver;
+    	
+    	[Output("Elements")]
         public ISpread<ISpread<XElement>> Elements;
-
+    	
+    	[Output("Elements Name")]
+        public ISpread<string> ElementsName;
+    	
         [Import()]
         IIOFactory IOFactory; 
-#pragma warning restore
+    	
+    	[Import()]
+        ILogger FLogger; 
+		#pragma warning restore
+    	#endregion
 
         #region fields
-
-        string BaseElementName;
-        string[] AttributeNames;
-        string[] ContentElementNames;
-        string[] ChildElementNames;
-        List<AttributeInfo> AttributeInfos = new List<AttributeInfo>();
-        List<ContentElementInfo> ContentElementInfos = new List<ContentElementInfo>();
-        List<ChildElementInfo> ChildElementInfos = new List<ChildElementInfo>();
-
+        Dictionary<string, QueryInfo> FQueries = new Dictionary<string, QueryInfo>();
         private bool ConfigChanged;
-
         #endregion
 
         public void OnImportsSatisfied()
         {
-            XPathNamePin.Changed += BaseElementName_Changed;
-            AttributeNamesPin.Changed += AttributeNamesPin_Changed;
-            ContentElementNamesPin.Changed += ContentElementNamesPin_Changed;
-            ChildElementNamesPin.Changed += ChildElementNamesPin_Changed;
+            QueryNamesPin.Changed += QueryNamesPin_Changed;
         }
 
-        // on AttributeNames changed
-        void AttributeNamesPin_Changed(IDiffSpread<string> spread)
+        #region attribute
+        void QueryNamesPin_Changed(IDiffSpread<string> spread)
         {
+        	try
+        	{
             if (spread.SliceCount == 0) return;
 
-            AttributeNames = AttributeNamesPin[0].Split(',').ToList().Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
+            var QueryNames = spread[0].Split(',').Select(s => s.Trim()).Where(s => s.Length > 0);
+			
+			foreach (var query in QueryNames)
+                if (!FQueries.ContainsKey(query))
+                	FQueries.Add(query, new QueryInfo(query, IOFactory));
 
-            //add new pins
-            foreach (var attributeName in AttributeNames)
+            //remove obsolete pins (ToList is necessary to not read and remove from the same list)
+            foreach (var key in FQueries.Keys.Except(QueryNames).ToArray())
             {
-                if (!AttributeInfos.Any(info => info.AttributeName == attributeName))
-                {
-                    var outputInfo = new AttributeInfo()
-                    {
-                        AttributeName = attributeName,
-                        AttributeContainer = IOFactory.CreateIOContainer<ISpread<string>>(new OutputAttribute(attributeName)),
-                        AttributeExistsContainer = IOFactory.CreateIOContainer<ISpread<bool>>(
-                            new OutputAttribute(attributeName + " Available") { Visibility = PinVisibility.OnlyInspector}
-                        ),
-                    };
-                    AttributeInfos.Add(outputInfo);
-                }
+            	FQueries[key].Dispose();
+                FQueries.Remove(key);
             }
-
-            //remove obsolete pins
-            foreach (var outputInfo in AttributeInfos.ToArray())
-                if (!AttributeNames.Contains(outputInfo.AttributeName))
-                {
-                    AttributeInfos.Remove(outputInfo);
-                    outputInfo.AttributeContainer.Dispose();
-                    outputInfo.AttributeExistsContainer.Dispose();
-                }
-
-            ConfigChanged = true;
+        	ConfigChanged = true;
+        		
+        	} catch (Exception e)
+        	{
+        		FLogger.Log(e);
+        	}
         }
+    	#endregion attribute
         
-        // on ContentElementNames changed 
-        void ContentElementNamesPin_Changed(IDiffSpread<string> spread)
-        {
-            if (spread.SliceCount == 0) return;
-
-            ContentElementNames = ContentElementNamesPin[0].Split(',').ToList().Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
-
-            // add new pins
-            foreach (var elementName in ContentElementNames)
-            {
-                if (!ContentElementInfos.Any(info => info.ContentElementName == elementName)) 
-                {
-                    var outputInfo = new ContentElementInfo()
-                    {
-                        ContentElementName = elementName,
-                        ContentElementContainer = IOFactory.CreateIOContainer<ISpread<string>>(new OutputAttribute(elementName)),
-                        ContentElementExistsContainer = IOFactory.CreateIOContainer<ISpread<bool>>(
-                            new OutputAttribute(elementName + " Available") { Visibility = PinVisibility.OnlyInspector }
-                        ),
-                    };
-                    ContentElementInfos.Add(outputInfo);
-                }
-            }
-
-            // remove obsolete pins
-            foreach (var outputInfo in ContentElementInfos.ToArray())
-            {
-                if (!ContentElementNames.Contains(outputInfo.ContentElementName)) 
-                {
-                    ContentElementInfos.Remove(outputInfo);
-                    outputInfo.ContentElementContainer.Dispose();
-                    outputInfo.ContentElementExistsContainer.Dispose();
-                }
-            }
-
-            ConfigChanged = true;
-        }
-
-        // on ChildElementNames changed
-        void ChildElementNamesPin_Changed(IDiffSpread<string> spread)
-        {
-            if (spread.SliceCount == 0) return;
-
-            ChildElementNames = ChildElementNamesPin[0].Split(',').ToList().Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
-
-            // add new pins
-            foreach (var elementName in ChildElementNames)
-            {
-                if (!ChildElementInfos.Any(info => info.ChildElementName == elementName))
-                {
-                    var outputInfo = new ChildElementInfo()
-                    {
-                        ChildElementName = elementName,
-                        ChildElementPinName = elementName + " (Children)",
-                        ChildElementContainer = IOFactory.CreateIOContainer<ISpread<XElement>>(new OutputAttribute(elementName + " (Children)")),
-                        ChildElementExistsContainer = IOFactory.CreateIOContainer<ISpread<bool>>(
-                            new OutputAttribute(elementName + " Available") { Visibility = PinVisibility.OnlyInspector}
-                        ),
-                    };
-                    ChildElementInfos.Add(outputInfo);
-                }
-            }
-
-            // remove obsolete pins
-            foreach (var outputInfo in ChildElementInfos.ToArray())
-            {
-                if (!ChildElementNames.Contains(outputInfo.ChildElementName))
-                {
-                    ChildElementInfos.Remove(outputInfo);
-                    outputInfo.ChildElementContainer.Dispose();
-                    outputInfo.ChildElementExistsContainer.Dispose();
-                }
-            }
-            ConfigChanged = true;
-        }
-
-        // on BaseElementName changed
-        void BaseElementName_Changed(IDiffSpread<string> spread)
-        {
-            try
-            {
-                // BaseElementName = XName.Get(BaseElementNamePin[0]);
-                BaseElementName = XPathNamePin[0];
-                ConfigChanged = true;
-            }
-            catch (ArgumentException)
-            {
-                BaseElementName = null;
-                ConfigChanged = true;
-            }
-        }
-
-        // currently not in use
-        static ISpread<XElement> GetElementsByName(XElement element, XName name)
-        {
-            if (element != null)
-                return element.Elements(name).ToSpread();
-            else
-                return XMLNodes.NoElements;
-        }
-
-        // using xPath expression for selecting elements
-        static ISpread<XElement> GetElementsByXPathQuery(XElement xElement, string xPath)
-        {
-
-            try
-            {
-                if (xElement != null)
-                {
-                        return xElement.XPathSelectElements("self::" + xPath).ToSpread();
-                }
-                else
-                    return XMLNodes.NoElements;
-            }
-            catch (Exception)
-            {
-                return XMLNodes.NoElements;
-                
-            }
-        }
-
-        // using xPath expression for selecting single element
-        static XElement GetElementByXPathQuery(XElement xElement, string xPath) 
-        {
-            if (xElement != null)
-                return xElement.XPathSelectElements(xPath).FirstOrDefault();
-            else
-                return XMLNodes.NoElements.FirstOrDefault();
-        }
-
         // method called each frame in vvvv
         public void Evaluate(int SpreadMax)
         {
-            if (SpreadMax == 0) return;
+            //if (Element.SliceCount == 0) return;
 
-            if (!Element.IsChanged && !ConfigChanged) return;
+        	if (!Element.IsChanged && !ConfigChanged && !XPathNamePin.IsChanged) return;
 
-            Elements.SliceCount = SpreadMax;
-
-            for (int i = 0; i < SpreadMax; i++)
+            Elements.SliceCount = Element.SliceCount;
+        	
+        	
+            for (int i = 0; i < Element.SliceCount; i++)
             {
-                var element = Element[i];
-                if (BaseElementName != null)
-                    Elements[i] = element != null ? GetElementsByXPathQuery(element, BaseElementName) : XMLNodes.NoElements;
-            }
+            	try
+            	{
+            		var element = Element[i];
 
+            		if (!string.IsNullOrEmpty(XPathNamePin[0]) && element != null)
+                		Elements[i] = element.XPathSelectElements(XPathNamePin[0], NamespaceResolver[0]).ToSpread();
+	            	else 
+	            		Elements[i] = new Spread<XElement>(0);
+            	}
+            	catch (Exception e)
+            	{
+            		Elements[i] = new Spread<XElement>(0);
+            		FLogger.Log(e);
+            	}
+            }
+        	
             var allElements = Elements.SelectMany(spread => spread).ToArray();
 
-            // process attributes
-            foreach (var attributeInfo in AttributeInfos)
+        	// set slicecount to all element hits
+            ElementsName.SliceCount = allElements.Length;
+        	
+        	#region process names
+        	int j = 0;
+        	foreach (var element in allElements)
+        	{
+        		ElementsName[j] = element.Name.ToString();
+	            j++;
+        	}
+        	#endregion process names
+
+            #region process queries
+            foreach (var query in FQueries.Values)
             {
-                attributeInfo.AttributeOutputPin.SliceCount = allElements.Length;
-                attributeInfo.AttributeExistsOutputPin.SliceCount = allElements.Length;
-
-                int i = 0;
-                foreach (var element in allElements)
-                {
-                    var attributes = element.Attributes(attributeInfo.AttributeName);
-                    var attribute = attributes.FirstOrDefault();
-
-                    attributeInfo.AttributeOutputPin[i] = attribute != null ? attribute.Value : "";
-                    attributeInfo.AttributeExistsOutputPin[i] = attribute != null;
-                    i++;
-                }
+            	var queryExistsPin = query.QueryExistsContainer.IOObject;
+            	var queryPin = query.QueryContainer.IOObject;
+            	var firstPin = query.FirstContainer.IOObject;
+            	var allPin = query.AllContainer.IOObject;
+            
+            	queryExistsPin.Length = allElements.Length;
+            	queryPin.Length = allElements.Length;
+              	firstPin.Length = allElements.Length;
+            	allPin.Length = allElements.Length;
+            	
+            	using (var queryExistsWriter = queryExistsPin.GetWriter())
+            	using (var queryWriter = queryPin.GetWriter())
+            	using (var firstWriter = firstPin.GetWriter())
+            	using (var allWriter = allPin.GetWriter())
+            	{
+            		foreach (var element in allElements)
+            		{
+            			XObject xobj = null;
+            			IEnumerable<XObject> xobjEnumerable = null;
+            			try
+            			{
+	            			var node = (IEnumerable)element.XPathEvaluate(query.Name, NamespaceResolver[0]);
+	            			xobjEnumerable = node.Cast<XObject>();
+	            			xobj = xobjEnumerable.FirstOrDefault();
+            			}
+            			catch (XPathException xe)
+            			{
+            				FLogger.Log(xe);
+            			}
+            			if (xobj != null)
+            			{
+	            			if (xobj.NodeType == XmlNodeType.Attribute)
+	            			{
+	            				var attr = xobj as XAttribute;
+	            				queryExistsWriter.Write(true);
+	            		   		queryWriter.Write(attr.Value);
+	            				firstWriter.Write(new XElement("NIL"));
+	                			allWriter.Write(new MemoryIOStream<XElement>(0));
+	            			}
+	            			else
+	            			{
+	            				var el = xobj as XElement;
+	            				queryExistsWriter.Write(true);
+	            		   		queryWriter.Write(el.Value);
+	            				firstWriter.Write(el);
+	            				allWriter.Write(xobjEnumerable.Cast<XElement>().ToStream());
+	            			}
+            			}
+	                    else
+            			{
+            				queryWriter.Write("");
+            				queryExistsWriter.Write(false);
+            				firstWriter.Write(new XElement("NIL"));
+	                		allWriter.Write(new MemoryIOStream<XElement>(0));
+            			}
+            		}
+            	}
             }
-
-            // process content elements
-            foreach (var contentElementInfo in ContentElementInfos)
-            {
-                contentElementInfo.ContentElementOutputPin.SliceCount = allElements.Length;
-                contentElementInfo.ContentElementExistsOutputPin.SliceCount = allElements.Length;
-
-                int i = 0;
-                foreach (var element in allElements)
-                {
-                    var elements = element.Elements(contentElementInfo.ContentElementName);
-                    var el = elements.FirstOrDefault();
-
-                    contentElementInfo.ContentElementOutputPin[i] = el != null ? el.Value : "";
-                    contentElementInfo.ContentElementExistsOutputPin[i] = el != null;
-                    i++;
-                }
-            }
-
-            // process child elements
-            foreach (var childElementInfo in ChildElementInfos)
-            {
-                childElementInfo.ChildElementOutputPin.SliceCount = allElements.Length;
-                childElementInfo.ChildElementExistsOutputPin.SliceCount = allElements.Length;
-
-                int i = 0;
-                foreach (var element in allElements)
-                {
-                    var elements = element.Elements(childElementInfo.ChildElementName);
-                    var el = elements.FirstOrDefault();
-                    childElementInfo.ChildElementOutputPin[i] = el != null ? GetElementByXPathQuery(element, childElementInfo.ChildElementName) : XMLNodes.NoElements.FirstOrDefault();
-                    childElementInfo.ChildElementExistsOutputPin[i] = el != null;
-                    i++;
-                }
-            }
+        	#endregion process queries
+        	
             ConfigChanged = false;
         }
     }
