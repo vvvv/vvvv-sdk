@@ -11,7 +11,7 @@ using System.ComponentModel.Composition;
 using VVVV.Utils.Streams;
 
 using VVVV.Core.Logging;
-namespace VVVV.Nodes
+namespace VVVV.Nodes.XML
 {
     [PluginInfo(Name = "Prune", Category = "XElement", Version = "", Tags = "xml")]
     public class PruneFixNode : IPluginEvaluate, IPartImportsSatisfiedNotification
