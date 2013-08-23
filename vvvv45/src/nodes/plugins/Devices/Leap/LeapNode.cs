@@ -27,8 +27,51 @@ namespace VVVV.Nodes.Devices
 		#region fields & pins
 		#pragma warning disable 0649
 		
-		[Input("Enable Gestures")]
-		ISpread<bool> FEnableGestures;
+		//circle
+		[Input("Enable Circle Gesture")]
+		IDiffSpread<bool> FEnableCircleGesture;
+		
+		[Input("Circle Min Radius (mm)", DefaultValue = 5.0, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<float> FCircleMinRadius;
+		
+		[Input("Circle Min Arc (radians)", DefaultValue = 1.5*Math.PI, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<float> FCircleMinArc;
+		
+		//swipe
+		[Input("Enable Swipe Gesture")]
+		IDiffSpread<bool> FEnableSwipeGesture;
+		
+		[Input("Swipe Min Length (mm)", DefaultValue = 150.0, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<float> FSwipeMinLength;
+		
+		[Input("Swipe Min Velocity (mm/s)", DefaultValue = 1000.0, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<float> FSwipeMinVelocity;
+		
+		//key tab
+		[Input("Enable KeyTab Gesture")]
+		IDiffSpread<bool> FEnableKeyTabGesture;
+		
+		[Input("KeyTab Min Down Velocity (mm/s)", DefaultValue = 50.0, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<float> FKeyTabMindDownVelo;
+		
+		[Input("KeyTab History Seconds (s)", DefaultValue = 0.1, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<float> FKeyTabHistorySeconds;
+		
+		[Input("KeyTab Min Distance (mm)", DefaultValue = 5.0, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<float> FKeyTabMindDistance;
+		
+		//screen tab
+		[Input("Enable ScreenTab Gesture")]
+		IDiffSpread<bool> FEnableScreenTabGesture;
+		
+		[Input("ScreenTab Min Forward Velocity (mm/s)", DefaultValue = 50.0, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<float> FScreenTabMindForwardVelo;
+		
+		[Input("ScreenTab History Seconds (s)", DefaultValue = 0.1, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<float> FScreenTabHistorySeconds;
+		
+		[Input("ScreenTab Min Distance (mm)", DefaultValue = 3.0, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<float> FScreenTabMindDistance;
 
         [Output("Hand Position")]
         ISpread<Vector3D> FHandPosOut;
@@ -72,8 +115,8 @@ namespace VVVV.Nodes.Devices
         [Output("Hand Slice")]
         ISpread<int> FHandSliceOut;
         
-        [Output("Calibrated Screens")]
-        ISpread<Vector3D> FScreensOut;
+        [Output("Gestures")]
+        ISpread<GestureList> FGestureOut;
         
 		#pragma warning restore
 		
@@ -85,18 +128,23 @@ namespace VVVV.Nodes.Devices
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if(FEnableGestures.IsChanged)
-			{
-				foreach (var gestureType in (Gesture.GestureType[])Enum.GetValues(typeof(Gesture.GestureType)))
-				{
-					if(gestureType != Gesture.GestureType.TYPEINVALID)
-						FLeapController.EnableGesture(gestureType, FEnableGestures[0]);
-				}
-			}
+//			if(FEnableGestures.IsChanged)
+//			{
+//				foreach (var gestureType in (Gesture.GestureType[])Enum.GetValues(typeof(Gesture.GestureType)))
+//				{
+//					if(gestureType != Gesture.GestureType.TYPEINVALID)
+//						FLeapController.EnableGesture(gestureType, FEnableGestures[0]);
+//				}
+//			}
 			
-			if(FLeapController.IsConnected && FLeapController.Frame().IsValid)
+			ConfigureGestures();
+			
+			var frame = FLeapController.Frame();
+			
+			if(FLeapController.IsConnected && frame.IsValid)
 			{
-				var hands = FLeapController.Frame().Hands;
+			
+				var hands = frame.Hands;
 				SpreadMax = hands.Count;
 				
 				FHandPosOut.SliceCount = SpreadMax;
@@ -145,7 +193,10 @@ namespace VVVV.Nodes.Devices
 					}
 				}
 				
+				
 				//gestures
+				FGestureOut[0] = frame.Gestures();
+				
 				var gestures = FLeapController.Frame().Gestures();
 				for (int i = 0; i < gestures.Count; i++) 
 				{
@@ -184,20 +235,49 @@ namespace VVVV.Nodes.Devices
 							break;
 					}
 				}
-			}
-			
-			//screens
-			FScreensOut.SliceCount = 0;
-			foreach(var screen in FLeapController.CalibratedScreens)
-			{
-//				FScreensOut.Add(screen.WidthPixels);
-//				FScreensOut.Add(screen.HeightPixels);
-				FScreensOut.Add(screen.BottomLeftCorner.ToVector3DPos());
-				FScreensOut.Add(screen.HorizontalAxis.ToVector3DDir());
-				FScreensOut.Add(screen.VerticalAxis.ToVector3DDir());           
 				
+				FLastFrame = frame;
 			}
+		}
+		
+		void ConfigureGestures()
+		{
+			var cfg = FLeapController.Config;
 			
+			//circle
+			HandleEnableGesture(FEnableCircleGesture, Gesture.GestureType.TYPECIRCLE);
+			HandleGestureConfig(new string[]{"Circle.MinRadius", "Circle.MinArc"}, FCircleMinRadius, FCircleMinArc);
+			
+			//swipe
+			HandleEnableGesture(FEnableSwipeGesture, Gesture.GestureType.TYPESWIPE);
+			HandleGestureConfig(new string[]{"Swipe.MinLength", "Swipe.MinVelocity"}, FSwipeMinLength, FSwipeMinVelocity);
+			
+			//key tab
+			HandleEnableGesture(FEnableKeyTabGesture, Gesture.GestureType.TYPEKEYTAP);
+			HandleGestureConfig(new string[]{"KeyTap.MinDownVelocity", "KeyTap.HistorySeconds", "KeyTap.MinDistance"}, 
+			                    FKeyTabMindDownVelo, FKeyTabHistorySeconds, FKeyTabMindDistance);
+			
+			//screen tab
+			HandleEnableGesture(FEnableScreenTabGesture, Gesture.GestureType.TYPESCREENTAP);
+			HandleGestureConfig(new string[]{"ScreenTap.MinForwardVelocity", "ScreenTap.HistorySeconds", "ScreenTap.MinDistance"}, 
+			                    FScreenTabMindForwardVelo, FScreenTabHistorySeconds, FScreenTabMindDistance);
+		}
+		
+		//generic enable
+		void HandleEnableGesture(IDiffSpread<bool> pin, Gesture.GestureType gestureType)
+		{
+			if(pin.IsChanged)
+				FLeapController.EnableGesture(gestureType, pin[0]);
+		}
+		
+		//generic gesture config
+		void HandleGestureConfig(string[] keys, params IDiffSpread<float>[] pins)
+		{
+			for (int i = 0; i < keys.Length; i++) 
+			{
+				if(pins[i].IsChanged)
+					FLeapController.Config.SetFloat("Gesture." + keys[i], pins[i][0]);
+			}	
 		}
 		
 
