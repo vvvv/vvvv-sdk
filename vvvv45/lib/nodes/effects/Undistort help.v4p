@@ -1,15 +1,25 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta14.dtd" >
-   <PATCH nodename="Y:\vvvv33\effects\Undistort help.v4p">
-   <BOUNDS height="11595" left="8970" top="690" type="Window" width="12315">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\effects\Undistort help.v4p">
+   <BOUNDS height="12645" left="7680" top="675" type="Window" width="12315">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="32" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="32" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="1785" top="10320" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="3960" left="375" top="585" type="Window" width="4920">
+   <BOUNDS height="4110" left="375" top="585" type="Window" width="5040">
    </BOUNDS>
    <BOUNDS height="1800" left="1785" top="10320" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="31" nodename="Grid (EX9.Geometry)">
@@ -22,7 +32,7 @@
    <PIN pinname="Resolution Y" slicecount="1" values="30">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="30" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="30" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3645" top="1635" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="26310" top="2580" type="Window" width="215">
@@ -31,12 +41,12 @@
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="320">
+   <PIN pinname="Y Input Value" slicecount="1" values="640">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="29" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="29" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4245" top="1635" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="26610" top="2880" type="Window" width="215">
@@ -45,7 +55,7 @@
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="240">
+   <PIN pinname="Y Input Value" slicecount="1" values="480">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -72,12 +82,12 @@
    </NODE>
    <LINK dstnodeid="28" dstpinname="Y" srcnodeid="29" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="26" nodename="VideoIn (DShow9)">
+   <NODE id="26" nodename="VIDEOIN (DSHOW9)">
    <BOUNDS height="0" left="690" top="3000" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
-   <PIN pinname="Driver" slicecount="1" values="|TM507A USB Camera|">
+   <PIN pinname="Driver" slicecount="1" values="|PS3Eye Camera|">
    </PIN>
    <PIN pinname="Video Format" slicecount="1" values="RGB24">
    </PIN>
@@ -87,11 +97,15 @@
    </PIN>
    <PIN pinname="Height" visible="1">
    </PIN>
+   <PIN pinname="Force Preview Output (via SmartT)" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Framerate" slicecount="1" values="60">
+   </PIN>
    </NODE>
    <NODE id="25" nodename="Undistort (DShow9 OpenCV)">
    <BOUNDS height="270" left="690" top="4575" type="Node" width="4785">
    </BOUNDS>
-   <PIN pinname="Video Input" visible="1">
+   <PIN pinname="Video Input" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Video Output" visible="1">
    </PIN>
@@ -101,9 +115,9 @@
    </PIN>
    <PIN pinname="Size of Squares" visible="1">
    </PIN>
-   <PIN pinname="Frames To Collect" slicecount="1" values="10">
+   <PIN pinname="Frames To Collect" slicecount="1" values="15">
    </PIN>
-   <PIN pinname="Collection Interval (ms)" slicecount="1" values="1000">
+   <PIN pinname="Collection Interval (ms)" slicecount="1" values="2000">
    </PIN>
    <PIN pinname="Load File" slicecount="1" values="0">
    </PIN>
@@ -132,7 +146,7 @@
    <PIN pinname="Save File" visible="1">
    </PIN>
    </NODE>
-   <NODE id="24" nodename="VideoTexture (EX9.Texture VMR9)">
+   <NODE id="24" nodename="VIDEOTEXTURE (EX9.TEXTURE VMR9)">
    <BOUNDS height="0" left="690" top="6450" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
@@ -141,10 +155,10 @@
    </PIN>
    <PIN pinname="Average Framerate" visible="1">
    </PIN>
+   <PIN pinname="Texture Size Mode" slicecount="1" values="Pow2Stretched">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="25" dstpinname="Video Input" srcnodeid="26" srcpinname="Video">
-   </LINK>
-   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="23" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="780" top="6945" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6195" top="6435" type="Window" width="215">
@@ -200,7 +214,7 @@
    </LINK>
    <LINK dstnodeid="32" dstpinname="Layers" srcnodeid="20" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="19" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6000" top="3615" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10980" top="7650" type="Window" width="215">
@@ -275,7 +289,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="210" top="10740" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Undistort - DShow9 OpenCV|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Undistort (DShow9 OpenCV)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -312,7 +326,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="12" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2805" top="3840" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="11280" top="7950" type="Window" width="215">
@@ -338,35 +352,35 @@
    </NODE>
    <LINK dstnodeid="25" dstpinname="Start Calibration" srcnodeid="12" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="11" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="945" top="3840" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9780" top="4950" type="Window" width="215">
    </BOUNDS>
    <BOUNDS height="255" left="945" top="3840" type="Box" width="450">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="7">
+   <PIN pinname="Y Input Value" slicecount="1" values="8">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="25" dstpinname="Rows of Squares" srcnodeid="11" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="10" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1425" top="3840" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9930" top="4575" type="Window" width="215">
    </BOUNDS>
    <BOUNDS height="240" left="1425" top="3840" type="Box" width="450">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="9">
+   <PIN pinname="Y Input Value" slicecount="1" values="11">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="25" dstpinname="Columns of Squares" srcnodeid="10" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="9" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1935" top="3840" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10170" top="4515" type="Window" width="215">
@@ -456,7 +470,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="3" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4485" top="3840" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="11580" top="8250" type="Window" width="215">
@@ -527,7 +541,7 @@
    </PIN>
    <PIN pinname="distortion " visible="1">
    </PIN>
-   <PIN pinname="Technique" slicecount="1" values="| Undistort|">
+   <PIN pinname="Technique" slicecount="1" values="| TUndistort|">
    </PIN>
    <PIN pinname="Resolution XY" visible="1">
    </PIN>
@@ -564,4 +578,46 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="PrincipalPoint XY" srcnodeid="25" srcpinname="Principal Point">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="33" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3015" top="1650" width="465" height="255">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3015" top="1650" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="60">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Framerate">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Video" dstnodeid="25" dstpinname="Video Input">
+   </LINK>
+   <NODE systemname="CamCalibConverter" filename="%VVVV%\lib\nodes\effects\CamCalibConverter.v4p" componentmode="Hidden" id="34" nodename="%VVVV%\lib\nodes\effects\CamCalibConverter.v4p">
+   <BOUNDS type="Node" left="4200" top="11370" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4200" top="11370" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7335" top="9495" width="8850" height="7080">
+   </BOUNDS>
+   <PIN pinname="Calibration File" slicecount="1" values="file.txt">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6015" top="11325" width="8250" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6015" top="11325" width="3345" height="720">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; use the converter to convert the .txt file written by the Undistort node to a .dat file readable by the ARTK+ node.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

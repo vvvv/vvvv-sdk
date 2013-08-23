@@ -1,11 +1,11 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\freeframes\ARTK+Tracker help.v4p">
-   <BOUNDS height="10605" left="2760" top="5610" type="Window" width="12135">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\addonpack\lib\nodes\freeframes\ARTK+Tracker help.v4p">
+   <BOUNDS height="10605" left="8010" top="480" type="Window" width="12420">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="29" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="4050" top="9390" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="4860" left="6705" top="615" type="Window" width="6120">
+   <BOUNDS height="4860" left="1830" top="465" type="Window" width="6120">
    </BOUNDS>
    <BOUNDS height="1800" left="4050" top="9390" type="Box" width="2400">
    </BOUNDS>
@@ -27,7 +27,7 @@
    </PIN>
    </NODE>
    <NODE id="27" nodename="VIDEOIN (DSHOW9)">
-   <BOUNDS height="0" left="4770" top="660" type="Node" width="0">
+   <BOUNDS height="0" left="4530" top="615" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
@@ -35,13 +35,19 @@
    </PIN>
    <PIN pinname="Video Format" slicecount="1" values="RGB24">
    </PIN>
-   <PIN pinname="Driver" slicecount="1" values="UI222xSE-C_4002688906">
+   <PIN pinname="Driver" slicecount="1" values="|PS3Eye Camera|">
    </PIN>
    <PIN pinname="Force Preview Output (via SmartT)" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Width" slicecount="1" values="640">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="480">
+   </PIN>
+   <PIN pinname="Framerate" slicecount="1" values="60">
+   </PIN>
    </NODE>
    <NODE id="26" nodename="VIDEOTEXTURE (EX9.TEXTURE VMR9)">
-   <BOUNDS height="0" left="1980" top="4335" type="Node" width="0">
+   <BOUNDS height="0" left="2385" top="7305" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -89,7 +95,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="InAWindow" id="21" nodename="ARTK+Tracker.dll">
-   <BOUNDS height="270" left="5145" top="1365" type="Node" width="2040">
+   <BOUNDS height="270" left="4530" top="1395" type="Node" width="2040">
    </BOUNDS>
    <PIN pinname="Video Input" visible="1">
    </PIN>
@@ -127,11 +133,11 @@
    </BOUNDS>
    <BOUNDS height="160" left="16560" top="9630" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="300" left="6465" top="600" type="Box" width="4320">
+   <BOUNDS height="270" left="6465" top="600" type="Box" width="2115">
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" encoded="0" values="LogitechPro4000.dat">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="PS3EyeCamera.dat">
    </PIN>
    </NODE>
    <LINK dstnodeid="21" dstpinname="Camera File" srcnodeid="20" srcpinname="Output String">
@@ -167,7 +173,7 @@
    </PIN>
    </NODE>
    <NODE id="14" nodename="S+H (Animation)">
-   <BOUNDS height="0" left="5505" top="1995" type="Node" width="0">
+   <BOUNDS height="0" left="5025" top="1995" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -210,32 +216,8 @@
    </LINK>
    <LINK dstnodeid="25" dstpinname="Layer 3" srcnodeid="11" srcpinname="Layer">
    </LINK>
-   <NODE id="10" nodename="ZWriteEnable (EX9.RenderState)">
-   <BOUNDS height="0" left="225" top="5160" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Render State Out" visible="1">
-   </PIN>
-   <PIN pinname="Compare Function" slicecount="1" values="Always">
-   </PIN>
-   <PIN pinname="ZWrite Enable" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    <LINK dstnodeid="18" dstpinname="Matrix In" srcnodeid="17" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
-   <BOUNDS height="690" left="15" top="5985" type="Node" width="5520">
-   </BOUNDS>
-   <BOUNDS height="960" left="15" top="5985" type="Box" width="3930">
-   </BOUNDS>
-   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|quad with videotexture is placed in projection space. &cr;&lf;therefore it is always visible as background. &cr;&lf;ZWriteEnable is disabled so the quad does not interfere with the depthbuffer|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
    <BOUNDS height="270" left="3120" top="2460" type="Node" width="1605">
    </BOUNDS>
@@ -402,42 +384,10 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE systemname="WithinProjection (Transform)" nodename="WithinProjection (Transform)" componentmode="Hidden" id="32">
-   <BOUNDS type="Node" left="705" top="4170" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="33" nodename="Quad (DX9)" systemname="Quad (DX9)">
-   <BOUNDS height="0" left="1665" top="5595" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="33" dstpinname="Texture" srcnodeid="26" srcpinname="Texture Out">
-   </LINK>
-   <LINK dstnodeid="25" dstpinname="Layer 1" srcnodeid="33" srcpinname="Layer">
-   </LINK>
-   <LINK dstnodeid="33" dstpinname="Render State" srcnodeid="10" srcpinname="Render State Out">
-   </LINK>
-   <NODE id="34" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
-   <BOUNDS height="0" left="705" top="4680" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="XYZ" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="Transform In" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="32" srcpinname="Transform Out" dstnodeid="34" dstpinname="Transform In">
-   </LINK>
-   <LINK srcnodeid="34" srcpinname="Transform Out" dstnodeid="33" dstpinname="Transform">
-   </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="37">
-   <BOUNDS type="Node" left="7485" top="1545" width="100" height="100">
+   <BOUNDS type="Node" left="7365" top="1545" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="7485" top="1545" width="480" height="480">
+   <BOUNDS type="Box" left="7365" top="1545" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -519,5 +469,49 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="43" srcpinname="Transform Out" dstnodeid="39" dstpinname="Transform In">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="44" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9690" top="630" width="1440" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9690" top="630" width="1440" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; see helppatch of|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Undistort (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Undistort.fx" nodename="Undistort (EX9.Effect)" componentmode="Hidden" id="45">
+   <BOUNDS type="Node" left="9690" top="975" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="46" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9690" top="1290" width="3615" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9690" top="1290" width="2130" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for how to create a .dat file for your own camera.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="47">
+   <BOUNDS type="Node" left="2385" top="7845" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Texture Out" dstnodeid="47" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="47" srcpinname="Layer" dstnodeid="25" dstpinname="Layer 1">
    </LINK>
    </PATCH>
