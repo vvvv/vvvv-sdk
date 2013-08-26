@@ -10,16 +10,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Kinect, Version=1.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Kinect">
       <HintPath>Dependencies\Microsoft.Kinect.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Kinect.Toolkit, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Kinect.Toolkit">
       <HintPath>Dependencies\Microsoft.Kinect.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Kinect.Toolkit.FaceTracking">
-      <HintPath>Dependencies\Microsoft.Kinect.Toolkit.FaceTracking.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX, Version=4.0.12.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -38,6 +33,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Lib\FaceTracking\EnumIndexableCollection.cs" />
+    <Compile Include="Lib\FaceTracking\FaceModel.cs" />
+    <Compile Include="Lib\FaceTracking\FaceTracker.cs" />
+    <Compile Include="Lib\FaceTracking\FaceTrackFrame.cs" />
+    <Compile Include="Lib\FaceTracking\FtInterop.cs" />
+    <Compile Include="Lib\FaceTracking\Image.cs" />
+    <Compile Include="Lib\FaceTracking\Utils.cs" />
     <Compile Include="Lib\KinectRuntime.cs" />
     <Compile Include="Nodes\KinectFaceNode.cs" />
     <Compile Include="Nodes\KinectWorldTextureNode.cs" />
@@ -67,6 +69,9 @@
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Lib\FaceTracking" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
