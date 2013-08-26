@@ -1,0 +1,341 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Sync (Network FileStream) help.v4p" systemname="Sync (Network FileStream) help" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Sync (Network FileStream) help.v4p" locked="0">
+   <BOUNDS type="Window" left="5010" top="1770" width="6900" height="8505">
+   </BOUNDS>
+   <NODE systemname="Sync (Network FileStream)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Sync (Network FileStream)" componentmode="Hidden" id="0" managers="boygroup">
+   <BOUNDS type="Node" left="2055" top="3645" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   <PIN pinname="Duration" visible="1">
+   </PIN>
+   <PIN pinname="Do Seek" visible="1">
+   </PIN>
+   <PIN pinname="Seek Position" visible="1">
+   </PIN>
+   <PIN pinname="Adjust System Time" visible="1">
+   </PIN>
+   <PIN pinname="Port">
+   </PIN>
+   <PIN pinname="Fine Offset (ms)">
+   </PIN>
+   </NODE>
+   <NODE systemname="FileStream (DShow9)" nodename="FileStream (DShow9)" componentmode="Hidden" id="1" managers="boygroup">
+   <BOUNDS type="Node" left="1290" top="3015" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Filename">
+   </PIN>
+   <PIN pinname="Play">
+   </PIN>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   <PIN pinname="Duration" visible="1">
+   </PIN>
+   <PIN pinname="Do Seek" visible="1">
+   </PIN>
+   <PIN pinname="Seek Position" visible="1">
+   </PIN>
+   <PIN pinname="Reference Clock" slicecount="1" values="System">
+   </PIN>
+   <PIN pinname="Adjust System Time" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="End Time" slicecount="1" values="99999">
+   </PIN>
+   <PIN pinname="Loop" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="4" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3165" top="1995" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3165" top="1995" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="file.avi">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="file.avi">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="|All Streams (*.aif, *.avi, *.avs, *.mid, *.mka, *.mkv, *.mov, *.mpg, *.ogg, *.rm, *.wmv, *.mp3, *.wav, *.wma)||*.aif;*.aiff;*.avi;*.avs;*.mov;*.mpg;*.mka;*.mkv;*.mpeg;*.ogg;*.rm;*.wmv;*.mid;*.wma;*.mp3;*.wav||AVI (*.avi)||*.avi||AviSynth (*.avs)||*.avs||Quicktime (*.mov, *.aif)||*.mov;*.aif;*.aiff||Ogg Media (*.ogg)||*.ogg||Matroska (*.mka, *.mkv)||*.mka;*.mkv||RealMedia (*.rm)||*.rm||WindowsMedia (*.wmv, *.wma)||*.wmv;*.wma||MIDI (*.mid)||*.mid||MPEG (*.mpg, *.mpeg)||*.mpg;*.mpeg||MP3 (*.mp3)||*.mp3||Wave (*.wav)||*.wav|">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output String" dstnodeid="1" dstpinname="Filename">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="6" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="135" top="120" width="1185" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="135" top="120" width="3825" height="495">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|Sync (Network FileStream)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="7" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="135" top="660" width="8115" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="135" top="660" width="5505" height="960">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|A plugin which is built to synchronize a FileStream node in a boygroup setup or optionally over network (see Inspektor). There is a convenience module called FileStream (DShow9 Boygroup) which can directly replace the FileStream node.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1275" top="1920" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1275" top="1920" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Play">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Play">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Position" dstnodeid="0" dstpinname="Position">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Duration" dstnodeid="0" dstpinname="Duration">
+   </LINK>
+   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="10" managers="boygroup">
+   <BOUNDS type="Node" left="2055" top="4125" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Do Seek" dstnodeid="10" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Seek Position" dstnodeid="10" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Adjust System Time" dstnodeid="10" dstpinname="Z">
+   </LINK>
+   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="11" managers="boygroup">
+   <BOUNDS type="Node" left="2055" top="4485" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="XYZ" dstnodeid="11" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="S (Value)" nodename="S (Value)" componentmode="Hidden" id="12" managers="boygroup">
+   <BOUNDS type="Node" left="2055" top="4860" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Send String" slicecount="1" encoded="0" values="fs_sync_values">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output 1" dstnodeid="12" dstpinname="Input Value">
+   </LINK>
+   <NODE systemname="R (Value)" nodename="R (Value)" componentmode="Hidden" id="13" managers="boygroup">
+   <BOUNDS type="Node" left="1950" top="1950" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Receive String" slicecount="1" values="fs_sync_values">
+   </PIN>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (3d Split)" nodename="Vector (3d Split)" componentmode="Hidden" id="14" managers="boygroup">
+   <BOUNDS type="Node" left="1950" top="2430" width="690" height="270">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Input Value" dstnodeid="14" dstpinname="XYZ">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="X" dstnodeid="1" dstpinname="Do Seek">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Y" dstnodeid="1" dstpinname="Seek Position">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Z" dstnodeid="1" dstpinname="Adjust System Time">
+   </LINK>
+   <NODE systemname="VideoTexture (EX9.Texture VMR9)" nodename="VideoTexture (EX9.Texture VMR9)" componentmode="Hidden" id="15" managers="boygroup">
+   <BOUNDS type="Node" left="1725" top="5430" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Wait for every Nth frame" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Video" dstnodeid="15" dstpinname="Video">
+   </LINK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="16" managers="boygroup">
+   <BOUNDS type="Node" left="1395" top="6255" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1395" top="6255" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="16560" top="8550" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="17" managers="boygroup">
+   <BOUNDS type="Node" left="1395" top="5850" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Texture Out" dstnodeid="17" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Layer" dstnodeid="16" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="AudioOut (DShow9)" nodename="AudioOut (DShow9)" componentmode="Hidden" id="18" managers="boygroup">
+   <BOUNDS type="Node" left="780" top="4455" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Audio" dstnodeid="18" dstpinname="Audio">
+   </LINK>
+   <NODE systemname="Scale (Transform Vector)" nodename="Scale (Transform Vector)" componentmode="Hidden" id="19" managers="boygroup">
+   <BOUNDS type="Node" left="1065" top="5265" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Transform Out" dstnodeid="17" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="FileStream2 (DShow9 Boygroup)" filename="%VVVV%\lib\nodes\modules\DShow9\FileStream2 (DShow9 Boygroup).v4p" componentmode="Hidden" id="20" nodename="FileStream2 (DShow9 Boygroup)">
+   <BOUNDS type="Node" left="2625" top="7335" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2625" top="7335" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6930" top="5460" width="12795" height="8775">
+   </BOUNDS>
+   <PIN pinname="Port" slicecount="1" values="3339">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="165" top="6900" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="165" top="6900" width="2985" height="300">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|these modules do all the magic for you:|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="FileStream (DShow9 Boygroup)" filename="%VVVV%\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p" nodename="FileStream (DShow9 Boygroup)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="645" top="7335" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Port" slicecount="1" values="3338">
+   </PIN>
+   <BOUNDS type="Box" left="645" top="7335">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4365" top="3450" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4365" top="3450" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="3337">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Port" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="100000">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Port">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="25" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="3435" top="2700" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3435" top="2700" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Fine Offset (ms)|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Fine Offset (ms)">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3690" top="3915" width="3750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3690" top="3915" width="2070" height="525">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|each sync module in your setup needs its own port|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4380" top="2580" width="3405" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4380" top="2580" width="2220" height="525">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|fine adjustment of the boygroup client stream|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
+   </PATCH>
