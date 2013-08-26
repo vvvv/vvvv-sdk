@@ -82,20 +82,17 @@ namespace VVVV.Nodes.Devices
         [Output("Hand Normal")]
         ISpread<Vector3D> FHandNormOut;
         
-        [Output("Hand Ball Center")]
+        [Output("Hand Ball Center", Visibility = PinVisibility.OnlyInspector)]
         ISpread<Vector3D> FHandBallCentOut;
         
-        [Output("Hand Ball Radius")]
+        [Output("Hand Ball Radius", Visibility = PinVisibility.OnlyInspector)]
         ISpread<double> FHandBallRadOut;
         
-        [Output("Hand Velocity")]
+        [Output("Hand Velocity", Visibility = PinVisibility.OnlyInspector)]
         ISpread<Vector3D> FHandVelOut;
         
         [Output("Hand ID")]
         ISpread<int> FHandIDOut;
-        
-        [Output("Is Tool")]
-        ISpread<bool> FFingerIsToolOut;
         
         [Output("Finger Position")]
         ISpread<Vector3D> FFingerPosOut;
@@ -103,16 +100,19 @@ namespace VVVV.Nodes.Devices
         [Output("Finger Direction")]
         ISpread<Vector3D> FFingerDirOut;
         
-        [Output("Finger Velocity")]
+        [Output("Finger Velocity", Visibility = PinVisibility.OnlyInspector)]
         ISpread<Vector3D> FFingerVelOut;
         
-        [Output("Finger Size")]
+        [Output("Is Tool")]
+        ISpread<bool> FFingerIsToolOut;
+        
+        [Output("Finger Size", Visibility = PinVisibility.OnlyInspector)]
         ISpread<Vector2D> FFingerSizeOut;
         
         [Output("Finger ID")]
         ISpread<int> FFingerIDOut;
         
-        [Output("Hand Slice")]
+        [Output("Hand Slice", Visibility = PinVisibility.OnlyInspector)]
         ISpread<int> FHandSliceOut;
         
         [Output("Gestures")]
@@ -121,7 +121,7 @@ namespace VVVV.Nodes.Devices
 		#pragma warning restore
 		
 		Controller FLeapController = new Controller();
-		Frame FLastFrame = new Frame();
+		Frame FLastFrame;
 		
 		#endregion fields & pins
 
@@ -193,49 +193,8 @@ namespace VVVV.Nodes.Devices
 					}
 				}
 				
-				
 				//gestures
-				FGestureOut[0] = frame.Gestures();
-				
-				var gestures = FLeapController.Frame().Gestures();
-				for (int i = 0; i < gestures.Count; i++) 
-				{
-					var gesture = gestures[i];
-
-					switch (gesture.Type) 
-					{
-						case Gesture.GestureType.TYPECIRCLE:
-							CircleGesture circle = new CircleGesture (gesture);
-
-							break;
-						case Gesture.GestureType.TYPESWIPE:
-							SwipeGesture swipe = new SwipeGesture (gesture);
-//							SafeWriteLine ("Swipe id: " + swipe.Id
-//							               + ", " + swipe.State
-//							               + ", position: " + swipe.Position
-//							               + ", direction: " + swipe.Direction
-//							               + ", speed: " + swipe.Speed);
-							break;
-						case Gesture.GestureType.TYPEKEYTAP:
-							KeyTapGesture keytap = new KeyTapGesture (gesture);
-//							SafeWriteLine ("Tap id: " + keytap.Id
-//							               + ", " + keytap.State
-//							               + ", position: " + keytap.Position
-//							               + ", direction: " + keytap.Direction);
-							break;
-						case Gesture.GestureType.TYPESCREENTAP:
-							ScreenTapGesture screentap = new ScreenTapGesture (gesture);
-//							SafeWriteLine ("Tap id: " + screentap.Id
-//							               + ", " + screentap.State
-//							               + ", position: " + screentap.Position
-//							               + ", direction: " + screentap.Direction);
-							break;
-						default:
-//							SafeWriteLine ("Unknown gesture type.");
-							break;
-					}
-				}
-				
+				FGestureOut[0] = FLastFrame != null ? frame.Gestures(FLastFrame) : frame.Gestures();
 				FLastFrame = frame;
 			}
 		}
@@ -279,13 +238,241 @@ namespace VVVV.Nodes.Devices
 					FLeapController.Config.SetFloat("Gesture." + keys[i], pins[i][0]);
 			}	
 		}
-		
 
 		public void Dispose()
 		{
 			FLeapController.Dispose();
 		}
 		
+	}
+	
+	public abstract class LeapSplitGestureNodeBase : IPluginEvaluate
+	{
+		#region fields & pins
+		#pragma warning disable 0649
+		
+		//screen tab
+		[Input("Gesture List")]
+		IDiffSpread<GestureList> FGestureListIn;
+
+        [Output("ID")]
+        ISpread<int> FIDOut;
+        
+        [Output("Duration")]
+        ISpread<float> FDurationOut;
+        
+        [Output("State")]
+        ISpread<Gesture.GestureState> FStateOut;
+        
+		#pragma warning restore
+		
+		#endregion fields & pins
+		
+		public void Evaluate(int SpreadMax)
+		{
+			if(FGestureListIn.IsChanged)
+			{
+				ClearPins();
+				var list = FGestureListIn[0];
+				if(list == null) return;
+				
+				for (int i = 0; i < list.Count; i++)
+				{
+					var gesture = list[i];
+					if(CheckGesture(gesture))
+					{
+						FIDOut.Add(gesture.Id);
+						FDurationOut.Add(gesture.DurationSeconds);
+						FStateOut.Add(gesture.State);
+						SplitGesture(gesture);
+					}
+				}
+			}
+		}
+		
+		protected virtual void ClearPins()
+		{
+			FIDOut.SliceCount = 0;
+			FDurationOut.SliceCount = 0;
+			FStateOut.SliceCount = 0;
+		}
+		
+		protected abstract bool CheckGesture(Gesture gesture);
+		protected abstract void SplitGesture(Gesture gesture);
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "CircleGesture",
+	Category = "Devices Leap", 
+	Help = "Returns the tracking data of the Leap circle gesture",
+	Tags = "tracking, hand, finger",
+	AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class LeapSplitCircleGestureNode : LeapSplitGestureNodeBase
+	{
+		[Output("Center")]
+        ISpread<Vector3D> FCenterOut;
+        
+        [Output("Normal")]
+        ISpread<Vector3D> FNormalOut;
+        
+        [Output("Radius")]
+        ISpread<float> FRadiusOut;
+        
+        [Output("Progress")]
+        ISpread<float> FProgressOut;
+        
+        protected override void SplitGesture(Gesture gesture)
+        {
+        	var g = new CircleGesture(gesture);
+        	FCenterOut.Add(g.Center.ToVector3DPos());
+        	FNormalOut.Add(g.Normal.ToVector3DDir());
+        	FRadiusOut.Add(g.Radius * 0.001f);
+        	FProgressOut.Add(g.Progress);
+        }
+		
+		protected override void ClearPins()
+		{
+			base.ClearPins();
+			
+			FCenterOut.SliceCount = 0;
+			FNormalOut.SliceCount = 0;
+			FRadiusOut.SliceCount = 0;
+			FProgressOut.SliceCount = 0;
+		}
+		
+		protected override bool CheckGesture(Gesture gesture)
+		{
+			return gesture.Type == Gesture.GestureType.TYPECIRCLE;
+		}
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "SwipeGesture",
+	Category = "Devices Leap", 
+	Help = "Returns the tracking data of the Leap swipe gesture",
+	Tags = "tracking, hand, finger",
+	AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class LeapSplitSwipeGestureNode : LeapSplitGestureNodeBase
+	{
+		[Output("Direction")]
+        ISpread<Vector3D> FDirectinOut;
+        
+        [Output("Position")]
+        ISpread<Vector3D> FPositionOut;
+        
+        [Output("Speed")]
+        ISpread<float> FSpeedOut;
+        
+        [Output("Start Position")]
+        ISpread<Vector3D> FStartPositionOut;
+        
+        protected override void SplitGesture(Gesture gesture)
+        {
+        	var g = new SwipeGesture(gesture);
+        	FDirectinOut.Add(g.Direction.ToVector3DDir());
+        	FPositionOut.Add(g.Position.ToVector3DPos());
+        	FSpeedOut.Add(g.Speed * 0.001f);
+        	FStartPositionOut.Add(g.StartPosition.ToVector3DPos());
+        }
+		
+		protected override void ClearPins()
+		{
+			base.ClearPins();
+			
+			FDirectinOut.SliceCount = 0;
+			FPositionOut.SliceCount = 0;
+			FSpeedOut.SliceCount = 0;
+			FStartPositionOut.SliceCount = 0;
+		}
+		
+		protected override bool CheckGesture(Gesture gesture)
+		{
+			return gesture.Type == Gesture.GestureType.TYPESWIPE;
+		}
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "KeyTabGesture",
+	Category = "Devices Leap", 
+	Help = "Returns the tracking data of the Leap key tab gesture",
+	Tags = "tracking, hand, finger",
+	AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class LeapSplitKeyTabGestureNode : LeapSplitGestureNodeBase
+	{
+		[Output("Direction")]
+        ISpread<Vector3D> FDirectinOut;
+        
+        [Output("Position")]
+        ISpread<Vector3D> FPositionOut;
+        
+        [Output("Progress")]
+        ISpread<float> FProgressOut;
+        
+        protected override void SplitGesture(Gesture gesture)
+        {
+        	var g = new KeyTapGesture(gesture);
+        	FDirectinOut.Add(g.Direction.ToVector3DDir());
+        	FPositionOut.Add(g.Position.ToVector3DPos());
+        	FProgressOut.Add(g.Progress);
+        }
+		
+		protected override void ClearPins()
+		{
+			base.ClearPins();
+			
+			FDirectinOut.SliceCount = 0;
+			FPositionOut.SliceCount = 0;
+			FProgressOut.SliceCount = 0;
+		}
+		
+		protected override bool CheckGesture(Gesture gesture)
+		{
+			return gesture.Type == Gesture.GestureType.TYPEKEYTAP;
+		}
+	}
+	
+    #region PluginInfo
+	[PluginInfo(Name = "ScreenTabGesture",
+	Category = "Devices Leap", 
+	Help = "Returns the tracking data of the Leap screen tab gesture",
+	Tags = "tracking, hand, finger",
+	AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class LeapSplitScreenTabGestureNode : LeapSplitGestureNodeBase
+	{
+		[Output("Direction")]
+        ISpread<Vector3D> FDirectinOut;
+        
+        [Output("Position")]
+        ISpread<Vector3D> FPositionOut;
+        
+        [Output("Progress")]
+        ISpread<float> FProgressOut;
+        
+        protected override void SplitGesture(Gesture gesture)
+        {
+        	var g = new KeyTapGesture(gesture);
+        	FDirectinOut.Add(g.Direction.ToVector3DDir());
+        	FPositionOut.Add(g.Position.ToVector3DPos());
+        	FProgressOut.Add(g.Progress);
+        }
+		
+		protected override void ClearPins()
+		{
+			base.ClearPins();
+			
+			FDirectinOut.SliceCount = 0;
+			FPositionOut.SliceCount = 0;
+			FProgressOut.SliceCount = 0;
+		}
+		
+		protected override bool CheckGesture(Gesture gesture)
+		{
+			return gesture.Type == Gesture.GestureType.TYPESCREENTAP;
+		}
 	}
 	
 	public static class LeapExtensions
