@@ -72,6 +72,10 @@ namespace VVVV.Nodes.Devices
 		
 		[Input("ScreenTab Min Distance (mm)", DefaultValue = 3.0, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<float> FScreenTabMindDistance;
+		
+		//screen tab
+		[Input("Reset", IsBang = true)]
+		IDiffSpread<bool> FResetIn;
 
         [Output("Hand Position")]
         ISpread<Vector3D> FHandPosOut;
@@ -136,6 +140,12 @@ namespace VVVV.Nodes.Devices
 //						FLeapController.EnableGesture(gestureType, FEnableGestures[0]);
 //				}
 //			}
+			
+			if(FResetIn[0])
+			{
+				FLeapController.Dispose();
+				FLeapController = new Controller();
+			}
 			
 			ConfigureGestures();
 			
