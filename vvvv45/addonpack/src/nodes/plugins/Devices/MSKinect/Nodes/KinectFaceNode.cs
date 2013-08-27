@@ -19,7 +19,7 @@ namespace VVVV.MSKinect.Nodes
 	            Version = "Microsoft", 
 	            Author = "vux", 
 	            Tags = "EX9",
-	           	Help = "Returns detailed 2D and 3D data describing the tracked face"))]
+	           	Help = "Returns detailed 2D and 3D data describing the tracked face")]
     public class KinectFaceNode : IPluginEvaluate, IPluginConnections
     {
         [Input("Kinect Runtime")]

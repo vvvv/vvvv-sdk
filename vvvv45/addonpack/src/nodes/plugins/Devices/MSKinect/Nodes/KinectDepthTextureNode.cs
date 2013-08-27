@@ -18,7 +18,7 @@ namespace VVVV.MSKinect.Nodes
 	            Version = "Microsoft", 
 	            Author = "vux", 
 	            Tags = "EX9, texture",
-	            Help = "Returns a 16bit depthmap from the Kinects depth camera."))]
+	            Help = "Returns a 16bit depthmap from the Kinects depth camera.")]
     public unsafe class KinectDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]
