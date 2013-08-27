@@ -129,7 +129,10 @@ namespace VVVV.PluginInterfaces.V2
 		/// <param name="enumerable">The IEnumerable{T} to copy from.</param>
 		public static void AssignFrom<T>(this ISpread<T> spread, IEnumerable<T> enumerable)
 		{
-			spread.SliceCount = enumerable.Count();
+            var collection = enumerable as ICollection;
+			spread.SliceCount = collection != null
+                ? collection.Count
+                : enumerable.Count();
 			
 			int i = 0;
 			foreach	(var entry in enumerable)
