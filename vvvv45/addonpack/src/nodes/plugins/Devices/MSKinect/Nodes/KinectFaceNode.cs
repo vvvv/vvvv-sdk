@@ -39,6 +39,9 @@ namespace VVVV.MSKinect.Nodes
 
         [Output("Face Points")]
         private ISpread<ISpread<Vector3>> FOutPts;
+        
+        [Output("Face Normals")]
+		private ISpread<ISpread<Vector3>> FOutNormals;
 
         [Output("Projected Face Points")]
         private ISpread<ISpread<Vector2>> FOutPPTs;
@@ -119,13 +122,37 @@ namespace VVVV.MSKinect.Nodes
 
                         this.FOutPPTs[cnt].SliceCount = pp.Count;
                         this.FOutPts[cnt].SliceCount = p.Count;
+                        this.FOutNormals[cnt].SliceCount = p.Count;
+                        
+                        //Compute smoothed normals
+						Vector3[] norms = new Vector3[p.Count];
+						int[] inds = KinectRuntime.FACE_INDICES;
+						int tricount = inds.Length / 3;
+						for (int j = 0; j < tricount; j++)
+						{
+							int i1 = inds[j * 3];
+							int i2 = inds[j * 3 + 1];
+							int i3 = inds[j * 3 + 2];
+
+							Vector3 v1 = new Vector3(p[i1].X, p[i1].Y, p[i1].Z);
+							Vector3 v2 = new Vector3(p[i2].X, p[i2].Y, p[i2].Z);
+							Vector3 v3 = new Vector3(p[i3].X, p[i3].Y, p[i3].Z);
+
+							Vector3 faceEdgeA = v2 - v1;
+							Vector3 faceEdgeB = v1 - v3;
+							Vector3 norm = Vector3.Cross(faceEdgeB, faceEdgeA);
+
+							norms[i1] += norm; 
+							norms[i2] += norm; 
+							norms[i3] += norm;
+						}
 
                         for (int i = 0; i < pp.Count; i++)
                         {
                             this.FOutPPTs[cnt][i] = new Vector2(pp[i].X, pp[i].Y);
                             this.FOutPts[cnt][i] = new Vector3(p[i].X, p[i].Y,p[i].Z);
+                            this.FOutNormals[cnt][i] = Vector3.Normalize(norms[i]);
                         }
-
 
                         FaceTriangle[] d = sft.frame.GetTriangles();
                         this.FOutIndices.SliceCount = d.Length * 3;
@@ -135,8 +162,6 @@ namespace VVVV.MSKinect.Nodes
                             this.FOutIndices[i * 3+1] = d[i].Second;
                             this.FOutIndices[i * 3 +2] = d[i].Third;
                         }
-
-                        
                     }
                     else
                     {
