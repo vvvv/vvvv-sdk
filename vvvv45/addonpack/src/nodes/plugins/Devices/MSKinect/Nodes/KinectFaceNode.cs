@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
+
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V1;
-using System.Runtime.InteropServices;
+using VVVV.Utils.VMath;
 using VVVV.MSKinect.Lib;
-using System.ComponentModel.Composition;
+
 using SlimDX.Direct3D9;
 using SlimDX;
 using Microsoft.Kinect;
@@ -62,10 +65,7 @@ namespace VVVV.MSKinect.Nodes
         private Skeleton[] skeletonData;
         private readonly Dictionary<int, SkeletonFaceTracker> trackedSkeletons = new Dictionary<int, SkeletonFaceTracker>();
 
-        private float INVTWOPI = 0.5f / (float)Math.PI;
-
         //private FaceTrackFrame frm;
-
 
         [ImportingConstructor()]
         public KinectFaceNode(IPluginHost host)
@@ -112,7 +112,7 @@ namespace VVVV.MSKinect.Nodes
                     {
                         this.FOutOK[cnt] = sft.frame.TrackSuccessful;
                         this.FOutPosition[cnt] = new Vector3(sft.frame.Translation.X, sft.frame.Translation.Y, sft.frame.Translation.Z);
-                        this.FOutRotation[cnt] = new Vector3(sft.frame.Rotation.X, sft.frame.Rotation.Y, sft.frame.Rotation.Z) * INVTWOPI;
+                        this.FOutRotation[cnt] = new Vector3(sft.frame.Rotation.X, sft.frame.Rotation.Y, sft.frame.Rotation.Z) * (float)VMath.DegToCyc;
 
                         EnumIndexableCollection<FeaturePoint, PointF> pp = sft.frame.GetProjected3DShape();
                         EnumIndexableCollection<FeaturePoint, Vector3DF> p = sft.frame.Get3DShape();
@@ -142,7 +142,7 @@ namespace VVVV.MSKinect.Nodes
                     {
                         this.FOutOK[cnt] = false;
                         this.FOutPosition[cnt] = new Vector3(sft.frame.Translation.X, sft.frame.Translation.Y, sft.frame.Translation.Z);
-                        this.FOutRotation[cnt] = new Vector3(sft.frame.Rotation.X, sft.frame.Rotation.Y, sft.frame.Rotation.Z) * INVTWOPI;
+                        this.FOutRotation[cnt] = new Vector3(sft.frame.Rotation.X, sft.frame.Rotation.Y, sft.frame.Rotation.Z) * (float)VMath.DegToCyc;
                         this.FOutIndices.SliceCount = 0;
                         this.FOutPPTs[cnt].SliceCount = 0;
                         this.FOutPts[cnt].SliceCount = 0;
