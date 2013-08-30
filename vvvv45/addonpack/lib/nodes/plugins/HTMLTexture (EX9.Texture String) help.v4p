@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.2.dtd" >
-   <PATCH nodename="D:\vvvv_dev\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\HTMLTexture (EX9.Texture String) help.v4p" systemname="Renderer (HTML String) help" filename="D:\vvvv_dev\vvvv\public\vvvv45\lib\nodes\plugins\Renderer (HTML String) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.2.dtd" >
+   <PATCH nodename="D:\vvvv_releases\vvvv_45beta30.2_x86\addonpack\lib\nodes\plugins\HTMLTexture (EX9.Texture String) help.v4p" systemname="Renderer (HTML String) help" filename="D:\vvvv_dev\vvvv\public\vvvv45\lib\nodes\plugins\Renderer (HTML String) help.v4p">
    <BOUNDS type="Window" left="0" top="0" width="10215" height="8940">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="3">
@@ -172,12 +172,14 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE systemname="HTTP (Network Get)" nodename="HTTP (Network Get)" componentmode="Hidden" id="69">
+   <NODE systemname="HTTP (Network Get String)" nodename="HTTP (Network Get)" componentmode="Hidden" id="69">
    <BOUNDS type="Node" left="2445" top="2715" width="100" height="100">
    </BOUNDS>
    <PIN pinname="URL" visible="1">
    </PIN>
    <PIN pinname="Body" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
    </PIN>
    </NODE>
    <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="69" dstpinname="URL">
@@ -202,6 +204,8 @@
    <PIN pinname="Render State Out" visible="1">
    </PIN>
    <PIN pinname="Source Blend Mode" slicecount="1" values="One">
+   </PIN>
+   <PIN pinname="Destination Blend Mode" slicecount="1" values="InvSrcAlpha">
    </PIN>
    </NODE>
    <LINK srcnodeid="71" srcpinname="Render State Out" dstnodeid="4" dstpinname="Render State">
