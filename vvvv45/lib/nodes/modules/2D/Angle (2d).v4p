@@ -1,0 +1,129 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\2D\Angle (2d).v4p" systemname="Angle (2d)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Angle (2d).v4p">
+   <BOUNDS type="Window" left="7755" top="885" width="7440" height="6750">
+   </BOUNDS>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1275" top="870" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1275" top="870" width="795" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="XY1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="0,0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1425" top="4530" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1425" top="4530" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Angle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="1275" top="1710" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="5" dstpinname="XY">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2265" top="885" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2265" top="885" width="795" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="XY2">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="0,0">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="2265" top="1725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="6" dstpinname="XY">
+   </LINK>
+   <INFO author="vvvv group" description="Returns the angle between two given 2d vectors" tags="vector">
+   </INFO>
+   <NODE id="10" nodename="Expr (Value Legacy)" systemname="Expr (Value Legacy)">
+   <BOUNDS height="0" left="1815" top="3045" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="A" visible="1" slicecount="1" values="-0.509601585116871">
+   </PIN>
+   <PIN pinname="Term" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="B" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="3915" top="1695" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7095" top="7755" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="3915" top="1695" type="Box" width="2925">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="|(arctan2(y, x)-arctan2(b, a))/(2*PI)|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Term" srcnodeid="9" srcpinname="Output String">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="X" dstnodeid="10" dstpinname="A">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Y" dstnodeid="10" dstpinname="B">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="X" dstnodeid="10" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y" dstnodeid="10" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>

@@ -1,0 +1,191 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.4.dtd" >
+   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\ToComplete\RSNodes\R (Value Advanced) help.v4p">
+   <BOUNDS height="7680" left="420" top="855" type="Window" width="7305">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1440" left="255" top="525" type="Box" width="4530">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Receives value from a S (Value Advanced) node in the patch with the same send string&cr;&lf;Please note that loops are not handled here, so you might have a one frame delay.&cr;&lf;Also you can use the same send string in multiple S nodes.&cr;&lf;In this case, matching R nodes work in LTP|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|R - Value Advanced|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4710" top="6345" type="Node" width="615">
+   </BOUNDS>
+   <BOUNDS height="270" left="4710" top="6345" type="Box" width="615">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4740" top="6705" type="Node" width="1785">
+   </BOUNDS>
+   <BOUNDS height="270" left="4740" top="6705" type="Box" width="1785">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="8" nodename="RSNodes.dll|VVVV.Nodes.RValueNode">
+   <BOUNDS height="0" left="5355" top="4050" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="5355" top="4050" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="4140" top="5580" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Receive String" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="7" nodename="RSNodes.dll|VVVV.Nodes.SValueNode">
+   <BOUNDS height="0" left="2955" top="5640" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2955" top="5640" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2700" top="4440" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Send String" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3180" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="3180" top="2370" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="4350" top="3225" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="MYVALUE">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Send String|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Send String" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Receive String" linkstyle="Bezier" srcnodeid="6" srcpinname="Output String">
+   <LINKPOINT x="3030" y="3330">
+   </LINKPOINT>
+   <LINKPOINT x="5205" y="3330">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="5" nodename="RSNodes.dll|VVVV.Nodes.SValueNode">
+   <BOUNDS height="0" left="1695" top="3870" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1695" top="3870" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2430" top="5160" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Send String" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Send String" linkstyle="Bezier" srcnodeid="6" srcpinname="Output String">
+   <LINKPOINT x="3030" y="3240">
+   </LINKPOINT>
+   <LINKPOINT x="1785" y="3240">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="4" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="1020" top="3300" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Period" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="4" srcpinname="Cycles">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4635" top="5085" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4635" top="5085" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="5235" top="5910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="285" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="285" top="2340" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="1050" top="3615" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Period" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2205" top="4920" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="2205" top="4920" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="2880" top="5850" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.14">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="390" top="4920" type="Node" width="1695">
+   </BOUNDS>
+   <BOUNDS height="270" left="390" top="4920" type="Box" width="1695">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Update value here --&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

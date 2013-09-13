@@ -1,0 +1,287 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\System\Keyboard (System Global) help.v4p">
+   <BOUNDS height="8145" left="9360" top="1185" type="Window" width="8835">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="12" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="525" top="1980" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5175" top="4680" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="435" left="525" top="1980" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="165" top="345" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="480" left="165" top="345" type="Box" width="4305">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="8160" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Returns the systemwide keyboardstate.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="165" top="0" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="165" top="0" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="8160" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Keyboard (System Global)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1005" top="2025" type="Node" width="1380">
+   </BOUNDS>
+   <BOUNDS height="270" left="1005" top="2025" type="Box" width="1380">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|&lt; enable || disable|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="165" top="1050" type="Node" width="8250">
+   </BOUNDS>
+   <BOUNDS height="495" left="165" top="1050" type="Box" width="4305">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|note that the number of simultaneously detected pressed keys varies with hardware and seems to default to around 4|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14">
+   <BOUNDS type="Node" left="450" top="7305" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="450" top="7305" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Keyboard (System Global)" systemname="Keyboard (System Global)" filename="%VVVV%\lib\nodes\modules\System\Keyboard (System Global).v4p" componentmode="Hidden">
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <BOUNDS type="Node" height="100" left="525" top="3660" width="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard Output" visible="1">
+   </PIN>
+   <PIN pinname="KeyCode" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard Input" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Keyboard Spread" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Enabled">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="16" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="525" top="5205" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="525" top="5205" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Keyboard" dstnodeid="16" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1455" top="4410" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1455" top="4410" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Key" dstnodeid="17" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="Keyboard (System Window)" componentmode="Hidden" id="15" systemname="Keyboard (System Window)" filename="%VVVV%\lib\nodes\modules\System\Keyboard (System Window).v4p">
+   <BOUNDS type="Node" left="1410" top="7320" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1455" top="3075" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1455" top="3075" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="s">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Repress Delay">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2325" top="3060" width="9960" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2325" top="3060" width="3885" height="780">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; the repress delay specifies how much time needs to pass after an initial keydown to have the key accepted as being continuously pressed.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="990" top="2580" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="990" top="2580" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="13" dstpinname="Keyboard Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1920" top="2565" width="2445" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1920" top="2565" width="2445" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; send keypresses to the system|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2475" top="4320" width="1710" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2475" top="4320" width="5820" height="525">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; the keys name as of:&cr;&lf;     http://msdn.microsoft.com/de-de/library/system.windows.forms.keys.aspx|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1485" top="5205" width="3360" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1485" top="5205" width="3360" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; the keyboardstate connection that fits into:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="KeyMatch (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (String)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="1665" top="5550" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1665" top="5550">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="RadioKeyMatch (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="RadioKeyMatch (String)" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="2700" top="5550" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2700" top="5550">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Typewriter (String)" filename="%VVVV%\addonpack\lib\nodes\plugins\TypeWriter.dll" nodename="Typewriter (String)" componentmode="Hidden" id="28">
+   <BOUNDS type="Node" left="4095" top="5550" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4095" top="5550">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="ApplyModifiers (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="ApplyModifiers (String)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="525" top="6120" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="525" top="6120">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Output Node" dstnodeid="29" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="525" top="6600" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="525" top="6600" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Output" dstnodeid="30" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1380" top="6600" width="255" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1380" top="6600" width="4920" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; shows the actual string representation of a given keyboardstate.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>

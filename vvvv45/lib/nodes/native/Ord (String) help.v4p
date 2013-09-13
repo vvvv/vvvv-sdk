@@ -1,0 +1,183 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Ord (String) help.v4p">
+   <BOUNDS height="7320" left="4560" top="4155" type="Window" width="8025">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1155" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7170" top="5400" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="420" left="1155" top="1380" type="Box" width="2220">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="abcdefghi0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3480" top="1290" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="3465" left="3480" top="1290" type="Box" width="4080">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Depending on the selected Format, a various number of letters/symbols (see list) is taken to calculate it&apos;s value.&cr;&lf;Use the offset to switch through the input string.&cr;&lf;&cr;&lf;Mainly used to convert values that come from a connected device that sends encoded values.&cr;&lf;&cr;&lf;This is quite a expert topic, so if u don&apos;t understand, what it&apos;s for, you&apos;ll probably not need this node right now.&cr;&lf;&cr;&lf;Info about Floating Point Numbers (IEEE)&cr;&lf;http://en.wikipedia.org/wiki/Floating-point&cr;&lf;&cr;&lf;Info about Integers&cr;&lf;http://en.wikipedia.org/wiki/Integral_data_type|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Ord (String)">
+   <BOUNDS height="0" left="1155" top="2220" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="Unsigned8Bit">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Offset" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="8" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="135" top="2775" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4890" top="3915" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1920" left="135" top="2775" type="Box" width="1095">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="1905" left="3450" top="5520" type="Node" width="810">
+   </BOUNDS>
+   <BOUNDS height="1395" left="3450" top="5520" type="Box" width="1380">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Unsigned8Bit 1&cr;&lf;Signed8Bit  1&cr;&lf;Unsigned16Bit 2&cr;&lf;Signed16Bit 2&cr;&lf;Unsigned32Bit 4&cr;&lf;Signed32Bit 4|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="I (Spreads)">
+   <BOUNDS height="0" left="1560" top="1860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname=".. To [" slicecount="1" values="10.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Offset" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1275" top="2760" type="Node" width="1050">
+   </BOUNDS>
+   <BOUNDS height="240" left="1275" top="2760" type="Box" width="1170">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|a = 97 (ASCII )|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1275" top="2985" type="Node" width="1050">
+   </BOUNDS>
+   <BOUNDS height="240" left="1275" top="2985" type="Box" width="1170">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|b = 98 (ASCII )|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1275" top="4410" type="Node" width="1050">
+   </BOUNDS>
+   <BOUNDS height="240" left="1275" top="4410" type="Box" width="1170">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|0 = 48 (ASCII )|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="465" left="15" top="390" type="Box" width="5985">
+   </BOUNDS>
+   <BOUNDS height="160" left="-330" top="24690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Converts a string to a numerical value by using the given binary number format for interpreting the string. returns 0 for empty |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="4035">
+   </BOUNDS>
+   <BOUNDS height="160" left="-330" top="24690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Ord - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="1905" left="4845" top="5520" type="Node" width="810">
+   </BOUNDS>
+   <BOUNDS height="1425" left="4845" top="5520" type="Box" width="1665">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Unsigned64Bit 8&cr;&lf;Signed64Bit 8&cr;&lf;IEEESingle  4&cr;&lf;IEEEDouble 8&cr;&lf;IEEEExtended 10|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="1905" left="3450" top="5190" type="Node" width="810">
+   </BOUNDS>
+   <BOUNDS height="285" left="3450" top="5190" type="Box" width="2760">
+   </BOUNDS>
+   <BOUNDS height="160" left="5160" top="60" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|FORMAT  CHARACTERS CONSIDERED&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

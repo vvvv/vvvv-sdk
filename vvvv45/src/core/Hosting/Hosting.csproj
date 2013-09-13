@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\Default.Core.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.Hosting</RootNamespace>
+    <AssemblyName>VVVV.Hosting</AssemblyName>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>..\..\..\..\common\src\thirdparty\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpDevelop.Dom">
+      <HintPath>..\..\..\..\common\src\thirdparty\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.Async">
+      <HintPath>..\..\..\..\common\src\thirdparty\Nito.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX">
+      <HintPath>..\..\..\..\common\src\thirdparty\$(PlatformTarget)\SlimDX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition.Codeplex">
+      <HintPath>..\..\..\..\common\src\thirdparty\System.ComponentModel.Composition.Codeplex.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExposedNodeService.cs" />
+    <Compile Include="DeviceService.cs" />
+    <Compile Include="ExportProviderUtils.cs" />
+    <Compile Include="Factories\AbstractFileFactory.cs" />
+    <Compile Include="Factories\DotNetPluginFactory.cs" />
+    <Compile Include="Factories\CSProjectFactory.cs" />
+    <Compile Include="Factories\EditorFactory.cs" />
+    <Compile Include="Factories\EffectsFactory.cs" />
+    <Compile Include="Factories\PatchFactory.cs" />
+    <Compile Include="Factories\StartableRegistry.cs" />
+    <Compile Include="Interfaces\EX9\IDXMeshPin.cs" />
+    <Compile Include="Interfaces\IInternalMainLoopEvent.cs" />
+    <Compile Include="Interfaces\IInternalMainLoopEventListener.cs" />
+    <Compile Include="IO\ComIStream.cs" />
+    <Compile Include="IO\ComStream.cs" />
+    <Compile Include="IO\PluginContainer.cs" />
+    <Compile Include="IO\PointerRegistry.cs" />
+    <Compile Include="IO\Pointers\ColorInput.cs" />
+    <Compile Include="IO\Pointers\ColorOutput.cs" />
+    <Compile Include="IO\Pointers\FastValueInput.cs" />
+    <Compile Include="IO\Pointers\TransformInput.cs" />
+    <Compile Include="IO\Pointers\TransformOutput.cs" />
+    <Compile Include="IO\Pointers\ValueInput.cs" />
+    <Compile Include="IO\Pointers\ValueOutput.cs" />
+    <Compile Include="IO\Streams\VectorConfigStreams.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainLoop.cs" />
+    <Compile Include="Graph\Node.cs" />
+    <Compile Include="Graph\Pin.cs" />
+    <Compile Include="Graph\Window.cs" />
+    <Compile Include="HDEHost.cs" />
+    <Compile Include="HostExportProvider.cs" />
+    <Compile Include="IInternalHDEHost.cs" />
+    <Compile Include="IInternalNodeInfoFactory.cs" />
+    <Compile Include="Interfaces\EX9\IInternalDXDeviceListener.cs" />
+    <Compile Include="Interfaces\EX9\IInternalDXDeviceService.cs" />
+    <Compile Include="Interfaces\EX9\IDXResourcePin.cs" />
+    <Compile Include="Interfaces\EX9\IDXTexturePin.cs" />
+    <Compile Include="Interfaces\IInternalExposedNodeListener.cs" />
+    <Compile Include="Interfaces\IInternalExposedNodeService.cs" />
+    <Compile Include="Interfaces\IInternalMainLoop.cs" />
+    <Compile Include="Interfaces\IInternalPluginHost.cs" />
+    <Compile Include="Interfaces\IInternalPluginHostListener.cs" />
+    <Compile Include="IO\DefaultConnectionHandler.cs" />
+    <Compile Include="IO\EnumStreamRegistry.cs" />
+    <Compile Include="IO\GenericNodeInterface.cs" />
+    <Compile Include="IO\IOContainerBase.cs" />
+    <Compile Include="IO\IOExportProvider.cs" />
+    <Compile Include="IO\IOFactory.cs" />
+    <Compile Include="IO\IORegistry.cs" />
+    <Compile Include="IO\IORegistryBase.cs" />
+    <Compile Include="IO\PinRegistry.cs" />
+    <Compile Include="IO\SpreadRegistry.cs" />
+    <Compile Include="IO\PluginIOContainer.cs" />
+    <Compile Include="IO\PluginIORegistry.cs" />
+    <Compile Include="IO\GenericIOContainer.cs" />
+    <Compile Include="IO\StreamRegistry.cs" />
+    <Compile Include="IVVVVHost.cs" />
+    <Compile Include="IO\Pins\BinSpread.cs" />
+    <Compile Include="IO\Pins\Config\ConfigPin.cs" />
+    <Compile Include="IO\Pins\DiffSpreadList.cs" />
+    <Compile Include="IO\Pins\Input\DiffInputBinSpread.cs" />
+    <Compile Include="IO\Pins\Input\DiffInputPin.cs" />
+    <Compile Include="IO\Pins\Input\DiffInputSpreadList.cs" />
+    <Compile Include="IO\Pins\Input\InputBinSpread.cs" />
+    <Compile Include="IO\Pins\Input\InputPin.cs" />
+    <Compile Include="IO\Pins\Input\InputSpreadList.cs" />
+    <Compile Include="IO\Pins\Output\OutputBinSpread.cs" />
+    <Compile Include="IO\Pins\Output\OutputPin.cs" />
+    <Compile Include="IO\Pins\Output\OutputSpreadList.cs" />
+    <Compile Include="IO\Pins\SpreadList.cs" />
+    <Compile Include="PluginLogger.cs" />
+    <Compile Include="Properties.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyNodeBrowserHost.cs" />
+    <Compile Include="ProxyNodeInfoFactory.cs" />
+    <Compile Include="Refactoring\Refactorer.cs" />
+    <Compile Include="Refactoring\XMLSnippets.cs" />
+    <Compile Include="StreamExportProvider.cs" />
+    <Compile Include="IO\Streams\GroupInStream.cs" />
+    <Compile Include="IO\Streams\MultiDimInStream.cs" />
+    <Compile Include="IO\Streams\MultiDimOutStream.cs" />
+    <Compile Include="IO\Streams\GroupOutStream.cs" />
+    <Compile Include="IO\Streams\PluginConfigStream.cs" />
+    <Compile Include="IO\Streams\PluginInStream.cs" />
+    <Compile Include="IO\Streams\PluginOutStream.cs" />
+    <Compile Include="IO\Streams\UnmanagedInStream.cs" />
+    <Compile Include="IO\Streams\UnmanagedOutStream.cs" />
+    <Compile Include="IO\Streams\UnmanagedVectorInStream.cs" />
+    <Compile Include="IO\Streams\UnmanagedVectorOutStream.cs" />
+    <Compile Include="VVVVLogger.cs" />
+    <Compile Include="Factories\FreeFrameFactory.cs" />
+    <Compile Include="Factories\VSTFactory.cs" />
+    <Compile Include="WindowInputNode.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\common\src\core\Core\Core.csproj">
+      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
+      <Name>Core %28core\Core%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\common\src\core\UtilsIL\UtilsIL.csproj">
+      <Project>{93CDB07F-0BB6-4891-B793-9C02114A88AE}</Project>
+      <Name>UtilsIL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\common\src\core\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\common\src\gui\PiccoloGraphicalEditor\PiccoloGraphicalEditor.csproj">
+      <Project>{304E1C6A-585F-4748-8E3B-33558E35B0D4}</Project>
+      <Name>PiccoloGraphicalEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\common\src\gui\WinFormsViewer\WinFormsViewer.csproj">
+      <Project>{98936436-EA28-437E-A2A4-CC7CAA532658}</Project>
+      <Name>WinFormsViewer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PluginInterfaces\PluginInterfaces.csproj">
+      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
+      <Name>PluginInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils3rdParty\Utils3rdParty.csproj">
+      <Project>{87863121-C124-4585-B3BB-7706F03ECC64}</Project>
+      <Name>Utils3rdParty</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
