@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
+
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V1;
-using System.Runtime.InteropServices;
+using VVVV.Utils.VMath;
 using VVVV.MSKinect.Lib;
-using System.ComponentModel.Composition;
+
 using SlimDX.Direct3D9;
 using SlimDX;
 using Microsoft.Kinect;
@@ -19,7 +22,7 @@ namespace VVVV.MSKinect.Nodes
 	            Version = "Microsoft", 
 	            Author = "vux", 
 	            Tags = "EX9",
-	           	Help = "Returns detailed 2D and 3D data describing the tracked face"))]
+	           	Help = "Returns detailed 2D and 3D data describing the tracked face")]
     public class KinectFaceNode : IPluginEvaluate, IPluginConnections
     {
         [Input("Kinect Runtime")]
@@ -36,6 +39,9 @@ namespace VVVV.MSKinect.Nodes
 
         [Output("Face Points")]
         private ISpread<ISpread<Vector3>> FOutPts;
+        
+        [Output("Face Normals")]
+		private ISpread<ISpread<Vector3>> FOutNormals;
 
         [Output("Projected Face Points")]
         private ISpread<ISpread<Vector2>> FOutPPTs;
@@ -62,10 +68,7 @@ namespace VVVV.MSKinect.Nodes
         private Skeleton[] skeletonData;
         private readonly Dictionary<int, SkeletonFaceTracker> trackedSkeletons = new Dictionary<int, SkeletonFaceTracker>();
 
-        private float INVTWOPI = 0.5f / (float)Math.PI;
-
         //private FaceTrackFrame frm;
-
 
         [ImportingConstructor()]
         public KinectFaceNode(IPluginHost host)
@@ -112,20 +115,44 @@ namespace VVVV.MSKinect.Nodes
                     {
                         this.FOutOK[cnt] = sft.frame.TrackSuccessful;
                         this.FOutPosition[cnt] = new Vector3(sft.frame.Translation.X, sft.frame.Translation.Y, sft.frame.Translation.Z);
-                        this.FOutRotation[cnt] = new Vector3(sft.frame.Rotation.X, sft.frame.Rotation.Y, sft.frame.Rotation.Z) * INVTWOPI;
+                        this.FOutRotation[cnt] = new Vector3(sft.frame.Rotation.X, sft.frame.Rotation.Y, sft.frame.Rotation.Z) * (float)VMath.DegToCyc;
 
                         EnumIndexableCollection<FeaturePoint, PointF> pp = sft.frame.GetProjected3DShape();
                         EnumIndexableCollection<FeaturePoint, Vector3DF> p = sft.frame.Get3DShape();
 
                         this.FOutPPTs[cnt].SliceCount = pp.Count;
                         this.FOutPts[cnt].SliceCount = p.Count;
+                        this.FOutNormals[cnt].SliceCount = p.Count;
+                        
+                        //Compute smoothed normals
+						Vector3[] norms = new Vector3[p.Count];
+						int[] inds = KinectRuntime.FACE_INDICES;
+						int tricount = inds.Length / 3;
+						for (int j = 0; j < tricount; j++)
+						{
+							int i1 = inds[j * 3];
+							int i2 = inds[j * 3 + 1];
+							int i3 = inds[j * 3 + 2];
+
+							Vector3 v1 = new Vector3(p[i1].X, p[i1].Y, p[i1].Z);
+							Vector3 v2 = new Vector3(p[i2].X, p[i2].Y, p[i2].Z);
+							Vector3 v3 = new Vector3(p[i3].X, p[i3].Y, p[i3].Z);
+
+							Vector3 faceEdgeA = v2 - v1;
+							Vector3 faceEdgeB = v1 - v3;
+							Vector3 norm = Vector3.Cross(faceEdgeB, faceEdgeA);
+
+							norms[i1] += norm; 
+							norms[i2] += norm; 
+							norms[i3] += norm;
+						}
 
                         for (int i = 0; i < pp.Count; i++)
                         {
                             this.FOutPPTs[cnt][i] = new Vector2(pp[i].X, pp[i].Y);
                             this.FOutPts[cnt][i] = new Vector3(p[i].X, p[i].Y,p[i].Z);
+                            this.FOutNormals[cnt][i] = Vector3.Normalize(norms[i]);
                         }
-
 
                         FaceTriangle[] d = sft.frame.GetTriangles();
                         this.FOutIndices.SliceCount = d.Length * 3;
@@ -135,14 +162,12 @@ namespace VVVV.MSKinect.Nodes
                             this.FOutIndices[i * 3+1] = d[i].Second;
                             this.FOutIndices[i * 3 +2] = d[i].Third;
                         }
-
-                        
                     }
                     else
                     {
                         this.FOutOK[cnt] = false;
                         this.FOutPosition[cnt] = new Vector3(sft.frame.Translation.X, sft.frame.Translation.Y, sft.frame.Translation.Z);
-                        this.FOutRotation[cnt] = new Vector3(sft.frame.Rotation.X, sft.frame.Rotation.Y, sft.frame.Rotation.Z) * INVTWOPI;
+                        this.FOutRotation[cnt] = new Vector3(sft.frame.Rotation.X, sft.frame.Rotation.Y, sft.frame.Rotation.Z) * (float)VMath.DegToCyc;
                         this.FOutIndices.SliceCount = 0;
                         this.FOutPPTs[cnt].SliceCount = 0;
                         this.FOutPts[cnt].SliceCount = 0;

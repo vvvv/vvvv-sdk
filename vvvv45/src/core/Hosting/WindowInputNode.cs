@@ -80,7 +80,8 @@ namespace VVVV.Hosting
         void HandleAfterComponentModeChange(object sender, ComponentModeEventArgs args)
         {
             var window = args.Window as Window;
-            TrySubclassWindow(window);
+            if (window != null)
+                TrySubclassWindow(window);
         }
 
         void HandleSubclassDisposed(object sender, EventArgs e)
