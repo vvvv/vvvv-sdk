@@ -1,0 +1,189 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33alpha14.1.dtd" >
+   <PATCH nodename="Y:\vvvv33_trunk\help\Sequencer (Animation) help.v4p">
+   <BOUNDS height="5745" left="2040" top="2445" type="Window" width="7380">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4785" top="1860" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4680" top="7095" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="495" left="4785" top="1860" type="Box" width="525">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="record">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3510" top="345" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5415" top="5040" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2010" left="3510" top="345" type="Box" width="990">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="input">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.569233076923077">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.0151515151515152">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="KeyMatch (String)">
+   <BOUNDS height="0" left="5265" top="1020" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Key Match" slicecount="1" values="&lt;space&gt;">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="&lt;SPACE&gt; Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="space">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="6" srcpinname="&lt;SPACE&gt; Output">
+   </LINK>
+   <NODE id="-2" nodename="Keyboard (System Global)">
+   <BOUNDS height="0" left="5280" top="630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Keyboard Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="-2" srcpinname="Keyboard Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3540" top="3015" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5715" top="5340" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1965" left="3540" top="3015" type="Box" width="990">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="replay">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Sequencer (Animation)">
+   <BOUNDS height="0" left="4455" top="2625" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Record" visible="1">
+   </PIN>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Record" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="750" left="15" top="960" type="Node" width="7305">
+   </BOUNDS>
+   <BOUNDS height="4290" left="15" top="960" type="Box" width="3165">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|press and hold space for recording the movement of the input slider.&cr;&lf;as soon as space is released, the record pin on the sequencer node is set to 0, recording stops and playback starts&cr;&lf;the sequence is stored and played as long as the record pin remains 0&cr;&lf;as soon as recording is started again, the old sequence is deleted and a new record starts.&cr;&lf;&cr;&lf;- if nothing has been recorded and the play pin = 0, the input value is passed through the node&cr;&lf;- if the input is changed, when the sequencer is running, the currently played sequenced is overruled by the value on the input pin.&cr;&lf;try to record a sequence and afterwards connect the lfo to the sequencer&apos;s input pin|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="5640" top="1860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="2700">
+   </BOUNDS>
+   <BOUNDS height="160" left="14760" top="39630" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Records values and plays them back|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="2940">
+   </BOUNDS>
+   <BOUNDS height="160" left="14760" top="39630" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sequencer - Animation|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
+   <BOUNDS type="Node" left="4875" top="3795" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7500" top="6660" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4875" top="3795" width="570" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Cycles" dstnodeid="9" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="5475" top="3780" width="3435" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5475" top="3780" width="1515" height="720">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|number of times the sequence has been played|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>
