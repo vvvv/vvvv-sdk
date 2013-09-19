@@ -9,6 +9,7 @@ using VVVV.Utils.Win32;
 using VVVV.Hosting.Graph;
 using System.Windows.Forms;
 using WindowsInput;
+using VVVV.Hosting;
 using VVVV.Hosting.IO;
 using System.Diagnostics;
 

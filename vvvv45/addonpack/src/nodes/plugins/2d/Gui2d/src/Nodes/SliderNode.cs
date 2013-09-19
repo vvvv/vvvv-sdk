@@ -179,7 +179,7 @@ namespace VVVV.Nodes
 					FColorOut[slice * 2] = s.CurrentCol;
 					FColorOut[slice * 2 + 1] = s.ColorSlider;
 					FValueOut[slice] = s.Value;
-					FMouseOverOut[slice] = s.MouseOver;
+					FMouseOverOut[slice] = s.GetAndResetMouseOver();
 					FHitOut[slice] = s.Hit;
 					FActiveOut[slice] = s.Active;
 					

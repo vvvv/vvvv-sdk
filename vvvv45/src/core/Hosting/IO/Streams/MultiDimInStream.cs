@@ -213,16 +213,17 @@ namespace VVVV.Hosting.IO.Streams
                     using (var binSizeReader = FBinSizeStream.GetCyclicReader())
                     {
                         var numSlicesToWrite = Length;
+                        var offsetIntoDataStream = 0;
                         while (numSlicesToWrite > 0)
                         {
                             var numSlicesToRead = Math.Min(numSlicesToWrite, binSizeBuffer.Length);
                             binSizeReader.Read(binSizeBuffer, 0, numSlicesToRead);
                             var offset = Length - numSlicesToWrite;
-                            var offsetIntoDataStream = 0;
                             for (int i = offset; i < offset + numSlicesToRead; i++)
                             {
                                 var binSize = SpreadUtils.NormalizeBinSize(dataLength, binSizeBuffer[i - offset]);
                                 var innerStream = this[i] as InnerStream;
+                                // Inner stream will use cyclic reader when offset + length > length of data stream.
                                 innerStream.Offset = offsetIntoDataStream;
                                 innerStream.Length = binSize;
                                 offsetIntoDataStream += binSize;

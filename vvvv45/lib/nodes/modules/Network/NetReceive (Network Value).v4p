@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Network\NetReceive (Network Value).v4p">
-   <BOUNDS height="6000" left="1620" top="3555" type="Window" width="9000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\NetReceive (Network Value).v4p">
+   <BOUNDS height="6000" left="13950" top="5310" type="Window" width="9000">
    </BOUNDS>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4680" top="3255" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="12345" top="12555" type="Window" width="215">
@@ -14,7 +14,7 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Connection Count|">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1275" top="5715" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="14520" top="6750" type="Window" width="215">
@@ -36,7 +36,7 @@
    </NODE>
    <LINK dstnodeid="16" dstpinname="Y Input Value" srcnodeid="15" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6060" top="285" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="14295" top="10425" type="Window" width="215">
@@ -47,11 +47,11 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Port">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="4446">
+   <PIN pinname="Y Input Value" slicecount="1" values="4444">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="4000">
    </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="10000">
+   <PIN pinname="Maximum" slicecount="1" values="65535">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -118,7 +118,7 @@
    </LINK>
    <LINK dstnodeid="10" dstpinname="Set" srcnodeid="9" srcpinname="Inverse Output">
    </LINK>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4290" top="270" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10035" top="5310" type="Window" width="215">
@@ -143,6 +143,8 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Protocol">
    </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
    </NODE>
    <NODE id="7" nodename="NOT (Boolean)" systemname="NOT (Boolean)">
    <BOUNDS height="0" left="4905" top="1245" type="Node" width="0">
@@ -166,7 +168,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="5" nodename="TCP (Network Server)" systemname="TCP (Network Server)">
+   <NODE id="5" nodename="TCP (Network Server)" systemname="TCP (Network Server String)" componentmode="Hidden">
    <BOUNDS height="0" left="4740" top="1920" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Enable" visible="1">
@@ -178,7 +180,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="4" nodename="UDP (Network Server)" systemname="UDP (Network Server)">
+   <NODE id="4" nodename="UDP (Network Server)" systemname="UDP (Network Server String)" componentmode="Hidden">
    <BOUNDS height="0" left="6000" top="1905" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Enable" visible="1">
