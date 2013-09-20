@@ -166,7 +166,7 @@ namespace VVVV.HDE.CodeEditor
                     if (csDoc != null)
                     {
                         csDoc.ContentChanged += HandleTextContentChanged;
-                        HandleTextContentChanged(csDoc, csDoc.TextContent);
+                        HandleTextContentChanged(csDoc, new ContentChangedEventArgs(csDoc.Content));
                     }
                 }
             }
@@ -390,11 +390,11 @@ namespace VVVV.HDE.CodeEditor
             doc.CommitUpdate();
         }
         
-        void HandleTextContentChanged(ITextDocument textDocument, string content)
+        void HandleTextContentChanged(object sender, ContentChangedEventArgs args)
         {
             try
             {
-                var document = textDocument as CSDocument;
+                var document = sender as CSDocument;
                 if (document.ParseInfo.MostRecentCompilationUnit != null)
                     Document.FoldingManager.UpdateFoldings(document.LocalPath, document.ParseInfo);
             }
@@ -567,10 +567,10 @@ namespace VVVV.HDE.CodeEditor
         /// <summary>
         /// Keeps the editor and the underlying ITextDocument in sync.
         /// </summary>
-        void TextDocumentContentChangedCB(IDocument doc, string content)
+        void TextDocumentContentChangedCB(object sender, ContentChangedEventArgs args)
         {
-            int length = Document.TextContent.Length;
-            Document.Replace(0, length, content);
+            var textContent = Document.TextContent;
+            Document.Replace(0, textContent.Length, textContent);
             Refresh();
         }
         

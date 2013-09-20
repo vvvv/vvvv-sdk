@@ -84,11 +84,11 @@ namespace VVVV.Core.Model.CS
             var resolver = new NRefactoryResolver(LanguageProperties.CSharp);
             return resolver.Resolve(expression, ParseInfo, TextContent);
         }
-        
-        protected override void OnContentChanged(string oldConent, string content)
+
+        protected override void OnContentChanged(Stream newContent)
         {
             FIsParseInfoValid = false;
-            base.OnContentChanged(oldConent, content);
+            base.OnContentChanged(newContent);
         }
 
         public CSParserResults Parse()
