@@ -1,0 +1,181 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\LinearFilter (Animation) help.v4p">
+   <BOUNDS height="5295" left="405" top="2460" type="Window" width="7260">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="9" managers="" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="3045" top="900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="6750" top="13755" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3450" left="3045" top="900" type="Box" width="3885">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Render Pass" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" visible="1" values="|0.62000,0.62000,0.62000,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="-2" nodename="Mouse (System Global)">
+   <BOUNDS height="0" left="1155" top="1140" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="VLine (GDI)">
+   <BOUNDS height="0" left="360" top="1770" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Render Pass" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="X" linkstyle="PolyLine" srcnodeid="-2" srcpinname="X">
+   <LINKPOINT x="1185" y="1575">
+   </LINKPOINT>
+   <LINKPOINT x="390" y="1575">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="7" nodename="LinearFilter (Animation)">
+   <BOUNDS height="0" left="1155" top="2910" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Go To Position" slicecount="1" visible="1" values="-0.59400">
+   </PIN>
+   <PIN pinname="Cyclics / second">
+   </PIN>
+   <PIN pinname="FilterTime" slicecount="10" visible="1" values="0.10000">
+   </PIN>
+   <PIN pinname="Cyclic" slicecount="1" values="NotCyclic">
+   </PIN>
+   <PIN pinname="Acceleration">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Point (GDI)">
+   <BOUNDS height="0" left="1155" top="3675" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Render Pass" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Type" slicecount="1" values="Asterisk">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="X" srcnodeid="7" srcpinname="Position Out">
+   </LINK>
+   <NODE id="5" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="1590" top="1590" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="Centered">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Add (Value)">
+   <BOUNDS height="0" left="1590" top="2070" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Go To Position" srcnodeid="-2" srcpinname="X">
+   </LINK>
+   <NODE id="3" nodename="Divide (Value)">
+   <BOUNDS height="0" left="1575" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="FilterTime" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="5" srcpinname="Output">
+   <LINKPOINT x="2310" y="2130">
+   </LINKPOINT>
+   <LINKPOINT x="2310" y="3465">
+   </LINKPOINT>
+   <LINKPOINT x="1350" y="3465">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="135" top="4515" type="Node" width="5205">
+   </BOUNDS>
+   <BOUNDS height="300" left="135" top="4515" type="Box" width="6840">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&quot;Filter Time&quot; defines, how long it takes to reach the &quot;Go to Position&quot; value with constant speed.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="15" top="390" type="Box" width="4920">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="9390" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Ramps from one value to another in a given time in a linear fashion|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="9390" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|LinearFilter - Animation|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Layer" dstnodeid="9" dstpinname="Layers">
+   <LINKPOINT x="1170" y="4305">
+   </LINKPOINT>
+   <LINKPOINT x="2670" y="4305">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
