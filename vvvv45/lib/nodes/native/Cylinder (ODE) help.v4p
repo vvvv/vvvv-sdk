@@ -1,0 +1,665 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33special9.1.dtd" >
+   <PATCH nodename="X:\vvvv33\help\Cylinder (ODE) help.v4p">
+   <BOUNDS height="10080" left="45" top="45" type="Window" width="7440">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="49" nodename="IOBox (String)">
+   <BOUNDS height="270" left="180" top="165" type="Node" width="660">
+   </BOUNDS>
+   <BOUNDS height="465" left="180" top="165" type="Box" width="2175">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Cylinder (ODE)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE id="48" nodename="Body (ODE)">
+   <BOUNDS height="0" left="3795" top="4665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Geom" visible="1">
+   </PIN>
+   <PIN pinname="Position Out XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion Out XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Auto Set" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Set Position" visible="1">
+   </PIN>
+   <PIN pinname="Set Rotation" visible="1">
+   </PIN>
+   <PIN pinname="Set Velocity" visible="1">
+   </PIN>
+   <PIN pinname="Set Angular Velocity" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion In XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Position In XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="47" nodename="IOBox (String)">
+   <BOUNDS height="270" left="195" top="615" type="Node" width="2670">
+   </BOUNDS>
+   <BOUNDS height="375" left="195" top="615" type="Box" width="3345">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Cylinder geometry in the physical ODE world.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="46" nodename="Translate (Transform Vector)">
+   <BOUNDS height="0" left="1680" top="5100" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="46" dstpinname="XYZ" srcnodeid="48" srcpinname="Position Out XYZ">
+   </LINK>
+   <NODE id="45" nodename="Rotate (Quaternion Vector)">
+   <BOUNDS height="0" left="1680" top="5610" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="45" dstpinname="Transform In" srcnodeid="46" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="45" dstpinname="Quaternion XYZW" srcnodeid="48" srcpinname="Quaternion Out XYZW">
+   </LINK>
+   <NODE id="44" nodename="DrawFixed (EX9.Effect)">
+   <BOUNDS height="0" left="885" top="6165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Transform" srcnodeid="45" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InAWindow" id="43" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="870" top="8865" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="7485" top="45" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="870" top="8865" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE id="42" nodename=":MODULES:\Camera (Transform Softimage).v4p">
+   <BOUNDS height="0" left="1845" top="8445" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="2850" top="6330" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1845" top="8445" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="43" dstpinname="View Transform" srcnodeid="42" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="43" dstpinname="Projection Transform" srcnodeid="42" srcpinname="Projection">
+   </LINK>
+   <NODE id="41" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="390" top="5700" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="Render State In" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Render State" srcnodeid="41" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="40" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3150" top="2865" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7590" top="5085" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="630" left="3150" top="2865" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,4.5,0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cylinder Initial Position|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="48" dstpinname="Position In XYZ" srcnodeid="40" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="39" nodename="Group (EX9)">
+   <BOUNDS height="0" left="885" top="7800" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="43" dstpinname="Layers" srcnodeid="39" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="38" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5070" top="2805" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4470" top="3420" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="705" left="5070" top="2805" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Start/Reset">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="48" dstpinname="Set Position" srcnodeid="38" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Set Rotation" srcnodeid="38" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Set Velocity" srcnodeid="38" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Set Angular Velocity" srcnodeid="38" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="37" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="660" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1395" top="3705" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="660" top="2880" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cylinder Radius|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="39" dstpinname="Layer 1" srcnodeid="44" srcpinname="Layer">
+   </LINK>
+   <NODE id="36" nodename="Euler (Quaternion Set Vector)">
+   <BOUNDS height="0" left="4260" top="2415" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Roll">
+   </PIN>
+   <PIN pinname="Pitch">
+   </PIN>
+   <PIN pinname="Yaw">
+   </PIN>
+   <PIN pinname="Rotate XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion XYZW" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="48" dstpinname="Quaternion In XYZW" srcnodeid="36" srcpinname="Quaternion XYZW">
+   </LINK>
+   <NODE componentmode="InABox" id="35" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3465" top="1455" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7890" top="5385" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="630" left="3465" top="1455" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="0.08,0,-0.08">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cylinder Initial Rotation|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="36" dstpinname="Rotate XYZ" srcnodeid="35" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="34" nodename="Cons (Spreads)">
+   <BOUNDS height="0" left="11235" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="33" nodename="Multiply (3d Dot)">
+   <BOUNDS height="0" left="10860" top="3855" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input2 XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Input1 XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="32" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8565" top="1935" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7590" top="5085" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="630" left="8565" top="1935" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,-7,0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Plane Position|">
+   </PIN>
+   </NODE>
+   <NODE id="31" nodename="Plane (ODE)">
+   <BOUNDS height="0" left="10575" top="5055" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Plane XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="ODE">
+   </PIN>
+   <PIN pinname="Density" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="30" nodename="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="8520" top="3090" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Resolution Y" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Resolution X" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Display">
+   </PIN>
+   </NODE>
+   <NODE id="29" nodename="DrawFixed (EX9.Effect)">
+   <BOUNDS height="0" left="9165" top="5100" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="28" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="8415" top="4740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="Mesh" srcnodeid="30" srcpinname="Mesh">
+   </LINK>
+   <NODE id="27" nodename="Scale (Transform Vector)">
+   <BOUNDS height="0" left="9480" top="4320" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="100,100,100">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="26" nodename="Translate (Transform Vector)">
+   <BOUNDS height="0" left="9480" top="3495" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="25" nodename="Rotate (Quaternion Vector)">
+   <BOUNDS height="0" left="9480" top="3915" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion XYZW" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="24" nodename="Euler (Quaternion Set Vector)">
+   <BOUNDS height="0" left="11250" top="2955" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Roll">
+   </PIN>
+   <PIN pinname="Pitch">
+   </PIN>
+   <PIN pinname="Yaw">
+   </PIN>
+   <PIN pinname="Rotate XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion XYZW" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9750" top="1935" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7890" top="5385" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="630" left="9750" top="1935" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="-0.25,0,0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Plane Rotation|">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="22" managers="" nodename="Rotate (Quaternion Point Vector)">
+   <PIN pinname="Quaternion XYZW" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="XYZ In " pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="XYZ Out " pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="11250" top="3360" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="XYZ Transformed" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="21" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="11040" top="1935" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8190" top="5685" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="630" left="11040" top="1935" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,0,1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Plane Normal Vector|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <BOUNDS height="270" left="11340" top="3840" type="Node" width="2520">
+   </BOUNDS>
+   <BOUNDS height="270" left="11340" top="3840" type="Box" width="2520">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|plane w = dot (position, normal)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="270" left="11985" top="2895" type="Node" width="3390">
+   </BOUNDS>
+   <BOUNDS height="525" left="11985" top="2895" type="Box" width="1875">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|(in Z direction, to fit with the displaying grid)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="270" left="8535" top="1335" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="300" left="8535" top="1335" type="Box" width="1560">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the plane (as floor):|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="17" nodename="World (ODE)">
+   <BOUNDS height="0" left="2025" top="7185" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Disable Still" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="480" left="1965" top="7515" type="Node" width="4050">
+   </BOUNDS>
+   <BOUNDS height="495" left="1965" top="7515" type="Box" width="4050">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ODE systems need a world node to enable the engine.&cr;&lf;The world node acts global, so open only one at a time.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="270" left="435" top="1575" type="Node" width="1335">
+   </BOUNDS>
+   <BOUNDS height="285" left="435" top="1575" type="Box" width="1590">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|a dynamic cylinder:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="31" dstpinname="Plane XYZW" srcnodeid="34" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="34" dstpinname="Input 2" srcnodeid="33" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="33" dstpinname="Input1 XYZ" srcnodeid="32" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="26" dstpinname="XYZ" srcnodeid="32" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="29" dstpinname="Render State" srcnodeid="28" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="29" dstpinname="Transform" srcnodeid="27" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Transform In" srcnodeid="26" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="27" dstpinname="Transform In" srcnodeid="25" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Quaternion XYZW" srcnodeid="24" srcpinname="Quaternion XYZW">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Quaternion XYZW" srcnodeid="24" srcpinname="Quaternion XYZW">
+   </LINK>
+   <LINK dstnodeid="24" dstpinname="Rotate XYZ" srcnodeid="23" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="34" dstpinname="Input 1" srcnodeid="22" srcpinname="XYZ Out ">
+   </LINK>
+   <LINK dstnodeid="33" dstpinname="Input2 XYZ" srcnodeid="22" srcpinname="XYZ Out ">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="XYZ In " srcnodeid="21" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="39" dstpinname="Layer 3" srcnodeid="29" srcpinname="Layer">
+   <LINKPOINT x="1275" y="7155">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="5" nodename="ColorChannel (EX9.RenderState)">
+   <BOUNDS height="0" left="7605" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Enable Green" slicecount="1" values="False">
+   </PIN>
+   <PIN pinname="Enable Blue" slicecount="1" values="False">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="28" dstpinname="Render State In" srcnodeid="5" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3555" top="8295" type="Node" width="285">
+   </BOUNDS>
+   <BOUNDS height="1305" left="3555" top="8295" type="Box" width="3675">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|If the falling object stops in the middle of the screen or collides with an invisible object, you probably have another ODE object in a different patch open (e.g. if you opened this patch by pressing F1 on a ODE node).|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <NODE id="51" nodename="Cylinder (ODE)">
+   <PIN pinname="Radius" visible="1">
+   </PIN>
+   <BOUNDS type="Node" height="0" left="1740" top="4035" width="0">
+   </BOUNDS>
+   <PIN pinname="Geom" visible="1">
+   </PIN>
+   <PIN pinname="Position In XYZ" slicecount="3" values="-2.42861286636753E-17,-2.42861286636753E-17,-2.42861286636753E-17">
+   </PIN>
+   <PIN pinname="Density" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Quaternion In XYZW" slicecount="4" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="Size XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="ODE">
+   </PIN>
+   <PIN pinname="Length" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="Y Output Value" dstnodeid="51" dstpinname="Radius">
+   </LINK>
+   <NODE id="52" nodename="Cylinder (EX9.Geometry)">
+   <BOUNDS height="0" left="600" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Depth" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Display">
+   </PIN>
+   <PIN pinname="Radius" visible="1">
+   </PIN>
+   <PIN pinname="Radius 2" visible="1">
+   </PIN>
+   <PIN pinname="Length" visible="1">
+   </PIN>
+   <PIN pinname="Radius 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Mesh" srcnodeid="52" srcpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Y Output Value" dstnodeid="52" dstpinname="Radius 2">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Y Output Value" dstnodeid="52" dstpinname="Radius 1">
+   </LINK>
+   <NODE componentmode="InABox" id="53" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1890" top="2280" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1695" top="4005" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1890" top="2280" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cylinder Lenght|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="53" srcpinname="Y Output Value" dstnodeid="52" dstpinname="Length">
+   </LINK>
+   <LINK srcnodeid="53" srcpinname="Y Output Value" dstnodeid="51" dstpinname="Length">
+   </LINK>
+   <LINK srcnodeid="51" srcpinname="Geom" dstnodeid="48" dstpinname="Geom">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Layer" dstnodeid="39" dstpinname="Layer 2">
+   <LINKPOINT x="1170" y="7020">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

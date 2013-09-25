@@ -1,0 +1,257 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Kinect (Devices OpenNI) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Kinect (Devices OpenNI) help.v4p" systemname="Kinect (Devices OpenNI) help">
+   <BOUNDS height="8565" left="5460" top="1395" type="Window" width="6915">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="450" left="255" top="525" type="Box" width="3795">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Provides access to a Kinect through the OpenNI API|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Kinect (Devices OpenNI)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="3" nodename="Kinect (Devices OpenNI)" systemname="Kinect (Devices OpenNI)">
+   <BOUNDS height="100" left="885" top="2310" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Configuration File">
+   </PIN>
+   <PIN pinname="Enabled">
+   </PIN>
+   <PIN pinname="Mirrored">
+   </PIN>
+   <PIN pinname="Driver" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="2925" top="2925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="735" left="2925" top="2925" type="Box" width="3390">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input String" srcnodeid="3" srcpinname="Status">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Enabled" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Configuration File" srcnodeid="7" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="900" top="1530" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="900" top="1530" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Mirrored" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1665" top="1620" type="Node" width="3135">
+   </BOUNDS>
+   <BOUNDS height="270" left="1665" top="1620" type="Box" width="3135">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; horizontally mirror the cameras images|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input String" srcnodeid="3" srcpinname="Driver">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2955" top="3780" type="Node" width="1395">
+   </BOUNDS>
+   <BOUNDS height="270" left="2955" top="3780" type="Box" width="1395">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|^ used drivers|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="12" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="885" top="2925" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="885" top="2925" width="795" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Context" dstnodeid="12" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="855" top="3225" width="5715" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="855" top="3225" width="1530" height="1155">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ kinect context needs to be connected to other kinect nodes for them to work|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="RGB (Kinect OpenNI)" filename="%VVVV%\addonpack\lib\nodes\plugins\OpenNIKinect.dll" nodename="RGB (Kinect OpenNI)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="855" top="5025" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="855" top="5025">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Depth (Kinect OpenNI)" filename="%VVVV%\addonpack\lib\nodes\plugins\OpenNIKinect.dll" nodename="Depth (Kinect OpenNI)" componentmode="Hidden" id="15">
+   <BOUNDS type="Node" left="855" top="5565" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="855" top="5565">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="User (Kinect OpenNI)" filename="%VVVV%\addonpack\lib\nodes\plugins\OpenNIKinect.dll" nodename="User (Kinect OpenNI)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="855" top="6060" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="855" top="6060">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Skeleton (Kinect OpenNI)" filename="%VVVV%\addonpack\lib\nodes\plugins\OpenNIKinect.dll" nodename="Skeleton (Kinect OpenNI)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="855" top="6600" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="855" top="6600">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Gesture (Kinect OpenNI)" filename="%VVVV%\addonpack\lib\nodes\plugins\OpenNIKinect.dll" nodename="Gesture (Kinect OpenNI)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="855" top="7140" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="855" top="7140">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Hand (Kinect OpenNI)" filename="%VVVV%\addonpack\lib\nodes\plugins\OpenNIKinect.dll" nodename="Hand (Kinect OpenNI)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="855" top="7635" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="855" top="7635">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2490" top="5025" width="3480" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2490" top="5025" width="3480" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; returns the rgb image as seen by the kinect|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2490" top="5565" width="3630" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2490" top="5565" width="3630" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; returns the depth image as seen by the kinect|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2490" top="6060" width="1665" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2490" top="6060" width="3465" height="345">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; returns an ID and a pixelmap per user|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2490" top="6600" width="2460" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2490" top="6600" width="2460" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; returns skeleton data per user|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2490" top="7140" width="1470" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2490" top="7140" width="1470" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; detects gestures|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2490" top="7635" width="1935" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2490" top="7635" width="1935" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; provides hand tracking|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>

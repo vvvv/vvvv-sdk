@@ -1,0 +1,265 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
+   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Source\RenderTarget\RenderTargetFisheye (EX9.Texture Source) help.v4p" systemname="RenderTargetFisheye (EX9.Texture Source) help" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Source\RenderTarget\RenderTargetFisheye (EX9.Texture Source) help.v4p">
+   <BOUNDS type="Window" left="10650" top="5250" width="9240" height="6000">
+   </BOUNDS>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="1">
+   <BOUNDS type="Node" left="1230" top="4485" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1230" top="4485" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10650" top="240" width="9240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="1155" top="3990" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Layer" dstnodeid="1" dstpinname="Layers" linkstyle="VHV">
+   <LINKPOINT x="1185" y="4373">
+   </LINKPOINT>
+   <LINKPOINT x="1245" y="4373">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="GouraudDirectional (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\GouraudDirectional.fx" nodename="GouraudDirectional (EX9.Effect)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="1095" top="2610" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Box (EX9.Geometry)" nodename="Box (EX9.Geometry)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="1215" top="2145" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Mesh" dstnodeid="3" dstpinname="Mesh" linkstyle="VHV">
+   <LINKPOINT x="1245" y="2513">
+   </LINKPOINT>
+   <LINKPOINT x="1260" y="2513">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="1890" top="1830" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="90">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="6.73">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <NODE systemname="Translate (Transform Vector)" nodename="Translate (Transform Vector)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="1740" top="2145" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="6" dstpinname="XYZ" linkstyle="VHV">
+   <LINKPOINT x="1950" y="2108">
+   </LINKPOINT>
+   <LINKPOINT x="2475" y="2108">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Transform Out" dstnodeid="3" dstpinname="Transform" linkstyle="VHV">
+   <LINKPOINT x="1740" y="2498">
+   </LINKPOINT>
+   <LINKPOINT x="1470" y="2498">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="2055" top="4890" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Aspect Width" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Height" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Actual Backbuffer Width" dstnodeid="9" dstpinname="Aspect Width" linkstyle="VHV">
+   <LINKPOINT x="2325" y="4823">
+   </LINKPOINT>
+   <LINKPOINT x="2325" y="4823">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Actual Backbuffer Height" dstnodeid="9" dstpinname="Aspect Height" linkstyle="VHV">
+   <LINKPOINT x="2520" y="4823">
+   </LINKPOINT>
+   <LINKPOINT x="2535" y="4823">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="RenderTargetFisheye (EX9.Texture Source)" filename="RenderTargetFisheye (EX9.Texture Source).v4p" nodename="RenderTargetFisheye (EX9.Texture Source)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="1110" top="3150" width="6090" height="270">
+   </BOUNDS>
+   <PIN pinname="View" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Projection" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" visible="1" values="16">
+   </PIN>
+   <BOUNDS type="Window" left="9660" top="7455" width="18525" height="10290">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Texture Out" dstnodeid="2" dstpinname="Texture" linkstyle="VHV">
+   <LINKPOINT x="1140" y="3705">
+   </LINKPOINT>
+   <LINKPOINT x="1170" y="3705">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="11" dstpinname="Layers" linkstyle="VHV">
+   <LINKPOINT x="1125" y="3015">
+   </LINKPOINT>
+   <LINKPOINT x="1125" y="3015">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="11" dstpinname="Aspect Ratio" hiddenwhenlocked="1" linkstyle="VHV">
+   <LINKPOINT x="2115" y="4140">
+   </LINKPOINT>
+   <LINKPOINT x="7140" y="4140">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="13">
+   <BOUNDS type="Node" left="5940" top="1170" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="5985" top="2100" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Inital Distance" slicecount="1" values="1.41">
+   </PIN>
+   <PIN pinname="Initial FOV" slicecount="1" values="0.37">
+   </PIN>
+   <PIN pinname="Initial Yaw" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="View" dstnodeid="11" dstpinname="View" linkstyle="VHV">
+   <LINKPOINT x="6135" y="2753">
+   </LINKPOINT>
+   <LINKPOINT x="5475" y="2753">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Projection" dstnodeid="11" dstpinname="Projection" linkstyle="VHV">
+   <LINKPOINT x="6315" y="2760">
+   </LINKPOINT>
+   <LINKPOINT x="6315" y="2760">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7110" top="645" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7110" top="645" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Inital Distance|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Inital Distance" linkstyle="VHV">
+   <LINKPOINT x="7110" y="1493">
+   </LINKPOINT>
+   <LINKPOINT x="6630" y="1493">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7065" top="1275" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7065" top="1275" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.4">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Initial FOV|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Initial FOV" linkstyle="VHV">
+   <LINKPOINT x="7065" y="1808">
+   </LINKPOINT>
+   <LINKPOINT x="6840" y="1808">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="90" top="420" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="90" top="420" type="Box" width="2865">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|rendering with &quot;fisheye lens&quot; camera|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="90" top="45" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="90" top="45" type="Box" width="5520">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|RenderTargetFisheye - EX9.Texture Source|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|see also|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6750" top="4305" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="255" left="6750" top="4305" type="Node" width="825">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="RenderTarget (EX9.Texture Source)" filename="RenderTarget (EX9.Texture Source).v4p" nodename="RenderTarget (EX9.Texture Source)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="6840" top="4590" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Actual Backbuffer Width" dstnodeid="11" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Actual Backbuffer Height" dstnodeid="11" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Output" dstnodeid="14" dstpinname="Initial Yaw">
+   </LINK>
+   </PATCH>

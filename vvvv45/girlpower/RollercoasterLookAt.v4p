@@ -1,0 +1,273 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.1.dtd" >
+   <PATCH nodename="C:\_vvvv\public sources\_TRUNK vvvv\girlpower\RollercoasterLookAt.v4p">
+   <BOUNDS height="6570" left="2925" top="5580" type="Window" width="8295">
+   </BOUNDS>
+   <NODE id="16" nodename="MovingTriad (3d Vector)">
+   <BOUNDS height="0" left="4245" top="2520" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Velocity XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Acceleration XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Normal XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Up XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Tangent XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Oscillator (Animation)">
+   <BOUNDS height="0" left="4005" top="1575" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   <PIN pinname="Acceleration Out" visible="1">
+   </PIN>
+   <PIN pinname="Cyclics / second" slicecount="1" values="0.31">
+   </PIN>
+   <PIN pinname="FilterTime" slicecount="1" values="15.51">
+   </PIN>
+   <PIN pinname="Cyclic" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="4005" top="735" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="111">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="11.35">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Position XYZ" srcnodeid="15" srcpinname="Position Out">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Velocity XYZ" srcnodeid="15" srcpinname="Velocity Out">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Acceleration XYZ" srcnodeid="15" srcpinname="Acceleration Out">
+   </LINK>
+   <NODE id="13" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="4050" top="240" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="0.71">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Random Seed" srcnodeid="13" srcpinname="Cycles">
+   </LINK>
+   <NODE id="12" nodename="ParallelEpiped (Transform Vector)">
+   <BOUNDS height="0" left="3750" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="XAxis XYZ" visible="1">
+   </PIN>
+   <PIN pinname="YAxis XYZ" visible="1">
+   </PIN>
+   <PIN pinname="ZAxis XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="YAxis XYZ" srcnodeid="16" srcpinname="Up XYZ">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Position XYZ" srcnodeid="15" srcpinname="Position Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="11" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\Transform\">
+   <BOUNDS height="0" left="1650" top="5160" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="14235" left="675" top="2670" type="Window" width="15825">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1650" top="5160" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="4935" top="4380" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ">
+   </PIN>
+   <PIN pinname="X" pintype="Input" slicecount="1" visible="1" values="4.3">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="1.69">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="XAxis XYZ" srcnodeid="16" srcpinname="Tangent XYZ">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="ZAxis XYZ" srcnodeid="16" srcpinname="Normal XYZ">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Go To Position" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Transform In" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="9" nodename="LookAt (Transform Vector)">
+   <BOUNDS height="0" left="1290" top="4260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="LookAt XYZ" visible="1">
+   </PIN>
+   <PIN pinname="UpVector XYZ" slicecount="3" values="0,0.9,0">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="8" nodename=":MODULES:\vvvv group\VVVV\TestCamera (VVVV).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\VVVV\">
+   <BOUNDS height="0" left="915" top="5655" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="9060" left="10725" top="6150" type="Window" width="10305">
+   </BOUNDS>
+   <BOUNDS height="3600" left="915" top="5655" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="testcamera" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="othercamera" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="testcamera" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="othercamera" srcnodeid="11" srcpinname="View Projection">
+   </LINK>
+   <NODE id="7" nodename="Perspective (Transform)">
+   <BOUNDS height="0" left="480" top="3495" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="0.35">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="20">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Transform In" srcnodeid="7" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="6" nodename="PILLOW (DX9)">
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS height="0" left="4785" top="4935" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Color" slicecount="1" values="|0.00000,0.61085,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Fade Color" slicecount="1" values="|0.00097,0.00029,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Render Pass" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Fade Amount" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Round Edges" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="5" nodename="Group (EX9)">
+   <BOUNDS height="0" left="4230" top="5445" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Layers" srcnodeid="5" srcpinname="Layer">
+   </LINK>
+   <NODE id="4" nodename="GetSlice (Spreads)">
+   <BOUNDS height="0" left="1695" top="3465" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="15" srcpinname="Position Out">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="LookAt XYZ" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="GetSlice (Node)">
+   <BOUNDS height="0" left="2655" top="3465" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1425" top="1530" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4350" top="9900" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1425" top="1530" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Index" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Index" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input Node" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="1" nodename=":MODULES:\vvvv group\EX9\Axis (DX9).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\EX9\">
+   <BOUNDS height="0" left="2355" top="3945" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="4980" top="12375" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2355" top="3945" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Transform" srcnodeid="3" srcpinname="Output Node">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Layer 1" srcnodeid="1" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Layer 2" srcnodeid="6" srcpinname="Layer">
+   </LINK>
+   <NODE id="0" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="6825" top="4725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Add">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Render State" srcnodeid="0" srcpinname="Render State Out">
+   </LINK>
+   </PATCH>

@@ -1,0 +1,519 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\( plants )\_root_plants.v4p" componentmode="InAWindow">
+   <BOUNDS height="4065" left="1410" top="8490" type="Window" width="7800">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="30" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1740" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6495" top="8145" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1740" top="2565" type="Box" width="885">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Plant Count|">
+   </PIN>
+   </NODE>
+   <NODE id="29" nodename="RandomSpread (Spreads Legacy)" systemname="RandomSpread (Spreads Legacy)">
+   <BOUNDS height="0" left="4245" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Standard Deviation" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" visible="1" values="40">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="Spread Count" srcnodeid="30" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="28" nodename="RandomSpread (Spreads Legacy)" systemname="RandomSpread (Spreads Legacy)">
+   <BOUNDS height="0" left="5490" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Standard Deviation" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" visible="1" values="30">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="28" dstpinname="Spread Count" srcnodeid="30" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InAWindow" id="27" managers="" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="270" left="2610" top="10170" type="Node" width="2280">
+   </BOUNDS>
+   <BOUNDS height="8040" left="1410" top="450" type="Window" width="7800">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2610" top="10170" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.75269,0.75269,0.75269,1.00000|">
+   </PIN>
+   <PIN pinname="Clear" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   </NODE>
+   <NODE id="26" managers="" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="1650" top="7410" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="25" managers="" nodename="SetAlpha (Color)" systemname="SetAlpha (Color)">
+   <BOUNDS height="0" left="2715" top="6105" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Saturation">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Color" srcnodeid="25" srcpinname="Output">
+   </LINK>
+   <NODE id="24" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="0" left="2640" top="9540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer 4" visible="1">
+   </PIN>
+   <PIN pinname="Layer 5" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="27" dstpinname="Layers" srcnodeid="24" srcpinname="Layer">
+   </LINK>
+   <NODE id="23" nodename="DynamicTexture (EX9.Texture Color)" systemname="DynamicTexture (EX9.Texture Color)">
+   <BOUNDS height="0" left="5355" top="7290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="22" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="4545" top="7680" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Space" slicecount="1" values="Projection">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.67742,0.67742,0.67742,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Texture" srcnodeid="23" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="21" nodename="HSL (Color Join)" systemname="HSL (Color Join)">
+   <BOUNDS height="0" left="5940" top="6795" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Hue" slicecount="1" visible="1" values="0.14">
+   </PIN>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" slicecount="1" values="0.64">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" values="0.71">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Color" srcnodeid="21" srcpinname="Output">
+   </LINK>
+   <NODE id="20" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS height="0" left="4710" top="7260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Layer 1" srcnodeid="22" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Transform" srcnodeid="20" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="19" nodename="LinearSpread (Spreads)" systemname="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="6255" top="6420" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0.8">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0.62">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Lightness" srcnodeid="19" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InAWindow" filename="%VVVV%\girlpower\( plants )\plants.v4p" id="18" managers="" nodename="plants.v4p" systemname="plants" path="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\( plants )\">
+   <BOUNDS height="270" left="1380" top="4995" type="Node" width="4575">
+   </BOUNDS>
+   <BOUNDS height="4065" left="1410" top="8490" type="Window" width="7800">
+   </BOUNDS>
+   <BOUNDS left="1380" top="4995" type="Box">
+   </BOUNDS>
+   <PIN pinname="Origin X" visible="1">
+   </PIN>
+   <PIN pinname="Origin Z" visible="1">
+   </PIN>
+   <PIN pinname="Goal X" visible="1">
+   </PIN>
+   <PIN pinname="Goal Z" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Curve Count">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Run" visible="1">
+   </PIN>
+   <PIN pinname="Zeitversatz %">
+   </PIN>
+   <PIN pinname="Duration (seconds)">
+   </PIN>
+   <PIN pinname="Ants Count" visible="1">
+   </PIN>
+   <PIN pinname="Anim Position" visible="1">
+   </PIN>
+   <PIN pinname="rs t" pintype="Input" slicecount="10" visible="-1" values="0,0,0,0,0,0,0,0,0,0">
+   </PIN>
+   <PIN pinname="rs angle" pintype="Input" slicecount="10" visible="-1" values="0,0,0,0,0,0,0,0,0,0">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Goal Radius" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Random Offset" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Controls per Curve" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Alpha" srcnodeid="18" srcpinname="Alpha">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Origin X" srcnodeid="29" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Goal X" srcnodeid="29" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Origin Z" srcnodeid="28" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Goal Z" srcnodeid="28" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="24" dstpinname="Layer 2" srcnodeid="18" srcpinname="Layer">
+   </LINK>
+   <NODE id="17" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="1770" top="6615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Filename" slicecount="1" values="|..\..\lib\assets\images\ring thin.bmp|">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Texture" srcnodeid="17" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="24" dstpinname="Layer 3" srcnodeid="26" srcpinname="Layer">
+   </LINK>
+   <NODE id="16" nodename="Blend (EX9.RenderState)" systemname="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="945" top="6405" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Add">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Render State" srcnodeid="16" srcpinname="Render State Out">
+   </LINK>
+   <NODE id="15" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="0" left="1545" top="6210" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="1.12">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Transform" srcnodeid="15" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Transform In" srcnodeid="18" srcpinname="Transform">
+   </LINK>
+   <NODE id="14" nodename="Perspective (Transform)" systemname="Perspective (Transform)">
+   <BOUNDS height="0" left="5595" top="9480" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" visible="1" values="200">
+   </PIN>
+   <PIN pinname="FOV" slicecount="1" visible="1" values="0.25">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" visible="1" values="0.05">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="27" dstpinname="Projection" srcnodeid="14" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="13" nodename="Translate (Transform)" systemname="Translate (Transform)">
+   <BOUNDS height="0" left="4095" top="8880" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="25">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="-13.401463815001">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
+   <BOUNDS height="0" left="4230" top="9405" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.02">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="-3.46944695195361E-018">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="27" dstpinname="View" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Transform In" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="11" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="5100" top="8865" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="40">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Y" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\girlpower\( plants )\bubbleTrigger.v4p" id="10" nodename="bubbleTrigger.v4p" systemname="bubbleTrigger" path="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\( plants )\">
+   <BOUNDS height="0" left="1410" top="3825" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="8160" left="2910" top="1755" type="Window" width="6180">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1410" top="3825" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="boom" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Anim Position" srcnodeid="10" srcpinname="boom">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Spread Count" srcnodeid="30" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="9" nodename="KeyMatch (String)" systemname="KeyMatch (String)">
+   <BOUNDS height="0" left="5895" top="1755" type="Node" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Key Match" slicecount="1" values="&lt;SPACE&gt;">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="&lt;SPACEBAR&gt; Output" visible="1">
+   </PIN>
+   <PIN pinname="&lt;SPACE&gt; Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Random (Value)" systemname="Random (Value)">
+   <BOUNDS height="0" left="5880" top="3045" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="10000">
+   </PIN>
+   <PIN pinname="Is Integer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Add (Value)" systemname="Add (Value)">
+   <BOUNDS height="0" left="6480" top="3495" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="5000">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input 1" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="28" dstpinname="Random Seed" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="29" dstpinname="Random Seed" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE id="6" nodename="TOGEDGE (ANIMATION)" systemname="TogEdge (Animation)">
+   <BOUNDS height="0" left="5895" top="2310" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Up Edge" visible="1">
+   </PIN>
+   <PIN pinname="Bang On Create" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="OnOpen (VVVV)" systemname="OnOpen (VVVV)">
+   <BOUNDS height="0" left="4950" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="OR (Boolean)" systemname="OR (Boolean)">
+   <BOUNDS height="0" left="5520" top="2700" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="5" srcpinname="Bang">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input 2" srcnodeid="6" srcpinname="Up Edge">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Enabled" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="9" srcpinname="&lt;SPACE&gt; Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="135" top="1080" type="Node" width="600">
+   </BOUNDS>
+   <BOUNDS height="570" left="135" top="1080" type="Box" width="3675">
+   </BOUNDS>
+   <BOUNDS height="160" left="3795" top="-435" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|if you have no idea of how to use vvvv press F1 to open a very basic help window|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="135" top="1740" type="Node" width="450">
+   </BOUNDS>
+   <BOUNDS height="555" left="135" top="1740" type="Box" width="3675">
+   </BOUNDS>
+   <BOUNDS height="160" left="3795" top="-435" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|if you want to get rid of this patch on startup delete args.txt in vvvv&apos;s root directory|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="3105" top="120" type="Node" width="1095">
+   </BOUNDS>
+   <BOUNDS height="870" left="3105" top="120" type="Box" width="705">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|patch by rrrr|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="480" left="135" top="120" type="Node" width="1290">
+   </BOUNDS>
+   <BOUNDS height="945" left="135" top="120" type="Box" width="1305">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|vvvv33beta14.9 &cr;&lf;vvvv33beta15&cr;&lf;helo&cr;&lf;helo|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="31" nodename="Keyboard (System Global)" systemname="Keyboard (System Global)">
+   <BOUNDS height="100" left="5895" top="1125" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="31" srcpinname="Keyboard Output">
+   </LINK>
+   </PATCH>

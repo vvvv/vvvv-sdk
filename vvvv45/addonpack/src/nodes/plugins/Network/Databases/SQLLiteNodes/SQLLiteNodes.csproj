@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="..\..\..\Default.Plugin.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{ACB8D084-7F60-414B-A8AF-ED2C86BD1B4D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SQLLiteNodes</RootNamespace>
+    <AssemblyName>SQLLiteNodes</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Datatypes\SQLiteDataType.cs" />
+    <Compile Include="Nodes\SQLiteExecBatchNode.cs" />
+    <Compile Include="Nodes\SQLLiteDatabaseNode.cs" />
+    <Compile Include="Nodes\SQLiteDeleteNode.cs" />
+    <Compile Include="Nodes\SQLiteInsertNode.cs" />
+    <Compile Include="Nodes\SQLiteSelectNode.cs" />
+    <Compile Include="Nodes\SQLiteUpdateNode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\src\core\PluginInterfaces\PluginInterfaces.csproj">
+      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
+      <Name>PluginInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\..\..\common\src\core\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BaseDatabaseNodes\BaseDatabaseNodes.csproj">
+      <Project>{D8586FB0-058B-4AC8-A493-FF5CAE2B2957}</Project>
+      <Name>BaseDatabaseNodes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
