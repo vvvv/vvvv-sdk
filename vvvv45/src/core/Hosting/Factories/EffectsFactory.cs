@@ -218,7 +218,8 @@ namespace VVVV.Hosting.Factories
             var project = nodeInfo.UserData as FXProject;
 
             //get the code of the FXProject associated with the nodeinfos filename
-            effectHost.SetEffect(nodeInfo.Filename, project.Code);
+            using (var code = project.GetCode())
+                effectHost.SetEffect(nodeInfo.Filename, new ComIStream(code));
 
             //now the effect is compiled in vvvv and we can access the errors
             string e = effectHost.GetErrors();

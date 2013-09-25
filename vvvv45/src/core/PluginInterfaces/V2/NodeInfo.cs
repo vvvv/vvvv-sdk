@@ -97,7 +97,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		IAddonFactory Factory { get; set; }
 		/// <summary>
-		/// Define if this node should be evaluated every frame, even if no outpur is read.
+		/// Define if this node should be evaluated every frame, even if no output is read.
 		/// </summary>
 		bool AutoEvaluate {get; set;}
 		/// <summary>
