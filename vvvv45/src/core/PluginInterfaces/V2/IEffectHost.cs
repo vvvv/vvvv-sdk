@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Win32;
 
 namespace VVVV.PluginInterfaces.V2
 {
@@ -9,7 +10,7 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IEffectHost : IAddonHost, INode
 	{
-		void SetEffect(string filename, string code);
+        void SetEffect(string filename, IStream code);
 	    string GetParameterDescription();
 		string GetErrors();	    
 	}

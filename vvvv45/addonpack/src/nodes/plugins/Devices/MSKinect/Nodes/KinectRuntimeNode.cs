@@ -9,7 +9,12 @@ using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Nodes
 {
-    [PluginInfo(Name = "Kinect", Category = "Devices",Version="Microsoft", Author = "vux", Tags = "EX9")]
+    [PluginInfo(Name = "Kinect", 
+	            Category = "Devices",
+	            Version="Microsoft", 
+	            Author = "vux", 
+	            Tags = "EX9",
+	            Help = "Provides access to a Kinect through the MSKinect API")]
     public class KinectRuntimeNode : IPluginEvaluate, IDisposable
     {
         [Input("Motor Angle", IsSingle = true,DefaultValue=0.5)]
@@ -146,10 +151,10 @@ namespace VVVV.MSKinect.Nodes
                 this.FOutDepthFOV.SliceCount = 1;
 
                 this.FOutColorFOV[0] = new Vector2D(this.runtime.Runtime.ColorStream.NominalHorizontalFieldOfView,
-                    this.runtime.Runtime.ColorStream.NominalVerticalFieldOfView);
+                                                    this.runtime.Runtime.ColorStream.NominalVerticalFieldOfView) * (float)VMath.DegToCyc;
 
-                this.FOutDepthFOV[0] = new Vector2D(this.runtime.Runtime.DepthStream.NominalHorizontalFieldOfView,
-                    this.runtime.Runtime.DepthStream.NominalVerticalFieldOfView);
+                this.FOutDepthFOV[0] = new Vector2D(this.runtime.Runtime.DepthStream.NominalHorizontalFieldOfView ,
+                    								this.runtime.Runtime.DepthStream.NominalVerticalFieldOfView) * (float)VMath.DegToCyc;
             }
 
             this.FOutKCnt[0] = KinectSensor.KinectSensors.Count;

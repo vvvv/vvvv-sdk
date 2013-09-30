@@ -13,7 +13,12 @@ using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Nodes
 {
-    [PluginInfo(Name = "World", Category = "Kinect", Version = "Microsoft", Author = "vux", Tags = "EX9, texture")]
+    [PluginInfo(Name = "World", 
+	            Category = "Kinect", 
+	            Version = "Microsoft", 
+	            Author = "vux", 
+	            Tags = "EX9, texture",
+	            Help = "Returns a A32B32G32R32F formatted texture with world-space coordinates encoded in each pixel")]
     public unsafe class KinectWorldTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]

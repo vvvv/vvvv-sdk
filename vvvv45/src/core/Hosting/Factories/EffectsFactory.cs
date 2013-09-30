@@ -93,19 +93,25 @@ namespace VVVV.Hosting.Factories
             if (!FProjects.TryGetValue(filename, out project))
             {
                 var isDX9 = true;
-                //check if this is a dx11 effect in that it does not contain "technique10 " or "technique11 "
-                using (var sr = new StreamReader(filename))
+
+                // check if file exists before attempt to open it - can happen because of a node info added
+                // event triggered by nodelist.xml file.
+                if (File.Exists(filename))
                 {
-                	var code = sr.ReadToEnd();
-                	//remove comments: between (* and *)
-                	code = Regex.Replace(code, @"/\*.*?\*/", "", RegexOptions.Singleline);
-                	//remove comments: from // to lineend
-                	code = Regex.Replace(code, @"//.*?\n", "", RegexOptions.Singleline);
-                    
-                    //if the rest of the code contains "technique10 " or "technique11 " this must be a dx11 effect
-					if (code.Contains("technique10 ") || code.Contains("technique11 "))
-                		isDX9 = false;
-            	}
+                    //check if this is a dx11 effect in that it does not contain "technique10 " or "technique11 "
+                    using (var sr = new StreamReader(filename))
+                    {
+                        var code = sr.ReadToEnd();
+                        //remove comments: between (* and *)
+                        code = Regex.Replace(code, @"/\*.*?\*/", "", RegexOptions.Singleline);
+                        //remove comments: from // to lineend
+                        code = Regex.Replace(code, @"//.*?\n", "", RegexOptions.Singleline);
+
+                        //if the rest of the code contains "technique10 " or "technique11 " this must be a dx11 effect
+                        if (code.Contains("technique10 ") || code.Contains("technique11 "))
+                            isDX9 = false;
+                    }
+                }
 
                 if (isDX9)
                 {
@@ -212,7 +218,8 @@ namespace VVVV.Hosting.Factories
             var project = nodeInfo.UserData as FXProject;
 
             //get the code of the FXProject associated with the nodeinfos filename
-            effectHost.SetEffect(nodeInfo.Filename, project.Code);
+            using (var code = project.GetCode())
+                effectHost.SetEffect(nodeInfo.Filename, new ComIStream(code));
 
             //now the effect is compiled in vvvv and we can access the errors
             string e = effectHost.GetErrors();

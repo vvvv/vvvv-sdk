@@ -14,7 +14,12 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.MSKinect.Nodes
 {
-    [PluginInfo(Name = "Player", Category = "Kinect", Version = "Microsoft", Author = "vux", Tags = "EX9, texture")]
+    [PluginInfo(Name = "Player", 
+	            Category = "Kinect", 
+	            Version = "Microsoft", 
+	            Author = "vux", 
+	            Tags = "EX9, texture",
+	            Help = "?")]
     public class KinectPlayeTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]
