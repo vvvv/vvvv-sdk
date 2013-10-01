@@ -331,6 +331,16 @@ namespace VVVV.PluginInterfaces.V2
         {
             get;
         }
+        
+        		
+		/// <summary>
+		/// Indicates whether this IHDEHost is running in encypted mode.
+		/// </summary>
+		bool IsBlackBoxMode
+		{
+			get;
+		}
+        
 	}
 	#endregion IHDEHost
 	
