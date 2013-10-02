@@ -222,7 +222,7 @@ namespace VVVV.Hosting.Factories
         protected void DeleteArtefacts(string dir)
         {
             // Nothing to do if not existent.
-            if (!Directory.Exists(dir)) return;
+            if (FHDEHost.IsBlackBoxMode || !Directory.Exists(dir)) return;
             
             // Dynamic plugins generate a new assembly everytime they are compiled.
             // Cleanup old assemblies.
