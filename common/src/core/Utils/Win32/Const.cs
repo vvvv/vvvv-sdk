@@ -15,5 +15,6 @@ namespace VVVV.Utils.Win32
         public const uint MAPVK_VK_TO_CHAR = 0x02;
         public const uint MAPVK_VSC_TO_VK_EX = 0x03;
         public const uint MAPVK_VK_TO_VSC_EX = 0x04;
+        public static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
     }
 }

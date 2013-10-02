@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.IO;
-using System.ComponentModel.Composition;
-using VVVV.Utils.Win32;
-using VVVV.Hosting.Graph;
 using System.Windows.Forms;
-using WindowsInput;
 using VVVV.Hosting;
 using VVVV.Hosting.IO;
-using System.Diagnostics;
+using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.IO;
+using VVVV.Utils.Win32;
+using WindowsInput;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global", AutoEvaluate = true)]
-    public class GlobalKeyboardNode : GlobalInputNode
+    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global Legacy", AutoEvaluate = true)]
+    public class LegacyGlobalKeyboardNode : GlobalInputNode
     {
 #pragma warning disable 0649
         [Input("Keyboard", IsSingle = true)]
@@ -137,8 +135,8 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Window")]
-    public class WindowKeyboardNode : WindowInputNode
+    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Window Legacy")]
+    public class LegacyWindowKeyboardNode : WindowInputNode
     {
 #pragma warning disable 0649
         [Output("Keyboard", IsSingle = true)]

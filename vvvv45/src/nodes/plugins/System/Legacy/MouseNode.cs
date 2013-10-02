@@ -1,24 +1,25 @@
-﻿using System;
+﻿using SharpDX.RawInput;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows.Forms;
 using VVVV.Hosting;
 using VVVV.Hosting.IO;
+using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
+using VVVV.Utils.VMath;
 using VVVV.Utils.Win32;
 
 namespace VVVV.Nodes.Input
 {
-    public enum CycleMode
-    {
-        NoCycle,
-        Cycle,
-        IncrementCycle
-    }
-
-    [PluginInfo(Name = "Mouse", Category = "System", Version = "Global")]
-    public class GlobalMouseNode : GlobalInputNode
+    [PluginInfo(Name = "Mouse", Category = "System", Version = "Global Legacy")]
+    public class LegacyGlobalMouseNode : GlobalInputNode
     {
 #pragma warning disable 0649
         [Input("Cycle Mode", IsSingle = true)]
@@ -82,8 +83,8 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Mouse", Category = "System", Version = "Window")]
-    public class WindowMouseNode : WindowInputNode
+    [PluginInfo(Name = "Mouse", Category = "System", Version = "Window Legacy")]
+    public class LegacyWindowMouseNode : WindowInputNode
     {
 #pragma warning disable 0649
         [Output("Mouse", IsSingle = true)]
