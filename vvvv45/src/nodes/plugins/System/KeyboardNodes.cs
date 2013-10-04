@@ -263,7 +263,7 @@ namespace VVVV.Nodes.Input
 
         public void Evaluate(int spreadMax)
         {
-            //resubsribe if necessary
+            //resubscribe if necessary
             FSubscription.Update(KeyboardIn[0]);
             //process events
             FScheduler.Run(ScheduleModeIn[0]);

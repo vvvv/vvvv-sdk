@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
@@ -26,7 +27,6 @@ namespace VVVV.Nodes.Input
         [Import]
         protected IOFactory FIOFactory;
 
-        //IObservable<KeyNotification> FKeyNotifications;
         private readonly List<Subclass> FSubclasses = new List<Subclass>();
 
         public void OnImportsSatisfied()
@@ -40,36 +40,47 @@ namespace VVVV.Nodes.Input
                 .OfType<Window>()
                 .Where(w => w.UserInputWindow != null && w.UserInputWindow.InputWindowHandle != IntPtr.Zero)
                 .Select(w => Subclass.Create(w.UserInputWindow.InputWindowHandle))
-                .Do(s => FSubclasses.Add(s))
+                .Do(s =>
+                    {
+                        s.Disposed += HandleSubclassDisposed;
+                        FSubclasses.Add(s);
+                        SubclassCreated(s);
+                    }
+                )
                 .SelectMany(s => Observable.FromEventPattern<WMEventArgs>(s, "WindowMessage"))
                 .Select(p => p.EventArgs)
                 .Where(_ => FEnabledIn.SliceCount > 0 && FEnabledIn[0]);
-                //.Where(e => e.Message >= WM.KEYFIRST && e.Message <= WM.KEYLAST)
-                //.Select<WMEventArgs, KeyNotification>(e =>
-                //    {
-                //        switch (e.Message)
-                //        {
-                //            case WM.KEYDOWN:
-                //            case WM.SYSKEYDOWN:
-                //                    return new KeyDownNotification(e);
-                //            case WM.CHAR:
-                //            case WM.SYSCHAR:
-                //                    return new KeyPressNotification(e);
-                //            case WM.KEYUP:
-                //            case WM.SYSKEYUP:
-                //                    return new KeyUpNotification(e);
-                //        }
-                //        return null;
-                //    }
-                //);
             Initialize(windowMessages);
+        }
+
+        void HandleSubclassDisposed(object sender, EventArgs e)
+        {
+            var subclass = sender as Subclass;
+            if (subclass != null)
+            {
+                FSubclasses.Remove(subclass);
+                SubclassDestroyed(subclass);
+            }
         }
 
         protected abstract void Initialize(IObservable<WMEventArgs> windowMessages);
 
+        protected virtual void SubclassCreated(Subclass subclass)
+        {
+        }
+
+        protected virtual void SubclassDestroyed(Subclass subclass)
+        {
+        }
+
+        protected ReadOnlyCollection<Subclass> Subclasses
+        {
+            get { return FSubclasses.AsReadOnly(); }
+        }
+
         public virtual void Dispose()
         {
-            foreach (var subclass in FSubclasses)
+            foreach (var subclass in FSubclasses.ToArray())
                 subclass.Dispose();
             FSubclasses.Clear();
         }

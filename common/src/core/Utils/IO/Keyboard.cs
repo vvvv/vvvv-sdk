@@ -62,6 +62,15 @@ namespace VVVV.Utils.IO
             }
         }
 
+        //public void Dispose()
+        //{
+        //    if (FSubscription != null)
+        //    {
+        //        FSubscription.Dispose();
+        //        FSubscription = null;
+        //    }
+        //}
+
         private IEnumerable<KeyNotification> GenerateKeyPressNotifications(KeyNotification n)
         {
             if (n.Kind == KeyNotificationKind.KeyDown)
@@ -76,5 +85,46 @@ namespace VVVV.Utils.IO
             else
                 yield return n;
         }
+
+        //private KeyboardState FState;
+        //public KeyboardState State
+        //{
+        //    get
+        //    {
+        //        if (FState == null)
+        //            Subscribe();
+        //        return FState;
+        //    }
+        //}
+
+        //private void Subscribe()
+        //{
+        //    FState = new KeyboardState();
+        //    FSubscription = KeyNotifications.Subscribe(notification =>
+        //        {
+        //            var capsLock = Control.IsKeyLocked(Keys.CapsLock);
+        //            var chars = Enumerable.Empty<char>();
+        //            var keys = Enumerable.Empty<Keys>();
+        //            switch (notification.Kind)
+        //            {
+        //                case KeyNotificationKind.KeyDown:
+        //                    var keyDown = notification as KeyDownNotification;
+        //                    keys = FState.KeyCodes.Concat(new[] { keyDown.Value.KeyCode });
+        //                    break;
+        //                case KeyNotificationKind.KeyPress:
+        //                    var keyPress = notification as KeyPressNotification;
+        //                    chars = new[] { keyPress.Value.KeyChar };
+        //                    keys = State.KeyCodes;
+        //                    break;
+        //                case KeyNotificationKind.KeyUp:
+        //                    var keyUp = notification as KeyUpNotification;
+        //                    keys = State.KeyCodes.Except(new[] { keyUp.Value.KeyCode });
+        //                    break;
+        //            }
+        //            // TODO: Find way to retrieve time
+        //            FState = new KeyboardState(keys, chars, capsLock, 0);
+        //        }
+        //    );
+        //}
     }
 }

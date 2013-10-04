@@ -19,5 +19,7 @@ namespace VVVV.Utils.Win32
         public readonly WM Message;
         public readonly IntPtr WParam;
         public readonly IntPtr LParam;
+        // If true DefWindowProc won't be called
+        public bool Handled;
     }
 }
