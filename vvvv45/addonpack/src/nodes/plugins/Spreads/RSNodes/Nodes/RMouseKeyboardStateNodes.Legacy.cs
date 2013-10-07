@@ -8,7 +8,7 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes
 {
-    [PluginInfo(Name = "R", Category = "MouseState", Version = "Advanced", Author = "vux")]
+    [PluginInfo(Name = "R", Category = "MouseState", Version = "Advanced Legacy", Author = "vux")]
     public class RMouseStateNode : IPluginEvaluate, IDisposable
     {
 
@@ -85,7 +85,7 @@ namespace VVVV.Nodes
         #endregion
     }
 
-    [PluginInfo(Name = "R", Category = "KeyboardState", Version = "Advanced", Author = "vux")]
+    [PluginInfo(Name = "R", Category = "KeyboardState", Version = "Advanced Legacy", Author = "vux")]
     public class RKeyStateNode : IPluginEvaluate, IDisposable
     {
 
