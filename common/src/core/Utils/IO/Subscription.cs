@@ -4,11 +4,10 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using System.Text;
-using VVVV.Utils.IO;
 
-namespace VVVV.Nodes.Input
+namespace VVVV.Utils.IO
 {
-    class Subscription<TSource, TNotification> : IDisposable
+    public class Subscription<TSource, TNotification> : IDisposable
         where TSource : class
     {
         private readonly Action<TNotification> FOnNext;
