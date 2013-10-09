@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta31.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\06_PlayingMidiData.v4p" systemname="05_PlayingMidiData" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\05_PlayingMidiData.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="12405" height="9195">
+   <BOUNDS type="Window" left="0" top="0" width="12405" height="11025">
    </BOUNDS>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -259,9 +259,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="151" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6225" top="6225" type="Node" width="315">
+   <BOUNDS height="270" left="6345" top="6225" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="6225" top="6225" type="Box" width="405">
+   <BOUNDS height="390" left="6345" top="6225" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -421,7 +421,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6180" top="1395" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -431,7 +431,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -458,6 +458,12 @@
    <PIN pinname="Midi0-Filename" slicecount="1" values="br_im2_format0.mid">
    </PIN>
    <PIN pinname="Midi1-Filename" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Midi0-Velocity" visible="1">
+   </PIN>
+   <PIN pinname="Set Time" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Midi0-Channel" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="190" systemname="IOBox (Enumerations)">
@@ -519,6 +525,8 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="193" srcpinname="Y Output Value" dstnodeid="145" dstpinname="Play">
    </LINK>
@@ -535,9 +543,9 @@
    <LINK srcnodeid="145" srcpinname="Time" dstnodeid="194" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="196" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8850" top="7035" width="495" height="240">
+   <BOUNDS type="Box" left="9150" top="7035" width="495" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8850" top="7035" width="0" height="0">
+   <BOUNDS type="Node" left="9150" top="7035" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -547,9 +555,9 @@
    <LINK srcnodeid="145" srcpinname="Midi0-Velocity" dstnodeid="196" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="197" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8820" top="7305" width="825" height="480">
+   <BOUNDS type="Node" left="9120" top="7305" width="825" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="8820" top="7305" width="1890" height="465">
+   <BOUNDS type="Box" left="9120" top="7305" width="1890" height="465">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|^&cr;&lf;Velocities of all 128 notes|">
    </PIN>
@@ -634,6 +642,156 @@
    <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="07_VisualizingMidi.v4p">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="203">
+   <BOUNDS type="Node" left="8280" top="9045" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname=".. To [" slicecount="1" values="128">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="205" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8475" top="8685" width="495" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8475" top="8685" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="128">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="205" srcpinname="Y Output Value" dstnodeid="203" dstpinname=".. To [">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="206" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="9975" top="9120" width="1590" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9975" top="9120" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="|Microsoft GS Wavetable Synth|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="207" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9435" top="8805" width="390" height="435">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9435" top="8805" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="208">
+   <BOUNDS type="Node" left="7140" top="9015" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="145" srcpinname="Midi0-Velocity" dstnodeid="208" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="MidiNoteOut (Devices)" filename="%VVVV%\lib\nodes\modules\Devices\MidiNoteOut (Devices).v4p" nodename="MidiNoteOut (Devices)" componentmode="Hidden" id="202">
+   <BOUNDS type="Node" left="7140" top="9525" width="2910" height="270">
+   </BOUNDS>
+   <PIN pinname="Velocity" visible="1">
+   </PIN>
+   <PIN pinname="Note" visible="1">
+   </PIN>
+   <PIN pinname="Play" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="145" srcpinname="Midi0-Velocity" dstnodeid="202" dstpinname="Velocity">
+   </LINK>
+   <LINK srcnodeid="203" srcpinname="Output" dstnodeid="202" dstpinname="Note">
+   </LINK>
+   <LINK srcnodeid="206" srcpinname="Output Enum" dstnodeid="202" dstpinname="Midi Output Port">
+   </LINK>
+   <LINK srcnodeid="207" srcpinname="Y Output Value" dstnodeid="202" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="208" srcpinname="Output" dstnodeid="202" dstpinname="Play">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="209" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7365" top="8445" width="435" height="270">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7365" top="8445" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="209" srcpinname="Y Output Value" dstnodeid="208" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="210">
+   <BOUNDS type="Node" left="9420" top="5595" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Simulate" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="210" srcpinname="Bang" dstnodeid="145" dstpinname="Set Time">
+   </LINK>
+   <NODE componentmode="InABox" id="211" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6345" top="9435" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="6345" top="9435" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE id="212" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS type="Node" height="270" left="735" top="8190" width="7425">
+   </BOUNDS>
+   <BOUNDS type="Box" height="1650" left="735" top="8190" width="3810">
+   </BOUNDS>
+   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|In order to here the notes which are coming from Timeliner&apos;s Midi Pin a MidiNoteOut (Devices) is used. &apos;Note&apos; pin of this node is spreaded with 127 values, so every note can be played. Velocity for every note is coming from the Timeliner. For those notes with velocities bigger than zero, &apos;Play&apos; input pin receives 1 and the note will be played.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="213" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="270" top="8205" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="270" top="8205" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
    </PATCH>
