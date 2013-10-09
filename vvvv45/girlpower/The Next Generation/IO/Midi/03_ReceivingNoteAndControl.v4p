@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta31.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\03_ReceivingNoteAndControl.v4p" systemname="02_GetTheNote" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\02_GetTheNote.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="12330" height="14745">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\03_ReceivingNoteAndControl.v4p" systemname="02_GetTheNote" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\02_GetTheNote.v4p">
+   <BOUNDS type="Window" left="5895" top="480" width="12330" height="14745">
    </BOUNDS>
    <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -14,20 +14,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="15">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8715" top="1680" width="1425" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8715" top="1680" width="1320" height="480">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Enable the node.&cr;&lf;v|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="51" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -73,7 +59,7 @@
    </BOUNDS>
    <BOUNDS height="4320" left="750" top="4845" type="Box" width="3660">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Right click to choose your midi-device and enable the node. Please note, you should plug in the device before starting vvvv.&cr;&lf;&cr;&lf;MidiNote (Devices) returns the velocity values of the notes on specified channel.&cr;&lf;&cr;&lf;Velocity in vvvv is defined from 0 to 1 (the received velocity value divided by 127).&cr;&lf;&cr;&lf;Notes of interest are defined as a spread on the &apos;Note&apos; input pin. (e.g. note number 60 equals note C4).&cr;&lf;&cr;&lf;&apos;Buffer Length&apos; defines the maximum number of incoming midi-messages that get queued for output in the patch. only one message per vvvv-frame will be output in the patch while within a frames timespan more than one message could arrive.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Right click to choose your midi-device. Please note that you have to plug in the device before starting vvvv.&cr;&lf;&cr;&lf;MidiNote (Devices) returns the velocity values of the specified notes on the specified channel.&cr;&lf;&cr;&lf;Velocity in vvvv is defined 0..1 (which is mapped from the midi specification 0..127).&cr;&lf;&cr;&lf;Notes of interest are defined as a spread on the &apos;Note&apos; input pin. (e.g. note number 60 equals note C4).&cr;&lf;&cr;&lf;&apos;Buffer Length&apos; defines the maximum number of incoming midi-messages that get queued for output in the patch. only one message per vvvv-frame will be returned in the patch while within a frames timespan more than one message could arrive.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -283,35 +269,15 @@
    </PIN>
    <PIN pinname="Note" visible="1">
    </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="92" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8730" top="2190" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8730" top="2190" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="92" srcpinname="Y Output Value" dstnodeid="93" dstpinname="Enabled">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="90" systemname="IOBox (Enumerations)">
    <BOUNDS type="Node" left="9465" top="2460" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="9465" top="2460" width="1590" height="240">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|USB Keystation 49e|">
+   <PIN pinname="Input Enum" slicecount="1" values="(nil)">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
@@ -469,9 +435,9 @@
    </PIN>
    </NODE>
    <NODE systemname="MidiController (Devices)" nodename="MidiController (Devices)" componentmode="Hidden" id="107">
-   <BOUNDS type="Node" left="6765" top="7365" width="3000" height="270">
+   <BOUNDS type="Node" left="6660" top="11415" width="3000" height="270">
    </BOUNDS>
-   <PIN pinname="Enabled" visible="1">
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Midi Input Port" visible="1">
    </PIN>
@@ -484,48 +450,24 @@
    <PIN pinname="On Data" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="109" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8970" top="6645" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8970" top="6645" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="108" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Node" left="9690" top="6885" width="0" height="0">
+   <BOUNDS type="Node" left="9585" top="10935" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="9690" top="6885" width="1590" height="240">
+   <BOUNDS type="Box" left="9585" top="10935" width="1590" height="240">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|USB Keystation 49e|">
+   <PIN pinname="Input Enum" slicecount="1" values="(nil)">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="109" srcpinname="Y Output Value" dstnodeid="107" dstpinname="Enabled">
-   </LINK>
    <LINK srcnodeid="108" srcpinname="Output Enum" dstnodeid="107" dstpinname="Midi Input Port">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="110" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="6765" top="6840" width="0" height="0">
+   <BOUNDS type="Node" left="6660" top="10890" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="6765" top="6840" width="330" height="240">
+   <BOUNDS type="Box" left="6660" top="10890" width="330" height="240">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -543,9 +485,9 @@
    <LINK srcnodeid="110" srcpinname="Y Output Value" dstnodeid="107" dstpinname="Channel">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="111" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="7500" top="6510" width="0" height="0">
+   <BOUNDS type="Node" left="7395" top="10560" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="7500" top="6510" width="495" height="630">
+   <BOUNDS type="Box" left="7395" top="10560" width="495" height="630">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" values="7,1">
    </PIN>
@@ -567,9 +509,9 @@
    <LINK srcnodeid="111" srcpinname="Y Output Value" dstnodeid="107" dstpinname="Controller">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="115" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8235" top="8010" width="0" height="0">
+   <BOUNDS type="Node" left="8130" top="12060" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="8235" top="8010" width="615" height="1605">
+   <BOUNDS type="Box" left="8130" top="12060" width="615" height="1605">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -587,9 +529,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="114" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="6765" top="8160" width="0" height="0">
+   <BOUNDS type="Node" left="6660" top="12210" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="6765" top="8160" width="495" height="705">
+   <BOUNDS type="Box" left="6660" top="12210" width="495" height="705">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1" slicecount="4" values="0,0,0,0">
    </PIN>
@@ -607,15 +549,15 @@
    </PIN>
    </NODE>
    <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="113">
-   <BOUNDS type="Node" left="7590" top="8025" width="100" height="100">
+   <BOUNDS type="Node" left="7485" top="12075" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="112" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7590" top="8415" width="285" height="240">
+   <BOUNDS type="Box" left="7485" top="12465" width="285" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="7590" top="8415" width="0" height="0">
+   <BOUNDS type="Node" left="7485" top="12465" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -633,9 +575,9 @@
    <LINK srcnodeid="107" srcpinname="On Data" dstnodeid="115" dstpinname="Y Input Value">
    </LINK>
    <NODE componentmode="InABox" id="116" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6255" top="7320" type="Node" width="315">
+   <BOUNDS height="270" left="6150" top="11370" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="6255" top="7320" type="Box" width="405">
+   <BOUNDS height="390" left="6150" top="11370" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -799,7 +741,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="750" top="2430" width="3840" height="1965">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Note, that in MIDI slang controllers are: volume knob, modulation wheel, pan fader, pedal and so on. &cr;&lf;&cr;&lf;The instrument as a whole is called a device and is defined by a channel number. Channels in vvvv are starting from 0 (which is identically to the actual data transmitted on the wire). In midi specification channels are starting from 1.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Note, that in MIDI slang controllers are: volume knob, modulation wheel, pan fader, pedal and so on. &cr;&lf;&cr;&lf;The instrument as a whole is called a device and sends its data on a specified channel number. Channels in vvvv are starting from 0 whereas in the midi specification channels are starting from 1.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
