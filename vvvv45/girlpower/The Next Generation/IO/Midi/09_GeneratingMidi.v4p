@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta31.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\09_GeneratingMidi.v4p" systemname="09_GeneratingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\09_GeneratingMidi.v4p">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\09_GeneratingMidi.v4p" systemname="09_GeneratingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\09_GeneratingMidi.v4p">
    <BOUNDS type="Window" left="4065" top="1020" width="16425" height="12990">
    </BOUNDS>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -467,9 +467,9 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="49">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="33">
+   <PIN pinname="Y Input Value" slicecount="1" values="61">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -967,7 +967,7 @@
    <NODE systemname="MidiNoteOut (Devices Bang)" filename="%VVVV%\lib\nodes\modules\Devices\MidiNoteOut (Devices Bang).v4p" nodename="MidiNoteOut (Devices Bang)" componentmode="Hidden" id="380">
    <BOUNDS type="Node" left="7335" top="6555" width="3285" height="270">
    </BOUNDS>
-   <PIN pinname="Do Send" visible="1">
+   <PIN pinname="Do Send" visible="1" slicecount="4" values="0,0,0,0">
    </PIN>
    <PIN pinname="Note" visible="1">
    </PIN>
@@ -975,8 +975,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="361" srcpinname="Output" dstnodeid="380" dstpinname="Velocity">
-   </LINK>
-   <LINK srcnodeid="375" srcpinname="Output" dstnodeid="380" dstpinname="Do Send">
    </LINK>
    <LINK srcnodeid="323" srcpinname="Output" dstnodeid="380" dstpinname="Channel">
    </LINK>
@@ -1166,24 +1164,6 @@
    </NODE>
    <LINK srcnodeid="392" srcpinname="Y Output Value" dstnodeid="256" dstpinname="Enabled">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="393" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13590" top="10275" width="360" height="420">
-   </BOUNDS>
-   <BOUNDS type="Node" left="13590" top="10275" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="393" srcpinname="Y Output Value" dstnodeid="253" dstpinname="Enabled">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="394" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="10560" top="6195" width="1605" height="240">
    </BOUNDS>
@@ -1209,7 +1189,11 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="395" srcpinname="Y Output Value" dstnodeid="380" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="375" srcpinname="Output" dstnodeid="380" dstpinname="Do Send">
    </LINK>
    </PATCH>

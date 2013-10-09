@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta31.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\07_VisualizingMidi.v4p" systemname="07_VisualizingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\07_VisualizingMidi.v4p">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\07_VisualizingMidi.v4p" systemname="07_VisualizingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\07_VisualizingMidi.v4p">
    <BOUNDS type="Window" left="0" top="0" width="12705" height="13395">
    </BOUNDS>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -245,13 +245,15 @@
    </PIN>
    <PIN pinname="Play" visible="1" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Do Seek" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="176" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="9375" top="1230" width="1800" height="240">
+   <BOUNDS type="Box" left="9375" top="1230" width="2670" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="9375" top="1230" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="br_im2_format0.mid">
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\lib\assets\sounds\Goldberg Variationen 14.mid|">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="file.avi">
    </PIN>
@@ -331,7 +333,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6180" top="960" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -341,7 +343,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -403,6 +405,8 @@
    </PIN>
    <PIN pinname="Buffer Length" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Channel" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="193" srcpinname="Output" dstnodeid="188" dstpinname="Velocity" linkstyle="Bezier">
    </LINK>
@@ -411,31 +415,15 @@
    <LINK srcnodeid="191" srcpinname="Output Enum" dstnodeid="193" dstpinname="Midi Input Port" linkstyle="Bezier">
    </LINK>
    <NODE id="194" systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden">
-   <BOUNDS type="Node" left="8760" top="5085" width="735" height="270">
+   <BOUNDS type="Node" left="8460" top="5100" width="450" height="270">
    </BOUNDS>
    <PIN pinname=".. To [" slicecount="1" values="128">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   </NODE>
-   <LINK srcnodeid="194" srcpinname="Output" dstnodeid="193" dstpinname="Note">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="195" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8760" top="4635" width="330" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="8760" top="4635" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   <PIN pinname="[ From .." slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="195" srcpinname="Y Output Value" dstnodeid="194" dstpinname="[ From ..">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="196" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9525" top="4215" width="585" height="240">
    </BOUNDS>
@@ -531,7 +519,7 @@
    </PIN>
    <PIN pinname="Saturation" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Value" slicecount="1" values="1" visible="1">
+   <PIN pinname="Value" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Alpha" visible="1">
    </PIN>
@@ -617,9 +605,9 @@
    <LINK srcnodeid="196" srcpinname="Y Output Value" dstnodeid="218" dstpinname="Spread Count">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="219" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8070" top="5490" width="345" height="240">
+   <BOUNDS type="Box" left="8070" top="5580" width="345" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8070" top="5490" width="0" height="0">
+   <BOUNDS type="Node" left="8070" top="5580" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -958,4 +946,32 @@
    <PIN pinname="Input String" slicecount="1" values="http://www.nerds.de/en/loopbe1.html">
    </PIN>
    </NODE>
+   <NODE systemname="Cross (2d)" nodename="Cross (2d)" componentmode="Hidden" id="248">
+   <BOUNDS type="Node" left="7080" top="5580" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="249" systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden">
+   <BOUNDS type="Node" left="7080" top="5115" width="450" height="270">
+   </BOUNDS>
+   <PIN pinname=".. To [" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="248" srcpinname="X Out" dstnodeid="193" dstpinname="Channel">
+   </LINK>
+   <LINK srcnodeid="248" srcpinname="Y Out" dstnodeid="193" dstpinname="Note">
+   </LINK>
+   <LINK srcnodeid="249" srcpinname="Output" dstnodeid="248" dstpinname="X In">
+   </LINK>
+   <LINK srcnodeid="194" srcpinname="Output" dstnodeid="248" dstpinname="Y In">
+   </LINK>
    </PATCH>
