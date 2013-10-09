@@ -1,11 +1,11 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.3.dtd" >
-   <PATCH nodename="C:\vvvv\git\vvvv-sdk\vvvv45\lib\nodes\native\MidiNote (Devices) help.v4p">
-   <BOUNDS type="Window" left="1290" top="570" width="14985" height="12720">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\native\MidiNote (Devices) help.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="11565" height="13995">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
    </BOUNDS>
-   <BOUNDS type="Box" left="150" top="150" width="5000" height="450">
+   <BOUNDS type="Box" left="150" top="150" width="2985" height="420">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="0" values="|MidiNote (Devices)|">
    </PIN>
@@ -15,317 +15,21 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="150" top="550" width="5000" height="500">
+   <BOUNDS type="Node" left="150" top="555" width="5000" height="500">
    </BOUNDS>
-   <BOUNDS type="Box" left="150" top="550" width="5000" height="500">
+   <BOUNDS type="Box" left="150" top="555" width="3240" height="285">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="0" values="|Handles MIDI NoteOn/NoteOff commands|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    </NODE>
-   <NODE nodename="MidiNote (Devices)" componentmode="Hidden" id="0" systemname="MidiNote (Devices)">
-   <BOUNDS type="Node" left="625" top="4070" width="2850" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="625" top="4070" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="2700" top="2760" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2700" top="2760" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Enabled">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3180" top="2760" width="1200" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3180" top="2760" width="1200" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Enable me first|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="6" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Node" left="3435" top="3630" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3435" top="3630" width="1590" height="240">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|loopMIDI Port|">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Midi Input Port|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="6" srcpinname="Output Enum" dstnodeid="0" dstpinname="Midi Input Port">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="7" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3435" top="3330" width="1695" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3435" top="3330" width="1695" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Midi device to listen to|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="405" top="3435" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="405" top="3435" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Channel">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Channel">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="1335" top="2640" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1335" top="2640" width="795" height="1065">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="4" values="60,62,64,65">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Note">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Note">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="2040" top="4695" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2040" top="4695" width="570" height="1380">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Bang">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|On Data|">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="0" srcpinname="On Data" dstnodeid="11" dstpinname="Y Input Value">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="630" top="4695" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="630" top="4695" width="885" height="1350">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="4" visible="1" values="60,62,64,65">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="12" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="225" top="1095" width="5925" height="270">
+   <BOUNDS type="Node" left="150" top="1095" width="5925" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="225" top="1095" width="3915" height="1305">
+   <BOUNDS type="Box" left="150" top="1095" width="4200" height="1110">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|MidiNote outputs the velocity value of the specified notes on the channel specified. &cr;&lf;&cr;&lf;You have to specify all the notes of interest. (e.g. note number 60 equals note C4). Only the correspondending values will be output.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="MidiNote (Devices)" componentmode="Hidden" id="14" systemname="MidiNote (Devices)">
-   <BOUNDS type="Node" left="7750" top="4025" width="2850" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7750" top="4025" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Note" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="7740" top="4725" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7740" top="4725" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="15" dstpinname="Y Input Value">
-   </LINK>
-   <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="16">
-   <BOUNDS type="Node" left="8430" top="2655" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname=".. To [" slicecount="1" values="127">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="14" dstpinname="Note">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="7740" top="3300" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7740" top="3300" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Channel">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Channel">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="18" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7755" top="1395" width="5115" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7755" top="1395" width="3075" height="540">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|I (Spreads) comes in handy when you want to listen to a range of notes|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="7920" top="2115" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7920" top="2115" width="705" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|[ From ..|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="16" dstpinname="[ From ..">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8820" top="2115" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8820" top="2115" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="128">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|.. To [|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="16" dstpinname=".. To [">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="9840" top="3090" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="9840" top="3090" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Enabled">
-   </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="22" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Node" left="10515" top="3420" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10515" top="3420" width="1590" height="240">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|loopMIDI Port|">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Midi Input Port|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="22" srcpinname="Output Enum" dstnodeid="14" dstpinname="Midi Input Port">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="555" top="7125" width="6720" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="555" top="7125" width="4785" height="945">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|see  http://www.midimountain.com/midi/midi_note_numbers.html  for a list of MIDI note numbers and their mapping to the musical scale.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|MidiNote outputs the velocity value of the specified notes on the channel specified.&cr;&lf;&cr;&lf;Channels in vvvv are starting from 0 whereas in the midi specification channels are starting from 1.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -335,9 +39,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="615" top="8325" width="705" height="270">
+   <BOUNDS type="Node" left="630" top="11325" width="705" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="615" top="8325" width="705" height="270">
+   <BOUNDS type="Box" left="630" top="11325" width="705" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|also see|">
    </PIN>
@@ -349,117 +53,31 @@
    </PIN>
    </NODE>
    <NODE systemname="MidiShort (Devices)" nodename="MidiShort (Devices)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="1425" top="8310" width="100" height="100">
+   <BOUNDS type="Node" left="1440" top="11310" width="100" height="100">
    </BOUNDS>
    </NODE>
    <NODE systemname="MidiController (Devices)" nodename="MidiController (Devices)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="2535" top="8310" width="100" height="100">
+   <BOUNDS type="Node" left="2550" top="11310" width="100" height="100">
    </BOUNDS>
    </NODE>
    <NODE systemname="MidiBend (Devices)" nodename="MidiBend (Devices)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="2430" top="8745" width="100" height="100">
+   <BOUNDS type="Node" left="2445" top="11745" width="100" height="100">
    </BOUNDS>
    </NODE>
    <NODE systemname="MidiSysex (Devices)" nodename="MidiSysex (Devices)" componentmode="Hidden" id="28">
-   <BOUNDS type="Node" left="1455" top="8745" width="100" height="100">
+   <BOUNDS type="Node" left="1470" top="11745" width="100" height="100">
    </BOUNDS>
    </NODE>
    <NODE systemname="MidiProgram (Devices)" nodename="MidiProgram (Devices)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="3720" top="8310" width="100" height="100">
+   <BOUNDS type="Node" left="3780" top="11310" width="100" height="100">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="30">
-   <BOUNDS type="Node" left="8775" top="4665" width="100" height="100">
+   <NODE componentmode="InABox" id="57" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="8610" top="2895" type="Node" width="315">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="30" dstpinname="Input">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8790" top="5055" width="0" height="0">
+   <BOUNDS height="390" left="8610" top="2895" type="Box" width="405">
    </BOUNDS>
-   <BOUNDS type="Box" left="8790" top="5055" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="30" srcpinname="Count" dstnodeid="31" dstpinname="Y Input Value">
-   </LINK>
-   <NODE systemname="MidiShort (Devices)" nodename="MidiShort (Devices)" componentmode="Hidden" id="42">
-   <BOUNDS type="Node" left="7650" top="8235" width="3315" height="270">
-   </BOUNDS>
-   <PIN pinname="Message" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="41" nodename="SpellValue (String)" systemname="SpellValue (String)">
-   <BOUNDS height="0" left="7650" top="10125" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Mode" slicecount="1" values="Hex">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="40" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="7650" top="10530" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="240" left="7650" top="10530" type="Box" width="795">
-   </BOUNDS>
-   <BOUNDS height="160" left="20205" top="7545" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Message Hex|">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="40" dstpinname="Input String" srcnodeid="41" srcpinname="Output">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="Message" dstnodeid="41" dstpinname="Input">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="39" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8310" top="9420" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8310" top="9420" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Data 1|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="42" srcpinname="Data 1" dstnodeid="39" dstpinname="Y Input Value">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="38" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8970" top="8730" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8970" top="8730" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Data 2|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="42" srcpinname="Data 2" dstnodeid="38" dstpinname="Y Input Value">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="37" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7680" top="6825" width="7785" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7680" top="6825" width="4605" height="525">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you are not sure which note numbers your device sends, you can use MidiShort to find the channel and note numbers.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -467,23 +85,69 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="36" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Node" left="10905" top="7455" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10905" top="7455" width="1590" height="240">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|loopMIDI Port|">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Midi Input Port|">
+   <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <LINK srcnodeid="36" srcpinname="Output Enum" dstnodeid="42" dstpinname="Midi Input Port">
+   <NODE componentmode="InABox" id="56" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6570" top="1680" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="6570" top="1680" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="55" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5820" top="4215" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="5820" top="4215" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE nodename="MidiNote (Devices)" componentmode="Hidden" id="54" systemname="MidiNote (Devices)">
+   <BOUNDS type="Node" left="6295" top="3605" width="2850" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6295" top="3605" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Note" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="53" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="9105" top="2985" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9105" top="2985" width="1590" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="|USB Keystation 49e|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="53" srcpinname="Output Enum" dstnodeid="54" dstpinname="Midi Input Port">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="35" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="9825" top="7410" width="0" height="0">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="52" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6285" top="2940" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="9825" top="7410" width="480" height="480">
+   <BOUNDS type="Box" left="6285" top="2940" width="330" height="240">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -491,21 +155,107 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="52" srcpinname="Y Output Value" dstnodeid="54" dstpinname="Channel">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="51" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7005" top="1725" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7005" top="1725" width="555" height="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="4" values="60,62,64,65">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="50" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7710" top="4230" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7710" top="4230" width="615" height="1605">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="35" srcpinname="Y Output Value" dstnodeid="42" dstpinname="Enabled">
+   <LINK srcnodeid="54" srcpinname="On Data" dstnodeid="50" dstpinname="Y Input Value">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="34" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8460" top="10110" width="7275" height="270">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="49" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6300" top="4230" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="8460" top="10110" width="4935" height="1785">
+   <BOUNDS type="Box" left="6300" top="4230" width="600" height="1575">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Encoded in the message is the type of command and the MIDI channel on which the command is sent:&cr;&lf;In Hex notation the first digit specifies the type of command, the second digit specifies the channel:&cr;&lf;&cr;&lf;E.g.: 92 means: &cr;&lf;Command: 9 = NoteOn&cr;&lf;Channel   : 2 |">
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="54" srcpinname="Output" dstnodeid="49" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="7065" top="4245" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="54" srcpinname="Output" dstnodeid="48" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="47" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7065" top="4635" width="285" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7065" top="4635" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="Count" dstnodeid="47" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="54" dstpinname="Note">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="46" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6990" top="1185" width="1425" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6990" top="1185" width="1395" height="480">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Notes of interest.&cr;&lf;v|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -514,12 +264,12 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9135" top="9420" width="4020" height="270">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="45" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5415" top="2925" width="855" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="9135" top="9420" width="5190" height="285">
+   <BOUNDS type="Box" left="5415" top="2925" width="825" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Data byte 1 holds the note number of the NoteOn/NoteOff command|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Channel &gt;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -528,18 +278,362 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9765" top="8730" width="4440" height="270">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="44" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7695" top="3150" width="405" height="240">
    </BOUNDS>
-   <BOUNDS type="Box" left="9765" top="8730" width="4725" height="285">
+   <BOUNDS type="Node" left="7695" top="3150" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Data byte 2 holds the velocity for the corresponding controller|">
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="54" dstpinname="Buffer Length">
+   </LINK>
+   <NODE componentmode="InABox" id="43" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="7260" top="3060" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="7260" top="3060" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="69" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="630" top="2610" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="2805" left="630" top="2610" type="Box" width="3720">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Right click to choose your midi-device. Please note that you have to plug in the device before starting vvvv.&cr;&lf;&cr;&lf;MidiNote (Devices) returns the velocity values of the specified notes on the specified channel.&cr;&lf;&cr;&lf;Velocity in vvvv is defined 0..1 (which is mapped from the midi specification 0..127).&cr;&lf;&cr;&lf;Notes of interest are defined as a spread on the &apos;Note&apos; input pin. (e.g. note number 60 equals note C4).&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="68" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="180" top="2610" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="180" top="2610" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="67" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="180" top="3435" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="180" top="3435" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="66" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="180" top="4680" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="180" top="4680" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="62" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="165" top="6990" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="165" top="6990" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="61">
+   <BOUNDS type="Node" left="630" top="9105" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="9105" width="3450" height="285">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org/documentation/midi#buffer-length-on-midi-input-nodes">
+   </PIN>
+   </NODE>
+   <NODE id="60" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" height="270" left="630" top="8745" width="840">
+   </BOUNDS>
+   <BOUNDS type="Box" height="270" left="630" top="8745" width="3510">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" pintype="Input" values="|For more info about the &apos;Buffer Length&apos;, check:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0" pintype="Output">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" pintype="Configuration" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" pintype="Configuration" values="7">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="59" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="630" top="8475" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="8475" width="3555" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="73">
+   <BOUNDS type="Node" left="630" top="10260" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="10260" width="3450" height="285">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|http://www.midimountain.com/midi/midi_note_numbers.html  |">
+   </PIN>
+   </NODE>
+   <NODE id="72" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" height="270" left="630" top="9675" width="840">
+   </BOUNDS>
+   <BOUNDS type="Box" height="510" left="630" top="9675" width="3495">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" pintype="Input" values="|For a list of MIDI note numbers and their mapping to the musical scale, check this:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0" pintype="Output">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" pintype="Configuration" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" pintype="Configuration" values="7">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="70" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="630" top="10635" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="10635" width="3525" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="77" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="630" top="7005" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="1365" left="630" top="7005" type="Box" width="3585">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&apos;Buffer Length&apos; defines the maximum number of incoming midi-messages that get queued for output in the patch. only one message per vvvv-frame will be returned in the patch while within a frames timespan more than one message could arrive.&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="79" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" height="270" left="630" top="5715" width="840">
+   </BOUNDS>
+   <BOUNDS type="Box" height="495" left="630" top="5715" width="3555">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" pintype="Input" values="|For more advanced examples on the &apos;Channel&apos; and the &apos;Note&apos; pins, please check:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0" pintype="Output">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" pintype="Configuration" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" pintype="Configuration" values="7">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="78" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="630" top="5460" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="5460" width="3555" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="81" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="630" top="6600" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="6600" width="3555" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="82">
+   <BOUNDS type="Node" left="630" top="6315" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="6315" width="3555" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\The Next Generation\IO\Midi\04_ReceivingNoteAndControl_Advanced.v4p|">
    </PIN>
    </NODE>
    </PATCH>
