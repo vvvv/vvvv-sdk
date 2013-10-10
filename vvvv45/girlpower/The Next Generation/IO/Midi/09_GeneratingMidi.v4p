@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta31.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\09_GeneratingMidi.v4p" systemname="09_GeneratingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\09_GeneratingMidi.v4p">
-   <BOUNDS type="Window" left="4065" top="1020" width="16425" height="12990">
+   <BOUNDS type="Window" left="7800" top="1245" width="16425" height="12990">
    </BOUNDS>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -169,7 +169,7 @@
    </BOUNDS>
    <BOUNDS height="6885" left="720" top="2445" type="Box" width="4170">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This subpatch returns spread of durations. Each slice of this spread is changing after its duration is over.&cr;&lf;&cr;&lf;MidiNoteOut (Devices Bang) needs two bangs for every note - one to start the note and another one to stop it (note&apos;s velocity should be set to 0 for this bang). &cr;&lf;This is how to generate two consecutive bangs, one immediately (to stop the last note) and one in the next frame (using FrameDelay (Animation)) to start a new one.&cr;&lf;&cr;&lf;Switch (Value Input) controls the velocities. It sets the velocity to 0 on the first bang, thus stopping the note.&cr;&lf;&cr;&lf;Random (Value) generates a spread of random values on each second bang. These values are used as notes numbers.&cr;&lf;&cr;&lf;Notes are sent out to the midi device. Note, that I (Spreads) generates a spread of 4 values for 4 channels.&cr;&lf;&cr;&lf;A random program number is generated for every channel. RandomSpread (Spreads) creates a spread of values in a range (0,1), after multiplication with 127 and taking the whole part (using Frac (Value)) there is a spread of program IDs.&cr;&lf;&cr;&lf;MidiProgramOut (Devices) sets these programs.&cr;&lf;&cr;&lf;Four messages with IDs 224-227 are sent to the midi device using MidiShortOutput (Device). These messages control the pitch wheel for every channel. So changing the slider in IOBox results in bending the pitch.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Bangs its output randomly in the given interval.&cr;&lf;&cr;&lf;MidiNoteOut (Devices Bang) needs two bangs for every note - one to start the note and another one to stop it (note&apos;s velocity should be set to 0 for this bang). &cr;&lf;&cr;&lf;This is how to generate two consecutive bangs, one immediately (to stop the last note) and one in the next frame (using FrameDelay (Animation)) to start a new one.&cr;&lf;&cr;&lf;Switch (Value Input) controls the velocities. It sets the velocity to 0 on the first bang, thus stopping the note.&cr;&lf;&cr;&lf;Random (Value) generates a spread of random values on each second bang. These values are used as notes numbers.&cr;&lf;&cr;&lf;Notes are sent out to the midi device. Note, that I (Spreads) generates a spread of 4 values for 4 channels.&cr;&lf;&cr;&lf;A random program number is generated for every channel. RandomSpread (Spreads) creates a spread of values in a range (0..1), after multiplication with 127 and taking the whole part (using Frac (Value)) there is a spread of program IDs.&cr;&lf;&cr;&lf;MidiProgramOut (Devices) sets these programs.&cr;&lf;&cr;&lf;Four messages with IDs 224-227 are sent to the midi device using MidiShortOutput (Device). These messages control the pitch wheel for every channel. So changing the slider in IOBox results in bending the pitch.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -381,7 +381,7 @@
    <LINK srcnodeid="277" srcpinname="Output" dstnodeid="279" dstpinname="Input 1">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="280" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7620" top="8775" width="495" height="240">
+   <BOUNDS type="Box" left="7620" top="8775" width="435" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="7620" top="8775" width="0" height="0">
    </BOUNDS>
@@ -390,6 +390,8 @@
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
    <LINK srcnodeid="280" srcpinname="Y Output Value" dstnodeid="279" dstpinname="Input 2">
@@ -541,9 +543,9 @@
    <LINK srcnodeid="288" srcpinname="Output" dstnodeid="253" dstpinname="Message">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="297" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7380" top="1335" width="405" height="240">
+   <BOUNDS type="Box" left="9420" top="990" width="405" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="7380" top="1335" width="0" height="0">
+   <BOUNDS type="Node" left="9420" top="990" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="4">
    </PIN>
@@ -554,40 +556,6 @@
    <PIN pinname="Value Type" slicecount="1" values="Real">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="302" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8475" top="1305" width="315" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="8475" top="1305" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="303" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9435" top="1260" width="480" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="9435" top="1260" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Bang">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="316">
@@ -658,30 +626,6 @@
    </NODE>
    <LINK srcnodeid="324" srcpinname="Y Output Value" dstnodeid="277" dstpinname="Random Seed">
    </LINK>
-   <NODE systemname="RandomTimes" filename="RandomTimes.v4p" nodename="RandomTimes.v4p" componentmode="Hidden" id="326">
-   <BOUNDS type="Node" left="7686" top="1962" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="5221" top="30" width="4930" height="5530">
-   </BOUNDS>
-   <BOUNDS type="Window" left="13740" top="3240" width="7635" height="7140">
-   </BOUNDS>
-   <PIN pinname="Time Max" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Output Bang" visible="1">
-   </PIN>
-   <PIN pinname="Time" visible="1">
-   </PIN>
-   <PIN pinname="Time change bang" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="297" srcpinname="Y Output Value" dstnodeid="326" dstpinname="Scale">
-   </LINK>
-   <LINK srcnodeid="302" srcpinname="Y Output Value" dstnodeid="326" dstpinname="Count">
-   </LINK>
-   <LINK srcnodeid="303" srcpinname="Y Output Value" dstnodeid="326" dstpinname="Reset">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="327" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8175" top="5685" width="345" height="240">
    </BOUNDS>
@@ -698,12 +642,10 @@
    </NODE>
    <LINK srcnodeid="327" srcpinname="Y Output Value" dstnodeid="323" dstpinname=".. To [">
    </LINK>
-   <LINK srcnodeid="297" srcpinname="Y Output Value" dstnodeid="326" dstpinname="Time Max">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="328" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="6180" top="1320" width="480" height="270">
+   <BOUNDS type="Box" left="8220" top="990" width="480" height="270">
    </BOUNDS>
-   <BOUNDS type="Node" left="6180" top="1320" width="0" height="0">
+   <BOUNDS type="Node" left="8220" top="990" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0.5">
    </PIN>
@@ -711,21 +653,7 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   </NODE>
-   <LINK srcnodeid="328" srcpinname="Y Output Value" dstnodeid="326" dstpinname="Time Min">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="333" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10035" top="1320" width="630" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10035" top="1320" width="630" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Reset|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="339" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -793,9 +721,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="345" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6165" top="795" width="810" height="270">
+   <BOUNDS type="Node" left="8205" top="465" width="810" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6165" top="795" width="1035" height="435">
+   <BOUNDS type="Box" left="8205" top="465" width="1035" height="435">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Duration min&cr;&lf;v|">
    </PIN>
@@ -807,9 +735,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="346" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7335" top="795" width="810" height="270">
+   <BOUNDS type="Node" left="9375" top="465" width="810" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7335" top="795" width="1065" height="435">
+   <BOUNDS type="Box" left="9375" top="465" width="1065" height="435">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Duration max&cr;&lf;v|">
    </PIN>
@@ -821,9 +749,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="347" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8475" top="795" width="810" height="270">
+   <BOUNDS type="Node" left="7530" top="465" width="810" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8475" top="795" width="1080" height="450">
+   <BOUNDS type="Box" left="7530" top="465" width="570" height="435">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Count&cr;&lf;v|">
    </PIN>
@@ -909,15 +837,13 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" visible="1" slicecount="4" values="3.13723226962611,3.24711483542342,2.34855227870867,1.81259174633306">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="|0, 0, 0, 1|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="326" srcpinname="Time" dstnodeid="357" dstpinname="Y Input Value" hiddenwhenlocked="1">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="358" systemname="IOBox (String)">
    <BOUNDS type="Node" left="14430" top="4935" width="2745" height="270">
    </BOUNDS>
@@ -935,7 +861,7 @@
    <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="361">
    <BOUNDS type="Node" left="9255" top="5400" width="1110" height="270">
    </BOUNDS>
-   <PIN pinname="Switch" visible="1">
+   <PIN pinname="Switch" visible="1" slicecount="4" values="0,0,0,0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -947,7 +873,7 @@
    <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="376">
    <BOUNDS type="Node" left="7665" top="3030" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="4" values="0,0,0,0">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
@@ -955,7 +881,7 @@
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="375">
    <BOUNDS type="Node" left="7350" top="3855" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="4" values="0,0,0,0">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -981,22 +907,6 @@
    <LINK srcnodeid="376" srcpinname="Output 1" dstnodeid="316" dstpinname="Enabled">
    </LINK>
    <LINK srcnodeid="316" srcpinname="Output" dstnodeid="380" dstpinname="Note">
-   </LINK>
-   <NODE systemname="Change (Animation)" nodename="Change (Animation)" componentmode="Hidden" id="381">
-   <BOUNDS type="Node" left="7680" top="2385" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="OnChange" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="326" srcpinname="Time" dstnodeid="381" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="381" srcpinname="OnChange" dstnodeid="376" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="381" srcpinname="OnChange" dstnodeid="375" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="381" srcpinname="OnChange" dstnodeid="361" dstpinname="Switch">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="382" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9765" top="5055" width="390" height="240">
@@ -1075,9 +985,9 @@
    <LINK srcnodeid="279" srcpinname="Output" dstnodeid="281" dstpinname="Input">
    </LINK>
    <NODE componentmode="InABox" id="387" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="3045" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="3675" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="3045" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="3675" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -1195,5 +1105,49 @@
    <LINK srcnodeid="395" srcpinname="Y Output Value" dstnodeid="380" dstpinname="Enabled">
    </LINK>
    <LINK srcnodeid="375" srcpinname="Output" dstnodeid="380" dstpinname="Do Send">
+   </LINK>
+   <NODE systemname="Select (Value)" nodename="Select (Value)" componentmode="Hidden" id="408">
+   <BOUNDS type="Node" left="7080" top="1470" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="409" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7560" top="990" width="390" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7560" top="990" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="409" srcpinname="Y Output Value" dstnodeid="408" dstpinname="Select">
+   </LINK>
+   <NODE systemname="Trigger (Animation)" filename="%VVVV%\lib\nodes\modules\Animation\Trigger (Animation).v4p" nodename="Trigger (Animation)" componentmode="Hidden" id="411">
+   <BOUNDS type="Node" left="7665" top="2025" width="1725" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="1680" top="2055" width="8700" height="9285">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="328" srcpinname="Y Output Value" dstnodeid="411" dstpinname="Minimum Interval">
+   </LINK>
+   <LINK srcnodeid="297" srcpinname="Y Output Value" dstnodeid="411" dstpinname="Maximum Interval">
+   </LINK>
+   <LINK srcnodeid="408" srcpinname="Output" dstnodeid="411" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="411" srcpinname="Bang" dstnodeid="375" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="411" srcpinname="Bang" dstnodeid="376" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="411" srcpinname="Bang" dstnodeid="361" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="411" srcpinname="Next In" dstnodeid="357" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
