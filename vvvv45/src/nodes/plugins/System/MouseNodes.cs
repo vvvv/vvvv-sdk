@@ -110,7 +110,7 @@ namespace VVVV.Nodes.Input
     }
 
     [PluginInfo(Name = "Mouse", Category = "System", Version = "Global")]
-    public class GlobalMouseNode : IPluginBase, IPartImportsSatisfiedNotification, IDisposable
+    public class GlobalMouseNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         public enum DataSource
         {
@@ -130,6 +130,11 @@ namespace VVVV.Nodes.Input
         [Output("Mouse")]
         public ISpread<Mouse> MouseOut;
 
+        [Import]
+        protected IOFactory FIOFactory;
+
+        private PluginContainer FMouseStatesSplitNode;
+
         public void OnImportsSatisfied()
         {
             RawInputService.DevicesChanged += RawKeyboardService_DevicesChanged;
@@ -137,6 +142,10 @@ namespace VVVV.Nodes.Input
 
             DataSourceIn.Changed += ModeIn_Changed;
             CycleModeIn.Changed += CycleModeIn_Changed;
+
+            // Create a mouse states split node for us and connect our mouse out to its mouse in
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseStates" && n.Category == "System" && n.Version == "Split");
+            FMouseStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => MouseOut);
         }
 
         void CycleModeIn_Changed(IDiffSpread<CycleMode> spread)
@@ -157,6 +166,7 @@ namespace VVVV.Nodes.Input
         public void Dispose()
         {
             RawInputService.DevicesChanged -= RawKeyboardService_DevicesChanged;
+            FMouseStatesSplitNode.Dispose();
         }
 
         private void SubscribeToDevices()
@@ -423,6 +433,12 @@ namespace VVVV.Nodes.Input
                 .OrderByDescending(b => b.Bottom)
                 .FirstOrDefault();
         }
+
+        public void Evaluate(int spreadMax)
+        {
+            // Evaluate our split plugin
+            FMouseStatesSplitNode.Evaluate(spreadMax);
+        }
     }
 
     [PluginInfo(Name = "MouseEvents", Category = "System", Version = "Split", AutoEvaluate = true)]
@@ -624,5 +640,67 @@ namespace VVVV.Nodes.Input
             //process events
             FScheduler.Run(ScheduleModeIn[0]);
         }
+    }
+
+    [PluginInfo(Name = "MouseStates", Category = "System", Version = "Join", AutoEvaluate = true)]
+    public class MouseStatesJoinNode : IPluginBase, IPartImportsSatisfiedNotification
+    {
+        [Input("Position")]
+        public IDiffSpread<Vector2D> PositionIn;
+        [Input("Mouse Wheel")]
+        public IDiffSpread<int> MouseWheelIn;
+        [Input("Left Button")]
+        public IDiffSpread<bool> LeftButtonIn;
+        [Input("Middle Button")]
+        public IDiffSpread<bool> MiddleButtonIn;
+        [Input("Right Button")]
+        public IDiffSpread<bool> RightButtonIn;
+        [Input("X1 Button")]
+        public IDiffSpread<bool> X1ButtonIn;
+        [Input("X2 Button")]
+        public IDiffSpread<bool> X2ButtonIn;
+
+        [Output("Mouse", IsSingle = true)]
+        public ISpread<Mouse> MouseOut;
+
+        public void OnImportsSatisfied()
+        {
+            var mouseMoves = PositionIn.ToObservable(0)
+                .Select(v => new MouseMoveNotification(ToMousePoint(v), FClientArea));
+            var mouseButtons = Observable.Merge(
+                LeftButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.Left)),
+                MiddleButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.Middle)),
+                RightButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.Right)),
+                X1ButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.XButton1)),
+                X2ButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.XButton2))
+            );
+            var mouseDowns = mouseButtons.Where(x => x.Item1)
+                .Select(x => x.Item2)
+                .Select(x => new MouseDownNotification(ToMousePoint(PositionIn[0]), FClientArea, x));
+            var mouseUps = mouseButtons.Where(x => !x.Item1)
+                .Select(x => x.Item2)
+                .Select(x => new MouseUpNotification(ToMousePoint(PositionIn[0]), FClientArea, x));
+            var mouseWheelDeltas = MouseWheelIn.ToObservable(0)
+                .StartWith(0)
+                .Buffer(2, 1)
+                .Select(b => b[1] - b[0])
+                .Select(d => new MouseWheelNotification(ToMousePoint(PositionIn[0]), FClientArea, d * Const.WHEEL_DELTA))
+                .Cast<MouseNotification>();
+            var notifications = Observable.Merge<MouseNotification>(
+                mouseMoves, 
+                mouseDowns, 
+                mouseUps, 
+                mouseWheelDeltas);
+            MouseOut[0] = new Mouse(notifications);
+        }
+
+        static Point ToMousePoint(Vector2D normV)
+        {
+            var clientArea = new Vector2D(FClientArea.Width, FClientArea.Height);
+            var v = VMath.Map(normV, new Vector2D(-1, 1), new Vector2D(1, -1), Vector2D.Zero, clientArea, TMapMode.Clamp);
+            return new Point((int)v.x, (int)v.y);
+        }
+
+        static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
     }
 }

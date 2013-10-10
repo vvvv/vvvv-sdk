@@ -25,7 +25,7 @@ namespace VVVV.Nodes.Input
     public class KeyboardNode : WindowMessageNode, IPluginEvaluate
     {
         [Output("Keyboard", IsSingle = true)]
-        public ISpread<Keyboard> FKeyboardOut;
+        public ISpread<Keyboard> KeyboardOut;
 
         private PluginContainer FKeyboardStatesSplitNode;
 
@@ -50,11 +50,11 @@ namespace VVVV.Nodes.Input
                 }
                 )
                 .OfType<KeyNotification>();
-            FKeyboardOut[0] = new Keyboard(keyNotifications);
+            KeyboardOut[0] = new Keyboard(keyNotifications);
 
             // Create a keyboard states node for us and connect our keyboard out to its keyboard in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardStates" && n.Category == "System" && n.Version == "Split");
-            FKeyboardStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => FKeyboardOut);
+            FKeyboardStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => KeyboardOut);
         }
 
         public override void Dispose()
@@ -71,7 +71,7 @@ namespace VVVV.Nodes.Input
     }
 
     [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global")]
-    public class GlobalKeyboardNode : IPluginBase, IPartImportsSatisfiedNotification, IDisposable
+    public class GlobalKeyboardNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         [Input("Enabled", DefaultBoolean = true)]
         public ISpread<bool> EnabledIn;
@@ -79,10 +79,18 @@ namespace VVVV.Nodes.Input
         [Output("Keyboard")]
         public ISpread<Keyboard> KeyboardOut;
 
+        [Import]
+        protected IOFactory FIOFactory;
+        private PluginContainer FKeyboardStatesSplitNode;
+
         public void OnImportsSatisfied()
         {
             RawInputService.DevicesChanged += RawKeyboardService_DevicesChanged;
             SubscribeToDevices();
+
+            // Create a keyboard states node for us and connect our keyboard out to its keyboard in
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardStates" && n.Category == "System" && n.Version == "Split");
+            FKeyboardStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => KeyboardOut);
         }
 
         void RawKeyboardService_DevicesChanged(object sender, EventArgs e)
@@ -93,6 +101,7 @@ namespace VVVV.Nodes.Input
         public void Dispose()
         {
             RawInputService.DevicesChanged -= RawKeyboardService_DevicesChanged;
+            FKeyboardStatesSplitNode.Dispose();
         }
 
         private void SubscribeToDevices()
@@ -143,6 +152,12 @@ namespace VVVV.Nodes.Input
                     break;
             }
             yield break;
+        }
+
+        public void Evaluate(int spreadMax)
+        {
+            // Evaluate our split plugin
+            FKeyboardStatesSplitNode.Evaluate(spreadMax);
         }
     }
 

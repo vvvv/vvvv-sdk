@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\TagPoints (3D Vector) help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
+   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\3D\TagPoints (3D Vector) help.v4p" locked="0">
    <BOUNDS height="11070" left="12015" top="780" type="Window" width="9120">
    </BOUNDS>
    <INFO author="vvvv group" description="edit a point cloud via mouse and keyboard within the ex9 renderer." tags="ex9, GUI, edit, modelling, point, cloud, mesh">
@@ -133,7 +133,7 @@
    </PIN>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="21" dstpinname="Layers" srcnodeid="16" srcpinname="Layer">
@@ -366,108 +366,6 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\TagPoints (3D Vector).v4p" id="31" nodename="TagPoints (3d Vector)" systemname="TagPoints (3d Vector)">
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   <PIN pinname="particles" visible="1">
-   </PIN>
-   <BOUNDS height="100" left="3675" top="5220" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="3600" left="3675" top="5220" type="Box" width="4800">
-   </BOUNDS>
-   <BOUNDS height="12120" left="10710" top="2610" type="Window" width="11640">
-   </BOUNDS>
-   <PIN pinname="over" visible="1">
-   </PIN>
-   <PIN pinname="picked" visible="1">
-   </PIN>
-   <PIN pinname="sorted" visible="1">
-   </PIN>
-   <PIN pinname="Points" visible="1">
-   </PIN>
-   <PIN pinname="Mouse Down" visible="1">
-   </PIN>
-   <PIN pinname="Mouse XYZ" visible="1" slicecount="3" values="0.912772585669782,-0.248520710059172,0">
-   </PIN>
-   <PIN pinname="Over" visible="1">
-   </PIN>
-   <PIN pinname="Picked" visible="1">
-   </PIN>
-   <PIN pinname="Epsilon" visible="1">
-   </PIN>
-   <PIN pinname="Point Size" visible="1">
-   </PIN>
-   <PIN pinname="Tagged" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Reset" visible="1">
-   </PIN>
-   <PIN pinname="Deselect All" visible="1">
-   </PIN>
-   <PIN pinname="Select All" visible="1">
-   </PIN>
-   <PIN pinname="Reset To" visible="1">
-   </PIN>
-   <PIN pinname="Mouse State" visible="1">
-   </PIN>
-   <PIN pinname="Points Visible" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="31" dstpinname="Point Size" srcnodeid="10" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="15" dstpinname="Index" srcnodeid="31" srcpinname="Tagged">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Deselect All" srcnodeid="3" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Select All" srcnodeid="4" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Reset" srcnodeid="5" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Reset To" srcnodeid="2" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Mouse Down" srcnodeid="6" srcpinname="XYZ">
-   </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" id="32" nodename="Cursor (DX9)" systemname="Cursor (DX9)">
-   <BOUNDS height="100" left="5625" top="5220" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="3600" left="5625" top="5220" type="Box" width="4800">
-   </BOUNDS>
-   <BOUNDS height="11190" left="11235" top="1515" type="Window" width="14415">
-   </BOUNDS>
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   <PIN pinname="Mouse XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Mouse Down" visible="1">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Aspect Ratio" visible="1">
-   </PIN>
-   <PIN pinname="Point Size" slicecount="3" visible="1" values="0.0299999995529652,0.0299999995529652,0.0299999995529652">
-   </PIN>
-   <PIN pinname="Selection" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="MouseState" visible="1">
-   </PIN>
-   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="32" dstpinname="View Projection" srcnodeid="25" srcpinname="Output Node">
-   </LINK>
-   <LINK dstnodeid="32" dstpinname="Mouse XYZ" srcnodeid="17" srcpinname="XYZ">
-   </LINK>
-   <LINK dstnodeid="16" dstpinname="Layer 2" srcnodeid="32" srcpinname="Layer">
-   </LINK>
-   <LINK dstnodeid="32" dstpinname="Mouse Down" srcnodeid="1" srcpinname="Output">
-   </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" id="33" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)">
    <BOUNDS height="100" left="7095" top="2550" type="Node" width="100">
    </BOUNDS>
@@ -506,9 +404,103 @@
    </LINK>
    <LINK srcnodeid="35" srcpinname="Transform Out" dstnodeid="21" dstpinname="Aspect Ratio">
    </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\TagPoints (3D Vector).v4p" id="31" nodename="TagPoints (3d Vector)" systemname="TagPoints (3d Vector)">
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="particles" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="3675" top="5220" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="3675" top="5220" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="12120" left="10710" top="2610" type="Window" width="11640">
+   </BOUNDS>
+   <PIN pinname="over" visible="1">
+   </PIN>
+   <PIN pinname="picked" visible="1">
+   </PIN>
+   <PIN pinname="sorted" visible="1">
+   </PIN>
+   <PIN pinname="Points" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Down" visible="1">
+   </PIN>
+   <PIN pinname="Mouse XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Over" visible="1">
+   </PIN>
+   <PIN pinname="Picked" visible="1">
+   </PIN>
+   <PIN pinname="Epsilon" visible="1">
+   </PIN>
+   <PIN pinname="Point Size" visible="1">
+   </PIN>
+   <PIN pinname="Tagged" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Deselect All" visible="1">
+   </PIN>
+   <PIN pinname="Select All" visible="1">
+   </PIN>
+   <PIN pinname="Reset To" visible="1">
+   </PIN>
+   <PIN pinname="Mouse State" visible="1">
+   </PIN>
+   <PIN pinname="Points Visible" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="31" dstpinname="Point Size" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Index" srcnodeid="31" srcpinname="Tagged">
+   </LINK>
+   <LINK dstnodeid="31" dstpinname="Deselect All" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="31" dstpinname="Select All" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="31" dstpinname="Reset" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="31" dstpinname="Reset To" srcnodeid="2" srcpinname="Output">
+   </LINK>
    <LINK srcnodeid="28" srcpinname="XYZ Transformed" dstnodeid="31" dstpinname="Points">
    </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="36">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" id="32" nodename="Cursor (DX9)" systemname="Cursor (DX9)">
+   <BOUNDS height="100" left="5625" top="5220" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="5625" top="5220" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="11190" left="11235" top="1515" type="Window" width="14415">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Mouse XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Down" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
+   <PIN pinname="Point Size" visible="1">
+   </PIN>
+   <PIN pinname="Selection" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="MouseState" visible="1">
+   </PIN>
+   <PIN pinname="Mouse State" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Layer 2" srcnodeid="32" srcpinname="Layer">
+   </LINK>
+   <NODE systemname="Mouse (System)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (System)" componentmode="Hidden" id="36">
    <BOUNDS type="Node" left="3990" top="4320" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">

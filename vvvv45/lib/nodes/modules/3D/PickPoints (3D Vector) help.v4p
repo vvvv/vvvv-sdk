@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PickPoints (3D Vector) help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
+   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\3D\PickPoints (3D Vector) help.v4p" locked="0">
    <BOUNDS height="8775" left="5880" top="105" type="Window" width="9120">
    </BOUNDS>
    <INFO author="vvvv group" description="edit a point cloud via mouse and keyboard within the ex9 renderer." tags="ex9, GUI, edit, modelling, point, cloud, mesh">
@@ -127,7 +127,7 @@
    </PIN>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="9" srcpinname="Layer">
@@ -317,9 +317,9 @@
    </PIN>
    <PIN pinname="Point Size" visible="1">
    </PIN>
-   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   <PIN pinname="Mouse State" visible="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="8" dstpinname="Index" srcnodeid="28" srcpinname="Picked">
@@ -345,31 +345,27 @@
    </PIN>
    <PIN pinname="Aspect Ratio" visible="1">
    </PIN>
-   <PIN pinname="Point Size" slicecount="3" visible="1" values="0.0299999995529652,0.0299999995529652,0.0299999995529652">
+   <PIN pinname="Point Size" visible="1">
    </PIN>
    <PIN pinname="Selection" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   <PIN pinname="Mouse State" visible="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <LINK dstnodeid="29" dstpinname="View Projection" srcnodeid="19" srcpinname="Output Node">
-   </LINK>
    <LINK dstnodeid="9" dstpinname="Layer 2" srcnodeid="29" srcpinname="Layer">
    </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="31">
+   <NODE systemname="Mouse (System)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (System)" componentmode="Hidden" id="31">
    <BOUNDS type="Node" left="4200" top="4380" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Mouse" dstnodeid="28" dstpinname="Mouse - Mouse">
+   <LINK srcnodeid="31" srcpinname="Mouse" dstnodeid="28" dstpinname="Mouse">
    </LINK>
    <LINK srcnodeid="31" srcpinname="Mouse" dstnodeid="29" dstpinname="Mouse">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="Mouse" dstnodeid="28" dstpinname="Mouse">
    </LINK>
    </PATCH>

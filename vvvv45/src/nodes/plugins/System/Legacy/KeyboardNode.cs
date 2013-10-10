@@ -13,7 +13,7 @@ using WindowsInput;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global Legacy", AutoEvaluate = true)]
+    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global Legacy2", AutoEvaluate = true)]
     public class LegacyGlobalKeyboardNode : GlobalInputNode
     {
 #pragma warning disable 0649
@@ -43,7 +43,7 @@ namespace VVVV.Nodes.Input
         public override void OnImportsSatisfied()
         {
             // Create a keyboard split node for us and connect our keyboard out to its keyboard in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardState" && n.Category == "System" && n.Version == "Split");
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardState" && n.Category == "System" && n.Version == "Split Legacy");
             FKeyboardSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => FKeyboardOut);
             base.OnImportsSatisfied();
         }
@@ -135,7 +135,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Window Legacy")]
+    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Window Legacy2")]
     public class LegacyWindowKeyboardNode : WindowInputNode
     {
 #pragma warning disable 0649
@@ -153,7 +153,7 @@ namespace VVVV.Nodes.Input
         public override void OnImportsSatisfied()
         {
             // Create a keyboard split node for us and connect our keyboard out to its keyboard in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardState" && n.Category == "System" && n.Version == "Split");
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardState" && n.Category == "System" && n.Version == "Split Legacy");
             FKeyboardSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => FKeyboardOut);
             base.OnImportsSatisfied();
         }
