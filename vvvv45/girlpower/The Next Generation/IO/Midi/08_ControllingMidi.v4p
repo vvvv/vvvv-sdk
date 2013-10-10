@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta31.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\08_ControllingMidi.v4p" systemname="07_DistortingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\07_DistortingMidi.v4p">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\08_ControllingMidi.v4p" systemname="07_DistortingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\07_DistortingMidi.v4p">
    <BOUNDS type="Window" left="3510" top="1815" width="17850" height="11715">
    </BOUNDS>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -155,7 +155,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="675" top="720" width="3660" height="480">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is how to change pitch bend when this midi file is playing.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is how to apply pitch bend to a midi file that is being played.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -167,9 +167,9 @@
    <NODE componentmode="InABox" id="54" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="720" top="2745" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="2130" left="720" top="2745" type="Box" width="4140">
+   <BOUNDS height="780" left="720" top="2745" type="Box" width="4125">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|FileStream (DShow9) loads and plays a MIDI file. With DirectShow it&apos;s not possible to hear to midi and to use this midi-data at the same time. That&apos;s why a little workaround: midi-data will be sent via virtual midi port back to vvvv, where the midi notes will be played, midi-programm for the device will be chosen and pitch bend will be modified.&cr;&lf;&cr;&lf;Please note, the MidiOut (DShow9) uses internal virtual midi port to loop the midi data back back in vvvv. |">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|FileStream (DShow9) loads and plays a MIDI file. In order to receive the midi-data in a MidiNote (Devices) node you have to send it to a virtual midi-port.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -251,7 +251,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="10425" top="1230" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="br_im2_format0.mid">
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\lib\assets\sounds\Goldberg Variationen 14.mid|">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="file.avi">
    </PIN>
@@ -331,7 +331,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7230" top="960" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -341,7 +341,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -519,9 +519,9 @@
    <LINK srcnodeid="6" srcpinname="Position" dstnodeid="232" dstpinname="Y Input Value">
    </LINK>
    <NODE componentmode="InABox" id="238" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="6195" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="5295" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="6195" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="5295" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -535,9 +535,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="239" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="7260" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="6360" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="7260" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="6360" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -551,9 +551,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="240" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="8310" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="7410" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="8310" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="7410" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -567,9 +567,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="241" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="8895" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="7995" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="8895" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="7995" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -583,11 +583,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="245" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="720" top="6210" type="Node" width="7425">
+   <BOUNDS height="270" left="720" top="5310" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="4620" left="720" top="6210" type="Box" width="4140">
+   <BOUNDS height="4620" left="720" top="5310" type="Box" width="4140">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|MidiNote (Devices) listens to all notes coming from the virtual midi port on channel 0. Please note I (Spreads) node on top of it, it generates a spread of integers for all 128 notes.&cr;&lf;&cr;&lf;In order to play the midi-data a MidiNoteOut (Devices Bang) is used. It receives the velocity of all the notes and &apos;OnData&apos; output of the MidiNote (Devices) is used to bang the notes.&cr;&lf;&cr;&lf;Midi program 49 (String Ensemble 1) is chosen to play the piece.&cr;&lf;&cr;&lf;MidiShortOutput (Devices) sends messages number 224 (Chan 0 Pitch Wheel Control) to the midi device.&cr;&lf;&cr;&lf;LFO (Animation) generates sawtooth pattern of values in the range of (0, 1), WaveShaper (Value) converts these values into the sine wave. After multiplication with 127 there will be alternating values used for controlling Pitch wheel of the instrument.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|MidiNote (Devices) listens to all notes coming from the virtual midi port on channel 0. Please note I (Spreads) node on top of it, it generates a spread of integers for all 128 notes.&cr;&lf;&cr;&lf;In order to play the midi-data a MidiNoteOut (Devices Bang) is used. It receives the velocity of all the notes and the &apos;OnData&apos; output of the MidiNote (Devices) is used to bang the notes.&cr;&lf;&cr;&lf;Midi program 49 (String Ensemble 1) is chosen to play the piece.&cr;&lf;&cr;&lf;MidiShortOut (Devices) sends message number 224 (Channel 0 Pitch Wheel Control) to the midi device.&cr;&lf;&cr;&lf;LFO (Animation) generates a sawtooth pattern of values in the range of 0..1, WaveShaper (Value) converts these values into a sine wave. After multiplication with 127 there will be alternating values used for controlling Pitch wheel of the instrument.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -599,9 +599,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="246" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="720" top="5085" type="Node" width="7425">
+   <BOUNDS height="270" left="720" top="3585" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="510" left="720" top="5085" type="Box" width="3825">
+   <BOUNDS height="510" left="720" top="3585" type="Box" width="3825">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|One of the many virtual midi drivers can be downloaded here:|">
    </PIN>
@@ -615,9 +615,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="247">
-   <BOUNDS type="Node" left="720" top="5640" width="100" height="100">
+   <BOUNDS type="Node" left="720" top="4140" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="720" top="5640" width="2970" height="240">
+   <BOUNDS type="Box" left="720" top="4140" width="2970" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
@@ -1115,9 +1115,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="273" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="9525" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="8625" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="9525" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="8625" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
