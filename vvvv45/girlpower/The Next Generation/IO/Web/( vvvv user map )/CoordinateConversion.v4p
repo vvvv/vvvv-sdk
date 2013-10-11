@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\( vvvv user map )\CoordinateConversion.v4p" bgcolor="15329769" locked="0" systemname="CoordinateConversion">
-   <BOUNDS height="12870" left="14700" top="2115" type="Window" width="13050">
+   <BOUNDS height="12060" left="405" top="495" type="Window" width="13050">
    </BOUNDS>
    <NODE id="42" nodename="Cartesian (3d)" systemname="Cartesian (3d)">
    <BOUNDS height="270" left="6060" top="2400" type="Node" width="1260">
@@ -67,7 +67,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Text">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Text Transform|">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="97" nodename="Billboard (Transform)" systemname="Billboard (Transform)">
@@ -207,7 +207,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="8940" top="675" type="Box" width="645">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="ActualSliceIndex">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Selected Index|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -289,7 +289,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Segment">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Segment Transform|">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="364" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
@@ -309,7 +309,7 @@
    </BOUNDS>
    <PIN pinname="Go To Position" visible="1">
    </PIN>
-   <PIN pinname="FilterTime" slicecount="1" values="2" visible="1">
+   <PIN pinname="FilterTime" slicecount="1" visible="1" values="2">
    </PIN>
    <PIN pinname="Position Out" visible="1">
    </PIN>
@@ -493,9 +493,9 @@
    <NODE componentmode="InABox" id="384" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="570" top="1380" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="4560" left="570" top="1380" type="Box" width="3705">
+   <BOUNDS height="6795" left="570" top="1380" type="Box" width="3735">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Latitude and Longitude are mapped to suitable ranges.&cr;&lf;&cr;&lf;Cartesian (3d) transforms spherical polar coordinates into usual cartesian 3d space (3d vectors). Latitude is the Pitch angle, Longitude is the Yaw and the Length is set so that the yellow dots will be places just above the surface.&cr;&lf;&cr;&lf;One of the XYZ positions is picked according to the ActualSliceIndex coming from the Interaction subpatch (see the root). This is the closest user to the cursor.&cr;&lf;&cr;&lf;If another user is selected, the &apos;ActualSliceIndex&apos; will be changed, so the &apos;Change&apos; bangs 1 on its output. The switches below shortly returns &cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Latitude and Longitude are mapped to suitable ranges.&cr;&lf;&cr;&lf;Cartesian (3d) transforms spherical polar coordinates into usual cartesian 3d space (3d vectors). Latitude is the Pitch angle, Longitude is the Yaw and the Length is set so that the yellow dots will be places just above the surface.&cr;&lf;&cr;&lf;One of the XYZ positions is picked according to the ActualSliceIndex coming from the Interaction subpatch (see the root). This is the closest user to the cursor.&cr;&lf;&cr;&lf;If another user is selected, the Change (Animation) bangs its &apos;Output&apos;. The switches below shortly returns the values from its second &apos;Input&apos; pin.&cr;&lf;&cr;&lf;Damper (Animation) smoothes these values.&cr;&lf;&cr;&lf;One of these values is used to move the text (username) shortly to the left.&cr;&lf;&cr;&lf;The second one is used to scale up the blue highlight.&cr;&lf;&cr;&lf;Billboard (Transform) with its &apos;Object Space&apos; pin set to &apos;Projection&apos; rotates objects in 3D space toward viwer. So the text and the blue highlight will be always drawn &quot;flat&quot; (without any 3D rotation).&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -587,9 +587,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="378" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="180" top="6000" type="Node" width="315">
+   <BOUNDS height="270" left="180" top="5550" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="180" top="6000" type="Box" width="405">
+   <BOUNDS height="390" left="180" top="5550" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -687,7 +687,7 @@
    </BOUNDS>
    <BOUNDS height="390" left="7095" top="6600" type="Box" width="405">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -703,7 +703,7 @@
    </BOUNDS>
    <BOUNDS height="390" left="7065" top="8520" type="Box" width="405">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -715,11 +715,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="392" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="7080" top="9525" type="Node" width="315">
+   <BOUNDS height="270" left="9885" top="9510" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="7080" top="9525" type="Box" width="405">
+   <BOUNDS height="390" left="9885" top="9510" type="Box" width="405">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -778,4 +778,36 @@
    </LINK>
    <LINK srcnodeid="395" srcpinname="Y Output Value" dstnodeid="363" dstpinname="FilterTime">
    </LINK>
+   <NODE componentmode="InABox" id="396" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="180" top="6165" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="180" top="6165" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="397" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="180" top="6810" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="180" top="6810" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
    </PATCH>
