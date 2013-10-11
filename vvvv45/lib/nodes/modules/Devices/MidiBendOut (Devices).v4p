@@ -1,43 +1,31 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\Devices\MidiBendOut (Devices).v4p" systemname="MidiBendOut (Devices)" filename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\Devices\MidiBendOut (Devices).v4p">
-   <BOUNDS type="Window" left="8610" top="4785" width="9000" height="4575">
+   <BOUNDS type="Window" left="13815" top="360" width="9000" height="6030">
    </BOUNDS>
    <NODE systemname="MidiShortOutput (Devices)" filename="" nodename="MidiShortOutput (Devices)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="1665" top="3300" width="4020" height="270">
+   <BOUNDS type="Node" left="1635" top="4380" width="4020" height="270">
    </BOUNDS>
-   <PIN pinname="Enabled">
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Do Send" visible="1">
    </PIN>
-   <PIN pinname="Data1" visible="1" slicecount="1" values="0">
+   <PIN pinname="Data1" visible="1" slicecount="1" values="29">
    </PIN>
-   <PIN pinname="Data2" visible="1" slicecount="1" values="14">
+   <PIN pinname="Data2" visible="1" slicecount="1" values="69">
    </PIN>
    <PIN pinname="Message" visible="1">
    </PIN>
+   <PIN pinname="Midi Output Port" visible="1" slicecount="1" values="|LoopBe Internal MIDI|">
+   </PIN>
    </NODE>
    <NODE systemname="Change (Animation)" nodename="Change (Animation)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="1680" top="2805" width="100" height="100">
+   <BOUNDS type="Node" left="1635" top="3840" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="7" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="5625" top="660" width="1590" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="5625" top="660" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|Microsoft GS Wavetable Synth|">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Midi Output Port|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="7" srcpinname="Output Enum" dstnodeid="9" dstpinname="Midi Output Port">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="OnChange" dstnodeid="9" dstpinname="Do Send">
-   </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="2445" top="660" type="Node" width="0">
    </BOUNDS>
@@ -59,7 +47,7 @@
    </PIN>
    </NODE>
    <NODE id="4" nodename="Add (Value)" systemname="Add (Value)">
-   <BOUNDS height="270" left="2460" top="2760" type="Node" width="330">
+   <BOUNDS height="270" left="2430" top="3855" type="Node" width="330">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -69,7 +57,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Frac (Value)" nodename="Frac (Value)" componentmode="Hidden" id="3">
-   <BOUNDS type="Node" left="2445" top="1275" width="435" height="270">
+   <BOUNDS type="Node" left="2445" top="1335" width="435" height="270">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -79,7 +67,7 @@
    <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Input">
    </LINK>
    <NODE id="2" nodename="Mod (Value)" systemname="Mod (Value)">
-   <BOUNDS height="270" left="2445" top="1710" type="Node" width="450">
+   <BOUNDS height="270" left="2445" top="1770" type="Node" width="450">
    </BOUNDS>
    <PIN pinname="Mapping">
    </PIN>
@@ -103,9 +91,9 @@
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="9" dstpinname="Message">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4020" top="660" width="480" height="240">
+   <BOUNDS type="Box" left="3390" top="630" width="480" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="4020" top="660" width="0" height="0">
+   <BOUNDS type="Node" left="3390" top="630" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0.5">
    </PIN>
@@ -125,11 +113,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="0" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4845" top="660" width="480" height="480">
+   <BOUNDS type="Box" left="4785" top="615" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="4845" top="660" width="0" height="0">
+   <BOUNDS type="Node" left="4785" top="615" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -143,61 +131,99 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Enabled">
-   </LINK>
    <INFO author="anton" description="module to send midi pitch bend messages" tags="io">
    </INFO>
    <NODE systemname="Map (Value)" nodename="Map (Value)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="4035" top="1695" width="1245" height="270">
+   <BOUNDS type="Node" left="3405" top="1515" width="1245" height="270">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0.46">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Destination Maximum" slicecount="1" values="127">
+   <PIN pinname="Destination Maximum" slicecount="1" values="16383" visible="1">
    </PIN>
-   <PIN pinname="Destination Minimum" slicecount="1" values="-127">
+   <PIN pinname="Destination Minimum" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="26" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="5610" top="3960" width="1740" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5610" top="3960" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="|LoopBe Internal MIDI|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Output Enum" dstnodeid="9" dstpinname="Midi Output Port">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="8" dstpinname="Input">
+   </LINK>
    <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Input">
    </LINK>
-   <NODE systemname="Frac (Value)" nodename="Frac (Value)" componentmode="Hidden" id="23">
-   <BOUNDS type="Node" left="4035" top="2100" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
+   <LINK srcnodeid="8" srcpinname="OnChange" dstnodeid="9" dstpinname="Do Send">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Enabled">
+   </LINK>
+   <NODE id="23" systemname="Frac (Value)" nodename="Frac (Value)" componentmode="Hidden">
    <PIN pinname="Whole Part" visible="1">
    </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="4005" top="3120" width="100" height="100">
+   </BOUNDS>
    </NODE>
+   <NODE id="35" systemname="Radix (Value)" nodename="Radix (Value)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Input 1" visible="1" pintype="Input" slicecount="1" values="8216">
+   </PIN>
+   <PIN pinname="Output 2" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="3210" top="3750" width="855" height="270">
+   </BOUNDS>
+   <PIN pinname="Output Base" slicecount="1" pintype="Input" visible="1" values="128">
+   </PIN>
+   <PIN pinname="Output 1" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Output Count" slicecount="1" pintype="Configuration" values="2">
+   </PIN>
+   <PIN pinname="Output 3" visible="1">
+   </PIN>
+   <PIN pinname="Output 4" visible="1">
+   </PIN>
+   <PIN pinname="Input Base" slicecount="1" pintype="Input" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input Count" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="" pintype="Output">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Output 2" dstnodeid="9" dstpinname="Data2">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Output 1" dstnodeid="9" dstpinname="Data1">
+   </LINK>
    <LINK srcnodeid="10" srcpinname="Output" dstnodeid="23" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Input">
-   </LINK>
-   <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="24">
-   <BOUNDS type="Node" left="4035" top="2865" width="100" height="100">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="43" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4035" top="750" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="24" srcpinname="Output" dstnodeid="9" dstpinname="Data2">
-   </LINK>
-   <LINK srcnodeid="23" srcpinname="Whole Part" dstnodeid="24" dstpinname="Input 1">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="25" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4320" top="2505" width="375" height="240">
+   <BOUNDS type="Node" left="4035" top="750" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Node" left="4320" top="2505" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="127">
+   <PIN pinname="Y Input Value" slicecount="1" values="16383">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="25" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Input 2">
+   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Destination Maximum">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Whole Part" dstnodeid="35" dstpinname="Input 1">
    </LINK>
    </PATCH>
