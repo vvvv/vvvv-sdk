@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta31.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\06_PlayingMidiData.v4p" systemname="05_PlayingMidiData" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\05_PlayingMidiData.v4p">
-   <BOUNDS type="Window" left="1050" top="1530" width="16200" height="11025">
+   <BOUNDS type="Window" left="1050" top="1530" width="18375" height="10965">
    </BOUNDS>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -663,7 +663,7 @@
    <LINK srcnodeid="205" srcpinname="Y Output Value" dstnodeid="203" dstpinname=".. To [">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="206" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="9975" top="9120" width="1830" height="240">
+   <BOUNDS type="Box" left="9975" top="9120" width="2400" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="9975" top="9120" width="0" height="0">
    </BOUNDS>
@@ -810,26 +810,12 @@
    </NODE>
    <LINK srcnodeid="145" srcpinname="Midi0-Channel" dstnodeid="223" dstpinname="Y Input Value">
    </LINK>
-   <NODE id="218" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="11805" top="3735" width="945">
+   <NODE componentmode="InABox" id="225" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="13365" top="3045" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS type="Box" height="330" left="11805" top="3735" width="1290">
+   <BOUNDS height="3495" left="13365" top="3045" type="Box" width="4380">
    </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="*****">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="21">
-   </PIN>
-   </NODE>
-   <NODE id="217" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="11805" top="2460" width="12240" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="11805" top="2460" width="3180" height="1290">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="1" values="|Strange Behaviour: It&apos;s not possible to listen to midi from the Timeliner if the midi was played via MidiOut before that.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The MidiOut (DShow9) node and all the Midi...Out (Devices) nodes both access the same midi ports but only either can run them at a time. &cr;&lf;&cr;&lf;So if any of the Midi...Out (Devices) nodes is enabled with a specific driver chosen MidiOut (DShow9) will not be able to access that same driver and vice versa. &cr;&lf;&cr;&lf;Therefore before choosing a driver in MidiOut (DShow9) you have to make sure all Midi...Out (Devices) nodes are disabled (or have a different driver chosen). &cr;&lf;&cr;&lf;The same goes for the other direction: If MidiOut (DShow9) is active with a specific driver any of the Midi...Out (Devices) nodes will fail when trying to enable it with the same driver chosen. Watch Renderer (TTY) for such errors.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -837,21 +823,71 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="8">
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <NODE id="214" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="11805" top="1890" width="945">
+   <NODE componentmode="InABox" id="224" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="12915" top="3030" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS type="Box" height="390" left="11805" top="1890" width="1275">
+   <BOUNDS height="975" left="12915" top="3030" type="Box" width="360">
    </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="*****">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="!">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="21">
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="35">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="226" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9420" top="8445" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9420" top="8445" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="226" srcpinname="Y Output Value" dstnodeid="219" dstpinname="Enabled">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="227" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9915" top="8445" width="2985" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9915" top="8445" width="3045" height="495">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; disable for the above example to work&cr;&lf;(see remarks to the right)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="228" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8220" top="4050" width="4215" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8220" top="4050" width="3345" height="570">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ choose a different driver here for the below example to work (see remarks to the right)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    </PATCH>
