@@ -14,9 +14,9 @@ namespace VVVV.Nodes.Texture.HTML
 {
 	[PluginInfo(Name = "HTMLTexture", 
                 Category = "EX9.Texture", 
-                Version = "String", 
+                Version = "String Legacy", 
                 Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
-    public class HTMLTextureStringNode : HTMLTextureNode
+    public class LegacyHTMLTextureStringNode : HTMLTextureNode
     {
         [Input("HTML", DefaultString = @"<html><head></head><body bgcolor=""#ffffff""></body></html>")]
         public ISpread<string> FHtmlIn;
@@ -30,10 +30,10 @@ namespace VVVV.Nodes.Texture.HTML
     }
 
     [PluginInfo(Name = "HTMLTexture", 
-                Category = "EX9.Texture", 
-                Version = "URL", 
+                Category = "EX9.Texture",
+                Version = "URL Legacy", 
                 Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
-    public class HTMLTextureUrlNode : HTMLTextureNode
+    public class LegacyHTMLTextureUrlNode : HTMLTextureNode
     {
         [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
         public ISpread<string> FUrlIn;
@@ -43,8 +43,8 @@ namespace VVVV.Nodes.Texture.HTML
             renderer.LoadURL(FUrlIn[slice]);
         }
     }
-    
-    public abstract class HTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
+
+    public abstract class LegacyHTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {
         [Input("Reload", IsBang = true)]
         public ISpread<bool> FReloadIn;
@@ -55,9 +55,9 @@ namespace VVVV.Nodes.Texture.HTML
         [Input("Zoom Level")]
         public ISpread<double> FZoomLevelIn;
         [Input("Mouse Event")]
-        public ISpread<Mouse> FMouseIn;
+        public ISpread<MouseState> FMouseIn;
         [Input("Key Event")]
-        public ISpread<Keyboard> FKeyboardIn;
+        public ISpread<KeyboardState> FKeyboardIn;
         [Input("Scroll To")]
         public ISpread<Vector2D> FScrollToIn;
         [Input("Update DOM", IsBang = true)]
@@ -117,8 +117,8 @@ namespace VVVV.Nodes.Texture.HTML
                 // Assign inputs
                 webRenderer.Size = new Size(FWidthIn[i], FHeightIn[i]);
                 webRenderer.ZoomLevel = FZoomLevelIn[i];
-                webRenderer.NewMouse = FMouseIn[i];
-                webRenderer.NewKeyboard = FKeyboardIn[i];
+                webRenderer.Mouse = FMouseIn[i];
+                webRenderer.Keyboard = FKeyboardIn[i];
                 webRenderer.ScrollTo = FScrollToIn[i];
 
                 if (FExecuteIn[i])
