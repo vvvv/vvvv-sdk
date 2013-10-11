@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Utils
 {
@@ -62,6 +63,21 @@ namespace VVVV.Utils
             var item = array[i];
             array[i] = array[j];
             array[j] = item;
+        }
+
+        // See VVVV.Utils.dll.config for mapping under Mono
+        [DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int memcmp(byte[] b1, byte[] b2, UIntPtr count);
+
+        /// <summary>
+        /// Compares the content of the two arrays for equality.
+        /// </summary>
+        /// <param name="a">The first array to compare.</param>
+        /// <param name="b">The second array to compare.</param>
+        /// <returns>True if a and b contain the same data otherwise false.</returns>
+        public static bool ContentEquals(this byte[] a, byte[] b)
+        {
+            return a.Length == b.Length && memcmp(a, b, new UIntPtr((uint)a.Length)) == 0;
         }
     }
 

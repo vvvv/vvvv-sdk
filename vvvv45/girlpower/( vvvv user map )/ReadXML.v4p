@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="X:\vvvv\vvvv45\girlpower\(vvvv user map)\ReadXML.v4p" systemname="ReadXML">
-   <BOUNDS height="13095" left="14655" top="3330" type="Window" width="13140">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\girlpower\( vvvv user map )\ReadXML.v4p" systemname="ReadXML">
+   <BOUNDS height="13095" left="3600" top="2835" type="Window" width="13140">
    </BOUNDS>
    <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="100" left="9285" top="2865" type="Node" width="100">
@@ -68,19 +68,19 @@
    </NODE>
    <LINK dstnodeid="12" dstpinname="Input" srcnodeid="5" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="7575" top="4005" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="7575" top="4005" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Digits" slicecount="1" values="0">
+   <PIN pinname="Precision" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="13" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Count">
    </LINK>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="8250" top="135" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="480" left="8250" top="135" type="Box" width="480">
@@ -162,14 +162,14 @@
    </NODE>
    <LINK dstnodeid="25" dstpinname="Input" srcnodeid="26" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="24" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="24" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="720" top="4035" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="720" top="4035" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Digits" slicecount="1" values="0">
+   <PIN pinname="Precision" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="24" dstpinname="Y Input Value" srcnodeid="25" srcpinname="Count">
@@ -228,14 +228,14 @@
    </NODE>
    <LINK dstnodeid="30" dstpinname="Input" srcnodeid="31" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="29" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="29" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="4335" top="4035" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="4335" top="4035" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Digits" slicecount="1" values="0">
+   <PIN pinname="Precision" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="29" dstpinname="Y Input Value" srcnodeid="30" srcpinname="Count">
@@ -290,7 +290,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="41" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="41" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="4845" top="11865" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="4845" top="11865" type="Box" width="795">
@@ -302,7 +302,7 @@
    </NODE>
    <LINK dstnodeid="41" dstpinname="Y Input Value" srcnodeid="39" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="42" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="42" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="1290" top="11865" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="1290" top="11865" type="Box" width="795">
@@ -340,7 +340,7 @@
    </NODE>
    <LINK dstnodeid="45" dstpinname="Select" srcnodeid="43" srcpinname="Count">
    </LINK>
-   <NODE componentmode="Hidden" id="46" nodename="HTTP (Network Get)" systemname="HTTP (Network Get)">
+   <NODE componentmode="Hidden" id="46" nodename="HTTP (Network Get)" systemname="HTTP (Network Get String)">
    <BOUNDS height="270" left="4545" top="1110" type="Node" width="4185">
    </BOUNDS>
    <BOUNDS height="0" left="4545" top="1110" type="Box" width="0">
@@ -356,6 +356,8 @@
    <PIN pinname="Status" visible="1">
    </PIN>
    <PIN pinname="Header" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="utf-8">
    </PIN>
    </NODE>
    <LINK dstnodeid="5" dstpinname="XML Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="46" srcpinname="Body">
@@ -452,7 +454,7 @@
    </NODE>
    <LINK dstnodeid="43" dstpinname="Substring" srcnodeid="60" srcpinname="Output String">
    </LINK>
-   <NODE componentmode="InABox" id="61" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="61" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="13575" top="4170" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="13575" top="4170" type="Box" width="795">
@@ -462,7 +464,7 @@
    </NODE>
    <LINK dstnodeid="61" dstpinname="Y Input Value" srcnodeid="45" srcpinname="Former Slice">
    </LINK>
-   <NODE componentmode="InABox" id="62" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="62" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="12090" top="4200" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="12090" top="4200" type="Box" width="795">
@@ -472,7 +474,7 @@
    </NODE>
    <LINK dstnodeid="62" dstpinname="Y Input Value" srcnodeid="45" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="68" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="68" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="10155" top="11865" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="480" left="10155" top="11865" type="Box" width="480">
