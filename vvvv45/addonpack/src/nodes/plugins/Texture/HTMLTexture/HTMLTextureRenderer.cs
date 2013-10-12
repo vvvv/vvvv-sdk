@@ -170,7 +170,7 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 lock (FLock)
                 {
-                    return FUrl;
+                    return FCurrentUrl;
                 }
             }
         }
