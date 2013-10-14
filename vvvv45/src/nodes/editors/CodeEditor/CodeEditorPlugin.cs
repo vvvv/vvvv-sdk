@@ -113,8 +113,6 @@ namespace VVVV.HDE.CodeEditor
             FErrorTableViewer.Dock = DockStyle.Bottom;
             FErrorTableViewer.TabIndex = 0;
             FErrorTableViewer.DoubleClick += FErrorTableViewerDoubleClick;
-            FErrorTableViewer.AutoSize = true;
-            FErrorTableViewer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             FErrorTableViewer.MaximumSize = new Size(0, 100);
             
             Controls.Add(FCodeEditorForm);
@@ -137,7 +135,7 @@ namespace VVVV.HDE.CodeEditor
 
         void FEditor_SavePressed(object sender, EventArgs e)
         {
-            document_ContentChanged(FEditor.TextDocument, FEditor.TextDocument.TextContent);
+            document_ContentChanged(FEditor.TextDocument, new ContentChangedEventArgs(FEditor.TextDocument.Content));
         }
 
         void FEditor_LinkClicked(object sender, Link link)
@@ -269,8 +267,9 @@ namespace VVVV.HDE.CodeEditor
             UpdateWindowCaption(sender as ITextDocument, newName);
         }
 
-        void document_ContentChanged(ITextDocument doc, string content)
+        void document_ContentChanged(object sender, ContentChangedEventArgs args)
         {
+            var doc = sender as ITextDocument;
             UpdateWindowCaption(doc, doc.Name);
         }
         
@@ -522,7 +521,7 @@ namespace VVVV.HDE.CodeEditor
             ClearRuntimeError();
             
             var results = args.CompilerResults;
-            if (results != null && results.Errors.HasErrors)
+            if (results != null && (results.Errors.HasErrors || results.Errors.HasWarnings))
             {
                 var compilerErrors =
                     from CompilerError error in results.Errors

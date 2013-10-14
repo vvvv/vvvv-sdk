@@ -14,7 +14,12 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.MSKinect.Nodes
 {
-    [PluginInfo(Name = "RGBDepth", Category = "Kinect",Version="Microsoft", Author = "vux",Tags="directx,texture")]
+    [PluginInfo(Name = "RGBDepth", 
+	            Category = "Kinect",
+	            Version="Microsoft", 
+	            Author = "vux", 
+	            Tags = "EX9, texture",
+	            Help = "Returns an X8R8G8B8 formatted texture from the Kinects RGB camera and a 16bit depthmap from its depth camera.")]
     public class KinectColorDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]
@@ -37,11 +42,7 @@ namespace VVVV.MSKinect.Nodes
         private ColorImagePoint[] cp;
         private object m_colorlock = new object();
 
-
-
         private Dictionary<Device, Texture> FColorTex = new Dictionary<Device, Texture>();
-
-
         [ImportingConstructor()]
         public KinectColorDepthTextureNode(IPluginHost host)
         {

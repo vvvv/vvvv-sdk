@@ -37,7 +37,7 @@ namespace VVVV.Nodes
 	            Category = "Kinect",
 	            Version ="OpenNI",
 	            Help = "Returns a 16bit depthmap in two flavors: histogram or depth in mm (where only the first 13bit are being used).",
-	            Tags = "ex9, texture",
+	            Tags = "EX9, texture",
 	            Author = "Phlegma, joreg",
 	            AutoEvaluate = true)]
 	#endregion PluginInfo
@@ -98,7 +98,7 @@ namespace VVVV.Nodes
 						try
 						{
 							FDepthGenerator = (DepthGenerator) FContextIn[0].GetProductionNodeByName("Depth1");
-							FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle);
+							FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle) * (float)VMath.RadToCyc;
 							
 							FHistogram = new int[FDepthGenerator.DeviceMaxDepth];
 							

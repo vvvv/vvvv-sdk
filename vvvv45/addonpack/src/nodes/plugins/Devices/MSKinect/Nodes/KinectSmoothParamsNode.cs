@@ -8,12 +8,14 @@ using VVVV.PluginInterfaces.V2.NonGeneric;
 
 namespace MSKinect.Nodes
 {
-    [PluginInfo(Name = "SmoothSettings", Category = "Kinect", Version = "Microsoft", Author = "vux")]
+    [PluginInfo(Name = "SmoothSettings", 
+	            Category = "Kinect", 
+	            Version = "Microsoft", 
+	            Author = "vux", 
+	            Tags = "EX9",
+	            Help = "Sets smoothing parameters for skeleton tracking")]
     public class KinectSmoothParamsNode : IPluginEvaluate
     {
-
-
-
         [Input("Correction", IsSingle = true, DefaultValue = 0.5)]
         IDiffSpread<float> FInCorrection;
 

@@ -26,6 +26,7 @@ namespace VVVV.HDE.CodeEditor.ErrorView
 		    yield return new Cell(FError.IsWarning ? "W" : "E", typeof(string));
 			yield return new Cell(FError.Line, typeof(int));
 			yield return new Cell(FError.ErrorText, typeof(string), true);
+            yield return new Cell(FError.ErrorNumber, typeof(string));
 			if (FError.FileName != null && FError.FileName.Length > 0)
 			{
 				yield return new Cell(Path.GetFileName(FError.FileName), typeof(string));

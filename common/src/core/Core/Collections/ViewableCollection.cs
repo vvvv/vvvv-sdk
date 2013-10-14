@@ -253,26 +253,34 @@ namespace VVVV.Core.Collections
     {
     	public static void AddRange<T>(this ViewableCollection<T> collection, IEnumerable<T> items)
     	{
+            collection.BeginUpdate();
     		foreach (var item in items)
     			collection.Add(item);
+            collection.EndUpdate();
     	}
     	
     	public static void AddRange<T>(this ViewableCollection<T> collection, IEnumerable items)
     	{
+            collection.BeginUpdate();
     		foreach (T item in items)
     			collection.Add(item);
+            collection.EndUpdate();
     	}
     	
     	public static void RemoveRange<T>(this ViewableCollection<T> collection, IEnumerable<T> items)
     	{
+            collection.BeginUpdate();
     		foreach (var item in items)
     			collection.Remove(item);
+            collection.EndUpdate();
     	}
     	
     	public static void RemoveRange<T>(this ViewableCollection<T> collection, IEnumerable items)
     	{
+            collection.BeginUpdate();
     		foreach (T item in items)
     			collection.Remove(item);
+            collection.EndUpdate();
     	}
     }
 }

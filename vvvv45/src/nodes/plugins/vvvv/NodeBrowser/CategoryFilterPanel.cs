@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Linq;
 using System.Xml;
+using VVVV.Nodes.Properties;
 
 using VVVV.PluginInterfaces.V2;
 
@@ -42,7 +43,7 @@ namespace VVVV.Nodes.NodeBrowser
             set;
         }
 
-		public void Update()
+		public new void Update()
 		{
 			this.SuspendLayout();
 			CheckboxPanel.SuspendLayout();
@@ -66,7 +67,7 @@ namespace VVVV.Nodes.NodeBrowser
 			{
 				var cb = new CheckBox();
 				cb.Text = category;
-				cb.Click += CheckBox_Click;
+				cb.MouseDown += CheckBox_MouseDown;
 				cb.Dock = DockStyle.Top;
 				cb.Checked = true;
 				CheckboxPanel.Controls.Add(cb);
@@ -82,8 +83,19 @@ namespace VVVV.Nodes.NodeBrowser
 			this.ResumeLayout();
 		}
 		
-		void CheckBox_Click(object sender, EventArgs e)
+		void CheckBox_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
+			var box = sender as CheckBox;
+			box.Checked = !box.Checked;
+
+			if (e.Button == MouseButtons.Left)
+			{
+				//un/check all other categories as well that start with this + Dot, like EX9. or DX11.
+				foreach (var categoryName in FCategories.Keys)
+					if (categoryName.StartsWith(box.Text + "."))
+						FCategories[categoryName].Checked = box.Checked;  
+			}
+			
 			SaveFilter();
 			
 			if (OnFilterChanged != null)
@@ -100,61 +112,29 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		private void SaveFilter()
 		{
-			var savePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-			var xmlDoc = new XmlDocument();
-			var settings = xmlDoc.CreateElement("SETTINGS");
-			var nodeCategories = xmlDoc.CreateElement("NODECATEGORIES");
-			xmlDoc.AppendChild(settings);
-			settings.AppendChild(nodeCategories);
-			
-			int hiddenCount = 0;
+			var hiddenCategories = new List<string>();
 	        foreach (var categoryName in FCategories.Keys)
 	        	if (!CategoryVisible(categoryName))
 	        {
-	        	var category = xmlDoc.CreateElement("CATEGORY");
-	        	var attr = xmlDoc.CreateAttribute("name");
-	        	attr.Value = categoryName;
-	        	category.Attributes.Append(attr);
-	        	attr = xmlDoc.CreateAttribute("visible");
-	        	attr.Value = "false";
-	        	category.Attributes.Append(attr);
-	        	
-	        	nodeCategories.AppendChild(category);	  
-				hiddenCount++;
+	        	hiddenCategories.Add(categoryName);
 	        }
-	
-	        using (var saveFile = new StreamWriter(savePath + @"\.vvvv"))
-	        {
-	            saveFile.Write(xmlDoc.OuterXml);
-	        }
+
+	        Settings.Default["HiddenCategories"] = string.Join(";", hiddenCategories);
+			Settings.Default.Save();
 	        
-	        FHiddenCategoryCountLabel.Text = "Hidden Categories: " + hiddenCount.ToString();
+	        FHiddenCategoryCountLabel.Text = "Hidden Categories: " + hiddenCategories.Count;
 		}
 		
 		private void LoadFilter()
 		{
-			FHiddenCategories.Clear();
-			
-			var loadPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-			
-			try
-	        {
-				var xmlDoc = new XmlDocument();
-	            xmlDoc.Load(loadPath + @"\.vvvv");
-	            
-	            var hiddenCategories = xmlDoc.SelectNodes("/SETTINGS/NODECATEGORIES/CATEGORY");
-	            foreach (XmlElement cat in hiddenCategories)
-	            	FHiddenCategories.Add(cat.GetAttributeNode("name").Value);
-	        }
-	        catch (Exception e)
-	        {
-	            
-	        }
-	        
+			var hiddenCategories = ((string)(Settings.Default["HiddenCategories"])).Trim().Split(';').ToList();
+			if ((hiddenCategories.Count == 1) && (hiddenCategories[0] == ""))
+				hiddenCategories.Clear();
+       
 	        foreach (var cb in FCategories)
-	        	cb.Value.Checked = !FHiddenCategories.Contains(cb.Key);
+	        	cb.Value.Checked = !hiddenCategories.Contains(cb.Key);
 	        
-	        FHiddenCategoryCountLabel.Text = "Hidden Categories: " + FHiddenCategories.Count.ToString();
+	        FHiddenCategoryCountLabel.Text = "Hidden Categories: " + hiddenCategories.Count;
 		}		
 		
 		void CategoryFilterPanelVisibleChanged(object sender, EventArgs e)

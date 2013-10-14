@@ -83,25 +83,29 @@ namespace VVVV.Hosting.Factories
             
             try
             {
-                // Create an instance of StreamReader to read from a file.
-                // The using statement also closes the StreamReader.
-                using (StreamReader sr = new StreamReader(filename))
+                // Do not try to read details from encrypted patches
+                if (!string.Equals(Path.GetExtension(filename), ".v4x", StringComparison.OrdinalIgnoreCase))
                 {
-                    //skip first line
-                    var s = sr.ReadLine();
-                    
-                    var settings = new XmlReaderSettings();
-                    settings.ProhibitDtd = false;
-                    
-                    using (StringReader stringReader = new StringReader(FDTD + sr.ReadToEnd()))
+                    // Create an instance of StreamReader to read from a file.
+                    // The using statement also closes the StreamReader.
+                    using (StreamReader sr = new StreamReader(filename))
                     {
-                        var xmlReader = XmlReader.Create(stringReader, settings);
-                        //xmlReader.Settings
-                        if(xmlReader.ReadToFollowing("INFO"))
+                        //skip first line
+                        var s = sr.ReadLine();
+
+                        var settings = new XmlReaderSettings();
+                        settings.ProhibitDtd = false;
+
+                        using (StringReader stringReader = new StringReader(FDTD + sr.ReadToEnd()))
                         {
-                            nodeInfo.Author = xmlReader.GetAttribute("author");
-                            nodeInfo.Help = xmlReader.GetAttribute("description");
-                            nodeInfo.Tags = xmlReader.GetAttribute("tags");
+                            var xmlReader = XmlReader.Create(stringReader, settings);
+                            //xmlReader.Settings
+                            if (xmlReader.ReadToFollowing("INFO"))
+                            {
+                                nodeInfo.Author = xmlReader.GetAttribute("author");
+                                nodeInfo.Help = xmlReader.GetAttribute("description");
+                                nodeInfo.Tags = xmlReader.GetAttribute("tags");
+                            }
                         }
                     }
                 }

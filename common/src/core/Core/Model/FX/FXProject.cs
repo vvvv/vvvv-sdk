@@ -42,19 +42,26 @@ namespace VVVV.Core.Model.FX
             get { return FDocuments[0] as FXDocument; }
         }
         
-        public string Code
+        public Stream GetCode()
         {
-            get
+            //vvvv only recompiles an fx if the .fx code has changed
+            //if an fx has includes it will not check for those being changed
+            //therefore if the fx has includes we'll have to fake a change in the main .fx file
+            //like so:
+            var content = Document.Content;
+            var stream = new MemoryStream();
+            content.Position = 0;
+            content.CopyTo(stream);
+            if (Documents.Count > 1)
             {
-                //vvvv only recompiles an fx if the .fx code has changed
-                //if an fx has includes it will not check for those being changed
-                //therefore if the fx has includes we'll have to fake a change in the main .fx file
-                //like so:
-                string fakechange = "";
-                if (Documents.Count > 1)
-                    fakechange = "//" + System.DateTime.Now.ToLongTimeString();
-                return (Documents[0] as TextDocument).TextContent + fakechange;
+                using (var writer = new LeaveOpenStreamWriter(stream))
+                {
+                    var fakechange = "//" + System.DateTime.Now.ToLongTimeString();
+                    writer.Write(fakechange);
+                }
             }
+            stream.Position = 0;
+            return stream;
         }
         
         public string ParameterDescription { get; set; }

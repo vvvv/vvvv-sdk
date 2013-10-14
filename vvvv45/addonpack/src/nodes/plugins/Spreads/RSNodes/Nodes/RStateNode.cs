@@ -85,7 +85,7 @@ namespace VVVV.Nodes
         #endregion
     }
 
-    [PluginInfo(Name = "R", Category = "KeyBoardState", Version = "Advanced", Author = "vux")]
+    [PluginInfo(Name = "R", Category = "KeyboardState", Version = "Advanced", Author = "vux")]
     public class RKeyStateNode : IPluginEvaluate, IDisposable
     {
 

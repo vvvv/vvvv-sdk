@@ -59,5 +59,12 @@ namespace VVVV.Nodes
 			CurrentCol = Source.CurrentCol;
 		}
 		
+		public bool GetAndResetMouseOver()
+		{
+			var mo = this.MouseOver;
+			this.MouseOver = false;
+			return mo;
+		}
+		
 	}
 }

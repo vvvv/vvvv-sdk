@@ -12,6 +12,8 @@ namespace VVVV.Nodes
     {
 
         bool FChanged = false;
+		bool FSensorChanged = false;
+		bool FDigitalInputChanged = false;
 
         #region constructor
 
@@ -132,11 +134,13 @@ namespace VVVV.Nodes
         void InputChange(object sender, InputChangeEventArgs e)
         {
             FChanged = true;
+			FDigitalInputChanged = true;
         }
 
         void SensorChange(object sender, SensorChangeEventArgs e)
         {
             FChanged = true;
+			FSensorChanged = true;
         }
 
         public override void RemoveChangedHandler()
@@ -162,6 +166,26 @@ namespace VVVV.Nodes
                 return temp;
             }
         }
+
+		public bool SensorChanged
+		{
+			get
+			{
+				bool temp = FSensorChanged;
+				FSensorChanged = false;
+				return temp;
+			}
+		}
+		
+		public bool DigitalInputChanged
+		{
+			get
+			{
+				bool temp = FDigitalInputChanged;
+				FDigitalInputChanged = false;
+				return temp;
+			}
+		}
 
 
     }

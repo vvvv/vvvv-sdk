@@ -14,6 +14,7 @@ namespace VVVV.Utils.Win32
         }
 
         private IntPtr FHwnd;
+        public IntPtr HWnd { get { return FHwnd; } }
         private readonly ComCtl32.SubClassProc FSubclassProcDelegate;
 
         private Subclass(IntPtr hwnd)
