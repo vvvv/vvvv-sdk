@@ -22,7 +22,7 @@ namespace VVVV.Nodes
 		[Input("Points", DefaultValue = 1.0)]
 		public ISpread<Vector2D> FInput;
 		
-		[Input("Thickness", DefaultValue = 0.2)]
+		[Input("Thickness", DefaultValue = 0.1)]
 		public ISpread<double> FWidth;
 		
 		[Output("Vertices")]
@@ -34,16 +34,16 @@ namespace VVVV.Nodes
 		[Output("Factor", Visibility = PinVisibility.OnlyInspector)]
 		public ISpread<double> IFactor;
 
-		//[Import()]
-		//public ILogger FLogger;
-
 		#endregion fields & pins
 		
 		public void Evaluate(int SpreadMax)
 		{
 			// no vertices
-			if(FInput.SliceCount < 1)
+			if(FInput.SliceCount < 1 || FWidth.SliceCount < 1)
 			{
+				FOutput.SliceCount = 0;
+				FTexCoords.SliceCount = 0;
+				IFactor[0] = 0;
 				return;
 			}
 			// Only one vertex
@@ -51,8 +51,9 @@ namespace VVVV.Nodes
 			{
 				FOutput.SliceCount = FInput.SliceCount;
 				FOutput[0] = FInput[0];
-				//FLogger.Log(LogType.Debug, "Single");
 				
+				FTexCoords.SliceCount = 1;
+				FTexCoords[0] = new Vector2D(0,0);
 				IFactor[0] = 1;
 				return;
 			}
