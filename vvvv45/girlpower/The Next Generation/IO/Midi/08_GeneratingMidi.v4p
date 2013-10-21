@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\08_GeneratingMidi.v4p" systemname="09_GeneratingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\09_GeneratingMidi.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\08_GeneratingMidi.v4p" systemname="09_GeneratingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\09_GeneratingMidi.v4p">
    <BOUNDS type="Window" left="930" top="390" width="16920" height="12990">
    </BOUNDS>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -169,7 +169,7 @@
    </BOUNDS>
    <BOUNDS height="6420" left="720" top="2445" type="Box" width="4155">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Bangs its output randomly in the given interval.&cr;&lf;&cr;&lf;MidiNoteOut (Devices Bang) needs two bangs for every note - one to start the note and another one to stop it (note&apos;s velocity should be set to 0 for this second bang). &cr;&lf;&cr;&lf;This is how to generate two consecutive bangs, one immediately (to stop the last note) and one in the next frame (using FrameDelay (Animation)) to start a new one.&cr;&lf;&cr;&lf;Switch (Value Input) controls the velocities. It sets the velocity to 0 on the first bang, thus stopping the note.&cr;&lf;&cr;&lf;Random (Value) generates a spread of random values on each second bang. These values are used as notes numbers.&cr;&lf;&cr;&lf;Notes are sent out to the midi device. Note, that I (Spreads) generates a spread of 4 values for 4 channels.&cr;&lf;&cr;&lf;A random program number is generated for every channel. RandomSpread (Spreads) creates a spread of values in a range (0..1), after multiplication with 127 and taking the whole part (using Frac (Value)) there is a spread of program IDs.&cr;&lf;&cr;&lf;MidiProgramOut (Devices) sets these programs.&cr;&lf;&cr;&lf;Changing the slider in the IOBox results in bending the pitch on all four channels.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Bangs its output randomly in the given interval.&cr;&lf;&cr;&lf;MidiNoteOut (Devices Bang) needs two bangs for every note - one to start the note and another one to stop it (note&apos;s velocity has to be set to 0 for this second bang). &cr;&lf;&cr;&lf;This is how to generate two consecutive bangs, one immediately (to stop the last note) and one in the next frame (using FrameDelay (Animation)) to start a new one.&cr;&lf;&cr;&lf;Switch (Value Input) controls the velocities. It sets the velocity to 0 on the first bang, thus stopping the note.&cr;&lf;&cr;&lf;Random (Value) generates a spread of random values on each second bang. These values are used as notes numbers.&cr;&lf;&cr;&lf;Notes are sent out to the midi device. on channels 0..3.&cr;&lf;&cr;&lf;A random program number is generated for every channel. RandomSpread (Spreads) creates a spread of values in a range (0..1), after multiplication with 127 and taking the whole part (using Frac (Value)) there is a spread of program IDs.&cr;&lf;&cr;&lf;MidiProgramOut (Devices) sets these programs.&cr;&lf;&cr;&lf;Changing the slider in the IOBox results in bending the pitch on all four channels.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -213,9 +213,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="239" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="6615" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="6465" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="6615" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="6465" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -229,9 +229,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="240" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="7800" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="7650" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="7800" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="7650" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -245,9 +245,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="241" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="255" top="8310" type="Node" width="315">
+   <BOUNDS height="270" left="255" top="8160" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="255" top="8310" type="Box" width="405">
+   <BOUNDS height="390" left="255" top="8160" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
@@ -765,6 +765,8 @@
    </PIN>
    <PIN pinname="Channel" visible="1">
    </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="361" srcpinname="Output" dstnodeid="380" dstpinname="Velocity">
    </LINK>
@@ -920,24 +922,6 @@
    </NODE>
    <LINK srcnodeid="391" srcpinname="Output Enum" dstnodeid="256" dstpinname="Midi Output Port">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="392" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7485" top="10425" width="360" height="375">
-   </BOUNDS>
-   <BOUNDS type="Node" left="7485" top="10425" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="392" srcpinname="Y Output Value" dstnodeid="256" dstpinname="Enabled">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="394" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="10560" top="6195" width="1605" height="240">
    </BOUNDS>
@@ -947,26 +931,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="394" srcpinname="Output Enum" dstnodeid="380" dstpinname="Midi Output Port">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="395" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9915" top="6000" width="420" height="420">
-   </BOUNDS>
-   <BOUNDS type="Node" left="9915" top="6000" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="395" srcpinname="Y Output Value" dstnodeid="380" dstpinname="Enabled">
    </LINK>
    <NODE systemname="Select (Value)" nodename="Select (Value)" componentmode="Hidden" id="408">
    <BOUNDS type="Node" left="7080" top="1485" width="100" height="100">

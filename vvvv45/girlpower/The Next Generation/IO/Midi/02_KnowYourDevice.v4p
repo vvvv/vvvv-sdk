@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\02_KnowYourDevice.v4p" systemname="01_KnowYourDevice" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\01_KnowYourDevice.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\02_KnowYourDevice.v4p" systemname="01_KnowYourDevice" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\01_KnowYourDevice.v4p">
    <BOUNDS type="Window" left="0" top="0" width="11730" height="13665">
    </BOUNDS>
    <NODE systemname="MidiShort (Devices)" nodename="MidiShort (Devices)" componentmode="Hidden" id="9">
@@ -10,6 +10,8 @@
    <PIN pinname="Buffer Length" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Skip Time Messages" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="8" nodename="SpellValue (String)" systemname="SpellValue (String)">
@@ -86,28 +88,6 @@
    </NODE>
    <LINK srcnodeid="4" srcpinname="Output Enum" dstnodeid="9" dstpinname="Midi Input Port">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="8145" top="1305" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8145" top="1305" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Enabled">
-   </LINK>
    <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
    </BOUNDS>
@@ -120,20 +100,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="15">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8280" top="780" width="1425" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8280" top="780" width="1320" height="480">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Enable the node.&cr;&lf;v|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="51" nodename="IOBox (String)" systemname="IOBox (String)">
