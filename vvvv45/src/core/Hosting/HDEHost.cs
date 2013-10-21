@@ -151,6 +151,9 @@ namespace VVVV.Hosting
         
         public void Initialize(IVVVVHost vvvvHost, INodeBrowserHost nodeBrowserHost, IWindowSwitcherHost windowSwitcherHost, IKommunikatorHost kommunikatorHost)
         {
+        	//set blackbox mode?
+        	this.IsBlackBoxMode = vvvvHost.IsBlackBoxMode;
+        	
             // Set VVVV45 to this running vvvv.exe
             Environment.SetEnvironmentVariable(ENV_VVVV, Path.GetFullPath(Shell.CallerPath.ConcatPath("..").ConcatPath("..")));
             
@@ -655,6 +658,12 @@ namespace VVVV.Hosting
         {
             get;
             private set;
+        }
+        
+        public bool IsBlackBoxMode
+        {
+        	get;
+        	private set;
         }
         
         #endregion 
