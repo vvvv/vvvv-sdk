@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\HTML_MultipleViews.v4p" systemname="HTML_MultipleViews" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\HTML_MultipleViews.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="12285" height="13425">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\06_HTML_Multiple Websites\_root.v4p" systemname="HTML_MultipleViews" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\HTML_MultipleViews.v4p">
+   <BOUNDS type="Window" left="3855" top="585" width="12285" height="12285">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="17">
    <BOUNDS type="Node" left="6900" top="10005" width="100" height="100">
@@ -136,22 +136,6 @@
    </NODE>
    <LINK srcnodeid="15" srcpinname="Output String" dstnodeid="8" dstpinname="URL">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1020" top="8340" width="1875" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1020" top="8340" width="2415" height="765">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|colors are alpha premultiplied|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="15">
-   </PIN>
-   </NODE>
    <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="9225" top="8610" width="100" height="100">
    </BOUNDS>
@@ -248,13 +232,13 @@
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="16" dstpinname="Texture">
    </LINK>
-   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="0" dstpinname="Height" linkstyle="Bezier">
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="0" dstpinname="Height" linkstyle="Bezier" hiddenwhenlocked="0">
    <LINKPOINT x="5340" y="12930">
    </LINKPOINT>
    <LINKPOINT x="5865" y="4980">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="0" dstpinname="Width" linkstyle="Bezier">
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="0" dstpinname="Width" linkstyle="Bezier" hiddenwhenlocked="0">
    <LINKPOINT x="5685" y="12165">
    </LINKPOINT>
    <LINKPOINT x="6510" y="5595">
@@ -551,11 +535,11 @@
    <LINK srcnodeid="50" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Input 2">
    </LINK>
    <NODE id="38" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" pintype="Input" values="|A spread of URL addresses is used to request HTML documents from different websites.&cr;&lf;&cr;&lf;Every website will be rendered to a texture which will be applied to a Quad. In order to position these Quads on screen spread of values for XY translation.&cr;&lf;&cr;&lf;The HTMLTexture (EX9.Texture String) receives the spread of HTML documents as well as the spread of &apos;Base URL&apos;s (which are there for resolving relative addresses. use about:blank if no such url can be given.). It returns a spread of textures.&cr;&lf;&cr;&lf;These textures are applied to a spread of Quads.&cr;&lf;&cr;&lf;If the website contains transparent flash (for example), then the Blend (EX9.RenderState Advanced) should be used to premultiply colors with the alpha.&cr;&lf;&cr;&lf;This subpatch maps window mouse coordinates to all quads (&quot;viewports&quot;). Only the Quad which has the mouse over it will receive the values (other will get 0). Please check it for more details.&cr;&lf;&cr;&lf;This subpatch creates the KeyboardState for every website. So if the user types something into a field of one of the websites, the text will appear only there.&cr;&lf;|">
+   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" pintype="Input" values="|A spread of URL addresses is used to request HTML documents from different websites.&cr;&lf;&cr;&lf;Every website will be rendered to a texture which will be applied to a Quad. In order to position these Quads on screen spread of values for XY translation.&cr;&lf;&cr;&lf;The HTMLTexture (EX9.Texture String) receives the spread of HTML documents as well as the spread of &apos;Base URL&apos;s (which are there for resolving relative addresses. use about:blank if no such url can be given.). It returns a spread of textures.&cr;&lf;&cr;&lf;These textures are applied to a spread of Quads.&cr;&lf;&cr;&lf;The Blend (EX9.RenderState Advanced) is used to set the right blending mode: premultiplied alpha.&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <BOUNDS type="Node" height="270" left="525" top="1290" width="7425">
    </BOUNDS>
-   <BOUNDS type="Box" height="6390" left="525" top="1290" width="3705">
+   <BOUNDS type="Box" height="3930" left="525" top="1290" width="3690">
    </BOUNDS>
    <PIN pinname="Output String" visible="0" pintype="Output">
    </PIN>
@@ -648,38 +632,6 @@
    </NODE>
    <LINK srcnodeid="18" srcpinname="Output Enum" dstnodeid="6" dstpinname="Source Blend Mode">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="52" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="4260" top="4785" width="270" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="4260" top="4785" width="360" height="435">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="??">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="15">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="53" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="615" top="8355" width="270" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="615" top="8355" width="360" height="435">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="??">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="15">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="54" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="150" top="1905" type="Node" width="315">
    </BOUNDS>
@@ -745,9 +697,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="58" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="150" top="5670" type="Node" width="315">
+   <BOUNDS height="270" left="150" top="6750" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="150" top="5670" type="Box" width="390">
+   <BOUNDS height="390" left="150" top="6750" type="Box" width="390">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -761,9 +713,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="59" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="150" top="6735" type="Node" width="315">
+   <BOUNDS height="270" left="150" top="7785" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="150" top="6735" type="Box" width="390">
+   <BOUNDS height="390" left="150" top="7785" type="Box" width="390">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -780,4 +732,196 @@
    </LINK>
    <LINK srcnodeid="2" srcpinname="Object Hit" dstnodeid="1" dstpinname="Object Hit">
    </LINK>
+   <NODE id="60" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" pintype="Input" values="|This subpatch maps window mouse coordinates to all quads (&quot;viewports&quot;). Only the Quad which has the mouse over it will receive the values (other will get 0). Please check it for more details.&cr;&lf;&cr;&lf;This subpatch creates the KeyboardState for every website. So if the user types something into a field of one of the websites, the text will appear only there.|">
+   </PIN>
+   <BOUNDS type="Node" height="270" left="525" top="6750" width="7425">
+   </BOUNDS>
+   <BOUNDS type="Box" height="2040" left="525" top="6750" width="3615">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="0" pintype="Output">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" pintype="Configuration" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" pintype="Configuration" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" pintype="Configuration" values="||">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="64" systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="525" top="5865" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="525" top="5865" width="3630" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" pintype="Configuration" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" pintype="Input" visible="1" values="http://blogs.msdn.com/b/shawnhar/archive/2009/11/06/premultiplied-alpha.aspx">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="63" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" height="270" left="525" top="5280" width="7425">
+   </BOUNDS>
+   <BOUNDS type="Box" height="465" left="525" top="5280" width="3660">
+   </BOUNDS>
+   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" pintype="Input" values="|For more about blending modes and premultiplied alpha, please check:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0" pintype="Output">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" pintype="Configuration" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" pintype="Configuration" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" pintype="Configuration" values="||">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="62" systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="525" top="6180" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="525" top="6180" width="3630" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" pintype="Configuration" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" pintype="Input" visible="1" values="http://en.wikipedia.org/wiki/Alpha_compositing">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
    </PATCH>
