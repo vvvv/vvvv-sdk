@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\05_Wikipedia Example\CreateHTML.v4p" systemname="CreateHTML" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\01_WikipediaParcer\CreateHTML.v4p">
-   <BOUNDS type="Window" left="495" top="660" width="15810" height="13620">
+   <BOUNDS type="Window" left="1995" top="7305" width="15810" height="13620">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
    <BOUNDS type="Box" left="5385" top="1455" width="2580" height="4470">
@@ -316,20 +316,6 @@
    </LINK>
    <LINK srcnodeid="25" srcpinname="Element" dstnodeid="11" dstpinname="Object" hiddenwhenlocked="1">
    </LINK>
-   <NODE systemname="Cons (XElement)" filename="plugins\XElementCons\XElementCons.csproj" nodename="Cons (XElement)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="7650" top="7980" width="1020" height="270">
-   </BOUNDS>
-   <PIN pinname="Input2" visible="1">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Element (XElement Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Element (XElement Join)" componentmode="Hidden" id="3">
    <BOUNDS type="Node" left="7635" top="6765" width="100" height="100">
    </BOUNDS>
@@ -353,10 +339,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="2" srcpinname="Output String" dstnodeid="3" dstpinname="Name">
-   </LINK>
-   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="17" dstpinname="Children">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Element" dstnodeid="4" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="26" srcpinname="Output String" dstnodeid="3" dstpinname="Value">
    </LINK>
@@ -383,8 +365,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="1" dstpinname="Name">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Element" dstnodeid="4" dstpinname="Input 1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="28" systemname="IOBox (String)">
    <BOUNDS type="Box" left="9135" top="285" width="795" height="240">
@@ -798,4 +778,20 @@
    <PIN pinname="Input String" slicecount="1" values="http://www.w3schools.com/cssref/default.asp">
    </PIN>
    </NODE>
+   <NODE systemname="Cons (XElement)" filename="%VVVV%\girlpower\The Next Generation\IO\Web\05_Wikipedia Example\plugins\XElementCons\XElementCons.csproj" nodename="Cons (XElement)" componentmode="Hidden" id="62">
+   <BOUNDS type="Node" left="7620" top="7980" width="1065" height="270">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Element" dstnodeid="62" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Element" dstnodeid="62" dstpinname="Input 2" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Output" dstnodeid="17" dstpinname="Children">
+   </LINK>
    </PATCH>
