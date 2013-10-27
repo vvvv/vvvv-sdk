@@ -346,6 +346,32 @@ namespace VVVV.Nodes.XML
         }
     }
 
+    [PluginInfo(Name = "Cons",
+                Category = "XElement",
+                Help = "Concatenates all input spreads to one output spread",
+                Tags = ""
+                )]
+    public class XElementCons : Cons<XElement>
+    { }
+
+    [PluginInfo(Name = "Cons",
+                Category = "XElement",
+                Help = "Concatenates all input spreads to one output spread",
+                Version = "Attribute",
+                Tags = ""
+                )]
+    public class XAttributeCons : Cons<XAttribute>
+    { }
+
+    [PluginInfo(Name = "Cons",
+                Category = "XElement",
+                Help = "Concatenates all input spreads to one output spread",
+                Version = "Document",
+                Tags = ""
+                )]
+    public class XDocumentCons : Cons<XDocument>
+    { }
+
 
     [PluginInfo(Name = "NamespaceResolver", Category = "XML", Tags = "xml")]
     public class NamespaceResolverNode : IPluginEvaluate

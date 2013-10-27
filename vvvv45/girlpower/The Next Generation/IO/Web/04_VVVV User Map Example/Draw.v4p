@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\( vvvv user map )\Draw.v4p" systemname="Draw" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\( vvvv user map )\Draw.v4p">
-   <BOUNDS type="Window" left="3030" top="2700" width="24225" height="13680">
+   <BOUNDS type="Window" left="510" top="1290" width="23670" height="11580">
    </BOUNDS>
    <NODE componentmode="Hidden" id="29" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="270" left="960" top="5985" type="Node" width="22245">
@@ -32,7 +32,7 @@
    <PIN pinname="Layer 9" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\girlpower\The Next Generation\IO\Web\( vvvv user map )\background.v4p" id="28" nodename="background.v4p" systemname="background">
+   <NODE componentmode="Hidden" filename="Background.v4p" id="28" nodename="Background.v4p" systemname="Background">
    <BOUNDS height="270" left="960" top="5490" type="Node" width="1380">
    </BOUNDS>
    <PIN pinname="background out (needs Renderer)" visible="1">
@@ -653,6 +653,8 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="InternetError">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="9" dstpinname="InternetError">
    </LINK>
@@ -673,11 +675,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="41" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="30" top="555" type="Node" width="2190">
+   <BOUNDS height="270" left="45" top="555" type="Node" width="2190">
    </BOUNDS>
-   <BOUNDS height="270" left="30" top="555" type="Box" width="2505">
+   <BOUNDS height="270" left="45" top="555" type="Box" width="2505">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Places and draws all the elements.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Places and draws every element.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -689,11 +691,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="48" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="840" top="7695" type="Node" width="7425">
+   <BOUNDS height="270" left="825" top="7695" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="2670" left="840" top="7695" type="Box" width="3750">
+   <BOUNDS height="2670" left="825" top="7695" type="Box" width="3750">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This subpatch retrieves and parses the data from vvvv server.&cr;&lf;&cr;&lf;Coordinates for the yello dots, texts and the blue highlight are calculated here.&cr;&lf;&cr;&lf;This subpatch moves the camera and calculates the closest user to the cursor.&cr;&lf;&cr;&lf;All the elements are drawn here.&cr;&lf;&cr;&lf;Everything is rendered.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This subpatch creates a radial gradient in the background.&cr;&lf;&cr;&lf;Z position of the camera (its &apos;Distance&apos;, see the Interaction patch) is mapped to a suitable range and used for the &apos;Radius&apos; pin of the Sphere (EX9.Geometry). All yellow spheres are drawn using the GouraudDirectional (EX9.Effect), which receives a mesh of one sphere and a spread of transformations (positions of all spheres).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -705,9 +707,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="47" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="450" top="7665" type="Node" width="315">
+   <BOUNDS height="270" left="420" top="7665" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="450" top="7665" type="Box" width="405">
+   <BOUNDS height="390" left="420" top="7665" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
@@ -721,9 +723,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="46" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="450" top="8310" type="Node" width="315">
+   <BOUNDS height="270" left="420" top="8310" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="450" top="8310" type="Box" width="405">
+   <BOUNDS height="390" left="420" top="8310" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -737,9 +739,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="45" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="450" top="8910" type="Node" width="315">
+   <BOUNDS height="270" left="5205" top="7665" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="450" top="8910" type="Box" width="405">
+   <BOUNDS height="390" left="5205" top="7665" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -753,9 +755,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="44" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="450" top="9510" type="Node" width="315">
+   <BOUNDS height="270" left="5205" top="8745" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="450" top="9510" type="Box" width="405">
+   <BOUNDS height="390" left="5205" top="8745" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -769,9 +771,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="43" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="450" top="9930" type="Node" width="315">
+   <BOUNDS height="270" left="10020" top="7605" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="450" top="9930" type="Box" width="405">
+   <BOUNDS height="390" left="10020" top="7605" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -884,6 +886,72 @@
    <BOUNDS height="270" left="19500" top="5430" type="Node" width="315">
    </BOUNDS>
    <BOUNDS height="390" left="19500" top="5430" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="56" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5625" top="7695" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="2670" left="5625" top="7695" type="Box" width="3750">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|ColorTransform (EX9.Effect) draws the Earth. It takes a sphere, the texture and the color transformation. If there was an &apos;InternetError&apos;, then the Earth will be disabled.&cr;&lf;&cr;&lf;From the spread of all usernames only one slice is picked (which corresponds to the closest yellow dot to the mouse). Add (String) adds &apos; &gt;&apos; to the username and Text (EX9) draws it.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Input">
+   </LINK>
+   <NODE componentmode="InABox" id="57" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="10395" top="7650" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="1395" left="10395" top="7650" type="Box" width="3750">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Segment (DX9) is used to draw the blue highlight.&cr;&lf;&cr;&lf;This subpatch displays an error if it went something wrong in the ReadXML patch.&cr;&lf;&cr;&lf;A simple Quad (DX9) is used to draw the cursor.&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="58" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="10020" top="8055" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="10020" top="8055" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="59" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="10020" top="8640" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="10020" top="8640" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
