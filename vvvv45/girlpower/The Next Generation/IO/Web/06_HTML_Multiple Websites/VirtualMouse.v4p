@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\VirtualMouse.v4p" systemname="VirtualMouse" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\VirtualMouse.v4p">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\06_HTML_Multiple Websites\VirtualMouse.v4p" systemname="VirtualMouse" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\VirtualMouse.v4p">
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="0" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="9960" top="1470" width="0" height="0">
    </BOUNDS>
@@ -95,7 +95,7 @@
    </PIN>
    <PIN pinname="Y" visible="1">
    </PIN>
-   <PIN pinname="Left Button" visible="1">
+   <PIN pinname="Left Button" visible="1" slicecount="4" values="0,0,0,0">
    </PIN>
    <PIN pinname="Middle Button" visible="1">
    </PIN>
@@ -171,11 +171,11 @@
    <BOUNDS type="Window" left="930" top="1245" width="13920" height="9345">
    </BOUNDS>
    <NODE id="18" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" pintype="Input" values="|Mouse window coordinates should be mapped for every Quad, so that in every Quad the mouse goes from -1 to 1. A spread of new MouseStates will be constructed.&cr;&lf;&cr;&lf;Map (Value) gets two spreads of min and max coordinates (in window space) for every &quot;viewport&quot; and maps the XY values coming to its &apos;Input&apos; pin to a -1..1 range.&cr;&lf;&cr;&lf;For example, the top left Quad goes from -1 to 0 (on X) and from 0 to 1 (on Y); the bottom left Quad goes from -1 to 0 (on X and on Y). These ranges are mapped to -1..1.&cr;&lf;&cr;&lf;HitTest (2d Quad) returns a boolean spread where true is set for the quad under the mouse.&cr;&lf;&cr;&lf;Left mouse button and mapped XY values are multiplied by this spread of 0s and 1s. So the only quad under the mouse will have these values set.&cr;&lf;&cr;&lf;MouseState (System Join) constructs the mouse state.|">
+   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" pintype="Input" values="|Mouse window coordinates are mapped for every Quad, so that in every Quad the mouse goes from -1 to 1. A spread of new MouseStates is constructed.&cr;&lf;&cr;&lf;Map (Value) gets two spreads of min and max coordinates (in window space) for every &quot;viewport&quot; and maps the XY values coming to its &apos;Input&apos; pin to a -1..1 range.&cr;&lf;&cr;&lf;For example, the top left Quad goes from -1 to 0 (on X) and from 0 to 1 (on Y); the bottom left Quad goes from -1 to 0 (on X and on Y). These ranges are mapped to -1..1.&cr;&lf;&cr;&lf;HitTest (2d Quad) returns a boolean spread where true is set for the quad under the mouse.&cr;&lf;&cr;&lf;The left mouse button and mapped XY values are multiplied by this spread of 0s and 1s. So that only the quad under the mouse will have these values set.&cr;&lf;&cr;&lf;MouseState (System Join) constructs the mouse state.|">
    </PIN>
    <BOUNDS type="Node" height="270" left="525" top="390" width="7425">
    </BOUNDS>
-   <BOUNDS type="Box" height="5220" left="525" top="390" width="3690">
+   <BOUNDS type="Box" height="5355" left="525" top="390" width="3705">
    </BOUNDS>
    <PIN pinname="Output String" visible="0" pintype="Output">
    </PIN>
@@ -440,22 +440,6 @@
    </NODE>
    <LINK srcnodeid="29" srcpinname="Object Hit" dstnodeid="35" dstpinname="Y Input Value">
    </LINK>
-   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="36">
-   <BOUNDS type="Node" left="8085" top="5655" width="330" height="270">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="7" srcpinname="Left Button" dstnodeid="36" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="29" srcpinname="Object Hit" dstnodeid="36" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="36" srcpinname="Output" dstnodeid="6" dstpinname="Left Button">
-   </LINK>
    <LINK srcnodeid="6" srcpinname="Mouse" dstnodeid="9" dstpinname="Input Node">
    </LINK>
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="6" dstpinname="Y">
@@ -656,4 +640,20 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="36">
+   <BOUNDS type="Node" left="8085" top="5655" width="330" height="270">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Left Button" dstnodeid="36" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Object Hit" dstnodeid="36" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Output" dstnodeid="6" dstpinname="Left Button">
+   </LINK>
    </PATCH>

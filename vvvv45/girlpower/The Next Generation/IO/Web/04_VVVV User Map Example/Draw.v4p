@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\( vvvv user map )\Draw.v4p" systemname="Draw" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\( vvvv user map )\Draw.v4p">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\04_VVVV User Map Example\Draw.v4p" systemname="Draw" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\( vvvv user map )\Draw.v4p">
    <BOUNDS type="Window" left="510" top="1290" width="23670" height="11580">
    </BOUNDS>
    <NODE componentmode="Hidden" id="29" nodename="Group (EX9)" systemname="Group (EX9)">
@@ -451,7 +451,7 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Color Transform" visible="1">
+   <PIN pinname="Color Transform" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Render State" slicecount="1" visible="1" values="||">
    </PIN>
@@ -467,8 +467,6 @@
    <LINK dstnodeid="2" dstpinname="Enabled" srcnodeid="8" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="29" dstpinname="Layer 3" srcnodeid="2" srcpinname="Layer">
-   </LINK>
-   <LINK srcnodeid="15" srcpinname="Transform Out" dstnodeid="2" dstpinname="Color Transform">
    </LINK>
    <LINK srcnodeid="3" srcpinname="Output" dstnodeid="5" dstpinname="Radius">
    </LINK>
@@ -695,7 +693,7 @@
    </BOUNDS>
    <BOUNDS height="2670" left="825" top="7695" type="Box" width="3750">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This subpatch creates a radial gradient in the background.&cr;&lf;&cr;&lf;Z position of the camera (its &apos;Distance&apos;, see the Interaction patch) is mapped to a suitable range and used for the &apos;Radius&apos; pin of the Sphere (EX9.Geometry). All yellow spheres are drawn using the GouraudDirectional (EX9.Effect), which receives a mesh of one sphere and a spread of transformations (positions of all spheres).|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This subpatch creates a radial gradient in the background.&cr;&lf;&cr;&lf;The Z position of the camera (its &apos;Distance&apos;, see the Interaction patch) is mapped to a suitable range and used for the &apos;Radius&apos; pin of the Sphere (EX9.Geometry). All yellow spheres are drawn using the GouraudDirectional (EX9.Effect), which receives a mesh of one sphere and a spread of transformations (positions of all spheres).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -921,7 +919,7 @@
    </BOUNDS>
    <BOUNDS height="1395" left="10395" top="7650" type="Box" width="3750">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Segment (DX9) is used to draw the blue highlight.&cr;&lf;&cr;&lf;This subpatch displays an error if it went something wrong in the ReadXML patch.&cr;&lf;&cr;&lf;A simple Quad (DX9) is used to draw the cursor.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Segment (DX9) is used to draw the blue highlight.&cr;&lf;&cr;&lf;This subpatch displays an error if somethign went wrong in the ReadXML patch.&cr;&lf;&cr;&lf;A simple Quad (DX9) is used to draw the cursor.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -964,4 +962,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <LINK srcnodeid="15" srcpinname="Transform Out" dstnodeid="2" dstpinname="Color Transform">
+   </LINK>
    </PATCH>

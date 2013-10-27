@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\02_VVVV User Map\CoordinateConversion.v4p" bgcolor="15329769" locked="0" systemname="CoordinateConversion">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\04_VVVV User Map Example\CoordinateConversion.v4p" bgcolor="15329769" locked="0" systemname="CoordinateConversion">
    <BOUNDS height="12060" left="405" top="495" type="Window" width="13050">
    </BOUNDS>
    <NODE id="42" nodename="Cartesian (3d)" systemname="Cartesian (3d)">
@@ -33,7 +33,7 @@
    </PIN>
    <PIN pinname="Source Width" slicecount="1" values="180">
    </PIN>
-   <PIN pinname="Destination Center" slicecount="1" values="-1.04083408558608E-017">
+   <PIN pinname="Destination Center" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Destination Width" slicecount="1" values="0.5">
    </PIN>
@@ -165,7 +165,7 @@
    </PIN>
    <PIN pinname="Source Width" slicecount="1" values="360">
    </PIN>
-   <PIN pinname="Destination Center" slicecount="1" values="3.12250225675825E-017">
+   <PIN pinname="Destination Center" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Destination Width" slicecount="1" values="-1">
    </PIN>
@@ -245,9 +245,9 @@
    <LINK dstnodeid="326" dstpinname="Go To Position" srcnodeid="324" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="351" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="6075" top="675" type="Node" width="100">
+   <BOUNDS height="100" left="6075" top="525" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="6075" top="675" type="Box" width="795">
+   <BOUNDS height="240" left="6075" top="525" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Lat">
    </PIN>
@@ -255,9 +255,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="352" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="7275" top="675" type="Node" width="100">
+   <BOUNDS height="100" left="7275" top="525" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="7275" top="675" type="Box" width="795">
+   <BOUNDS height="240" left="7275" top="525" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Long">
    </PIN>
@@ -495,7 +495,7 @@
    </BOUNDS>
    <BOUNDS height="6795" left="570" top="1380" type="Box" width="3735">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Latitude and Longitude are mapped to suitable ranges.&cr;&lf;&cr;&lf;Cartesian (3d) transforms spherical polar coordinates into usual cartesian 3d space (3d vectors). Latitude is the Pitch angle, Longitude is the Yaw and the Length is set so that the yellow dots will be places just above the surface.&cr;&lf;&cr;&lf;One of the XYZ positions is picked according to the ActualSliceIndex coming from the Interaction subpatch (see the root). This is the closest user to the cursor.&cr;&lf;&cr;&lf;If another user is selected, the Change (Animation) bangs its &apos;Output&apos;. The switches below shortly returns the values from its second &apos;Input&apos; pin.&cr;&lf;&cr;&lf;Damper (Animation) smoothes these values.&cr;&lf;&cr;&lf;One of these values is used to move the text (username) shortly to the left.&cr;&lf;&cr;&lf;The second one is used to scale up the blue highlight.&cr;&lf;&cr;&lf;Billboard (Transform) with its &apos;Object Space&apos; pin set to &apos;Projection&apos; rotates objects in 3D space toward viwer. So the text and the blue highlight will be always drawn &quot;flat&quot; (without any 3D rotation).&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Latitude and Longitude are mapped to suitable ranges.&cr;&lf;&cr;&lf;Cartesian (3d) transforms spherical polar coordinates into usual cartesian 3d space (3d vectors). Latitude is the Pitch angle, Longitude is the Yaw and the Length is set so that the yellow dots will be placed just above the surface.&cr;&lf;&cr;&lf;One of the XYZ positions is picked according to the SelectedIndex coming from the Interaction subpatch (see the root). This is the closest user to the cursor.&cr;&lf;&cr;&lf;If another user is selected, the Change (Animation) bangs its &apos;Output&apos;. The switches below shortly returns the values from its second &apos;Input&apos; pin.&cr;&lf;&cr;&lf;Damper (Animation) smoothes these values.&cr;&lf;&cr;&lf;One of these values is used to move the text (username) shortly to the left.&cr;&lf;&cr;&lf;The second one is used to scale up the blue highlight.&cr;&lf;&cr;&lf;Billboard (Transform) with its &apos;Object Space&apos; pin set to &apos;Projection&apos; rotates objects in 3D space towards the viewer. So the text and the blue highlight will always drawn &quot;flat&quot; (without any 3D rotation).&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -826,4 +826,36 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="399" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7575" top="1080" width="510" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7575" top="1080" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="360">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="399" srcpinname="Y Output Value" dstnodeid="217" dstpinname="Source Width">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="400" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6405" top="1080" width="450" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6405" top="1080" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="180">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="400" srcpinname="Y Output Value" dstnodeid="37" dstpinname="Source Width">
+   </LINK>
    </PATCH>
