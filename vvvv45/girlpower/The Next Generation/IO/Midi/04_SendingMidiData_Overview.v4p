@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\04_SendingMidiData_Overview.v4p" systemname="05_SendingMidiData" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\05_SendingMidiData.v4p">
-   <BOUNDS type="Window" left="1125" top="675" width="17145" height="15780">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\04_SendingMidiData_Overview.v4p" systemname="05_SendingMidiData" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\05_SendingMidiData.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="17145" height="15540">
    </BOUNDS>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -259,7 +259,7 @@
    <NODE componentmode="InABox" id="54" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="2595" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="1785" left="675" top="2595" type="Box" width="3615">
+   <BOUNDS height="1800" left="675" top="2595" type="Box" width="3585">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Sends a midi-note out.&cr;&lf;&cr;&lf;MidiNoteOut (Devices) plays the note as long as the toggle IOBox is on.&cr;&lf;&cr;&lf;MidiNoteOut (Devices Bang) starts the note with the bang. To stop the note, a bang with a zero velocity for the same note is required.|">
    </PIN>
@@ -537,9 +537,9 @@
    </PIN>
    </NODE>
    <NODE id="72" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="675" top="5670" width="7425">
+   <BOUNDS type="Node" height="270" left="675" top="6225" width="7425">
    </BOUNDS>
-   <BOUNDS type="Box" height="315" left="675" top="5670" width="3435">
+   <BOUNDS type="Box" height="315" left="675" top="6225" width="3435">
    </BOUNDS>
    <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|Stops all notes on the specified channel (i.e. 0).|">
    </PIN>
@@ -569,9 +569,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="134" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="5640" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="6150" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="5640" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="6150" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -1482,4 +1482,62 @@
    </NODE>
    <LINK srcnodeid="210" srcpinname="Y Output Value" dstnodeid="199" dstpinname="Pitch Bend">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="211" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="630" top="4695" width="12255" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="4695" width="3615" height="870">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&apos;Play&apos; / &apos;Send&apos;, &apos;Channel&apos;, &apos;Note&apos; and &apos;Velocity&apos; pins of the MIDI nodes are spreadable. So it&apos;s possible to play many notes with different velocities on different channels at the same time.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="212" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="630" top="4440" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="4440" width="3735" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="------------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="213" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="630" top="5595" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="5595" width="3735" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="------------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="214" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="240" top="4800" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="705" left="240" top="4800" type="Box" width="285">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="!">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="25">
+   </PIN>
+   </NODE>
    </PATCH>
