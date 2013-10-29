@@ -1,15 +1,15 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\TUIODecoder (Network 1.0) help.v4p" systemname="TUIODecoder (Network 1.0) help" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\TUIODecoder (Network 1.0) help.v4p">
-   <BOUNDS height="6795" left="6450" top="1155" type="Window" width="10920">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\TUIODecoder (Network 1.0) help.v4p" systemname="TUIODecoder (Network 1.0) help" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\TUIODecoder (Network 1.0) help.v4p">
+   <BOUNDS height="7455" left="6450" top="1155" type="Window" width="10920">
    </BOUNDS>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="255" top="525" type="Node" width="570">
    </BOUNDS>
-   <BOUNDS height="465" left="255" top="525" type="Box" width="3975">
+   <BOUNDS height="720" left="255" top="525" type="Box" width="3795">
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Takes a TUIO command string (for example from an UDP client), &lf;decodes it and returns the parsed command|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Takes a TUIO command string (for example from an UDP client), decodes it and returns the parsed data|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -33,7 +33,7 @@
    </PIN>
    </NODE>
    <NODE systemname="UDP (Network Server String)" filename="%VVVV%\lib\nodes\modules\Network\UDP (Network Server String).v4p" nodename="UDP (Network Server String)" componentmode="Hidden" id="5">
-   <BOUNDS type="Node" left="5115" top="1260" width="1065" height="270">
+   <BOUNDS type="Node" left="5115" top="1260" width="840" height="270">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -297,9 +297,9 @@
    <LINK srcnodeid="3" srcpinname="Type" dstnodeid="28" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7380" top="840" width="16710" height="480">
+   <BOUNDS type="Node" left="6225" top="840" width="16710" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="7380" top="840" width="2760" height="1185">
+   <BOUNDS type="Box" left="6225" top="840" width="2760" height="1185">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|NOTE:&cr;&lf;if reception of the values seems jerky:&cr;&lf;set the &apos;Encoding&apos; pin (which is hidden by default, so check the Inspektor) to &apos;Windows-1252&apos;.|">
    </PIN>
@@ -310,16 +310,32 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="IOBox (Enumerations)" nodename="IOBox (Enumerations)" componentmode="InABox" id="32">
-   <BOUNDS type="Node" left="5910" top="855" width="100" height="100">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="34" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4890" top="6525" width="7335" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5910" top="855" width="1380" height="240">
+   <BOUNDS type="Box" left="4890" top="6525" width="2475" height="240">
    </BOUNDS>
-   <PIN pinname="Output Enum" visible="1">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|..\..\..\..\girlpower\The Next Generation\IO\TUIO\Using_TUIO.v4p|">
    </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="Windows-1252">
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Output Enum" dstnodeid="5" dstpinname="Encoding">
-   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4890" top="6255" width="2355" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4890" top="6255" width="2355" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for a more extensive demo see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
