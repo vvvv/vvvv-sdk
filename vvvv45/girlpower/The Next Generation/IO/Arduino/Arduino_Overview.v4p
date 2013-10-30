@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\Arduino_Overview.v4p" systemname="Arduino_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\Arduino_Overview.v4p" bgcolor="15329769">
-   <BOUNDS type="Window" left="990" top="420" width="16695" height="16980">
+   <BOUNDS type="Window" left="255" top="165" width="16695" height="16980">
    </BOUNDS>
    <NODE componentmode="InABox" id="76" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -94,7 +94,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Arduino (Devices StandardFirmata 2.x)" filename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" nodename="Arduino (Devices StandardFirmata 2.x)" componentmode="Hidden" id="189">
+   <NODE systemname="Arduino (Devices StandardFirmata 2.x)" filename="%VVVV%\addonpack\lib\nodes\modules\Devices\Arduino (Devices StandardFirmata 2.x).v4p" nodename="Arduino (Devices StandardFirmata 2.x)" componentmode="InAWindow" id="189">
    <BOUNDS type="Node" left="6945" top="5415" width="3570" height="270">
    </BOUNDS>
    <PIN pinname="ComPort" slicecount="1" values="COM1">
@@ -521,7 +521,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6930" top="1170" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="20" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+   <PIN pinname="Y Input Value" slicecount="20" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.08,0,0,0,0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -538,6 +538,8 @@
    <BOUNDS type="Node" left="11970" top="6195" width="100" height="100">
    </BOUNDS>
    <PIN pinname="I2C Data" visible="1">
+   </PIN>
+   <PIN pinname="Address" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="189" srcpinname="I2C Data" dstnodeid="236" dstpinname="I2C Data">
@@ -1306,4 +1308,112 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Ord (String)" nodename="Ord (String)" componentmode="Hidden" id="307">
+   <BOUNDS type="Node" left="8745" top="12855" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Cons (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Raw)" componentmode="Hidden" id="308">
+   <BOUNDS type="Node" left="8730" top="14475" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Cons (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Raw)" componentmode="Hidden" id="309">
+   <BOUNDS type="Node" left="9345" top="9315" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="207" srcpinname="Output" dstnodeid="309" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="310">
+   <BOUNDS type="Node" left="10980" top="8070" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname=".. To [" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="311" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="11505" top="7920" width="1005" height="525">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11505" top="7920" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="2" values="Byte,SByte">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="312" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="12960" top="7830" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12960" top="7830" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="2,6">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsRaw (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="AsRaw (Value)" componentmode="Hidden" id="313">
+   <BOUNDS type="Node" left="10470" top="8820" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Format" slicecount="1" values="UInt16">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="314" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9810" top="9765" width="405" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9810" top="9765" width="405" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="raw">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="+ (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="+ (Raw)" componentmode="Hidden" id="315">
+   <BOUNDS type="Node" left="10830" top="9465" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsRaw (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="AsRaw (Value)" componentmode="Hidden" id="316">
+   <BOUNDS type="Node" left="11295" top="8850" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Format" slicecount="1" values="UInt16">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="316" srcpinname="Output" dstnodeid="315" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="207" srcpinname="Output" dstnodeid="315" dstpinname="Input 1">
+   </LINK>
    </PATCH>
