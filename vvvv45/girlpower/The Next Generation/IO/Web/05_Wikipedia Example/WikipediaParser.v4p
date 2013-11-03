@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\05_Wikipedia Example\WikipediaParser.v4p">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\05_Wikipedia Example\WikipediaParser.v4p">
    <BOUNDS height="14580" left="10515" top="645" type="Window" width="15960">
    </BOUNDS>
    <NODE componentmode="Hidden" id="0" nodename="HTTP (Network Get String)">
@@ -1145,7 +1145,7 @@
    </BOUNDS>
    <BOUNDS height="6045" left="855" top="6795" type="Box" width="3930">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|XPath (XML) parses an XML string and returns a spread of matches from a &apos;XPath Query&apos;. The content of the &apos;title&apos; attribute will be returned here.&cr;&lf;&cr;&lf;The content of the &apos;length&apos; attribute is returned.&cr;&lf;&cr;&lf;The content of the &apos;missing&apos; attribute is returned.&cr;&lf;&cr;&lf;Queue (String) accumulates slices from its &apos;Input&apos; pin coming in the last N frames (as defined by &apos;Frame Count&apos; pin). A spred of requested article titles is created by the Select (String) and saved in a Queue (String) when the HTTP node returns 1 on its &apos;Success&apos; pin.&cr;&lf;&cr;&lf;This queue returns the spread of article titles found in the step 4.&cr;&lf;&cr;&lf;And this queue has the spread of article lengths from the step 5.&cr;&lf;&cr;&lf;When the HTTP node bangs 1 on its &apos;Success&apos; pin OR when the page is missing (the spread from the step 6 is not empty) the Counter (Animation) counts up and the GetSlice (String) picks one next slice from the spread of the page titles. This slice is used in the next frame to build a new HTTP request to the Wikipedia website.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|XPath (XML) parses an XML string and returns a spread of matches from &apos;XPath Query&apos;. The content of the &apos;title&apos; attribute will be returned here.&cr;&lf;&cr;&lf;The content of the &apos;length&apos; attribute is returned.&cr;&lf;&cr;&lf;The content of the &apos;missing&apos; attribute is returned.&cr;&lf;&cr;&lf;Queue (String) accumulates slices from its &apos;Input&apos; pin coming in the last N frames (as defined by &apos;Frame Count&apos; pin). A spread of requested article titles is created by the Select (String) and saved in a Queue (String) when the HTTP node returns 1 on its &apos;Success&apos; pin.&cr;&lf;&cr;&lf;This queue returns the spread of article titles found in step 4.&cr;&lf;&cr;&lf;And this queue has the spread of article lengths from step 5.&cr;&lf;&cr;&lf;When the HTTP node bangs 1 on its &apos;Success&apos; pin OR when the page is missing (the spread from step 6 is not empty) the Counter (Animation) counts up and the GetSlice (String) picks one next slice from the spread of the page titles. This slice is used in the next frame to build a new HTTP request to the Wikipedia website.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1209,7 +1209,7 @@
    </BOUNDS>
    <BOUNDS height="1785" left="855" top="915" type="Box" width="4170">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTTP requests are sent to Wikipedia website asking it for the pages linked from page defined one frame before: At first, all pages linked to a title defined on the &apos;TItle of Article&apos; input are returned. In the next frame one of the returned titles is picked and used for the next request to the Wikipedia. Every request asks for pages linked to only one title. Note the &apos;Page Link Limit&apos; and &apos;Max Links Followed&apos; inputs.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTTP requests are sent to Wikipedia website asking it for the pages linked from the page defined one frame before: At first, all pages linked to a title defined on the &apos;TItle of Article&apos; input are returned. In the next frame one of the returned titles is picked and used for the next request to the Wikipedia. Every request asks for pages linked to only one title. Note the &apos;Page Link Limit&apos; and &apos;Max Links Followed&apos; inputs.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1333,7 +1333,7 @@
    <LINK srcnodeid="9" srcpinname="Output" dstnodeid="0" dstpinname="URL">
    </LINK>
    <NODE id="97" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" values="|A GET request to Wikipedia website has to be prepared. Substitute (String) replaces portions (defined on the &apos;From&apos; pin) of the URL string with the two slices from the &apos;To&apos; pin. These slices are: the page title and the link limit.&cr;&lf;&cr;&lf;Strings for the HTTP requests should be properly encoded.&cr;&lf;&cr;&lf;HTTP (Network Get String) sends the GET request to Wikipedia and returns its response as a string.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" values="|A GET request to the Wikipedia website is prepared. Substitute (String) replaces portions (defined on the &apos;From&apos; pin) of the URL string with the two slices from the &apos;To&apos; pin. These slices are: the page title and the link limit.&cr;&lf;&cr;&lf;Strings for the HTTP requests have to be properly encoded.&cr;&lf;&cr;&lf;HTTP (Network Get String) sends the GET request to Wikipedia and returns its response as a string.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <BOUNDS type="Node" height="270" left="855" top="3015" width="7425">
    </BOUNDS>

@@ -59,7 +59,7 @@ namespace TUIO.NET
             startTime = DateTime.Now;
         }
 
-		public void ProcessMessage(OSC.NET.OSCMessage message) {
+		public void ProcessMessage(VVVV.Utils.OSC.OSCMessage message) {
             string address = message.Address;
             ArrayList args = message.Values;
 			string command = (string)args[0];

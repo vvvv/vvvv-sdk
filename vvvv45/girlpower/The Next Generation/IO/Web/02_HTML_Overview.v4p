@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\02_HTML_Overview.v4p" systemname="html" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\html.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="14940" height="13515">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\02_HTML_Overview.v4p" systemname="html" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\html.v4p">
+   <BOUNDS type="Window" left="225" top="285" width="14940" height="13515">
    </BOUNDS>
    <NODE systemname="HTMLTexture (EX9.Texture String)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.dll" nodename="HTMLTexture (EX9.Texture String)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="11160" top="3525" width="100" height="100">
@@ -11,7 +11,7 @@
    </PIN>
    <PIN pinname="Reload" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Base Url" visible="1">
+   <PIN pinname="Base Url" visible="1" slicecount="1" values="about:blank">
    </PIN>
    <PIN pinname="Height" slicecount="1" visible="1" values="1024">
    </PIN>
@@ -37,7 +37,7 @@
    </BOUNDS>
    <BOUNDS height="720" left="750" top="2070" type="Box" width="3975">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTMLTexture (EX9.Texture URL) renders a website to a texture using the chrome engine. It receives an URL string and returns the texture.&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTMLTexture (EX9.Texture URL) renders a website to a texture using the chromium engine. It takes an URL and returns the website as a texture.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -85,7 +85,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="675" top="720" width="4545" height="990">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|There are two ways to render html websites in vvvv: &cr;&lf;- render html as a texture (Chrome engine backend)&cr;&lf;- render html in a window (IE engine backend)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|There are two ways to render html websites in vvvv: &cr;&lf;- render html as a texture (Chromium engine backend)&cr;&lf;- render html in a window (IE engine backend)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -157,8 +157,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="17" dstpinname="URL">
-   </LINK>
-   <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="0" dstpinname="Base Url">
    </LINK>
    <LINK srcnodeid="17" srcpinname="Body" dstnodeid="0" dstpinname="HTML">
    </LINK>
@@ -249,7 +247,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6105" top="5250" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="14985" top="0" width="4290" height="3810">
+   <BOUNDS type="Window" left="15180" top="2310" width="4515" height="4020">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -311,9 +309,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="47" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="7215" top="6525" type="Node" width="7425">
+   <BOUNDS height="270" left="7215" top="7020" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="240" left="7215" top="6525" type="Box" width="5325">
+   <BOUNDS height="240" left="7215" top="7020" type="Box" width="5325">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="---------------------------------------------------------------------">
    </PIN>
@@ -327,9 +325,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="48" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8190" top="7020" width="1425" height="270">
+   <BOUNDS type="Node" left="8190" top="7620" width="1425" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8190" top="7020" width="2745" height="405">
+   <BOUNDS type="Box" left="8190" top="7620" width="2745" height="405">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|HTML in a window|">
    </PIN>
@@ -343,19 +341,19 @@
    </PIN>
    </NODE>
    <NODE systemname="Renderer (HTML URL)" nodename="Renderer (HTML URL)" componentmode="InAWindow" id="49">
-   <BOUNDS type="Node" left="6030" top="10050" width="100" height="100">
+   <BOUNDS type="Node" left="6030" top="10650" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="6030" top="10050" width="2400" height="1800">
+   <BOUNDS type="Box" left="6030" top="10650" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="15000" top="7845" width="4320" height="5220">
+   <BOUNDS type="Window" left="15195" top="7215" width="8340" height="6555">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="50" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="6690" top="8550" width="1695" height="240">
+   <BOUNDS type="Box" left="6690" top="9150" width="1695" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="6690" top="8550" width="0" height="0">
+   <BOUNDS type="Node" left="6690" top="9150" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="http://www.openframeworks.cc">
    </PIN>
@@ -371,11 +369,11 @@
    <LINK srcnodeid="50" srcpinname="Output String" dstnodeid="49" dstpinname="Input URL">
    </LINK>
    <NODE systemname="Renderer (HTML String)" nodename="Renderer (HTML String)" componentmode="InAWindow" id="52">
-   <BOUNDS type="Node" left="8985" top="10050" width="1455" height="270">
+   <BOUNDS type="Node" left="8985" top="10650" width="1455" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8985" top="10050" width="2400" height="1800">
+   <BOUNDS type="Box" left="8985" top="10650" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="15000" top="7845" width="4320" height="5220">
+   <BOUNDS type="Window" left="15195" top="7215" width="8340" height="6555">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -383,15 +381,15 @@
    </PIN>
    </NODE>
    <NODE systemname="HTTP (Network Get String)" filename="%VVVV%\lib\nodes\modules\Network\HTTP (Network Get String).v4p" nodename="HTTP (Network Get String)" componentmode="Hidden" id="53">
-   <BOUNDS type="Node" left="9270" top="9300" width="100" height="100">
+   <BOUNDS type="Node" left="9270" top="9900" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Body" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="54" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="9270" top="8550" width="1500" height="240">
+   <BOUNDS type="Box" left="9270" top="9150" width="1500" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9270" top="8550" width="0" height="0">
+   <BOUNDS type="Node" left="9270" top="9150" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="http://meso.net/">
    </PIN>
@@ -459,7 +457,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="10830" top="5250" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="14985" top="3840" width="4305" height="4020">
+   <BOUNDS type="Window" left="19710" top="2310" width="4305" height="4020">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -495,9 +493,9 @@
    <LINK srcnodeid="70" srcpinname="Y Output Value" dstnodeid="69" dstpinname="XYZ">
    </LINK>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="74">
-   <BOUNDS type="Node" left="11100" top="7815" width="100" height="100">
+   <BOUNDS type="Node" left="11100" top="8415" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="11100" top="7815" width="3375" height="2220">
+   <BOUNDS type="Box" left="11100" top="8415" width="3375" height="2220">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="|&lt;html&gt;&cr;&lf; &lt;head&gt;&cr;&lf;  &lt;style&gt;&cr;&lf;   h1 {font-family: Georgia; font-style: italic;}&cr;&lf;  &lt;/style&gt;&cr;&lf; &lt;/head&gt;&cr;&lf; &lt;body&gt;&cr;&lf;  &lt;h1&gt;Everything you know is wrong.&lt;/h1&gt;&cr;&lf; &lt;/body&gt;&cr;&lf;&lt;/html&gt;|">
    </PIN>
@@ -561,9 +559,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="79" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5535" top="10005" type="Node" width="315">
+   <BOUNDS height="270" left="5535" top="9555" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="5535" top="10005" type="Box" width="405">
+   <BOUNDS height="390" left="5535" top="9555" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -577,9 +575,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="80" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="8505" top="9990" type="Node" width="315">
+   <BOUNDS height="270" left="8505" top="10590" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="8505" top="9990" type="Box" width="405">
+   <BOUNDS height="390" left="8505" top="10590" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -593,9 +591,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="84" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5970" top="10380" width="1620" height="480">
+   <BOUNDS type="Node" left="5970" top="10980" width="1620" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="5970" top="10380" width="1620" height="480">
+   <BOUNDS type="Box" left="5970" top="10980" width="1620" height="480">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|^&cr;&lf;Renderer (HTML URL)|">
    </PIN>
@@ -607,9 +605,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="85" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8985" top="10380" width="1620" height="480">
+   <BOUNDS type="Node" left="8985" top="10980" width="1620" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="8985" top="10380" width="1725" height="465">
+   <BOUNDS type="Box" left="8985" top="10980" width="1725" height="465">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|^&cr;&lf;Renderer (HTML String)|">
    </PIN>
@@ -637,9 +635,9 @@
    <NODE componentmode="InABox" id="88" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="750" top="10245" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="1365" left="750" top="10245" type="Box" width="3825">
+   <BOUNDS height="1515" left="750" top="10245" type="Box" width="3765">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is its string counterpart. HTML Documents can be retrieved from the web using HTTP (Network Get String), loaded from the harddrive using Reader (String) or just provided from IOBoxes (just connect the IOBox on the right with the &apos;Input&apos; pin of the Renderer.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Same as the former node only it takes an HTML document string as input. HTML Documents can be retrieved from the web using HTTP (Network Get String), loaded from the harddrive using Reader (String) or just provided via an IOBox (just connect the IOBox on the right with the &apos;Input&apos; pin of the Renderer to see an example of this).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -655,7 +653,7 @@
    </BOUNDS>
    <BOUNDS height="1170" left="750" top="8670" type="Box" width="3600">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Note, that the HTML file can be places in a local folder. To access it, just select the IOBox containing the URL, open Inspektor (CTRL+I) and change the &apos;String Type&apos; to &apos;Filename&apos;. Now you can right click the IOBox and select a local file.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Note, that the HTML file can be placed in a local folder. To access it, just select the IOBox containing the URL, open Inspektor (CTRL+I) and change the &apos;String Type&apos; to &apos;Filename&apos;. Now you can right click the IOBox and select a local file.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -698,8 +696,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <LINK srcnodeid="53" srcpinname="Body" dstnodeid="52" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="98" systemname="IOBox (String)">
    <BOUNDS type="Node" left="8010" top="3960" width="825" height="270">
    </BOUNDS>
@@ -719,7 +715,7 @@
    </BOUNDS>
    <BOUNDS height="465" left="750" top="6525" type="Box" width="3660">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|An example on how to interact with the websites rendered as textures:|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|For an example on how to interact with websites rendered as textures see:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -745,7 +741,7 @@
    </BOUNDS>
    <BOUNDS height="795" left="750" top="7665" type="Box" width="3585">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is the Renderer (HTML URL) which just does his job - it renders HTML documents supplied by a URL address to its &apos;Input URL&apos; pin.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is the Renderer (HTML URL) which just does its job - it renders HTML documents it finds on the specified &apos;Input URL&apos;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -757,9 +753,9 @@
    </PIN>
    </NODE>
    <NODE id="97" systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox">
-   <BOUNDS type="Node" left="750" top="12315" width="100" height="100">
+   <BOUNDS type="Node" left="750" top="12615" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="750" top="12315" width="3705" height="240">
+   <BOUNDS type="Box" left="750" top="12615" width="3705" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
@@ -767,9 +763,9 @@
    </PIN>
    </NODE>
    <NODE id="96" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="750" top="11730" width="7425">
+   <BOUNDS type="Node" height="270" left="750" top="12030" width="7425">
    </BOUNDS>
-   <BOUNDS type="Box" height="465" left="750" top="11730" width="3660">
+   <BOUNDS type="Box" height="465" left="750" top="12030" width="3660">
    </BOUNDS>
    <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|HTML Documents can be also dynamically constructed inside vvvv. Check this:|">
    </PIN>
@@ -787,7 +783,7 @@
    </BOUNDS>
    <BOUNDS height="465" left="750" top="2955" type="Box" width="3660">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|An example on how to render transparent flash movie as a texture.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|For an example on how to render a transparent flash movie as a texture see:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -813,7 +809,7 @@
    </BOUNDS>
    <BOUNDS height="2235" left="750" top="4200" type="Box" width="3780">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTMLTexture (EX9.Texture String) is just a string conuterpart. It receives a HTML document as a string and returns the texture. In this example the string with the HTML comes from the HTTP (Network Get String) node, which retrieves the document from the website.&cr;&lf;&cr;&lf;Please note the &apos;Base Url&apos; input pin, is there for resolving relative addresses. use &quot;about:blank&quot; if no such url can be given.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTMLTexture (EX9.Texture String) does exactly the same as the former node only it takes an HTML document string as input instead of an URL. In this example that HTML string comes from the HTTP (Network Get String) node, which retrieves the document from the website.&cr;&lf;&cr;&lf;Please note the &apos;Base Url&apos; input pin: It is there for resolving relative addresses in the website. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -824,4 +820,8 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
+   <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="0" dstpinname="Base Url">
+   </LINK>
+   <LINK srcnodeid="53" srcpinname="Body" dstnodeid="52" dstpinname="Input">
+   </LINK>
    </PATCH>

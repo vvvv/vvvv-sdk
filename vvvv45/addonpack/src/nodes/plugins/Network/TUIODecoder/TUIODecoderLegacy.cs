@@ -9,10 +9,10 @@ using TUIO.NET;
 
 namespace TUIODecoder
 {
-    public class TUIODecoder : IPlugin, IDisposable
+    public class TUIODecoderLegacy : IPlugin, IDisposable
     {
         //DEBUG
-        public static TUIODecoder instance;
+        public static TUIODecoderLegacy instance;
 
         #region field declaration
 
@@ -48,7 +48,7 @@ namespace TUIODecoder
 
         #region constructor/destructor
 
-        public TUIODecoder()
+        public TUIODecoderLegacy()
         {
             FTuioClient = new TuioClient();
             instance = this;
@@ -102,7 +102,7 @@ namespace TUIODecoder
         // does not get called.
         // It gives your base class the opportunity to finalize.
         // Do not provide destructors in types derived from this class.
-        ~TUIODecoder()
+        ~TUIODecoderLegacy()
         {
             // Do not re-create Dispose clean-up code here.
             // Calling Dispose(false) is optimal in terms of
@@ -123,7 +123,7 @@ namespace TUIODecoder
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "TUIODecoder";							//use CamelCaps and no spaces
                 Info.Category = "Network";						//try to use an existing one
-                Info.Version = "1.0";						//versions are optional. leave blank if not needed
+                Info.Version = "1.0 Legacy";						//versions are optional. leave blank if not needed
                 Info.Help = "Takes a TUIO command string (for example from an UDP client), \ndecodes it and returns the parsed command";
                 Info.Bugs = "";
                 Info.Credits = "Thanks to the \"TUIO C# Library\" from the reacTIVision project";								//give credits to thirdparty code used
@@ -167,7 +167,7 @@ namespace TUIODecoder
             FHost.CreateValueOutput("Class ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FClassIDOut);
             FClassIDOut.SetSubType(0, int.MaxValue, 1, 0, false, false, true);
 
-            FHost.CreateValueOutput("Type", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTypeIDOut);
+            FHost.CreateValueOutput("Unique ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTypeIDOut);
             FTypeIDOut.SetSubType(0, int.MaxValue, 1, 0, false, false, true);
 
             FHost.CreateValueOutput("Position X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosXOut);
@@ -287,8 +287,8 @@ namespace TUIODecoder
             {
                 TuioCursor cur = cursors[i];
                 FSessionIDOut.SetValue(curindex, cur.getSessionID());
-                FClassIDOut.SetValue(curindex, cur.getFingerID());
-                FTypeIDOut.SetValue(curindex, 0);
+                FClassIDOut.SetValue(curindex, 0);
+                FTypeIDOut.SetValue(curindex, cur.getFingerID());
                 FPosXOut.SetValue(curindex, cur.getPosition().getX() * 2 - 1);
                 FPosYOut.SetValue(curindex, -cur.getPosition().getY() * 2 + 1);
                 FAngleOut.SetValue(curindex, 0);
@@ -305,8 +305,8 @@ namespace TUIODecoder
             {
                 TuioObject obj = objects[i];
                 FSessionIDOut.SetValue(curindex, obj.getSessionID());
-                FClassIDOut.SetValue(curindex, obj.getFiducialID());
-                FTypeIDOut.SetValue(curindex,  1);
+                FClassIDOut.SetValue(curindex, 1);
+                FTypeIDOut.SetValue(curindex, obj.getFiducialID() + objectOffset);
                 FPosXOut.SetValue(curindex, obj.getPosition().getX() * 2 - 1);
                 FPosYOut.SetValue(curindex, -obj.getPosition().getY() * 2 + 1);
                 FAngleOut.SetValue(curindex, 1 - ((obj.getAngle()) / (Math.PI + Math.PI)));
@@ -324,8 +324,8 @@ namespace TUIODecoder
             {
                 TuioBlob blb = blobs[i];
                 FSessionIDOut.SetValue(curindex, blb.getSessionID());
-                FClassIDOut.SetValue(curindex, blb.getBlobID());
-                FTypeIDOut.SetValue(curindex, 2);
+                FClassIDOut.SetValue(curindex, 2);
+                FTypeIDOut.SetValue(curindex, blb.getBlobID() + blobOffset);
                 FPosXOut.SetValue(curindex, blb.getPosition().getX() * 2 - 1);
                 FPosYOut.SetValue(curindex, -blb.getPosition().getY() * 2 + 1);
                 FWidthOut.SetValue(curindex, blb.getWidth());

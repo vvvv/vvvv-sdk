@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\07_ControllingMidi.v4p" systemname="07_DistortingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\07_DistortingMidi.v4p" locked="0">
-   <BOUNDS type="Window" left="0" top="0" width="17010" height="11970">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\07_ControllingMidi.v4p" systemname="07_DistortingMidi" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Midi\07_DistortingMidi.v4p" locked="0">
+   <BOUNDS type="Window" left="0" top="0" width="17010" height="11265">
    </BOUNDS>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -573,7 +573,7 @@
    </BOUNDS>
    <BOUNDS height="5190" left="720" top="4860" type="Box" width="4155">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|MidiNote (Devices) listens to all 128 notes coming from the virtual midi port on all 16 channels.&cr;&lf;&cr;&lf;Please note two I (Spreads) nodes, one of them generates a spread for channels, another one a spread for note IDs. Cross (2d) returns all combinations of the incoming spreads, i.e. every note on every channel.&cr;&lf;&cr;&lf;In order to play the midi-data a MidiNoteOut (Devices Bang) is used. It receives the velocity of all the notes and the &apos;OnData&apos; output of the MidiNote (Devices) is used to bang the notes.&cr;&lf;&cr;&lf;Midi programs 0 and 4 (Acoustic Grand and Electric Piano 1) are chosen for two channels to play the piece.&cr;&lf;&cr;&lf;MidiBendOut (Devices) sends pitch bend messages on two channels to the midi device. &cr;&lf;&cr;&lf;LFO (Animation) generates a sawtooth pattern of values in the range of 0..1, WaveShaper (Value) converts these values into a sine wave. These alternating values are controlling Pitch Bend wheel of the instruments on both defined channels.&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|MidiNote (Devices) listens to all 128 notes coming from the virtual midi port on all 16 channels.&cr;&lf;&cr;&lf;Note two the I (Spreads) nodes, one of them generates a spread for channels, the other a spread for note IDs. Cross (2d) returns all combinations of the incoming spreads, i.e. every note on every channel.&cr;&lf;&cr;&lf;In order to play the midi-data a MidiNoteOut (Devices Bang) is used. It receives the velocity of all the notes and the &apos;OnData&apos; output of the MidiNote (Devices) is used to bang the notes.&cr;&lf;&cr;&lf;Midi programs 0 and 4 (Acoustic Grand and Electric Piano 1) are chosen for two channels to play the piece.&cr;&lf;&cr;&lf;MidiBendOut (Devices) sends pitch bend messages on two channels to the midi device. &cr;&lf;&cr;&lf;LFO (Animation) generates a sawtooth pattern of values in the range of 0..1, WaveShaper (Value) converts these values into a sine wave. These alternating values are controlling the Pitch Bend wheel of the instruments on both defined channels.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -940,24 +940,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="292" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13680" top="7545" width="480" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="13680" top="7545" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="293" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="14265" top="7785" width="1590" height="240">
    </BOUNDS>
@@ -1084,8 +1066,6 @@
    <PIN pinname="Channel" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="292" srcpinname="Y Output Value" dstnodeid="307" dstpinname="Enabled">
-   </LINK>
    <LINK srcnodeid="293" srcpinname="Output Enum" dstnodeid="307" dstpinname="Midi Output Port">
    </LINK>
    <LINK srcnodeid="259" srcpinname="Output" dstnodeid="307" dstpinname="Pitch Bend">
