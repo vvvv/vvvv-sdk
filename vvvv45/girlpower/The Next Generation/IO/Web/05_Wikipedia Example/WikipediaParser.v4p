@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\05_Wikipedia Example\WikipediaParser.v4p">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\05_Wikipedia Example\WikipediaParser.v4p">
    <BOUNDS height="14580" left="10515" top="645" type="Window" width="15960">
    </BOUNDS>
    <NODE componentmode="Hidden" id="0" nodename="HTTP (Network Get String)">
@@ -1318,18 +1318,6 @@
    </NODE>
    <LINK srcnodeid="57" srcpinname="Output" dstnodeid="77" dstpinname="Input">
    </LINK>
-   <NODE systemname="URLEncode (String)" filename="plugins\StringURLEncode\StringURLEncode.csproj" nodename="URLEncode (String)" componentmode="Hidden" id="131">
-   <BOUNDS type="Node" left="8145" top="3675" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="40" srcpinname="Output" dstnodeid="131" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="131" srcpinname="Output" dstnodeid="9" dstpinname="To">
-   </LINK>
    <LINK srcnodeid="9" srcpinname="Output" dstnodeid="0" dstpinname="URL">
    </LINK>
    <NODE id="97" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -1411,5 +1399,17 @@
    <LINK srcnodeid="133" srcpinname="Output" dstnodeid="44" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Maximum">
+   </LINK>
+   <NODE systemname="Encode (String URL)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Encode (String URL)" componentmode="Hidden" id="136">
+   <BOUNDS type="Node" left="8160" top="3705" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Output" dstnodeid="136" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="136" srcpinname="Output" dstnodeid="9" dstpinname="To">
    </LINK>
    </PATCH>
