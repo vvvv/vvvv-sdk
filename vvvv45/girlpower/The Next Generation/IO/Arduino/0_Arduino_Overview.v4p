@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\0_Arduino_Overview.v4p" systemname="Arduino_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\Arduino_Overview.v4p" bgcolor="15329769">
-   <BOUNDS type="Window" left="0" top="0" width="16695" height="17265">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\0_Arduino_Overview.v4p" systemname="Arduino_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\Arduino_Overview.v4p" bgcolor="15329769">
+   <BOUNDS type="Window" left="0" top="0" width="15915" height="16380">
    </BOUNDS>
    <NODE componentmode="InABox" id="76" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -19,9 +19,9 @@
    <NODE componentmode="InABox" id="75" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="5595" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="4305" left="675" top="5595" type="Box" width="4320">
+   <BOUNDS height="4470" left="675" top="5595" type="Box" width="4350">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Set the PinMode for each physical pin of your Arduino board (note, that different boards may have different pin layouts). &cr;&lf;&cr;&lf;This spread contains values for every pin of the Arduino board. These values are what the Arduino board writes to its pins defined as output (OUTPUT, SERVO, PWM).&cr;&lf;&cr;&lf;The Arduino board have to be loaded with the StandartFirmata, please find it in the Arduino IDE under: File &gt; Examples &gt; Firmata &gt; StandardFirmata. To estabish a connection, please right click on &apos;Enable&apos; pin.&cr;&lf;&cr;&lf;In order to get the states of the pins from Arduino board, open the Inspektor for the Arduino node and enable &apos;Report Analog / Digital pins&apos;. States of the pins are returned as two spreads on &apos;Analog In&apos; and &apos;Digital In&apos; output pins of the node.&cr;&lf;&cr;&lf;Some sensors are talking over I2C protocol, the I2CDecode (Devices 2.x) is used to decode the data.&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Set the PinMode for each physical pin of your Arduino board (note, that different boards may have different pin layouts). &cr;&lf;&cr;&lf;This spread contains values for every pin of the Arduino board. These values are what the Arduino board writes to its pins defined as output (OUTPUT, SERVO, PWM).&cr;&lf;&cr;&lf;The Arduino board has to be loaded with the StandardFirmata, which you find in the Arduino IDE under: File &gt; Examples &gt; Firmata &gt; StandardFirmata. After having loaded StandardFirmata into the Arduino you can connect to it with a right click on the &apos;Enable&apos; pin.&cr;&lf;&cr;&lf;In order to get the states of the pins from the Arduino board, open the Inspektor for the Arduino node and enable &apos;Report Analog / Digital Pins&apos;. States of the pins are returned as two spreads on &apos;Analog In&apos; and &apos;Digital In&apos; output pins of the node.&cr;&lf;&cr;&lf;Some sensors are talking over the I2C protocol. The I2CDecode (Devices 2.x) is used to decode such data.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -49,11 +49,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="129" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6720" top="375" width="600" height="270">
+   <BOUNDS type="Node" left="6270" top="375" width="600" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6720" top="375" width="4950" height="375">
+   <BOUNDS type="Box" left="6270" top="375" width="7050" height="390">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Ardunio (Devices StandardFirmata 2.x)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The simple way: Arduino (Devices StandardFirmata 2.x)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -65,11 +65,11 @@
    </PIN>
    </NODE>
    <NODE id="72" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" exposed="0">
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|There are two options how to communicate to Arduino. With their pros and cons.&cr;&lf;&cr;&lf;- The first one is to use Firmata. This protocol aims to completely control the Arduino board from software on the host computer. No code on the Arduino side is necessary.&cr;&lf;&cr;&lf;- The second option is to send bare messages to and from Arduino. The Arduino board should then have a custom code to handle these messages.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|There are two options to communicate with the Arduino from vvvv. Both with their pros and cons:&cr;&lf;&cr;&lf;- The simple/limited way is to use the predefined Firmata protocol. This protocol aims to completely control the Arduino board from software on the host computer. No custom code writing is necessary on the Arduino side.&cr;&lf;&cr;&lf;- The general/more advanced way is to write custom code for the Arduino and send/receive bare messages to/from it. ie. defining a custom communication protocol. |">
    </PIN>
    <BOUNDS type="Node" left="675" top="720" width="390" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="675" top="720" width="3885" height="2490">
+   <BOUNDS type="Box" left="675" top="720" width="4320" height="2445">
    </BOUNDS>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -341,9 +341,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="274" nodename="IOBox (String)" systemname="IOBox (String)" exposed="0">
-   <BOUNDS height="270" left="675" top="3225" type="Node" width="945">
+   <BOUNDS height="270" left="675" top="3375" type="Node" width="945">
    </BOUNDS>
-   <BOUNDS height="375" left="675" top="3225" type="Box" width="1755">
+   <BOUNDS height="375" left="675" top="3375" type="Box" width="1755">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Using Firmata|">
    </PIN>
@@ -359,7 +359,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="675" top="3870" width="3735" height="1035">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Firmata support is contributed by user &apos;jens.a.e&apos;. These nodes are coming with the addonpack, which can be downloaded here:|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Firmata support in vvvv is contributed by user &apos;jens.a.e&apos;. These nodes are coming with the addonpack, which can be downloaded here:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -559,9 +559,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="293" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="285" top="8100" type="Node" width="315">
+   <BOUNDS height="270" left="285" top="8280" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="285" top="8100" type="Box" width="405">
+   <BOUNDS height="390" left="285" top="8280" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -589,9 +589,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="295" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="285" top="9360" type="Node" width="315">
+   <BOUNDS height="270" left="285" top="9525" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="285" top="9360" type="Box" width="405">
+   <BOUNDS height="390" left="285" top="9525" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -623,9 +623,9 @@
    <NODE componentmode="InABox" id="299" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="12465" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="2895" left="675" top="12465" type="Box" width="4350">
+   <BOUNDS height="3915" left="675" top="12465" type="Box" width="4410">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Everything sent through the COM port must be converted to the byte representation. Please check the AsRaw group of nodes. In this case a single boolean value is converted into bytes. Rollover the mouse over the &apos;Output&apos; pin to peek at the byte sequence.&cr;&lf;&cr;&lf;After setting the &apos;Baudrate&apos; (which should be the same as defined in your Arduino code) and selecting the &apos;Port Name&apos; of the Arduino board, the connection can be established by rightclick on the &apos;Enable&apos; input pin.&cr;&lf;&cr;&lf;RS232 (Devices) returns a byte stream, which is converted to the value (i.e. unsigned integer).|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Everything sent through the COM port must be converted to a byte representation. Please check the AsRaw group of nodes that do this for you. In this case a single boolean value is converted into bytes. Rollover the mouse over the &apos;Output&apos; pin to peek at the byte sequence.&cr;&lf;Now the custom code you uploaded to the Arduino has to know that the bytes it receives have to be interpreted as booleans.&cr;&lf;&cr;&lf;After setting the &apos;Baudrate&apos; (which has to be the same as defined in your Arduino code) and selecting the &apos;Port Name&apos; of the Arduino board, the connection can be established by rightclick on the &apos;Enable&apos; input pin.&cr;&lf;&cr;&lf;RS232 (Devices) returns a byte stream, which you have to know (by looking at the code running on the Arduino) has to be interpreted as an unsigned integer value in order to be displayed correctly. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -637,9 +637,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="297" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="285" top="13710" type="Node" width="315">
+   <BOUNDS height="270" left="285" top="14355" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="285" top="13710" type="Box" width="405">
+   <BOUNDS height="390" left="285" top="14355" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -1055,11 +1055,11 @@
    </PIN>
    </NODE>
    <NODE id="176" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9105" top="10560" width="600" height="270">
+   <BOUNDS type="Node" left="6195" top="10395" width="600" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="9105" top="10560" width="2520" height="435">
+   <BOUNDS type="Box" left="6195" top="10395" width="4995" height="420">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|RS232 (Devices)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The general way: RS232 (Devices)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1183,7 +1183,7 @@
    </BOUNDS>
    <BOUNDS height="1125" left="675" top="11010" type="Box" width="4410">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In order to make this example work, please upload an arduino sketch (from the directory of this patch) to the board. This patch will blink the LED on the Arduino board and the board will report how many times it blinked back to the patch.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In order to make this example work, you have to upload the arduino sketch (from the directory of this patch - press ALT+E to jump there) to the board. This patch will blink the LED on the Arduino board and the board will report how many times it blinked back to the patch.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1211,9 +1211,9 @@
    </PIN>
    </NODE>
    <NODE id="335" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="285" top="14760" width="315">
+   <BOUNDS type="Node" height="270" left="285" top="15405" width="315">
    </BOUNDS>
-   <BOUNDS type="Box" height="390" left="285" top="14760" width="405">
+   <BOUNDS type="Box" height="390" left="285" top="15405" width="405">
    </BOUNDS>
    <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -1227,9 +1227,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="336" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="15345" type="Node" width="7425">
+   <BOUNDS height="270" left="675" top="16395" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="240" left="675" top="15345" type="Box" width="4320">
+   <BOUNDS height="240" left="675" top="16395" type="Box" width="4320">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="--------------------------------------------------------">
    </PIN>
@@ -1243,9 +1243,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="337" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="15645" type="Node" width="7425">
+   <BOUNDS height="270" left="675" top="16695" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="525" left="675" top="15645" type="Box" width="3645">
+   <BOUNDS height="525" left="675" top="16695" type="Box" width="3645">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|For more detailed examples on how to define your own protocol, please check this patch:|">
    </PIN>
@@ -1259,9 +1259,9 @@
    </PIN>
    </NODE>
    <NODE id="338" systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox">
-   <BOUNDS type="Node" left="675" top="16200" width="100" height="100">
+   <BOUNDS type="Node" left="675" top="17250" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="675" top="16200" width="2940" height="240">
+   <BOUNDS type="Box" left="675" top="17250" width="2940" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
