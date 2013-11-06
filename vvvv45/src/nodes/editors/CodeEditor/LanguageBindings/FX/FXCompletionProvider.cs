@@ -31,7 +31,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
             FTypeReference = new Dictionary<string, string>();
             
             //check for presence of functionreference
-            var filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\..\hlsl.fnr"));
+            var filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\..\thirdparty\hlsl.fnr"));
             //if not present, prevent codecompletion 
             FAllowCodeCompletion = File.Exists(filename);
             if (FAllowCodeCompletion)
@@ -77,7 +77,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
             }
             catch (Exception e)
             {
-                FLogger.Log(LogType.Error, @"Error parsing HLSL function reference \lib\hlsl.fnr");
+                FLogger.Log(LogType.Error, @"Error parsing HLSL function reference \lib\thirdparty\hlsl.fnr");
                 FLogger.Log(e);
             }
         }
