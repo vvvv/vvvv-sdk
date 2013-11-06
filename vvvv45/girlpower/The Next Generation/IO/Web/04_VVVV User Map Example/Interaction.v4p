@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\04_VVVV User Map Example\Interaction.v4p" systemname="Interaction">
-   <BOUNDS height="15570" left="435" top="225" type="Window" width="17100">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\04_VVVV User Map Example\Interaction.v4p" systemname="Interaction">
+   <BOUNDS height="15570" left="2415" top="1005" type="Window" width="17100">
    </BOUNDS>
    <NODE componentmode="InABox" id="25" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="6345" top="465" type="Node" width="100">
@@ -41,7 +41,7 @@
    <NODE componentmode="Hidden" id="247" nodename="FrameDifference (Animation)" systemname="FrameDifference (Animation)">
    <BOUNDS height="270" left="9975" top="2325" type="Node" width="1320">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -437,7 +437,7 @@
    </BOUNDS>
    <BOUNDS height="12780" left="750" top="1380" type="Box" width="4230">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The difference between two mouse positions (in two following frames) is calculated.&cr;&lf;&cr;&lf;After multiplication by the constants to adjust the range and by the value of the right/left mouse buttons (0 or 1) this difference is used further or it is annihilated (multiplied by 0).&cr;&lf;&cr;&lf;First, the camera will be moved along the Z axis (zoom) and then rotated around.&cr;&lf;&cr;&lf;The Y position of the mouse (when the right mouse button is pressed) is mapped to a suitable range and is used for the &apos;Z&apos; pin of the Translate (Transform) node to move the camera.&cr;&lf;&cr;&lf;The Mouse XY position (when the left mouse button is pressed) and its X position (with the right mouse button pressed) are defining a 3d Vector.&cr;&lf;&cr;&lf;This vector is used for &apos;Angular Speed XYZ&apos; input pin of the Rotate (Transform Successive Vector) which returns the transformation for the camera.&cr;&lf;&cr;&lf;If the user presses &apos;r&apos; key on the keyboard, KeyMatch (String) will bang its ouput pin and the Rotate (Transform Successive Vector) will reset the transformation, thus returning the camera into its initial position.&cr;&lf;&cr;&lf;Multiply (3d Vector) moves all yellow spheres into camera space.&cr;&lf;&cr;&lf;From there only those spheres are selected, whose Z coordinate is less than the average of the Z coordinates of all spheres. These are the spheres on the visible portion of the earth (closest hemisphere to the user).&cr;&lf;&cr;&lf;The position of the camera (its view) is multiplied by the Perspective (Transform). The resulting transformation is the view projection transformation of the camera, which brings all 3d elements into the 2d space of the window. &cr;&lf;&cr;&lf;So after the GetSlice (Spreads) with its &apos;BinSize&apos; pin set to 3 (as every yellow sphere is defined by a 3d vector) returns 3d coodrinates of the visible spheres, their coordinates are multiplied by the transformation of the camera. Now the positions of the yellow spheres are defined in 2d space of the window.&cr;&lf;&cr;&lf;After throwing away the Z coordinate of every vector using xy (2d) node, a distance between the spheres and the mouse XY position is calculated.&cr;&lf;&cr;&lf;After sorting the spread of all distances, CAR (Spreads) simply returns the first element of this sorted spread. So the slice index of the closest to the mouse yellow sphere is now known.&cr;&lf;&cr;&lf;This slice is picked from the slices of all visible spheres. This is the slice index of the closest to the mouse user.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The difference between two mouse positions (in two following frames) is calculated.&cr;&lf;&cr;&lf;After multiplication by the constants to adjust the range and by the value of the right/left mouse buttons (0 or 1) this difference is used further or it is annihilated (multiplied by 0).&cr;&lf;&cr;&lf;First, the camera will be moved along the Z axis (zoom) and then rotated around.&cr;&lf;&cr;&lf;The Y position of the mouse (when the right mouse button is pressed) is mapped to a suitable range and is used for the &apos;Z&apos; pin of the Translate (Transform) node to move the camera.&cr;&lf;&cr;&lf;The Mouse XY position (when the left mouse button is pressed) and its X position (with the right mouse button pressed) are defining a 3d Vector.&cr;&lf;&cr;&lf;This vector is used for &apos;Angular Speed XYZ&apos; input pin of the Rotate (Transform Successive Vector) which returns the transformation for the camera.&cr;&lf;&cr;&lf;If the user presses &apos;r&apos; key on the keyboard, KeyMatch (String) will bang its ouput pin and the Rotate (Transform Successive Vector) will reset the transformation, thus returning the camera into its initial position.&cr;&lf;&cr;&lf;Multiply (3d Vector) moves all yellow spheres into camera space.&cr;&lf;&cr;&lf;From there only those spheres are selected, whose Z coordinate is less than the average of the Z coordinates of all spheres. These are the spheres on the visible portion of the earth (closest hemisphere to the user).&cr;&lf;&cr;&lf;The position of the camera (its view) is multiplied by the Perspective (Transform). The resulting transformation is the view projection transformation of the camera, which brings all 3d elements into the 2d space of the window. &cr;&lf;&cr;&lf;So after the GetSlice (Spreads) with its &apos;BinSize&apos; pin set to 3 (as every yellow sphere is defined by a 3d vector) returns 3d coordinates of the visible spheres, their coordinates are multiplied by the transformation of the camera. Now the positions of the yellow spheres are defined in 2d space of the window.&cr;&lf;&cr;&lf;After throwing away the Z coordinate of every vector using the xy (2d) node, the  distance between the spheres and the mouse XY position is calculated.&cr;&lf;&cr;&lf;After sorting the spread of all distances, CAR (Spreads) simply returns the first element of this sorted spread. So the slice index of the yellow sphere closest to the mouse is now known.&cr;&lf;&cr;&lf;This slice is picked from the slices of all visible spheres. This is the slice index of the users closest to the mouse.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -951,9 +951,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="404" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="180" top="10605" type="Node" width="315">
+   <BOUNDS height="270" left="180" top="10185" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="180" top="10605" type="Box" width="405">
+   <BOUNDS height="390" left="180" top="10185" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="9.">
    </PIN>
@@ -1074,8 +1074,6 @@
    </LINK>
    <LINK srcnodeid="248" srcpinname="XYZ" dstnodeid="247" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="248" srcpinname="XYZ" dstnodeid="413" dstpinname="XY2">
-   </LINK>
    <NODE systemname="xy (2d)" nodename="xy (2d)" componentmode="Hidden" id="420">
    <BOUNDS type="Node" left="9510" top="10965" width="300" height="270">
    </BOUNDS>
@@ -1087,5 +1085,7 @@
    <LINK srcnodeid="389" srcpinname="XYZ Transformed" dstnodeid="420" dstpinname="XYZ">
    </LINK>
    <LINK srcnodeid="420" srcpinname="XY" dstnodeid="413" dstpinname="XY1">
+   </LINK>
+   <LINK srcnodeid="248" srcpinname="XY" dstnodeid="413" dstpinname="XY2">
    </LINK>
    </PATCH>

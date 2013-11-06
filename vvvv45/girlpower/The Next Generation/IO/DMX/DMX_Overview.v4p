@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\DMX\DMX_Overview.v4p" systemname="DMX_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\DMX\DMX_Overview.v4p" bgcolor="15329769">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\DMX\DMX_Overview.v4p" systemname="DMX_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\DMX\DMX_Overview.v4p" bgcolor="15329769">
    <BOUNDS type="Window" left="195" top="0" width="18615" height="17070">
    </BOUNDS>
    <NODE componentmode="InABox" id="76" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -199,7 +199,7 @@
    <NODE componentmode="InABox" id="215" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="1035" top="12060" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="930" left="1035" top="12060" type="Box" width="3075">
+   <BOUNDS height="915" left="1035" top="12060" type="Box" width="3360">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|NOTE, all these DMX nodes are actually legacy. They are device dependent and available only in 32bit version as they rely on external DLLs provided by the manufacturers.|">
    </PIN>
@@ -249,7 +249,7 @@
    </BOUNDS>
    <BOUNDS height="1140" left="675" top="3525" type="Box" width="3795">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Art-Net uses Ethernet for transmission of DMX data. vvvv supports Art-Net II specification with a total number of 256 universes: every 16 consecutive universes are packed into one Subnet, and there are 16 Subnets in total.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Art-Net uses Ethernet for transmission of DMX data. vvvv supports the Art-Net II specification with a total number of 256 universes: 16 subnets with 16 universes each. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -311,9 +311,9 @@
    <LINK srcnodeid="228" srcpinname="Output String" dstnodeid="183" dstpinname="Destination Address">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="232" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6735" top="5385" width="240" height="270">
+   <BOUNDS type="Node" left="6735" top="5685" width="240" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6735" top="5385" width="285" height="270">
+   <BOUNDS type="Box" left="6735" top="5685" width="285" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="V">
    </PIN>
@@ -341,9 +341,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="236" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6135" top="5760" type="Node" width="315">
+   <BOUNDS height="270" left="6135" top="6360" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="6135" top="5760" type="Box" width="405">
+   <BOUNDS height="390" left="6135" top="6360" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -495,7 +495,7 @@
    </BOUNDS>
    <BOUNDS height="4950" left="675" top="5655" type="Box" width="3555">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|DMX (Network Artnet Sender) sends 512 values to the channels sitting on the IP-Adress defined on &apos;Destination Address&apos; input pin. Every DMX-channel represents a number from 0 to 255. In vvvv these values are mapped to a range 0...1.&cr;&lf;&cr;&lf;To set the &apos;Subnet ID&apos; and &apos;Universe ID&apos; open the Inspektor.&cr;&lf;&cr;&lf;SetSlice (Spreads) receives the spread of 512 values (zeroes in this case) and replaces three of them (slices number 42, 43, 44) with the values coming from LinearSpread (Spreads).&cr;&lf;&cr;&lf;DMX (Network Artnet Receiver) listens to the UDP port and returns 512 values from the channels of the Subnet/Universe (defined via Inspektor).&cr;&lf;&cr;&lf;GetSpread (Spreads) picks 10 slices, starting from 38. This is just to show the values.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|DMX (Network Artnet Sender) sends 512 values to the channels sitting on the IP-Adress defined on the &apos;Destination Address&apos; input pin. Every DMX-channel represents a number from 0 to 255. In vvvv these values are mapped to the range 0...1.&cr;&lf;&cr;&lf;To set the &apos;Subnet ID&apos; and &apos;Universe ID&apos; view this node using the Inspektor.&cr;&lf;&cr;&lf;SetSlice (Spreads) takes the spread of 512 values (zeroes in this case) and replaces three of them (slices number 42, 43, 44) with the values coming from LinearSpread (Spreads).&cr;&lf;&cr;&lf;DMX (Network Artnet Receiver) returns 512 values from the channels of the Subnet/Universe (defined via Inspektor).&cr;&lf;&cr;&lf;GetSpread (Spreads) picks 10 slices, starting from 38. This is just to show the values.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -823,7 +823,7 @@
    </PIN>
    </NODE>
    <NODE systemname="DMX (Network Artnet Receiver)" nodename="DMX (Network Artnet Receiver)" componentmode="Hidden" id="309">
-   <BOUNDS type="Node" left="6615" top="5820" width="100" height="100">
+   <BOUNDS type="Node" left="6615" top="6420" width="100" height="100">
    </BOUNDS>
    <PIN pinname="SubnetID" slicecount="1" values="3">
    </PIN>
@@ -859,23 +859,7 @@
    </PIN>
    <PIN pinname="Bin Size" visible="1" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Index" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="313" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9750" top="2385" width="285" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="9750" top="2385" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="42">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
+   <PIN pinname="Index" visible="1" slicecount="3" values="42,43,44">
    </PIN>
    </NODE>
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="314">
@@ -885,25 +869,9 @@
    </PIN>
    <PIN pinname="Phase" visible="1">
    </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="315" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9315" top="1770" width="360" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="9315" top="1770" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
+   <PIN pinname="Spread Count" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="315" srcpinname="Y Output Value" dstnodeid="314" dstpinname="Spread Count">
-   </LINK>
    <LINK srcnodeid="314" srcpinname="Output" dstnodeid="312" dstpinname="Input">
    </LINK>
    <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="316">
@@ -915,9 +883,9 @@
    <LINK srcnodeid="316" srcpinname="Output" dstnodeid="314" dstpinname="Phase">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="317" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8100" top="990" width="390" height="240">
+   <BOUNDS type="Box" left="8115" top="990" width="390" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8100" top="990" width="0" height="0">
+   <BOUNDS type="Node" left="8115" top="990" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="5">
    </PIN>
@@ -930,34 +898,8 @@
    </LINK>
    <LINK srcnodeid="312" srcpinname="Output" dstnodeid="183" dstpinname="Input">
    </LINK>
-   <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="320">
-   <BOUNDS type="Node" left="9135" top="2400" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname=".. To [" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="315" srcpinname="Y Output Value" dstnodeid="320" dstpinname=".. To [">
-   </LINK>
-   <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="321">
-   <BOUNDS type="Node" left="9150" top="2850" width="330" height="270">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="321" srcpinname="Output" dstnodeid="312" dstpinname="Index">
-   </LINK>
-   <LINK srcnodeid="313" srcpinname="Y Output Value" dstnodeid="321" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="320" srcpinname="Output" dstnodeid="321" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="GetSpread (Spreads)" nodename="GetSpread (Spreads)" componentmode="Hidden" id="322">
-   <BOUNDS type="Node" left="6600" top="6750" width="100" height="100">
+   <BOUNDS type="Node" left="6600" top="7350" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -965,9 +907,9 @@
    <LINK srcnodeid="309" srcpinname="Input" dstnodeid="322" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="323" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="6975" top="6315" width="300" height="240">
+   <BOUNDS type="Box" left="6975" top="6915" width="300" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="6975" top="6315" width="0" height="0">
+   <BOUNDS type="Node" left="6975" top="6915" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="38">
    </PIN>
@@ -981,9 +923,9 @@
    <LINK srcnodeid="323" srcpinname="Y Output Value" dstnodeid="322" dstpinname="Offset">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="324" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7350" top="6300" width="390" height="240">
+   <BOUNDS type="Box" left="7350" top="6900" width="390" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="7350" top="6300" width="0" height="0">
+   <BOUNDS type="Node" left="7350" top="6900" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="10">
    </PIN>
@@ -997,9 +939,9 @@
    <LINK srcnodeid="324" srcpinname="Y Output Value" dstnodeid="322" dstpinname="Count">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="325" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="6600" top="7335" width="690" height="1815">
+   <BOUNDS type="Box" left="6600" top="7935" width="690" height="1815">
    </BOUNDS>
-   <BOUNDS type="Node" left="6600" top="7335" width="0" height="0">
+   <BOUNDS type="Node" left="6600" top="7935" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -1085,9 +1027,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="333" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6135" top="6660" type="Node" width="315">
+   <BOUNDS height="270" left="6135" top="7260" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="6135" top="6660" type="Box" width="405">
+   <BOUNDS height="390" left="6135" top="7260" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -1165,5 +1107,35 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="328" srcpinname="Y Output Value" dstnodeid="183" dstpinname="Do Send">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="339">
+   <BOUNDS type="Node" left="9570" top="975" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9570" top="975" width="345" height="930">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="42,43,44">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="340">
+   <BOUNDS type="Node" left="8715" top="1995" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="339" srcpinname="Y Output Value" dstnodeid="340" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="340" srcpinname="Count" dstnodeid="314" dstpinname="Spread Count">
+   </LINK>
+   <LINK srcnodeid="339" srcpinname="Y Output Value" dstnodeid="312" dstpinname="Index">
    </LINK>
    </PATCH>
