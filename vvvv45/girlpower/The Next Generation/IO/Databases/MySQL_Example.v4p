@@ -91,7 +91,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7215" top="8130">
    </BOUNDS>
-   <PIN pinname="Field Names" slicecount="1" values="|name, chrom,txStart,txEnd|">
+   <PIN pinname="Field Names" slicecount="1" values="|name, chrom, txStart, txEnd|">
    </PIN>
    <PIN pinname="COUNT" visible="1">
    </PIN>
@@ -155,7 +155,7 @@
    <LINK srcnodeid="25" srcpinname="name" dstnodeid="4" dstpinname="Input String">
    </LINK>
    <NODE id="4" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
-   <PIN pinname="Input String" visible="1" slicecount="10" values="uc010scw.1,uc031qfi.1,uc010scx.1,uc010scy.2,uc010scz.2,uc010sda.1,uc010sdb.1,uc010sdc.1,uc010sdd.2,uc010sde.2">
+   <PIN pinname="Input String" visible="1" slicecount="1" values="||">
    </PIN>
    <BOUNDS type="Node" left="10935" top="9090" width="0" height="0">
    </BOUNDS>
@@ -191,7 +191,7 @@
    </PIN>
    </NODE>
    <NODE id="45" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Input String" visible="1" pintype="Input">
+   <PIN pinname="Input String" visible="1" pintype="Input" slicecount="1" values="||">
    </PIN>
    <BOUNDS type="Node" left="13485" top="9090" width="0" height="0">
    </BOUNDS>
@@ -239,7 +239,7 @@
    </PIN>
    </NODE>
    <NODE id="46" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Input String" visible="1" pintype="Input">
+   <PIN pinname="Input String" visible="1" pintype="Input" slicecount="1" values="||">
    </PIN>
    <BOUNDS type="Node" left="14640" top="9090" width="0" height="0">
    </BOUNDS>
@@ -1746,10 +1746,6 @@
    </NODE>
    <LINK srcnodeid="131" srcpinname="Output" dstnodeid="135" dstpinname="Input String" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="25" srcpinname=" txStart" dstnodeid="45" dstpinname="Input String">
-   </LINK>
-   <LINK srcnodeid="25" srcpinname=" txEnd" dstnodeid="46" dstpinname="Input String">
-   </LINK>
    <LINK srcnodeid="124" srcpinname="Output String" dstnodeid="123" dstpinname="Input 3">
    </LINK>
    <LINK srcnodeid="123" srcpinname="Output" dstnodeid="131" dstpinname="Input">
@@ -1833,5 +1829,11 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="123" srcpinname="Output" dstnodeid="141" dstpinname="Input String" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="chrom" dstnodeid="3" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="txStart" dstnodeid="45" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="txEnd" dstnodeid="46" dstpinname="Input String">
    </LINK>
    </PATCH>
