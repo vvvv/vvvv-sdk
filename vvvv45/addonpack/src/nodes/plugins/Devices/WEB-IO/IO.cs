@@ -371,9 +371,9 @@ namespace VVVV.Nodes
                         TCP_Client.Shutdown(SocketShutdown.Both);
                         TCP_Client.Close();
                         TCP_Client.Dispose();
-                        //TCP_Client = null;
-                        
+                        TCP_Client = null;    // only null, when disposing ?
 					}
+                    
 				}
 
 				FConnected[0] = false;
@@ -408,7 +408,6 @@ namespace VVVV.Nodes
             if (addr == "")
             {
                 valid = false;
-                //FLogger.Log(LogType.Debug, "no address provided");
             }
             else
             {
@@ -424,12 +423,9 @@ namespace VVVV.Nodes
 			
 		public void Dispose()
 		{
-            FLogger.Log(LogType.Debug, "Dispose...");
             GC.SuppressFinalize(this);
 			Dispose(true);
-            GC.Collect();
-            FLogger.Log(LogType.Debug, "disposed");
-			
+            GC.Collect();			
 		}
 		
 		
@@ -437,46 +433,17 @@ namespace VVVV.Nodes
 		{
 			// Check to see if Dispose has already been called.
 			if(!this.disposed)
-			{
-				/*
+			{				
 				if(disposing)
 				{
-
-                    if (TCP_Client != null)
-					{
-
-                        if (TCP_Client.Connected)
-						{
-                            TCP_Client.Shutdown(SocketShutdown.Both);
-                            TCP_Client.Close();
-						}
-                        this.TCP_Client = null;
-					}
-				}*/
-                //Thread.Sleep(3000);
-                closeConnection(false);
+                    closeConnection(false);
+                    TCP_Client = null;
+				}
+                
 				// Note disposing has been done.
 				disposed = true;
 			}
 		}
-
-
-        ~IO()
-        {
-            /*
-            if (TCP_Client != null)
-            {
-
-                if (TCP_Client.Connected)
-                {
-                    TCP_Client.Shutdown(SocketShutdown.Both);
-                    TCP_Client.Close();
-                }
-                TCP_Client = null;
-            }*/
-            closeConnection(false);
-        }
-		
 		
 	}
 }
