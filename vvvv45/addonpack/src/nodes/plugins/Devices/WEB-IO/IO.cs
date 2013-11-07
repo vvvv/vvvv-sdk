@@ -14,7 +14,7 @@ using System.Net;
 using System.Net.Sockets;
 
 //using System.Text;
-//using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 using System.Threading;
 
@@ -38,16 +38,16 @@ namespace VVVV.Nodes
 		[Input("Output")]
 		public IDiffSpread<bool> FPinsIn;
 		
-		[Input("Enabled", IsSingle = true)]
+		[Input("Enabled", IsSingle = true, DefaultBoolean = false)]
 		public IDiffSpread<bool> FEnable;
 		
 		[Input("Get Pin States", IsSingle = true, IsBang = true)]
 		public IDiffSpread<bool> FGetState;
 		
-		[Input("Remote Host", IsSingle = true, StringType = StringType.IP)]
+		[Input("Remote Host", IsSingle = true, StringType = StringType.IP, DefaultString = "192.168.1.1")]
 		public IDiffSpread<string> FIp;
 		
-		[Input("Remote Port", IsSingle = true)]
+		[Input("Remote Port", IsSingle = true, DefaultValue = 49153)]
 		public IDiffSpread<int> FPort;
 		
 		[Output("Actual Output")]
@@ -67,28 +67,40 @@ namespace VVVV.Nodes
 		
 		
 		//-------------------------------------
-		Socket TCP_Client;
-		
-		byte[] receiveBuffer = new byte[512];
-		byte[] lastReceive = new byte[512];
-		
-		private bool disposed = false;
-		private bool firstConnect = true;
-		
-		bool[] lastOutputPinState = new bool[12]{false, false, false, false, false, false, false, false, false, false, false, false};
-		bool[] lastInputPinState = new bool[12]{false, false, false, false, false, false, false, false, false, false, false, false};
-		
+        //[ImportingConstructor]
+        //public IO()
+        //{
+        private Socket TCP_Client;
+
+        private byte[] receiveBuffer = new byte[512];
+        private byte[] lastReceive = new byte[512];
+
+        private bool[] lastOutputPinState = new bool[12] { false, false, false, false, false, false, false, false, false, false, false, false };
+        private bool[] lastInputPinState = new bool[12] { false, false, false, false, false, false, false, false, false, false, false, false };
+        //}
+
+        private bool disposed = false;
+        private bool firstConnect = true;
+
 		#endregion fields & pins
 		#pragma warning restore
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
+
+            FOutput.SliceCount = 12;
+            FInputs.SliceCount = 12;
+
 			// Enabled changed
-			if (FEnable.IsChanged)
+            if (FEnable.IsChanged || FIp.IsChanged || FPort.IsChanged)
 			{
+                FConnected[0] = false;
+
 				if(FEnable[0] == true)
 				{
+                    if (FConnected[0])
+                        closeConnection(true);
 					connect();
 				}
 				else
@@ -97,20 +109,7 @@ namespace VVVV.Nodes
 					firstConnect = true;
 				}
 			}
-			
-			// IP or Port changed
-			if ((FIp.IsChanged || FPort.IsChanged) && FEnable[0])
-			{
-				if (FConnected[0])
-				{
-					closeConnection(true);
-				}
-				else
-				{
-					connect();
-				}
-			}
-			
+
 			// on first connect
 			if (firstConnect && FEnable[0] && FConnected[0])
 			{
@@ -133,8 +132,8 @@ namespace VVVV.Nodes
 			{
 				for (int i = 0; i < 12; i++)
 				{
-					if (FConnected[0])
-					{
+                    //if (FConnected[0])
+                    //{
 						if (FPinsIn[i] != lastOutputPinState[i])
 						{
 							if(FPinsIn[i])
@@ -146,7 +145,7 @@ namespace VVVV.Nodes
 								setPins(i, (UInt16)0);
 							}
 						}
-					}
+					//}
 					lastOutputPinState[i] = FPinsIn[i];
 				}
 				getPins();
@@ -193,14 +192,18 @@ namespace VVVV.Nodes
 			readCmd.StructLength = 8;
 			
 			byte[] sendCmd = ByteConvert.ToBytes(readCmd, typeof(structs.RegisterRequest));
-			TCP_Client.Send(sendCmd, sendCmd.Length, SocketFlags.None);
-			TCP_Client.BeginReceive(receiveBuffer, 0, 512, SocketFlags.None, new AsyncCallback(callback_receive), TCP_Client);
+
+            if (FConnected[0] && TCP_Client.Connected)
+            {
+                TCP_Client.Send(sendCmd, sendCmd.Length, SocketFlags.None);
+                TCP_Client.BeginReceive(receiveBuffer, 0, 512, SocketFlags.None, new AsyncCallback(callback_receive), TCP_Client);
+            }
 		}
 		
 		
 		private void connect()
 		{
-			if (FIp[0] != "" && FPort[0] > 0)
+            if (IsValidIP(FIp[0]) && FPort[0] > 0 && FPort[0] < 65535)
 			{
 				try
 				{
@@ -218,7 +221,7 @@ namespace VVVV.Nodes
 			}
 			else
 			{
-				FStatus[0] = "IP and Port needed!";
+				FStatus[0] = "IP and Port needed or in wrong format";
 			}
 			
 		}
@@ -360,9 +363,16 @@ namespace VVVV.Nodes
 				{
                     if (TCP_Client.Connected)
 					{
+                        if (reconnect)
+                            TCP_Client.Disconnect(true);
+                        else
+                            TCP_Client.Disconnect(false);
+
                         TCP_Client.Shutdown(SocketShutdown.Both);
                         TCP_Client.Close();
-                        TCP_Client = null;
+                        TCP_Client.Dispose();
+                        //TCP_Client = null;
+                        
 					}
 				}
 
@@ -371,8 +381,8 @@ namespace VVVV.Nodes
 
                 if (reconnect && FEnable[0])
                 {
-                    FLogger.Log(LogType.Debug, "reconnect in 3 seconds...");
-                    Thread.Sleep(3000);
+                    FLogger.Log(LogType.Debug, "reconnect in 2 seconds...");
+                    Thread.Sleep(2000);
                     connect();
                 }
 
@@ -382,6 +392,30 @@ namespace VVVV.Nodes
 				FStatus[0] = "Error while disconnecting: " + e;
 			}
 		}
+
+        //--------------------------------------------------------------------------------------------
+        // Helpers
+        //--------------------------------------------------------------------------------------------
+
+
+        public bool IsValidIP(string addr)
+        {
+            string pattern = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+            Regex check = new Regex(pattern);
+
+            bool valid = false;
+
+            if (addr == "")
+            {
+                valid = false;
+                //FLogger.Log(LogType.Debug, "no address provided");
+            }
+            else
+            {
+                valid = check.IsMatch(addr, 0);
+            }
+            return valid;
+        }
 
 		
 		//--------------------------------------------------------------------------------------------
@@ -404,7 +438,7 @@ namespace VVVV.Nodes
 			// Check to see if Dispose has already been called.
 			if(!this.disposed)
 			{
-				
+				/*
 				if(disposing)
 				{
 
@@ -416,25 +450,31 @@ namespace VVVV.Nodes
                             TCP_Client.Shutdown(SocketShutdown.Both);
                             TCP_Client.Close();
 						}
-                        TCP_Client = null;
+                        this.TCP_Client = null;
 					}
-				}
+				}*/
+                //Thread.Sleep(3000);
+                closeConnection(false);
 				// Note disposing has been done.
 				disposed = true;
 			}
 		}
 
-        // Use C# destructor syntax for finalization code.
-        // This destructor will run only if the Dispose method
-        // does not get called.
-        // It gives your base class the opportunity to finalize.
-        // Do not provide destructors in types derived from this class.
+
         ~IO()
         {
-                // Do not re-create Dispose clean-up code here.
-                // Calling Dispose(false) is optimal in terms of
-                // readability and maintainability.
-                Dispose(false);
+            /*
+            if (TCP_Client != null)
+            {
+
+                if (TCP_Client.Connected)
+                {
+                    TCP_Client.Shutdown(SocketShutdown.Both);
+                    TCP_Client.Close();
+                }
+                TCP_Client = null;
+            }*/
+            closeConnection(false);
         }
 		
 		
