@@ -35,7 +35,7 @@ namespace VVVV.Nodes
 	{
 		#pragma warning disable 649
 		#region fields & pins
-		[Input("Input")]
+		[Input("Output")]
 		public IDiffSpread<bool> FPinsIn;
 		
 		[Input("Enabled", IsSingle = true)]
@@ -50,10 +50,10 @@ namespace VVVV.Nodes
 		[Input("Remote Port", IsSingle = true)]
 		public IDiffSpread<int> FPort;
 		
-		[Output("Output")]
+		[Output("Actual Output")]
 		public ISpread<bool> FOutput;
 		
-		[Output("Inputs")]
+		[Output("Input")]
 		public ISpread<bool> FInputs;
 		
 		[Output("Status")]
