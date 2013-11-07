@@ -38,7 +38,7 @@ namespace VVVV.Nodes
 		[Input("Input")]
 		public IDiffSpread<bool> FPinsIn;
 		
-		[Input("Enable", IsSingle = true)]
+		[Input("Enabled", IsSingle = true)]
 		public IDiffSpread<bool> FEnable;
 		
 		[Input("Get Pin States", IsSingle = true, IsBang = true)]
@@ -50,7 +50,7 @@ namespace VVVV.Nodes
 		[Input("Remote Port", IsSingle = true)]
 		public IDiffSpread<int> FPort;
 		
-		[Output("Outputs ")]
+		[Output("Output")]
 		public ISpread<bool> FOutput;
 		
 		[Output("Inputs")]
