@@ -155,7 +155,7 @@ namespace VVVV.Nodes
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
-	public class EnumBufferNode : BufferNode<System.IO.Stream>
+	public class RawBufferNode : BufferNode<System.IO.Stream>
 	{
 	}
 }

@@ -113,7 +113,7 @@ namespace VVVV.Nodes
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
-	public class EnumQueueNode : QueueNode<System.IO.Stream>
+	public class RawQueueNode : QueueNode<System.IO.Stream>
 	{
 	}
 }

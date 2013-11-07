@@ -94,5 +94,5 @@ namespace VVVV.Nodes
 	            Tags = "remove, filter",
 	            Author = "woei")]
 	#endregion PluginInfo
-	public class DeleteSliceEnum : DeleteSlice<System.IO.Stream> {}
+	public class DeleteSliceRaw : DeleteSlice<System.IO.Stream> {}
 }

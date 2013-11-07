@@ -72,5 +72,5 @@ namespace VVVV.Nodes
 	            Tags = "",
 	            Author = "woei")]
 	#endregion PluginInfo
-	public class SetSliceEnum : SetSlice<System.IO.Stream> {}
+	public class SetSliceRaw : SetSlice<System.IO.Stream> {}
 }

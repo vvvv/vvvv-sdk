@@ -141,7 +141,7 @@ namespace VVVV.Nodes
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
-	public class EnumRingBufferNode : RingBufferNode<System.IO.Stream>
+	public class RawRingBufferNode : RingBufferNode<System.IO.Stream>
 	{
 	}
 }
