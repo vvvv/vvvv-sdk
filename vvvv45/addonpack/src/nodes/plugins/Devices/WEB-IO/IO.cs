@@ -23,15 +23,15 @@ using System.Threading;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "WEB-IO",
+	[PluginInfo(Name = "IO",
 	Category = "Devices",
-	//Version = " Wiesemann & Theis Web-IO Digital E/A",
+    Version = "Wiesemann+Theis Web-IO",
 	Help = "alternative Node for the Wiesemann & Theis 12x Web-IO Digital E/A",
 	Tags = "IO, Devices",
     Author = "sebl",
     Credits = " Wiesemann & Theis (http://www.wut.de/e-5763w-13-inde-000.php)")]
 	#endregion PluginInfo
-	public class WEB_IONode : IPluginEvaluate, IDisposable
+	public class IO : IPluginEvaluate, IDisposable
 	{
 		#pragma warning disable 649
 		#region fields & pins
@@ -423,6 +423,19 @@ namespace VVVV.Nodes
 				disposed = true;
 			}
 		}
+
+        // Use C# destructor syntax for finalization code.
+        // This destructor will run only if the Dispose method
+        // does not get called.
+        // It gives your base class the opportunity to finalize.
+        // Do not provide destructors in types derived from this class.
+        ~IO()
+        {
+                // Do not re-create Dispose clean-up code here.
+                // Calling Dispose(false) is optimal in terms of
+                // readability and maintainability.
+                Dispose(false);
+        }
 		
 		
 	}
