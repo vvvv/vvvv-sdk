@@ -181,7 +181,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="12">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="0" visible="1">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Inputs">
    </PIN>
@@ -213,6 +213,12 @@
    </BOUNDS>
    <BOUNDS type="Window" left="0" top="0" width="6000" height="4500">
    </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Actual Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="111" srcpinname="Y Output Value" dstnodeid="177" dstpinname="Get Pin States">
    </LINK>
@@ -224,12 +230,14 @@
    </LINK>
    <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="177" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="177" srcpinname="Inputs" dstnodeid="158" dstpinname="Y Input Value">
-   </LINK>
    <LINK srcnodeid="177" srcpinname="Status" dstnodeid="34" dstpinname="Input String">
    </LINK>
-   <LINK srcnodeid="177" srcpinname="Output" dstnodeid="173" dstpinname="Y Input Value">
-   </LINK>
    <LINK srcnodeid="37" srcpinname="Y Output Value" dstnodeid="177" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="177" dstpinname="Output">
+   </LINK>
+   <LINK srcnodeid="177" srcpinname="Actual Output" dstnodeid="173" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="177" srcpinname="Input" dstnodeid="158" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
