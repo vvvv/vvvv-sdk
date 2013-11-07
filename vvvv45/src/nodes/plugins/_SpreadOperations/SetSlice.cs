@@ -64,4 +64,13 @@ namespace VVVV.Nodes
 	            Author = "woei")]
 	#endregion PluginInfo
 	public class SetSliceEnum : SetSlice<EnumEntry> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "SetSlice",
+	            Category = "Raw",
+	            Help = "Replace individual slices of the spread with the given input",
+	            Tags = "",
+	            Author = "woei")]
+	#endregion PluginInfo
+	public class SetSliceEnum : SetSlice<System.IO.Stream> {}
 }

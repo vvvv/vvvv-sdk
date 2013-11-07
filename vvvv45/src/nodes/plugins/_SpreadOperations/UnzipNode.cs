@@ -152,4 +152,16 @@ namespace VVVV.Nodes
     {
 
     }
+    
+    [PluginInfo(Name = "Unzip", Category = "Raw", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
+	public class EnumUnzipNode : UnzipNode<System.IO.Stream>
+	{
+		
+	}
+
+    [PluginInfo(Name = "Unzip", Category = "Raw", Version = "Bin", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
+    public class EnumBinSizeUnzipNode : UnzipNode<IInStream<System.IO.Stream>>
+    {
+
+    }
 }
