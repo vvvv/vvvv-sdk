@@ -26,10 +26,12 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "WEB-IO",
 	Category = "Devices",
 	//Version = " Wiesemann & Theis Web-IO Digital E/A",
-	Help = "alternate Node for the Wiesemann & Theis Web-IO Digital E/A",
-	Tags = "")]
+	Help = "alternative Node for the Wiesemann & Theis 12x Web-IO Digital E/A",
+	Tags = "IO, Devices",
+    Author = "sebl",
+    Credits = " Wiesemann & Theis (http://www.wut.de/e-5763w-13-inde-000.php)")]
 	#endregion PluginInfo
-	public class DevicesWEB_IONode : IPluginEvaluate, IDisposable
+	public class WEB_IONode : IPluginEvaluate, IDisposable
 	{
 		#pragma warning disable 649
 		#region fields & pins
@@ -85,25 +87,23 @@ namespace VVVV.Nodes
 			// Enabled changed
 			if (FEnable.IsChanged)
 			{
-				
 				if(FEnable[0] == true)
 				{
 					connect();
 				}
 				else
 				{
-					closeConnection();
+					closeConnection(false);
 					firstConnect = true;
 				}
 			}
 			
 			// IP or Port changed
-			if (FIp.IsChanged || FPort.IsChanged)
+			if ((FIp.IsChanged || FPort.IsChanged) && FEnable[0])
 			{
 				if (FConnected[0])
 				{
-					closeConnection();
-					connect();
+					closeConnection(true);
 				}
 				else
 				{
@@ -114,7 +114,6 @@ namespace VVVV.Nodes
 			// on first connect
 			if (firstConnect && FEnable[0] && FConnected[0])
 			{
-				
 				getPins();
 				FOutput.AssignFrom(lastOutputPinState);
 				FInputs.AssignFrom(lastInputPinState);
@@ -124,20 +123,19 @@ namespace VVVV.Nodes
 			// getpinState manually
 			if (FGetState[0] && FEnable[0] && FConnected[0])
 			{
-				
 				getPins();
 				FOutput.AssignFrom(lastOutputPinState);
 				FInputs.AssignFrom(lastInputPinState);
 			}
 			
+            // set Output Pins
 			if(FPinsIn.IsChanged && FConnected[0])
 			{
 				for (int i = 0; i < 12; i++)
 				{
-					if(FConnected[0])
+					if (FConnected[0])
 					{
-						
-						if(FPinsIn[i] != lastOutputPinState[i])
+						if (FPinsIn[i] != lastOutputPinState[i])
 						{
 							if(FPinsIn[i])
 							{
@@ -151,11 +149,11 @@ namespace VVVV.Nodes
 					}
 					lastOutputPinState[i] = FPinsIn[i];
 				}
-				//FOutput.AssignFrom(lastOutputPinState);
 				getPins();
 			}
 		}
-		
+	
+
 		//--------------------------------------------------------------------------------------------
 		// METHODS
 		//--------------------------------------------------------------------------------------------
@@ -163,7 +161,6 @@ namespace VVVV.Nodes
 		
 		private void setPins(int outputPin, UInt16 state)
 		{
-			//this.FLogger.Log(LogType.Debug, "setting Pin " + outputPin + " to " + state);
 			int CurOutputNo = outputPin;
 			
 			structs.setBit cmd = new structs.setBit();
@@ -189,7 +186,6 @@ namespace VVVV.Nodes
 		
 		private void getPins()
 		{
-			//this.FLogger.Log(LogType.Debug, "get Pin states");
 			structs.RegisterRequest readCmd = new structs.RegisterRequest();
 			readCmd.Start_1 = 0;
 			readCmd.Start_2 = 0;
@@ -208,17 +204,16 @@ namespace VVVV.Nodes
 			{
 				try
 				{
-					IPEndPoint ClientEP = new IPEndPoint(IPAddress.Parse(FIp[0]), FPort[0]);
-                    
+                    //FLogger.Log(LogType.Debug, "connecting to " + FIp[0] + ":" + FPort[0]);
+					IPEndPoint ClientEP = new IPEndPoint(IPAddress.Parse(FIp[0]), FPort[0]);                    
                     TCP_Client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    TCP_Client.BeginConnect(ClientEP, new AsyncCallback(callback_connect), TCP_Client);
 
-					TCP_Client.BeginConnect(ClientEP, new AsyncCallback(callback_connect), TCP_Client);
-					
 				}
 				catch (Exception e)
 				{
-					FLogger.Log(LogType.Debug, "exception while connect: " + e);
-					closeConnection();
+					FLogger.Log(LogType.Debug, "exception in connect(): " + e);
+					closeConnection(true);
 				}
 			}
 			else
@@ -231,39 +226,48 @@ namespace VVVV.Nodes
 		
 		private void callback_connect(IAsyncResult ar)
 		{
-			//FLogger.Log(LogType.Debug, "connect callback: " + TCP_Client.ToString() );
 			try
 			{
-				
-				TCP_Client.EndConnect(ar);
-				
-				FStatus[0] = "connected";
-				FConnected[0] = true;
-								
+                bool complete = ar.IsCompleted;
+
+                if (complete)
+                {
+                    Socket socket = (Socket)ar.AsyncState;
+                    socket.EndConnect(ar);
+
+                    FStatus[0] = "connected";
+                    FConnected[0] = true;
+
+                }
+                else
+                {
+                    //didn't connect > retry
+                    FLogger.Log(LogType.Debug, "connection not established");
+                    closeConnection(true);
+                }
+
 			}
 			catch (Exception e)
 			{
-				FLogger.Log(LogType.Debug, "exception while connect: " + e);
-				closeConnection();
-                //connect();
-			}
-			
+                FLogger.Log(LogType.Debug, "exception in callback_connect(): " + e);
+                FStatus[0] = "connection error (refused)";
+				closeConnection(true);
+			}		
 		}
 		
 		
 		private void callback_receive(IAsyncResult ar)
 		{
-			//FLogger.Log(LogType.Debug, "receive callback...");
 			int receiveCount = 0;
 			
 			try
 			{
-				if(TCP_Client != null)
+                if (TCP_Client != null)
 				{
-					if (TCP_Client.Connected)
+                    if (TCP_Client.Connected)
 					{
-						receiveCount = TCP_Client.EndReceive(ar);
-						Array.Copy(receiveBuffer, this.lastReceive, 511);
+                        receiveCount = TCP_Client.EndReceive(ar);
+						Array.Copy(receiveBuffer, lastReceive, 511);
 						Array.Clear(receiveBuffer, 0, 512);
 						
 						evaluateResponse();
@@ -274,13 +278,6 @@ namespace VVVV.Nodes
 			{
 				FLogger.Log(LogType.Debug, "Error while receiving!" + e);
 			}
-			
-			if (receiveCount == 0)
-			{
-                // why should it close the connection, when nothing comes back?
-				//closeConnection();
-			}
-			
 		}
 		
 		
@@ -342,8 +339,10 @@ namespace VVVV.Nodes
 						lastInputPinState[port] = false;
 					}
 				}
+
 				FOutput.AssignFrom(lastOutputPinState);
 				FInputs.AssignFrom(lastInputPinState);
+
 			}
 			catch (Exception e)
 			{
@@ -353,42 +352,49 @@ namespace VVVV.Nodes
 		}
 		
 		
-		private void closeConnection()
+		private void closeConnection(bool reconnect)
 		{
 			try
 			{
-				if (TCP_Client != null)
+                if (TCP_Client != null)
 				{
-					//FLogger.Log(LogType.Debug, "closing connection to " + TCP_Client.RemoteEndPoint.ToString());
-					if (TCP_Client.Connected)
+                    if (TCP_Client.Connected)
 					{
-						TCP_Client.Shutdown(SocketShutdown.Both);
-						TCP_Client.Close();
-						TCP_Client = null;
+                        TCP_Client.Shutdown(SocketShutdown.Both);
+                        TCP_Client.Close();
+                        TCP_Client = null;
 					}
-					TCP_Client = null;
 				}
-				FStatus[0] = "connection closed";
+
 				FConnected[0] = false;
-				
+                FStatus[0] = "disconnected";
+
+                if (reconnect && FEnable[0])
+                {
+                    FLogger.Log(LogType.Debug, "reconnect in 3 seconds...");
+                    Thread.Sleep(3000);
+                    connect();
+                }
+
 			}
 			catch (Exception e)
 			{
 				FStatus[0] = "Error while disconnecting: " + e;
 			}
-			
 		}
+
 		
 		//--------------------------------------------------------------------------------------------
 		// DISPOSE
 		//--------------------------------------------------------------------------------------------
-		
-		
+			
 		public void Dispose()
 		{
+            FLogger.Log(LogType.Debug, "Dispose...");
+            GC.SuppressFinalize(this);
 			Dispose(true);
-			FLogger.Log(LogType.Debug, "GarbageCollector SuppressFinalize");
-			GC.SuppressFinalize(this);
+            GC.Collect();
+            FLogger.Log(LogType.Debug, "disposed");
 			
 		}
 		
@@ -401,26 +407,20 @@ namespace VVVV.Nodes
 				
 				if(disposing)
 				{
-					//this.FLogger.Log(LogType.Debug, "Disposing TCP Client");
-					
-					if (TCP_Client != null)
+
+                    if (TCP_Client != null)
 					{
-						
-						if (TCP_Client.Connected)
+
+                        if (TCP_Client.Connected)
 						{
-							//this.FLogger.Log(LogType.Debug, "shutdown TCP Client");
-							TCP_Client.Shutdown(SocketShutdown.Both);
-							TCP_Client.Close();
-							TCP_Client = null;
+                            TCP_Client.Shutdown(SocketShutdown.Both);
+                            TCP_Client.Close();
 						}
+                        TCP_Client = null;
 					}
-					
-					TCP_Client.Dispose();
 				}
-				
 				// Note disposing has been done.
 				disposed = true;
-				
 			}
 		}
 		
