@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\1_Arduino_DataAsStrings.v4p" systemname="1_Arduino_DataAsStrings" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\1_Arduino_DataAsStrings.v4p" bgcolor="15329769" locked="0">
-   <BOUNDS type="Window" left="9780" top="375" width="19020" height="16650">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\1_Arduino_DataAsStrings.v4p" systemname="1_Arduino_DataAsStrings" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\1_Arduino_DataAsStrings.v4p" bgcolor="15329769" locked="0">
+   <BOUNDS type="Window" left="6480" top="225" width="19020" height="16650">
    </BOUNDS>
    <NODE componentmode="InABox" id="76" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="825" top="195" type="Node" width="945">
@@ -17,11 +17,11 @@
    </PIN>
    </NODE>
    <NODE id="72" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" exposed="0">
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|This is how to exchange messages (encoded as strings) between an Arduino and vvvv. All values are represented as a sequence of ascii characters. So the value 254 will be sent as three characters: 2, 5 and 4. Every character uses one byte in ASCII format.&cr;&lf;&cr;&lf;It&apos;s not very efficient method, but the advantage here is that it&apos;s very easy to debug, because the values can be seen just as a text.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|This is how to exchange messages (encoded as strings) between an Arduino and vvvv. All values are represented as a sequence of ascii characters. So e.g. the value 254 will be sent as three characters: 2, 5 and 4. In ASCII encoding every character uses one byte.&cr;&lf;&cr;&lf;This is not a very efficient method, but the advantage here is that it&apos;s very easy to debug, because the values can be seen just as a text.|">
    </PIN>
    <BOUNDS type="Node" left="825" top="720" width="390" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="825" top="720" width="4800" height="1590">
+   <BOUNDS type="Box" left="825" top="720" width="4815" height="1710">
    </BOUNDS>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -409,9 +409,9 @@
    <NODE id="391" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS type="Node" height="270" left="825" top="7875" width="7425">
    </BOUNDS>
-   <BOUNDS type="Box" height="5175" left="825" top="7875" width="4965">
+   <BOUNDS type="Box" height="5355" left="825" top="7875" width="4965">
    </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|Define the values and convert them into strings.&cr;&lf;&cr;&lf;The last value of the message which is sent to Arduino is the smooth alternating value (see IOBox on the right). To limit how many messages are sent per second the Limiter (Animation) is used. In this example there will be 15 values per second.&cr;&lf;&cr;&lf;Concatenate strings together into one big string (putting some &apos;Intersperse character&apos; to separate them: &apos;Comma&apos; is used in this example).&cr;&lf;&cr;&lf;A newline character (ASCII code 10) is added to the end of the string. Arduino sketch is reading incoming string one character at time, untill the newline character arrives. After that the string is parsed.&cr;&lf;&cr;&lf;Convert this big string into byte sequence (using AsRaw (String)) before sending over RS232 (Devices).&cr;&lf;&cr;&lf;If the string changes, it will be sent to Arduino by banging the &apos;Do Send&apos; input pin.&cr;&lf;&cr;&lf;RS232 (Devices) sends the byte sequence. &apos;Baudrate&apos; is set to the same value as defined in the Arduino sketch and the &apos;Port name&apos; pin is where the Arduino board is connected.|">
+   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|Define the values and convert them into strings.&cr;&lf;&cr;&lf;The last value of the message which is sent to Arduino is the smooth alternating value (see IOBox on the right). To limit how many messages are sent per second the Limiter (Animation) is used. In this example there will be 15 values per second.&cr;&lf;&cr;&lf;Concatenate strings together into one big string (putting some &apos;Intersperse character&apos; to separate them: &apos;Comma&apos; is used in this example).&cr;&lf;&cr;&lf;A newline character (ASCII code 10) is added to the end of the string. The Arduino sketch is reading the incoming string one character at time, until the newline character arrives. After that the string is parsed.&cr;&lf;&cr;&lf;The string is converted into a byte sequence using ascii-encoding via AsRaw (String) before being sent over RS232 (Devices).&cr;&lf;&cr;&lf;If the string changes, it will be sent to Arduino by banging the &apos;Do Send&apos; input pin.&cr;&lf;&cr;&lf;RS232 (Devices) sends the byte sequence. &apos;Baudrate&apos; is set to the same value as defined in the Arduino sketch and the &apos;Port Name&apos; pin is where the Arduino board is connected.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -719,9 +719,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="427" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="11010" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="11250" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="11010" type="Box" width="405">
+   <BOUNDS height="390" left="240" top="11250" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -735,9 +735,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="428" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="11625" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="11865" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="11625" type="Box" width="405">
+   <BOUNDS height="390" left="240" top="11865" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -853,9 +853,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="447" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="12255" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="12495" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="12255" type="Box" width="405">
+   <BOUNDS height="390" left="240" top="12495" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -1305,7 +1305,7 @@
    <NODE id="512" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS type="Node" height="270" left="825" top="15390" width="7425">
    </BOUNDS>
-   <BOUNDS type="Box" height="3825" left="825" top="15390" width="5130">
+   <BOUNDS type="Box" height="3780" left="825" top="15390" width="5055">
    </BOUNDS>
    <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|RS232 (Devices) returns the arrived byte sequence which is then decoded as a string.&cr;&lf;&cr;&lf;Some parts of the string can arrive in different frames. Tokenizer (String) with its &apos;Queue Mode&apos; pin set to &apos;Enqueue&apos; buffers the input and returns the entire (completed) string only when if finds characters defined on its &apos;Separator&apos; pin. In this example a newline character (ASCII code 10) is used as the separator.&cr;&lf;&cr;&lf;The string passes through the S+H (String) only when it has changed AND its length is not zero.&cr;&lf;&cr;&lf;After cleaning the string from blank characters, it is separated into the slices at the separator defined on the &apos;Intersperse&apos; pin (a &apos;Comma&apos; in this example).&cr;&lf;&cr;&lf;These slices are converted into values and returned induvidually.|">
    </PIN>
@@ -1419,11 +1419,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="524" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7680" top="9855" width="285" height="240">
+   <BOUNDS type="Box" left="7680" top="9855" width="390" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="7680" top="9855" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="13">
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -1555,9 +1555,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="537" systemname="IOBox (String)">
    <BOUNDS type="Node" left="9480" top="16260" width="1065" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="9480" top="16260" width="645" height="465">
+   <BOUNDS type="Box" left="9480" top="16260" width="1200" height="510">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ &cr;&lf;Value|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ &cr;&lf;Value on Pin|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1613,9 +1613,9 @@
    <NODE componentmode="InABox" id="541" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="825" top="3675" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="1155" left="825" top="3675" type="Box" width="4185">
+   <BOUNDS height="1155" left="825" top="3675" type="Box" width="4260">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|To see the physical output plug the LED into the Arduino board between the pin (defined by the &apos;Pin number&apos; in this patch, this should be one of PWM pins of the board) and the GND (ground) pin. Short leg of the LED (it is &apos;-&apos;) goes to the GND.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|To see the physical output plug an LED into the Arduino board between the pin (defined by the &apos;Pin number&apos; in this patch, this should be one of the PWM pins of the board) and the GND (ground) pin. The short leg of the LED (it is &apos;-&apos;) goes to the GND.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1661,7 +1661,7 @@
    </BOUNDS>
    <BOUNDS type="Box" height="1305" left="825" top="13950" width="5055">
    </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|The Arduino board sends some data back to vvvv in form of a string &quot;a,b,c\r\n&apos;, where:&cr;&lf;&cr;&lf;a - Timestamp (how long arduino is running)&cr;&lf;b - Pin number being is controlled from vvvv&cr;&lf;c - Current value set to the pin|">
+   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|The Arduino board sends some data back to vvvv in form of a string &quot;a,b,c\r\n&apos;, where:&cr;&lf;&cr;&lf;a - Timestamp (how long arduino is running)&cr;&lf;b - Pin number as controlled from vvvv&cr;&lf;c - Current value set to the pin|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1691,9 +1691,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="547" systemname="IOBox (String)">
    <BOUNDS type="Node" left="855" top="5880" width="9150" height="1530">
    </BOUNDS>
-   <BOUNDS type="Box" left="855" top="5880" width="4935" height="1845">
+   <BOUNDS type="Box" left="855" top="5880" width="4890" height="1980">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|In this example a string &quot;s,LED_ON,a,b&quot; will be sent to Arduino:&cr;&lf;s - header, defines the start of the message,&cr;&lf;&quot;LED_ON&quot; / &quot;LED_OFF&quot; - command, defines the state of the LED,&cr;&lf;a - pin number where LED is attached (int)&cr;&lf;b - brightness of the LED (float)&cr;&lf;&cr;&lf;Arduino receives the string, splits it into different parts and converts the ascii characters into values of corresponding format.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|In this example a string &quot;s,LED_ON,a,b&quot; will be sent to the Arduino:&cr;&lf;s - header, defines the start of the message,&cr;&lf;&quot;LED_ON&quot; / &quot;LED_OFF&quot; - command, defines the state of the LED,&cr;&lf;a - pin number where the LED is attached (int)&cr;&lf;b - brightness of the LED (float)&cr;&lf;&cr;&lf;Arduino receives the string, splits it into different parts and converts the ascii characters/bytes into values of the right format.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

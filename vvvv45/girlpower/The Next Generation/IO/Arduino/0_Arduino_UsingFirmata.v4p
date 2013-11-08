@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\0_Arduino_UsingFirmata.v4p" systemname="0_Arduino_UsingFirmata" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\0_Arduino_UsingFirmata.v4p" bgcolor="15329769" locked="0">
-   <BOUNDS type="Window" left="270" top="210" width="16320" height="12165">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\0_Arduino_UsingFirmata.v4p" systemname="0_Arduino_UsingFirmata" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Arduino\0_Arduino_UsingFirmata.v4p" bgcolor="15329769" locked="0">
+   <BOUNDS type="Window" left="270" top="210" width="15735" height="12030">
    </BOUNDS>
    <NODE componentmode="InABox" id="76" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -251,9 +251,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="258" systemname="IOBox (String)">
    <BOUNDS type="Node" left="11760" top="5775" width="3555" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="11760" top="5775" width="1470" height="660">
+   <BOUNDS type="Box" left="11760" top="5775" width="1770" height="690">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Select the COM port where Arduino is connected.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Select the COM port where the Arduino is connected.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -649,7 +649,7 @@
    </BOUNDS>
    <BOUNDS height="3840" left="675" top="4950" type="Box" width="4365">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This spread contains values for every pin of the Arduino board. These values are what the Arduino board writes to its pins.&cr;&lf;&cr;&lf;The Arduino board has to be loaded with the StandardFirmata, which you find in the Arduino IDE under: File &gt; Examples &gt; Firmata &gt; StandardFirmata. After having loaded StandardFirmata into the Arduino you can connect to it with a right click on the &apos;Enable&apos; pin.&cr;&lf;&cr;&lf;In order to get the states of the pins from the Arduino board (i.e. read the inputs), open the Inspektor for the Arduino node and enable &apos;Report Analog / Digital Pins&apos;. States of the pins are returned as two spreads on &apos;Analog In&apos; and &apos;Digital In&apos; output pins of the node.&cr;&lf;&cr;&lf;Some sensors are talking over the I2C protocol. The I2CDecode (Devices 2.x) is used to decode such data.&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This spread contains a value for each pin of the Arduino board. These values are what the Arduino board writes to its pins.&cr;&lf;&cr;&lf;The Arduino board has to be loaded with the StandardFirmata, which you find in the Arduino IDE under: File &gt; Examples &gt; Firmata &gt; StandardFirmata. After having loaded StandardFirmata into the Arduino you can connect to it with a right click on the &apos;Enable&apos; pin.&cr;&lf;&cr;&lf;In order to get the states of the pins from the Arduino board (i.e. read the inputs), open the Inspektor for the Arduino node and enable &apos;Report Analog / Digital Pins&apos;. States of the pins are then returned as two spreads on &apos;Analog In&apos; and &apos;Digital In&apos; output pins of the node.&cr;&lf;&cr;&lf;Some sensors are talking over the I2C protocol. The I2CDecode (Devices 2.x) is used to decode such data.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -697,7 +697,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="11595" top="735" width="3510" height="720">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Digital pins of the Arduino board can work as an input and output (i.e. they can read and output only LOW or HIGH voltage levels).|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Digital pins of the Arduino board can work as input or output (they can read and write only LOW or HIGH voltage levels).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -725,7 +725,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="11595" top="3930" width="3165" height="495">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|SERVO, SHIFT and I2C settings are defined by Firmata protocol:|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|SERVO, SHIFT and I2C pin modes are specific to the Firmata protocol:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -737,9 +737,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="352" systemname="IOBox (String)">
    <BOUNDS type="Node" left="11595" top="3180" width="3000" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="11595" top="3180" width="3000" height="270">
+   <BOUNDS type="Box" left="11595" top="3180" width="3150" height="285">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Some of the pins can output PWM signal.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Some of the pins can output a PWM signal.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -753,7 +753,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="11595" top="1920" width="3345" height="720">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Analog input pins of the board are able to read analog voltage levels (everything between LOW and HIGH with the 10 bit resolution).|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Analog input pins of the board are able to read analog voltage levels (everything between LOW and HIGH with a resolution of 10 bit).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -779,7 +779,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="http://arduino.cc/en/Tutorial/DigitalPins">
+   <PIN pinname="Input String" slicecount="1" values="http://arduino.cc/en/Tutorial/AnalogInputPins">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="356">
@@ -789,7 +789,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="http://arduino.cc/en/Tutorial/AnalogInputPins">
+   <PIN pinname="Input String" slicecount="1" values="http://arduino.cc/en/Tutorial/DigitalPins">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="357">
