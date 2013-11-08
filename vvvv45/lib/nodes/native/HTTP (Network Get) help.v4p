@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\HTTP (Network Get) help.v4p">
-   <BOUNDS height="14430" left="1500" top="165" type="Window" width="15315">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\native\HTTP (Network Get) help.v4p">
+   <BOUNDS height="14430" left="5490" top="1470" type="Window" width="15315">
    </BOUNDS>
-   <NODE id="20" nodename="HTTP (NETWORK GET)">
+   <NODE id="20" nodename="HTTP (NETWORK GET)" systemname="HTTP (Network Get String)">
    <BOUNDS height="270" left="2325" top="5055" type="Node" width="600">
    </BOUNDS>
    <PIN pinname="URL" visible="1">
@@ -31,6 +31,8 @@
    </PIN>
    <PIN pinname="Proxy Port" visible="1">
    </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
    <BOUNDS height="255" left="225" top="615" type="Node" width="570">
@@ -39,7 +41,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="300" top="1860" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|reads a data from the web|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|reads a data from the web|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -53,7 +55,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="300" top="1860" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|HTTP - Network Get|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|HTTP - Network Get|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -71,9 +73,9 @@
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Input String" slicecount="2" values="http://vvvv.org,http://www.meso.net" encoded="0">
+   <PIN pinname="Input String" slicecount="2" encoded="0" values="http://vvvv.org,http://www.meso.net">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="URLs" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="URLs">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
@@ -95,7 +97,7 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Refresh" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Refresh">
    </PIN>
    <PIN pinname="X Output Value" visible="1">
    </PIN>
@@ -121,7 +123,7 @@
    </PIN>
    <PIN pinname="Input String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|HTTP Status Codes|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|HTTP Status Codes|">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
@@ -141,7 +143,7 @@
    </PIN>
    <PIN pinname="Input String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|HTTP Protocol Header Send by Server|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|HTTP Protocol Header Send by Server|">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
@@ -165,7 +167,7 @@
    </PIN>
    <PIN pinname="Input String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|The Websites|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|The Websites|">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
@@ -187,7 +189,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="OnFail" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="OnFail">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
@@ -209,7 +211,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="OnSuccess" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="OnSuccess">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
@@ -231,7 +233,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Parameter Name|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Parameter Name|">
    </PIN>
    </NODE>
    <LINK dstnodeid="20" dstpinname="Name" srcnodeid="10" srcpinname="Output String">
@@ -245,7 +247,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Parameter Value|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Parameter Value|">
    </PIN>
    </NODE>
    <LINK dstnodeid="20" dstpinname="Value" linkstyle="VHV" srcnodeid="9" srcpinname="Output String">
@@ -263,7 +265,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="User-Name" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="User-Name">
    </PIN>
    </NODE>
    <LINK dstnodeid="20" dstpinname="Username" srcnodeid="8" srcpinname="Output String">
@@ -277,7 +279,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Password" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Password">
    </PIN>
    </NODE>
    <LINK dstnodeid="20" dstpinname="Password" linkstyle="VHV" srcnodeid="7" srcpinname="Output String">
@@ -295,7 +297,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Proxy-Server" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Proxy-Server">
    </PIN>
    </NODE>
    <LINK dstnodeid="20" dstpinname="Proxy" srcnodeid="6" srcpinname="Output String">
@@ -309,7 +311,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Proxy-Port" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Proxy-Port">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="8080">
    </PIN>
@@ -323,7 +325,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|The HTTP (Network Get) Node requests data using the HTTP GET-method.&cr;&lf;The URL-Pin tells the node where to get the data, this pin is spreadable, this means that it is possible to request several ressources from different locations at the same time. If you change the Url in one slice, the ressource the new Url points to, is instantly loaded.&cr;&lf;&cr;&lf;The pins Name and Value form name-value-pairs that will be attached to the requested URLs as (optional) parameters. If you assign values to these pins the resulting URL will look like this:&cr;&lf;http://www.meso.net?password=123&cr;&lf;&cr;&lf;Of course such a Url could also be entered directly. Both pins are spreadable but all name-value-pairs are send to every Url you request.&cr;&lf;&cr;&lf;The Username and Password pins are required if you want to access htaccess-protected websites. Those sites need authentification and you need to provide the correct credentials via these pins.&cr;&lf;&cr;&lf;The pins Proxy and ProxyPort provide the possibility to send your request via a proxy server. A list of open proxyserver can be found here : &tab;http://www.stayinvisible.com/&cr;&lf;&cr;&lf;The Refresh Pin is used to reload a ressource. This pin is also spreadable so it is possible to only refresh certain sources.&cr;&lf;&cr;&lf;|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|The HTTP (Network Get) Node requests data using the HTTP GET-method.&cr;&lf;The URL-Pin tells the node where to get the data, this pin is spreadable, this means that it is possible to request several ressources from different locations at the same time. If you change the Url in one slice, the ressource the new Url points to, is instantly loaded.&cr;&lf;&cr;&lf;The pins Name and Value form name-value-pairs that will be attached to the requested URLs as (optional) parameters. If you assign values to these pins the resulting URL will look like this:&cr;&lf;http://www.meso.net?password=123&cr;&lf;&cr;&lf;Of course such a Url could also be entered directly. Both pins are spreadable but all name-value-pairs are send to every Url you request.&cr;&lf;&cr;&lf;The Username and Password pins are required if you want to access htaccess-protected websites. Those sites need authentification and you need to provide the correct credentials via these pins.&cr;&lf;&cr;&lf;The pins Proxy and ProxyPort provide the possibility to send your request via a proxy server. A list of open proxyserver can be found here : &tab;http://www.stayinvisible.com/&cr;&lf;&cr;&lf;The Refresh Pin is used to reload a ressource. This pin is also spreadable so it is possible to only refresh certain sources.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -337,7 +339,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Continue Reading|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Continue Reading|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -353,11 +355,55 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|The Status pin spits out the HTTP-status codes returned by the webservers  or other error messages. For an overall list of possible HTTP-Status-Codes please refer to this site:&tab;http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.&cr;&lf;&cr;&lf;The Header pin contains the HTTP-Headers returned by the webs-ervers. For more information on HTTP-Headers or HTTP in general&cr;&lf;have a look at this website:&tab; http://www.w3.org/Protocols/rfc2616/rfc2616.html&cr;&lf;&cr;&lf;OnFail and OnSuccess tell you wheter your request was successful or not. If so the OnSucces is set to 1 otherwise the Onfail pin.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|The Status pin spits out the HTTP-status codes returned by the webservers  or other error messages. For an overall list of possible HTTP-Status-Codes please refer to this site:&tab;http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.&cr;&lf;&cr;&lf;The Header pin contains the HTTP-Headers returned by the webs-ervers. For more information on HTTP-Headers or HTTP in general&cr;&lf;have a look at this website:&tab; http://www.w3.org/Protocols/rfc2616/rfc2616.html&cr;&lf;&cr;&lf;OnFail and OnSuccess tell you wheter your request was successful or not. If so the OnSucces is set to 1 otherwise the Onfail pin.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="480" top="14430" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="480" top="14430" width="1350" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Examples:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="12">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="24">
+   <BOUNDS type="Node" left="480" top="15030" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="480" top="15030" width="3330" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\The Next Generation\IO\Web\04_VVVV User Map Example\_root.v4p|">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="23">
+   <BOUNDS type="Node" left="480" top="15420" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="480" top="15420" width="3330" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\The Next Generation\IO\Web\03_ReadingRSS_Example.v4p|">
+   </PIN>
+   </NODE>
+   <NODE id="22" systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox">
+   <BOUNDS type="Node" left="480" top="15780" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="480" top="15780" width="3330" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\The Next Generation\IO\Web\05_Wikipedia Example\_root.v4p|">
    </PIN>
    </NODE>
    </PATCH>
