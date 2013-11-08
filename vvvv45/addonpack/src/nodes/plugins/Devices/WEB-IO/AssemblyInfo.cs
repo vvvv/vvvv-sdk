@@ -9,11 +9,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DemoPlugin")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("IO")]
+[assembly: AssemblyDescription("W&T WEB-IO")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DemoPlugin")]
+[assembly: AssemblyProduct("IO")]
 [assembly: AssemblyCopyright("Copyright 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

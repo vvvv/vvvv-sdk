@@ -9,9 +9,10 @@ using VVVV.Utils.VMath;
 
 using VVVV.Core.Logging;
 
-
 using System.Net;
 using System.Net.Sockets;
+
+using VVVV.Nodes.structs;
 
 //using System.Text;
 using System.Text.RegularExpressions;
@@ -67,9 +68,7 @@ namespace VVVV.Nodes
 		
 		
 		//-------------------------------------
-        //[ImportingConstructor]
-        //public IO()
-        //{
+
         private Socket TCP_Client;
 
         private byte[] receiveBuffer = new byte[512];
@@ -77,16 +76,15 @@ namespace VVVV.Nodes
 
         private bool[] lastOutputPinState = new bool[12] { false, false, false, false, false, false, false, false, false, false, false, false };
         private bool[] lastInputPinState = new bool[12] { false, false, false, false, false, false, false, false, false, false, false, false };
-        //}
 
         private bool disposed = false;
         private bool firstConnect = true;
 
 		#endregion fields & pins
 		#pragma warning restore
-		
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
+
+        #region Evaluate
+        public void Evaluate(int SpreadMax)
 		{
 
             FOutput.SliceCount = 12;
@@ -101,6 +99,7 @@ namespace VVVV.Nodes
 				{
                     if (FConnected[0])
                         closeConnection(true);
+
 					connect();
 				}
 				else
@@ -151,9 +150,10 @@ namespace VVVV.Nodes
 				getPins();
 			}
 		}
-	
+        #endregion Evaluate
 
-		//--------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------
 		// METHODS
 		//--------------------------------------------------------------------------------------------
 		
