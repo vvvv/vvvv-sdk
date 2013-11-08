@@ -86,4 +86,13 @@ namespace VVVV.Nodes
 	            Author = "woei")]
 	#endregion PluginInfo
 	public class DeleteSliceEnum : DeleteSlice<EnumEntry> {}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "DeleteSlice",
+	            Category = "Raw",
+	            Help = "Delete the slice at the given index.",
+	            Tags = "remove, filter",
+	            Author = "woei")]
+	#endregion PluginInfo
+	public class DeleteSliceRaw : DeleteSlice<System.IO.Stream> {}
 }

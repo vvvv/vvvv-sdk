@@ -1,47 +1,75 @@
+/*
+This is an example on how to communicate to vvvv 
+using the data encoded as strings.
+For more about Arduino and vvvv check:
+http://vvvv.org/documentation/arduino
+
+To see the physical output plug the LED into the Arduino board 
+between the pin (defined by the 'Pin number' in vvvv patch, 
+this should be one of PWM pins of the board) and 
+the GND (ground) pin. Short leg of the LED (it is '-') 
+goes to the GND.
+*/
+
+
 const int bufferSize = 20; // how big is the buffer
  
-char buffer[bufferSize];  // array to store an incoming bytes
-char command;             // one char to store a command
-char pinNumber[3];        // array to store a pin number 
-char floatValue[10];      // array to store a value
-int byteCount;            // counts how many bytes arrives
+char buffer[bufferSize];  // Serial buffer
+char commandBuffer[10];   // array to store a command
+char pinBuffer[3];        // array to store a pin number 
+char valueBuffer[10];     // array to store a value
+int ByteCount;            // how many bytes arrived
 
-int brightness;
+boolean ledON;            // state of the LED
+int pinNumber;            // pinNumber
+int value;                // brightness value
  
 void setup() 
 {
-    Serial.begin(57600);
-    pinMode (13, OUTPUT);
+    //start the serial communication at the speed of 9600 baud
+    Serial.begin(9600);    
 }
 
  
 void loop() 
 {
-    //Read the data and parse it
+    //read the data and parse it
     SerialParser();
-   
-    //If something arrived, print the convert the data
-    //to the suitable formats and send some data back
-    if (byteCount  > 0) 
+    
+    //if something arrived 
+    if (ByteCount  > 0) 
     {
       
-      brightness=LOW;   
+      //send some data back to vvvv
+      //the values are encoded as ASCII characters
+      //the last print command sends '/r/n/' at the end
+      //this defines the end of the message
+      Serial.print(millis());
+      Serial.print(",");
+      Serial.print(pinNumber);
+      Serial.print(",");
+      Serial.println(value);
       
-      brightness=command ? HIGH : LOW;
-       
-      digitalWrite(13, brightness);
-
-      //sendBinary(atoi(pinNumber));
-      //Serial.write(command);
-      //Serial.write(brightness);
-      
+      //set the state of the pin according to the string received from vvvv 
+      if (ledON)
+      {
+        //write PWM signal value to the pin
+        analogWrite (pinNumber, value);
+      }
+      else
+      {
+       //write digital value to the pin
+       //setting 0V in this example;
+       digitalWrite (pinNumber,LOW);
+      }
     }
+    
 }
 
 void SerialParser() 
 {
 
-  byteCount = -1;
+  ByteCount = -1;
   
   // if something is arrived over serial port
   if (Serial.available()>0)
@@ -54,42 +82,47 @@ void SerialParser()
     if (ch=='s')
     {
       
-      //read bytes of the message until '\n'
-       byteCount =  Serial.readBytesUntil('\n',buffer,bufferSize);
-     
-       //if the number of arrived bytes is exactly the same,
-       //as vvvv sends in a message
-       if (byteCount  > 0) 
+      //read all bytes of the message until the newline character ('\n')
+       ByteCount =  Serial.readBytesUntil('\n',buffer,bufferSize); 
+       
+       //if the number of arrived bytes > 0
+       if (ByteCount  > 0) 
        {
-         // copy 1 byte from  buffer into 'command'
-         strncpy (&command, buffer, 1);   
-      
-         Serial.write ((int)command);   
+            // copy the string until the first ','
+            strcpy(commandBuffer, strtok(buffer,","));
+            
+            // copy the same string until the next ','
+            strcpy(pinBuffer, strtok(NULL,","));
+     
+            // copy the same string until the next ',' 
+            strcpy(valueBuffer, strtok(NULL,","));
+            
+            //check the documentation about strtok() at:
+            //http://www.gnu.org/software/libc/manual/html_node/Finding-Tokens-in-a-String.html
          
-         // copy 2 bytes (offsetted by 1 byte) from buffer into 'pinNumber'
-         strncpy (pinNumber, buffer+1, 2);   
          
-         //pinNumber[2]='\0';                  // manually add 'end of the string' to the 'pinNumber' 
-         
-         // copy 4 bytes (offsetted by 3 bytes) from buffer into 'value'
-         strncpy (floatValue, buffer+3, 4);       
-         
-         //check the documentation about strncpy() at:
-         //http://pubs.opengroup.org/onlinepubs/009695399/functions/strncpy.html  
+            //check the arrived command and set the LED state
+            //this is how to compare two char arrays (simple strings)
+            //if they are equal, strcmp returns 0
+            if (strcmp(commandBuffer, "LED_ON")==0)
+            {
+              ledON=true;
+            }
+            else
+            {
+              ledON=false;
+            }
+            
+            // convert the string into an 'int' value
+            pinNumber=atoi (pinBuffer);   
+   
+            // convert the sting into a 'float' value and bring it to (0,255) range;
+            value=atof (valueBuffer) * 255;  
        }
        
        // clear contents of buffer
        memset(buffer, 0, sizeof(buffer));   
-       //Serial.flush();
+       Serial.flush();
     }
   }
-}
-
-void sendBinary(int value)
-{
-  //integer value will be splitted into two bytes before sending.
-  //it's important for the values bigger than 255 (one byte).
-  
-  Serial.write(lowByte(value));  // send the low byte
-  Serial.write(highByte(value)); // send the high byte
 }
