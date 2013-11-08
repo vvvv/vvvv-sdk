@@ -325,6 +325,20 @@ namespace VVVV.Utils.VMath
 		 	int maxTemp = Math.Max(min, max);
 		 	return Math.Min(Math.Max(x, minTemp), maxTemp);
 		}
+
+        /// <summary>
+        /// Clamp function, clamps a long value into the range [min..max]
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static long Clamp(long x, long min, long max)
+        {
+            var minTemp = Math.Min(min, max);
+            var maxTemp = Math.Max(min, max);
+            return Math.Min(Math.Max(x, minTemp), maxTemp);
+        }
 		
 		/// <summary>
 		/// Clamp function, clamps a 2d-vector into the range [min..max]

@@ -1,0 +1,41 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\VVVV\IsActive (VVVV).v4p" systemname="IsActive (VVVV)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\VVVV\IsActive (VVVV).v4p">
+   <NODE systemname="OnActivate (VVVV)" nodename="OnActivate (VVVV)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="1020" top="990" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="OnDeactivate (VVVV)" nodename="OnDeactivate (VVVV)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="2385" top="1005" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="FlipFlop (Animation)" nodename="FlipFlop (Animation)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="1560" top="1680" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Bang" dstnodeid="2" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Bang" dstnodeid="2" dstpinname="Reset">
+   </LINK>
+   <NODE id="3" systemname="IOBox (Value Advanced)" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <BOUNDS type="Box" left="1560" top="2280" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1560" top="2280" width="750" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   <BOUNDS type="Window" left="12110" top="8230" width="4465" height="3790">
+   </BOUNDS>
+   <INFO author="vvvv group" description="Retuns 1 if vvvv has the focus, else 0" tags="focus, background, foreground">
+   </INFO>
+   </PATCH>

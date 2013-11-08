@@ -44,7 +44,6 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
         private readonly Dictionary<string, Frame> FPreloadedFrames = new Dictionary<string, Frame>();
         private readonly IDXDeviceService FDeviceService;
-        private bool FClearedMemoryPool;
         
         public ImagePlayer(
             int threadsIO,
@@ -52,14 +51,15 @@ namespace VVVV.Nodes.ImagePlayer
             ILogger logger,
             IOTaskScheduler ioTaskScheduler,
             MemoryPool memoryPool,
+            TexturePool texturePool,
             IDXDeviceService deviceService
            )
         {
             FThreadsIO = threadsIO;
             FThreadsTexture = threadsTexture;
             FLogger = logger;
-            
-            FTexturePool = new TexturePool();
+
+            FTexturePool = texturePool;
             FMemoryPool = memoryPool;
             FDeviceService = deviceService;
             
@@ -137,10 +137,6 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 // TODO: Check if these are only exceptions of type OperationCancledException
             }
-            finally
-            {
-                FTexturePool.Dispose();
-            }
         }
         
         public ISpread<string> Directories
@@ -185,7 +181,6 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 Flush();
                 ClearPreloadedFrames();
-                FTexturePool.Clear();
             }
         }
         
@@ -339,14 +334,6 @@ namespace VVVV.Nodes.ImagePlayer
                 }
             }
 
-            // Free resources if there're no frames to preload and we didn't free them yet
-            if (preloadFiles.Length == 0 && !FClearedMemoryPool)
-            {
-                FMemoryPool.Clear();
-                // Remember that we cleared the pool 
-                FClearedMemoryPool = true;
-            }
-
             // Schedule new frames
             foreach (var file in preloadFiles)
             {
@@ -355,8 +342,6 @@ namespace VVVV.Nodes.ImagePlayer
                     var frameInfo = CreateFrameInfo(file, bufferSize);
                     Enqueue(frameInfo);
                 }
-                // We're back using resources from the pool -> not clean anymore
-                FClearedMemoryPool = false;
             }
 
             // Write the "is loaded" state

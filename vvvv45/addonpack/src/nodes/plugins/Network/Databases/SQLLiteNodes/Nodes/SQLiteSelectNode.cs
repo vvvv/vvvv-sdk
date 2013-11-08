@@ -22,7 +22,7 @@ namespace VVVV.Nodes
                     FPluginInfo.Version = "Network";
                     FPluginInfo.Author = "vux";
                     FPluginInfo.Help = "Select records on a SQLite database";
-                    FPluginInfo.Tags = "";
+                    FPluginInfo.Tags = "database";
                     FPluginInfo.Credits = "";
                     FPluginInfo.Bugs = "";
                     FPluginInfo.Warnings = "";

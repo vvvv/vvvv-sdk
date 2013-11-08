@@ -1,23 +1,7 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\Devices\MidiBendOut (Devices).v4p" systemname="MidiBendOut (Devices)" filename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\Devices\MidiBendOut (Devices).v4p">
-   <BOUNDS type="Window" left="13815" top="360" width="9000" height="6030">
+   <BOUNDS type="Window" left="17895" top="4080" width="9000" height="6990">
    </BOUNDS>
-   <NODE systemname="MidiShortOutput (Devices)" filename="" nodename="MidiShortOutput (Devices)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="1635" top="4380" width="4020" height="270">
-   </BOUNDS>
-   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Do Send" visible="1">
-   </PIN>
-   <PIN pinname="Data1" visible="1" slicecount="1" values="29">
-   </PIN>
-   <PIN pinname="Data2" visible="1" slicecount="1" values="69">
-   </PIN>
-   <PIN pinname="Message" visible="1">
-   </PIN>
-   <PIN pinname="Midi Output Port" visible="1" slicecount="1" values="|LoopBe Internal MIDI|">
-   </PIN>
-   </NODE>
    <NODE systemname="Change (Animation)" nodename="Change (Animation)" componentmode="Hidden" id="8">
    <BOUNDS type="Node" left="1635" top="3840" width="100" height="100">
    </BOUNDS>
@@ -88,8 +72,6 @@
    </LINK>
    <LINK srcnodeid="3" srcpinname="Whole Part" dstnodeid="2" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="9" dstpinname="Message">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3390" top="630" width="480" height="240">
    </BOUNDS>
@@ -158,15 +140,9 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Midi Output Port|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="26" srcpinname="Output Enum" dstnodeid="9" dstpinname="Midi Output Port">
-   </LINK>
    <LINK srcnodeid="10" srcpinname="Output" dstnodeid="8" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="OnChange" dstnodeid="9" dstpinname="Do Send">
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Enabled">
    </LINK>
    <NODE id="23" systemname="Frac (Value)" nodename="Frac (Value)" componentmode="Hidden">
    <PIN pinname="Whole Part" visible="1">
@@ -204,10 +180,6 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="35" srcpinname="Output 2" dstnodeid="9" dstpinname="Data2">
-   </LINK>
-   <LINK srcnodeid="35" srcpinname="Output 1" dstnodeid="9" dstpinname="Data1">
-   </LINK>
    <LINK srcnodeid="10" srcpinname="Output" dstnodeid="23" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="43" systemname="IOBox (Value Advanced)">
@@ -227,5 +199,33 @@
    <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Destination Maximum">
    </LINK>
    <LINK srcnodeid="23" srcpinname="Whole Part" dstnodeid="35" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="MidiShortOut (Devices)" filename="" nodename="MidiShortOut (Devices)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="1635" top="4380" width="4020" height="270">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   <PIN pinname="Data1" visible="1">
+   </PIN>
+   <PIN pinname="Data2" visible="1">
+   </PIN>
+   <PIN pinname="Message" visible="1">
+   </PIN>
+   <PIN pinname="Midi Output Port" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="9" dstpinname="Message">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Output Enum" dstnodeid="9" dstpinname="Midi Output Port">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="OnChange" dstnodeid="9" dstpinname="Do Send">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Output 2" dstnodeid="9" dstpinname="Data2">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Output 1" dstnodeid="9" dstpinname="Data1">
    </LINK>
    </PATCH>
