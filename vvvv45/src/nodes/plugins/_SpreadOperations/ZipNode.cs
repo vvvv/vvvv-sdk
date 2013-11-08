@@ -179,4 +179,16 @@ namespace VVVV.Nodes
     {
 
     }
+    
+    [PluginInfo(Name = "Zip", Category = "Raw", Help = ZipInfo.HELP, Tags = ZipInfo.TAGS)]
+	public class RawZipNode : ZipNode<System.IO.Stream>
+	{
+		
+	}
+
+    [PluginInfo(Name = "Zip", Category = "Raw", Version = "Bin", Help = ZipInfo.HELP, Tags = ZipInfo.TAGS)]
+    public class RawBinSizeZipNode : ZipNode<IInStream<System.IO.Stream>>
+    {
+
+    }
 }
