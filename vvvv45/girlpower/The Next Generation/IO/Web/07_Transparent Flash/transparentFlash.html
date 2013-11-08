@@ -1,46 +1,25 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de">
 	<head>
-		<title>test_4</title>
+		<title>vvvv vs. flash</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<style type="text/css" media="screen">
-			html, body { height:100%; background: rgba(255,255,255,0); }
+			html, body { 
+				
+				height:100%; 
+				
+				/*This is the first important thing:*/
+				/*Alpha channel of the Background color*/
+				/*should be transparent*/
+				
+				background: rgba(255,255,255,0); 
+				
+				}
+			
 			body { margin:0; padding:0; overflow:hidden; }
+			
 			#flashContent { width:100%; height:100%; }
 		</style>
-		<script>
-			function getFlashMovieObject(movieName)	{
-				return window.document[movieName];
-			}
-
-			function stop() {
-				var flashMovie=getFlashMovieObject("clip");
-				flashMovie.StopPlay();
-			}
-
-			function play() {
-				var flashMovie=getFlashMovieObject("clip");
-				flashMovie.Play();
-			}
-
-			function rewind()	{
-				var flashMovie=getFlashMovieObject("clip");
-				flashMovie.Rewind();
-			}
-
-			function nextFrame() {
-				var flashMovie=getFlashMovieObject("clip");
-				var currentFrame=flashMovie.TGetProperty("/", 4);
-				var nextFrame=parseInt(currentFrame);
-				if (nextFrame>=10) nextFrame=0;
-				flashMovie.GotoFrame(nextFrame);		
-			}
-
-			function gotoFrame(frame) {
-				var flashMovie=getFlashMovieObject("clip");
-				flashMovie.GotoFrame(frame);		
-			}
-		</script>
 	</head>
 	<body>
 		<div id="flashContent">
@@ -50,20 +29,27 @@
 				width="550" 
 				height="400"
 				id="clip">
-				<param name="movie" value="girlpower-flash.swf"> 
+				<param name="movie" value="transparentFlash.swf"> 
+				
+				<!-- Setting wmode=transparent is the second important thing-->
 				<param name="wmode" value="transparent">
+				<!-- -->
+				
 				<param name="quality" value="high"> 
 				<param name="bgcolor" value="#F0F0F0">
+				
+				<!-- Setting wmode attribute in this tag is important as well-->
 				<embed 
-					src="girlpower-flash.swf" 
+					src="transparentFlash.swf" 
 					quality="high" 
 					width="550" 
 					height="400" 
 					name="clip"
-					wmode="transparent"  
+					wmode="transparent"
 					type="application/x-shockwave-flash" 
 					pluginspace="http://www.macromedia.com/go/getflashplayer">
 				</embed> 
+				<!-- -->
 			</object>
 		</div>
 	</body>
