@@ -9,6 +9,13 @@ namespace VVVV.Core.Model
     {
         string LocalPath { get; }
         void SaveTo(string path);
+        Stream Content { get; set; }
+        /// <summary>
+        /// This event occurs each time the content of this document changes.
+        /// </summary>
+        event EventHandler<ContentChangedEventArgs> ContentChanged;
+        bool IsDirty { get; }
+        bool IsReadOnly { get; set; }
     }
     
     public static class DocumentExtensionMethods

@@ -12,6 +12,7 @@ namespace VVVV.HDE.CodeEditor.ErrorView
 			yield return new Column("!");
 			yield return new Column("Line");
 			yield return new Column("Message", AutoSizeColumnMode.Fill);
+            yield return new Column("Number");
 			yield return new Column("File", AutoSizeColumnMode.AllCells);
 			yield return new Column("Path", AutoSizeColumnMode.None);
 		}

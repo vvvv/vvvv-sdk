@@ -39,7 +39,7 @@ namespace VVVV.Nodes.Text
         [Input("Input String")]
         public IDiffSpread<string> FInput;
 
-        [Output("Output Data")]
+        [Output("Output Data", AutoFlush = false)]
         public ISpread<Stream> FOutput;
 
         public void OnImportsSatisfied()
@@ -60,6 +60,8 @@ namespace VVVV.Nodes.Text
                 outputStream.SetLength(outputArray.Length);
                 outputStream.Write(outputArray, 0, outputArray.Length);
             }
+            // Will mark all slices changed
+            FOutput.Flush(true);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace SQLLiteNodes.Nodes
                     FPluginInfo.Version = "Network";
                     FPluginInfo.Author = "vux";
                     FPluginInfo.Help = "Executes a batch of queries on a sqlite database";
-                    FPluginInfo.Tags = "";
+                    FPluginInfo.Tags = "database";
                     FPluginInfo.Credits = "";
                     FPluginInfo.Bugs = "";
                     FPluginInfo.Warnings = "";

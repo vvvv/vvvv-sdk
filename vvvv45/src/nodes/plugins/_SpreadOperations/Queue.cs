@@ -106,4 +106,14 @@ namespace VVVV.Nodes
 	public class EnumQueueNode : QueueNode<EnumEntry>
 	{
 	}
+	
+	[PluginInfo(Name = "Queue",
+	            Category = "Raw",
+	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
+	            Tags = "",
+	            AutoEvaluate = true
+	           )]
+	public class RawQueueNode : QueueNode<System.IO.Stream>
+	{
+	}
 }

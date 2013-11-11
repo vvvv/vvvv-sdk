@@ -9,9 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
-
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Ast;
 using ICSharpCode.NRefactory.PrettyPrinter;
@@ -121,7 +121,7 @@ namespace VVVV.Hosting.Factories
         
         private bool RecompileIfNeeded(CSProject project)
         {
-            if (!IsAssemblyUpToDate(project))
+            if (!FHDEHost.IsBlackBoxMode && !IsAssemblyUpToDate(project))
             {
                 FLogger.Log(LogType.Message, "Assembly of {0} is not up to date. Need to recompile ...", project.Name);
                 
@@ -222,7 +222,7 @@ namespace VVVV.Hosting.Factories
         protected void DeleteArtefacts(string dir)
         {
             // Nothing to do if not existent.
-            if (!Directory.Exists(dir)) return;
+            if (FHDEHost.IsBlackBoxMode || !Directory.Exists(dir)) return;
             
             // Dynamic plugins generate a new assembly everytime they are compiled.
             // Cleanup old assemblies.

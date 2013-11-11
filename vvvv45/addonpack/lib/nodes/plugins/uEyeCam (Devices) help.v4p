@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha18.1.dtd" >
-   <PATCH nodename="Y:\sourceforge\plugins\Devices\uEyeCam\uEyeCam (Devices) help.v4p">
-   <BOUNDS height="8085" left="2205" top="1845" type="Window" width="8370">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\uEyeCam (Devices) help.v4p">
+   <BOUNDS height="7935" left="585" top="1830" type="Window" width="9045">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
    <BOUNDS height="255" left="15" top="390" type="Node" width="570">
@@ -23,23 +23,13 @@
    </BOUNDS>
    <BOUNDS height="160" left="11100" top="41910" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|uEyeCam - Devices|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|uEyeCam (Devices)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="12">
-   </PIN>
-   </NODE>
-   <NODE nodename=":PLUGINS:\uEyeCam.dll|VVVV.Nodes.uEyeCamPlugin" componentmode="InAWindow" id="2">
-   <BOUNDS type="Node" left="2040" top="1920" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Window" left="11190" top="885" width="6000" height="4515">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2040" top="1920" width="3000" height="1500">
-   </BOUNDS>
-   <PIN pinname="Shared Name" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="4">
@@ -54,8 +44,6 @@
    <PIN pinname="Input String" slicecount="1" values="#vvvv">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Output String" dstnodeid="2" dstpinname="Shared Name">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="5">
    <BOUNDS type="Node" left="2025" top="2295" width="5175" height="270">
    </BOUNDS>
@@ -111,6 +99,8 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
+   <PIN pinname="Flip Vertically" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE nodename="VideoOut (DShow9)" id="9">
    <BOUNDS type="Node" left="1155" top="6480" width="0" height="0">
@@ -142,7 +132,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="11">
    <BOUNDS type="Node" left="1515" top="3735" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Window" left="4215" top="6630" width="215" height="160">
@@ -151,12 +141,12 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="720">
+   <PIN pinname="Y Input Value" slicecount="1" values="768">
    </PIN>
    </NODE>
    <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Width">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="12">
    <BOUNDS type="Node" left="1515" top="4080" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Window" left="5100" top="6630" width="215" height="160">
@@ -174,7 +164,7 @@
    </LINK>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Height" hiddenwhenlocked="1">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="13">
    <BOUNDS type="Node" left="1530" top="4410" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Window" left="6300" top="6465" width="215" height="160">
@@ -270,7 +260,7 @@
    </NODE>
    <LINK srcnodeid="8" srcpinname="Texture Out" dstnodeid="20" dstpinname="Texture">
    </LINK>
-   <NODE nodename="Renderer (EX9)" componentmode="InAWindow" id="21">
+   <NODE nodename="RENDERER (EX9)" componentmode="InAWindow" id="21">
    <BOUNDS type="Node" left="5475" top="6675" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Window" left="11190" top="5385" width="6120" height="4860">
@@ -279,7 +269,75 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
    </NODE>
    <LINK srcnodeid="20" srcpinname="Layer" dstnodeid="21" dstpinname="Layers">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7395" top="1695" width="780" height="1320">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7395" top="1695" width="1065" height="1560">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Formats are:&cr;&lf;0: RGB32&cr;&lf;1: RGB24&cr;&lf;2: RGB16&cr;&lf;3: RGB15&cr;&lf;4: BAYER&cr;&lf;5: Y8|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename=":PLUGINS:\uEyeCam.dll|VVVV.Nodes.uEyeCamPlugin" componentmode="InAWindow" id="23" systemname="uEyeCam (Devices)" filename="%VVVV%\addonpack\lib\nodes\plugins\uEyeCam.dll">
+   <BOUNDS type="Node" left="2040" top="1920" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="11190" top="885" width="6000" height="4515">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2040" top="1920" width="3000" height="1500">
+   </BOUNDS>
+   <PIN pinname="Exposure Time" slicecount="1" values="19.099">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output String" dstnodeid="23" dstpinname="Shared Name">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2205" top="1020" width="330" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2205" top="1020" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Format">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2595" top="1020" width="1890" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2595" top="1020" width="1890" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&gt; RGB (3 bytes per pixel)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

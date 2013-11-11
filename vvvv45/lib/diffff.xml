@@ -18,7 +18,7 @@
   ========================================================================================================
 	  
   How to edit this file 
-  * if you are not an internal developer you can contribute to this via the SDK and by making pull request
+  * if you are not an internal developer you can contribute to this via the SDK and by making a pull request
   
   * HOWEVER you are also invited to use this tool to convert temporarily   
    
@@ -1199,5 +1199,54 @@
 	  </NODE>
 	  <NODE old="FFT (DShow9 4Channels Win7)" new="FFT (DShow9 4Channels)"></NODE>
 	  <NODE old="FFT (DShow9 4Channels)" new="FFT (DShow9 4Channels WinXP)"></NODE>	  
+  </PATCH>
+  <PATCH version="45debug30.3">
+	  <NODE old="MAC (Network)">
+		<PIN old="Name (or IP, blank for local)" new="Host Name"></PIN>
+	  </NODE>
+	  <NODE old="Prune (XML)" new="Prune (XElement Legacy)"></NODE> <!-- has been forgotten the other day (29.6) -->
+	  <NODE old="Prune (XElement)" new="Prune (XElement Legacy)"></NODE>
+	  <NODE old="Perspective (Transform Kinect)" new="Perspective (Transform Kinect Legacy)"></NODE>
   </PATCH>  
+  <PATCH version="45debug31.1">
+    <NODE old="Metaballs (EX9.Geometry)">
+      <PIN old="Position XYZ" new="PositionXYZ"/>
+    </NODE>
+	<NODE old="MidiNote (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiController (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiController (Devices Relative)" new="MidiController (Devices Endless)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiBend (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiProgram (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiTimeCode (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiClock (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiShort (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiSysex (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiShortOutput (Devices)" new="MidiShortOut (Devices)"> </NODE>
+	<NODE old="MidiSysexOutput (Devices)" new="MidiSysexOut (Devices)"> </NODE>
+	<NODE old="TUIODecoder (Network 1.0)" new="TUIODecoder (Network 1.0 Legacy)"> </NODE>
+	<NODE old="Quad (DX11.Layer)">
+	  <PIN old="Transform In" new="Transform"> </PIN>
+	  <PIN old="Texture In" new="Texture"> </PIN>
+	  <PIN old="Samper State" new="Sampler State"> </PIN>
+	  <PIN old="Layer Out" new="Layer"> </PIN>
+	</NODE>
+  </PATCH>
 </CONVVVVERTER>

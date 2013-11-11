@@ -24,7 +24,7 @@ namespace VVVV.Nodes.Raw
         public void Evaluate(int spreadMax)
         {
             FOutput.Length = FInputGroup.GetMaxLength();
-            var inputStreamReaders = FInputGroup.Select(i => i.GetCyclicReader());
+            var inputStreamReaders = FInputGroup.Select(i => i.GetCyclicReader()).ToArray();
             using (var intersperseReader = FIntersperseSequence.GetCyclicReader())
             using (var outputWriter = FOutput.GetWriter())
             {

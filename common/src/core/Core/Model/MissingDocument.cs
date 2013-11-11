@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -45,5 +46,24 @@ namespace VVVV.Core.Model
         }
 
         public event EventHandler Disposed;
+
+        public event EventHandler<ContentChangedEventArgs> ContentChanged;
+
+        public bool IsDirty
+        {
+            get { return false; }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return false; }
+            set { throw new NotSupportedException(); }
+        }
+
+        public Stream Content
+        {
+            get { return null; }
+            set { throw new NotSupportedException(); }
+        }
     }
 }

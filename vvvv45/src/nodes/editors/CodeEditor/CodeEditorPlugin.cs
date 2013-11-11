@@ -135,7 +135,7 @@ namespace VVVV.HDE.CodeEditor
 
         void FEditor_SavePressed(object sender, EventArgs e)
         {
-            document_ContentChanged(FEditor.TextDocument, FEditor.TextDocument.TextContent);
+            document_ContentChanged(FEditor.TextDocument, new ContentChangedEventArgs(FEditor.TextDocument.Content));
         }
 
         void FEditor_LinkClicked(object sender, Link link)
@@ -267,8 +267,9 @@ namespace VVVV.HDE.CodeEditor
             UpdateWindowCaption(sender as ITextDocument, newName);
         }
 
-        void document_ContentChanged(ITextDocument doc, string content)
+        void document_ContentChanged(object sender, ContentChangedEventArgs args)
         {
+            var doc = sender as ITextDocument;
             UpdateWindowCaption(doc, doc.Name);
         }
         
