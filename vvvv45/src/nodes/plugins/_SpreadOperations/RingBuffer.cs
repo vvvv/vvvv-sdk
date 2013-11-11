@@ -134,4 +134,14 @@ namespace VVVV.Nodes
 	public class EnumRingBufferNode : RingBufferNode<EnumEntry>
 	{
 	}
+	
+	[PluginInfo(Name = "RingBuffer",
+	            Category = "Raw",
+	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
+	            Tags = "",
+	            AutoEvaluate = true
+	           )]
+	public class RawRingBufferNode : RingBufferNode<System.IO.Stream>
+	{
+	}
 }
