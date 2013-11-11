@@ -19,7 +19,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 		[Input("Input", DefaultValue = 0)]
 		IDiffSpread<int> FInput;
 		
-		[Input("Number of Bits", DefaultValue = 7, MaxValue = 8, MinValue=0, Visibility = PinVisibility.Hidden,IsSingle=true)]
+		[Input("Number of Bits", DefaultValue = 7, MaxValue = Int32.MaxValue, MinValue=0, Visibility = PinVisibility.Hidden)]
 		IDiffSpread<int> NumBits;
 		
 		[Output("MSB")]
@@ -31,9 +31,9 @@ namespace VVVV.Nodes.Utils.BitOperators
 		{
 			if(!FInput.IsChanged && NumBits.IsChanged) return;
 			FOutput.SliceCount = SpreadMax;
-			int shift = 8-NumBits[0]; int mask  = 0xff>>shift;
       for (int i = 0; i < SpreadMax; i++)
       {
+        int mask = Int32.MaxValue >> (31 - NumBits[i]);
         FOutput[i] = (FInput[i] >> NumBits[i]) & mask;
       }
 		}
@@ -49,7 +49,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 		[Input("Input", DefaultValue = 0)]
 		IDiffSpread<int> FInput;
 
-    [Input("Number of Bits", DefaultValue = 7, MaxValue = 8, MinValue = 0, Visibility = PinVisibility.Hidden, IsSingle = true)]
+    [Input("Number of Bits", DefaultValue = 7, MaxValue = Int32.MaxValue, MinValue = 0, Visibility = PinVisibility.Hidden)]
     IDiffSpread<int> NumBits;
 		
 		[Output("LSB")]
@@ -60,9 +60,9 @@ namespace VVVV.Nodes.Utils.BitOperators
 		{
 			if(!FInput.IsChanged && NumBits.IsChanged) return;
 			FOutput.SliceCount = SpreadMax;
-      int shift = 8 - NumBits[0]; int mask = 0xff >> shift;
       for (int i = 0; i < SpreadMax; i++)
       {
+        int mask = Int32.MaxValue >> (31 - NumBits[i]);
         FOutput[i] = FInput[i] & mask;
       }
 		}
@@ -80,7 +80,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 		[Input("MSB", DefaultValue = 0)]
 		IDiffSpread<int> MSB;
 
-    [Input("Number of Bits", DefaultValue = 7, MaxValue = 8, MinValue = 0, Visibility = PinVisibility.Hidden, IsSingle = true)]
+    [Input("Number of Bits", DefaultValue = 7, MaxValue = Int32.MaxValue, MinValue = 0, Visibility = PinVisibility.Hidden)]
     IDiffSpread<int> NumBits;
 		
 		[Output("Output")]
@@ -93,12 +93,10 @@ namespace VVVV.Nodes.Utils.BitOperators
 
 			FOutput.SliceCount = Math.Max(LSB.SliceCount,MSB.SliceCount);
 
-			int shift = NumBits[0];
-      int mask  = 0xff>>shift;
-
 			for (int i = 0; i < FOutput.SliceCount; i++)
 			{
-				FOutput[i] = ((MSB[i] & mask) << NumBits[i]) | (LSB[i]&mask);
+        int mask = Int32.MaxValue >> (31 - NumBits[i]);
+        FOutput[i] = ((MSB[i] & mask) << NumBits[i]) | (LSB[i] & mask);
 			}
 		}
 	}
@@ -335,23 +333,19 @@ namespace VVVV.Nodes.Utils.BitOperators
 		[Input("BitSize", DefaultValue = 8, IsSingle = true)]
 		IDiffSpread<int> BitSize;
 
-    [Input("Endianess", DefaultValue = 8, IsSingle = true, Visibility = PinVisibility.Hidden)]
-    IDiffSpread<Endianess> Direction;
-		
 		[Output("Output")]
 		ISpread<int> FOutput;
 		#endregion fields & pins
 		
 		public void Evaluate(int SpreadMax)
 		{
-			if(!FInput.IsChanged && !BitSize.IsChanged && !Direction.IsChanged) return;
+			if(!FInput.IsChanged && !BitSize.IsChanged) return;
 			FOutput.SliceCount = SpreadMax * BitSize[0];
 			for (int i = 0; i < FOutput.SliceCount; i++)
 			{
         for (int bi = 0; bi < BitSize[i]; bi++)
         {
-          int index = Direction[0] == Endianess.Little_Endian ? bi : BitSize[i] - 1 - bi;
-          FOutput[(i * BitSize[i]) + index] = (FInput[i] >> bi) & 0x01;
+          FOutput[(i * BitSize[i]) + bi] = (FInput[i] >> bi) & 0x01;
         }
 			}
 		}
