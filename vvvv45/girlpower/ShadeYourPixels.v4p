@@ -1,0 +1,323 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\ShadeYourPixels.v4p" locked="0">
+   <BOUNDS height="6240" left="30" top="15" type="Window" width="7995">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="5415" top="60" type="Node" width="2775">
+   </BOUNDS>
+   <BOUNDS height="2325" left="5415" top="60" type="Box" width="2475">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|bottom right is the original unshaded image. &cr;&lf;&cr;&lf;the other three images are pixelshaded as the effects names tell us. &cr;&lf;&cr;&lf;you may not see anything if your graphicscard cannot cope with pixelshader version 2.0|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="1260" top="930" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="..\lib\assets\images\earth_512x512.jpg" encoded="0">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform">
+   </PIN>
+   <PIN pinname="Mesh">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="CircularSpread (Spreads)" systemname="CircularSpread (Spreads)">
+   <BOUNDS height="0" left="3075" top="660" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" values="0.125">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1.414">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="1.414">
+   </PIN>
+   <PIN pinname="Transform">
+   </PIN>
+   <PIN pinname="Mesh">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Stallone (Spreads)" systemname="Stallone (Spreads)">
+   <BOUNDS height="0" left="3075" top="1185" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 2" visible="1">
+   </PIN>
+   <PIN pinname="Output 3" visible="1">
+   </PIN>
+   <PIN pinname="Output 4" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input 1" srcnodeid="15" srcpinname="Output X">
+   </LINK>
+   <NODE id="13" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="0" left="3930" top="2205" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="0" left="495" top="2175" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="0" left="1110" top="3405" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="TranslateX" srcnodeid="14" srcpinname="Output 1">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="TranslateX" srcnodeid="14" srcpinname="Output 2">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="TranslateX" srcnodeid="14" srcpinname="Output 3">
+   </LINK>
+   <NODE id="10" nodename="Stallone (Spreads)" systemname="Stallone (Spreads)">
+   <BOUNDS height="0" left="4140" top="1185" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 2" visible="1">
+   </PIN>
+   <PIN pinname="Output 3" visible="1">
+   </PIN>
+   <PIN pinname="Output 4" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input 1" srcnodeid="15" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="TranslateY" srcnodeid="10" srcpinname="Output 1">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="TranslateY" srcnodeid="10" srcpinname="Output 2">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="TranslateY" srcnodeid="10" srcpinname="Output 3">
+   </LINK>
+   <NODE id="9" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="0" left="4020" top="3405" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="TranslateX" srcnodeid="14" srcpinname="Output 4">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="TranslateY" srcnodeid="10" srcpinname="Output 4">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1080" top="555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3090" top="6870" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1080" top="555" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="256">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Width" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1305" top="210" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3765" top="6825" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1305" top="210" type="Box" width="840">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="256">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Height" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="6" nodename="DrawFixed (EX9.Effect)" systemname="DrawFixed (EX9.Effect)">
+   <BOUNDS height="0" left="3690" top="3885" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Texture" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="5" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="0" left="1815" top="4845" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer 4" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="4" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="1830" top="5340" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="7005" left="7995" top="15" type="Window" width="7350">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1830" top="5340" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Layer 4" srcnodeid="6" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Layers" srcnodeid="5" srcpinname="Layer">
+   </LINK>
+   <NODE id="3" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="360" top="975" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Mesh" hiddenwhenlocked="1" srcnodeid="3" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="Hidden" id="18" nodename="SobelEdgeDetection.fx" systemname="SobelEdgeDetection (EX9.Effect)" filename="%VVVV%\girlpower\SobelEdgeDetection.fx">
+   <BOUNDS height="0" left="195" top="2715" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="2490" top="10875" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="195" top="2715" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Transform" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Texture" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Layer 1" srcnodeid="18" srcpinname="Layer">
+   <LINKPOINT x="210" y="4035">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Mesh" hiddenwhenlocked="1" srcnodeid="3" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="Hidden" id="19" nodename="Sepia.fx" systemname="Sepia (EX9.Effect)" filename="%VVVV%\girlpower\Sepia.fx">
+   <BOUNDS height="0" left="3585" top="2910" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="9030" left="6960" top="8070" type="Window" width="14610">
+   </BOUNDS>
+   <BOUNDS height="3600" left="3585" top="2910" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Texture" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Layer 3" srcnodeid="19" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Mesh" hiddenwhenlocked="1" srcnodeid="3" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="Hidden" id="20" nodename="GaussianBlur.fx" systemname="GaussianBlur (EX9.Effect)" filename="%VVVV%\girlpower\GaussianBlur.fx">
+   <BOUNDS height="0" left="795" top="3885" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="2160" top="11565" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="795" top="3885" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Transform" srcnodeid="11" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Texture" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Layer 2" srcnodeid="20" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Mesh" hiddenwhenlocked="1" srcnodeid="3" srcpinname="Mesh">
+   <LINKPOINT x="1035" y="3975">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

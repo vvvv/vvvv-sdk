@@ -1,0 +1,165 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\HWND (Windows) help.v4p" systemname="HWND (Windows) help" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\HWND (Windows) help.v4p">
+   <BOUNDS height="9780" left="4215" top="375" type="Window" width="9210">
+   </BOUNDS>
+   <NODE id="19" nodename="HWND (Windows)" systemname="HWND (Windows)">
+   <BOUNDS height="0" left="900" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Title" visible="1">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="ScreenShot (EX9.Texture)" systemname="ScreenShot (EX9.Texture)">
+   <BOUNDS height="0" left="4485" top="3741" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="ClientAreaOfHandle">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Repair" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="9" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="4155" top="4965" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Texture" srcnodeid="18" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="4155" top="5415" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="4365" top="6495" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="3705" left="4155" top="5415" type="Box" width="4515">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Layers" srcnodeid="9" srcpinname="Layer" hiddenwhenlocked="0">
+   </LINK>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="210" top="555" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="210" top="555" type="Box" width="3465">
+   </BOUNDS>
+   <BOUNDS height="160" left="10890" top="46020" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|gets the Window Handle of a Windows Window|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="210" top="180" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="210" top="180" type="Box" width="4005">
+   </BOUNDS>
+   <BOUNDS height="160" left="10890" top="46020" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HWND (Windows)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <INFO author="" description="" tags="">
+   </INFO>
+   <NODE systemname="Self (VVVV)" nodename="Self (VVVV)" componentmode="Hidden" id="28">
+   <BOUNDS type="Node" left="735" top="1560" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Caption" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Caption" dstnodeid="19" dstpinname="Title">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="29" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="900" top="3840" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="900" top="3840" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Handle" dstnodeid="29" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1860" top="3840" width="4605" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1860" top="3840" width="2460" height="675">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; returns the handle of the window with the given title/caption|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Handle" dstnodeid="18" dstpinname="Handle">
+   </LINK>
+   <NODE systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="4305" top="4515" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Transform Out" dstnodeid="9" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5895" top="3696" width="5640" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5895" top="3696" width="2310" height="870">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; the window handle can be used e.g. with the ScreenShot (EX9.Texture) node.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="34" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="5970" top="4566" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5970" top="4566" width="2385" height="345">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.69133,0.76885,1.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="34" srcpinname="Color Output" dstnodeid="9" dstpinname="Color">
+   </LINK>
+   </PATCH>
