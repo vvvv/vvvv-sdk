@@ -11,7 +11,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 {
 
 	#region PluginInfo
-	[PluginInfo(Name = "MSB", Category = "Value Bitwise", Help = "Get the most significant byte from an integer.")]
+	[PluginInfo(Name = "MSB", Category = "Value", Version="Bitwise", Author = "jens.a.e", Help = "Get the most significant byte from an integer.")]
 	#endregion PluginInfo
 	public class MSB : IPluginEvaluate
 	{
@@ -19,7 +19,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 		[Input("Input", DefaultValue = 0)]
 		IDiffSpread<int> FInput;
 		
-		[Input("Number of Bits", DefaultValue = 7, MaxValue = Int32.MaxValue, MinValue=0, Visibility = PinVisibility.Hidden)]
+		[Input("Number Of Bits", DefaultValue = 7, MaxValue = Int32.MaxValue, MinValue=0, Visibility = PinVisibility.Hidden)]
 		IDiffSpread<int> NumBits;
 		
 		[Output("MSB")]
@@ -41,7 +41,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 	
 	
 	#region PluginInfo
-  [PluginInfo(Name = "LSB", Category = "Value Bitwise", Help = "Get the least significant byte.")]
+  [PluginInfo(Name = "LSB", Category = "Value", Version = "Bitwise", Author = "jens.a.e", Help = "Get the least significant byte.")]
 	#endregion PluginInfo
 	public class LSB : IPluginEvaluate
 	{
@@ -49,7 +49,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 		[Input("Input", DefaultValue = 0)]
 		IDiffSpread<int> FInput;
 
-    [Input("Number of Bits", DefaultValue = 7, MaxValue = Int32.MaxValue, MinValue = 0, Visibility = PinVisibility.Hidden)]
+    [Input("Number Of Bits", DefaultValue = 7, MaxValue = Int32.MaxValue, MinValue = 0, Visibility = PinVisibility.Hidden)]
     IDiffSpread<int> NumBits;
 		
 		[Output("LSB")]
@@ -69,7 +69,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 	}
 	
 	#region PluginInfo
-  [PluginInfo(Name = "LSB+MSB", Category = "Value Bitwise", Help = "Get an integer from a least and a most significatn byte.")]
+  [PluginInfo(Name = "LSB+MSB", Category = "Value", Version = "Bitwise", Author = "jens.a.e", Help = "Get an integer from a least and a most significatn byte.")]
 	#endregion PluginInfo
 	public class PackLSBMSB : IPluginEvaluate
 	{
@@ -80,7 +80,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 		[Input("MSB", DefaultValue = 0)]
 		IDiffSpread<int> MSB;
 
-    [Input("Number of Bits", DefaultValue = 7, MaxValue = Int32.MaxValue, MinValue = 0, Visibility = PinVisibility.Hidden)]
+    [Input("Number Of Bits", DefaultValue = 7, MaxValue = Int32.MaxValue, MinValue = 0, Visibility = PinVisibility.Hidden)]
     IDiffSpread<int> NumBits;
 		
 		[Output("Output")]
@@ -102,7 +102,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "<<", Category = "Value Bitwise", Help = "Shift bits to the left by a given value.")]
+  [PluginInfo(Name = "<<", Category = "Value", Version = "Bitwise", Author = "jens.a.e", Help = "Shift bits to the left by a given value.")]
 	#endregion PluginInfo
 	public class Shiftleft : IPluginEvaluate
 	{
@@ -128,7 +128,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 	}
 	
 	#region PluginInfo
-  [PluginInfo(Name = ">>", Category = "Value Bitwise", Help = "Shift bits to the right by a given value.")]
+  [PluginInfo(Name = ">>", Category = "Value", Version = "Bitwise", Author = "jens.a.e", Help = "Shift bits to the right by a given value.")]
 	#endregion PluginInfo
 	public class Shiftright : IPluginEvaluate
 	{
@@ -155,12 +155,12 @@ namespace VVVV.Nodes.Utils.BitOperators
 	}
 	
 	#region PluginInfo
-  [PluginInfo(Name = "&", Category = "Value Bitwise", Help = "Get the bitwise AND value", Tags = "")]
+  [PluginInfo(Name = "&", Category = "Value", Version = "Bitwise", Author = "jens.a.e", Help = "Get the bitwise AND value", Tags = "")]
 	#endregion PluginInfo
 	public class BitAND : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Input", DefaultValue = 0)]
+		[Input("Input 1", DefaultValue = 0)]
 		IDiffSpread<int> FInput;
 		
 		[Input("Input 2", DefaultValue = 0)]
@@ -183,7 +183,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 		}
 	}
 	#region PluginInfo
-  [PluginInfo(Name = "&", Category = "Value Bitwise", Version = "Spectral", Help = "Get the bitwise AND value.")]
+  [PluginInfo(Name = "&", Category = "Value", Version = "Spectral Bitwise", Author = "jens.a.e", Help = "Get the bitwise AND value.")]
 	#endregion PluginInfo
 	public class BitANDSpectral : IPluginEvaluate
 	{
@@ -209,12 +209,12 @@ namespace VVVV.Nodes.Utils.BitOperators
 	}
 	
 	#region PluginInfo
-  [PluginInfo(Name = "|", Category = "Value Bitwise", Help = "Get the bitwise OR value.")]
+  [PluginInfo(Name = "|", Category = "Value", Version = "Bitwise", Author = "jens.a.e", Help = "Get the bitwise OR value.")]
 	#endregion PluginInfo
 	public class BitOR : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Input", DefaultValue = 0)]
+		[Input("Input 1", DefaultValue = 0)]
 		IDiffSpread<int> FInput;
 		
 		[Input("Input 2", DefaultValue = 0)]
@@ -238,7 +238,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 	}
 
 	#region PluginInfo
-  [PluginInfo(Name = "|", Category = "Value Bitwise", Version = "Spectral", Help = "Get the bitwise OR value.")]
+  [PluginInfo(Name = "|", Category = "Value", Version = "Spectral Bitwise", Author = "jens.a.e", Help = "Get the bitwise OR value.")]
 	#endregion PluginInfo
 	public class BitOrSpectral : IPluginEvaluate
 	{
@@ -266,7 +266,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 
 	
 	#region PluginInfo
-  [PluginInfo(Name = "~", Category = "Value Bitwise", Help = "Get the bitwise NOT of a value", Tags = "")]
+  [PluginInfo(Name = "~", Category = "Value", Version = "Bitwise", Author = "jens.a.e", Help = "Get the bitwise NOT of a value", Tags = "")]
 	#endregion PluginInfo
 	public class BitNOT : IPluginEvaluate
 	{
@@ -290,12 +290,12 @@ namespace VVVV.Nodes.Utils.BitOperators
 	}
 	
 	#region PluginInfo
-  [PluginInfo(Name = "^", Category = "Value Bitwise", Help = "Get the bitwise XOR value.")]
+  [PluginInfo(Name = "^", Category = "Value", Version = "Bitwise", Author = "jens.a.e", Help = "Get the bitwise XOR value.")]
 	#endregion PluginInfo
 	public class BitXOR : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Input", DefaultValue = 0)]
+		[Input("Input 1", DefaultValue = 0)]
 		IDiffSpread<int> FInput;
 		
 		[Input("Input 2", DefaultValue = 0)]
@@ -317,7 +317,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 	}
 	
 	#region PluginInfo
-  [PluginInfo(Name = "FastBit", Category = "Value Bitwise", Help = "Convert an integer into their bit sequence")]
+  [PluginInfo(Name = "FastBit", Category = "Value", Version = "Bitwise", Author = "jens.a.e", Help = "Convert an integer into their bit sequence")]
 	#endregion PluginInfo
 	public class FastBit : IPluginEvaluate
 	{
@@ -330,7 +330,7 @@ namespace VVVV.Nodes.Utils.BitOperators
 		[Input("Input", DefaultValue = 0)]
 		IDiffSpread<int> FInput;
 		
-		[Input("BitSize", DefaultValue = 8, IsSingle = true)]
+		[Input("Bit Size", DefaultValue = 8, IsSingle = true)]
 		IDiffSpread<int> BitSize;
 
 		[Output("Output")]
