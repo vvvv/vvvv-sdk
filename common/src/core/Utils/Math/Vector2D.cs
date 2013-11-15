@@ -7,6 +7,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace VVVV.Utils.VMath
 {
@@ -15,19 +16,37 @@ namespace VVVV.Utils.VMath
 	/// Fast 2d vector struct with operators
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct Vector2D
+    [DataContract]
+    public struct Vector2D
 	{
 		#region data fields
 		
 		/// <summary>
 		/// Data component for the x dimension
 		/// </summary>
-		public double x;
+        public double x;
 		/// <summary>
 		/// Data component for the y dimension
 		/// </summary>
-		public double y;
-		
+        public double y;
+
+
+        [DataMember]
+        public double[] XY
+        {
+            get
+            {
+                double[] l = { x, y };
+                return l;
+            }
+            set
+            {
+                x = value[0];
+                y = value[1];
+            }
+        }
+        		
+
 		#endregion data fields
 		
 		#region constructors
