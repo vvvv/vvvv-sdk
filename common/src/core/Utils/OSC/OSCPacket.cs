@@ -28,7 +28,9 @@
 
 using System;
 using System.Collections;
+using System.IO;
 using System.Text;
+using VVVV.Utils.VColor;
 
 namespace VVVV.Utils.OSC
 {
@@ -67,7 +69,7 @@ namespace VVVV.Utils.OSC
 			}
 		}
 
-		protected static byte[] swapEndian(byte[] data)
+		internal static byte[] swapEndian(byte[] data)
 		{
 			byte[] swapped = new byte[data.Length];
 			for(int i = data.Length - 1, j = 0 ; i >= 0 ; i--, j++)
@@ -109,6 +111,35 @@ namespace VVVV.Utils.OSC
 		{
 			return ASCIIEncoding8Bit.GetBytes(value);
 		}
+
+
+        protected static byte[] packChar(char value)
+        {
+            byte[] data = BitConverter.GetBytes(value);
+            if (BitConverter.IsLittleEndian) data = swapEndian(data);
+            return data;
+        }
+
+        protected static byte[] packStream(MemoryStream value)
+        {
+            byte[] data = value.ToArray();
+            return data;
+        }
+
+        protected static byte[] packTimetag(OscTimeTag value)
+        {
+            return value.ToByteArray(); ;
+        }
+
+        protected static byte[] packColor(RGBAColor value)
+        {
+            double[] rgba = {value.R, value.G, value.B, value.A};
+
+            byte[] data = new byte[rgba.Length];
+            for (int i = 0; i < rgba.Length; i++) data[i] = (byte) Math.Round(rgba[i]*255);
+            if (BitConverter.IsLittleEndian) data = swapEndian(data);
+            return data;
+        }
 
 		abstract protected void pack();
 		protected byte[] binaryData;
@@ -162,6 +193,47 @@ namespace VVVV.Utils.OSC
 			start = (start + 3) / 4 * 4;
 			return s;
 		}
+
+        protected static char unpackChar(byte[] bytes, ref int start)
+        {
+            byte[] data = {bytes[start]};
+            return BitConverter.ToChar(data, 0);
+        }
+
+        protected static MemoryStream unpackBlob(byte[] bytes, ref int start)
+        {
+            int length = unpackInt(bytes, ref start);
+
+            byte[] buffer = new byte[length];
+            Array.Copy(bytes, start, buffer, 0, length);
+
+
+            return new MemoryStream(buffer);
+        }
+
+
+
+        protected static RGBAColor unpackColor(byte[] bytes, ref int start)
+        {
+            byte[] data = new byte[4];
+            for (int i = 0; i < 4; i++, start++) data[i] = bytes[start];
+            if (BitConverter.IsLittleEndian) data = swapEndian(data);
+            
+            var col = new RGBAColor();
+            col.R = (double)data[0] / 255.0;
+            col.G = (double)data[1] / 255.0;
+            col.B = (double)data[2] / 255.0;
+            col.A = (double)data[3] / 255.0;
+
+            return col;
+        }
+
+        protected static OscTimeTag unpackTimeTag(byte[] bytes, ref int start)
+        {
+            byte[] data = new byte[8];
+            for (int i = 0; i < 8; i++, start++) data[i] = bytes[start];
+            return new OscTimeTag(data);
+        }
 
 		public static OSCPacket Unpack(byte[] bytes)
 		{

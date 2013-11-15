@@ -28,7 +28,9 @@
 
 using System;
 using System.Collections;
+using System.IO;
 using System.Text;
+using VVVV.Utils.VColor;
 
 namespace VVVV.Utils.OSC
 {
@@ -37,13 +39,24 @@ namespace VVVV.Utils.OSC
 	/// </summary>
 	public class OSCMessage : OSCPacket
 	{
-		protected const char INTEGER = 'i';
-		protected const char FLOAT	  = 'f';
+		protected const char INTEGER = 'i'; // int32
+		protected const char FLOAT	  = 'f'; //float32
 		protected const char LONG	  = 'h';
 		protected const char DOUBLE  = 'd';
 		protected const char STRING  = 's';
 		protected const char SYMBOL  = 'S';
-		//protected const char BLOB	  = 'b';
+
+        protected const char BLOB	  = 'b';
+        protected const char TIMETAG = 't';
+        protected const char CHAR	  = 'c'; // 32bit
+        protected const char COLOR  = 'r'; // 4x8bit -> rgba
+
+        //protected const char TRUE	  = 'T';
+        //protected const char FALSE = 'F';
+        //protected const char NIL = 'N';
+        //protected const char INFINITUM = 'I';
+
+
 		//protected const char ALL     = '*';
 
 		public OSCMessage(string address)
@@ -104,8 +117,12 @@ namespace VVVV.Utils.OSC
 				else if(tag == LONG) msg.Append(unpackLong(bytes, ref start));
 				else if(tag == DOUBLE) msg.Append(unpackDouble(bytes, ref start));
 				else if(tag == FLOAT) msg.Append(unpackFloat(bytes, ref start));
-				else if(tag == STRING || tag == SYMBOL) msg.Append(unpackString(bytes, ref start));
-				else Console.WriteLine("unknown tag: "+tag);
+                else if (tag == STRING || tag == SYMBOL) msg.Append(unpackString(bytes, ref start));
+                else if (tag == CHAR) msg.Append(unpackChar(bytes, ref start));
+                else if (tag == BLOB) msg.Append(unpackBlob(bytes, ref start));
+                else if (tag == COLOR) msg.Append(unpackColor(bytes, ref start));
+                else if (tag == TIMETAG) msg.Append(unpackTimeTag(bytes, ref start));
+                else Console.WriteLine("unknown tag: " + tag);
 			}
 
 			return msg;
@@ -133,7 +150,23 @@ namespace VVVV.Utils.OSC
 			{
 				AppendTag(STRING);
 			}
-			else 
+            else if (value is char)
+            {
+                AppendTag(CHAR);
+            }
+            else if (value is MemoryStream)
+            {
+                AppendTag(BLOB);
+            }
+            else if (value is OscTimeTag)
+            {
+                AppendTag(TIMETAG);
+            }
+            else if (value is RGBAColor)
+            {
+                AppendTag(COLOR);
+            }
+            else 
 			{
 				// TODO: exception
 			}
