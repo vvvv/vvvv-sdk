@@ -19,7 +19,7 @@ namespace VVVV.MSKinect.Nodes
 	            Version="Microsoft", 
 	            Author = "vux", 
 	            Tags = "EX9, texture",
-	            Help = "Returns an X8R8G8B8 formatted texture from the Kinects RGB camera and a 16bit depthmap from its depth camera.")]
+	            Help = "Returns a static G32R32F formatted texture whose pixels represent a UV map mapping pixels from depth to color space.")]
     public class KinectColorDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]
