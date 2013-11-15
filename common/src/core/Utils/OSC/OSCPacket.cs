@@ -28,6 +28,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using VVVV.Utils.VColor;
@@ -120,15 +121,31 @@ namespace VVVV.Utils.OSC
             return data;
         }
 
-        protected static byte[] packStream(MemoryStream value)
+        protected static byte[] packBlob(Stream value)
         {
-            byte[] data = value.ToArray();
-            return data;
+            var mem = new MemoryStream();
+            value.Seek(0, SeekOrigin.Begin);
+            value.CopyTo(mem);
+
+            byte[] valueData = mem.ToArray();
+
+            var lData = new ArrayList();
+
+            var length = packInt(valueData.Length);
+//            Array.Reverse(length);
+
+            lData.AddRange(length);
+            lData.AddRange(valueData);
+
+            return (byte[])lData.ToArray(typeof(byte));
         }
 
-        protected static byte[] packTimetag(OscTimeTag value)
+        protected static byte[] packTimeTag(DateTime value)
         {
-            return value.ToByteArray(); ;
+            var tag = new OscTimeTag();
+            tag.Set(value);
+            
+            return tag.ToByteArray(); ;
         }
 
         protected static byte[] packColor(RGBAColor value)
@@ -200,18 +217,17 @@ namespace VVVV.Utils.OSC
             return BitConverter.ToChar(data, 0);
         }
 
-        protected static MemoryStream unpackBlob(byte[] bytes, ref int start)
+        protected static Stream unpackBlob(byte[] bytes, ref int start)
         {
             int length = unpackInt(bytes, ref start);
 
             byte[] buffer = new byte[length];
             Array.Copy(bytes, start, buffer, 0, length);
-
-
+            
+            start += length;
+            start = (start + 3) / 4 * 4;
             return new MemoryStream(buffer);
         }
-
-
 
         protected static RGBAColor unpackColor(byte[] bytes, ref int start)
         {
@@ -228,11 +244,14 @@ namespace VVVV.Utils.OSC
             return col;
         }
 
-        protected static OscTimeTag unpackTimeTag(byte[] bytes, ref int start)
+        protected static DateTime unpackTimeTag(byte[] bytes, ref int start)
         {
             byte[] data = new byte[8];
             for (int i = 0; i < 8; i++, start++) data[i] = bytes[start];
-            return new OscTimeTag(data);
+            var tag = new OscTimeTag(data);
+            Console.Write(tag.ToString());
+
+            return tag.DateTime;
         }
 
 		public static OSCPacket Unpack(byte[] bytes)

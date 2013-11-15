@@ -76,9 +76,9 @@ namespace VVVV.Utils.OSC
             Array.Copy(data, 0, secondsSinceEpochData, 0, 4);
 
             byte[] fractionalSecondData = new byte[4];
-            Array.Copy(data, 0, secondsSinceEpochData, 4, 4);
+            Array.Copy(data, 4, fractionalSecondData, 0, 4);
 
-            if (BitConverter.IsLittleEndian) // != OSCPacket.LittleEndianByteOrder)
+            if (BitConverter.IsLittleEndian) 
             {
                 secondsSinceEpochData = OSCPacket.swapEndian(secondsSinceEpochData);
                 fractionalSecondData = OSCPacket.swapEndian(fractionalSecondData);
@@ -88,8 +88,31 @@ namespace VVVV.Utils.OSC
             uint fractionalSecond = BitConverter.ToUInt32(fractionalSecondData, 0);
 
             DateTime timeStamp = Epoch.AddSeconds(secondsSinceEpoch).AddMilliseconds(fractionalSecond);
-            if (!IsValidTime(timeStamp)) throw new Exception("Not a valid OSC Timetag.");
+            if (!IsValidTime(timeStamp)) throw new Exception("Not a valid OSC Timetag discovered.");
             mTimeStamp = timeStamp;
+        }
+
+        /// <summary>
+        /// Convert the Osc Time Tag to a byte array.
+        /// </summary>
+        /// <returns>A byte array containing the Osc Time Tag.</returns>
+        public byte[] ToByteArray()
+        {
+            List<byte> timeStamp = new List<byte>();
+
+            byte[] secondsSinceEpoch = BitConverter.GetBytes(SecondsSinceEpoch);
+            byte[] fractionalSecond = BitConverter.GetBytes(FractionalSecond);
+
+            if (BitConverter.IsLittleEndian) // != OscPacket.LittleEndianByteOrder)
+            {
+                secondsSinceEpoch = OSCPacket.swapEndian(secondsSinceEpoch);
+                fractionalSecond = OSCPacket.swapEndian(fractionalSecond);
+            }
+
+            timeStamp.AddRange(secondsSinceEpoch);
+            timeStamp.AddRange(fractionalSecond);
+
+            return timeStamp.ToArray();
         }
 
         /// <summary>
@@ -200,29 +223,6 @@ namespace VVVV.Utils.OSC
 
             if(!IsValidTime(timeStamp)) throw new Exception("Not a valid OSC Timetag.");
             mTimeStamp = timeStamp;
-        }
-
-        /// <summary>
-        /// Convert the Osc Time Tag to a byte array.
-        /// </summary>
-        /// <returns>A byte array containing the Osc Time Tag.</returns>
-        public byte[] ToByteArray()
-        {
-            List<byte> timeStamp = new List<byte>();
-
-            byte[] secondsSinceEpoch = BitConverter.GetBytes(SecondsSinceEpoch);
-            byte[] fractionalSecond = BitConverter.GetBytes(FractionalSecond);
-
-            if (BitConverter.IsLittleEndian) // != OscPacket.LittleEndianByteOrder)
-            {
-                secondsSinceEpoch = OSCPacket.swapEndian(secondsSinceEpoch);
-                fractionalSecond = OSCPacket.swapEndian(fractionalSecond);
-            }
-
-            timeStamp.AddRange(secondsSinceEpoch);
-            timeStamp.AddRange(fractionalSecond);
-
-            return timeStamp.ToArray();
         }
 
         /// <summary>

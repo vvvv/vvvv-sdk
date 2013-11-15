@@ -46,7 +46,7 @@ namespace VVVV.Utils.OSC
 		protected const char STRING  = 's';
 		protected const char SYMBOL  = 'S';
 
-        protected const char BLOB	  = 'b';
+        protected const char BLOB	  = 'b'; 
         protected const char TIMETAG = 't';
         protected const char CHAR	  = 'c'; // 32bit
         protected const char COLOR  = 'r'; // 4x8bit -> rgba
@@ -86,12 +86,21 @@ namespace VVVV.Utils.OSC
 				else if(value is long) addBytes(data, packLong((long)value));
 				else if(value is float) addBytes(data, packFloat((float)value));
 				else if(value is double) addBytes(data, packDouble((double)value));
-				else if(value is string)
-				{
+				else if(value is string) {
 					addBytes(data, packString((string)value));
 					padNull(data);
 				}
-				else 
+                else if (value is Stream) {
+                    addBytes(data, packBlob((Stream)value));
+                    padNull(data);
+                }
+                else if (value is RGBAColor) addBytes(data, packColor((RGBAColor)value));
+                else if (value is char) addBytes(data, packChar((char)value));
+                else if (value is DateTime)
+                {
+                    addBytes(data, packTimeTag((DateTime)value));
+                }
+                else 
 				{
 					// TODO
 				}
@@ -118,6 +127,7 @@ namespace VVVV.Utils.OSC
 				else if(tag == DOUBLE) msg.Append(unpackDouble(bytes, ref start));
 				else if(tag == FLOAT) msg.Append(unpackFloat(bytes, ref start));
                 else if (tag == STRING || tag == SYMBOL) msg.Append(unpackString(bytes, ref start));
+                
                 else if (tag == CHAR) msg.Append(unpackChar(bytes, ref start));
                 else if (tag == BLOB) msg.Append(unpackBlob(bytes, ref start));
                 else if (tag == COLOR) msg.Append(unpackColor(bytes, ref start));
@@ -154,11 +164,11 @@ namespace VVVV.Utils.OSC
             {
                 AppendTag(CHAR);
             }
-            else if (value is MemoryStream)
+            else if (value is Stream)
             {
                 AppendTag(BLOB);
             }
-            else if (value is OscTimeTag)
+            else if (value is DateTime)
             {
                 AppendTag(TIMETAG);
             }
