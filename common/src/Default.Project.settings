@@ -74,5 +74,12 @@
                   AssemblyVersion="$(AssemblyVersion)"
                   AssemblyFileVersion="$(FileVersion)"
                   AssemblyInformationalVersion="$(InformationalVersion)" />
+                  
+    <!-- Remove stupid comment -->
+    <FileUpdate Files="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.generated.cs"
+                Regex="\/\/ &lt;auto-generated&gt;.*?\/\/ &lt;\/auto-generated&gt;"
+                Singleline="true"
+                Multiline="true"
+                ReplacementText="// Auto-generated. Do not modify." />
   </Target>
 </Project>
