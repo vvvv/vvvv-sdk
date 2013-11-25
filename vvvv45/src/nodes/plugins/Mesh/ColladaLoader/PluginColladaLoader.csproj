@@ -7,6 +7,8 @@
     <AssemblyName>ColladaLoader</AssemblyName>
     <ProjectGuid>{8B9D2C28-4394-4C86-A14C-B0021EC29089}</ProjectGuid>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ColladaSlimDX">
@@ -16,12 +18,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dependencies\dnAnalytics.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX">
-      <HintPath>..\..\..\..\..\..\common\src\thirdparty\$(Platform)\SlimDX.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition.Codeplex">
-      <HintPath>..\..\..\..\..\..\common\src\thirdparty\System.ComponentModel.Composition.Codeplex.dll</HintPath>
+    <Reference Include="System.ComponentModel.Composition.CodePlex, Version=4.1.2.0, Culture=neutral, PublicKeyToken=13e5ffd4e05db186, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\packages\System.ComponentModel.Composition.Codeplex.2.5.0\lib\net40\System.ComponentModel.Composition.CodePlex.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -58,5 +57,10 @@
       <Name>Utils3rdParty</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\..\..\..\..\..\packages\VVVV.SlimDX.1.0.0\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\..\..\packages\VVVV.SlimDX.1.0.0\build\net40\VVVV.SlimDX.targets')" />
 </Project>
