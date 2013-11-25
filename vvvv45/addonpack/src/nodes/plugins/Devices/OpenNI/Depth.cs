@@ -98,7 +98,7 @@ namespace VVVV.Nodes
 						try
 						{
 							FDepthGenerator = (DepthGenerator) FContextIn[0].GetProductionNodeByName("Depth1");
-							FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle);
+							FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle) * (float)VMath.RadToCyc;
 							
 							FHistogram = new int[FDepthGenerator.DeviceMaxDepth];
 							

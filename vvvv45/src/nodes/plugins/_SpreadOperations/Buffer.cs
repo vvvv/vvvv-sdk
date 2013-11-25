@@ -148,4 +148,14 @@ namespace VVVV.Nodes
 	public class EnumBufferNode : BufferNode<EnumEntry>
 	{
 	}
+	
+	[PluginInfo(Name = "Buffer",
+	            Category = "Raw",
+	            Help = "Inserts the input at the given index and returns the whole Buffer as spread",
+	            Tags = "",
+	            AutoEvaluate = true
+	           )]
+	public class RawBufferNode : BufferNode<System.IO.Stream>
+	{
+	}
 }

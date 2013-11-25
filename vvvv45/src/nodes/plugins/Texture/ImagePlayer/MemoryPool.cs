@@ -4,34 +4,33 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Linq;
+using System.Diagnostics;
 
 namespace VVVV.Nodes.ImagePlayer
 {
-    class MemoryPool<T> : IDisposable
+    abstract class MemoryPool<T> : IDisposable
     {
-        private readonly Dictionary<int, ObjectPool<T>> FMemoryPools = new Dictionary<int, ObjectPool<T>>();
-        private readonly Func<int, T> FConstructor;
-        private Action<T> FDestructor;
+        private readonly Dictionary<int, Stack<T>> FMemoryPools = new Dictionary<int, Stack<T>>();
         private long FHandedOutBytes;
 
-        public MemoryPool(Func<int, T> constructor, Action<T> destructor)
-        {
-            FConstructor = constructor;
-            FDestructor = destructor;
-        }
+        protected abstract T Allocate(int length);
+        protected abstract void Free(T mem);
         
         public T GetMemory(int length)
         {
             lock (this)
             {
-                ObjectPool<T> memoryPool = null;
+                Stack<T> memoryPool = null;
                 if (!FMemoryPools.TryGetValue(length, out memoryPool))
                 {
-                    memoryPool = new ObjectPool<T>(() => FConstructor(length));
+                    memoryPool = new Stack<T>(1);
                     FMemoryPools[length] = memoryPool;
                 }
                 FHandedOutBytes += length;
-                return memoryPool.GetObject();
+                if (memoryPool.Count > 0)
+                    return memoryPool.Pop();
+                else
+                    return Allocate(length);
             }
         }
         
@@ -41,19 +40,20 @@ namespace VVVV.Nodes.ImagePlayer
             {
                 var memoryPool = FMemoryPools[length];
                 FHandedOutBytes -= length;
-                memoryPool.PutObject(mem);
+                memoryPool.Push(mem);
             }
         }
 
-        public void Clear()
+        public void ReleaseUnused(int capacity)
         {
             lock (this)
             {
                 foreach (var memoryPool in FMemoryPools.Values)
                 {
-                    foreach (var mem in memoryPool.ToArrayAndClear())
+                    while (memoryPool.Count > capacity)
                     {
-                        FDestructor(mem);
+                        var mem = memoryPool.Pop();
+                        Free(mem);
                     }
                 }
             }
@@ -63,7 +63,7 @@ namespace VVVV.Nodes.ImagePlayer
         {
             lock (this)
             {
-                Clear();
+                ReleaseUnused(0);
                 FMemoryPools.Clear();
             }
         }
@@ -101,10 +101,10 @@ namespace VVVV.Nodes.ImagePlayer
             private set;
         }
 
-        public void Clear()
+        public void ReleaseUnused(int capacity)
         {
-            ManagedPool.Clear();
-            UnmanagedPool.Clear();
+            ManagedPool.ReleaseUnused(capacity);
+            UnmanagedPool.ReleaseUnused(capacity);
         }
 
         public void Dispose()
@@ -116,10 +116,14 @@ namespace VVVV.Nodes.ImagePlayer
 
     class ManagedMemoryPool : MemoryPool<byte[]>
     {
-        public ManagedMemoryPool()
-            : base((length) => new byte[length], (m) => { })
+        protected override byte[] Allocate(int length)
         {
+            return new byte[length];
+        }
 
+        protected override void Free(byte[] mem)
+        {
+            Debug.WriteLine("ManagedMemoryPool: released {0} bytes.", mem.Length);
         }
 
         public void PutMemory(byte[] array)
@@ -130,10 +134,15 @@ namespace VVVV.Nodes.ImagePlayer
 
     class UnmanagedMemoryPool : MemoryPool<SharpDX.DataPointer>
     {
-        public UnmanagedMemoryPool()
-            : base((length) => new SharpDX.DataPointer(Marshal.AllocHGlobal(length), length), (m) => Marshal.FreeHGlobal(m.Pointer))
+        protected override SharpDX.DataPointer Allocate(int length)
         {
+            return new SharpDX.DataPointer(Marshal.AllocHGlobal(length), length);
+        }
 
+        protected override void Free(SharpDX.DataPointer mem)
+        {
+            Marshal.FreeHGlobal(mem.Pointer);
+            Debug.WriteLine("UnmanagedMemoryPool: released {0} bytes.", mem.Size);
         }
 
         public void PutMemory(SharpDX.DataPointer dp)

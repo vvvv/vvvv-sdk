@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.3.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.3.dtd" >
    <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Face (Kinect Microsoft) help.v4p">
-   <BOUNDS type="Window" left="7695" top="405" width="10380" height="11625">
+   <BOUNDS type="Window" left="11415" top="840" width="10380" height="11625">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
@@ -53,6 +53,8 @@
    </PIN>
    <PIN pinname="Projection" visible="1">
    </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="14" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
    <BOUNDS height="100" left="4710" top="2205" type="Node" width="100">
@@ -79,7 +81,7 @@
    </BOUNDS>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.4">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.7">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -97,7 +99,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
@@ -138,76 +140,20 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\myplugins\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" id="6" nodename="Kinect (Devices Microsoft)" systemname="Kinect (Devices Microsoft)">
-   <BOUNDS height="270" left="3180" top="3390" type="Node" width="3405">
-   </BOUNDS>
-   <PIN pinname="Index" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Enable Skeleton" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <PIN pinname="Motor Angle" visible="1">
-   </PIN>
-   <PIN pinname="Kinect Count" visible="1">
-   </PIN>
-   <PIN pinname="Kinect Runtime" visible="1">
-   </PIN>
-   <PIN pinname="Is Started" visible="1">
-   </PIN>
-   <PIN pinname="Enable Color" visible="1">
-   </PIN>
-   <PIN pinname="Enable Depth" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="Depth Mode" visible="1">
-   </PIN>
-   <PIN pinname="Reset" visible="1">
-   </PIN>
-   <PIN pinname="Depth Range" visible="1">
-   </PIN>
-   <PIN pinname="Color FOVXY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="6" dstpinname="Enabled" srcnodeid="16" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Motor Angle" linkstyle="PolyLine" srcnodeid="12" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Is Started">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Enable Color" srcnodeid="8" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Reset" srcnodeid="7" srcpinname="Y Output Value">
-   </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\myplugins\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" id="5" nodename="RGB (Kinect Microsoft)" systemname="RGB (Kinect Microsoft)">
-   <BOUNDS height="100" left="3195" top="5085" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Kinect Runtime" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Frame Index" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="5" dstpinname="Kinect Runtime" linkstyle="PolyLine" srcnodeid="6" srcpinname="Kinect Runtime">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Output Enum" dstnodeid="6" dstpinname="Depth Range">
-   </LINK>
    <NODE componentmode="Hidden" id="4" nodename="FullscreenQuad (DX9)" systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p">
    <BOUNDS height="100" left="1830" top="8880" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS type="Box" left="1830" top="8880">
+   </BOUNDS>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Texture" srcnodeid="5" srcpinname="Texture Out">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enable Depth">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enable Skeleton">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
    <BOUNDS type="Node" left="3765" top="1425" width="2625" height="270">
    </BOUNDS>
@@ -222,20 +168,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Face (Kinect Microsoft)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" nodename="Face (Kinect Microsoft)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="3630" top="4125" width="1890" height="270">
-   </BOUNDS>
-   <PIN pinname="Kinect Runtime" visible="1">
-   </PIN>
-   <PIN pinname="Face PointsXYZ" visible="1">
-   </PIN>
-   <PIN pinname="Indices" visible="1">
-   </PIN>
-   <PIN pinname="Projected Face PointsXY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="6" srcpinname="Kinect Runtime" dstnodeid="18" dstpinname="Kinect Runtime">
-   </LINK>
    <NODE systemname="VertexBuffer (EX9.Geometry Join)" nodename="VertexBuffer (EX9.Geometry Join)" componentmode="Hidden" id="19">
    <BOUNDS type="Node" left="3840" top="7755" width="100" height="100">
    </BOUNDS>
@@ -245,23 +177,21 @@
    </PIN>
    <PIN pinname="Texture Coordinate 0 XY" visible="1">
    </PIN>
-   <PIN pinname="Enable Normal" slicecount="1" values="0">
+   <PIN pinname="Enable Normal" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Normal XYZ" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Mesh (EX9.Geometry Join)" nodename="Mesh (EX9.Geometry Join)" componentmode="Hidden" id="20">
    <BOUNDS type="Node" left="3840" top="8250" width="1920" height="270">
    </BOUNDS>
-   <PIN pinname="Indices" visible="1">
+   <PIN pinname="Indices" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Vertex Buffer" visible="1">
    </PIN>
    <PIN pinname="Mesh" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="18" srcpinname="Face PointsXYZ" dstnodeid="19" dstpinname="Position XYZ">
-   </LINK>
-   <LINK srcnodeid="18" srcpinname="Indices" dstnodeid="20" dstpinname="Indices">
-   </LINK>
    <LINK srcnodeid="19" srcpinname="Vertex Buffer" dstnodeid="20" dstpinname="Vertex Buffer">
    </LINK>
    <NODE nodename="Group (EX9)" id="21" systemname="Group (EX9)">
@@ -271,28 +201,12 @@
    </BOUNDS>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="15" dstpinname="Layers">
    </LINK>
    <LINK srcnodeid="4" srcpinname="Layer" dstnodeid="21" dstpinname="Layer 1">
-   </LINK>
-   <NODE systemname="Constant (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Constant.fx" nodename="Constant (EX9.Effect)" componentmode="Hidden" id="22">
-   <BOUNDS type="Node" left="3870" top="8865" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Render State" visible="1">
-   </PIN>
-   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="20" srcpinname="Mesh" dstnodeid="22" dstpinname="Mesh">
-   </LINK>
-   <LINK srcnodeid="22" srcpinname="Layer" dstnodeid="21" dstpinname="Layer 2">
    </LINK>
    <NODE systemname="Fill (EX9.RenderState)" nodename="Fill (EX9.RenderState)" componentmode="Hidden" id="23">
    <BOUNDS type="Node" left="3285" top="8265" width="100" height="100">
@@ -302,8 +216,6 @@
    <PIN pinname="Fill Mode" slicecount="1" values="Solid">
    </PIN>
    </NODE>
-   <LINK srcnodeid="23" srcpinname="Render State Out" dstnodeid="22" dstpinname="Render State">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3630" top="4590" width="480" height="480">
    </BOUNDS>
@@ -317,65 +229,35 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
+   <PIN pinname="Y Input Value">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="18" srcpinname="Success" dstnodeid="24" dstpinname="Y Input Value">
-   </LINK>
    <NODE systemname="Perspective (Transform Kinect)" filename="%VVVV%\addonpack\lib\nodes\modules\Kinect\Perspective (Transform Kinect).v4p" nodename="Perspective (Transform Kinect)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="6735" top="8955" width="100" height="100">
+   <BOUNDS type="Node" left="6735" top="8880" width="100" height="100">
    </BOUNDS>
    <PIN pinname="FOV" visible="1">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="6735" top="8955">
+   <BOUNDS type="Box" left="6735" top="8880">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Radians (Value Degrees)" filename="%VVVV%\lib\nodes\modules\Value\Radians (Value Degrees).v4p" nodename="Radians (Value Degrees)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="6735" top="8430" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Degrees" visible="1">
-   </PIN>
-   <PIN pinname="Radians" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="6735" top="8430">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="6" srcpinname="Color FOVXY" dstnodeid="26" dstpinname="Degrees">
-   </LINK>
-   <LINK srcnodeid="26" srcpinname="Radians" dstnodeid="25" dstpinname="FOV">
-   </LINK>
    <LINK srcnodeid="25" srcpinname="Transform Out" dstnodeid="15" dstpinname="Projection">
-   </LINK>
-   <NODE systemname="Blur (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Blur\Blur (EX9.Texture Filter).v4p" nodename="Blur (EX9.Texture Filter)" componentmode="Hidden" id="28">
-   <BOUNDS type="Node" left="5010" top="7800" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Width" slicecount="1" values="0.33">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="5" srcpinname="Texture Out" dstnodeid="28" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="22" dstpinname="Texture">
    </LINK>
    <NODE systemname="Info (EX9.Texture)" nodename="Info (EX9.Texture)" componentmode="Hidden" id="29">
    <BOUNDS type="Node" left="4755" top="5925" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Width" visible="1">
    </PIN>
    <PIN pinname="Height" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Texture Out" dstnodeid="29" dstpinname="Texture">
-   </LINK>
    <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="30">
    <BOUNDS type="Node" left="4395" top="6915" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -397,8 +279,6 @@
    <LINK srcnodeid="29" srcpinname="Height" dstnodeid="31" dstpinname="Y">
    </LINK>
    <LINK srcnodeid="31" srcpinname="XY" dstnodeid="30" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="18" srcpinname="Projected Face PointsXY" dstnodeid="30" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="30" srcpinname="Output" dstnodeid="19" dstpinname="Texture Coordinate 0 XY">
    </LINK>
@@ -444,4 +324,128 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" id="6" nodename="Kinect (Devices Microsoft)" systemname="Kinect (Devices Microsoft)">
+   <BOUNDS height="270" left="3180" top="3390" type="Node" width="3405">
+   </BOUNDS>
+   <PIN pinname="Index" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Enable Skeleton" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Motor Angle" visible="1">
+   </PIN>
+   <PIN pinname="Kinect Count" visible="1">
+   </PIN>
+   <PIN pinname="Kinect Runtime" visible="1">
+   </PIN>
+   <PIN pinname="Is Started" visible="1">
+   </PIN>
+   <PIN pinname="Enable Color" visible="1">
+   </PIN>
+   <PIN pinname="Enable Depth" visible="1">
+   </PIN>
+   <PIN pinname="Depth Mode" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Depth Range" visible="1">
+   </PIN>
+   <PIN pinname="Color FOVXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Enabled" srcnodeid="16" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Motor Angle" linkstyle="PolyLine" srcnodeid="12" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Is Started">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Enable Color" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Reset" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output Enum" dstnodeid="6" dstpinname="Depth Range">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enable Depth">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enable Skeleton">
+   </LINK>
+   <NODE systemname="Face (Kinect Microsoft)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" nodename="Face (Kinect Microsoft)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="3630" top="4125" width="1890" height="270">
+   </BOUNDS>
+   <PIN pinname="Kinect Runtime" visible="1">
+   </PIN>
+   <PIN pinname="Face PointsXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="Projected Face PointsXY" visible="1">
+   </PIN>
+   <PIN pinname="Face NormalsXYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Face PointsXYZ" dstnodeid="19" dstpinname="Position XYZ">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Indices" dstnodeid="20" dstpinname="Indices">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Success" dstnodeid="24" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Projected Face PointsXY" dstnodeid="30" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Kinect Runtime" dstnodeid="18" dstpinname="Kinect Runtime">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" id="5" nodename="RGB (Kinect Microsoft)" systemname="RGB (Kinect Microsoft)">
+   <BOUNDS height="100" left="3195" top="5085" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Kinect Runtime" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Frame Index" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Texture" srcnodeid="5" srcpinname="Texture Out">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Texture Out" dstnodeid="29" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Kinect Runtime" dstnodeid="5" dstpinname="Kinect Runtime">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Color FOVXY" dstnodeid="25" dstpinname="FOV">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Face NormalsXYZ" dstnodeid="19" dstpinname="Normal XYZ">
+   </LINK>
+   <NODE id="28" systemname="Blur (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Blur\Blur (EX9.Texture Filter).v4p" nodename="Blur (EX9.Texture Filter)" componentmode="Hidden">
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="5010" top="7800" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Width" slicecount="1" values="0.33">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Texture Out" dstnodeid="28" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Constant (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Constant.fx" nodename="Constant (EX9.Effect)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="3870" top="8880" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Mesh" dstnodeid="22" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Layer" dstnodeid="21" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Render State Out" dstnodeid="22" dstpinname="Render State">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="22" dstpinname="Texture">
+   </LINK>
    </PATCH>

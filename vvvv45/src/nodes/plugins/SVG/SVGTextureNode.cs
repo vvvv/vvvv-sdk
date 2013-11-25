@@ -59,7 +59,7 @@ namespace VVVV.Nodes
 			try
 			{
 				var s = new MemoryStream(UTF8Encoding.Default.GetBytes(FXMLIn[slice]));
-				doc = SvgDocument.Open(s, null);
+				doc = SvgDocument.Open<SvgDocument>(s);
 			}
 			catch (Exception e)
 			{

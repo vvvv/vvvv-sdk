@@ -1,6 +1,6 @@
 #region Copyright notice
 /*
-A Firmata Plugin for VVVV - v 1.2
+A Firmata Plugin for VVVV - v 1.3
 ----------------------------------
 Encoding control and configuration messages for Firmata enabled MCUs. This
 Plugin encodes to a ANSI string and a byte array, so you can send via any
@@ -272,6 +272,7 @@ namespace Firmata
     public const int SampleRate     = 20;
     public const int MaxAnalogPins  = 16;
     public const int MaxDigitalPins = 128;
+    public const int I2CDelay       = 7;
     public const PinMode PINMODE = PinMode.OUTPUT;
   }
 
@@ -409,6 +410,16 @@ namespace Firmata
     /// This port represents analog input pins 0..5
     /// </summary>
     PORTC = 0x02,
+  }
+
+  public enum I2CMode {
+    WRITE             = 0x00, // B00000000
+
+    READ_ONCE         = 0x08, // B00001000
+
+    READ_CONTINUOUSLY = 0x10, // B00010000
+
+    STOP_READING      = 0x18  // B00011000
   }
 
   #endregion

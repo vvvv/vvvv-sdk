@@ -54,6 +54,7 @@
     <Reference Include="System.Threading.Tasks.Dataflow">
       <HintPath>..\..\..\..\common\src\thirdparty\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -75,14 +76,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Raw\AsValueNode.cs" />
+    <Compile Include="Raw\PlusSpectralNode.cs" />
+    <Compile Include="Raw\TakeNode.cs" />
+    <Compile Include="Raw\SkipNode.cs" />
     <Compile Include="Raw\PlusNode.cs" />
     <Compile Include="Spreads\Lindenmayer\Lindenmayer.cs" />
     <Compile Include="Spreads\Lindenmayer\LindenmayerNode.cs" />
     <Compile Include="String\ApplyModifiersNode.cs" />
     <Compile Include="String\Base64Nodes.cs" />
     <Compile Include="String\FormatNode.cs" />
+    <Compile Include="String\HTMLCoding.cs" />
     <Compile Include="String\KeyMatchNodes.cs" />
     <Compile Include="String\StringInsertNode.cs" />
+    <Compile Include="String\URLCoding.cs" />
     <Compile Include="SVG\SVGGeomNodes.cs" />
     <Compile Include="SVG\SVGTextureNode.cs">
       <SubType>UserControl</SubType>
@@ -260,9 +266,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Windows" />
-    <Folder Include="Windows\WindowsKill" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

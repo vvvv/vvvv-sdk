@@ -1,6 +1,6 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Tokenizer (String) help.v4p">
-   <BOUNDS height="9120" left="105" top="1650" type="Window" width="9600">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\native\Tokenizer (String) help.v4p">
+   <BOUNDS height="10875" left="0" top="1650" type="Window" width="10215">
    </BOUNDS>
    <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
    <BOUNDS height="255" left="1455" top="2595" type="Node" width="795">
@@ -13,7 +13,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
@@ -27,13 +27,13 @@
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="12" nodename="Tokenizer (String)">
    <BOUNDS height="0" left="435" top="2610" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" slicecount="1" visible="1">
+   <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Separator" slicecount="1" visible="1" values="| |">
    </PIN>
@@ -43,9 +43,9 @@
    </PIN>
    <PIN pinname="Queue Mode" slicecount="1" values="Spread">
    </PIN>
-   <PIN pinname="Update" slicecount="1" values="1.00000">
+   <PIN pinname="Update" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Token Length" slicecount="1" values="12.00000">
+   <PIN pinname="Token Length" slicecount="1" values="12">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
@@ -55,13 +55,13 @@
    </BOUNDS>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1">
+   <PIN pinname="Input String" visible="1">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Rows" slicecount="1" values="19.00000">
+   <PIN pinname="Rows" slicecount="1" values="19">
    </PIN>
    </NODE>
    <LINK dstnodeid="11" dstpinname="Input String" linkstyle="VHV" srcnodeid="12" srcpinname="Output">
@@ -84,18 +84,18 @@
    </NODE>
    <LINK dstnodeid="12" dstpinname="Separator" srcnodeid="10" srcpinname="Output String">
    </LINK>
-   <NODE id="9" nodename="RS232 (Devices)">
+   <NODE id="9" nodename="RS232 (Devices String Legacy)">
    <BOUNDS height="0" left="6795" top="2760" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="ComPort" slicecount="1" visible="1" values="COM2">
    </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1.00000">
+   <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Baud Rate" slicecount="1" values="9600">
    </PIN>
    <PIN pinname="Input" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Do Send" slicecount="1" visible="1">
+   <PIN pinname="Do Send" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -105,7 +105,7 @@
    <NODE id="8" nodename="Tokenizer (String)">
    <BOUNDS height="0" left="6795" top="3660" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Separator" slicecount="1" visible="1">
+   <PIN pinname="Separator" visible="1">
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -134,7 +134,7 @@
    </LINK>
    <LINK dstnodeid="8" dstpinname="Input" srcnodeid="7" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="7680" top="4125" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="12030" top="12150" type="Window" width="215">
@@ -149,7 +149,7 @@
    <NODE id="5" nodename="SpellValue (String)">
    <BOUNDS height="0" left="7530" top="3270" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" slicecount="1" values="10.00000">
+   <PIN pinname="Input" slicecount="1" values="10">
    </PIN>
    <PIN pinname="Mode" slicecount="1" values="Ascii">
    </PIN>
@@ -200,12 +200,14 @@
    </LINK>
    <LINK dstnodeid="3" dstpinname="Input" srcnodeid="2" srcpinname="Output">
    </LINK>
-   <NODE id="1" nodename="Change (String)">
+   <NODE id="1" nodename="CHANGE (STRING)">
    <BOUNDS height="0" left="6945" top="2385" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="OnChange" visible="1">
    </PIN>
    <PIN pinname="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Bang On Create" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="9" dstpinname="Do Send" srcnodeid="1" srcpinname="OnChange">
@@ -223,7 +225,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
@@ -237,7 +239,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
@@ -247,13 +249,37 @@
    </BOUNDS>
    <BOUNDS height="160" left="9930" top="45030" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tokenizer - String|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tokenizer (String)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="12.00000">
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="750" top="9090" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="750" top="9090" width="1350" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Examples:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="12">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="20">
+   <BOUNDS type="Node" left="750" top="9690" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="750" top="9690" width="2850" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\The Next Generation\IO\Arduino\1_Arduino_DataAsStrings.v4p|">
    </PIN>
    </NODE>
    </PATCH>
