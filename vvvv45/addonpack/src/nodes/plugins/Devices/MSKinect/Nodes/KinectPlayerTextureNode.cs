@@ -212,6 +212,8 @@ namespace VVVV.MSKinect.Nodes
                 }
 
                 this.found = fnd;
+                
+                frame.Dispose();
             }
         }
     }

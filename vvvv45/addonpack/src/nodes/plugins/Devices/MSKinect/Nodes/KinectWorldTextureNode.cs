@@ -175,8 +175,6 @@ namespace VVVV.MSKinect.Nodes
                         }
                     }
 
-                    frame.Dispose();
-
                     lock (m_lock)
                     {
                         float[] tmp = this.color0;
@@ -184,6 +182,8 @@ namespace VVVV.MSKinect.Nodes
                         this.color1 = tmp;
                     }
                 }
+                
+                frame.Dispose();
             }  
         }
     }

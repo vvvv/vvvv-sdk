@@ -140,7 +140,6 @@ namespace VVVV.MSKinect.Lib
                 this.Runtime.DepthFrameReady -= Runtime_DepthFrameReady;
                 this.Runtime.DepthStream.Disable();
             }
-
         }
 
         public void SetColor(bool enable)

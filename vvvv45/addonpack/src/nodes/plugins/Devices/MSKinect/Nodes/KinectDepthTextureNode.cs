@@ -172,6 +172,8 @@ namespace VVVV.MSKinect.Nodes
                         this.rawdepth[i16] = this.depthpixels[i16].Depth;
                     }
                 }
+                
+                frame.Dispose();
             }  
         }
     }
