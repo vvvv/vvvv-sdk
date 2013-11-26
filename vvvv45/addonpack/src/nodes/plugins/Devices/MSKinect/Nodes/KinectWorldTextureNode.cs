@@ -36,9 +36,9 @@ namespace VVVV.MSKinect.Nodes
 
         private KinectRuntime runtime;
 
-        private float[] color0;
-        private float[] color1;
-
+        private DepthImagePixel[] depthpixels;
+        private SkeletonPoint[] skelpoints;
+        
         private object m_lock = new object();
 
         private Dictionary<Device, Texture> FDepthTex = new Dictionary<Device, Texture>();
@@ -46,8 +46,9 @@ namespace VVVV.MSKinect.Nodes
         [ImportingConstructor()]
         public KinectWorldTextureNode(IPluginHost host)
         {
-            this.color0 = new float[320 * 240*4];
-            this.color1 = new float[320 * 240*4];
+            skelpoints = new SkeletonPoint[640 * 480];
+            depthpixels = new DepthImagePixel[640 * 480];
+                    
             host.CreateTextureOutput("Texture Out", TSliceMode.Single, TPinVisibility.True, out this.FOutTexture);
         }
 
@@ -114,11 +115,11 @@ namespace VVVV.MSKinect.Nodes
                     Texture t = null;
                     if (OnDevice is DeviceEx)
                     {
-                        t = new Texture(OnDevice, 320, 240, 1, Usage.Dynamic, Format.A32B32G32R32F, Pool.Default);
+                        t = new Texture(OnDevice, 640, 480, 1, Usage.Dynamic, Format.A32B32G32R32F, Pool.Default);
                     }
                     else
                     {
-                       t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.A32B32G32R32F, Pool.Managed);
+                       t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.A32B32G32R32F, Pool.Managed);
                     }
                     this.FDepthTex.Add(OnDevice, t);
                 }
@@ -131,10 +132,13 @@ namespace VVVV.MSKinect.Nodes
 
                     lock (this.m_lock)
                     {
-                        rect.Data.WriteRange(this.color1);
+                        fixed (SkeletonPoint* f = &this.skelpoints[0])
+		                {
+		                    IntPtr ptr = new IntPtr(f);
+		                    rect.Data.WriteRange(ptr, 640 * 480 * 16);
+		                }
                     }
                     srf.UnlockRectangle();
-
 
                     this.FInvalidate = false;
                 }
@@ -156,36 +160,21 @@ namespace VVVV.MSKinect.Nodes
 
             if (frame != null)
             {
-                this.FInvalidate = true;
                 if (frame.FrameNumber != this.frameindex)
                 {
+                    this.FInvalidate = true;
+//                    this.RebuildBuffer(frame.Format, false);
 
                     this.frameindex = frame.FrameNumber;
-
-                    int cnt = 0;
-                    for (int h = 0; h < 240; h++)
-                    {
-                        for (int w = 0; w < 320; w++)
-                        {
-                            SkeletonPoint sp = frame.MapToSkeletonPoint(w, h);
-                            this.color0[cnt] = sp.X;
-                            this.color0[cnt + 1] = sp.Y;
-                            this.color0[cnt + 2] = sp.Z;
-                            this.color0[cnt + 3] = 1.0f;
-                            cnt += 4;
-                        }
-                    }
-
-                    frame.Dispose();
+                    frame.CopyDepthImagePixelDataTo(this.depthpixels);
 
                     lock (m_lock)
                     {
-                        float[] tmp = this.color0;
-                        this.color0 = this.color1;
-                        this.color1 = tmp;
+                        this.runtime.Runtime.CoordinateMapper.MapDepthFrameToSkeletonFrame(frame.Format, this.depthpixels, this.skelpoints);
                     }
-                }
-            }  
+                 }
+                frame.Dispose();
+            }
         }
     }
 }

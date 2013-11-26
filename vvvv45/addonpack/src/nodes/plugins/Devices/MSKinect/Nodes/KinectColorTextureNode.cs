@@ -39,10 +39,7 @@ namespace VVVV.MSKinect.Nodes
         private byte[] colorimage;
         private object m_colorlock = new object();
 
-
-
         private Dictionary<Device, Texture> FColorTex = new Dictionary<Device, Texture>();
-
 
         [ImportingConstructor()]
         public KinectColorTextureNode(IPluginHost host)
@@ -167,6 +164,8 @@ namespace VVVV.MSKinect.Nodes
                 }
                 this.FInvalidate = true;
                 this.frameindex = frame.FrameNumber;
+                
+                frame.Dispose();
             }  
         }
     }
