@@ -36,9 +36,9 @@ namespace VVVV.MSKinect.Nodes
 
         private KinectRuntime runtime;
 
-        private float[] color0;
-        private float[] color1;
-
+        private DepthImagePixel[] depthpixels;
+        private SkeletonPoint[] skelpoints;
+        
         private object m_lock = new object();
 
         private Dictionary<Device, Texture> FDepthTex = new Dictionary<Device, Texture>();
@@ -46,8 +46,9 @@ namespace VVVV.MSKinect.Nodes
         [ImportingConstructor()]
         public KinectWorldTextureNode(IPluginHost host)
         {
-            this.color0 = new float[640 * 480*4];
-            this.color1 = new float[640 * 480*4];
+            skelpoints = new SkeletonPoint[640 * 480];
+            depthpixels = new DepthImagePixel[640 * 480];
+                    
             host.CreateTextureOutput("Texture Out", TSliceMode.Single, TPinVisibility.True, out this.FOutTexture);
         }
 
@@ -131,10 +132,13 @@ namespace VVVV.MSKinect.Nodes
 
                     lock (this.m_lock)
                     {
-                        rect.Data.WriteRange(this.color1);
+                        fixed (SkeletonPoint* f = &this.skelpoints[0])
+		                {
+		                    IntPtr ptr = new IntPtr(f);
+		                    rect.Data.WriteRange(ptr, 640 * 480 * 16);
+		                }
                     }
                     srf.UnlockRectangle();
-
 
                     this.FInvalidate = false;
                 }
@@ -156,35 +160,21 @@ namespace VVVV.MSKinect.Nodes
 
             if (frame != null)
             {
-                this.FInvalidate = true;
                 if (frame.FrameNumber != this.frameindex)
                 {
-                    this.frameindex = frame.FrameNumber;
+                    this.FInvalidate = true;
+//                    this.RebuildBuffer(frame.Format, false);
 
-                    int cnt = 0;
-                    for (int h = 0; h < 480; h++)
-                    {
-                        for (int w = 0; w < 640; w++)
-                        {
-                            SkeletonPoint sp = frame.MapToSkeletonPoint(w, h);
-                            this.color0[cnt] = sp.X;
-                            this.color0[cnt + 1] = sp.Y;
-                            this.color0[cnt + 2] = sp.Z;
-                            this.color0[cnt + 3] = 1.0f;
-                            cnt += 4;
-                        }
-                    }
+                    this.frameindex = frame.FrameNumber;
+                    frame.CopyDepthImagePixelDataTo(this.depthpixels);
 
                     lock (m_lock)
                     {
-                        float[] tmp = this.color0;
-                        this.color0 = this.color1;
-                        this.color1 = tmp;
+                        this.runtime.Runtime.CoordinateMapper.MapDepthFrameToSkeletonFrame(frame.Format, this.depthpixels, this.skelpoints);
                     }
-                }
-                
+                 }
                 frame.Dispose();
-            }  
+            }
         }
     }
 }
