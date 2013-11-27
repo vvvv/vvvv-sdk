@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- Utils3rdParty needs to be intalled in GAC for AnyCPU to work -->
-  <ItemGroup Condition="'$(Platform)' == 'AnyCPU'">
-    <Reference Include="VVVV.Utils3rdParty" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)' == 'x86'">
+  <ItemGroup>
     <Reference Include="VVVV.Utils3rdParty">
-      <HintPath>$(MSBuildThisFileDirectory)\lib\x86\VVVV.Utils3rdParty.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)' == 'x64'">
-    <Reference Include="VVVV.Utils3rdParty">
-      <HintPath>$(MSBuildThisFileDirectory)\lib\x64\VVVV.Utils3rdParty.dll</HintPath>
+      <HintPath>$(MSBuildThisFileDirectory)\lib\$(Platform)\VVVV.Utils3rdParty.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
 </Project>

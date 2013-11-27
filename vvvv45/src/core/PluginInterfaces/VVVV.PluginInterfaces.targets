@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- PluginInterfaces needs to be intalled in GAC for AnyCPU to work -->
-  <ItemGroup Condition="'$(Platform)' == 'AnyCPU'">
-    <Reference Include="VVVV.PluginInterfaces" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)' == 'x86'">
+  <ItemGroup>
     <Reference Include="VVVV.PluginInterfaces">
-      <HintPath>$(MSBuildThisFileDirectory)\lib\x86\VVVV.PluginInterfaces.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)' == 'x64'">
-    <Reference Include="VVVV.PluginInterfaces">
-      <HintPath>$(MSBuildThisFileDirectory)\lib\x64\VVVV.PluginInterfaces.dll</HintPath>
+      <HintPath>$(MSBuildThisFileDirectory)\lib\$(Platform)\VVVV.PluginInterfaces.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
 </Project>
