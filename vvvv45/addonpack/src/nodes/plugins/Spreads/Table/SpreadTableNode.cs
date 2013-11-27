@@ -18,10 +18,10 @@ namespace VVVV.Nodes.Table
 	public class SpreadTableNode : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Column names", DefaultString="x,y,z", IsSingle=true)]
+		[Input("Column Names", DefaultString="x,y,z", IsSingle=true)]
 		IDiffSpread<string> FPinInColumnNames;
 
-		[Input("Auto save", IsSingle = true)]
+		[Input("Auto Save", IsSingle = true)]
 		IDiffSpread<bool> FPinInAutoSave;
 
 		[Input("Load", IsBang = true, IsSingle = true)]
@@ -36,7 +36,7 @@ namespace VVVV.Nodes.Table
 		[Input("Filename", IsSingle = true, DefaultString="spreadtable.xml", FileMask="XML File (*.xml)|*.xml", StringType=StringType.Filename)]
 		IDiffSpread<string> FPinInFilename;
 
-		[Output("SpreadTable")]
+		[Output("Table")]
 		ISpread<Table> FPinOutTable;
 
 		[Output("Status")]

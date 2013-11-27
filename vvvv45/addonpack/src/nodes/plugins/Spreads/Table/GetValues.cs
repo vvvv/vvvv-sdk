@@ -10,7 +10,7 @@ namespace VVVV.Nodes.Table
 	#region PluginInfo
 	[PluginInfo(Name = "GetValues", Category = "Table", Version = "Value", Help = "Convert Table to Values", Tags = "", Author = "elliotwoods", AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class AsValueNode : IHasTable
+	public class GetValuesNode : IHasTable
 	{
 		#region fields & pins
 		[Output("Output")]
