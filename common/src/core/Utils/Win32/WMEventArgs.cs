@@ -15,9 +15,11 @@ namespace VVVV.Utils.Win32
             LParam = lparam;
         }
 
-        public IntPtr HWnd { get; private set; }
-        public WM Message { get; private set; }
-        public IntPtr WParam { get; private set; }
-        public IntPtr LParam { get; private set; }
+        public readonly IntPtr HWnd;
+        public readonly WM Message;
+        public readonly IntPtr WParam;
+        public readonly IntPtr LParam;
+        // If true DefWindowProc won't be called
+        public bool Handled;
     }
 }

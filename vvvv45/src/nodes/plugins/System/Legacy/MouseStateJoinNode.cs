@@ -7,8 +7,8 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "MouseState", Category = "System", Version = "Join")]
-    public class MouseStateJoinNode: IPluginEvaluate
+    [PluginInfo(Name = "MouseState", Category = "System", Version = "Join Legacy")]
+    public class LegacyMouseStateJoinNode : IPluginEvaluate
     {
         [Input("X")]
         public ISpread<double> FXIn;

@@ -7,8 +7,8 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "MouseState", Category = "System", Version = "Split")]
-    public class MouseStatetSplitNode : IPluginEvaluate
+    [PluginInfo(Name = "MouseState", Category = "System", Version = "Split Legacy")]
+    public class LegacyMouseStatetSplitNode : IPluginEvaluate
     {
         [Input("Mouse")]
         public ISpread<MouseState> FInput;

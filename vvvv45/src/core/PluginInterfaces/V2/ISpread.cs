@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using VVVV.Utils.Streams;
@@ -494,6 +495,16 @@ namespace VVVV.PluginInterfaces.V2
         	}
         	
         	return false;
+        }
+
+        public static IObservable<T> ToObservable<T>(this IDiffSpread<T> spread, int slice)
+        {
+            return Observable.FromEvent<SpreadChangedEventHander<T>, IDiffSpread<T>>(
+                        h => spread.Changed += h,
+                        h => spread.Changed -= h
+                    )
+                    .Where(s => s.SliceCount > 0)
+                    .Select(s => s[slice]);
         }
 		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(

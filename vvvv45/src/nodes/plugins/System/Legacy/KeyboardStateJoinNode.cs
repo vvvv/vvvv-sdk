@@ -7,8 +7,8 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Join")]
-    public class KeyStateJoinNode : IPluginEvaluate
+    [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Join Legacy")]
+    public class LegacyKeyStateJoinNode : IPluginEvaluate
     {
         [Input("Key Code")]
         public IDiffSpread<ISpread<int>> FKeyIn;

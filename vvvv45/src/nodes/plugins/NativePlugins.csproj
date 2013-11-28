@@ -44,9 +44,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\packages\SharpDX.Direct3D9.2.5.0\lib\net40\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.DXGI, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+    <Reference Include="SharpDX.RawInput, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\SharpDX.DXGI.2.5.0\lib\net40\SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\..\..\..\packages\SharpDX.RawInput.2.5.0\lib\net40\SharpDX.RawInput.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX">
+      <HintPath>..\..\..\..\common\src\thirdparty\$(Platform)\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="Svg">
       <HintPath>..\..\..\..\common\src\thirdparty\Svg.dll</HintPath>
@@ -59,6 +62,18 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Dataflow">
       <HintPath>..\..\..\..\common\src\thirdparty\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
@@ -101,11 +116,20 @@
     <Compile Include="SVG\SVGTextureNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="System\DeltaMouse.cs" />
-    <Compile Include="System\GlobalInputNode.cs" />
-    <Compile Include="System\KeyboardNode.cs" />
-    <Compile Include="System\LegacyKeyboardHelper.cs" />
-    <Compile Include="System\MouseNode.cs" />
+    <Compile Include="System\TouchNodes.cs" />
+    <Compile Include="System\Legacy\DeltaMouse.cs" />
+    <Compile Include="System\Legacy\GlobalInputNode.cs" />
+    <Compile Include="System\KeyboardNodes.cs" />
+    <Compile Include="System\Legacy\KeyboardNode.cs" />
+    <Compile Include="System\MouseNodes.cs" />
+    <Compile Include="System\KeyMatchNodes.cs" />
+    <Compile Include="System\FrameBasedScheduler.cs" />
+    <Compile Include="System\ExtensionMethods.cs" />
+    <Compile Include="System\QueueMode.cs" />
+    <Compile Include="System\RawInputService.cs" />
+    <Compile Include="System\WindowMessageNode.cs" />
+    <Compile Include="System\Legacy\LegacyKeyboardHelper.cs" />
+    <Compile Include="System\Legacy\MouseNode.cs" />
     <Compile Include="System\SystemProcessorsNode.cs" />
     <Compile Include="Texture\ImagePlayer\FrameDecoder.cs" />
     <Compile Include="Texture\ImagePlayer\FrameInfo.cs" />
@@ -113,13 +137,13 @@
     <Compile Include="Texture\ImagePlayer\MemoryPool.cs" />
     <Compile Include="Texture\ImagePlayer\PlayerNode.cs" />
     <Compile Include="Texture\ImagePlayer\TexturePool.cs" />
-    <Compile Include="System\KeyboardStateNodes.cs" />
-    <Compile Include="System\KeyboardStateJoinNode.cs" />
+    <Compile Include="System\Legacy\KeyboardStateNodes.cs" />
+    <Compile Include="System\Legacy\KeyboardStateJoinNode.cs" />
     <Compile Include="Texture\QrCode\QrCodeTextureNode.cs" />
     <Compile Include="Texture\SharedTexture\SharedTextureNode.cs" />
-    <Compile Include="System\KeyboardStateSplitNode.cs" />
-    <Compile Include="System\MouseStateJoinNode.cs" />
-    <Compile Include="System\MouseStatetSplitNode.cs" />
+    <Compile Include="System\Legacy\KeyboardStateSplitNode.cs" />
+    <Compile Include="System\Legacy\MouseStateJoinNode.cs" />
+    <Compile Include="System\Legacy\MouseStatetSplitNode.cs" />
     <Compile Include="Transform\Decompose\DecomposeNode.cs" />
     <Compile Include="Value\AsRawNode.cs" />
     <Compile Include="Value\DifferentialNode.cs" />
