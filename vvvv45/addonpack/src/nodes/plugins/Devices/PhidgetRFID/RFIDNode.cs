@@ -30,8 +30,8 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "RFID", 
 	            Category = "Devices",
                 Version = "Phidget", 
-	            Help = "manages multiple Phidget RFID", 
-	            Tags = "RFID",
+	            Help = "Manages multiple Phidget RFID", 
+	            Tags = "",
 	            Author = "velcrome"
 	           )]
 	#endregion PluginInfo

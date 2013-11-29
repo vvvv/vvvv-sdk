@@ -20,8 +20,8 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Accelerometer",
                 Category = "Devices",
                 Version = "Phidget",
-                Help = "manages 1059 - PhidgetAccelerometer 3-Axis",
-                Tags = "Controller",
+                Help = "Manages the 1059 - PhidgetAccelerometer 3-Axis",
+                Tags = "controller",
                 Author = "Phlegma",
                 AutoEvaluate = true
 )]

@@ -20,7 +20,7 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Manager",
                 Category = "Devices",
                 Version = "Phidget",
-                Help = "shows all the Phidgets connected to USB Port",
+                Help = "Shows all the Phidgets connected to USB Port",
                 Tags = "",
                 Author = "Phlegma",
                 AutoEvaluate = true

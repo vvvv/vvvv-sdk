@@ -20,8 +20,8 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "ServoMotor",
 	            Category = "Devices",
                 Version = "Phidget",
-	            Help = "controls the position, velocity, and acceleration of a servo 1-Motor with the PhidgetAdvancedServo 1066 controller",
-	            Tags = "Controller, Motor",
+	            Help = "Controls the Phidget Servo Motor Controllers",
+	            Tags = "controller",
                 Author = "Phlegma",
                 AutoEvaluate=true
 )]
