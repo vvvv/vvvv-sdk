@@ -128,7 +128,7 @@ namespace VVVV.Nodes.Lindenmayer
         	Recurse(FAxiom, rnd, FDepth, FBranchLength, FBranchLengthDeviation, FAngle, FAngleDeviation);
 		}
 		
-		void Recurse(String Start, Random Rnd, int Depth, double Length, double LengthDev, double Angle, double AngleDev)
+		void Recurse(string Start, Random Rnd, int Depth, double Length, double LengthDev, double Angle, double AngleDev)
 		{
 			char c;
 			

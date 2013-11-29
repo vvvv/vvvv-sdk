@@ -16,10 +16,14 @@ namespace VVVV.Utils.VMath
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Vector2D
-	{
-		#region data fields
-		
-		/// <summary>
+    {
+        #region constants
+        public static readonly Vector2D Zero = new Vector2D();
+        #endregion
+
+        #region data fields
+
+        /// <summary>
 		/// Data component for the x dimension
 		/// </summary>
 		public double x;

@@ -11,6 +11,7 @@ using System.Threading;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Forms;
+using System.Reactive.Linq;
 
 using VVVV.Utils;
 using VVVV.Utils.VMath;
@@ -29,12 +30,12 @@ namespace TypeWriter
 	            Author = "vvvv group",
 	            Help = "Takes all keyboardinput including keyboard commands and returns a resulting string",
 	            Tags = "keyboard")]
-	public class TypeWriterPlugin: IPluginEvaluate
+	public class TypeWriterPlugin: IPluginEvaluate, IDisposable
 	{
 		#region field declaration
 		//input pin declaration
-		[Input("Keyboard State", IsSingle = true)]
-		IDiffSpread<KeyboardState> FKeyboardState;
+		[Input("Keyboard", IsSingle = true)]
+		IDiffSpread<Keyboard> FKeyboardIn;
 		
 		[Input("Text", DefaultString = "", IsSingle = true)]
 		ISpread<string> FInputText;
@@ -78,7 +79,8 @@ namespace TypeWriter
 		private string FNewlineSymbol = Environment.NewLine;
 		private Dictionary<uint, double> FBufferedCommands = new Dictionary<uint, double>();
 		private Dictionary<string, double> FBufferedKeys = new Dictionary<string, double>();
-		private KeyboardState FLastKeyboardState = KeyboardState.Empty;
+        private Keyboard FKeyboard;
+        private IDisposable FKeyboardSubscription;
 		
 		// Track whether Dispose has been called.
 		private bool FDisposed = false;
@@ -279,13 +281,13 @@ namespace TypeWriter
 			FText = FText.Remove(FCursorCharPos, charCount);
 		}
 
-		private bool RunCommand(uint ScanCode)
+		private bool RunCommand(Keys keyCode)
 		{
 			try
 			{
-				switch ((Keys)ScanCode)
+				switch (keyCode)
 				{
-					case 0:
+					case Keys.None:
 						return true;
 					case Keys.Space:
 						AddNewChar(" ");
@@ -367,38 +369,59 @@ namespace TypeWriter
 
 			if (FInsertText[0])
 				AddNewChar(FInputText[0]);
-			
-			if (FKeyboardState.SliceCount > 0)
-			{
-                var keyboard = FKeyboardState[0] ?? KeyboardState.Empty;
-                if (keyboard != FLastKeyboardState)
-				{
-                    if (keyboard.KeyCodes.Count > 0)
-					{
-                        FControlKeyPressed = (keyboard.Modifiers & Keys.Control) > 0;
-                        var altKeyPressed = (keyboard.Modifiers & Keys.Alt) > 0;
-                        var lastKeyCode = (uint)keyboard.KeyCodes.Last();
 
-                        var keyUp = keyboard.KeyCodes.Count < FLastKeyboardState.KeyCodes.Count;
-                        var keyDown = keyboard.KeyCodes.Count > FLastKeyboardState.KeyCodes.Count;
-							
-						if (keyDown || !keyUp)
-						{
-							if (lastKeyCode < 48)
-							{
-								if (!altKeyPressed)
-									RunCommand(lastKeyCode);
-							}
-                            else if (keyboard.KeyChars.Count > 0)
-                                AddNewChar(keyboard.KeyChars.Last().ToString());
-						}
-					}
-                    FLastKeyboardState = keyboard;
-				}
-			}
+            var keyboard = FKeyboardIn.SliceCount > 0
+                ? FKeyboardIn[0]
+                : null;
+            if (keyboard != FKeyboard)
+            {
+                if (FKeyboardSubscription != null)
+                {
+                    FKeyboardSubscription.Dispose();
+                    FKeyboardSubscription = null;
+                }
+                FKeyboard = keyboard;
+                if (FKeyboard != null)
+                {
+                    FKeyboardSubscription = FKeyboard.KeyNotifications
+                        .Subscribe(n =>
+                            {
+                                switch (n.Kind)
+                                {
+                                    case KeyNotificationKind.KeyDown:
+                                        FControlKeyPressed = (FKeyboard.Modifiers & Keys.Control) > 0;
+                                        var altKeyPressed = (FKeyboard.Modifiers & Keys.Alt) > 0;
+                                        var keyDown = n as KeyDownNotification;
+                                        var keyCode = keyDown.KeyCode;
+                                        if ((int)keyCode < 48)
+                                        {
+                                            if (!altKeyPressed)
+                                                RunCommand(keyCode);
+                                        }
+                                        break;
+                                    case KeyNotificationKind.KeyPress:
+                                        var keyPress = n as KeyPressNotification;
+                                        var chr = keyPress.KeyChar;
+                                        if (!char.IsControl(chr))
+                                            AddNewChar(chr.ToString());
+                                        break;
+                                }
+                            }
+                        );
+                }
+            }
 
 			FOutput[0] = FText;
 			FCursorPosition[0] = FCursorCharPos;
 		}
-	}
+
+        public void Dispose()
+        {
+            if (FKeyboardSubscription != null)
+            {
+                FKeyboardSubscription.Dispose();
+                FKeyboardSubscription = null;
+            }
+        }
+    }
 }

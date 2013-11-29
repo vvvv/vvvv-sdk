@@ -25,7 +25,7 @@ namespace VVVV.MSKinect.Nodes
         [Input("Kinect Runtime")]
         private Pin<KinectRuntime> FInRuntime;
 
-        [Output("Frame Index",IsSingle=true, Order=10)]
+        [Output("Frame Index", IsSingle=true, Order=10)]
         private ISpread<int> FOutFrameIndex;
 
         private int frameindex = -1;
@@ -34,21 +34,22 @@ namespace VVVV.MSKinect.Nodes
 
         private bool FInvalidateConnect = false;
         private bool FInvalidate = true;
+        private bool FUpdate = true;
 
         private KinectRuntime runtime;
 
         private float[] colorimage;
         private short[] depthimage;
         private ColorImagePoint[] cp;
-        private object m_colorlock = new object();
+        private object m_lock = new object();
 
         private Dictionary<Device, Texture> FColorTex = new Dictionary<Device, Texture>();
         [ImportingConstructor()]
         public KinectColorDepthTextureNode(IPluginHost host)
         {
-            this.colorimage = new float[320 * 320 *2];
-            this.depthimage = new short[320 * 240];
-            this.cp = new ColorImagePoint[320 * 240];
+        	this.colorimage = new float[640 * 480 * 2];
+            this.depthimage = new short[640 * 480];
+            this.cp = new ColorImagePoint[640 * 480];
             host.CreateTextureOutput("Texture Out", TSliceMode.Single, TPinVisibility.True, out this.FOutTexture);
         }
 
@@ -109,17 +110,16 @@ namespace VVVV.MSKinect.Nodes
         {
             if (this.runtime != null)
             {
-
                 if (!this.FColorTex.ContainsKey(OnDevice))
                 {
                     Texture t;
                     if (OnDevice is DeviceEx)
                     {
-                        t = new Texture(OnDevice, 320, 240, 1, Usage.Dynamic, Format.G32R32F, Pool.Default);
+                        t = new Texture(OnDevice, 640, 480, 1, Usage.Dynamic, Format.G32R32F, Pool.Default);
                     }
                     else
                     {
-                        t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.G32R32F, Pool.Managed);
+                        t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.G32R32F, Pool.Managed);
                     }
                     this.FColorTex.Add(OnDevice, t);
                 }
@@ -130,14 +130,15 @@ namespace VVVV.MSKinect.Nodes
                     Surface srf = tx.GetSurfaceLevel(0);
                     DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
 
-                    lock (this.m_colorlock)
+                    lock (this.m_lock)
                     {
-                        rect.Data.WriteRange<float>(this.colorimage, 0, 320*240*2);
+                        rect.Data.WriteRange<float>(this.colorimage, 0, 640*480*2);
                     }
                     srf.UnlockRectangle();
 
 
-                    this.FInvalidate = false;
+                    //no need to update this every frame since it does not change
+                    //this.FInvalidate = false;
                 }
             }
         }
@@ -153,37 +154,27 @@ namespace VVVV.MSKinect.Nodes
 
         private void AllFrameReady(object sender, AllFramesReadyEventArgs e)
         {
-            //ColorImageFrame frame = e.OpenColorImageFrame();
+        	if (!FUpdate)
+        		return;
+        	
             DepthImageFrame df = e.OpenDepthImageFrame();
-
-
-            
 
             if (df != null)
             {
-                this.FInvalidate = true;
-                //this.frameindex = frame.FrameNumber;
-
-                lock (m_colorlock)
-                {
-                    df.CopyPixelDataTo(this.depthimage);
-                    //frame.CopyPixelDataTo(this.colorimage);
-                    //Marshal.Copy(frame..Image.Bits, 0, this.colorimage, 640 * 480 * 4);
-                }
-
-                this.runtime.Runtime.MapDepthFrameToColorFrame(DepthImageFormat.Resolution320x240Fps30, this.depthimage, ColorImageFormat.RgbResolution640x480Fps30, this.cp);
-
-                lock (m_colorlock)
+                df.CopyPixelDataTo(this.depthimage);
+                this.runtime.Runtime.MapDepthFrameToColorFrame(DepthImageFormat.Resolution640x480Fps30, this.depthimage, ColorImageFormat.RgbResolution640x480Fps30, this.cp);                
+                
+                lock (m_lock)
                 {
                     for (int i = 0; i < this.cp.Length; i++)
                     {
-                        this.colorimage[i * 2] = (float)VMath.Map(cp[i].X, 0, 640, 0, 1,TMapMode.Clamp);
+                    	this.colorimage[i * 2] = (float)VMath.Map(cp[i].X, 0, 640, 0, 1, TMapMode.Clamp);
                         this.colorimage[i * 2 +1] = (float)VMath.Map(cp[i].Y, 0, 480, 0, 1, TMapMode.Clamp);
                     }
                 }
 
-
                 this.FInvalidate = true;
+                this.FUpdate = false;
                 this.frameindex = df.FrameNumber;
 
                 df.Dispose();

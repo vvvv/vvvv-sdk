@@ -111,7 +111,7 @@ namespace VVVV.Nodes.XML
                 }
                 catch
                 {
-                    errorMessage = String.Format("couldn't map xpath '{0}' to xml {1}", xPath, nodesName);
+                    errorMessage = string.Format("couldn't map xpath '{0}' to xml {1}", xPath, nodesName);
                     return null;
                 }
             }

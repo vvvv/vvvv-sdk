@@ -55,9 +55,9 @@ namespace VVVV.Nodes.Texture.HTML
         [Input("Zoom Level")]
         public ISpread<double> FZoomLevelIn;
         [Input("Mouse Event")]
-        public ISpread<MouseState> FMouseIn;
+        public ISpread<Mouse> FMouseIn;
         [Input("Key Event")]
-        public ISpread<KeyboardState> FKeyboardIn;
+        public ISpread<Keyboard> FKeyboardIn;
         [Input("Scroll To")]
         public ISpread<Vector2D> FScrollToIn;
         [Input("Update DOM", IsBang = true)]
@@ -117,8 +117,8 @@ namespace VVVV.Nodes.Texture.HTML
                 // Assign inputs
                 webRenderer.Size = new Size(FWidthIn[i], FHeightIn[i]);
                 webRenderer.ZoomLevel = FZoomLevelIn[i];
-                webRenderer.Mouse = FMouseIn[i];
-                webRenderer.Keyboard = FKeyboardIn[i];
+                webRenderer.NewMouse = FMouseIn[i];
+                webRenderer.NewKeyboard = FKeyboardIn[i];
                 webRenderer.ScrollTo = FScrollToIn[i];
 
                 if (FExecuteIn[i])

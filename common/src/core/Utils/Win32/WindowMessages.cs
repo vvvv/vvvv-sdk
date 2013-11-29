@@ -721,6 +721,10 @@ namespace VVVV.Utils.Win32
         /// </summary>
         MDIREFRESHMENU = 0x0234,
         /// <summary>
+        /// Notifies the window when one or more touch points, such as a finger or pen, touches a touch-sensitive digitizer surface.
+        /// </summary>
+        TOUCH = 0x0240,
+        /// <summary>
         /// Sent to an application when a window is activated. A window receives this message through its WindowProc function.
         /// </summary>
         IME_SETCONTEXT = 0x0281,

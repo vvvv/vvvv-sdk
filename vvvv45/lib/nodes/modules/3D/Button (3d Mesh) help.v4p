@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Mesh) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
+   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Mesh) help.v4p">
    <BOUNDS height="9615" left="105" top="75" type="Window" width="6480">
    </BOUNDS>
    <NODE id="22" nodename="Group (EX9)" systemname="Group (EX9)">
@@ -41,7 +41,7 @@
    </PIN>
    <PIN pinname="XYZ" slicecount="3" values="0.02,0.02,0.02">
    </PIN>
-   <PIN pinname="Transform In" visible="1">
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="20" dstpinname="Transform" linkstyle="Bezier" srcnodeid="19" srcpinname="Transform Out">
@@ -123,7 +123,7 @@
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="20" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -165,7 +165,7 @@
    <NODE id="11" nodename="Count (Value)" systemname="Count (Value)">
    <BOUNDS height="0" left="2655" top="4080" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="20" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
    </PIN>
    <PIN pinname="Count" visible="1">
    </PIN>
@@ -334,8 +334,38 @@
    <LINKPOINT x="2640" y="5355">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Mesh).v4p" id="25" nodename="Button (3d Mesh).v4p" systemname="Button (3d Mesh)">
-   <BOUNDS height="0" left="2790" top="3390" type="Node" width="0">
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\PhongDirectional.fx" id="1" nodename="PhongDirectional (EX9.Effect)" systemname="PhongDirectional (EX9.Effect)">
+   <BOUNDS height="0" left="405" top="6675" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="13665" left="5670" top="2490" type="Window" width="12555">
+   </BOUNDS>
+   <BOUNDS height="3600" left="405" top="6675" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Power" slicecount="1" values="50000">
+   </PIN>
+   <PIN pinname="Specular Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Technique" pintype="Input" slicecount="1" visible="-1" values="| TPhongDirectional|">
+   </PIN>
+   <PIN pinname="Color Transform" pintype="Input" slicecount="1" visible="-1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" slicecount="1" visible="-1" values="||">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" slicecount="1" visible="-1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Ambient Color" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Diffuse Color" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Layer 1" srcnodeid="1" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Mesh" srcnodeid="5" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Mesh).v4p" id="25" nodename="Button (3d Mesh)" systemname="Button (3d Mesh)">
+   <BOUNDS height="100" left="2790" top="3390" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="9195" left="7410" top="3570" type="Window" width="9000">
    </BOUNDS>
@@ -359,9 +389,9 @@
    </PIN>
    <PIN pinname="Transform Mesh">
    </PIN>
-   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
+   <PIN pinname="Mouse State" visible="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="19" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="25" srcpinname="Cursor Transform">
@@ -402,37 +432,7 @@
    <LINKPOINT x="3585" y="3000">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\effects\PhongDirectional.fx" id="1" nodename="PhongDirectional (EX9.Effect)" systemname="PhongDirectional (EX9.Effect)">
-   <BOUNDS height="0" left="405" top="6675" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="13665" left="5670" top="2490" type="Window" width="12555">
-   </BOUNDS>
-   <BOUNDS height="3600" left="405" top="6675" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Power" slicecount="1" values="50000">
-   </PIN>
-   <PIN pinname="Specular Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Technique" pintype="Input" slicecount="1" visible="-1" values="| TPhongDirectional|">
-   </PIN>
-   <PIN pinname="Color Transform" pintype="Input" slicecount="1" visible="-1" values="||">
-   </PIN>
-   <PIN pinname="Texture Transform" pintype="Input" slicecount="1" visible="-1" values="||">
-   </PIN>
-   <PIN pinname="Texture" pintype="Input" slicecount="1" visible="-1" values="||">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="1" dstpinname="Ambient Color" srcnodeid="7" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="1" dstpinname="Diffuse Color" srcnodeid="7" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="1" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
-   </LINK>
-   <LINK dstnodeid="22" dstpinname="Layer 1" srcnodeid="1" srcpinname="Layer">
-   </LINK>
-   <LINK dstnodeid="1" dstpinname="Mesh" srcnodeid="5" srcpinname="Mesh">
-   </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="26">
+   <NODE systemname="Mouse (System)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (System)" componentmode="Hidden" id="26">
    <BOUNDS type="Node" left="3255" top="2520" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">

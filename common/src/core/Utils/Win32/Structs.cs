@@ -167,4 +167,19 @@ namespace VVVV.Utils.Win32
             get { return ((LParam.ToInt32() & 0x1000000) >> 24) > 0; }
         }
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct TOUCHINPUT
+    {
+        public int x;
+        public int y;
+        public System.IntPtr hSource;
+        public int dwID;
+        public int dwFlags;
+        public int dwMask;
+        public int dwTime;
+        public System.IntPtr dwExtraInfo;
+        public int cxContact;
+        public int cyContact;
+    }
 }

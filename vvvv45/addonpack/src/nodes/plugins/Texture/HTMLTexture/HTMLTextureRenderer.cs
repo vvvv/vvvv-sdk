@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reactive.Linq;
 using CefGlue;
 using SlimDX.Direct3D9;
 using VVVV.Core;
@@ -17,6 +18,7 @@ using VVVV.PluginInterfaces.V2;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows.Forms;
+using VVVV.Utils.Win32;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -72,6 +74,8 @@ namespace VVVV.Nodes.Texture.HTML
 
         public void Dispose()
         {
+            UnsubscribeKeyboard();
+            UnsubscribeMouse();
             if (FBrowser != null)
             {
                 FBrowser.Close();
@@ -252,6 +256,82 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
+        private Mouse FNewMouse;
+        private IDisposable FMouseSubscription;
+        private int FMouseWheel;
+        public Mouse NewMouse 
+        {
+            get { return FNewMouse; }
+            set
+            {
+                if (FNewMouse != value)
+                {
+                    UnsubscribeMouse();
+                    FNewMouse = value;
+                    SubscribeMouse();
+                }
+            }
+        }
+
+        private void SubscribeMouse()
+        {
+            if (FNewMouse != null)
+            {
+                FMouseSubscription = FNewMouse.MouseNotifications
+                    .Subscribe(n =>
+                        {
+                            var x = (int)VMath.Map(n.Position.X, 0, n.ClientArea.Width, 0, FSize.Width, TMapMode.Clamp);
+                            var y = (int)VMath.Map(n.Position.Y, 0, n.ClientArea.Height, 0, FSize.Height, TMapMode.Clamp);
+                            switch (n.Kind)
+                            {
+                                case MouseNotificationKind.MouseDown:
+                                case MouseNotificationKind.MouseUp:
+                                    var mouseButtonNotification = n as MouseButtonNotification;
+                                    CefMouseButtonType cefButtons;
+                                    switch (mouseButtonNotification.Buttons)
+	                                {
+                                        case MouseButtons.Left:
+                                            cefButtons = CefMouseButtonType.Left;
+                                            break;
+                                        case MouseButtons.Middle:
+                                            cefButtons = CefMouseButtonType.Middle;
+                                            break;
+                                        case MouseButtons.Right:
+                                            cefButtons = CefMouseButtonType.Right;
+                                            break;
+                                        default:
+                                            cefButtons = CefMouseButtonType.Left;
+                                            break;
+	                                }
+                                    FBrowser.SendMouseClickEvent(x, y, cefButtons, n.Kind == MouseNotificationKind.MouseUp, 1);
+                                    break;
+                                case MouseNotificationKind.MouseMove:
+                                    FBrowser.SendMouseMoveEvent(x, y, false);
+                                    break;
+                                case MouseNotificationKind.MouseWheel:
+                                    var mouseWheel = n as MouseWheelNotification;
+                                    var wheel = FMouseWheel;
+                                    FMouseWheel += mouseWheel.WheelDelta;
+                                    var delta = (int)Math.Round((float)(FMouseWheel - wheel) / Const.WHEEL_DELTA);
+                                    FBrowser.SendMouseWheelEvent(x, y, 0, mouseWheel.WheelDelta);
+                                    break;
+                                default:
+                                    throw new NotImplementedException();
+                            }
+                        }
+                );
+            }
+        }
+
+        private void UnsubscribeMouse()
+        {
+            if (FMouseSubscription != null)
+            {
+                FMouseSubscription.Dispose();
+                FMouseSubscription = null;
+            }
+        }
+
         private MouseState FMouse;
         public MouseState Mouse
         {
@@ -294,6 +374,66 @@ namespace VVVV.Nodes.Texture.HTML
                     }
                     FMouse = value;
                 }
+            }
+        }
+
+        private Keyboard FNewKeyboard;
+        private IDisposable FKeyboardSubscription;
+
+        public Keyboard NewKeyboard
+        {
+            get { return FNewKeyboard; }
+            set
+            {
+                if (value != FNewKeyboard)
+                {
+                    UnsubscribeKeyboard();
+                    FNewKeyboard = value;
+                    SubscribeKeyboard();
+                }
+            }
+        }
+
+        private void SubscribeKeyboard()
+        {
+            if (FNewKeyboard != null)
+            {
+                FKeyboardSubscription = FNewKeyboard.KeyNotifications
+                    .Subscribe(n =>
+                        {
+                            CefKeyInfo cefKey;
+                            var modifiers = (CefHandlerKeyEventModifiers)((int)(FNewKeyboard.Modifiers) >> 16);
+                            switch (n.Kind)
+                            {
+                                case KeyNotificationKind.KeyDown:
+                                    var keyDown = n as KeyDownNotification;
+                                    cefKey = new CefKeyInfo((int)keyDown.KeyCode, false, false);
+                                    FBrowser.SendKeyEvent(CefKeyType.KeyDown, cefKey, modifiers);
+                                    break;
+                                case KeyNotificationKind.KeyPress:
+                                    var keyPress = n as KeyPressNotification;
+                                    cefKey = new CefKeyInfo((int)keyPress.KeyChar, false, false);
+                                    FBrowser.SendKeyEvent(CefKeyType.Char, cefKey, modifiers);
+                                    break;
+                                case KeyNotificationKind.KeyUp:
+                                    var keyUp = n as KeyUpNotification;
+                                    cefKey = new CefKeyInfo((int)keyUp.KeyCode, false, false);
+                                    FBrowser.SendKeyEvent(CefKeyType.KeyUp, cefKey, modifiers);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                );
+            }
+        }
+
+        private void UnsubscribeKeyboard()
+        {
+            if (FKeyboardSubscription != null)
+            {
+                FKeyboardSubscription.Dispose();
+                FKeyboardSubscription = null;
             }
         }
 

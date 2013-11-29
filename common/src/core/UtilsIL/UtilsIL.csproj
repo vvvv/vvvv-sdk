@@ -9,9 +9,12 @@
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Utils</RootNamespace>
     <AssemblyName>VVVV.UtilsIL</AssemblyName>
+    <AssemblyDescription>The VVVV Utility Library</AssemblyDescription>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DocumentationFile>$(OutputPath)\VVVV.UtilsIL.xml</DocumentationFile>
     <NoWarn>1591 1587</NoWarn>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\vvvv45\src\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -26,6 +29,7 @@
     <Compile Include="Memory.cs" />
     <Compile Include="Memory.il" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -131,4 +135,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

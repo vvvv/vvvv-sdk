@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(MSBuildThisFileDirectory)..\vvvv.exe</StartProgram>
+    <BuildingInsideVisualStudio Condition=" '$(BuildingInsideVisualStudio)' == '' ">false</BuildingInsideVisualStudio>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'x64' " />
+  
+  <!-- Build -->
+  <PropertyGroup>
+    <CoreOutputDir>$(MSBuildThisFileDirectory)..\lib\core\</CoreOutputDir>
+    <PluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</PluginsOutputDir>
+    <EditorsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\editors\</EditorsOutputDir>
+    
+    <BuildDependsOn>CoreBuild</BuildDependsOn>
+    <RebuildDependsOn>Clean;Build</RebuildDependsOn>
+    <CleanDependsOn>$(CleanDependsOn)</CleanDependsOn>
+  </PropertyGroup>
+
+  <!-- Zip -->
+  <!-- We used the Zip task from this project. Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
+  <!--<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>-->
+  <PropertyGroup>
+    <VVVVExe>$(MSBuildThisFileDirectory)..\vvvv.exe</VVVVExe>
+    <SevenZip>$(ProgramFiles)\7-Zip\7z.exe</SevenZip>
+    <ZipSteps>_PreZip_;_Zip_;_PostZip_</ZipSteps>
+    <ZipOutputDir>$(MSBuildThisFileDirectory)..\..\build\vvvv45\</ZipOutputDir>
+    <TempBaseDir>$(ZipOutputDir)temp\</TempBaseDir>
+    
+    <!-- Override these -->
+    <ZipFileNamePrefix />
+    <ZipInclude />
+    <ZipExclude />
+    <ZipReadOnlyFiles />
+    <ZipHiddenFiles />
+  </PropertyGroup>
+
+  <!-- ARToolKitPlus -->
+  <PropertyGroup>
+    <ARToolKitPlus>thirdparty\ARToolKitPlus\</ARToolKitPlus>
+    <ARToolKitPlusOutputPath>$(ARToolKitPlus)lib\Win32\</ARToolKitPlusOutputPath>
+    <ARToolKitPlusLibFile>$(ARToolKitPlusOutputPath)\libARToolKitPlus.a</ARToolKitPlusLibFile>
+    <ARToolKitPlusCompilerOptions>-O2 -W -fexceptions -DWIN32 -DNDEBUG -D_MBCS -D_LIB -DLIBRPP_STATIC</ARToolKitPlusCompilerOptions>
+    <ARToolKitPlusCompilerIncludes>-I$(ARToolKitPlus)include</ARToolKitPlusCompilerIncludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ARToolKitPlusSourceFiles Include="$(ARToolKitPlus)\src\**\*.cpp"
+                              Exclude="$(ARToolKitPlus)\src\**\MATLAB\*.cpp" />
+    <ARToolKitPlusObjectFiles Include="@(ARToolKitPlusSourceFiles->'%(RootDir)%(Directory)%(Filename).o')" />
+  </ItemGroup>
+</Project>

@@ -108,10 +108,6 @@ namespace VVVV.Utils.SlimDX
 			return t;
 		}
 		
-		//memcopy method
-		[DllImport("msvcrt.dll", EntryPoint="memcpy", SetLastError=false)]
-        static extern void CopyMemory(IntPtr dest, IntPtr src, int size);
-		
 		/// <summary>
 		/// Copies all pixels of the bitmap into the texture.
 		/// no checks are done, make sure the pixel count of the bitmap and texture matches
@@ -125,14 +121,14 @@ namespace VVVV.Utils.SlimDX
 				
 			if(rect.Pitch == data.Stride)
 			{
-				CopyMemory(rect.Data.DataPointer, data.Scan0, data.Stride * data.Height);
+				Memory.Copy(rect.Data.DataPointer, data.Scan0, (uint)(data.Stride * data.Height));
 			}
 			else
 			{
 				//copy full lines
 				for (int i = 0; i < data.Height; i++) 
 				{
-					CopyMemory(rect.Data.DataPointer.Move(rect.Pitch * i), data.Scan0.Move(data.Stride * i), data.Stride);
+                    Memory.Copy(rect.Data.DataPointer.Move(rect.Pitch * i), data.Scan0.Move(data.Stride * i), (uint)data.Stride);
 				}
 			}
 			
