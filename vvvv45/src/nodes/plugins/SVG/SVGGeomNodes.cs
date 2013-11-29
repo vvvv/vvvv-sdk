@@ -76,8 +76,9 @@ namespace VVVV.Nodes
 				}
 			}
 			
-			//changed hack
-			FOutput.AssignFrom(FOutput);
+			//out pin changed hack
+			if(FIDIn.IsChanged || FClassIn.IsChanged)
+				FOutput[0] = FOutput[0];
 		}
 	}
 	
@@ -249,10 +250,10 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		
-		[Input("Position", Order = 11, Visibility = PinVisibility.OnlyInspector)]
+		[Input("Position", Order = 6, Visibility = PinVisibility.OnlyInspector)]
 		protected IDiffSpread<Vector2> FPositionIn;
 		
-		[Input("Size", DefaultValues = new double[] { 1, 1 }, Order = 12, Visibility = PinVisibility.OnlyInspector)]
+		[Input("Size", DefaultValues = new double[] { 1, 1 }, Order = 8, Visibility = PinVisibility.OnlyInspector)]
 		protected IDiffSpread<Vector2> FSizeIn;
 		
 		#endregion fields & pins
@@ -272,7 +273,7 @@ namespace VVVV.Nodes
 	            Help = "Renders a rectangle into a Renderer (SVG)", 
 	            Tags = "rectangle, square, primitive, 2d, vector")]
 	#endregion PluginInfo
-	public class SvgRectNode : SVGVisualElementFillNode<SvgRectangle>
+	public class SvgRectNode : SVGVisualElementFillXYWH<SvgRectangle>
 	{
 	    #pragma warning disable 649
 		[Input("Corner Radius ", Order = 23, MinValue = 0, MaxValue = 1)]
@@ -291,11 +292,15 @@ namespace VVVV.Nodes
 		
 		protected override void CalcGeometry(SvgRectangle elem, Vector2 trans, Vector2 scale, int slice)
 		{
-			elem.Transforms.Add(new SvgTranslate(-scale.X * 0.5f, -scale.Y * 0.5f));
-			elem.X = 0;
-			elem.Y = 0;
-			elem.Width = (float)scale.X;
-			elem.Height = (float)scale.Y;
+			
+			var pos = FPositionIn[slice];
+			var size = FSizeIn[slice];
+			elem.X = pos.X;
+			elem.Y = pos.Y;
+			elem.Width = scale.X * size.X;
+			elem.Height = scale.Y * size.Y;
+			
+			elem.Transforms.Add(new SvgTranslate(-elem.Width * 0.5f, -elem.Height * 0.5f));
 			
 			elem.CornerRadiusX = Math.Max(FCornerRadiusIn[slice].X * elem.Width * 0.5f, 0);
 			elem.CornerRadiusY = Math.Max(FCornerRadiusIn[slice].Y * elem.Height * 0.5f, 0);
@@ -309,7 +314,7 @@ namespace VVVV.Nodes
 	            Help = "Renders an ellipse into a Renderer (SVG)", 
 	            Tags = "ellipse, primitive, 2d, vector")]
 	#endregion PluginInfo
-	public class SvgEllipseNode : SVGVisualElementFillNode<SvgEllipse>
+	public class SvgEllipseNode : SVGVisualElementFillXYWH<SvgEllipse>
 	{
 		protected override SvgEllipse CreateElement()
 		{
@@ -318,8 +323,12 @@ namespace VVVV.Nodes
 		
 		protected override void CalcGeometry(SvgEllipse elem, Vector2 trans, Vector2 scale, int slice)
 		{
-			elem.RadiusX = scale.X*0.5f;
-			elem.RadiusY = scale.Y*0.5f;
+			var pos = FPositionIn[slice];
+			var size = FSizeIn[slice];
+			elem.CenterX = pos.X;
+			elem.CenterY = pos.Y;
+			elem.RadiusX = scale.X*0.5f*size.X;
+			elem.RadiusY = scale.Y*0.5f*size.Y;
 		}
 	}
 	
@@ -823,8 +832,8 @@ namespace VVVV.Nodes
 		[Output("Element")]
 		ISpread<SvgElement> FElementsOut;
 		
-		[Output("Name")]
-		ISpread<string> FElementNameOut;
+		[Output("ID")]
+		ISpread<string> FElementIDOut;
 		
 		[Output("Class")]
 		ISpread<string> FElementClassOut;
@@ -843,7 +852,7 @@ namespace VVVV.Nodes
 				FElementsOut.SliceCount = 0;
 				FElementTypeOut.SliceCount = 0;
 				FElementLevelOut.SliceCount = 0;
-				FElementNameOut.SliceCount = 0;
+				FElementIDOut.SliceCount = 0;
 				FElementClassOut.SliceCount = 0;
 				
 				for(int i=0; i<SpreadMax; i++)
@@ -860,7 +869,7 @@ namespace VVVV.Nodes
 			FElementsOut.Add(elem);
 			FElementTypeOut.Add(elem.GetType().Name.Replace("Svg", ""));
 			FElementLevelOut.Add(level);
-			FElementNameOut.Add(elem.ID);
+			FElementIDOut.Add(elem.ID);
 			var className = "";
 			if(elem.CustomAttributes.ContainsKey("class"))
 				className = elem.CustomAttributes["class"];
