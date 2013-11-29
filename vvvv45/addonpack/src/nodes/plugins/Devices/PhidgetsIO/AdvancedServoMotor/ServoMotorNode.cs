@@ -20,8 +20,8 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "ServoMotor",
 	            Category = "Devices",
                 Version = "Phidget",
-	            Help = "Wrapper for the Phidget Servo Motor Controllers",
-	            Tags = "Controller",
+	            Help = "Controls the Phidget Servo Motor Controllers",
+	            Tags = "controller",
                 Author = "Phlegma",
                 AutoEvaluate=true
 )]
