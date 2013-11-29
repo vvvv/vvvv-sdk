@@ -20,7 +20,7 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "LED",
                 Category = "Devices",
                 Version = "Phidget",
-                Help = "Wrapper for the Phidget LED 64 Advanced board",
+                Help = "controls the Phidget LED 64 Advanced board",
                 Tags = "Controller",
                 Author = "Phlegma",
                 AutoEvaluate = true

@@ -18,7 +18,7 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Encoder",
                 Category = "Devices",
                 Version = "Phidget",
-                Help = "Wrapper for the Phidget Encoders",
+                Help = "sends the movement and coordiantes of the magnetic Phidget Encoders",
                 Tags = "Controller, HighSpeed",
                 Author = "Phlegma",
                 AutoEvaluate = true

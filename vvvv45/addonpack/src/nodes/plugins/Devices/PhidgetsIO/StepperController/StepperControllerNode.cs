@@ -19,7 +19,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "StepperController",
 	            Category = "Devices",
                 Version = "Phidget",
-                Help = "Wrapper for the Phidget Stepper Unipolar & Bipolar",
+                Help = "controls 4 stepper unipolar with the PhidgetStepper 4-Motor Unipolar Controller or 1 stepper with the PhidgetStepper Bipolar 1-Motor with current limit",
 	            Tags = "Controller, Motor",
                 Author = "Phlegma, woei")]
 	#endregion PluginInfo

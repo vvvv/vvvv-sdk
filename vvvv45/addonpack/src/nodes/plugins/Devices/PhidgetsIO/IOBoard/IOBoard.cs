@@ -20,7 +20,7 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "IO",
                 Category = "Devices",
                 Version = "Phidget",
-                Help = "Wrapper for the Phidget IOBoards",
+                Help = "controls the Phidget Interface Kits",
                 Tags = "Controller, InterfaceKit",
                 Author = "Phlegma",
                 AutoEvaluate = true
