@@ -374,6 +374,9 @@ namespace VVVV.Nodes
 		
 		[Import]
 		INode FThisNode;
+		
+		[Import]
+		ILogger FLogger;
 		#pragma warning restore
 		
 		#endregion fields & pins
@@ -396,6 +399,12 @@ namespace VVVV.Nodes
 		{
 			FResized = true;
 		}
+		
+		void LogIDFix(SvgElement elem, string oldID, string newID)
+		{
+			var msg = "ID of " + elem + " was changed from " + oldID + " to " + newID;
+			FLogger.Log(LogType.Warning, msg);
+		}
  
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
@@ -410,7 +419,7 @@ namespace VVVV.Nodes
 				FSVGDoc = new SvgDocument();
 				foreach(var elem in FSVGIn)
 				{
-					if(elem != null) FSVGDoc.Children.Add(elem);
+					if(elem != null) FSVGDoc.Children.AddAndFixID(elem, true, true, LogIDFix);
 				}
 				
 				FSVGDoc.Transforms = new SvgTransformCollection();
