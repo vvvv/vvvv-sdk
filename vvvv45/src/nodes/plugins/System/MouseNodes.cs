@@ -176,6 +176,7 @@ namespace VVVV.Nodes.Input
             var cycleMode = CycleModeIn.SliceCount > 0 ? CycleModeIn[0] : CycleMode.NoCycle;
             var mouseDevices = Device.GetDevices()
                 .Where(d => d.DeviceType == DeviceType.Mouse)
+                .OrderBy(d => d, new DeviceComparer())
                 .ToList();
             MouseOut.SliceCount = dataSource == DataSource.Raw
                 ? mouseDevices.Count

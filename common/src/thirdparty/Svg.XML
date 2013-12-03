@@ -165,6 +165,12 @@
             </summary>
             <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> that should have transforms removed.</param>
         </member>
+        <member name="M:Svg.SvgElement.FixID(System.String)">
+            <summary>
+            Only used by the ID Manager
+            </summary>
+            <param name="newID"></param>
+        </member>
         <member name="M:Svg.SvgElement.AddElement(Svg.SvgElement,System.Int32)">
             <summary>
             Called by the underlying <see cref="T:Svg.SvgElement"/> when an element has been added to the
@@ -2045,13 +2051,23 @@
             </summary>
             <param name="element">The <see cref="T:Svg.SvgElement"/> to be managed.</param>
         </member>
+        <member name="M:Svg.SvgElementIdManager.AddAndFixID(Svg.SvgElement,System.Boolean,System.Action{Svg.SvgElement,System.String,System.String})">
+            <summary>
+            Adds the specified <see cref="T:Svg.SvgElement"/> for ID management. 
+            And can auto fix the ID if it already exists or it starts with a number.
+            </summary>
+            <param name="element">The <see cref="T:Svg.SvgElement"/> to be managed.</param>
+            <param name="autoFixID">Pass true here, if you want the ID to be fixed</param>
+            <param name="logElementOldIDNewID">If not null, the action is called before the id is fixed</param>
+            <returns>true, if ID was altered</returns>
+        </member>
         <member name="M:Svg.SvgElementIdManager.Remove(Svg.SvgElement)">
             <summary>
             Removed the specified <see cref="T:Svg.SvgElement"/> from ID management.
             </summary>
             <param name="element">The <see cref="T:Svg.SvgElement"/> to be removed from ID management.</param>
         </member>
-        <member name="M:Svg.SvgElementIdManager.EnsureValidId(System.String)">
+        <member name="M:Svg.SvgElementIdManager.EnsureValidId(System.String,System.Boolean)">
             <summary>
             Ensures that the specified ID is valid within the containing <see cref="T:Svg.SvgDocument"/>.
             </summary>
