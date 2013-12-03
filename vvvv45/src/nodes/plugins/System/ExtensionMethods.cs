@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reactive.Linq;
 using System.Windows.Forms;
+using SharpDX.RawInput;
 
 namespace VVVV.Nodes.Input
 {
@@ -40,6 +41,13 @@ namespace VVVV.Nodes.Input
                 )
                 .Where(keyCode => keyCode != Keys.None)
                 .ToList();
+        }
+
+        public static string GetClassCode(this DeviceInfo deviceInfo)
+        {
+            var deviceName = deviceInfo.DeviceName;
+            var indexOfHash = deviceName.IndexOf('#');
+            return deviceName.Substring(4, indexOfHash - 4);
         }
     }
 }

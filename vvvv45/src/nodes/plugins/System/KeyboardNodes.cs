@@ -108,6 +108,7 @@ namespace VVVV.Nodes.Input
         {
             var keyboardDevices = Device.GetDevices()
                 .Where(d => d.DeviceType == DeviceType.Keyboard)
+                .OrderBy(d => d, new DeviceComparer())
                 .ToList();
             KeyboardOut.SliceCount = keyboardDevices.Count;
             for (int i = 0; i < keyboardDevices.Count; i++)
