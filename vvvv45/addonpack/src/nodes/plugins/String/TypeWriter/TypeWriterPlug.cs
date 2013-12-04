@@ -79,6 +79,7 @@ namespace TypeWriter
 		private string FNewlineSymbol = Environment.NewLine;
 		private Dictionary<uint, double> FBufferedCommands = new Dictionary<uint, double>();
 		private Dictionary<string, double> FBufferedKeys = new Dictionary<string, double>();
+		//private KeyboardState FLastKeyboardState = KeyboardState.Empty;
         private Keyboard FKeyboard;
         private IDisposable FKeyboardSubscription;
 		
