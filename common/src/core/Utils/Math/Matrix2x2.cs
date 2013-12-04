@@ -40,6 +40,23 @@ namespace VVVV.Utils.VMath
         /// </summary>
         public double d;
 
+        [DataMember]
+        public double[] abcd
+        {
+            get
+            {
+                double[] l = { a, b, c, d};
+                return l;
+            }
+            set
+            {
+                a = value[0];
+                b = value[1];
+                c = value[2];
+                d = value[3];
+            }
+        }
+        
         #endregion data fields
 
         #region constructors

@@ -6,10 +6,11 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-
+using System.Runtime.Serialization;
 using VVVV.Utils.VMath;
 
 /// <summary>
@@ -23,6 +24,7 @@ namespace VVVV.Utils.VColor
 	/// Aswell as implicit casts from and to Vector4D.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
+    [DataContract]
 	public struct RGBAColor
 	{
 		#region data fields
@@ -30,21 +32,38 @@ namespace VVVV.Utils.VColor
 		/// <summary>
 		/// The Red data field
 		/// </summary>
-		public double R;
+        public double R;
 		/// <summary>
 		/// The Green data field
 		/// </summary>
-		public double G;
+        public double G;
 		/// <summary>
 		/// The Blue data field
 		/// </summary>
-		public double B;
+        public double B;
 		/// <summary>
 		/// The Alpha data field
 		/// </summary>
-		public double A;
+        public double A;
 		
-		#endregion data fields
+        [DataMember]
+        public double[] RGBA
+        {
+            get
+            {
+                double[] l = { R, G, B, A };
+                return l;
+            }
+            set
+            {
+                R = value[0];
+                G = value[1];
+                B = value[2];
+                A = value[3];
+            }
+        }
+        
+        #endregion data fields
 		
 		#region constructor, properties
 		

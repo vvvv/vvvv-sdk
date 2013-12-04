@@ -89,7 +89,38 @@ namespace VVVV.Utils.VMath
 		/// </summary>
 		public double m44;
 		
-		#endregion data fields
+        [DataMember]
+        public double[] matrix
+        {
+            get
+            {
+                double[] l = { m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44 };
+                return l;
+            }
+            set
+            {
+                m11 = value[ 0];
+                m12 = value[ 1];
+                m13 = value[ 2];
+                m14 = value[ 3];
+
+                m21 = value[ 4];
+                m22 = value[ 5];
+                m23 = value[ 6];
+                m24 = value[ 7];
+
+                m31 = value[ 8];
+                m32 = value[ 9];
+                m33 = value[10];
+                m34 = value[11];
+
+                m41 = value[12];
+                m42 = value[13];
+                m43 = value[14];
+                m44 = value[15];
+            }
+        }
+        #endregion data fields
 						  
 		#region constructors
 		
@@ -197,7 +228,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Get/Set the 1. row as 4d-vector
 		/// </summary>
-		public Vector4D row1
+        public Vector4D row1
 		{
 			get
 			{
@@ -215,7 +246,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Get/Set the 2. row as 4d-vector
 		/// </summary>
-		public Vector4D row2
+        public Vector4D row2
 		{
 			get
 			{
@@ -233,7 +264,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Get/Set the 3. row as 4d-vector
 		/// </summary>
-		public Vector4D row3
+        public Vector4D row3
 		{
 			get
 			{
@@ -251,7 +282,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Get/Set the 4. row as 4d-vector
 		/// </summary>
-		public Vector4D row4
+        public Vector4D row4
 		{
 			get
 			{
@@ -270,7 +301,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Get/Set the 1. column as 4d-vector
 		/// </summary>
-		public Vector4D col1
+        public Vector4D col1
 		{
 			get
 			{
@@ -288,7 +319,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Get/Set the 2. column as 4d-vector
 		/// </summary>
-		public Vector4D col2
+        public Vector4D col2
 		{
 			get
 			{
