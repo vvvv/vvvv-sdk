@@ -207,14 +207,10 @@ namespace TypeWriter
 		{
 			var newPos = Math.Min(FText.Length, FCursorCharPos + steps);
 			//if cursor lands on an \r and the next symbol is an \n make sure to step one more
-			try
+            if (newPos >= 0 && newPos < FText.Length)
 			{
 				if (FText[newPos] == '\n' && FText[newPos - 1] == '\r')
 					newPos += 1;
-			}
-			catch
-			{
-				//FText[newPos] may access out of range char..nevermind
 			}
 			
 			FCursorCharPos = Math.Min(FText.Length, newPos);
@@ -224,14 +220,10 @@ namespace TypeWriter
 		{
 			var newPos = Math.Max(0, FCursorCharPos - 1);
 			//if cursor lands on an \n and the previouse symbol is an \r make sure to step one more
-			try
+            if (newPos >= 0 && newPos < FText.Length)
 			{
 				if (FText[newPos] == '\n' && FText[newPos - 1] == '\r')
 					newPos -= 1;
-			}
-			catch
-			{
-				//FText[newPos] may access out of range char..nevermind
 			}
 			
 			FCursorCharPos = Math.Max(0, newPos);
