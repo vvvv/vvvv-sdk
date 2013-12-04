@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("TweenerShaper")]
-[assembly: AssemblyDescription("Tweener Wave Shaper")]
+[assembly: AssemblyTitle("SpreadTable")]
+[assembly: AssemblyDescription("Table of values")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("VVVVestbam")]
-[assembly: AssemblyProduct("TweenerShaper")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("SpreadTable")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
