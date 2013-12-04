@@ -96,5 +96,27 @@ namespace VVVV.Utils.Win32
             }
             return modifiers;
         }
+
+        public static IEnumerable<Keys> ReplaceModifierKeys(this IEnumerable<Keys> keys)
+        {
+            foreach (var key in keys)
+            {
+                switch (key)
+                {
+                    case Keys.Shift:
+                        yield return Keys.ShiftKey;
+                        break;
+                    case Keys.Control:
+                        yield return Keys.ControlKey;
+                        break;
+                    case Keys.Alt:
+                        yield return Keys.Menu;
+                        break;
+                    default:
+                        yield return key;
+                        break;
+                }
+            }
+        }
     }
 }
