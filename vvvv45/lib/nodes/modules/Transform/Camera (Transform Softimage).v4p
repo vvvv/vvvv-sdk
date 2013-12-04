@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="A:\v\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" locked="0">
    <BOUNDS height="13170" left="8460" top="2235" type="Window" width="17160">
    </BOUNDS>
    <INFO author="vvvv group" description="move your camera with keyboard and mouse like in the 3d modeller &quot;Softimage&quot;" tags="3d, perspective, modelling, tool">
@@ -40,7 +40,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="100" nodename="KeyMatch (String)" systemname="Match (String)">
+   <NODE id="100" nodename="KeyMatch (String)" systemname="KeyMatch (String)">
    <BOUNDS height="0" left="9750" top="495" type="Node" width="0">
    </BOUNDS>
    <PIN encoded="0" pinname="Key Match" slicecount="1" values="|o, z, p, r|">
@@ -1494,7 +1494,43 @@
    <PIN pinname="Enum" visible="1">
    </PIN>
    </NODE>
+   <NODE id="-2" nodename="Mouse (System Global)" systemname="Mouse (System Global)">
+   <BOUNDS height="0" left="7065" top="1185" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Cycle Mode" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="103" dstpinname="Input" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="104" dstpinname="Input" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="102" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="Left Button">
+   </LINK>
+   <LINK dstnodeid="102" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="Middle Button">
+   </LINK>
+   <LINK dstnodeid="98" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="Left Button">
+   </LINK>
+   <LINK dstnodeid="98" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="Right Button">
+   </LINK>
+   <LINK dstnodeid="84" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="Right Button">
+   </LINK>
+   <LINK dstnodeid="72" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="Left Button">
+   </LINK>
+   <LINK dstnodeid="72" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="Middle Button">
+   </LINK>
+   <LINK dstnodeid="72" dstpinname="Input 3" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="Right Button">
+   </LINK>
+   <LINK dstnodeid="51" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="-2" srcpinname="Left Button">
+   </LINK>
+   <LINK dstnodeid="41" dstpinname="Input 1" srcnodeid="-2" srcpinname="Left Button">
+   </LINK>
+   <LINK dstnodeid="41" dstpinname="Input 2" srcnodeid="-2" srcpinname="Middle Button">
+   </LINK>
+   <LINK dstnodeid="41" dstpinname="Input 3" srcnodeid="-2" srcpinname="Right Button">
+   </LINK>
    <LINK dstnodeid="105" dstpinname="Ord Value" srcnodeid="40" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="-2" dstpinname="Cycle Mode" srcnodeid="105" srcpinname="Enum">
    </LINK>
    <LINK dstnodeid="6" dstpinname="Update" srcnodeid="41" srcpinname="Output">
    <LINKPOINT x="1350" y="1740">
@@ -1506,68 +1542,12 @@
    <LINKPOINT x="1260" y="105">
    </LINKPOINT>
    </LINK>
-   <NODE id="20" nodename="Keyboard (System Window)" systemname="Keyboard (System Window Legacy)">
+   <NODE id="20" nodename="Keyboard (System Window)" systemname="Keyboard (System Window)">
    <BOUNDS height="0" left="9750" top="75" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Keyboard Output" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="100" dstpinname="Input" srcnodeid="20" srcpinname="Keyboard Output">
-   </LINK>
-   <NODE systemname="Mouse (System Global)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (System Global)" componentmode="Hidden" id="107">
-   <BOUNDS type="Node" left="7005" top="1170" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Cycle Mode" visible="1">
-   </PIN>
-   <PIN pinname="PositionXY" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="105" srcpinname="Enum" dstnodeid="107" dstpinname="Cycle Mode">
-   </LINK>
-   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="108">
-   <BOUNDS type="Node" left="6450" top="1935" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="107" srcpinname="PositionXY" dstnodeid="108" dstpinname="XY" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="X" dstnodeid="104" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="Y" dstnodeid="103" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Left Button" dstnodeid="72" dstpinname="Input 1" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Middle Button" dstnodeid="72" dstpinname="Input 2" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Right Button" dstnodeid="72" dstpinname="Input 3" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Right Button" dstnodeid="84" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Right Button" dstnodeid="98" dstpinname="Input 2" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Middle Button" dstnodeid="102" dstpinname="Input 2" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Left Button" dstnodeid="102" dstpinname="Input 1" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Left Button" dstnodeid="51" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Left Button" dstnodeid="98" dstpinname="Input 1" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Left Button" dstnodeid="41" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Middle Button" dstnodeid="41" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Right Button" dstnodeid="41" dstpinname="Input 3">
    </LINK>
    </PATCH>

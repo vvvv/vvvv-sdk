@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\EX9\Cursor (DX9).v4p">
-   <BOUNDS height="6000" left="7485" top="4860" type="Window" width="9000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.1.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\EX9\Cursor (DX9).v4p">
+   <BOUNDS height="12330" left="7485" top="4860" type="Window" width="15360">
    </BOUNDS>
    <NODE id="35" nodename="Quad (DX9)" systemname="Quad (DX9)">
    <BOUNDS height="0" left="6585" top="8070" type="Node" width="0">
@@ -186,6 +186,28 @@
    </NODE>
    <LINK dstnodeid="18" dstpinname="Input 2" srcnodeid="24" srcpinname="Y Output Value">
    </LINK>
+   <NODE id="17" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
+   <BOUNDS height="0" left="1695" top="4440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="XYZ" srcnodeid="19" srcpinname="Output">
+   </LINK>
+   <NODE id="16" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
+   <BOUNDS height="0" left="2490" top="4440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
    <NODE id="15" nodename="Points2Vector (2d)" systemname="Points2Vector (2d)">
    <BOUNDS height="0" left="2145" top="5730" type="Node" width="0">
    </BOUNDS>
@@ -223,17 +245,19 @@
    </PIN>
    <PIN pinname="Spread Count" pintype="Input" slicecount="1" visible="0" values="4">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 3" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 3" visible="1">
    </PIN>
-   <PIN pinname="Input 4" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 4" visible="1">
    </PIN>
    </NODE>
+   <LINK dstnodeid="14" dstpinname="Input 1" srcnodeid="17" srcpinname="X">
+   </LINK>
    <LINK dstnodeid="15" dstpinname="X1" srcnodeid="14" srcpinname="Output 1">
    </LINK>
    <NODE id="13" nodename="Stallone (Spreads)" systemname="Stallone (Spreads)">
@@ -247,15 +271,15 @@
    </PIN>
    <PIN pinname="Spread Count" pintype="Input" slicecount="1" visible="0" values="4">
    </PIN>
-   <PIN pinname="Input 1" slicecount="1" visible="1" values="0">
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="0.00000">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 3" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 3" visible="1">
    </PIN>
-   <PIN pinname="Input 4" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 4" visible="1">
    </PIN>
    </NODE>
    <NODE id="12" nodename="Stallone (Spreads)" systemname="Stallone (Spreads)">
@@ -269,15 +293,15 @@
    </PIN>
    <PIN pinname="Spread Count" pintype="Input" slicecount="1" visible="0" values="4">
    </PIN>
-   <PIN pinname="Input 1" slicecount="1" visible="1" values="0">
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="0.00000">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 3" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 3" visible="1">
    </PIN>
-   <PIN pinname="Input 4" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 4" visible="1">
    </PIN>
    </NODE>
    <NODE id="11" nodename="Stallone (Spreads)" systemname="Stallone (Spreads)">
@@ -291,18 +315,48 @@
    </PIN>
    <PIN pinname="Spread Count" pintype="Input" slicecount="1" visible="0" values="4">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 3" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 3" visible="1">
    </PIN>
-   <PIN pinname="Input 4" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 4" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="15" dstpinname="X2" srcnodeid="12" srcpinname="Output 1">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Input 1" srcnodeid="17" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input 1" srcnodeid="16" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input 1" srcnodeid="17" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input 2" srcnodeid="16" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Input 2" srcnodeid="17" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input 2" srcnodeid="16" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input 2" srcnodeid="16" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input 3" srcnodeid="16" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Input 3" srcnodeid="16" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input 3" srcnodeid="17" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input 3" srcnodeid="16" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input 4" srcnodeid="17" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Input 4" srcnodeid="16" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input 4" srcnodeid="17" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input 4" srcnodeid="17" srcpinname="Y">
    </LINK>
    <LINK dstnodeid="15" dstpinname="Y1" srcnodeid="13" srcpinname="Output 1">
    </LINK>
@@ -394,6 +448,24 @@
    </NODE>
    <INFO author="vvvv group" description="draws a cross-shaped cursor into the ex9 renderer. it also can draw a selection rectangle." tags="GUI, ex9, editor, modelling">
    </INFO>
+   <NODE systemname="MouseState (System Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseState (System Split)" componentmode="Hidden" id="36">
+   <BOUNDS type="Node" left="3870" top="1020" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="37" systemname="IOBox (Node)">
    <BOUNDS type="Node" left="3855" top="360" width="0" height="0">
    </BOUNDS>
@@ -406,8 +478,10 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
+   <LINK srcnodeid="37" srcpinname="Output Node" dstnodeid="36" dstpinname="Input">
+   </LINK>
    <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="38">
-   <BOUNDS type="Node" left="6405" top="3915" width="100" height="100">
+   <BOUNDS type="Node" left="3870" top="1755" width="100" height="100">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -416,7 +490,15 @@
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
+   <LINK srcnodeid="36" srcpinname="X" dstnodeid="38" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Y" dstnodeid="38" dstpinname="Y">
+   </LINK>
    <LINK srcnodeid="38" srcpinname="XYZ" dstnodeid="32" dstpinname="XYZ">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="XYZ" dstnodeid="19" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="XYZ" dstnodeid="16" dstpinname="XYZ">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="39" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="7815" top="6075" width="0" height="0">
@@ -550,6 +632,12 @@
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
+   <LINK srcnodeid="36" srcpinname="Left Button" dstnodeid="55" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Middle Button" dstnodeid="55" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Right Button" dstnodeid="55" dstpinname="Z">
+   </LINK>
    <LINK srcnodeid="55" srcpinname="XYZ" dstnodeid="54" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="54" srcpinname="Output" dstnodeid="20" dstpinname="Input">
@@ -557,6 +645,8 @@
    <LINK srcnodeid="54" srcpinname="Output" dstnodeid="18" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="54" srcpinname="Output" dstnodeid="25" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Output Node" dstnodeid="36" dstpinname="Mouse">
    </LINK>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="56">
    <BOUNDS type="Node" left="6315" top="4770" width="100" height="100">
@@ -589,105 +679,5 @@
    <LINK srcnodeid="25" srcpinname="Output" dstnodeid="57" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="57" srcpinname="Output" dstnodeid="26" dstpinname="Alpha">
-   </LINK>
-   <NODE systemname="MouseStates (System Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (System Split)" componentmode="Hidden" id="58">
-   <BOUNDS type="Node" left="3840" top="1095" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="PositionXY" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="37" srcpinname="Output Node" dstnodeid="58" dstpinname="Mouse">
-   </LINK>
-   <NODE id="17" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
-   <BOUNDS height="0" left="1695" top="4440" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="14" dstpinname="Input 1" srcnodeid="17" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="13" dstpinname="Input 1" srcnodeid="17" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="Input 1" srcnodeid="17" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="13" dstpinname="Input 2" srcnodeid="17" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="12" dstpinname="Input 3" srcnodeid="17" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="14" dstpinname="Input 4" srcnodeid="17" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="12" dstpinname="Input 4" srcnodeid="17" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="Input 4" srcnodeid="17" srcpinname="Y">
-   </LINK>
-   <NODE id="16" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
-   <BOUNDS height="0" left="2490" top="4440" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="12" dstpinname="Input 1" srcnodeid="16" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="14" dstpinname="Input 2" srcnodeid="16" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="12" dstpinname="Input 2" srcnodeid="16" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="Input 2" srcnodeid="16" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="14" dstpinname="Input 3" srcnodeid="16" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="13" dstpinname="Input 3" srcnodeid="16" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="Input 3" srcnodeid="16" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="13" dstpinname="Input 4" srcnodeid="16" srcpinname="Y">
-   </LINK>
-   <LINK srcnodeid="58" srcpinname="PositionXY" dstnodeid="19" dstpinname="Input">
-   </LINK>
-   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="60">
-   <BOUNDS type="Node" left="6405" top="3345" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="58" srcpinname="PositionXY" dstnodeid="60" dstpinname="XY">
-   </LINK>
-   <LINK srcnodeid="60" srcpinname="X" dstnodeid="38" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="60" srcpinname="Y" dstnodeid="38" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="58" srcpinname="Left Button" dstnodeid="55" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="58" srcpinname="Middle Button" dstnodeid="55" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="58" srcpinname="Right Button" dstnodeid="55" dstpinname="Z">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="17" dstpinname="XY">
-   </LINK>
-   <LINK srcnodeid="58" srcpinname="PositionXY" dstnodeid="16" dstpinname="XY">
    </LINK>
    </PATCH>

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\2D\Slope (2d) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\Slope (2d) help.v4p">
    <BOUNDS type="Window" left="7890" top="1365" width="8760" height="9900">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -92,6 +92,32 @@
    <PIN pinname="Transform" visible="1">
    </PIN>
    </NODE>
+   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="2355" top="1305" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="2355" top="1305">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Vector (2d Join)" nodename="Vector (2d Join)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="2355" top="2010" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="X" dstnodeid="21" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Y" dstnodeid="21" dstpinname="Y">
+   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="1710" top="3810" width="0" height="0">
    </BOUNDS>
@@ -270,6 +296,8 @@
    </NODE>
    <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="27" dstpinname="XY1">
    </LINK>
+   <LINK srcnodeid="21" srcpinname="XY" dstnodeid="27" dstpinname="XY2">
+   </LINK>
    <LINK srcnodeid="27" srcpinname="Angle" dstnodeid="19" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="27" srcpinname="Angle" dstnodeid="14" dstpinname="Input">
@@ -332,6 +360,8 @@
    </NODE>
    <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="31" dstpinname="Input 1">
    </LINK>
+   <LINK srcnodeid="21" srcpinname="XY" dstnodeid="31" dstpinname="Input 2">
+   </LINK>
    <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="3885" top="5955" width="100" height="100">
    </BOUNDS>
@@ -378,14 +408,4 @@
    <BOUNDS type="Node" left="525" top="8820" width="100" height="100">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Mouse (System)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (System)" componentmode="Hidden" id="36">
-   <BOUNDS type="Node" left="2250" top="1785" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="PositionXY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="36" srcpinname="PositionXY" dstnodeid="27" dstpinname="XY2">
-   </LINK>
-   <LINK srcnodeid="36" srcpinname="PositionXY" dstnodeid="31" dstpinname="Input 2">
-   </LINK>
    </PATCH>
