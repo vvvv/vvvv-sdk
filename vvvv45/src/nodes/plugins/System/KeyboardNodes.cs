@@ -21,10 +21,10 @@ using SharpDX.Multimedia;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Keyboard", Category = "System")]
+    [PluginInfo(Name = "Keyboard", Category = "Devices")]
     public class KeyboardNode : WindowMessageNode, IPluginEvaluate
     {
-        [Output("Keyboard", IsSingle = true)]
+        [Output("Device", IsSingle = true)]
         public ISpread<Keyboard> KeyboardOut;
 
         private PluginContainer FKeyboardStatesSplitNode;
@@ -53,7 +53,7 @@ namespace VVVV.Nodes.Input
             KeyboardOut[0] = new Keyboard(keyNotifications);
 
             // Create a keyboard states node for us and connect our keyboard out to its keyboard in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardStates" && n.Category == "System" && n.Version == "Split");
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "States" && n.Category == "Keyboard" && n.Version == "Split");
             FKeyboardStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => KeyboardOut);
         }
 
@@ -70,11 +70,11 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global")]
+    [PluginInfo(Name = "Keyboard", Category = "Devices", Version = "Desktop")]
     public class GlobalKeyboardNode : GlobalDeviceInputNode<Keyboard>
     {
         public GlobalKeyboardNode()
-            : base(DeviceType.Keyboard, "KeyboardStates", "Keyboard")
+            : base(DeviceType.Keyboard, "Keyboard")
         {
         }
 
@@ -117,7 +117,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "KeyboardEvents", Category = "System", Version = "Join")]
+    [PluginInfo(Name = "Events", Category = "Keyboard", Version = "Join")]
     public class KeyboardEventsJoinNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Event Type")]
@@ -167,7 +167,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "KeyboardStates", Category = "System", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "States", Category = "Keyboard", Version = "Split", AutoEvaluate = true)]
     public class KeyboardStatesSplitNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         class KeyCodeNotificationComparer : IEqualityComparer<KeyCodeNotification>
@@ -241,7 +241,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "KeyboardEvents", Category = "System", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "Events", Category = "Keyboard", Version = "Split", AutoEvaluate = true)]
     public class KeyboardEventsSplitNode : IPluginEvaluate, IDisposable
     {
         [Input("Keyboard", IsSingle = true)]
@@ -329,13 +329,13 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "AsKey", Category = "Value", Tags = "keyboard, convert")]
+    [PluginInfo(Name = "AsKeyName", Category = "Value", Tags = "keyboard, convert")]
     public class KeyCodeAsKey : IPluginEvaluate
     {
         [Input("Key Code")]
         public IDiffSpread<int> KeyCodeIn;
 
-        [Output("Key")]
+        [Output("Key Name")]
         public ISpread<string> KeyOut;
 
         public void Evaluate(int spreadMax)
@@ -356,7 +356,7 @@ namespace VVVV.Nodes.Input
     [PluginInfo(Name = "AsKeyCode", Category = "String", Tags = "keyboard, convert")]
     public class KeyAsKeyCodeNode : IPluginEvaluate
     {
-        [Input("Key")]
+        [Input("Key Name")]
         public IDiffSpread<string> KeyIn;
 
         [Output("Key Code")]

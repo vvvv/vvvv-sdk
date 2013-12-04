@@ -25,10 +25,10 @@ namespace VVVV.Nodes.Input
         IncrementCycle
     }
 
-    [PluginInfo(Name = "Mouse", Category = "System")]
+    [PluginInfo(Name = "Mouse", Category = "Devices")]
     public class WindowMouseNode : WindowMessageNode, IPluginEvaluate
     {
-        [Output("Mouse", IsSingle = true)]
+        [Output("Device", IsSingle = true)]
         public ISpread<Mouse> MouseOut;
 
         private PluginContainer FMouseStatesSplitNode;
@@ -92,7 +92,7 @@ namespace VVVV.Nodes.Input
             MouseOut[0] = new Mouse(mouseNotifications);
 
             // Create a mouse states split node for us and connect our mouse out to its mouse in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseStates" && n.Category == "System" && n.Version == "Split");
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "States" && n.Category == "Mouse" && n.Version == "Split");
             FMouseStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => MouseOut);
         }
 
@@ -109,7 +109,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Mouse", Category = "System", Version = "Global")]
+    [PluginInfo(Name = "Mouse", Category = "Devices", Version = "Desktop")]
     public class GlobalMouseNode : GlobalDeviceInputNode<Mouse>
     {
         public enum DataSource
@@ -125,7 +125,7 @@ namespace VVVV.Nodes.Input
         public IDiffSpread<CycleMode> CycleModeIn;
 
         public GlobalMouseNode()
-            : base(DeviceType.Mouse, "MouseStates", "Mouse")
+            : base(DeviceType.Mouse, "Mouse")
         {
         }
 
@@ -424,7 +424,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "MouseEvents", Category = "System", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "Events", Category = "Mouse", Version = "Split", AutoEvaluate = true)]
     public class MouseEventsSplitNode : IPluginEvaluate, IDisposable
     {
         [Input("Mouse", IsSingle = true)]
@@ -540,7 +540,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "MouseStates", Category = "System", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "States", Category = "Mouse", Version = "Split", AutoEvaluate = true)]
     public class MouseStatesSplitNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         [Input("Mouse", IsSingle = true)]
@@ -625,7 +625,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "MouseStates", Category = "System", Version = "Join", AutoEvaluate = true)]
+    [PluginInfo(Name = "States", Category = "Mouse", Version = "Join", AutoEvaluate = true)]
     public class MouseStatesJoinNode : IPluginBase, IPartImportsSatisfiedNotification
     {
         [Input("Position")]

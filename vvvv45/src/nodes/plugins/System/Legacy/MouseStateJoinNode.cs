@@ -7,7 +7,7 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "MouseState", Category = "System", Version = "Join Legacy")]
+    [PluginInfo(Name = "MouseState", Category = "System", Version = "Join")]
     public class LegacyMouseStateJoinNode : IPluginEvaluate
     {
         [Input("X")]

@@ -7,7 +7,7 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Join Legacy")]
+    [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Join")]
     public class LegacyKeyStateJoinNode : IPluginEvaluate
     {
         [Input("Key Code")]

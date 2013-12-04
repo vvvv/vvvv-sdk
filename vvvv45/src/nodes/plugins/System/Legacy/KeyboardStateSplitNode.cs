@@ -8,7 +8,7 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Split Legacy")]
+    [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Split")]
     public class LegacyKeyStateSplitNode : IPluginEvaluate
     {
         [Input("Keyboard")]

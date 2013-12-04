@@ -18,7 +18,7 @@ using VVVV.Utils.Win32;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Mouse", Category = "System", Version = "Global Legacy2")]
+    [PluginInfo(Name = "Mouse", Category = "System", Version = "Global")]
     public class LegacyGlobalMouseNode : GlobalInputNode
     {
 #pragma warning disable 0649
@@ -35,7 +35,7 @@ namespace VVVV.Nodes.Input
         public override void OnImportsSatisfied()
         {
             // Create a mouse split node for us and connect our mouse out to its mouse in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseState" && n.Category == "System" && n.Version == "Split Legacy");
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseState" && n.Category == "System" && n.Version == "Split");
             FMouseSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => FMouseOut);
             base.OnImportsSatisfied();
         }
@@ -83,7 +83,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Mouse", Category = "System", Version = "Window Legacy2")]
+    [PluginInfo(Name = "Mouse", Category = "System", Version = "Window")]
     public class LegacyWindowMouseNode : WindowInputNode
     {
 #pragma warning disable 0649
@@ -98,7 +98,7 @@ namespace VVVV.Nodes.Input
         public override void OnImportsSatisfied()
         {
             // Create a mouse split node for us and connect our mouse out to its mouse in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseState" && n.Category == "System" && n.Version == "Split Legacy");
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseState" && n.Category == "System" && n.Version == "Split");
             FMouseSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => FMouseOut);
             base.OnImportsSatisfied();
         }
