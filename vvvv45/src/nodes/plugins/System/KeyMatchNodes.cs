@@ -19,10 +19,9 @@ using System.Reactive.Concurrency;
 namespace VVVV.Nodes.Input
 {
     [PluginInfo(Name = "KeyMatch",
-                Category = "System",
+                Category = "Keyboard",
                 Help = "Detects pressed keys when connected with a Keyboard Node. Use the inspector to specify the keys to check.",
-                AutoEvaluate = true,
-                Tags = "keyboard")]
+                AutoEvaluate = true)]
     public class KeyMatchNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         public enum KeyMode { Press, Toggle, UpOnly, DownOnly, DownUp, RepeatedEvent };
@@ -181,10 +180,9 @@ namespace VVVV.Nodes.Input
     }
 
     [PluginInfo(Name = "RadioKeyMatch",
-                Category = "System",
+                Category = "Keyboard",
                 Help = "Similiar to KeyMatch, but does not create a output pin for each key to check, but returns the index of the pressed key on its output pin.",
-                AutoEvaluate = true,
-                Tags = "keyboard")]
+                AutoEvaluate = true)]
     public class RadioKeyMatchNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         [Input("Keyboard", IsSingle = true)]
