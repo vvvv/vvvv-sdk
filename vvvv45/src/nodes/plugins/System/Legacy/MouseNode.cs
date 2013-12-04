@@ -140,13 +140,10 @@ namespace VVVV.Nodes.Input
         ISpread<Mouse> FMouseOut;
 #pragma warning restore 0649
 
-        IDisposable FSubscription;
         PluginContainer FMouseSplitNode;
-        int FMouseWheel;
 
         public override void Dispose()
         {
-            FSubscription.Dispose();
             FMouseSplitNode.Dispose();
             base.Dispose();
         }
