@@ -483,7 +483,7 @@ namespace VVVV.Nodes.Input
                 var n = notifications[i];
                 FEventTypeOut[i] = n.Kind;
                 var position = new Vector2D(n.Position.X, n.Position.Y);
-                var clientArea = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);
+                var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
                 PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
                 switch (n.Kind)
                 {
@@ -595,7 +595,7 @@ namespace VVVV.Nodes.Input
                             break;
                         case MouseNotificationKind.MouseMove:
                             var position = new Vector2D(n.Position.X, n.Position.Y);
-                            var clientArea = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);
+                            var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
                             PositionOut[0] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
                             break;
                         case MouseNotificationKind.MouseWheel:
@@ -679,7 +679,7 @@ namespace VVVV.Nodes.Input
 
         static Point ToMousePoint(Vector2D normV)
         {
-            var clientArea = new Vector2D(FClientArea.Width, FClientArea.Height);
+            var clientArea = new Vector2D(FClientArea.Width - 1, FClientArea.Height - 1);
             var v = VMath.Map(normV, new Vector2D(-1, 1), new Vector2D(1, -1), Vector2D.Zero, clientArea, TMapMode.Clamp);
             return new Point((int)v.x, (int)v.y);
         }
