@@ -118,8 +118,11 @@ namespace VVVV.Nodes.Input
             Raw
         }
 
-        [Input("Enabled", DefaultBoolean = true)]
+        [Input("Enabled", DefaultBoolean = true, IsSingle = true)]
         public ISpread<bool> EnabledIn;
+
+        [Input("Index", IsSingle = true)]
+        public IDiffSpread<int> IndexIn;
 
         [Input("Source", IsSingle = true)]
         public IDiffSpread<DataSource> DataSourceIn;
@@ -138,6 +141,7 @@ namespace VVVV.Nodes.Input
         public void OnImportsSatisfied()
         {
             RawInputService.DevicesChanged += RawKeyboardService_DevicesChanged;
+            IndexIn.Changed += IndexIn_Changed;
             SubscribeToDevices();
 
             DataSourceIn.Changed += ModeIn_Changed;
@@ -146,6 +150,11 @@ namespace VVVV.Nodes.Input
             // Create a mouse states split node for us and connect our mouse out to its mouse in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseStates" && n.Category == "System" && n.Version == "Split");
             FMouseStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => MouseOut);
+        }
+
+        void IndexIn_Changed(IDiffSpread<int> spread)
+        {
+            SubscribeToDevices();
         }
 
         void CycleModeIn_Changed(IDiffSpread<CycleMode> spread)
@@ -165,6 +174,7 @@ namespace VVVV.Nodes.Input
 
         public void Dispose()
         {
+            IndexIn.Changed -= IndexIn_Changed;
             RawInputService.DevicesChanged -= RawKeyboardService_DevicesChanged;
             FMouseStatesSplitNode.Dispose();
         }
@@ -178,13 +188,22 @@ namespace VVVV.Nodes.Input
                 .Where(d => d.DeviceType == DeviceType.Mouse)
                 .OrderBy(d => d, new DeviceComparer())
                 .ToList();
-            MouseOut.SliceCount = dataSource == DataSource.Raw
-                ? mouseDevices.Count
-                : Math.Min(mouseDevices.Count, 1);
-            for (int i = 0; i < MouseOut.SliceCount; i++)
+            var index = IndexIn.SliceCount > 0 ? IndexIn[0] : 0;
+            if (mouseDevices.Count > 0)
             {
-                MouseOut[i] = CreateMouse(mouseDevices[i], i, initialPosition, dataSource, cycleMode);
+                var mouseDevice = mouseDevices[index % mouseDevices.Count];
+                MouseOut.SliceCount = 1;
+                MouseOut[0] = CreateMouse(mouseDevice, 0, initialPosition, dataSource, cycleMode);
             }
+            else
+                MouseOut.SliceCount = 0;
+            //MouseOut.SliceCount = dataSource == DataSource.Raw
+            //    ? mouseDevices.Count
+            //    : Math.Min(mouseDevices.Count, 1);
+            //for (int i = 0; i < MouseOut.SliceCount; i++)
+            //{
+            //    MouseOut[i] = CreateMouse(mouseDevices[i], i, initialPosition, dataSource, cycleMode);
+            //}
         }
 
         // Little helper classes to keep track of individual mouse positions

@@ -73,10 +73,13 @@ namespace VVVV.Nodes.Input
     [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global")]
     public class GlobalKeyboardNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
-        [Input("Enabled", DefaultBoolean = true)]
+        [Input("Enabled", DefaultBoolean = true, IsSingle = true)]
         public ISpread<bool> EnabledIn;
 
-        [Output("Keyboard")]
+        [Input("Index", IsSingle = true)]
+        public IDiffSpread<int> IndexIn;
+
+        [Output("Keyboard", IsSingle = true)]
         public ISpread<Keyboard> KeyboardOut;
 
         [Import]
@@ -86,11 +89,17 @@ namespace VVVV.Nodes.Input
         public void OnImportsSatisfied()
         {
             RawInputService.DevicesChanged += RawKeyboardService_DevicesChanged;
+            IndexIn.Changed += IndexIn_Changed;
             SubscribeToDevices();
 
             // Create a keyboard states node for us and connect our keyboard out to its keyboard in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardStates" && n.Category == "System" && n.Version == "Split");
             FKeyboardStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => KeyboardOut);
+        }
+
+        void IndexIn_Changed(IDiffSpread<int> spread)
+        {
+            SubscribeToDevices();
         }
 
         void RawKeyboardService_DevicesChanged(object sender, EventArgs e)
@@ -100,6 +109,7 @@ namespace VVVV.Nodes.Input
 
         public void Dispose()
         {
+            IndexIn.Changed -= IndexIn_Changed;
             RawInputService.DevicesChanged -= RawKeyboardService_DevicesChanged;
             FKeyboardStatesSplitNode.Dispose();
         }
@@ -110,11 +120,22 @@ namespace VVVV.Nodes.Input
                 .Where(d => d.DeviceType == DeviceType.Keyboard)
                 .OrderBy(d => d, new DeviceComparer())
                 .ToList();
-            KeyboardOut.SliceCount = keyboardDevices.Count;
-            for (int i = 0; i < keyboardDevices.Count; i++)
+            var index = IndexIn.SliceCount > 0 ? IndexIn[0] : 0;
+            if (keyboardDevices.Count > 0)
             {
-                KeyboardOut[i] = CreateKeyboard(keyboardDevices[i], i);
+                var keyboardDevice = keyboardDevices[index % keyboardDevices.Count];
+                KeyboardOut.SliceCount = 1;
+                KeyboardOut[0] = CreateKeyboard(keyboardDevice, 0);
             }
+            else
+            {
+                KeyboardOut.SliceCount = 0;
+            }
+            //KeyboardOut.SliceCount = keyboardDevices.Count;
+            //for (int i = 0; i < keyboardDevices.Count; i++)
+            //{
+            //    KeyboardOut[i] = CreateKeyboard(keyboardDevices[i], i);
+            //}
         }
 
         private Keyboard CreateKeyboard(DeviceInfo deviceInfo, int slice)
