@@ -65,12 +65,13 @@ namespace VVVV.Nodes.Input
 
         public void Evaluate(int spreadMax)
         {
+            KeyboardOut[0].CapsLock = Control.IsKeyLocked(Keys.CapsLock);
             // Evaluate our split plugin
             FKeyboardStatesSplitNode.Evaluate(spreadMax);
         }
     }
 
-    [PluginInfo(Name = "Keyboard", Category = "Devices", Version = "Desktop")]
+    [PluginInfo(Name = "Keyboard", Category = "Devices", Version = "Desktop", Bugs = "Not spreadable")]
     public class GlobalKeyboardNode : GlobalDeviceInputNode<Keyboard>
     {
         public GlobalKeyboardNode()
@@ -83,12 +84,13 @@ namespace VVVV.Nodes.Input
             var notifications = Observable.FromEventPattern<KeyboardInputEventArgs>(typeof(Device), "KeyboardInput")
                 .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice])
                 .Where(ep => ep.EventArgs.Device == deviceInfo.Handle)
-                .SelectMany<EventPattern<KeyboardInputEventArgs>, KeyNotification>(ep => GenerateKeyNotifications(ep.EventArgs));
+                .SelectMany<EventPattern<KeyboardInputEventArgs>, KeyNotification>(ep => GenerateKeyNotifications(ep.EventArgs, slice));
             return new Keyboard(notifications, true);
         }
 
-        private IEnumerable<KeyNotification> GenerateKeyNotifications(KeyboardInputEventArgs args)
+        private IEnumerable<KeyNotification> GenerateKeyNotifications(KeyboardInputEventArgs args, int slice)
         {
+            DeviceOut[slice].CapsLock = Control.IsKeyLocked(Keys.CapsLock);
             var key = args.Key;
             switch (args.State)
             {
@@ -117,7 +119,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Events", Category = "Keyboard", Version = "Join")]
+    [PluginInfo(Name = "Events", Category = "Keyboard", Version = "Join", Bugs = "Not spreadable")]
     public class KeyboardEventsJoinNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Event Type")]
@@ -168,7 +170,7 @@ namespace VVVV.Nodes.Input
     }
 
     [PluginInfo(Name = "States", Category = "Keyboard", Version = "Split", AutoEvaluate = true)]
-    public class KeyboardStatesSplitNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+    public class KeyboardStatesSplitNode : IPluginEvaluate, IDisposable
     {
         class KeyCodeNotificationComparer : IEqualityComparer<KeyCodeNotification>
         {
@@ -183,65 +185,76 @@ namespace VVVV.Nodes.Input
             }
         }
 
-        [Input("Keyboard", IsSingle = true)]
+        [Input("Keyboard")]
         public ISpread<Keyboard> KeyboardIn;
 
-        [Input("Schedule Mode", IsSingle = true)]
+        [Input("Schedule Mode")]
         public ISpread<ScheduleMode> ScheduleModeIn;
 
         [Output("Pressed Key Code")]
-        public ISpread<int> KeyCodeOut;
+        public ISpread<ISpread<int>> KeyCodeOut;
 
-        private readonly FrameBasedScheduler FScheduler = new FrameBasedScheduler();
-        private Subscription<Keyboard, KeyCodeNotification> FSubscription;
-
-        public void OnImportsSatisfied()
-        {
-            KeyCodeOut.SliceCount = 0;
-            FSubscription = new Subscription<Keyboard, KeyCodeNotification>(
-                keyboard => 
-                {
-                    return keyboard.KeyNotifications
-                        .OfType<KeyCodeNotification>()
-                        .DistinctUntilChanged(new KeyCodeNotificationComparer());
-                },
-                n =>
-                {
-                    switch (n.Kind)
-                    {
-                        case KeyNotificationKind.KeyDown:
-                            if (!KeyCodeOut.Contains((int)n.KeyCode))
-                                KeyCodeOut.Add((int)n.KeyCode);
-                            break;
-                        case KeyNotificationKind.KeyPress:
-                            //ignore
-                            break;
-                        case KeyNotificationKind.KeyUp:
-                            KeyCodeOut.RemoveAll(k => k == (int)n.KeyCode);
-                            break;
-                        default:
-                            throw new NotImplementedException();
-                    }
-                },
-                FScheduler
-            );
-        }
+        Spread<FrameBasedScheduler> FSchedulers = new Spread<FrameBasedScheduler>();
+        Spread<Subscription<Keyboard, KeyCodeNotification>> FSubscriptions = new Spread<Subscription<Keyboard, KeyCodeNotification>>();
 
         public void Dispose()
         {
-            FSubscription.Dispose();
+            foreach (var subscription in FSubscriptions)
+                subscription.Dispose();
+            FSubscriptions.SliceCount = 0;
         }
 
         public void Evaluate(int spreadMax)
         {
-            //resubscribe if necessary
-            FSubscription.Update(KeyboardIn[0]);
-            //process events
-            FScheduler.Run(ScheduleModeIn[0]);
+            KeyCodeOut.SliceCount = spreadMax;
+
+            FSchedulers.ResizeAndDismiss(spreadMax, () => new FrameBasedScheduler());
+            FSubscriptions.ResizeAndDispose(
+                spreadMax,
+                slice =>
+                {
+                    return new Subscription<Keyboard, KeyCodeNotification>(
+                        keyboard =>
+                        {
+                            return keyboard.KeyNotifications
+                                .OfType<KeyCodeNotification>()
+                                .DistinctUntilChanged(new KeyCodeNotificationComparer());
+                        },
+                        n =>
+                        {
+                            var keyCodeOut = KeyCodeOut[slice];
+                            switch (n.Kind)
+                            {
+                                case KeyNotificationKind.KeyDown:
+                                    if (!keyCodeOut.Contains((int)n.KeyCode))
+                                        keyCodeOut.Add((int)n.KeyCode);
+                                    break;
+                                case KeyNotificationKind.KeyPress:
+                                    //ignore
+                                    break;
+                                case KeyNotificationKind.KeyUp:
+                                    keyCodeOut.RemoveAll(k => k == (int)n.KeyCode);
+                                    break;
+                                default:
+                                    throw new NotImplementedException();
+                            }
+                        },
+                        FSchedulers[slice]
+                    );
+                }
+            );
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                //resubsribe if necessary
+                FSubscriptions[i].Update(KeyboardIn[i]);
+                //process events
+                FSchedulers[i].Run(ScheduleModeIn[i]);
+            }
         }
     }
 
-    [PluginInfo(Name = "Events", Category = "Keyboard", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "Events", Category = "Keyboard", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
     public class KeyboardEventsSplitNode : IPluginEvaluate, IDisposable
     {
         [Input("Keyboard", IsSingle = true)]
@@ -369,7 +382,7 @@ namespace VVVV.Nodes.Input
                     KeyIn.Select(s =>
                         {
                             Keys result;
-                            if (Enum.TryParse<Keys>(s, out result))
+                            if (Enum.TryParse<Keys>(s, true, out result))
                                 return (int)result;
                             else
                                 return (int)Keys.None;

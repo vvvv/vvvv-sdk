@@ -64,6 +64,8 @@ namespace VVVV.Utils.IO
             }
         }
 
+        public bool CapsLock { get; set; }
+
         //public void Dispose()
         //{
         //    if (FSubscription != null)

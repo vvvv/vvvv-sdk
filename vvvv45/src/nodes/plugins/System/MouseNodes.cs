@@ -109,7 +109,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Mouse", Category = "Devices", Version = "Desktop")]
+    [PluginInfo(Name = "Mouse", Category = "Devices", Version = "Desktop", Bugs = "Not spreadable")]
     public class GlobalMouseNode : GlobalDeviceInputNode<Mouse>
     {
         public enum DataSource
@@ -424,7 +424,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Events", Category = "Mouse", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "Events", Category = "Mouse", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
     public class MouseEventsSplitNode : IPluginEvaluate, IDisposable
     {
         [Input("Mouse", IsSingle = true)]
@@ -541,11 +541,11 @@ namespace VVVV.Nodes.Input
     }
 
     [PluginInfo(Name = "States", Category = "Mouse", Version = "Split", AutoEvaluate = true)]
-    public class MouseStatesSplitNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+    public class MouseStatesSplitNode : IPluginEvaluate, IDisposable
     {
-        [Input("Mouse", IsSingle = true)]
+        [Input("Mouse")]
         public ISpread<Mouse> MouseIn;
-        [Input("Schedule Mode", IsSingle = true, DefaultEnumEntry = "Discard")]
+        [Input("Schedule Mode", DefaultEnumEntry = "Discard")]
         public ISpread<ScheduleMode> ScheduleModeIn;
 
         [Output("Position")]
@@ -563,70 +563,85 @@ namespace VVVV.Nodes.Input
         [Output("X2 Button")]
         public ISpread<bool> X2ButtonOut;
 
-        private readonly FrameBasedScheduler FScheduler = new FrameBasedScheduler();
-        private Subscription<Mouse, MouseNotification> FSubscription;
+        private Spread<Subscription<Mouse, MouseNotification>> FSubscriptions = new Spread<Subscription<Mouse,MouseNotification>>();
+        private Spread<FrameBasedScheduler> FSchedulers = new Spread<FrameBasedScheduler>();
         private Spread<int> FRawMouseWheel = new Spread<int>(1);
-
-        public void OnImportsSatisfied()
-        {
-            FSubscription = new Subscription<Mouse, MouseNotification>(
-                mouse =>
-                {
-                    return mouse.MouseNotifications;
-                },
-                n =>
-                {
-                    switch (n.Kind)
-                    {
-                        case MouseNotificationKind.MouseDown:
-                        case MouseNotificationKind.MouseUp:
-                            var mouseButton = n as MouseButtonNotification;
-                            var isDown = n.Kind == MouseNotificationKind.MouseDown;
-                            if ((mouseButton.Buttons & MouseButtons.Left) > 0)
-                                LeftButtonOut[0] = isDown;
-                            if ((mouseButton.Buttons & MouseButtons.Middle) > 0)
-                                MiddleButtonOut[0] = isDown;
-                            if ((mouseButton.Buttons & MouseButtons.Right) > 0)
-                                RightButtonOut[0] = isDown;
-                            if ((mouseButton.Buttons & MouseButtons.XButton1) > 0)
-                                X1ButtonOut[0] = isDown;
-                            if ((mouseButton.Buttons & MouseButtons.XButton2) > 0)
-                                X2ButtonOut[0] = isDown;
-                            break;
-                        case MouseNotificationKind.MouseMove:
-                            var position = new Vector2D(n.Position.X, n.Position.Y);
-                            var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
-                            PositionOut[0] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                            break;
-                        case MouseNotificationKind.MouseWheel:
-                            var mouseWheel = n as MouseWheelNotification;
-                            FRawMouseWheel[0] += mouseWheel.WheelDelta;
-                            MouseWheelOut[0] = (int)Math.Round((float)FRawMouseWheel[0] / Const.WHEEL_DELTA);
-                            break;
-                        default:
-                            break;
-                    }
-                },
-                FScheduler
-            );
-        }
 
         public void Dispose()
         {
-            FSubscription.Dispose();
+            foreach (var subscription in FSubscriptions)
+                subscription.Dispose();
+            FSubscriptions.SliceCount = 0;
         }
 
         public void Evaluate(int spreadMax)
         {
-            //resubsribe if necessary
-            FSubscription.Update(MouseIn[0]);
-            //process events
-            FScheduler.Run(ScheduleModeIn[0]);
+            PositionOut.SliceCount = spreadMax;
+            MouseWheelOut.SliceCount = spreadMax;
+            FRawMouseWheel.SliceCount = spreadMax;
+            LeftButtonOut.SliceCount = spreadMax;
+            MiddleButtonOut.SliceCount = spreadMax;
+            RightButtonOut.SliceCount = spreadMax;
+            X1ButtonOut.SliceCount = spreadMax;
+            X2ButtonOut.SliceCount = spreadMax;
+
+            FSchedulers.ResizeAndDismiss(spreadMax, () => new FrameBasedScheduler());
+            FSubscriptions.ResizeAndDispose(
+                spreadMax,
+                slice =>
+                {
+                    return new Subscription<Mouse, MouseNotification>(
+                        mouse => mouse.MouseNotifications,
+                        n =>
+                        {
+                            switch (n.Kind)
+                            {
+                                case MouseNotificationKind.MouseDown:
+                                case MouseNotificationKind.MouseUp:
+                                    var mouseButton = n as MouseButtonNotification;
+                                    var isDown = n.Kind == MouseNotificationKind.MouseDown;
+                                    if ((mouseButton.Buttons & MouseButtons.Left) > 0)
+                                        LeftButtonOut[slice] = isDown;
+                                    if ((mouseButton.Buttons & MouseButtons.Middle) > 0)
+                                        MiddleButtonOut[slice] = isDown;
+                                    if ((mouseButton.Buttons & MouseButtons.Right) > 0)
+                                        RightButtonOut[slice] = isDown;
+                                    if ((mouseButton.Buttons & MouseButtons.XButton1) > 0)
+                                        X1ButtonOut[slice] = isDown;
+                                    if ((mouseButton.Buttons & MouseButtons.XButton2) > 0)
+                                        X2ButtonOut[slice] = isDown;
+                                    break;
+                                case MouseNotificationKind.MouseMove:
+                                    var position = new Vector2D(n.Position.X, n.Position.Y);
+                                    var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
+                                    PositionOut[slice] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                                    break;
+                                case MouseNotificationKind.MouseWheel:
+                                    var mouseWheel = n as MouseWheelNotification;
+                                    FRawMouseWheel[slice] += mouseWheel.WheelDelta;
+                                    MouseWheelOut[slice] = (int)Math.Round((float)FRawMouseWheel[slice] / Const.WHEEL_DELTA);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        },
+                        FSchedulers[slice]
+                    );
+                }
+            );
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                //resubsribe if necessary
+                FSubscriptions[i].Update(MouseIn[i]);
+                //process events
+                FSchedulers[i].Run(ScheduleModeIn[i]);
+            }
         }
     }
 
     [PluginInfo(Name = "States", Category = "Mouse", Version = "Join", AutoEvaluate = true)]
-    public class MouseStatesJoinNode : IPluginBase, IPartImportsSatisfiedNotification
+    public class MouseStatesJoinNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Position")]
         public IDiffSpread<Vector2D> PositionIn;
@@ -643,38 +658,49 @@ namespace VVVV.Nodes.Input
         [Input("X2 Button")]
         public IDiffSpread<bool> X2ButtonIn;
 
-        [Output("Mouse", IsSingle = true)]
+        [Output("Mouse")]
         public ISpread<Mouse> MouseOut;
 
         public void OnImportsSatisfied()
         {
-            var mouseMoves = PositionIn.ToObservable(0)
-                .Select(v => new MouseMoveNotification(ToMousePoint(v), FClientArea));
-            var mouseButtons = Observable.Merge(
-                LeftButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.Left)),
-                MiddleButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.Middle)),
-                RightButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.Right)),
-                X1ButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.XButton1)),
-                X2ButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.XButton2))
+            MouseOut.SliceCount = 0;
+        }
+
+        public void Evaluate(int spreadMax)
+        {
+            MouseOut.ResizeAndDismiss(
+                spreadMax,
+                slice =>
+                {
+                    var mouseMoves = PositionIn.ToObservable(slice)
+                        .Select(v => new MouseMoveNotification(ToMousePoint(v), FClientArea));
+                    var mouseButtons = Observable.Merge(
+                        LeftButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Left)),
+                        MiddleButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Middle)),
+                        RightButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Right)),
+                        X1ButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.XButton1)),
+                        X2ButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.XButton2))
+                    );
+                    var mouseDowns = mouseButtons.Where(x => x.Item1)
+                        .Select(x => x.Item2)
+                        .Select(x => new MouseDownNotification(ToMousePoint(PositionIn[slice]), FClientArea, x));
+                    var mouseUps = mouseButtons.Where(x => !x.Item1)
+                        .Select(x => x.Item2)
+                        .Select(x => new MouseUpNotification(ToMousePoint(PositionIn[slice]), FClientArea, x));
+                    var mouseWheelDeltas = MouseWheelIn.ToObservable(0)
+                        .StartWith(0)
+                        .Buffer(2, 1)
+                        .Select(b => b[1] - b[0])
+                        .Select(d => new MouseWheelNotification(ToMousePoint(PositionIn[slice]), FClientArea, d * Const.WHEEL_DELTA))
+                        .Cast<MouseNotification>();
+                    var notifications = Observable.Merge<MouseNotification>(
+                        mouseMoves,
+                        mouseDowns,
+                        mouseUps,
+                        mouseWheelDeltas);
+                    return new Mouse(notifications);
+                }
             );
-            var mouseDowns = mouseButtons.Where(x => x.Item1)
-                .Select(x => x.Item2)
-                .Select(x => new MouseDownNotification(ToMousePoint(PositionIn[0]), FClientArea, x));
-            var mouseUps = mouseButtons.Where(x => !x.Item1)
-                .Select(x => x.Item2)
-                .Select(x => new MouseUpNotification(ToMousePoint(PositionIn[0]), FClientArea, x));
-            var mouseWheelDeltas = MouseWheelIn.ToObservable(0)
-                .StartWith(0)
-                .Buffer(2, 1)
-                .Select(b => b[1] - b[0])
-                .Select(d => new MouseWheelNotification(ToMousePoint(PositionIn[0]), FClientArea, d * Const.WHEEL_DELTA))
-                .Cast<MouseNotification>();
-            var notifications = Observable.Merge<MouseNotification>(
-                mouseMoves, 
-                mouseDowns, 
-                mouseUps, 
-                mouseWheelDeltas);
-            MouseOut[0] = new Mouse(notifications);
         }
 
         static Point ToMousePoint(Vector2D normV)
