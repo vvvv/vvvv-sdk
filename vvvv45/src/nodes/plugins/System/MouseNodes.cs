@@ -110,7 +110,7 @@ namespace VVVV.Nodes.Input
     }
 
     [PluginInfo(Name = "Mouse", Category = "System", Version = "Global")]
-    public class GlobalMouseNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+    public class GlobalMouseNode : GlobalDeviceInputNode<Mouse>
     {
         public enum DataSource
         {
@@ -118,43 +118,22 @@ namespace VVVV.Nodes.Input
             Raw
         }
 
-        [Input("Enabled", DefaultBoolean = true, IsSingle = true)]
-        public ISpread<bool> EnabledIn;
-
-        [Input("Index", IsSingle = true)]
-        public IDiffSpread<int> IndexIn;
-
         [Input("Source", IsSingle = true)]
         public IDiffSpread<DataSource> DataSourceIn;
 
         [Input("Cycle Mode", IsSingle = true)]
         public IDiffSpread<CycleMode> CycleModeIn;
 
-        [Output("Mouse")]
-        public ISpread<Mouse> MouseOut;
-
-        [Import]
-        protected IOFactory FIOFactory;
-
-        private PluginContainer FMouseStatesSplitNode;
-
-        public void OnImportsSatisfied()
+        public GlobalMouseNode()
+            : base(DeviceType.Mouse, "MouseStates", "Mouse")
         {
-            RawInputService.DevicesChanged += RawKeyboardService_DevicesChanged;
-            IndexIn.Changed += IndexIn_Changed;
-            SubscribeToDevices();
-
-            DataSourceIn.Changed += ModeIn_Changed;
-            CycleModeIn.Changed += CycleModeIn_Changed;
-
-            // Create a mouse states split node for us and connect our mouse out to its mouse in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseStates" && n.Category == "System" && n.Version == "Split");
-            FMouseStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => MouseOut);
         }
 
-        void IndexIn_Changed(IDiffSpread<int> spread)
+        public override void OnImportsSatisfied()
         {
-            SubscribeToDevices();
+            DataSourceIn.Changed += ModeIn_Changed;
+            CycleModeIn.Changed += CycleModeIn_Changed;
+            base.OnImportsSatisfied();
         }
 
         void CycleModeIn_Changed(IDiffSpread<CycleMode> spread)
@@ -167,43 +146,10 @@ namespace VVVV.Nodes.Input
             SubscribeToDevices();
         }
 
-        void RawKeyboardService_DevicesChanged(object sender, EventArgs e)
+        public override void Dispose()
         {
-            SubscribeToDevices();
-        }
-
-        public void Dispose()
-        {
-            IndexIn.Changed -= IndexIn_Changed;
-            RawInputService.DevicesChanged -= RawKeyboardService_DevicesChanged;
-            FMouseStatesSplitNode.Dispose();
-        }
-
-        private void SubscribeToDevices()
-        {
-            var initialPosition = Control.MousePosition;
-            var dataSource = DataSourceIn.SliceCount > 0 ? DataSourceIn[0] : DataSource.Cursor;
-            var cycleMode = CycleModeIn.SliceCount > 0 ? CycleModeIn[0] : CycleMode.NoCycle;
-            var mouseDevices = Device.GetDevices()
-                .Where(d => d.DeviceType == DeviceType.Mouse)
-                .OrderBy(d => d, new DeviceComparer())
-                .ToList();
-            var index = IndexIn.SliceCount > 0 ? IndexIn[0] : 0;
-            if (mouseDevices.Count > 0)
-            {
-                var mouseDevice = mouseDevices[index % mouseDevices.Count];
-                MouseOut.SliceCount = 1;
-                MouseOut[0] = CreateMouse(mouseDevice, 0, initialPosition, dataSource, cycleMode);
-            }
-            else
-                MouseOut.SliceCount = 0;
-            //MouseOut.SliceCount = dataSource == DataSource.Raw
-            //    ? mouseDevices.Count
-            //    : Math.Min(mouseDevices.Count, 1);
-            //for (int i = 0; i < MouseOut.SliceCount; i++)
-            //{
-            //    MouseOut[i] = CreateMouse(mouseDevices[i], i, initialPosition, dataSource, cycleMode);
-            //}
+            DataSourceIn.Changed -= ModeIn_Changed;
+            CycleModeIn.Changed -= CycleModeIn_Changed;
         }
 
         // Little helper classes to keep track of individual mouse positions
@@ -217,42 +163,65 @@ namespace VVVV.Nodes.Input
             public Point IncrementalPosition;
         }
 
-        private Mouse CreateMouse(DeviceInfo deviceInfo, int slice, Point initialPosition, DataSource dataSource, CycleMode cycleMode)
+        protected override void SubscribeToDevices()
         {
+            var dataSource = DataSourceIn.SliceCount > 0 ? DataSourceIn[0] : DataSource.Cursor;
+            if (dataSource == DataSource.Cursor)
+            {
+                DeviceOut.SliceCount = 1;
+                DeviceNameOut.SliceCount = 1;
+                DeviceOut[0] = CreateCursorMouse();
+                DeviceNameOut[0] = "Cursor";
+            }
+            else
+            {
+                base.SubscribeToDevices();
+            }
+        }
+
+        protected override Mouse CreateDevice(DeviceInfo deviceInfo, int slice)
+        {
+            // Ignore cycleMode
+            var initialPosition = Control.MousePosition;
             var mouseData = new MouseData() { Position = initialPosition };
             var mouseInput = Observable.FromEventPattern<MouseInputEventArgs>(typeof(Device), "MouseInput")
                     .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice]);
-            IObservable<MouseNotification> notifications;
-            if (dataSource == DataSource.Cursor)
-            {
-                switch (cycleMode)
-                {
-                    case CycleMode.NoCycle:
-                        notifications = mouseInput
-                            .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCursorNotifications(mouseData, ep.EventArgs));
-                        break;
-                    case CycleMode.Cycle:
-                        notifications = mouseInput
-                            .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCyclicCursorNotifications(mouseData, ep.EventArgs));
-                        break;
-                    case CycleMode.IncrementCycle:
-                        var incrementalMouseData = new IncrementalMouseData()
-                        {
-                            Position = initialPosition,
-                            IncrementalPosition = initialPosition
-                        };
-                        notifications = mouseInput
-                            .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateIncrementalCyclicCursorNotifications(incrementalMouseData, ep.EventArgs));
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-            else
-                // Ignore cycleMode
-                notifications = mouseInput
+            var notifications = mouseInput
                     .Where(ep => ep.EventArgs.Device == deviceInfo.Handle)
                     .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep.EventArgs));
+            return new Mouse(notifications);
+        }
+
+        private Mouse CreateCursorMouse()
+        {
+            var initialPosition = Control.MousePosition;
+            var cycleMode = CycleModeIn.SliceCount > 0 ? CycleModeIn[0] : CycleMode.NoCycle;
+            var mouseData = new MouseData() { Position = initialPosition };
+            var mouseInput = Observable.FromEventPattern<MouseInputEventArgs>(typeof(Device), "MouseInput")
+                    .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[0]);
+            IObservable<MouseNotification> notifications;
+            switch (cycleMode)
+            {
+                case CycleMode.NoCycle:
+                    notifications = mouseInput
+                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCursorNotifications(mouseData, ep.EventArgs));
+                    break;
+                case CycleMode.Cycle:
+                    notifications = mouseInput
+                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCyclicCursorNotifications(mouseData, ep.EventArgs));
+                    break;
+                case CycleMode.IncrementCycle:
+                    var incrementalMouseData = new IncrementalMouseData()
+                    {
+                        Position = initialPosition,
+                        IncrementalPosition = initialPosition
+                    };
+                    notifications = mouseInput
+                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateIncrementalCyclicCursorNotifications(incrementalMouseData, ep.EventArgs));
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
             return new Mouse(notifications);
         }
 
@@ -452,12 +421,6 @@ namespace VVVV.Nodes.Input
                 .Where(b => b.Left <= x && x < b.Right)
                 .OrderByDescending(b => b.Bottom)
                 .FirstOrDefault();
-        }
-
-        public void Evaluate(int spreadMax)
-        {
-            // Evaluate our split plugin
-            FMouseStatesSplitNode.Evaluate(spreadMax);
         }
     }
 

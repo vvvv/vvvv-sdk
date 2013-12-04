@@ -5,6 +5,7 @@ using System.Text;
 using System.Reactive.Linq;
 using System.Windows.Forms;
 using SharpDX.RawInput;
+using Microsoft.Win32;
 
 namespace VVVV.Nodes.Input
 {
@@ -48,6 +49,22 @@ namespace VVVV.Nodes.Input
             var deviceName = deviceInfo.DeviceName;
             var indexOfHash = deviceName.IndexOf('#');
             return deviceName.Substring(4, indexOfHash - 4);
+        }
+
+        public static string GetDeviceDescription(this DeviceInfo deviceInfo)
+        {
+            // remove the \??\
+            var deviceName = deviceInfo.DeviceName;
+            deviceName = deviceName.Substring(4);
+
+            var split = deviceName.Split('#');
+
+            var id_01 = split[0];    // ACPI (Class code)
+            var id_02 = split[1];    // PNP0303 (SubClass code)
+            var id_03 = split[2];    // 3&13c0b0c5&0 (Protocol code)
+            var localMachineKey = Registry.LocalMachine;
+            using (var key = localMachineKey.OpenSubKey(string.Format(@"System\CurrentControlSet\Enum\{0}\{1}\{2}", id_01, id_02, id_03)))
+                return (string)key.GetValue("DeviceDesc");
         }
     }
 }
