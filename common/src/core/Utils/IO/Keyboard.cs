@@ -20,26 +20,32 @@ namespace VVVV.Utils.IO
         public Keyboard(IObservable<KeyNotification> keyNotifications, bool generateKeyPressNotifications = false)
         {
             keyNotifications = keyNotifications
-                .OfType<KeyCodeNotification>()
                 .Do(n =>
                 {
-                    var keyCode = n.KeyCode;
-                    var i = (int)keyCode;
-                    if (i < FKeyStates.Length)
+                    Keys keyCode;
+                    int i;
+                    switch (n.Kind)
                     {
-                        switch (n.Kind)
-                        {
-                            case KeyNotificationKind.KeyDown:
+                        case KeyNotificationKind.KeyDown:
+                            keyCode = ((KeyCodeNotification)n).KeyCode;
+                            i = (int)keyCode;
+                            if (i < FKeyStates.Length)
+                            {
                                 FKeyStates[i] = keyCode == Keys.NumLock || keyCode == Keys.CapsLock
                                     ? (byte)(FKeyStates[i] ^ Const.KEY_TOGGLED)
                                     : Const.KEY_PRESSED;
-                                break;
-                            case KeyNotificationKind.KeyUp:
+                            }
+                            break;
+                        case KeyNotificationKind.KeyUp:
+                            keyCode = ((KeyCodeNotification)n).KeyCode;
+                            i = (int)keyCode;
+                            if (i < FKeyStates.Length)
+                            {
                                 FKeyStates[i] = keyCode == Keys.NumLock || keyCode == Keys.CapsLock
                                     ? (byte)FKeyStates[i]
                                     : (byte)0;
-                                break;
-                        }
+                            }
+                            break;
                     }
                 }
             );
