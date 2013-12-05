@@ -14,7 +14,7 @@ using VVVV.Utils.Win32;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "MouseState", Category = "System", Version = "Join")]
+    [PluginInfo(Name = "MouseState", Category = "System", Version = "Join Legacy")]
     public class LegacyMouseStateJoinNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("X")]

@@ -29,11 +29,13 @@ namespace VVVV.Nodes.Input
         protected IOFactory FIOFactory;
         private PluginContainer FDeviceStatesSplitNode;
         private readonly DeviceType FDeviceType;
+        private readonly string FSplitNodeName;
         private readonly string FSplitNodeDeviceOutputName;
 
-        public GlobalDeviceInputNode(DeviceType deviceType, string splitNodeDeviceOutputName)
+        public GlobalDeviceInputNode(DeviceType deviceType, string splitNodeName, string splitNodeDeviceOutputName)
         {
             FDeviceType = deviceType;
+            FSplitNodeName = splitNodeName;
             FSplitNodeDeviceOutputName = splitNodeDeviceOutputName;
         }
 
@@ -43,7 +45,7 @@ namespace VVVV.Nodes.Input
             IndexIn.Changed += IndexIn_Changed;
             SubscribeToDevices();
 
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "States" && n.Category == FSplitNodeDeviceOutputName && n.Version == "Split");
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == FSplitNodeName && n.Category == FSplitNodeDeviceOutputName && n.Version == "Split");
             FDeviceStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == FSplitNodeDeviceOutputName, c => DeviceOut);
         }
 

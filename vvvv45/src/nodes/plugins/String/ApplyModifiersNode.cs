@@ -11,6 +11,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "ApplyModifiers", 
 	            Category = "String",
+                Version = "Legacy",
 	            Help = "Returns the currently pressed character of a keyboard.",
 	            AutoEvaluate = true,
 				Tags = "keyboard, convert")]

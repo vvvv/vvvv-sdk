@@ -129,7 +129,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Events", Category = "Touch", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
+    [PluginInfo(Name = "TouchEvents", Category = "Touch", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
     public class TouchEventsSplitNode : IPluginEvaluate, IDisposable
     {
         [Input("Touch Device", IsSingle = true)]
@@ -203,7 +203,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "States", Category = "Touch", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
+    [PluginInfo(Name = "TouchStates", Category = "Touch", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
     public class TouchStatesSplitNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         [Input("Touch Device", IsSingle = true)]

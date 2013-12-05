@@ -10,7 +10,7 @@ using VVVV.Utils.Win32;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "MouseState", Category = "System", Version = "Split")]
+    [PluginInfo(Name = "MouseState", Category = "System", Version = "Split Legacy")]
     public class LegacyMouseStatetSplitNode : IPluginEvaluate, IDisposable
     {
         [Input("Mouse")]

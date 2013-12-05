@@ -10,7 +10,7 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Join")]
+    [PluginInfo(Name = "KeyboardState", Category = "System", Version = "Join Legacy")]
     public class LegacyKeyStateJoinNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Key Code")]
