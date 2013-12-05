@@ -38,9 +38,8 @@ namespace VVVV.Nodes.Input
                 {
                     return new Subscription<Keyboard, KeyCodeNotification>(
                         keyboard => keyboard.KeyNotifications.OfType<KeyCodeNotification>(),
-                        notification =>
+                        (keyboard, notification) =>
                         {
-                            var keyboard = FInput[slice];
                             var keyCodeOut = FKeyCodeOut[slice];
                             var keyCodeValue = (int)notification.KeyCode;
                             switch (notification.Kind)

@@ -201,7 +201,7 @@ namespace VVVV.Nodes.Input
         {
             FSubscription = new Subscription<Keyboard, KeyDownNotification>(
                 keyboard => keyboard.KeyNotifications.OfType<KeyDownNotification>(),
-                n =>
+                (keyboard, n) =>
                 {
                     var pressedKeyCode = n.KeyCode;
                     for (int i = 0; i < Output.SliceCount; i++)

@@ -52,7 +52,7 @@ namespace VVVV.Nodes.Input
             FLegacyInputKeyboard = new Keyboard(FLegacyInputKeyboardSubject, true);
             FInputKeyboardSubscription = new Subscription<Keyboard, KeyNotification>(
                 keyboard => keyboard.KeyNotifications,
-                notification =>
+                (keyboard, notification) =>
                 {
                     unchecked
                     {

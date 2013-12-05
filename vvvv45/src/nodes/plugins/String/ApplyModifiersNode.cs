@@ -40,7 +40,7 @@ namespace VVVV.Nodes
                 {
                     return new Subscription<Keyboard, KeyNotification>(
                         keyboard => keyboard.KeyNotifications,
-                        n =>
+                        (keyboard, n) =>
                         {
                             switch (n.Kind)
                             {

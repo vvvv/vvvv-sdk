@@ -272,7 +272,7 @@ namespace VVVV.Nodes.Texture.HTML
                 if (FMouseSubscription == null)
                     FMouseSubscription = new Subscription<Mouse, MouseNotification>(
                         mouse => mouse.MouseNotifications,
-                        n =>
+                        (mouse, n) =>
                         {
                             var x = (int)VMath.Map(n.Position.X, 0, n.ClientArea.Width, 0, FSize.Width, TMapMode.Clamp);
                             var y = (int)VMath.Map(n.Position.Y, 0, n.ClientArea.Height, 0, FSize.Height, TMapMode.Clamp);
@@ -327,7 +327,7 @@ namespace VVVV.Nodes.Texture.HTML
                 if (FKeyboardSubscription == null)
                     FKeyboardSubscription = new Subscription<Keyboard, KeyNotification>(
                         keyboard => keyboard.KeyNotifications,
-                        n =>
+                        (keyboard, n) =>
                         {
                             CefKeyInfo cefKey;
                             var modifiers = (CefHandlerKeyEventModifiers)((int)(FKeyboard.Modifiers) >> 16);

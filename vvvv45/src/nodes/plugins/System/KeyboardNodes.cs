@@ -220,7 +220,7 @@ namespace VVVV.Nodes.Input
                                 .OfType<KeyCodeNotification>()
                                 .DistinctUntilChanged(new KeyCodeNotificationComparer());
                         },
-                        n =>
+                        (keyboard, n) =>
                         {
                             var keyCodeOut = KeyCodeOut[slice];
                             switch (n.Kind)

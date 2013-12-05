@@ -592,7 +592,7 @@ namespace VVVV.Nodes.Input
                 {
                     return new Subscription<Mouse, MouseNotification>(
                         mouse => mouse.MouseNotifications,
-                        n =>
+                        (mouse, n) =>
                         {
                             switch (n.Kind)
                             {
