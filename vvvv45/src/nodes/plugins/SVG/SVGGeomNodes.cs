@@ -26,10 +26,10 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		#pragma warning disable 649
-		[Input("ID", Order = -20, Visibility = PinVisibility.OnlyInspector)]
+		[Input("ID", Order = -2, Visibility = PinVisibility.OnlyInspector)]
 		protected IDiffSpread<string> FIDIn;
 		
-		[Input("Class", Order = -10, Visibility = PinVisibility.OnlyInspector)]
+		[Input("Class", Order = -1, Visibility = PinVisibility.OnlyInspector)]
 		protected IDiffSpread<string> FClassIn;
 		
 		[Input("Transform", Order = 0)]
@@ -342,20 +342,23 @@ namespace VVVV.Nodes
 	public class SvgPathNode : SVGVisualElementFillNode<SvgPath>
 	{
 	    #pragma warning disable 649
-		[Input("Vertices", Order = -5)]
+		[Input("Vertices", Order = -50)]
 		IDiffSpread<ISpread<Vector2>> FVerticesIn;
 		
-		[Input("Control 1", Order = -4)]
+		[Input("Control 1", Order = -40)]
 		IDiffSpread<ISpread<Vector2>> FControl1In;
 		
-		[Input("Control 2", Order = -3)]
+		[Input("Control 2", Order = -30)]
 		IDiffSpread<ISpread<Vector2>> FControl2In;
 		
-		[Input("Arc Rotation", Order = -2)]
+		[Input("Arc Rotation", Order = -20)]
 		IDiffSpread<ISpread<float>> FArcRotationIn;
 		
-		[Input("Command", Order = -1, MaxChars = 1, DefaultString = "L")]
+		[Input("Command", Order = -10, MaxChars = 1, DefaultString = "L")]
 		IDiffSpread<ISpread<string>> FCommandIn;
+		
+		[Input("Closed Path", Order = -15, DefaultValue = 1)]
+		IDiffSpread<bool> FClosedIn;
 		#pragma warning restore
 		
 		protected override SvgPath CreateElement()
@@ -376,12 +379,13 @@ namespace VVVV.Nodes
 			max = Math.Max(max, FControl2In.SliceCount);
 			max = Math.Max(max, FArcRotationIn.SliceCount);
 			max = Math.Max(max, FCommandIn.SliceCount);
+			max = Math.Max(max, FClosedIn.SliceCount);
 			return max;
 		}
 		
 		protected override bool PinsChanged()
 		{
-			return base.PinsChanged() || FVerticesIn.IsChanged || FCommandIn.IsChanged || FControl1In.IsChanged || FControl2In.IsChanged || FArcRotationIn.IsChanged;
+			return base.PinsChanged() || FVerticesIn.IsChanged || FCommandIn.IsChanged || FControl1In.IsChanged || FControl2In.IsChanged || FArcRotationIn.IsChanged || FClosedIn.IsChanged;
 		}
 		
 		protected override void CalcGeometry(SvgPath elem, Vector2 trans, Vector2 scale, int slice)
@@ -406,10 +410,6 @@ namespace VVVV.Nodes
 				if(i == 0)
 				{
 					c = 'M';
-				}
-				else if (i == verts.SliceCount - 1)
-				{
-					c = 'Z';
 				}
 				
 				//fill in params
@@ -492,6 +492,12 @@ namespace VVVV.Nodes
 				}
 				
 				SvgPathBuilder.CreatePathSegment(c, elem.PathData, coords, char.IsLower(c));
+				
+				if (i == verts.SliceCount - 1 && FClosedIn[i])
+				{
+					c = 'Z';
+					SvgPathBuilder.CreatePathSegment(c, elem.PathData, coords, char.IsLower(c));
+				}
 			}
 			
 		}
