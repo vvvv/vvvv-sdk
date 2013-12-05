@@ -8,7 +8,7 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes
 {
-    [PluginInfo(Name = "R", Category = "Mouse", Version = "Advanced", Author = "vux")]
+    [PluginInfo(Name = "R", Category = "Mouse", Author = "vux")]
     public class RMouseNode : IPluginEvaluate, IDisposable
     {
 
@@ -162,7 +162,7 @@ namespace VVVV.Nodes
         #endregion
     }
 
-    [PluginInfo(Name = "R", Category = "Touch", Version = "Advanced", Author = "vux")]
+    [PluginInfo(Name = "R", Category = "Touch", Author = "vux")]
     public class RTouchDeviceNode : IPluginEvaluate, IDisposable
     {
 

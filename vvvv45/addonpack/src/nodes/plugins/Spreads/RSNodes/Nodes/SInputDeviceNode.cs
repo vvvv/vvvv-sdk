@@ -8,7 +8,7 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes
 {
-    [PluginInfo(Name = "S", Category = "Mouse", Version = "Advanced", Author = "vux", AutoEvaluate = true)]
+    [PluginInfo(Name = "S", Category = "Mouse", Author = "vux", AutoEvaluate = true)]
     public class SMouseNode : IPluginEvaluate, IDisposable
     {
         #region Fields
@@ -81,7 +81,7 @@ namespace VVVV.Nodes
         #endregion
     }
 
-    [PluginInfo(Name = "S", Category = "Keyboard", Version = "Advanced", Author = "vux", AutoEvaluate = true)]
+    [PluginInfo(Name = "S", Category = "Keyboard", Author = "vux", AutoEvaluate = true)]
     public class SKeyboardNode : IPluginEvaluate, IDisposable
     {
         #region Fields
@@ -153,7 +153,7 @@ namespace VVVV.Nodes
         #endregion
     }
 
-    [PluginInfo(Name = "S", Category = "Touch", Version = "Advanced", Author = "vux", AutoEvaluate = true)]
+    [PluginInfo(Name = "S", Category = "Touch", Author = "vux", AutoEvaluate = true)]
     public class STouchNode : IPluginEvaluate, IDisposable
     {
         #region Fields
