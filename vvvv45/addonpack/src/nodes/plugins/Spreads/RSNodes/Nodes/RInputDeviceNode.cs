@@ -8,18 +8,18 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes
 {
-    [PluginInfo(Name = "R", Category = "MouseState", Version = "Advanced", Author = "vux")]
-    public class RMouseStateNode : IPluginEvaluate, IDisposable
+    [PluginInfo(Name = "R", Category = "Mouse", Version = "Advanced", Author = "vux")]
+    public class RMouseNode : IPluginEvaluate, IDisposable
     {
 
         #region Fields
-        private MouseStateDataHolder FData;
+        private MouseDataHolder FData;
 
         [Input("Receive String", IsSingle = true, DefaultString = "send")]
         IDiffSpread<string> FReceive;
 
-        [Output("Output",IsSingle=true)]
-        ISpread<MouseState> FOut;
+        [Output("Output", IsSingle = true)]
+        ISpread<Mouse> FOut;
 
         [Output("Is Found", IsSingle = true)]
         ISpread<bool> FOutMC;
@@ -30,9 +30,9 @@ namespace VVVV.Nodes
 
         #endregion
 
-        public RMouseStateNode()
+        public RMouseNode()
         {
-            this.FData = MouseStateDataHolder.Instance;
+            this.FData = MouseDataHolder.Instance;
             this.FData.OnAdd += FData_OnAdd;
             this.FData.OnRemove += this.FData_OnAdd;
             this.FData.OnUpdate += this.FData_OnAdd;
@@ -60,7 +60,7 @@ namespace VVVV.Nodes
             if (this.FInvalidate)
             {
                 bool found;
-                List<MouseState> dbl = this.FData.GetData(this.FKey,out found);
+                List<Mouse> dbl = this.FData.GetData(this.FKey, out found);
 
                 if (found)
                 {
@@ -68,7 +68,7 @@ namespace VVVV.Nodes
                 }
                 else
                 {
-                    this.FOut[0] = new MouseState();
+                    this.FOut[0] = Mouse.Empty;
                 }
 
                 this.FOutMC[0] = found;
@@ -85,18 +85,18 @@ namespace VVVV.Nodes
         #endregion
     }
 
-    [PluginInfo(Name = "R", Category = "KeyboardState", Version = "Advanced", Author = "vux")]
-    public class RKeyStateNode : IPluginEvaluate, IDisposable
+    [PluginInfo(Name = "R", Category = "Keyboard", Author = "vux")]
+    public class RKeyboardNode : IPluginEvaluate, IDisposable
     {
 
         #region Fields
-        private KeyStateDataHolder FData;
+        private KeyboardDataHolder FData;
 
         [Input("Receive String", IsSingle = true, DefaultString = "send")]
         IDiffSpread<string> FReceive;
 
         [Output("Output", IsSingle = true)]
-        ISpread<KeyboardState> FOut;
+        ISpread<Keyboard> FOut;
 
         [Output("Is Found", IsSingle = true)]
         ISpread<bool> FOutMC;
@@ -107,9 +107,9 @@ namespace VVVV.Nodes
 
         #endregion
 
-        public RKeyStateNode()
+        public RKeyboardNode()
         {
-            this.FData = KeyStateDataHolder.Instance;
+            this.FData = KeyboardDataHolder.Instance;
             this.FData.OnAdd += FData_OnAdd;
             this.FData.OnRemove += this.FData_OnAdd;
             this.FData.OnUpdate += this.FData_OnAdd;
@@ -137,7 +137,7 @@ namespace VVVV.Nodes
             if (this.FInvalidate)
             {
                 bool found;
-                List<KeyboardState> dbl = this.FData.GetData(this.FKey, out found);
+                List<Keyboard> dbl = this.FData.GetData(this.FKey, out found);
 
                 if (found)
                 {
@@ -145,7 +145,7 @@ namespace VVVV.Nodes
                 }
                 else
                 {
-                    this.FOut[0] = new KeyboardState(new List<System.Windows.Forms.Keys>());
+                    this.FOut[0] = Keyboard.Empty;
                 }
 
                 this.FOutMC[0] = found;
@@ -160,5 +160,82 @@ namespace VVVV.Nodes
         {
         }
         #endregion
-    }      
+    }
+
+    [PluginInfo(Name = "R", Category = "Touch", Version = "Advanced", Author = "vux")]
+    public class RTouchDeviceNode : IPluginEvaluate, IDisposable
+    {
+
+        #region Fields
+        private TouchDeviceDataHolder FData;
+
+        [Input("Receive String", IsSingle = true, DefaultString = "send")]
+        IDiffSpread<string> FReceive;
+
+        [Output("Output", IsSingle = true)]
+        ISpread<TouchDevice> FOut;
+
+        [Output("Is Found", IsSingle = true)]
+        ISpread<bool> FOutMC;
+
+        private string FKey = "";
+
+        private bool FInvalidate = false;
+
+        #endregion
+
+        public RTouchDeviceNode()
+        {
+            this.FData = TouchDeviceDataHolder.Instance;
+            this.FData.OnAdd += FData_OnAdd;
+            this.FData.OnRemove += this.FData_OnAdd;
+            this.FData.OnUpdate += this.FData_OnAdd;
+        }
+
+        #region Set Plugin Host
+        void FData_OnAdd(string key)
+        {
+            if (this.FKey == key)
+            {
+                this.FInvalidate = true;
+            }
+        }
+        #endregion
+
+        #region Evaluate
+        public void Evaluate(int SpreadMax)
+        {
+            if (this.FReceive.IsChanged)
+            {
+                this.FKey = this.FReceive[0];
+                this.FInvalidate = true;
+            }
+
+            if (this.FInvalidate)
+            {
+                bool found;
+                List<TouchDevice> dbl = this.FData.GetData(this.FKey, out found);
+
+                if (found)
+                {
+                    this.FOut[0] = dbl[0];
+                }
+                else
+                {
+                    this.FOut[0] = TouchDevice.Empty;
+                }
+
+                this.FOutMC[0] = found;
+                this.FInvalidate = false;
+            }
+
+        }
+        #endregion
+
+        #region Dispose
+        public void Dispose()
+        {
+        }
+        #endregion
+    }
 }
