@@ -13,17 +13,20 @@ namespace VVVV.Nodes.Input
 {
     public abstract class GlobalDeviceInputNode<TDevice> : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
-        [Input("Enabled", DefaultBoolean = true, IsSingle = true, Order = int.MinValue)]
+        [Input("Enabled", DefaultBoolean = true, Order = int.MinValue)]
         public ISpread<bool> EnabledIn;
 
-        [Input("Index", IsSingle = true, Order = int.MinValue + 1)]
+        [Input("Index", Order = int.MinValue + 1)]
         public IDiffSpread<int> IndexIn;
 
-        [Output("Device", IsSingle = true)]
+        [Output("Device")]
         public ISpread<TDevice> DeviceOut;
 
-        [Output("Device Name", IsSingle = true, Visibility = PinVisibility.Hidden)]
+        [Output("Device Name", Visibility = PinVisibility.OnlyInspector)]
         public ISpread<string> DeviceNameOut;
+
+        [Output("Device Description", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<string> DeviceDescriptionOut;
 
         [Import]
         protected IOFactory FIOFactory;
@@ -72,20 +75,32 @@ namespace VVVV.Nodes.Input
                 .Where(d => d.DeviceType == FDeviceType)
                 .OrderBy(d => d, new DeviceComparer())
                 .ToList();
-            var index = IndexIn.SliceCount > 0 ? IndexIn[0] : 0;
             if (devices.Count > 0)
             {
-                var device = devices[index % devices.Count];
-                DeviceOut.SliceCount = 1;
-                DeviceOut[0] = CreateDevice(device, 0);
-                DeviceNameOut.SliceCount = 1;
-                DeviceNameOut[0] = device.GetDeviceDescription();
+                var spreadMax = GetMaxSpreadCount();
+                DeviceOut.SliceCount = spreadMax;
+                DeviceNameOut.SliceCount = spreadMax;
+                DeviceDescriptionOut.SliceCount = spreadMax;
+                for (int i = 0; i < spreadMax; i++)
+                {
+                    var index = IndexIn[i];
+                    var device = devices[index % devices.Count];
+                    DeviceOut[i] = CreateDevice(device, i);
+                    DeviceNameOut[i] = device.DeviceName;
+                    DeviceDescriptionOut[i] = device.GetDeviceDescription();
+                }
             }
             else
             {
                 DeviceOut.SliceCount = 0;
                 DeviceNameOut.SliceCount = 0;
+                DeviceDescriptionOut.SliceCount = 0;
             }
+        }
+
+        protected virtual int GetMaxSpreadCount()
+        {
+            return SpreadUtils.SpreadMax(EnabledIn, IndexIn);
         }
 
         protected abstract TDevice CreateDevice(DeviceInfo deviceInfo, int slice);
@@ -93,7 +108,10 @@ namespace VVVV.Nodes.Input
         public void Evaluate(int spreadMax)
         {
             // Evaluate our split plugin
-            FDeviceStatesSplitNode.Evaluate(spreadMax);
+            if (DeviceOut.SliceCount > 0)
+                FDeviceStatesSplitNode.Evaluate(spreadMax);
+            else
+                FDeviceStatesSplitNode.Evaluate(0);
         }
     }
 }

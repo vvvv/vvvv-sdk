@@ -118,10 +118,10 @@ namespace VVVV.Nodes.Input
             Raw
         }
 
-        [Input("Source", IsSingle = true)]
+        [Input("Source")]
         public IDiffSpread<DataSource> DataSourceIn;
 
-        [Input("Cycle Mode", IsSingle = true)]
+        [Input("Cycle Mode")]
         public IDiffSpread<CycleMode> CycleModeIn;
 
         public GlobalMouseNode()
@@ -163,15 +163,21 @@ namespace VVVV.Nodes.Input
             public Point IncrementalPosition;
         }
 
+        protected override int GetMaxSpreadCount()
+        {
+            return SpreadUtils.SpreadMax(DataSourceIn, CycleModeIn)
+                .CombineSpreads(base.GetMaxSpreadCount());
+        }
+
         protected override void SubscribeToDevices()
         {
             var dataSource = DataSourceIn.SliceCount > 0 ? DataSourceIn[0] : DataSource.Cursor;
             if (dataSource == DataSource.Cursor)
             {
                 DeviceOut.SliceCount = 1;
-                DeviceNameOut.SliceCount = 1;
+                DeviceDescriptionOut.SliceCount = 1;
                 DeviceOut[0] = CreateCursorMouse();
-                DeviceNameOut[0] = "Cursor";
+                DeviceDescriptionOut[0] = "Cursor";
             }
             else
             {
