@@ -465,6 +465,13 @@ namespace VVVV.Nodes.Input
             MouseOut.SliceCount = 0;
         }
 
+        public void Dispose()
+        {
+            foreach (var subject in FSubjects)
+                subject.Dispose();
+            BinSizePin.Dispose();
+        }
+
         public void Evaluate(int spreadMax)
         {
             var binCount = BinSizePin.IOObject.Length;
@@ -520,11 +527,6 @@ namespace VVVV.Nodes.Input
         }
 
         static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
-
-        public void Dispose()
-        {
-            BinSizePin.Dispose();
-        }
     }
 
     [PluginInfo(Name = "MouseEvents", Category = "Mouse", Version = "Split", AutoEvaluate = true)]
