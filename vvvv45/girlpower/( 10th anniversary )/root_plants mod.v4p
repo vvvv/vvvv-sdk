@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.3.2.dtd" >
-   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\( 10th anniversary )\root_plants mod.v4p" componentmode="InAWindow" systemname="root_plants mod" filename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\( 10th anniversary )\root_plants mod.v4p">
-   <BOUNDS height="8940" left="1410" top="8610" type="Window" width="11310">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\( 10th anniversary )\root_plants mod.v4p" componentmode="InAWindow" systemname="root_plants mod" filename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\( 10th anniversary )\root_plants mod.v4p">
+   <BOUNDS height="4065" left="1410" top="8490" type="Window" width="7800">
    </BOUNDS>
    <NODE componentmode="InABox" id="30" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1740" top="2565" type="Node" width="0">
@@ -397,7 +397,7 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -544,28 +544,6 @@
    </LINK>
    <LINK srcnodeid="36" srcpinname="Output" dstnodeid="18" dstpinname="Evaluate">
    </LINK>
-   <NODE systemname="Keyboard (System Global)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (System Global)" componentmode="Hidden" id="37">
-   <BOUNDS type="Node" left="5835" top="1140" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="KeyMatch (System)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (System)" componentmode="Hidden" id="38">
-   <BOUNDS type="Node" left="5835" top="1950" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <PIN pinname="Key Match" slicecount="1" values="space">
-   </PIN>
-   <PIN pinname="Key Mode" slicecount="1" values="DownOnly">
-   </PIN>
-   <PIN pinname="Space" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="38" srcpinname="Space" dstnodeid="4" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Keyboard" dstnodeid="38" dstpinname="Keyboard">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="41" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="6555" top="1575" width="1065" height="240">
    </BOUNDS>
@@ -574,6 +552,30 @@
    <PIN pinname="Input Enum" slicecount="1" values="DownOnly">
    </PIN>
    </NODE>
+   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="37">
+   <BOUNDS type="Node" left="5835" top="1140" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="38">
+   <BOUNDS type="Node" left="5835" top="1950" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Key Match" slicecount="1" values="space">
+   </PIN>
+   <PIN pinname="Key Mode">
+   </PIN>
+   <PIN pinname="Space" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="38" srcpinname="Space" dstnodeid="4" dstpinname="Input 2">
+   </LINK>
    <LINK srcnodeid="41" srcpinname="Output Enum" dstnodeid="38" dstpinname="Key Mode">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Device" dstnodeid="38" dstpinname="Keyboard">
    </LINK>
    </PATCH>

@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\Blender.v4p">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Blender.v4p">
    <BOUNDS height="8475" left="900" top="7035" type="Window" width="11955">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="72" nodename="RENDERER (EX9)">
@@ -1204,12 +1204,6 @@
    </LINK>
    <LINK dstnodeid="12" dstpinname="Background Color" srcnodeid="0" srcpinname="Output">
    </LINK>
-   <NODE systemname="Keyboard (System Global Legacy2)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (System Global)" componentmode="Hidden" id="74">
-   <BOUNDS type="Node" left="4650" top="540" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
-   </PIN>
-   </NODE>
    <NODE id="51" nodename="KeyMatch (Keyboard)" systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
    <BOUNDS height="0" left="4650" top="1065" type="Node" width="0">
    </BOUNDS>
@@ -1219,7 +1213,7 @@
    </PIN>
    <PIN pinname="&lt;SPACE&gt; Output" visible="1">
    </PIN>
-   <PIN pinname="Keyboard" visible="1">
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="&lt;SPACE&gt;" visible="1">
    </PIN>
@@ -1230,6 +1224,14 @@
    </NODE>
    <LINK srcnodeid="51" srcpinname="Space" dstnodeid="65" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="74" srcpinname="Keyboard" dstnodeid="51" dstpinname="Keyboard">
+   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="74">
+   <BOUNDS type="Node" left="4650" top="540" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="74" srcpinname="Device" dstnodeid="51" dstpinname="Keyboard">
    </LINK>
    </PATCH>

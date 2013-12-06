@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\bezier.v4p">
-   <BOUNDS height="11925" left="7710" top="825" type="Window" width="11475">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\bezier.v4p">
+   <BOUNDS height="11970" left="7710" top="825" type="Window" width="11475">
    </BOUNDS>
    <NODE id="49" nodename="Cross (2d)" systemname="Cross (2d)">
    <BOUNDS height="0" left="3975" top="6300" type="Node" width="0">
@@ -279,7 +279,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|The Keyboard  &amp; KeyMatch combo look for arrow keys: Up, Down, Left, Right.  |">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|The Keyboard &amp; KeyMatch combo look for arrow keys: Up, Down, Left, Right.  |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -658,16 +658,10 @@
    </LINK>
    <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
    </LINK>
-   <NODE systemname="Keyboard (System Global Legacy2)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (System Global)" componentmode="Hidden" id="52">
-   <BOUNDS type="Node" left="3315" top="2475" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="55" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="4020" top="2925" width="1095" height="240">
+   <BOUNDS type="Box" left="4050" top="2865" width="1095" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="4020" top="2925" width="0" height="0">
+   <BOUNDS type="Node" left="4050" top="2865" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="DownOnly">
    </PIN>
@@ -691,7 +685,7 @@
    <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="53">
    <BOUNDS type="Node" left="3330" top="3255" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Keyboard" visible="1">
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Key Match" slicecount="1" values="|Up, Down, Right, Left|">
    </PIN>
@@ -714,8 +708,6 @@
    </LINK>
    <LINK srcnodeid="53" srcpinname="Left" dstnodeid="38" dstpinname="Down">
    </LINK>
-   <LINK srcnodeid="52" srcpinname="Keyboard" dstnodeid="53" dstpinname="Keyboard">
-   </LINK>
    <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="56">
    <BOUNDS type="Node" left="6855" top="1845" width="100" height="100">
    </BOUNDS>
@@ -723,5 +715,15 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="56" srcpinname="PositionXY" dstnodeid="34" dstpinname="Go To Position">
+   </LINK>
+   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="3315" top="2475" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="52" srcpinname="Device" dstnodeid="53" dstpinname="Keyboard">
    </LINK>
    </PATCH>
