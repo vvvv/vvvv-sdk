@@ -28,8 +28,11 @@ namespace VVVV.Hosting.IO
                                       {
                                           spreadType = typeof(InputSpreadList<>).MakeGenericType(t.GetGenericArguments().First());
                                       }
-                                      
-                                      spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
+
+                                      if (context.BinSizeIOContainer != null)
+                                          spread = Activator.CreateInstance(spreadType, factory, attribute.Clone(), context.BinSizeIOContainer) as ISpread;
+                                      else
+                                          spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
                                       if (attribute.AutoValidate)
                                           return GenericIOContainer.Create(context, factory, spread, s => s.Sync());
                                       else
@@ -92,8 +95,12 @@ namespace VVVV.Hosting.IO
                                        {
                                            spreadType = typeof(OutputSpreadList<>).MakeGenericType(t.GetGenericArguments().First());
                                        }
-                                       
-                                       var spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
+
+                                       ISpread spread;
+                                       if (context.BinSizeIOContainer != null)
+                                           spread = Activator.CreateInstance(spreadType, factory, attribute.Clone(), context.BinSizeIOContainer) as ISpread;
+                                       else
+                                           spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
                                        if (context.IOAttribute.AutoFlush)
                                            return GenericIOContainer.Create(context, factory, spread, null, s => s.Flush());
                                        else

@@ -14,11 +14,18 @@ namespace VVVV.Hosting.Pins.Output
             private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
             private readonly IOutStream<T> FDataStream;
             private readonly IOutStream<int> FBinSizeStream;
+            private bool FOwnsBinSizeContainer;
             
             public OutputBinSpreadStream(IIOFactory ioFactory, OutputAttribute attribute)
+                : this(ioFactory, attribute, () => ioFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(), false))
+            {
+                FOwnsBinSizeContainer = true;
+            }
+
+            public OutputBinSpreadStream(IIOFactory ioFactory, OutputAttribute attribute, Func<IIOContainer<IOutStream<int>>> binSizeIOContainerFactory)
             {
                 FDataContainer = ioFactory.CreateIOContainer<IOutStream<T>>(attribute, false);
-                FBinSizeContainer = ioFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(), false);
+                FBinSizeContainer = binSizeIOContainerFactory();
                 FDataStream = FDataContainer.IOObject;
                 FBinSizeStream = FBinSizeContainer.IOObject;
                 Length = 1;
@@ -27,7 +34,8 @@ namespace VVVV.Hosting.Pins.Output
             public void Dispose()
             {
                 FDataContainer.Dispose();
-                FBinSizeContainer.Dispose();
+                if (FOwnsBinSizeContainer)
+                    FBinSizeContainer.Dispose();
             }
 
             public override void Flush(bool force = false)
@@ -108,6 +116,12 @@ namespace VVVV.Hosting.Pins.Output
             : this(ioFactory, attribute, new OutputBinSpreadStream(ioFactory, attribute))
         {
             
+        }
+
+        public OutputBinSpread(IIOFactory ioFactory, OutputAttribute attribute, IIOContainer<IOutStream<int>> binSizeIOContainer)
+            : this(ioFactory, attribute, new OutputBinSpreadStream(ioFactory, attribute, () => binSizeIOContainer))
+        {
+
         }
         
         public OutputBinSpread(IIOFactory ioFactory, OutputAttribute attribute, OutputBinSpreadStream stream)

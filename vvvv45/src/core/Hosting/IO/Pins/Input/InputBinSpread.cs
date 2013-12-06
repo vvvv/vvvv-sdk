@@ -16,6 +16,7 @@ namespace VVVV.Hosting.Pins.Input
             private readonly IInStream<T> FDataStream;
             private readonly IInStream<int> FBinSizeStream;
             private readonly IPluginIO FDataIO;
+            private bool FOwnsBinSizeContainer;
             
             public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
                 : this(ioFactory, attribute, false)
@@ -25,6 +26,7 @@ namespace VVVV.Hosting.Pins.Input
             public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, bool checkIfChanged)
                 : this(ioFactory, attribute, checkIfChanged, () => ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false))
             {
+                FOwnsBinSizeContainer = true;
             }
 
             public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, bool checkIfChanged, Func<IIOContainer<IInStream<int>>> binSizeIOContainerFactory)
@@ -50,7 +52,8 @@ namespace VVVV.Hosting.Pins.Input
             public void Dispose()
             {
                 FDataContainer.Dispose();
-                FBinSizeContainer.Dispose();
+                if (FOwnsBinSizeContainer)
+                    FBinSizeContainer.Dispose();
             }
             
             public override bool Sync()
