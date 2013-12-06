@@ -79,11 +79,11 @@ namespace VVVV.Nodes.Input
                 // discard "fake keys" which are part of an escaped sequence
                 return null;
             }
-            else if (virtualKey == Keys.ShiftKey)
-            {
-                // correct left-hand / right-hand SHIFT
-                virtualKey = (Keys)User32.MapVirtualKey((uint)scanCode, Const.MAPVK_VSC_TO_VK_EX);
-            }
+            //else if (virtualKey == Keys.ShiftKey)
+            //{
+            //    // correct left-hand / right-hand SHIFT
+            //    virtualKey = (Keys)User32.MapVirtualKey((uint)scanCode, Const.MAPVK_VSC_TO_VK_EX);
+            //}
             else if (virtualKey == Keys.NumLock)
             {
                 // correct PAUSE/BREAK and NUM LOCK silliness, and set the extended bit
@@ -105,22 +105,22 @@ namespace VVVV.Nodes.Input
                     scanCode = User32.MapVirtualKey((uint)virtualKey, Const.MAPVK_VK_TO_VSC);
             }
 
-            switch (virtualKey)
-            {
-              // right-hand CONTROL and ALT have their e0 bit set
-              case Keys.ControlKey:
-                if (isE0)
-                  virtualKey = Keys.RControlKey;
-                else
-                  virtualKey = Keys.LControlKey;
-                break;
+            //switch (virtualKey)
+            //{
+              //// right-hand CONTROL and ALT have their e0 bit set
+              //case Keys.ControlKey:
+              //  if (isE0)
+              //    virtualKey = Keys.RControlKey;
+              //  else
+              //    virtualKey = Keys.LControlKey;
+              //  break;
  
-              case Keys.Menu:
-                if (isE0)
-                  virtualKey = Keys.RMenu;
-                else
-                  virtualKey = Keys.LMenu;
-                break;
+              //case Keys.Menu:
+              //  if (isE0)
+              //    virtualKey = Keys.RMenu;
+              //  else
+              //    virtualKey = Keys.LMenu;
+              //  break;
  
               //// NUMPAD ENTER has its e0 bit set
               //case Keys.Enter:
@@ -187,7 +187,7 @@ namespace VVVV.Nodes.Input
               //  if (!isE0)
               //    virtualKey = Keys.NumPad5;
               //  break;
-            }
+            //}
             return new KeyboardInputEventArgs()
             {
                 Device = args.Device,
