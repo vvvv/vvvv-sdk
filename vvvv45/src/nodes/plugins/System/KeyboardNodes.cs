@@ -18,6 +18,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using SharpDX.RawInput;
 using SharpDX.Multimedia;
+using VVVV.Utils.Streams;
 
 namespace VVVV.Nodes.Input
 {
@@ -121,52 +122,67 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "KeyEvents", Category = "Keyboard", Version = "Join", Bugs = "Not spreadable")]
-    public class KeyboardEventsJoinNode : IPluginEvaluate, IPartImportsSatisfiedNotification
+    [PluginInfo(Name = "KeyEvents", Category = "Keyboard", Version = "Join")]
+    public class KeyboardEventsJoinNode : IPluginEvaluate, IDisposable
     {
-        [Input("Event Type")]
-        public ISpread<KeyNotificationKind> FEventTypeIn;
+        public ISpread<ISpread<KeyNotificationKind>> EventTypeIn;
+        public ISpread<ISpread<int>> KeyCodeIn;
+        public ISpread<ISpread<string>> KeyCharIn;
+        public ISpread<Keyboard> KeyboardOut;
 
-        [Input("Key Code")]
-        public ISpread<int> FKeyCodeIn;
+        private readonly Spread<Subject<KeyNotification>> FSubjects = new Spread<Subject<KeyNotification>>();
+        private IIOContainer<IInStream<int>> BinSizePin;
 
-        [Input("Key Char")]
-        public ISpread<string> FKeyCharIn;
-
-        [Output("Keyboard", IsSingle = true)]
-        public ISpread<Keyboard> FOutput;
-
-        private readonly Subject<KeyNotification> FSubject = new Subject<KeyNotification>();
-
-        public void OnImportsSatisfied()
+        [ImportingConstructor]
+        public KeyboardEventsJoinNode(IIOFactory factory)
         {
-            FOutput[0] = new Keyboard(FSubject);
+            BinSizePin = factory.CreateBinSizeInput(new InputAttribute("Bin Size") { DefaultValue = InputAttribute.DefaultBinSize, Order = int.MaxValue });
+            EventTypeIn = BinSizePin.CreateBinSizeSpread<KeyNotificationKind>(new InputAttribute("Event Type"));
+            KeyCodeIn = BinSizePin.CreateBinSizeSpread<int>(new InputAttribute("Key Code"));
+            KeyCharIn = BinSizePin.CreateBinSizeSpread<string>(new InputAttribute("Key Char"));
+            KeyboardOut = factory.CreateSpread<Keyboard>(new OutputAttribute("Keyboard"));
+            KeyboardOut.SliceCount = 0;
+        }
+
+        public void Dispose()
+        {
+            foreach (var subject in FSubjects)
+                subject.Dispose();
+            BinSizePin.Dispose();
         }
 
         public void Evaluate(int spreadMax)
         {
-            for (int i = 0; i < spreadMax; i++)
+            var binCount = BinSizePin.IOObject.Length;
+            FSubjects.ResizeAndDispose(binCount);
+            KeyboardOut.ResizeAndDismiss(binCount, slice => new Keyboard(FSubjects[slice]));
+            for (int bin = 0; bin < binCount; bin++)
             {
-                KeyNotification notification;
-                switch (FEventTypeIn[i])
+                var subject = FSubjects[bin];
+                var notificationCount = EventTypeIn[bin].SliceCount;
+                for (int i = 0; i < notificationCount; i++)
                 {
-                    case KeyNotificationKind.KeyDown:
-                        notification = new KeyDownNotification((Keys)FKeyCodeIn[i]);
-                        break;
-                    case KeyNotificationKind.KeyPress:
-                        var s = FKeyCharIn[i];
-                        notification = s.Length > 0
-                            ? new KeyPressNotification(s[0])
-                            : null;
-                        break;
-                    case KeyNotificationKind.KeyUp:
-                        notification = new KeyUpNotification((Keys)FKeyCodeIn[i]);
-                        break;
-                    default:
-                        throw new NotImplementedException();
+                    KeyNotification notification;
+                    switch (EventTypeIn[bin][i])
+                    {
+                        case KeyNotificationKind.KeyDown:
+                            notification = new KeyDownNotification((Keys)KeyCodeIn[bin][i]);
+                            break;
+                        case KeyNotificationKind.KeyPress:
+                            var s = KeyCharIn[bin][i];
+                            notification = s.Length > 0
+                                ? new KeyPressNotification(s[0])
+                                : null;
+                            break;
+                        case KeyNotificationKind.KeyUp:
+                            notification = new KeyUpNotification((Keys)KeyCodeIn[bin][i]);
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                    if (notification != null)
+                        subject.OnNext(notification);
                 }
-                if (notification != null)
-                    FSubject.OnNext(notification);
             }
         }
     }
@@ -287,90 +303,112 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "KeyEvents", Category = "Keyboard", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
+    [PluginInfo(Name = "KeyEvents", Category = "Keyboard", Version = "Split", AutoEvaluate = true)]
     public class KeyboardEventsSplitNode : IPluginEvaluate, IDisposable
     {
-        [Input("Keyboard", IsSingle = true)]
-        public ISpread<Keyboard> FInput;
-
-        [Output("Event Type")]
-        public ISpread<KeyNotificationKind> FEventTypeOut;
-
-        [Output("Key Code")]
-        public ISpread<int> FKeyCodeOut;
-
-        [Output("Key Char")]
-        public ISpread<string> FKeyCharOut;
+        public ISpread<Keyboard> KeyboardIn;
+        public ISpread<ISpread<KeyNotificationKind>> EventTypeOut;
+        public ISpread<ISpread<int>> KeyCodeOut;
+        public ISpread<ISpread<string>> KeyCharOut;
 
         private static readonly IList<KeyNotification> FEmptyList = new List<KeyNotification>(0);
-        private Keyboard FKeyboard;
-        private IEnumerator<IList<KeyNotification>> FEnumerator;
+        private Spread<Tuple<Keyboard, IEnumerator<IList<KeyNotification>>>> FEnumerators = new Spread<Tuple<Keyboard, IEnumerator<IList<KeyNotification>>>>();
+        private IIOContainer<IOutStream<int>> BinSizePin;
+
+        [ImportingConstructor]
+        public KeyboardEventsSplitNode(IIOFactory factory)
+        {
+            KeyboardIn = factory.CreateSpread<Keyboard>(new InputAttribute("Keyboard"));
+            BinSizePin = factory.CreateBinSizeOutput(new OutputAttribute("Bin Size") { Order = int.MaxValue });
+            EventTypeOut = BinSizePin.CreateBinSizeSpread<KeyNotificationKind>(new OutputAttribute("Event Type"));
+            KeyCodeOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Key Code"));
+            KeyCharOut = BinSizePin.CreateBinSizeSpread<string>(new OutputAttribute("Key Char"));
+        }
 
         public void Dispose()
         {
-            Unsubscribe();
+            foreach (var tuple in FEnumerators)
+                Unsubscribe(tuple);
+            BinSizePin.Dispose();
+        }
+
+        static Tuple<Keyboard, IEnumerator<IList<KeyNotification>>> Subscribe(Keyboard keyboard)
+        {
+            return Tuple.Create(
+                keyboard,
+                keyboard.KeyNotifications
+                    .Chunkify()
+                    .GetEnumerator()
+            );
+        }
+
+        static void Unsubscribe(Tuple<Keyboard, IEnumerator<IList<KeyNotification>>> tuple)
+        {
+            tuple.Item2.Dispose();
         }
 
         public void Evaluate(int spreadMax)
         {
-            var keyboard = FInput[0] ?? Keyboard.Empty;
-            if (keyboard != FKeyboard)
-            {
-                Unsubscribe();
-                FKeyboard = keyboard;
-                Subscribe();
-            }
-
-            var notifications = FEnumerator.MoveNext()
-                ? FEnumerator.Current
-                : FEmptyList;
-            FEventTypeOut.SliceCount = notifications.Count;
-            FKeyCodeOut.SliceCount = notifications.Count;
-            FKeyCharOut.SliceCount = notifications.Count;
-
-            for (int i = 0; i < notifications.Count; i++)
-            {
-                var notification = notifications[i];
-                FEventTypeOut[i] = notification.Kind;
-                switch (notification.Kind)
+            FEnumerators.Resize(
+                spreadMax,
+                slice =>
                 {
-                    case KeyNotificationKind.KeyDown:
-                        var keyDown = notification as KeyDownNotification;
-                        FKeyCodeOut[i] = (int)keyDown.KeyCode;
-                        FKeyCharOut[i] = null;
-                        break;
-                    case KeyNotificationKind.KeyPress:
-                        var keyPress = notification as KeyPressNotification;
-                        FKeyCodeOut[i] = 0;
-                        FKeyCharOut[i] = keyPress.KeyChar.ToString();
-                        break;
-                    case KeyNotificationKind.KeyUp:
-                        var keyUp = notification as KeyUpNotification;
-                        FKeyCodeOut[i] = (int)keyUp.KeyCode;
-                        FKeyCharOut[i] = null;
-                        break;
-                    default:
-                        throw new NotImplementedException();
+                    var keyboard = KeyboardIn[slice] ?? Keyboard.Empty;
+                    return Subscribe(keyboard);
+                },
+                Unsubscribe
+            );
+
+            EventTypeOut.SliceCount = spreadMax;
+            KeyCodeOut.SliceCount = spreadMax;
+            KeyCharOut.SliceCount = spreadMax;
+
+            for (int bin = 0; bin < spreadMax; bin++)
+            {
+                var keyboard = KeyboardIn[bin] ?? Keyboard.Empty;
+                var tuple = FEnumerators[bin];
+                if (keyboard != tuple.Item1)
+                {
+                    Unsubscribe(tuple);
+                    tuple = Subscribe(keyboard);
                 }
-            }
-        }
 
-        private void Subscribe()
-        {
-            if (FKeyboard != null)
-            {
-                FEnumerator = FKeyboard.KeyNotifications
-                    .Chunkify()
-                    .GetEnumerator();
-            }
-        }
+                var enumerator = tuple.Item2;
+                var notifications = enumerator.MoveNext()
+                    ? enumerator.Current
+                    : FEmptyList;
 
-        private void Unsubscribe()
-        {
-            if (FEnumerator != null)
-            {
-                FEnumerator.Dispose();
-                FEnumerator = null;
+                EventTypeOut[bin].SliceCount = notifications.Count;
+                KeyCodeOut[bin].SliceCount = notifications.Count;
+                KeyCharOut[bin].SliceCount = notifications.Count;
+
+                for (int i = 0; i < notifications.Count; i++)
+                {
+                    var notification = notifications[i];
+                    EventTypeOut[bin][i] = notification.Kind;
+                    switch (notification.Kind)
+                    {
+                        case KeyNotificationKind.KeyDown:
+                            var keyDown = notification as KeyDownNotification;
+                            KeyCodeOut[bin][i] = (int)keyDown.KeyCode;
+                            KeyCharOut[bin][i] = null;
+                            break;
+                        case KeyNotificationKind.KeyPress:
+                            var keyPress = notification as KeyPressNotification;
+                            KeyCodeOut[bin][i] = 0;
+                            KeyCharOut[bin][i] = keyPress.KeyChar.ToString();
+                            break;
+                        case KeyNotificationKind.KeyUp:
+                            var keyUp = notification as KeyUpNotification;
+                            KeyCodeOut[bin][i] = (int)keyUp.KeyCode;
+                            KeyCharOut[bin][i] = null;
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                }
+
+                FEnumerators[bin] = tuple;
             }
         }
     }

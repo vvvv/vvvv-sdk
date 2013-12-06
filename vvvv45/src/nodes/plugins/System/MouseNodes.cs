@@ -465,6 +465,13 @@ namespace VVVV.Nodes.Input
             MouseOut.SliceCount = 0;
         }
 
+        public void Dispose()
+        {
+            foreach (var subject in FSubjects)
+                subject.Dispose();
+            BinSizePin.Dispose();
+        }
+
         public void Evaluate(int spreadMax)
         {
             var binCount = BinSizePin.IOObject.Length;
@@ -473,7 +480,8 @@ namespace VVVV.Nodes.Input
             for (int bin = 0; bin < binCount; bin++)
             {
                 var subject = FSubjects[bin];
-                for (int i = 0; i < spreadMax; i++)
+                var notificationCount = EventTypeIn[bin].SliceCount;
+                for (int i = 0; i < notificationCount; i++)
                 {
                     var position = ToMousePoint(PositionIn[bin][i]);
                     MouseNotification notification;
@@ -489,7 +497,7 @@ namespace VVVV.Nodes.Input
                             notification = new MouseMoveNotification(position, FClientArea);
                             break;
                         case MouseNotificationKind.MouseWheel:
-                            notification = new MouseWheelNotification(position, FClientArea, MouseWheelIn[bin][i] * Const.WHEEL_DELTA);
+                            notification = new MouseWheelNotification(position, FClientArea, MouseWheelIn[bin][i]);
                             break;
                         default:
                             throw new NotImplementedException();
@@ -519,11 +527,6 @@ namespace VVVV.Nodes.Input
         }
 
         static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
-
-        public void Dispose()
-        {
-            BinSizePin.Dispose();
-        }
     }
 
     [PluginInfo(Name = "MouseEvents", Category = "Mouse", Version = "Split", AutoEvaluate = true)]
