@@ -84,7 +84,9 @@ namespace VVVV.Nodes.Input
             var notifications = Observable.FromEventPattern<KeyboardInputEventArgs>(typeof(Device), "KeyboardInput")
                 .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice])
                 .Where(ep => ep.EventArgs.Device == deviceInfo.Handle)
-                .SelectMany<EventPattern<KeyboardInputEventArgs>, KeyNotification>(ep => GenerateKeyNotifications(ep.EventArgs, slice));
+                .Select(ep => ep.EventArgs.GetCorrectedKeyboardInputEventArgs())
+                .Where(args => args != null)
+                .SelectMany(args => GenerateKeyNotifications(args, slice));
             return new Keyboard(notifications, true);
         }
 
