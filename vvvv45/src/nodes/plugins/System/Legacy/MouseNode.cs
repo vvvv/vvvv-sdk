@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows.Forms;
 using VVVV.Hosting;
 using VVVV.Hosting.IO;
@@ -25,15 +26,18 @@ namespace VVVV.Nodes.Input
         [Input("Cycle Mode", IsSingle = true)]
         ISpread<CycleMode> FCycleModeIn;
         [Output("Mouse", IsSingle = true)]
-        ISpread<MouseState> FMouseOut;
+        ISpread<Mouse> FMouseOut;
 #pragma warning restore 0649
 
         readonly DeltaMouse FDeltaMouse = new DeltaMouse();
         bool FLastFrameCycle;
         PluginContainer FMouseSplitNode;
+        Subject<MouseNotification> FMouseNotificationSubject = new Subject<MouseNotification>();
+        MouseState FLastMouseState;
 
         public override void OnImportsSatisfied()
         {
+            FMouseOut[0] = new Mouse(FMouseNotificationSubject);
             // Create a mouse split node for us and connect our mouse out to its mouse in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseState" && n.Category == "System" && n.Version == "Split Legacy");
             FMouseSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => FMouseOut);
@@ -42,6 +46,7 @@ namespace VVVV.Nodes.Input
 
         public override void Dispose()
         {
+            FMouseNotificationSubject.Dispose();
             FMouseSplitNode.Dispose();
             base.Dispose();
         }
@@ -75,7 +80,51 @@ namespace VVVV.Nodes.Input
                 }
 
                 var buttons = Control.MouseButtons;
-                FMouseOut[0] = new MouseState(x, y, buttons, 0);
+                var mouseState = new MouseState(x, y, buttons, 0);
+                if (mouseState != FLastMouseState)
+                {
+                    var virtualScreenSize = SystemInformation.VirtualScreen.Size;
+                        var v = new Vector2D(x, y);
+                        var vInScreenCoordinates = VMath.Map(
+                            v,
+                            new Vector2D(-1, -1),
+                            new Vector2D(1, 1),
+                            new Vector2D(0, virtualScreenSize.Height - 1),
+                            new Vector2D(virtualScreenSize.Width - 1, 0),
+                            TMapMode.Float);
+                        var position = new Point((int)vInScreenCoordinates.x, (int)vInScreenCoordinates.y);
+                    if (mouseState.X != FLastMouseState.X || mouseState.Y != FLastMouseState.Y)
+                        FMouseNotificationSubject.OnNext(new MouseMoveNotification(position, virtualScreenSize));
+
+                    if (mouseState.IsLeft && !FLastMouseState.IsLeft)
+                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.Left));
+                    else if (!mouseState.IsLeft && FLastMouseState.IsLeft)
+                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.Left));
+                    if (mouseState.IsMiddle && !FLastMouseState.IsMiddle)
+                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.Middle));
+                    else if (!mouseState.IsMiddle && FLastMouseState.IsMiddle)
+                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.Middle));
+                    if (mouseState.IsRight && !FLastMouseState.IsRight)
+                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.Right));
+                    else if (!mouseState.IsRight && FLastMouseState.IsRight)
+                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.Right));
+                    if (mouseState.IsXButton1 && !FLastMouseState.IsXButton1)
+                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.XButton1));
+                    else if (!mouseState.IsXButton1 && FLastMouseState.IsXButton1)
+                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.XButton1));
+                    if (mouseState.IsXButton2 && !FLastMouseState.IsXButton2)
+                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.XButton2));
+                    else if (!mouseState.IsXButton2 && FLastMouseState.IsXButton2)
+                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.XButton2));
+
+                    if (mouseState.MouseWheel != FLastMouseState.MouseWheel)
+                    {
+                        var delta = mouseState.MouseWheel - FLastMouseState.MouseWheel;
+                        FMouseNotificationSubject.OnNext(new MouseWheelNotification(position, virtualScreenSize, delta * Const.WHEEL_DELTA));
+                    }
+
+                    FLastMouseState = mouseState;
+                }
                 FMouseSplitNode.Evaluate(spreadMax);
             }
 
@@ -84,24 +133,14 @@ namespace VVVV.Nodes.Input
     }
 
     [PluginInfo(Name = "Mouse", Category = "System", Version = "Window Legacy2")]
-    public class LegacyWindowMouseNode : WindowInputNode
+    public class LegacyWindowMouseNode : WindowMessageNode, IPluginEvaluate
     {
 #pragma warning disable 0649
         [Output("Mouse", IsSingle = true)]
-        ISpread<MouseState> FMouseOut;
+        ISpread<Mouse> FMouseOut;
 #pragma warning restore 0649
 
-        MouseState FMouseState = new MouseState();
         PluginContainer FMouseSplitNode;
-        int FMouseWheel;
-
-        public override void OnImportsSatisfied()
-        {
-            // Create a mouse split node for us and connect our mouse out to its mouse in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseState" && n.Category == "System" && n.Version == "Split Legacy");
-            FMouseSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => FMouseOut);
-            base.OnImportsSatisfied();
-        }
 
         public override void Dispose()
         {
@@ -109,58 +148,73 @@ namespace VVVV.Nodes.Input
             base.Dispose();
         }
 
-        protected override void HandleSubclassWindowMessage(object sender, WMEventArgs e)
+        protected override void Initialize(IObservable<WMEventArgs> windowMessages)
         {
-            if (e.Message >= WM.MOUSEFIRST && e.Message <= WM.MOUSELAST)
-            {
-                switch (e.Message)
+            var mouseNotifications = windowMessages
+                .Where(e => e.Message >= WM.MOUSEFIRST && e.Message <= WM.MOUSELAST)
+                .Select<WMEventArgs, MouseNotification>(e =>
                 {
-                    case WM.MOUSEWHEEL:
-                        unchecked
+                    RECT cr;
+                    if (User32.GetClientRect(e.HWnd, out cr))
+                    {
+                        var pos = e.LParam.ToInt32();
+                        var position = new Point(pos.LoWord(), pos.HiWord());
+                        var clientArea = new Size(cr.Width, cr.Height);
+                        var wParam = e.WParam.ToInt32();
+
+                        switch (e.Message)
                         {
-                            var wheel = e.WParam.ToInt32().HiWord();
-                            FMouseWheel += wheel;
-                            FMouseState.MouseWheel = (int)Math.Round((float)FMouseWheel / Const.WHEEL_DELTA);
+                            case WM.MOUSEWHEEL:
+                                unchecked
+                                {
+                                    var wheel = e.WParam.ToInt32().HiWord();
+                                    return new MouseWheelNotification(position, clientArea, wheel);
+                                }
+                            case WM.MOUSEMOVE:
+                                return new MouseMoveNotification(position, clientArea);
+                            case WM.LBUTTONDOWN:
+                            case WM.LBUTTONDBLCLK:
+                                return new MouseDownNotification(position, clientArea, MouseButtons.Left);
+                            case WM.LBUTTONUP:
+                                return new MouseUpNotification(position, clientArea, MouseButtons.Left);
+                            case WM.MBUTTONDOWN:
+                            case WM.MBUTTONDBLCLK:
+                                return new MouseDownNotification(position, clientArea, MouseButtons.Middle);
+                            case WM.MBUTTONUP:
+                                return new MouseUpNotification(position, clientArea, MouseButtons.Middle);
+                            case WM.RBUTTONDOWN:
+                            case WM.RBUTTONDBLCLK:
+                                return new MouseDownNotification(position, clientArea, MouseButtons.Right);
+                            case WM.RBUTTONUP:
+                                return new MouseUpNotification(position, clientArea, MouseButtons.Right);
+                            case WM.XBUTTONDOWN:
+                            case WM.XBUTTONDBLCLK:
+                                if ((wParam.HiWord() & 0x0001) > 0)
+                                    return new MouseDownNotification(position, clientArea, MouseButtons.XButton1);
+                                else
+                                    return new MouseDownNotification(position, clientArea, MouseButtons.XButton2);
+                            case WM.XBUTTONUP:
+                                if ((wParam.HiWord() & 0x0001) > 0)
+                                    return new MouseUpNotification(position, clientArea, MouseButtons.XButton1);
+                                else
+                                    return new MouseUpNotification(position, clientArea, MouseButtons.XButton2);
                         }
-                        break;
-                    case WM.MOUSEMOVE:
-                        RECT cr;
-                        if (User32.GetClientRect(e.HWnd, out cr))
-                        {
-                            var pos = e.LParam.ToInt32();
-                            var x = (int)pos.LoWord();
-                            var y = (int)pos.HiWord();
-                            var width = cr.Width;
-                            var height = cr.Height;
-                            FMouseState.X = 2d * x / (width - 1) - 1;
-                            FMouseState.Y = 1d - 2d * y / (height - 1);
-                        }
-                        break;
-                    case WM.LBUTTONDOWN:
-                    case WM.LBUTTONDBLCLK:
-                    case WM.LBUTTONUP:
-                    case WM.MBUTTONDOWN:
-                    case WM.MBUTTONDBLCLK:
-                    case WM.MBUTTONUP:
-                    case WM.RBUTTONDOWN:
-                    case WM.RBUTTONDBLCLK:
-                    case WM.RBUTTONUP:
-                    case WM.XBUTTONDOWN:
-                    case WM.XBUTTONDBLCLK:
-                    case WM.XBUTTONUP:
-                        FMouseState.Buttons = Control.MouseButtons;
-                        break;
+                    }
+                    return null;
                 }
-            }
+                )
+                .OfType<MouseNotification>();
+            FMouseOut[0] = new Mouse(mouseNotifications);
+
+            // Create a mouse split node for us and connect our mouse out to its mouse in
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseState" && n.Category == "System" && n.Version == "Split Legacy");
+            FMouseSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => FMouseOut);
         }
-        
-        protected override void Evaluate(int spreadMax, bool enabled)
+
+        public void Evaluate(int spreadMax)
         {
-            if (enabled)
-            {
-                FMouseOut[0] = FMouseState;
-                FMouseSplitNode.Evaluate(spreadMax);
-            }
+            // Evaluate our split plugin
+            FMouseSplitNode.Evaluate(spreadMax);
         }
     }
 }

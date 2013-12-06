@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent).v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent).v4p" locked="0">
    <BOUNDS height="14025" left="6915" top="720" type="Window" width="21435">
    </BOUNDS>
    <NODE hiddenwhenlocked="1" id="96" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
@@ -353,7 +353,7 @@
    </BOUNDS>
    <BOUNDS left="2940" top="6645" type="Box">
    </BOUNDS>
-   <PIN pinname="Index" visible="1" slicecount="1" values="0">
+   <PIN pinname="Index" visible="1">
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -390,6 +390,16 @@
    <PIN pinname="Minimum" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="69" nodename="Keyboard (System Global)" systemname="Keyboard (System Global)">
+   <BOUNDS height="0" left="12780" top="585" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Keyboard Output" visible="1">
+   </PIN>
+   <PIN pinname="Key" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" hiddenwhenlocked="1" id="67" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -553,7 +563,7 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -635,7 +645,7 @@
    <NODE hiddenwhenlocked="1" id="54" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="0" left="11340" top="1395" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -785,7 +795,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="48" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -811,7 +821,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="47" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -835,7 +845,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="77" dstpinname="Source" srcnodeid="57" srcpinname="Output Node">
@@ -1061,7 +1071,7 @@
    <LINK dstnodeid="42" dstpinname="Set" srcnodeid="33" srcpinname="Up Edge">
    </LINK>
    <NODE componentmode="InABox" hiddenwhenlocked="0" id="30" managers="" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <PIN pinname="Y Input Value" pintype="Input" visible="1" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" pintype="Input" visible="1">
    </PIN>
    <BOUNDS height="0" left="15570" top="7050" type="Node" width="0">
    </BOUNDS>
@@ -1193,9 +1203,9 @@
    <NODE hiddenwhenlocked="1" id="25" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="0" left="13650" top="4860" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1203,9 +1213,9 @@
    <NODE hiddenwhenlocked="1" id="24" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="0" left="14250" top="4860" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1373,7 +1383,7 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Layer 4" visible="1" slicecount="1" values="||">
+   <PIN pinname="Layer 4" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="15" dstpinname="Layer 1" hiddenwhenlocked="1" srcnodeid="85" srcpinname="Layer">
@@ -1648,132 +1658,62 @@
    </LINK>
    <INFO author="vvvv group" description="Edit a point cloud via mouse and keyboard within the ex9 renderer - Persistent: save to / load from disk." tags="ex9, GUI, edit, modelling, mesh, save, load">
    </INFO>
-   <LINK srcnodeid="13" srcpinname="Output String" dstnodeid="7" dstpinname="FileName">
-   </LINK>
-   <NODE nodename="IOBox (Node)" componentmode="InABox" id="99" systemname="IOBox (Node)">
-   <BOUNDS type="Node" left="7410" top="60" width="0" height="0">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\PickPoints (3D Vector).v4p" id="2" nodename="PickPoints (3D Vector).v4p" systemname="PickPoints (3d Vector)">
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="particles" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="6540" top="5085" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="7410" top="60" width="795" height="240">
+   <BOUNDS height="3600" left="6540" top="5085" type="Box" width="4800">
    </BOUNDS>
-   <PIN pinname="Input Node" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mouse">
-   </PIN>
-   <PIN pinname="Output Node" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="97">
-   <BOUNDS type="Node" left="8115" top="1140" width="100" height="100">
+   <BOUNDS height="11415" left="795" top="210" type="Window" width="8520">
    </BOUNDS>
-   <PIN pinname="X" visible="1">
+   <PIN pinname="over" visible="1">
    </PIN>
-   <PIN pinname="Y" visible="1">
+   <PIN pinname="picked" visible="1">
    </PIN>
-   <PIN pinname="Z" visible="1">
+   <PIN pinname="sorted" visible="1">
    </PIN>
-   <PIN pinname="XYZ" visible="1">
+   <PIN pinname="Points" visible="1">
    </PIN>
-   </NODE>
-   <LINK srcnodeid="97" srcpinname="XYZ" dstnodeid="65" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="97" srcpinname="XYZ" dstnodeid="44" dstpinname="Input 2">
-   </LINK>
-   <NODE systemname="MouseStates (System Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (System Split)" componentmode="Hidden" id="102">
-   <BOUNDS type="Node" left="7425" top="660" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="PositionXY" visible="1">
+   <PIN pinname="Mouse Down" visible="1">
    </PIN>
-   <PIN pinname="Left Button" visible="1">
+   <PIN pinname="Mouse XYZ" visible="1">
    </PIN>
-   <PIN pinname="Middle Button" visible="1">
+   <PIN pinname="Over" visible="1">
    </PIN>
-   <PIN pinname="Right Button" visible="1">
+   <PIN pinname="Picked" visible="1">
+   </PIN>
+   <PIN pinname="Epsilon" visible="1">
+   </PIN>
+   <PIN pinname="Point Size" visible="1">
+   </PIN>
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="103">
-   <BOUNDS type="Node" left="7425" top="1125" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="102" srcpinname="PositionXY" dstnodeid="103" dstpinname="Input 1">
+   <LINK dstnodeid="2" dstpinname="Points" linkstyle="PolyLine" srcnodeid="78" srcpinname="XYZ Transformed">
    </LINK>
-   <LINK srcnodeid="103" srcpinname="Output" dstnodeid="22" dstpinname="Input">
+   <LINK dstnodeid="71" dstpinname="Index" hiddenwhenlocked="1" srcnodeid="2" srcpinname="Over">
    </LINK>
-   <LINK srcnodeid="103" srcpinname="Output" dstnodeid="45" dstpinname="XYZ">
+   <LINK dstnodeid="2" dstpinname="Mouse Down" hiddenwhenlocked="1" srcnodeid="65" srcpinname="Output">
+   <LINKPOINT x="7890" y="2685">
+   </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="102" srcpinname="Left Button" dstnodeid="97" dstpinname="X">
+   <LINK dstnodeid="2" dstpinname="Point Size" hiddenwhenlocked="1" srcnodeid="88" srcpinname="Y Output Value">
+   <LINKPOINT x="6660" y="1575">
+   </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="102" srcpinname="Middle Button" dstnodeid="97" dstpinname="Y">
+   <LINK dstnodeid="19" dstpinname="Index" srcnodeid="2" srcpinname="Picked">
+   <LINKPOINT x="7605" y="7785">
+   </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="102" srcpinname="Right Button" dstnodeid="97" dstpinname="Z">
+   <LINK dstnodeid="20" dstpinname="Index" srcnodeid="2" srcpinname="Picked">
    </LINK>
-   <NODE systemname="KeyMatch (System)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (System)" componentmode="Hidden" id="101" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="12795" top="1185" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Key Match" slicecount="1" encoded="0" values="|t,s,d,x,c,v,y, m|">
-   </PIN>
-   <PIN pinname="T" visible="1">
-   </PIN>
-   <PIN pinname="S" visible="1">
-   </PIN>
-   <PIN pinname="D" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="C" visible="1">
-   </PIN>
-   <PIN pinname="V" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="M" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="101" srcpinname="T" dstnodeid="25" dstpinname="Input 1" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="101" srcpinname="S" dstnodeid="25" dstpinname="Input 2" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="101" srcpinname="T" dstnodeid="24" dstpinname="Input 1" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="101" srcpinname="D" dstnodeid="24" dstpinname="Input 2" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="101" srcpinname="X" dstnodeid="48" dstpinname="Y Input Value" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="101" srcpinname="C" dstnodeid="47" dstpinname="Y Input Value" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="101" srcpinname="V" dstnodeid="49" dstpinname="Y Input Value" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="101" srcpinname="Y" dstnodeid="30" dstpinname="Y Input Value" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="101" srcpinname="T" dstnodeid="54" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="101" srcpinname="M" dstnodeid="56" dstpinname="Input 2">
-   </LINK>
-   <NODE hiddenwhenlocked="1" id="69" nodename="Keyboard (System Global)" systemname="Keyboard (System Global)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
-   <BOUNDS height="0" left="12795" top="750" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Keyboard Output" visible="1">
-   </PIN>
-   <PIN pinname="Key" visible="1">
-   </PIN>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="69" srcpinname="Keyboard" dstnodeid="101" dstpinname="Keyboard">
-   </LINK>
-   <LINK srcnodeid="82" srcpinname="Y Output Value" dstnodeid="69" dstpinname="Enabled">
-   </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\TagPoints (3D Vector).v4p" id="1" nodename="TagPoints (3d Vector)" systemname="TagPoints (3d Vector)">
-   <BOUNDS height="100" left="11955" top="5085" type="Node" width="100">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\TagPoints (3D Vector).v4p" id="1" nodename="TagPoints (3D Vector).v4p" systemname="TagPoints (3d Vector)">
+   <BOUNDS height="270" left="11955" top="5085" type="Node" width="1050">
    </BOUNDS>
    <BOUNDS height="3600" left="11955" top="5085" type="Box" width="4800">
    </BOUNDS>
@@ -1801,7 +1741,7 @@
    </PIN>
    <PIN pinname="Edit Front Only" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Mouse State" visible="1">
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
@@ -1840,64 +1780,14 @@
    </LINK>
    <LINK dstnodeid="1" dstpinname="Reset" hiddenwhenlocked="1" srcnodeid="94" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\PickPoints (3D Vector).v4p" id="2" nodename="PickPoints (3d Vector)" systemname="PickPoints (3d Vector)">
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   <PIN pinname="particles" visible="1">
-   </PIN>
-   <BOUNDS height="100" left="6540" top="5085" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="3600" left="6540" top="5085" type="Box" width="4800">
-   </BOUNDS>
-   <BOUNDS height="11415" left="795" top="210" type="Window" width="8520">
-   </BOUNDS>
-   <PIN pinname="over" visible="1">
-   </PIN>
-   <PIN pinname="picked" visible="1">
-   </PIN>
-   <PIN pinname="sorted" visible="1">
-   </PIN>
-   <PIN pinname="Points" visible="1">
-   </PIN>
-   <PIN pinname="Mouse Down" visible="1">
-   </PIN>
-   <PIN pinname="Mouse XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Over" visible="1">
-   </PIN>
-   <PIN pinname="Picked" visible="1">
-   </PIN>
-   <PIN pinname="Epsilon" visible="1">
-   </PIN>
-   <PIN pinname="Point Size" visible="1">
-   </PIN>
-   <PIN pinname="Mouse State" visible="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="2" dstpinname="Points" linkstyle="PolyLine" srcnodeid="78" srcpinname="XYZ Transformed">
-   </LINK>
-   <LINK dstnodeid="71" dstpinname="Index" hiddenwhenlocked="1" srcnodeid="2" srcpinname="Over">
-   </LINK>
-   <LINK dstnodeid="2" dstpinname="Point Size" hiddenwhenlocked="1" srcnodeid="88" srcpinname="Y Output Value">
-   <LINKPOINT x="6660" y="1575">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="19" dstpinname="Index" srcnodeid="2" srcpinname="Picked">
-   <LINKPOINT x="7605" y="7785">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="20" dstpinname="Index" srcnodeid="2" srcpinname="Picked">
-   </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" id="0" nodename="Cursor (DX9)" systemname="Cursor (DX9)">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" id="0" nodename="..\EX9\Cursor (DX9).v4p" systemname="Cursor (DX9)">
    <BOUNDS height="100" left="8550" top="2820" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="8550" top="2820" type="Box" width="4800">
    </BOUNDS>
    <BOUNDS height="6615" left="600" top="3570" type="Window" width="10980">
    </BOUNDS>
-   <PIN pinname="View Projection" visible="1">
+   <PIN pinname="View Projection" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Mouse XYZ" visible="1">
    </PIN>
@@ -1915,12 +1805,20 @@
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
-   <PIN pinname="Mouse State" visible="1">
+   <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
+   <LINK dstnodeid="0" dstpinname="Mouse Down" hiddenwhenlocked="1" srcnodeid="65" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="View Projection" srcnodeid="57" srcpinname="Output Node">
+   </LINK>
    <LINK dstnodeid="0" dstpinname="Selection" hiddenwhenlocked="1" srcnodeid="51" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Point Size" hiddenwhenlocked="1" srcnodeid="88" srcpinname="Y Output Value">
+   <LINKPOINT x="6615" y="1560">
+   </LINKPOINT>
    </LINK>
    <LINK dstnodeid="15" dstpinname="Layer 4" hiddenwhenlocked="1" srcnodeid="0" srcpinname="Layer">
    <LINKPOINT x="4890" y="3045">
@@ -1932,12 +1830,136 @@
    <LINKPOINT x="9345" y="765">
    </LINKPOINT>
    </LINK>
+   <LINK srcnodeid="13" srcpinname="Output String" dstnodeid="7" dstpinname="FileName">
+   </LINK>
+   <NODE systemname="MouseState (System Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseState (System Split)" componentmode="Hidden" id="100">
+   <BOUNDS type="Node" left="7410" top="660" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="99" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="7410" top="60" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7410" top="60" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mouse">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="100" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="98">
+   <BOUNDS type="Node" left="7410" top="1140" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="100" srcpinname="X" dstnodeid="98" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="100" srcpinname="Y" dstnodeid="98" dstpinname="Y">
+   </LINK>
+   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="97">
+   <BOUNDS type="Node" left="8115" top="1140" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="100" srcpinname="Left Button" dstnodeid="97" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="100" srcpinname="Middle Button" dstnodeid="97" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="100" srcpinname="Right Button" dstnodeid="97" dstpinname="Z">
+   </LINK>
+   <LINK srcnodeid="98" srcpinname="XYZ" dstnodeid="22" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="98" srcpinname="XYZ" dstnodeid="45" dstpinname="XYZ">
+   </LINK>
+   <LINK srcnodeid="97" srcpinname="XYZ" dstnodeid="65" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="97" srcpinname="XYZ" dstnodeid="44" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="2" dstpinname="Mouse State">
+   </LINK>
+   <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="1" dstpinname="Mouse State">
+   </LINK>
+   <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="0" dstpinname="Mouse State">
+   </LINK>
+   <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="100" dstpinname="Mouse">
+   </LINK>
    <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="2" dstpinname="Mouse">
    </LINK>
-   <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="102" dstpinname="Mouse">
+   <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="1" dstpinname="Mouse">
    </LINK>
    <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="0" dstpinname="Mouse">
    </LINK>
-   <LINK srcnodeid="99" srcpinname="Output Node" dstnodeid="1" dstpinname="Mouse">
+   <NODE systemname="KeyMatch (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (String)" componentmode="Hidden" id="101" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="12795" top="1185" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Key Match" slicecount="1" encoded="0" values="|t,s,d,x,c,v,y, m|">
+   </PIN>
+   <PIN pinname="T" visible="1">
+   </PIN>
+   <PIN pinname="S" visible="1">
+   </PIN>
+   <PIN pinname="D" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="C" visible="1">
+   </PIN>
+   <PIN pinname="V" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="M" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="69" srcpinname="Keyboard" dstnodeid="101" dstpinname="Keyboard" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="T" dstnodeid="25" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="S" dstnodeid="25" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="T" dstnodeid="24" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="D" dstnodeid="24" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="X" dstnodeid="48" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="C" dstnodeid="47" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="V" dstnodeid="49" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="Y" dstnodeid="30" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="T" dstnodeid="54" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="M" dstnodeid="56" dstpinname="Input 2">
    </LINK>
    </PATCH>

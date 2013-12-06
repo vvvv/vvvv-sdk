@@ -11,6 +11,7 @@ using System.Threading;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Forms;
+using System.Reactive.Linq;
 
 using VVVV.Utils;
 using VVVV.Utils.VMath;
@@ -21,55 +22,68 @@ using VVVV.Core.Logging;
 using VVVV.Utils.IO;
 #endregion using
 
-namespace TypeWriter
+namespace VVVV.Nodes
 {
-    [PluginInfo(Name = "Typewriter",
-                Category = "String",
-                Version = "Legacy",
-                Credits = "Based on an original version by bo27, Yuri Dolgov",
-                Author = "vvvv group",
-                Help = "Takes all keyboardinput including keyboard commands and returns a resulting string",
-                Tags = "keyboard")]
-    public class LegacyTypeWriterPlugin : IPluginEvaluate
+    class TypeWriter : IDisposable
     {
-        #region field declaration
-        //input pin declaration
-        [Input("Keyboard State", IsSingle = true)]
-        IDiffSpread<KeyboardState> FKeyboardState;
+        private Keyboard FKeyboard;
+        private IDisposable FKeyboardSubscription;
+        public Keyboard Keyboard
+        {
+            set
+            {
+                if (value != FKeyboard)
+                {
+                    if (FKeyboardSubscription != null)
+                    {
+                        FKeyboardSubscription.Dispose();
+                        FKeyboardSubscription = null;
+                    }
+                    FKeyboard = value;
+                    if (FKeyboard != null)
+                    {
+                        FKeyboardSubscription = FKeyboard.KeyNotifications
+                            .Subscribe(n =>
+                            {
+                                switch (n.Kind)
+                                {
+                                    case KeyNotificationKind.KeyDown:
+                                        FControlKeyPressed = (FKeyboard.Modifiers & Keys.Control) > 0;
+                                        var altKeyPressed = (FKeyboard.Modifiers & Keys.Alt) > 0;
+                                        var keyDown = n as KeyDownNotification;
+                                        var keyCode = keyDown.KeyCode;
+                                        if ((int)keyCode < 48)
+                                        {
+                                            if (!altKeyPressed)
+                                                RunCommand(keyCode);
+                                        }
+                                        break;
+                                    case KeyNotificationKind.KeyPress:
+                                        var keyPress = n as KeyPressNotification;
+                                        var chr = keyPress.KeyChar;
+                                        if (!char.IsControl(chr))
+                                            AddNewChar(chr.ToString());
+                                        break;
+                                }
+                            }
+                            );
+                    }
+                }
+            }
+        }
 
-        [Input("Text", DefaultString = "", IsSingle = true)]
-        ISpread<string> FInputText;
+        public int CursorPosition
+        {
+            get { return FCursorCharPos; }
+            set
+            {
+                FCursorCharPos = Math.Min(FText.Length, Math.Max(0, value));
+            }
+        }
 
-        [Input("Insert Text", IsBang = true, IsSingle = true)]
-        ISpread<bool> FInsertText;
+        public bool IgnoreNavigationKeys { get; set; }
 
-        [Input("Initial Text", IsSingle = true)]
-        ISpread<string> FInitialText;
-
-        [Input("Initialize", IsSingle = true, IsBang = true)]
-        ISpread<bool> FInitialize;
-
-        [Input("Cursor Position", IsSingle = true, MinValue = 0, MaxValue = int.MaxValue, Visibility = PinVisibility.OnlyInspector)]
-        ISpread<int> FNewCursorPosition;
-
-        [Input("Set Cursor Position", IsSingle = true, IsBang = true, Visibility = PinVisibility.OnlyInspector)]
-        ISpread<bool> FSetCursorPosition;
-
-        [Input("Ignore Navigation Keys", IsSingle = true, DefaultValue = 1, Visibility = PinVisibility.OnlyInspector)]
-        ISpread<bool> FIgnoreNavigationKeys;
-
-        //output pin declaration
-        [Output("Output")]
-        ISpread<string> FOutput;
-
-        [Output("Cursor Position")]
-        ISpread<int> FCursorPosition;
-
-        [Import()]
-        ILogger Flogger;
-
-        [Import()]
-        IHDEHost FHDEHost;
+        public string Output { get { return FText; } }
 
         private bool FControlKeyPressed;
         private string FLastCapitalKey;
@@ -79,11 +93,6 @@ namespace TypeWriter
         private string FNewlineSymbol = Environment.NewLine;
         private Dictionary<uint, double> FBufferedCommands = new Dictionary<uint, double>();
         private Dictionary<string, double> FBufferedKeys = new Dictionary<string, double>();
-        private KeyboardState FLastKeyboardState = KeyboardState.Empty;
-
-        // Track whether Dispose has been called.
-        private bool FDisposed = false;
-        #endregion field declaration
 
         #region Text navigation helper
         //todo:
@@ -205,14 +214,10 @@ namespace TypeWriter
         {
             var newPos = Math.Min(FText.Length, FCursorCharPos + steps);
             //if cursor lands on an \r and the next symbol is an \n make sure to step one more
-            try
+            if (newPos >= 0 && newPos < FText.Length)
             {
                 if (FText[newPos] == '\n' && FText[newPos - 1] == '\r')
                     newPos += 1;
-            }
-            catch
-            {
-                //FText[newPos] may access out of range char..nevermind
             }
 
             FCursorCharPos = Math.Min(FText.Length, newPos);
@@ -222,14 +227,10 @@ namespace TypeWriter
         {
             var newPos = Math.Max(0, FCursorCharPos - 1);
             //if cursor lands on an \n and the previouse symbol is an \r make sure to step one more
-            try
+            if (newPos >= 0 && newPos < FText.Length)
             {
                 if (FText[newPos] == '\n' && FText[newPos - 1] == '\r')
                     newPos -= 1;
-            }
-            catch
-            {
-                //FText[newPos] may access out of range char..nevermind
             }
 
             FCursorCharPos = Math.Max(0, newPos);
@@ -280,16 +281,13 @@ namespace TypeWriter
             FText = FText.Remove(FCursorCharPos, charCount);
         }
 
-        private bool RunCommand(uint ScanCode)
+        private bool RunCommand(Keys keyCode)
         {
             try
             {
-                switch ((Keys)ScanCode)
+                switch (keyCode)
                 {
-                    case 0:
-                        return true;
-                    case Keys.Space:
-                        AddNewChar(" ");
+                    case Keys.None:
                         return true;
                     case Keys.Return:
                         AddNewChar(FNewlineSymbol);
@@ -308,41 +306,41 @@ namespace TypeWriter
                         AddNewChar(" ");
                         return true;
                     case Keys.Left:
-                        if (!FIgnoreNavigationKeys[0])
+                        if (!IgnoreNavigationKeys)
                             if (FControlKeyPressed)
                                 CursorStepsWordLeft();
                             else
                                 CursorStepsLeft();
                         return true;
                     case Keys.Right:
-                        if (!FIgnoreNavigationKeys[0])
+                        if (!IgnoreNavigationKeys)
                             if (FControlKeyPressed)
                                 CursorStepsWordRight();
                             else
                                 CursorStepsRight();
                         return true;
                     case Keys.Up:
-                        if (!FIgnoreNavigationKeys[0])
+                        if (!IgnoreNavigationKeys)
                             CursorOneLineUp();
                         return true;
                     case Keys.Down:
-                        if (!FIgnoreNavigationKeys[0])
+                        if (!IgnoreNavigationKeys)
                             CursorOneLineDown();
                         return true;
                     case Keys.Home:
-                        if (!FIgnoreNavigationKeys[0])
+                        if (!IgnoreNavigationKeys)
                             CursorToLineStart();
                         return true;
                     case Keys.End:
-                        if (!FIgnoreNavigationKeys[0])
+                        if (!IgnoreNavigationKeys)
                             CursorToLineEnd();
                         return true;
                     case Keys.Prior:
-                        if (!FIgnoreNavigationKeys[0])
+                        if (!IgnoreNavigationKeys)
                             CursorToTextStart();
                         return true;
                     case Keys.Next:
-                        if (!FIgnoreNavigationKeys[0])
+                        if (!IgnoreNavigationKeys)
                             CursorToTextEnd();
                         return true;
                 }
@@ -352,54 +350,24 @@ namespace TypeWriter
         }
         #endregion
 
-        //here we go, thats the method called by vvvv each frame
-        //all data handling should be in here
-        public void Evaluate(int SpreadMax)
+        public void Initialize(string text)
         {
-            if (FSetCursorPosition[0])
-                FCursorCharPos = Math.Min(FText.Length, Math.Max(0, FNewCursorPosition[0]));
+            FText = text;
+            CursorToTextEnd();
+        }
 
-            //initializing with text
-            if (FInitialize[0])
+        public void InsertText(string text)
+        {
+            AddNewChar(text);
+        }
+
+        public void Dispose()
+        {
+            if (FKeyboardSubscription != null)
             {
-                FText = FInitialText[0];
-                CursorToTextEnd();
+                FKeyboardSubscription.Dispose();
+                FKeyboardSubscription = null;
             }
-
-            if (FInsertText[0])
-                AddNewChar(FInputText[0]);
-
-            if (FKeyboardState.SliceCount > 0)
-            {
-                var keyboard = FKeyboardState[0] ?? KeyboardState.Empty;
-                if (keyboard != FLastKeyboardState)
-                {
-                    if (keyboard.KeyCodes.Count > 0)
-                    {
-                        FControlKeyPressed = (keyboard.Modifiers & Keys.Control) > 0;
-                        var altKeyPressed = (keyboard.Modifiers & Keys.Alt) > 0;
-                        var lastKeyCode = (uint)keyboard.KeyCodes.Last();
-
-                        var keyUp = keyboard.KeyCodes.Count < FLastKeyboardState.KeyCodes.Count;
-                        var keyDown = keyboard.KeyCodes.Count > FLastKeyboardState.KeyCodes.Count;
-
-                        if (keyDown || !keyUp)
-                        {
-                            if (lastKeyCode < 48)
-                            {
-                                if (!altKeyPressed)
-                                    RunCommand(lastKeyCode);
-                            }
-                            else if (keyboard.KeyChars.Count > 0)
-                                AddNewChar(keyboard.KeyChars.Last().ToString());
-                        }
-                    }
-                    FLastKeyboardState = keyboard;
-                }
-            }
-
-            FOutput[0] = FText;
-            FCursorPosition[0] = FCursorCharPos;
         }
     }
 }

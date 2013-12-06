@@ -25,10 +25,10 @@ namespace VVVV.Nodes.Input
         IncrementCycle
     }
 
-    [PluginInfo(Name = "Mouse", Category = "System")]
+    [PluginInfo(Name = "Mouse", Category = "Devices", Version = "Window")]
     public class WindowMouseNode : WindowMessageNode, IPluginEvaluate
     {
-        [Output("Mouse", IsSingle = true)]
+        [Output("Device", IsSingle = true)]
         public ISpread<Mouse> MouseOut;
 
         private PluginContainer FMouseStatesSplitNode;
@@ -92,7 +92,7 @@ namespace VVVV.Nodes.Input
             MouseOut[0] = new Mouse(mouseNotifications);
 
             // Create a mouse states split node for us and connect our mouse out to its mouse in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseStates" && n.Category == "System" && n.Version == "Split");
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseStates" && n.Category == "Mouse" && n.Version == "Split");
             FMouseStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => MouseOut);
         }
 
@@ -109,8 +109,8 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Mouse", Category = "System", Version = "Global")]
-    public class GlobalMouseNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+    [PluginInfo(Name = "Mouse", Category = "Devices", Version = "Desktop")]
+    public class DesktopMouseNode : DesktopDeviceInputNode<Mouse>
     {
         public enum DataSource
         {
@@ -118,34 +118,22 @@ namespace VVVV.Nodes.Input
             Raw
         }
 
-        [Input("Enabled", DefaultBoolean = true)]
-        public ISpread<bool> EnabledIn;
-
-        [Input("Source", IsSingle = true)]
+        [Input("Source")]
         public IDiffSpread<DataSource> DataSourceIn;
 
-        [Input("Cycle Mode", IsSingle = true)]
+        [Input("Cycle Mode")]
         public IDiffSpread<CycleMode> CycleModeIn;
 
-        [Output("Mouse")]
-        public ISpread<Mouse> MouseOut;
-
-        [Import]
-        protected IOFactory FIOFactory;
-
-        private PluginContainer FMouseStatesSplitNode;
-
-        public void OnImportsSatisfied()
+        public DesktopMouseNode()
+            : base(DeviceType.Mouse, "MouseStates", "Mouse")
         {
-            RawInputService.DevicesChanged += RawKeyboardService_DevicesChanged;
-            SubscribeToDevices();
+        }
 
+        public override void OnImportsSatisfied()
+        {
             DataSourceIn.Changed += ModeIn_Changed;
             CycleModeIn.Changed += CycleModeIn_Changed;
-
-            // Create a mouse states split node for us and connect our mouse out to its mouse in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseStates" && n.Category == "System" && n.Version == "Split");
-            FMouseStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Mouse", c => MouseOut);
+            base.OnImportsSatisfied();
         }
 
         void CycleModeIn_Changed(IDiffSpread<CycleMode> spread)
@@ -158,33 +146,10 @@ namespace VVVV.Nodes.Input
             SubscribeToDevices();
         }
 
-        void RawKeyboardService_DevicesChanged(object sender, EventArgs e)
+        public override void Dispose()
         {
-            SubscribeToDevices();
-        }
-
-        public void Dispose()
-        {
-            RawInputService.DevicesChanged -= RawKeyboardService_DevicesChanged;
-            FMouseStatesSplitNode.Dispose();
-        }
-
-        private void SubscribeToDevices()
-        {
-            var initialPosition = Control.MousePosition;
-            var dataSource = DataSourceIn.SliceCount > 0 ? DataSourceIn[0] : DataSource.Cursor;
-            var cycleMode = CycleModeIn.SliceCount > 0 ? CycleModeIn[0] : CycleMode.NoCycle;
-            var mouseDevices = Device.GetDevices()
-                .Where(d => d.DeviceType == DeviceType.Mouse)
-                .OrderBy(d => d, new DeviceComparer())
-                .ToList();
-            MouseOut.SliceCount = dataSource == DataSource.Raw
-                ? mouseDevices.Count
-                : Math.Min(mouseDevices.Count, 1);
-            for (int i = 0; i < MouseOut.SliceCount; i++)
-            {
-                MouseOut[i] = CreateMouse(mouseDevices[i], i, initialPosition, dataSource, cycleMode);
-            }
+            DataSourceIn.Changed -= ModeIn_Changed;
+            CycleModeIn.Changed -= CycleModeIn_Changed;
         }
 
         // Little helper classes to keep track of individual mouse positions
@@ -198,42 +163,71 @@ namespace VVVV.Nodes.Input
             public Point IncrementalPosition;
         }
 
-        private Mouse CreateMouse(DeviceInfo deviceInfo, int slice, Point initialPosition, DataSource dataSource, CycleMode cycleMode)
+        protected override int GetMaxSpreadCount()
         {
+            return SpreadUtils.SpreadMax(DataSourceIn, CycleModeIn)
+                .CombineSpreads(base.GetMaxSpreadCount());
+        }
+
+        protected override void SubscribeToDevices()
+        {
+            var dataSource = DataSourceIn.SliceCount > 0 ? DataSourceIn[0] : DataSource.Cursor;
+            if (dataSource == DataSource.Cursor)
+            {
+                DeviceOut.SliceCount = 1;
+                DeviceDescriptionOut.SliceCount = 1;
+                DeviceOut[0] = CreateCursorMouse();
+                DeviceDescriptionOut[0] = "Cursor";
+            }
+            else
+            {
+                base.SubscribeToDevices();
+            }
+        }
+
+        protected override Mouse CreateDevice(DeviceInfo deviceInfo, int slice)
+        {
+            // Ignore cycleMode
+            var initialPosition = Control.MousePosition;
             var mouseData = new MouseData() { Position = initialPosition };
             var mouseInput = Observable.FromEventPattern<MouseInputEventArgs>(typeof(Device), "MouseInput")
                     .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice]);
-            IObservable<MouseNotification> notifications;
-            if (dataSource == DataSource.Cursor)
-            {
-                switch (cycleMode)
-                {
-                    case CycleMode.NoCycle:
-                        notifications = mouseInput
-                            .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCursorNotifications(mouseData, ep.EventArgs));
-                        break;
-                    case CycleMode.Cycle:
-                        notifications = mouseInput
-                            .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCyclicCursorNotifications(mouseData, ep.EventArgs));
-                        break;
-                    case CycleMode.IncrementCycle:
-                        var incrementalMouseData = new IncrementalMouseData()
-                        {
-                            Position = initialPosition,
-                            IncrementalPosition = initialPosition
-                        };
-                        notifications = mouseInput
-                            .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateIncrementalCyclicCursorNotifications(incrementalMouseData, ep.EventArgs));
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-            else
-                // Ignore cycleMode
-                notifications = mouseInput
+            var notifications = mouseInput
                     .Where(ep => ep.EventArgs.Device == deviceInfo.Handle)
                     .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep.EventArgs));
+            return new Mouse(notifications);
+        }
+
+        private Mouse CreateCursorMouse()
+        {
+            var initialPosition = Control.MousePosition;
+            var cycleMode = CycleModeIn.SliceCount > 0 ? CycleModeIn[0] : CycleMode.NoCycle;
+            var mouseData = new MouseData() { Position = initialPosition };
+            var mouseInput = Observable.FromEventPattern<MouseInputEventArgs>(typeof(Device), "MouseInput")
+                    .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[0]);
+            IObservable<MouseNotification> notifications;
+            switch (cycleMode)
+            {
+                case CycleMode.NoCycle:
+                    notifications = mouseInput
+                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCursorNotifications(mouseData, ep.EventArgs));
+                    break;
+                case CycleMode.Cycle:
+                    notifications = mouseInput
+                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCyclicCursorNotifications(mouseData, ep.EventArgs));
+                    break;
+                case CycleMode.IncrementCycle:
+                    var incrementalMouseData = new IncrementalMouseData()
+                    {
+                        Position = initialPosition,
+                        IncrementalPosition = initialPosition
+                    };
+                    notifications = mouseInput
+                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateIncrementalCyclicCursorNotifications(incrementalMouseData, ep.EventArgs));
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
             return new Mouse(notifications);
         }
 
@@ -434,15 +428,9 @@ namespace VVVV.Nodes.Input
                 .OrderByDescending(b => b.Bottom)
                 .FirstOrDefault();
         }
-
-        public void Evaluate(int spreadMax)
-        {
-            // Evaluate our split plugin
-            FMouseStatesSplitNode.Evaluate(spreadMax);
-        }
     }
 
-    [PluginInfo(Name = "MouseEvents", Category = "System", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "MouseEvents", Category = "Mouse", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
     public class MouseEventsSplitNode : IPluginEvaluate, IDisposable
     {
         [Input("Mouse", IsSingle = true)]
@@ -501,7 +489,7 @@ namespace VVVV.Nodes.Input
                 var n = notifications[i];
                 FEventTypeOut[i] = n.Kind;
                 var position = new Vector2D(n.Position.X, n.Position.Y);
-                var clientArea = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);
+                var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
                 PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
                 switch (n.Kind)
                 {
@@ -558,12 +546,12 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "MouseStates", Category = "System", Version = "Split", AutoEvaluate = true)]
-    public class MouseStatesSplitNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+    [PluginInfo(Name = "MouseStates", Category = "Mouse", Version = "Split", AutoEvaluate = true)]
+    public class MouseStatesSplitNode : IPluginEvaluate, IDisposable
     {
-        [Input("Mouse", IsSingle = true)]
+        [Input("Mouse")]
         public ISpread<Mouse> MouseIn;
-        [Input("Schedule Mode", IsSingle = true, DefaultEnumEntry = "Discard")]
+        [Input("Schedule Mode", DefaultEnumEntry = "Discard")]
         public ISpread<ScheduleMode> ScheduleModeIn;
 
         [Output("Position")]
@@ -581,70 +569,85 @@ namespace VVVV.Nodes.Input
         [Output("X2 Button")]
         public ISpread<bool> X2ButtonOut;
 
-        private readonly FrameBasedScheduler FScheduler = new FrameBasedScheduler();
-        private Subscription<Mouse, MouseNotification> FSubscription;
+        private Spread<Subscription<Mouse, MouseNotification>> FSubscriptions = new Spread<Subscription<Mouse,MouseNotification>>();
+        private Spread<FrameBasedScheduler> FSchedulers = new Spread<FrameBasedScheduler>();
         private Spread<int> FRawMouseWheel = new Spread<int>(1);
-
-        public void OnImportsSatisfied()
-        {
-            FSubscription = new Subscription<Mouse, MouseNotification>(
-                mouse =>
-                {
-                    return mouse.MouseNotifications;
-                },
-                n =>
-                {
-                    switch (n.Kind)
-                    {
-                        case MouseNotificationKind.MouseDown:
-                        case MouseNotificationKind.MouseUp:
-                            var mouseButton = n as MouseButtonNotification;
-                            var isDown = n.Kind == MouseNotificationKind.MouseDown;
-                            if ((mouseButton.Buttons & MouseButtons.Left) > 0)
-                                LeftButtonOut[0] = isDown;
-                            if ((mouseButton.Buttons & MouseButtons.Middle) > 0)
-                                MiddleButtonOut[0] = isDown;
-                            if ((mouseButton.Buttons & MouseButtons.Right) > 0)
-                                RightButtonOut[0] = isDown;
-                            if ((mouseButton.Buttons & MouseButtons.XButton1) > 0)
-                                X1ButtonOut[0] = isDown;
-                            if ((mouseButton.Buttons & MouseButtons.XButton2) > 0)
-                                X2ButtonOut[0] = isDown;
-                            break;
-                        case MouseNotificationKind.MouseMove:
-                            var position = new Vector2D(n.Position.X, n.Position.Y);
-                            var clientArea = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);
-                            PositionOut[0] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                            break;
-                        case MouseNotificationKind.MouseWheel:
-                            var mouseWheel = n as MouseWheelNotification;
-                            FRawMouseWheel[0] += mouseWheel.WheelDelta;
-                            MouseWheelOut[0] = (int)Math.Round((float)FRawMouseWheel[0] / Const.WHEEL_DELTA);
-                            break;
-                        default:
-                            break;
-                    }
-                },
-                FScheduler
-            );
-        }
 
         public void Dispose()
         {
-            FSubscription.Dispose();
+            foreach (var subscription in FSubscriptions)
+                subscription.Dispose();
+            FSubscriptions.SliceCount = 0;
         }
 
         public void Evaluate(int spreadMax)
         {
-            //resubsribe if necessary
-            FSubscription.Update(MouseIn[0]);
-            //process events
-            FScheduler.Run(ScheduleModeIn[0]);
+            PositionOut.SliceCount = spreadMax;
+            MouseWheelOut.SliceCount = spreadMax;
+            FRawMouseWheel.SliceCount = spreadMax;
+            LeftButtonOut.SliceCount = spreadMax;
+            MiddleButtonOut.SliceCount = spreadMax;
+            RightButtonOut.SliceCount = spreadMax;
+            X1ButtonOut.SliceCount = spreadMax;
+            X2ButtonOut.SliceCount = spreadMax;
+
+            FSchedulers.ResizeAndDismiss(spreadMax, () => new FrameBasedScheduler());
+            FSubscriptions.ResizeAndDispose(
+                spreadMax,
+                slice =>
+                {
+                    return new Subscription<Mouse, MouseNotification>(
+                        mouse => mouse.MouseNotifications,
+                        (mouse, n) =>
+                        {
+                            switch (n.Kind)
+                            {
+                                case MouseNotificationKind.MouseDown:
+                                case MouseNotificationKind.MouseUp:
+                                    var mouseButton = n as MouseButtonNotification;
+                                    var isDown = n.Kind == MouseNotificationKind.MouseDown;
+                                    if ((mouseButton.Buttons & MouseButtons.Left) > 0)
+                                        LeftButtonOut[slice] = isDown;
+                                    if ((mouseButton.Buttons & MouseButtons.Middle) > 0)
+                                        MiddleButtonOut[slice] = isDown;
+                                    if ((mouseButton.Buttons & MouseButtons.Right) > 0)
+                                        RightButtonOut[slice] = isDown;
+                                    if ((mouseButton.Buttons & MouseButtons.XButton1) > 0)
+                                        X1ButtonOut[slice] = isDown;
+                                    if ((mouseButton.Buttons & MouseButtons.XButton2) > 0)
+                                        X2ButtonOut[slice] = isDown;
+                                    break;
+                                case MouseNotificationKind.MouseMove:
+                                    var position = new Vector2D(n.Position.X, n.Position.Y);
+                                    var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
+                                    PositionOut[slice] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                                    break;
+                                case MouseNotificationKind.MouseWheel:
+                                    var mouseWheel = n as MouseWheelNotification;
+                                    FRawMouseWheel[slice] += mouseWheel.WheelDelta;
+                                    MouseWheelOut[slice] = (int)Math.Round((float)FRawMouseWheel[slice] / Const.WHEEL_DELTA);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        },
+                        FSchedulers[slice]
+                    );
+                }
+            );
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                //resubsribe if necessary
+                FSubscriptions[i].Update(MouseIn[i]);
+                //process events
+                FSchedulers[i].Run(ScheduleModeIn[i]);
+            }
         }
     }
 
-    [PluginInfo(Name = "MouseStates", Category = "System", Version = "Join", AutoEvaluate = true)]
-    public class MouseStatesJoinNode : IPluginBase, IPartImportsSatisfiedNotification
+    [PluginInfo(Name = "MouseStates", Category = "Mouse", Version = "Join", AutoEvaluate = true)]
+    public class MouseStatesJoinNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Position")]
         public IDiffSpread<Vector2D> PositionIn;
@@ -661,43 +664,54 @@ namespace VVVV.Nodes.Input
         [Input("X2 Button")]
         public IDiffSpread<bool> X2ButtonIn;
 
-        [Output("Mouse", IsSingle = true)]
+        [Output("Mouse")]
         public ISpread<Mouse> MouseOut;
 
         public void OnImportsSatisfied()
         {
-            var mouseMoves = PositionIn.ToObservable(0)
-                .Select(v => new MouseMoveNotification(ToMousePoint(v), FClientArea));
-            var mouseButtons = Observable.Merge(
-                LeftButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.Left)),
-                MiddleButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.Middle)),
-                RightButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.Right)),
-                X1ButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.XButton1)),
-                X2ButtonIn.ToObservable(0).Select(x => Tuple.Create(x, MouseButtons.XButton2))
+            MouseOut.SliceCount = 0;
+        }
+
+        public void Evaluate(int spreadMax)
+        {
+            MouseOut.ResizeAndDismiss(
+                spreadMax,
+                slice =>
+                {
+                    var mouseMoves = PositionIn.ToObservable(slice)
+                        .Select(v => new MouseMoveNotification(ToMousePoint(v), FClientArea));
+                    var mouseButtons = Observable.Merge(
+                        LeftButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Left)),
+                        MiddleButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Middle)),
+                        RightButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Right)),
+                        X1ButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.XButton1)),
+                        X2ButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.XButton2))
+                    );
+                    var mouseDowns = mouseButtons.Where(x => x.Item1)
+                        .Select(x => x.Item2)
+                        .Select(x => new MouseDownNotification(ToMousePoint(PositionIn[slice]), FClientArea, x));
+                    var mouseUps = mouseButtons.Where(x => !x.Item1)
+                        .Select(x => x.Item2)
+                        .Select(x => new MouseUpNotification(ToMousePoint(PositionIn[slice]), FClientArea, x));
+                    var mouseWheelDeltas = MouseWheelIn.ToObservable(slice)
+                        .StartWith(0)
+                        .Buffer(2, 1)
+                        .Select(b => b[1] - b[0])
+                        .Select(d => new MouseWheelNotification(ToMousePoint(PositionIn[slice]), FClientArea, d * Const.WHEEL_DELTA))
+                        .Cast<MouseNotification>();
+                    var notifications = Observable.Merge<MouseNotification>(
+                        mouseMoves,
+                        mouseDowns,
+                        mouseUps,
+                        mouseWheelDeltas);
+                    return new Mouse(notifications);
+                }
             );
-            var mouseDowns = mouseButtons.Where(x => x.Item1)
-                .Select(x => x.Item2)
-                .Select(x => new MouseDownNotification(ToMousePoint(PositionIn[0]), FClientArea, x));
-            var mouseUps = mouseButtons.Where(x => !x.Item1)
-                .Select(x => x.Item2)
-                .Select(x => new MouseUpNotification(ToMousePoint(PositionIn[0]), FClientArea, x));
-            var mouseWheelDeltas = MouseWheelIn.ToObservable(0)
-                .StartWith(0)
-                .Buffer(2, 1)
-                .Select(b => b[1] - b[0])
-                .Select(d => new MouseWheelNotification(ToMousePoint(PositionIn[0]), FClientArea, d * Const.WHEEL_DELTA))
-                .Cast<MouseNotification>();
-            var notifications = Observable.Merge<MouseNotification>(
-                mouseMoves, 
-                mouseDowns, 
-                mouseUps, 
-                mouseWheelDeltas);
-            MouseOut[0] = new Mouse(notifications);
         }
 
         static Point ToMousePoint(Vector2D normV)
         {
-            var clientArea = new Vector2D(FClientArea.Width, FClientArea.Height);
+            var clientArea = new Vector2D(FClientArea.Width - 1, FClientArea.Height - 1);
             var v = VMath.Map(normV, new Vector2D(-1, 1), new Vector2D(1, -1), Vector2D.Zero, clientArea, TMapMode.Clamp);
             return new Point((int)v.x, (int)v.y);
         }

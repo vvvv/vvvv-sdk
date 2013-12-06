@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Quad) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Quad) help.v4p">
    <BOUNDS height="9615" left="105" top="75" type="Window" width="6480">
    </BOUNDS>
    <NODE id="18" nodename="Quad (DX9)" systemname="Quad (DX9)">
@@ -57,7 +57,7 @@
    </PIN>
    <PIN pinname="XYZ" slicecount="3" values="0.02,0.02,0.02">
    </PIN>
-   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   <PIN pinname="Transform In" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="15" dstpinname="Transform" linkstyle="Bezier" srcnodeid="14" srcpinname="Transform Out">
@@ -133,7 +133,7 @@
    <NODE id="10" nodename="SetSlice (Spreads Legacy)" systemname="SetSlice (Spreads Legacy)">
    <BOUNDS height="0" left="1845" top="5085" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Index" visible="1" slicecount="1" values="24">
+   <PIN pinname="Index" visible="1">
    </PIN>
    <PIN pinname="Input" slicecount="1" values="1">
    </PIN>
@@ -161,7 +161,7 @@
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="30" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0">
+   <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -219,7 +219,7 @@
    <NODE id="5" nodename="Count (Value)" systemname="Count (Value)">
    <BOUNDS height="0" left="2505" top="4050" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="30" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0">
+   <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Count" visible="1">
    </PIN>
@@ -324,20 +324,8 @@
    <LINKPOINT x="1740" y="5535">
    </LINKPOINT>
    </LINK>
-   <NODE id="16" nodename="Mouse (System)" systemname="Mouse (System)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" componentmode="Hidden">
-   <BOUNDS height="100" left="2895" top="2190" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="State" visible="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="21" nodename="Button (3d Quad)" systemname="Button (3d Quad)" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Quad).v4p">
-   <BOUNDS height="100" left="2640" top="3345" type="Node" width="100">
+   <NODE componentmode="Hidden" id="21" nodename="Button (3d Quad).v4p" systemname="Button (3d Quad)" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Quad).v4p">
+   <BOUNDS height="0" left="2640" top="3345" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="9195" left="1140" top="1695" type="Window" width="9000">
    </BOUNDS>
@@ -359,7 +347,7 @@
    </PIN>
    <PIN pinname="Mouse State" visible="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="14" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="21" srcpinname="Cursor Transform">
@@ -398,6 +386,18 @@
    <LINKPOINT x="3435" y="2895">
    </LINKPOINT>
    </LINK>
+   <NODE id="16" nodename="Mouse (System Window)" systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" componentmode="Hidden">
+   <BOUNDS height="100" left="2895" top="2190" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="State" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   </NODE>
    <LINK srcnodeid="16" srcpinname="Mouse" dstnodeid="21" dstpinname="Mouse">
    </LINK>
    </PATCH>

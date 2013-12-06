@@ -1,16 +1,9 @@
 #region usings
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
 using VVVV.Utils.IO;
-
-using VVVV.Core.Logging;
 #endregion usings
 
 namespace VVVV.Nodes
@@ -18,39 +11,54 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "ApplyModifiers", 
 	            Category = "String",
-	            Help = "Returns the actual string representation of a given keyboardstate.",
+                Version = "Legacy",
+	            Help = "Returns the currently pressed character of a keyboard.",
 	            AutoEvaluate = true,
 				Tags = "keyboard, convert")]
 	#endregion PluginInfo
-	public class ApplyModifiersNode: IPluginEvaluate
+    public class ApplyModifiersNode : IPluginEvaluate, IDisposable
 	{
-		#region fields & pins
-#pragma warning disable 0649
         [Input("Input")]
-        IDiffSpread<KeyboardState> FInput;
+        public ISpread<Keyboard> Input;
 
         [Output("Output")]
-        ISpread<string> FOutput; 
-#pragma warning restore
-		#endregion fields & pins
+        public ISpread<string> Output;
+
+        Spread<Subscription<Keyboard, KeyNotification>> FSubscriptions = new Spread<Subscription<Keyboard, KeyNotification>>();
+
+        public void Dispose()
+        {
+            foreach (var subscription in FSubscriptions)
+                subscription.Dispose();
+        }
 
 		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
+		public void Evaluate(int spreadMax)
 		{
-            if (!FInput.IsChanged) return;
-
-			FOutput.SliceCount = SpreadMax;
-
-            for (int i = 0; i < SpreadMax; i++)
-            {
-                var input = FInput[i];
-                if (input != null)
+            FSubscriptions.ResizeAndDispose(
+                spreadMax,
+                slice =>
                 {
-                    FOutput[i] = string.Join(string.Empty, input.KeyChars);
+                    return new Subscription<Keyboard, KeyNotification>(
+                        keyboard => keyboard.KeyNotifications,
+                        (keyboard, n) =>
+                        {
+                            switch (n.Kind)
+                            {
+                                case KeyNotificationKind.KeyPress:
+                                    var keyPress = n as KeyPressNotification;
+                                    Output[slice] = new string(keyPress.KeyChar, 1);
+                                    break;
+                                case KeyNotificationKind.KeyUp:
+                                    Output[slice] = string.Empty;
+                                    break;
+                            }
+                        }
+                    );
                 }
-                else
-                    FOutput[i] = string.Empty;
-            }
+            );
+            for (int i = 0; i < spreadMax; i++)
+                FSubscriptions[i].Update(Input[i]);
 		}
-	}
+    }
 }

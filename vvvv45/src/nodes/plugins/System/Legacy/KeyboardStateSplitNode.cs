@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Windows.Forms;
 using VVVV.PluginInterfaces.V2;
@@ -12,7 +14,7 @@ namespace VVVV.Nodes.Input
     public class LegacyKeyStateSplitNode : IPluginEvaluate
     {
         [Input("Keyboard")]
-        public ISpread<KeyboardState> FInput;
+        public ISpread<Keyboard> FInput;
 
         [Output("Key")]
         public ISpread<string> FKeyOut;
@@ -26,29 +28,44 @@ namespace VVVV.Nodes.Input
         [Output("Time")]
         public ISpread<int> FTimeOut;
 
+        Spread<Subscription<Keyboard, KeyCodeNotification>> FSubscriptions = new Spread<Subscription<Keyboard, KeyCodeNotification>>();
+
         public void Evaluate(int spreadMax)
         {
+            FSubscriptions.ResizeAndDispose(
+                spreadMax,
+                slice =>
+                {
+                    return new Subscription<Keyboard, KeyCodeNotification>(
+                        keyboard => keyboard.KeyNotifications.OfType<KeyCodeNotification>(),
+                        (keyboard, notification) =>
+                        {
+                            var keyCodeOut = FKeyCodeOut[slice];
+                            var keyCodeValue = (int)notification.KeyCode;
+                            switch (notification.Kind)
+                            {
+                                case KeyNotificationKind.KeyDown:
+                                    if (!keyCodeOut.Contains(keyCodeValue))
+                                        keyCodeOut.Add(keyCodeValue);
+                                    break;
+                                case KeyNotificationKind.KeyUp:
+                                    keyCodeOut.Remove(keyCodeValue);
+                                    break;
+                            }
+                            FCapsOut[slice] = keyboard.CapsLock;
+                            FTimeOut[slice] = FTimeOut[slice] + 1;
+                        }
+                    );
+                }
+            );
+
+            FKeyCodeOut.SliceCount = spreadMax;
+            FCapsOut.SliceCount = spreadMax;
             FTimeOut.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
-                var keyEvent = FInput[i];
-                ISpread<int> keyCode;
-                int time;
-                bool capsLock;
-
-                if (keyEvent != null)
-                    KeyboardStateNodes.Split(keyEvent, out keyCode, out time, out capsLock);
-                else
-                {
-                    keyCode = new Spread<int>();
-                    time = 0;
-                    capsLock = false;
-                }        
-
-                FKeyCodeOut[i] = keyCode;
-                FCapsOut[i] = capsLock;
-                FTimeOut[i] = time;
+                FSubscriptions[i].Update(FInput[i]);
             }
             
             //KeyOut returns the keycodes symbolic names

@@ -10,13 +10,13 @@ namespace VVVV.Utils.IO
     public class Subscription<TSource, TNotification> : IDisposable
         where TSource : class
     {
-        private readonly Action<TNotification> FOnNext;
+        private readonly Action<TSource, TNotification> FOnNext;
         private readonly IScheduler FScheduler;
         private TSource FSource;
         private Func<TSource, IObservable<TNotification>> FSelector;
         private IDisposable FSubscription;
 
-        public Subscription(Func<TSource, IObservable<TNotification>> selector, Action<TNotification> onNext, IScheduler scheduler = null)
+        public Subscription(Func<TSource, IObservable<TNotification>> selector, Action<TSource, TNotification> onNext, IScheduler scheduler = null)
         {
             FSelector = selector;
             FOnNext = onNext;
@@ -52,7 +52,7 @@ namespace VVVV.Utils.IO
                 var notifications = FSelector(FSource);
                 if (FScheduler != null)
                     notifications = notifications.ObserveOn(FScheduler);
-                FSubscription = notifications.Subscribe(FOnNext);
+                FSubscription = notifications.Subscribe(n => FOnNext(FSource, n));
             }
         }
 

@@ -117,8 +117,8 @@ namespace VVVV.Nodes.Texture.HTML
                 // Assign inputs
                 webRenderer.Size = new Size(FWidthIn[i], FHeightIn[i]);
                 webRenderer.ZoomLevel = FZoomLevelIn[i];
-                webRenderer.NewMouse = FMouseIn[i];
-                webRenderer.NewKeyboard = FKeyboardIn[i];
+                webRenderer.Mouse = FMouseIn[i];
+                webRenderer.Keyboard = FKeyboardIn[i];
                 webRenderer.ScrollTo = FScrollToIn[i];
 
                 if (FExecuteIn[i])
