@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.1.dtd" >
-   <PATCH nodename="C:\_vvvv\public sources\_TRUNK vvvv\girlpower\gassi - use at own risk.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\gassi - use at own risk.v4p">
    <BOUNDS height="8070" left="2700" top="1605" type="Window" width="7215">
    </BOUNDS>
    <NODE id="7" nodename="Icon (Windows)">
@@ -22,10 +22,10 @@
    <PIN pinname="Output 1" visible="1">
    </PIN>
    </NODE>
-   <NODE id="5" nodename="QUEUE (SPREADS)">
+   <NODE id="5" nodename="Queue (Spreads Legacy)">
    <BOUNDS height="0" left="1515" top="3840" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="do Insert" visible="1">
    </PIN>
@@ -36,14 +36,14 @@
    </NODE>
    <LINK dstnodeid="7" dstpinname="X" srcnodeid="5" srcpinname="Output">
    </LINK>
-   <NODE id="-8" nodename="MainLoop (VVVV)">
+   <NODE id="-6" nodename="MainLoop (VVVV)">
    <BOUNDS height="0" left="990" top="6150" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Maximum forground fps" slicecount="1" values="999">
    </PIN>
    </NODE>
-   <NODE id="-2" nodename="Mouse (System Global)">
-   <BOUNDS height="0" left="990" top="2265" type="Node" width="0">
+   <NODE id="8" nodename="Mouse (Devices Desktop)">
+   <BOUNDS height="0" left="1110" top="2070" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -56,9 +56,9 @@
    <PIN pinname="Middle Button" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="-2" srcpinname="X">
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="8" srcpinname="X">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="do Insert" srcnodeid="-2" srcpinname="Middle Button">
+   <LINK dstnodeid="5" dstpinname="do Insert" srcnodeid="8" srcpinname="Middle Button">
    </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
    <BOUNDS height="255" left="240" top="195" type="Node" width="660">
@@ -118,7 +118,7 @@
    <LINKPOINT x="4485" y="2430">
    </LINKPOINT>
    </LINK>
-   <NODE id="1" nodename=":MODULES:\vvvv group\Spreads\AvoidNIL (Spreads).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\Spreads\">
+   <NODE id="1" nodename=":MODULES:\vvvv group\Spreads\AvoidNIL (Spreads).v4p">
    <BOUNDS height="0" left="3885" top="4800" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="6960" top="8025" type="Window" width="9000">
@@ -134,21 +134,21 @@
    </LINK>
    <LINK dstnodeid="6" dstpinname="Input 1" srcnodeid="1" srcpinname="Output">
    </LINK>
-   <NODE id="0" nodename="QUEUE (SPREADS)">
+   <NODE id="0" nodename="Queue (Spreads Legacy)">
    <BOUNDS height="0" left="2550" top="3585" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Frame Count">
    </PIN>
    <PIN pinname="do Insert">
    </PIN>
-   <PIN pinname="Input">
+   <PIN pinname="Input" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Y" srcnodeid="0" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="-2" srcpinname="Y">
+   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="8" srcpinname="Y">
    </LINK>
-   <LINK dstnodeid="0" dstpinname="do Insert" srcnodeid="-2" srcpinname="Middle Button">
+   <LINK dstnodeid="0" dstpinname="do Insert" srcnodeid="8" srcpinname="Middle Button">
    </LINK>
    <LINK dstnodeid="0" dstpinname="Frame Count" srcnodeid="6" srcpinname="Output 1">
    <LINKPOINT x="4305" y="6945">

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.1.dtd" >
-   <PATCH nodename="C:\_vvvv\public sources\_TRUNK vvvv\girlpower\tocktock.v4p" componentmode="Hidden" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\tocktock.v4p" componentmode="Hidden" locked="0">
    <BOUNDS height="10305" left="780" top="4560" type="Window" width="8955">
    </BOUNDS>
    <NODE id="31" nodename="GRID (DX9)">
@@ -108,16 +108,6 @@
    </LINK>
    <LINK dstnodeid="29" dstpinname="Y" srcnodeid="26" srcpinname="Output Y">
    </LINK>
-   <NODE id="25" nodename="Mouse (System Window)">
-   <BOUNDS height="0" left="2820" top="120" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="24" nodename="Oscillator (Animation)">
    <BOUNDS height="270" left="3660" top="6465" type="Node" width="810">
    </BOUNDS>
@@ -154,9 +144,7 @@
    <PIN pinname="Destination Center" slicecount="1" values="1.5">
    </PIN>
    </NODE>
-   <LINK dstnodeid="23" dstpinname="Input" srcnodeid="25" srcpinname="Left Button">
-   </LINK>
-   <NODE componentmode="InABox" id="21" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="21" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6630" top="4140" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10333" top="5834" type="Window" width="215">
@@ -186,7 +174,7 @@
    <PIN pinname="Spread" visible="1">
    </PIN>
    </NODE>
-   <NODE id="19" nodename="TogEdge (Animation)">
+   <NODE id="19" nodename="TOGEDGE (ANIMATION)">
    <BOUNDS height="0" left="735" top="1050" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -195,9 +183,9 @@
    </PIN>
    <PIN pinname="Up Edge" visible="1">
    </PIN>
+   <PIN pinname="Bang On Create" slicecount="1" values="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="Input" srcnodeid="25" srcpinname="Left Button">
-   </LINK>
    <NODE id="18" nodename="Switch (Value Output)">
    <BOUNDS height="0" left="1455" top="1620" type="Node" width="0">
    </BOUNDS>
@@ -246,8 +234,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="15" dstpinname="Input 2" srcnodeid="25" srcpinname="Left Button">
-   </LINK>
    <LINK dstnodeid="16" dstpinname="Input 1" srcnodeid="15" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="22" dstpinname="Input" srcnodeid="23" srcpinname="Output">
@@ -362,22 +348,6 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <NODE id="7" nodename="Transform (Transform 2d)">
-   <BOUNDS height="0" left="7095" top="1770" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="ScaleX" slicecount="1" values="0.05">
-   </PIN>
-   <PIN pinname="ScaleY" slicecount="1" values="0.05">
-   </PIN>
-   <PIN pinname="TranslateX" visible="1">
-   </PIN>
-   <PIN pinname="TranslateY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="7" srcpinname="Transform Out">
-   </LINK>
    <LINK dstnodeid="13" dstpinname="Input" srcnodeid="18" srcpinname="Output 2">
    </LINK>
    <LINK dstnodeid="12" dstpinname="Input" srcnodeid="17" srcpinname="Output 2">
@@ -448,30 +418,30 @@
    </NODE>
    <LINK dstnodeid="9" dstpinname="Input 2" srcnodeid="20" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Input 1" srcnodeid="11" srcpinname="Output 1">
-   <LINKPOINT x="1500" y="6150">
+   <LINK dstnodeid="5" dstpinname="Input 1" srcnodeid="11" srcpinname="Output 1" linkstyle="Bezier">
+   <LINKPOINT x="1125" y="6165">
    </LINKPOINT>
-   <LINKPOINT x="1425" y="3960">
+   <LINKPOINT x="1140" y="3840">
    </LINKPOINT>
    </LINK>
    <LINK dstnodeid="13" dstpinname="Spread" srcnodeid="5" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="11" srcpinname="Output 2">
-   <LINKPOINT x="2925" y="6165">
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="11" srcpinname="Output 2" linkstyle="Bezier">
+   <LINKPOINT x="3315" y="6360">
    </LINKPOINT>
-   <LINKPOINT x="2790" y="3960">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="3" dstpinname="Input 1" srcnodeid="9" srcpinname="Output 1">
-   <LINKPOINT x="4155" y="6060">
-   </LINKPOINT>
-   <LINKPOINT x="4155" y="4095">
+   <LINKPOINT x="3315" y="3375">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="2" dstpinname="Input 1" srcnodeid="9" srcpinname="Output 2">
-   <LINKPOINT x="5730" y="6180">
+   <LINK dstnodeid="3" dstpinname="Input 1" srcnodeid="9" srcpinname="Output 1" linkstyle="Bezier">
+   <LINKPOINT x="3555" y="6675">
    </LINKPOINT>
-   <LINKPOINT x="5670" y="4005">
+   <LINKPOINT x="3570" y="3510">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input 1" srcnodeid="9" srcpinname="Output 2" linkstyle="Bezier">
+   <LINKPOINT x="6840" y="6720">
+   </LINKPOINT>
+   <LINKPOINT x="6375" y="3315">
    </LINKPOINT>
    </LINK>
    <LINK dstnodeid="20" dstpinname="Spread" srcnodeid="2" srcpinname="Output">
@@ -480,15 +450,7 @@
    </LINK>
    <LINK dstnodeid="12" dstpinname="Spread" srcnodeid="4" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="18" dstpinname="Input" srcnodeid="25" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="17" dstpinname="Input" srcnodeid="25" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="7" dstpinname="TranslateX" srcnodeid="25" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="7" dstpinname="TranslateY" srcnodeid="25" srcpinname="Y">
-   </LINK>
-   <NODE componentmode="InAWindow" id="1" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="1" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="3270" top="9540" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="2115" top="-15" type="Window" width="6120">
@@ -496,6 +458,16 @@
    <BOUNDS height="1800" left="3270" top="9540" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="0" nodename="Group (EX9)">
@@ -517,5 +489,65 @@
    <LINK dstnodeid="0" dstpinname="Layer 2" srcnodeid="8" srcpinname="Layer">
    <LINKPOINT x="7905" y="4200">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="3975" top="225" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Left Button" dstnodeid="19" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="33">
+   <BOUNDS type="Node" left="2430" top="1155" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="PositionXY" dstnodeid="33" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="X" dstnodeid="18" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Y" dstnodeid="17" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="34">
+   <BOUNDS type="Node" left="7095" top="1875" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="TranslateXY" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="PositionXY" dstnodeid="34" dstpinname="TranslateXY">
+   </LINK>
+   <LINK srcnodeid="34" srcpinname="Transform Out" dstnodeid="8" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="35" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7455" top="1410" width="375" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7455" top="1410" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Y Output Value" dstnodeid="34" dstpinname="ScaleXY">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Left Button" dstnodeid="23" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Left Button" dstnodeid="15" dstpinname="Input 2">
    </LINK>
    </PATCH>
