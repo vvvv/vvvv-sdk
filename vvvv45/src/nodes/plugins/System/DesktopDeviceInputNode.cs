@@ -11,7 +11,7 @@ using VVVV.Utils.IO;
 
 namespace VVVV.Nodes.Input
 {
-    public abstract class GlobalDeviceInputNode<TDevice> : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+    public abstract class DesktopDeviceInputNode<TDevice> : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         [Input("Enabled", DefaultBoolean = true, Order = int.MinValue)]
         public ISpread<bool> EnabledIn;
@@ -35,7 +35,7 @@ namespace VVVV.Nodes.Input
         private readonly string FSplitNodeName;
         private readonly string FSplitNodeDeviceOutputName;
 
-        public GlobalDeviceInputNode(DeviceType deviceType, string splitNodeName, string splitNodeDeviceOutputName)
+        public DesktopDeviceInputNode(DeviceType deviceType, string splitNodeName, string splitNodeDeviceOutputName)
         {
             FDeviceType = deviceType;
             FSplitNodeName = splitNodeName;

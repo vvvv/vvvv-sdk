@@ -71,10 +71,10 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Keyboard", Category = "Devices", Version = "Desktop", Bugs = "Not spreadable")]
-    public class GlobalKeyboardNode : GlobalDeviceInputNode<Keyboard>
+    [PluginInfo(Name = "Keyboard", Category = "Devices", Version = "Desktop")]
+    public class DesktopKeyboardNode : DesktopDeviceInputNode<Keyboard>
     {
-        public GlobalKeyboardNode()
+        public DesktopKeyboardNode()
             : base(DeviceType.Keyboard, "KeyStates", "Keyboard")
         {
         }

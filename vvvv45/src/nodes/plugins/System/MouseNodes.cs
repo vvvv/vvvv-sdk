@@ -109,8 +109,8 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Mouse", Category = "Devices", Version = "Desktop", Bugs = "Not spreadable")]
-    public class GlobalMouseNode : GlobalDeviceInputNode<Mouse>
+    [PluginInfo(Name = "Mouse", Category = "Devices", Version = "Desktop")]
+    public class DesktopMouseNode : DesktopDeviceInputNode<Mouse>
     {
         public enum DataSource
         {
@@ -124,7 +124,7 @@ namespace VVVV.Nodes.Input
         [Input("Cycle Mode")]
         public IDiffSpread<CycleMode> CycleModeIn;
 
-        public GlobalMouseNode()
+        public DesktopMouseNode()
             : base(DeviceType.Mouse, "MouseStates", "Mouse")
         {
         }
@@ -693,7 +693,7 @@ namespace VVVV.Nodes.Input
                     var mouseUps = mouseButtons.Where(x => !x.Item1)
                         .Select(x => x.Item2)
                         .Select(x => new MouseUpNotification(ToMousePoint(PositionIn[slice]), FClientArea, x));
-                    var mouseWheelDeltas = MouseWheelIn.ToObservable(0)
+                    var mouseWheelDeltas = MouseWheelIn.ToObservable(slice)
                         .StartWith(0)
                         .Buffer(2, 1)
                         .Select(b => b[1] - b[0])
