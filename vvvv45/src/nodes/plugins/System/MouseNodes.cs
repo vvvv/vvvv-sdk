@@ -7,12 +7,15 @@ using System.Drawing;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows.Forms;
 using VVVV.Hosting;
 using VVVV.Hosting.IO;
+using VVVV.Hosting.Pins.Input;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
+using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 using VVVV.Utils.Win32;
 
@@ -430,118 +433,240 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "MouseEvents", Category = "Mouse", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
-    public class MouseEventsSplitNode : IPluginEvaluate, IDisposable
+    [PluginInfo(Name = "MouseEvents", Category = "Mouse", Version = "Join")]
+    public class MouseEventsJoinNode : IPluginEvaluate, IDisposable
     {
-        [Input("Mouse", IsSingle = true)]
-        public ISpread<Mouse> FInput;
+        public ISpread<ISpread<MouseNotificationKind>> EventTypeIn;
+        public ISpread<ISpread<Vector2D>> PositionIn;
+        public ISpread<ISpread<int>> MouseWheelIn;
+        public ISpread<ISpread<bool>> LeftButtonIn;
+        public ISpread<ISpread<bool>> MiddleButtonIn;
+        public ISpread<ISpread<bool>> RightButtonIn;
+        public ISpread<ISpread<bool>> X1ButtonIn;
+        public ISpread<ISpread<bool>> X2ButtonIn;
+        public IIOContainer<IInStream<int>> BinSizePin;
+        public ISpread<Mouse> MouseOut;
 
-        [Output("Event Type")]
-        public ISpread<MouseNotificationKind> FEventTypeOut;
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
-        [Output("Mouse Wheel Delta")]
-        public ISpread<int> MouseWheelDeltaOut;
-        [Output("Left Button")]
-        public ISpread<bool> LeftButtonOut;
-        [Output("Middle Button")]
-        public ISpread<bool> MiddleButtonOut;
-        [Output("Right Button")]
-        public ISpread<bool> RightButtonOut;
-        [Output("X1 Button")]
-        public ISpread<bool> X1ButtonOut;
-        [Output("X2 Button")]
-        public ISpread<bool> X2ButtonOut;
+        private readonly Spread<Subject<MouseNotification>> FSubjects = new Spread<Subject<MouseNotification>>();
 
-        private static readonly IList<MouseNotification> FEmptyList = new List<MouseNotification>(0);
-        private Mouse FMouse;
-        private IEnumerator<IList<MouseNotification>> FEnumerator;
-
-        public void Dispose()
+        [ImportingConstructor]
+        public MouseEventsJoinNode(IIOFactory factory)
         {
-            Unsubscribe();
+            BinSizePin = factory.CreateBinSizeInput(new InputAttribute("Bin Size") { DefaultValue = InputAttribute.DefaultBinSize, Order = int.MaxValue });
+            EventTypeIn = BinSizePin.CreateBinSizeSpread<MouseNotificationKind>(new InputAttribute("Event Type"));
+            PositionIn = BinSizePin.CreateBinSizeSpread<Vector2D>(new InputAttribute("Position"));
+            MouseWheelIn = BinSizePin.CreateBinSizeSpread<int>(new InputAttribute("Mouse Wheel Delta"));
+            LeftButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("Left Button"));
+            MiddleButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("Middle Button"));
+            RightButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("Right Button"));
+            X1ButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("X1 Button"));
+            X2ButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("X2 Button"));
+            MouseOut = factory.CreateSpread<Mouse>(new OutputAttribute("Mouse"));
+            MouseOut.SliceCount = 0;
         }
 
         public void Evaluate(int spreadMax)
         {
-            var mouse = FInput[0] ?? Mouse.Empty;
-            if (mouse != FMouse)
+            var binCount = BinSizePin.IOObject.Length;
+            FSubjects.ResizeAndDispose(binCount);
+            MouseOut.ResizeAndDismiss(binCount, slice => new Mouse(FSubjects[slice]));
+            for (int bin = 0; bin < binCount; bin++)
             {
-                Unsubscribe();
-                FMouse = mouse;
-                Subscribe();
-            }
-
-            var notifications = FEnumerator.MoveNext()
-                ? FEnumerator.Current
-                : FEmptyList;
-            FEventTypeOut.SliceCount = notifications.Count;
-            PositionOut.SliceCount = notifications.Count;
-            MouseWheelDeltaOut.SliceCount = notifications.Count;
-            LeftButtonOut.SliceCount = notifications.Count;
-            MiddleButtonOut.SliceCount = notifications.Count;
-            RightButtonOut.SliceCount = notifications.Count;
-            X1ButtonOut.SliceCount = notifications.Count;
-            X2ButtonOut.SliceCount = notifications.Count;
-
-            for (int i = 0; i < notifications.Count; i++)
-            {
-                var n = notifications[i];
-                FEventTypeOut[i] = n.Kind;
-                var position = new Vector2D(n.Position.X, n.Position.Y);
-                var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
-                PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                switch (n.Kind)
+                var subject = FSubjects[bin];
+                for (int i = 0; i < spreadMax; i++)
                 {
-                    case MouseNotificationKind.MouseDown:
-                    case MouseNotificationKind.MouseUp:
-                        var mouseButton = n as MouseButtonNotification;
-                        MouseWheelDeltaOut[i] = 0;
-                        LeftButtonOut[i] = (mouseButton.Buttons & MouseButtons.Left) > 0;
-                        MiddleButtonOut[i] = (mouseButton.Buttons & MouseButtons.Middle) > 0;
-                        RightButtonOut[i] = (mouseButton.Buttons & MouseButtons.Right) > 0;
-                        X1ButtonOut[i] = (mouseButton.Buttons & MouseButtons.XButton1) > 0;
-                        X2ButtonOut[i] = (mouseButton.Buttons & MouseButtons.XButton2) > 0;
-                        break;
-                    case MouseNotificationKind.MouseMove:
-                        MouseWheelDeltaOut[i] = 0;
-                        LeftButtonOut[i] = false;
-                        MiddleButtonOut[i] = false;
-                        RightButtonOut[i] = false;
-                        X1ButtonOut[i] = false;
-                        X2ButtonOut[i] = false;
-                        break;
-                    case MouseNotificationKind.MouseWheel:
-                        var mouseWheel = n as MouseWheelNotification;
-                        MouseWheelDeltaOut[i] = mouseWheel.WheelDelta;
-                        LeftButtonOut[i] = false;
-                        MiddleButtonOut[i] = false;
-                        RightButtonOut[i] = false;
-                        X1ButtonOut[i] = false;
-                        X2ButtonOut[i] = false;
-                        break;
-                    default:
-                        throw new NotImplementedException();
+                    var position = ToMousePoint(PositionIn[bin][i]);
+                    MouseNotification notification;
+                    switch (EventTypeIn[bin][i])
+                    {
+                        case MouseNotificationKind.MouseDown:
+                            notification = new MouseDownNotification(position, FClientArea, GetMouseButtons(bin, i));
+                            break;
+                        case MouseNotificationKind.MouseUp:
+                            notification = new MouseUpNotification(position, FClientArea, GetMouseButtons(bin, i));
+                            break;
+                        case MouseNotificationKind.MouseMove:
+                            notification = new MouseMoveNotification(position, FClientArea);
+                            break;
+                        case MouseNotificationKind.MouseWheel:
+                            notification = new MouseWheelNotification(position, FClientArea, MouseWheelIn[bin][i] * Const.WHEEL_DELTA);
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                    if (notification != null)
+                        subject.OnNext(notification);
                 }
             }
         }
 
-        private void Subscribe()
+        MouseButtons GetMouseButtons(int bin, int slice)
         {
-            if (FMouse != null)
-            {
-                FEnumerator = FMouse.MouseNotifications
-                    .Chunkify()
-                    .GetEnumerator();
-            }
+            var result = MouseButtons.None;
+            if (LeftButtonIn[bin][slice]) result |= MouseButtons.Left;
+            if (MiddleButtonIn[bin][slice]) result |= MouseButtons.Middle;
+            if (RightButtonIn[bin][slice]) result |= MouseButtons.Right;
+            if (X1ButtonIn[bin][slice]) result |= MouseButtons.XButton1;
+            if (X2ButtonIn[bin][slice]) result |= MouseButtons.XButton2;
+            return result;
         }
 
-        private void Unsubscribe()
+        static Point ToMousePoint(Vector2D normV)
         {
-            if (FEnumerator != null)
+            var clientArea = new Vector2D(FClientArea.Width - 1, FClientArea.Height - 1);
+            var v = VMath.Map(normV, new Vector2D(-1, 1), new Vector2D(1, -1), Vector2D.Zero, clientArea, TMapMode.Clamp);
+            return new Point((int)v.x, (int)v.y);
+        }
+
+        static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
+
+        public void Dispose()
+        {
+            BinSizePin.Dispose();
+        }
+    }
+
+    [PluginInfo(Name = "MouseEvents", Category = "Mouse", Version = "Split", AutoEvaluate = true)]
+    public class MouseEventsSplitNode : IPluginEvaluate, IDisposable
+    {
+        public ISpread<Mouse> MouseIn;
+        public ISpread<ISpread<MouseNotificationKind>> EventTypeOut;
+        public ISpread<ISpread<Vector2D>> PositionOut;
+        public ISpread<ISpread<int>> MouseWheelDeltaOut;
+        public ISpread<ISpread<bool>> LeftButtonOut;
+        public ISpread<ISpread<bool>> MiddleButtonOut;
+        public ISpread<ISpread<bool>> RightButtonOut;
+        public ISpread<ISpread<bool>> X1ButtonOut;
+        public ISpread<ISpread<bool>> X2ButtonOut;
+        public IIOContainer<IOutStream<int>> BinSizePin;
+
+        private static readonly IList<MouseNotification> FEmptyList = new List<MouseNotification>(0);
+        private Spread<Tuple<Mouse, IEnumerator<IList<MouseNotification>>>> FEnumerators = new Spread<Tuple<Mouse, IEnumerator<IList<MouseNotification>>>>();
+
+        [ImportingConstructor]
+        public MouseEventsSplitNode(IIOFactory factory)
+        {
+            MouseIn = factory.CreateSpread<Mouse>(new InputAttribute("Mouse"));
+            BinSizePin = factory.CreateBinSizeOutput(new OutputAttribute("Bin Size") { Order = int.MaxValue });
+            EventTypeOut = BinSizePin.CreateBinSizeSpread<MouseNotificationKind>(new OutputAttribute("Event Type"));
+            PositionOut = BinSizePin.CreateBinSizeSpread<Vector2D>(new OutputAttribute("Position"));
+            MouseWheelDeltaOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Mouse Wheel Delta"));
+            LeftButtonOut = BinSizePin.CreateBinSizeSpread<bool>(new OutputAttribute("Left Button"));
+            MiddleButtonOut = BinSizePin.CreateBinSizeSpread<bool>(new OutputAttribute("Middle Button"));
+            RightButtonOut = BinSizePin.CreateBinSizeSpread<bool>(new OutputAttribute("Right Button"));
+            X1ButtonOut = BinSizePin.CreateBinSizeSpread<bool>(new OutputAttribute("X1 Button"));
+            X2ButtonOut = BinSizePin.CreateBinSizeSpread<bool>(new OutputAttribute("X2 Button"));
+        }
+
+        public void Dispose()
+        {
+            foreach (var tuple in FEnumerators)
+                Unsubscribe(tuple);
+            BinSizePin.Dispose();
+        }
+
+        static Tuple<Mouse, IEnumerator<IList<MouseNotification>>> Subscribe(Mouse mouse)
+        {
+            return Tuple.Create(
+                mouse,
+                mouse.MouseNotifications
+                    .Chunkify()
+                    .GetEnumerator()
+            );
+        }
+
+        static void Unsubscribe(Tuple<Mouse, IEnumerator<IList<MouseNotification>>> tuple)
+        {
+            tuple.Item2.Dispose();
+        }
+
+        public void Evaluate(int spreadMax)
+        {
+            FEnumerators.Resize(
+                spreadMax,
+                slice =>
+                {
+                    var mouse = MouseIn[slice] ?? Mouse.Empty;
+                    return Subscribe(mouse);
+                },
+                Unsubscribe
+            );
+
+            EventTypeOut.SliceCount = spreadMax;
+            PositionOut.SliceCount = spreadMax;
+            MouseWheelDeltaOut.SliceCount = spreadMax;
+            LeftButtonOut.SliceCount = spreadMax;
+            MiddleButtonOut.SliceCount = spreadMax;
+            RightButtonOut.SliceCount = spreadMax;
+            X1ButtonOut.SliceCount = spreadMax;
+            X2ButtonOut.SliceCount = spreadMax;
+
+            for (int bin = 0; bin < spreadMax; bin++)
             {
-                FEnumerator.Dispose();
-                FEnumerator = null;
+                var mouse = MouseIn[bin] ?? Mouse.Empty;
+                var tuple = FEnumerators[bin];
+                if (mouse != tuple.Item1)
+                {
+                    Unsubscribe(tuple);
+                    tuple = Subscribe(mouse);
+                }
+
+                var enumerator = tuple.Item2;
+                var notifications = enumerator.MoveNext()
+                    ? enumerator.Current
+                    : FEmptyList;
+
+                EventTypeOut[bin].SliceCount = notifications.Count;
+                PositionOut[bin].SliceCount = notifications.Count;
+                MouseWheelDeltaOut[bin].SliceCount = notifications.Count;
+                LeftButtonOut[bin].SliceCount = notifications.Count;
+                MiddleButtonOut[bin].SliceCount = notifications.Count;
+                RightButtonOut[bin].SliceCount = notifications.Count;
+                X1ButtonOut[bin].SliceCount = notifications.Count;
+                X2ButtonOut[bin].SliceCount = notifications.Count;
+
+                for (int i = 0; i < notifications.Count; i++)
+                {
+                    var n = notifications[i];
+                    EventTypeOut[bin][i] = n.Kind;
+                    var position = new Vector2D(n.Position.X, n.Position.Y);
+                    var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
+                    PositionOut[bin][i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                    switch (n.Kind)
+                    {
+                        case MouseNotificationKind.MouseDown:
+                        case MouseNotificationKind.MouseUp:
+                            var mouseButton = n as MouseButtonNotification;
+                            MouseWheelDeltaOut[bin][i] = 0;
+                            LeftButtonOut[bin][i] = (mouseButton.Buttons & MouseButtons.Left) > 0;
+                            MiddleButtonOut[bin][i] = (mouseButton.Buttons & MouseButtons.Middle) > 0;
+                            RightButtonOut[bin][i] = (mouseButton.Buttons & MouseButtons.Right) > 0;
+                            X1ButtonOut[bin][i] = (mouseButton.Buttons & MouseButtons.XButton1) > 0;
+                            X2ButtonOut[bin][i] = (mouseButton.Buttons & MouseButtons.XButton2) > 0;
+                            break;
+                        case MouseNotificationKind.MouseMove:
+                            MouseWheelDeltaOut[bin][i] = 0;
+                            LeftButtonOut[bin][i] = false;
+                            MiddleButtonOut[bin][i] = false;
+                            RightButtonOut[bin][i] = false;
+                            X1ButtonOut[bin][i] = false;
+                            X2ButtonOut[bin][i] = false;
+                            break;
+                        case MouseNotificationKind.MouseWheel:
+                            var mouseWheel = n as MouseWheelNotification;
+                            MouseWheelDeltaOut[bin][i] = mouseWheel.WheelDelta;
+                            LeftButtonOut[bin][i] = false;
+                            MiddleButtonOut[bin][i] = false;
+                            RightButtonOut[bin][i] = false;
+                            X1ButtonOut[bin][i] = false;
+                            X2ButtonOut[bin][i] = false;
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                }
+
+                FEnumerators[bin] = tuple;
             }
         }
     }
