@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Extended) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Extended) help.v4p">
    <BOUNDS height="9795" left="135" top="135" type="Window" width="13590">
    </BOUNDS>
    <NODE componentmode="InABox" id="32" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -523,11 +523,11 @@
    </BOUNDS>
    <BOUNDS height="3600" left="5295" top="4395" type="Box" width="4800">
    </BOUNDS>
-   <BOUNDS height="9765" left="2280" top="7680" type="Window" width="21990">
+   <BOUNDS height="9765" left="1020" top="4755" type="Window" width="21990">
    </BOUNDS>
    <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="39" dstpinname="Input" srcnodeid="10" srcpinname="XYZ">
@@ -548,12 +548,14 @@
    </LINK>
    <LINK dstnodeid="39" dstpinname="View Projection" srcnodeid="35" srcpinname="View Projection">
    </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="40">
-   <BOUNDS type="Node" left="5625" top="3435" width="100" height="100">
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="40">
+   <BOUNDS type="Node" left="5910" top="3420" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="40" srcpinname="Mouse" dstnodeid="39" dstpinname="Mouse">
+   <LINK srcnodeid="40" srcpinname="Device" dstnodeid="39" dstpinname="Mouse">
    </LINK>
    </PATCH>
