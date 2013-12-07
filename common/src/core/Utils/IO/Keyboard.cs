@@ -19,24 +19,32 @@ namespace VVVV.Utils.IO
 
         public Keyboard(IObservable<KeyNotification> keyNotifications, bool generateKeyPressNotifications = false)
         {
-            keyNotifications = keyNotifications.Do(n =>
+            keyNotifications = keyNotifications
+                .Do(n =>
                 {
+                    Keys keyCode;
+                    int i;
                     switch (n.Kind)
                     {
                         case KeyNotificationKind.KeyDown:
-                            var keyDown = n as KeyDownNotification;
-                            var downKeyCode = keyDown.KeyCode;
-                            var i = (int)downKeyCode;
-                            FKeyStates[(int)downKeyCode] = downKeyCode == Keys.NumLock || downKeyCode == Keys.CapsLock
-                                ? (byte)(FKeyStates[(int)downKeyCode] ^ Const.KEY_TOGGLED)
-                                : Const.KEY_PRESSED;
+                            keyCode = ((KeyCodeNotification)n).KeyCode;
+                            i = (int)keyCode;
+                            if (i < FKeyStates.Length)
+                            {
+                                FKeyStates[i] = keyCode == Keys.NumLock || keyCode == Keys.CapsLock
+                                    ? (byte)(FKeyStates[i] ^ Const.KEY_TOGGLED)
+                                    : Const.KEY_PRESSED;
+                            }
                             break;
                         case KeyNotificationKind.KeyUp:
-                            var keyUp = n as KeyUpNotification;
-                            var upKeyCode = keyUp.KeyCode;
-                            FKeyStates[(int)upKeyCode] = upKeyCode == Keys.NumLock || upKeyCode == Keys.CapsLock
-                                ? (byte)FKeyStates[(int)upKeyCode]
-                                : (byte)0;
+                            keyCode = ((KeyCodeNotification)n).KeyCode;
+                            i = (int)keyCode;
+                            if (i < FKeyStates.Length)
+                            {
+                                FKeyStates[i] = keyCode == Keys.NumLock || keyCode == Keys.CapsLock
+                                    ? (byte)FKeyStates[i]
+                                    : (byte)0;
+                            }
                             break;
                     }
                 }
@@ -61,6 +69,8 @@ namespace VVVV.Utils.IO
                 return modifiers;
             }
         }
+
+        public bool CapsLock { get; set; }
 
         //public void Dispose()
         //{

@@ -103,14 +103,14 @@ namespace VVVV.Utils.IO
         // This overload will try to compute the chars from the given keys (doesn't work with dead keys)
         public KeyboardState(IEnumerable<Keys> keys, bool capsLock = false, int time = 0)
         {
-            FKeys = keys.Distinct().ToReadOnlyCollection();
+            FKeys = keys.ReplaceModifierKeys().Distinct().Where(k => k != Keys.None).ToReadOnlyCollection();
         	FCapsLock = capsLock;
             FTime = time;
         }
 
         public KeyboardState(IEnumerable<Keys> keys, IEnumerable<char> chars, bool capsLock = false, int time = 0)
         {
-            FKeys = keys.Distinct().ToReadOnlyCollection();
+            FKeys = keys.ReplaceModifierKeys().Distinct().Where(k => k != Keys.None).ToReadOnlyCollection();
             FKeyChars = chars.Distinct().ToReadOnlyCollection();
             FCapsLock = capsLock;
             FTime = time;

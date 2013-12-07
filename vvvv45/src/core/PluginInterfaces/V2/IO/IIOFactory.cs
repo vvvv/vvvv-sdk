@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
+using VVVV.Utils.Streams;
 
 namespace VVVV.PluginInterfaces.V2
 {
@@ -145,6 +146,32 @@ namespace VVVV.PluginInterfaces.V2
         public static IDiffSpread<T> CreateDiffSpread<T>(this IIOFactory factory, IOAttribute attribute, bool subscribe = true)
         {
             return (IDiffSpread<T>)factory.CreateIO(typeof(IDiffSpread<T>), attribute, subscribe);
+        }
+
+        public static IIOContainer<IInStream<int>> CreateBinSizeInput(this IIOFactory factory, InputAttribute attribute)
+        {
+            return factory.CreateIOContainer<IInStream<int>>(attribute, false);
+        }
+
+        public static IIOContainer<IOutStream<int>> CreateBinSizeOutput(this IIOFactory factory, OutputAttribute attribute)
+        {
+            return factory.CreateIOContainer<IOutStream<int>>(attribute, false);
+        }
+
+        public static ISpread<ISpread<T>> CreateBinSizeSpread<T>(this IIOContainer<IInStream<int>> binSizePin, InputAttribute attribute, bool subscribe = true)
+        {
+            var factory = binSizePin.Factory;
+            var context = IOBuildContext.Create(typeof(ISpread<ISpread<T>>), attribute, subscribe);
+            context.BinSizeIOContainer = binSizePin;
+            return factory.CreateIO(context) as ISpread<ISpread<T>>;
+        }
+
+        public static ISpread<ISpread<T>> CreateBinSizeSpread<T>(this IIOContainer<IOutStream<int>> binSizePin, OutputAttribute attribute, bool subscribe = true)
+        {
+            var factory = binSizePin.Factory;
+            var context = IOBuildContext.Create(typeof(ISpread<ISpread<T>>), attribute, subscribe);
+            context.BinSizeIOContainer = binSizePin;
+            return factory.CreateIO(context) as ISpread<ISpread<T>>;
         }
 	}
 }

@@ -21,13 +21,13 @@ using VVVV.Utils.Win32;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Touch", Category = "System")]
+    [PluginInfo(Name = "Touch", Category = "Devices")]
     public class WindowTouchNode : WindowMessageNode, IPluginEvaluate
     {
         [Input("Mode", IsSingle = true)]
         public IDiffSpread<User32.TouchWindowFlags> ModeIn;
 
-        [Output("Touch Device", IsSingle = true)]
+        [Output("Device", IsSingle = true)]
         public ISpread<TouchDevice> TouchDeviceOut;
 
         [Import]
@@ -129,7 +129,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "TouchEvents", Category = "System", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "TouchEvents", Category = "Touch", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
     public class TouchEventsSplitNode : IPluginEvaluate, IDisposable
     {
         [Input("Touch Device", IsSingle = true)]
@@ -203,7 +203,7 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "TouchStates", Category = "System", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "TouchStates", Category = "Touch", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
     public class TouchStatesSplitNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         [Input("Touch Device", IsSingle = true)]
@@ -231,7 +231,7 @@ namespace VVVV.Nodes.Input
                 {
                     return touchDevice.Notifications;
                 },
-                n =>
+                (touchDevice, n) =>
                 {
                     var position = new Vector2D(n.Position.X, n.Position.Y);
                     var clientArea = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);

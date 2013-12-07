@@ -1,10 +1,17 @@
 ﻿
 using System;
+using System.Linq;
 using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 using System.IO;
+using VVVV.Utils.IO;
+using VVVV.Utils.VMath;
+using VVVV.Utils.Win32;
+using VVVV.Utils.Reflection;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -146,6 +153,174 @@ namespace VVVV.Hosting.IO.Streams
                             result = (T) upstreamInterface.GetSlice(usS);
                         }
                         writer.Write(result);
+                    }
+                }
+            }
+            return base.Sync();
+        }
+    }
+
+    class KeyboardToKeyboardStateInStream : MemoryIOStream<KeyboardState>, IDisposable
+    {
+        private readonly INodeIn FNodeIn;
+        private readonly bool FAutoValidate;
+        private readonly Spread<Subscription<Keyboard, KeyNotification>> FSubscriptions = new Spread<Subscription<Keyboard, KeyNotification>>();
+
+        public KeyboardToKeyboardStateInStream(INodeIn nodeIn)
+        {
+            FNodeIn = nodeIn;
+            FAutoValidate = nodeIn.AutoValidate;
+        }
+
+        public void Dispose()
+        {
+            foreach (var subscription in FSubscriptions)
+                subscription.Dispose();
+        }
+
+        public override bool Sync()
+        {
+            IsChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
+            if (IsChanged)
+            {
+                Length = FNodeIn.SliceCount;
+
+                FSubscriptions.ResizeAndDispose(
+                    Length,
+                    slice =>
+                    {
+                        return new Subscription<Keyboard, KeyNotification>(
+                            keyboard => keyboard.KeyNotifications,
+                            (keyboard, n) =>
+                            {
+                                var keyboardState = this.Buffer[slice];
+                                IEnumerable<Keys> keys;
+                                switch (n.Kind)
+                                {
+                                    case KeyNotificationKind.KeyDown:
+                                        var downNotification = n as KeyDownNotification;
+                                        keys = keyboardState.KeyCodes.Concat(new [] { downNotification.KeyCode });
+                                        keyboardState = new KeyboardState(keys, keyboard.CapsLock, keyboardState.Time + 1);
+                                        break;
+                                    case KeyNotificationKind.KeyUp:
+                                        var upNotification = n as KeyUpNotification;
+                                        keys = keyboardState.KeyCodes.Except(new[] { upNotification.KeyCode });
+                                        keyboardState = new KeyboardState(keys, keyboardState.CapsLock, keyboardState.Time + 1);
+                                        break;
+                                }
+                                this.Buffer[slice] = keyboardState;
+                            }
+                        );
+                    }
+                );
+
+                using (var writer = GetWriter())
+                {
+                    object usI;
+                    FNodeIn.GetUpstreamInterface(out usI);
+                    var upstreamInterface = usI as IGenericIO;
+
+                    for (int i = 0; i < Length; i++)
+                    {
+                        int usS;
+                        var keyboard = Keyboard.Empty;
+                        if (upstreamInterface != null)
+                        {
+                            FNodeIn.GetUpsreamSlice(i, out usS);
+                            keyboard = (Keyboard)upstreamInterface.GetSlice(usS);
+                        }
+                        writer.Write(KeyboardState.Empty);
+                        FSubscriptions[i].Update(keyboard);
+                    }
+                }
+            }
+            return base.Sync();
+        }
+    }
+
+    class MouseToMouseStateInStream : MemoryIOStream<MouseState>, IDisposable
+    {
+        private readonly INodeIn FNodeIn;
+        private readonly bool FAutoValidate;
+        private readonly Spread<Subscription<Mouse, MouseNotification>> FSubscriptions = new Spread<Subscription<Mouse, MouseNotification>>();
+        private readonly Spread<int> FRawMouseWheels = new Spread<int>();
+        
+        public MouseToMouseStateInStream(INodeIn nodeIn)
+        {
+            FNodeIn = nodeIn;
+            FAutoValidate = nodeIn.AutoValidate;
+        }
+
+        public void Dispose()
+        {
+            foreach (var subscription in FSubscriptions)
+                subscription.Dispose();
+        }
+        
+        public override bool Sync()
+        {
+            IsChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
+            if (IsChanged)
+            {
+                Length = FNodeIn.SliceCount;
+
+                FRawMouseWheels.SliceCount = Length;
+                FSubscriptions.ResizeAndDispose(
+                    Length,
+                    slice =>
+                    {
+                        return new Subscription<Mouse, MouseNotification>(
+                            mouse => mouse.MouseNotifications,
+                            (mouse, n) =>
+                            {
+                                var position = new Vector2D(n.Position.X, n.Position.Y);
+                                var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
+                                var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+
+                                var mouseState = this.Buffer[slice];
+                                switch (n.Kind)
+                                {
+                                    case MouseNotificationKind.MouseDown:
+                                        var downNotification = n as MouseButtonNotification;
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons | downNotification.Buttons, mouseState.MouseWheel);
+                                        break;
+                                    case MouseNotificationKind.MouseUp:
+                                        var upNotification = n as MouseButtonNotification;
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons & ~upNotification.Buttons, mouseState.MouseWheel);
+                                        break;
+                                    case MouseNotificationKind.MouseMove:
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, mouseState.MouseWheel);
+                                        break;
+                                    case MouseNotificationKind.MouseWheel:
+                                        var wheelNotification = n as MouseWheelNotification;
+                                        FRawMouseWheels[slice] += wheelNotification.WheelDelta;
+                                        var wheel = (int)Math.Round((float)FRawMouseWheels[slice] / Const.WHEEL_DELTA);
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, wheel);
+                                        break;
+                                }
+                                this.Buffer[slice] = mouseState;
+                            }
+                        );
+                    }
+                );
+
+                using (var writer = GetWriter())
+                {
+                    object usI;
+                    FNodeIn.GetUpstreamInterface(out usI);
+                    var upstreamInterface = usI as IGenericIO;
+                    
+                    for (int i = 0; i < Length; i++)
+                    {
+                        int usS;
+                        var mouse = Mouse.Empty;
+                        if (upstreamInterface != null)
+                        {
+                            FNodeIn.GetUpsreamSlice(i, out usS);
+                            mouse = (Mouse) upstreamInterface.GetSlice(usS);
+                        }
+                        writer.Write(new MouseState());
+                        FSubscriptions[i].Update(mouse);
                     }
                 }
             }

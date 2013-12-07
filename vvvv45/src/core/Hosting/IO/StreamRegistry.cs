@@ -11,6 +11,7 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
+using VVVV.Utils.IO;
 
 namespace VVVV.Hosting.IO
 {
@@ -203,8 +204,25 @@ namespace VVVV.Hosting.IO
                               }
                               
                               {
-                                  var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
-                                  var stream = Activator.CreateInstance(typeof(NodeInStream<>).MakeGenericType(context.DataType), container.RawIOObject) as IInStream;
+                                  IIOContainer container;
+                                  IInStream stream;
+                                  if (context.DataType == typeof(MouseState))
+                                  {
+                                      context = context.ReplaceDataType(typeof(Mouse));
+                                      container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
+                                      stream = Activator.CreateInstance(typeof(MouseToMouseStateInStream), container.RawIOObject) as IInStream;
+                                  }
+                                  else if (context.DataType == typeof(KeyboardState))
+                                  {
+                                      context = context.ReplaceDataType(typeof(Keyboard));
+                                      container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
+                                      stream = Activator.CreateInstance(typeof(KeyboardToKeyboardStateInStream), container.RawIOObject) as IInStream;
+                                  }
+                                  else
+                                  {
+                                      container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
+                                      stream = Activator.CreateInstance(typeof(NodeInStream<>).MakeGenericType(context.DataType), container.RawIOObject) as IInStream;
+                                  }
                                   return IOContainer.Create(context, stream, container);
                               }
                           });
@@ -444,9 +462,25 @@ namespace VVVV.Hosting.IO
                                }
                                
                                {
-                                   var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeOut)));
-                                   var nodeOut = container.RawIOObject as INodeOut;
-                                   var stream = Activator.CreateInstance(typeof(NodeOutStream<>).MakeGenericType(context.DataType), nodeOut) as IOutStream;
+                                   IOutStream stream;
+                                   IIOContainer container;
+                                   if (context.DataType == typeof(MouseState))
+                                   {
+                                       context = context.ReplaceDataType(typeof(Mouse));
+                                       container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeOut)));
+                                       stream = Activator.CreateInstance(typeof(MouseStateToMouseOutStream), container.RawIOObject) as IOutStream;
+                                   }
+                                   else if (context.DataType == typeof(KeyboardState))
+                                   {
+                                       context = context.ReplaceDataType(typeof(Keyboard));
+                                       container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeOut)));
+                                       stream = Activator.CreateInstance(typeof(KeyboardStateToKeyboardOutStream), container.RawIOObject) as IOutStream;
+                                   }
+                                   else
+                                   {
+                                       container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeOut)));
+                                       stream = Activator.CreateInstance(typeof(NodeOutStream<>).MakeGenericType(context.DataType), container.RawIOObject) as IOutStream;
+                                   }
                                    if (context.IOAttribute.AutoFlush)
                                        return IOContainer.Create(context, stream, container, null, s => s.Flush());
                                    else

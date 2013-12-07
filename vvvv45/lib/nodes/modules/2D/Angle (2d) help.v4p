@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\2D\Angle (2d) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\Angle (2d) help.v4p">
    <BOUNDS type="Window" left="1095" top="1380" width="10140" height="10050">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -102,6 +102,34 @@
    <BOUNDS type="Box" left="2970" top="6600">
    </BOUNDS>
    </NODE>
+   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="4920" top="1215" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="4920" top="1215">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Vector (2d Join)" nodename="Vector (2d Join)" componentmode="Hidden" id="15">
+   <BOUNDS type="Node" left="4920" top="1920" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="X" dstnodeid="15" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Y" dstnodeid="15" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="XY" dstnodeid="0" dstpinname="XY2">
+   </LINK>
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="17">
    <BOUNDS type="Node" left="3900" top="5685" width="100" height="100">
    </BOUNDS>
@@ -334,6 +362,8 @@
    </LINK>
    <LINK srcnodeid="37" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Input 4">
    </LINK>
+   <LINK srcnodeid="15" srcpinname="XY" dstnodeid="17" dstpinname="Input 5">
+   </LINK>
    <NODE systemname="Quad (DX9)" filename="" nodename="Quad (DX9)" componentmode="Hidden" id="16">
    <BOUNDS type="Node" left="5160" top="6600" width="100" height="100">
    </BOUNDS>
@@ -386,14 +416,4 @@
    <BOUNDS type="Node" left="450" top="8835" width="100" height="100">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Mouse (System)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (System)" componentmode="Hidden" id="42">
-   <BOUNDS type="Node" left="5175" top="1305" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="PositionXY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="42" srcpinname="PositionXY" dstnodeid="0" dstpinname="XY2">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="PositionXY" dstnodeid="17" dstpinname="Input 5">
-   </LINK>
    </PATCH>

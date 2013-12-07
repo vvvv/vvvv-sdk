@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SlimDX.Direct3D9;
 using VVVV.Hosting.Interfaces;
 using VVVV.Hosting.Interfaces.EX9;
@@ -11,6 +12,11 @@ using VVVV.Utils.VMath;
 using SlimDX;
 using System.Runtime.InteropServices;
 using System.IO;
+using VVVV.Utils.IO;
+using System.Reactive.Subjects;
+using System.Drawing;
+using VVVV.Utils.Win32;
+using System.Windows.Forms;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -109,6 +115,163 @@ namespace VVVV.Hosting.IO.Streams
             }
             base.Flush(force);
         }
+    }
+
+    class KeyboardStateToKeyboardOutStream : MemoryIOStream<KeyboardState>, IGenericIO, IDisposable
+    {
+        private readonly INodeOut FNodeOut;
+        private readonly Spread<Subject<KeyNotification>> FSubjects = new Spread<Subject<KeyNotification>>();
+        private readonly Spread<Keyboard> FKeyboards = new Spread<Keyboard>();
+        private readonly Spread<KeyboardState> FKeyboardStates = new Spread<KeyboardState>();
+
+        public KeyboardStateToKeyboardOutStream(INodeOut nodeOut)
+        {
+            FNodeOut = nodeOut;
+            FNodeOut.SetInterface(this);
+        }
+
+        public void Dispose()
+        {
+            FSubjects.ResizeAndDispose(0);
+        }
+
+        object IGenericIO.GetSlice(int index)
+        {
+            return FKeyboards[index];
+        }
+
+        public override void Flush(bool force = false)
+        {
+            if (force || IsChanged)
+            {
+                FSubjects.ResizeAndDispose(Length);
+                FKeyboardStates.ResizeAndDismiss(Length);
+                FKeyboards.ResizeAndDismiss(
+                    Length,
+                    slice =>
+                    {
+                        var subject = FSubjects[slice];
+                        return new Keyboard(subject, true);
+                    }
+                );
+                for (int i = 0; i < Length; i++)
+                {
+                    var keyboardState = this.Buffer[i];
+                    var previousKeyboardState = FKeyboardStates[i];
+                    if (keyboardState != previousKeyboardState)
+                    {
+                        var subject = FSubjects[i];
+                        var keyDowns = keyboardState.KeyCodes.Except(previousKeyboardState.KeyCodes);
+                        foreach (var keyDown in keyDowns)
+                            subject.OnNext(new KeyDownNotification(keyDown));
+                        var keyUps = previousKeyboardState.KeyCodes.Except(keyboardState.KeyCodes);
+                        foreach (var keyUp in keyUps)
+                            subject.OnNext(new KeyUpNotification(keyUp));
+                    }
+                    FKeyboardStates[i] = keyboardState;
+                }
+
+                FNodeOut.SliceCount = Length;
+                FNodeOut.MarkPinAsChanged();
+            }
+            base.Flush(force);
+        }
+    }
+
+    class MouseStateToMouseOutStream : MemoryIOStream<MouseState>, IGenericIO, IDisposable
+    {
+        private readonly INodeOut FNodeOut;
+        private readonly Spread<Subject<MouseNotification>> FSubjects = new Spread<Subject<MouseNotification>>();
+        private readonly Spread<Mouse> FMouses = new Spread<Mouse>();
+        private readonly Spread<MouseState> FMouseStates = new Spread<MouseState>();
+
+        public MouseStateToMouseOutStream(INodeOut nodeOut)
+        {
+            FNodeOut = nodeOut;
+            FNodeOut.SetInterface(this);
+        }
+
+        public void Dispose()
+        {
+            FSubjects.ResizeAndDispose(0);
+        }
+
+        object IGenericIO.GetSlice(int index)
+        {
+            return FMouses[index];
+        }
+
+        public override void Flush(bool force = false)
+        {
+            if (force || IsChanged)
+            {
+                FSubjects.ResizeAndDispose(Length);
+                FMouseStates.ResizeAndDismiss(Length);
+                FMouses.ResizeAndDismiss(
+                    Length,
+                    slice =>
+                    {
+                        var subject = FSubjects[slice];
+                        return new Mouse(subject);
+                    }
+                );
+                for (int i = 0; i < Length; i++)
+                {
+                    var mouseState = this.Buffer[i];
+                    var previousMouseState = FMouseStates[i];
+                    if (mouseState != previousMouseState)
+                    {
+                        var subject = FSubjects[i];
+                        var v = new Vector2D(mouseState.X, mouseState.Y);
+                        var position = ToMousePoint(v);
+                        if (mouseState.X != previousMouseState.X || mouseState.Y != previousMouseState.Y)
+                            subject.OnNext(new MouseMoveNotification(position, FClientArea));
+                        if (mouseState.Buttons != previousMouseState.Buttons)
+                        {
+                            if (mouseState.IsLeft && !previousMouseState.IsLeft)
+                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.Left));
+                            else if (!mouseState.IsLeft && previousMouseState.IsLeft)
+                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.Left));
+                            if (mouseState.IsMiddle && !previousMouseState.IsMiddle)
+                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.Middle));
+                            else if (!mouseState.IsMiddle && previousMouseState.IsMiddle)
+                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.Middle));
+                            if (mouseState.IsRight && !previousMouseState.IsRight)
+                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.Right));
+                            else if (!mouseState.IsRight && previousMouseState.IsRight)
+                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.Right));
+                            if (mouseState.IsXButton1 && !previousMouseState.IsXButton1)
+                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.XButton1));
+                            else if (!mouseState.IsXButton1 && previousMouseState.IsXButton1)
+                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.XButton1));
+                            if (mouseState.IsXButton2 && !previousMouseState.IsXButton2)
+                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.XButton2));
+                            else if (!mouseState.IsXButton2 && previousMouseState.IsXButton2)
+                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.XButton2));
+                        }
+                        if (mouseState.MouseWheel != previousMouseState.MouseWheel)
+                        {
+                            var wheelDelta = previousMouseState.MouseWheel - mouseState.MouseWheel;
+                            subject.OnNext(new MouseWheelNotification(position, FClientArea, wheelDelta * Const.WHEEL_DELTA));
+                        }
+                    }
+                    FMouseStates[i] = mouseState;
+                }
+
+                FNodeOut.SliceCount = Length;
+                FNodeOut.MarkPinAsChanged();
+            }
+            base.Flush(force);
+        }
+
+        static Point ToMousePoint(Vector2D normV)
+        {
+            var clientArea = new Vector2D(FClientArea.Width - 1, FClientArea.Height - 1);
+            var v = VMath.Map(normV, new Vector2D(-1, 1), new Vector2D(1, -1), Vector2D.Zero, clientArea, TMapMode.Clamp);
+            return new Point((int)v.x, (int)v.y);
+        }
+
+        static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
     }
 
     class RawOutStream : IOutStream<System.IO.Stream>

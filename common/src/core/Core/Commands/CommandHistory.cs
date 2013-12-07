@@ -3,6 +3,7 @@ using System.Diagnostics;
 using VVVV.Core.Logging;
 using System.Xml.Linq;
 using VVVV.Core.Serialization;
+using VVVV.Utils;
 
 namespace VVVV.Core.Commands
 {
@@ -94,6 +95,8 @@ namespace VVVV.Core.Commands
                 Debug.WriteLine(string.Format("Command {0} executed.", command));
             },
             string.Format("Execution of command {0}", command));
+        	
+        	OnCommandInserted(command);
         }
 
         public virtual void Insert(string xml)
@@ -118,6 +121,8 @@ namespace VVVV.Core.Commands
                 },
                 string.Format("Undo of command {0}", command));
             }
+            
+            OnUndone(command);
         }
 
         /// <summary>
@@ -136,6 +141,8 @@ namespace VVVV.Core.Commands
                 },
                 string.Format("Redo of command {0}", command));
             }
+            
+            OnRedone(command);
         }
 
         //IIDItem Interface
@@ -145,5 +152,38 @@ namespace VVVV.Core.Commands
         {
             get { return "History"; }
         }
+    	
+		public event EventHandler<EventArgs<Command>> CommandInserted;
+		
+		protected void OnCommandInserted(Command command)
+		{
+			var handler = CommandInserted;
+			if(handler != null)
+			{
+				handler(this, handler.CreateArgs(command));
+			}
+		}
+    	
+		public event EventHandler<EventArgs<Command>> Undone;
+		
+		protected void OnUndone(Command command)
+		{
+			var handler = Undone;
+			if(handler != null)
+			{
+				handler(this, handler.CreateArgs(command));
+			}
+		}
+    	
+		public event EventHandler<EventArgs<Command>> Redone;
+		
+		protected void OnRedone(Command command)
+		{
+			var handler = Redone;
+			if(handler != null)
+			{
+				handler(this, handler.CreateArgs(command));
+			}
+		}
     }
 }
