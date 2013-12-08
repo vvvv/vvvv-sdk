@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Polar (2d) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Polar (2d) help.v4p" systemname="Polar (2d) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\Polar (2d) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Polar (2d) help.v4p" systemname="Polar (2d) help">
    <BOUNDS height="8685" left="4140" top="1605" type="Window" width="9540">
    </BOUNDS>
    <NODE componentmode="Hidden" id="3" nodename="Polar (2d)" systemname="Polar (2d)">
@@ -134,18 +134,6 @@
    <BOUNDS height="100" left="1245" top="3555" type="Node" width="100">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="Hidden" id="41" nodename="Mouse (System Window)" systemname="Mouse (System Window)">
-   <BOUNDS height="100" left="4140" top="450" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="3" dstpinname="X" srcnodeid="41" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="3" dstpinname="Y" srcnodeid="41" srcpinname="Y">
-   </LINK>
    <NODE componentmode="Hidden" id="44" nodename="Quad (DX9)" systemname="Quad (DX9)">
    <BOUNDS height="100" left="3540" top="3210" type="Node" width="100">
    </BOUNDS>
@@ -204,4 +192,26 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="3960" top="435" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="4125" top="885" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="PositionXY" dstnodeid="49" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="X" dstnodeid="3" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Y" dstnodeid="3" dstpinname="Y">
+   </LINK>
    </PATCH>

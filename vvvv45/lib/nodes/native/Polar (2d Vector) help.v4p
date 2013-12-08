@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Polar (2d Vector) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Polar (2d Vector) help.v4p" systemname="Polar (2d Vector) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\Polar (2d Vector) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Polar (2d Vector) help.v4p" systemname="Polar (2d Vector) help">
    <BOUNDS height="8565" left="4140" top="1605" type="Window" width="9240">
    </BOUNDS>
    <NODE componentmode="InABox" hiddenwhenlocked="0" id="10" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
@@ -114,14 +114,6 @@
    <BOUNDS height="100" left="1140" top="3000" type="Node" width="100">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="Hidden" id="41" nodename="Mouse (System Window)" systemname="Mouse (System Window)">
-   <BOUNDS height="100" left="3660" top="345" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="44" nodename="Quad (DX9)" systemname="Quad (DX9)">
    <BOUNDS height="100" left="3090" top="3465" type="Node" width="100">
    </BOUNDS>
@@ -176,20 +168,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="48" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
-   <BOUNDS height="100" left="3660" top="840" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="48" dstpinname="X" srcnodeid="41" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="48" dstpinname="Y" srcnodeid="41" srcpinname="Y">
-   </LINK>
    <NODE componentmode="Hidden" id="3" nodename="Polar (2d Vector)" systemname="Polar (2d Vector)">
    <BOUNDS height="100" left="3660" top="1590" type="Node" width="100">
    </BOUNDS>
@@ -212,10 +190,20 @@
    </LINK>
    <LINK dstnodeid="45" dstpinname="Rotate" srcnodeid="3" srcpinname="Angle">
    </LINK>
-   <LINK dstnodeid="3" dstpinname="XY" srcnodeid="48" srcpinname="XY">
-   </LINK>
    <NODE componentmode="Hidden" id="36" nodename="Polar (2d)" systemname="Polar (2d)">
    <BOUNDS height="100" left="450" top="2565" type="Node" width="100">
    </BOUNDS>
    </NODE>
+   <NODE componentmode="Hidden" id="41" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS height="100" left="3510" top="585" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="41" srcpinname="PositionXY" dstnodeid="3" dstpinname="XY">
+   </LINK>
    </PATCH>
