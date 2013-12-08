@@ -1,25 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.4.dtd" >
-   <PATCH nodename="C:\Users\joreg\Desktop\vvvvs\vvvv_45alpha28.4_x86\girlpower\( VLY )\VLY.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\( VLY )\VLY.v4p" componentmode="InAWindow">
    <BOUNDS height="4800" left="900" top="7875" type="Window" width="9720">
    </BOUNDS>
-   <NODE id="70" nodename="KeyMatch (String)" systemname="Match (String)">
-   <BOUNDS height="0" left="11295" top="570" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Key Match" slicecount="1" encoded="0" values="&lt;LEFT&gt;&lt;RIGHT&gt;&lt;UP&gt;&lt;DOWN&gt;&lt;SPACE&gt;">
-   </PIN>
-   <PIN pinname="&lt;LEFT&gt; Output" visible="1">
-   </PIN>
-   <PIN pinname="&lt;RIGHT&gt; Output" visible="1">
-   </PIN>
-   <PIN pinname="&lt;UP&gt; Output" visible="1">
-   </PIN>
-   <PIN pinname="&lt;DOWN&gt; Output" visible="1">
-   </PIN>
-   <PIN pinname="&lt;SPACE&gt; Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE hiddenwhenlocked="0" id="69" managers="" nodename="Counter (Animation)" systemname="Counter (Animation)">
    <PIN pinname="Up" pintype="Input" visible="1">
    </PIN>
@@ -569,19 +551,13 @@
    <NODE id="36" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
    <BOUNDS height="0" left="12405" top="2085" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="36" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="70" srcpinname="&lt;UP&gt; Output">
-   <LINKPOINT x="11715" y="1455">
-   </LINKPOINT>
-   <LINKPOINT x="12720" y="1455">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="68" dstpinname="Up" linkstyle="Bezier" srcnodeid="36" srcpinname="Output">
    <LINKPOINT x="12435" y="2625">
    </LINKPOINT>
@@ -621,7 +597,7 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
@@ -632,18 +608,12 @@
    <LINKPOINT x="10770" y="2640">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="33" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="70" srcpinname="&lt;RIGHT&gt; Output">
-   <LINKPOINT x="11520" y="1470">
-   </LINKPOINT>
-   <LINKPOINT x="10290" y="1470">
-   </LINKPOINT>
-   </LINK>
    <NODE id="32" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
    <BOUNDS height="0" left="11010" top="2145" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
@@ -652,12 +622,6 @@
    <LINKPOINT x="11040" y="2655">
    </LINKPOINT>
    <LINKPOINT x="11025" y="2655">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="32" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="70" srcpinname="&lt;LEFT&gt; Output">
-   <LINKPOINT x="11325" y="1485">
-   </LINKPOINT>
-   <LINKPOINT x="11325" y="1485">
    </LINKPOINT>
    </LINK>
    <LINK dstnodeid="32" dstpinname="Switch" linkstyle="Bezier" srcnodeid="34" srcpinname="Output 1">
@@ -691,7 +655,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="69" dstpinname="Reset" linkstyle="Bezier" srcnodeid="31" srcpinname="Y Output Value">
@@ -736,12 +700,6 @@
    <LINKPOINT x="13650" y="8745">
    </LINKPOINT>
    <LINKPOINT x="14280" y="8745">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="70" srcpinname="&lt;SPACE&gt; Output">
-   <LINKPOINT x="12105" y="1125">
-   </LINKPOINT>
-   <LINKPOINT x="13320" y="1125">
    </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="28" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
@@ -1382,12 +1340,38 @@
    <PIN pinname="Font" slicecount="1" values="Courier">
    </PIN>
    </NODE>
-   <NODE systemname="Keyboard (System Global Legacy)" nodename="Keyboard (System Global)" componentmode="Hidden" id="71">
-   <BOUNDS type="Node" left="11280" top="120" width="100" height="100">
+   <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="73">
+   <BOUNDS type="Node" left="11265" top="1065" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Keyboard Output" visible="1">
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Key Match" slicecount="1" values="|Left, Right, Up, Down, Space|">
+   </PIN>
+   <PIN pinname="Left" visible="1">
+   </PIN>
+   <PIN pinname="Right" visible="1">
+   </PIN>
+   <PIN pinname="Up" visible="1">
+   </PIN>
+   <PIN pinname="Space" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="71" srcpinname="Keyboard Output" dstnodeid="70" dstpinname="Input">
+   <LINK srcnodeid="73" srcpinname="Left" dstnodeid="32" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="73" srcpinname="Right" dstnodeid="33" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="73" srcpinname="Up" dstnodeid="36" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="73" srcpinname="Space" dstnodeid="31" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="72">
+   <BOUNDS type="Node" left="11265" top="555" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="72" srcpinname="Device" dstnodeid="73" dstpinname="Keyboard">
    </LINK>
    </PATCH>

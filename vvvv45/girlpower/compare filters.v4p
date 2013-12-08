@@ -1,6 +1,6 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="V:\releases\vvvv_33beta9a\girlpower\compare filters.v4p">
-   <BOUNDS height="7050" left="675" top="1290" type="Window" width="14040">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\compare filters.v4p">
+   <BOUNDS height="7050" left="675" top="1290" type="Window" width="14205">
    </BOUNDS>
    <NODE id="16" nodename="Oscillator (Animation)">
    <BOUNDS height="0" left="3465" top="3105" type="Node" width="0">
@@ -144,7 +144,7 @@
    </LINK>
    <LINK dstnodeid="8" dstpinname="Y" srcnodeid="14" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4710" top="2130" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8360" top="7056" type="Window" width="215">
@@ -174,16 +174,6 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <NODE id="17" nodename="Mouse (System Window)">
-   <BOUNDS height="0" left="5295" top="1590" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="17" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="17" srcpinname="Y">
-   </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
    <BOUNDS height="255" left="450" top="345" type="Node" width="1230">
    </BOUNDS>
@@ -299,5 +289,25 @@
    </LINKPOINT>
    <LINKPOINT x="3735" y="5655">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="4770" top="990" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Y" dstnodeid="6" dstpinname="Y">
+   </LINK>
+   <NODE id="18" systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden">
+   <BOUNDS type="Node" left="4605" top="540" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="PositionXY" dstnodeid="19" dstpinname="XY">
    </LINK>
    </PATCH>

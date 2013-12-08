@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
-   <PATCH nodename="X:\vvvv33svn\public\vvvv33\girlpower\gridworm.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\gridworm.v4p">
    <BOUNDS height="7110" left="1845" top="5700" type="Window" width="8970">
    </BOUNDS>
    <NODE id="16" nodename="ArbitraryPoint (Transform)">
@@ -53,9 +53,9 @@
    </PIN>
    <PIN pinname="Output Y" visible="1">
    </PIN>
-   <PIN pinname="Attractor X" visible="1">
+   <PIN pinname="Attractor X" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Attractor Y" visible="1">
+   <PIN pinname="Attractor Y" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Attractor Radius" pintype="Input" slicecount="1" visible="0" values="0.4">
    </PIN>
@@ -194,18 +194,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="3" nodename="Mouse (System Window)">
-   <BOUNDS height="0" left="5310" top="2775" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="13" dstpinname="Attractor X" srcnodeid="3" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="13" dstpinname="Attractor Y" srcnodeid="3" srcpinname="Y">
-   </LINK>
    <NODE id="2" nodename="GRID (DX9)">
    <BOUNDS height="0" left="3870" top="5250" type="Node" width="0">
    </BOUNDS>
@@ -236,7 +224,7 @@
    </LINK>
    <LINK dstnodeid="16" dstpinname="Y" srcnodeid="11" srcpinname="Position Out">
    </LINK>
-   <NODE id="0" nodename="Renderer (EX9)" componentmode="InAWindow">
+   <NODE id="0" nodename="RENDERER (EX9)" componentmode="InAWindow">
    <BOUNDS height="0" left="3870" top="5640" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="1860" top="825" type="Window" width="6120">
@@ -247,9 +235,41 @@
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
    </NODE>
    <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="16" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="0" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="5685" top="2610" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="5520" top="2235" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="5520" top="2235">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="PositionXY" dstnodeid="17" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="X" dstnodeid="13" dstpinname="Attractor X">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Y" dstnodeid="13" dstpinname="Attractor Y">
    </LINK>
    </PATCH>

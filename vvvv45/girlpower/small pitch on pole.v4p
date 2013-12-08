@@ -1,19 +1,9 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\small pitch on pole.v4p">
-   <BOUNDS height="9645" left="2415" top="4725" type="Window" width="8325">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\small pitch on pole.v4p">
+   <BOUNDS height="9645" left="2415" top="4725" type="Window" width="8385">
    </BOUNDS>
-   <NODE id="-2" nodename="Mouse (System Global)" systemname="Mouse (System Global)">
-   <BOUNDS height="0" left="930" top="1755" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="22" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
-   <BOUNDS height="0" left="2325" top="3225" type="Node" width="0">
+   <BOUNDS height="0" left="1500" top="3600" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Y" visible="1">
    </PIN>
@@ -43,7 +33,7 @@
    </PIN>
    </NODE>
    <NODE id="20" nodename="LFO (Animation)" systemname="LFO (Animation)">
-   <BOUNDS height="0" left="1860" top="2310" type="Node" width="0">
+   <BOUNDS height="0" left="1860" top="3135" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -209,7 +199,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Based on a media installation &cr;&lf;by Michael Höpfel and Sebastian Gregor&cr;&lf;© meso 11.2002&cr;&lf;www.meso.net&cr;&lf;&cr;&lf;demonstrates the impact of moving the poles when using planar projection|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Based on a media installation &cr;&lf;by Michael Höpfel and Sebastian Gregor&cr;&lf;© meso 11.2002&cr;&lf;www.meso.net&cr;&lf;&cr;&lf;demonstrates the impact of moving the poles when using planar projection|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -223,7 +213,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|pitch on pole|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|pitch on pole|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -232,46 +222,6 @@
    <PIN pinname="Size" slicecount="1" values="25">
    </PIN>
    </NODE>
-   <NODE id="7" nodename="Damper (Animation)" systemname="Damper (Animation)">
-   <BOUNDS height="0" left="2925" top="2280" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Go To Position" visible="1">
-   </PIN>
-   <PIN pinname="FilterTime" slicecount="1" values="1.43">
-   </PIN>
-   <PIN pinname="Mode">
-   </PIN>
-   <PIN pinname="Cyclic" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Velocity" pintype="Input" visible="0">
-   </PIN>
-   <PIN pinname="Position Out" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="7" dstpinname="Go To Position" srcnodeid="-2" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="22" dstpinname="Z" srcnodeid="7" srcpinname="Position Out">
-   </LINK>
-   <NODE id="6" nodename="Damper (Animation)" systemname="Damper (Animation)">
-   <BOUNDS height="0" left="915" top="2325" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Go To Position" visible="1">
-   </PIN>
-   <PIN pinname="FilterTime" slicecount="1" values="1.43">
-   </PIN>
-   <PIN pinname="Mode">
-   </PIN>
-   <PIN pinname="Cyclic" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Velocity" pintype="Input" visible="0">
-   </PIN>
-   <PIN pinname="Position Out" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="6" dstpinname="Go To Position" srcnodeid="-2" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="22" dstpinname="X" srcnodeid="6" srcpinname="Position Out">
-   </LINK>
    <NODE id="5" nodename="GRID (DX9)" systemname="Grid (DX9)">
    <BOUNDS height="0" left="3780" top="7995" type="Node" width="0">
    </BOUNDS>
@@ -297,7 +247,7 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="..\lib\assets\images\earth_512x512.jpg" encoded="0">
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\lib\assets\images\earth_512x512.jpg">
    </PIN>
    <PIN pinname="Texture State In" visible="1">
    </PIN>
@@ -379,5 +329,45 @@
    <LINK dstnodeid="0" dstpinname="Layer 2" srcnodeid="2" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   </LINK>
+   <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="1485" top="1740" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="25" nodename="Damper (Animation)" systemname="Damper (Animation)">
+   <BOUNDS height="0" left="1665" top="2235" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1" slicecount="1" values="-0.721730067743616">
+   </PIN>
+   <PIN pinname="FilterTime" slicecount="1" values="1.43">
+   </PIN>
+   <PIN pinname="Mode">
+   </PIN>
+   <PIN pinname="Cyclic" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Velocity" pintype="Input" visible="0">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="PositionXY" dstnodeid="25" dstpinname="Go To Position">
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="1680" top="2655" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Position Out" dstnodeid="26" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="X" dstnodeid="22" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Y" dstnodeid="22" dstpinname="Z">
    </LINK>
    </PATCH>

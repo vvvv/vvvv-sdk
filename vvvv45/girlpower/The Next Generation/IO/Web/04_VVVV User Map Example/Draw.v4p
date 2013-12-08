@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\04_VVVV User Map Example\Draw.v4p" systemname="Draw" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\( vvvv user map )\Draw.v4p">
-   <BOUNDS type="Window" left="3870" top="2610" width="23670" height="11580">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\04_VVVV User Map Example\Draw.v4p" systemname="Draw" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\( vvvv user map )\Draw.v4p">
+   <BOUNDS type="Window" left="13800" top="3150" width="23670" height="11580">
    </BOUNDS>
    <NODE componentmode="Hidden" id="29" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="270" left="960" top="5985" type="Node" width="22245">
@@ -890,50 +890,6 @@
    </NODE>
    <LINK srcnodeid="65" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Lightness Max">
    </LINK>
-   <NODE nodename="IOBox (Node)" componentmode="InABox" id="67" systemname="IOBox (Node)">
-   <BOUNDS type="Box" left="19995" top="1545" width="795" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="19995" top="1545" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Node" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Mouse">
-   </PIN>
-   </NODE>
-   <NODE id="66" systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="19995" top="5475" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1" pintype="Output">
-   </PIN>
-   <BOUNDS type="Box" left="0" top="0" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="2625" top="5220" width="15360" height="12330">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Mouse" pintype="Input" visible="1">
-   </PIN>
-   <PIN pinname="Size" pintype="Input" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Color" pintype="Input" visible="1" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Selection" pintype="Input" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Enabled" pintype="Input" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Window Handle" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Patch" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="67" srcpinname="Output Node" dstnodeid="66" dstpinname="Mouse">
-   </LINK>
-   <LINK srcnodeid="66" srcpinname="Layer" dstnodeid="29" dstpinname="Layer 7">
-   </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\Constant.fx" id="4" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
    <PIN pinname="Mesh" visible="1">
    </PIN>
@@ -1173,5 +1129,25 @@
    <LINK srcnodeid="61" srcpinname="Layer" dstnodeid="29" dstpinname="Layer 3">
    </LINK>
    <LINK srcnodeid="91" srcpinname="Color Output" dstnodeid="61" dstpinname="Color">
+   </LINK>
+   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="94">
+   <BOUNDS type="Node" left="19965" top="5460" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="95" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="19980" top="1485" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="19980" top="1485" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mouse">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="95" srcpinname="Output Node" dstnodeid="94" dstpinname="Mouse">
+   </LINK>
+   <LINK srcnodeid="94" srcpinname="Layer" dstnodeid="29" dstpinname="Layer 7">
    </LINK>
    </PATCH>
